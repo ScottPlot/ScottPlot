@@ -15,7 +15,7 @@ namespace ScottPlotTests.Colormap
         public void Create_AvailableName_NotThrows(string Name)
         {
             var factory = new ColormapFactory();
-            ScottPlot.Drawing.Colormap result = factory.Create(Name);
+            ScottPlot.Drawing.Colormap result = factory.CreateOrDefault(Name);
         }
 
         [TestCase("Solar")]
@@ -25,7 +25,7 @@ namespace ScottPlotTests.Colormap
         public void Create_AvailableName_ColormapNameMatchRequested(string Name)
         {
             var factory = new ColormapFactory();
-            ScottPlot.Drawing.Colormap result = factory.Create(Name);
+            ScottPlot.Drawing.Colormap result = factory.CreateOrDefault(Name);
             Assert.AreEqual(Name, result.Name);
         }
 
@@ -35,8 +35,8 @@ namespace ScottPlotTests.Colormap
         public void Create_NotAvailableName_ReturnDefaultAlgae(string Name)
         {
             var factory = new ColormapFactory();
-            ScottPlot.Drawing.Colormap result = factory.Create(Name);
-            Assert.AreEqual("Algae", result.Name);
+            ScottPlot.Drawing.Colormap result = factory.CreateOrDefault(Name);
+            Assert.AreEqual(factory.GetDefaultColormap().GetType().Name, result.Name);
         }
 
         [TestCase("Solar")]
@@ -46,7 +46,7 @@ namespace ScottPlotTests.Colormap
         public void CreateUnsafe_AvailableName_ColormapNameMatchrequested(string Name)
         {
             var factory = new ColormapFactory();
-            ScottPlot.Drawing.Colormap result = factory.CreateUnsafe(Name);
+            ScottPlot.Drawing.Colormap result = factory.CreateOrThrow(Name);
             Assert.AreEqual(Name, result.Name);
         }
 
@@ -58,7 +58,7 @@ namespace ScottPlotTests.Colormap
             var factory = new ColormapFactory();
             Assert.Throws<ArgumentOutOfRangeException>(() =>
            {
-               ScottPlot.Drawing.Colormap result = factory.CreateUnsafe(Name);
+               ScottPlot.Drawing.Colormap result = factory.CreateOrThrow(Name);
            });
         }
 

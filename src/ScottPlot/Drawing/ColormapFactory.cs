@@ -7,10 +7,8 @@ namespace ScottPlot.Drawing
 {
     public class ColormapFactory
     {
-        private Dictionary<string, Func<IColormap>> avaialbeColormaps;
-        public ColormapFactory()
-        {
-            avaialbeColormaps = new Dictionary<string, Func<IColormap>>()
+        private readonly Dictionary<string, Func<IColormap>> Colormaps =
+            new Dictionary<string, Func<IColormap>>()
             {
                 { "Algae", () => new Algae()},
                 { "Amp", () => new Amp()},
@@ -44,36 +42,28 @@ namespace ScottPlot.Drawing
                 { "Turbo", () => new Turbo()},
                 { "Viridis", () => new Viridis()},
             };
-        }
 
-        public Colormap Create(string Name)
+        public IColormap GetDefaultColormap() => new Grayscale();
+
+        public Colormap CreateOrDefault(string Name)
         {
-            Func<IColormap> cmap;
-            if (avaialbeColormaps.TryGetValue(Name, out cmap))
-            {
+            if (Colormaps.TryGetValue(Name, out Func<IColormap> cmap))
                 return new Colormap(cmap());
-            }
-            return new Colormap(new Algae());
+            else
+                return new Colormap(GetDefaultColormap());
         }
 
-        public Colormap CreateUnsafe(string Name)
+        public Colormap CreateOrThrow(string Name)
         {
-            Func<IColormap> cmap;
-            if (avaialbeColormaps.TryGetValue(Name, out cmap))
-            {
+            if (Colormaps.TryGetValue(Name, out Func<IColormap> cmap))
                 return new Colormap(cmap());
-            }
-            throw new ArgumentOutOfRangeException($"Can't find colormap with name={Name}");
+            else
+                throw new ArgumentOutOfRangeException($"No colormap with name '{Name}'");
         }
 
-        public IEnumerable<string> GetAvailableNames()
-        {
-            return avaialbeColormaps.Keys;
-        }
+        public IEnumerable<string> GetAvailableNames() => Colormaps.Keys;
 
-        public IEnumerable<Colormap> GetAvailableColormaps()
-        {
-            return avaialbeColormaps.Values.Select(f => new Colormap(f()));
-        }
+        public IEnumerable<Colormap> GetAvailableColormaps() =>
+            Colormaps.Values.Select(f => new Colormap(f()));
     }
 }

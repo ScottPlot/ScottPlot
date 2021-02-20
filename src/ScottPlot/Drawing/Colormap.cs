@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using ScottPlot.Ticks;
 
 namespace ScottPlot.Drawing
 {
@@ -42,56 +38,49 @@ namespace ScottPlot.Drawing
         public static Colormap Turbo => new Colormap(new Colormaps.Turbo());
         public static Colormap Viridis => new Colormap(new Colormaps.Viridis());
 
-        private readonly IColormap cmap;
+        private readonly IColormap ThisColormap;
+
+        private static readonly ColormapFactory ColormapFactory = new ColormapFactory();
+
+        // TODO: move name into IColormap
         public readonly string Name;
+
         public Colormap(IColormap colormap)
         {
-            cmap = colormap ?? new Colormaps.Grayscale();
-            Name = cmap.GetType().Name;
+            ThisColormap = colormap ?? ColormapFactory.GetDefaultColormap();
+            Name = ThisColormap.GetType().Name;
         }
 
-        public override string ToString()
-        {
-            return $"Colormap {Name}";
-        }
+        public override string ToString() => $"Colormap {Name}";
 
-        public static Colormap[] GetColormaps() =>
-                typeof(Colormap)
-                .GetProperties()
-                .Where(x => x.PropertyType == typeof(Colormap))
-                .Select(x => (Colormap)x.GetValue(x))
-                .ToArray();
+        /// <summary>
+        /// Create new instances of every colormap and return them as an array.
+        /// </summary>
+        /// <returns></returns>
+        public static Colormap[] GetColormaps() => ColormapFactory.GetAvailableColormaps().ToArray();
 
-        public static string[] GetColormapNames() =>
-            typeof(Colormap)
-            .GetProperties()
-            .Where(x => x.PropertyType == typeof(Colormap))
-            .Select(x => x.Name)
-            .ToArray();
+        /// <summary>
+        /// Return the names of all available colormaps.
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetColormapNames() => ColormapFactory.GetAvailableNames().ToArray();
 
-        public static Colormap GetColormapByName(string name)
-        {
-            var matchingCmaps = typeof(Colormap)
-                                .GetProperties()
-                                .Where(x => x.PropertyType == typeof(Colormap))
-                                .Where(x => x.Name == name)
-                                .Select(x => (Colormap)x.GetValue(x));
+        /// <summary>
+        /// Create a new colormap by its name.
+        /// </summary>
+        /// <param name="name">colormap name</param>
+        /// <param name="throwIfNotFound">if false the default colormap (Viridis) will be returned</param>
+        /// <returns></returns>
+        public static Colormap GetColormapByName(string name, bool throwIfNotFound = true) =>
+            throwIfNotFound ? ColormapFactory.CreateOrThrow(name) : ColormapFactory.CreateOrDefault(name);
 
-            return matchingCmaps.Any()
-                ? matchingCmaps.First()
-                : throw new ArgumentException($"No colormap named '{name}' exists");
-        }
-
-        public (byte r, byte g, byte b) GetRGB(byte value)
-        {
-            return cmap.GetRGB(value);
-        }
+        public (byte r, byte g, byte b) GetRGB(byte value) => ThisColormap.GetRGB(value);
 
         public (byte r, byte g, byte b) GetRGB(double fraction)
         {
             fraction = Math.Max(fraction, 0);
             fraction = Math.Min(fraction, 1);
-            return cmap.GetRGB((byte)(fraction * 255));
+            return ThisColormap.GetRGB((byte)(fraction * 255));
         }
 
         public int GetInt32(byte value)
