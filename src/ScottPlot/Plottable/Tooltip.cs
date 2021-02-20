@@ -35,7 +35,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems() => null;
 
-        public AxisLimits GetAxisLimits() => new AxisLimits();
+        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)
         {
