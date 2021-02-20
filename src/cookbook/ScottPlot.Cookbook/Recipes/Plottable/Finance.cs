@@ -138,12 +138,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Description =>
             "Newer data appears on the ride side of the chart so financial charts are often " +
             "displayed with the vertical axis label on the right side as well. This is possible " +
-            "by disabling the left vertical axis (YAxis) and enabling the right one (YAxis2)";
+            "by disabling the left vertical axis (YAxis) and enabling the right one (YAxis2). " +
+            "The left and right Y axes are index 0 and 1 (respectively), and the plottable has to be " +
+            "update to indicate which axis index it should render on.";
 
         public void ExecuteRecipe(Plot plt)
         {
             OHLC[] prices = DataGen.RandomStockPrices(null, 30, TimeSpan.FromMinutes(5));
-            plt.AddCandlesticks(prices);
+            var candlePlot = plt.AddCandlesticks(prices);
+            candlePlot.YAxisIndex = 1;
             plt.XAxis.DateTimeFormat(true);
 
             plt.YAxis.Ticks(false);
