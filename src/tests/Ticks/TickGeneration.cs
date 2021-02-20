@@ -22,20 +22,20 @@ namespace ScottPlotTests.Ticks
             for (int i = 1; i < pointCount; i++)
                 values[i] = values[i - 1] + rand.NextDouble();
 
-            var mplt = new ScottPlot.MultiPlot(1000, 400, 1, 2);
 
-            var pltDefault = mplt.GetSubplot(0, 0);
+            var pltDefault = new ScottPlot.Plot();
             pltDefault.Title("Default xSpacing");
             pltDefault.AddScatter(days, values);
 
-            var pltTest = mplt.GetSubplot(0, 1);
+            var pltTest = new ScottPlot.Plot();
             pltTest.Title("xSpacing = 1 unit");
             pltTest.AddScatter(days, values);
 
             // force inter-tick distance on a numerical axis
             pltTest.XAxis.ManualTickSpacing(1);
 
-            TestTools.SaveFig(mplt);
+            //TestTools.SaveFig(pltDefault);
+            //TestTools.SaveFig(pltTest);
         }
 
         [Test]
@@ -55,14 +55,12 @@ namespace ScottPlotTests.Ticks
             for (int i = 1; i < pointCount; i++)
                 values[i] = values[i - 1] + rand.NextDouble();
 
-            var mplt = new ScottPlot.MultiPlot(1000, 400, 1, 2);
-
-            var pltDefault = mplt.GetSubplot(0, 0);
+            var pltDefault = new ScottPlot.Plot();
             pltDefault.Title("Default xSpacing");
             pltDefault.AddScatter(dates, values);
             pltDefault.XAxis.DateTimeFormat(true);
 
-            var pltTest = mplt.GetSubplot(0, 1);
+            var pltTest = new ScottPlot.Plot();
             pltTest.Title("xSpacing = 1 day");
             pltTest.AddScatter(dates, values);
             pltTest.XAxis.DateTimeFormat(true);
@@ -72,7 +70,8 @@ namespace ScottPlotTests.Ticks
             // force 1 tick per day on a DateTime axis
             pltTest.XAxis.ManualTickSpacing(1, ScottPlot.Ticks.DateTimeUnit.Day);
 
-            TestTools.SaveFig(mplt);
+            //TestTools.SaveFig(pltDefault);
+            //TestTools.SaveFig(pltTest);
         }
 
         [Test]
