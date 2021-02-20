@@ -29,15 +29,28 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool Sequential;
 
-        // customizations
+        /// <summary>
+        /// Color of the candle if it closes at or above its open value
+        /// </summary>
+        public Color ColorUp = Color.LightGreen;
+
+        /// <summary>
+        /// Color of the candle if it closes below its open value
+        /// </summary>
+        public Color ColorDown = Color.LightCoral;
+
+        /// <summary>
+        /// This field controls the color of the wick and rectangular candle border.
+        /// If null, the wick is the same color as the candle and no border is applied.
+        /// </summary>
+        public Color? WickColor = null;
+
         public bool IsVisible { get; set; } = true;
-        public override string ToString() => $"PlottableOHLC with {PointCount} points";
+        public override string ToString() => $"FinancePlot with {PointCount} OHLC indicators";
         public LegendItem[] GetLegendItems() => null;
         public int PointCount { get => OHLCs.Length; }
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color ColorUp = Color.LightGreen;
-        public Color ColorDown = Color.LightCoral;
 
         public AxisLimits GetAxisLimits()
         {
@@ -113,7 +126,6 @@ namespace ScottPlot.Plottable
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
             using Pen pen = new Pen(Color.Magenta);
             using SolidBrush brush = new SolidBrush(Color.Magenta);
-
             for (int i = 0; i < OHLCs.Length; i++)
             {
                 var ohlc = OHLCs[i];
@@ -123,24 +135,37 @@ namespace ScottPlot.Plottable
                 if (AutoWidth == false)
                     boxWidth = (float)(ohlc.timeSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
 
-                pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
-                brush.Color = ohlc.closedHigher ? ColorUp : ColorDown;
+                Color priceChangeColor = ohlc.closedHigher ? ColorUp : ColorDown;
+                pen.Color = WickColor ?? priceChangeColor;
                 pen.Width = (boxWidth >= 2) ? 2 : 1;
 
-                // the wick below the box
+                // draw the wick below the box
                 PointF wickLowBot = new PointF(pixelX, dims.GetPixelY(ohlc.low));
                 PointF wickLowTop = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
                 gfx.DrawLine(pen, wickLowBot, wickLowTop);
 
-                // the wick above the box
+                // draw the wick above the box
                 PointF wickHighBot = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
                 PointF wickHighTop = new PointF(pixelX, dims.GetPixelY(ohlc.high));
                 gfx.DrawLine(pen, wickHighBot, wickHighTop);
 
-                // the candle
+                // draw the candle body
                 PointF boxLowerLeft = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
                 PointF boxUpperRight = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
-                gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                if (ohlc.open == ohlc.close)
+                {
+                    // draw OHLC (non-filled) candle
+                    gfx.DrawLine(pen, boxLowerLeft.X - boxWidth, boxLowerLeft.Y, boxLowerLeft.X + boxWidth, boxLowerLeft.Y);
+                }
+                else
+                {
+                    // draw a filled candle
+                    brush.Color = priceChangeColor;
+                    gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+
+                    if (WickColor != null)
+                        gfx.DrawRectangle(pen, boxLowerLeft.X - boxWidth, boxUpperRight.Y - 1, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y + 2);
+                }
             }
         }
 
