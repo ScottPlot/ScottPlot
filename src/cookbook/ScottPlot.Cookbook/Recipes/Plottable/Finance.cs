@@ -165,4 +165,100 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.YAxis2.Label("Price (USD)");
         }
     }
+
+    public class FinanceWickColor : IRecipe
+    {
+        public string Category => "Plottable: Finance";
+        public string ID => "finance_wick";
+        public string Title => "Custom Wick Color";
+        public string Description =>
+            "By default candle wicks are the same color as their bodies, but this can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            OHLC[] prices = DataGen.RandomStockPrices(null, 30, TimeSpan.FromMinutes(5));
+            var fp = plt.AddCandlesticks(prices);
+            fp.WickColor = Color.Black;
+        }
+    }
+
+    public class FinanceColor : IRecipe
+    {
+        public string Category => "Plottable: Finance";
+        public string ID => "finance_color";
+        public string Title => "Custom Colors";
+        public string Description =>
+            "Candles that close below their open price are colored differently from " +
+            "candles which close at or above it. These colors can be customized. " +
+            "Combine this styling with a custom wick color (which also controls the candle border) " +
+            "to create a different visual style.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            OHLC[] prices = DataGen.RandomStockPrices(null, 30, TimeSpan.FromMinutes(5));
+            var fp = plt.AddCandlesticks(prices);
+            fp.ColorDown = Color.Black;
+            fp.ColorUp = Color.White;
+            fp.WickColor = Color.Black;
+        }
+    }
+
+    public class FinanceDark : IRecipe
+    {
+        public string Category => "Plottable: Finance";
+        public string ID => "finance_dark";
+        public string Title => "Dark Mode";
+        public string Description =>
+            "A dark mode finance plot can be realized by customizing color options of the candles and figure. " +
+            "Colors in this example were chosen to mimic TC2000.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // add some random candles
+            OHLC[] prices = DataGen.RandomStockPrices(null, 100, TimeSpan.FromMinutes(5));
+            double[] xs = prices.Select(x => x.time).ToArray();
+            var candlePlot = plt.AddCandlesticks(prices);
+            candlePlot.YAxisIndex = 1;
+
+            plt.XAxis.DateTimeFormat(true);
+
+            // add SMA indicators for 8 and 20 days
+            double[] sma8xs = xs.Skip(8).ToArray();
+            double[] sma8ys = Statistics.Finance.SMA(prices, 8);
+            double[] sma20xs = xs.Skip(20).ToArray();
+            double[] sma20ys = Statistics.Finance.SMA(prices, 20);
+            var sma8plot = plt.AddScatterLines(sma8xs, sma8ys, Color.Cyan, 2, label: "8 day SMA");
+            var sma20plot = plt.AddScatterLines(sma20xs, sma20ys, Color.Yellow, 2, label: "20 day SMA");
+            sma8plot.YAxisIndex = 1;
+            sma20plot.YAxisIndex = 1;
+
+            // customize candle styling
+            candlePlot.ColorDown = ColorTranslator.FromHtml("#00FF00");
+            candlePlot.ColorUp = ColorTranslator.FromHtml("#FF0000");
+
+            // customize figure styling
+            plt.Layout(padding: 12);
+            plt.Style(figureBackground: Color.Black, dataBackground: Color.Black);
+            plt.Frame(false);
+            plt.XAxis.TickLabelStyle(color: Color.White);
+            plt.XAxis.TickMarkColor(ColorTranslator.FromHtml("#333333"));
+            plt.XAxis.MajorGrid(color: ColorTranslator.FromHtml("#333333"));
+
+            // hide the left axis and show a right axis
+            plt.YAxis.Ticks(false);
+            plt.YAxis.Grid(false);
+            plt.YAxis2.Ticks(true);
+            plt.YAxis2.Grid(true);
+            plt.YAxis2.TickLabelStyle(color: ColorTranslator.FromHtml("#00FF00"));
+            plt.YAxis2.TickMarkColor(ColorTranslator.FromHtml("#333333"));
+            plt.YAxis2.MajorGrid(color: ColorTranslator.FromHtml("#333333"));
+
+            // customize the legend style
+            var legend = plt.Legend();
+            legend.FillColor = Color.Transparent;
+            legend.OutlineColor = Color.Transparent;
+            legend.Font.Color = Color.White;
+            legend.Font.Bold = true;
+        }
+    }
 }
