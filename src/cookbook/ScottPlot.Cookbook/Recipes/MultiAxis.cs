@@ -71,17 +71,48 @@ namespace ScottPlot.Cookbook.Recipes
         public string Category => "Multi-Axis";
         public string ID => "multiAxis_right";
         public string Title => "Right Y Axis";
-        public string Description => "This example shows how to display a Y axis only on the right side.";
+        public string Description =>
+            "This example demonstrates how to display a Y axis on the right side of the figure. " +
+            "The vertical axis to the right of the figure is index 1, so plots must be updated " +
+            "to indicate they are to use a nonstandard axis index.";
 
         public void ExecuteRecipe(Plot plt)
         {
             double[] values = DataGen.RandomWalk(100);
-            plt.AddSignal(values);
+            var sig = plt.AddSignal(values);
+            sig.YAxisIndex = 1;
 
             plt.YAxis.Ticks(false);
+            plt.YAxis.Grid(false);
             plt.YAxis2.Ticks(true);
+            plt.YAxis2.Grid(true);
             plt.YAxis2.Label("Value");
             plt.XAxis.Label("Sample Number");
+        }
+    }
+
+    public class TopAxis : IRecipe
+    {
+        public string Category => "Multi-Axis";
+        public string ID => "multiAxis_top";
+        public string Title => "Top Y Axis";
+        public string Description =>
+            "This example demonstrates how to display an X axis above the figure. " +
+            "The horizontal axis above the figure is index 1, so plots must be updated " +
+            "to indicate they are to use a nonstandard axis index.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.RandomWalk(100);
+            var sig = plt.AddSignal(values);
+            sig.XAxisIndex = 1;
+
+            plt.XAxis.Ticks(false);
+            plt.XAxis.Grid(false);
+            plt.XAxis2.Ticks(true);
+            plt.XAxis2.Grid(true);
+            plt.XAxis2.Label("Sample Number");
+            plt.YAxis.Label("Value");
         }
     }
 
