@@ -102,10 +102,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var candlePlot = plt.AddCandlesticks(ohlcs);
 
             var sma8 = candlePlot.GetSMA(8);
-            plt.AddScatter(sma8.xs, sma8.ys, markerSize: 0, color: Color.Blue, lineWidth: 2);
+            plt.AddScatterLines(sma8.xs, sma8.ys, Color.Blue, 2);
 
             var sma20 = candlePlot.GetSMA(20);
-            plt.AddScatter(sma20.xs, sma20.ys, markerSize: 0, color: Color.Navy, lineWidth: 2);
+            plt.AddScatterLines(sma20.xs, sma20.ys, Color.Navy, 2);
         }
     }
 
@@ -124,9 +124,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var candlePlot = plt.AddCandlesticks(ohlcs);
 
             var bol = candlePlot.GetBollingerBands(20);
-            plt.AddScatter(bol.xs, bol.sma, markerSize: 0, color: Color.Blue);
-            plt.AddScatter(bol.xs, bol.lower, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
-            plt.AddScatter(bol.xs, bol.upper, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatterLines(bol.xs, bol.sma, Color.Blue);
+            plt.AddScatterLines(bol.xs, bol.lower, Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatterLines(bol.xs, bol.upper, Color.Blue, lineStyle: LineStyle.Dash);
         }
     }
 
