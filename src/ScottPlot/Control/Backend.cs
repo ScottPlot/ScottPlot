@@ -39,12 +39,13 @@
  *   
  */
 
+using ScottPlot.Control.EventProcess;
+using ScottPlot.Control.EventProcess.Factories;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScottPlot.Control
@@ -67,9 +68,16 @@ namespace ScottPlot.Control
 
         private readonly Queue<InputState> MouseWheelQueue = new Queue<InputState>();
         private readonly Stopwatch MouseWheelStopwatch = new Stopwatch();
+        private EventsProcessor eventProcessor;
+        private IUIEventFactory eventFactory;
 
-        public ControlBackEnd(float width, float height) =>
+
+        public ControlBackEnd(float width, float height)
+        {
+            eventFactory = new ModernDecorator(new UIEventFactory(Configuration, Settings, Plot));
             Reset(width, height);
+            eventProcessor = new EventsProcessor((hq) => Render(!hq), (int)Configuration.ScrollWheelZoomHighQualityDelay);
+        }
 
         public void Reset(float width, float height) =>
             Reset(width, height, new Plot());
@@ -123,6 +131,8 @@ namespace ScottPlot.Control
         {
             Plot = newPlot;
             Settings = Plot.GetSettings(false);
+            eventFactory.plt = Plot;
+            eventFactory.settings = Settings;
             Resize(width, height);
         }
 
@@ -176,11 +186,6 @@ namespace ScottPlot.Control
             BitmapUpdated(null, EventArgs.Empty);
             currentlyRendering = false;
         }
-
-        private void RenderAfterDragging() =>
-            Render(
-                lowQuality: Configuration.Quality == QualityMode.LowWhileDragging,
-                skipIfCurrentlyRendering: Configuration.AllowDroppedFramesWhileDragging);
 
         public void RenderIfPlottableCountChanged()
         {
@@ -238,71 +243,15 @@ namespace ScottPlot.Control
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
-                MouseMovedToDragPlottable(input);
-            else if (IsLeftDown && !input.AltDown)
-                MouseMovedToPan(input);
-            else if (IsRightDown)
-                MouseMovedToZoom(input);
+                eventProcessor.Process(eventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged));
+            else if (IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan)
+                eventProcessor.Process(eventFactory.CreateMousePan(input));
+            else if (IsRightDown && Configuration.RightClickDragZoom)
+                eventProcessor.Process(eventFactory.CreateMouseZoom(input));
             else if (IsZoomingRectangle)
-                MouseMovedToZoomRectangle(input);
+                eventProcessor.Process(eventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y));
             else
                 MouseMovedWithoutInteraction(input);
-        }
-
-        private void MouseMovedToDragPlottable(InputState input)
-        {
-            double x = Plot.GetCoordinateX(input.X);
-            double y = Plot.GetCoordinateY(input.Y);
-            PlottableBeingDragged.DragTo(x, y, fixedSize: input.ShiftDown);
-            RenderAfterDragging();
-        }
-
-        private void MouseMovedToPan(InputState input)
-        {
-            if (Configuration.LeftClickDragPan == false)
-                return;
-
-            float x = (input.ShiftDown || Configuration.LockHorizontalAxis) ? Settings.MouseDownX : input.X;
-            float y = (input.CtrlDown || Configuration.LockVerticalAxis) ? Settings.MouseDownY : input.Y;
-            Settings.MousePan(x, y);
-
-            RenderAfterDragging();
-        }
-
-        private void MouseMovedToZoom(InputState input)
-        {
-            if (Configuration.RightClickDragZoom == false)
-                return;
-
-            var originalLimits = Plot.GetAxisLimits();
-
-            if (input.ShiftDown && input.CtrlDown)
-            {
-                float dx = input.X - Settings.MouseDownX;
-                float dy = Settings.MouseDownY - input.Y;
-                float delta = Math.Max(dx, dy);
-                Settings.MouseZoom(Settings.MouseDownX + delta, Settings.MouseDownY - delta);
-            }
-            else
-            {
-                float x = input.ShiftDown ? Settings.MouseDownX : input.X;
-                float y = input.CtrlDown ? Settings.MouseDownY : input.Y;
-                Settings.MouseZoom(x, y);
-            }
-
-            if (Configuration.LockHorizontalAxis)
-                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
-
-            if (Configuration.LockVerticalAxis)
-                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
-
-            RenderAfterDragging();
-        }
-
-        private void MouseMovedToZoomRectangle(InputState input)
-        {
-            Settings.MouseZoomRect(input.X, input.Y);
-            RenderAfterDragging();
         }
 
         private void MouseMovedWithoutInteraction(InputState input)
@@ -322,10 +271,12 @@ namespace ScottPlot.Control
             PlottableBeingDragged = null;
             bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
 
-            if (IsZoomingRectangle && mouseWasDragged)
-                ApplyZoomRectangle(input);
-            else if (IsMiddleDown)
-                MiddleClickAutoAxis();
+            if (IsZoomingRectangle && mouseWasDragged && Configuration.MiddleClickDragZoom)
+                eventProcessor.Process(eventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y));
+            else if (IsMiddleDown && Configuration.MiddleClickAutoAxis)
+                eventProcessor.Process(eventFactory.CreateMouseAutoAxis());
+            else
+                eventProcessor.Process(eventFactory.CreateMouseUpClearRender());
 
             if (IsRightDown && mouseWasDragged == false)
                 RightClicked(null, EventArgs.Empty);
@@ -334,51 +285,16 @@ namespace ScottPlot.Control
             IsRightDown = false;
             IsLeftDown = false;
 
-            Render();
             UpdateCursor(input);
         }
 
-        private void ApplyZoomRectangle(InputState input)
-        {
-            if (Configuration.MiddleClickDragZoom == false)
-                return;
-
-            Settings.RecallAxisLimits();
-
-            var originalLimits = Plot.GetAxisLimits();
-
-            Settings.MouseZoomRect(input.X, input.Y, finalize: true);
-
-            if (Configuration.LockHorizontalAxis)
-                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
-
-            if (Configuration.LockVerticalAxis)
-                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
-        }
-
-        private void MiddleClickAutoAxis()
-        {
-            if (Configuration.MiddleClickAutoAxis == false)
-                return;
-
-            Settings.ZoomRectangle.Clear();
-
-            if (Configuration.LockVerticalAxis == false)
-                Plot.AxisAutoY(Configuration.MiddleClickAutoAxisMarginY);
-
-            if (Configuration.LockHorizontalAxis == false)
-                Plot.AxisAutoX(Configuration.MiddleClickAutoAxisMarginX);
-
-            Render();
-        }
 
         public void DoubleClick()
         {
             if (Configuration.DoubleClickBenchmark == false)
                 return;
 
-            Plot.Benchmark(!Plot.Benchmark(null));
-            Render();
+            eventProcessor.Process(eventFactory.CreateBenchmarkToggle());
         }
 
         /// <summary>
@@ -389,9 +305,9 @@ namespace ScottPlot.Control
             if (!Settings.AllAxesHaveBeenSet)
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
-            // this method is suitable for WinForms
-            MouseWheelQueue.Enqueue(input);
-            _ = MouseWheelQueueProcessorAsync(sendUpdateEvents: true);
+            if (Configuration.ScrollWheelZoom)
+                eventProcessor.Process(eventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp));
+
         }
 
         /// <summary>
@@ -399,64 +315,6 @@ namespace ScottPlot.Control
         /// </summary>
         public async Task MouseWheelAsync(InputState input)
         {
-            // this method is suitable for WPF
-            MouseWheelQueue.Enqueue(input);
-            await MouseWheelQueueProcessorAsync(sendUpdateEvents: false);
-        }
-
-        /// <summary>
-        /// Perform a low quality render after a mouse wheel.
-        /// The MouseWheelQueueProcessor will later repeat a render using high quality.
-        /// </summary>
-        private void MouseWheelRender(InputState input)
-        {
-            if (Configuration.ScrollWheelZoom == false)
-                return;
-
-            double xFrac = input.WheelScrolledUp ? 1.15 : 0.85;
-            double yFrac = input.WheelScrolledUp ? 1.15 : 0.85;
-
-            if (Configuration.LockHorizontalAxis)
-                xFrac = 1;
-            if (Configuration.LockVerticalAxis)
-                yFrac = 1;
-
-            Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
-            Render(lowQuality: true);
-        }
-
-        /// <summary>
-        /// Watches the queue for mouse events and processes them as they come in using low quality rendering.
-        /// After a certain amount of time without new events, perform a high quality render and exit.
-        /// </summary>
-        private async Task MouseWheelQueueProcessorAsync(bool sendUpdateEvents)
-        {
-            if (MouseWheelStopwatch.IsRunning)
-                return;
-
-            MouseWheelStopwatch.Start();
-            while (true)
-            {
-                while (MouseWheelQueue.Count > 0)
-                {
-                    Debug.WriteLine($"{MouseWheelStopwatch.ElapsedMilliseconds} rendering LW");
-                    MouseWheelRender(MouseWheelQueue.Dequeue());
-                    MouseWheelStopwatch.Restart();
-                }
-
-                if (sendUpdateEvents)
-                    BitmapUpdated.Invoke(null, EventArgs.Empty);
-
-                await Task.Delay(10);
-
-                if (MouseWheelStopwatch.ElapsedMilliseconds >= Configuration.ScrollWheelZoomHighQualityDelay)
-                {
-                    Debug.WriteLine($"{MouseWheelStopwatch.ElapsedMilliseconds} rendering HQ");
-                    Render(lowQuality: false);
-                    MouseWheelStopwatch.Reset();
-                    return;
-                }
-            }
         }
     }
 }
