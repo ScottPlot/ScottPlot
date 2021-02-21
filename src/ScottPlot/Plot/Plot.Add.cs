@@ -784,6 +784,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Create a SignalList, add it to the plot, and return it.
+        /// A SignalList is a ScatterPlot that is designed to grow using Add() and AddRange() methods.
+        /// </summary>
+        public SignalPlotList AddSignalList(double sampleRate = 1, Color? color = null, string label = null, int capacity = 100_000)
+        {
+            SignalPlotList plottable = new SignalPlotList(capacity)
+            {
+                SampleRate = sampleRate,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
