@@ -840,7 +840,7 @@ namespace ScottPlot
             return signal;
         }
 
-        [Obsolete("Use AddScatter() and customize the object it returns")]
+        [Obsolete("Use AddScatterStep() and customize the object it returns")]
         public ScatterPlot PlotStep(
             double[] xs,
             double[] ys,
