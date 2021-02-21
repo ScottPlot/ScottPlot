@@ -2,7 +2,18 @@
 
 _See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
 
-## ScottPlot 4.1.9-beta ⚠️ in development
+## ScottPlot 4.1.10-beta ⚠️ in development
+
+## ScottPlot 4.1.9-beta
+* Improved support for negative DateTimes when using DateTime axis mode (#806, #807) _Thanks @StendProg and @at2software_
+* Improved axis limit detection when using tooltips (#805, #811) _Thanks @bclehmann and @ChrisAtVault_
+* Added `WickColor` field to candlestick plots (#803) _Thanks @bclehmann_
+* Improved rendering of candlesticks that open and close at the same price (#803, #800) _Thanks @bclehmann and @AlgoExecutor_
+* Improved rendering of SignalXY plots near the edge of the plot (#795) _Thanks @StendProg_
+* new `AddScatterStep()` helper method creates a scatter plot with the step style (#808) _Thanks @KlaskSkovby_
+* Marked `MultiPlot` obsolete and added information to the [FAQ](https://swharden.com/scottplot/faq)
+* Refactored `Colormap` module to use classes instead of reflection (#767, #773) _Thanks @StendProg_
+* Refactored `OHLC` fields and finance plots to store `DateTime` and `TimeSpan` instead of `double` (#795)
 
 ## ScottPlot 4.1.8-beta
 * Improved validation and error reporting for large heatmaps (#772) _Thanks @Matthias-C_
