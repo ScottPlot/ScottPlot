@@ -9,7 +9,7 @@ namespace ScottPlot
     /// <summary>
     /// This class holds open/high/low/close (OHLC) price data over a time range.
     /// </summary>
-    public class OHLC
+    public class OHLC : IComparable
     {
         public double Open;
         public double High;
@@ -71,6 +71,23 @@ namespace ScottPlot
             Close = close;
             DateTime = DateTime.FromOADate(timeStart);
             TimeSpan = TimeSpan.FromDays(timeSpan);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is OHLC other)
+            {
+                if (this.DateTime < other.DateTime)
+                    return 1;
+                else if (this.DateTime > other.DateTime)
+                    return -1;
+                else
+                    return 0;
+            }
+            else
+            {
+                throw new InvalidOperationException("OHLCs may only be compared to other OHLCs");
+            }
         }
     }
 }
