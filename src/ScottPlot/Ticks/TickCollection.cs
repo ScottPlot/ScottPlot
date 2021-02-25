@@ -64,12 +64,16 @@ namespace ScottPlot.Ticks
             }
             else
             {
-                tickPositionsMajor = manualTickPositions;
                 double min = verticalAxis ? dims.YMin : dims.XMin;
                 double max = verticalAxis ? dims.YMax : dims.XMax;
-                tickPositionsMajor = manualTickPositions.Where(x => x >= min && x <= max).ToArray();
+
+                var visibleIndexes = Enumerable.Range(0, manualTickPositions.Count())
+                    .Where(i => manualTickPositions[i] >= min)
+                    .Where(i => manualTickPositions[i] <= max);
+
+                tickPositionsMajor = visibleIndexes.Select(x => manualTickPositions[x]).ToArray();
                 tickPositionsMinor = null;
-                tickLabels = manualTickLabels;
+                tickLabels = visibleIndexes.Select(x => manualTickLabels[x]).ToArray();
                 cornerLabel = null;
                 (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
             }
