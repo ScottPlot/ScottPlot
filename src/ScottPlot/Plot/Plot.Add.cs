@@ -129,6 +129,7 @@ namespace ScottPlot
                     ErrorCapSize = errorCapSize,
                     FillColor = GetNextColor()
                 };
+                bars[i] = bar;
                 Add(bar);
             }
 
