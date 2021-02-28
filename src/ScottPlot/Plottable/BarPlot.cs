@@ -136,19 +136,17 @@ namespace ScottPlot.Plottable
                 switch (DisplayStyle)
                 {
                     case BarStyle.Lollipop:
-                        const float RADIUS_FACTOR = 1 / 4f;
+                        const float RADIUS = 5;
                         float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
 
                         if (HorizontalOrientation)
                         {
-                            float radius = rect.Height / 2 * RADIUS_FACTOR;
-                            gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - radius / 2, radius, radius);
+                            gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - RADIUS / 2, RADIUS, RADIUS);
                             gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
                         }
                         else
                         {
-                            float radius = rect.Width / 2 * RADIUS_FACTOR;
-                            gfx.FillEllipse(fillBrush, centerPx - radius / 2, !negative ? rect.Y : rect.Y + rect.Height, radius, radius);
+                            gfx.FillEllipse(fillBrush, centerPx - RADIUS / 2, !negative ? rect.Y : rect.Y + rect.Height, RADIUS, RADIUS);
                             gfx.DrawLine(fillPen, centerPx, rect.Y, centerPx, rect.Y + rect.Height);
                         }
                         break;
