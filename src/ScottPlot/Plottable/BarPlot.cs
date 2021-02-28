@@ -40,6 +40,7 @@ namespace ScottPlot.Plottable
         public Color BorderColor = Color.Black;
         public float BorderLineWidth = 1;
         public BarStyle DisplayStyle = BarStyle.Bar;
+        public float LollipopRadius = 5;
 
         public readonly Drawing.Font Font = new Drawing.Font();
         public string FontName { set => Font.Name = value; }
@@ -136,17 +137,16 @@ namespace ScottPlot.Plottable
                 switch (DisplayStyle)
                 {
                     case BarStyle.Lollipop:
-                        const float RADIUS = 5;
                         float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
 
                         if (HorizontalOrientation)
                         {
-                            gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - RADIUS / 2, RADIUS, RADIUS);
+                            gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius);
                             gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
                         }
                         else
                         {
-                            gfx.FillEllipse(fillBrush, centerPx - RADIUS / 2, !negative ? rect.Y : rect.Y + rect.Height, RADIUS, RADIUS);
+                            gfx.FillEllipse(fillBrush, centerPx - LollipopRadius / 2, !negative ? rect.Y : rect.Y + rect.Height, LollipopRadius, LollipopRadius);
                             gfx.DrawLine(fillPen, centerPx, rect.Y, centerPx, rect.Y + rect.Height);
                         }
                         break;
