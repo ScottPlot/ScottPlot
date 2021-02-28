@@ -5,6 +5,12 @@ using System.Data;
 
 namespace ScottPlot.Plottable
 {
+    public enum BarStyle
+    {
+        Bar,
+        Lollipop,
+    }
+
     /// <summary>
     /// Bar plots display a series of bars. 
     /// Positions are defined by Xs.
@@ -33,6 +39,7 @@ namespace ScottPlot.Plottable
         public double ErrorCapSize = .4;
         public Color BorderColor = Color.Black;
         public float BorderLineWidth = 1;
+        public BarStyle DisplayStyle = BarStyle.Bar;
 
         public readonly Drawing.Font Font = new Drawing.Font();
         public string FontName { set => Font.Name = value; }
@@ -120,6 +127,44 @@ namespace ScottPlot.Plottable
             }
         }
 
+        private void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
+        {
+            using (var outlinePen = new Pen(BorderColor, BorderLineWidth))
+            using (var fillPen = new Pen(negative ? FillColorNegative : FillColor))
+            using (var fillBrush = GDI.Brush(negative ? FillColorNegative : FillColor, FillColorHatch, HatchStyle))
+            {
+                switch (DisplayStyle)
+                {
+                    case BarStyle.Lollipop:
+                        const float RADIUS_FACTOR = 1 / 4f;
+                        float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
+
+                        if (HorizontalOrientation)
+                        {
+                            float radius = rect.Height / 2 * RADIUS_FACTOR;
+                            gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - radius / 2, radius, radius);
+                            gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
+                        }
+                        else
+                        {
+                            float radius = rect.Width / 2 * RADIUS_FACTOR;
+                            gfx.FillEllipse(fillBrush, centerPx - radius / 2, !negative ? rect.Y : rect.Y + rect.Height, radius, radius);
+                            gfx.DrawLine(fillPen, centerPx, rect.Y, centerPx, rect.Y + rect.Height);
+                        }
+                        break;
+
+                    case BarStyle.Bar:
+                    default:
+                        gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+                        if (BorderLineWidth > 0)
+                        {
+                            gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+                        }
+                        break;
+                }
+            }
+        }
+
         private void RenderBarVertical(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
         {
             // bar body
@@ -128,6 +173,7 @@ namespace ScottPlot.Plottable
             double value1 = Math.Min(BaseValue, value) + yOffset;
             double value2 = Math.Max(BaseValue, value) + yOffset;
             double valueSpan = value2 - value1;
+
             var rect = new RectangleF(
                 x: dims.GetPixelX(edge1),
                 y: dims.GetPixelY(value2),
@@ -142,12 +188,7 @@ namespace ScottPlot.Plottable
             float errorPx2 = dims.GetPixelY(error2);
             float errorPx1 = dims.GetPixelY(error1);
 
-            using (var fillBrush = GDI.Brush((value < 0) ? FillColorNegative : FillColor, FillColorHatch, HatchStyle))
-                gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
-
-            if (BorderLineWidth > 0)
-                using (var outlinePen = new Pen(BorderColor, BorderLineWidth))
-                    gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+            RenderBarFromRect(rect, value < 0, gfx);
 
             if (ErrorLineWidth > 0 && valueError > 0)
             {
@@ -180,6 +221,8 @@ namespace ScottPlot.Plottable
                 height: (float)(BarWidth * dims.PxPerUnitY),
                 width: (float)(valueSpan * dims.PxPerUnitX));
 
+            RenderBarFromRect(rect, value < 0, gfx);
+
             // errorbar
             double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
             double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
@@ -187,13 +230,6 @@ namespace ScottPlot.Plottable
             float capPx2 = dims.GetPixelY(position + ErrorCapSize * BarWidth / 2);
             float errorPx2 = dims.GetPixelX(error2);
             float errorPx1 = dims.GetPixelX(error1);
-
-            using (var fillBrush = GDI.Brush((value < 0) ? FillColorNegative : FillColor, FillColorHatch, HatchStyle))
-                gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
-
-            if (BorderLineWidth > 0)
-                using (var outlinePen = new Pen(BorderColor, BorderLineWidth))
-                    gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
 
             if (ErrorLineWidth > 0 && valueError > 0)
             {

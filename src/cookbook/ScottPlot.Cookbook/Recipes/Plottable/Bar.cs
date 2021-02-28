@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -281,6 +282,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             bar.YOffsets = offsets;
             bar.FillColorNegative = Color.Red;
             bar.FillColor = Color.Green;
+        }
+    }
+
+    public class BarLollipop : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_lollipop";
+        public string Title => "Lollipop Plot";
+        public string Description => "Lollipop plots convey the same information as Bar plots but have a different appearance.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 26, 20, 23, 7, 16 };
+
+            var bar = plt.AddBar(values);
+            bar.DisplayStyle = BarStyle.Lollipop;
+            bar.HorizontalOrientation = true;
         }
     }
 }
