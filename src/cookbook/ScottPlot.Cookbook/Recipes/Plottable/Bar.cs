@@ -311,8 +311,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] home_wins = { 12, 17, 16, 18, 18}; // Data collected from https://footystats.org/england/premier-league/home-away-league-table
-            double[] away_wins = { 11, 13, 16, 14, 14};
+            double[] home_wins = { 12, 17, 16, 18, 18 }; // Data collected from https://footystats.org/england/premier-league/home-away-league-table
+            double[] away_wins = { 11, 13, 16, 14, 14 };
             away_wins = away_wins.Select((y, i) => y - home_wins[i]).ToArray(); // y2 should be absolute, not in terms of its distance from y1
 
             string[] labels = { "2015/16", "2016/17", "2017/18", "2018/19", "2019/20" };
