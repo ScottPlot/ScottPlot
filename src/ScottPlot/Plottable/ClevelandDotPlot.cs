@@ -32,7 +32,7 @@ namespace ScottPlot.Plottable
         /// <param name="color">The color of the dot, null for no change.</param>
         /// <param name="markerShape">The shape of the dot, null for no change.</param>
         /// <param name="label">The label of the dot in the legend, null for no change</param>
-        public void SetDot1Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
+        public void SetPoint1Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label1 = label ?? Label1;
             MarkerShape1 = markerShape ?? MarkerShape1;
@@ -45,7 +45,7 @@ namespace ScottPlot.Plottable
         /// <param name="color">The color of the dot, null for no change.</param>
         /// <param name="markerShape">The shape of the dot, null for no change.</param>
         /// <param name="label">The label of the dot in the legend, null for no change</param>
-        public void SetDot2Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
+        public void SetPoint2Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label2 = label ?? Label2;
             MarkerShape2 = markerShape ?? MarkerShape2;

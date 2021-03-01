@@ -320,8 +320,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.XAxis.ManualTickPositions(label_positions, labels);
             plt.Title("British Premier League Champion Home vs Away Wins");
 
-            clevelandDot.SetDot1Style(label: "Home Wins");
-            clevelandDot.SetDot2Style(label: "Away Wins", markerShape: MarkerShape.triUp);
+            clevelandDot.SetPoint1Style(label: "Home Wins");
+            clevelandDot.SetPoint2Style(label: "Away Wins", markerShape: MarkerShape.triUp);
 
             plt.Legend();
         }
