@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Data;
+using System.Linq;
 
 namespace ScottPlot.Plottable
 {
@@ -77,8 +78,16 @@ namespace ScottPlot.Plottable
 
             for (int i = 0; i < Xs.Length; i++)
             {
-                valueMin = Math.Min(valueMin, Ys[i] - YErrors[i] + YOffsets[i]);
-                valueMax = Math.Max(valueMax, Ys[i] + YErrors[i] + YOffsets[i]);
+                if (DisplayStyle != BarStyle.ClevelandDot)
+                {
+                    valueMin = Math.Min(valueMin, Ys[i] - YErrors[i] + YOffsets[i]);
+                    valueMax = Math.Max(valueMax, Ys[i] + YErrors[i] + YOffsets[i]);
+				}
+				else // For Cleveland Dot Plots the YOffset is rendered as a dot
+				{
+                    valueMin = new double[] { valueMin, Ys[i] - YErrors[i] + YOffsets[i], YOffsets[i] }.Min();
+                    valueMax = new double[] { valueMin, Ys[i] + YErrors[i] + YOffsets[i], YOffsets[i] }.Max();
+                }
                 positionMin = Math.Min(positionMin, Xs[i]);
                 positionMax = Math.Max(positionMax, Xs[i]);
             }
