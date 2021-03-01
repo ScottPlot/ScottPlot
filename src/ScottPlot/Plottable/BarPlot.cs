@@ -45,6 +45,8 @@ namespace ScottPlot.Plottable
         public float LollipopRadius = 5;
         public Color ClevelandColor1 = Color.Green;
         public Color ClevelandColor2 = Color.Red;
+        public string ClevelandLabel1 = "";
+        public string ClevelandLabel2 = "";
 
         public readonly Drawing.Font Font = new Drawing.Font();
         public string FontName { set => Font.Name = value; }
@@ -82,9 +84,9 @@ namespace ScottPlot.Plottable
                 {
                     valueMin = Math.Min(valueMin, Ys[i] - YErrors[i] + YOffsets[i]);
                     valueMax = Math.Max(valueMax, Ys[i] + YErrors[i] + YOffsets[i]);
-				}
-				else // For Cleveland Dot Plots the YOffset is rendered as a dot
-				{
+                }
+                else // For Cleveland Dot Plots the YOffset is rendered as a dot
+                {
                     valueMin = new double[] { valueMin, Ys[i] - YErrors[i] + YOffsets[i], YOffsets[i] }.Min();
                     valueMax = new double[] { valueMin, Ys[i] + YErrors[i] + YOffsets[i], YOffsets[i] }.Max();
                 }
@@ -169,14 +171,14 @@ namespace ScottPlot.Plottable
                         {
                             if (HorizontalOrientation)
                             {
-                                gfx.FillEllipse(dot1Brush, negative ? rect.X + rect.Width : rect.X, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius);
                                 gfx.FillEllipse(dot2Brush, negative ? rect.X : rect.X + rect.Width, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius);
+                                gfx.FillEllipse(dot1Brush, negative ? rect.X + rect.Width : rect.X, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius); // Ensure the first dot is drawn overtop the second
                                 gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
                             }
                             else
                             {
-                                gfx.FillEllipse(dot1Brush, centerPx - LollipopRadius / 2, !negative ? rect.Y + rect.Height : rect.Y, LollipopRadius, LollipopRadius);
                                 gfx.FillEllipse(dot2Brush, centerPx - LollipopRadius / 2, !negative ? rect.Y : rect.Y + rect.Height, LollipopRadius, LollipopRadius);
+                                gfx.FillEllipse(dot1Brush, centerPx - LollipopRadius / 2, !negative ? rect.Y + rect.Height : rect.Y, LollipopRadius, LollipopRadius); // Ensure the first dot is drawn overtop the second
                                 gfx.DrawLine(fillPen, centerPx, rect.Y, centerPx, rect.Y + rect.Height);
                             }
                         }
@@ -288,18 +290,42 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleItem = new LegendItem()
+            if (DisplayStyle != BarStyle.ClevelandDot)
             {
-                label = Label,
-                color = FillColor,
-                lineWidth = 10,
-                markerShape = MarkerShape.none,
-                hatchColor = FillColorHatch,
-                hatchStyle = HatchStyle,
-                borderColor = BorderColor,
-                borderWith = BorderLineWidth
-            };
-            return new LegendItem[] { singleItem };
+                var singleItem = new LegendItem()
+                {
+                    label = Label,
+                    color = FillColor,
+                    lineWidth = 10,
+                    markerShape = MarkerShape.none,
+                    hatchColor = FillColorHatch,
+                    hatchStyle = HatchStyle,
+                    borderColor = BorderColor,
+                    borderWith = BorderLineWidth
+                };
+                return new LegendItem[] { singleItem };
+            }
+            else
+            {
+                var firstDot = new LegendItem()
+                {
+                    label = ClevelandLabel1,
+                    color = ClevelandColor1,
+                    lineStyle = LineStyle.None,
+                    markerShape = MarkerShape.filledCircle,
+                    markerSize = 5,
+                };
+                var secondDot = new LegendItem()
+                {
+                    label = ClevelandLabel2,
+                    color = ClevelandColor2,
+                    lineStyle = LineStyle.None,
+                    markerShape = MarkerShape.filledCircle,
+                    markerSize = 5,
+                };
+
+                return new LegendItem[] { firstDot, secondDot };
+            }
         }
     }
 }

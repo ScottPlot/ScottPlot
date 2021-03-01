@@ -323,6 +323,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             bar.DisplayStyle = BarStyle.ClevelandDot;
             plt.XAxis.ManualTickPositions(label_positions, labels);
             plt.Title("British Premier League Champion Home vs Away Wins");
+
+            bar.ClevelandLabel1 = "Home Wins";
+            bar.ClevelandLabel2 = "Away Wins";
+            plt.Legend();
         }
     }
 }
