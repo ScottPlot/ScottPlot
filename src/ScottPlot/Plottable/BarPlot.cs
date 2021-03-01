@@ -20,10 +20,6 @@ namespace ScottPlot.Plottable
         public Color FillColorHatch = Color.Blue;
         public HatchStyle HatchStyle = HatchStyle.None;
         public float BorderLineWidth = 1;
-        public Color ClevelandColor1 = Color.Green;
-        public Color ClevelandColor2 = Color.Red;
-        public string ClevelandLabel1 = "";
-        public string ClevelandLabel2 = "";
 
         public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets) : base()
         {
@@ -39,7 +35,6 @@ namespace ScottPlot.Plottable
         protected override void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
         {
             using (var outlinePen = new Pen(BorderColor, BorderLineWidth))
-            using (var fillPen = new Pen(negative ? FillColorNegative : FillColor))
             using (var fillBrush = GDI.Brush(negative ? FillColorNegative : FillColor, FillColorHatch, HatchStyle))
             {
                 gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
