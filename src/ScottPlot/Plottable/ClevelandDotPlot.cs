@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Cleveland Dot plots display a series of paired p[oints. 
+    /// Positions are defined by Xs.
+    /// Heights are defined by Ys1 and Ys2 (internally done with Ys and YOffsets).
+    /// </summary>
     public class ClevelandDotPlot : BarPlotBase
     {
         public Color StemColor = Color.Gray;
@@ -21,14 +26,26 @@ namespace ScottPlot.Plottable
         private Color Color2 = Color.Red;
         private MarkerShape MarkerShape2 = MarkerShape.filledCircle;
 
-        public void SetDot1Style(Color? color = null, MarkerShape? markerShape = null, string? label = null)
+        /// <summary>
+        /// Allows customizing the first point (set by ys1)
+        /// </summary>
+        /// <param name="color">The color of the dot, null for no change.</param>
+        /// <param name="markerShape">The shape of the dot, null for no change.</param>
+        /// <param name="label">The label of the dot in the legend, null for no change</param>
+        public void SetDot1Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label1 = label ?? Label1;
             MarkerShape1 = markerShape ?? MarkerShape1;
             Color1 = color ?? Color1;
         }
 
-        public void SetDot2Style(Color? color = null, MarkerShape? markerShape = null, string? label = null)
+        /// <summary>
+        /// Allows customizing the second point (set by ys2)
+        /// </summary>
+        /// <param name="color">The color of the dot, null for no change.</param>
+        /// <param name="markerShape">The shape of the dot, null for no change.</param>
+        /// <param name="label">The label of the dot in the legend, null for no change</param>
+        public void SetDot2Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label2 = label ?? Label2;
             MarkerShape2 = markerShape ?? MarkerShape2;

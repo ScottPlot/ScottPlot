@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Lollipop plots display a series of "Lollipops" in place of bars. 
+    /// Positions are defined by Xs.
+    /// Heights are defined by Ys (relative to BaseValue and YOffsets).
+    /// </summary>
     public class LollipopPlot : BarPlotBase
     {
         public string Label { get; set; }
