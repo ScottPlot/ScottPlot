@@ -296,9 +296,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] values = { 26, 20, 23, 7, 16 };
 
-            var bar = plt.AddBar(values);
-            bar.DisplayStyle = BarStyle.Lollipop;
-            bar.HorizontalOrientation = true;
+            var lollipop = plt.AddLollipop(values);
+            lollipop.HorizontalOrientation = true;
         }
     }
 
@@ -313,19 +312,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] home_wins = { 12, 17, 16, 18, 18 }; // Data collected from https://footystats.org/england/premier-league/home-away-league-table
             double[] away_wins = { 11, 13, 16, 14, 14 };
-            away_wins = away_wins.Select((y, i) => y - home_wins[i]).ToArray(); // y2 should be absolute, not in terms of its distance from y1
 
             string[] labels = { "2015/16", "2016/17", "2017/18", "2018/19", "2019/20" };
             double[] label_positions = Enumerable.Range(0, labels.Length).Select(i => (double)i).ToArray();
 
-            var bar = plt.AddBar(away_wins);
-            bar.YOffsets = home_wins;
-            bar.DisplayStyle = BarStyle.ClevelandDot;
+            var clevelandDot = plt.AddClevelandDot(home_wins, away_wins);
             plt.XAxis.ManualTickPositions(label_positions, labels);
             plt.Title("British Premier League Champion Home vs Away Wins");
 
-            bar.ClevelandLabel1 = "Home Wins";
-            bar.ClevelandLabel2 = "Away Wins";
+            clevelandDot.SetDot1Style(label: "Home Wins");
+            clevelandDot.SetDot2Style(label: "Away Wins", markerShape: MarkerShape.triUp);
+
             plt.Legend();
         }
     }
