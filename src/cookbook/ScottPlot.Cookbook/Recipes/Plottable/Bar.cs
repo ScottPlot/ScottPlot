@@ -301,4 +301,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             bar.HorizontalOrientation = true;
         }
     }
+
+    public class ClevelandDot : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_cleveland_dot";
+        public string Title => "Cleveland Dot Plot";
+        public string Description => "Cleveland Dot Plots allow comparing two categories in situations where a Bar Plot may be crowded.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] home_wins = { 12, 17, 16, 18, 18}; // Data collected from https://footystats.org/england/premier-league/home-away-league-table
+            double[] away_wins = { 11, 13, 16, 14, 14};
+            away_wins = away_wins.Select((y, i) => y - home_wins[i]).ToArray(); // y2 should be absolute, not in terms of its distance from y1
+
+            string[] labels = { "2015/16", "2016/17", "2017/18", "2018/19", "2019/20" };
+            double[] label_positions = Enumerable.Range(0, labels.Length).Select(i => (double)i).ToArray();
+
+            var bar = plt.AddBar(away_wins);
+            bar.YOffsets = home_wins;
+            bar.DisplayStyle = BarStyle.ClevelandDot;
+            plt.XAxis.ManualTickPositions(label_positions, labels);
+            plt.Title("British Premier League Champion Home vs Away Wins");
+        }
+    }
 }
