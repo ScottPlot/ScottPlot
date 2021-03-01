@@ -17,6 +17,30 @@ namespace ScottPlot.Plottable
     {
         public Color StemColor = Color.Gray;
         public float DotRadius { get; set; } = 5;
+        public double[] Ys1
+        {
+            get
+            {
+                return YOffsets;
+            }
+            set
+            {
+                YOffsets = value;
+            }
+        }
+
+        public double[] Ys2
+        {
+            get
+            {
+                return Ys.Select((y, i) => y + Ys1[i]).ToArray();
+            }
+            set
+            {
+                Ys = value.Select((y, i) => y - Ys1[i]).ToArray();
+            }
+        }
+
 
         private string Label1;
         private Color Color1 = Color.Green;
@@ -54,8 +78,8 @@ namespace ScottPlot.Plottable
 
         public ClevelandDotPlot(double[] xs, double[] ys1, double[] ys2) : base()
         {
-            this.Ys = ys2.Select((y, i) => y - ys1[i]).ToArray();
-            this.YOffsets = ys1;
+            this.Ys1 = ys1;
+            this.Ys2 = ys2;
             this.Xs = xs;
             this.YErrors = DataGen.Zeros(ys1.Length);
         }
