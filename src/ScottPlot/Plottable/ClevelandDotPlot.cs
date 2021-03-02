@@ -25,7 +25,11 @@ namespace ScottPlot.Plottable
             }
             set
             {
+                double[] diff = (Ys1 ?? DataGen.Zeros(value.Length)).Zip(value, (y, v) => y - v).ToArray();
                 YOffsets = value;
+
+                if (Ys2 != null)
+                    Ys2 = (Ys2 ?? DataGen.Zeros(value.Length)).Zip(diff, (y, v) => y + v).ToArray();
             }
         }
 
@@ -33,11 +37,16 @@ namespace ScottPlot.Plottable
         {
             get
             {
-                return Ys.Select((y, i) => y + Ys1[i]).ToArray();
+                if (Ys == null)
+                    return null;
+
+                double[] offsets = Ys1 ?? DataGen.Zeros(Ys.Length);
+                return Ys.Select((y, i) => y + offsets[i]).ToArray();
             }
             set
             {
-                Ys = value.Select((y, i) => y - Ys1[i]).ToArray();
+                double[] offsets = Ys1 ?? DataGen.Zeros(value.Length);
+                Ys = value.Select((y, i) => y - offsets[i]).ToArray();
             }
         }
 
