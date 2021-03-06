@@ -269,12 +269,104 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
+        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+        {
+            if (lockScales)
+                AxisScaleLock(true);
+
+            var plottable = new Heatmap();
+            plottable.Update(intensities, colormap);
+            Add(plottable);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a heatmap to the plot automatically-sized so each cell is 1x1.
+        /// </summary>
+        /// <param name="intensities">2D array of intensities. 
+        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+        /// <param name="colormap"></param>
+        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+        /// <returns>
+        /// Returns the heatmap that was added to the plot.
+        /// Act on its public fields and methods to customize it or update its data.
+        /// </returns>
         public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
             if (lockScales)
                 AxisScaleLock(true);
 
             var plottable = new Heatmap();
+            plottable.Update(intensities, colormap);
+            Add(plottable);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add heatmap to the plot stretched to fit the given dimensions.
+        /// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
+        /// this heatmap stretches the array so that it covers the defined X and Y spans.
+        /// </summary>
+        /// <param name="intensities">2D array of intensities. 
+        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+        /// <param name="xMin">position of the left edge of the far left column</param>
+        /// <param name="xMax">position of the left edge of the far right column</param>
+        /// <param name="yMin">position of the upper edge of the bottom row</param>
+        /// <param name="yMax">position of the upper edge of the top row</param>
+        /// <param name="colormap"></param>
+        /// <returns>
+        /// Returns the heatmap that was added to the plot.
+        /// Act on its public fields and methods to customize it or update its data.
+        /// </returns>
+        public CoordinatedHeatmap AddHeatMapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            var plottable = new CoordinatedHeatmap();
+
+            // Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
+            if (xMin == null && xMax == null)
+            {
+                plottable.XMin = 0;
+                plottable.XMax = 0 + intensities.GetLength(0);
+            }
+            else if (xMin == null)
+            {
+                plottable.XMax = xMax.Value;
+                plottable.XMin = xMax.Value - intensities.GetLength(0);
+            }
+            else if (xMax == null)
+            {
+                plottable.XMin = xMin.Value;
+                plottable.XMax = xMin.Value + intensities.GetLength(0);
+            }
+            else
+            {
+                plottable.XMin = xMin.Value;
+                plottable.XMax = xMax.Value;
+            }
+
+            if (yMin == null && yMax == null)
+            {
+                plottable.YMin = 0;
+                plottable.YMax = 0 + intensities.GetLength(1);
+            }
+            else if (yMin == null)
+            {
+                plottable.YMax = yMax.Value;
+                plottable.YMin = yMax.Value - intensities.GetLength(1);
+            }
+            else if (yMax == null)
+            {
+                plottable.YMin = yMin.Value;
+                plottable.YMax = yMin.Value + intensities.GetLength(1);
+            }
+            else
+            {
+                plottable.YMin = yMin.Value;
+                plottable.YMax = yMax.Value;
+            }
+
             plottable.Update(intensities, colormap);
             Add(plottable);
 
