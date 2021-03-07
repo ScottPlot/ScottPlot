@@ -1,5 +1,12 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event describes represents interactive panning.
+    /// It is assume the plot has already been reset to the pre-mouse-interaction state,
+    /// and processing of this event pans the plot on the axes according to the distance
+    /// the mouse has moved.
+    /// This is typically called on MouseMove events when the left button is held down.
+    /// </summary>
     public class MousePanEvent : IUIEvent
     {
         private InputState input;

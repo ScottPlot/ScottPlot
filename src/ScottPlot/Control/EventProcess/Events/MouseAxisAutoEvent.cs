@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event calls AxisAuto() on all axes.
+    /// This is typically called after middle-clicking.
+    /// </summary>
     public class MouseAxisAutoEvent : IUIEvent
     {
         private Configuration config;

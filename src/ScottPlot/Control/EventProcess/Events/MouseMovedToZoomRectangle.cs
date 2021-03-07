@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event occurs when the user is actively middle-click-dragging to zoom.
+    /// A zoom window is drawn on the screen, but axis limits have not yet been changed.
+    /// </summary>
     public class MouseMovedToZoomRectangle : IUIEvent
     {
         private float x;

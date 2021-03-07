@@ -1,5 +1,8 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event describes a zoom operation performed by scrolling the mouse wheel.
+    /// </summary>
     public class MouseScrollEvent : IUIEvent
     {
         private float x;

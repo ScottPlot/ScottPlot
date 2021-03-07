@@ -2,6 +2,12 @@
 
 namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event describes what happens when a draggable plottable (like an axis line)
+    /// has been moved from its initial position. This event places the plottable of interest
+    /// at the current mouse position.
+    /// This is typically called on MouseMove events while left-click-dragging a draggable plottable.
+    /// </summary>
     public class PlottableDragEvent : IUIEvent
     {
         private float x;

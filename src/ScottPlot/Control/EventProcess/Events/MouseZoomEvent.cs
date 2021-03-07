@@ -2,6 +2,13 @@
 
 namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event describes represents interactive zooming.
+    /// It is assume the plot has already been reset to the pre-mouse-interaction state,
+    /// and processing of this event zooms the plot on the axes according to the distance
+    /// the mouse has moved.
+    /// This is typically called on MouseMove events when the right button is held down.
+    /// </summary>
     public class MouseZoomEvent : IUIEvent
     {
         private InputState input;

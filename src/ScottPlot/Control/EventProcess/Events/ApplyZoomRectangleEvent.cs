@@ -1,5 +1,10 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event describes what happens when the mouse button is lifted after 
+    /// middle-click-dragging a rectangle to zoom into. The coordinates of that rectangle
+    /// are calculated, and the plot's axis limits are adjusted accordingly.
+    /// </summary>
     public class ApplyZoomRectangleEvent : IUIEvent
     {
         private float x;

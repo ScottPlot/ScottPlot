@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot.Control.EventProcess.Events
 {
+    /// <summary>
+    /// This event toggles visibility of the benchmark.
+    /// This event is typically called after double-clicking the plot.
+    /// </summary>
     public class BenchmarkToggleEvent : IUIEvent
     {
         private Plot plt;
@@ -9,7 +13,6 @@
         {
             this.plt = plt;
         }
-
 
         public void ProcessEvent()
         {
