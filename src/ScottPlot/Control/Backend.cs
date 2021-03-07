@@ -76,7 +76,11 @@ namespace ScottPlot.Control
         {
             eventFactory = new ModernDecorator(new UIEventFactory(Configuration, Settings, Plot));
             Reset(width, height);
-            eventProcessor = new EventsProcessor((hq) => Render(!hq), (int)Configuration.ScrollWheelZoomHighQualityDelay);
+
+            // create an event processor and later request new renders by interacting with it.
+            eventProcessor = new EventsProcessor(
+                    renderAction: (lowQuality) => Render(lowQuality),
+                    renderDelay: (int)Configuration.ScrollWheelZoomHighQualityDelay);
         }
 
         public void Reset(float width, float height) =>
