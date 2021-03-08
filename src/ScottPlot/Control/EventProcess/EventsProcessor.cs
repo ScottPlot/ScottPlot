@@ -12,8 +12,6 @@ namespace ScottPlot.Control.EventProcess
     public class EventsProcessor
     {
         private readonly Queue<IUIEvent> Queue = new Queue<IUIEvent>();
-        private bool QueueHasUnprocessedEvents => Queue.Count > 0;
-        private bool QueueIsEmpty => Queue.Count == 0;
 
         /// <summary>
         /// This timer is used for delayed rendering.
@@ -140,7 +138,7 @@ namespace ScottPlot.Control.EventProcess
             {
                 QueueProcessorIsRunning = true;
                 bool eventRenderRequested = false;
-                while (QueueHasUnprocessedEvents)
+                while (Queue.Count > 0)
                 {
                     var uiEvent = Queue.Dequeue();
                     uiEvent.ProcessEvent();
@@ -158,17 +156,15 @@ namespace ScottPlot.Control.EventProcess
                 if (eventRenderRequested)
                     RenderPreview(lastEventRenderType);
 
-                // TODO: how small can this number be?
                 await Task.Delay(1);
 
-                // If new events came in, handle those instead of proceeding toward a final render
-                if (QueueHasUnprocessedEvents)
-                    continue;
-
-                // Perform the final render and shut down the processor loop
-                bool finalRenderWasPerformed = RenderFinal(lastEventRenderType);
-                if (finalRenderWasPerformed)
-                    break;
+                // if all events were processed, consider performing a final render and exiting
+                if (Queue.Count == 0)
+                {
+                    bool finalRenderExecuted = RenderFinal(lastEventRenderType);
+                    if (finalRenderExecuted)
+                        break;
+                }
             };
 
             QueueProcessorIsRunning = false;
