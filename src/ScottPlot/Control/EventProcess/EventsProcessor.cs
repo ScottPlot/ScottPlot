@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 namespace ScottPlot.Control.EventProcess
 {
     /// <summary>
-    /// This UI event processor uses a queue to process incoming events.
-    /// After processing events, this processor may initiate a render.
-    /// This processor also contains logic to initiate delayed renders.
+    /// This event processor process incoming events and invokes renders as needed.
+    /// This class contains logic to optionally display a fast preview render and a delayed high quality render.
     /// </summary>
     public class EventsProcessor
     {
@@ -62,7 +61,8 @@ namespace ScottPlot.Control.EventProcess
         private void RenderLowQuality() => RenderAction.Invoke(true);
 
         /// <summary>
-        /// Add an event to the queue and process it when it is ready
+        /// Add an event to the queue and process it when it is ready.
+        /// After all events are processed a render will be called automatically.
         /// </summary>
         public async Task Process(IUIEvent uiEvent)
         {
@@ -74,36 +74,23 @@ namespace ScottPlot.Control.EventProcess
         }
 
         /// <summary>
-        /// This is called just after a UI event is processed.
-        /// If a UI event calls for a delayed render, this will restart the timer.
+        /// Perform a low quality preview render if the render type allows it
         /// </summary>
-        private void EventPostProcess(IUIEvent uiEvent)
+        private void RenderPreview(RenderType renderType)
         {
-            bool delayedRenderIsRequired = uiEvent.RenderOrder == RenderType.HQAfterLQDelayed;
+            if (renderType == RenderType.HQOnly)
+                return;
 
-            // TODO: is this the best place for this?
-            if (delayedRenderIsRequired)
-            {
-                if (RenderDelayTimer.IsRunning)
-                    RenderDelayTimer.Restart();
-            }
-            else
-            {
-                if (RenderDelayTimer.IsRunning)
-                    RenderDelayTimer.Stop();
-            }
+            RenderLowQuality();
         }
 
         /// <summary>
-        /// An initial low quality render may have been recently executed already.
-        /// Given the render type of the last event, perform a HQ render if needed.
-        /// If a HQ render is needed after a delay, this method will arrange it.
+        /// Perform a final high quality render if the render type allows it.
         /// </summary>
-        /// <param name="lastRenderQuality">Quality of the last render used to determine if a HQ render is needed.</param>
-        /// <returns>True if no further action is required. False if a delayed render is still needed.</returns>
-        private bool RenderHighQualityIfNeeded(RenderType lastRenderQuality)
+        /// <returns>Return False if the final render needs to happen later</returns>
+        private bool RenderFinal(RenderType renderType)
         {
-            switch (lastRenderQuality)
+            switch (renderType)
             {
                 case RenderType.LQOnly:
                     // we don't need a HQ render if the type is LQ only
@@ -128,6 +115,7 @@ namespace ScottPlot.Control.EventProcess
                     if (RenderDelayTimer.ElapsedMilliseconds > RenderDelayMilliseconds)
                     {
                         RenderHighQuality();
+                        RenderDelayTimer.Stop();
                         return true;
                     }
                     else
@@ -136,7 +124,7 @@ namespace ScottPlot.Control.EventProcess
                     }
 
                 default:
-                    throw new ArgumentException($"Unknown quality: {lastRenderQuality}");
+                    throw new ArgumentException($"Unknown quality: {renderType}");
             }
         }
 
@@ -147,48 +135,43 @@ namespace ScottPlot.Control.EventProcess
         /// </summary>
         private async Task RunQueueProcessor()
         {
-            bool RequestExit = false;
-            QueueProcessorIsRunning = true;
-            IUIEvent lastEvent = null;
-
-            while (RequestExit == false || QueueHasUnprocessedEvents)
+            RenderType lastEventRenderType = RenderType.None;
+            while (true)
             {
-                // process all events in the queue
-                bool eventWasProcessed = false;
-                bool hqOnly = false;
+                QueueProcessorIsRunning = true;
+                bool eventRenderRequested = false;
                 while (QueueHasUnprocessedEvents)
                 {
                     var uiEvent = Queue.Dequeue();
                     uiEvent.ProcessEvent();
-                    EventPostProcess(uiEvent);
-                    hqOnly |= uiEvent.RenderOrder == RenderType.HQOnly;
+
+                    if (uiEvent.RenderOrder == RenderType.HQAfterLQDelayed)
+                        RenderDelayTimer.Restart();
+
                     if (uiEvent.RenderOrder != RenderType.None)
                     {
-                        lastEvent = uiEvent;
-                        eventWasProcessed |= true;
+                        lastEventRenderType = uiEvent.RenderOrder;
+                        eventRenderRequested = true;
                     }
                 }
 
-                if (eventWasProcessed && hqOnly == false)
-                    RenderLowQuality();
+                if (eventRenderRequested)
+                    RenderPreview(lastEventRenderType);
 
-                await Task.Delay(1); // TODO: is this required?
+                // TODO: how small can this number be?
+                await Task.Delay(1);
 
-                if (QueueIsEmpty)
-                {
-                    // avoid HQ rendering if new requests arrived after lq Render
-                    bool finalEventProcessed = RenderHighQualityIfNeeded(lastEvent.RenderOrder);
-                    if (finalEventProcessed)
-                    {
-                        QueueProcessorIsRunning = false;
-                        return;
-                    }
-                }
+                // If new events came in, handle those instead of proceeding toward a final render
+                if (QueueHasUnprocessedEvents)
+                    continue;
+
+                // Perform the final render and shut down the processor loop
+                bool finalRenderWasPerformed = RenderFinal(lastEventRenderType);
+                if (finalRenderWasPerformed)
+                    break;
             };
 
-            // all events have been processed and no delayed renders are needed
             QueueProcessorIsRunning = false;
-            return;
         }
     }
 }
