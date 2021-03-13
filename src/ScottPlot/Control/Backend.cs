@@ -155,7 +155,7 @@ namespace ScottPlot.Control
         /// Bitmaps that are created are stored here so they can be kept track of and
         /// disposed properly when new bitmaps are created.
         /// </summary>
-        private readonly List<System.Drawing.Bitmap> OldBitmaps = new();
+        private readonly Queue<System.Drawing.Bitmap> OldBitmaps = new();
 
         /// <summary>
         /// Store last render limits so new renders can know whether the axis limits
@@ -189,6 +189,11 @@ namespace ScottPlot.Control
         /// The event factor creates event objects to be handled by the event processor
         /// </summary>
         private UIEventFactory EventFactory;
+
+        /// <summary>
+        /// Number of times the current bitmap has been rendered on.
+        /// </summary>
+        private int BitmapRenderCount = 0;
 
         /// <summary>
         /// Create a back-end for a user control
@@ -283,26 +288,9 @@ namespace ScottPlot.Control
         /// </summary>
         public System.Drawing.Bitmap GetLatestBitmap()
         {
-            foreach (System.Drawing.Bitmap bmp in OldBitmaps)
-                bmp?.Dispose();
-            OldBitmaps.Clear();
+            while (OldBitmaps.Count > 3)
+                OldBitmaps.Dequeue()?.Dispose();
             return Bmp;
-        }
-
-        /// <summary>
-        /// Create a new bitmap but also add the old one to the list (so it can be disposed later)
-        /// and trigger the appropraite event.
-        /// </summary>
-        private void NewBitmap(float width, float height)
-        {
-            if (width < 1 || height < 1)
-                return;
-
-            // Disposing a Bitmap the GUI is displaying will cause an exception.
-            // Keep track of old bitmaps so they can be disposed of later.
-            OldBitmaps.Add(Bmp);
-            Bmp = new System.Drawing.Bitmap((int)width, (int)height);
-            BitmapChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -323,15 +311,26 @@ namespace ScottPlot.Control
             else if (Configuration.Quality == QualityMode.Low)
                 lowQuality = true;
 
-            PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
+            BitmapRenderCount += 1;
+            PlottableCountOnLastRender = Settings.Plottables.Count;
 
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
                 AxesChanged(null, EventArgs.Empty);
             LimitsOnLastRender = newLimits;
 
-            BitmapUpdated(null, EventArgs.Empty);
+            if (BitmapRenderCount == 1)
+            {
+                // a new bitmap was rendered on for the first time
+                BitmapChanged(this, EventArgs.Empty);
+            }
+            else
+            {
+                // an existing bitmap was re-rendered onto
+                BitmapUpdated(null, EventArgs.Empty);
+            }
+
             currentlyRendering = false;
         }
 
@@ -380,12 +379,21 @@ namespace ScottPlot.Control
         /// </summary>
         public void Resize(float width, float height)
         {
-            NewBitmap(width, height);
+            // don't render if the requested size cannot produce a valid bitmap
+            if (width < 1 || height < 1)
+                return;
 
-            if (EventsProcessor is null) // this can happen when the control is first starting-up
-                Render(lowQuality: false);
-            else
-                RenderDelayedHighQuality();
+            // don't render if the request is so early that the processor hasn't started
+            if (EventsProcessor is null)
+                return;
+
+            // Disposing a Bitmap the GUI is displaying will cause an exception.
+            // Keep track of old bitmaps so they can be disposed of later.
+            OldBitmaps.Enqueue(Bmp);
+            Bmp = new System.Drawing.Bitmap((int)width, (int)height);
+            BitmapRenderCount = 0;
+
+            RenderDelayedHighQuality();
         }
 
         /// <summary>
