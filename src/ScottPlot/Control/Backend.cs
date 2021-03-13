@@ -1,11 +1,11 @@
 ﻿/* This file describes the ScottPlot back-end control module.
  * 
  *  Goals for this module:
- *    - handle interact with the Plot object so controls don't have to
- *    - single location for mouse interaction logic so controls don't have to implement it
- *    - use events to tell controls when to update the image or change the mouse cursor
- *    - TODO: render calls should be non-blocking so GUI/controls aren't slowed by render requests
- *    - TODO: a timer should ask for a high quality render after mouse interaction stops
+ *    - Interact with the Plot object so controls don't have to.
+ *    - Wrap/abstract mouse interaction logic so controls don't have to implement it.
+ *    - Use events to tell controls when to update the image or change the mouse cursor.
+ *    - Render calls are non-blocking so GUI/controls aren't slowed by render requests.
+ *    - Delayed high quality renders are possible after mouse interaction stops.
  *   
  *   Default Controls:
  *   
@@ -34,8 +34,8 @@
  *    - middle-click auto-axis margin
  *    - double-click benchmark toggle
  *    - scrollwheel zoom
- *    - low quality (never / while dragging / always)
- *    - delayed high quality render after scrollwheel
+ *    - quality (anti-aliasing on/off) for various actions
+ *    - delayed high quality render after low-quality interactive renders
  *   
  */
 
@@ -43,49 +43,127 @@ using ScottPlot.Control.EventProcess;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
+    /// <summary>
+    /// The control back end module contains all the logic required to manage a mouse-interactive
+    /// plot to display in a user control. However, this module contains no control-specific dependencies.
+    /// User controls can instantiate this object, pass mouse and resize event information in, and have
+    /// renders triggered using events.
+    /// </summary>
     public class ControlBackEnd
     {
+        /// <summary>
+        /// This event is invoked when an existing Bitmap is redrawn.
+        /// e.g., after rendering following a click-drag-pan mouse event.
+        /// </summary>
         public event EventHandler BitmapUpdated = delegate { };
+
+        /// <summary>
+        /// This event is invoked after a new Bitmap was created.
+        /// e.g., after resizing the control, requiring a new Bitmap of a different size
+        /// </summary>
         public event EventHandler BitmapChanged = delegate { };
+
+        /// <summary>
+        /// This event is invoked when the cursor is supposed to change.
+        /// Cursor changes may be required when hovering over draggable plottable objects.
+        /// </summary>
         public event EventHandler CursorChanged = delegate { };
+
+        /// <summary>
+        /// This event is invoked when the axis limts change.
+        /// This is typically the result of a pan or zoom operation.
+        /// </summary>
         public event EventHandler AxesChanged = delegate { };
+
+        /// <summary>
+        /// This event is invoked when the user right-clicks the control with the mouse.
+        /// It is typically used to deploy a context menu.
+        /// </summary>
         public event EventHandler RightClicked = delegate { };
 
+        /// <summary>
+        /// The control configuration object stores advanced customization and behavior settings
+        /// for mouse-interactive plots.
+        /// </summary>
         public readonly Configuration Configuration = new();
+
         public Plot Plot { get; private set; }
         private Settings Settings;
         private System.Drawing.Bitmap Bmp;
+
+        /// <summary>
+        /// Bitmaps that are created are stored here so they can be kept track of and
+        /// disposed properly when new bitmaps are created.
+        /// </summary>
         private readonly List<System.Drawing.Bitmap> OldBitmaps = new();
+
+        /// <summary>
+        /// Store last render limits so new renders can know whether the axis limits
+        /// have changed and decide whether to invoke the AxesChanged event or not.
+        /// </summary>
+        private AxisLimits LimitsOnLastRender = new();
+
+        /// <summary>
+        /// Store the total number of plottables so user controls can implement a timer
+        /// to automatically update the plot if this number changes.
+        /// </summary>
+        private int PlottableCountOnLastRender = -1;
+
+        /// <summary>
+        /// This is set to True while the render loop is running.
+        /// This prevents multiple renders from occurring at the same time.
+        /// </summary>
+        private bool currentlyRendering = false;
+
+        /// <summary>
+        /// The style of cursor the control should display
+        /// </summary>
         public Cursor Cursor { get; private set; } = Cursor.Arrow;
 
-        private EventsProcessor eventProcessor;
-        private UIEventFactory eventFactory;
+        /// <summary>
+        /// The events processor invokes renders in response to custom events
+        /// </summary>
+        private readonly EventsProcessor EventsProcessor;
 
+        /// <summary>
+        /// The event factor creates event objects to be handled by the event processor
+        /// </summary>
+        private UIEventFactory EventFactory;
 
         public ControlBackEnd(float width, float height)
         {
-            eventFactory = new UIEventFactory(Configuration, Settings, Plot);
+            EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             Reset(width, height);
 
             // create an event processor and later request new renders by interacting with it.
-            eventProcessor = new EventsProcessor(
+            EventsProcessor = new EventsProcessor(
                     renderAction: (lowQuality) => Render(lowQuality),
                     renderDelay: (int)Configuration.ScrollWheelZoomHighQualityDelay);
         }
 
-        public void Reset(float width, float height) =>
-            Reset(width, height, new Plot());
+        /// <summary>
+        /// Reset the back-end by creating an entirely new plot of the given dimensions
+        /// </summary>
+        public void Reset(float width, float height) => Reset(width, height, new Plot());
+
+        /// <summary>
+        /// Reset the back-end by replacing the existing plot with one that has already been created
+        /// </summary>
+        public void Reset(float width, float height, Plot newPlot)
+        {
+            Plot = newPlot;
+            Settings = Plot.GetSettings(false);
+            EventFactory = new UIEventFactory(Configuration, Settings, Plot);
+            Resize(width, height);
+        }
 
         /// <summary>
         /// Return a copy of the list of draggable plottables
         /// </summary>
-        /// <returns></returns>
         private IDraggable[] GetDraggables() =>
             Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
 
@@ -105,6 +183,10 @@ namespace ScottPlot.Control
             return null;
         }
 
+        /// <summary>
+        /// Return a multi-line string describing the default mouse interactions.
+        /// This can be useful for displaying a help message in a user control.
+        /// </summary>
         public static string GetHelpMessage()
         {
             var sb = new System.Text.StringBuilder();
@@ -127,14 +209,10 @@ namespace ScottPlot.Control
             return sb.ToString();
         }
 
-        public void Reset(float width, float height, Plot newPlot)
-        {
-            Plot = newPlot;
-            Settings = Plot.GetSettings(false);
-            eventFactory = new UIEventFactory(Configuration, Settings, Plot);
-            Resize(width, height);
-        }
-
+        /// <summary>
+        /// Return the most recently rendered Bitmap.
+        /// This method also disposes old Bitmaps if they exist.
+        /// </summary>
         public System.Drawing.Bitmap GetLatestBitmap()
         {
             foreach (System.Drawing.Bitmap bmp in OldBitmaps)
@@ -143,6 +221,10 @@ namespace ScottPlot.Control
             return Bmp;
         }
 
+        /// <summary>
+        /// Create a new bitmap but also add the old one to the list (so it can be disposed later)
+        /// and trigger the appropraite event.
+        /// </summary>
         private void NewBitmap(float width, float height)
         {
             if (width < 1 || height < 1)
@@ -155,9 +237,10 @@ namespace ScottPlot.Control
             BitmapChanged(this, EventArgs.Empty);
         }
 
-        private AxisLimits LimitsOnLastRender = new AxisLimits();
-        private int PlottableCountOnLastRender = -1;
-        private bool currentlyRendering = false;
+        /// <summary>
+        /// Render onto the existing Bitmap.
+        /// Quality describes whether anti-aliasing will be used.
+        /// </summary>
         public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             if (Bmp is null)
@@ -167,8 +250,6 @@ namespace ScottPlot.Control
                 return;
             currentlyRendering = true;
 
-            //Debug.WriteLine("Render called by:" + new StackTrace().GetFrame(1).GetMethod().Name);
-
             if (Configuration.Quality == QualityMode.High)
                 lowQuality = false;
             else if (Configuration.Quality == QualityMode.Low)
@@ -177,7 +258,7 @@ namespace ScottPlot.Control
             PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
 
-            ScottPlot.AxisLimits newLimits = Plot.GetAxisLimits();
+            AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
                 AxesChanged(null, EventArgs.Empty);
             LimitsOnLastRender = newLimits;
@@ -197,13 +278,13 @@ namespace ScottPlot.Control
         public void Resize(float width, float height)
         {
             NewBitmap(width, height);
-            Render(false);
+            Render(lowQuality: false);
         }
 
         private bool IsMiddleDown;
         private bool IsRightDown;
         private bool IsLeftDown;
-        private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
+        private IDraggable PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
             if (!Settings.AllAxesHaveBeenSet)
@@ -242,13 +323,13 @@ namespace ScottPlot.Control
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
-                eventProcessor.Process(eventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged));
+                EventsProcessor.Process(EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged));
             else if (IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan)
-                eventProcessor.Process(eventFactory.CreateMousePan(input));
+                EventsProcessor.Process(EventFactory.CreateMousePan(input));
             else if (IsRightDown && Configuration.RightClickDragZoom)
-                eventProcessor.Process(eventFactory.CreateMouseZoom(input));
+                EventsProcessor.Process(EventFactory.CreateMouseZoom(input));
             else if (IsZoomingRectangle)
-                eventProcessor.Process(eventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y));
+                EventsProcessor.Process(EventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y));
             else
                 MouseMovedWithoutInteraction(input);
         }
@@ -271,11 +352,11 @@ namespace ScottPlot.Control
             bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
 
             if (IsZoomingRectangle && mouseWasDragged && Configuration.MiddleClickDragZoom)
-                eventProcessor.Process(eventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y));
+                EventsProcessor.Process(EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y));
             else if (IsMiddleDown && Configuration.MiddleClickAutoAxis)
-                eventProcessor.Process(eventFactory.CreateMouseAutoAxis());
+                EventsProcessor.Process(EventFactory.CreateMouseAutoAxis());
             else
-                eventProcessor.Process(eventFactory.CreateMouseUpClearRender());
+                EventsProcessor.Process(EventFactory.CreateMouseUpClearRender());
 
             if (IsRightDown && mouseWasDragged == false)
                 RightClicked(null, EventArgs.Empty);
@@ -293,7 +374,7 @@ namespace ScottPlot.Control
             if (Configuration.DoubleClickBenchmark == false)
                 return;
 
-            eventProcessor.Process(eventFactory.CreateBenchmarkToggle());
+            EventsProcessor.Process(EventFactory.CreateBenchmarkToggle());
         }
 
         /// <summary>
@@ -305,15 +386,8 @@ namespace ScottPlot.Control
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
             if (Configuration.ScrollWheelZoom)
-                eventProcessor.Process(eventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp));
+                EventsProcessor.Process(EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp));
 
-        }
-
-        /// <summary>
-        /// Apply a scroll wheel action, perform a low quality render, and later re-render in high quality.
-        /// </summary>
-        public async Task MouseWheelAsync(InputState input)
-        {
         }
     }
 }
