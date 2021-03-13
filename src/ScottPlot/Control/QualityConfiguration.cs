@@ -15,16 +15,10 @@ namespace ScottPlot.Control
     /// </summary>
     public class QualityConfiguration
     {
-        // immediate high quality is typically preferred for these non-interactive events
         public RenderType BenchmarkToggle = RenderType.HQOnly;
-        public RenderType AutoAxis = RenderType.HQOnly;
-
-        // low quality followed by automatic re-rendering with high quality is typically preferred
-        // for real-time interactive mouse events: pan, zoom, zoom rectangle, and plottable drag
+        public RenderType AutoAxis = RenderType.HQAfterLQDelayed;
         public RenderType MouseInteractiveDragged = RenderType.LQOnly;
         public RenderType MouseInteractiveDropped = RenderType.HQOnly;
-
-        // scroll wheel events typically used a delayed high quality render
         public RenderType MouseWheelScrolled = RenderType.HQAfterLQDelayed;
     }
 }

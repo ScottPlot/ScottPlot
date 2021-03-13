@@ -12,7 +12,7 @@ namespace WinFormsFrameworkApp
         public Form1()
         {
             InitializeComponent();
-            buttonSignal1M_Click(null, null);
+            buttonScatter1k_Click(null, null);
         }
 
         private void btnScatter10_Click(object sender, EventArgs e)

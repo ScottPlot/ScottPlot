@@ -72,6 +72,7 @@ namespace ScottPlot
 
             InitializeComponent();
             InitializeLayout();
+            Backend.StartProcessingEvents();
         }
 
         /// <summary>

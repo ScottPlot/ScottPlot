@@ -29,7 +29,7 @@ namespace ScottPlot
         /// </summary>
         public event EventHandler RightClicked;
 
-        private readonly Control.ControlBackEnd Backend;
+        private readonly Control.ControlBackEnd Backend = new(1, 1);
         private readonly Dictionary<Cursor, System.Windows.Forms.Cursor> Cursors;
         private readonly bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
@@ -38,7 +38,7 @@ namespace ScottPlot
 
         public FormsPlot()
         {
-            Backend = new Control.ControlBackEnd(Width, Height);
+            Backend.Resize(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -64,6 +64,8 @@ namespace ScottPlot
             RightClicked += DefaultRightClickEvent;
             if (IsDesignerMode)
                 Plot.Title($"ScottPlot {Plot.Version}");
+
+            Backend.StartProcessingEvents();
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot using low quality (fast) then immediate re-render using high quality (slower)
         /// </summary>
-        public void RenderLowThenImmediateHighQuality() { Render(lowQuality: true); Backend.RenderHighQuality(); }
+        public void RenderLowThenImmediateHighQuality() => Backend.RenderLowThenImmediateHighQuality();
 
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }

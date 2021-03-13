@@ -11,7 +11,15 @@ namespace ScottPlot.Control.EventProcess
     /// </summary>
     public class EventsProcessor
     {
-        private readonly Queue<IUIEvent> Queue = new Queue<IUIEvent>();
+        /// <summary>
+        /// List of events that have not yet been processed
+        /// </summary>
+        private readonly Queue<IUIEvent> Queue = new();
+
+        /// <summary>
+        /// The event processor loop will hang infinitely until this is set to True
+        /// </summary>
+        public bool Enable = false;
 
         /// <summary>
         /// This timer is used for delayed rendering.
@@ -133,6 +141,11 @@ namespace ScottPlot.Control.EventProcess
         /// </summary>
         private async Task RunQueueProcessor()
         {
+            while (Enable == false)
+            {
+                await Task.Delay(1);
+            }
+
             RenderType lastEventRenderType = RenderType.None;
             while (true)
             {

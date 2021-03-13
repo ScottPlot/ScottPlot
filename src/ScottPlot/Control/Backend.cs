@@ -207,6 +207,13 @@ namespace ScottPlot.Control
         }
 
         /// <summary>
+        /// The host control may instantiate the back-end and start sending it events
+        /// before it has fully connected its event handlers. To prevent processing events before
+        /// the host is control is ready, the processor will be stopped until is called by the host control.
+        /// </summary>
+        public void StartProcessingEvents() => EventsProcessor.Enable = true;
+
+        /// <summary>
         /// Reset the back-end by creating an entirely new plot of the given dimensions
         /// </summary>
         public void Reset(float width, float height) => Reset(width, height, new Plot());
