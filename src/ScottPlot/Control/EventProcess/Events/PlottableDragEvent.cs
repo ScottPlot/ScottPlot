@@ -10,27 +10,29 @@ namespace ScottPlot.Control.EventProcess.Events
     /// </summary>
     public class PlottableDragEvent : IUIEvent
     {
-        private float x;
-        private float y;
-        private IDraggable plottable;
-        private Plot plt;
-        private bool shiftDown;
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly float X;
+        private readonly float Y;
+        private readonly IDraggable PlottableBeingDragged;
+        private readonly Plot Plot;
+        private readonly bool ShiftDown;
+        private readonly Configuration Configuration;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDragged;
 
-        public PlottableDragEvent(float x, float y, bool shiftDown, IDraggable plottable, Plot plt)
+        public PlottableDragEvent(float x, float y, bool shiftDown, IDraggable plottable, Plot plt, Configuration config)
         {
-            this.x = x;
-            this.y = y;
-            this.shiftDown = shiftDown;
-            this.plt = plt;
-            this.plottable = plottable;
+            X = x;
+            Y = y;
+            ShiftDown = shiftDown;
+            Plot = plt;
+            PlottableBeingDragged = plottable;
+            Configuration = config;
         }
 
         public void ProcessEvent()
         {
-            double xCoord = plt.GetCoordinateX(x);
-            double yCoord = plt.GetCoordinateY(y);
-            plottable.DragTo(xCoord, yCoord, fixedSize: shiftDown);
+            double xCoord = Plot.GetCoordinateX(X);
+            double yCoord = Plot.GetCoordinateY(Y);
+            PlottableBeingDragged.DragTo(xCoord, yCoord, fixedSize: ShiftDown);
         }
     }
 }

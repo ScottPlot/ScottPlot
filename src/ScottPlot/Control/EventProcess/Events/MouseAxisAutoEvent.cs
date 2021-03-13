@@ -6,27 +6,27 @@
     /// </summary>
     public class MouseAxisAutoEvent : IUIEvent
     {
-        private Configuration config;
-        private Settings settings;
-        private Plot plt;
-        public RenderType RenderOrder { get; set; } = RenderType.HQOnly;
+        private readonly Configuration Configuration;
+        private readonly Settings Settings;
+        private readonly Plot Plot;
+        public RenderType RenderType => Configuration.QualityConfiguration.AutoAxis;
 
         public MouseAxisAutoEvent(Configuration config, Settings settings, Plot plt)
         {
-            this.config = config;
-            this.settings = settings;
-            this.plt = plt;
+            Configuration = config;
+            Settings = settings;
+            Plot = plt;
         }
 
         public void ProcessEvent()
         {
-            settings.ZoomRectangle.Clear();
+            Settings.ZoomRectangle.Clear();
 
-            if (config.LockVerticalAxis == false)
-                plt.AxisAutoY(config.MiddleClickAutoAxisMarginY);
+            if (Configuration.LockVerticalAxis == false)
+                Plot.AxisAutoY(Configuration.MiddleClickAutoAxisMarginY);
 
-            if (config.LockHorizontalAxis == false)
-                plt.AxisAutoX(config.MiddleClickAutoAxisMarginX);
+            if (Configuration.LockHorizontalAxis == false)
+                Plot.AxisAutoX(Configuration.MiddleClickAutoAxisMarginX);
         }
     }
 }

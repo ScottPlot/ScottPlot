@@ -9,23 +9,23 @@
     /// </summary>
     public class MousePanEvent : IUIEvent
     {
-        private InputState input;
-        private Configuration config;
-        private Settings settings;
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly InputState Input;
+        private readonly Configuration Configuration;
+        private readonly Settings Settings;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDragged;
 
         public MousePanEvent(InputState input, Configuration config, Settings settings)
         {
-            this.input = input;
-            this.config = config;
-            this.settings = settings;
+            Input = input;
+            Configuration = config;
+            Settings = settings;
         }
 
         public void ProcessEvent()
         {
-            float x = (input.ShiftDown || config.LockHorizontalAxis) ? settings.MouseDownX : input.X;
-            float y = (input.CtrlDown || config.LockVerticalAxis) ? settings.MouseDownY : input.Y;
-            settings.MousePan(x, y);
+            float x = (Input.ShiftDown || Configuration.LockHorizontalAxis) ? Settings.MouseDownX : Input.X;
+            float y = (Input.CtrlDown || Configuration.LockVerticalAxis) ? Settings.MouseDownY : Input.Y;
+            Settings.MousePan(x, y);
         }
     }
 }

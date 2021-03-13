@@ -11,43 +11,43 @@ namespace ScottPlot.Control.EventProcess.Events
     /// </summary>
     public class MouseZoomEvent : IUIEvent
     {
-        private InputState input;
-        private Configuration config;
-        private Settings settings;
-        private Plot plt;
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly InputState Input;
+        private readonly Configuration Configuration;
+        private readonly Settings Settings;
+        private readonly Plot Plot;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDragged;
 
         public MouseZoomEvent(InputState input, Configuration config, Settings settings, Plot plt)
         {
-            this.input = input;
-            this.config = config;
-            this.settings = settings;
-            this.plt = plt;
+            Input = input;
+            Configuration = config;
+            Settings = settings;
+            Plot = plt;
         }
 
         public void ProcessEvent()
         {
-            var originalLimits = plt.GetAxisLimits();
+            var originalLimits = Plot.GetAxisLimits();
 
-            if (input.ShiftDown && input.CtrlDown)
+            if (Input.ShiftDown && Input.CtrlDown)
             {
-                float dx = input.X - settings.MouseDownX;
-                float dy = settings.MouseDownY - input.Y;
+                float dx = Input.X - Settings.MouseDownX;
+                float dy = Settings.MouseDownY - Input.Y;
                 float delta = Math.Max(dx, dy);
-                settings.MouseZoom(settings.MouseDownX + delta, settings.MouseDownY - delta);
+                Settings.MouseZoom(Settings.MouseDownX + delta, Settings.MouseDownY - delta);
             }
             else
             {
-                float x = input.ShiftDown ? settings.MouseDownX : input.X;
-                float y = input.CtrlDown ? settings.MouseDownY : input.Y;
-                settings.MouseZoom(x, y);
+                float x = Input.ShiftDown ? Settings.MouseDownX : Input.X;
+                float y = Input.CtrlDown ? Settings.MouseDownY : Input.Y;
+                Settings.MouseZoom(x, y);
             }
 
-            if (config.LockHorizontalAxis)
-                plt.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
+            if (Configuration.LockHorizontalAxis)
+                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
 
-            if (config.LockVerticalAxis)
-                plt.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
+            if (Configuration.LockVerticalAxis)
+                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
         }
     }
 }

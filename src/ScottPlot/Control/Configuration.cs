@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control
+﻿using System;
+
+namespace ScottPlot.Control
 {
     public class Configuration
     {
@@ -20,6 +22,7 @@
         /// Control when anti-aliasing (high quality) is used
         /// </summary>
         public QualityMode Quality = QualityMode.LowWhileDragging;
+        public readonly QualityConfiguration QualityConfiguration = new();
 
         /// <summary>
         /// Control whether left-click-drag panning is enabled

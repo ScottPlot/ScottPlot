@@ -6,21 +6,23 @@
     /// </summary>
     public class MouseMovedToZoomRectangle : IUIEvent
     {
-        private float x;
-        private float y;
-        private Settings settings;
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly float X;
+        private readonly float Y;
+        private readonly Settings Settings;
+        private readonly Configuration Configuration;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDragged;
 
-        public MouseMovedToZoomRectangle(float x, float y, Settings settings)
+        public MouseMovedToZoomRectangle(float x, float y, Settings settings, Configuration configuration)
         {
-            this.x = x;
-            this.y = y;
-            this.settings = settings;
+            X = x;
+            Y = y;
+            Settings = settings;
+            Configuration = configuration;
         }
 
         public void ProcessEvent()
         {
-            settings.MouseZoomRect(x, y);
+            Settings.MouseZoomRect(X, Y);
         }
     }
 }

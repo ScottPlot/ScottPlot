@@ -6,6 +6,7 @@
     /// Some options allow a fast initial render followed by a slower higher quality render.
     /// </summary>
     public enum RenderType
+
     {
         /// <summary>
         /// Only render using low quality (anti-aliasing off)

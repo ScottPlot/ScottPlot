@@ -2,7 +2,7 @@
 {
     public interface IUIEvent
     {
-        public RenderType RenderOrder { get; set; }
+        public RenderType RenderType { get; }
         void ProcessEvent();
     }
 }

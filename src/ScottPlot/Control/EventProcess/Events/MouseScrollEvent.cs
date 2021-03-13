@@ -5,34 +5,33 @@
     /// </summary>
     public class MouseScrollEvent : IUIEvent
     {
-        private float x;
-        private float y;
-        private bool scrolledUp;
-        private Configuration config;
-        private Settings settings;
-
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly float X;
+        private readonly float Y;
+        private readonly bool ScrolledUp;
+        private readonly Configuration Configuration;
+        private readonly Settings Settings;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseWheelScrolled;
 
         public MouseScrollEvent(float x, float y, bool scrolledUp, Configuration config, Settings settings)
         {
-            this.x = x;
-            this.y = y;
-            this.scrolledUp = scrolledUp;
-            this.config = config;
-            this.settings = settings;
+            X = x;
+            Y = y;
+            ScrolledUp = scrolledUp;
+            Configuration = config;
+            Settings = settings;
         }
 
         public void ProcessEvent()
         {
-            double xFrac = scrolledUp ? 1.15 : 0.85;
-            double yFrac = scrolledUp ? 1.15 : 0.85;
+            double xFrac = ScrolledUp ? 1.15 : 0.85;
+            double yFrac = ScrolledUp ? 1.15 : 0.85;
 
-            if (config.LockHorizontalAxis)
+            if (Configuration.LockHorizontalAxis)
                 xFrac = 1;
-            if (config.LockVerticalAxis)
+            if (Configuration.LockVerticalAxis)
                 yFrac = 1;
 
-            settings.AxesZoomTo(xFrac, yFrac, x, y);
+            Settings.AxesZoomTo(xFrac, yFrac, X, Y);
         }
     }
 }

@@ -40,7 +40,6 @@
  */
 
 using ScottPlot.Control.EventProcess;
-using ScottPlot.Control.EventProcess.Factories;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
@@ -58,23 +57,20 @@ namespace ScottPlot.Control
         public event EventHandler AxesChanged = delegate { };
         public event EventHandler RightClicked = delegate { };
 
-        public readonly Configuration Configuration = new Configuration();
-        public ScottPlot.Plot Plot { get; private set; }
-
-        private ScottPlot.Settings Settings;
+        public readonly Configuration Configuration = new();
+        public Plot Plot { get; private set; }
+        private Settings Settings;
         private System.Drawing.Bitmap Bmp;
-        private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
-        public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
+        private readonly List<System.Drawing.Bitmap> OldBitmaps = new();
+        public Cursor Cursor { get; private set; } = Cursor.Arrow;
 
-        private readonly Queue<InputState> MouseWheelQueue = new Queue<InputState>();
-        private readonly Stopwatch MouseWheelStopwatch = new Stopwatch();
         private EventsProcessor eventProcessor;
-        private IUIEventFactory eventFactory;
+        private UIEventFactory eventFactory;
 
 
         public ControlBackEnd(float width, float height)
         {
-            eventFactory = new ModernDecorator(new UIEventFactory(Configuration, Settings, Plot));
+            eventFactory = new UIEventFactory(Configuration, Settings, Plot);
             Reset(width, height);
 
             // create an event processor and later request new renders by interacting with it.
@@ -135,8 +131,7 @@ namespace ScottPlot.Control
         {
             Plot = newPlot;
             Settings = Plot.GetSettings(false);
-            eventFactory.plt = Plot;
-            eventFactory.settings = Settings;
+            eventFactory = new UIEventFactory(Configuration, Settings, Plot);
             Resize(width, height);
         }
 

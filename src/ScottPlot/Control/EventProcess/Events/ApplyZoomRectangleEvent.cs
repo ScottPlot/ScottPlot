@@ -7,37 +7,35 @@
     /// </summary>
     public class ApplyZoomRectangleEvent : IUIEvent
     {
-        private float x;
-        private float y;
-        private Configuration config;
-        private Settings settings;
-        private Plot plt;
-
-        public RenderType RenderOrder { get; set; } = RenderType.HQAfterLQDelayed;
+        private readonly float X;
+        private readonly float Y;
+        private readonly Configuration Configuration;
+        private readonly Settings Settings;
+        private readonly Plot Plot;
+        public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDropped;
 
         public ApplyZoomRectangleEvent(float x, float y, Configuration config, Settings settings, Plot plt)
         {
-            this.x = x;
-            this.y = y;
-            this.config = config;
-            this.settings = settings;
-            this.plt = plt;
+            X = x;
+            Y = y;
+            Configuration = config;
+            Settings = settings;
+            Plot = plt;
         }
-
 
         public void ProcessEvent()
         {
-            settings.RecallAxisLimits();
+            Settings.RecallAxisLimits();
 
-            var originalLimits = plt.GetAxisLimits();
+            var originalLimits = Plot.GetAxisLimits();
 
-            settings.MouseZoomRect(x, y, finalize: true);
+            Settings.MouseZoomRect(X, Y, finalize: true);
 
-            if (config.LockHorizontalAxis)
-                plt.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
+            if (Configuration.LockHorizontalAxis)
+                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
 
-            if (config.LockVerticalAxis)
-                plt.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
+            if (Configuration.LockVerticalAxis)
+                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
         }
     }
 }

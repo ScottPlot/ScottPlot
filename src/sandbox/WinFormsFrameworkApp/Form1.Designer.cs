@@ -40,7 +40,6 @@ namespace WinFormsFrameworkApp
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(800, 450);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormsPlot1_MouseMove);
             // 
             // Form1
             // 

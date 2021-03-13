@@ -143,12 +143,12 @@ namespace ScottPlot.Control.EventProcess
                     var uiEvent = Queue.Dequeue();
                     uiEvent.ProcessEvent();
 
-                    if (uiEvent.RenderOrder == RenderType.HQAfterLQDelayed)
+                    if (uiEvent.RenderType == RenderType.HQAfterLQDelayed)
                         RenderDelayTimer.Restart();
 
-                    if (uiEvent.RenderOrder != RenderType.None)
+                    if (uiEvent.RenderType != RenderType.None)
                     {
-                        lastEventRenderType = uiEvent.RenderOrder;
+                        lastEventRenderType = uiEvent.RenderType;
                         eventRenderRequested = true;
                     }
                 }

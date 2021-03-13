@@ -6,17 +6,19 @@
     /// </summary>
     public class BenchmarkToggleEvent : IUIEvent
     {
-        private Plot plt;
-        public RenderType RenderOrder { get; set; } = RenderType.HQOnly;
+        private readonly Plot Plot;
+        private readonly Configuration Configuration;
+        public RenderType RenderType => Configuration.QualityConfiguration.BenchmarkToggle;
 
-        public BenchmarkToggleEvent(Plot plt)
+        public BenchmarkToggleEvent(Plot plt, Configuration config)
         {
-            this.plt = plt;
+            Plot = plt;
+            Configuration = config;
         }
 
         public void ProcessEvent()
         {
-            plt.Benchmark(!plt.Benchmark(null));
+            Plot.Benchmark(!Plot.Benchmark(null));
         }
     }
 }
