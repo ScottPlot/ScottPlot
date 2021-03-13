@@ -23,7 +23,7 @@ namespace WinFormsFrameworkApp
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.AddScatter(xs, ys);
             formsPlot1.Plot.Title("Scatter Plot with 10 Points");
-            formsPlot1.Render();
+            formsPlot1.RenderLowThenImmediateHighQuality();
         }
 
         private void buttonScatter1k_Click(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace WinFormsFrameworkApp
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.AddScatter(xs, ys);
             formsPlot1.Plot.Title("Scatter Plot with 2,000 Points");
-            formsPlot1.Render();
+            formsPlot1.RenderLowThenImmediateHighQuality();
         }
 
         private void buttonSignal1M_Click(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace WinFormsFrameworkApp
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.AddSignal(data, sampleRate);
             formsPlot1.Plot.Title("Signal Plot with 1,000,000 Points");
-            formsPlot1.Render();
+            formsPlot1.RenderLowThenImmediateHighQuality();
         }
     }
 }

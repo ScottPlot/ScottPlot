@@ -43,7 +43,9 @@ using ScottPlot.Control.EventProcess;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
@@ -91,8 +93,62 @@ namespace ScottPlot.Control
         /// </summary>
         public readonly Configuration Configuration = new();
 
+        /// <summary>
+        /// True if the middle mouse button is pressed
+        /// </summary>
+        private bool IsMiddleDown;
+
+        /// <summary>
+        /// True if the right mouse button is pressed
+        /// </summary>
+        private bool IsRightDown;
+
+        /// <summary>
+        /// True if the left mouse button is pressed
+        /// </summary>
+        private bool IsLeftDown;
+
+        /// <summary>
+        /// Current position of the mouse in pixels
+        /// </summary>
+        private float MouseLocationX;
+
+        /// <summary>
+        /// Current position of the mouse in pixels
+        /// </summary>
+        private float MouseLocationY;
+
+        /// <summary>
+        /// Holds the plottable actively being dragged with the mouse.
+        /// Contains null if no plottable is being dragged.
+        /// </summary>
+        private IDraggable PlottableBeingDragged = null;
+
+        /// <summary>
+        /// True when a zoom rectangle is being drawn and the mouse button is still down
+        /// </summary>
+        private bool IsZoomingRectangle;
+
+        /// <summary>
+        /// True if a zoom rectangle is being actively drawn using ALT + left click
+        /// </summary>
+        private bool IsZoomingWithAlt;
+
+        /// <summary>
+        /// The plot underlying this control.
+        /// </summary>
         public Plot Plot { get; private set; }
+
+        /// <summary>
+        /// The settings object underlying the plot.
+        /// </summary>
         private Settings Settings;
+
+        /// <summary>
+        /// The latest render is stored in this bitmap.
+        /// New renders may be performed on this existing bitmap.
+        /// When a new bitmap is created, this bitmap will be stored in OldBitmaps and eventually disposed.
+        /// </summary>
         private System.Drawing.Bitmap Bmp;
 
         /// <summary>
@@ -134,6 +190,11 @@ namespace ScottPlot.Control
         /// </summary>
         private UIEventFactory EventFactory;
 
+        /// <summary>
+        /// Create a back-end for a user control
+        /// </summary>
+        /// <param name="width">initial bitmap size (pixels)</param>
+        /// <param name="height">initial bitmap size (pixels)</param>
         public ControlBackEnd(float width, float height)
         {
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
@@ -267,6 +328,38 @@ namespace ScottPlot.Control
             currentlyRendering = false;
         }
 
+        public void RenderLowQuality()
+        {
+            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
+        }
+
+        public void RenderHighQuality()
+        {
+            EventsProcessor.Process(EventFactory.CreateManualHighQualityRender());
+        }
+
+        /// <summary>
+        /// Render the plot using low quality (fast) then immediate re-render using high quality (slower).
+        /// </summary>
+        public void RenderLowThenImmediateHighQuality()
+        {
+            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
+            EventsProcessor.Process(EventFactory.CreateManualHighQualityRender());
+        }
+
+        /// <summary>
+        /// Render the plot using low quality (fast) then delayed re-render using high quality (slower).
+        /// </summary>
+        public void RenderDelayedHighQuality()
+        {
+            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
+            EventsProcessor.Process(EventFactory.CreateManualDelayedHighQualityRender());
+        }
+
+        /// <summary>
+        /// Check if the number of plottibles has changed and if so request a render.
+        /// This is typically called by a continuously running timer in the user control.
+        /// </summary>
         public void RenderIfPlottableCountChanged()
         {
             if (Bmp is null)
@@ -275,16 +368,22 @@ namespace ScottPlot.Control
                 Render();
         }
 
+        /// <summary>
+        /// Resize the control (creates a new Bitmap and requests a render)
+        /// </summary>
         public void Resize(float width, float height)
         {
             NewBitmap(width, height);
-            Render(lowQuality: false);
+
+            if (EventsProcessor is null) // this can happen when the control is first starting-up
+                Render(lowQuality: false);
+            else
+                RenderDelayedHighQuality();
         }
 
-        private bool IsMiddleDown;
-        private bool IsRightDown;
-        private bool IsLeftDown;
-        private IDraggable PlottableBeingDragged = null;
+        /// <summary>
+        /// Indicate a mouse button has just been pressed
+        /// </summary>
         public void MouseDown(InputState input)
         {
             if (!Settings.AllAxesHaveBeenSet)
@@ -296,19 +395,23 @@ namespace ScottPlot.Control
             Settings.MouseDown(input.X, input.Y);
         }
 
-        private float MouseLocationX;
-        private float MouseLocationY;
-
+        /// <summary>
+        /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
+        /// </summary>
         public (double x, double y) GetMouseCoordinates()
         {
             (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY);
             return (double.IsNaN(x) ? 0 : x, double.IsNaN(y) ? 0 : y);
         }
 
+        /// <summary>
+        /// Return the mouse position (in pixel space) for the last observed mouse position
+        /// </summary>
         public (float x, float y) GetMousePixel() => (MouseLocationX, MouseLocationY);
 
-        private bool IsZoomingRectangle;
-        private bool IsZoomingWithAlt;
+        /// <summary>
+        /// Indicate the mouse has moved to a new position
+        /// </summary>
         public void MouseMove(InputState input)
         {
             bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
@@ -334,18 +437,31 @@ namespace ScottPlot.Control
                 MouseMovedWithoutInteraction(input);
         }
 
+        /// <summary>
+        /// Call this when the mouse moves without any buttons being down.
+        /// It will only update the cursor based on what's beneath the cursor.
+        /// </summary>
         private void MouseMovedWithoutInteraction(InputState input)
         {
             UpdateCursor(input);
         }
 
+        /// <summary>
+        /// Set the cursor based on whether a draggable is engaged or not,
+        /// then invoke the CursorChanged event.
+        /// </summary>
         private void UpdateCursor(InputState input)
         {
             var draggableUnderCursor = GetDraggableUnderMouse(input.X, input.Y);
-            Cursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            Cursor = (draggableUnderCursor is null) ? Cursor.Arrow : draggableUnderCursor.DragCursor;
             CursorChanged(null, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Indicate a mouse button has been released.
+        /// This may initiate a render (and/or a delayed render).
+        /// </summary>
+        /// <param name="input"></param>
         public void MouseUp(InputState input)
         {
             PlottableBeingDragged = null;
@@ -368,13 +484,14 @@ namespace ScottPlot.Control
             UpdateCursor(input);
         }
 
-
+        /// <summary>
+        /// Indicate the left mouse button has been double-clicked.
+        /// The default action of a double-click is to toggle the benchmark.
+        /// </summary>
         public void DoubleClick()
         {
-            if (Configuration.DoubleClickBenchmark == false)
-                return;
-
-            EventsProcessor.Process(EventFactory.CreateBenchmarkToggle());
+            if (Configuration.DoubleClickBenchmark)
+                EventsProcessor.Process(EventFactory.CreateBenchmarkToggle());
         }
 
         /// <summary>
@@ -387,7 +504,6 @@ namespace ScottPlot.Control
 
             if (Configuration.ScrollWheelZoom)
                 EventsProcessor.Process(EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp));
-
         }
     }
 }
