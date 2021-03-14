@@ -358,7 +358,6 @@ namespace ScottPlot.Control
         /// </summary>
         public void RenderDelayedHighQuality()
         {
-            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
             EventsProcessor.Process(EventFactory.CreateManualDelayedHighQualityRender());
         }
 
