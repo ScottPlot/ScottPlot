@@ -104,7 +104,7 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot using low quality (fast) then immediate re-render using high quality (slower)
         /// </summary>
-        public void RenderLowThenHighQuality() { Render(lowQuality: true); Backend.RenderHighQuality(); }
+        public void RenderLowThenImmediateHighQuality() => Backend.RenderLowThenImmediateHighQuality();
 
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
