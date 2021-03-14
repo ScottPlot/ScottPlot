@@ -7,45 +7,49 @@ namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
-        private readonly HLine HLine;
-        private readonly VLine VLine;
-        private readonly SignalPlot Signal;
-        private int LastHighlightedIndex = -1;
+        private readonly Random Rand = new Random();
 
         public Form1()
         {
             InitializeComponent();
-
-            // simulate 10 seconds of 48 kHz audio
-            int sampleRate = 48_000;
-            Random rand = new Random(0);
-            double[] data = ScottPlot.DataGen.RandomWalk(rand, sampleRate * 10);
-            Signal = formsPlot1.Plot.AddSignal(data, sampleRate);
-
-            // markers to indicate where the mouse is
-            HLine = formsPlot1.Plot.AddHorizontalLine(0, Color.Red, 1, ScottPlot.LineStyle.Dash);
-            VLine = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 1, ScottPlot.LineStyle.Dash);
-
-            formsPlot1.Render();
+            buttonScatter1k_Click(null, null);
+            cbRenderQueue.Checked = formsPlot1.Configuration.UseRenderQueue;
         }
 
-        private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
+        private void btnScatter10_Click(object sender, EventArgs e)
         {
-            if (e.Button != MouseButtons.None)
-                return; // don't move markers if actively panning or zooming
-
-            double mouseX = formsPlot1.Plot.GetCoordinateX(e.X);
-            (double x, double y, int pointIndex) = Signal.GetPointNearestX(mouseX);
-            VLine.X = x;
-            HLine.Y = y;
-            Text = $"Mouse is over point {pointIndex:N0} ({x:.03}, {y:.03})";
-
-            // render if the highlighted point chnaged
-            if (LastHighlightedIndex != pointIndex)
-            {
-                LastHighlightedIndex = pointIndex;
-                formsPlot1.Render(skipIfCurrentlyRendering: true);
-            }
+            int pointCount = 10;
+            double[] xs = ScottPlot.DataGen.Random(Rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(Rand, pointCount);
+            formsPlot1.Plot.Clear();
+            formsPlot1.Plot.AddScatter(xs, ys);
+            formsPlot1.Plot.Title("Scatter Plot with 10 Points");
+            formsPlot1.RenderLowThenImmediateHighQuality();
         }
+
+        private void buttonScatter1k_Click(object sender, EventArgs e)
+        {
+            int pointCount = 2_000;
+            double[] xs = ScottPlot.DataGen.Random(Rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(Rand, pointCount);
+            formsPlot1.Plot.Clear();
+            formsPlot1.Plot.AddScatter(xs, ys);
+            formsPlot1.Plot.Title("Scatter Plot with 2,000 Points");
+            formsPlot1.RenderLowThenImmediateHighQuality();
+        }
+
+        private void buttonSignal1M_Click(object sender, EventArgs e)
+        {
+            int pointCount = 1_000_000;
+            int sampleRate = 48_000;
+            double[] data = ScottPlot.DataGen.RandomWalk(Rand, pointCount);
+            formsPlot1.Plot.Clear();
+            formsPlot1.Plot.AddSignal(data, sampleRate);
+            formsPlot1.Plot.Title("Signal Plot with 1,000,000 Points");
+            formsPlot1.RenderLowThenImmediateHighQuality();
+        }
+
+        private void cbRenderQueue_CheckedChanged(object sender, EventArgs e) =>
+            formsPlot1.Configuration.UseRenderQueue = cbRenderQueue.Checked;
     }
 }

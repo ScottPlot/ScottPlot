@@ -60,6 +60,7 @@ namespace ScottPlot.Avalonia
             PlottableCountTimer.Start();
 
             InitializeLayout();
+            Backend.StartProcessingEvents();
         }
 
         public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();

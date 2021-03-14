@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control
+﻿using System;
+
+namespace ScottPlot.Control
 {
     public class Configuration
     {
@@ -17,9 +19,15 @@
         }
 
         /// <summary>
-        /// Control when anti-aliasing (high quality) is used
+        /// Manual override to set anti-aliasing (high quality) behavior for all renders.
+        /// Refer to the QualityConfiguration field for more control over quality in response to specific interactions.
         /// </summary>
         public QualityMode Quality = QualityMode.LowWhileDragging;
+
+        /// <summary>
+        /// This module customizes anti-aliasing (high quality) behavior in response to interactive events.
+        /// </summary>
+        public readonly QualityConfiguration QualityConfiguration = new();
 
         /// <summary>
         /// Control whether left-click-drag panning is enabled
@@ -90,5 +98,11 @@
         /// Permitting dropped frames makes interactive mouse manipulation feel faster
         /// </summary>
         public bool AllowDroppedFramesWhileDragging = true;
+
+        /// <summary>
+        /// If true, control interactions will be non-blocking and renders will occur after interactions.
+        /// If false, control interactions will be blocking while renders are drawn.
+        /// </summary>
+        public bool UseRenderQueue = false;
     }
 }

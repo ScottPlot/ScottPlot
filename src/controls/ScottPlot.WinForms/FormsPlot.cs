@@ -7,27 +7,45 @@ namespace ScottPlot
 {
     public partial class FormsPlot : UserControl
     {
-        public ScottPlot.Plot Plot => Backend.Plot;
-        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
-        public event EventHandler AxesChanged;
-        public event EventHandler RightClicked;
-        private readonly ScottPlot.Control.ControlBackEnd Backend;
-        private readonly Dictionary<ScottPlot.Cursor, System.Windows.Forms.Cursor> Cursors;
-        private bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
+        /// <summary>
+        /// This is the plot displayed by the user control.
+        /// After modifying it you may need to call Render() to request the plot be redrawn on the screen.
+        /// </summary>
+        public Plot Plot => Backend.Plot;
 
-        [Obsolete("Reference Plot instead of plt")]
-        public ScottPlot.Plot plt => Plot;
+        /// <summary>
+        /// This object can be used to modify advanced behaior and customization of this user control.
+        /// </summary>
+        public Control.Configuration Configuration => Backend.Configuration;
+
+        /// <summary>
+        /// This event is invoked any time the axis limits are modified.
+        /// </summary>
+        public event EventHandler AxesChanged;
+
+        /// <summary>
+        /// This event is invoked any time the plot is right-clicked.
+        /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
+        /// </summary>
+        public event EventHandler RightClicked;
+
+        private readonly Control.ControlBackEnd Backend = new(1, 1);
+        private readonly Dictionary<Cursor, System.Windows.Forms.Cursor> Cursors;
+        private readonly bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
+
+        [Obsolete("Reference 'Plot' instead of 'plt'")]
+        public Plot plt => Plot;
 
         public FormsPlot()
         {
-            Backend = new ScottPlot.Control.ControlBackEnd(Width, Height);
+            Backend.Resize(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
 
-            Cursors = new Dictionary<ScottPlot.Cursor, System.Windows.Forms.Cursor>()
+            Cursors = new Dictionary<Cursor, System.Windows.Forms.Cursor>()
             {
                 [ScottPlot.Cursor.Arrow] = System.Windows.Forms.Cursors.Arrow,
                 [ScottPlot.Cursor.WE] = System.Windows.Forms.Cursors.SizeWE,
@@ -46,19 +64,47 @@ namespace ScottPlot
             RightClicked += DefaultRightClickEvent;
             if (IsDesignerMode)
                 Plot.Title($"ScottPlot {Plot.Version}");
+
+            Backend.StartProcessingEvents();
         }
 
+        /// <summary>
+        /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
+        /// </summary>
         public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
+
+        /// <summary>
+        /// Return the mouse position (in pixel space) for the last observed mouse position
+        /// </summary>
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
+
+        /// <summary>
+        /// Reset this control by replacing the current plot with a new empty plot
+        /// </summary>
         public void Reset() => Backend.Reset(Width, Height);
+
+        /// <summary>
+        /// Reset this control by replacing the current plot with an existing plot
+        /// </summary>
         public void Reset(Plot newPlot) => Backend.Reset(Width, Height, newPlot);
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
+
+        /// <summary>
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
+        /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
+        /// <param name="skipIfCurrentlyRendering"></param>
         public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             Application.DoEvents();
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
 
+        /// <summary>
+        /// Render the plot using low quality (fast) then immediate re-render using high quality (slower)
+        /// </summary>
+        public void RenderLowThenImmediateHighQuality() => Backend.RenderLowThenImmediateHighQuality();
+
+        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
@@ -72,8 +118,8 @@ namespace ScottPlot
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
-        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
-            new ScottPlot.Control.InputState()
+        private Control.InputState GetInputState(MouseEventArgs e) =>
+            new()
             {
                 X = e.X,
                 Y = e.Y,
@@ -87,6 +133,9 @@ namespace ScottPlot
                 WheelScrolledDown = e.Delta < 0,
             };
 
+        /// <summary>
+        /// Launch the default right-click menu.
+        /// </summary>
         public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
