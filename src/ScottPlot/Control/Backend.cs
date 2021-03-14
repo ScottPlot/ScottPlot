@@ -336,12 +336,12 @@ namespace ScottPlot.Control
 
         public void RenderLowQuality()
         {
-            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
+            ProcessEvent(EventFactory.CreateManualLowQualityRender());
         }
 
         public void RenderHighQuality()
         {
-            EventsProcessor.Process(EventFactory.CreateManualHighQualityRender());
+            ProcessEvent(EventFactory.CreateManualHighQualityRender());
         }
 
         /// <summary>
@@ -349,8 +349,8 @@ namespace ScottPlot.Control
         /// </summary>
         public void RenderLowThenImmediateHighQuality()
         {
-            EventsProcessor.Process(EventFactory.CreateManualLowQualityRender());
-            EventsProcessor.Process(EventFactory.CreateManualHighQualityRender());
+            ProcessEvent(EventFactory.CreateManualLowQualityRender());
+            ProcessEvent(EventFactory.CreateManualHighQualityRender());
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace ScottPlot.Control
         /// </summary>
         public void RenderDelayedHighQuality()
         {
-            EventsProcessor.Process(EventFactory.CreateManualDelayedHighQualityRender());
+            ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
         }
 
         /// <summary>
@@ -439,16 +439,52 @@ namespace ScottPlot.Control
 
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
+
+            IUIEvent mouseMoveEvent = null;
             if (PlottableBeingDragged != null)
-                EventsProcessor.Process(EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged));
+                mouseMoveEvent = EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged);
             else if (IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan)
-                EventsProcessor.Process(EventFactory.CreateMousePan(input));
+                mouseMoveEvent = EventFactory.CreateMousePan(input);
             else if (IsRightDown && Configuration.RightClickDragZoom)
-                EventsProcessor.Process(EventFactory.CreateMouseZoom(input));
+                mouseMoveEvent = EventFactory.CreateMouseZoom(input);
             else if (IsZoomingRectangle)
-                EventsProcessor.Process(EventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y));
+                mouseMoveEvent = EventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y);
+
+            if (mouseMoveEvent != null)
+                ProcessEvent(mouseMoveEvent);
             else
                 MouseMovedWithoutInteraction(input);
+        }
+
+        /// <summary>
+        /// Process an event using the render queue (non-blocking) or traditional rendering (blocking)
+        /// based on the UseRenderQueue flag in the Configuration module.
+        /// </summary>
+        private void ProcessEvent(IUIEvent uiEvent)
+        {
+            if (Configuration.UseRenderQueue)
+            {
+                // TODO: refactor to better support async
+                _ = EventsProcessor.ProcessAsync(uiEvent);
+            }
+            else
+            {
+                uiEvent.ProcessEvent();
+
+                if (uiEvent.RenderType == RenderType.None)
+                    return;
+
+                bool lowQuality =
+                    uiEvent is EventProcess.Events.MouseMovedToZoomRectangle ||
+                    uiEvent is EventProcess.Events.MousePanEvent ||
+                    uiEvent is EventProcess.Events.MouseZoomEvent ||
+                    uiEvent is EventProcess.Events.PlottableDragEvent ||
+                    uiEvent is EventProcess.Events.RenderLowQuality;
+
+                bool allowSkip = lowQuality && Configuration.AllowDroppedFramesWhileDragging;
+
+                Render(lowQuality: lowQuality, skipIfCurrentlyRendering: allowSkip);
+            }
         }
 
         /// <summary>
@@ -481,12 +517,14 @@ namespace ScottPlot.Control
             PlottableBeingDragged = null;
             bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
 
+            IUIEvent mouseEvent;
             if (IsZoomingRectangle && mouseWasDragged && Configuration.MiddleClickDragZoom)
-                EventsProcessor.Process(EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y));
+                mouseEvent = EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y);
             else if (IsMiddleDown && Configuration.MiddleClickAutoAxis)
-                EventsProcessor.Process(EventFactory.CreateMouseAutoAxis());
+                mouseEvent = EventFactory.CreateMouseAutoAxis();
             else
-                EventsProcessor.Process(EventFactory.CreateMouseUpClearRender());
+                mouseEvent = EventFactory.CreateMouseUpClearRender();
+            ProcessEvent(mouseEvent);
 
             if (IsRightDown && mouseWasDragged == false)
                 RightClicked(null, EventArgs.Empty);
@@ -505,7 +543,10 @@ namespace ScottPlot.Control
         public void DoubleClick()
         {
             if (Configuration.DoubleClickBenchmark)
-                EventsProcessor.Process(EventFactory.CreateBenchmarkToggle());
+            {
+                IUIEvent mouseEvent = EventFactory.CreateBenchmarkToggle();
+                ProcessEvent(mouseEvent);
+            }
         }
 
         /// <summary>
@@ -517,7 +558,10 @@ namespace ScottPlot.Control
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
             if (Configuration.ScrollWheelZoom)
-                EventsProcessor.Process(EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp));
+            {
+                IUIEvent mouseEvent = EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp);
+                ProcessEvent(mouseEvent);
+            }
         }
     }
 }

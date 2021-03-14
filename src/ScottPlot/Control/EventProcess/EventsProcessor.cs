@@ -68,9 +68,9 @@ namespace ScottPlot.Control.EventProcess
 
         /// <summary>
         /// Add an event to the queue and process it when it is ready.
-        /// After all events are processed a render will be called automatically.
+        /// After all events are processed a render will be called automatically by the queue processor.
         /// </summary>
-        public async Task Process(IUIEvent uiEvent)
+        public async Task ProcessAsync(IUIEvent uiEvent)
         {
             Queue.Enqueue(uiEvent);
 

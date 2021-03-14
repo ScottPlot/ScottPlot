@@ -93,5 +93,11 @@ namespace ScottPlot.Control
         /// Permitting dropped frames makes interactive mouse manipulation feel faster
         /// </summary>
         public bool AllowDroppedFramesWhileDragging = true;
+
+        /// <summary>
+        /// If true, control interactions will be non-blocking and renders will occur after interactions.
+        /// If false, control interactions will be blocking while renders are drawn.
+        /// </summary>
+        public bool UseRenderQueue = false;
     }
 }
