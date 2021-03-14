@@ -9,12 +9,12 @@
         Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
 <DockPanel>
     <TabControl>
-        <TabItem Header="ScottPlot 1">
+        <TabItem Header="Blocking Render">
             <DockPanel>
                 <ScottPlot:WpfPlot Name="WpfPlot1"/>
             </DockPanel>
         </TabItem>
-        <TabItem Header="ScottPlot 2">
+        <TabItem Header="Render Queue">
             <DockPanel>
                 <ScottPlot:WpfPlot Name="WpfPlot2"/>
             </DockPanel>
