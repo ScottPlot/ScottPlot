@@ -33,6 +33,7 @@ namespace WinFormsFrameworkApp
             this.btnScatter10 = new System.Windows.Forms.Button();
             this.buttonScatter1k = new System.Windows.Forms.Button();
             this.buttonSignal1M = new System.Windows.Forms.Button();
+            this.cbRenderQueue = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -76,11 +77,25 @@ namespace WinFormsFrameworkApp
             this.buttonSignal1M.UseVisualStyleBackColor = true;
             this.buttonSignal1M.Click += new System.EventHandler(this.buttonSignal1M_Click);
             // 
+            // cbRenderQueue
+            // 
+            this.cbRenderQueue.AutoSize = true;
+            this.cbRenderQueue.Checked = true;
+            this.cbRenderQueue.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbRenderQueue.Location = new System.Drawing.Point(255, 16);
+            this.cbRenderQueue.Name = "cbRenderQueue";
+            this.cbRenderQueue.Size = new System.Drawing.Size(112, 17);
+            this.cbRenderQueue.TabIndex = 4;
+            this.cbRenderQueue.Text = "UseRenderQueue";
+            this.cbRenderQueue.UseVisualStyleBackColor = true;
+            this.cbRenderQueue.CheckedChanged += new System.EventHandler(this.cbRenderQueue_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cbRenderQueue);
             this.Controls.Add(this.buttonSignal1M);
             this.Controls.Add(this.buttonScatter1k);
             this.Controls.Add(this.btnScatter10);
@@ -88,6 +103,7 @@ namespace WinFormsFrameworkApp
             this.Name = "Form1";
             this.Text = "ScottPlot Sandbox - WinForms (.NET Framework)";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -97,6 +113,7 @@ namespace WinFormsFrameworkApp
         private System.Windows.Forms.Button btnScatter10;
         private System.Windows.Forms.Button buttonScatter1k;
         private System.Windows.Forms.Button buttonSignal1M;
+        private System.Windows.Forms.CheckBox cbRenderQueue;
     }
 }
 

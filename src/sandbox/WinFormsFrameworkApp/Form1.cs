@@ -13,6 +13,7 @@ namespace WinFormsFrameworkApp
         {
             InitializeComponent();
             buttonScatter1k_Click(null, null);
+            cbRenderQueue.Checked = formsPlot1.Configuration.UseRenderQueue;
         }
 
         private void btnScatter10_Click(object sender, EventArgs e)
@@ -47,5 +48,8 @@ namespace WinFormsFrameworkApp
             formsPlot1.Plot.Title("Signal Plot with 1,000,000 Points");
             formsPlot1.RenderLowThenImmediateHighQuality();
         }
+
+        private void cbRenderQueue_CheckedChanged(object sender, EventArgs e) =>
+            formsPlot1.Configuration.UseRenderQueue = cbRenderQueue.Checked;
     }
 }
