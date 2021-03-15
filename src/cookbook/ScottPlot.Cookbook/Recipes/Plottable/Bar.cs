@@ -200,7 +200,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             // generate random data to plot
             int groupCount = 5;
-            Random rand = new Random(0);
+            Random rand = new(0);
             double[] values1 = DataGen.RandomNormal(rand, groupCount, 20, 5);
             double[] values2 = DataGen.RandomNormal(rand, groupCount, 20, 5);
             double[] values3 = DataGen.RandomNormal(rand, groupCount, 20, 5);
@@ -289,15 +289,33 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Bar Graph";
         public string ID => "bar_lollipop";
-        public string Title => "Lollipop Plot";
-        public string Description => "Lollipop plots convey the same information as Bar plots but have a different appearance.";
+        public string Title => "Lollipop Plot Quickstart";
+        public string Description =>
+            "Lollipop plots convey the same information as Bar plots but have a different appearance.";
 
         public void ExecuteRecipe(Plot plt)
         {
             double[] values = { 26, 20, 23, 7, 16 };
+            plt.AddLollipop(values);
+        }
+    }
 
+    public class BarLollipopCustom : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_lollipop_custom";
+        public string Title => "Lollipop Plot Customizations";
+        public string Description => "Lollipop plots can be extensively customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 26, 20, 23, 7, 16 };
             var lollipop = plt.AddLollipop(values);
             lollipop.HorizontalOrientation = true;
+            lollipop.LollipopRadius = 3;
+            lollipop.BorderColor = Color.Green;
+            lollipop.LollipopColor = Color.Blue;
+            lollipop.LollipopRadius = 10;
         }
     }
 
@@ -306,23 +324,22 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Bar Graph";
         public string ID => "bar_cleveland_dot";
         public string Title => "Cleveland Dot Plot";
-        public string Description => "Cleveland Dot Plots allow comparing two categories in situations where a Bar Plot may be crowded.";
+        public string Description =>
+            "Cleveland Dot Plots allow comparing two categories in situations where a Bar Plot may be crowded.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] home_wins = { 12, 17, 16, 18, 18 }; // Data collected from https://footystats.org/england/premier-league/home-away-league-table
-            double[] away_wins = { 11, 13, 16, 14, 14 };
-
+            // Data from https://footystats.org/england/premier-league/home-away-league-table
+            double[] homeWins = { 12, 17, 16, 18, 18 };
+            double[] awayWins = { 11, 13, 16, 14, 14 };
             string[] labels = { "2015/16", "2016/17", "2017/18", "2018/19", "2019/20" };
-            double[] label_positions = Enumerable.Range(0, labels.Length).Select(i => (double)i).ToArray();
 
-            var clevelandDot = plt.AddClevelandDot(home_wins, away_wins);
-            plt.XAxis.ManualTickPositions(label_positions, labels);
-            plt.Title("British Premier League Champion Home vs Away Wins");
-
+            var clevelandDot = plt.AddClevelandDot(homeWins, awayWins);
             clevelandDot.SetPoint1Style(label: "Home Wins");
             clevelandDot.SetPoint2Style(label: "Away Wins", markerShape: MarkerShape.triUp);
 
+            plt.XTicks(labels);
+            plt.Title("British Premier League Champion Home vs Away Wins");
             plt.Legend();
         }
     }
