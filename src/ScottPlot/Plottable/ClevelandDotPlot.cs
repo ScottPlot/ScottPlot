@@ -15,8 +15,18 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class ClevelandDotPlot : BarPlotBase
     {
+        /// <summary>
+        /// Color for the line
+        /// </summary>
         public Color StemColor = Color.Gray;
+
+        /// <summary>
+        /// Size of the markers at the ends of each line
+        /// </summary>
         public float DotRadius { get; set; } = 5;
+
+        // TODO: don't expose these, instead put them behind an Update() method
+        // that lets the user update one or both arrays. This can also perform length checking.
         public double[] Ys1
         {
             get
@@ -50,13 +60,34 @@ namespace ScottPlot.Plottable
             }
         }
 
-
+        /// <summary>
+        /// Text to display in the legend associated with the series 1 data
+        /// </summary>
         private string Label1;
+
+        /// <summary>
+        /// Color for one of the markers
+        /// </summary>
         private Color Color1 = Color.Green;
+
+        /// <summary>
+        /// Marker to use for the series 1 data
+        /// </summary>
         private MarkerShape MarkerShape1 = MarkerShape.filledCircle;
 
+        /// <summary>
+        /// Text to display in the legend associated with the series 2 data
+        /// </summary>
         private string Label2;
+
+        /// <summary>
+        /// Color for one of the markers
+        /// </summary>
         private Color Color2 = Color.Red;
+
+        /// <summary>
+        /// Marker to use for the series 2 data
+        /// </summary>
         private MarkerShape MarkerShape2 = MarkerShape.filledCircle;
 
         /// <summary>
@@ -87,10 +118,10 @@ namespace ScottPlot.Plottable
 
         public ClevelandDotPlot(double[] xs, double[] ys1, double[] ys2) : base()
         {
-            this.Ys1 = ys1;
-            this.Ys2 = ys2;
-            this.Xs = xs;
-            this.YErrors = DataGen.Zeros(ys1.Length);
+            Ys1 = ys1;
+            Ys2 = ys2;
+            Xs = xs;
+            YErrors = DataGen.Zeros(ys1.Length);
         }
 
         public override AxisLimits GetAxisLimits()
@@ -150,29 +181,24 @@ namespace ScottPlot.Plottable
         protected override void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
         {
             float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
-            using (var stemPen = new Pen(StemColor))
+            using var stemPen = new Pen(StemColor);
+            using var dot1Brush = GDI.Brush(Color1);
+            using var dot2Brush = GDI.Brush(Color2);
+            PointF[] points = new PointF[2];
+            if (HorizontalOrientation)
             {
-                using (var dot1Brush = GDI.Brush(Color1))
-                using (var dot2Brush = GDI.Brush(Color2))
-                {
-                    PointF[] points = new PointF[2];
-                    if (HorizontalOrientation)
-                    {
-                        points[0] = new PointF(negative ? rect.X + rect.Width : rect.X, centerPx - DotRadius / 2);
-                        points[1] = new PointF(negative ? rect.X : rect.X + rect.Width, centerPx - DotRadius / 2);
-                    }
-                    else
-                    {
-                        points[0] = new PointF(centerPx - DotRadius / 2, !negative ? rect.Y + rect.Height : rect.Y);
-                        points[1] = new PointF(centerPx - DotRadius / 2, !negative ? rect.Y : rect.Y + rect.Height);
-                    }
-
-                    gfx.DrawLine(stemPen, points[0], points[1]);
-                    MarkerTools.DrawMarker(gfx, points[1], MarkerShape2, DotRadius, Color2);
-                    MarkerTools.DrawMarker(gfx, points[0], MarkerShape1, DotRadius, Color1); // First point should be drawn overtop the second.
-                }
-
+                points[0] = new PointF(negative ? rect.X + rect.Width : rect.X, centerPx - DotRadius / 2);
+                points[1] = new PointF(negative ? rect.X : rect.X + rect.Width, centerPx - DotRadius / 2);
             }
+            else
+            {
+                points[0] = new PointF(centerPx - DotRadius / 2, !negative ? rect.Y + rect.Height : rect.Y);
+                points[1] = new PointF(centerPx - DotRadius / 2, !negative ? rect.Y : rect.Y + rect.Height);
+            }
+
+            gfx.DrawLine(stemPen, points[0], points[1]);
+            MarkerTools.DrawMarker(gfx, points[1], MarkerShape2, DotRadius, Color2);
+            MarkerTools.DrawMarker(gfx, points[0], MarkerShape1, DotRadius, Color1); // First point should be drawn overtop the second.
         }
     }
 }

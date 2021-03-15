@@ -79,7 +79,7 @@ namespace ScottPlot
         public LollipopPlot AddLollipop(double[] values, Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new LollipopPlot(xs, values, null, null)
+            var plottable = new LollipopPlot(xs, values)
             {
                 LollipopColor = color ?? GetNextColor()
             };
@@ -92,7 +92,7 @@ namespace ScottPlot
         /// </summary>
         public LollipopPlot AddLollipop(double[] values, double[] positions, Color? color = null)
         {
-            var plottable = new LollipopPlot(positions, values, null, null)
+            var plottable = new LollipopPlot(positions, values)
             {
                 LollipopColor = color ?? GetNextColor()
             };

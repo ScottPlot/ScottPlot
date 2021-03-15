@@ -13,27 +13,84 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+
+        // TODO: replace orientation with an enum?
+
+        /// <summary>
+        /// Display vertically-oriented bars with heights defined by Ys placed at horizontal positions defined by Xs
+        /// </summary>
         public bool VerticalOrientation { get; set; } = true;
+
+        /// <summary>
+        /// Display horizontally-oriented bars with widths defined by Ys placed at vertical positions defined by Xs
+        /// </summary>
         public bool HorizontalOrientation { get => !VerticalOrientation; set => VerticalOrientation = !value; }
+
+        /// <summary>
+        /// Bars have width but positions are defined as a single point.
+        /// This value defines how to place a bar relative to its position.
+        /// If a bar has a width of 0.8, its X offset should be -0.4 to ensure it's centered on a whole number.
+        /// </summary>
         public double XOffset { get; set; }
+
+        /// <summary>
+        /// Heights of each bar
+        /// </summary>
         public double[] Ys { get; set; }
-        public double[] YErrors { get; set; }
-        public double[] YOffsets { get; set; }
+
+        /// <summary>
+        /// Position of each bar
+        /// </summary>
         public double[] Xs { get; set; }
+
+        /// <summary>
+        /// This array defines the base of each bar.
+        /// Unless the user specifically defines it, this will be an array of zeros.
+        /// </summary>
+        public double[] YOffsets { get; set; }
+
+        /// <summary>
+        /// If populated, this array describes the height of errorbars for each bar
+        /// </summary>
+        public double[] YErrors { get; set; }
+
+        /// <summary>
+        /// If true, errorbars will be drawn according to the values in the YErrors array
+        /// </summary>
         public bool ShowValuesAboveBars { get; set; }
 
+        // TODO: what does this value do?
         public double BaseValue = 0;
-        public double BarWidth = .8;
-        public double ErrorCapSize = .4;
-        public float ErrorLineWidth = 1;
-        public Color BorderColor = Color.Black;
-        public Color ErrorColor = Color.Black;
-        public readonly Drawing.Font Font = new Drawing.Font();
-        public string FontName { set => Font.Name = value; }
-        public float FontSize { set => Font.Size = value; }
-        public bool FontBold { set => Font.Bold = value; }
-        public Color FontColor { set => Font.Color = value; }
 
+        /// <summary>
+        /// Width of bars (axis units)
+        /// </summary>
+        public double BarWidth = .8;
+
+        /// <summary>
+        /// Width of the errorbars (axis units)
+        /// </summary>
+        public double ErrorCapSize = .4;
+
+        /// <summary>
+        /// Thickness of the errorbars (pixel units)
+        /// </summary>
+        public float ErrorLineWidth = 1;
+
+        /// <summary>
+        /// Outline each bar with this color. Set to transparent to disable outlines.
+        /// </summary>
+        public Color BorderColor = Color.Black;
+
+        /// <summary>
+        /// Color of errorbars.
+        /// </summary>
+        public Color ErrorColor = Color.Black;
+
+        /// <summary>
+        /// Font settings for labels drawn above the bars
+        /// </summary>
+        public readonly Drawing.Font Font = new();
 
         public virtual AxisLimits GetAxisLimits()
         {
@@ -50,11 +107,12 @@ namespace ScottPlot.Plottable
                 positionMax = Math.Max(positionMax, Xs[i]);
             }
 
+            // TODO: what is BaseValue actually doing and can it be omitted?
             valueMin = Math.Min(valueMin, BaseValue);
             valueMax = Math.Max(valueMax, BaseValue);
 
             if (ShowValuesAboveBars)
-                valueMax += (valueMax - valueMin) * .1; // increase by 10% to accomodate label
+                valueMax += (valueMax - valueMin) * .1; // increase by 10% to accommodate label
 
             positionMin -= BarWidth / 2;
             positionMax += BarWidth / 2;
@@ -70,15 +128,13 @@ namespace ScottPlot.Plottable
         public abstract LegendItem[] GetLegendItems();
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            for (int barIndex = 0; barIndex < Ys.Length; barIndex++)
             {
-                for (int barIndex = 0; barIndex < Ys.Length; barIndex++)
-                {
-                    if (VerticalOrientation)
-                        RenderBarVertical(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
-                    else
-                        RenderBarHorizontal(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
-                }
+                if (VerticalOrientation)
+                    RenderBarVertical(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
+                else
+                    RenderBarHorizontal(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
             }
         }
 
@@ -111,12 +167,10 @@ namespace ScottPlot.Plottable
 
             if (ErrorLineWidth > 0 && valueError > 0)
             {
-                using (var errorPen = new Pen(ErrorColor, ErrorLineWidth))
-                {
-                    gfx.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
-                    gfx.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
-                    gfx.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
-                }
+                using var errorPen = new Pen(ErrorColor, ErrorLineWidth);
+                gfx.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
+                gfx.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
+                gfx.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
             }
 
             if (ShowValuesAboveBars)
@@ -152,12 +206,10 @@ namespace ScottPlot.Plottable
 
             if (ErrorLineWidth > 0 && valueError > 0)
             {
-                using (var errorPen = new Pen(ErrorColor, ErrorLineWidth))
-                {
-                    gfx.DrawLine(errorPen, errorPx1, centerPx, errorPx2, centerPx);
-                    gfx.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
-                    gfx.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
-                }
+                using var errorPen = new Pen(ErrorColor, ErrorLineWidth);
+                gfx.DrawLine(errorPen, errorPx1, centerPx, errorPx2, centerPx);
+                gfx.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
+                gfx.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
             }
 
             if (ShowValuesAboveBars)
