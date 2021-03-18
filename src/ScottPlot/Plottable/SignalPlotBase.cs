@@ -4,14 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasPoints where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasPointsXCalculatable<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -23,7 +22,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public float MarkerSize { get; set; } = 5;
         public double OffsetX { get; set; } = 0;
-        public double OffsetY { get; set; } = 0;
+        public T OffsetY { get; set; } = default(T);
         public double LineWidth { get; set; } = 1;
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
@@ -165,6 +164,11 @@ namespace ScottPlot.Plottable
             }
         }
 
+        public SignalPlotBase()
+        {
+            InitExp();
+        }
+
         /// <summary>
         /// Replace a single Y value
         /// </summary>
@@ -206,7 +210,7 @@ namespace ScottPlot.Plottable
             if (double.IsInfinity(yMin) || double.IsInfinity(yMax))
                 throw new InvalidOperationException("Signal data must not contain Infinity");
 
-            return new AxisLimits(xMin + OffsetX, xMax + OffsetX, yMin + OffsetY, yMax + OffsetY);
+            return new AxisLimits(xMin + OffsetX, xMax + OffsetX, yMin + Convert.ToDouble(OffsetY), yMax + Convert.ToDouble(OffsetY));
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
@@ -214,8 +218,8 @@ namespace ScottPlot.Plottable
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out yMin, out yMax);
-            PointF point1 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + OffsetY));
-            PointF point2 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + OffsetY));
+            PointF point1 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + Convert.ToDouble(OffsetY)));
+            PointF point2 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + Convert.ToDouble(OffsetY)));
             gfx.DrawLine(penHD, point1, point2);
         }
 
@@ -234,7 +238,7 @@ namespace ScottPlot.Plottable
                 visibleIndex1 = MinRenderIndex;
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(new PointF(dims.GetPixelX(_SamplePeriod * i + OffsetX), dims.GetPixelY(Strategy.SourceElement(i) + OffsetY)));
+                linePoints.Add(new PointF(dims.GetPixelX(_SamplePeriod * i + OffsetX), dims.GetPixelY(Convert.ToDouble(AddExp(Ys[i], OffsetY)))));
 
             if (linePoints.Count > 1)
             {
@@ -311,8 +315,8 @@ namespace ScottPlot.Plottable
 
             // get the min and max value for this column                
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + OffsetY);
-            float yPxLow = dims.GetPixelY(highestValue + OffsetY);
+            float yPxHigh = dims.GetPixelY(lowestValue + Convert.ToDouble(OffsetY));
+            float yPxLow = dims.GetPixelY(highestValue + Convert.ToDouble(OffsetY));
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
@@ -547,7 +551,7 @@ namespace ScottPlot.Plottable
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(y) + OffsetY)))
+                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(AddExp(y, OffsetY)))))
                                 .ToArray())
                 .ToList();
 
@@ -684,20 +688,22 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
-        public (double x, double y, int index) GetPointNearestX(double x)
+        public (double x, T y, int index) GetPointNearestX(double x)
         {
             int index = (int)((x - OffsetX) / SamplePeriod);
             index = Math.Max(index, 0);
             index = Math.Min(index, Ys.Length - 1);
-            return (OffsetX + index * SamplePeriod, Convert.ToDouble(Ys[index]) + OffsetY, index);
+            return (OffsetX + index * SamplePeriod, AddExp(Ys[index], OffsetY), index);
         }
 
-        [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
-        public (double x, double y, int index) GetPointNearestY(double y) =>
-            throw new NotImplementedException();
+        private static Func<T, T, T> AddExp;
 
-        [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
-        public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1) =>
-            throw new NotImplementedException();
+        private void InitExp()
+        {
+            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
+            BinaryExpression bodyAdd = Expression.Add(paramA, paramB);
+            AddExp = Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
+        }
     }
 }
