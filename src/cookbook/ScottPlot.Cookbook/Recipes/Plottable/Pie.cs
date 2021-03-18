@@ -126,6 +126,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var pie = plt.AddPie(values);
             pie.SliceLabels = labels;
             pie.ShowLabels = true;
+            pie.SliceFillColors = new Color[] { // From https://github.com/ozh/github-colors
+				Color.FromArgb(0x17, 0x86, 0x00),
+                Color.FromArgb(0xB0, 0x72, 0x19),
+                Color.FromArgb(0x35, 0x72, 0xA5),
+                Color.FromArgb(0xB8, 0x45, 0xFC),
+                Color.FromArgb(0x4F, 0x5D, 0x95)
+            };
+
+            pie.SliceLabelColors = new Color[] { Color.White, Color.Silver, Color.Silver, Color.Silver, Color.Silver }; // Highlight the largest section
         }
     }
 
