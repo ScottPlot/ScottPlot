@@ -168,7 +168,9 @@ namespace ScottPlot.Plottable
                 for (int i = 0; i < Values.Length; i++)
                     if (!string.IsNullOrWhiteSpace(labelStrings[i]))
                     {
-                        sliceFontBrush.Color = SliceLabelColors is null ? SliceFont.Color : SliceLabelColors[i];
+                        if (SliceLabelColors is not null && SliceLabelColors.Length == Values.Length)
+                            sliceFontBrush.Color = SliceLabelColors[i];
+
                         gfx.DrawString(labelStrings[i], sliceFont, sliceFontBrush, (float)labelXs[i], (float)labelYs[i], sfCenter);
                     }
 
