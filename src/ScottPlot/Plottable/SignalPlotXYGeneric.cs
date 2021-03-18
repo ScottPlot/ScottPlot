@@ -243,5 +243,39 @@ namespace ScottPlot.Plottable
             string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalXYGeneric{label} with {PointCount} points ({typeof(TX).Name}, {typeof(TY).Name})";
         }
+
+        private (double x, double y, int index) GetPointByIndex(int index)
+        {
+            return (Convert.ToDouble(Xs[index]), Convert.ToDouble(Ys[index]), index);
+        }
+
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
+        public new(double x, double y, int index) GetPointNearestX(double x)
+        {
+            int index = Array.BinarySearch(Xs, x);
+            if (index < 0)
+            {
+                index = ~index;
+            }
+            else // x equal to XS element
+            {
+                return GetPointByIndex(index);
+            }
+            if (index == 0) // x lower then any XS[]
+                return GetPointByIndex(0);
+            if (index == Xs.Length) // x higher then all XS[]
+                return GetPointByIndex(Xs.Length - 1);
+
+            double distLeft = x - Convert.ToDouble(Xs[index - 1]);
+            double distRight = Convert.ToDouble(Xs[index]) - x;
+            if (distLeft <= distRight) // x closer to XS[index -1]
+                return GetPointByIndex(index - 1);
+            else // x closer to XS[index]
+                return GetPointByIndex(index);
+        }
     }
 }
