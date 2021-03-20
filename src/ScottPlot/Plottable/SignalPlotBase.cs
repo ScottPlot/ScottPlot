@@ -691,8 +691,8 @@ namespace ScottPlot.Plottable
         public (double x, T y, int index) GetPointNearestX(double x)
         {
             int index = (int)((x - OffsetX) / SamplePeriod);
-            index = Math.Max(index, 0);
-            index = Math.Min(index, Ys.Length - 1);
+            index = Math.Max(index, MinRenderIndex);
+            index = Math.Min(index, MaxRenderIndex);
             return (OffsetX + index * SamplePeriod, AddExp(Ys[index], OffsetY), index);
         }
 
