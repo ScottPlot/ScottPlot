@@ -165,6 +165,7 @@ namespace ScottPlot.Plottable
                     start += sweep;
                 }
 
+                // TODO: move length checking logic into new validation system (triaged March, 2021)
                 bool useCustomLabelColors = SliceLabelColors is not null && SliceLabelColors.Length == Values.Length;
 
                 for (int i = 0; i < Values.Length; i++)
