@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
         public double XOffset { get; set; }
 
         /// <summary>
-        /// Size of each bar
+        /// Size of each bar (along the axis defined by Orientation) relative to ValueBase
         /// </summary>
         public double[] Values { get; set; }
 
@@ -53,8 +53,10 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool ShowValuesAboveBars { get; set; }
 
-        // TODO: what does this value do?
-        public double BaseValue = 0;
+        /// <summary>
+        /// Bars are drawn from this level and extend according to the sizes defined in Values[]
+        /// </summary>
+        public double ValueBase { get; set; }
 
         /// <summary>
         /// Width of bars (axis units)
@@ -101,9 +103,8 @@ namespace ScottPlot.Plottable
                 positionMax = Math.Max(positionMax, Positions[i]);
             }
 
-            // TODO: what is BaseValue actually doing and can it be omitted?
-            valueMin = Math.Min(valueMin, BaseValue);
-            valueMax = Math.Max(valueMax, BaseValue);
+            valueMin = Math.Min(valueMin, ValueBase);
+            valueMax = Math.Max(valueMax, ValueBase);
 
             if (ShowValuesAboveBars)
                 valueMax += (valueMax - valueMin) * .1; // increase by 10% to accommodate label
@@ -140,8 +141,8 @@ namespace ScottPlot.Plottable
             // bar body
             float centerPx = dims.GetPixelX(position);
             double edge1 = position - BarWidth / 2;
-            double value1 = Math.Min(BaseValue, value) + yOffset;
-            double value2 = Math.Max(BaseValue, value) + yOffset;
+            double value1 = Math.Min(ValueBase, value) + yOffset;
+            double value2 = Math.Max(ValueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
             var rect = new RectangleF(
@@ -180,8 +181,8 @@ namespace ScottPlot.Plottable
             // bar body
             float centerPx = dims.GetPixelY(position);
             double edge2 = position + BarWidth / 2;
-            double value1 = Math.Min(BaseValue, value) + yOffset;
-            double value2 = Math.Max(BaseValue, value) + yOffset;
+            double value1 = Math.Min(ValueBase, value) + yOffset;
+            double value2 = Math.Max(ValueBase, value) + yOffset;
             double valueSpan = value2 - value1;
             var rect = new RectangleF(
                 x: dims.GetPixelX(value1),
