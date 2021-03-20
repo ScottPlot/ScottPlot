@@ -164,9 +164,27 @@ namespace ScottPlot.Plottable
             }
         }
 
+        /// <summary>
+        /// This expression adds two parameters of the generic type used by this signal plot.
+        /// </summary>
+        private readonly Func<T, T, T> AddYsGenericExpression;
+
+        /// <summary>
+        /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
+        /// </summary>
+        private double AddYs(T y1, T y2) => Convert.ToDouble(AddYsGenericExpression(y1, y2));
+
+        /// <summary>
+        /// Add two Y values (of the generic type used by this signal plot) and return the result as a the same type
+        /// </summary>
+        private T AddYsGeneric(T y1, T y2) => AddYsGenericExpression(y1, y2);
+
         public SignalPlotBase()
         {
-            InitExp();
+            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
+            BinaryExpression bodyAdd = Expression.Add(paramA, paramB);
+            AddYsGenericExpression = Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
         }
 
         /// <summary>
@@ -238,7 +256,12 @@ namespace ScottPlot.Plottable
                 visibleIndex1 = MinRenderIndex;
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(new PointF(dims.GetPixelX(_SamplePeriod * i + OffsetX), dims.GetPixelY(Convert.ToDouble(AddExp(Ys[i], OffsetY)))));
+            {
+                float yPixel = dims.GetPixelY(AddYs(Ys[i], OffsetY));
+                float xPixel = dims.GetPixelX(_SamplePeriod * i + OffsetX);
+                PointF linePoint = new(xPixel, yPixel);
+                linePoints.Add(linePoint);
+            }
 
             if (linePoints.Count > 1)
             {
@@ -551,7 +574,9 @@ namespace ScottPlot.Plottable
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(AddExp(y, OffsetY)))))
+                                .Select(y => new PointF(
+                                    x: x.xPx + dims.DataOffsetX,
+                                    y: dims.GetPixelY(AddYs(y, OffsetY))))
                                 .ToArray())
                 .ToList();
 
@@ -693,17 +718,7 @@ namespace ScottPlot.Plottable
             int index = (int)((x - OffsetX) / SamplePeriod);
             index = Math.Max(index, MinRenderIndex);
             index = Math.Min(index, MaxRenderIndex);
-            return (OffsetX + index * SamplePeriod, AddExp(Ys[index], OffsetY), index);
-        }
-
-        private static Func<T, T, T> AddExp;
-
-        private void InitExp()
-        {
-            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
-            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
-            BinaryExpression bodyAdd = Expression.Add(paramA, paramB);
-            AddExp = Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
+            return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
     }
 }
