@@ -279,6 +279,16 @@ namespace ScottPlot.Plottable
                 return GetPointByIndex(index);
         }
 
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
+        public new (double x, TY y, int index) GetPointNearestX(double x)
+        {
+            return GetPointNearestX(x);
+        }
+
         private static Func<TX, TX, TX> SubstractExp;
         private static Func<TX, TX, bool> LessThanOrEqualExp;
 
