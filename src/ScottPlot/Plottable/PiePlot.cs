@@ -17,6 +17,7 @@ namespace ScottPlot.Plottable
         public string[] SliceLabels;
 
         public Color[] SliceFillColors;
+        public Color[] SliceLabelColors;
         public Color BackgroundColor;
 
         public bool Explode;
@@ -86,7 +87,7 @@ namespace ScottPlot.Plottable
             using (Pen outlinePen = GDI.Pen(OutlineColor, OutlineSize))
             using (Brush sliceFillBrush = GDI.Brush(Color.Black))
             using (var sliceFont = GDI.Font(SliceFont))
-            using (Brush sliceFontBrush = GDI.Brush(SliceFont.Color))
+            using (SolidBrush sliceFontBrush = (SolidBrush)GDI.Brush(SliceFont.Color))
             using (var centerFont = GDI.Font(CenterFont))
             using (Brush centerFontBrush = GDI.Brush(CenterFont.Color))
             using (StringFormat sfCenter = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center })
@@ -164,9 +165,17 @@ namespace ScottPlot.Plottable
                     start += sweep;
                 }
 
+                // TODO: move length checking logic into new validation system (triaged March, 2021)
+                bool useCustomLabelColors = SliceLabelColors is not null && SliceLabelColors.Length == Values.Length;
+
                 for (int i = 0; i < Values.Length; i++)
                     if (!string.IsNullOrWhiteSpace(labelStrings[i]))
+                    {
+                        if (useCustomLabelColors)
+                            sliceFontBrush.Color = SliceLabelColors[i];
+
                         gfx.DrawString(labelStrings[i], sliceFont, sliceFontBrush, (float)labelXs[i], (float)labelYs[i], sfCenter);
+                    }
 
                 if (OutlineSize > 0)
                     gfx.DrawEllipse(

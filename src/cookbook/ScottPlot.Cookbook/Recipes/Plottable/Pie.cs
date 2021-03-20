@@ -111,21 +111,44 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class PieShowLabels : IRecipe
+    public class PieCustomColors : IRecipe
     {
         public string Category => "Plottable: Pie";
-        public string ID => "pie_sliceLabels";
-        public string Title => "Slice Labels";
+        public string ID => "pie_customColors";
+        public string Title => "Customize Pie Colors";
         public string Description =>
-            "The label for each slice can be displayed at its center.";
+            "Colors for pie slices and labels can be customized.";
 
         public void ExecuteRecipe(Plot plt)
         {
             double[] values = { 778, 43, 283, 76, 184 };
             string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
+
+            // Language colors from https://github.com/ozh/github-colors
+            Color[] sliceColors =
+            {
+                ColorTranslator.FromHtml("#178600"),
+                ColorTranslator.FromHtml("#B07219"),
+                ColorTranslator.FromHtml("#3572A5"),
+                ColorTranslator.FromHtml("#B845FC"),
+                ColorTranslator.FromHtml("#4F5D95"),
+            };
+
+            // Show labels using different transparencies
+            Color[] labelColors =
+                new Color[] {
+                Color.FromArgb(255, Color.White),
+                Color.FromArgb(100, Color.White),
+                Color.FromArgb(250, Color.White),
+                Color.FromArgb(150, Color.White),
+                Color.FromArgb(200, Color.White),
+            };
+
             var pie = plt.AddPie(values);
             pie.SliceLabels = labels;
             pie.ShowLabels = true;
+            pie.SliceFillColors = sliceColors;
+            pie.SliceLabelColors = labelColors;
         }
     }
 
