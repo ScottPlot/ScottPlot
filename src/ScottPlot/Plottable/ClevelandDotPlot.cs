@@ -151,7 +151,7 @@ namespace ScottPlot.Plottable
             positionMin += XOffset;
             positionMax += XOffset;
 
-            return VerticalOrientation ?
+            return Orientation == Orientation.Vertical ?
                 new AxisLimits(positionMin, positionMax, valueMin, valueMax) :
                 new AxisLimits(valueMin, valueMax, positionMin, positionMax);
         }
@@ -180,12 +180,15 @@ namespace ScottPlot.Plottable
 
         protected override void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
         {
-            float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
+            float centerPx = Orientation == Orientation.Horizontal
+                ? rect.Y + rect.Height / 2
+                : rect.X + rect.Width / 2;
+
             using var stemPen = new Pen(StemColor);
             using var dot1Brush = GDI.Brush(Color1);
             using var dot2Brush = GDI.Brush(Color2);
             PointF[] points = new PointF[2];
-            if (HorizontalOrientation)
+            if (Orientation == Orientation.Horizontal)
             {
                 points[0] = new PointF(negative ? rect.X + rect.Width : rect.X, centerPx - DotRadius / 2);
                 points[1] = new PointF(negative ? rect.X : rect.X + rect.Width, centerPx - DotRadius / 2);

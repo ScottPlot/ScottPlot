@@ -179,7 +179,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add a bar graph to the plot and customize it to render horizontally
             var bar = plt.AddBar(values, errors, positions);
-            bar.VerticalOrientation = false;
+            bar.Orientation = Orientation.Horizontal;
 
             // adjust axis limits so there is no padding to the left of the bar graph
             plt.SetAxisLimits(xMin: 0);
@@ -311,7 +311,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] values = { 26, 20, 23, 7, 16 };
             var lollipop = plt.AddLollipop(values);
-            lollipop.HorizontalOrientation = true;
+            lollipop.Orientation = Orientation.Horizontal;
             lollipop.LollipopRadius = 3;
             lollipop.BorderColor = Color.Green;
             lollipop.LollipopColor = Color.Blue;

@@ -99,7 +99,7 @@ namespace ScottPlotTests.PlotTypes
             bar1.XOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
-            bar1.HorizontalOrientation = true;
+            bar1.Orientation = ScottPlot.Orientation.Horizontal;
             bar1.Label = "Series A";
 
             plt.AddBar(xs, ys2);
@@ -108,7 +108,7 @@ namespace ScottPlotTests.PlotTypes
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
-            bar2.HorizontalOrientation = true;
+            bar2.Orientation = ScottPlot.Orientation.Horizontal;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
@@ -125,7 +125,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             var bar = plt.AddBar(xs, ys, yErr);
-            bar.HorizontalOrientation = true;
+            bar.Orientation = ScottPlot.Orientation.Horizontal;
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
@@ -171,7 +171,7 @@ namespace ScottPlotTests.PlotTypes
             bar1.XOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
-            bar1.HorizontalOrientation = true;
+            bar1.Orientation = ScottPlot.Orientation.Horizontal;
             bar1.Label = "Series A";
 
             plt.AddBar(xs, ys2);
@@ -180,7 +180,7 @@ namespace ScottPlotTests.PlotTypes
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
-            bar2.HorizontalOrientation = true;
+            bar2.Orientation = ScottPlot.Orientation.Horizontal;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
@@ -202,7 +202,7 @@ namespace ScottPlotTests.PlotTypes
             bar1.XOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
-            bar1.HorizontalOrientation = true;
+            bar1.Orientation = ScottPlot.Orientation.Horizontal;
             bar1.Label = "Series A";
 
             plt.AddBar(xs, ys2);
@@ -211,7 +211,7 @@ namespace ScottPlotTests.PlotTypes
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
-            bar2.HorizontalOrientation = true;
+            bar2.Orientation = ScottPlot.Orientation.Horizontal;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);

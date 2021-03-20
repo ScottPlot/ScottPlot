@@ -14,17 +14,11 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        // TODO: replace orientation with an enum?
-
         /// <summary>
-        /// Display vertically-oriented bars with heights defined by Ys placed at horizontal positions defined by Xs
+        /// Orientation of the bars.
+        /// Default behavior is vertical so values are on the Y axis and positions are on the X axis.
         /// </summary>
-        public bool VerticalOrientation { get; set; } = true;
-
-        /// <summary>
-        /// Display horizontally-oriented bars with widths defined by Ys placed at vertical positions defined by Xs
-        /// </summary>
-        public bool HorizontalOrientation { get => !VerticalOrientation; set => VerticalOrientation = !value; }
+        public Orientation Orientation = Orientation.Vertical;
 
         /// <summary>
         /// Bars have width but positions are defined as a single point.
@@ -120,18 +114,19 @@ namespace ScottPlot.Plottable
             positionMin += XOffset;
             positionMax += XOffset;
 
-            return VerticalOrientation ?
+            return Orientation == Orientation.Vertical ?
                 new AxisLimits(positionMin, positionMax, valueMin, valueMax) :
                 new AxisLimits(valueMin, valueMax, positionMin, positionMax);
         }
 
         public abstract LegendItem[] GetLegendItems();
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
             for (int barIndex = 0; barIndex < Ys.Length; barIndex++)
             {
-                if (VerticalOrientation)
+                if (Orientation == Orientation.Vertical)
                     RenderBarVertical(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
                 else
                     RenderBarHorizontal(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
@@ -235,6 +230,21 @@ namespace ScottPlot.Plottable
                 Validate.AssertAllReal("yOffsets", YOffsets);
             }
 
+        }
+
+        [Obsolete("set the 'Orientation' field instead of this field", true)]
+        public bool VerticalOrientation
+        {
+            get => Orientation == Orientation.Vertical;
+            set => Orientation = value ? Orientation.Vertical : Orientation.Horizontal;
+        }
+
+
+        [Obsolete("set the 'Orientation' field instead of this field", true)]
+        public bool HorizontalOrientation
+        {
+            get => Orientation == Orientation.Horizontal;
+            set => Orientation = value ? Orientation.Horizontal : Orientation.Vertical;
         }
     }
 }

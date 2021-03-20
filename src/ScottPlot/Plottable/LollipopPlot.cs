@@ -65,11 +65,14 @@ namespace ScottPlot.Plottable
 
         protected override void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
         {
-            float centerPx = HorizontalOrientation ? rect.Y + rect.Height / 2 : rect.X + rect.Width / 2;
+            float centerPx = Orientation == Orientation.Horizontal
+                ? rect.Y + rect.Height / 2
+                : rect.X + rect.Width / 2;
+
             using var fillPen = new Pen(LollipopColor);
             using var fillBrush = GDI.Brush(LollipopColor);
 
-            if (HorizontalOrientation)
+            if (Orientation == Orientation.Horizontal)
             {
                 gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius);
                 gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
