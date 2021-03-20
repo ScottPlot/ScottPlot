@@ -126,9 +126,9 @@ namespace ScottPlot
                 BorderColor = outlineColor ?? Color.Black,
                 VerticalOrientation = !horizontal,
                 ShowValuesAboveBars = showValues,
-                FontColor = valueColor ?? Color.Black,
                 FillColorNegative = negativeColor ?? nextColor
             };
+            barPlot.Font.Color = valueColor ?? Color.Black;
             Add(barPlot);
 
             if (autoAxis)

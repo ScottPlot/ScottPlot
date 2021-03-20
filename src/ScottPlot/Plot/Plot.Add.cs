@@ -53,6 +53,54 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a Cleveland Dot plot for the given values. Cleveland Dots will be placed at X positions 0, 1, 2, etc.
+        /// </summary>
+        public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2)
+        {
+            double[] xs = DataGen.Consecutive(ys1.Length);
+            var plottable = new ClevelandDotPlot(xs, ys1, ys2);
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a Cleveland Dot plot for the given values using defined dot positions.
+        /// </summary>
+        public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2, double[] positions)
+        {
+            var plottable = new ClevelandDotPlot(positions, ys1, ys2);
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a Lollipop plot for the given values. Lollipops will be placed at X positions 0, 1, 2, etc.
+        /// </summary>
+        public LollipopPlot AddLollipop(double[] values, Color? color = null)
+        {
+            double[] xs = DataGen.Consecutive(values.Length);
+            var plottable = new LollipopPlot(xs, values)
+            {
+                LollipopColor = color ?? GetNextColor()
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a lollipop plot for the given values using defined lollipop positions
+        /// </summary>
+        public LollipopPlot AddLollipop(double[] values, double[] positions, Color? color = null)
+        {
+            var plottable = new LollipopPlot(positions, values)
+            {
+                LollipopColor = color ?? GetNextColor()
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public BarPlot AddBar(double[] values, Color? color = null)
@@ -125,7 +173,7 @@ namespace ScottPlot
                 {
                     Label = seriesLabels[i],
                     BarWidth = barWidth * barWidthFraction,
-                    XOffset = i * barWidth,
+                    PositionOffset = i * barWidth,
                     ErrorCapSize = errorCapSize,
                     FillColor = GetNextColor()
                 };

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add errorbars to the bar graph and customize styling as desired
             double[] errors = { 3, 2, 5, 1, 3 };
-            bar.YErrors = errors;
+            bar.ValueErrors = errors;
             bar.ErrorCapSize = .1;
 
             // adjust axis limits so there is no padding below the bar graph
@@ -178,7 +179,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add a bar graph to the plot and customize it to render horizontally
             var bar = plt.AddBar(values, errors, positions);
-            bar.VerticalOrientation = false;
+            bar.Orientation = Orientation.Horizontal;
 
             // adjust axis limits so there is no padding to the left of the bar graph
             plt.SetAxisLimits(xMin: 0);
@@ -199,7 +200,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             // generate random data to plot
             int groupCount = 5;
-            Random rand = new Random(0);
+            Random rand = new(0);
             double[] values1 = DataGen.RandomNormal(rand, groupCount, 20, 5);
             double[] values2 = DataGen.RandomNormal(rand, groupCount, 20, 5);
             double[] values3 = DataGen.RandomNormal(rand, groupCount, 20, 5);
@@ -238,7 +239,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] yOffsets = { -100, -100, -100, -100, -100 };
 
             var bar = plt.AddBar(values);
-            bar.YOffsets = yOffsets;
+            bar.ValueOffsets = yOffsets;
 
             // adjust axis limits so there is no padding below the bar graph
             plt.SetAxisLimits(yMin: -100);
@@ -278,9 +279,68 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] offsets = Enumerable.Range(0, values.Length).Select(x => values.Take(x).Sum()).ToArray();
 
             var bar = plt.AddBar(values);
-            bar.YOffsets = offsets;
+            bar.ValueOffsets = offsets;
             bar.FillColorNegative = Color.Red;
             bar.FillColor = Color.Green;
+        }
+    }
+
+    public class BarLollipop : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_lollipop";
+        public string Title => "Lollipop Plot Quickstart";
+        public string Description =>
+            "Lollipop plots convey the same information as Bar plots but have a different appearance.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 26, 20, 23, 7, 16 };
+            plt.AddLollipop(values);
+        }
+    }
+
+    public class BarLollipopCustom : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_lollipop_custom";
+        public string Title => "Lollipop Plot Customizations";
+        public string Description => "Lollipop plots can be extensively customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 26, 20, 23, 7, 16 };
+            var lollipop = plt.AddLollipop(values);
+            lollipop.Orientation = Orientation.Horizontal;
+            lollipop.LollipopRadius = 3;
+            lollipop.BorderColor = Color.Green;
+            lollipop.LollipopColor = Color.Blue;
+            lollipop.LollipopRadius = 10;
+        }
+    }
+
+    public class ClevelandDot : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_cleveland_dot";
+        public string Title => "Cleveland Dot Plot";
+        public string Description =>
+            "Cleveland Dot Plots allow comparing two categories in situations where a Bar Plot may be crowded.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // Data from https://footystats.org/england/premier-league/home-away-league-table
+            double[] homeWins = { 12, 17, 16, 18, 18 };
+            double[] awayWins = { 11, 13, 16, 14, 14 };
+            string[] labels = { "2015/16", "2016/17", "2017/18", "2018/19", "2019/20" };
+
+            var clevelandDot = plt.AddClevelandDot(homeWins, awayWins);
+            clevelandDot.SetPoint1Style(label: "Home Wins");
+            clevelandDot.SetPoint2Style(label: "Away Wins", markerShape: MarkerShape.triUp);
+
+            plt.XTicks(labels);
+            plt.Title("British Premier League Champion Home vs Away Wins");
+            plt.Legend();
         }
     }
 }

@@ -1,35 +1,72 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Data;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
     /// <summary>
-    /// Bar plots display a series of bars. 
+    /// Lollipop plots display a series of "Lollipops" in place of bars. 
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class BarPlot : BarPlotBase, IPlottable
+    public class LollipopPlot : BarPlotBase, IPlottable
     {
-        public string Label;
-        public Color FillColor = Color.Green;
-        public Color FillColorNegative = Color.Red;
-        public Color FillColorHatch = Color.Blue;
-        public HatchStyle HatchStyle = HatchStyle.None;
-        public float BorderLineWidth = 1;
+        /// <summary>
+        /// Name for this series of values that will appear in the legend
+        /// </summary>
+        public string Label { get; set; }
 
-        public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets) : base()
+        /// <summary>
+        /// Color of all lollipop components (the stick and the circle)
+        /// </summary>
+        public Color LollipopColor { get; set; }
+
+        /// <summary>
+        /// Size of the circle at the end of each lollipop
+        /// </summary>
+        public float LollipopRadius { get; set; } = 5;
+
+        /// <summary>
+        /// Create a lollipop plot from arrays of positions and sizes
+        /// </summary>
+        /// <param name="positions">position of each lollipop</param>
+        /// <param name="values">height of each lollipop</param>
+        public LollipopPlot(double[] positions, double[] values) : base()
         {
-            if (ys is null || ys.Length == 0)
-                throw new InvalidOperationException("ys must be an array that contains elements");
+            if (positions is null || positions.Length == 0 || values is null || values.Length == 0)
+                throw new InvalidOperationException("xs and ys must be arrays that contains elements");
 
-            Values = ys;
-            Positions = xs ?? DataGen.Consecutive(ys.Length);
-            ValueErrors = yErr ?? DataGen.Zeros(ys.Length);
-            ValueOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
+            if (values.Length != positions.Length)
+                throw new InvalidOperationException("xs and ys must have the same number of elements");
+
+            ValueErrors = DataGen.Zeros(values.Length);
+            ValueOffsets = DataGen.Zeros(values.Length);
+            Values = values;
+            Positions = positions ?? DataGen.Consecutive(values.Length);
         }
+
+        public LegendItem[] GetLegendItems()
+        {
+            var singleItem = new LegendItem()
+            {
+                label = Label,
+                color = LollipopColor,
+                lineWidth = 10,
+                markerShape = MarkerShape.none,
+                borderColor = BorderColor,
+                borderWith = 1
+            };
+            return new LegendItem[] { singleItem };
+        }
+
+        #region Render Implementation
+
+        // NOTE: These render methods contains a lot of code and complexity not required to render this plot type.
+        // TODO: Delete as much of this code as possible and simplify the render methods.
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -40,6 +77,27 @@ namespace ScottPlot.Plottable
                     RenderBarVertical(dims, gfx, Positions[barIndex] + PositionOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
                 else
                     RenderBarHorizontal(dims, gfx, Positions[barIndex] + PositionOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
+            }
+        }
+
+        private void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
+        {
+            float centerPx = Orientation == Orientation.Horizontal
+                ? rect.Y + rect.Height / 2
+                : rect.X + rect.Width / 2;
+
+            using var fillPen = new Pen(LollipopColor);
+            using var fillBrush = GDI.Brush(LollipopColor);
+
+            if (Orientation == Orientation.Horizontal)
+            {
+                gfx.FillEllipse(fillBrush, negative ? rect.X : rect.X + rect.Width, centerPx - LollipopRadius / 2, LollipopRadius, LollipopRadius);
+                gfx.DrawLine(fillPen, rect.X, centerPx, rect.X + rect.Width, centerPx);
+            }
+            else
+            {
+                gfx.FillEllipse(fillBrush, centerPx - LollipopRadius / 2, !negative ? rect.Y : rect.Y + rect.Height, LollipopRadius, LollipopRadius);
+                gfx.DrawLine(fillPen, centerPx, rect.Y, centerPx, rect.Y + rect.Height);
             }
         }
 
@@ -122,40 +180,7 @@ namespace ScottPlot.Plottable
                     gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
         }
 
-        protected void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)
-        {
-            using (var outlinePen = new Pen(BorderColor, BorderLineWidth))
-            using (var fillBrush = GDI.Brush(negative ? FillColorNegative : FillColor, FillColorHatch, HatchStyle))
-            {
-                gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
-                if (BorderLineWidth > 0)
-                {
-                    gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
-                }
-            }
-        }
-
-        public override string ToString()
-        {
-            string label = string.IsNullOrWhiteSpace(Label) ? "" : $" ({Label})";
-            return $"PlottableBar{label} with {Values.Length} bars";
-        }
-
-        public LegendItem[] GetLegendItems()
-        {
-            var singleItem = new LegendItem()
-            {
-                label = Label,
-                color = FillColor,
-                lineWidth = 10,
-                markerShape = MarkerShape.none,
-                hatchColor = FillColorHatch,
-                hatchStyle = HatchStyle,
-                borderColor = BorderColor,
-                borderWith = BorderLineWidth
-            };
-            return new LegendItem[] { singleItem };
-        }
+        #endregion
 
         public void ValidateData(bool deep = false)
         {

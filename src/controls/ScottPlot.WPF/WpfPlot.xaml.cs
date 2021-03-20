@@ -141,7 +141,7 @@ namespace ScottPlot
             if (isDesignerMode)
             {
                 MainGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#003366"));
-                var sp = new StackPanel() { Orientation = Orientation.Horizontal };
+                var sp = new StackPanel() { Orientation = System.Windows.Controls.Orientation.Horizontal };
                 sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Brushes.White });
                 sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Brushes.White });
                 MainGrid.Children.Add(sp);

@@ -20,7 +20,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.Ys[0] += 1;
+            bar.Values[0] += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -48,7 +48,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.YErrors[0] = .25;
+            bar.ValueErrors[0] = .25;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
