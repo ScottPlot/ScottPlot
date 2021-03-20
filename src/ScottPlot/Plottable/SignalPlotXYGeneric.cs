@@ -279,6 +279,11 @@ namespace ScottPlot.Plottable
                 return GetPointByIndex(index);
         }
 
+        /// <summary>
+        /// This method to pass test only
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
         private new(double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
