@@ -3,14 +3,13 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Plottable;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using ScottPlot.Plottable;
-using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
@@ -742,7 +741,7 @@ namespace ScottPlot
             T[] ys,
             double sampleRate = 1,
             double xOffset = 0,
-            double yOffset = 0,
+            T yOffset = default(T),
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,

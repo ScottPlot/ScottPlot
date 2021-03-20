@@ -32,6 +32,33 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SignalXYOffset : IRecipe
+    {
+        public string Category => "Plottable: SignalXY";
+        public string ID => "signalxy_offset";
+        public string Title => "SignalXY Offset";
+        public string Description =>
+            "SignalXY plots can have X and Y offsets that shift all data by a defined amount.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate random, unevenly-spaced data
+            var rand = new Random(2);
+            int pointCount = 100_000;
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 1; i < ys.Length; i++)
+            {
+                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
+                xs[i] = xs[i - 1] + rand.NextDouble();
+            }
+
+            var sig = plt.AddSignalXY(xs, ys);
+            sig.OffsetX = 10_000;
+            sig.OffsetY = 100;
+        }
+    }
+
     public class HasXGaps : IRecipe
     {
         public string Category => "Plottable: SignalXY";
@@ -41,7 +68,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            Random rand = new Random(0);
+            var rand = new Random(0);
             int pointCount = 1_000_000;
             double[] sine = DataGen.Sin(pointCount, 3);
             double[] noise = DataGen.RandomNormal(rand, pointCount, 0, 0.5);

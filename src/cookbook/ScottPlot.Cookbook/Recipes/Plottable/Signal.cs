@@ -15,7 +15,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] values = DataGen.RandomWalk(null, 100_000);
+            var rand = new Random(0);
+            double[] values = DataGen.RandomWalk(rand, 100_000);
             int sampleRate = 20_000;
 
             // Signal plots require a data array and a sample rate (points per unit)
@@ -23,6 +24,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             plt.Benchmark(enable: true);
             plt.Title($"Signal Plot: One Million Points");
+        }
+    }
+
+    public class SignalOffset : IRecipe
+    {
+        public string Category => "Plottable: Signal Plot";
+        public string ID => "signal_offset";
+        public string Title => "Signal Offset";
+        public string Description =>
+            "Signal plots can have X and Y offsets that shift all data by a defined amount.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var rand = new Random(0);
+            double[] values = DataGen.RandomWalk(rand, 100_000);
+            var sig = plt.AddSignal(values);
+            sig.OffsetX = 10_000;
+            sig.OffsetY = 100;
         }
     }
 
