@@ -257,7 +257,7 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (TX x, TY y, int index) GetPointNearestX(TX x)
         {
-            int index = Array.BinarySearch(Xs, x);
+            int index = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - 1, x);
             if (index < 0)
             {
                 index = ~index;
@@ -266,10 +266,10 @@ namespace ScottPlot.Plottable
             {
                 return GetPointByIndex(index);
             }
-            if (index == 0) // x lower then any XS[]
-                return GetPointByIndex(0);
-            if (index == Xs.Length) // x higher then all XS[]
-                return GetPointByIndex(Xs.Length - 1);
+            if (index <= MinRenderIndex) // x lower then any MinRenderIndex
+                return GetPointByIndex(MinRenderIndex);
+            if (index > MaxRenderIndex) // x higher then MaxRenderIndex
+                return GetPointByIndex(MaxRenderIndex);
 
             TX distLeft = SubstractExp(x, Xs[index - 1]);
             TX distRight = SubstractExp(Xs[index], x);
@@ -279,14 +279,9 @@ namespace ScottPlot.Plottable
                 return GetPointByIndex(index);
         }
 
-        /// <summary>
-        /// Return the X/Y coordinates of the point nearest the X position
-        /// </summary>
-        /// <param name="x">X position in plot space</param>
-        /// <returns></returns>
-        public new(double x, TY y, int index) GetPointNearestX(double x)
+        private new(double x, TY y, int index) GetPointNearestX(double x)
         {
-            return GetPointNearestX(x);
+            throw new NotImplementedException();
         }
 
         private static Func<TX, TX, TX> SubstractExp;
