@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public float MarkerSize { get; set; } = 5;
         public double OffsetX { get; set; } = 0;
-        public T OffsetY { get; set; } = default(T);
+        public T OffsetY { get; set; } = default;
         public double LineWidth { get; set; } = 1;
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
@@ -249,7 +249,6 @@ namespace ScottPlot.Plottable
         private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
             // this function is for when the graph is zoomed in so individual data points can be seen
-
             int capacity = visibleIndex2 - visibleIndex1 + 2;
             List<PointF> linePoints = new(capacity);
             if (visibleIndex2 > _Ys.Length - 2)
