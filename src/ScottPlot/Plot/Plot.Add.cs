@@ -173,7 +173,7 @@ namespace ScottPlot
                 {
                     Label = seriesLabels[i],
                     BarWidth = barWidth * barWidthFraction,
-                    XOffset = i * barWidth,
+                    PositionOffset = i * barWidth,
                     ErrorCapSize = errorCapSize,
                     FillColor = GetNextColor()
                 };

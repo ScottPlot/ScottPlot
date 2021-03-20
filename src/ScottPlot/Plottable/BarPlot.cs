@@ -37,9 +37,9 @@ namespace ScottPlot.Plottable
             for (int barIndex = 0; barIndex < Values.Length; barIndex++)
             {
                 if (Orientation == Orientation.Vertical)
-                    RenderBarVertical(dims, gfx, Positions[barIndex] + XOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
+                    RenderBarVertical(dims, gfx, Positions[barIndex] + PositionOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
                 else
-                    RenderBarHorizontal(dims, gfx, Positions[barIndex] + XOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
+                    RenderBarHorizontal(dims, gfx, Positions[barIndex] + PositionOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
             }
         }
 

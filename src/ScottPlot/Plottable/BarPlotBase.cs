@@ -16,11 +16,10 @@ namespace ScottPlot.Plottable
         public Orientation Orientation = Orientation.Vertical;
 
         /// <summary>
-        /// Bars have width but positions are defined as a single point.
-        /// This value defines how to place a bar relative to its position.
-        /// If a bar has a width of 0.8, its X offset should be -0.4 to ensure it's centered on a whole number.
+        /// The position of each bar defines where the left edge of the bar should be.
+        /// To center the bar at each position, adjust this value to be negative one-half of the BarWidth.
         /// </summary>
-        public double XOffset { get; set; }
+        public double PositionOffset { get; set; }
 
         /// <summary>
         /// Size of each bar (along the axis defined by Orientation) relative to ValueBase
@@ -28,7 +27,8 @@ namespace ScottPlot.Plottable
         public double[] Values { get; set; }
 
         /// <summary>
-        /// Position of each bar
+        /// Location of the left edge of each bar.
+        /// To center bars on these positions, adjust PositionOffset to be negative one-half of the BarWidth.
         /// </summary>
         public double[] Positions { get; set; }
 
@@ -109,8 +109,8 @@ namespace ScottPlot.Plottable
             positionMin -= BarWidth / 2;
             positionMax += BarWidth / 2;
 
-            positionMin += XOffset;
-            positionMax += XOffset;
+            positionMin += PositionOffset;
+            positionMax += PositionOffset;
 
             return Orientation == Orientation.Vertical ?
                 new AxisLimits(positionMin, positionMax, valueMin, valueMax) :
@@ -143,6 +143,13 @@ namespace ScottPlot.Plottable
         {
             get => Positions;
             set => Positions = value;
+        }
+
+        [Obsolete("Reference the 'PositionOffset' field instead of this field", true)]
+        public double XOffset
+        {
+            get => PositionOffset;
+            set => PositionOffset = value;
         }
     }
 }

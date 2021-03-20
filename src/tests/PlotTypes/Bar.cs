@@ -96,7 +96,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
 
             var bar1 = plt.AddBar(xs, ys1);
-            bar1.XOffset = -.20;
+            bar1.PositionOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
             bar1.Orientation = ScottPlot.Orientation.Horizontal;
@@ -104,7 +104,7 @@ namespace ScottPlotTests.PlotTypes
 
             plt.AddBar(xs, ys2);
             var bar2 = plt.AddBar(xs, ys2);
-            bar2.XOffset = +.20;
+            bar2.PositionOffset = +.20;
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
@@ -168,7 +168,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
 
             var bar1 = plt.AddBar(xs, ys1);
-            bar1.XOffset = -.20;
+            bar1.PositionOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
             bar1.Orientation = ScottPlot.Orientation.Horizontal;
@@ -176,7 +176,7 @@ namespace ScottPlotTests.PlotTypes
 
             plt.AddBar(xs, ys2);
             var bar2 = plt.AddBar(xs, ys2);
-            bar2.XOffset = +.20;
+            bar2.PositionOffset = +.20;
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
@@ -199,7 +199,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
 
             var bar1 = plt.AddBar(xs, ys1);
-            bar1.XOffset = -.20;
+            bar1.PositionOffset = -.20;
             bar1.BarWidth = .3;
             bar1.ShowValuesAboveBars = true;
             bar1.Orientation = ScottPlot.Orientation.Horizontal;
@@ -207,7 +207,7 @@ namespace ScottPlotTests.PlotTypes
 
             plt.AddBar(xs, ys2);
             var bar2 = plt.AddBar(xs, ys2);
-            bar2.XOffset = +.20;
+            bar2.PositionOffset = +.20;
             bar2.BarWidth = 0.3;
             bar2.ShowValuesAboveBars = true;
             bar2.Label = "Series B";
