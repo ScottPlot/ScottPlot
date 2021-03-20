@@ -71,7 +71,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add errorbars to the bar graph and customize styling as desired
             double[] errors = { 3, 2, 5, 1, 3 };
-            bar.YErrors = errors;
+            bar.ValueErrors = errors;
             bar.ErrorCapSize = .1;
 
             // adjust axis limits so there is no padding below the bar graph
@@ -239,7 +239,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] yOffsets = { -100, -100, -100, -100, -100 };
 
             var bar = plt.AddBar(values);
-            bar.YOffsets = yOffsets;
+            bar.ValueOffsets = yOffsets;
 
             // adjust axis limits so there is no padding below the bar graph
             plt.SetAxisLimits(yMin: -100);
@@ -279,7 +279,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] offsets = Enumerable.Range(0, values.Length).Select(x => values.Take(x).Sum()).ToArray();
 
             var bar = plt.AddBar(values);
-            bar.YOffsets = offsets;
+            bar.ValueOffsets = offsets;
             bar.FillColorNegative = Color.Red;
             bar.FillColor = Color.Green;
         }

@@ -43,10 +43,10 @@ namespace ScottPlot.Plottable
             if (values.Length != positions.Length)
                 throw new InvalidOperationException("xs and ys must have the same number of elements");
 
-            YErrors = DataGen.Zeros(values.Length);
-            YOffsets = DataGen.Zeros(values.Length);
-            Ys = values;
-            Xs = positions ?? DataGen.Consecutive(values.Length);
+            ValueErrors = DataGen.Zeros(values.Length);
+            ValueOffsets = DataGen.Zeros(values.Length);
+            Values = values;
+            Positions = positions ?? DataGen.Consecutive(values.Length);
         }
 
         public override LegendItem[] GetLegendItems()

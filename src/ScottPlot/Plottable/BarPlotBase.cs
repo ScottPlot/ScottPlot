@@ -28,25 +28,25 @@ namespace ScottPlot.Plottable
         public double XOffset { get; set; }
 
         /// <summary>
-        /// Heights of each bar
+        /// Size of each bar
         /// </summary>
-        public double[] Ys { get; set; }
+        public double[] Values { get; set; }
 
         /// <summary>
         /// Position of each bar
         /// </summary>
-        public double[] Xs { get; set; }
+        public double[] Positions { get; set; }
 
         /// <summary>
         /// This array defines the base of each bar.
         /// Unless the user specifically defines it, this will be an array of zeros.
         /// </summary>
-        public double[] YOffsets { get; set; }
+        public double[] ValueOffsets { get; set; }
 
         /// <summary>
         /// If populated, this array describes the height of errorbars for each bar
         /// </summary>
-        public double[] YErrors { get; set; }
+        public double[] ValueErrors { get; set; }
 
         /// <summary>
         /// If true, errorbars will be drawn according to the values in the YErrors array
@@ -93,12 +93,12 @@ namespace ScottPlot.Plottable
             double positionMin = double.PositiveInfinity;
             double positionMax = double.NegativeInfinity;
 
-            for (int i = 0; i < Xs.Length; i++)
+            for (int i = 0; i < Positions.Length; i++)
             {
-                valueMin = Math.Min(valueMin, Ys[i] - YErrors[i] + YOffsets[i]);
-                valueMax = Math.Max(valueMax, Ys[i] + YErrors[i] + YOffsets[i]);
-                positionMin = Math.Min(positionMin, Xs[i]);
-                positionMax = Math.Max(positionMax, Xs[i]);
+                valueMin = Math.Min(valueMin, Values[i] - ValueErrors[i] + ValueOffsets[i]);
+                valueMax = Math.Max(valueMax, Values[i] + ValueErrors[i] + ValueOffsets[i]);
+                positionMin = Math.Min(positionMin, Positions[i]);
+                positionMax = Math.Max(positionMax, Positions[i]);
             }
 
             // TODO: what is BaseValue actually doing and can it be omitted?
@@ -124,12 +124,12 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            for (int barIndex = 0; barIndex < Ys.Length; barIndex++)
+            for (int barIndex = 0; barIndex < Values.Length; barIndex++)
             {
                 if (Orientation == Orientation.Vertical)
-                    RenderBarVertical(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
+                    RenderBarVertical(dims, gfx, Positions[barIndex] + XOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
                 else
-                    RenderBarHorizontal(dims, gfx, Xs[barIndex] + XOffset, Ys[barIndex], YErrors[barIndex], YOffsets[barIndex]);
+                    RenderBarHorizontal(dims, gfx, Positions[barIndex] + XOffset, Values[barIndex], ValueErrors[barIndex], ValueOffsets[barIndex]);
             }
         }
 
@@ -216,23 +216,23 @@ namespace ScottPlot.Plottable
 
         public void ValidateData(bool deep = false)
         {
-            Validate.AssertHasElements("xs", Xs);
-            Validate.AssertHasElements("ys", Ys);
-            Validate.AssertHasElements("yErr", YErrors);
-            Validate.AssertHasElements("yOffsets", YOffsets);
-            Validate.AssertEqualLength("xs, ys, yErr, and yOffsets", Xs, Ys, YErrors, YOffsets);
+            Validate.AssertHasElements("xs", Positions);
+            Validate.AssertHasElements("ys", Values);
+            Validate.AssertHasElements("yErr", ValueErrors);
+            Validate.AssertHasElements("yOffsets", ValueOffsets);
+            Validate.AssertEqualLength("xs, ys, yErr, and yOffsets", Positions, Values, ValueErrors, ValueOffsets);
 
             if (deep)
             {
-                Validate.AssertAllReal("xs", Xs);
-                Validate.AssertAllReal("ys", Ys);
-                Validate.AssertAllReal("yErr", YErrors);
-                Validate.AssertAllReal("yOffsets", YOffsets);
+                Validate.AssertAllReal("xs", Positions);
+                Validate.AssertAllReal("ys", Values);
+                Validate.AssertAllReal("yErr", ValueErrors);
+                Validate.AssertAllReal("yOffsets", ValueOffsets);
             }
 
         }
 
-        [Obsolete("set the 'Orientation' field instead of this field", true)]
+        [Obsolete("Reference the 'Orientation' field instead of this field")]
         public bool VerticalOrientation
         {
             get => Orientation == Orientation.Vertical;
@@ -240,11 +240,25 @@ namespace ScottPlot.Plottable
         }
 
 
-        [Obsolete("set the 'Orientation' field instead of this field", true)]
+        [Obsolete("Reference the 'Orientation' field instead of this field")]
         public bool HorizontalOrientation
         {
             get => Orientation == Orientation.Horizontal;
             set => Orientation = value ? Orientation.Horizontal : Orientation.Vertical;
+        }
+
+        [Obsolete("Reference the 'Values' field instead of this field")]
+        public double[] Ys
+        {
+            get => Values;
+            set => Values = value;
+        }
+
+        [Obsolete("Reference the 'Positions' field instead of this field")]
+        public double[] Xs
+        {
+            get => Positions;
+            set => Positions = value;
         }
     }
 }

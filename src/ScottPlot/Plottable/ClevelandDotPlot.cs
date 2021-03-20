@@ -29,14 +29,11 @@ namespace ScottPlot.Plottable
         // that lets the user update one or both arrays. This can also perform length checking.
         public double[] Ys1
         {
-            get
-            {
-                return YOffsets;
-            }
+            get => ValueOffsets;
             set
             {
                 double[] diff = (Ys1 ?? DataGen.Zeros(value.Length)).Zip(value, (y, v) => y - v).ToArray();
-                YOffsets = value;
+                ValueOffsets = value;
 
                 if (Ys2 != null)
                     Ys2 = (Ys2 ?? DataGen.Zeros(value.Length)).Zip(diff, (y, v) => y + v).ToArray();
@@ -47,16 +44,16 @@ namespace ScottPlot.Plottable
         {
             get
             {
-                if (Ys == null)
+                if (Values == null)
                     return null;
 
-                double[] offsets = Ys1 ?? DataGen.Zeros(Ys.Length);
-                return Ys.Select((y, i) => y + offsets[i]).ToArray();
+                double[] offsets = Ys1 ?? DataGen.Zeros(Values.Length);
+                return Values.Select((y, i) => y + offsets[i]).ToArray();
             }
             set
             {
                 double[] offsets = Ys1 ?? DataGen.Zeros(value.Length);
-                Ys = value.Select((y, i) => y - offsets[i]).ToArray();
+                Values = value.Select((y, i) => y - offsets[i]).ToArray();
             }
         }
 
@@ -120,8 +117,8 @@ namespace ScottPlot.Plottable
         {
             Ys1 = ys1;
             Ys2 = ys2;
-            Xs = xs;
-            YErrors = DataGen.Zeros(ys1.Length);
+            Positions = xs;
+            ValueErrors = DataGen.Zeros(ys1.Length);
         }
 
         public override AxisLimits GetAxisLimits()
@@ -131,12 +128,12 @@ namespace ScottPlot.Plottable
             double positionMin = double.PositiveInfinity;
             double positionMax = double.NegativeInfinity;
 
-            for (int i = 0; i < Xs.Length; i++)
+            for (int i = 0; i < Positions.Length; i++)
             {
-                valueMin = new double[] { valueMin, Ys[i] - YErrors[i] + YOffsets[i], YOffsets[i] }.Min();
-                valueMax = new double[] { valueMin, Ys[i] + YErrors[i] + YOffsets[i], YOffsets[i] }.Max();
-                positionMin = Math.Min(positionMin, Xs[i]);
-                positionMax = Math.Max(positionMax, Xs[i]);
+                valueMin = new double[] { valueMin, Values[i] - ValueErrors[i] + ValueOffsets[i], ValueOffsets[i] }.Min();
+                valueMax = new double[] { valueMin, Values[i] + ValueErrors[i] + ValueOffsets[i], ValueOffsets[i] }.Max();
+                positionMin = Math.Min(positionMin, Positions[i]);
+                positionMax = Math.Max(positionMax, Positions[i]);
             }
 
             valueMin = Math.Min(valueMin, BaseValue);
