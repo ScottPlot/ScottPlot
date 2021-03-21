@@ -186,4 +186,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var cb = plt.AddColorbar(hmc);
         }
     }
+
+    public class HeatmapTransparent : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_transparent";
+        public string Title => "Heatmap with Empty Squares";
+        public string Description =>
+            "You can use a 2D array of nullable doubles to indicate some squares do not contain data. " +
+            "This allows the user to display heatmaps with transparency and implement non-rectangular heatmaps.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double?[,] intensities = {
+                { 1, 7, 4, null },
+                { 9, null, 2, 4 },
+                { 1, 4, null, 8 },
+                { null, 2, 4, null }
+            };
+
+            var hmc = plt.AddHeatmap(intensities);
+            var cb = plt.AddColorbar(hmc);
+        }
+    }
 }
