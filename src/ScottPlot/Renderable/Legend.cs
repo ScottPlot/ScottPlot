@@ -53,6 +53,9 @@ namespace ScottPlot.Renderable
 
         public Bitmap GetBitmap(bool lowQuality)
         {
+            if (LegendItems is null)
+                throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
+
             using (var bmpTemp = new Bitmap(1, 1))
             using (var gfxTemp = GDI.Graphics(bmpTemp, lowQuality))
             using (var font = GDI.Font(Font))
