@@ -55,6 +55,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class BarLabels : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_labels";
+        public string Title => "Bar Labels";
+        public string Description =>
+            "Bars placed at specific positions can be labeled by setting tick labels for those positions.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 26, 20, 23, 7, 16 };
+            double[] positions = { 0, 1, 2, 3, 4 };
+            string[] labels = { "PHP", "JS", "C++", "GO", "VB" };
+            plt.AddBar(values, positions);
+            plt.XTicks(positions, labels);
+            plt.SetAxisLimits(yMin: 0);
+        }
+    }
+
     public class BarError : IRecipe
     {
         public string Category => "Plottable: Bar Graph";
