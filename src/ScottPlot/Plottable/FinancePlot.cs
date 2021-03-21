@@ -209,10 +209,20 @@ namespace ScottPlot.Plottable
                 {
                     // draw a filled candle
                     brush.Color = priceChangeColor;
-                    gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                    gfx.FillRectangle(
+                        brush: brush,
+                        x: boxLowerLeft.X - boxWidth,
+                        y: boxUpperRight.Y,
+                        width: boxWidth * 2,
+                        height: boxLowerLeft.Y - boxUpperRight.Y);
 
                     if (WickColor != null)
-                        gfx.DrawRectangle(pen, boxLowerLeft.X - boxWidth, boxUpperRight.Y - 1, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y + 2);
+                        gfx.DrawRectangle(
+                            pen: pen,
+                            x: boxLowerLeft.X - boxWidth,
+                            y: boxUpperRight.Y,
+                            width: boxWidth * 2,
+                            height: boxLowerLeft.Y - boxUpperRight.Y);
                 }
             }
         }
