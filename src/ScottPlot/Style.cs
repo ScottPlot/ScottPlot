@@ -122,9 +122,6 @@ namespace ScottPlot
                         axisLabel: Color.Black,
                         titleLabel: Color.Black
                         );
-                    existingPlot.Frame(false);
-                    existingPlot.XAxis.MinorLogScale(true);
-                    existingPlot.YAxis.MinorLogScale(true);
                     break;
 
                 default:
