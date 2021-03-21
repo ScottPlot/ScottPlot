@@ -1,8 +1,19 @@
 # ScottPlot Changelog
 
-_See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
-
 ## ScottPlot 4.1.10-beta ⚠️ in development
+* Fixed a bug where applying the Seabourn style modified axis frame and minor tick distribution (#866) _Thanks @oszymczak_
+* Improved XML documentation and error reporting for getting legend bitmaps (#860) _Thanks @mzemljak_
+* Fixed rendering bug affecting finance plots with thin borders (#837) _Thanks @AlgoExecutor_
+* Improved argument names and XML docs for SMA and Bollinger band calculation methods (#830) _Thanks @ticool_
+* Improved GetPointNearest support for generic signal plots (#809, #882, #886) _Thanks @StendProg, @at2software, and @mrradd_
+* Added support for custom slice label colors in pie charts (#883, #844) _Thanks @bclehmann, @StendProg, and @Timothy343_
+* Improved support for transparent heatmaps using nullable double arrays (#849, #852) _Thanks @bclehmann_
+* Deprecated bar plot `IsHorizontal` and `IsVertical` in favor of an `Orientation` enumeration
+* Deprecated bar plot `xs` and `ys` in favor of `positions` and `values` which are better orientation-agnostic names
+* Added Lollipop and Cleveland plots as new types of bar plots (#842, #817) _Thanks @bclehmann_
+* Fixed a bug where `Plot.AddBarGroups()` returned an array of nulls (#839) _Thanks @rhys-wootton_
+* Fixed a bug affecting manual tick labels (#829) _Thanks @ohru131_
+* Implemented an optional render queue to allow asynchronous rendering in user controls (#813) _Thanks @StendProg_
 
 ## ScottPlot 4.1.9-beta
 * Improved support for negative DateTimes when using DateTime axis mode (#806, #807) _Thanks @StendProg and @at2software_
