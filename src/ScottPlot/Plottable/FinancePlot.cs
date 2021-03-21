@@ -252,34 +252,37 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Return the simple moving average (SMA) for the last N points.
-        /// Horizontal units are a double array in DateTime.ToOATime() units.
+        /// Return the simple moving average (SMA) of the OHLC closing prices.
+        /// The returned ys are SMA where each point is the average of N points.
+        /// The returned xs are times in OATime units.
+        /// The returned xs and ys arrays will be the length of the OHLC data minus N.
         /// </summary>
-        /// <param name="points">number of points to analyze backwards in time</param>
-        /// <returns>Xs (in DateTime.ToOATime() units) and Ys (price units)</returns>
-        public (double[] xs, double[] ys) GetSMA(int points)
+        /// <param name="N">each returned value represents the average of N points</param>
+        /// <returns>times and averages of the OHLC closing prices</returns>
+        public (double[] xs, double[] ys) GetSMA(int N)
         {
-            if (points >= OHLCs.Count)
+            if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            double[] xs = OHLCs.Skip(points).Select(x => x.DateTime.ToOADate()).ToArray();
-            double[] ys = Statistics.Finance.SMA(OHLCs.ToArray(), points);
+            double[] xs = OHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
+            double[] ys = Statistics.Finance.SMA(OHLCs.ToArray(), N);
             return (xs, ys);
         }
 
         /// <summary>
-        /// Return Bollinger Bands (mean +/- 2*SD) for the last N points.
-        /// Horizontal units are a double array in DateTime.ToOATime() units.
+        /// Return Bollinger bands (mean +/- 2*SD) for the OHLC closing prices.
+        /// The returned xs are times in OATime units.
+        /// The returned xs and ys arrays will be the length of the OHLC data minus N (points).
         /// </summary>
-        /// <param name="points">number of points to analyze backwards in time</param>
-        /// <returns>Xs (in DateTime.ToOATime() units) and Ys (price units)</returns>
-        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int points)
+        /// <param name="N">each returned value represents the average of N points</param>
+        /// <returns>times, averages, and both Bollinger bands for the OHLC closing prices</returns>
+        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int N)
         {
-            if (points >= OHLCs.Count)
+            if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            double[] xs = OHLCs.Skip(points).Select(x => x.DateTime.ToOADate()).ToArray();
-            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(OHLCs.ToArray(), points);
+            double[] xs = OHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
+            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(OHLCs.ToArray(), N);
             return (xs, sma, lower, upper);
         }
     }

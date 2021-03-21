@@ -73,57 +73,60 @@ namespace ScottPlot.Statistics
         }
 
         /// <summary>
-        /// Simple moving average
+        /// Return the simple moving average (SMA) of the OHLC closing prices.
+        /// The returned data will be shorter than the input data by N points.
         /// </summary>
-        /// <param name="ohlcs"></param>
-        /// <param name="period">number of OHLCs to use for each calculation</param>
-        public static double[] SMA(OHLC[] ohlcs, int period)
+        /// <param name="ohlcs">price data to analyze</param>
+        /// <param name="N">each returned price represents the average of N prices</param>
+        public static double[] SMA(OHLC[] ohlcs, int N)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
                 closingPrices[i] = ohlcs[i].Close;
-            return SMA(closingPrices, period);
+            return SMA(closingPrices, N);
         }
 
         /// <summary>
-        /// Bollinger Bands
+        /// Return the SMA and upper/lower Bollinger bands for the given price data.
+        /// The returned data will NOT be shorter than the input data. It will contain NaN values at the front.
         /// </summary>
-        /// <param name="values"></param>
-        /// <param name="period">number of OHLCs to use for each calculation</param>
-        /// <param name="multiplier">number of standard deviations from the mean</param>
-        public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] values, int period, double multiplier = 2)
+        /// <param name="prices">price data to use for analysis</param>
+        /// <param name="N">each returned price represents the average of N prices</param>
+        /// <param name="sdCoeff">number of standard deviations from the mean to use for the Bollinger bands</param>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] prices, int N, double sdCoeff = 2)
         {
-            double[] sma = SMA(values, period, trimNan: false);
-            double[] smstd = SMStDev(values, period);
+            double[] sma = SMA(prices, N, trimNan: false);
+            double[] smstd = SMStDev(prices, N);
 
-            double[] bolU = new double[values.Length];
-            double[] bolL = new double[values.Length];
-            for (int i = 0; i < values.Length; i++)
+            double[] bolU = new double[prices.Length];
+            double[] bolL = new double[prices.Length];
+            for (int i = 0; i < prices.Length; i++)
             {
-                bolL[i] = sma[i] - multiplier * smstd[i];
-                bolU[i] = sma[i] + multiplier * smstd[i];
+                bolL[i] = sma[i] - sdCoeff * smstd[i];
+                bolU[i] = sma[i] + sdCoeff * smstd[i];
             }
 
             return (sma, bolL, bolU);
         }
 
         /// <summary>
-        /// Bollinger Bands
+        /// Return the SMA and upper/lower Bollinger bands for the closing price of the given OHLCs.
+        /// The returned data will be shorter than the input data by N values.
         /// </summary>
-        /// <param name="ohlcs"></param>
-        /// <param name="period">number of OHLCs to use for each calculation</param>
-        /// <param name="multiplier">number of standard deviations from the mean</param>
-        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int period, double multiplier = 2)
+        /// <param name="ohlcs">price data to use for analysis</param>
+        /// <param name="N">each returned price represents the average of N prices</param>
+        /// <param name="sdCoeff">number of standard deviations from the mean to use for the Bollinger bands</param>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int N, double sdCoeff = 2)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
                 closingPrices[i] = ohlcs[i].Close;
-            var (sma, lower, upper) = Bollinger(closingPrices, period, multiplier);
+            var (sma, lower, upper) = Bollinger(closingPrices, N, sdCoeff);
 
             // skip the first points which all contain NaN
-            sma = sma.Skip(period).ToArray();
-            lower = lower.Skip(period).ToArray();
-            upper = upper.Skip(period).ToArray();
+            sma = sma.Skip(N).ToArray();
+            lower = lower.Skip(N).ToArray();
+            upper = upper.Skip(N).ToArray();
 
             return (sma, lower, upper);
         }
