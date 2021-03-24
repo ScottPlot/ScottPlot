@@ -18,15 +18,46 @@ namespace ScottPlot.Cookbook
             .Select(x => (IRecipe)Activator.CreateInstance(x))
             .ToArray();
 
+        private static readonly string[] _categories = _recipes.Select(r => r.Category).Distinct().ToArray();
+        private static Dictionary<string, IRecipe[]> _recipesByCategory = new Dictionary<string, IRecipe[]>();
+        private static Dictionary<string, IRecipe> _recipesById = new Dictionary<string, IRecipe>();
+
+
+        static Locate() // A static constructor runs exactly once and before the class or an instance of it is needed
+        {
+            InitializeDictionaries();
+        }
+
+        private static void InitializeDictionaries()
+        {
+            Dictionary<string, List<IRecipe>> byCategory = new Dictionary<string, List<IRecipe>>();
+            foreach (IRecipe curr in GetRecipes())
+            {
+                _recipesById[curr.ID] = curr;
+
+                if (!byCategory.ContainsKey(curr.Category))
+                {
+                    byCategory.Add(curr.Category, new List<IRecipe>());
+                }
+
+                byCategory[curr.Category].Add(curr);
+            }
+
+            foreach (string category in GetCategories())
+            {
+                _recipesByCategory[category] = byCategory[category].ToArray();
+            }
+        }
+
         public static IRecipe[] GetRecipes() => _recipes;
 
-        public static IRecipe GetRecipe(string id) => GetRecipes().Where(x => x.ID == id).First();
+        public static IRecipe GetRecipe(string id) => _recipesById[id];
 
-        public static string[] GetCategories() => GetRecipes().Select(x => x.Category).Distinct().ToArray();
+        public static string[] GetCategories() => _categories;
 
         public static string[] GetCategoriesInDisplayOrder() => GetCategorizedRecipes().Select(x => x.Key).ToArray();
 
-        public static IRecipe[] GetRecipes(string category) => GetRecipes().Where(x => x.Category == category).ToArray();
+        public static IRecipe[] GetRecipes(string category) => _recipesByCategory[category];
 
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes()
         {
