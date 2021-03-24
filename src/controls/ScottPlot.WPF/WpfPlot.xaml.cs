@@ -122,18 +122,18 @@ namespace ScottPlot
 
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
-            {
-                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
-                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
-                LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
-                RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
-                MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
-                ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
-                CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
-                AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
-                WheelScrolledUp = delta.HasValue && delta > 0,
-                WheelScrolledDown = delta.HasValue && delta < 0,
-            };
+        {
+            X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
+            Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
+            LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
+            RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
+            MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
+            ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
+            CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
+            AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
+            WheelScrolledUp = delta.HasValue && delta > 0,
+            WheelScrolledDown = delta.HasValue && delta < 0,
+        };
 
         private void InitializeLayout()
         {
