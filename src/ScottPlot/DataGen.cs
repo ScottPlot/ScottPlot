@@ -13,6 +13,13 @@ namespace ScottPlot
 {
     public static class DataGen
     {
+        /// <summary>
+        /// Generates an array of numbers with constant spacing.
+        /// </summary>
+        /// <param name="pointCount">The number of points</param>
+        /// <param name="spacing">The space between points. Default 1.</param>
+        /// <param name="offset">The first point. Default 0</param>
+        /// <returns>An array of numbers with constant spacing.</returns>
         public static double[] Consecutive(int pointCount, double spacing = 1, double offset = 0)
         {
             double[] ys = new double[pointCount];
@@ -21,6 +28,12 @@ namespace ScottPlot
             return ys;
         }
 
+        /// <summary>
+        /// Generates an array of sine values of an input array.
+        /// </summary>
+        /// <param name="xs">The arguments to the sine function.</param>
+        /// <param name="mult">A number to multiply the output by. Default 1.</param>
+        /// <returns>An array of sine values</returns>
         public static double[] Sin(double[] xs, double mult = 1)
         {
             double[] ys = new double[xs.Length];
@@ -29,6 +42,15 @@ namespace ScottPlot
             return ys;
         }
 
+        /// <summary>
+        /// Generates an array of sine values.
+        /// </summary>
+        /// <param name="pointCount">The number of values to generate.</param>
+        /// <param name="oscillations">The number of periods. Default 1.</param>
+        /// <param name="offset">The number to increment the output by. Default 0.</param>
+        /// <param name="mult">The number to multiply the output by. Default 1.</param>
+        /// <param name="phase">The fraction of a period to offset by. Default 0.</param>
+        /// <returns>An array of sine values</returns>
         public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
         {
             double sinScale = 2 * Math.PI * oscillations / (pointCount - 1);
@@ -62,14 +84,29 @@ namespace ScottPlot
             return data;
         }
 
-        public static double[] Cos(double[] xs)
+        /// <summary>
+        /// Generates an array of cosine values of an input array.
+        /// </summary>
+        /// <param name="xs">The arguments to the cosine function.</param>
+        /// <param name="mult">A number to multiply the output by. Default 1.</param>
+        /// <returns>An array of cosine values</returns>
+        public static double[] Cos(double[] xs, double mult = 1)
         {
             double[] ys = new double[xs.Length];
             for (int i = 0; i < xs.Length; i++)
-                ys[i] = Math.Cos(xs[i]);
+                ys[i] = Math.Cos(xs[i]) * mult;
             return ys;
         }
 
+        /// <summary>
+        /// Generates an array of cosine values.
+        /// </summary>
+        /// <param name="pointCount">The number of values to generate.</param>
+        /// <param name="oscillations">The number of periods. Default 1.</param>
+        /// <param name="offset">The number to increment the output by. Default 0.</param>
+        /// <param name="mult">The number to multiply the output by. Default 1.</param>
+        /// <param name="phase">The fraction of a period to offset by. Default 0.</param>
+        /// <returns>An array of cosine values</returns>
         public static double[] Cos(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
         {
             double sinScale = 2 * Math.PI * oscillations / (pointCount - 1);
@@ -79,14 +116,28 @@ namespace ScottPlot
             return ys;
         }
 
-        public static double[] Tan(double[] xs)
+        /// <summary>
+        /// Generates an array of tangent values of an input array.
+        /// </summary>
+        /// <param name="xs">The arguments to the tangent function.</param>
+        /// <param name="mult">A number to multiply the output by. Default 1.</param>
+        /// <returns>An array of tangent values</returns>
+        public static double[] Tan(double[] xs, double mult = 1)
         {
             double[] ys = new double[xs.Length];
             for (int i = 0; i < xs.Length; i++)
-                ys[i] = Math.Tan(xs[i]);
+                ys[i] = Math.Tan(xs[i]) * mult;
             return ys;
         }
 
+        /// <summary>
+        /// Generates an array of random numbers following a uniform distribution on the interval [offset, multiplier].
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="pointCount">The number of random points to generate.</param>
+        /// <param name="multiplier">The maximum number above offset that may be generated.</param>
+        /// <param name="offset">The minimum number that may be generated.</param>
+        /// <returns>An array of random numbers.</returns>
         public static double[] Random(Random rand, int pointCount, double multiplier = 1, double offset = 0)
         {
             if (rand is null)
@@ -97,6 +148,14 @@ namespace ScottPlot
             return ys;
         }
 
+        /// <summary>
+        /// Generates an array of random numbers following a uniform distribution on the interval [offset, multiplier].
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="pointCount">The number of random points to generate.</param>
+        /// <param name="multiplier">The maximum number above offset that may be generated.</param>
+        /// <param name="offset">The minimum number that may be generated.</param>
+        /// <returns>An array of random numbers.</returns>
         public static int[] RandomInts(Random rand, int pointCount, double multiplier = 1, double offset = 0)
         {
             if (rand is null)
@@ -107,6 +166,14 @@ namespace ScottPlot
             return ys;
         }
 
+        /// <summary>
+        /// Generates a single value from a normal distribution.
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="mean">The mean of the distribution.</param>
+        /// <param name="stdDev">The standard deviation of the distribution.</param>
+        /// <param name="maxSdMultiple">The maximum distance from the mean to generate, given as a multiple of the standard deviation.</param>
+        /// <returns>A single value from a normal distribution.</returns>
         public static double RandomNormalValue(Random rand, double mean, double stdDev, double maxSdMultiple = 10)
         {
             while (true)
@@ -119,9 +186,27 @@ namespace ScottPlot
             }
         }
 
+        /// <summary>
+        /// Generates an array of values from a normal distribution.
+        /// </summary>
+        /// <param name="seed">The number to seed the random number generator with.</param>
+        /// <param name="pointCount">The number of points to generate.</param>
+        /// <param name="mean">The mean of the distribution.</param>
+        /// <param name="stdDev">The standard deviation of the distribution.</param>
+        /// <param name="maxSdMultiple">The maximum distance from the mean to generate, given as a multiple of the standard deviation.</param>
+        /// <returns>An array of values from a normal distribution.</returns>
         public static double[] RandomNormal(int seed, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10) =>
             RandomNormal(new Random(seed), pointCount, mean, stdDev, maxSdMultiple);
 
+        /// <summary>
+        /// Generates an array of values from a normal distribution.
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="pointCount">The number of points to generate.</param>
+        /// <param name="mean">The mean of the distribution.</param>
+        /// <param name="stdDev">The standard deviation of the distribution.</param>
+        /// <param name="maxSdMultiple">The maximum distance from the mean to generate, given as a multiple of the standard deviation.</param>
+        /// <returns>An array of values from a normal distribution.</returns>
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10)
         {
             if (rand == null)
@@ -133,6 +218,15 @@ namespace ScottPlot
             return values;
         }
 
+        /// <summary>
+        /// Generates an array of data with normally distributed residuals about a line.
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="pointCount">The number of points to generate. Default 100.</param>
+        /// <param name="slope">The slope of the line. Default 1.</param>
+        /// <param name="offset">The y-intercept of the line. Default 0.</param>
+        /// <param name="noise">The standard deviation of the residuals. Default 0.1</param>
+        /// <returns>An array of approximately linear data.</returns>
         public static double[] NoisyLinear(Random rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
         {
             if (rand is null)
@@ -145,6 +239,15 @@ namespace ScottPlot
             return data;
         }
 
+        /// <summary>
+        /// Generates an array of data with uniformally distributed residuals about a sinusoidal curve.
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="pointCount">The number of points to generate.</param>
+        /// <param name="oscillations">The number of periods. Default 1.</param>
+        /// <param name="noiseLevel">Twice the maximum residual, in units of mult. Default 0.5</param>
+        /// <param name="mult">The number to multiply the residuals by. Default 1.</param>
+        /// <returns>An array of approximately sinusoidal data.</returns>
         public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
         {
             if (rand is null)
@@ -155,6 +258,13 @@ namespace ScottPlot
             return values;
         }
 
+        /// <summary>
+        /// Generates a random color.
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="min">The min of each component. Default 0.</param>
+        /// <param name="max">The max of each component. Default 255.</param>
+        /// <returns>A random color.</returns>
         public static Color RandomColor(Random rand, int min = 0, int max = 255)
         {
             if (rand is null)
@@ -168,12 +278,21 @@ namespace ScottPlot
         /// <summary>
         /// Return the cumulative sum of a random set of numbers using a fixed seed
         /// </summary>
+        /// <param name="pointCount">The number of points to generate.</param>
+        /// <param name="mult">The max difference between points in the walk. Default 1.</param>
+        /// <param name="offset">The first point in the walk. Default 0.</param>
+        /// <returns>The cumulative sum of a random set of numbers.</returns>
         public static double[] RandomWalk(int pointCount, double mult = 1, double offset = 0) =>
             RandomWalk(new Random(0), pointCount, mult, offset);
 
         /// <summary>
-        /// Return the cumulative sum of a random set of numbers
+        /// Return the cumulative sum of a random set of numbers.
         /// </summary>
+        /// <param name="rand">The random object to use.</param>
+        /// <param name="pointCount">The number of points to generate.</param>
+        /// <param name="mult">The max difference between points in the walk. Default 1.</param>
+        /// <param name="offset">The first point in the walk. Default 0.</param>
+        /// <returns>The cumulative sum of a random set of numbers.</returns>
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
             if (rand is null)
@@ -188,6 +307,12 @@ namespace ScottPlot
         /// <summary>
         /// Return OHLC array with random prices X positions as DateTime.ToOATime() values using the given time delta
         /// </summary>
+        /// <param name="rand">The random object to use.</param>
+        /// <param name="pointCount">The number of prices to generate.</param>
+        /// <param name="delta">The difference in time between prices.</param>
+        /// <param name="mult">The max difference between base prices around which that day's prices independently vary. Default 10.</param>
+        /// <param name="startingPrice">The initial base price. Default 123.45</param>
+        /// <returns>OHLC array with random prices</returns>
         public static OHLC[] RandomStockPrices(Random rand, int pointCount, TimeSpan delta, double mult = 10, double startingPrice = 123.45)
         {
             OHLC[] ohlcs = RandomStockPrices(rand, pointCount, mult, startingPrice);
@@ -211,6 +336,11 @@ namespace ScottPlot
         /// <summary>
         /// Return OHLC array with random prices X positions as sequential numbers (0, 1, 2, etc.)
         /// </summary>
+        /// <param name="rand">The random object to use.</param>
+        /// <param name="pointCount">The number of prices to generate.</param>
+        /// <param name="mult">The max difference between base prices around which that day's prices independently vary. Default 10.</param>
+        /// <param name="startingPrice">The initial base price. Default 123.45</param>
+        /// <returns>OHLC array with random prices</returns>
         private static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45)
         {
             if (rand is null)
@@ -238,6 +368,17 @@ namespace ScottPlot
             return ohlcs;
         }
 
+        /// <summary>
+        /// Return OHLC array with random prices X positions as sequential numbers (0, 1, 2, etc.)
+        /// </summary>
+        /// <param name="rand">The random object to use.</param>
+        /// <param name="pointCount">The number of prices to generate.</param>
+        /// <param name="mult">The max difference between base prices around which that day's prices independently vary. Default 10.</param>
+        /// <param name="startingPrice">The initial base price. Default 123.45</param>
+        /// <param name="deltaMinutes">The minutes between prices. Cumulative with deltaDays. Default 0.</param>
+        /// <param name="deltaDays">The days between prices. Cumulative with deltaMinutes. Default 1.</param>
+        /// <param name="sequential">Whether to use TimeSpan or integer x axis.</param>
+        /// <returns>OHLC array with random prices</returns>
         public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1, bool sequential = true)
         {
             TimeSpan ts = TimeSpan.FromMinutes(deltaMinutes) + TimeSpan.FromDays(deltaDays);
