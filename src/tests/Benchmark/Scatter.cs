@@ -12,7 +12,7 @@ namespace ScottPlotTests.Benchmark
         public void Test_scatter_10kPoints()
         {
             double[] pointCounts = { 10, 100, 1000, 10000 };
-            double[] reps = { 1000, 100, 25, 10 };
+            const int REPS = 10;
             double[] speeds = new double[pointCounts.Length];
 
             for (int i = 0; i < pointCounts.Length; i++)
@@ -26,7 +26,7 @@ namespace ScottPlotTests.Benchmark
                 plt.Render(lowQuality: true);
 
                 List<double> times = new List<double>();
-                for (int j = 0; j < reps[i]; j++)
+                for (int j = 0; j < REPS; j++)
                 {
                     plt.Render(lowQuality: true);
                     times.Add(plt.GetSettings(false).BenchmarkMessage.MSec);
