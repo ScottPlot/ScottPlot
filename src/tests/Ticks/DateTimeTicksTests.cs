@@ -6,6 +6,7 @@ using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ScottPlotTests.Ticks
 {
@@ -38,12 +39,12 @@ namespace ScottPlotTests.Ticks
                 TimeSpan span = dateUpper - dateLower;
                 Console.WriteLine($"Testing span: {span}");
 
-                foreach (var culture in supportedCultures)
+                Parallel.ForEach(supportedCultures, culture =>
                 {
                     var unit = factory.CreateBestUnit(dateLower, dateUpper, culture, 10);
                     var labels = unit.GetTicksAndLabels(dateLower, dateUpper, null);
                     Assert.False(labels.Labels.Any(l => l.Count(c => c == '\n') != 1));
-                }
+                });
 
                 dateUpper -= span / 2;
             }
