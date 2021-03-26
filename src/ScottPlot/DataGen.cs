@@ -388,6 +388,14 @@ namespace ScottPlot
                 return RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
         }
 
+        /// <summary>
+        /// Generates a random span.
+        /// </summary>
+        /// <param name="rand">The random object to use.</param>
+        /// <param name="low">The minimum of the span. Default 0.</param>
+        /// <param name="high">Tge naximum of the span. Default 100.</param>
+        /// <param name="minimumSpacing">The minimum length of the span. Default 10.</param>
+        /// <returns>A random span.</returns>
         public static (double, double) RandomSpan(Random rand = null, double low = 0, double high = 100, double minimumSpacing = 10)
         {
             if (rand is null)
@@ -411,16 +419,35 @@ namespace ScottPlot
             throw new ArgumentException();
         }
 
+        /// <summary>
+        /// Generates a range of values starting at 0 and separated by 1.
+        /// </summary>
+        /// <param name="stop">The end of the range.</param>
+        /// <returns>A range of values.</returns>
         public static double[] Range(int stop)
         {
             return Range(0, stop, 1);
         }
 
+        /// <summary>
+        /// Generates a range of values separated by 1.
+        /// </summary>
+        /// <param name="start">The start of the range.</param>
+        /// <param name="stop">The end of the range.</param>
+        /// <returns>A range of values.</returns>
         public static double[] Range(int start, int stop)
         {
             return Range(start, stop, 1);
         }
 
+        /// <summary>
+        /// Generates a range of values.
+        /// </summary>
+        /// <param name="start">The start of the range.</param>
+        /// <param name="stop">The end of the range.</param>
+        /// <param name="step">The space between values.</param>
+        /// <param name="includeStop">Indicates whether to include the stop point in the range. Default false.</param>
+        /// <returns>A range of values.</returns>
         public static double[] Range(double start, double stop, double step, bool includeStop = false)
         {
             if (step <= 0)
@@ -439,12 +466,22 @@ namespace ScottPlot
             return values;
         }
 
+        /// <summary>
+        /// Generates an array of zeros
+        /// </summary>
+        /// <param name="pointCount">The number of zeroes to generate</param>
+        /// <returns>An array of zeros</returns>
         public static double[] Zeros(int pointCount)
         {
             double[] values = new double[pointCount];
             return values;
         }
 
+        /// <summary>
+        /// Generates an array of ones
+        /// </summary>
+        /// <param name="pointCount">The number of ones to generate</param>
+        /// <returns>An array of ones</returns>
         public static double[] Ones(int pointCount)
         {
             double[] values = new double[pointCount];
@@ -453,6 +490,12 @@ namespace ScottPlot
             return values;
         }
 
+        /// <summary>
+        /// Generates a Bitmap from data on the range [0, 255]
+        /// </summary>
+        /// <param name="data">The data to use.</param>
+        /// <param name="cmap">The colormap to use.</param>
+        /// <returns>A Bitmap</returns>
         public static Bitmap BitmapFrom2dArray(double[,] data, Colormap cmap)
         {
             int width = data.GetLength(1);
@@ -480,8 +523,16 @@ namespace ScottPlot
             return bmp2;
         }
 
+        /// <summary>
+        /// Generates a sample Bitmap.
+        /// </summary>
+        /// <returns>A sample Bitmap</returns>
         public static Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
 
+        /// <summary>
+        /// Returns a sample 2D array of grayscale values.
+        /// </summary>
+        /// <returns>2D array of grayscale values.</returns>
         public static double[,] SampleImageData()
         {
             double[,] imageData = {
@@ -592,6 +643,7 @@ namespace ScottPlot
         /// <summary>
         /// Recording of a neuronal action potential (100 ms, 20 kHz sample rate, mV units)
         /// </summary>
+        /// <returns>Recording of a neuronal action potential</returns>
         public static double[] ActionPotential()
         {
             /* originated from 17o05027_ic_ramp.abf as part of the pyABF project */
