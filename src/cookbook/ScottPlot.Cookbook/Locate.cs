@@ -19,9 +19,9 @@ namespace ScottPlot.Cookbook
             .ToArray();
 
         private static readonly string[] _categories = _recipes.Select(r => r.Category).Distinct().ToArray();
-        private static Dictionary<string, IRecipe[]> _recipesByCategory = new Dictionary<string, IRecipe[]>();
-        private static Dictionary<string, IRecipe> _recipesById = new Dictionary<string, IRecipe>();
-        private static List<KeyValuePair<string, IRecipe[]>> _categorizedRecipeList = new List<KeyValuePair<string, IRecipe[]>>();
+        private static Dictionary<string, IRecipe[]> _recipesByCategory = GetRecipes().GroupBy(x => x.Category).ToDictionary(gk => gk.Key, gk => gk.ToArray());
+        private static Dictionary<string, IRecipe> _recipesById = GetRecipes().ToDictionary(r => r.ID, r => r);
+        private static List<KeyValuePair<string, IRecipe[]>> _categorizedRecipeList;
 
         private static readonly string[] topCategories =
         {
@@ -36,56 +36,41 @@ namespace ScottPlot.Cookbook
             "Style",
             "Misc"
         };
+        private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)
+        {
+            string category = input.Key;
+            if (topCategories.Contains(category))
+                return 0;
+
+            if (bottomCategories.Contains(category))
+                return 2;
+
+            return 1;
+        }
+
+        private static int IndexWithinCategory(KeyValuePair<string, IRecipe[]> input)
+        {
+            string category = input.Key;
+            for (int i = 0; i < topCategories.Length; i++)
+                if (topCategories[i] == category)
+                    return i;
+
+            for (int i = 0; i < bottomCategories.Length; i++)
+                if (topCategories[i] == category)
+                    return i;
+
+            return 0;
+        }
+
 
         static Locate() // A static constructor runs exactly once and before the class or an instance of it is needed
         {
-            InitializeDictionaries();
             InitializeCategoryList();
-        }
-
-        private static void InitializeDictionaries()
-        {
-            Dictionary<string, List<IRecipe>> byCategory = new Dictionary<string, List<IRecipe>>();
-            foreach (IRecipe curr in GetRecipes())
-            {
-                _recipesById[curr.ID] = curr;
-
-                if (!byCategory.ContainsKey(curr.Category))
-                {
-                    byCategory.Add(curr.Category, new List<IRecipe>());
-                }
-
-                byCategory[curr.Category].Add(curr);
-            }
-
-            foreach (string category in GetCategories())
-            {
-                _recipesByCategory[category] = byCategory[category].ToArray();
-            }
         }
 
         private static void InitializeCategoryList()
         {
-            foreach (string category in topCategories)
-            {
-                var recipesForCategory = new KeyValuePair<string, IRecipe[]>(category, GetRecipes(category));
-                _categorizedRecipeList.Add(recipesForCategory);
-            }
-
-            foreach (string category in GetCategories())
-            {
-                if (!topCategories.Contains(category) && !bottomCategories.Contains(category))
-                {
-                    var recipesForCategory = new KeyValuePair<string, IRecipe[]>(category, GetRecipes(category));
-                    _categorizedRecipeList.Add(recipesForCategory);
-                }
-            }
-
-            foreach (string category in bottomCategories)
-            {
-                var recipesForCategory = new KeyValuePair<string, IRecipe[]>(category, GetRecipes(category));
-                _categorizedRecipeList.Add(recipesForCategory);
-            }
+            _categorizedRecipeList = _recipesByCategory.OrderBy(CategoryIndex).ThenBy(IndexWithinCategory).ToList();
         }
 
         public static IRecipe[] GetRecipes() => _recipes;

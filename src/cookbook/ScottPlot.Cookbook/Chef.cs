@@ -28,8 +28,6 @@ namespace ScottPlot.Cookbook
         /// </summary>
         public void CreateCookbookImages(string outputPath)
         {
-            List<Task> tasks = new List<Task>();
-
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
