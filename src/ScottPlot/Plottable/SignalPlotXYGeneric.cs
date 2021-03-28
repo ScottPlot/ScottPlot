@@ -163,7 +163,7 @@ namespace ScottPlot.Plottable
                 IEnumerable<PointF> VisiblePoints;
                 if (UseParallel)
                 {
-                    VisiblePoints = Enumerable.Range(0, (int)dims.DataWidth)
+                    VisiblePoints = Enumerable.Range(0, (int)Math.Round(dims.DataWidth))
                                               .AsParallel()
                                               .AsOrdered()
                                               .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, dims))
@@ -172,7 +172,7 @@ namespace ScottPlot.Plottable
                 }
                 else
                 {
-                    VisiblePoints = Enumerable.Range(0, (int)dims.DataWidth)
+                    VisiblePoints = Enumerable.Range(0, (int)Math.Round(dims.DataWidth))
                                               .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, dims))
                                               .SelectMany(x => x);
                 }
