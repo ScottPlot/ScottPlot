@@ -196,6 +196,11 @@ namespace ScottPlot.Control
         private int BitmapRenderCount = 0;
 
         /// <summary>
+        /// Tracks the total distance the mouse was click-dragged
+        /// </summary>
+        private (float X, float Y) MouseDownTravelDistance = (0, 0);
+
+        /// <summary>
         /// Create a back-end for a user control
         /// </summary>
         /// <param name="width">initial bitmap size (pixels)</param>
@@ -407,6 +412,7 @@ namespace ScottPlot.Control
             IsLeftDown = input.LeftWasJustPressed;
             PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
+            MouseDownTravelDistance = (0, 0);
         }
 
         /// <summary>
@@ -436,6 +442,9 @@ namespace ScottPlot.Control
             bool isMiddleClickDragZooming = IsMiddleDown;
             bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
             IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom;
+
+            MouseDownTravelDistance.X += Math.Abs(input.X - MouseLocationX);
+            MouseDownTravelDistance.Y += Math.Abs(input.Y - MouseLocationY);
 
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
@@ -515,7 +524,7 @@ namespace ScottPlot.Control
         public void MouseUp(InputState input)
         {
             PlottableBeingDragged = null;
-            bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
+            bool mouseWasDragged = (MouseDownTravelDistance.X + MouseDownTravelDistance.Y) > 0;
 
             IUIEvent mouseEvent;
             if (IsZoomingRectangle && mouseWasDragged && Configuration.MiddleClickDragZoom)
