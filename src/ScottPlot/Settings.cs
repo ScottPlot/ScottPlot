@@ -356,10 +356,6 @@ namespace ScottPlot
             MouseDownY = mouseDownY;
         }
 
-        public bool MouseHasMoved(float mouseNowX, float mouseNowY, float threshold = 2) =>
-            Math.Abs(mouseNowX - MouseDownX) >= threshold &&
-            Math.Abs(mouseNowY - MouseDownY) >= threshold;
-
         /// <summary>
         /// Pan all axes based on the mouse position now vs that last given to MouseDown()
         /// </summary>
