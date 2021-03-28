@@ -1,9 +1,9 @@
 # ScottPlot
 
-[![](https://img.shields.io/azure-devops/build/swharden/ScottPlot/15?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
-[![](https://img.shields.io/azure-devops/tests/swharden/ScottPlot/15?label=Tests&logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
-[![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
-[![](https://img.shields.io/nuget/v/scottplot?label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
+[![](https://img.shields.io/azure-devops/build/swharden/ScottPlot/15/master?logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
+[![](https://img.shields.io/azure-devops/tests/swharden/ScottPlot/15/master?logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
+[![](https://img.shields.io/nuget/dt/scottplot?color=004880&label=Downloads&logo=NuGet)](https://www.nuget.org/packages/ScottPlot/)
+[![](https://img.shields.io/nuget/vpre/scottplot?color=%23004880&label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
 **ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [**ScottPlot Cookbook**](https://swharden.com/scottplot/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
