@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
+#pragma warning disable IDE1006 // ignore warning about lowercase 'plt' property
+
 namespace ScottPlot
 {
     public partial class FormsPlot : UserControl
@@ -112,10 +114,10 @@ namespace ScottPlot
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
-        private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
-        private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
-        private void PictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
-        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e) { Backend.MouseDown(GetInputState(e)); base.OnMouseDown(e); }
+        private void PictureBox1_MouseUp(object sender, MouseEventArgs e) { Backend.MouseUp(GetInputState(e)); base.OnMouseUp(e); }
+        private void PictureBox1_DoubleClick(object sender, EventArgs e) { Backend.DoubleClick(); base.OnDoubleClick(e); }
+        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) { Backend.MouseWheel(GetInputState(e)); base.OnMouseWheel(e); }
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
         private Control.InputState GetInputState(MouseEventArgs e) =>
