@@ -10,10 +10,7 @@ namespace ScottPlot.Cookbook
 {
     public static class Locate
     {
-        public static IRecipe[] GetRecipes() =>
-            AppDomain
-            .CurrentDomain
-            .GetAssemblies()
+        private static readonly IRecipe[] _recipes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(x => x.IsAbstract == false)
             .Where(x => x.IsInterface == false)
@@ -21,54 +18,72 @@ namespace ScottPlot.Cookbook
             .Select(x => (IRecipe)Activator.CreateInstance(x))
             .ToArray();
 
-        public static IRecipe GetRecipe(string id) => GetRecipes().Where(x => x.ID == id).First();
+        private static readonly string[] _categories = _recipes.Select(r => r.Category).Distinct().ToArray();
+        private static Dictionary<string, IRecipe[]> _recipesByCategory = GetRecipes().GroupBy(x => x.Category).ToDictionary(gk => gk.Key, gk => gk.ToArray());
+        private static Dictionary<string, IRecipe> _recipesById = GetRecipes().ToDictionary(r => r.ID, r => r);
+        private static List<KeyValuePair<string, IRecipe[]>> _categorizedRecipeList;
 
-        public static string[] GetCategories() => GetRecipes().Select(x => x.Category).Distinct().ToArray();
+        private static readonly string[] topCategories =
+        {
+            "Quickstart",
+            "Axis and Ticks",
+            "Advanced Axis Features",
+            "Multi-Axis",
+        };
+
+        private static readonly string[] bottomCategories =
+        {
+            "Style",
+            "Misc"
+        };
+        private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)
+        {
+            string category = input.Key;
+            if (topCategories.Contains(category))
+                return 0;
+
+            if (bottomCategories.Contains(category))
+                return 2;
+
+            return 1;
+        }
+
+        private static int IndexWithinCategory(KeyValuePair<string, IRecipe[]> input)
+        {
+            string category = input.Key;
+            for (int i = 0; i < topCategories.Length; i++)
+                if (topCategories[i] == category)
+                    return i;
+
+            for (int i = 0; i < bottomCategories.Length; i++)
+                if (topCategories[i] == category)
+                    return i;
+
+            return 0;
+        }
+
+
+        static Locate() // A static constructor runs exactly once and before the class or an instance of it is needed
+        {
+            InitializeCategoryList();
+        }
+
+        private static void InitializeCategoryList()
+        {
+            _categorizedRecipeList = _recipesByCategory.OrderBy(CategoryIndex).ThenBy(IndexWithinCategory).ToList();
+        }
+
+        public static IRecipe[] GetRecipes() => _recipes;
+
+        public static IRecipe GetRecipe(string id) => _recipesById[id];
+
+        public static string[] GetCategories() => _categories;
 
         public static string[] GetCategoriesInDisplayOrder() => GetCategorizedRecipes().Select(x => x.Key).ToArray();
 
-        public static IRecipe[] GetRecipes(string category) => GetRecipes().Where(x => x.Category == category).ToArray();
+        public static IRecipe[] GetRecipes(string category) => _recipesByCategory[category];
 
-        public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes()
-        {
-            var categorizedRecipeList = new List<KeyValuePair<string, IRecipe[]>>();
-
-            foreach (string category in GetCategories())
-            {
-                var recipesForCategory = new KeyValuePair<string, IRecipe[]>(category, GetRecipes(category));
-                categorizedRecipeList.Add(recipesForCategory);
-            }
-
-            string[] topCategories =
-            {
-                "Quickstart",
-                "Axis and Ticks",
-                "Advanced Axis Features",
-                "Multi-Axis",
-            };
-
-            foreach (string category in topCategories.Reverse())
-            {
-                var moveThis = categorizedRecipeList.Where(x => x.Key == category).First(); ;
-                categorizedRecipeList.Remove(moveThis);
-                categorizedRecipeList.Insert(0, moveThis);
-            }
-
-            string[] bottomCategories =
-            {
-                "Style",
-                "Misc"
-            };
-
-            foreach (string category in bottomCategories)
-            {
-                var moveThis = categorizedRecipeList.Where(x => x.Key == category).First(); ;
-                categorizedRecipeList.Remove(moveThis);
-                categorizedRecipeList.Add(moveThis);
-            }
-
-            return categorizedRecipeList;
-        }
+        public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes() => _categorizedRecipeList;
 
         public static string RecipeSourceCode(IRecipe recipe) => RecipeSourceCode(recipe.ID);
 
@@ -103,14 +118,15 @@ namespace ScottPlot.Cookbook
             return sb2.ToString();
         }
 
-        public static Type[] GetPlottableTypes() =>
-            Assembly.GetAssembly(typeof(Plottable.ScatterPlot))
+        private static readonly Type[] _plottableTypes = Assembly.GetAssembly(typeof(Plottable.ScatterPlot))
                      .GetTypes()
                      .Where(x => x.Namespace == typeof(Plottable.ScatterPlot).Namespace)
                      .Where(x => x.GetInterfaces().Contains(typeof(Plottable.IPlottable)))
                      .Where(x => !x.IsAbstract)
                      .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                      .ToArray();
+
+        public static Type[] GetPlottableTypes() => _plottableTypes;
 
         public static string TypeName(Type type, bool urlSafe = false)
         {
@@ -148,8 +164,7 @@ namespace ScottPlot.Cookbook
                                 .ToArray();
         }
 
-        public static MethodInfo[] GetPlotMethods() =>
-            typeof(Plot)
+        private static readonly MethodInfo[] _plotMethods = typeof(Plot)
             .GetMethods()
             .Where(x => x.IsPublic)
             .Where(x => !x.Name.StartsWith("get_"))
@@ -160,22 +175,26 @@ namespace ScottPlot.Cookbook
             .OrderBy(x => x.Name)
             .ToArray();
 
+        public static MethodInfo[] GetPlotMethods() => _plotMethods;
+
         public static MethodInfo[] GetPlotMethodsOnlyAdd() =>
             GetPlotMethods().Where(x => x.Name.StartsWith("Add")).ToArray();
 
         public static MethodInfo[] GetPlotMethodsNoAdd() =>
             GetPlotMethods().Where(x => !x.Name.StartsWith("Add")).ToArray();
 
-        public static PropertyInfo[] GetPlotProperties() =>
-            typeof(Plot)
+        private static readonly PropertyInfo[] _plotProperies = typeof(Plot)
             .GetProperties()
             .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
             .ToArray();
 
-        public static FieldInfo[] GetPlotFields() =>
-            typeof(Plot)
+        public static PropertyInfo[] GetPlotProperties() => _plotProperies;
+
+        private static readonly FieldInfo[] _plotFields = typeof(Plot)
             .GetFields()
             .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
             .ToArray();
+
+        public static FieldInfo[] GetPlotFields() => _plotFields;
     }
 }

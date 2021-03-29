@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Cookbook
 {
@@ -33,7 +34,8 @@ namespace ScottPlot.Cookbook
 
             var recipes = Locate.GetRecipes();
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
-            foreach (var recipe in recipes)
+
+            Parallel.ForEach(recipes, recipe =>
             {
                 Debug.WriteLine($"Executing {recipe.ID}");
                 var plt = new Plot(Width, Height);
@@ -52,7 +54,8 @@ namespace ScottPlot.Cookbook
                 string thumbFileName = (recipe.ID + ExtThumb).ToLower();
                 string thumbFilePath = Path.Combine(outputPath, thumbFileName);
                 thumb.Save(thumbFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            }
+            });
+
         }
 
         /// <summary>
@@ -67,7 +70,7 @@ namespace ScottPlot.Cookbook
 
             var sources = GetRecipeSources(sourcePath);
             Console.WriteLine($"Creating source code for {sources.Count} recipes in: {outputPath}");
-            foreach (var recipe in sources)
+            Parallel.ForEach(sources, recipe =>
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("// " + recipe.title);
@@ -77,7 +80,7 @@ namespace ScottPlot.Cookbook
                 string fileName = recipe.id + ".cs";
                 string filePath = Path.Combine(outputPath, fileName.ToLower());
                 File.WriteAllText(filePath, sb.ToString());
-            }
+            });
         }
 
         /// <summary>
