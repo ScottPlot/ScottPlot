@@ -1,6 +1,13 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.10-beta ⚠️ in development
+## ScottPlot 4.1.11-beta
+* FormsPlot mouse events are now properly forwarded to the base control (#892, #919) _Thanks @grabul_
+* Prevent right-click menu from deploying after right-click-drag (#891, #917)
+* Add offset support to SignalXY (#894, #890) _Thanks @StendProg_
+* Eliminate rendering artifacts in SignalXY plots (#893, #889) _Thanks @StendProg and @grabul_
+* Optimize cookbook generation and test execution (#901) _Thanks @bclehmann_
+
+## ScottPlot 4.1.10-beta
 * Fixed a bug where applying the Seabourn style modified axis frame and minor tick distribution (#866) _Thanks @oszymczak_
 * Improved XML documentation and error reporting for getting legend bitmaps (#860) _Thanks @mzemljak_
 * Fixed rendering bug affecting finance plots with thin borders (#837) _Thanks @AlgoExecutor_
