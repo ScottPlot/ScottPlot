@@ -7,27 +7,60 @@ using System.Linq;
 
 namespace ScottPlot.Ticks
 {
+    public enum TickLabelFormat { Numeric, DateTime }; // TODO: add hex, binary, scientific notation, etc?
+    public enum AxisOrientation { Vertical, Horizontal };
+    public enum MinorTickDistribution { even, log };
+
     public class TickCollection
     {
         // This class creates pretty tick labels (with offset and exponent) uses graph settings
         // to inspect the tick font and ensure tick labels will not overlap. 
         // It also respects manually defined tick spacing settings set via plt.Grid().
 
+        // TODO: store these in a class
         public double[] tickPositionsMajor;
         public double[] tickPositionsMinor;
         public string[] tickLabels;
-
         public double[] manualTickPositions;
         public string[] manualTickLabels;
 
-        public string cornerLabel;
-        public float maxLabelWidth = 15;
-        public float maxLabelHeight = 12;
+        /// <summary>
+        /// Label to show in the corner when using multiplier or offset notation
+        /// </summary>
+        public string CornerLabel { get; private set; }
 
-        public bool dateFormat;
-        public bool verticalAxis;
-        public bool invertSign;
-        public bool logScale;
+        /// <summary>
+        /// Measured size of the largest tick label
+        /// </summary>
+        public float LargestLabelWidth { get; private set; } = 15;
+
+        /// <summary>
+        /// Measured size of the largest tick label
+        /// </summary>
+        public float LargestLabelHeight { get; private set; } = 12;
+
+        /// <summary>
+        /// Controls how to translate positions to strings
+        /// </summary>
+        public TickLabelFormat LabelFormat = TickLabelFormat.Numeric;
+
+        /// <summary>
+        /// If True, these ticks are placed along a vertical (Y) axis.
+        /// This is used to determine whether tick density should be based on tick label width or height.
+        /// </summary>
+        public AxisOrientation Orientation;
+
+        /// <summary>
+        /// If True, the sign of numeric tick labels will be inverted.
+        /// This is used to give the appearance of descending ticks.
+        /// </summary>
+        public bool LabelUsingInvertedSign;
+
+        /// <summary>
+        /// Define how minor ticks are distributed (evenly vs. log scale)
+        /// </summary>
+        public MinorTickDistribution MinorTickDistribution;
+
         public string numericFormatString;
         public string dateTimeFormatString;
 
@@ -50,22 +83,22 @@ namespace ScottPlot.Ticks
             if (manualTickPositions is null)
             {
                 // first pass uses forced density with manual label sizes to consistently approximate labels
-                if (dateFormat)
+                if (LabelFormat == TickLabelFormat.DateTime)
                     RecalculatePositionsAutomaticDatetime(dims, 20, 24, 10);
                 else
                     RecalculatePositionsAutomaticNumeric(dims, 15, 12, 10);
 
                 // second pass calculates density using measured labels produced by the first pass
-                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
-                if (dateFormat)
-                    RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight, null);
+                (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
+                if (LabelFormat == TickLabelFormat.DateTime)
+                    RecalculatePositionsAutomaticDatetime(dims, LargestLabelWidth, LargestLabelHeight, null);
                 else
-                    RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight, null);
+                    RecalculatePositionsAutomaticNumeric(dims, LargestLabelWidth, LargestLabelHeight, null);
             }
             else
             {
-                double min = verticalAxis ? dims.YMin : dims.XMin;
-                double max = verticalAxis ? dims.YMax : dims.XMax;
+                double min = Orientation == AxisOrientation.Vertical ? dims.YMin : dims.XMin;
+                double max = Orientation == AxisOrientation.Vertical ? dims.YMax : dims.XMax;
 
                 var visibleIndexes = Enumerable.Range(0, manualTickPositions.Count())
                     .Where(i => manualTickPositions[i] >= min)
@@ -74,8 +107,8 @@ namespace ScottPlot.Ticks
                 tickPositionsMajor = visibleIndexes.Select(x => manualTickPositions[x]).ToArray();
                 tickPositionsMinor = null;
                 tickLabels = visibleIndexes.Select(x => manualTickLabels[x]).ToArray();
-                cornerLabel = null;
-                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
+                CornerLabel = null;
+                (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
             }
         }
 
@@ -109,7 +142,7 @@ namespace ScottPlot.Ticks
                 if (s.Length > largestString.Length)
                     largestString = s;
 
-            if (dateFormat)
+            if (LabelFormat == TickLabelFormat.DateTime)
             {
                 // widen largest string based on the longest month name
                 foreach (string s in new DateTimeFormatInfo().MonthGenitiveNames)
@@ -129,7 +162,7 @@ namespace ScottPlot.Ticks
             double low, high;
             int tickCount;
 
-            if (verticalAxis)
+            if (Orientation == AxisOrientation.Vertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -149,8 +182,8 @@ namespace ScottPlot.Ticks
                 low = Math.Max(low, new DateTime(0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
-                var dtManualUnits = (verticalAxis) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
-                var dtManualSpacing = (verticalAxis) ? manualSpacingY : manualSpacingX;
+                var dtManualUnits = (Orientation == AxisOrientation.Vertical) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
+                var dtManualSpacing = (Orientation == AxisOrientation.Vertical) ? manualSpacingY : manualSpacingX;
 
                 try
                 {
@@ -174,7 +207,7 @@ namespace ScottPlot.Ticks
 
             // dont forget to set all the things
             tickPositionsMinor = null;
-            cornerLabel = null;
+            CornerLabel = null;
         }
 
         private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
@@ -182,7 +215,7 @@ namespace ScottPlot.Ticks
             double low, high, tickSpacing;
             int maxTickCount;
 
-            if (verticalAxis)
+            if (Orientation == AxisOrientation.Vertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -209,34 +242,33 @@ namespace ScottPlot.Ticks
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
 
-            if (dateFormat)
+            if (LabelFormat == TickLabelFormat.DateTime)
             {
                 tickLabels = GetDateLabels(tickPositionsMajor, Culture);
                 tickPositionsMinor = null;
             }
             else
             {
-                (tickLabels, cornerLabel) = GetPrettyTickLabels(
+                (tickLabels, CornerLabel) = GetPrettyTickLabels(
                         tickPositionsMajor,
                         useMultiplierNotation,
                         useOffsetNotation,
                         useExponentialNotation,
-                        invertSign: invertSign,
+                        invertSign: LabelUsingInvertedSign,
                         culture: Culture
                     );
 
-                if (logScale)
+                if (MinorTickDistribution == MinorTickDistribution.log)
                     tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
                 else
                     tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
-
             }
         }
 
         public override string ToString()
         {
             string allTickLabels = string.Join(", ", tickLabels);
-            return $"Tick Collection: [{allTickLabels}] {cornerLabel}";
+            return $"Tick Collection: [{allTickLabels}] {CornerLabel}";
         }
 
         private static double GetIdealTickSpacing(double low, double high, int maxTickCount, int radix = 10)

@@ -100,9 +100,9 @@ namespace ScottPlot.Renderable
                                 y: dims.DataOffsetY + dims.DataHeight + PixelOffset + MajorTickLength);
 
                         sf.Alignment = StringAlignment.Far;
-                        gfx.DrawString(tc.cornerLabel, font, brush, format: sf,
+                        gfx.DrawString(tc.CornerLabel, font, brush, format: sf,
                             x: dims.DataOffsetX + dims.DataWidth,
-                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + tc.maxLabelHeight);
+                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + tc.LargestLabelHeight);
                     }
                     else
                     {
@@ -142,7 +142,7 @@ namespace ScottPlot.Renderable
 
                         sf.LineAlignment = StringAlignment.Far;
                         sf.Alignment = StringAlignment.Near;
-                        gfx.DrawString(tc.cornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
+                        gfx.DrawString(tc.CornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
                     }
                     else
                     {

@@ -47,7 +47,7 @@ namespace ScottPlot.Renderable
                 AxisLabel.Edge = value;
                 AxisTicks.Edge = value;
                 bool isVertical = (value == Edge.Left || value == Edge.Right);
-                AxisTicks.TickCollection.verticalAxis = isVertical;
+                AxisTicks.TickCollection.Orientation = isVertical ? AxisOrientation.Vertical : AxisOrientation.Horizontal;
                 Dims.IsInverted = isVertical;
             }
         }
@@ -122,7 +122,10 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// DateTime format assumes axis represents DateTime.ToOATime() units and displays tick labels accordingly.
         /// </summary>
-        public void DateTimeFormat(bool enable) => AxisTicks.TickCollection.dateFormat = enable;
+        public void DateTimeFormat(bool enable) => AxisTicks.TickCollection.LabelFormat =
+            enable
+            ? ScottPlot.Ticks.TickLabelFormat.DateTime
+            : ScottPlot.Ticks.TickLabelFormat.Numeric;
 
         /// <summary>
         /// Configure the label of this axis
@@ -197,7 +200,7 @@ namespace ScottPlot.Renderable
             AxisTicks.TickCollection.useMultiplierNotation = multiplier ?? AxisTicks.TickCollection.useMultiplierNotation;
             AxisTicks.TickCollection.useOffsetNotation = offset ?? AxisTicks.TickCollection.useOffsetNotation;
             AxisTicks.TickCollection.useExponentialNotation = exponential ?? AxisTicks.TickCollection.useExponentialNotation;
-            AxisTicks.TickCollection.invertSign = invertSign ?? AxisTicks.TickCollection.invertSign;
+            AxisTicks.TickCollection.LabelUsingInvertedSign = invertSign ?? AxisTicks.TickCollection.LabelUsingInvertedSign;
             AxisTicks.TickCollection.radix = radix ?? AxisTicks.TickCollection.radix;
             AxisTicks.TickCollection.prefix = prefix ?? AxisTicks.TickCollection.prefix;
         }
@@ -304,7 +307,8 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
-        public void MinorLogScale(bool enable) => AxisTicks.TickCollection.logScale = enable;
+        public void MinorLogScale(bool enable) => AxisTicks.TickCollection.MinorTickDistribution =
+            enable ? MinorTickDistribution.log : MinorTickDistribution.even;
 
         /// <summary>
         /// Configure the line drawn along the edge of the axis
@@ -355,7 +359,10 @@ namespace ScottPlot.Renderable
             AxisTicks.MinorGridColor = color ?? AxisTicks.MinorGridColor;
             AxisTicks.MinorGridWidth = lineWidth ?? AxisTicks.MinorGridWidth;
             AxisTicks.MinorGridStyle = lineStyle ?? AxisTicks.MinorGridStyle;
-            AxisTicks.TickCollection.logScale = logScale ?? AxisTicks.TickCollection.logScale;
+            if (logScale.HasValue)
+                AxisTicks.TickCollection.MinorTickDistribution = logScale.Value
+                    ? MinorTickDistribution.log
+                    : MinorTickDistribution.even;
         }
 
         /// <summary>
@@ -392,8 +399,8 @@ namespace ScottPlot.Renderable
                 if (AxisTicks.TickLabelVisible)
                 {
                     // determine how many pixels the largest tick label occupies
-                    float maxHeight = AxisTicks.TickCollection.maxLabelHeight;
-                    float maxWidth = AxisTicks.TickCollection.maxLabelWidth * 1.2f;
+                    float maxHeight = AxisTicks.TickCollection.LargestLabelHeight;
+                    float maxWidth = AxisTicks.TickCollection.LargestLabelWidth * 1.2f;
 
                     // calculate the width and height of the rotated label
                     float largerEdgeLength = Math.Max(maxWidth, maxHeight);
