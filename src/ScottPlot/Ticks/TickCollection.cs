@@ -78,6 +78,8 @@ namespace ScottPlot.Ticks
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
+        public float TickDensity = 1.0f;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -219,7 +221,7 @@ namespace ScottPlot.Ticks
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(dims.DataHeight / labelHeight);
+                maxTickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
@@ -227,7 +229,7 @@ namespace ScottPlot.Ticks
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(dims.DataWidth / labelWidth);
+                maxTickCount = (int)(dims.DataWidth / labelWidth * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }

@@ -418,4 +418,26 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.ImageLabel(new Bitmap("Images/theta.jpg"));
         }
     }
+
+    class TickDensity : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_tickDensity";
+        public string Title => "Tick Density";
+        public string Description => "Axis tick density can be adjusted by the user. " +
+            "The largest the density is, the more ticks are displayed. Setting this value too high " +
+            "will result in overlapping tick labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.XAxis.Label("Low Density Ticks");
+            plt.XAxis.SetTickDensity(0.2);
+
+            plt.YAxis.Label("High Density Ticks");
+            plt.YAxis.SetTickDensity(3);
+        }
+    }
 }

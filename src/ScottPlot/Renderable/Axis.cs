@@ -305,6 +305,16 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// This value defines the packing density of tick labels.
+        /// A density of 1.0 means labels fit tightly based on measured maximum label size.
+        /// Higher densities place more ticks but tick labels may oberlap.
+        /// </summary>
+        public void SetTickDensity(double density = 1.0)
+        {
+            AxisTicks.TickCollection.TickDensity = (float)density;
+        }
+
+        /// <summary>
         /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
         public void MinorLogScale(bool enable) => AxisTicks.TickCollection.MinorTickDistribution =
