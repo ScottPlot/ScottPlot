@@ -109,6 +109,17 @@ namespace ScottPlot.Ticks
                 if (s.Length > largestString.Length)
                     largestString = s;
 
+            if (dateFormat)
+            {
+                // widen largest string based on the longest month name
+                foreach (string s in new DateTimeFormatInfo().MonthGenitiveNames)
+                {
+                    string s2 = s + "\n" + "1985";
+                    if (s2.Length > largestString.Length)
+                        largestString = s2;
+                }
+            }
+
             var maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
             return (maxLabelSize.Width, maxLabelSize.Height);
         }
