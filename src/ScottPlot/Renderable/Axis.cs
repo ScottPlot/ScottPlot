@@ -309,9 +309,18 @@ namespace ScottPlot.Renderable
         /// A density of 1.0 means labels fit tightly based on measured maximum label size.
         /// Higher densities place more ticks but tick labels may oberlap.
         /// </summary>
-        public void SetTickDensity(double density = 1.0)
+        public void TickDensity(double ratio = 1.0)
         {
-            AxisTicks.TickCollection.TickDensity = (float)density;
+            AxisTicks.TickCollection.TickDensity = (float)ratio;
+        }
+
+        /// <summary>
+        /// Define the smallest distance between major ticks, grid lines, and tick labels in coordinate units.
+        /// This only works for numeric tick systems (DateTime ticks are not supported).
+        /// </summary>
+        public void MinimumTickSpacing(double spacing)
+        {
+            AxisTicks.TickCollection.MinimumTickSpacing = spacing;
         }
 
         /// <summary>

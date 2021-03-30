@@ -433,11 +433,29 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            plt.XAxis.Label("Low Density Ticks");
-            plt.XAxis.SetTickDensity(0.2);
+            plt.XAxis.Label("Lower Density Ticks");
+            plt.XAxis.TickDensity(0.2);
 
-            plt.YAxis.Label("High Density Ticks");
-            plt.YAxis.SetTickDensity(3);
+            plt.YAxis.Label("Higher Density Ticks");
+            plt.YAxis.TickDensity(3);
+        }
+    }
+
+    class MinimumTickSpacing : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_minimumTickSpacing";
+        public string Title => "Minimum Tick Spacing";
+        public string Description => "Minimum tick spacing can be defined such that zooming in " +
+            "does not produce more grid lines, ticks, and tick labels beyond the defined limit.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.YAxis.MinimumTickSpacing(1);
+            plt.XAxis.MinimumTickSpacing(25);
         }
     }
 }

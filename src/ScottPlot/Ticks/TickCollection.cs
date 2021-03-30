@@ -78,7 +78,15 @@ namespace ScottPlot.Ticks
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
+        /// <summary>
+        /// Optimally packed tick labels have a density 1.0 and lower densities space ticks farther apart.
+        /// </summary>
         public float TickDensity = 1.0f;
+
+        /// <summary>
+        /// Defines the minimum distance (in coordinate units) for major ticks.
+        /// </summary>
+        public double MinimumTickSpacing = 0;
 
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
@@ -86,9 +94,9 @@ namespace ScottPlot.Ticks
             {
                 // first pass uses forced density with manual label sizes to consistently approximate labels
                 if (LabelFormat == TickLabelFormat.DateTime)
-                    RecalculatePositionsAutomaticDatetime(dims, 20, 24, 10);
+                    RecalculatePositionsAutomaticDatetime(dims, 20, 24, (int)(10 * TickDensity));
                 else
-                    RecalculatePositionsAutomaticNumeric(dims, 15, 12, 10);
+                    RecalculatePositionsAutomaticNumeric(dims, 15, 12, (int)(10 * TickDensity));
 
                 // second pass calculates density using measured labels produced by the first pass
                 (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
@@ -164,18 +172,21 @@ namespace ScottPlot.Ticks
             double low, high;
             int tickCount;
 
+            if (MinimumTickSpacing > 0)
+                throw new InvalidOperationException("minimum tick spacing does not support DateTime ticks");
+
             if (Orientation == AxisOrientation.Vertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataHeight / labelHeight);
+                tickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 tickCount = forcedTickCount ?? tickCount;
             }
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataWidth / labelWidth);
+                tickCount = (int)(dims.DataWidth / labelWidth * TickDensity);
                 tickCount = forcedTickCount ?? tickCount;
             }
 
@@ -224,6 +235,7 @@ namespace ScottPlot.Ticks
                 maxTickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }
             else
             {
@@ -232,6 +244,7 @@ namespace ScottPlot.Ticks
                 maxTickCount = (int)(dims.DataWidth / labelWidth * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
