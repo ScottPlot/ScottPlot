@@ -345,7 +345,7 @@ namespace ScottPlot.Ticks
             string[] labels = new string[positions.Length];
             string cornerLabel = "";
 
-            if (positions.Length <= 1)
+            if (positions.Length == 0)
                 return (labels, cornerLabel);
 
             double range = positions.Last() - positions.First();
