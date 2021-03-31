@@ -3,7 +3,6 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -42,6 +41,8 @@ namespace ScottPlot
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
         public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
         public bool AxisEqualScale = false;
+        public bool EqualScaleUseX = true;
+        public bool EqualScaleUseY = true;
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
@@ -234,7 +235,10 @@ namespace ScottPlot
             if (AxisEqualScale == false)
                 return;
 
-            double unitsPerPixel = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
+            if (EqualScaleUseX == false && EqualScaleUseY == false)
+                return;
+
+            double unitsPerPixel = Math.Max(EqualScaleUseX ? XAxis.Dims.UnitsPerPx : 0, EqualScaleUseY ? YAxis.Dims.UnitsPerPx : 0);
             double xHalfSize = (XAxis.Dims.DataSizePx / 2) * unitsPerPixel;
             double yHalfSize = (YAxis.Dims.DataSizePx / 2) * unitsPerPixel;
 
