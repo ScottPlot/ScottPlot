@@ -44,6 +44,29 @@ namespace ScottPlot.Control
         /// </summary>
         public bool ScrollWheelZoom = true;
 
+        private double _scrollWheelZoomIncrement = 0.15;
+
+        /// <summary>
+        /// Zoom value for a single scroll of the mouse wheel.
+        /// Available range is (0, 1).
+        /// Zoom in goes (1 + value) times, 
+        /// Zoom out goes (1 - value) times.
+        /// Default value is 0.15
+        /// </summary>
+        public double ScrollWheelZoomIncrement
+        {
+            get => _scrollWheelZoomIncrement;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomIncrement", "must be positive");
+                if (value >= 1)
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomIncrement", "must be less than 1");
+
+                _scrollWheelZoomIncrement = value;
+            }
+        }
+
         /// <summary>
         /// Number of milliseconds after low quality scroll wheel zoom to re-render using high quality
         /// </summary>
