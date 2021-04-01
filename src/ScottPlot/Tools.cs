@@ -398,11 +398,11 @@ namespace ScottPlot
             }
         }
 
-        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
+        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true, char decimalSymbol = '.')
         {
             if (number < 0)
             {
-                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes);
+                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes, decimalSymbol);
             }
             else if (number == 0)
             {
@@ -451,8 +451,8 @@ namespace ScottPlot
                 {
                     output += "0";
                 }
-                output += ".";
-                output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
+                output += decimalSymbol;
+                output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces, dropTrailingZeroes, decimalSymbol);
                 if (dropTrailingZeroes)
                 {
                     while (output.Last() == '0')
@@ -460,7 +460,7 @@ namespace ScottPlot
                         output = output.Substring(0, output.Length - 1);
                     }
 
-                    if (output.Last() == '.')
+                    if (output.Last() == decimalSymbol)
                     {
                         output = output.Substring(0, output.Length - 1);
                     }
