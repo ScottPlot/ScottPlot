@@ -276,7 +276,7 @@ namespace ScottPlot.Plottable
                 ValidatePoints(pointsArray);
 
                 if (penLD.Width > 0)
-                    gfx.DrawLines(penHD, pointsArray);
+                    gfx.DrawLines(penLD, pointsArray);
 
                 if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
                 {
