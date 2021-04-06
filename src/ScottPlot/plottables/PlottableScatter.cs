@@ -176,7 +176,7 @@ namespace ScottPlot
                 }
 
                 // draw the lines connecting points
-                if (lineWidth > 0 && lineStyle != LineStyle.None)
+                if (lineWidth > 0 && lineStyle != LineStyle.None && points.Length > 1)
                 {
                     if (stepDisplay)
                     {
