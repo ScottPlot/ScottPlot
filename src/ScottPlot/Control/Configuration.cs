@@ -124,5 +124,11 @@ namespace ScottPlot.Control
         /// If false, control interactions will be blocking while renders are drawn.
         /// </summary>
         public bool UseRenderQueue = false;
+
+        /// <summary>
+        /// Distance (in pixels) the mouse can travel with a button held-down for it to be treated as a click (not a drag).
+        /// A number slightly above zero allows middle-click to call AxisAuto() even if it was draged a few pixels by accident.
+        /// </summary>
+        public int IgnoreMouseDragDistance = 5;
     }
 }

@@ -196,9 +196,14 @@ namespace ScottPlot.Control
         private int BitmapRenderCount = 0;
 
         /// <summary>
-        /// Tracks the total distance the mouse was click-dragged
+        /// Tracks the total distance the mouse was click-dragged (rectangular pixel units)
         /// </summary>
-        private (float X, float Y) MouseDownTravelDistance = (0, 0);
+        private float MouseDownTravelDistance;
+
+        /// <summary>
+        /// True if the mouse was dragged (with a button down) long enough to quality as a drag instead of a click
+        /// </summary>
+        private bool MouseDownDragged => MouseDownTravelDistance > Configuration.IgnoreMouseDragDistance;
 
         /// <summary>
         /// Create a back-end for a user control
@@ -412,7 +417,7 @@ namespace ScottPlot.Control
             IsLeftDown = input.LeftWasJustPressed;
             PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
-            MouseDownTravelDistance = (0, 0);
+            MouseDownTravelDistance = 0;
         }
 
         /// <summary>
@@ -441,10 +446,10 @@ namespace ScottPlot.Control
             IsZoomingWithAlt = IsLeftDown && input.AltDown;
             bool isMiddleClickDragZooming = IsMiddleDown;
             bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
-            IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom;
+            IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom && MouseDownDragged;
 
-            MouseDownTravelDistance.X += Math.Abs(input.X - MouseLocationX);
-            MouseDownTravelDistance.Y += Math.Abs(input.Y - MouseLocationY);
+            MouseDownTravelDistance += Math.Abs(input.X - MouseLocationX);
+            MouseDownTravelDistance += Math.Abs(input.Y - MouseLocationY);
 
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
@@ -524,18 +529,17 @@ namespace ScottPlot.Control
         public void MouseUp(InputState input)
         {
             PlottableBeingDragged = null;
-            bool mouseWasDragged = (MouseDownTravelDistance.X + MouseDownTravelDistance.Y) > 0;
 
             IUIEvent mouseEvent;
-            if (IsZoomingRectangle && mouseWasDragged && Configuration.MiddleClickDragZoom)
+            if (IsZoomingRectangle && MouseDownDragged && Configuration.MiddleClickDragZoom)
                 mouseEvent = EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y);
-            else if (IsMiddleDown && Configuration.MiddleClickAutoAxis)
+            else if (IsMiddleDown && Configuration.MiddleClickAutoAxis && MouseDownDragged == false)
                 mouseEvent = EventFactory.CreateMouseAutoAxis();
             else
                 mouseEvent = EventFactory.CreateMouseUpClearRender();
             ProcessEvent(mouseEvent);
 
-            if (IsRightDown && mouseWasDragged == false)
+            if (IsRightDown && MouseDownDragged == false)
                 RightClicked(null, EventArgs.Empty);
 
             IsMiddleDown = false;
