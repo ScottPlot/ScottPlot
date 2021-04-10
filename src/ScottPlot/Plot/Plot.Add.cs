@@ -134,7 +134,8 @@ namespace ScottPlot
         {
             var plottable = new BarPlot(positions, values, errors, null)
             {
-                FillColor = color ?? GetNextColor()
+                FillColor = color ?? GetNextColor(),
+                FillColorNegative = color ?? GetNextColor(),
             };
             Add(plottable);
             return plottable;
