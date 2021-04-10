@@ -462,13 +462,12 @@ namespace ScottPlot
         /// <summary>
         /// Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
         /// </summary>
-        /// <param name="enable">if true, scales are locked</param>
-        public void AxisScaleLock(bool enable, bool EqualScaleUseX = true, bool EqualScaleUseY = true)
+        /// <param name="enable">if true, scales are locked such that zooming one zooms the other</param>
+        /// <param name="scaleMode">defines behavior for how to adjust axis limits to achieve equal scales</param>
+        public void AxisScaleLock(bool enable, EqualScaleMode scaleMode = EqualScaleMode.PreserveY)
         {
             settings.AxisAutoUnsetAxes();
-            settings.AxisEqualScale = enable;
-            settings.EqualScaleUseX = EqualScaleUseX;
-            settings.EqualScaleUseY = EqualScaleUseY;
+            settings.EqualScaleMode = enable ? scaleMode : EqualScaleMode.Disabled;
             settings.LayoutAuto();
             settings.EnforceEqualAxisScales();
         }
