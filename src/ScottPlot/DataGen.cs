@@ -60,6 +60,13 @@ namespace ScottPlot
             return ys;
         }
 
+        /// <summary>
+        /// Return data for a sine wave that increases frequency toward the end of an array.
+        /// This function may be useful for inspecting rendering artifacts when data is displayed at different densities.
+        /// </summary>
+        /// <param name="pointCount">The number of values to generate.</param>
+        /// <param name="density">Increasing this value increases maximum frequency.</param>
+        /// <returns>An array of values</returns>
         public static double[] SinSweep(int pointCount, double density = 50.0)
         {
             double[] data = new double[pointCount];
@@ -68,18 +75,6 @@ namespace ScottPlot
                 double t = (double)i / pointCount * density;
                 double tSquared = Math.Pow(t, 2);
                 data[i] = Math.Sin(tSquared);
-            }
-            return data;
-        }
-
-        public static byte[] SinSweepByte(int pointCount, double density = 50.0)
-        {
-            byte[] data = new byte[pointCount];
-            for (int i = 0; i < data.Length; i++)
-            {
-                double t = (double)i / pointCount * density;
-                double tSquared = Math.Pow(t, 2);
-                data[i] = (byte)(Math.Sin(tSquared) * 120 + 128);
             }
             return data;
         }
