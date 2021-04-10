@@ -7,6 +7,7 @@ using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -15,6 +16,21 @@ namespace ScottPlot
 {
     public partial class Plot
     {
+        [Obsolete("Use AddHeatmapCoordinated (note capitalization)")]
+        [EditorBrowsable(EditorBrowsableState.Never)] // Prevents suggestions in Intellisense for downstream users. Still shows up while editing this assembly.
+        public CoordinatedHeatmap AddHeatMapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            return AddHeatmapCoordinated(intensities, xMin, xMax, yMin, yMax, colormap);
+        }
+
+        [Obsolete("Use AddHeatmapCoordinated (note capitalization)")]
+        [EditorBrowsable(EditorBrowsableState.Never)] // Prevents suggestions in Intellisense for downstream users. Still shows up while editing this assembly.
+        public CoordinatedHeatmap AddHeatMapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            return AddHeatmapCoordinated(intensities, xMin, xMax, yMin, yMax, colormap);
+        }
+
+
         [Obsolete("Use AddAnnotation() and customize the object it returns")]
         public Annotation PlotAnnotation(
             string label,

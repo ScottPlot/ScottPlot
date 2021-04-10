@@ -182,7 +182,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
-            var hmc = plt.AddHeatMapCoordinated(intensities, xMin: -100, xMax: 500, yMin: 200, yMax: 201);
+            var hmc = plt.AddHeatmapCoordinated(intensities, xMin: -100, xMax: 500, yMin: 200, yMax: 201);
             var cb = plt.AddColorbar(hmc);
         }
     }
