@@ -7,6 +7,7 @@ using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -15,23 +16,38 @@ namespace ScottPlot
 {
     public partial class Plot
     {
+        [Obsolete("Use AddHeatmapCoordinated (note capitalization)")]
+        [EditorBrowsable(EditorBrowsableState.Never)] // Prevents suggestions in Intellisense for downstream users. Still shows up while editing this assembly.
+        public CoordinatedHeatmap AddHeatMapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            return AddHeatmapCoordinated(intensities, xMin, xMax, yMin, yMax, colormap);
+        }
+
+        [Obsolete("Use AddHeatmapCoordinated (note capitalization)")]
+        [EditorBrowsable(EditorBrowsableState.Never)] // Prevents suggestions in Intellisense for downstream users. Still shows up while editing this assembly.
+        public CoordinatedHeatmap AddHeatMapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            return AddHeatmapCoordinated(intensities, xMin, xMax, yMin, yMax, colormap);
+        }
+
+
         [Obsolete("Use AddAnnotation() and customize the object it returns")]
         public Annotation PlotAnnotation(
-            string label,
-            double xPixel = 10,
-            double yPixel = 10,
-            double fontSize = 12,
-            string fontName = "Segoe UI",
-            Color? fontColor = null,
-            double fontAlpha = 1,
-            bool fill = true,
-            Color? fillColor = null,
-            double fillAlpha = .2,
-            double lineWidth = 1,
-            Color? lineColor = null,
-            double lineAlpha = 1,
-            bool shadow = false
-            )
+        string label,
+        double xPixel = 10,
+        double yPixel = 10,
+        double fontSize = 12,
+        string fontName = "Segoe UI",
+        Color? fontColor = null,
+        double fontAlpha = 1,
+        bool fill = true,
+        Color? fillColor = null,
+        double fillAlpha = .2,
+        double lineWidth = 1,
+        Color? lineColor = null,
+        double lineAlpha = 1,
+        bool shadow = false
+        )
         {
             fontColor ??= Color.Black;
             fillColor ??= Color.Yellow;

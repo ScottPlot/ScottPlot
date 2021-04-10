@@ -368,7 +368,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public CoordinatedHeatmap AddHeatMapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        public CoordinatedHeatmap AddHeatmapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();
 
@@ -437,7 +437,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public CoordinatedHeatmap AddHeatMapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        public CoordinatedHeatmap AddHeatmapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();
 
