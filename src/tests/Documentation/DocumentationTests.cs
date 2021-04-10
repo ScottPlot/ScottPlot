@@ -82,5 +82,23 @@ namespace ScottPlotTests.Documentation
                 }
             }
         }
+
+        [Test]
+        public void Text_Datagen_MethodsHaveSummaries()
+        {
+            foreach (MethodInfo info in typeof(ScottPlot.DataGen).GetMethods())
+            {
+                // skip abstract methods
+                if (info.DeclaringType.IsAbstract && info.DeclaringType != typeof(ScottPlot.DataGen)) // Static classes count as abstract since they cannot be instantiated.....
+                    continue;
+
+                // skip inherited methods
+                if (info.DeclaringType.FullName is null || info.DeclaringType.FullName == "System.Object")
+                    continue;
+
+                var m = new DocumentedMethod(info, LoadedXmlDocument);
+                Assert.IsNotNull(m.Summary, $"{m.FullName} has no summary.");
+            }
+        }
     }
 }
