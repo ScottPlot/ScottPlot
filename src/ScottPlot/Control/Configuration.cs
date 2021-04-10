@@ -44,26 +44,23 @@ namespace ScottPlot.Control
         /// </summary>
         public bool ScrollWheelZoom = true;
 
-        private double _scrollWheelZoomIncrement = 0.15;
+        private double _scrollWheelZoomFraction = 0.15;
 
         /// <summary>
-        /// Zoom value for a single scroll of the mouse wheel.
-        /// Available range is (0, 1).
-        /// Zoom in goes (1 + value) times, 
-        /// Zoom out goes (1 - value) times.
-        /// Default value is 0.15
+        /// Fractional amount to zoom in or out when the mouse wheel is scrolled.
+        /// Value must be between 0 and 1 (default is 0.15).
         /// </summary>
-        public double ScrollWheelZoomIncrement
+        public double ScrollWheelZoomFraction
         {
-            get => _scrollWheelZoomIncrement;
+            get => _scrollWheelZoomFraction;
             set
             {
                 if (value <= 0)
-                    throw new ArgumentOutOfRangeException("ScrollWheelZoomIncrement", "must be positive");
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomFraction", "must be positive");
                 if (value >= 1)
-                    throw new ArgumentOutOfRangeException("ScrollWheelZoomIncrement", "must be less than 1");
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomFraction", "must be less than 1");
 
-                _scrollWheelZoomIncrement = value;
+                _scrollWheelZoomFraction = value;
             }
         }
 

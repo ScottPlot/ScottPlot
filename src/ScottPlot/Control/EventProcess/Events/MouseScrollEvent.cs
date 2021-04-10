@@ -23,8 +23,8 @@
 
         public void ProcessEvent()
         {
-            double increment = 1.0 + Configuration.ScrollWheelZoomIncrement;
-            double decrement = 1.0 - Configuration.ScrollWheelZoomIncrement;
+            double increment = 1.0 + Configuration.ScrollWheelZoomFraction;
+            double decrement = 1.0 - Configuration.ScrollWheelZoomFraction;
 
             double xFrac = ScrolledUp ? increment : decrement;
             double yFrac = ScrolledUp ? increment : decrement;

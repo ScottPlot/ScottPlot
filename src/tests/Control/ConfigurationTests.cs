@@ -15,7 +15,7 @@ namespace ScottPlotTests.Control
         public void ScrollWheelZoomIncrement_WithinValidRange_NotThrows(double value)
         {
             Configuration config = new Configuration();
-            config.ScrollWheelZoomIncrement = value;
+            config.ScrollWheelZoomFraction = value;
         }
 
         [TestCase(-5)]
@@ -26,7 +26,7 @@ namespace ScottPlotTests.Control
         public void ScrollWheelZoomIncrement_WithoutValidRange_Throws(double value)
         {
             Configuration config = new Configuration();
-            Assert.Throws<ArgumentOutOfRangeException>(() => config.ScrollWheelZoomIncrement = value);
+            Assert.Throws<ArgumentOutOfRangeException>(() => config.ScrollWheelZoomFraction = value);
         }
     }
 }
