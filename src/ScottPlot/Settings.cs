@@ -3,7 +3,6 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -41,7 +40,8 @@ namespace ScottPlot
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
         public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
-        public bool AxisEqualScale = false;
+
+        public EqualScaleMode EqualScaleMode = EqualScaleMode.Disabled;
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
@@ -227,23 +227,35 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Ensure X and Y axes have the same scale (units per pixel) if AxisEqualScale is True
+        /// If a scale lock mode is in use, modify the axis limits accordingly
         /// </summary>
         public void EnforceEqualAxisScales()
         {
-            if (AxisEqualScale == false)
-                return;
+            switch (EqualScaleMode)
+            {
+                case EqualScaleMode.Disabled:
+                    return;
 
-            double unitsPerPixel = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
-            double xHalfSize = (XAxis.Dims.DataSizePx / 2) * unitsPerPixel;
-            double yHalfSize = (YAxis.Dims.DataSizePx / 2) * unitsPerPixel;
+                case EqualScaleMode.PreserveX:
+                    double yHalfSize = (YAxis.Dims.DataSizePx / 2) * XAxis.Dims.UnitsPerPx;
+                    AxisSet(null, null, YAxis.Dims.Center - yHalfSize, YAxis.Dims.Center + yHalfSize);
+                    return;
 
-            double xMin = XAxis.Dims.Center - xHalfSize;
-            double xMax = XAxis.Dims.Center + xHalfSize;
-            double yMin = YAxis.Dims.Center - yHalfSize;
-            double yMax = YAxis.Dims.Center + yHalfSize;
+                case EqualScaleMode.PreserveY:
+                    double xHalfSize = (XAxis.Dims.DataSizePx / 2) * YAxis.Dims.UnitsPerPx;
+                    AxisSet(XAxis.Dims.Center - xHalfSize, XAxis.Dims.Center + xHalfSize, null, null);
+                    return;
 
-            AxisSet(xMin, xMax, yMin, yMax);
+                case EqualScaleMode.ZoomOut:
+                    double maxUnitsPerPx = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
+                    double halfX = (XAxis.Dims.DataSizePx / 2) * maxUnitsPerPx;
+                    double halfY = (YAxis.Dims.DataSizePx / 2) * maxUnitsPerPx;
+                    AxisSet(XAxis.Dims.Center - halfX, XAxis.Dims.Center + halfX, YAxis.Dims.Center - halfY, YAxis.Dims.Center + halfY);
+                    return;
+
+                default:
+                    throw new InvalidOperationException("unknown scale lock mode");
+            }
         }
 
         /// <summary>
