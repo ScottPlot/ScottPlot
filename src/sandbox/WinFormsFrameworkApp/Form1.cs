@@ -7,49 +7,26 @@ namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
-        private readonly Random Rand = new Random();
-
         public Form1()
         {
             InitializeComponent();
-            buttonScatter1k_Click(null, null);
-            cbRenderQueue.Checked = formsPlot1.Configuration.UseRenderQueue;
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51, mult: 10));
         }
 
-        private void btnScatter10_Click(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int pointCount = 10;
-            double[] xs = ScottPlot.DataGen.Random(Rand, pointCount);
-            double[] ys = ScottPlot.DataGen.Random(Rand, pointCount);
-            formsPlot1.Plot.Clear();
-            formsPlot1.Plot.AddScatter(xs, ys);
-            formsPlot1.Plot.Title("Scatter Plot with 10 Points");
-            formsPlot1.RenderLowThenImmediateHighQuality();
-        }
+            if (comboBox1.Text == "Disabled")
+                formsPlot1.Plot.AxisScaleLock(enable: false);
+            else if (comboBox1.Text == "Preserve X")
+                formsPlot1.Plot.AxisScaleLock(enable: true, scaleMode: ScottPlot.EqualScaleMode.PreserveX);
+            else if (comboBox1.Text == "Preserve Y")
+                formsPlot1.Plot.AxisScaleLock(enable: true, scaleMode: ScottPlot.EqualScaleMode.PreserveY);
+            else if (comboBox1.Text == "Zoom Out")
+                formsPlot1.Plot.AxisScaleLock(enable: true, scaleMode: ScottPlot.EqualScaleMode.ZoomOut);
+            else
+                throw new InvalidOperationException();
 
-        private void buttonScatter1k_Click(object sender, EventArgs e)
-        {
-            int pointCount = 2_000;
-            double[] xs = ScottPlot.DataGen.Random(Rand, pointCount);
-            double[] ys = ScottPlot.DataGen.Random(Rand, pointCount);
-            formsPlot1.Plot.Clear();
-            formsPlot1.Plot.AddScatter(xs, ys);
-            formsPlot1.Plot.Title("Scatter Plot with 2,000 Points");
-            formsPlot1.RenderLowThenImmediateHighQuality();
+            formsPlot1.Render();
         }
-
-        private void buttonSignal1M_Click(object sender, EventArgs e)
-        {
-            int pointCount = 1_000_000;
-            int sampleRate = 48_000;
-            double[] data = ScottPlot.DataGen.RandomWalk(Rand, pointCount);
-            formsPlot1.Plot.Clear();
-            formsPlot1.Plot.AddSignal(data, sampleRate);
-            formsPlot1.Plot.Title("Signal Plot with 1,000,000 Points");
-            formsPlot1.RenderLowThenImmediateHighQuality();
-        }
-
-        private void cbRenderQueue_CheckedChanged(object sender, EventArgs e) =>
-            formsPlot1.Configuration.UseRenderQueue = cbRenderQueue.Checked;
     }
 }
