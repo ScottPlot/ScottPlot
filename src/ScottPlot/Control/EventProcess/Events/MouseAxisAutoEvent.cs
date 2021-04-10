@@ -22,11 +22,12 @@
         {
             Settings.ZoomRectangle.Clear();
 
-            if (Configuration.LockVerticalAxis == false)
-                Plot.AxisAutoY(Configuration.MiddleClickAutoAxisMarginY);
+            if (Configuration.LockVerticalAxis)
+                return;
 
-            if (Configuration.LockHorizontalAxis == false)
-                Plot.AxisAutoX(Configuration.MiddleClickAutoAxisMarginX);
+            Plot.AxisAuto(
+                horizontalMargin: Configuration.MiddleClickAutoAxisMarginX,
+                verticalMargin: Configuration.MiddleClickAutoAxisMarginY);
         }
     }
 }
