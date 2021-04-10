@@ -44,6 +44,26 @@ namespace ScottPlot.Control
         /// </summary>
         public bool ScrollWheelZoom = true;
 
+        private double _scrollWheelZoomFraction = 0.15;
+
+        /// <summary>
+        /// Fractional amount to zoom in or out when the mouse wheel is scrolled.
+        /// Value must be between 0 and 1 (default is 0.15).
+        /// </summary>
+        public double ScrollWheelZoomFraction
+        {
+            get => _scrollWheelZoomFraction;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomFraction", "must be positive");
+                if (value >= 1)
+                    throw new ArgumentOutOfRangeException("ScrollWheelZoomFraction", "must be less than 1");
+
+                _scrollWheelZoomFraction = value;
+            }
+        }
+
         /// <summary>
         /// Number of milliseconds after low quality scroll wheel zoom to re-render using high quality
         /// </summary>

@@ -23,8 +23,11 @@
 
         public void ProcessEvent()
         {
-            double xFrac = ScrolledUp ? 1.15 : 0.85;
-            double yFrac = ScrolledUp ? 1.15 : 0.85;
+            double increment = 1.0 + Configuration.ScrollWheelZoomFraction;
+            double decrement = 1.0 - Configuration.ScrollWheelZoomFraction;
+
+            double xFrac = ScrolledUp ? increment : decrement;
+            double yFrac = ScrolledUp ? increment : decrement;
 
             if (Configuration.LockHorizontalAxis)
                 xFrac = 1;
