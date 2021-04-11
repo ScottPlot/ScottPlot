@@ -6,7 +6,7 @@
         x:Class="ScottPlot.Demo.Avalonia.MainWindow"
         xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         Title="ScottPlot Demo"
-        Width="500"
+        Width="520"
         Height="350"
         >
 	<ScrollViewer>
