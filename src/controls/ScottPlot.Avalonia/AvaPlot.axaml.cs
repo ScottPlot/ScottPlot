@@ -172,7 +172,7 @@ namespace ScottPlot.Avalonia
             return bitmapImage;
         }
 
-        public void DefaultRightClickEvent(object sender, EventArgs e)
+        private ContextMenu GetDefaultContextMenu()
         {
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
@@ -195,7 +195,23 @@ namespace ScottPlot.Avalonia
                 OpenInNewWindowMenuItem
             };
             cm.Items = cmItems;
-            cm.Open(this);
+            return cm;
+        }
+        private ContextMenu _defaultContextMenu;
+        private ContextMenu defaultContextMenu
+        {
+            get
+            {
+                if (_defaultContextMenu is null)
+                    _defaultContextMenu = GetDefaultContextMenu();
+
+                return _defaultContextMenu;
+            }
+        }
+
+        public void DefaultRightClickEvent(object sender, EventArgs e)
+        {
+            defaultContextMenu.Open(this);
         }
 
         //private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));

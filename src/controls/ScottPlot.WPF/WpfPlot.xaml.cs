@@ -171,10 +171,7 @@ namespace ScottPlot
             return bitmapImage;
         }
 
-        /// <summary>
-        /// Launch the default right-click menu.
-        /// </summary>
-        public void DefaultRightClickEvent(object sender, EventArgs e)
+        private ContextMenu GetDefaultContextMenu()
         {
             MenuItem SaveImageMenuItem = new() { Header = "Save Image" };
             SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
@@ -188,12 +185,38 @@ namespace ScottPlot
             OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
 
             var cm = new ContextMenu();
-            cm.Items.Add(SaveImageMenuItem);
-            cm.Items.Add(CopyImageMenuItem);
-            cm.Items.Add(AutoAxisMenuItem);
-            cm.Items.Add(HelpMenuItem);
-            cm.Items.Add(OpenInNewWindowMenuItem);
-            cm.IsOpen = true;
+            List<MenuItem> cmItems = new List<MenuItem>
+            {
+                SaveImageMenuItem,
+                CopyImageMenuItem,
+                AutoAxisMenuItem,
+                HelpMenuItem,
+                OpenInNewWindowMenuItem
+            };
+
+            foreach (var item in cmItems)
+                cm.Items.Add(item);
+
+            return cm;
+        }
+        private ContextMenu _defaultContextMenu;
+        private ContextMenu defaultContextMenu
+        {
+            get
+            {
+                if (_defaultContextMenu is null)
+                    _defaultContextMenu = GetDefaultContextMenu();
+
+                return _defaultContextMenu;
+            }
+        }
+
+        /// <summary>
+        /// Launch the default right-click menu.
+        /// </summary>
+        public void DefaultRightClickEvent(object sender, EventArgs e)
+        {
+            defaultContextMenu.IsOpen = true;
         }
 
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
