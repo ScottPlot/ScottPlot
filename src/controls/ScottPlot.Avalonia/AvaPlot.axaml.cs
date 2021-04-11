@@ -182,6 +182,8 @@ namespace ScottPlot.Avalonia
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += RightClickMenu_Help_Click;
+            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
+            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
 
             var cm = new ContextMenu();
             List<MenuItem> cmItems = new List<MenuItem>
@@ -189,7 +191,8 @@ namespace ScottPlot.Avalonia
                 SaveImageMenuItem,
                 //CopyImageMenuItem,
                 AutoAxisMenuItem,
-                HelpMenuItem
+                HelpMenuItem,
+                OpenInNewWindowMenuItem
             };
             cm.Items = cmItems;
             cm.Open(this);
@@ -237,6 +240,7 @@ namespace ScottPlot.Avalonia
             if ((filenameTask.Result ?? "") != "")
                 Plot.SaveFig(filenameTask.Result);
         }
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new AvaPlotViewer(Plot).Show(); }
 
         private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {

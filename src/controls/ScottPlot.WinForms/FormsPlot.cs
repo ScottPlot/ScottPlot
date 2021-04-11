@@ -122,18 +122,18 @@ namespace ScottPlot
 
         private Control.InputState GetInputState(MouseEventArgs e) =>
             new()
-            {
-                X = e.X,
-                Y = e.Y,
-                LeftWasJustPressed = e.Button == MouseButtons.Left,
-                RightWasJustPressed = e.Button == MouseButtons.Right,
-                MiddleWasJustPressed = e.Button == MouseButtons.Middle,
-                ShiftDown = ModifierKeys.HasFlag(Keys.Shift),
-                CtrlDown = ModifierKeys.HasFlag(Keys.Control),
-                AltDown = ModifierKeys.HasFlag(Keys.Alt),
-                WheelScrolledUp = e.Delta > 0,
-                WheelScrolledDown = e.Delta < 0,
-            };
+        {
+            X = e.X,
+            Y = e.Y,
+            LeftWasJustPressed = e.Button == MouseButtons.Left,
+            RightWasJustPressed = e.Button == MouseButtons.Right,
+            MiddleWasJustPressed = e.Button == MouseButtons.Middle,
+            ShiftDown = ModifierKeys.HasFlag(Keys.Shift),
+            CtrlDown = ModifierKeys.HasFlag(Keys.Control),
+            AltDown = ModifierKeys.HasFlag(Keys.Alt),
+            WheelScrolledUp = e.Delta > 0,
+            WheelScrolledDown = e.Delta < 0,
+        };
 
         /// <summary>
         /// Launch the default right-click menu.
@@ -155,6 +155,11 @@ namespace ScottPlot
 
             if (sfd.ShowDialog() == DialogResult.OK)
                 Plot.SaveFig(sfd.FileName);
+        }
+
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e)
+        {
+            new FormsPlotViewer(Plot).Show();
         }
     }
 }

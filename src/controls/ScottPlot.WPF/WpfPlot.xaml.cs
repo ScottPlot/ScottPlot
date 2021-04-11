@@ -122,18 +122,18 @@ namespace ScottPlot
 
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
-            {
-                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
-                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
-                LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
-                RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
-                MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
-                ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
-                CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
-                AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
-                WheelScrolledUp = delta.HasValue && delta > 0,
-                WheelScrolledDown = delta.HasValue && delta < 0,
-            };
+        {
+            X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
+            Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
+            LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
+            RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
+            MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
+            ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
+            CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
+            AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
+            WheelScrolledUp = delta.HasValue && delta > 0,
+            WheelScrolledDown = delta.HasValue && delta < 0,
+        };
 
         private void InitializeLayout()
         {
@@ -184,12 +184,15 @@ namespace ScottPlot
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
             MenuItem HelpMenuItem = new() { Header = "Help" };
             HelpMenuItem.Click += RightClickMenu_Help_Click;
+            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
+            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
 
             var cm = new ContextMenu();
             cm.Items.Add(SaveImageMenuItem);
             cm.Items.Add(CopyImageMenuItem);
             cm.Items.Add(AutoAxisMenuItem);
             cm.Items.Add(HelpMenuItem);
+            cm.Items.Add(OpenInNewWindowMenuItem);
             cm.IsOpen = true;
         }
 
@@ -210,6 +213,7 @@ namespace ScottPlot
             if (sfd.ShowDialog() is true)
                 Plot.SaveFig(sfd.FileName);
         }
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new WpfPlotViewer(Plot).Show(); }
 
     }
 }
