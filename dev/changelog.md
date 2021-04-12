@@ -1,5 +1,20 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.12-beta
+* User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @
+PassionateDeveloper86 and @StendProg_
+* Added options to `Plot.AxisScaleLock()` to let the user define scaling behavior when the plot is resized (#933, #857) _Thanks @ricecakebear and @StendProg_
+* Improved XML documentation for `DataGen` module (#903, #902) _Thanks @bclehmann_
+* Fixed bug where tick labels would not render for axes with a single tick (#945, #828, #725, #925) _Thanks @saklanmazozgur and @audun_
+* Added option to manually refine tick density (#828) _Thanks @ChrisAtVault and @bclehmann_
+* Improved tick density calculations for DateTime axes (#725) _Thanks @bclehmann_
+* Fixed SignalXY rendering artifact affecting the right edge of the plot (#929, #931) _Thanks @damiandixon and @StendProg_
+* Improved line style customization for signal plots (#929, #931) _Thanks @damiandixon and @StendProg_
+* Fixed bug where negative bar plots would default to red fill color (#968, #946) _Thanks @pietcoussens_
+* Fixed bug where custom vertical margin was not respected when `AxisAuto()` was called with a middle-click (#943) _Thanks Andreas_
+* Added a minimum distance the mouse must travel while click-dragging for the action to be considered a drag instead of a click (#962)
+* Improved Histogram documentation and simplified access to probability curves (#930, #932, #971) _Thanks @LB767, @breakwinz, and @bclehmann_
+
 ## ScottPlot 4.1.11-beta
 * FormsPlot mouse events are now properly forwarded to the base control (#892, #919) _Thanks @grabul_
 * Prevent right-click menu from deploying after right-click-drag (#891, #917)
