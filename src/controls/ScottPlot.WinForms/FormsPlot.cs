@@ -156,5 +156,10 @@ namespace ScottPlot
             if (sfd.ShowDialog() == DialogResult.OK)
                 Plot.SaveFig(sfd.FileName);
         }
+
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e)
+        {
+            new FormsPlotViewer(Plot).Show();
+        }
     }
 }

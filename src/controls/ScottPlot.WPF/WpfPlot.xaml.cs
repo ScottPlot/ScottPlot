@@ -176,25 +176,34 @@ namespace ScottPlot
         /// </summary>
         public void DefaultRightClickEvent(object sender, EventArgs e)
         {
+            var cm = new ContextMenu();
+
             MenuItem SaveImageMenuItem = new() { Header = "Save Image" };
             SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
+            cm.Items.Add(SaveImageMenuItem);
+
             MenuItem CopyImageMenuItem = new() { Header = "Copy Image" };
             CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
+            cm.Items.Add(CopyImageMenuItem);
+
             MenuItem AutoAxisMenuItem = new() { Header = "Zoom to Fit Data" };
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
+            cm.Items.Add(AutoAxisMenuItem);
+
             MenuItem HelpMenuItem = new() { Header = "Help" };
             HelpMenuItem.Click += RightClickMenu_Help_Click;
-
-            var cm = new ContextMenu();
-            cm.Items.Add(SaveImageMenuItem);
-            cm.Items.Add(CopyImageMenuItem);
-            cm.Items.Add(AutoAxisMenuItem);
             cm.Items.Add(HelpMenuItem);
+
+            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
+            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
+            cm.Items.Add(OpenInNewWindowMenuItem);
+
             cm.IsOpen = true;
         }
 
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new WPF.HelpWindow().Show();
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new WpfPlotViewer(Plot).Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
