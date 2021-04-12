@@ -60,7 +60,7 @@ namespace ScottPlot.Cookbook.Recipes
             // display histogram distribution curve as a line plot
             plt.AddScatterLines(
                 xs: hist.bins,
-                ys: hist.countsProbability,
+                ys: hist.probability,
                 color: Color.Black,
                 lineWidth: 2,
                 lineStyle: LineStyle.Dash);
@@ -107,14 +107,14 @@ namespace ScottPlot.Cookbook.Recipes
             // plot probability function curves
             plt.AddScatterLines(
                 xs: histMale.bins,
-                ys: histMale.countsProbability,
+                ys: histMale.probability,
                 color: Color.FromArgb(150, Color.Blue),
                 lineWidth: 3,
                 label: $"Male (n={heightsMale.Length:N0})");
 
             plt.AddScatterLines(
                 xs: histFemale.bins,
-                ys: histFemale.countsProbability,
+                ys: histFemale.probability,
                 color: Color.FromArgb(150, Color.Red),
                 lineWidth: 3,
                 label: $"Female (n={heightsFemale.Length:N0})");

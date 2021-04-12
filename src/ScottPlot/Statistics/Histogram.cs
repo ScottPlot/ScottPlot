@@ -48,7 +48,7 @@ namespace ScottPlot.Statistics
         /// Probability density (fraction) for each bin based on the mean and standard deviation of the population.
         /// The sum of all these values is 1.0
         /// </summary>
-        public readonly double[] countsProbability;
+        public readonly double[] probability;
 
         /// <summary>
         /// This is the probability density curve normalized to its peak, so its maximum value is 1.0
@@ -124,7 +124,7 @@ namespace ScottPlot.Statistics
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
             countsFracCurve = population.GetDistribution(bins, false);
-            countsProbability = population.GetDistribution(bins, true);
+            probability = population.GetDistribution(bins, true);
         }
 
         private static double[] GetNormalized(double[] values)
