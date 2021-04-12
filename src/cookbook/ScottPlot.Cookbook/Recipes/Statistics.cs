@@ -5,41 +5,126 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes
 {
-    public class StatsGaussian : IRecipe
+    public class HistogramCount : IRecipe
     {
         public string Category => "Statistics";
         public string ID => "stats_histogram";
         public string Title => "Histogram";
-        public string Description => "The Histogram class makes it easy to get binned population information.";
+        public string Description =>
+            "The Histogram class makes it easy to get binned population information.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            Random rand = new Random(0);
-            double[] values = DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
-            var hist = new ScottPlot.Statistics.Histogram(values, min: 0, max: 100);
+            // generate sample heights are based on https://ourworldindata.org/human-height
+            Random rand = new(0);
+            double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
 
-            // plot the bins as a bar graph (on the primary Y axis)
+            // create a histogram
+            var hist = new ScottPlot.Statistics.Histogram(heights, min: 140, max: 220, binSize: 1);
+
+            // display the histogram counts as a bar plot
             var bar = plt.AddBar(hist.counts, hist.bins);
-            bar.BarWidth = hist.binSize * 1.2; // oversize to reduce render artifacts
-            bar.BorderLineWidth = 0;
-            bar.YAxisIndex = 0;
+            bar.BarWidth = hist.binSize;
+
+            // customize the plot style
             plt.YAxis.Label("Count (#)");
-            plt.YAxis.Color(bar.FillColor);
-
-            // plot the mean curve as a scatter plot (on the secondary Y axis)
-            var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);
-            sp.MarkerSize = 0;
-            sp.LineWidth = 2;
-            sp.YAxisIndex = 1;
-            plt.YAxis2.Label("Fraction");
-            plt.YAxis2.Color(sp.Color);
-            plt.YAxis2.Ticks(true);
-
-            // decorate the plot
-            plt.XAxis2.Label("Normal Random Data", bold: true);
-            plt.XAxis.Label("Value (units)");
+            plt.XAxis.Label("Height (cm)");
             plt.SetAxisLimits(yMin: 0);
-            plt.Grid(lineStyle: LineStyle.Dot);
+        }
+    }
+
+    public class HistogramProbability : IRecipe
+    {
+        public string Category => "Statistics";
+        public string ID => "stats_histogramProbability";
+        public string Title => "Histogram Probability";
+        public string Description =>
+            "Binned probability can be displayed instead of raw counts. " +
+            "The probability density is also available for every bin.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate sample heights are based on https://ourworldindata.org/human-height
+            Random rand = new(0);
+            double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
+
+            // create a histogram
+            var hist = new ScottPlot.Statistics.Histogram(heights, min: 140, max: 220, binSize: 1);
+
+            // display histogram probabability as a bar plot
+            var bar = plt.AddBar(values: hist.countsFrac, positions: hist.bins);
+            bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
+            bar.BorderColor = ColorTranslator.FromHtml("#82add9");
+            bar.BarWidth = hist.binSize;
+
+            // display histogram distribution curve as a line plot
+            plt.AddScatterLines(
+                xs: hist.bins,
+                ys: hist.countsProbability,
+                color: Color.Black,
+                lineWidth: 2,
+                lineStyle: LineStyle.Dash);
+
+            // customize the plot style
+            plt.Title("Adult Male Height");
+            plt.YAxis.Label("Probability");
+            plt.XAxis.Label("Height (cm)");
+            plt.SetAxisLimits(yMin: 0);
+        }
+    }
+
+    public class TwoHistograms : IRecipe
+    {
+        public string Category => "Statistics";
+        public string ID => "stats_histogram2";
+        public string Title => "Multiple Histograms";
+        public string Description => "This example demonstrates two histograms on the same plot. " +
+            "Note the use of fractional units on the vertical axis, allowing easy comparison of datasets " +
+            "with different numbers of points. Unlike the previous example, this one does not use multiple axes.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // male and female heights are based on https://ourworldindata.org/human-height
+            Random rand = new(0);
+            double[] heightsMale = ScottPlot.DataGen.RandomNormal(rand, pointCount: 2345, mean: 178.4, stdDev: 7.6);
+            double[] heightsFemale = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 164.7, stdDev: 7.1);
+
+            // calculate histograms for male and female datasets
+            var histMale = new ScottPlot.Statistics.Histogram(heightsMale, min: 140, max: 210, binSize: 1);
+            var histFemale = new ScottPlot.Statistics.Histogram(heightsFemale, min: 140, max: 210, binSize: 1);
+
+            // plot histograms
+            var barMale = plt.AddBar(values: histMale.countsFrac, positions: histMale.bins);
+            barMale.BarWidth = histMale.binSize;
+            barMale.FillColor = Color.FromArgb(50, Color.Blue);
+            barMale.BorderLineWidth = 0;
+
+            var barFemale = plt.AddBar(values: histFemale.countsFrac, positions: histFemale.bins);
+            barFemale.BarWidth = histFemale.binSize;
+            barFemale.FillColor = Color.FromArgb(50, Color.Red);
+            barFemale.BorderLineWidth = 0;
+
+            // plot probability function curves
+            plt.AddScatterLines(
+                xs: histMale.bins,
+                ys: histMale.countsProbability,
+                color: Color.FromArgb(150, Color.Blue),
+                lineWidth: 3,
+                label: $"Male (n={heightsMale.Length:N0})");
+
+            plt.AddScatterLines(
+                xs: histFemale.bins,
+                ys: histFemale.countsProbability,
+                color: Color.FromArgb(150, Color.Red),
+                lineWidth: 3,
+                label: $"Female (n={heightsFemale.Length:N0})");
+
+            // customize styling
+            plt.Title("Human Height by Sex");
+            plt.YLabel("Probability");
+            plt.XLabel("Height (cm)");
+            plt.Legend(location: ScottPlot.Alignment.UpperLeft);
+            plt.SetAxisLimits(yMin: 0);
         }
     }
 
