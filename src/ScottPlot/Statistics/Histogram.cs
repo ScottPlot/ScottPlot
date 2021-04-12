@@ -18,25 +18,78 @@ namespace ScottPlot
 
 namespace ScottPlot.Statistics
 {
+    // TODO: This class needs refactoring to improve names.
+    // Use numpy.histogram as a reference: https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
     public class Histogram
     {
-        public double[] values;
-        public Population population;
-        public double[] bins;
-        public double[] counts;
-        public double[] cumulativeCounts;
-        public double[] countsFrac;
-        public double[] countsFracCurve;
-        public double[] cumulativeFrac;
-        public double binSize { get { return bins[1] - bins[0]; } }
+        /// <summary>
+        /// Lower edges of bins used to create the histogram
+        /// </summary>
+        public readonly double[] bins;
 
-        public double mean { get { return population.mean; } }
-        public double stdev { get { return population.stDev; } }
+        /// <summary>
+        /// Total number of values in each bin.
+        /// </summary>
+        public readonly double[] counts;
 
+        /// <summary>
+        /// Fractional number of values in each bin.
+        /// The total of all values in this array is 1.0.
+        /// </summary>
+        public readonly double[] countsFrac;
+
+        /// <summary>
+        /// Cumulative total number of values in each bin.
+        /// The returned array will start near 0.0 and end near 1.0.
+        /// </summary>
+        public readonly double[] cumulativeCounts;
+
+        /// <summary>
+        /// Probability density (fraction) for each bin based on the mean and standard deviation of the population.
+        /// The sum of all these values is 1.0
+        /// </summary>
+        public readonly double[] countsProbability;
+
+        /// <summary>
+        /// This is the probability density curve normalized to its peak, so its maximum value is 1.0
+        /// </summary>
+        public readonly double[] countsFracCurve;
+
+        /// <summary>
+        /// Cumulative probability density fraction for each bin
+        /// </summary>
+        public readonly double[] cumulativeFrac;
+
+        /// <summary>
+        /// Distance between each bin
+        /// </summary>
+        public readonly double binSize;
+
+        /// <summary>
+        /// Population mean
+        /// </summary>
+        public readonly double mean;
+
+        /// <summary>
+        /// Population standard deviation
+        /// </summary>
+        public readonly double stdev;
+
+        /// <summary>
+        /// Compute the histogram of a set of data.
+        /// Bins are identically sized and evenly spaced.
+        /// </summary>
+        /// <param name="values">input data</param>
+        /// <param name="min">manually-defined lower edge of first bin</param>
+        /// <param name="max">manually-defined upper edge of last bin</param>
+        /// <param name="binSize">manually-defined width of each bin</param>
+        /// <param name="binCount">resize bins as needed so this number of bins is achieved</param>
+        /// <param name="ignoreOutOfBounds">if True, values below min or above max will be ignored</param>
         public Histogram(double[] values, double? min = null, double? max = null, double? binSize = null, double? binCount = null, bool ignoreOutOfBounds = true)
         {
-            this.values = values;
-            population = new Population(values);
+            var population = new Population(values);
+            mean = population.mean;
+            stdev = population.stDev;
 
             min = (min is null) ? population.minus3stDev : min.Value;
             max = (max is null) ? population.plus3stDev : max.Value;
@@ -65,11 +118,13 @@ namespace ScottPlot.Statistics
             }
 
             bins = BinBySize((double)binSize, (double)min, (double)max);
+            this.binSize = bins[1] - bins[0];
             counts = GetHistogram(values, bins, ignoreOutOfBounds);
             cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
             countsFracCurve = population.GetDistribution(bins, false);
+            countsProbability = population.GetDistribution(bins, true);
         }
 
         private static double[] GetNormalized(double[] values)
