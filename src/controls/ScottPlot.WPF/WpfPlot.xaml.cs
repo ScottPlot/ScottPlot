@@ -171,56 +171,39 @@ namespace ScottPlot
             return bitmapImage;
         }
 
-        private ContextMenu GetDefaultContextMenu()
-        {
-            MenuItem SaveImageMenuItem = new() { Header = "Save Image" };
-            SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
-            MenuItem CopyImageMenuItem = new() { Header = "Copy Image" };
-            CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
-            MenuItem AutoAxisMenuItem = new() { Header = "Zoom to Fit Data" };
-            AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
-            MenuItem HelpMenuItem = new() { Header = "Help" };
-            HelpMenuItem.Click += RightClickMenu_Help_Click;
-            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
-            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
-
-            var cm = new ContextMenu();
-            List<MenuItem> cmItems = new List<MenuItem>
-            {
-                SaveImageMenuItem,
-                CopyImageMenuItem,
-                AutoAxisMenuItem,
-                HelpMenuItem,
-                OpenInNewWindowMenuItem
-            };
-
-            foreach (var item in cmItems)
-                cm.Items.Add(item);
-
-            return cm;
-        }
-        private ContextMenu _defaultContextMenu;
-        private ContextMenu defaultContextMenu
-        {
-            get
-            {
-                if (_defaultContextMenu is null)
-                    _defaultContextMenu = GetDefaultContextMenu();
-
-                return _defaultContextMenu;
-            }
-        }
-
         /// <summary>
         /// Launch the default right-click menu.
         /// </summary>
         public void DefaultRightClickEvent(object sender, EventArgs e)
         {
-            defaultContextMenu.IsOpen = true;
+            var cm = new ContextMenu();
+
+            MenuItem SaveImageMenuItem = new() { Header = "Save Image" };
+            SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
+            cm.Items.Add(SaveImageMenuItem);
+
+            MenuItem CopyImageMenuItem = new() { Header = "Copy Image" };
+            CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
+            cm.Items.Add(CopyImageMenuItem);
+
+            MenuItem AutoAxisMenuItem = new() { Header = "Zoom to Fit Data" };
+            AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
+            cm.Items.Add(AutoAxisMenuItem);
+
+            MenuItem HelpMenuItem = new() { Header = "Help" };
+            HelpMenuItem.Click += RightClickMenu_Help_Click;
+            cm.Items.Add(HelpMenuItem);
+
+            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
+            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
+            cm.Items.Add(OpenInNewWindowMenuItem);
+
+            cm.IsOpen = true;
         }
 
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new WPF.HelpWindow().Show();
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new WpfPlotViewer(Plot).Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
@@ -236,7 +219,6 @@ namespace ScottPlot
             if (sfd.ShowDialog() is true)
                 Plot.SaveFig(sfd.FileName);
         }
-        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new WpfPlotViewer(Plot).Show(); }
 
     }
 }
