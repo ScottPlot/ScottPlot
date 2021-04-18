@@ -41,7 +41,7 @@ namespace ScottPlot.Plottable
         public float Rotation { set => Font.Rotation = value; }
 
         public override string ToString() => $"PlottableCircle \"{Label}\" at ({X}, {Y}) with R=({Radius})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(X-Radius, X+Radius, Y-Radius, Y+Radius);
+        public AxisLimits GetAxisLimits() => new AxisLimits(X - Radius, X + Radius, Y - Radius, Y + Radius);
         public LegendItem[] GetLegendItems() => null;
 
         public void ValidateData(bool deep = false)
@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Returns the point in pixel space shifted by the necessary amount to apply text alignment
         /// </summary>
-        private static (float pixelX, float pixelY) ApplyAlignmentOffset(Alignment alignment,  float pixelX, float pixelY, float stringWidth, float stringHeight)
+        private static (float pixelX, float pixelY) ApplyAlignmentOffset(Alignment alignment, float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
             switch (alignment)
             {
@@ -109,7 +109,7 @@ namespace ScottPlot.Plottable
                 }
                 var rect = new RectangleF(pixelX - xRad, pixelY - yRad, 2 * xRad, 2 * yRad);
 
-                if(Fill)
+                if (Fill)
                     gfx.FillEllipse(fillBrush, rect);
                 gfx.DrawEllipse(pen, rect);
 
