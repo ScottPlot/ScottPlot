@@ -190,7 +190,7 @@ namespace ScottPlot
         /// <returns>Full path for the image that was saved</returns>
         public string SaveFig(string filePath, int? bitmapWidth = null, int? bitmapHeight = null, bool lowQuality = false, bool resizePlot = false)
         {
-            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue) s? Render(bitmapWidth.Value, bitmapHeight.Value, lowQuality, resizePlot) : Render();
+            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue) ? Render(bitmapWidth.Value, bitmapHeight.Value, lowQuality, resizePlot) : Render();
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);
