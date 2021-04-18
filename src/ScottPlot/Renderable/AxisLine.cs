@@ -19,7 +19,7 @@ namespace ScottPlot.Renderable
             if (IsVisible == false)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
             using (var pen = GDI.Pen(Color, Width))
             {
                 float left = dims.DataOffsetX;

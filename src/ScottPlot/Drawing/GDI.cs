@@ -95,6 +95,8 @@ namespace ScottPlot.Drawing
         public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false, bool clipToDataArea = true)
         {
             Graphics gfx = Graphics(bmp, lowQuality);
+            gfx.ScaleTransform(dims.TransformScale, dims.TransformScale);
+
             if (clipToDataArea)
                 gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));
             return gfx;

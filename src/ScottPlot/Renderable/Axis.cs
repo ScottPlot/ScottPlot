@@ -111,7 +111,7 @@ namespace ScottPlot.Renderable
             AxisLabel.PixelSize = PixelSize;
             AxisLine.PixelOffset = PixelOffset;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
             {
                 AxisTicks.Render(dims, bmp, lowQuality);
                 AxisLabel.Render(dims, bmp, lowQuality);

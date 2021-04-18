@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
             if (!IsVisible)
                 return;
 
-            using var gfx = GDI.Graphics(bmp, lowQuality);
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality, false);
             using var font = GDI.Font(Font);
             using var fontBrush = new SolidBrush(Font.Color);
             using var shadowBrush = new SolidBrush(ShadowColor);

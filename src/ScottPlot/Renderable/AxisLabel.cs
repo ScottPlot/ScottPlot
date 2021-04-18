@@ -85,7 +85,7 @@ namespace ScottPlot.Renderable
             if (IsVisible == false || (string.IsNullOrWhiteSpace(Label) && ImageLabel == null))
                 return;
 
-            using var gfx = GDI.Graphics(bmp, lowQuality);
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality, false);
             (float x, float y) = GetAxisCenter(dims);
 
             if (ImageLabel is null)

@@ -15,14 +15,24 @@ namespace ScottPlot
         /// </summary>
         /// <param name="bmp">an existing bitmap to render onto</param>
         /// <param name="lowQuality"></param>
+        /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
-        public Bitmap Render(Bitmap bmp, bool lowQuality = false)
+        public Bitmap Render(Bitmap bmp, bool lowQuality = false, bool resizePlot=true)
         {
             while (IsRenderLocked) { }
             IsRendering = true;
 
             settings.BenchmarkMessage.Restart();
-            settings.Resize(bmp.Width, bmp.Height);
+            if (resizePlot)
+            {
+                settings.Resize(bmp.Width, bmp.Height);
+                settings.OutputWidth = settings.OutputHeight = null;
+            }
+            else 
+            {
+                settings.OutputWidth = bmp.Width;
+                settings.OutputHeight = bmp.Height;
+            }
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
             settings.EnforceEqualAxisScales();
@@ -147,9 +157,10 @@ namespace ScottPlot
         /// <param name="width">width (pixels) for this render</param>
         /// <param name="height">height (pixels) for this render</param>
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
+        /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(int width, int height, bool lowQuality = false) =>
-            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
+        public Bitmap Render(int width, int height, bool lowQuality = false, bool resizePlot=false) =>
+            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality, resizePlot);
 
         [Obsolete("Call Render() without arguments instead of using this method")]
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
@@ -172,10 +183,14 @@ namespace ScottPlot
         /// Save the plot as an image
         /// </summary>
         /// <param name="filePath">file path for the images (existing files will be overwritten)</param>
+        /// <param name="bitmapWidth">the width (in pixels) of the output bitmap</param>
+        /// <param name="bitmapHeight">the width (in pixels) of the output bitmap</param>
+        /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render. Default false</param>
+        /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>Full path for the image that was saved</returns>
-        public string SaveFig(string filePath)
+        public string SaveFig(string filePath, int? bitmapWidth=null, int? bitmapHeight=null, bool lowQuality = false, bool resizePlot=false)
         {
-            Bitmap bmp = Render();
+            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue)? Render(bitmapWidth.Value, bitmapHeight.Value,lowQuality,resizePlot) : Render();
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);

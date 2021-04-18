@@ -14,6 +14,11 @@ namespace ScottPlot
         public readonly float DataHeight;
         public readonly float DataOffsetX;
         public readonly float DataOffsetY;
+        public float TransformScale { get; private set; } = 1;
+        public void SetOutputDimensions(int width, int height)
+        {
+            TransformScale = System.Math.Min(width / Width, height / Height);
+        }
 
         // axis limits
         public readonly double XMin;
