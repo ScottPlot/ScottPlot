@@ -17,7 +17,7 @@ namespace ScottPlot
         /// <param name="lowQuality"></param>
         /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
-        public Bitmap Render(Bitmap bmp, bool lowQuality = false, bool resizePlot=true)
+        public Bitmap Render(Bitmap bmp, bool lowQuality = false, bool resizePlot = true)
         {
             while (IsRenderLocked) { }
             IsRendering = true;
@@ -28,7 +28,7 @@ namespace ScottPlot
                 settings.Resize(bmp.Width, bmp.Height);
                 settings.OutputWidth = settings.OutputHeight = null;
             }
-            else 
+            else
             {
                 settings.OutputWidth = bmp.Width;
                 settings.OutputHeight = bmp.Height;
@@ -159,7 +159,7 @@ namespace ScottPlot
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
         /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(int width, int height, bool lowQuality = false, bool resizePlot=false) =>
+        public Bitmap Render(int width, int height, bool lowQuality = false, bool resizePlot = false) =>
             Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality, resizePlot);
 
         [Obsolete("Call Render() without arguments instead of using this method")]
@@ -188,9 +188,9 @@ namespace ScottPlot
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render. Default false</param>
         /// <param name="resizePlot">if true then the plot will be resized to fit the new dimensions. If false then the resolution will be changed without resizing. Default true</param>
         /// <returns>Full path for the image that was saved</returns>
-        public string SaveFig(string filePath, int? bitmapWidth=null, int? bitmapHeight=null, bool lowQuality = false, bool resizePlot=false)
+        public string SaveFig(string filePath, int? bitmapWidth = null, int? bitmapHeight = null, bool lowQuality = false, bool resizePlot = false)
         {
-            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue)? Render(bitmapWidth.Value, bitmapHeight.Value,lowQuality,resizePlot) : Render();
+            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue) s? Render(bitmapWidth.Value, bitmapHeight.Value, lowQuality, resizePlot) : Render();
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);

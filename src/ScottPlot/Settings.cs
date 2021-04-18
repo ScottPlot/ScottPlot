@@ -58,7 +58,7 @@ namespace ScottPlot
         public float DataHeight => YAxis.Dims.DataSizePx;
 
         public int? OutputWidth { get; set; }
-        public int? OutputHeight { get; set; } 
+        public int? OutputHeight { get; set; }
 
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes
@@ -78,8 +78,9 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             var limits = (xMin, xMax, yMin, yMax);
 
-            var dims= new PlotDimensions(figureSize, dataSize, dataOffset, limits);
-            if (OutputWidth.HasValue && OutputHeight.HasValue) {
+            var dims = new PlotDimensions(figureSize, dataSize, dataOffset, limits);
+            if (OutputWidth.HasValue && OutputHeight.HasValue)
+            {
                 dims.SetOutputDimensions(OutputWidth.Value, OutputHeight.Value);
             }
             return dims;
