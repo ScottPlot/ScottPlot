@@ -17,16 +17,23 @@ namespace ScottPlot.Plottable
         public string Label;
         public double Radius;
         public bool AllowEllipse;
+        public bool Fill = true;
 
         // customization
         public bool IsVisible { get; set; } = true;
+        public float LineWidth { get; set; } = 1;
+        public Color LineColor { get; set; }
+
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public bool BackgroundFill = false;
-        public Color BackgroundColor;
+
+        public Color FillColor;
+
+        public Color HatchColor = Color.Transparent;
+        public HatchStyle HatchStyle = HatchStyle.None;
+
         public Drawing.Font Font = new Drawing.Font();
-        public float BorderWidth { get; set; } = 1;
-        public Color Color { get;set; }
+
         public Color FontColor { set => Font.Color = value; }
         public string FontName { set => Font.Name = value; }
         public float FontSize { set => Font.Size = value; }
@@ -34,7 +41,7 @@ namespace ScottPlot.Plottable
         public float Rotation { set => Font.Rotation = value; }
 
         public override string ToString() => $"PlottableCircle \"{Label}\" at ({X}, {Y}) with R=({Radius})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
+        public AxisLimits GetAxisLimits() => new AxisLimits(X-Radius, X+Radius, Y-Radius, Y+Radius);
         public LegendItem[] GetLegendItems() => null;
 
         public void ValidateData(bool deep = false)
@@ -45,16 +52,17 @@ namespace ScottPlot.Plottable
             if (double.IsInfinity(X) || double.IsInfinity(Y) || double.IsInfinity(Radius))
                 throw new InvalidOperationException("X, Y and Radius cannot be Infinity");
 
-            //if (string.IsNullOrWhiteSpace(Label))
-            //    throw new InvalidOperationException("text cannot be null or whitespace");
         }
+
+        // TODO: It would be nice to be able to reuse this code that was copied from Text.ApplyAlignmentOffset. For that reason I have made it a static function here.
+        // Ideally make this a public function, put it somewhere appropriate (perhaps Alignment.cs itself), and change the Text calls to use it
 
         /// <summary>
         /// Returns the point in pixel space shifted by the necessary amount to apply text alignment
         /// </summary>
-        private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
+        private static (float pixelX, float pixelY) ApplyAlignmentOffset(Alignment alignment,  float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
-            switch (Font.Alignment)
+            switch (alignment)
             {
                 case Alignment.LowerCenter:
                     return (pixelX - stringWidth / 2, pixelY - stringHeight);
@@ -86,9 +94,9 @@ namespace ScottPlot.Plottable
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var font = GDI.Font(Font))
+            using (Brush fillBrush = GDI.Brush(FillColor, HatchColor, HatchStyle))
             using (var fontBrush = new SolidBrush(Font.Color))
-            using (var pen=new Pen(Color, BorderWidth))
-            using (var frameBrush = new SolidBrush(BackgroundColor))
+            using (Pen pen = GDI.Pen(LineColor, LineWidth))
             {
                 float pixelX = dims.GetPixelX(X);
                 float pixelY = dims.GetPixelY(Y);
@@ -100,27 +108,25 @@ namespace ScottPlot.Plottable
                     yRad = xRad;
                 }
                 var rect = new RectangleF(pixelX - xRad, pixelY - yRad, 2 * xRad, 2 * yRad);
-                gfx.FillEllipse(frameBrush, rect);
+
+                if(Fill)
+                    gfx.FillEllipse(fillBrush, rect);
                 gfx.DrawEllipse(pen, rect);
 
+                if (!string.IsNullOrEmpty(Label))
+                {
+                    SizeF stringSize = GDI.MeasureString(gfx, Label, font);
 
-                SizeF stringSize = GDI.MeasureString(gfx, Label, font);
+                    if (Font.Rotation == 0)
+                        (pixelX, pixelY) = ApplyAlignmentOffset(Font.Alignment, pixelX, pixelY, stringSize.Width, stringSize.Height);
 
-                if (Font.Rotation == 0)
-                    (pixelX, pixelY) = ApplyAlignmentOffset(pixelX, pixelY, stringSize.Width, stringSize.Height);
+                    gfx.TranslateTransform(pixelX, pixelY);
+                    gfx.RotateTransform(Font.Rotation);
 
-                gfx.TranslateTransform(pixelX, pixelY);
-                gfx.RotateTransform(Font.Rotation);
+                    gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
 
-                //if (BackgroundFill) // Maybe we still want this for the circle labels
-                //{
-                //    RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
-                //    gfx.FillRectangle(frameBrush, stringRect);
-                //}
-
-                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
-
-                gfx.ResetTransform();
+                    gfx.ResetTransform();
+                }
             }
         }
     }
