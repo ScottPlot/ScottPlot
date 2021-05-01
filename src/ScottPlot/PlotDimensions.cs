@@ -15,8 +15,8 @@ namespace ScottPlot
         public readonly float DataOffsetX;
         public readonly float DataOffsetY;
 
-        // TODO: make readonly
-        public float ScaleFactor;
+        // rendering options
+        public readonly double ScaleFactor;
 
         // axis limits
         public readonly double XMin;
@@ -40,7 +40,8 @@ namespace ScottPlot
         public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
 
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset,
-            (double xMin, double xMax, double yMin, double yMax) axisLimits)
+            (double xMin, double xMax, double yMin, double yMax) axisLimits,
+            double scaleFactor)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);
@@ -50,6 +51,7 @@ namespace ScottPlot
             (XCenter, YCenter) = ((XMin + XMax) / 2, (YMin + YMax) / 2);
             (PxPerUnitX, PxPerUnitY) = (DataWidth / XSpan, DataHeight / YSpan);
             (UnitsPerPxX, UnitsPerPxY) = (XSpan / DataWidth, YSpan / DataHeight);
+            ScaleFactor = scaleFactor;
         }
 
         public override string ToString() =>

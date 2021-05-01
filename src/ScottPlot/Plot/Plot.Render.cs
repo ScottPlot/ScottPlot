@@ -23,20 +23,19 @@ namespace ScottPlot
             IsRendering = true;
 
             settings.BenchmarkMessage.Restart();
-            settings.ScaleFactor = scale;
-            settings.Resize((int)(bmp.Width / settings.ScaleFactor), (int)(bmp.Height / settings.ScaleFactor));
+            settings.Resize((int)(bmp.Width / scale), (int)(bmp.Height / scale));
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
             settings.EnforceEqualAxisScales();
             settings.LayoutAuto();
             settings.EnforceEqualAxisScales();
 
-            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0);
+            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
             RenderClear(bmp, lowQuality, primaryDims);
             if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
             {
                 RenderBeforePlottables(bmp, lowQuality, primaryDims);
-                RenderPlottables(bmp, lowQuality);
+                RenderPlottables(bmp, lowQuality, scale);
                 RenderAfterPlottables(bmp, lowQuality, primaryDims);
             }
 
@@ -56,8 +55,8 @@ namespace ScottPlot
             foreach (var axis in settings.Axes)
             {
                 PlotDimensions dims2 = axis.IsHorizontal ?
-                    settings.GetPlotDimensions(axis.AxisIndex, 0) :
-                    settings.GetPlotDimensions(0, axis.AxisIndex);
+                    settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) :
+                    settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
 
                 try
                 {
@@ -70,7 +69,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderPlottables(Bitmap bmp, bool lowQuality)
+        private void RenderPlottables(Bitmap bmp, bool lowQuality, double scaleFactor)
         {
             foreach (var plottable in settings.Plottables)
             {
@@ -80,8 +79,8 @@ namespace ScottPlot
                 plottable.ValidateData(deep: false);
 
                 PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
-                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex) :
-                    settings.GetPlotDimensions(0, 0);
+                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) :
+                    settings.GetPlotDimensions(0, 0, scaleFactor);
 
                 try
                 {
