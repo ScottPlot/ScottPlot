@@ -159,8 +159,16 @@ namespace ScottPlot
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
         /// <param name="resize">resize the plot according to the given dimensions (otherwise scale the output image)</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(int width, int height, bool lowQuality = false, bool resize = true) =>
-            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality, resize);
+        public Bitmap Render(int width, int height, bool lowQuality = false, bool resize = true)
+        {
+            // allow a bitmap to always be created even if invalid dimensions are provided
+            width = Math.Max(1, width);
+            height = Math.Max(1, height);
+
+            Bitmap bmp = new(width, height, PixelFormat.Format32bppPArgb);
+            Render(bmp, lowQuality, resize);
+            return bmp;
+        }
 
         [Obsolete("Call Render() without arguments instead of using this method")]
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
