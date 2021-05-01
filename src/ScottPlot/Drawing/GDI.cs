@@ -84,18 +84,18 @@ namespace ScottPlot.Drawing
             return Mix(colorA, colorB, fracA);
         }
 
-        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false)
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
             Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
             gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
             gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+            gfx.ScaleTransform((float)scale, (float)scale);
             return gfx;
         }
 
         public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false, bool clipToDataArea = true)
         {
-            Graphics gfx = Graphics(bmp, lowQuality);
-            gfx.ScaleTransform((float)dims.ScaleFactor, (float)dims.ScaleFactor);
+            Graphics gfx = Graphics(bmp, lowQuality, dims.ScaleFactor);
 
             if (clipToDataArea)
                 gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));

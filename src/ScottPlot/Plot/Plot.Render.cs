@@ -168,12 +168,12 @@ namespace ScottPlot
         /// Return a new Bitmap containing only the legend
         /// </summary>
         /// <returns>new bitmap containing the legend</returns>
-        public Bitmap RenderLegend(bool lowQuality = false)
+        public Bitmap RenderLegend(bool lowQuality = false, double scale = 1.0)
         {
             Render(lowQuality);
             var originalEdgeColor = settings.CornerLegend.OutlineColor;
             settings.CornerLegend.OutlineColor = Color.Transparent;
-            var bmp = settings.CornerLegend.GetBitmap(lowQuality);
+            var bmp = settings.CornerLegend.GetBitmap(lowQuality, scale);
             settings.CornerLegend.OutlineColor = originalEdgeColor;
             return bmp;
         }
