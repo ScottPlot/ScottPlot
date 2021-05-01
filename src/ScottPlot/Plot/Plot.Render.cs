@@ -183,14 +183,14 @@ namespace ScottPlot
         /// Save the plot as an image
         /// </summary>
         /// <param name="filePath">file path for the images (existing files will be overwritten)</param>
-        /// <param name="bitmapWidth">the width (in pixels) of the output bitmap</param>
-        /// <param name="bitmapHeight">the width (in pixels) of the output bitmap</param>
+        /// <param name="width">width (in pixels) of the plot</param>
+        /// <param name="height">width (in pixels) of the plot</param>
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render. Default false</param>
         /// <param name="resize">resize the plot according to the given dimensions (otherwise scale the output image)</param>
         /// <returns>Full path for the image that was saved</returns>
-        public string SaveFig(string filePath, int? bitmapWidth = null, int? bitmapHeight = null, bool lowQuality = false, bool resize = true)
+        public string SaveFig(string filePath, int? width = null, int? height = null, bool lowQuality = false, bool resize = true)
         {
-            Bitmap bmp = (bitmapWidth.HasValue && bitmapHeight.HasValue) ? Render(bitmapWidth.Value, bitmapHeight.Value, lowQuality, resize) : Render();
+            Bitmap bmp = (width.HasValue && height.HasValue) ? Render(width.Value, height.Value, lowQuality, resize) : Render();
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);
