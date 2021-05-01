@@ -60,7 +60,7 @@ namespace ScottPlot
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes
         /// </summary>
-        public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
+        public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex, double scaleFactor)
         {
             var xAxis = GetXAxis(xAxisIndex);
             var yAxis = GetYAxis(yAxisIndex);
@@ -75,7 +75,7 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             var limits = (xMin, xMax, yMin, yMax);
 
-            return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
+            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
         }
 
         /// <summary>
@@ -452,12 +452,12 @@ namespace ScottPlot
             // then calculate ticks, then set padding based on the largest tick, then re-calculate ticks.
 
             // axis limits shall not change
-            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex);
+            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex, scaleFactor: 1.0);
             var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(Width, Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits, scaleFactor: 1);
 
             foreach (var axis in Axes)
             {
@@ -477,7 +477,7 @@ namespace ScottPlot
             var dataSize = new SizeF(DataWidth, DataHeight);
             var dataOffset = new PointF(DataOffsetX, DataOffsetY);
 
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits, scaleFactor: 1.0);
             foreach (var axis in Axes)
             {
                 bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;

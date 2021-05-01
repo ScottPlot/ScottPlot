@@ -15,26 +15,27 @@ namespace ScottPlot
         /// </summary>
         /// <param name="bmp">an existing bitmap to render onto</param>
         /// <param name="lowQuality"></param>
+        /// <param name="scale">scale the size of the output image by this fraction (without resizing the plot)</param>
         /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
-        public Bitmap Render(Bitmap bmp, bool lowQuality = false)
+        public Bitmap Render(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
             while (IsRenderLocked) { }
             IsRendering = true;
 
             settings.BenchmarkMessage.Restart();
-            settings.Resize(bmp.Width, bmp.Height);
+            settings.Resize((int)(bmp.Width / scale), (int)(bmp.Height / scale));
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
             settings.EnforceEqualAxisScales();
             settings.LayoutAuto();
             settings.EnforceEqualAxisScales();
 
-            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0);
+            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
             RenderClear(bmp, lowQuality, primaryDims);
             if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
             {
                 RenderBeforePlottables(bmp, lowQuality, primaryDims);
-                RenderPlottables(bmp, lowQuality);
+                RenderPlottables(bmp, lowQuality, scale);
                 RenderAfterPlottables(bmp, lowQuality, primaryDims);
             }
 
@@ -54,8 +55,8 @@ namespace ScottPlot
             foreach (var axis in settings.Axes)
             {
                 PlotDimensions dims2 = axis.IsHorizontal ?
-                    settings.GetPlotDimensions(axis.AxisIndex, 0) :
-                    settings.GetPlotDimensions(0, axis.AxisIndex);
+                    settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) :
+                    settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
 
                 try
                 {
@@ -68,7 +69,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderPlottables(Bitmap bmp, bool lowQuality)
+        private void RenderPlottables(Bitmap bmp, bool lowQuality, double scaleFactor)
         {
             foreach (var plottable in settings.Plottables)
             {
@@ -78,8 +79,8 @@ namespace ScottPlot
                 plottable.ValidateData(deep: false);
 
                 PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
-                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex) :
-                    settings.GetPlotDimensions(0, 0);
+                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) :
+                    settings.GetPlotDimensions(0, 0, scaleFactor);
 
                 try
                 {
@@ -144,12 +145,21 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot onto a new Bitmap of the given dimensions
         /// </summary>
-        /// <param name="width">width (pixels) for this render</param>
-        /// <param name="height">height (pixels) for this render</param>
+        /// <param name="width">resize the plot to this width (pixels) before rendering</param>
+        /// <param name="height">resize the plot to this height (pixels) before rendering</param>
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
+        /// <param name="scale">scale the size of the output image by this fraction (without resizing the plot)</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(int width, int height, bool lowQuality = false) =>
-            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
+        public Bitmap Render(int width, int height, bool lowQuality = false, double scale = 1.0)
+        {
+            // allow a bitmap to always be created even if invalid dimensions are provided
+            width = Math.Max(1, (int)(width * scale));
+            height = Math.Max(1, (int)(height * scale));
+
+            Bitmap bmp = new(width, height, PixelFormat.Format32bppPArgb);
+            Render(bmp, lowQuality, scale);
+            return bmp;
+        }
 
         [Obsolete("Call Render() without arguments instead of using this method")]
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
@@ -158,12 +168,12 @@ namespace ScottPlot
         /// Return a new Bitmap containing only the legend
         /// </summary>
         /// <returns>new bitmap containing the legend</returns>
-        public Bitmap RenderLegend(bool lowQuality = false)
+        public Bitmap RenderLegend(bool lowQuality = false, double scale = 1.0)
         {
             Render(lowQuality);
             var originalEdgeColor = settings.CornerLegend.OutlineColor;
             settings.CornerLegend.OutlineColor = Color.Transparent;
-            var bmp = settings.CornerLegend.GetBitmap(lowQuality);
+            var bmp = settings.CornerLegend.GetBitmap(lowQuality, scale);
             settings.CornerLegend.OutlineColor = originalEdgeColor;
             return bmp;
         }
@@ -172,10 +182,14 @@ namespace ScottPlot
         /// Save the plot as an image
         /// </summary>
         /// <param name="filePath">file path for the images (existing files will be overwritten)</param>
+        /// <param name="width">resize the plot to this width (pixels) before rendering</param>
+        /// <param name="height">resize the plot to this height (pixels) before rendering</param>
+        /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render. Default false</param>
+        /// <param name="scale">scale the size of the output image by this fraction (without resizing the plot)</param>
         /// <returns>Full path for the image that was saved</returns>
-        public string SaveFig(string filePath)
+        public string SaveFig(string filePath, int? width = null, int? height = null, bool lowQuality = false, double scale = 1.0)
         {
-            Bitmap bmp = Render();
+            Bitmap bmp = Render(width: width ?? settings.Width, height: height ?? settings.Height, lowQuality, scale);
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);

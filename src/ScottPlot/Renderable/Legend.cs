@@ -42,7 +42,7 @@ namespace ScottPlot.Renderable
             if (IsVisible is false || LegendItems is null || LegendItems.Length == 0)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
             using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);
@@ -51,23 +51,25 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public Bitmap GetBitmap(bool lowQuality)
+        public Bitmap GetBitmap(bool lowQuality = false, double scale = 1.0)
         {
             if (LegendItems is null)
                 throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
 
-            using (var bmpTemp = new Bitmap(1, 1))
-            using (var gfxTemp = GDI.Graphics(bmpTemp, lowQuality))
-            using (var font = GDI.Font(Font))
-            {
-                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, LegendItems, font);
-                Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
+            // use a temporary bitmap and graphics (without scaling) to measure how large the final image should be
+            using var tempBitmap = new Bitmap(1, 1);
+            using var tempGfx = GDI.Graphics(tempBitmap, lowQuality, scale);
+            using var legendFont = GDI.Font(Font);
+            var (maxLabelWidth, maxLabelHeight, totalLabelWidth, totalLabelHeight) = GetDimensions(tempGfx, LegendItems, legendFont);
 
-                using (var gfx = Graphics.FromImage(bmp))
-                    RenderOnBitmap(gfx, LegendItems, font, 0, 0, width, height, maxLabelHeight);
+            // create the actual legend bitmap based on the scaled measured size
+            int width = (int)(totalLabelWidth * scale);
+            int height = (int)(totalLabelHeight * scale);
+            Bitmap bmp = new(width, height, PixelFormat.Format32bppPArgb);
+            using var gfx = GDI.Graphics(bmp, lowQuality, scale);
+            RenderOnBitmap(gfx, LegendItems, legendFont, 0, 0, totalLabelWidth, totalLabelHeight, maxLabelHeight);
 
-                return bmp;
-            }
+            return bmp;
         }
 
         private (float maxLabelWidth, float maxLabelHeight, float width, float height)
