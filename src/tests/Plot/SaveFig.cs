@@ -19,15 +19,28 @@ namespace ScottPlotTests.Plot
             plt.Title("Scaled Figure Demo");
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
-            var leg = plt.Legend();
+            plt.Legend();
 
-            plt.SaveFig("Test_Scaled_A.png", 400, 300);
-            plt.SaveFig("Test_Scaled_B.png", 400, 300, scale: 0.5);
-            plt.SaveFig("Test_Scaled_C.png", 400, 300, scale: 5);
-            plt.SaveFig("Test_Scaled_D.png", 300, 400, scale: 5);
+            System.Drawing.Bitmap bmpA = plt.Render(400, 300);
+            Assert.AreEqual(400, bmpA.Width);
+            Assert.AreEqual(300, bmpA.Height);
 
-            System.Drawing.Bitmap legBmp = leg.GetBitmap(lowQuality: false, scale: 5);
-            legBmp.Save("Test_Scaled_E.png", System.Drawing.Imaging.ImageFormat.Png);
+            System.Drawing.Bitmap bmpB = plt.Render(400, 300, scale: .5);
+            Assert.AreEqual(200, bmpB.Width);
+            Assert.AreEqual(150, bmpB.Height);
+
+            System.Drawing.Bitmap bmpC = plt.Render(400, 300, scale: 2);
+            Assert.AreEqual(800, bmpC.Width);
+            Assert.AreEqual(600, bmpC.Height);
+
+            System.Drawing.Bitmap bmpD = plt.Render(300, 400, scale: 2);
+            Assert.AreEqual(600, bmpD.Width);
+            Assert.AreEqual(800, bmpD.Height);
+
+            System.Drawing.Bitmap legendNormal = plt.RenderLegend();
+            System.Drawing.Bitmap legendBig = plt.RenderLegend(scale: 2);
+            Assert.Greater(legendBig.Width, legendNormal.Width);
+            Assert.Greater(legendBig.Height, legendNormal.Height);
         }
     }
 }
