@@ -19,8 +19,8 @@ namespace ScottPlotTests.Plot
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
 
+            plt.SaveFig("TestPlot_HighRes.png", 400, 300, scale: 10);
             plt.SaveFig("TestPlot_LowRes.png", 400, 300);
-            plt.SaveFig("TestPlot_HighRes.png", 4000, 3000, resize: false);
         }
     }
 }
