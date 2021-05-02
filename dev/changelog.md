@@ -1,5 +1,11 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.13-beta
+* `Plot.Render()` and `Plot.SaveFig()` now have a `scale` argument to allow for the creation of high resolution scaled plots (#983, #982, #981) _Thanks @PeterDavidson_
+* A `BubblePlot` has been added to allow display of circles with custom colors and sizes. See cookbook for examples. (#984, #973, #960) _Thanks @PeterDavidson_
+* Avalonia 0.10.3 is now supported (#986) _Thanks @bclehmann_
+* Default version of System.Drawing.Common has been changed from `5.0.0` to `4.6.1` to minimize errors associated with downgrading (#1004, #1005, #993, #924, #655) _Thanks @bukkideme_
+
 ## ScottPlot 4.1.12-beta
 * Added "Open in New Window" option to right-click menu (#958, #969) _Thanks @ademkaya and @bclehmann_
 * User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @
