@@ -81,26 +81,28 @@ namespace ScottPlot.Drawing
             return ThisColormap.GetRGB((byte)(fraction * 255));
         }
 
-        public int GetInt32(byte value)
+        public int GetInt32(byte value, byte alpha = 255)
         {
             var (r, g, b) = GetRGB(value);
-            return 255 << 24 | r << 16 | g << 8 | b;
+            return alpha << 24 | r << 16 | g << 8 | b;
         }
 
-        public int GetInt32(double fraction)
+        public int GetInt32(double fraction, byte alpha = 255)
         {
             var (r, g, b) = GetRGB(fraction);
-            return 255 << 24 | r << 16 | g << 8 | b;
+            return alpha << 24 | r << 16 | g << 8 | b;
         }
 
-        public Color GetColor(byte value)
+        public Color GetColor(byte value, double alpha = 1.0)
         {
-            return Color.FromArgb(GetInt32(value));
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(value, alphaByte));
         }
 
-        public Color GetColor(double fraction)
+        public Color GetColor(double fraction, double alpha = 1.0)
         {
-            return Color.FromArgb(GetInt32(fraction));
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(fraction, alphaByte));
         }
 
         public void Apply(Bitmap bmp)
