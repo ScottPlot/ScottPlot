@@ -31,23 +31,6 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"BubblePlot with {Bubbles.Count} bubbles";
 
         /// <summary>
-        /// Create an empty bubble plot. Call the Add() method to add bubbles.
-        /// </summary>
-        public BubblePlot()
-        {
-
-        }
-
-        /// <summary>
-        /// Create a bubble plot with multiple bubbles all styled the same.
-        /// Call the Add() method to add bubbles manually, allowing further customization of size and style.
-        /// </summary>
-        public BubblePlot(double[] xs, double[] ys, double radius, Color fillColor, double edgeWidth, Color edgeColor)
-        {
-            Add(xs, ys, radius, fillColor, edgeWidth, edgeColor);
-        }
-
-        /// <summary>
         /// Clear all bubbles
         /// </summary>
         public void Clear() => Bubbles.Clear();

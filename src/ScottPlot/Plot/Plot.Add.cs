@@ -192,6 +192,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add an empty bubble plot. Call it's Add() method to add bubbles with custom position and styling.
+        /// </summary>
+        public BubblePlot AddBubblePlot()
+        {
+            BubblePlot bubblePlot = new();
+            Add(bubblePlot);
+            return bubblePlot;
+        }
+
+        /// <summary>
+        /// Add a bubble plot with multiple bubbles at the given positions all styled the same.
+        /// Call the Add() method to add bubbles manually, allowing further customization of size and style.
+        /// </summary>
+        public BubblePlot AddBubblePlot(double[] xs, double[] ys, double radius = 10, Color? fillColor = null, double edgeWidth = 1, Color? edgeColor = null)
+        {
+            BubblePlot bubblePlot = new();
+            bubblePlot.Add(xs, ys, radius, fillColor ?? GetNextColor(), edgeWidth, edgeColor ?? Color.Black);
+            Add(bubblePlot);
+            return bubblePlot;
+        }
+
+        /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
         public FinancePlot AddCandlesticks(OHLC[] ohlcs)

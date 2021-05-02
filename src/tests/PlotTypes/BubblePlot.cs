@@ -12,12 +12,27 @@ namespace ScottPlotTests.PlotTypes
         [Test]
         public void Test_BubblePlot_Simple()
         {
-            int pointCount = 31;
-            double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] ys = ScottPlot.DataGen.Sin(pointCount);
+            double[] xs = ScottPlot.DataGen.Consecutive(31);
+            double[] sin = ScottPlot.DataGen.Sin(31);
+            double[] cos = ScottPlot.DataGen.Cos(31);
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.AddBubblePlot(xs, sin);
+            plt.AddBubblePlot(xs, cos);
+            plt.Title("Simple Bubble Plot");
+            plt.AxisAuto(.2, .25);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_BubblePlot_Advanced()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(31);
+            double[] ys = ScottPlot.DataGen.Sin(31);
             var cmap = ScottPlot.Drawing.Colormap.Viridis;
 
-            var myBubblePlot = new ScottPlot.Plottable.BubblePlot();
+            var plt = new ScottPlot.Plot(600, 400);
+            var myBubblePlot = plt.AddBubblePlot();
             for (int i = 0; i < xs.Length; i++)
             {
                 double fraction = (double)i / xs.Length;
@@ -31,9 +46,7 @@ namespace ScottPlotTests.PlotTypes
                 );
             }
 
-            var plt = new ScottPlot.Plot(600, 400);
-            plt.Add(myBubblePlot);
-            plt.Title("Bubble Plot");
+            plt.Title("Advanced Bubble Plot");
             plt.AxisAuto(.2, .25);
             TestTools.SaveFig(plt);
         }
