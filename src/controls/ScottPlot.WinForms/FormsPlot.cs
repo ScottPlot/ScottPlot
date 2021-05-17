@@ -102,9 +102,24 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Render the plot using low quality
+        /// </summary>
+        public void RenderLowQuality() => Backend.RenderLowQuality();
+
+        /// <summary>
+        /// Render the plot using high quality
+        /// </summary>
+        public void RenderHighQuality() => Backend.RenderHighQuality();
+
+        /// <summary>
         /// Render the plot using low quality (fast) then immediate re-render using high quality (slower)
         /// </summary>
         public void RenderLowThenImmediateHighQuality() => Backend.RenderLowThenImmediateHighQuality();
+
+        /// <summary>
+        /// Render the plot using low quality (fast) then delayed re-render using high quality (slower).
+        /// </summary>
+        public void RenderDelayedHighQuality() => Backend.RenderDelayedHighQuality();
 
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
