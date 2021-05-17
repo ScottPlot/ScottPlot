@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = new SolidBrush(Color))
-            using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true))
+            using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
             {
 
                 PointF[] PointBefore;
