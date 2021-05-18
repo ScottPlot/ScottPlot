@@ -81,7 +81,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[,] intensities = Tools.XYToIntensities(IntensityMode.Gaussian, xs, ys, 50, 50, 4);
 
             plt.Clear();
-            plt.PlotHeatmap(intensities, cmap);
+            plt.AddHeatmap(intensities, cmap);
             plt.AxisAuto();
         }
 
@@ -89,7 +89,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             double[,] intensities = DataGen.SampleImageData();
             plt.Clear();
-            plt.PlotHeatmap(intensities, cmap);
+            plt.AddHeatmap(intensities, cmap);
         }
 
         public static void PlotLineSeries(Plot plt, Colormap cmap)
