@@ -119,5 +119,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.Layout().ShowDialog();
         }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
+        }
     }
 }

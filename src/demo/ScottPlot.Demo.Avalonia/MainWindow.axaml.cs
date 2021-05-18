@@ -83,7 +83,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void WebsiteLabelClick(object sender, RoutedEventArgs e)
         {
-            Tools.LaunchBrowser();
+            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
         }
 
         public void LaunchPlotViewer(object sender, RoutedEventArgs e)

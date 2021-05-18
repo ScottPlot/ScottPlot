@@ -91,5 +91,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.ColormapViewer().ShowDialog();
         }
+
+        private void richTextBox1_Click(object sender, EventArgs e)
+        {
+            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
+        }
     }
 }
