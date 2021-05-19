@@ -50,5 +50,25 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             wpfPlot1.Render();
         }
+
+        private void wpfPlot1_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MouseTrackLabel.Content = "Mouse ENTERED the plot";
+            vLine.IsVisible = true;
+            hLine.IsVisible = true;
+        }
+
+        private void wpfPlot1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MouseTrackLabel.Content = "Mouse LEFT the plot";
+            XPixelLabel.Content = "--";
+            YPixelLabel.Content = "--";
+            XCoordinateLabel.Content = "--";
+            YCoordinateLabel.Content = "--";
+
+            vLine.IsVisible = false;
+            hLine.IsVisible = false;
+            wpfPlot1.Render();
+        }
     }
 }

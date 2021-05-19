@@ -14,6 +14,8 @@
              MouseUp="OnMouseUp" 
              MouseWheel="OnMouseWheel"
              MouseDoubleClick="OnDoubleClick"
+             MouseEnter="OnMouseEnter"
+             MouseLeave="OnMouseLeave"
              Background="Transparent"
              >
 

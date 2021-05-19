@@ -119,6 +119,8 @@ namespace ScottPlot
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta));
         private void OnMouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
+        private void OnMouseEnter(object sender, MouseEventArgs e) => base.OnMouseEnter(e);
+        private void OnMouseLeave(object sender, MouseEventArgs e) => base.OnMouseLeave(e);
 
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
@@ -219,6 +221,5 @@ namespace ScottPlot
             if (sfd.ShowDialog() is true)
                 Plot.SaveFig(sfd.FileName);
         }
-
     }
 }
