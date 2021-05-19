@@ -92,6 +92,8 @@ namespace ScottPlot.Avalonia
         private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
         private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); /*base.OnMouseMove(e);*/ }
+        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
+        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
 
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
@@ -138,6 +140,8 @@ namespace ScottPlot.Avalonia
             PointerMoved += OnMouseMove;
             PointerReleased += OnMouseUp;
             PointerWheelChanged += OnMouseWheel;
+            PointerEnter += OnMouseEnter;
+            PointerLeave += OnMouseLeave;
 
             PropertyChanged += AvaPlot_PropertyChanged;
         }

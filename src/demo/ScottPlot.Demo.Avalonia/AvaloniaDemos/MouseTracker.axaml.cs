@@ -27,6 +27,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += OnMouseMove;
+            avaPlot1.PointerLeave += OnMouseLeave;
+            avaPlot1.PointerEnter += OnMouseEnter;
         }
 
         private void InitializeComponent()
@@ -50,6 +52,27 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             vLine.X = coordinateX;
             hLine.Y = coordinateY;
 
+            avaPlot1.Render();
+        }
+
+        private void OnMouseEnter(object sender, PointerEventArgs e)
+        {
+            this.Find<TextBlock>("MouseTrackerMessage").Text = "Mouse ENTERED the plot";
+
+            vLine.IsVisible = true;
+            hLine.IsVisible = true;
+        }
+
+        private void OnMouseLeave(object sender, PointerEventArgs e)
+        {
+            this.Find<TextBlock>("MouseTrackerMessage").Text = "Mouse LEFT the plot";
+            this.Find<TextBlock>("XPixelLabel").Text = "--";
+            this.Find<TextBlock>("YPixelLabel").Text = "--";
+            this.Find<TextBlock>("XCoordinateLabel").Text = "--";
+            this.Find<TextBlock>("YCoordinateLabel").Text = "--";
+
+            vLine.IsVisible = false;
+            hLine.IsVisible = false;
             avaPlot1.Render();
         }
     }
