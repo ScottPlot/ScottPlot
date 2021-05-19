@@ -12,6 +12,7 @@ namespace ScottPlot.Plottable
     public class FinancePlot : IPlottable
     {
         private readonly List<OHLC> OHLCs = new List<OHLC>();
+        public OHLC Last() => OHLCs.Last();
 
         /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
