@@ -39,5 +39,26 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             formsPlot1.Render();
         }
+
+        private void formsPlot1_MouseEnter(object sender, EventArgs e)
+        {
+            lblMouse.Text = "Mouse ENTERED the plot";
+            hLine.IsVisible = true;
+            vLine.IsVisible = true;
+        }
+
+        private void formsPlot1_MouseLeave(object sender, EventArgs e)
+        {
+            lblMouse.Text = "Mouse LEFT the plot";
+
+            XPixelLabel.Text = $"--";
+            YPixelLabel.Text = $"--";
+            XCoordinateLabel.Text = $"--";
+            YCoordinateLabel.Text = $"--";
+
+            hLine.IsVisible = false;
+            vLine.IsVisible = false;
+            formsPlot1.Render();
+        }
     }
 }

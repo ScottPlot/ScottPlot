@@ -119,6 +119,8 @@ namespace ScottPlot
         private void PictureBox1_DoubleClick(object sender, EventArgs e) { Backend.DoubleClick(); base.OnDoubleClick(e); }
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) { Backend.MouseWheel(GetInputState(e)); base.OnMouseWheel(e); }
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
+        private void PictureBox1_MouseEnter(object sender, EventArgs e) => base.OnMouseEnter(e);
+        private void PictureBox1_MouseLeave(object sender, EventArgs e) => base.OnMouseLeave(e);
 
         private Control.InputState GetInputState(MouseEventArgs e) =>
             new()
@@ -142,6 +144,7 @@ namespace ScottPlot
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new FormsPlotViewer(Plot).Show();
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog
@@ -155,11 +158,6 @@ namespace ScottPlot
 
             if (sfd.ShowDialog() == DialogResult.OK)
                 Plot.SaveFig(sfd.FileName);
-        }
-
-        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e)
-        {
-            new FormsPlotViewer(Plot).Show();
         }
     }
 }
