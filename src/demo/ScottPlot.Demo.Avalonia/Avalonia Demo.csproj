@@ -5,9 +5,9 @@
         <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.4" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.4" />
+        <PackageReference Include="Avalonia" Version="0.10.5" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.5" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.5" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
