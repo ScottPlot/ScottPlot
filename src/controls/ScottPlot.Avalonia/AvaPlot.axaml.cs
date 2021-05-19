@@ -1,32 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.VisualTree;
-using Ava = Avalonia;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ava = Avalonia;
 
 #pragma warning disable IDE1006 // lowercase top-level property
 
 namespace ScottPlot.Avalonia
 {
-    /// <summary>
-    /// Interaction logic for AvaPlot.axaml
-    /// </summary>
+	/// <summary>
+	/// Interaction logic for AvaPlot.axaml
+	/// </summary>
 
-    [System.ComponentModel.ToolboxItem(true)]
+	[System.ComponentModel.ToolboxItem(true)]
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
@@ -149,9 +140,24 @@ namespace ScottPlot.Avalonia
 
         private void InitializeLayout()
         {
-            var canvas = new Canvas();
-            this.Find<Grid>("MainGrid").Children.Add(canvas);
-            canvas.Children.Add(PlotImage);
+			Grid mainGrid = this.Find<Grid>("MainGrid");
+
+            bool isDesignerMode = Design.IsDesignMode;
+            if (isDesignerMode)
+            {
+                mainGrid.Background = new Ava.Media.SolidColorBrush(Ava.Media.Color.FromArgb(0xff, 0, 0x33, 0x66));
+				StackPanel sp = new StackPanel() { Orientation = Ava.Layout.Orientation.Horizontal };
+                sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Ava.Media.Brushes.White });
+                sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Ava.Media.Brushes.White });
+
+                mainGrid.Children.Add(sp);
+            }
+            else
+            {
+                Canvas canvas = new Canvas();
+                mainGrid.Children.Add(canvas);
+                canvas.Children.Add(PlotImage);
+            }
         }
 
         public static Ava.Media.Imaging.Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
