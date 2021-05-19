@@ -250,10 +250,5 @@ namespace ScottPlot.Avalonia
                 Render();
             }
         }
-
-        public void Render()
-        {
-            Backend.Render();
-        }
     }
 }
