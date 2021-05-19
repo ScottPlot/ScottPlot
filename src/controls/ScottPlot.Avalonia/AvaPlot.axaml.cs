@@ -186,9 +186,9 @@ namespace ScottPlot.Avalonia
             /* Copying binary data to the clipboard remains OS-specific,
              * so it is intentionally not supported at this time.
              * https://github.com/AvaloniaUI/Avalonia/issues/3588
+             */
             MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
             CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
-             */
 
             MenuItem AutoAxisMenuItem = new MenuItem() { Header = "Zoom to Fit Data" };
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
@@ -211,23 +211,8 @@ namespace ScottPlot.Avalonia
             cm.Items = cmItems;
             return cm;
         }
-        private ContextMenu _defaultContextMenu;
-        private ContextMenu defaultContextMenu
-        {
-            get
-            {
-                if (_defaultContextMenu is null)
-                    _defaultContextMenu = GetDefaultContextMenu();
 
-                return _defaultContextMenu;
-            }
-        }
-
-        public void DefaultRightClickEvent(object sender, EventArgs e)
-        {
-            defaultContextMenu.Open(this);
-        }
-
+        public void DefaultRightClickEvent(object sender, EventArgs e) => GetDefaultContextMenu().Open(this);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => throw new NotImplementedException();
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new HelpWindow().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
