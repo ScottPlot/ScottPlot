@@ -36,7 +36,7 @@ namespace ScottPlot.Avalonia
         public event EventHandler RightClicked;
 
         private readonly Control.ControlBackEnd Backend;
-        //private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
+        private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
         private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
 
@@ -46,11 +46,24 @@ namespace ScottPlot.Avalonia
         public AvaPlot()
         {
             InitializeComponent();
+
+            Cursors = new Dictionary<ScottPlot.Cursor, Ava.Input.Cursor>()
+            {
+                [ScottPlot.Cursor.Arrow] = new Ava.Input.Cursor(StandardCursorType.Arrow),
+                [ScottPlot.Cursor.WE] = new Ava.Input.Cursor(StandardCursorType.SizeWestEast),
+                [ScottPlot.Cursor.NS] = new Ava.Input.Cursor(StandardCursorType.SizeNorthSouth),
+                [ScottPlot.Cursor.All] = new Ava.Input.Cursor(StandardCursorType.SizeAll),
+                [ScottPlot.Cursor.Crosshair] = new Ava.Input.Cursor(StandardCursorType.Cross),
+                [ScottPlot.Cursor.Hand] = new Ava.Input.Cursor(StandardCursorType.Hand),
+                [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
+            };
+
+            // TODO: delete this?
             //SetContextMenu(backend.DefaultRightClickMenu());
             Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            //Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
 
@@ -82,11 +95,11 @@ namespace ScottPlot.Avalonia
         }
 
         private void OnBitmapChanged(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
+        private void OnCursorChanged(object sender, EventArgs e) { PlotImage.Cursor = Cursors[Backend.Cursor]; }
         private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
-
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
         private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
@@ -94,7 +107,6 @@ namespace ScottPlot.Avalonia
         private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
         private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
         private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
-
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
