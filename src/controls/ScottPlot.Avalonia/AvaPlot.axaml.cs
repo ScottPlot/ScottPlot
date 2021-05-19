@@ -32,7 +32,16 @@ namespace ScottPlot.Avalonia
     {
         public Plot Plot => Backend.Plot;
         public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
+
+        /// <summary>
+        /// This event is invoked any time the axis limits are modified.
+        /// </summary>
         public event EventHandler AxesChanged;
+
+        /// <summary>
+        /// This event is invoked any time the plot is right-clicked.
+        /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
+        /// </summary>
         public event EventHandler RightClicked;
 
         private readonly Control.ControlBackEnd Backend;
@@ -58,8 +67,6 @@ namespace ScottPlot.Avalonia
                 [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
             };
 
-            // TODO: delete this?
-            //SetContextMenu(backend.DefaultRightClickMenu());
             Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -126,23 +133,6 @@ namespace ScottPlot.Avalonia
                 WheelScrolledDown = delta.HasValue && delta < 0,
             };
 
-        //public void SetContextMenu(List<ContextMenuItem> contextMenuItems)
-        //{
-        //    Backend.contextMenuItems = contextMenuItems;
-        //    var cm = new ContextMenu();
-
-        //    List<MenuItem> menuItems = new List<MenuItem>();
-        //    foreach (var curr in contextMenuItems)
-        //    {
-        //        var menuItem = new MenuItem() { Header = curr.itemName };
-        //        menuItem.Click += (object sender, RoutedEventArgs e) => curr.onClick();
-        //        menuItems.Add(menuItem);
-        //    }
-        //    cm.Items = menuItems;
-
-        //    ContextMenu = cm;
-        //}
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -202,10 +192,10 @@ namespace ScottPlot.Avalonia
 
             MenuItem AutoAxisMenuItem = new MenuItem() { Header = "Zoom to Fit Data" };
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
-            
+
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += RightClickMenu_Help_Click;
-            
+
             MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
             OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
 
