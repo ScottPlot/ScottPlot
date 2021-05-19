@@ -117,7 +117,6 @@ namespace ScottPlot.Avalonia
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
-        // This does not use a DPI corrected InputState because Avalonia does that itself.
         private ScottPlot.Control.InputState GetInputState(PointerEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
@@ -150,23 +149,9 @@ namespace ScottPlot.Avalonia
 
         private void InitializeLayout()
         {
-            bool isDesignerMode = false;//DesignerProperties.GetIsInDesignMode(this);
-            if (isDesignerMode)
-            {
-                //MainGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#003366"));
-                //var sp = new StackPanel() { Orientation = Orientation.Horizontal };
-                //sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Brushes.White });
-                //sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Brushes.White });
-                //MainGrid.Children.Add(sp);
-            }
-            else
-            {
-                var canvas = new Canvas();
-                //canvas.SizeChanged += OnSizeChanged;
-                //canvas.PropertyChanged += AvaPlot_PropertyChanged;
-                this.Find<Grid>("MainGrid").Children.Add(canvas);
-                canvas.Children.Add(PlotImage);
-            }
+            var canvas = new Canvas();
+            this.Find<Grid>("MainGrid").Children.Add(canvas);
+            canvas.Children.Add(PlotImage);
         }
 
         public static Ava.Media.Imaging.Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
@@ -259,14 +244,11 @@ namespace ScottPlot.Avalonia
 
         private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            //Debug.WriteLine(e.Property.Name);
             if (e.Property.Name == "Bounds")
             {
-                //Plot.SetSize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
                 Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
                 Render();
             }
-
         }
 
         public void Render()
