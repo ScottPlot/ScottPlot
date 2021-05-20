@@ -13,11 +13,11 @@ using Ava = Avalonia;
 
 namespace ScottPlot.Avalonia
 {
-	/// <summary>
-	/// Interaction logic for AvaPlot.axaml
-	/// </summary>
+    /// <summary>
+    /// Interaction logic for AvaPlot.axaml
+    /// </summary>
 
-	[System.ComponentModel.ToolboxItem(true)]
+    [System.ComponentModel.ToolboxItem(true)]
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
@@ -140,13 +140,13 @@ namespace ScottPlot.Avalonia
 
         private void InitializeLayout()
         {
-			Grid mainGrid = this.Find<Grid>("MainGrid");
+            Grid mainGrid = this.Find<Grid>("MainGrid");
 
             bool isDesignerMode = Design.IsDesignMode;
             if (isDesignerMode)
             {
                 mainGrid.Background = new Ava.Media.SolidColorBrush(Ava.Media.Color.FromArgb(0xff, 0, 0x33, 0x66));
-				StackPanel sp = new StackPanel() { Orientation = Ava.Layout.Orientation.Horizontal };
+                StackPanel sp = new StackPanel() { Orientation = Ava.Layout.Orientation.Horizontal };
                 sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Ava.Media.Brushes.White });
                 sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Ava.Media.Brushes.White });
 
