@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.VisualTree;
-using Ava = Avalonia;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ava = Avalonia;
 
 #pragma warning disable IDE1006 // lowercase top-level property
 
@@ -32,11 +23,20 @@ namespace ScottPlot.Avalonia
     {
         public Plot Plot => Backend.Plot;
         public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
+
+        /// <summary>
+        /// This event is invoked any time the axis limits are modified.
+        /// </summary>
         public event EventHandler AxesChanged;
+
+        /// <summary>
+        /// This event is invoked any time the plot is right-clicked.
+        /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
+        /// </summary>
         public event EventHandler RightClicked;
 
         private readonly Control.ControlBackEnd Backend;
-        //private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
+        private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
         private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
 
@@ -46,11 +46,22 @@ namespace ScottPlot.Avalonia
         public AvaPlot()
         {
             InitializeComponent();
-            //SetContextMenu(backend.DefaultRightClickMenu());
+
+            Cursors = new Dictionary<ScottPlot.Cursor, Ava.Input.Cursor>()
+            {
+                [ScottPlot.Cursor.Arrow] = new Ava.Input.Cursor(StandardCursorType.Arrow),
+                [ScottPlot.Cursor.WE] = new Ava.Input.Cursor(StandardCursorType.SizeWestEast),
+                [ScottPlot.Cursor.NS] = new Ava.Input.Cursor(StandardCursorType.SizeNorthSouth),
+                [ScottPlot.Cursor.All] = new Ava.Input.Cursor(StandardCursorType.SizeAll),
+                [ScottPlot.Cursor.Crosshair] = new Ava.Input.Cursor(StandardCursorType.Cross),
+                [ScottPlot.Cursor.Hand] = new Ava.Input.Cursor(StandardCursorType.Hand),
+                [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
+            };
+
             Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            //Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
 
@@ -82,23 +93,21 @@ namespace ScottPlot.Avalonia
         }
 
         private void OnBitmapChanged(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
+        private void OnCursorChanged(object sender, EventArgs e) { PlotImage.Cursor = Cursors[Backend.Cursor]; }
         private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
-
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
         private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
-        private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); /*base.OnMouseMove(e);*/ }
+        private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
         private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
         private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
-
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
-        // This does not use a DPI corrected InputState because Avalonia does that itself.
         private ScottPlot.Control.InputState GetInputState(PointerEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
@@ -113,23 +122,6 @@ namespace ScottPlot.Avalonia
                 WheelScrolledUp = delta.HasValue && delta > 0,
                 WheelScrolledDown = delta.HasValue && delta < 0,
             };
-
-        //public void SetContextMenu(List<ContextMenuItem> contextMenuItems)
-        //{
-        //    Backend.contextMenuItems = contextMenuItems;
-        //    var cm = new ContextMenu();
-
-        //    List<MenuItem> menuItems = new List<MenuItem>();
-        //    foreach (var curr in contextMenuItems)
-        //    {
-        //        var menuItem = new MenuItem() { Header = curr.itemName };
-        //        menuItem.Click += (object sender, RoutedEventArgs e) => curr.onClick();
-        //        menuItems.Add(menuItem);
-        //    }
-        //    cm.Items = menuItems;
-
-        //    ContextMenu = cm;
-        //}
 
         private void InitializeComponent()
         {
@@ -148,21 +140,22 @@ namespace ScottPlot.Avalonia
 
         private void InitializeLayout()
         {
-            bool isDesignerMode = false;//DesignerProperties.GetIsInDesignMode(this);
+            Grid mainGrid = this.Find<Grid>("MainGrid");
+
+            bool isDesignerMode = Design.IsDesignMode;
             if (isDesignerMode)
             {
-                //MainGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#003366"));
-                //var sp = new StackPanel() { Orientation = Orientation.Horizontal };
-                //sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Brushes.White });
-                //sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Brushes.White });
-                //MainGrid.Children.Add(sp);
+                mainGrid.Background = new Ava.Media.SolidColorBrush(Ava.Media.Color.FromArgb(0xff, 0, 0x33, 0x66));
+                StackPanel sp = new StackPanel() { Orientation = Ava.Layout.Orientation.Horizontal };
+                sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Ava.Media.Brushes.White });
+                sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Ava.Media.Brushes.White });
+
+                mainGrid.Children.Add(sp);
             }
             else
             {
-                var canvas = new Canvas();
-                //canvas.SizeChanged += OnSizeChanged;
-                //canvas.PropertyChanged += AvaPlot_PropertyChanged;
-                this.Find<Grid>("MainGrid").Children.Add(canvas);
+                Canvas canvas = new Canvas();
+                mainGrid.Children.Add(canvas);
                 canvas.Children.Add(PlotImage);
             }
         }
@@ -180,12 +173,20 @@ namespace ScottPlot.Avalonia
         {
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
-            //MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
-            //CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
+
+            /* Copying binary data to the clipboard remains OS-specific,
+             * so it is intentionally not supported at this time.
+             * https://github.com/AvaloniaUI/Avalonia/issues/3588
+             */
+            MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
+            CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
+
             MenuItem AutoAxisMenuItem = new MenuItem() { Header = "Zoom to Fit Data" };
             AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
+
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += RightClickMenu_Help_Click;
+
             MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
             OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
 
@@ -201,24 +202,9 @@ namespace ScottPlot.Avalonia
             cm.Items = cmItems;
             return cm;
         }
-        private ContextMenu _defaultContextMenu;
-        private ContextMenu defaultContextMenu
-        {
-            get
-            {
-                if (_defaultContextMenu is null)
-                    _defaultContextMenu = GetDefaultContextMenu();
 
-                return _defaultContextMenu;
-            }
-        }
-
-        public void DefaultRightClickEvent(object sender, EventArgs e)
-        {
-            defaultContextMenu.Open(this);
-        }
-
-        //private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
+        public void DefaultRightClickEvent(object sender, EventArgs e) => GetDefaultContextMenu().Open(this);
+        private void RightClickMenu_Copy_Click(object sender, EventArgs e) => throw new NotImplementedException();
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new HelpWindow().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
         private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
@@ -264,19 +250,11 @@ namespace ScottPlot.Avalonia
 
         private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            //Debug.WriteLine(e.Property.Name);
             if (e.Property.Name == "Bounds")
             {
-                //Plot.SetSize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
                 Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
                 Render();
             }
-
-        }
-
-        public void Render()
-        {
-            Backend.Render();
         }
     }
 }
