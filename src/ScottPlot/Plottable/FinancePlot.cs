@@ -12,6 +12,10 @@ namespace ScottPlot.Plottable
     public class FinancePlot : IPlottable
     {
         private readonly List<OHLC> OHLCs = new List<OHLC>();
+        
+        // <summary>
+        // Returns the last element of OHLCs so users can modify FinancePlots in real time.
+        // </summary>
         public OHLC Last() => OHLCs.Last();
 
         /// <summary>
