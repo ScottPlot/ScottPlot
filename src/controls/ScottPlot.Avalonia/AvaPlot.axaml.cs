@@ -68,6 +68,7 @@ namespace ScottPlot.Avalonia
         public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
         public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
         public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void RenderRequest(Control.EventProcess.RenderType renderType) => Backend.RenderRequest(renderType);
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
