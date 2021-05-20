@@ -352,28 +352,28 @@ namespace ScottPlot.Control
         {
             switch (renderType)
             {
-                case RenderType.LQOnly:
+                case RenderType.LowQuality:
                     ProcessEvent(EventFactory.CreateManualLowQualityRender());
                     return;
 
-                case RenderType.HQOnly:
+                case RenderType.HighQuality:
                     ProcessEvent(EventFactory.CreateManualHighQualityRender());
                     return;
 
-                case RenderType.HQDelayed:
+                case RenderType.HighQualityDelayed:
                     ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
                     return;
 
-                case RenderType.HQAfterLQImmediately:
+                case RenderType.LowQualityThenHighQuality:
                     ProcessEvent(EventFactory.CreateManualLowQualityRender());
                     ProcessEvent(EventFactory.CreateManualHighQualityRender());
                     return;
 
-                case RenderType.HQAfterLQDelayed:
+                case RenderType.LowQualityThenHighQualityDelayed:
                     ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
                     return;
 
-                case RenderType.None:
+                case RenderType.ProcessMouseEventsOnly:
                     return;
 
                 default:
@@ -412,7 +412,7 @@ namespace ScottPlot.Control
             Bmp = new System.Drawing.Bitmap((int)width, (int)height);
             BitmapRenderCount = 0;
 
-            RenderRequest(RenderType.HQDelayed);
+            RenderRequest(RenderType.HighQualityDelayed);
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace ScottPlot.Control
             {
                 uiEvent.ProcessEvent();
 
-                if (uiEvent.RenderType == RenderType.None)
+                if (uiEvent.RenderType == RenderType.ProcessMouseEventsOnly)
                     return;
 
                 bool lowQuality =
