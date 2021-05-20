@@ -19,6 +19,12 @@
         HQOnly,
 
         /// <summary>
+        /// Perform a high quality render after a delay.
+        /// This is the best render type to use when resizing windows.
+        /// </summary>
+        HQDelayed,
+
+        /// <summary>
         /// Render low quality and display it, then if no new render requests
         /// have been received immediately render a high quality version and display it.
         /// This is the best render option to use when requesting renders programmatically
