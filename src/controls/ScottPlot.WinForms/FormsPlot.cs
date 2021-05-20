@@ -102,9 +102,10 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Render the plot using low quality (fast) then immediate re-render using high quality (slower)
+        /// Request the control re-render the next time it is available.
+        /// This method does not block the calling thread.
         /// </summary>
-        public void RenderLowThenImmediateHighQuality() => Backend.RenderLowThenImmediateHighQuality();
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }

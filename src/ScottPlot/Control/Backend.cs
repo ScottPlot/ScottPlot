@@ -344,31 +344,41 @@ namespace ScottPlot.Control
             currentlyRendering = false;
         }
 
-        public void RenderLowQuality()
-        {
-            ProcessEvent(EventFactory.CreateManualLowQualityRender());
-        }
-
-        public void RenderHighQuality()
-        {
-            ProcessEvent(EventFactory.CreateManualHighQualityRender());
-        }
-
         /// <summary>
-        /// Render the plot using low quality (fast) then immediate re-render using high quality (slower).
+        /// Request a render using the render queue. 
+        /// This method does not block the calling thread.
         /// </summary>
-        public void RenderLowThenImmediateHighQuality()
+        public void RenderRequest(RenderType renderType)
         {
-            ProcessEvent(EventFactory.CreateManualLowQualityRender());
-            ProcessEvent(EventFactory.CreateManualHighQualityRender());
-        }
+            switch (renderType)
+            {
+                case RenderType.LowQuality:
+                    ProcessEvent(EventFactory.CreateManualLowQualityRender());
+                    return;
 
-        /// <summary>
-        /// Render the plot using low quality (fast) then delayed re-render using high quality (slower).
-        /// </summary>
-        public void RenderDelayedHighQuality()
-        {
-            ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
+                case RenderType.HighQuality:
+                    ProcessEvent(EventFactory.CreateManualHighQualityRender());
+                    return;
+
+                case RenderType.HighQualityDelayed:
+                    ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
+                    return;
+
+                case RenderType.LowQualityThenHighQuality:
+                    ProcessEvent(EventFactory.CreateManualLowQualityRender());
+                    ProcessEvent(EventFactory.CreateManualHighQualityRender());
+                    return;
+
+                case RenderType.LowQualityThenHighQualityDelayed:
+                    ProcessEvent(EventFactory.CreateManualDelayedHighQualityRender());
+                    return;
+
+                case RenderType.ProcessMouseEventsOnly:
+                    return;
+
+                default:
+                    throw new InvalidOperationException($"unsupported render type {renderType}");
+            }
         }
 
         /// <summary>
@@ -402,7 +412,7 @@ namespace ScottPlot.Control
             Bmp = new System.Drawing.Bitmap((int)width, (int)height);
             BitmapRenderCount = 0;
 
-            RenderDelayedHighQuality();
+            RenderRequest(RenderType.HighQualityDelayed);
         }
 
         /// <summary>
@@ -485,7 +495,7 @@ namespace ScottPlot.Control
             {
                 uiEvent.ProcessEvent();
 
-                if (uiEvent.RenderType == RenderType.None)
+                if (uiEvent.RenderType == RenderType.ProcessMouseEventsOnly)
                     return;
 
                 bool lowQuality =

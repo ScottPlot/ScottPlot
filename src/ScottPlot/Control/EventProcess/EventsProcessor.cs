@@ -84,7 +84,7 @@ namespace ScottPlot.Control.EventProcess
         /// </summary>
         private void RenderPreview(RenderType renderType)
         {
-            if (renderType == RenderType.HQOnly)
+            if (renderType == RenderType.HighQuality)
                 return;
 
             RenderLowQuality();
@@ -98,21 +98,21 @@ namespace ScottPlot.Control.EventProcess
         {
             switch (renderType)
             {
-                case RenderType.LQOnly:
+                case RenderType.LowQuality:
                     // we don't need a HQ render if the type is LQ only
                     return true;
 
-                case RenderType.HQOnly:
+                case RenderType.HighQuality:
                     // A HQ version is always needed
                     RenderHighQuality();
                     return true;
 
-                case RenderType.HQAfterLQImmediately:
+                case RenderType.LowQualityThenHighQuality:
                     // A LQ version has been rendered, but we need a HQ version now
                     RenderHighQuality();
                     return true;
 
-                case RenderType.HQAfterLQDelayed:
+                case RenderType.LowQualityThenHighQualityDelayed:
                     // A LQ version has been rendered, but we need a HQ version after a delay
 
                     if (RenderDelayTimer.IsRunning == false)
@@ -146,7 +146,7 @@ namespace ScottPlot.Control.EventProcess
                 await Task.Delay(1);
             }
 
-            RenderType lastEventRenderType = RenderType.None;
+            RenderType lastEventRenderType = RenderType.ProcessMouseEventsOnly;
             while (true)
             {
                 QueueProcessorIsRunning = true;
@@ -156,10 +156,10 @@ namespace ScottPlot.Control.EventProcess
                     var uiEvent = Queue.Dequeue();
                     uiEvent.ProcessEvent();
 
-                    if (uiEvent.RenderType == RenderType.HQAfterLQDelayed)
+                    if (uiEvent.RenderType == RenderType.LowQualityThenHighQualityDelayed)
                         RenderDelayTimer.Restart();
 
-                    if (uiEvent.RenderType != RenderType.None)
+                    if (uiEvent.RenderType != RenderType.ProcessMouseEventsOnly)
                     {
                         lastEventRenderType = uiEvent.RenderType;
                         eventRenderRequested = true;
