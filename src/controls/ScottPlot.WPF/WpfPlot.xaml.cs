@@ -105,7 +105,7 @@ namespace ScottPlot
         /// Request the control re-render the next time it is available.
         /// This method does not block the calling thread.
         /// </summary>
-        public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
