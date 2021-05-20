@@ -2,8 +2,9 @@
 
 ## ScottPlot 4.1.14-beta
 * Add support for custom linestyles in SignalXY plots (#1017, #1016) _Thanks @StendProg and @breakwinz_
-* Support Avalonia 0.10.4 (#1018) _Thanks @bclehmann_
+* Improved Avalonia dependency versioning (#1018, #1041) _Thanks @bclehmann_
 * Controls now properly process `MouseEnter` and `MouseLeave` events (#999) _Thanks @kirsan31 and @breakwinz_
+* Controls now have a `RenderRequest()` method that uses a render queue to facilitate non-blocking render calls (#813, #1034) _Thanks @StendProg_
 
 ## ScottPlot 4.1.13-beta
 * `Plot.Render()` and `Plot.SaveFig()` now have a `scale` argument to allow for the creation of high resolution scaled plots (#983, #982, #981) _Thanks @PeterDavidson_
