@@ -40,6 +40,17 @@ namespace ScottPlot
 
         public FormsPlot()
         {
+            string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
+            if (renderErrorMessage != null)
+            {
+                InitializeComponent();
+                pictureBox1.Visible = false;
+                rtbErrorMessage.Visible = true;
+                rtbErrorMessage.Dock = DockStyle.Fill;
+                rtbErrorMessage.Text = renderErrorMessage;
+                return;
+            }
+
             Backend.Resize(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
