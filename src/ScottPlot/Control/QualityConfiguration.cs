@@ -15,10 +15,10 @@ namespace ScottPlot.Control
     /// </summary>
     public class QualityConfiguration
     {
-        public RenderType BenchmarkToggle = RenderType.HQOnly;
-        public RenderType AutoAxis = RenderType.HQAfterLQDelayed;
-        public RenderType MouseInteractiveDragged = RenderType.LQOnly;
-        public RenderType MouseInteractiveDropped = RenderType.HQOnly;
-        public RenderType MouseWheelScrolled = RenderType.HQAfterLQDelayed;
+        public RenderType BenchmarkToggle = RenderType.HighQuality;
+        public RenderType AutoAxis = RenderType.LowQualityThenHighQualityDelayed;
+        public RenderType MouseInteractiveDragged = RenderType.LowQuality;
+        public RenderType MouseInteractiveDropped = RenderType.HighQuality;
+        public RenderType MouseWheelScrolled = RenderType.LowQualityThenHighQualityDelayed;
     }
 }
