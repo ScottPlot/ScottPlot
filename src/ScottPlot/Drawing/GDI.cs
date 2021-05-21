@@ -40,7 +40,7 @@ namespace ScottPlot.Drawing
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                return "ScottPlot Render Error:" + Environment.NewLine + ex.ToString();
             }
 
             return null;
