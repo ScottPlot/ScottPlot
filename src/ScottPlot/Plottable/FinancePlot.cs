@@ -14,6 +14,11 @@ namespace ScottPlot.Plottable
         private readonly List<OHLC> OHLCs = new List<OHLC>();
 
         /// <summary>
+        /// Returns the last element of OHLCs so users can modify FinancePlots in real time.
+        /// </summary>
+        public OHLC Last() => OHLCs.Last();
+
+        /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
         /// </summary>
         public bool Candle;
