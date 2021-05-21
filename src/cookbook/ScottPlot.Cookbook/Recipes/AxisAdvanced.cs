@@ -213,15 +213,15 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "ticks_multiplier";
         public string Title => "Multiplier Notation";
         public string Description =>
-            "Multiplier notation keeps tick labels small when plotting large data values.";
+            "Multiplier notation keeps tick labels small when plotting large data values. " +
+            "This style is also called engineering notation or scientific notation.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] largeXs = DataGen.Consecutive(100, spacing: 1e6);
-            double[] largeYs = DataGen.Random(null, 100, multiplier: 1e6);
+            plt.AddLine(-1e5, -1e10, 1e5, 1e10);
 
-            plt.AddScatter(largeXs, largeYs);
             plt.XAxis.TickLabelNotation(multiplier: true);
+            plt.YAxis.TickLabelNotation(multiplier: true);
         }
     }
 
@@ -235,11 +235,10 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] largeXs = DataGen.Consecutive(100, spacing: 1e6);
-            double[] largeYs = DataGen.Random(null, 100, multiplier: 1e6);
+            plt.AddLine(1e5 + 111, 1e10 + 111, 1e5 + 222, 1e10 + 222);
 
-            plt.AddScatter(largeXs, largeYs);
             plt.XAxis.TickLabelNotation(offset: true);
+            plt.YAxis.TickLabelNotation(offset: true);
         }
     }
 
