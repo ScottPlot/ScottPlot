@@ -19,8 +19,8 @@
              Background="Transparent"
              >
 
-    <Grid x:Name="MainGrid">
-
+    <Grid x:Name="MainGrid" SizeChanged="OnSizeChanged">
+        <Image x:Name="PlotImage"/>
     </Grid>
-    
+
 </UserControl>
