@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
+#pragma warning disable IDE1006 // lowercase public properties
+
 namespace ScottPlot
 {
     [System.ComponentModel.ToolboxItem(true)]
@@ -36,9 +38,8 @@ namespace ScottPlot
         /// </summary>
         public event EventHandler RightClicked;
 
-        private readonly Control.ControlBackEnd Backend;
+        private readonly Control.ControlBackEnd Backend = new(1, 1);
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly Image PlotImage = new();
         private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
 
@@ -47,7 +48,16 @@ namespace ScottPlot
 
         public WpfPlot()
         {
-            Backend = new Control.ControlBackEnd((float)ActualWidth, (float)ActualHeight);
+            string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
+            if (renderErrorMessage != null)
+            {
+                InitializeComponent();
+                PlotImage.Visibility = System.Windows.Visibility.Hidden;
+                ErrorLabel.Text = renderErrorMessage;
+                return;
+            }
+
+            Backend.Resize((float)ActualWidth, (float)ActualHeight);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -71,7 +81,9 @@ namespace ScottPlot
             PlottableCountTimer.Start();
 
             InitializeComponent();
-            InitializeLayout();
+            if (DesignerProperties.GetIsInDesignMode(this))
+                Plot.Title($"ScottPlot {Plot.Version}");
+
             Backend.StartProcessingEvents();
         }
 
@@ -113,7 +125,7 @@ namespace ScottPlot
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
-        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth * DisplayScale.ScaleRatio, (float)ActualHeight * DisplayScale.ScaleRatio);
+        private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize((float)ActualWidth * DisplayScale.ScaleRatio, (float)ActualHeight * DisplayScale.ScaleRatio);
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
@@ -137,26 +149,6 @@ namespace ScottPlot
                 WheelScrolledUp = delta.HasValue && delta > 0,
                 WheelScrolledDown = delta.HasValue && delta < 0,
             };
-
-        private void InitializeLayout()
-        {
-            bool isDesignerMode = DesignerProperties.GetIsInDesignMode(this);
-            if (isDesignerMode)
-            {
-                MainGrid.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#003366"));
-                var sp = new StackPanel() { Orientation = System.Windows.Controls.Orientation.Horizontal };
-                sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Brushes.White });
-                sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Brushes.White });
-                MainGrid.Children.Add(sp);
-            }
-            else
-            {
-                var canvas = new Canvas();
-                canvas.SizeChanged += OnSizeChanged;
-                MainGrid.Children.Add(canvas);
-                canvas.Children.Add(PlotImage);
-            }
-        }
 
         private static BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
         {

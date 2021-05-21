@@ -41,13 +41,14 @@ namespace ScottPlot
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.openInNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PlottableCountTimer = new System.Windows.Forms.Timer(this.components);
+            this.rtbErrorMessage = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.DefaultRightClickMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Maroon;
+            this.pictureBox1.BackColor = System.Drawing.Color.Navy;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
@@ -132,10 +133,23 @@ namespace ScottPlot
             this.PlottableCountTimer.Interval = 10;
             this.PlottableCountTimer.Tick += new System.EventHandler(this.PlottableCountTimer_Tick);
             // 
+            // rtbErrorMessage
+            // 
+            this.rtbErrorMessage.BackColor = System.Drawing.Color.Maroon;
+            this.rtbErrorMessage.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbErrorMessage.ForeColor = System.Drawing.Color.White;
+            this.rtbErrorMessage.Location = new System.Drawing.Point(21, 24);
+            this.rtbErrorMessage.Name = "rtbErrorMessage";
+            this.rtbErrorMessage.Size = new System.Drawing.Size(186, 84);
+            this.rtbErrorMessage.TabIndex = 1;
+            this.rtbErrorMessage.Text = "error message";
+            this.rtbErrorMessage.Visible = false;
+            // 
             // FormsPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.rtbErrorMessage);
             this.Controls.Add(this.pictureBox1);
             this.Name = "FormsPlot";
             this.Size = new System.Drawing.Size(400, 300);
@@ -160,5 +174,6 @@ namespace ScottPlot
         private System.Windows.Forms.Timer PlottableCountTimer;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem openInNewWindowMenuItem;
-	}
+        private System.Windows.Forms.RichTextBox rtbErrorMessage;
+    }
 }
