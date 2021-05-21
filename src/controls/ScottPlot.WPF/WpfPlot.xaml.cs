@@ -38,7 +38,7 @@ namespace ScottPlot
         /// </summary>
         public event EventHandler RightClicked;
 
-        private readonly Control.ControlBackEnd Backend;
+        private readonly Control.ControlBackEnd Backend = new(1, 1);
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
         private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
@@ -48,9 +48,6 @@ namespace ScottPlot
 
         public WpfPlot()
         {
-            Backend = new Control.ControlBackEnd((float)ActualWidth, (float)ActualHeight);
-
-            // if render errors occur, exit quickly to prevent design-time crashes
             string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
             if (renderErrorMessage != null)
             {
@@ -60,6 +57,7 @@ namespace ScottPlot
                 return;
             }
 
+            Backend.Resize((float)ActualWidth, (float)ActualHeight);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
