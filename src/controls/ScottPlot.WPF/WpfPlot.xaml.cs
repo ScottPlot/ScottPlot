@@ -49,6 +49,17 @@ namespace ScottPlot
         public WpfPlot()
         {
             Backend = new Control.ControlBackEnd((float)ActualWidth, (float)ActualHeight);
+
+            // if render errors occur, exit quickly to prevent design-time crashes
+            string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
+            if (renderErrorMessage != null)
+            {
+                InitializeComponent();
+                PlotImage.Visibility = System.Windows.Visibility.Hidden;
+                ErrorLabel.Text = renderErrorMessage;
+                return;
+            }
+
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);

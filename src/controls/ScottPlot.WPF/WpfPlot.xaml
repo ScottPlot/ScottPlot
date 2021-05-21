@@ -20,7 +20,14 @@
              >
 
     <Grid x:Name="MainGrid" SizeChanged="OnSizeChanged">
-        <Image x:Name="PlotImage"/>
+        <TextBlock x:Name="ErrorLabel" 
+            Padding="5"
+            FontFamily="consolas"
+            Background="Maroon"
+            Foreground="White"
+            TextWrapping="Wrap"
+            Text="error message" />
+        <Image x:Name="PlotImage" />
     </Grid>
 
 </UserControl>
