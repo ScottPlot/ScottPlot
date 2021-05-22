@@ -1,5 +1,5 @@
-- name: ScottPlot API
-  href: api/index.html
+- name: ScottPlot 4.1.13-beta API
+  href: index.md
 - name: ScottPlot Cookbook
   href: https://swharden.com/scottplot/cookbook
 - name: ScottPlot FAQ

@@ -7,6 +7,7 @@ destFile = thisFolder.joinpath("api/index.md")
 destFile2 = thisFolder.joinpath("index.md")
 csprojFile = thisFolder.joinpath("../../src/ScottPlot/ScottPlot.csproj")
 jsonFile = thisFolder.joinpath("docfx.json")
+toc = thisFolder.joinpath("toc.yml")
 
 with csprojFile.open() as f:
     lines = f.readlines()
@@ -30,3 +31,12 @@ with open(jsonFile, 'r') as f:
             jsonLines[i] = f'            "_appTitle": "ScottPlot {version} API",\n'
 with open(jsonFile, 'w') as f:
     f.writelines(jsonLines)
+
+with open(toc, 'w') as f:
+    f.write(f"""- name: ScottPlot {version} API
+  href: index.md
+- name: ScottPlot Cookbook
+  href: https://swharden.com/scottplot/cookbook
+- name: ScottPlot FAQ
+  href: https://swharden.com/scottplot/faq
+""")
