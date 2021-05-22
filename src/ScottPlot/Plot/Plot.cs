@@ -43,7 +43,7 @@ namespace ScottPlot
             get
             {
                 Version v = typeof(Plot).Assembly.GetName().Version;
-                string versionString = $"{v.Major}.{v.Minor}.{v.Build}-beta";
+                string versionString = $"{v.Major}.{v.Minor}.{v.Build}";
                 return versionString;
             }
         }
