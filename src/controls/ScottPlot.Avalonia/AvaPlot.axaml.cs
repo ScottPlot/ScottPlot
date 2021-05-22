@@ -148,7 +148,8 @@ namespace ScottPlot.Avalonia
             {
                 try
                 {
-                    ScottPlot.Drawing.GDI.DrawingTest();
+                    Plot.Title($"ScottPlot {Plot.Version}");
+                    Plot.Render();
                 }
                 catch (Exception e)
                 {
