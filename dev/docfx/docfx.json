@@ -1,0 +1,63 @@
+{
+    "metadata": [
+        {
+            "src": [
+                {
+                    "files": [
+                        "ScottPlot/ScottPlot.csproj",
+                        "controls/ScottPlot.WinForms/ScottPlot.WinForms.csproj",
+                        "controls/ScottPlot.WPF/ScottPlot.WPF.csproj",
+                        "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.csproj"
+                    ],
+                    "exclude": [
+                        "**/bin/**",
+                        "**/obj/**"
+                    ],
+                    "src": "../../src/"
+                }
+            ],
+            "dest": "api",
+            "disableGitFeatures": true,
+            "disableDefaultFilter": false
+        }
+    ],
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "api/**.yml",
+                    "api/index.md",
+                    "toc.yml",
+                    "index.md"
+                ]
+            }
+        ],
+        "overwrite": [
+            {
+                "files": [
+                    "apidoc/**.md"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
+        "dest": "_site",
+        "globalMetadata": {
+            "_appTitle": "ScottPlot 4.1.13-beta API",
+            "repo": "https://github.com/ScottPlot/ScottPlot",
+            "branch": "master",
+            "apiSpecFolder": "dev/docfx"
+        },
+        "template": [
+            "statictoc"
+        ],
+        "postProcessors": [],
+        "markdownEngineName": "markdig",
+        "noLangKeyword": false,
+        "keepFileLink": false,
+        "cleanupCacheHistory": false,
+        "disableGitFeatures": true
+    }
+}
