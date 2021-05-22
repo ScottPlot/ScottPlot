@@ -275,10 +275,8 @@ namespace ScottPlot
 
         public static double[,] XYToIntensitiesGaussian(int[] xs, int[] ys, int width, int height, int sigma)
         {
-            double NormPDF(double x, double mu, double sigma)
-            {
-                return (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
-            }
+            static double NormPDF(double x, double mu, double sigma) =>
+                (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
 
             double[,] output = new double[height, width];
             double[,] intermediate = new double[height, width]; // Each cell has the number of hits. This is the array before any blurring
