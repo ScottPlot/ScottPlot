@@ -51,7 +51,8 @@
             "apiSpecFolder": "dev/docfx"
         },
         "template": [
-            "statictoc"
+		    "default",
+			"template-material"
         ],
         "postProcessors": [],
         "markdownEngineName": "markdig",
