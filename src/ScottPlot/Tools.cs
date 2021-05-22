@@ -382,18 +382,12 @@ namespace ScottPlot
 
         public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
         {
-            switch (mode)
+            return mode switch
             {
-                case IntensityMode.Gaussian:
-                    return XYToIntensitiesGaussian(xs, ys, width, height, sampleWidth);
-                    break;
-                case IntensityMode.Density:
-                    return XYToIntensitiesDensity(xs, ys, width, height, sampleWidth);
-                    break;
-                default:
-                    throw new NotImplementedException($"{nameof(mode)} is not a supported {nameof(IntensityMode)}");
-
-            }
+                IntensityMode.Gaussian => XYToIntensitiesGaussian(xs, ys, width, height, sampleWidth),
+                IntensityMode.Density => XYToIntensitiesDensity(xs, ys, width, height, sampleWidth),
+                _ => throw new NotImplementedException($"{nameof(mode)} is not a supported {nameof(IntensityMode)}"),
+            };
         }
 
         public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true, char decimalSymbol = '.')
