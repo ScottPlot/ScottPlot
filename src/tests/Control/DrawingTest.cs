@@ -12,8 +12,7 @@ namespace ScottPlotTests.Control
         [Test]
         public void Test_DrawingTest_CanDrawGraphics()
         {
-            var errorMessage = ScottPlot.Drawing.GDI.DrawingTest();
-            Assert.IsNull(errorMessage);
+            Assert.DoesNotThrow(ScottPlot.Drawing.GDI.DrawingTest);
         }
     }
 }
