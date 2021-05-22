@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
     <RootNamespace>ScottPlot.Demo.WinForms</RootNamespace>
     <AssemblyName>ScottPlot.Demo.WinForms</AssemblyName>
     <StartupObject>ScottPlot.Demo.WinForms.Program</StartupObject>
+    <PackageIcon></PackageIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

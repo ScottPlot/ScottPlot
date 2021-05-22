@@ -83,7 +83,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             if (cbRightClickMenu.Enabled == false)
                 return;
 
-            formsPlot1.RightClicked += cbCustomRightClick.Checked ? CustomRightClickEvent : formsPlot1.DefaultRightClickEvent;
+            if (cbCustomRightClick.Checked)
+                formsPlot1.RightClicked += CustomRightClickEvent;
+            else
+                formsPlot1.RightClicked += formsPlot1.DefaultRightClickEvent;
         }
 
         private void CustomRightClickEvent(object sender, EventArgs e) =>
