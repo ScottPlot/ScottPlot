@@ -53,7 +53,7 @@
         ],
         "dest": "_site",
         "globalMetadata": {
-            "_appTitle": "ScottPlot 4.1.13-beta API",
+            "_appTitle": "ScottPlot 4.1.14-beta API",
             "repo": "https://github.com/ScottPlot/ScottPlot",
             "branch": "master",
             "apiSpecFolder": "dev/docfx",
