@@ -1,3 +1,8 @@
 footer {
     visibility: collapse;
 }
+
+#logo {
+    height: 3em;
+    padding: .2em;
+}

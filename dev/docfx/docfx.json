@@ -18,7 +18,8 @@
             ],
             "dest": "api",
             "disableGitFeatures": true,
-            "disableDefaultFilter": false
+            "disableDefaultFilter": false,
+            "_disableAffix": true
         }
     ],
     "build": {
@@ -29,6 +30,13 @@
                     "api/index.md",
                     "toc.yml",
                     "index.md"
+                ]
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "icon.png"
                 ]
             }
         ],
@@ -48,11 +56,13 @@
             "_appTitle": "ScottPlot 4.1.13-beta API",
             "repo": "https://github.com/ScottPlot/ScottPlot",
             "branch": "master",
-            "apiSpecFolder": "dev/docfx"
+            "apiSpecFolder": "dev/docfx",
+            "_appLogoPath": "icon.png",
+            "_appFaviconPath": "icon.png"
         },
         "template": [
-		    "default",
-			"template-material"
+            "default",
+            "template-material"
         ],
         "postProcessors": [],
         "markdownEngineName": "markdig",
