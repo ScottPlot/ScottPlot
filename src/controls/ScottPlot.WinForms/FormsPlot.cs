@@ -53,7 +53,10 @@ namespace ScottPlot
                     pictureBox1.Visible = false;
                     rtbErrorMessage.Visible = true;
                     rtbErrorMessage.Dock = DockStyle.Fill;
-                    rtbErrorMessage.Text = e.ToString();
+                    rtbErrorMessage.Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                        "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
+                        "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
+                        $"Exception details:\n{e}";
                     return;
                 }
             }
