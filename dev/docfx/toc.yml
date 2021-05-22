@@ -1,0 +1,6 @@
+- name: ScottPlot API
+  href: api/index.md
+- name: ScottPlot Cookbook
+  href: https://swharden.com/scottplot/cookbook
+- name: ScottPlot FAQ
+  href: https://swharden.com/scottplot/faq
