@@ -48,13 +48,23 @@ namespace ScottPlot
 
         public WpfPlot()
         {
-            string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
-            if (renderErrorMessage != null)
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
-                InitializeComponent();
-                PlotImage.Visibility = System.Windows.Visibility.Hidden;
-                ErrorLabel.Text = renderErrorMessage;
-                return;
+                try
+                {
+                    Plot.Title($"ScottPlot {Plot.Version}");
+                    Plot.Render();
+                }
+                catch (Exception e)
+                {
+                    InitializeComponent();
+                    PlotImage.Visibility = System.Windows.Visibility.Hidden;
+                    ErrorLabel.Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                        "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
+                        "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
+                        $"Exception details:\n{e}";
+                    return;
+                }
             }
 
             Backend.Resize((float)ActualWidth, (float)ActualHeight);
@@ -81,8 +91,6 @@ namespace ScottPlot
             PlottableCountTimer.Start();
 
             InitializeComponent();
-            if (DesignerProperties.GetIsInDesignMode(this))
-                Plot.Title($"ScottPlot {Plot.Version}");
 
             Backend.StartProcessingEvents();
         }

@@ -5,6 +5,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ScottPlot.Avalonia.AvaPlot">
 	<Grid x:Name="MainGrid">
-
+		<TextBlock x:Name="ErrorLabel"
+					Padding="5"
+					FontFamily="consolas"
+					Background="Maroon"
+					Foreground="White"
+					TextWrapping="Wrap"
+					Text="error message" />
 	</Grid>
 </UserControl>

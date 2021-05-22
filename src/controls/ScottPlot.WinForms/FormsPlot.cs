@@ -40,15 +40,25 @@ namespace ScottPlot
 
         public FormsPlot()
         {
-            string renderErrorMessage = ScottPlot.Drawing.GDI.DrawingTest();
-            if (renderErrorMessage != null)
+            if (IsDesignerMode)
             {
-                InitializeComponent();
-                pictureBox1.Visible = false;
-                rtbErrorMessage.Visible = true;
-                rtbErrorMessage.Dock = DockStyle.Fill;
-                rtbErrorMessage.Text = renderErrorMessage;
-                return;
+                try
+                {
+                    Plot.Title($"ScottPlot {Plot.Version}");
+                    Plot.Render();
+                }
+                catch (Exception e)
+                {
+                    InitializeComponent();
+                    pictureBox1.Visible = false;
+                    rtbErrorMessage.Visible = true;
+                    rtbErrorMessage.Dock = DockStyle.Fill;
+                    rtbErrorMessage.Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                        "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
+                        "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
+                        $"Exception details:\n{e}";
+                    return;
+                }
             }
 
             Backend.Resize(Width, Height);
@@ -75,8 +85,6 @@ namespace ScottPlot
             Plot.Style(figureBackground: BackColor);
             pictureBox1.MouseWheel += PictureBox1_MouseWheel;
             RightClicked += DefaultRightClickEvent;
-            if (IsDesignerMode)
-                Plot.Title($"ScottPlot {Plot.Version}");
 
             Backend.StartProcessingEvents();
         }

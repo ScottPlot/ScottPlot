@@ -146,19 +146,24 @@ namespace ScottPlot.Avalonia
             bool isDesignerMode = Design.IsDesignMode;
             if (isDesignerMode)
             {
-                mainGrid.Background = new Ava.Media.SolidColorBrush(Ava.Media.Color.FromArgb(0xff, 0, 0x33, 0x66));
-                StackPanel sp = new StackPanel() { Orientation = Ava.Layout.Orientation.Horizontal };
-                sp.Children.Add(new Label() { Content = "ScottPlot", Foreground = Ava.Media.Brushes.White });
-                sp.Children.Add(new Label() { Content = Plot.Version, Foreground = Ava.Media.Brushes.White });
-
-                mainGrid.Children.Add(sp);
+                try
+                {
+                    Plot.Title($"ScottPlot {Plot.Version}");
+                    Plot.Render();
+                }
+                catch (Exception e)
+                {
+                    InitializeComponent();
+                    this.Find<TextBlock>("ErrorLabel").Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                        "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
+                        "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
+                        $"Exception details:\n{e}";
+                    return;
+                }
             }
-            else
-            {
-                Canvas canvas = new Canvas();
-                mainGrid.Children.Add(canvas);
-                canvas.Children.Add(PlotImage);
-            }
+            Canvas canvas = new Canvas();
+            mainGrid.Children.Add(canvas);
+            canvas.Children.Add(PlotImage);
         }
 
         public static Ava.Media.Imaging.Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
