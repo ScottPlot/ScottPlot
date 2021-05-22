@@ -19,25 +19,6 @@ namespace ScottPlot.Drawing
         private const float yMultiplierMacOS = 27.16f / 20;
 
         /// <summary>
-        /// Test if the system can properly render graphics using System.Drawing.Common.
-        /// Throws on failure.
-        /// </summary>
-        public static void DrawingTest()
-        {
-            var bmp = new Bitmap(10, 10);
-            using var gfx = GDI.Graphics(bmp);
-            gfx.Clear(Color.Magenta);
-            gfx.DrawLine(Pens.Black, 0, 0, 10, 10);
-
-            using var stream = new System.IO.MemoryStream();
-            bmp.Save(stream, ImageFormat.Bmp);
-            byte[] bytes = stream.ToArray();
-            int expectedBitmapSize = 454;
-            if (bytes.Length != expectedBitmapSize)
-                throw new InvalidOperationException($"test image was {bytes.Length} bytes (expected {expectedBitmapSize})");
-        }
-
-        /// <summary>
         /// Return the display scale ratio being used.
         /// A scaling ratio of 1.0 means scaling is not active.
         /// </summary>
