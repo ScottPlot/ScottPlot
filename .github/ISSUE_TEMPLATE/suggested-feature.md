@@ -7,7 +7,16 @@ assignees: ''
 
 ---
 
-**What can we do to make ScottPlot better?**
-Consider if code examples or images would help communicate your request.
+## Features Suggestion
 
-The [ScottPlot Roadmap](https://github.com/swharden/ScottPlot/blob/master/dev/roadmap.md) may provide additional context regarding current goals and future directions.
+**Feature description:** Describe your question here
+
+**Code example:** If applicable, use this space to demonstrate how you wish the new feature could be used in code.
+
+```cs
+// a code sample may improve communication
+var examplePlot = new ScottPlot.Plot();
+var meme = ScottPlot.Memes.ICanHaz("Grafixs");
+plt.Add(meme);
+plt.SaveFig("meme.png");
+```

@@ -4,23 +4,28 @@ about: How do I use ScottPlot to...
 title: ''
 labels: 'Question'
 assignees: ''
-
 ---
-### Your Environment
-- ScottPlot Version:
-- Operating System:
-- Is it a GUI app? What platform?
-    - Platforms include WinForms, WPF, and Avalonia
 
-**Before asking a question** see if it is already answered in:
-* [ScottPlot Cookbook](http://swharden.com/scottplot/cookbook)
-* [ScottPlot Demo Application](http://swharden.com/scottplot/demo)
+## Before submitting a question
+1. Check if your question is already addressed in:
+  * The ScottPlot FAQ: https://swharden.com/scottplot/faq/
+  * The ScottPlot Cookbook: https://swharden.com/scottplot/cookbook
+  * The ScottPlot Demo: https://swharden.com/scottplot/demo
+2. Search the issues and discussions to see if the question has already been addressed: https://github.com/ScottPlot/ScottPlot/issues
 
-**Indicate what you have tried:**
-If applicable, indicate what you tried that _doesn't_ work:
+_Delete this line and the text above it before submitting this issue_
+
+## Question Template
+
+**ScottPlot Version:** ???
+
+**Operating System:** ???
+
+**Application Type:** (console, WinForms, WPF, or Avalonia)
+
+**Question:** Describe your question here
 
 ```cs
-var plt = new ScottPlot.Plot();
-plt.PlotWinningLotteryNumbers();
-plt.saveFig("helloYacht.png");
+// a code sample may improve communication
+var examplePlot = new ScottPlot.Plot();
 ```
