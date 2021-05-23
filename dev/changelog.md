@@ -1,12 +1,12 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.14-beta
+## ScottPlot 4.1.14
 * Add support for custom linestyles in SignalXY plots (#1017, #1016) _Thanks @StendProg and @breakwinz_
 * Improved Avalonia dependency versioning (#1018, #1041) _Thanks @bclehmann_
 * Controls now properly process `MouseEnter` and `MouseLeave` events (#999) _Thanks @kirsan31 and @breakwinz_
 * Controls now have a `RenderRequest()` method that uses a render queue to facilitate non-blocking render calls (#813, #1034) _Thanks @StendProg_
 * Added Last() to finance plots to make it easier to access the final OHLC (#1038) _Thanks @CalderWhite_
-* Controls that fail to render in design mode now display the error message in a textbox to prevent Visual Studio exceptions (#1048)
+* Controls that fail to render in design mode now display the error message in a textbox to prevent Visual Studio exceptions (#1048) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.13-beta
 * `Plot.Render()` and `Plot.SaveFig()` now have a `scale` argument to allow for the creation of high resolution scaled plots (#983, #982, #981) _Thanks @PeterDavidson_
