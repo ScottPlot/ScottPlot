@@ -1,16 +1,12 @@
 # ScottPlot Roadmap
 
-**⚠️ If the [issues page](https://github.com/ScottPlot/ScottPlot/issues) has a "triaged tasks and features" issue pinned, it is likely to contain the most up-to-date information about active targets for development effort.**
-
-### Note from Scott (Jan 29, 2021)
-
-Over the last few months I refactored much of ScottPlot (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks prior to full release relate to refining the API and improving the documentation.
+The forward-looking roadmap is tracked in a pinned "triaged tasks and features" issue on the [**issues page**](https://github.com/ScottPlot/ScottPlot/issues).
 
 ## Versions
 
-_Detailed feature lists are on the [releases](https://github.com/swharden/ScottPlot/releases) page_
+_Detailed notes for each version are in the [changelog](changelog.md) and [releases page](https://github.com/swharden/ScottPlot/releases)_
 
-* **ScottPlot 4.1** (Nov, 2020) Added support for multiple axes. Refactored all plottables and plot components. Rendering system now renders onto a single image (rather than separate figure and data images), and does not store images in memory between renders. Many namespaces and public fields were renamed to promote discoverability.
+* **ScottPlot 4.1** (Nov 2020, released May 2021) Added support for multiple axes. Refactored all plottables and plot components. Rendering system now renders onto a single image (rather than separate figure and data images), and does not store images in memory between renders. Many namespaces and public fields were renamed to promote discoverability.
 
 * **ScottPlot 4.0** (Nov, 2019) ScottPlot.Plot module became platform-agnostic using .NET Standard and System.Drawing.Common. Total recode, but same API. User controls became separate, platform-specific modules.
 
