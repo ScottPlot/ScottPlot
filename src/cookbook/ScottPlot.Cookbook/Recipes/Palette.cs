@@ -1,0 +1,224 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ScottPlot.Cookbook.Recipes
+{
+    public class PaletteCategory10 : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Category10";
+        public string Title => "Category10";
+        public string Description => "This 10-color palette is the default colorset used by ScottPlot. " +
+            "It is the same default colorset used by modern versions of Matplotlib " +
+            "(https://matplotlib.org/2.0.2/users/dflt_style_changes.html)";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Category10;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteCategory20 : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Category20";
+        public string Title => "Category20";
+        public string Description => "This 20-color palette is similar to the default, but optimized " +
+            "for situations where more than 10 plottables are required. " +
+            "Every second color is a lighter version of the color before it. " +
+            "This palette was sourced from Matplotlib.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Category20;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteAurora : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Aurora";
+        public string Title => "Aurora";
+        public string Description => "Aurora is a 5-color palette sourced from Nord.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Aurora;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteFrost : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Frost";
+        public string Title => "Frost";
+        public string Description => "Frost is a 4-color palette sourced from Nord.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Frost;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteNord : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Nord";
+        public string Title => "Nord";
+        public string Description => "Nord is a 7-color palette derived from Aurora source from NordConEmu.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PalettePolarNight : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_PolarNight";
+        public string Title => "PolarNight";
+        public string Description => "PolarNight is a 4-color palette sourced from Nord. " +
+            "This palette is optimized for a dark background.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.PolarNight;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+            plt.Style(ScottPlot.Style.Blue2);
+        }
+    }
+
+    public class PaletteSnowStorm : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_SnowStorm";
+        public string Title => "SnowStorm";
+        public string Description => "SnowStorm is a 3-color palette sourced from Nord.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.SnowStorm;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteOneHalf : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_OneHalf";
+        public string Title => "OneHalf";
+        public string Description => "OneHalf is a 7-color palette sourced from Sublime";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.OneHalf;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
+
+    public class PaletteOneHalfDark : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_OneHalfDark";
+        public string Title => "OneHalfDark";
+        public string Description => "OneHalfDark is a 7-color palette of colors complimentary to the OneHalf palette " +
+            "desaturated and optimized for a dark background. #2e3440 is a recommended background color with this palette.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.OneHalfDark;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+            plt.Style(ScottPlot.Style.Gray1);
+            var bnColor = System.Drawing.ColorTranslator.FromHtml("#2e3440");
+            plt.Style(figureBackground: bnColor, dataBackground: bnColor);
+        }
+    }
+}

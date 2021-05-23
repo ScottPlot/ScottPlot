@@ -34,6 +34,7 @@ namespace ScottPlot.Cookbook
         private static readonly string[] bottomCategories =
         {
             "Style",
+            "Palette",
             "Misc"
         };
         private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)
