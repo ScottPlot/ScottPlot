@@ -13,6 +13,8 @@
 
 * **Quickstart:** [WinForms](https://swharden.com/scottplot/quickstart#windows-forms-quickstart), [WPF](https://swharden.com/scottplot/quickstart#wpf-quickstart), [Avalonia](https://swharden.com/scottplot/quickstart#avalonia-quickstart), [Console](https://swharden.com/scottplot/quickstart#console-quickstart)
 
+* [**What's New in ScottPlot 4.1?**](https://swharden.com/scottplot/faq/version-4.1/) _Released May, 2021_
+
 <div align='center'>
 
 <a href='https://swharden.com/scottplot'><img src='dev/graphics/ScottPlot.gif'></a>
@@ -29,17 +31,30 @@
 
 * If you enjoy ScottPlot **give us a star!** ⭐
 
-### Major Versions
+### Quickstart (Windows Forms)
 
-* See [**Releases**](https://github.com/swharden/ScottPlot/releases) for source code and notes for all versions
+Use NuGet to install [`ScottPlot.WinForms`](https://www.nuget.org/packages/ScottPlot.WinForms), drag/drop a `FormsPlot` onto your form, then add the following to your start-up sequence.
 
-* **`ScottPlot 4.1`** is being actively-developed and is currently available as a pre-release package on NuGet. This version is faster than 4.0, supports multiple axes, and has a simpler API and a much better cookbook.
+```cs
+double[] dataX = new double[] {1, 2, 3, 4, 5};
+double[] dataY = new double[] {1, 4, 9, 16, 25};
+formsPlot1.Plot.AddScatter(dataX, dataY);
+```
 
-* **`ScottPlot 4.0`** is stable, available on NuGet, and has its own [branch](https://github.com/swharden/ScottPlot/branches) for continued bug fixes and refinements. However, new features are no longer being developed for this version.
+![](dev/graphics/winforms-quickstart.png)
 
 ### Plot in the Cloud
 
-**This figure is an example of ScottPlot running in the cloud.** Once daily an [Azure Function](https://azure.microsoft.com/en-us/services/functions/) logs the number of stars this repository has and creates a graph of the star history using ScottPlot. Since the output is simply a static image accessible by a URL, it can be displayed in places where JavaScript is not permitted like in this readme file. Rendering plots server-side allows automatically-updating plots to be displayed in many interesting places. Source code can be found in the [StarGraph](https://github.com/swharden/StarGraph) repository.
+**This figure is an example of ScottPlot running in the cloud.** Once daily an [Azure Function](https://azure.microsoft.com/en-us/services/functions/) logs the number of stars this repository has and creates a graph of the star history using ScottPlot. Since the output is simply a static image accessible by a URL, it can be displayed in places where JavaScript is not permitted like in this readme file. Rendering plots server-side allows automatically-updating plots to be displayed in many interesting places.
+
+```cs
+var plt = new ScottPlot.Plot(700, 400);
+plt.AddScatter(dates, stars);
+plt.XAxis.DateTimeFormat(true);
+plt.Title("ScottPlot Stars on GitHub");
+plt.YLabel("Total Stars");
+plt.SaveFig("quickstart.png");
+```
 
 <p align="center">
   <img src="https://swhardendev.z13.web.core.windows.net/packagestats/scottplot-stars.png">
@@ -49,7 +64,7 @@
 
 * **Minimum Supported Platforms:** .NET Core 2.0 and .NET Framework 4.6.1 ([see details](https://swharden.com/scottplot/#supported-platforms))
 
-* **The [ScottPlot Roadmap](dev/roadmap.md)** summarizes ScottPlot's origins and tracks development goals. If there is a pinned _Triaged Tasks and Features_ issue on the [issues page](https://github.com/ScottPlot/ScottPlot/issues), it likely indicates what I am currently working on.
+* **Active development is focused on** topics listed in the pinned _Triaged Tasks and Features_ [issues](https://github.com/ScottPlot/ScottPlot/issues).
 
 * **Contributions are welcome!** See [contributing.md](CONTRIBUTING.md) to get started
 
