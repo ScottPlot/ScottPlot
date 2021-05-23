@@ -122,7 +122,9 @@ namespace ScottPlot.Cookbook
                     string indentedMethod = "\n        " + ExecutionMethod;
                     int indentedMethodCount = Regex.Matches(singleClassSourceCode, indentedMethod).Count;
                     if (executionMethodCount != indentedMethodCount)
-                        throw new InvalidOperationException($"recipe structure error in: {csFilePath}");
+                        throw new InvalidOperationException($"Source code parsing error in: {csFilePath}\n\n" +
+                            "This is typically caused by an error in indentation and whitespace before '{ExecutionMethod}'.\n\n" +
+                            "Ensure cookbook classes are standalone classes not encased by another class.");
 
                     // read the file's source code for primary recipe components
                     string id = GetRecipeID(singleClassSourceCode);
