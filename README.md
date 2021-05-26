@@ -54,7 +54,7 @@ formsPlot1.Plot.AddScatter(xs, ys);
 
 <p align="center">
   <a href="https://stargraph.z20.web.core.windows.net/scottplot-stars.png" target="_blank">
-    <img src="https://stargraph.z20.web.core.windows.net/scottplot-stars.png">
+    <img src="https://stargraph.z20.web.core.windows.net/scottplot-stars.png?">
   </a>
 </p>
 
