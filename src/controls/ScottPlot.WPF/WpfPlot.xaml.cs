@@ -67,8 +67,6 @@ namespace ScottPlot
                 }
             }
 
-            ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
-
             Backend.Resize((float)ActualWidth, (float)ActualHeight);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -93,6 +91,8 @@ namespace ScottPlot
             PlottableCountTimer.Start();
 
             InitializeComponent();
+
+            ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
 
             Backend.StartProcessingEvents();
         }

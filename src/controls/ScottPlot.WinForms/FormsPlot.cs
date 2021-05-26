@@ -61,8 +61,6 @@ namespace ScottPlot
                 }
             }
 
-            rtbErrorMessage.Visible = false;
-
             Backend.Resize(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -82,6 +80,8 @@ namespace ScottPlot
             };
 
             InitializeComponent();
+
+            rtbErrorMessage.Visible = false;
             pictureBox1.BackColor = System.Drawing.Color.Transparent;
             BackColor = System.Drawing.Color.Transparent;
             Plot.Style(figureBackground: BackColor);
