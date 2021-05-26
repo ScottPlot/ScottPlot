@@ -80,6 +80,8 @@ namespace ScottPlot
             };
 
             InitializeComponent();
+
+            rtbErrorMessage.Visible = false;
             pictureBox1.BackColor = System.Drawing.Color.Transparent;
             BackColor = System.Drawing.Color.Transparent;
             Plot.Style(figureBackground: BackColor);

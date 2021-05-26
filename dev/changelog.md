@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.15 (work in progress)
+* Hide design-time error message component at run time to reduce flicking when resizing (#1073, #1075) _Thanks @Superberti and @bclehmann_
+
 ## ScottPlot 4.1.14
 * Add support for custom linestyles in SignalXY plots (#1017, #1016) _Thanks @StendProg and @breakwinz_
 * Improved Avalonia dependency versioning (#1018, #1041) _Thanks @bclehmann_

@@ -92,6 +92,8 @@ namespace ScottPlot
 
             InitializeComponent();
 
+            ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
+
             Backend.StartProcessingEvents();
         }
 
