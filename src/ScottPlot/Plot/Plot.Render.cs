@@ -161,8 +161,14 @@ namespace ScottPlot
             return bmp;
         }
 
-        [Obsolete("Call Render() without arguments instead of using this method")]
+        [Obsolete("Use one of the other overloads of this function", error: true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] // disable intellisense suggestion
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
+
+        /// <summary>
+        /// Create a new Bitmap, render the plot onto it, and return it
+        /// </summary>
+        public Bitmap GetBitmap(bool lowQuality = false, double scale = 1.0) => Render(settings.Width, settings.Height, lowQuality, scale);
 
         /// <summary>
         /// Return a new Bitmap containing only the legend
