@@ -61,6 +61,8 @@ namespace ScottPlot
                 }
             }
 
+            rtbErrorMessage.Visible = false;
+
             Backend.Resize(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);

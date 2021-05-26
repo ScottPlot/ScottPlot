@@ -161,6 +161,9 @@ namespace ScottPlot.Avalonia
                     return;
                 }
             }
+
+            this.Find<TextBlock>("ErrorLabel").IsVisible = false;
+
             Canvas canvas = new Canvas();
             mainGrid.Children.Add(canvas);
             canvas.Children.Add(PlotImage);
