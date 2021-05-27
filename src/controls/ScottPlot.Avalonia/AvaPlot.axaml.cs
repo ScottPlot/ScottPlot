@@ -35,6 +35,24 @@ namespace ScottPlot.Avalonia
         /// </summary>
         public event EventHandler RightClicked;
 
+        /// <summary>
+        /// This event is invoked after the mouse moves while dragging a draggable plottable.
+        /// The object passed is the plottable being dragged.
+        /// </summary>
+        public event EventHandler PlottableDragged;
+
+        [Obsolete("use 'PlottableDragged' instead", error: true)]
+        public event EventHandler MouseDragPlottable;
+
+        /// <summary>
+        /// This event is invoked right after a draggable plottable was dropped.
+        /// The object passed is the plottable that was just dropped.
+        /// </summary>
+        public event EventHandler PlottableDropped;
+
+        [Obsolete("use 'PlottableDropped' instead", error: true)]
+        public event EventHandler MouseDropPlottable;
+
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
@@ -64,6 +82,8 @@ namespace ScottPlot.Avalonia
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
+            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
+            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
 
             RightClicked += DefaultRightClickEvent;
             PlottableCountTimer.Tick += PlottableCountTimer_Tick;
@@ -97,6 +117,8 @@ namespace ScottPlot.Avalonia
         private void OnCursorChanged(object sender, EventArgs e) { PlotImage.Cursor = Cursors[Backend.Cursor]; }
         private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
+        private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
+        private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
