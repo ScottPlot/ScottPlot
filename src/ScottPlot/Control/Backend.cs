@@ -88,6 +88,16 @@ namespace ScottPlot.Control
         public event EventHandler RightClicked = delegate { };
 
         /// <summary>
+        /// This event is invoked after the mouse moves while dragging a draggable plottable.
+        /// </summary>
+        public event EventHandler PlottableDragged = delegate { };
+
+        /// <summary>
+        /// This event is invoked after the mouse moves while dragging a draggable plottable.
+        /// </summary>
+        public event EventHandler PlottableDropped = delegate { };
+
+        /// <summary>
         /// The control configuration object stores advanced customization and behavior settings
         /// for mouse-interactive plots.
         /// </summary>
@@ -489,6 +499,7 @@ namespace ScottPlot.Control
             if (Configuration.UseRenderQueue)
             {
                 // TODO: refactor to better support async
+                // TODO: document that draggable events aren't supported by the render queue
                 _ = EventsProcessor.ProcessAsync(uiEvent);
             }
             else
@@ -508,6 +519,9 @@ namespace ScottPlot.Control
                 bool allowSkip = lowQuality && Configuration.AllowDroppedFramesWhileDragging;
 
                 Render(lowQuality: lowQuality, skipIfCurrentlyRendering: allowSkip);
+
+                if (uiEvent is EventProcess.Events.PlottableDragEvent)
+                    PlottableDragged(PlottableBeingDragged, EventArgs.Empty);
             }
         }
 
@@ -538,6 +552,7 @@ namespace ScottPlot.Control
         /// <param name="input"></param>
         public void MouseUp(InputState input)
         {
+            var droppedPlottable = PlottableBeingDragged;
             PlottableBeingDragged = null;
 
             IUIEvent mouseEvent;
@@ -557,6 +572,9 @@ namespace ScottPlot.Control
             IsLeftDown = false;
 
             UpdateCursor(input);
+
+            if (droppedPlottable != null)
+                PlottableDropped(droppedPlottable, EventArgs.Empty);
         }
 
         /// <summary>
