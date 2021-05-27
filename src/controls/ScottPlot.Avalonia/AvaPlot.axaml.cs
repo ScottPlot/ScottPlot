@@ -41,11 +41,17 @@ namespace ScottPlot.Avalonia
         /// </summary>
         public event EventHandler PlottableDragged;
 
+        [Obsolete("use 'PlottableDragged' instead", error: true)]
+        public event EventHandler MouseDragPlottable;
+
         /// <summary>
         /// This event is invoked right after a draggable plottable was dropped.
         /// The object passed is the plottable that was just dropped.
         /// </summary>
         public event EventHandler PlottableDropped;
+
+        [Obsolete("use 'PlottableDropped' instead", error: true)]
+        public event EventHandler MouseDropPlottable;
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
