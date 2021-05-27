@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-#pragma warning disable IDE1006 // ignore warning about lowercase 'plt' property
+#pragma warning disable IDE1006 // lowercase public properties
+#pragma warning disable CS0067 // unused events
 
 namespace ScottPlot
 {

@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ava = Avalonia;
 
-#pragma warning disable IDE1006 // lowercase top-level property
+#pragma warning disable IDE1006 // lowercase public properties
+#pragma warning disable CS0067 // unused events
 
 namespace ScottPlot.Avalonia
 {

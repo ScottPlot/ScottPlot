@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 #pragma warning disable IDE1006 // lowercase public properties
+#pragma warning disable CS0067 // unused events
 
 namespace ScottPlot
 {
