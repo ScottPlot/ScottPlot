@@ -149,5 +149,33 @@ namespace ScottPlotTests.Misc
                 Console.WriteLine(sb);
             }
         }
+
+        [Test]
+        public void Test_LettersDontRenderAsRectangles_SerifFont()
+        {
+            // this test ensures letters don't render as rectangles
+            // https://github.com/ScottPlot/ScottPlot/issues/1079
+
+            System.Drawing.Bitmap bmp = new(200, 100);
+            using var gfx = Graphics.FromImage(bmp);
+            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+            gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+
+            string[] fontNames = { InstalledFont.Serif(), InstalledFont.Sans(), InstalledFont.Monospace() };
+
+            foreach (string fontName in fontNames)
+            {
+                gfx.Clear(Color.Navy);
+                System.Drawing.Font fnt = new(fontName, 18);
+
+                gfx.DrawString("tttt", fnt, Brushes.Yellow, 10, 10);
+                string hash1 = ScottPlot.Tools.BitmapHash(bmp);
+
+                gfx.DrawString("eeee", fnt, Brushes.Yellow, 10, 10);
+                string hash2 = ScottPlot.Tools.BitmapHash(bmp);
+
+                Assert.AreNotEqual(hash1, hash2);
+            }
+        }
     }
 }
