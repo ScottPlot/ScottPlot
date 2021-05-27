@@ -13,7 +13,7 @@ namespace WinFormsFrameworkApp
             InitializeComponent();
 
             formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51));
 
             var vline1 = formsPlot1.Plot.AddVerticalLine(11, Color.Blue);
             vline1.DragEnabled = true;
