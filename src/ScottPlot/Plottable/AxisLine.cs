@@ -37,6 +37,11 @@ namespace ScottPlot.Plottable
         protected double Position;
         private readonly bool IsHorizontal;
 
+        /// <summary>
+        /// If true, AxisAuto() will ignore the position of this line when determining axis limits
+        /// </summary>
+        public bool IgnoreAxisAuto = false;
+
         // customizations
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -62,10 +67,16 @@ namespace ScottPlot.Plottable
             IsHorizontal = isHorizontal;
         }
 
-        public AxisLimits GetAxisLimits() =>
-            IsHorizontal ?
-            new AxisLimits(double.NaN, double.NaN, Position, Position) :
-            new AxisLimits(Position, Position, double.NaN, double.NaN);
+        public AxisLimits GetAxisLimits()
+        {
+            if (IgnoreAxisAuto)
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+
+            if (IsHorizontal)
+                return new AxisLimits(double.NaN, double.NaN, Position, Position);
+            else
+                return new AxisLimits(Position, Position, double.NaN, double.NaN);
+        }
 
         public void ValidateData(bool deep = false)
         {

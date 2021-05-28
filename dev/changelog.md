@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.16 (work in progress)
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
+* Added a `IgnoreAxisAuto` field to axis lines and spans (#999) _Thanks @kirsan31_
 
 ## ScottPlot 4.1.15
 * Hide design-time error message component at run time to reduce flicking when resizing (#1073, #1075) _Thanks @Superberti and @bclehmann_
