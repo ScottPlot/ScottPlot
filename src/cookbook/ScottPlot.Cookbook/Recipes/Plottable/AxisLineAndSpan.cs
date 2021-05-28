@@ -109,4 +109,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hSpan.DragFixedSize = true;
         }
     }
+
+    public class AxisLineAndSpanIgnore : IRecipe
+    {
+        public string Category => "Plottable: Axis Line and Span";
+        public string ID => "axisSpan_ignore";
+        public string Title => "Ignore Axis Limits";
+        public string Description =>
+            "Calling Plot.AxisAuto (or middle-clicking the plot) will set the axis limits " +
+            "automatically to fit the data on the plot. By default the position of axis lines and spans are " +
+            "included in automatic axis limit calculations, but setting the '' flag can disable this behavior.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            var hline = plt.AddHorizontalLine(0.23);
+            hline.DragEnabled = true;
+            hline.IgnoreAxisAuto = true;
+
+            var hSpan = plt.AddHorizontalSpan(-10, 20);
+            hSpan.DragEnabled = true;
+            hSpan.IgnoreAxisAuto = true;
+        }
+    }
 }
