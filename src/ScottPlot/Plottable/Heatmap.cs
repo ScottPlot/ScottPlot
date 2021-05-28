@@ -213,9 +213,6 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                gfx.SmoothingMode = SmoothingMode.HighQuality;
-                gfx.CompositingMode = CompositingMode.SourceCopy;
-                gfx.CompositingQuality = CompositingQuality.HighQuality;
                 gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
                 int fromX = (int)Math.Round(dims.GetPixelX(0));
