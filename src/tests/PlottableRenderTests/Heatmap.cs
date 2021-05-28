@@ -16,10 +16,6 @@ namespace ScottPlotTests.PlottableRenderTests
         {
             // see discussion in https://github.com/ScottPlot/ScottPlot/issues/1003
 
-            // Interpolation doesn't seem to work on Linux or MacOS in Azure Pipelines
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == false)
-                return;
-
             Random rand = new(0);
             double[,] data = ScottPlot.DataGen.Random2D(rand, 4, 5);
 
@@ -28,14 +24,14 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.SetAxisLimits(0, data.GetLength(1), 0, data.GetLength(0));
 
             TestTools.SaveFig(plt, "default");
-            var before = new MeanPixel(plt);
+            string hash1 = ScottPlot.Tools.BitmapHash(plt.Render());
 
             hm.Smooth = true;
 
             TestTools.SaveFig(plt, "smooth");
-            var after = new MeanPixel(plt);
+            string hash2 = ScottPlot.Tools.BitmapHash(plt.Render());
 
-            Assert.That(after.IsDifferentThan(before));
+            Assert.AreNotEqual(hash1, hash2);
         }
     }
 }
