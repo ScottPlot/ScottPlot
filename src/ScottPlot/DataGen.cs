@@ -144,6 +144,29 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Generates a 2D array of random numbers between 0 and 1 (uniform distribution)
+        /// </summary>
+        /// <param name="rand">The Random object to use.</param>
+        /// <param name="rows">number of rows (dimension 0)</param>
+        /// <param name="columns">number of columns (dimension 1)</param>
+        /// <param name="multiplier">Multiply values by this number after generation</param>
+        /// <param name="offset">Add to values after multiplication</param>
+        /// <returns>2D array filled with random numbers</returns>
+        public static double[,] Random2D(Random rand, int rows, int columns, double multiplier = 1, double offset = 0)
+        {
+            if (rand is null)
+                throw new ArgumentNullException();
+
+            double[,] data = new double[rows, columns];
+
+            for (int y = 0; y < data.GetLength(0); y++)
+                for (int x = 0; x < data.GetLength(1); x++)
+                    data[y, x] = rand.NextDouble() * multiplier + offset;
+
+            return data;
+        }
+
+        /// <summary>
         /// Generates an array of random numbers following a uniform distribution on the interval [offset, multiplier].
         /// </summary>
         /// <param name="rand">The Random object to use.</param>
