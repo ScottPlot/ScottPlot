@@ -16,10 +16,6 @@ namespace ScottPlotTests.PlottableRenderTests
         {
             // see discussion in https://github.com/ScottPlot/ScottPlot/issues/1003
 
-            // Interpolation doesn't seem to work on Linux or MacOS in Azure Pipelines
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == false)
-                return;
-
             Random rand = new(0);
             double[,] data = ScottPlot.DataGen.Random2D(rand, 4, 5);
 
