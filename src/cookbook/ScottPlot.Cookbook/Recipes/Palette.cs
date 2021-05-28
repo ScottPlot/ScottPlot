@@ -221,4 +221,32 @@ namespace ScottPlot.Cookbook.Recipes
             plt.Style(figureBackground: bnColor, dataBackground: bnColor);
         }
     }
+
+    public class PaletteCustom : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Custom";
+        public string Title => "Custom";
+        public string Description => "A custom palette can be created from an array of HTML color values. " +
+            "These colors will be used as the default colors for new plottables added to the plot.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // custom colors generated using "i want hue" http://medialab.github.io/iwanthue/
+            string[] customColors = { "#019d9f", "#7d3091", "#57e075", "#e5b5fa", "#009118" };
+
+            // create a custom palette and set it in the plot module
+            plt.Palette = new ScottPlot.Drawing.Palette(customColors);
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAutoX(0);
+        }
+    }
 }
