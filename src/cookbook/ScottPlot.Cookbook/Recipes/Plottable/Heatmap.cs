@@ -38,6 +38,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapSmooth : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_smooth";
+        public string Title => "Smooth Heatmap";
+        public string Description =>
+            "Heatmaps display values as rectangles with sharp borders by default. " +
+            "Enabling the Smooth feature uses bicubic interpolation to display the heatmap " +
+            "as a smooth gradient between values.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var rand = new Random(0);
+            double[,] data2D = DataGen.Random2D(rand, 5, 4);
+
+            var hm = plt.AddHeatmap(data2D, lockScales: false);
+            hm.Smooth = true;
+
+            plt.SetAxisLimits(-2, 6, -1, 6);
+        }
+    }
+
     public class HeatmapImage : IRecipe
     {
         public string Category => "Plottable: Heatmap";
