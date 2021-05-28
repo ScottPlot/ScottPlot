@@ -39,6 +39,12 @@ namespace ScottPlot.Plottable
         public string ColorbarMin { get; private set; }
         public string ColorbarMax { get; private set; }
 
+        /// <summary>
+        /// If true, heatmap squares will be smoothed using bitmap interpolation.
+        /// If false, heatmap squares will look like sharp rectangles.
+        /// </summary>
+        public bool Smooth = false;
+
         public Heatmap()
         {
             AxisOffsets = new double[] { 0, 0 };
@@ -206,7 +212,7 @@ namespace ScottPlot.Plottable
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
-                gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
                 gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
                 int fromX = (int)Math.Round(dims.GetPixelX(0));
