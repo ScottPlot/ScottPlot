@@ -37,6 +37,11 @@ namespace ScottPlot.Plottable
         private double Max { get => Math.Max(Position1, Position2); }
         readonly bool IsHorizontal;
 
+        /// <summary>
+        /// If true, AxisAuto() will ignore the position of this span when determining axis limits
+        /// </summary>
+        public bool IgnoreAxisAuto = false;
+
         // configuration
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -82,10 +87,16 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleItem };
         }
 
-        public AxisLimits GetAxisLimits() =>
-            IsHorizontal ?
-            new AxisLimits(Min, Max, double.NaN, double.NaN) :
-            new AxisLimits(double.NaN, double.NaN, Min, Max);
+        public AxisLimits GetAxisLimits()
+        {
+            if (IgnoreAxisAuto)
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+
+            if (IsHorizontal)
+                return new AxisLimits(Min, Max, double.NaN, double.NaN);
+            else
+                return new AxisLimits(double.NaN, double.NaN, Min, Max);
+        }
 
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
