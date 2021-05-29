@@ -90,6 +90,18 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Remove the plottable at the specified index of the list
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to remove</param>
+        public void RemoveAt(int index)
+        {
+            settings.Plottables.RemoveAt(index);
+
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
+        }
+
+        /// <summary>
         /// Return a copy of the list of plottables
         /// </summary>
         /// <returns>list of plottables</returns>
