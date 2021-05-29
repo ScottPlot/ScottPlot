@@ -174,10 +174,10 @@ namespace ScottPlot.Control
         private AxisLimits LimitsOnLastRender = new();
 
         /// <summary>
-        /// Store the total number of plottables so user controls can implement a timer
-        /// to automatically update the plot if this number changes.
+        /// Unique identifier of the plottables list that was last rendered.
+        /// This value is used to determine if the plottables list was modified (requiring a re-render).
         /// </summary>
-        private int PlottableCountOnLastRender = -1;
+        private int PlottablesIdentifierAtLastRender = 0;
 
         /// <summary>
         /// This is set to True while the render loop is running.
@@ -338,7 +338,7 @@ namespace ScottPlot.Control
             Plot.Render(Bmp, lowQuality);
             BitmapRenderCount += 1;
             RenderCount += 1;
-            PlottableCountOnLastRender = Settings.Plottables.Count;
+            PlottablesIdentifierAtLastRender = Settings.PlottablesIdentifier;
 
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
@@ -400,15 +400,15 @@ namespace ScottPlot.Control
         /// Check if the number of plottibles has changed and if so request a render.
         /// This is typically called by a continuously running timer in the user control.
         /// </summary>
-        public void RenderIfPlottableCountChanged()
+        public void RenderIfPlottableListChanged()
         {
-            if (Configuration.RenderIfPlottableCountChanges == false)
+            if (Configuration.RenderIfPlottableListChanges == false)
                 return;
 
             if (Bmp is null)
                 return;
 
-            if (Settings.Plottables.Count != PlottableCountOnLastRender)
+            if (Settings.PlottablesIdentifier != PlottablesIdentifierAtLastRender)
                 Render();
         }
 

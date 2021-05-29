@@ -105,9 +105,9 @@ namespace ScottPlot.Control
         public bool LockHorizontalAxis = false;
 
         /// <summary>
-        /// Controls whether or not a render event will be triggered if a change in the number of plottables is detected
+        /// If enabled the control will automatically re-render as plottables are added and removed
         /// </summary>
-        public bool RenderIfPlottableCountChanges = true;
+        public bool RenderIfPlottableListChanges = true;
 
         /// <summary>
         /// Controls whether or not a render event will be triggered if a change in the axis limits is detected

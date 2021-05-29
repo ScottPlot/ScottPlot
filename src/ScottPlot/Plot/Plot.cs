@@ -54,7 +54,11 @@ namespace ScottPlot
         /// Add a plottable to the plot
         /// </summary>
         /// <param name="plottable">a plottable the user created</param>
-        public void Add(IPlottable plottable) => settings.Plottables.Add(plottable);
+        public void Add(IPlottable plottable)
+        {
+            settings.Plottables.Add(plottable);
+            settings.PlottablesModified();
+        }
 
         /// <summary>
         /// Clear all plottables
@@ -63,6 +67,7 @@ namespace ScottPlot
         {
             settings.Plottables.Clear();
             settings.ResetAxisLimits();
+            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -75,6 +80,8 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
+
+            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -87,6 +94,8 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
+
+            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -99,6 +108,8 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
+
+            settings.PlottablesModified();
         }
 
         /// <summary>

@@ -14,8 +14,25 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        // plottables
-        public readonly List<IPlottable> Plottables = new List<IPlottable>();
+        /// <summary>
+        /// This List contains all plottables managed by this Plot.
+        /// Render order is from lowest (first) to highest (last).
+        /// </summary>
+        public readonly List<IPlottable> Plottables = new();
+
+        /// <summary>
+        /// Unique value that changes any time the list of plottables is modified.
+        /// </summary>
+        public int PlottablesIdentifier { get; private set; } = 0;
+
+        /// <summary>
+        /// Indicate that the list of plottables was modified (changing the value of PlottablesIdentifier)
+        /// </summary>
+        public void PlottablesModified() => PlottablesIdentifier++;
+
+        /// <summary>
+        /// Return the next color from PlottablePalette based on the current number of plottables
+        /// </summary>
         public Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
 
         // renderable objects the user can customize
