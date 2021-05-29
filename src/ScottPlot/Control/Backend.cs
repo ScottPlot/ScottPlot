@@ -206,6 +206,11 @@ namespace ScottPlot.Control
         private int BitmapRenderCount = 0;
 
         /// <summary>
+        /// Total number of renders performed.
+        /// </summary>
+        public int RenderCount { get; private set; } = 0;
+
+        /// <summary>
         /// Tracks the total distance the mouse was click-dragged (rectangular pixel units)
         /// </summary>
         private float MouseDownTravelDistance;
@@ -223,12 +228,11 @@ namespace ScottPlot.Control
         public ControlBackEnd(float width, float height)
         {
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
-            Reset(width, height);
-
-            // create an event processor and later request new renders by interacting with it.
             EventsProcessor = new EventsProcessor(
                     renderAction: (lowQuality) => Render(lowQuality),
                     renderDelay: (int)Configuration.ScrollWheelZoomHighQualityDelay);
+
+            Reset(width, height);
         }
 
         /// <summary>
@@ -251,7 +255,7 @@ namespace ScottPlot.Control
             Plot = newPlot;
             Settings = Plot.GetSettings(false);
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
-            Resize(width, height);
+            Resize(width, height, renderToo: false);
         }
 
         /// <summary>
@@ -333,6 +337,7 @@ namespace ScottPlot.Control
 
             Plot.Render(Bmp, lowQuality);
             BitmapRenderCount += 1;
+            RenderCount += 1;
             PlottableCountOnLastRender = Settings.Plottables.Count;
 
             AxisLimits newLimits = Plot.GetAxisLimits();
@@ -406,7 +411,7 @@ namespace ScottPlot.Control
         /// <summary>
         /// Resize the control (creates a new Bitmap and requests a render)
         /// </summary>
-        public void Resize(float width, float height)
+        public void Resize(float width, float height, bool renderToo = true)
         {
             // don't render if the requested size cannot produce a valid bitmap
             if (width < 1 || height < 1)
@@ -422,7 +427,8 @@ namespace ScottPlot.Control
             Bmp = new System.Drawing.Bitmap((int)width, (int)height);
             BitmapRenderCount = 0;
 
-            RenderRequest(RenderType.HighQualityDelayed);
+            if (renderToo)
+                RenderRequest(RenderType.HighQualityDelayed);
         }
 
         /// <summary>
