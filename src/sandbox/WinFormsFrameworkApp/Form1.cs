@@ -8,25 +8,26 @@ namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
+        private readonly Random Rand = new Random();
+
         public Form1()
         {
             InitializeComponent();
+            AddSignal();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51, offset: new Random().NextDouble()));
-        }
+        private void AddSignal() =>
+            formsPlot1.Plot.AddSignal(
+                ys: ScottPlot.DataGen.Cos(pointCount: 51, phase: new Random().NextDouble()),
+                color: ScottPlot.DataGen.RandomColor(Rand));
+
+        private void button1_Click(object sender, EventArgs e) => AddSignal();
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var plottables = formsPlot1.Plot.GetPlottables();
-            if (plottables.Length == 0)
-                return;
-
-            formsPlot1.Plot.Remove(plottables[0]);
-
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51, offset: new Random().NextDouble()));
+            if (formsPlot1.Plot.GetPlottables().Length > 0)
+                formsPlot1.Plot.RemoveAt(0);
+            AddSignal();
         }
     }
 }
