@@ -54,7 +54,10 @@ namespace ScottPlot
         /// Add a plottable to the plot
         /// </summary>
         /// <param name="plottable">a plottable the user created</param>
-        public void Add(IPlottable plottable) => settings.Plottables.Add(plottable);
+        public void Add(IPlottable plottable)
+        {
+            settings.Plottables.Add(plottable);
+        }
 
         /// <summary>
         /// Clear all plottables
@@ -71,7 +74,13 @@ namespace ScottPlot
         /// <param name="plottableType">all plottables of this type will be removed</param>
         public void Clear(Type plottableType)
         {
-            settings.Plottables.RemoveAll(x => x.GetType() == plottableType);
+            var plottablesWithSameType = settings.Plottables.Where(x => x.GetType() == plottableType).ToList();
+
+            while (plottablesWithSameType.Count > 0)
+            {
+                settings.Plottables.Remove(plottablesWithSameType[0]);
+                plottablesWithSameType.RemoveAt(0);
+            }
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
@@ -84,6 +93,18 @@ namespace ScottPlot
         public void Remove(IPlottable plottable)
         {
             settings.Plottables.Remove(plottable);
+
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
+        }
+
+        /// <summary>
+        /// Remove the plottable at the specified index of the list
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to remove</param>
+        public void RemoveAt(int index)
+        {
+            settings.Plottables.RemoveAt(index);
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
