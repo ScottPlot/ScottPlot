@@ -402,8 +402,12 @@ namespace ScottPlot.Control
         /// </summary>
         public void RenderIfPlottableCountChanged()
         {
+            if (Configuration.RenderIfPlottableCountChanges == false)
+                return;
+
             if (Bmp is null)
                 return;
+
             if (Settings.Plottables.Count != PlottableCountOnLastRender)
                 Render();
         }
