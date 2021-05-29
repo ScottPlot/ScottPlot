@@ -45,7 +45,7 @@ namespace ScottPlot.Plottable
         /// Updates the internal data array <see cref="Norm"/> that holds the values to be plotted. It also computes the normalization values for the axis, which are later needed in <see cref="Render(PlotDimensions, Bitmap, bool)"/>.
         /// </summary>
         /// <param name="values">Values to be plotted. Rows correspond to the <see cref="GroupLabels"/> property and columns to the <see cref="CategoryLabels"/> property</param>
-        /// <param name="maxValues">Only needed for user-normalizing (scaling) the axes. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axis is normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axis (categories) and are normalized independently</param>
+        /// <param name="maxValues">Only needed for user-normalizing (scaling) of the axis. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axis are normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axes (categories) and are normalized independently.</param>
         public void Update(double[,] values, double[] maxValues = null)
         {
             // The passed values are copied into the internal array 'Norm', which stores the plot's data.
