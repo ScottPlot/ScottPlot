@@ -18,17 +18,13 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class MouseTracker : Window
     {
-        VLine vLine;
-        HLine hLine;
+        Crosshair Crosshair;
 
         public MouseTracker()
         {
             InitializeComponent();
             wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
-
-            vLine = wpfPlot1.Plot.AddVerticalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
-            hLine = wpfPlot1.Plot.AddHorizontalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
-
+            Crosshair = wpfPlot1.Plot.AddCrosshair(0, 0);
             wpfPlot1.Render();
         }
 
@@ -45,8 +41,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             XCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
             YCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
-            vLine.X = coordinateX;
-            hLine.Y = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
             wpfPlot1.Render();
         }
@@ -54,8 +50,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         private void wpfPlot1_MouseEnter(object sender, MouseEventArgs e)
         {
             MouseTrackLabel.Content = "Mouse ENTERED the plot";
-            vLine.IsVisible = true;
-            hLine.IsVisible = true;
+            Crosshair.IsVisible = true;
         }
 
         private void wpfPlot1_MouseLeave(object sender, MouseEventArgs e)
@@ -66,8 +61,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             XCoordinateLabel.Content = "--";
             YCoordinateLabel.Content = "--";
 
-            vLine.IsVisible = false;
-            hLine.IsVisible = false;
+            Crosshair.IsVisible = false;
             wpfPlot1.Render();
         }
     }
