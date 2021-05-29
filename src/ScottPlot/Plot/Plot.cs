@@ -57,7 +57,6 @@ namespace ScottPlot
         public void Add(IPlottable plottable)
         {
             settings.Plottables.Add(plottable);
-            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -67,7 +66,6 @@ namespace ScottPlot
         {
             settings.Plottables.Clear();
             settings.ResetAxisLimits();
-            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -76,12 +74,11 @@ namespace ScottPlot
         /// <param name="plottableType">all plottables of this type will be removed</param>
         public void Clear(Type plottableType)
         {
-            settings.Plottables.RemoveAll(x => x.GetType() == plottableType);
+            foreach (IPlottable plottable in settings.Plottables.Where(x => x.GetType() == plottableType))
+                settings.Plottables.Remove(plottable);
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
-
-            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -94,8 +91,6 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
-
-            settings.PlottablesModified();
         }
 
         /// <summary>
@@ -108,8 +103,6 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
-
-            settings.PlottablesModified();
         }
 
         /// <summary>

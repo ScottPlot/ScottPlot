@@ -3,6 +3,8 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
 
@@ -18,17 +20,12 @@ namespace ScottPlot
         /// This List contains all plottables managed by this Plot.
         /// Render order is from lowest (first) to highest (last).
         /// </summary>
-        public readonly List<IPlottable> Plottables = new();
+        public readonly ObservableCollection<IPlottable> Plottables = new();
 
         /// <summary>
         /// Unique value that changes any time the list of plottables is modified.
         /// </summary>
         public int PlottablesIdentifier { get; private set; } = 0;
-
-        /// <summary>
-        /// Indicate that the list of plottables was modified (changing the value of PlottablesIdentifier)
-        /// </summary>
-        public void PlottablesModified() => PlottablesIdentifier++;
 
         /// <summary>
         /// Return the next color from PlottablePalette based on the current number of plottables
@@ -73,6 +70,11 @@ namespace ScottPlot
         public float DataOffsetY => YAxis.Dims.DataOffsetPx;
         public float DataWidth => XAxis.Dims.DataSizePx;
         public float DataHeight => YAxis.Dims.DataSizePx;
+
+        public Settings()
+        {
+            Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
+        }
 
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes
