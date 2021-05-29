@@ -13,9 +13,9 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class RadarPlot : IPlottable
     {
-        private readonly double[,] Norm;
-        private readonly double NormMax;
-        private readonly double[] NormMaxes;
+        private double[,] Norm;
+        private double NormMax;
+        private double[] NormMaxes;
         public string[] CategoryLabels;
         public string[] GroupLabels;
         public Color[] FillColors;
@@ -35,20 +35,32 @@ namespace ScottPlot.Plottable
             this.FillColors = fillColors;
             this.IndependentAxes = independentAxes;
 
-            Norm = new double[values.GetLength(0), values.GetLength(1)];
-            Array.Copy(values, 0, Norm, 0, values.Length);
-            if (independentAxes)
-            {
-                NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
-            }
-            else
-            {
-                NormMax = NormalizeInPlace(Norm, maxValues);
-            }
+            Update(values, maxValues);
         }
 
         public override string ToString() =>
             $"PlottableRadar with {PointCount} points and {Norm.GetUpperBound(1) + 1} categories.";
+
+        /// <summary>
+        /// Updates the internal data array <see cref="Norm"/> that holds the values to be plotted. It also computes the normalization values for the axis, which are later needed in <see cref="Render(PlotDimensions, Bitmap, bool)"/>.
+        /// </summary>
+        /// <param name="values">Values to be plotted. Rows correspond to the <see cref="GroupLabels"/> property and columns to the <see cref="CategoryLabels"/> property</param>
+        /// <param name="maxValues">Only needed for user-normalizing (scaling) the axes. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axis is normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axis (categories) and are normalized independently</param>
+        public void Update(double[,] values, double[] maxValues = null)
+        {
+            // The passed values are copied into the internal array 'Norm', which stores the plot's data.
+            // Consider (@swharden and @bclehmann) if this is needed or desirable: do we want to allow the user to update its "value" array and call Render, (similarly to SignalPlot)?
+            // If so, then the Array.Copy could be left out, and move the normalization at the beginning of the Render() method.
+            Norm = new double[values.GetLength(0), values.GetLength(1)];
+            Array.Copy(values, 0, Norm, 0, values.Length);
+            
+            // Normalize values, which are needed later to render the plot.
+            // Consider moving this code to the very beginning of Render() method, just before the "using" statements.
+            if (this.IndependentAxes)
+                NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
+            else
+                NormMax = NormalizeInPlace(Norm, maxValues);
+        }
 
         public void ValidateData(bool deep = false)
         {
