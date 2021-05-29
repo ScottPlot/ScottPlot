@@ -74,8 +74,13 @@ namespace ScottPlot
         /// <param name="plottableType">all plottables of this type will be removed</param>
         public void Clear(Type plottableType)
         {
-            foreach (IPlottable plottable in settings.Plottables.Where(x => x.GetType() == plottableType))
-                settings.Plottables.Remove(plottable);
+            var plottablesWithSameType = settings.Plottables.Where(x => x.GetType() == plottableType).ToList();
+
+            while (plottablesWithSameType.Count > 0)
+            {
+                settings.Plottables.Remove(plottablesWithSameType[0]);
+                plottablesWithSameType.RemoveAt(0);
+            }
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
