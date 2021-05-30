@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -51,7 +51,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -97,7 +97,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -144,7 +144,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
             plt.Style(ScottPlot.Style.Blue2);
         }
     }
@@ -168,7 +168,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -191,7 +191,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 
@@ -215,7 +215,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
             plt.Style(ScottPlot.Style.Gray1);
             var bnColor = System.Drawing.ColorTranslator.FromHtml("#2e3440");
             plt.Style(figureBackground: bnColor, dataBackground: bnColor);
@@ -246,7 +246,7 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.Title($"{plt.Palette}");
-            plt.AxisAutoX(0);
+            plt.AxisAuto(0, 0.1);
         }
     }
 }
