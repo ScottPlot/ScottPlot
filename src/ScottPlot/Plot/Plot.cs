@@ -111,6 +111,29 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Move a plottable in the list. Plottables near the end are rendered last (on top).
+        /// </summary>
+        public void Move(int oldIndex, int newIndex) => settings.Plottables.Move(oldIndex, newIndex);
+
+        /// <summary>
+        /// Move a plottable to the front so it is rendered first and appears beneath all others.
+        /// </summary>
+        public void MoveFirst(IPlottable plottable)
+        {
+            settings.Plottables.Remove(plottable);
+            settings.Plottables.Insert(0, plottable);
+        }
+
+        /// <summary>
+        /// Move a plottable to the end so it is rendered last and appears above all others.
+        /// </summary>
+        public void MoveLast(IPlottable plottable)
+        {
+            settings.Plottables.Remove(plottable);
+            settings.Plottables.Add(plottable);
+        }
+
+        /// <summary>
         /// Return a copy of the list of plottables
         /// </summary>
         /// <returns>list of plottables</returns>
