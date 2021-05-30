@@ -207,6 +207,8 @@ namespace ScottPlot.Control
 
         /// <summary>
         /// Total number of renders performed.
+        /// Note that at least one render occurs before the first request to measure the layout and calculate data area.
+        /// This means the first render increments this number twice.
         /// </summary>
         public int RenderCount { get; private set; } = 0;
 
