@@ -1,6 +1,6 @@
-# ScottPlot 4.1.14 API
+# ScottPlot 4.1.16 API
 
-This documentation is specific to ScottPlot version `4.1.14`. 
+This documentation is specific to ScottPlot version `4.1.16`. 
 
 Information about other versions and additional documentation can be found at **http://swharden.com/scottplot**
 
