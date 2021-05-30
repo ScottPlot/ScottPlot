@@ -121,7 +121,7 @@ namespace ScottPlot.Avalonia
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
-        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
         private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();

@@ -61,6 +61,8 @@ namespace ScottPlot
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
         private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
+        private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
+        private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
 
         [Obsolete("Reference Plot instead of plt")]
         public Plot plt => Plot;
@@ -86,7 +88,7 @@ namespace ScottPlot
                 }
             }
 
-            Backend.Resize((float)ActualWidth, (float)ActualHeight);
+            Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -158,8 +160,7 @@ namespace ScottPlot
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
-        private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize((float)ActualWidth * DisplayScale.ScaleRatio, (float)ActualHeight * DisplayScale.ScaleRatio);
-
+        private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
