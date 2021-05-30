@@ -8,26 +8,21 @@ namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
-        private readonly Random Rand = new Random();
+        AxisLine VLine;
 
         public Form1()
         {
             InitializeComponent();
-            AddSignal();
+            var sig1 = formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
+            sig1.LineWidth = 20;
+
+            VLine = formsPlot1.Plot.AddVerticalLine(13);
+            VLine.DragEnabled = true;
+            VLine.LineWidth = 5;
         }
 
-        private void AddSignal() =>
-            formsPlot1.Plot.AddSignal(
-                ys: ScottPlot.DataGen.Cos(pointCount: 51, phase: new Random().NextDouble()),
-                color: ScottPlot.DataGen.RandomColor(Rand));
+        private void button1_Click(object sender, EventArgs e) => formsPlot1.Plot.MoveFirst(VLine);
 
-        private void button1_Click(object sender, EventArgs e) => AddSignal();
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (formsPlot1.Plot.GetPlottables().Length > 0)
-                formsPlot1.Plot.RemoveAt(0);
-            AddSignal();
-        }
+        private void button2_Click(object sender, EventArgs e) => formsPlot1.Plot.MoveLast(VLine);
     }
 }

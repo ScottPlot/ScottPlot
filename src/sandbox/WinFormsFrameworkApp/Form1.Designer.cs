@@ -36,13 +36,10 @@ namespace WinFormsFrameworkApp
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
-            this.formsPlot1.Location = new System.Drawing.Point(12, 41);
+            this.formsPlot1.Location = new System.Drawing.Point(0, 64);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(776, 397);
+            this.formsPlot1.Size = new System.Drawing.Size(800, 386);
             this.formsPlot1.TabIndex = 0;
             // 
             // button1
@@ -51,7 +48,7 @@ namespace WinFormsFrameworkApp
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "add";
+            this.button1.Text = "MoveFirst";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -61,7 +58,7 @@ namespace WinFormsFrameworkApp
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
-            this.button2.Text = "replace";
+            this.button2.Text = "MoveLast";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

@@ -1,6 +1,6 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.16 (work in progress)
+## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
 * Added a `IgnoreAxisAuto` field to axis lines and spans (#999) _Thanks @kirsan31_
 * Heatmaps now have a `Smooth` field which uses bicubic interpolation to display smooth heatmaps (#1003) _Thanks @xichaoqiang_
@@ -8,6 +8,7 @@
 * Controls now automatically render after the list of plottables is modified (previously it was after the number of plottables changed). This behavior can be disabled by setting a public field in the control's `Configuration` module. (#1087, #1088) _Thanks @bftrock_
 * New `Crosshair` plot type draws lines to highlight a point on the plot and labels their coordinates in the axes (#999, #1093) _Thanks @kirsan31_
 * Added support for a custom `Func<double, string>` to be used as custom tick label formatters (see cookbook) (#926, #1070) _Thanks @damiandixon and @ssalsinha_
+* Added `Move`, `MoveFirst`, and `MoveLast` to the `Plot` module for added control over which plottables appear on top (#1090) _Thanks @EmanuelFeru_
 
 ## ScottPlot 4.1.15
 * Hide design-time error message component at run time to reduce flicking when resizing (#1073, #1075) _Thanks @Superberti and @bclehmann_
