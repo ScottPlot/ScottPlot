@@ -170,6 +170,14 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Use a custom function to generate tick label strings
+        /// </summary>
+        public void TickLabelFormat(Func<double, string> tickFormatter)
+        {
+            AxisTicks.TickCollection.ManualTickFormatter = tickFormatter;
+        }
+
+        /// <summary>
         /// Manually define the string format to use for translating tick positions to tick labels
         /// </summary>
         public void TickLabelFormat(string format, bool dateTimeFormat)
