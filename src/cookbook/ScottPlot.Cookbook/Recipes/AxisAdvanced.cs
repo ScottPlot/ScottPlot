@@ -457,4 +457,35 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.MinimumTickSpacing(25);
         }
     }
+
+    class CustomTickFormatter : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_custom_tick_formatter";
+        public string Title => "Custom Tick Formatter";
+        public string Description => "For ultimate control over tick label format you can create " +
+            "a custom formatter function and use that to convert positions to labels. " +
+            "This allows logic to be used to format tick labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+
+            // create a custom formatter as a static class
+            static string customTickFormatter(double position)
+            {
+                if (position == 0)
+                    return "zero";
+                else if (position > 0)
+                    return $"+{position:F2}";
+                else
+                    return $"({Math.Abs(position):F2})";
+            }
+
+            // use the custom formatter for horizontal and vertical tick labels
+            plt.XAxis.TickLabelFormat(customTickFormatter);
+            plt.YAxis.TickLabelFormat(customTickFormatter);
+        }
+    }
 }
