@@ -27,6 +27,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class CrosshairOne : IRecipe
+    {
+        public string Category => "Plottable: Crosshair";
+        public string ID => "crosshair_one";
+        public string Title => "Crosshair 1 Axis";
+        public string Description =>
+            "The Crosshair displays a line and label marking both axes by default, but " +
+            "vertical and horizontal elements can be hidden if desired.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+            var ch = plt.AddCrosshair(42, 0.48);
+            ch.IsVisibleX = false;
+
+            plt.Title("Crosshair on One Axis Only");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+        }
+    }
+
     public class CrosshairCustomize : IRecipe
     {
         public string Category => "Plottable: Crosshair";

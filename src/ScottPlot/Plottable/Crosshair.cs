@@ -44,6 +44,11 @@ namespace ScottPlot.Plottable
         public bool IsDateTimeX = false;
 
         /// <summary>
+        /// If false, the vertical line marking the X position will not be rendered.
+        /// </summary>
+        public bool IsVisibleX = true;
+
+        /// <summary>
         /// Controls the conversion from Y position to a text.
         /// https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
         /// </summary>
@@ -53,6 +58,11 @@ namespace ScottPlot.Plottable
         /// If true, the Y position will be converted to DateTime before applying the format string
         /// </summary>
         public bool IsDateTimeY = false;
+
+        /// <summary>
+        /// If false, the horizontal line marking the Y position will not be rendered.
+        /// </summary>
+        public bool IsVisibleY = true;
 
         public LineStyle LineStyle = LineStyle.Dash;
         public float LineWidth = 1;
@@ -75,13 +85,16 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (IsVisible == false)
+                return;
+
             using var gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality, clipToDataArea: false);
             using var pen = Drawing.GDI.Pen(LineColor, LineWidth, LineStyle);
             using var fnt = Drawing.GDI.Font(LabelFont);
             using var fillBrush = Drawing.GDI.Brush(LabelBackgroundColor);
             using var fontBrush = Drawing.GDI.Brush(LabelFont.Color);
 
-            if (X >= dims.XMin && X <= dims.XMax)
+            if (X >= dims.XMin && X <= dims.XMax && IsVisibleX)
             {
                 // vertical line and label centered at X
                 float xPixel = dims.GetPixelX(X);
@@ -95,7 +108,7 @@ namespace ScottPlot.Plottable
                 gfx.DrawString(xLabel, fnt, fontBrush, xPixel, dims.DataOffsetY + dims.DataHeight, sf);
             }
 
-            if (Y >= dims.YMin && Y <= dims.YMax)
+            if (Y >= dims.YMin && Y <= dims.YMax && IsVisibleY)
             {
                 // horizontal line and label centered at Y
                 float yPixel = dims.GetPixelY(Y);
