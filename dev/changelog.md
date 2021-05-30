@@ -9,6 +9,7 @@
 * New `Crosshair` plot type draws lines to highlight a point on the plot and labels their coordinates in the axes (#999, #1093) _Thanks @kirsan31_
 * Added support for a custom `Func<double, string>` to be used as custom tick label formatters (see cookbook) (#926, #1070) _Thanks @damiandixon and @ssalsinha_
 * Added `Move`, `MoveFirst`, and `MoveLast` to the `Plot` module for added control over which plottables appear on top (#1090) _Thanks @EmanuelFeru_
+* Fixed bug preventing expected behavior when calling `AxisAutoX` and `AxisAutoY` (#1089) _Thanks @EmanuelFeru__
 
 ## ScottPlot 4.1.15
 * Hide design-time error message component at run time to reduce flicking when resizing (#1073, #1075) _Thanks @Superberti and @bclehmann_

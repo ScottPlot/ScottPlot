@@ -399,19 +399,15 @@ namespace ScottPlot
         /// <param name="margin">amount of space to the left and right of the data (as a fraction of its width)</param>
         public void AxisAutoX(double margin = .05)
         {
-            if (settings.Plottables.Any())
-            {
-                if (settings.AllAxesHaveBeenSet == false)
-                    AxisAuto();
-
-                AxisLimits originalLimits = GetAxisLimits();
-                AxisAuto(horizontalMargin: margin);
-                SetAxisLimits(yMin: originalLimits.YMin, yMax: originalLimits.YMax);
-            }
-            else
+            if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(yMin: -10, yMax: 10);
+                return;
             }
+
+            AxisLimits originalLimits = GetAxisLimits();
+            AxisAuto(horizontalMargin: margin);
+            SetAxisLimits(yMin: originalLimits.YMin, yMax: originalLimits.YMax);
         }
 
         /// <summary>
@@ -420,19 +416,15 @@ namespace ScottPlot
         /// <param name="margin">amount of space above and below the data (as a fraction of its height)</param>
         public void AxisAutoY(double margin = .1)
         {
-            if (settings.Plottables.Any())
-            {
-                if (settings.AllAxesHaveBeenSet == false)
-                    AxisAuto();
-
-                AxisLimits originalLimits = GetAxisLimits();
-                AxisAuto(horizontalMargin: margin);
-                SetAxisLimits(xMin: originalLimits.XMin, xMax: originalLimits.XMax);
-            }
-            else
+            if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(xMin: -10, xMax: 10);
+                return;
             }
+
+            AxisLimits originalLimits = GetAxisLimits();
+            AxisAuto(horizontalMargin: margin);
+            SetAxisLimits(xMin: originalLimits.XMin, xMax: originalLimits.XMax);
         }
 
         #endregion
