@@ -8,21 +8,22 @@ namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
-        AxisLine VLine;
-
         public Form1()
         {
             InitializeComponent();
-            var sig1 = formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
-            sig1.LineWidth = 20;
-
-            VLine = formsPlot1.Plot.AddVerticalLine(13);
-            VLine.DragEnabled = true;
-            VLine.LineWidth = 5;
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(100));
         }
 
-        private void button1_Click(object sender, EventArgs e) => formsPlot1.Plot.MoveFirst(VLine);
+        private void button1_Click(object sender, EventArgs e)
+        {
+            formsPlot1.Plot.AxisAutoX();
+            formsPlot1.Render();
+        }
 
-        private void button2_Click(object sender, EventArgs e) => formsPlot1.Plot.MoveLast(VLine);
+        private void button2_Click(object sender, EventArgs e)
+        {
+            formsPlot1.Plot.AxisAutoY();
+            formsPlot1.Render();
+        }
     }
 }
