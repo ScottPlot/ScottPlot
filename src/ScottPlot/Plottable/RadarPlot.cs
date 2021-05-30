@@ -42,15 +42,15 @@ namespace ScottPlot.Plottable
             $"PlottableRadar with {PointCount} points and {Norm.GetUpperBound(1) + 1} categories.";
 
         /// <summary>
-        /// Updates the internal data array <see cref="Norm"/> that holds the values to be plotted. It also computes the normalization values for the axis, which are later needed in <see cref="Render(PlotDimensions, Bitmap, bool)"/>.
+        /// Updates the internal data array <see cref="Norm"/> that holds the values to be plotted. It also computes the normalization values for the axes, which are later needed in <see cref="Render(PlotDimensions, Bitmap, bool)"/>.
         /// </summary>
         /// <param name="values">Values to be plotted. Rows correspond to the <see cref="GroupLabels"/> property and columns to the <see cref="CategoryLabels"/> property</param>
-        /// <param name="maxValues">Only needed for user-normalizing (scaling) of the axis. Typically this would be null unless the user wants to manually set the axis's upper limit. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axis are normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axes (categories) which are normalized independently.</param>
+        /// <param name="maxValues">Only needed for user-normalizing (scaling) of the axes. Typically this would be null unless the user wants to manually set the axes upper limit. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axes are normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axis (categories) which are normalized independently.</param>
         public void Update(double[,] values, double[] maxValues = null)
         {
             // The passed values are copied into the internal array 'Norm', which stores the plot's data.
             // Consider (@swharden and @bclehmann) if this is needed or desirable: do we want to allow the user to update its "value" array and call Render, (similarly to SignalPlot)? After all, in SignalPlot, the Update() method is used whenever the array is redimensioned but not when the array values are modified.
-            // If so, then the Array.Copy could be left out (just keep a reference to 'values'); and move the normalization at the beginning of the Render() method.
+            // If so, then the Array.Copy could be left out (just keep a reference to 'values'), and move the normalization at the beginning of the Render() method.
             Norm = new double[values.GetLength(0), values.GetLength(1)];
             Array.Copy(values, 0, Norm, 0, values.Length);
 
