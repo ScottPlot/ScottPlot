@@ -10,53 +10,104 @@ namespace ScottPlot.Plottable
     /// A radar chart is a graphical method of displaying multivariate data in the form of 
     /// a two-dimensional chart of three or more quantitative variables represented on axes 
     /// starting from the same point.
+    /// 
+    /// Data is managed using 2D arrays where groups (colored shapes) are rows and categories (arms of the web) are columns.
     /// </summary>
     public class RadarPlot : IPlottable
     {
+        /// <summary>
+        /// Values for every group (rows) and category (columns) normalized from 0 to 1.
+        /// </summary>
         private double[,] Norm;
+
+        /// <summary>
+        /// Single value to normalize all values against for all groups/categories.
+        /// </summary>
         private double NormMax;
+
+        /// <summary>
+        /// Individual values (one per category) to use for normalization.
+        /// Length must be equal to the number of columns (categories) in the original data.
+        /// </summary>
         private double[] NormMaxes;
+
+        /// <summary>
+        /// Labels for each category.
+        /// Length must be equal to the number of columns (categories) in the original data.
+        /// </summary>
         public string[] CategoryLabels;
+
+        /// <summary>
+        /// Labels for each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public string[] GroupLabels;
+
+        /// <summary>
+        /// Colors (typically semi-transparent) to shade the inner area of each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public Color[] FillColors;
+
+        /// <summary>
+        /// Colors to outline the shape for each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public Color[] LineColors;
+
+        /// <summary>
+        /// Color of the axis lines and concentric circles representing ticks
+        /// </summary>
         public Color WebColor = Color.Gray;
-        public readonly bool IndependentAxes;
+
+        /// <summary>
+        /// Controls if values along each category axis are scaled independently or uniformly across all axes.
+        /// </summary>
+        public bool IndependentAxes;
+
+        /// <summary>
+        /// Font used for labeling values on the plot
+        /// </summary>
+        public Drawing.Font Font = new();
+
+        /// <summary>
+        /// If true, each value will be written in text on the plot.
+        /// </summary>
+        public bool ShowAxisValues { get; set; } = true;
+
+        /// <summary>
+        /// Controls rendering style of the concentric circles (ticks) of the web
+        /// </summary>
+        public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Drawing.Font Font = new Drawing.Font();
-        public bool ShowAxisValues { get; set; } = true;
-        public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
-            this.LineColors = lineColors;
-            this.FillColors = fillColors;
-            this.IndependentAxes = independentAxes;
-
-            Update(values, maxValues);
+            LineColors = lineColors;
+            FillColors = fillColors;
+            IndependentAxes = independentAxes;
+            Update(values, independentAxes, maxValues);
         }
 
         public override string ToString() =>
             $"PlottableRadar with {PointCount} points and {Norm.GetUpperBound(1) + 1} categories.";
 
         /// <summary>
-        /// Updates the internal data array <see cref="Norm"/> that holds the values to be plotted. It also computes the normalization values for the axes, which are later needed in <see cref="Render(PlotDimensions, Bitmap, bool)"/>.
+        /// Replace the data values with new ones.
         /// </summary>
-        /// <param name="values">Values to be plotted. Rows correspond to the <see cref="GroupLabels"/> property and columns to the <see cref="CategoryLabels"/> property</param>
-        /// <param name="maxValues">Only needed for user-normalizing (scaling) of the axes. Typically this would be null unless the user wants to manually set the axes upper limit. If <see cref="IndependentAxes"/> is set to <see langword="false"/>, then only the first element of this array is considered (all axes are normalized by the same factor). If <see cref="IndependentAxes"/> is set to <see langword="true"/>, then its elements correspond to each axis (categories) which are normalized independently.</param>
-        public void Update(double[,] values, double[] maxValues = null)
+        /// <param name="values">2D array of groups (rows) of values for each category (columns)</param>
+        /// <param name="independentAxes">Controls if values along each category axis are scaled independently or uniformly across all axes</param>
+        /// <param name="maxValues">If provided, these values will be used to normalize each category (columns)</param>
+        public void Update(double[,] values, bool independentAxes, double[] maxValues = null)
         {
-            // The passed values are copied into the internal array 'Norm', which stores the plot's data.
-            // Consider (@swharden and @bclehmann) if this is needed or desirable: do we want to allow the user to update its "value" array and call Render, (similarly to SignalPlot)? After all, in SignalPlot, the Update() method is used whenever the array is redimensioned but not when the array values are modified.
-            // If so, then the Array.Copy could be left out (just keep a reference to 'values'), and move the normalization at the beginning of the Render() method.
+            IndependentAxes = independentAxes;
             Norm = new double[values.GetLength(0), values.GetLength(1)];
             Array.Copy(values, 0, Norm, 0, values.Length);
 
-            // Normalize the acis values, which are needed later to render the plot.
-            // Consider moving this code to the very beginning of Render() method, just before the "using" statements.
-            if (this.IndependentAxes)
+            if (IndependentAxes)
                 NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
             else
                 NormMax = NormalizeInPlace(Norm, maxValues);
