@@ -284,7 +284,7 @@ namespace ScottPlot.Avalonia
         {
             if (e.Property.Name == "Bounds")
             {
-                Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
+                Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
                 Render();
             }
         }
