@@ -10,35 +10,68 @@ namespace ScottPlotTests.Axis
     class AutoAxis
     {
         [Test]
-        public void Test_AxisAutoY_Repeated()
+        public void Test_AxisAuto_Works()
         {
-            double[] xs = { 1, 2, 3, 4, 5 };
-            double[] ys = { 1, 4, 9, 16, 25 };
-
             var plt = new ScottPlot.Plot(400, 300);
-            plt.AddScatter(xs, ys);
-            plt.SetAxisLimits(-5, 10, -15, 40);
+            plt.AddPoint(-5, -5);
+            plt.AddPoint(5, 5);
 
-            for (int i = 0; i < 10; i++)
-                plt.AxisAutoY();
+            // set limits too small
+            plt.SetAxisLimits(-1, 1, -1, 1);
+            var limits1 = plt.GetAxisLimits();
 
-            TestTools.SaveFig(plt);
+            // autoAxis should make them bigger
+            plt.AxisAuto();
+            var limits2 = plt.GetAxisLimits();
+
+            Assert.Less(limits2.XMin, limits1.XMin);
+            Assert.Greater(limits2.XMax, limits1.XMax);
+            Assert.Less(limits2.YMin, limits1.YMin);
+            Assert.Greater(limits2.YMax, limits1.YMax);
         }
 
         [Test]
-        public void Test_AxisAutoX_Repeated()
+        public void Test_AxisAutoY_Works()
         {
-            double[] xs = { 1, 2, 3, 4, 5 };
-            double[] ys = { 1, 4, 9, 16, 25 };
-
             var plt = new ScottPlot.Plot(400, 300);
-            plt.AddScatter(xs, ys);
-            plt.SetAxisLimits(-5, 10, -15, 40);
+            plt.AddPoint(-5, -5);
+            plt.AddPoint(5, 5);
 
-            for (int i = 0; i < 10; i++)
-                plt.AxisAutoX();
+            // set limits too small
+            plt.SetAxisLimits(-1, 1, -1, 1);
+            var limits1 = plt.GetAxisLimits();
 
-            TestTools.SaveFig(plt);
+            // autoAxis should make them bigger just for Y values
+            plt.AxisAutoY();
+            var limits2 = plt.GetAxisLimits();
+
+            Assert.AreEqual(limits1.XMin, limits2.XMin);
+            Assert.AreEqual(limits1.XMax, limits2.XMax);
+
+            Assert.Less(limits2.YMin, limits1.YMin);
+            Assert.Greater(limits2.YMax, limits1.YMax);
+        }
+
+        [Test]
+        public void Test_AxisAutoX_Works()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddPoint(-5, -5);
+            plt.AddPoint(5, 5);
+
+            // set limits too small
+            plt.SetAxisLimits(-1, 1, -1, 1);
+            var limits1 = plt.GetAxisLimits();
+
+            // autoAxis should make them bigger just for X values
+            plt.AxisAutoX();
+            var limits2 = plt.GetAxisLimits();
+
+            Assert.AreEqual(limits1.YMin, limits2.YMin);
+            Assert.AreEqual(limits1.YMax, limits2.YMax);
+
+            Assert.Less(limits2.XMin, limits1.XMin);
+            Assert.Greater(limits2.XMax, limits1.XMax);
         }
 
         [Test]
