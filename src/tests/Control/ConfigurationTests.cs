@@ -38,7 +38,7 @@ namespace ScottPlotTests.Control
             ControlBackEnd backend = new(400, 300);
             for (int i = 0; i < renderCount; i++)
                 backend.Render();
-            Assert.AreEqual(renderCount, backend.RenderCount);
+            Assert.AreEqual(renderCount + 1, backend.RenderCount);
         }
 
         public void Test_AutoRender_CanBeDisabled()
@@ -61,17 +61,17 @@ namespace ScottPlotTests.Control
             ControlBackEnd backend = new(600, 400);
 
             backend.Plot.AddVerticalLine(123);
-            Assert.AreEqual(0, backend.RenderCount);
-
-            backend.RenderIfPlottableListChanged();
             Assert.AreEqual(1, backend.RenderCount);
 
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(1, backend.RenderCount);
+            Assert.AreEqual(2, backend.RenderCount);
+
+            backend.RenderIfPlottableListChanged();
+            Assert.AreEqual(2, backend.RenderCount);
 
             backend.Plot.AddVerticalLine(123);
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(2, backend.RenderCount);
+            Assert.AreEqual(3, backend.RenderCount);
         }
 
         [Test]
@@ -83,12 +83,12 @@ namespace ScottPlotTests.Control
             var p2 = backend.Plot.AddVerticalLine(123);
             var p3 = backend.Plot.AddVerticalLine(123);
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(1, backend.RenderCount);
+            Assert.AreEqual(2, backend.RenderCount);
 
             // remove a plottable
             backend.Plot.Remove(p3);
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(2, backend.RenderCount);
+            Assert.AreEqual(3, backend.RenderCount);
         }
 
         [Test]
@@ -100,13 +100,13 @@ namespace ScottPlotTests.Control
             var p2 = backend.Plot.AddVerticalLine(123);
             var p3 = backend.Plot.AddVerticalLine(123);
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(1, backend.RenderCount);
+            Assert.AreEqual(2, backend.RenderCount);
 
             // remove and replace a plottable
             backend.Plot.Remove(p3);
             var p4 = backend.Plot.AddVerticalLine(123);
             backend.RenderIfPlottableListChanged();
-            Assert.AreEqual(2, backend.RenderCount);
+            Assert.AreEqual(3, backend.RenderCount);
         }
     }
 }

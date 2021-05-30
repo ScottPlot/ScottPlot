@@ -207,6 +207,8 @@ namespace ScottPlot.Control
 
         /// <summary>
         /// Total number of renders performed.
+        /// Note that at least one render occurs before the first request to measure the layout and calculate data area.
+        /// This means the first render increments this number twice.
         /// </summary>
         public int RenderCount { get; private set; } = 0;
 
@@ -255,7 +257,7 @@ namespace ScottPlot.Control
             Plot = newPlot;
             Settings = Plot.GetSettings(false);
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
-            Resize(width, height, renderToo: false);
+            Resize(width, height, useDelayedRendering: false);
         }
 
         /// <summary>
@@ -415,7 +417,10 @@ namespace ScottPlot.Control
         /// <summary>
         /// Resize the control (creates a new Bitmap and requests a render)
         /// </summary>
-        public void Resize(float width, float height, bool renderToo = true)
+        /// <param name="width">new width (pixels)</param>
+        /// <param name="height">new height (pixels)</param>
+        /// <param name="useDelayedRendering">Render using the queue (best for mouse events), otherwise render immediately.</param>
+        public void Resize(float width, float height, bool useDelayedRendering)
         {
             // don't render if the requested size cannot produce a valid bitmap
             if (width < 1 || height < 1)
@@ -431,8 +436,10 @@ namespace ScottPlot.Control
             Bmp = new System.Drawing.Bitmap((int)width, (int)height);
             BitmapRenderCount = 0;
 
-            if (renderToo)
+            if (useDelayedRendering)
                 RenderRequest(RenderType.HighQualityDelayed);
+            else
+                Render();
         }
 
         /// <summary>
