@@ -10,45 +10,108 @@ namespace ScottPlot.Plottable
     /// A radar chart is a graphical method of displaying multivariate data in the form of 
     /// a two-dimensional chart of three or more quantitative variables represented on axes 
     /// starting from the same point.
+    /// 
+    /// Data is managed using 2D arrays where groups (colored shapes) are rows and categories (arms of the web) are columns.
     /// </summary>
     public class RadarPlot : IPlottable
     {
-        private readonly double[,] Norm;
-        private readonly double NormMax;
-        private readonly double[] NormMaxes;
+        /// <summary>
+        /// Values for every group (rows) and category (columns) normalized from 0 to 1.
+        /// </summary>
+        private double[,] Norm;
+
+        /// <summary>
+        /// Single value to normalize all values against for all groups/categories.
+        /// </summary>
+        private double NormMax;
+
+        /// <summary>
+        /// Individual values (one per category) to use for normalization.
+        /// Length must be equal to the number of columns (categories) in the original data.
+        /// </summary>
+        private double[] NormMaxes;
+
+        /// <summary>
+        /// Labels for each category.
+        /// Length must be equal to the number of columns (categories) in the original data.
+        /// </summary>
         public string[] CategoryLabels;
+
+        /// <summary>
+        /// Labels for each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public string[] GroupLabels;
+
+        /// <summary>
+        /// Colors (typically semi-transparent) to shade the inner area of each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public Color[] FillColors;
+
+        /// <summary>
+        /// Colors to outline the shape for each group.
+        /// Length must be equal to the number of rows (groups) in the original data.
+        /// </summary>
         public Color[] LineColors;
+
+        /// <summary>
+        /// Color of the axis lines and concentric circles representing ticks
+        /// </summary>
         public Color WebColor = Color.Gray;
-        public readonly bool IndependentAxes;
+
+        /// <summary>
+        /// Controls if values along each category axis are scaled independently or uniformly across all axes.
+        /// </summary>
+        public bool IndependentAxes;
+
+        /// <summary>
+        /// Font used for labeling values on the plot
+        /// </summary>
+        public Drawing.Font Font = new();
+
+        /// <summary>
+        /// If true, each value will be written in text on the plot.
+        /// </summary>
+        public bool ShowAxisValues { get; set; } = true;
+
+        /// <summary>
+        /// Controls rendering style of the concentric circles (ticks) of the web
+        /// </summary>
+        public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Drawing.Font Font = new Drawing.Font();
-        public bool ShowAxisValues { get; set; } = true;
-        public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
-            this.LineColors = lineColors;
-            this.FillColors = fillColors;
-            this.IndependentAxes = independentAxes;
-
-            Norm = new double[values.GetLength(0), values.GetLength(1)];
-            Array.Copy(values, 0, Norm, 0, values.Length);
-            if (independentAxes)
-            {
-                NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
-            }
-            else
-            {
-                NormMax = NormalizeInPlace(Norm, maxValues);
-            }
+            LineColors = lineColors;
+            FillColors = fillColors;
+            IndependentAxes = independentAxes;
+            Update(values, independentAxes, maxValues);
         }
 
         public override string ToString() =>
             $"PlottableRadar with {PointCount} points and {Norm.GetUpperBound(1) + 1} categories.";
+
+        /// <summary>
+        /// Replace the data values with new ones.
+        /// </summary>
+        /// <param name="values">2D array of groups (rows) of values for each category (columns)</param>
+        /// <param name="independentAxes">Controls if values along each category axis are scaled independently or uniformly across all axes</param>
+        /// <param name="maxValues">If provided, these values will be used to normalize each category (columns)</param>
+        public void Update(double[,] values, bool independentAxes, double[] maxValues = null)
+        {
+            IndependentAxes = independentAxes;
+            Norm = new double[values.GetLength(0), values.GetLength(1)];
+            Array.Copy(values, 0, Norm, 0, values.Length);
+
+            if (IndependentAxes)
+                NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
+            else
+                NormMax = NormalizeInPlace(Norm, maxValues);
+        }
 
         public void ValidateData(bool deep = false)
         {

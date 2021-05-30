@@ -706,8 +706,13 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a radar plot
+        /// Add a radar plot (a two-dimensional chart of three or more quantitative variables represented on axes starting from the same point)
         /// </summary>
+        /// <param name="values">2D array containing categories (columns) and groups (rows)</param>
+        /// <param name="independentAxes">if true, axis (category) values are scaled independently</param>
+        /// <param name="maxValues">if provided, each category (column) is normalized to these values</param>
+        /// <param name="disableFrameAndGrid">also make the plot frameless and disable its grid</param>
+        /// <returns>the radar plot that was just created and added to the plot</returns>
         public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
         {
 
@@ -717,7 +722,7 @@ namespace ScottPlot
 
             Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
 
-            RadarPlot plottable = new RadarPlot(values, colors, fills, independentAxes, maxValues);
+            RadarPlot plottable = new(values, colors, fills, independentAxes, maxValues);
             Add(plottable);
 
             if (disableFrameAndGrid)
