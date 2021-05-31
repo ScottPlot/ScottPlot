@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.17
+* Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
+
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
 * Added a `IgnoreAxisAuto` field to axis lines and spans (#999) _Thanks @kirsan31_
