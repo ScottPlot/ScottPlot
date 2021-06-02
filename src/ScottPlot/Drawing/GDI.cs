@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,6 +17,17 @@ namespace ScottPlot.Drawing
 
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
+
+        /// <summary>
+        /// Return the display scale ratio being used.
+        /// A scaling ratio of 1.0 means scaling is not active.
+        /// </summary>
+        public static float GetScaleRatio()
+        {
+            const int DEFAULT_DPI = 96;
+            using Graphics gfx = GDI.Graphics(new Bitmap(1, 1));
+            return gfx.DpiX / DEFAULT_DPI;
+        }
 
         public static SizeF MeasureString(string text, Font font)
         {
@@ -72,18 +84,21 @@ namespace ScottPlot.Drawing
             return Mix(colorA, colorB, fracA);
         }
 
-        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false)
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
             Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
             gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
             gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+            gfx.ScaleTransform((float)scale, (float)scale);
             return gfx;
         }
 
-        public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false)
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false, bool clipToDataArea = true)
         {
-            Graphics gfx = Graphics(bmp, lowQuality);
-            gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));
+            Graphics gfx = Graphics(bmp, lowQuality, dims.ScaleFactor);
+
+            if (clipToDataArea)
+                gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));
             return gfx;
         }
 
@@ -212,6 +227,26 @@ namespace ScottPlot.Drawing
                 sf.LineAlignment = StringAlignment.Far;
 
             return sf;
+        }
+
+        public static Bitmap Resize(Image bmp, int width, int height)
+        {
+            var bmp2 = new Bitmap(width, height);
+            var rect = new Rectangle(0, 0, width, height);
+
+            using (var gfx = System.Drawing.Graphics.FromImage(bmp2))
+            using (var attribs = new ImageAttributes())
+            {
+                gfx.CompositingMode = CompositingMode.SourceCopy;
+                gfx.CompositingQuality = CompositingQuality.HighQuality;
+                gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                gfx.SmoothingMode = SmoothingMode.HighQuality;
+                gfx.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                attribs.SetWrapMode(WrapMode.TileFlipXY);
+                gfx.DrawImage(bmp, rect, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attribs);
+            }
+
+            return bmp2;
         }
     }
 }

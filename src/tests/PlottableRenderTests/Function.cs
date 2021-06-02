@@ -16,14 +16,14 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             double? func2(double x) => Math.Pow(x, 2);
-            funcPlot.function = func2;
+            funcPlot.Function = func2;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -45,13 +45,13 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.lineWidth += 1;
+            funcPlot.LineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -73,13 +73,13 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.lineStyle = LineStyle.Dash;
+            funcPlot.LineStyle = LineStyle.Dash;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -101,13 +101,13 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.color = Color.Gray;
+            funcPlot.Color = Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

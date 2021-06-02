@@ -27,14 +27,16 @@ namespace ScottPlotTests.Plot
             double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotBarGroups(
+            plt.AddBarGroups(
                 groupLabels: groupNames,
                 seriesLabels: seriesNames,
                 ys: new double[][] { ys1, ys2, ys3 },
                 yErr: new double[][] { err1, err2, err3 });
 
-            plt.Axis(y1: 0);
-            plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+            plt.SetAxisLimits(yMin: 0);
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
+            plt.XAxis.Grid(false);
+            plt.XAxis.Grid(false);
             plt.Legend(location: Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }

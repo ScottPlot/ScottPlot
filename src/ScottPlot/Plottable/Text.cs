@@ -1,100 +1,49 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class Text : IRenderable, IUsesAxes, IValidatable
+    /// <summary>
+    /// Display a text label at an X/Y position in coordinate space
+    /// </summary>
+    public class Text : IPlottable
     {
-        /// <summary>
-        /// Horizontal position in coordinate space
-        /// </summary>
-        public double x;
+        // data
+        public double X;
+        public double Y;
+        public string Label;
 
-        /// <summary>
-        /// Vertical position in coordinate space
-        /// </summary>
-        public double y;
-
-        /// <summary>
-        /// Rotation of text in degrees. If rotation is used text alignment is ignored and the top left corner is fixed.
-        /// </summary>
-        public double rotation;
-
-        /// <summary>
-        /// Text to display on the plot
-        /// </summary>
-        public string text;
-
-        /// <summary>
-        /// Defines where the x/y point is relative to the text. 
-        /// Alignment is ignored when rotation is enabled.
-        /// </summary>
-        public Alignment alignment;
-
-        /// <summary>
-        /// Whether or not to draw a border around the text
-        /// </summary>
-        public bool frame;
-
-        /// <summary>
-        /// Color of the border around the text
-        /// </summary>
-        public Color frameColor;
-
-        /// <summary>
-        /// Color of the text
-        /// </summary>
-        public Color FontColor = Color.Black;
-
-        /// <summary>
-        /// Name of the text font.
-        /// If this font does not exist a system default will be used.
-        /// </summary>
-        public string FontName;
-
-        /// <summary>
-        /// Font size (in pixels)
-        /// </summary>
-        public float FontSize = 12;
-
-        /// <summary>
-        /// Renders bold font if true
-        /// </summary>
-        public bool FontBold;
-
+        // customization
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public bool BackgroundFill = false;
+        public Color BackgroundColor;
+        public Drawing.Font Font = new Drawing.Font();
+        public Color Color { set => Font.Color = value; }
+        public string FontName { set => Font.Name = value; }
+        public float FontSize { set => Font.Size = value; }
+        public bool FontBold { set => Font.Bold = value; }
+        public Alignment Alignment { set => Font.Alignment = value; }
+        public float Rotation { set => Font.Rotation = value; }
 
-        /// <summary>
-        /// The Text plot type displays a string at an X/Y position in coordinate space.
-        /// </summary>
-        public Text() { }
+        public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
+        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
+        public LegendItem[] GetLegendItems() => null;
 
-        public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
-
-        public AxisLimits GetAxisLimits() => new AxisLimits(x, x, y, y);
-
-        public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
-
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                Validate.AssertIsReal("x", x);
-                Validate.AssertIsReal("y", y);
-                Validate.AssertIsReal("rotation", rotation);
-                Validate.AssertHasText("text", text);
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            if (double.IsNaN(X) || double.IsNaN(Y))
+                throw new InvalidOperationException("X and Y cannot be NaN");
+
+            if (double.IsInfinity(X) || double.IsInfinity(Y))
+                throw new InvalidOperationException("X and Y cannot be Infinity");
+
+            if (string.IsNullOrWhiteSpace(Label))
+                throw new InvalidOperationException("text cannot be null or whitespace");
         }
 
         /// <summary>
@@ -102,7 +51,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
-            switch (alignment)
+            switch (Font.Alignment)
             {
                 case Alignment.LowerCenter:
                     return (pixelX - stringWidth / 2, pixelY - stringHeight);
@@ -129,35 +78,31 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (string.IsNullOrWhiteSpace(text))
-                return; // no render needed
+            if (string.IsNullOrWhiteSpace(Label) || IsVisible == false)
+                return;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var font = GDI.Font(Font))
+            using (var fontBrush = new SolidBrush(Font.Color))
+            using (var frameBrush = new SolidBrush(BackgroundColor))
             {
-                float pixelX = dims.GetPixelX(x);
-                float pixelY = dims.GetPixelY(y);
-                SizeF stringSize = GDI.MeasureString(gfx, text, font);
-                RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
+                float pixelX = dims.GetPixelX(X);
+                float pixelY = dims.GetPixelY(Y);
+                SizeF stringSize = GDI.MeasureString(gfx, Label, font);
 
-                if (rotation == 0)
+                if (Font.Rotation == 0)
                     (pixelX, pixelY) = ApplyAlignmentOffset(pixelX, pixelY, stringSize.Width, stringSize.Height);
 
                 gfx.TranslateTransform(pixelX, pixelY);
-                gfx.RotateTransform((float)rotation);
+                gfx.RotateTransform(Font.Rotation);
 
-                if (frame)
+                if (BackgroundFill)
                 {
-                    using (var frameBrush = new SolidBrush(frameColor))
-                    {
-                        gfx.FillRectangle(frameBrush, stringRect);
-                    }
+                    RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
+                    gfx.FillRectangle(frameBrush, stringRect);
                 }
 
-                using (var fontBrush = new SolidBrush(FontColor))
-                {
-                    gfx.DrawString(text, font, fontBrush, new PointF(0, 0));
-                }
+                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
 
                 gfx.ResetTransform();
             }

@@ -24,7 +24,7 @@ namespace ScottPlot.Renderable
             if (!IsVisible)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality: true))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality: true, false))
             using (var fillBrush = GDI.Brush(FillColor))
             using (var borderPen = GDI.Pen(BorderColor))
             {

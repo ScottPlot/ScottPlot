@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Platform;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
-using ScottPlot.Avalonia;
-using ScottPlot.Ticks;
-using ScottPlot.Interactive;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ava = Avalonia;
 
-#pragma warning disable IDE1006 // lowercase top-level property
+#pragma warning disable IDE1006 // lowercase public properties
+#pragma warning disable CS0067 // unused events
 
 namespace ScottPlot.Avalonia
 {
@@ -32,226 +22,271 @@ namespace ScottPlot.Avalonia
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
-        public Plot plt { get { return backend.plt; } }
-        internal readonly SolidColorBrush transparentBrush = new SolidColorBrush(Ava.Media.Color.FromUInt32(0), 0);
-        internal AvaPlotBackend backend;
+        public Plot Plot => Backend.Plot;
+        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
 
-        public AvaPlot(Plot plt)
-        {
-            InitializeComponent();
-            backend = new AvaPlotBackend(this);
-            SetContextMenu(backend.DefaultRightClickMenu());
-            backend.Reset(plt);
-        }
+        /// <summary>
+        /// This event is invoked any time the axis limits are modified.
+        /// </summary>
+        public event EventHandler AxesChanged;
+
+        /// <summary>
+        /// This event is invoked any time the plot is right-clicked.
+        /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
+        /// </summary>
+        public event EventHandler RightClicked;
+
+        /// <summary>
+        /// This event is invoked after the mouse moves while dragging a draggable plottable.
+        /// The object passed is the plottable being dragged.
+        /// </summary>
+        public event EventHandler PlottableDragged;
+
+        [Obsolete("use 'PlottableDragged' instead", error: true)]
+        public event EventHandler MouseDragPlottable;
+
+        /// <summary>
+        /// This event is invoked right after a draggable plottable was dropped.
+        /// The object passed is the plottable that was just dropped.
+        /// </summary>
+        public event EventHandler PlottableDropped;
+
+        [Obsolete("use 'PlottableDropped' instead", error: true)]
+        public event EventHandler MouseDropPlottable;
+
+        private readonly Control.ControlBackEnd Backend;
+        private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
+        private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
+        private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
+
+        [Obsolete("Reference Plot instead of plt")]
+        public ScottPlot.Plot plt => Plot;
 
         public AvaPlot()
         {
             InitializeComponent();
-            backend = new AvaPlotBackend(this);
-            SetContextMenu(backend.DefaultRightClickMenu());
-            backend.Reset(null);
-        }
 
-        public void SetContextMenu(List<ContextMenuItem> contextMenuItems)
-        {
-            backend.contextMenuItems = contextMenuItems;
-            var cm = new ContextMenu();
-
-            List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (var curr in contextMenuItems)
+            Cursors = new Dictionary<ScottPlot.Cursor, Ava.Input.Cursor>()
             {
-                var menuItem = new MenuItem() { Header = curr.itemName };
-                menuItem.Click += (object sender, RoutedEventArgs e) => curr.onClick();
-                menuItems.Add(menuItem);
-            }
-            cm.Items = menuItems;
+                [ScottPlot.Cursor.Arrow] = new Ava.Input.Cursor(StandardCursorType.Arrow),
+                [ScottPlot.Cursor.WE] = new Ava.Input.Cursor(StandardCursorType.SizeWestEast),
+                [ScottPlot.Cursor.NS] = new Ava.Input.Cursor(StandardCursorType.SizeNorthSouth),
+                [ScottPlot.Cursor.All] = new Ava.Input.Cursor(StandardCursorType.SizeAll),
+                [ScottPlot.Cursor.Crosshair] = new Ava.Input.Cursor(StandardCursorType.Cross),
+                [ScottPlot.Cursor.Hand] = new Ava.Input.Cursor(StandardCursorType.Hand),
+                [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
+            };
 
-            ContextMenu = cm;
+            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
+            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
+            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.RightClicked += new EventHandler(OnRightClicked);
+            Backend.AxesChanged += new EventHandler(OnAxesChanged);
+            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
+            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+
+            RightClicked += DefaultRightClickEvent;
+            PlottableCountTimer.Tick += PlottableCountTimer_Tick;
+            PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
+            PlottableCountTimer.Start();
+
+            InitializeLayout();
+            Backend.StartProcessingEvents();
         }
+
+        public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
+        public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
+        public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
+        public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
+        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
+        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
+
+        private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
+        {
+            return Task.Run(() =>
+            {
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    PlotImage.Source = getBmp();
+                });
+            });
+        }
+
+        private void OnBitmapChanged(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
+        private void OnCursorChanged(object sender, EventArgs e) { PlotImage.Cursor = Cursors[Backend.Cursor]; }
+        private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
+        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
+        private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
+        private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
+        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
+        private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
+        private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
+        private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
+        private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
+        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
+        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
+        private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
+        private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
+
+        private ScottPlot.Control.InputState GetInputState(PointerEventArgs e, double? delta = null) =>
+            new ScottPlot.Control.InputState()
+            {
+                X = (float)e.GetPosition(this).X,
+                Y = (float)e.GetPosition(this).Y,
+                LeftWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed,
+                RightWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed,
+                MiddleWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed,
+                ShiftDown = e.KeyModifiers.HasFlag(KeyModifiers.Shift),
+                CtrlDown = e.KeyModifiers.HasFlag(KeyModifiers.Control),
+                AltDown = e.KeyModifiers.HasFlag(KeyModifiers.Alt),
+                WheelScrolledUp = delta.HasValue && delta > 0,
+                WheelScrolledDown = delta.HasValue && delta < 0,
+            };
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             this.Focusable = true;
 
-            PointerPressed += UserControl_MouseDown;
-            PointerMoved += UserControl_MouseMove;
-            PointerReleased += UserControl_MouseUp;
-            KeyDown += OnKeyDown;
-            KeyUp += OnKeyUp;
-            PointerWheelChanged += UserControl_MouseWheel;
+            PointerPressed += OnMouseDown;
+            PointerMoved += OnMouseMove;
+            PointerReleased += OnMouseUp;
+            PointerWheelChanged += OnMouseWheel;
+            PointerEnter += OnMouseEnter;
+            PointerLeave += OnMouseLeave;
 
             PropertyChanged += AvaPlot_PropertyChanged;
         }
 
+        private void InitializeLayout()
+        {
+            Grid mainGrid = this.Find<Grid>("MainGrid");
+
+            bool isDesignerMode = Design.IsDesignMode;
+            if (isDesignerMode)
+            {
+                try
+                {
+                    Plot.Title($"ScottPlot {Plot.Version}");
+                    Plot.Render();
+                }
+                catch (Exception e)
+                {
+                    InitializeComponent();
+                    this.Find<TextBlock>("ErrorLabel").Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                        "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
+                        "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
+                        $"Exception details:\n{e}";
+                    return;
+                }
+            }
+
+            this.Find<TextBlock>("ErrorLabel").IsVisible = false;
+
+            Canvas canvas = new Canvas();
+            mainGrid.Children.Add(canvas);
+            canvas.Children.Add(PlotImage);
+        }
+
+        public static Ava.Media.Imaging.Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
+        {
+            using var memory = new System.IO.MemoryStream();
+            bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+            memory.Position = 0;
+            var bitmapImage = new Ava.Media.Imaging.Bitmap(memory);
+            return bitmapImage;
+        }
+
+        private ContextMenu GetDefaultContextMenu()
+        {
+            MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
+            SaveImageMenuItem.Click += RightClickMenu_SaveImage_Click;
+
+            /* Copying binary data to the clipboard remains OS-specific,
+             * so it is intentionally not supported at this time.
+             * https://github.com/AvaloniaUI/Avalonia/issues/3588
+             */
+            MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
+            CopyImageMenuItem.Click += RightClickMenu_Copy_Click;
+
+            MenuItem AutoAxisMenuItem = new MenuItem() { Header = "Zoom to Fit Data" };
+            AutoAxisMenuItem.Click += RightClickMenu_AutoAxis_Click;
+
+            MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
+            HelpMenuItem.Click += RightClickMenu_Help_Click;
+
+            MenuItem OpenInNewWindowMenuItem = new() { Header = "Open in New Window" };
+            OpenInNewWindowMenuItem.Click += RightClickMenu_OpenInNewWindow_Click;
+
+            var cm = new ContextMenu();
+            List<MenuItem> cmItems = new List<MenuItem>
+            {
+                SaveImageMenuItem,
+                //CopyImageMenuItem,
+                AutoAxisMenuItem,
+                HelpMenuItem,
+                OpenInNewWindowMenuItem
+            };
+            cm.Items = cmItems;
+            return cm;
+        }
+
+        public void DefaultRightClickEvent(object sender, EventArgs e) => GetDefaultContextMenu().Open(this);
+        private void RightClickMenu_Copy_Click(object sender, EventArgs e) => throw new NotImplementedException();
+        private void RightClickMenu_Help_Click(object sender, EventArgs e) => new HelpWindow().Show();
+        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
+        private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog savefile = new SaveFileDialog { InitialFileName = "ScottPlot.png" };
+
+            var filtersPNG = new FileDialogFilter { Name = "PNG Files" };
+            filtersPNG.Extensions.Add("png");
+
+            var filtersJPEG = new FileDialogFilter { Name = "JPG Files" };
+            filtersJPEG.Extensions.Add("jpg");
+            filtersJPEG.Extensions.Add("jpeg");
+
+            var filtersBMP = new FileDialogFilter { Name = "BMP Files" };
+            filtersBMP.Extensions.Add("bmp");
+
+            var filtersTIFF = new FileDialogFilter { Name = "TIF Files" };
+            filtersTIFF.Extensions.Add("tif");
+            filtersTIFF.Extensions.Add("tiff");
+
+            var filtersGeneric = new FileDialogFilter { Name = "All Files" };
+            filtersGeneric.Extensions.Add("*");
+
+            savefile.Filters.Add(filtersPNG);
+            savefile.Filters.Add(filtersJPEG);
+            savefile.Filters.Add(filtersBMP);
+            savefile.Filters.Add(filtersTIFF);
+            savefile.Filters.Add(filtersGeneric);
+
+
+            Task<string> filenameTask = savefile.ShowAsync((Window)this.GetVisualRoot());
+            await filenameTask;
+
+            if (filenameTask.Exception != null)
+            {
+                return;
+            }
+
+            if ((filenameTask.Result ?? "") != "")
+                Plot.SaveFig(filenameTask.Result);
+        }
+        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new AvaPlotViewer(Plot).Show(); }
+
         private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            //Debug.WriteLine(e.Property.Name);
             if (e.Property.Name == "Bounds")
             {
-                plt.Resize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
+                Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
                 Render();
             }
-
         }
-
-        public void Render()
-        {
-            backend.Render();
-        }
-
-        public void Reset()
-        {
-            backend.Reset();
-        }
-
-        #region user control configuration
-
-        public void Configure(
-            bool? enablePanning = null,
-            bool? enableRightClickZoom = null,
-            bool? enableRightClickMenu = null,
-            bool? enableScrollWheelZoom = null,
-            bool? lowQualityWhileDragging = null,
-            bool? enableDoubleClickBenchmark = null,
-            bool? lockVerticalAxis = null,
-            bool? lockHorizontalAxis = null,
-            bool? equalAxes = null,
-            double? middleClickMarginX = null,
-            double? middleClickMarginY = null,
-            bool? recalculateLayoutOnMouseUp = null
-            )
-        {
-            backend.Configure(enablePanning, enableRightClickZoom, enableRightClickMenu, enableScrollWheelZoom, lowQualityWhileDragging, enableDoubleClickBenchmark,
-                lockVerticalAxis, lockHorizontalAxis, equalAxes, middleClickMarginX, middleClickMarginY, recalculateLayoutOnMouseUp);
-        }
-
-        private void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.LeftAlt:
-                case Key.RightAlt:
-                    backend.SetAltPressed(true);
-                    break;
-                case Key.LeftShift:
-                case Key.RightShift:
-                    backend.SetShiftPressed(true);
-                    break;
-                case Key.LeftCtrl:
-                case Key.RightCtrl:
-                    backend.SetCtrlPressed(true);
-                    break;
-            }
-        }
-
-        private void OnKeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.LeftAlt:
-                case Key.RightAlt:
-                    backend.SetAltPressed(false);
-                    break;
-                case Key.LeftShift:
-                case Key.RightShift:
-                    backend.SetShiftPressed(false);
-                    break;
-                case Key.LeftCtrl:
-                case Key.RightCtrl:
-                    backend.SetCtrlPressed(false);
-                    break;
-            }
-        }
-        #endregion
-
-        #region mouse tracking
-
-        private Ava.Point GetPixelPosition(PointerEventArgs e)
-        {
-            Ava.Point pos = e.GetPosition(this);
-            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * backend.dpiScaleInput, pos.Y * backend.dpiScaleInput);
-            return dpiCorrectedPos;
-        }
-
-        private System.Drawing.PointF SDPointF(Ava.Point pt)
-        {
-            return new System.Drawing.PointF((float)pt.X, (float)pt.Y);
-        }
-
-        void UserControl_MouseDown(object sender, PointerPressedEventArgs e)
-        {
-            e.Pointer.Capture(this);
-
-            var mousePixel = GetPixelPosition(e);
-            MouseButtons button = MouseButtons.Left;
-            if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed) button = MouseButtons.Left;
-            else if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed) button = MouseButtons.Right;
-            else if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed) button = MouseButtons.Middle;
-
-
-            backend.MouseDrag(SDPointF(mousePixel), button);
-        }
-
-        private void UserControl_MouseMove(object sender, PointerEventArgs e)
-        {
-            backend.MouseMove(SDPointF(GetPixelPosition(e)));
-        }
-
-        public (double x, double y) GetMouseCoordinates() => backend.GetMouseCoordinates();
-
-        private void UserControl_MouseUp(object sender, PointerEventArgs e)
-        {
-            e.Pointer.Capture(null);
-            var mouseLocation = GetPixelPosition(e);
-
-            if (backend.mouseRightDownLocation != null)
-            {
-                double deltaX = Math.Abs(mouseLocation.X - backend.mouseRightDownLocation.Value.X);
-                double deltaY = Math.Abs(mouseLocation.Y - backend.mouseRightDownLocation.Value.Y);
-                bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
-                if (mouseDraggedFar)
-                {
-                    e.Handled = true; //I wish I was bullshitting you but this is the only way to prevent opening the context menu that works in Avalonia right now
-                }
-            }
-            else
-            {
-                if (ContextMenu != null)
-                {
-                    ContextMenu.Close();
-                }
-            }
-
-            backend.MouseUp();
-
-
-        }
-
-        #endregion
-
-        #region mouse clicking
-
-        private void UserControl_MouseWheel(object sender, PointerWheelEventArgs e)
-        {
-            backend.MouseWheel(e.Delta.Y);
-        }
-
-        #endregion
-
-        #region event handling
-
-        public event EventHandler Rendered
-        {
-            add { backend.Rendered += value; }
-            remove { backend.Rendered -= value; }
-        }
-        public event EventHandler AxisChanged
-        {
-            add { backend.AxisChanged += value; }
-            remove { backend.AxisChanged -= value; }
-        }
-
-        #endregion
     }
 }

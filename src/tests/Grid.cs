@@ -16,9 +16,9 @@ namespace ScottPlotTests
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
-            plt.Grid(enableVertical: true, enableHorizontal: false);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
+            plt.YAxis.Grid(false);
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");
@@ -35,9 +35,9 @@ namespace ScottPlotTests
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
-            plt.Grid(enableVertical: false, enableHorizontal: true);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
+            plt.XAxis.Grid(false);
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");

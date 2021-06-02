@@ -1,11 +1,14 @@
-﻿namespace ScottPlot
+﻿using System;
+
+namespace ScottPlot
 {
-    public struct AxisLimits
+    public struct AxisLimits : IEquatable<AxisLimits>
     {
         public readonly double XMin;
         public readonly double XMax;
         public readonly double YMin;
         public readonly double YMax;
+        public override string ToString() => $"AxisLimits: x=[{XMin}, {XMax}] y=[{YMin}, {YMax}]";
 
         public readonly double XSpan;
         public readonly double YSpan;
@@ -18,5 +21,11 @@
             (XSpan, YSpan) = (XMax - XMin, YMax - YMin);
             (XCenter, YCenter) = (XMin + XSpan / 2, YMin + YSpan / 2);
         }
+
+        public bool Equals(AxisLimits other) =>
+            other.XMin == XMin &&
+            other.XMax == XMax &&
+            other.YMin == YMin &&
+            other.YMax == YMax;
     }
 }

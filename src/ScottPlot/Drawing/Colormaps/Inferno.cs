@@ -12,6 +12,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Inferno : IColormap
     {
+        public string Name => "Inferno";
+
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
             byte[] bytes = BitConverter.GetBytes(rgb[value]);

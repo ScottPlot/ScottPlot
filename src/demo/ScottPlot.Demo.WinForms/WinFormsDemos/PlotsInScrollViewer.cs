@@ -23,9 +23,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             foreach (FormsPlot formsPlot in formsPlots)
             {
                 for (int i = 0; i < 3; i++)
-                    formsPlot.plt.PlotSignal(DataGen.RandomWalk(rand, 100));
+                    formsPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
 
-                formsPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
+                formsPlot.Configuration.ScrollWheelZoom = false;
 
                 formsPlot.Render();
             }

@@ -25,26 +25,33 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
         Stopwatch sw = Stopwatch.StartNew();
 
-        private System.Threading.Timer _timer;
+        private Timer _updateDataTimer;
+        private DispatcherTimer _renderTimer;
 
         public LiveDataFixed()
         {
             InitializeComponent();
-            wpfPlot1.Configure(middleClickMarginX: 0);
+            wpfPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
-            wpfPlot1.plt.PlotSignal(liveData);
-            wpfPlot1.plt.AxisAutoX(margin: 0);
-            wpfPlot1.plt.Axis(y1: -1, y2: 2.5);
+            wpfPlot1.Plot.AddSignal(liveData);
+            wpfPlot1.Plot.AxisAutoX(margin: 0);
+            wpfPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // create a traditional timer to update the data
-            _timer = new Timer(_ => UpdateData(), null, 0, 5);
+            _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
 
             // create a separate timer to update the GUI
-            DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(10);
-            renderTimer.Tick += Render;
-            renderTimer.Start();
+            _renderTimer = new DispatcherTimer();
+            _renderTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _renderTimer.Tick += Render;
+            _renderTimer.Start();
+
+            Closed += (sender, args) =>
+            {
+                _updateDataTimer?.Dispose();
+                _renderTimer?.Stop();
+            };
         }
 
         void UpdateData()
@@ -59,7 +66,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         void Render(object sender, EventArgs e)
         {
-            wpfPlot1.Render(skipIfCurrentlyRendering: true);
+            wpfPlot1.Render();
         }
     }
 }

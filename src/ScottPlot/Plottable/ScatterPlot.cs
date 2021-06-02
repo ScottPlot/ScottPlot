@@ -1,169 +1,193 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IUsesAxes, IValidatable
+    /// <summary>
+    /// The scatter plot renders X/Y pairs as points and/or connected lines.
+    /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
+    /// </summary>
+    public class ScatterPlot : IPlottable, IHasPoints
     {
-        public double[] xs { get; private set; }
-        public double[] ys { get; private set; }
-        public double[] errorX { get; private set; }
-        public double[] errorY { get; private set; }
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
-        public bool FilterOutNansBeforeEveryRender = true;
+        // data
+        public double[] Xs { get; private set; }
+        public double[] Ys { get; private set; }
+        public double[] XError { get; set; }
+        public double[] YError { get; set; }
 
-        public double lineWidth = 1;
-        public float errorLineWidth = 1;
-        public float errorCapSize = 3;
-        public float markerSize = 5;
-        public bool stepDisplay = false;
+        public int PointCount => Ys.Length;
 
+        // customization
+        public bool IsVisible { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public string Label;
+        public Color Color = Color.Black;
+        public LineStyle LineStyle = LineStyle.Solid;
+        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+        public double LineWidth = 1;
+        public float ErrorLineWidth = 1;
+        public float ErrorCapSize = 3;
+        public float MarkerSize = 5;
+        public bool StepDisplay = false;
         public bool IsArrow { get => ArrowheadWidth > 0 && ArrowheadLength > 0; }
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
-        public int? minRenderIndex { set { throw new NotImplementedException(); } }
-        public int? maxRenderIndex { set { throw new NotImplementedException(); } }
-
-        public MarkerShape markerShape = MarkerShape.filledCircle;
-        public Color color = Color.Black;
-        public LineStyle lineStyle = LineStyle.Solid;
-        public string label;
-        public bool IsVisible { get; set; } = true;
+        // TODO: think about better/additional API ?
+        public int? MinRenderIndex { get; set; }
+        public int? MaxRenderIndex { get; set; }
 
         public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
-            this.xs = xs;
-            this.ys = ys;
-            this.errorX = errorX;
-            this.errorY = errorY;
+            Xs = xs;
+            Ys = ys;
+            XError = errorX;
+            YError = errorY;
         }
 
-        public void ReplaceX(double[] xs)
+        /// <summary>
+        /// Replace the Xs array with a new one
+        /// </summary>
+        public void UpdateX(double[] xs)
         {
             if (xs is null)
                 throw new ArgumentException("xs must not be null");
-            if (xs.Length != ys.Length)
+            if (xs.Length != Ys.Length)
                 throw new ArgumentException("xs and ys must have the same length");
 
-            this.xs = xs;
+            Xs = xs;
         }
 
-        public void ReplaceY(double[] ys)
+        /// <summary>
+        /// Replace the Ys array with a new one
+        /// </summary>
+        public void UpdateY(double[] ys)
         {
+            if (ys is null)
+                throw new ArgumentException("ys must not be null");
+            if (Xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have the same length");
+
+            Ys = ys;
+        }
+
+        /// <summary>
+        /// Replace Xs and Ys arrays with new ones
+        /// </summary>
+        public void Update(double[] xs, double[] ys)
+        {
+            if (xs is null)
+                throw new ArgumentException("xs must not be null");
             if (ys is null)
                 throw new ArgumentException("ys must not be null");
             if (xs.Length != ys.Length)
                 throw new ArgumentException("xs and ys must have the same length");
 
-            this.ys = ys;
+            Xs = xs;
+            Ys = ys;
         }
 
-        public void ReplaceXY(double[] xs, double[] ys)
+        public void ValidateData(bool deep = false)
         {
-            if (xs is null)
-                throw new ArgumentException("xs must not be null");
-            if (ys is null)
-                throw new ArgumentException("ys must not be null");
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("xs and ys must have the same length");
+            Validate.AssertHasElements("xs", Xs);
+            Validate.AssertHasElements("ys", Ys);
+            Validate.AssertEqualLength("xs and ys", Xs, Ys);
 
-            this.xs = xs;
-            this.ys = ys;
-        }
-
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            try
+            if (MaxRenderIndex != null)
             {
-                Validate.AssertHasElements("xs", xs);
-                if (deepValidation)
-                    Validate.AssertAllReal("xs", xs);
-
-                Validate.AssertHasElements("ys", ys);
-                if (deepValidation)
-                    Validate.AssertAllReal("ys", ys);
-
-                Validate.AssertEqualLength("xs and ys", xs, ys);
-
-                if (errorX != null)
-                {
-                    Validate.AssertHasElements("errorX", xs);
-                    Validate.AssertEqualLength("xs and errorX", xs, errorX);
-                    if (deepValidation)
-                        Validate.AssertAllReal("errorX", errorX);
-                }
-
-                if (errorY != null)
-                {
-                    Validate.AssertHasElements("errorY", ys);
-                    Validate.AssertEqualLength("ys and errorY", ys, errorY);
-                    if (deepValidation)
-                        Validate.AssertAllReal("errorY", errorY);
-                }
-
-                return null;
+                if ((MaxRenderIndex > Ys.Length - 1) || MaxRenderIndex < 0)
+                    throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
             }
-            catch (ArgumentException e)
+
+            if (MinRenderIndex != null)
             {
-                return e.Message;
+                if (MinRenderIndex < 0)
+                    throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
+                if (MaxRenderIndex != null && MinRenderIndex > MaxRenderIndex)
+                    throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
+            }
+
+
+            if (XError != null)
+            {
+                Validate.AssertHasElements("errorX", Xs);
+                Validate.AssertEqualLength("xs and errorX", Xs, XError);
+            }
+
+            if (YError != null)
+            {
+                Validate.AssertHasElements("errorY", Ys);
+                Validate.AssertEqualLength("ys and errorY", Ys, YError);
+            }
+
+            if (deep)
+            {
+                Validate.AssertAllReal("xs", Xs);
+                Validate.AssertAllReal("ys", Ys);
+
+                if (XError != null)
+                    Validate.AssertAllReal("errorX", XError);
+
+                if (YError != null)
+                    Validate.AssertAllReal("errorY", YError);
             }
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableScatter{label} with {PointCount} points";
         }
 
         public AxisLimits GetAxisLimits()
         {
+            ValidateData(deep: false);
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Xs.Length - 1);
+
+            // TODO: don't use an array for this
             double[] limits = new double[4];
 
-            if (errorX == null)
+            if (XError == null)
             {
-                limits[0] = xs.Min();
-                limits[1] = xs.Max();
+                var XsRange = Xs.Skip(from).Take(to - from + 1);
+                limits[0] = XsRange.Min();
+                limits[1] = XsRange.Max();
             }
             else
             {
-                limits[0] = xs[0] - errorX[0];
-                limits[1] = xs[0] + errorX[0];
-                for (int i = 1; i < xs.Length; i++)
-                {
-                    if (xs[i] - errorX[i] < limits[0])
-                        limits[0] = xs[i] - errorX[i];
-                    if (xs[i] + errorX[i] > limits[0])
-                        limits[1] = xs[i] + errorX[i];
-                }
+                var XsAndError = Xs.Zip(XError, (x, e) => (x, e)).Skip(from).Take(to - from + 1);
+                limits[0] = XsAndError.Min(p => p.x - p.e);
+                limits[1] = XsAndError.Max(p => p.x + p.e);
             }
 
-            if (errorY == null)
+            if (YError == null)
             {
-                limits[2] = ys.Min();
-                limits[3] = ys.Max();
+                var YsRange = Ys.Skip(from).Take(to - from + 1);
+                limits[2] = YsRange.Min();
+                limits[3] = YsRange.Max();
             }
             else
             {
-                limits[2] = ys[0] - errorY[0];
-                limits[3] = ys[0] + errorY[0];
-                for (int i = 1; i < ys.Length; i++)
-                {
-                    if (ys[i] - errorY[i] < limits[2])
-                        limits[2] = ys[i] - errorY[i];
-                    if (ys[i] + errorY[i] > limits[3])
-                        limits[3] = ys[i] + errorY[i];
-                }
+                var YsAndError = Ys.Zip(XError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
+                limits[2] = YsAndError.Min(p => p.y - p.e);
+                limits[3] = YsAndError.Max(p => p.y + p.e);
             }
+
+            if (double.IsNaN(limits[0]) || double.IsNaN(limits[1]))
+                throw new InvalidOperationException("X data must not contain NaN");
+            if (double.IsNaN(limits[2]) || double.IsNaN(limits[3]))
+                throw new InvalidOperationException("Y data must not contain NaN");
+
+            if (double.IsInfinity(limits[0]) || double.IsInfinity(limits[1]))
+                throw new InvalidOperationException("X data must not contain Infinity");
+            if (double.IsInfinity(limits[2]) || double.IsInfinity(limits[3]))
+                throw new InvalidOperationException("Y data must not contain Infinity");
 
             return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
         }
@@ -174,54 +198,49 @@ namespace ScottPlot.Plottable
                 return;
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
-            using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
+            using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
+            using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
             {
-                PointF[] points;
-
-                if (FilterOutNansBeforeEveryRender)
+                int from = MinRenderIndex ?? 0;
+                int to = MaxRenderIndex ?? (Xs.Length - 1);
+                PointF[] points = new PointF[to - from + 1];
+                for (int i = from; i <= to; i++)
                 {
-                    List<PointF> validPoints = new List<PointF>(xs.Length);
-                    for (int i = 0; i < xs.Length; i++)
-                        if (double.IsNaN(xs[i]) == false && double.IsNaN(ys[i]) == false)
-                            validPoints.Add(new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i])));
-                    points = validPoints.ToArray();
-                }
-                else
-                {
-                    points = new PointF[xs.Length];
-                    for (int i = 0; i < xs.Length; i++)
-                        points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                    float x = dims.GetPixelX(Xs[i]);
+                    float y = dims.GetPixelY(Ys[i]);
+                    if (float.IsNaN(x) || float.IsNaN(y))
+                        throw new NotImplementedException("Data must not contain NaN");
+                    points[i - from] = new PointF(x, y);
                 }
 
-                if (errorY != null)
+                if (YError != null)
                 {
                     for (int i = 0; i < points.Count(); i++)
                     {
-                        float yBot = dims.GetPixelY(ys[i] - errorY[i]);
-                        float yTop = dims.GetPixelY(ys[i] + errorY[i]);
+                        float yBot = dims.GetPixelY(Ys[i + from] - YError[i + from]);
+                        float yTop = dims.GetPixelY(Ys[i + from] + YError[i + from]);
                         gfx.DrawLine(penLineError, points[i].X, yBot, points[i].X, yTop);
-                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yBot, points[i].X + errorCapSize, yBot);
-                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yTop, points[i].X + errorCapSize, yTop);
+                        gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yBot, points[i].X + ErrorCapSize, yBot);
+                        gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yTop, points[i].X + ErrorCapSize, yTop);
                     }
                 }
 
-                if (errorX != null)
+                if (XError != null)
                 {
                     for (int i = 0; i < points.Length; i++)
                     {
-                        float xLeft = dims.GetPixelX(xs[i] - errorX[i]);
-                        float xRight = dims.GetPixelX(xs[i] + errorX[i]);
+                        float xLeft = dims.GetPixelX(Xs[i + from] - XError[i + from]);
+                        float xRight = dims.GetPixelX(Xs[i + from] + XError[i + from]);
                         gfx.DrawLine(penLineError, xLeft, points[i].Y, xRight, points[i].Y);
-                        gfx.DrawLine(penLineError, xLeft, points[i].Y - errorCapSize, xLeft, points[i].Y + errorCapSize);
-                        gfx.DrawLine(penLineError, xRight, points[i].Y - errorCapSize, xRight, points[i].Y + errorCapSize);
+                        gfx.DrawLine(penLineError, xLeft, points[i].Y - ErrorCapSize, xLeft, points[i].Y + ErrorCapSize);
+                        gfx.DrawLine(penLineError, xRight, points[i].Y - ErrorCapSize, xRight, points[i].Y + ErrorCapSize);
                     }
                 }
 
                 // draw the lines connecting points
-                if (lineWidth > 0 && lineStyle != LineStyle.None)
+                if (LineWidth > 0 && points.Length > 1 && LineStyle != LineStyle.None)
                 {
-                    if (stepDisplay)
+                    if (StepDisplay)
                     {
                         PointF[] pointsStep = new PointF[points.Length * 2 - 1];
                         for (int i = 0; i < points.Length - 1; i++)
@@ -245,42 +264,104 @@ namespace ScottPlot.Plottable
                 }
 
                 // draw a marker at each point
-                if ((markerSize > 0) && (markerShape != MarkerShape.none))
+                if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                     for (int i = 0; i < points.Length; i++)
-                        MarkerTools.DrawMarker(gfx, points[i], markerShape, markerSize, color);
+                        MarkerTools.DrawMarker(gfx, points[i], MarkerShape, MarkerSize, Color);
             }
         }
 
-        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
+        public LegendItem[] GetLegendItems()
         {
-            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
-        }
-
-        public string GetCSV(string delimiter = ", ", string separator = "\n")
-        {
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", xs[i], delimiter, ys[i], separator);
-            return csv.ToString();
-        }
-
-        public int PointCount { get => ys.Length; }
-
-        public LegendItem[] LegendItems
-        {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var legendItem = new LegendItem()
+                label = Label,
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
+                markerShape = MarkerShape,
+                markerSize = MarkerSize
+            };
+            return new LegendItem[] { singleLegendItem };
+        }
+
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
+        public (double x, double y, int index) GetPointNearestX(double x)
+        {
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Xs.Length - 1);
+            double minDistance = Math.Abs(Xs[from] - x);
+            int minIndex = 0;
+            for (int i = from; i <= to; i++)
+            {
+                double currDistance = Math.Abs(Xs[i] - x);
+                if (currDistance < minDistance)
                 {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = markerShape,
-                    markerSize = markerSize
-                };
-                return new LegendItem[] { legendItem };
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
             }
+
+            return (Xs[minIndex], Ys[minIndex], minIndex);
+        }
+
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the Y position
+        /// </summary>
+        /// <param name="y">Y position in plot space</param>
+        /// <returns></returns>
+        public (double x, double y, int index) GetPointNearestY(double y)
+        {
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Ys.Length - 1);
+            double minDistance = Math.Abs(Ys[from] - y);
+            int minIndex = 0;
+            for (int i = from; i <= to; i++)
+            {
+                double currDistance = Math.Abs(Ys[i] - y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+
+            return (Xs[minIndex], Ys[minIndex], minIndex);
+        }
+
+        /// <summary>
+        /// Return the position and index of the data point nearest the given coordinate
+        /// </summary>
+        /// <param name="x">location in coordinate space</param>
+        /// <param name="y">location in coordinate space</param>
+        /// <param name="xyRatio">Ratio of pixels per unit (X/Y) when rendered</param>
+        public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1)
+        {
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Ys.Length - 1);
+
+            List<(double x, double y)> points = Xs.Zip(Ys, (first, second) => (first, second)).Skip(from).Take(to - from + 1).ToList();
+
+            double xyRatioSquared = xyRatio * xyRatio;
+            double pointDistanceSquared(double x1, double y1) =>
+                (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
+
+            double minDistance = pointDistanceSquared(points[0].x, points[0].y);
+            int minIndex = 0;
+            for (int i = 1; i < points.Count; i++)
+            {
+                double currDistance = pointDistanceSquared(points[i].x, points[i].y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+
+            return (Xs[minIndex], Ys[minIndex], minIndex);
         }
     }
 }

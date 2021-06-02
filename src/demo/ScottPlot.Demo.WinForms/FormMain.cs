@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.WinForms
 
         private void FormStartup_Load(object sender, EventArgs e)
         {
-            versionLabel.Text = Tools.GetVersionString();
+            versionLabel.Text = Plot.Version;
         }
 
         private void cookbookButton_Click(object sender, EventArgs e)
@@ -90,6 +90,11 @@ namespace ScottPlot.Demo.WinForms
         private void btnColormapViewer_Click(object sender, EventArgs e)
         {
             new WinFormsDemos.ColormapViewer().ShowDialog();
+        }
+
+        private void richTextBox1_Click(object sender, EventArgs e)
+        {
+            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
         }
     }
 }

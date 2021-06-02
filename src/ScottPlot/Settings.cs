@@ -3,6 +3,8 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
 
@@ -10,13 +12,25 @@ namespace ScottPlot
 {
     /// <summary>
     /// This module holds state for figure dimensions, axis limits, plot contents, and styling options.
-    /// A plot can be duplicated by copying the full stae of this settings module.
+    /// A plot can be duplicated by copying the full state of this settings module.
     /// </summary>
     public class Settings
     {
-        // plottables
-        public readonly List<IRenderable> Plottables = new List<IRenderable>();
-        public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
+        /// <summary>
+        /// This List contains all plottables managed by this Plot.
+        /// Render order is from lowest (first) to highest (last).
+        /// </summary>
+        public readonly ObservableCollection<IPlottable> Plottables = new();
+
+        /// <summary>
+        /// Unique value that changes any time the list of plottables is modified.
+        /// </summary>
+        public int PlottablesIdentifier { get; private set; } = 0;
+
+        /// <summary>
+        /// Return the next color from PlottablePalette based on the current number of plottables
+        /// </summary>
+        public Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
 
         // renderable objects the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
@@ -40,14 +54,14 @@ namespace ScottPlot
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
         public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
-        public bool AxisEqualScale = false;
+
+        public EqualScaleMode EqualScaleMode = EqualScaleMode.Disabled;
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
         public Axis YAxis2 => Axes[1];
         public Axis XAxis => Axes[2];
         public Axis XAxis2 => Axes[3];
-        public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
         // public fields represent primary X and Y axes
         public int Width => (int)XAxis.Dims.FigureSizePx;
@@ -57,10 +71,15 @@ namespace ScottPlot
         public float DataWidth => XAxis.Dims.DataSizePx;
         public float DataHeight => YAxis.Dims.DataSizePx;
 
+        public Settings()
+        {
+            Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
+        }
+
         /// <summary>
         /// Return figure dimensions for the specified X and Y axes
         /// </summary>
-        public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
+        public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex, double scaleFactor)
         {
             var xAxis = GetXAxis(xAxisIndex);
             var yAxis = GetYAxis(yAxisIndex);
@@ -75,7 +94,7 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             var limits = (xMin, xMax, yMin, yMax);
 
-            return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
+            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
         }
 
         /// <summary>
@@ -106,6 +125,15 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Define axis limits for a particuar axis
+        /// </summary>
+        public void AxisSet(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            GetXAxis(xAxisIndex).Dims.SetAxis(limits.XMin, limits.XMax);
+            GetYAxis(yAxisIndex).Dims.SetAxis(limits.YMin, limits.YMax);
+        }
+
+        /// <summary>
         /// Return X and Y axis limits
         /// </summary>
         public AxisLimits AxisLimits(int xAxisIndex, int yAxisIndex)
@@ -120,8 +148,25 @@ namespace ScottPlot
         /// </summary>
         public void AxesPanPx(float dxPx, float dyPx)
         {
-            foreach (Axis axis in Axes)
-                axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+            List<int> modifiedXs = new List<int>();
+            foreach (Axis axis in Axes.Where(x => x.IsHorizontal))
+            {
+                if (!modifiedXs.Contains(axis.AxisIndex))
+                {
+                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+                    modifiedXs.Add(axis.AxisIndex);
+                }
+            }
+
+            List<int> modifiedYs = new List<int>();
+            foreach (Axis axis in Axes.Where(x => x.IsVertical))
+            {
+                if (!modifiedYs.Contains(axis.AxisIndex))
+                {
+                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+                    modifiedYs.Add(axis.AxisIndex);
+                }
+            }
         }
 
         /// <summary>
@@ -142,12 +187,17 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Automatically adjust X and Y axis limits of the primary axes to fit the data
+        /// Zoom all axes by the given fraction
         /// </summary>
-        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
+        public void AxesZoomTo(double xFrac, double yFrac, float xPixel, float yPixel)
         {
-            AxisAutoX(xAxisIndex, horizontalMargin);
-            AxisAutoY(yAxisIndex, verticalMargin);
+            foreach (Axis axis in Axes)
+            {
+                double frac = axis.IsHorizontal ? xFrac : yFrac;
+                float centerPixel = axis.IsHorizontal ? xPixel : yPixel;
+                double center = axis.Dims.GetUnit(centerPixel);
+                axis.Dims.Zoom(frac, center);
+            }
         }
 
         /// <summary>
@@ -164,33 +214,67 @@ namespace ScottPlot
         /// </summary>
         public void AxisAutoUnsetAxes()
         {
-            foreach (Axis axis in Axes.Where(x => x.Dims.HasBeenSet == false))
+            /* Extra logic here ensures axes index only get auto-set once 
+             * in the case that multiple axes share the same axis index
+             */
+
+            var xAxes = Axes.Where(x => x.IsHorizontal);
+            var yAxes = Axes.Where(x => x.IsVertical);
+
+            var setIndexesX = xAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
+            var setIndexesY = yAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
+
+            foreach (Axis axis in xAxes)
             {
-                if (axis.IsHorizontal)
-                    AxisAutoX(axis.AxisIndex);
-                else
-                    AxisAutoY(axis.AxisIndex);
+                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
+                    continue;
+                if (setIndexesX.Contains(axis.AxisIndex))
+                    continue;
+                setIndexesX.Add(axis.AxisIndex);
+                AxisAutoX(axis.AxisIndex);
+            }
+
+            foreach (Axis axis in yAxes)
+            {
+                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
+                    continue;
+                if (setIndexesY.Contains(axis.AxisIndex))
+                    continue;
+                setIndexesY.Add(axis.AxisIndex);
+                AxisAutoY(axis.AxisIndex);
             }
         }
 
         /// <summary>
-        /// Ensure X and Y axes have the same scale (units per pixel) if AxisEqualScale is True
+        /// If a scale lock mode is in use, modify the axis limits accordingly
         /// </summary>
         public void EnforceEqualAxisScales()
         {
-            if (AxisEqualScale == false)
-                return;
+            switch (EqualScaleMode)
+            {
+                case EqualScaleMode.Disabled:
+                    return;
 
-            double unitsPerPixel = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
-            double xHalfSize = (XAxis.Dims.DataSizePx / 2) * unitsPerPixel;
-            double yHalfSize = (YAxis.Dims.DataSizePx / 2) * unitsPerPixel;
+                case EqualScaleMode.PreserveX:
+                    double yHalfSize = (YAxis.Dims.DataSizePx / 2) * XAxis.Dims.UnitsPerPx;
+                    AxisSet(null, null, YAxis.Dims.Center - yHalfSize, YAxis.Dims.Center + yHalfSize);
+                    return;
 
-            double xMin = XAxis.Dims.Center - xHalfSize;
-            double xMax = XAxis.Dims.Center + xHalfSize;
-            double yMin = YAxis.Dims.Center - yHalfSize;
-            double yMax = YAxis.Dims.Center + yHalfSize;
+                case EqualScaleMode.PreserveY:
+                    double xHalfSize = (XAxis.Dims.DataSizePx / 2) * YAxis.Dims.UnitsPerPx;
+                    AxisSet(XAxis.Dims.Center - xHalfSize, XAxis.Dims.Center + xHalfSize, null, null);
+                    return;
 
-            AxisSet(xMin, xMax, yMin, yMax);
+                case EqualScaleMode.ZoomOut:
+                    double maxUnitsPerPx = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
+                    double halfX = (XAxis.Dims.DataSizePx / 2) * maxUnitsPerPx;
+                    double halfY = (YAxis.Dims.DataSizePx / 2) * maxUnitsPerPx;
+                    AxisSet(XAxis.Dims.Center - halfX, XAxis.Dims.Center + halfX, YAxis.Dims.Center - halfY, YAxis.Dims.Center + halfY);
+                    return;
+
+                default:
+                    throw new InvalidOperationException("unknown scale lock mode");
+            }
         }
 
         /// <summary>
@@ -213,16 +297,16 @@ namespace ScottPlot
                 AxisAutoY(i, margin);
         }
 
-        private void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
+        private void AxisAutoX(int xAxisIndex, double margin = .1)
         {
             double min = double.NaN;
             double max = double.NaN;
             double zoomFrac = 1 - margin;
 
-            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
-                                               .Select(x => (IUsesAxes)x)
+            var plottableLimits = Plottables.Where(x => x is IPlottable)
+                                               .Select(x => (IPlottable)x)
                                                .Where(x => x.IsVisible)
-                                               .Where(x => x.HorizontalAxisIndex == xAxisIndex)
+                                               .Where(x => x.XAxisIndex == xAxisIndex)
                                                .Select(x => x.GetAxisLimits())
                                                .ToArray();
 
@@ -248,10 +332,10 @@ namespace ScottPlot
             double max = double.NaN;
             double zoomFrac = 1 - margin;
 
-            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
-                                               .Select(x => (IUsesAxes)x)
+            var plottableLimits = Plottables.Where(x => x is IPlottable)
+                                               .Select(x => (IPlottable)x)
                                                .Where(x => x.IsVisible)
-                                               .Where(x => x.VerticalAxisIndex == yAxisIndex)
+                                               .Where(x => x.YAxisIndex == yAxisIndex)
                                                .Select(x => x.GetAxisLimits())
                                                .ToArray();
 
@@ -276,6 +360,7 @@ namespace ScottPlot
         /// </summary>
         public void RememberAxisLimits()
         {
+            AxisAutoUnsetAxes();
             foreach (Axis axis in Axes)
                 axis.Dims.Remember();
         }
@@ -289,8 +374,8 @@ namespace ScottPlot
                 axis.Dims.Recall();
         }
 
-        private float MouseDownX;
-        private float MouseDownY;
+        public float MouseDownX { get; private set; }
+        public float MouseDownY { get; private set; }
 
         /// <summary>
         /// Remember mouse position (do this before calling MousePan or MouseZoom)
@@ -301,10 +386,6 @@ namespace ScottPlot
             MouseDownX = mouseDownX;
             MouseDownY = mouseDownY;
         }
-
-        public bool MouseHasMoved(float mouseNowX, float mouseNowY, float threshold = 2) =>
-            Math.Abs(mouseNowX - MouseDownX) >= threshold &&
-            Math.Abs(mouseNowY - MouseDownY) >= threshold;
 
         /// <summary>
         /// Pan all axes based on the mouse position now vs that last given to MouseDown()
@@ -390,12 +471,12 @@ namespace ScottPlot
             // then calculate ticks, then set padding based on the largest tick, then re-calculate ticks.
 
             // axis limits shall not change
-            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex);
+            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex, scaleFactor: 1.0);
             var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(Width, Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits, scaleFactor: 1);
 
             foreach (var axis in Axes)
             {
@@ -415,7 +496,7 @@ namespace ScottPlot
             var dataSize = new SizeF(DataWidth, DataHeight);
             var dataOffset = new PointF(DataOffsetX, DataOffsetY);
 
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits, scaleFactor: 1.0);
             foreach (var axis in Axes)
             {
                 bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
@@ -438,15 +519,15 @@ namespace ScottPlot
                 float offset = 0;
                 foreach (var axis in Axes.Where(x => x.Edge == edge))
                 {
-                    axis.PixelOffset = offset;
-                    offset += axis.PixelSize;
+                    axis.SetOffset(offset);
+                    offset += axis.GetSize();
                 }
             }
 
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
 
             foreach (Axis axis in Axes)
             {

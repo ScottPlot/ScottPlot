@@ -31,22 +31,22 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void Redraw()
         {
-            Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex];
+            Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex >= 0 ? lbColormapNames.SelectedIndex : 0];
             lblColormap.Text = cmap.Name;
 
             pbColormap.Image?.Dispose();
             pbColormap.Image = Colormap.Colorbar(cmap, pbColormap.Width, pbColormap.Height);
 
-            PlotColormapCurves(formsPlot1.plt, cmap);
+            PlotColormapCurves(formsPlot1.Plot, cmap);
             formsPlot1.Render();
 
             if (rbImage.Checked)
-                PlotHeatmapImage(formsPlot2.plt, cmap);
+                PlotHeatmapImage(formsPlot2.Plot, cmap);
             else
-                PlotHeatmapGaussianNoise(formsPlot2.plt, cmap);
+                PlotHeatmapGaussianNoise(formsPlot2.Plot, cmap);
             formsPlot2.Render();
 
-            PlotLineSeries(formsPlot3.plt, cmap);
+            PlotLineSeries(formsPlot3.Plot, cmap);
             formsPlot3.Render();
         }
 
@@ -78,10 +78,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
             int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
 
-            double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 4);
+            double[,] intensities = Tools.XYToIntensities(IntensityMode.Gaussian, xs, ys, 50, 50, 4);
 
             plt.Clear();
-            plt.PlotHeatmap(intensities, cmap);
+            plt.AddHeatmap(intensities, cmap);
             plt.AxisAuto();
         }
 
@@ -89,7 +89,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             double[,] intensities = DataGen.SampleImageData();
             plt.Clear();
-            plt.PlotHeatmap(intensities, cmap);
+            plt.AddHeatmap(intensities, cmap);
         }
 
         public static void PlotLineSeries(Plot plt, Colormap cmap)

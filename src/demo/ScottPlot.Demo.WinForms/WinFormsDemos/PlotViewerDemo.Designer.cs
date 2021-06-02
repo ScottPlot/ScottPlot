@@ -117,7 +117,7 @@
             this.btnLaunchRandomWalk.TabIndex = 0;
             this.btnLaunchRandomWalk.Text = "Launch";
             this.btnLaunchRandomWalk.UseVisualStyleBackColor = true;
-            this.btnLaunchRandomWalk.Click += new System.EventHandler(this.btnLaunchRandomWalk_Click);
+            this.btnLaunchRandomWalk.Click += new System.EventHandler(this.BtnLaunchRandomWalk_Click);
             // 
             // groupBox2
             // 
@@ -170,7 +170,7 @@
             this.btnLaunchRandomSine.TabIndex = 0;
             this.btnLaunchRandomSine.Text = "Launch";
             this.btnLaunchRandomSine.UseVisualStyleBackColor = true;
-            this.btnLaunchRandomSine.Click += new System.EventHandler(this.btnLaunchRandomSine_Click);
+            this.btnLaunchRandomSine.Click += new System.EventHandler(this.BtnLaunchRandomSine_Click);
             // 
             // groupBox3
             // 

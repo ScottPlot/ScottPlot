@@ -1,0 +1,74 @@
+{
+    "metadata": [
+        {
+            "src": [
+                {
+                    "files": [
+                        "ScottPlot/ScottPlot.csproj",
+                        "controls/ScottPlot.WinForms/ScottPlot.WinForms.csproj",
+                        "controls/ScottPlot.WPF/ScottPlot.WPF.csproj",
+                        "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.csproj"
+                    ],
+                    "exclude": [
+                        "**/bin/**",
+                        "**/obj/**"
+                    ],
+                    "src": "../../src/"
+                }
+            ],
+            "dest": "api",
+            "disableGitFeatures": true,
+            "disableDefaultFilter": false,
+            "_disableAffix": true
+        }
+    ],
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "api/**.yml",
+                    "api/index.md",
+                    "toc.yml",
+                    "index.md"
+                ]
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "icon.png"
+                ]
+            }
+        ],
+        "overwrite": [
+            {
+                "files": [
+                    "apidoc/**.md"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
+        "dest": "_site",
+        "globalMetadata": {
+            "_appTitle": "ScottPlot 4.1.16 API",
+            "repo": "https://github.com/ScottPlot/ScottPlot",
+            "branch": "master",
+            "apiSpecFolder": "dev/docfx",
+            "_appLogoPath": "icon.png",
+            "_appFaviconPath": "icon.png"
+        },
+        "template": [
+            "default",
+            "template-material"
+        ],
+        "postProcessors": [],
+        "markdownEngineName": "markdig",
+        "noLangKeyword": false,
+        "keepFileLink": false,
+        "cleanupCacheHistory": false,
+        "disableGitFeatures": true
+    }
+}

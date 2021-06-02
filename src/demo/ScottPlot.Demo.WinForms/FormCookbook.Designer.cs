@@ -38,12 +38,9 @@
             this.sourceCodeTextbox = new System.Windows.Forms.TextBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.gbPlot = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tbBenchmark = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.sourceCodeGroupbox.SuspendLayout();
             this.gbPlot.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // treeView1
@@ -131,56 +128,29 @@
             this.formsPlot1.Location = new System.Drawing.Point(4, 19);
             this.formsPlot1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(693, 378);
+            this.formsPlot1.Size = new System.Drawing.Size(693, 410);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.Rendered += new System.EventHandler(this.formsPlot1_Rendered);
             // 
             // gbPlot
             // 
             this.gbPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbPlot.Controls.Add(this.pictureBox1);
             this.gbPlot.Controls.Add(this.formsPlot1);
             this.gbPlot.Location = new System.Drawing.Point(374, 114);
             this.gbPlot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gbPlot.Name = "gbPlot";
             this.gbPlot.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.gbPlot.Size = new System.Drawing.Size(701, 400);
+            this.gbPlot.Size = new System.Drawing.Size(701, 432);
             this.gbPlot.TabIndex = 7;
             this.gbPlot.TabStop = false;
             this.gbPlot.Text = "Interactive Plot";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(196, 117);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(401, 210);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // tbBenchmark
-            // 
-            this.tbBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbBenchmark.BackColor = System.Drawing.SystemColors.Control;
-            this.tbBenchmark.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbBenchmark.Enabled = false;
-            this.tbBenchmark.Location = new System.Drawing.Point(371, 522);
-            this.tbBenchmark.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tbBenchmark.Name = "tbBenchmark";
-            this.tbBenchmark.Size = new System.Drawing.Size(705, 16);
-            this.tbBenchmark.TabIndex = 8;
-            this.tbBenchmark.Text = "Rendered in...";
             // 
             // FormCookbook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1090, 820);
-            this.Controls.Add(this.tbBenchmark);
             this.Controls.Add(this.gbPlot);
             this.Controls.Add(this.DescriptionTextbox);
             this.Controls.Add(this.sourceCodeGroupbox);
@@ -196,7 +166,6 @@
             this.sourceCodeGroupbox.ResumeLayout(false);
             this.sourceCodeGroupbox.PerformLayout();
             this.gbPlot.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,8 +181,6 @@
         private System.Windows.Forms.TextBox DescriptionTextbox;
         private System.Windows.Forms.TextBox sourceCodeTextbox;
         private System.Windows.Forms.GroupBox gbPlot;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox tbBenchmark;
     }
 }
 

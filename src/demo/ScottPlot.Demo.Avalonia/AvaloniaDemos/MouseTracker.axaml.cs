@@ -8,8 +8,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class MouseTracker : Window
     {
-        Plottable.VLine vLine;
-        Plottable.HLine hLine;
+        Plottable.Crosshair Crosshair;
         AvaPlot avaPlot1;
 
         public MouseTracker()
@@ -21,12 +20,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
-            vLine = avaPlot1.plt.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-            hLine = avaPlot1.plt.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
+            avaPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            Crosshair = avaPlot1.Plot.AddCrosshair(0, 0);
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += OnMouseMove;
+            avaPlot1.PointerLeave += OnMouseLeave;
+            avaPlot1.PointerEnter += OnMouseEnter;
         }
 
         private void InitializeComponent()
@@ -44,12 +44,31 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("XPixelLabel").Text = $"{pixelX:0.000}";
             this.Find<TextBlock>("YPixelLabel").Text = $"{pixelY:0.000}";
 
-            this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.plt.CoordinateFromPixelX(pixelX):0.00000000}";
-            this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.plt.CoordinateFromPixelY(pixelY):0.00000000}";
+            this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
+            this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
-            vLine.position = coordinateX;
-            hLine.position = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
+            avaPlot1.Render();
+        }
+
+        private void OnMouseEnter(object sender, PointerEventArgs e)
+        {
+            this.Find<TextBlock>("MouseTrackerMessage").Text = "Mouse ENTERED the plot";
+
+            Crosshair.IsVisible = true;
+        }
+
+        private void OnMouseLeave(object sender, PointerEventArgs e)
+        {
+            this.Find<TextBlock>("MouseTrackerMessage").Text = "Mouse LEFT the plot";
+            this.Find<TextBlock>("XPixelLabel").Text = "--";
+            this.Find<TextBlock>("YPixelLabel").Text = "--";
+            this.Find<TextBlock>("XCoordinateLabel").Text = "--";
+            this.Find<TextBlock>("YCoordinateLabel").Text = "--";
+
+            Crosshair.IsVisible = false;
             avaPlot1.Render();
         }
     }

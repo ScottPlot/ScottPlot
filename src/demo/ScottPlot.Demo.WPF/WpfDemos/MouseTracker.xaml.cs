@@ -18,17 +18,13 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class MouseTracker : Window
     {
-        VLine vLine;
-        HLine hLine;
+        Crosshair Crosshair;
 
         public MouseTracker()
         {
             InitializeComponent();
-            wpfPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
-
-            vLine = wpfPlot1.plt.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-            hLine = wpfPlot1.plt.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-
+            wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            Crosshair = wpfPlot1.Plot.AddCrosshair(0, 0);
             wpfPlot1.Render();
         }
 
@@ -42,13 +38,31 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             XPixelLabel.Content = $"{pixelX:0.000}";
             YPixelLabel.Content = $"{pixelY:0.000}";
 
-            XCoordinateLabel.Content = $"{wpfPlot1.plt.CoordinateFromPixelX(pixelX):0.00000000}";
-            YCoordinateLabel.Content = $"{wpfPlot1.plt.CoordinateFromPixelY(pixelY):0.00000000}";
+            XCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
+            YCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
-            vLine.position = coordinateX;
-            hLine.position = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
-            wpfPlot1.Render(skipIfCurrentlyRendering: true);
+            wpfPlot1.Render();
+        }
+
+        private void wpfPlot1_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MouseTrackLabel.Content = "Mouse ENTERED the plot";
+            Crosshair.IsVisible = true;
+        }
+
+        private void wpfPlot1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MouseTrackLabel.Content = "Mouse LEFT the plot";
+            XPixelLabel.Content = "--";
+            YPixelLabel.Content = "--";
+            XCoordinateLabel.Content = "--";
+            YCoordinateLabel.Content = "--";
+
+            Crosshair.IsVisible = false;
+            wpfPlot1.Render();
         }
     }
 }

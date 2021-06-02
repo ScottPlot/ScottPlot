@@ -21,9 +21,15 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LiveDataIncoming()
         {
             InitializeComponent();
-            signalPlot = formsPlot1.plt.PlotSignal(data);
-            formsPlot1.plt.YLabel("Value");
-            formsPlot1.plt.XLabel("Sample Number");
+            signalPlot = formsPlot1.Plot.AddSignal(data);
+            formsPlot1.Plot.YLabel("Value");
+            formsPlot1.Plot.XLabel("Sample Number");
+
+            Closed += (sender, args) =>
+            {
+                dataTimer?.Stop();
+                renderTimer?.Stop();
+            };
         }
 
         private void LiveDataIncoming_Load(object sender, EventArgs e)
@@ -50,7 +56,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             tbLastValue.Text = (latestValue > 0) ? "+" + latestValue.ToString() : latestValue.ToString();
             tbLatestValue.Text = nextDataIndex.ToString();
 
-            signalPlot.maxRenderIndex = nextDataIndex;
+            signalPlot.MaxRenderIndex = nextDataIndex;
 
             nextDataIndex += 1;
         }
@@ -58,7 +64,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void renderTimer_Tick(object sender, EventArgs e)
         {
             if (cbAutoAxis.Checked)
-                formsPlot1.plt.AxisAuto();
+                formsPlot1.Plot.AxisAuto();
             formsPlot1.Render();
         }
 
@@ -66,9 +72,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             if (cbAutoAxis.Checked == false)
             {
-                formsPlot1.plt.AxisAuto(verticalMargin: .5);
-                var oldLimits = formsPlot1.plt.AxisLimits();
-                formsPlot1.plt.Axis(x2: oldLimits.XMax + 1000);
+                formsPlot1.Plot.AxisAuto(verticalMargin: .5);
+                var oldLimits = formsPlot1.Plot.GetAxisLimits();
+                formsPlot1.Plot.SetAxisLimits(xMax: oldLimits.XMax + 1000);
             }
         }
     }

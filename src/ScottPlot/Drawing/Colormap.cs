@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using ScottPlot.Ticks;
 
 namespace ScottPlot.Drawing
 {
@@ -41,64 +38,71 @@ namespace ScottPlot.Drawing
         public static Colormap Turbo => new Colormap(new Colormaps.Turbo());
         public static Colormap Viridis => new Colormap(new Colormaps.Viridis());
 
-        private readonly IColormap cmap;
-        public readonly string Name;
+        private readonly IColormap ThisColormap;
+
+        public string Name => ThisColormap.Name;
+
+        private static readonly ColormapFactory ColormapFactory = new ColormapFactory();
+
         public Colormap(IColormap colormap)
         {
-            cmap = colormap ?? new Colormaps.Grayscale();
-            Name = cmap.GetType().Name;
+            ThisColormap = colormap ?? ColormapFactory.GetDefaultColormap();
         }
 
-        public override string ToString()
-        {
-            return $"Colormap {Name}";
-        }
+        public override string ToString() => $"Colormap {Name}";
 
-        public static Colormap[] GetColormaps()
-        {
-            IColormap[] ics = AppDomain.CurrentDomain.GetAssemblies()
-                                .SelectMany(s => s.GetTypes())
-                                .Where(p => p.IsInterface == false)
-                                .Where(p => p.ToString().StartsWith("ScottPlot.Drawing.Colormaps."))
-                                .Select(x => x.ToString())
-                                .Select(path => (IColormap)Activator.CreateInstance(Type.GetType(path)))
-                                .ToArray();
+        /// <summary>
+        /// Create new instances of every colormap and return them as an array.
+        /// </summary>
+        /// <returns></returns>
+        public static Colormap[] GetColormaps() => ColormapFactory.GetAvailableColormaps().ToArray();
 
-            return ics.Select(x => new Colormap(x)).ToArray();
-        }
+        /// <summary>
+        /// Return the names of all available colormaps.
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetColormapNames() => ColormapFactory.GetAvailableNames().ToArray();
 
-        public (byte r, byte g, byte b) GetRGB(byte value)
-        {
-            return cmap.GetRGB(value);
-        }
+        /// <summary>
+        /// Create a new colormap by its name.
+        /// </summary>
+        /// <param name="name">colormap name</param>
+        /// <param name="throwIfNotFound">if false the default colormap (Viridis) will be returned</param>
+        /// <returns></returns>
+        public static Colormap GetColormapByName(string name, bool throwIfNotFound = true) =>
+            throwIfNotFound ? ColormapFactory.CreateOrThrow(name) : ColormapFactory.CreateOrDefault(name);
+
+        public (byte r, byte g, byte b) GetRGB(byte value) => ThisColormap.GetRGB(value);
 
         public (byte r, byte g, byte b) GetRGB(double fraction)
         {
             fraction = Math.Max(fraction, 0);
             fraction = Math.Min(fraction, 1);
-            return cmap.GetRGB((byte)(fraction * 255));
+            return ThisColormap.GetRGB((byte)(fraction * 255));
         }
 
-        public int GetInt32(byte value)
+        public int GetInt32(byte value, byte alpha = 255)
         {
             var (r, g, b) = GetRGB(value);
-            return 255 << 24 | r << 16 | g << 8 | b;
+            return alpha << 24 | r << 16 | g << 8 | b;
         }
 
-        public int GetInt32(double fraction)
+        public int GetInt32(double fraction, byte alpha = 255)
         {
             var (r, g, b) = GetRGB(fraction);
-            return 255 << 24 | r << 16 | g << 8 | b;
+            return alpha << 24 | r << 16 | g << 8 | b;
         }
 
-        public Color GetColor(byte value)
+        public Color GetColor(byte value, double alpha = 1.0)
         {
-            return Color.FromArgb(GetInt32(value));
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(value, alphaByte));
         }
 
-        public Color GetColor(double fraction)
+        public Color GetColor(double fraction, double alpha = 1.0)
         {
-            return Color.FromArgb(GetInt32(fraction));
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(fraction, alphaByte));
         }
 
         public void Apply(Bitmap bmp)
@@ -131,9 +135,31 @@ namespace ScottPlot.Drawing
             {
                 byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
                 var (r, g, b) = colorMap.GetRGB(pixelIntensity);
-                byte alpha = pixelIntensity < minimumIntensity ? (byte)0 : (byte)255;
+                byte alpha = intensities[i] < minimumIntensity ? (byte)0 : (byte)255;
                 byte[] argb = { b, g, r, alpha };
                 rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
+        public static int[] GetRGBAs(double?[] intensities, Colormap colorMap, double minimumIntensity = 0)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                if (intensities[i].HasValue)
+                {
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                    byte alpha = intensities[i] < minimumIntensity ? (byte)0 : (byte)255;
+                    byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
             }
             return rgbas;
         }

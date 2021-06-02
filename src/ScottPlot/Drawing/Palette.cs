@@ -30,6 +30,14 @@ namespace ScottPlot.Drawing
             Name = cset.GetType().Name;
         }
 
+        public Palette(string[] htmlColors, string name = "Custom")
+        {
+            cset = new Colorsets.Custom(htmlColors);
+            Name = name;
+        }
+
+        public override string ToString() => $"{Name} Palette ({Count()} colors)";
+
         public int GetInt32(int index)
         {
             var (r, g, b) = cset.GetRGB(index);

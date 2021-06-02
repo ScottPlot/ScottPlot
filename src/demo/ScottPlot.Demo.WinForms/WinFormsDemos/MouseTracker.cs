@@ -13,37 +13,48 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class MouseTracker : Form
     {
-        VLine vLine;
-        HLine hLine;
+        private readonly Crosshair Crosshair;
 
         public MouseTracker()
         {
             InitializeComponent();
-            formsPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
-
-            vLine = formsPlot1.plt.PlotVLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
-            hLine = formsPlot1.plt.PlotHLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
-
-            formsPlot1.Render();
+            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
         }
 
         private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
         {
-            int pixelX = e.X;
-            int pixelY = e.Y;
-
             (double coordinateX, double coordinateY) = formsPlot1.GetMouseCoordinates();
 
             XPixelLabel.Text = $"{e.X:0.000}";
-            YPixelLabel.Text = $"{e.X:0.000}";
+            YPixelLabel.Text = $"{e.Y:0.000}";
 
             XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
             YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
 
-            vLine.position = coordinateX;
-            hLine.position = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
-            formsPlot1.Render(skipIfCurrentlyRendering: true);
+            formsPlot1.Render();
+        }
+
+        private void formsPlot1_MouseEnter(object sender, EventArgs e)
+        {
+            lblMouse.Text = "Mouse ENTERED the plot";
+            Crosshair.IsVisible = true;
+        }
+
+        private void formsPlot1_MouseLeave(object sender, EventArgs e)
+        {
+            lblMouse.Text = "Mouse LEFT the plot";
+
+            XPixelLabel.Text = $"--";
+            YPixelLabel.Text = $"--";
+            XCoordinateLabel.Text = $"--";
+            YCoordinateLabel.Text = $"--";
+
+            Crosshair.IsVisible = false;
+            formsPlot1.Render();
         }
     }
 }

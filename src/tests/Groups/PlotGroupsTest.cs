@@ -31,13 +31,14 @@ namespace ScottPlotTests.Groups
             // plot the multi-series
             var plt = new ScottPlot.Plot(400, 300);
             plt.Add(customPlottable);
-            plt.Ticks(displayTicksX: false);
+            plt.XAxis.Ticks(false);
 
             // additional plot styling
             plt.Title("Life Expectancy in European Countries in 2007");
             plt.YLabel("Age (years)");
             plt.Legend(location: Alignment.LowerRight);
-            plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
+            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
         }
@@ -65,13 +66,15 @@ namespace ScottPlotTests.Groups
             var plt = new ScottPlot.Plot();
             plt.Add(customPlottable);
             plt.XTicks(labels: new string[] { "Africas", "Americas", "Asia", "Europe", "Oceania" });
-            plt.Ticks(fontSize: 18);
+            plt.XAxis.TickLabelStyle(fontSize: 18);
+            plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
-            plt.Title("Life Expectancy in 2007", fontSize: 26);
-            plt.YLabel("Age (years)", fontSize: 18);
+            plt.XAxis2.Label(label: "Life Expectancy in 2007", size: 26);
+            plt.YAxis.Label(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
-            plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
+            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
         }
@@ -128,13 +131,15 @@ namespace ScottPlotTests.Groups
             var plt = new ScottPlot.Plot();
             plt.Add(customPlottable);
             plt.XTicks(labels: groupLabels);
-            plt.Ticks(fontSize: 18);
+            plt.XAxis.TickLabelStyle(fontSize: 18);
+            plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
-            plt.Title("Life Expectancy", fontSize: 26);
-            plt.YLabel("Age (years)", fontSize: 18);
+            plt.XAxis2.Label(label: "Life Expectancy", size: 26);
+            plt.YAxis.Label(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
-            plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
+            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
         }

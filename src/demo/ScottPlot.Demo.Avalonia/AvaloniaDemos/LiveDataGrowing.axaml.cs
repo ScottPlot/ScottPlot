@@ -20,6 +20,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         TextBox LatestValueTextbox;
         CheckBox AutoAxisCheckbox;
 
+        private DispatcherTimer _updateDataTimer;
+        private DispatcherTimer _renderTimer;
+
         public LiveDataGrowing()
         {
             this.InitializeComponent();
@@ -33,21 +36,27 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AutoAxisCheckbox = this.Find<CheckBox>("AutoAxisCheckbox");
 
             // plot the data array only once
-            signalPlot = avaPlot1.plt.PlotSignal(data);
-            avaPlot1.plt.YLabel("Value");
-            avaPlot1.plt.XLabel("Sample Number");
+            signalPlot = avaPlot1.Plot.AddSignal(data);
+            avaPlot1.Plot.YLabel("Value");
+            avaPlot1.Plot.XLabel("Sample Number");
 
             // create a timer to modify the data
-            DispatcherTimer updateDataTimer = new DispatcherTimer();
-            updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
-            updateDataTimer.Tick += UpdateData;
-            updateDataTimer.Start();
+            _updateDataTimer = new DispatcherTimer();
+            _updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
+            _updateDataTimer.Tick += UpdateData;
+            _updateDataTimer.Start();
 
             // create a timer to update the GUI
-            DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(20);
-            renderTimer.Tick += Render;
-            renderTimer.Start();
+            _renderTimer = new DispatcherTimer();
+            _renderTimer.Interval = TimeSpan.FromMilliseconds(20);
+            _renderTimer.Tick += Render;
+            _renderTimer.Start();
+
+            Closed += (sender, args) =>
+            {
+                _updateDataTimer?.Stop();
+                _renderTimer?.Stop();
+            };
         }
 
         private void InitializeComponent()
@@ -71,7 +80,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double randomValue = Math.Round(rand.NextDouble() - .5, 3);
             double latestValue = data[nextDataIndex - 1] + randomValue;
             data[nextDataIndex] = latestValue;
-            signalPlot.maxRenderIndex = nextDataIndex;
+            signalPlot.MaxRenderIndex = nextDataIndex;
             ReadingsTextbox.Text = $"{nextDataIndex + 1}";
             LatestValueTextbox.Text = $"{latestValue:0.000}";
             nextDataIndex += 1;
@@ -80,15 +89,15 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         void Render(object sender, EventArgs e)
         {
             if (AutoAxisCheckbox.IsChecked == true)
-                avaPlot1.plt.AxisAuto();
+                avaPlot1.Plot.AxisAuto();
             avaPlot1.Render();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            avaPlot1.plt.AxisAuto(verticalMargin: .5);
-            var autoLimits = avaPlot1.plt.AxisLimits();
-            avaPlot1.plt.Axis(x2: autoLimits.XMax + 1000);
+            avaPlot1.Plot.AxisAuto(verticalMargin: .5);
+            var autoLimits = avaPlot1.Plot.GetAxisLimits();
+            avaPlot1.Plot.SetAxisLimits(xMax: autoLimits.XMax + 1000);
         }
     }
 }

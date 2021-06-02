@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using ScottPlot;
 using ScottPlot.Plottable;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScottPlotTests.PlottableRenderTests
 {
@@ -15,13 +12,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot();
 
             // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { X1 = 1.23, X2 = 2.34 };
 
             plt.Add(axSpan);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axSpan.position2 += 1;
+            axSpan.X2 += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -41,13 +38,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot();
 
             // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
+            var axSpan = new HSpan() { X1 = 1.23, X2 = 2.34, Color = System.Drawing.Color.Gray };
 
             plt.Add(axSpan);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axSpan.color = System.Drawing.Color.Black;
+            axSpan.Color = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -62,29 +59,50 @@ namespace ScottPlotTests.PlottableRenderTests
         }
 
         [Test]
-        public void Test_AxisSpan_Alpha()
+        public void AxisHSpan_ExtremeZoomIn_FullScreenIsSpanColor()
         {
             var plt = new ScottPlot.Plot();
-
-            // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
-
+            var axSpan = new HSpan() { X1 = 1, X2 = 10, Color = System.Drawing.Color.Green };
             plt.Add(axSpan);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
-            // change the plottable
-            axSpan.alpha /= 2;
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+            // Initial zoom to fill full plot with span color
+            plt.AxisZoom(10);
 
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
+            var smallZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var smallZoom = new MeanPixel(smallZoomBmp);
 
-            Assert.That(after.IsLighterThan(before));
+            // Extreme zoom to prove that full plot filled with span Color
+            plt.AxisZoom(10_000_000);
+
+            var extremeZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var extremeZoom = new MeanPixel(extremeZoomBmp);
+
+            // Compare mean pixel with delta, because different ticks
+            Assert.AreEqual(smallZoom.RGB, extremeZoom.RGB, 1.0);
+        }
+
+        [Test]
+        public void AxisVSpan_ExtremeZoomIn_FullScreenIsSpanColor()
+        {
+            var plt = new ScottPlot.Plot();
+            var axSpan = new VSpan() { Y1 = 1, Y2 = 10, Color = System.Drawing.Color.Green };
+            plt.Add(axSpan);
+
+            // Initial zoom to fill full plot with span color
+            plt.AxisZoom(1, 10);
+
+            var smallZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var smallZoom = new MeanPixel(smallZoomBmp);
+
+            // Extreme zoom to prove that full plot filled with span Color
+            plt.AxisZoom(1, 10_000_000);
+
+            var extremeZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var extremeZoom = new MeanPixel(extremeZoomBmp);
+
+            // Compare mean pixel with delta, because different ticks
+            // Y Ticks has more affect on mean pixel
+            Assert.AreEqual(smallZoom.RGB, extremeZoom.RGB, 20);
         }
     }
 }

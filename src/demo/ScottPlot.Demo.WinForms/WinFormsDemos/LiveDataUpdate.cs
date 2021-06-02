@@ -23,21 +23,27 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LiveDataUpdate()
         {
             InitializeComponent();
-            formsPlot1.Configure(middleClickMarginX: 0);
+            formsPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once and we can updates its values later
-            formsPlot1.plt.PlotSignal(liveData);
-            formsPlot1.plt.AxisAutoX(margin: 0);
-            formsPlot1.plt.Axis(y1: -1, y2: 2.5);
+            formsPlot1.Plot.AddSignal(liveData);
+            formsPlot1.Plot.AxisAutoX(margin: 0);
+            formsPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // plot a red vertical line and save it so we can move it later
-            vline = formsPlot1.plt.PlotVLine(0, Color.Red, lineWidth: 2);
+            vline = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 2);
 
             // customize styling
-            formsPlot1.plt.Title("Electrocardiogram Strip Chart");
-            formsPlot1.plt.YLabel("Potential (mV)");
-            formsPlot1.plt.XLabel("Time (seconds)");
-            formsPlot1.plt.Grid(false);
+            formsPlot1.Plot.Title("Electrocardiogram Strip Chart");
+            formsPlot1.Plot.YLabel("Potential (mV)");
+            formsPlot1.Plot.XLabel("Time (seconds)");
+            formsPlot1.Plot.Grid(false);
+
+            Closed += (sender, args) =>
+            {
+                timerUpdateData?.Stop();
+                timerRender?.Stop();
+            };
         }
 
         int nextValueIndex = -1;
@@ -51,7 +57,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 nextValueIndex = (nextValueIndex < liveData.Length - 1) ? nextValueIndex + 1 : 0;
                 liveData[nextValueIndex] = nextValue;
                 vline.IsVisible = true;
-                vline.position = nextValueIndex;
+                vline.X = nextValueIndex;
             }
             else
             {
@@ -64,7 +70,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void timerRender_Tick(object sender, EventArgs e)
         {
-            formsPlot1.Render(skipIfCurrentlyRendering: true);
+            formsPlot1.Render();
         }
 
         private void runCheckbox_CheckedChanged(object sender, EventArgs e)

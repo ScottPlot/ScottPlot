@@ -23,7 +23,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.ys[0] += 1;
+            splt.Ys[0] += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -53,8 +53,8 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorX[0] += .1;
-            splt.errorY[0] += .1;
+            splt.XError[0] += .1;
+            splt.YError[0] += .1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -84,7 +84,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.lineWidth += 1;
+            splt.LineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -114,7 +114,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorLineWidth += 1;
+            splt.ErrorLineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -144,7 +144,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorCapSize += 1;
+            splt.ErrorCapSize += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -174,7 +174,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.markerSize += 1;
+            splt.MarkerSize += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -196,13 +196,17 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
             double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlot(xs, ys) { };
+            var splt = new ScatterPlot(xs, ys)
+            {
+                MarkerSize = 20,
+                MarkerShape = MarkerShape.filledCircle
+            };
 
             plt.Add(splt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.markerShape = MarkerShape.openCircle;
+            splt.MarkerShape = MarkerShape.openCircle;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -230,7 +234,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.stepDisplay = true;
+            splt.StepDisplay = true;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -287,7 +291,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.color = System.Drawing.Color.Gray;
+            splt.Color = System.Drawing.Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -315,7 +319,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.lineStyle = LineStyle.Dash;
+            splt.LineStyle = LineStyle.Dash;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -330,31 +334,47 @@ namespace ScottPlotTests.PlottableRenderTests
         }
 
         [Test]
-        public void Test_Scatter_Highlight()
+        public void Test_Scatter_ZoomWorksWithTwoPoints()
         {
+            // Tests a bug where plots with a single point (axis span 0) can't zoom
+            // https://github.com/ScottPlot/ScottPlot/issues/768
+
+            double[] dataX = { 42, 3 };
+            double[] dataY = { 303, 5 };
+
+            // create a scatter plot with a single point
             var plt = new ScottPlot.Plot(400, 300);
-
-            // start with default settings
-            double[] xs = { 1, 2, 3, 4 };
-            double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlotHighlight(xs, ys) { highlightedMarkerSize = 20, highlightedColor = System.Drawing.Color.Black };
-
-            plt.Add(splt);
+            plt.AddScatter(dataX, dataY);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
-            // change the plottable
-            splt.HighlightPointNearest(2.1, 4.1);
+            // zoom in
+            plt.AxisZoom(2, 2);
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
+            // ensure the bitmap changed
+            Assert.AreNotEqual(ScottPlot.Tools.BitmapHash(bmp1), ScottPlot.Tools.BitmapHash(bmp2));
+        }
 
-            Assert.That(after.IsDarkerThan(before));
+        [Test]
+        public void Test_Scatter_ZoomWorksWithOnePoint()
+        {
+            // Tests a bug where plots with a single point (axis span 0) can't zoom
+            // https://github.com/ScottPlot/ScottPlot/issues/768
+
+            double[] dataX = { 42 };
+            double[] dataY = { 303 };
+
+            // create a scatter plot with a single point
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddScatter(dataX, dataY);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+
+            // zoom in
+            plt.AxisZoom(2, 2);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+
+            // ensure the bitmap changed
+            Assert.AreNotEqual(ScottPlot.Tools.BitmapHash(bmp1), ScottPlot.Tools.BitmapHash(bmp2));
         }
     }
 }

@@ -20,8 +20,8 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.Grid(false);
-            plt.PlotCandlestick(ohlcs, autoWidth: false);
-            plt.Axis(-1, 5);
+            plt.AddCandlesticks(ohlcs);
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 
@@ -38,8 +38,8 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.Grid(false);
-            plt.PlotOHLC(ohlcs, autoWidth: false);
-            plt.Axis(-1, 5);
+            plt.AddCandlesticks(ohlcs);
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 
@@ -58,8 +58,10 @@ namespace ScottPlotTests.PlotTypes
             var colorDown = System.Drawing.ColorTranslator.FromHtml("#99ef5350");
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotCandlestick(ohlcs, colorUp, colorDown, autoWidth: false);
-            plt.Axis(-1, 5);
+            var candles = plt.AddCandlesticks(ohlcs);
+            candles.ColorUp = colorUp;
+            candles.ColorDown = colorDown;
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 
@@ -70,7 +72,7 @@ namespace ScottPlotTests.PlotTypes
             var ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, 20);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs);
+            plt.AddCandlesticks(ohlcs);
             plt.Title("Default Behavior");
             plt.XLabel("OHLC DateTime Code");
             TestTools.SaveFig(plt);
@@ -83,7 +85,8 @@ namespace ScottPlotTests.PlotTypes
             var ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, 20);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs, sequential: true);
+            var cs = plt.AddCandlesticks(ohlcs);
+            cs.Sequential = true;
             plt.Title("sequential: true");
             plt.XLabel("OHLC Index");
             TestTools.SaveFig(plt);

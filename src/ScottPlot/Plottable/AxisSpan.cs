@@ -1,92 +1,130 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
-    public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
-
-    public abstract class AxisSpan : IDraggable, IRenderable, IHasLegendItems, IUsesAxes
+    /// <summary>
+    /// Shaded horizontal region between two X values
+    /// </summary>
+    public class HSpan : AxisSpan
     {
-        public double position1;
-        public double position2;
-        private double Min { get => Math.Min(position1, position2); }
-        private double Max { get => Math.Max(position1, position2); }
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public double X1 { get => Position1; set => Position1 = value; }
+        public double X2 { get => Position2; set => Position2 = value; }
+        public HSpan() : base(true) { }
+        public override string ToString() => $"Horizontal span between Y1={X1} and Y2={X2}";
+    }
 
-        public Color color;
-        public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
-        public double alpha = .35;
-        public string label;
-        public bool IsHorizontal = true;
+    /// <summary>
+    /// Shade the region between two Y values
+    /// </summary>
+    public class VSpan : AxisSpan
+    {
+        public double Y1 { get => Position1; set => Position1 = value; }
+        public double Y2 { get => Position2; set => Position2 = value; }
+        public VSpan() : base(false) { }
+        public override string ToString() => $"Vertical span between X1={Y1} and X2={Y2}";
+    }
+
+    public abstract class AxisSpan : IPlottable, IDraggable
+    {
+        // location and orientation
+        protected double Position1;
+        protected double Position2;
+        private double Min { get => Math.Min(Position1, Position2); }
+        private double Max { get => Math.Max(Position1, Position2); }
+        readonly bool IsHorizontal;
+
+        /// <summary>
+        /// If true, AxisAuto() will ignore the position of this span when determining axis limits
+        /// </summary>
+        public bool IgnoreAxisAuto = false;
+
+        // configuration
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public bool IsVisible { get; set; } = true;
+        public Color Color = Color.FromArgb(128, Color.Magenta);
+        public string Label;
+
+        // mouse interaction
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
+        public double DragLimitMin = double.NegativeInfinity;
+        public double DragLimitMax = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
-        public bool IsVisible { get; set; } = true;
 
-        public override string ToString()
+        /// <summary>
+        /// This event is invoked after the line is dragged 
+        /// </summary>
+        public event EventHandler Dragged = delegate { };
+
+        public AxisSpan(bool isHorizontal)
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return IsHorizontal ?
-                $"PlottableVSpan{label} from X={position1} to X={position2}" :
-                $"PlottableVSpan{label} from Y={position1} to Y={position2}";
+            IsHorizontal = isHorizontal;
         }
 
-        public LegendItem[] LegendItems
+        public void ValidateData(bool deep = false)
         {
-            get
+            if (double.IsNaN(Position1) || double.IsInfinity(Position1))
+                throw new InvalidOperationException("position1 must be a valid number");
+
+            if (double.IsNaN(Position2) || double.IsInfinity(Position2))
+                throw new InvalidOperationException("position2 must be a valid number");
+        }
+
+        public LegendItem[] GetLegendItems()
+        {
+            var singleItem = new LegendItem()
             {
-                var item = new LegendItem()
-                {
-                    label = label,
-                    color = colorWithAlpha,
-                    markerSize = 0,
-                    lineWidth = 10
-                };
-                return new LegendItem[] { item };
-            }
+                label = Label,
+                color = Color,
+                markerSize = 0,
+                lineWidth = 10
+            };
+            return new LegendItem[] { singleItem };
         }
 
-        public AxisLimits GetAxisLimits() =>
-            IsHorizontal ?
-            new AxisLimits(Min, Max, double.NaN, double.NaN) :
-            new AxisLimits(double.NaN, double.NaN, Min, Max);
-
-        private double dragLimitX1 = double.NegativeInfinity;
-        private double dragLimitX2 = double.PositiveInfinity;
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
+        public AxisLimits GetAxisLimits()
         {
-            dragLimitX1 = x1 ?? dragLimitX1;
-            dragLimitX2 = x2 ?? dragLimitX2;
-            dragLimitY1 = y1 ?? dragLimitY1;
-            dragLimitY2 = y2 ?? dragLimitY2;
+            if (IgnoreAxisAuto)
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+
+            if (IsHorizontal)
+                return new AxisLimits(Min, Max, double.NaN, double.NaN);
+            else
+                return new AxisLimits(double.NaN, double.NaN, Min, Max);
         }
 
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
+
+        /// <summary>
+        /// Return True if either span edge is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position (coordinate space)</param>
+        /// <param name="coordinateY">mouse position (coordinate space)</param>
+        /// <param name="snapX">snap distance (pixels)</param>
+        /// <param name="snapY">snap distance (pixels)</param>
+        /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             if (IsHorizontal)
             {
-                if (Math.Abs(position1 - coordinateX) <= snapX)
+                if (Math.Abs(Position1 - coordinateX) <= snapX)
                     edgeUnderMouse = Edge.Edge1;
-                else if (Math.Abs(position2 - coordinateX) <= snapX)
+                else if (Math.Abs(Position2 - coordinateX) <= snapX)
                     edgeUnderMouse = Edge.Edge2;
                 else
                     edgeUnderMouse = Edge.Neither;
             }
             else
             {
-                if (Math.Abs(position1 - coordinateY) <= snapY)
+                if (Math.Abs(Position1 - coordinateY) <= snapY)
                     edgeUnderMouse = Edge.Edge1;
-                else if (Math.Abs(position2 - coordinateY) <= snapY)
+                else if (Math.Abs(Position2 - coordinateY) <= snapY)
                     edgeUnderMouse = Edge.Edge2;
                 else
                     edgeUnderMouse = Edge.Neither;
@@ -95,28 +133,40 @@ namespace ScottPlot.Plottable
             return edgeUnderMouse != Edge.Neither;
         }
 
-        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
+        /// <summary>
+        /// Move the span to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateX">new X position</param>
+        /// <param name="coordinateY">new Y position</param>
+        /// <param name="fixedSize">if True, both edges will be moved to maintain the size of the span</param>
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
                 return;
 
-            if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-            if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-            if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-            if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+            if (IsHorizontal)
+            {
+                coordinateX = Math.Max(coordinateX, DragLimitMin);
+                coordinateX = Math.Min(coordinateX, DragLimitMax);
+            }
+            else
+            {
+                coordinateY = Math.Max(coordinateY, DragLimitMin);
+                coordinateY = Math.Min(coordinateY, DragLimitMax);
+            }
 
-            double sizeBeforeDrag = position2 - position1;
+            double sizeBeforeDrag = Position2 - Position1;
             if (edgeUnderMouse == Edge.Edge1)
             {
-                position1 = IsHorizontal ? coordinateX : coordinateY;
-                if (DragFixedSize || isShiftDown)
-                    position2 = position1 + sizeBeforeDrag;
+                Position1 = IsHorizontal ? coordinateX : coordinateY;
+                if (DragFixedSize || fixedSize)
+                    Position2 = Position1 + sizeBeforeDrag;
             }
             else if (edgeUnderMouse == Edge.Edge2)
             {
-                position2 = IsHorizontal ? coordinateX : coordinateY;
-                if (DragFixedSize || isShiftDown)
-                    position1 = position2 - sizeBeforeDrag;
+                Position2 = IsHorizontal ? coordinateX : coordinateY;
+                if (DragFixedSize || fixedSize)
+                    Position1 = Position2 - sizeBeforeDrag;
             }
             else
             {
@@ -124,40 +174,45 @@ namespace ScottPlot.Plottable
             }
 
             // ensure fixed-width spans stay entirely inside the allowable range
-            double lowerLimit = IsHorizontal ? dragLimitX1 : dragLimitY1;
-            double upperLimit = IsHorizontal ? dragLimitX2 : dragLimitY2;
-            double belowLimit = lowerLimit - position1;
-            double aboveLimit = position2 - upperLimit;
+            double belowLimit = DragLimitMin - Position1;
+            double aboveLimit = Position2 - DragLimitMax;
             if (belowLimit > 0)
             {
-                position1 += belowLimit;
-                position2 += belowLimit;
+                Position1 += belowLimit;
+                Position2 += belowLimit;
             }
             if (aboveLimit > 0)
             {
-                position1 -= aboveLimit;
-                position2 -= aboveLimit;
+                Position1 -= aboveLimit;
+                Position2 -= aboveLimit;
             }
+
+            Dragged(this, EventArgs.Empty);
+        }
+
+        private RectangleF GetClippedRectangle(PlotDimensions dims)
+        {
+            // clip the rectangle to the size of the data area to avoid GDI rendering errors
+            float ClippedPixelX(double x) => dims.GetPixelX(Math.Max(dims.XMin, Math.Min(x, dims.XMax)));
+            float ClippedPixelY(double y) => dims.GetPixelY(Math.Max(dims.YMin, Math.Min(y, dims.YMax)));
+
+            float left = IsHorizontal ? ClippedPixelX(Min) : dims.DataOffsetX;
+            float right = IsHorizontal ? ClippedPixelX(Max) : dims.DataOffsetX + dims.DataWidth;
+            float top = IsHorizontal ? dims.DataOffsetY : ClippedPixelY(Max);
+            float bottom = IsHorizontal ? dims.DataOffsetY + dims.DataHeight : ClippedPixelY(Min);
+
+            float width = right - left + 1;
+            float height = bottom - top + 1;
+
+            return new RectangleF(left, top, width, height);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            PointF p1, p2;
-            if (IsHorizontal)
-            {
-                p1 = new PointF(dims.GetPixelX(Min), dims.GetPixelY(dims.YMin));
-                p2 = new PointF(dims.GetPixelX(Max), dims.GetPixelY(dims.YMax));
-            }
-            else
-            {
-                p1 = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(Min));
-                p2 = new PointF(dims.GetPixelX(dims.XMax), dims.GetPixelY(Max));
-            }
-            RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
-
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(colorWithAlpha))
+            using (var brush = GDI.Brush(Color))
             {
+                RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
             }
         }

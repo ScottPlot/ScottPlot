@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FunctionPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    /// <summary>
+    /// A function plot displays a curve using a function (Y as a function of X)
+    /// </summary>
+    public class FunctionPlot : IPlottable
     {
-        public Func<double, double?> function;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        /// <summary>
+        /// The function to translate an X to a Y (or null if undefined)
+        /// </summary>
+        public Func<double, double?> Function;
 
-        // TODO: Capitalize these fields
-        public double lineWidth = 1;
-        public LineStyle lineStyle = LineStyle.Solid;
-        public string label;
-        public Color color = Color.Black;
+        // customizations
         public bool IsVisible { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public double LineWidth = 1;
+        public LineStyle LineStyle = LineStyle.Solid;
+        public string Label;
+        public Color Color = Color.Black;
 
         public FunctionPlot(Func<double, double?> function)
         {
-            this.function = function;
+            Function = function;
         }
 
         public AxisLimits GetAxisLimits()
@@ -34,7 +37,7 @@ namespace ScottPlot.Plottable
 
             foreach (double x in DataGen.Range(-10, 10, .1))
             {
-                double? y = function(x);
+                double? y = Function(x);
                 if (y != null)
                 {
                     max = Math.Max(max, y.Value);
@@ -59,7 +62,7 @@ namespace ScottPlot.Plottable
                 double x = columnIndex * dims.UnitsPerPxX + dims.XMin;
                 try
                 {
-                    double? y = function(x);
+                    double? y = Function(x);
 
                     if (y is null)
                         throw new NoNullAllowedException();
@@ -82,44 +85,39 @@ namespace ScottPlot.Plottable
             double[] ys = yList.ToArray();
             var scatter = new ScatterPlot(xs, ys)
             {
-                color = color,
-                lineWidth = lineWidth,
-                markerSize = 0,
-                label = label,
-                markerShape = MarkerShape.none,
-                lineStyle = lineStyle
+                Color = Color,
+                LineWidth = LineWidth,
+                MarkerSize = 0,
+                Label = Label,
+                MarkerShape = MarkerShape.none,
+                LineStyle = LineStyle
             };
             scatter.Render(dims, bmp, lowQuality);
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deepValidation = false)
         {
-            if (function is null)
-                return "function cannot be null";
-
-            return null;
+            if (Function is null)
+                throw new InvalidOperationException("function cannot be null");
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableFunction{label} displaying {PointCount} points";
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = Label,
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }

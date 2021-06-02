@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ScottPlot.Plottable;
+using System;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsFrameworkApp
@@ -15,14 +11,18 @@ namespace WinFormsFrameworkApp
         public Form1()
         {
             InitializeComponent();
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(100));
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            var xs = new double[] { 1, 2, 3, 4, 5 };
-            var ys = new double[] { 1, 4, 9, 16, 25 };
+            formsPlot1.Plot.AxisAutoX();
+            formsPlot1.Render();
+        }
 
-            formsPlot1.plt.PlotScatter(xs, ys);
+        private void button2_Click(object sender, EventArgs e)
+        {
+            formsPlot1.Plot.AxisAutoY();
             formsPlot1.Render();
         }
     }

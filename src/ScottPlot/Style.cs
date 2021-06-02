@@ -11,128 +11,127 @@ namespace ScottPlot
     {
         public static void SetStyle(Plot existingPlot, Style style)
         {
+            // TODO: this system really needs refactoring...
             switch (style)
             {
                 case (Style.Black):
                     existingPlot.Style(
-                        figBg: Color.Black,
-                        dataBg: Color.Black,
+                        figureBackground: Color.Black,
+                        dataBackground: Color.Black,
                         grid: ColorTranslator.FromHtml("#2d2d2d"),
                         tick: ColorTranslator.FromHtml("#757575"),
-                        label: ColorTranslator.FromHtml("#b9b9ba"),
-                        title: ColorTranslator.FromHtml("#FFFFFF")
+                        axisLabel: ColorTranslator.FromHtml("#b9b9ba"),
+                        titleLabel: ColorTranslator.FromHtml("#FFFFFF")
                         );
                     break;
 
                 case (Style.Blue1):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#07263b"),
-                        dataBg: ColorTranslator.FromHtml("#0b3049"),
+                        figureBackground: ColorTranslator.FromHtml("#07263b"),
+                        dataBackground: ColorTranslator.FromHtml("#0b3049"),
                         grid: ColorTranslator.FromHtml("#0e3d54"),
                         tick: ColorTranslator.FromHtml("#145665"),
-                        label: ColorTranslator.FromHtml("#b5bec5"),
-                        title: ColorTranslator.FromHtml("#d0dae2")
+                        axisLabel: ColorTranslator.FromHtml("#b5bec5"),
+                        titleLabel: ColorTranslator.FromHtml("#d0dae2")
                         );
                     break;
 
                 case (Style.Blue2):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#1b2138"),
-                        dataBg: ColorTranslator.FromHtml("#252c48"),
+                        figureBackground: ColorTranslator.FromHtml("#1b2138"),
+                        dataBackground: ColorTranslator.FromHtml("#252c48"),
                         grid: ColorTranslator.FromHtml("#2c334e"),
                         tick: ColorTranslator.FromHtml("#bbbdc4"),
-                        label: ColorTranslator.FromHtml("#bbbdc4"),
-                        title: ColorTranslator.FromHtml("#d8dbe3")
+                        axisLabel: ColorTranslator.FromHtml("#bbbdc4"),
+                        titleLabel: ColorTranslator.FromHtml("#d8dbe3")
                         );
                     break;
 
                 case (Style.Blue3):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#001021"),
-                        dataBg: ColorTranslator.FromHtml("#021d38"),
+                        figureBackground: ColorTranslator.FromHtml("#001021"),
+                        dataBackground: ColorTranslator.FromHtml("#021d38"),
                         grid: ColorTranslator.FromHtml("#273c51"),
                         tick: ColorTranslator.FromHtml("#d3d3d3"),
-                        label: ColorTranslator.FromHtml("#d3d3d3"),
-                        title: ColorTranslator.FromHtml("#FFFFFF")
+                        axisLabel: ColorTranslator.FromHtml("#d3d3d3"),
+                        titleLabel: ColorTranslator.FromHtml("#FFFFFF")
                         );
                     break;
 
                 case (Style.Gray1):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#31363a"),
-                        dataBg: ColorTranslator.FromHtml("#3a4149"),
+                        figureBackground: ColorTranslator.FromHtml("#31363a"),
+                        dataBackground: ColorTranslator.FromHtml("#3a4149"),
                         grid: ColorTranslator.FromHtml("#444b52"),
                         tick: ColorTranslator.FromHtml("#757a80"),
-                        label: ColorTranslator.FromHtml("#d6d7d8"),
-                        title: ColorTranslator.FromHtml("#FFFFFF")
+                        axisLabel: ColorTranslator.FromHtml("#d6d7d8"),
+                        titleLabel: ColorTranslator.FromHtml("#FFFFFF")
                         );
                     break;
 
                 case (Style.Gray2):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#131519"),
-                        dataBg: ColorTranslator.FromHtml("#262626"),
+                        figureBackground: ColorTranslator.FromHtml("#131519"),
+                        dataBackground: ColorTranslator.FromHtml("#262626"),
                         grid: ColorTranslator.FromHtml("#2d2d2d"),
                         tick: ColorTranslator.FromHtml("#757575"),
-                        label: ColorTranslator.FromHtml("#b9b9ba"),
-                        title: ColorTranslator.FromHtml("#FFFFFF")
+                        axisLabel: ColorTranslator.FromHtml("#b9b9ba"),
+                        titleLabel: ColorTranslator.FromHtml("#FFFFFF")
                         );
                     break;
 
                 case (Style.Light1):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#FFFFFF"),
-                        dataBg: ColorTranslator.FromHtml("#FFFFFF"),
+                        figureBackground: ColorTranslator.FromHtml("#FFFFFF"),
+                        dataBackground: ColorTranslator.FromHtml("#FFFFFF"),
                         grid: ColorTranslator.FromHtml("#ededed "),
                         tick: ColorTranslator.FromHtml("#7f7f7f"),
-                        label: ColorTranslator.FromHtml("#000000"),
-                        title: ColorTranslator.FromHtml("#000000")
+                        axisLabel: ColorTranslator.FromHtml("#000000"),
+                        titleLabel: ColorTranslator.FromHtml("#000000")
                         );
                     break;
 
                 case (Style.Light2):
                     existingPlot.Style(
-                        figBg: ColorTranslator.FromHtml("#e4e6ec"),
-                        dataBg: ColorTranslator.FromHtml("#f1f3f7"),
+                        figureBackground: ColorTranslator.FromHtml("#e4e6ec"),
+                        dataBackground: ColorTranslator.FromHtml("#f1f3f7"),
                         grid: ColorTranslator.FromHtml("#e5e7ea"),
                         tick: ColorTranslator.FromHtml("#77787b"),
-                        label: ColorTranslator.FromHtml("#000000"),
-                        title: ColorTranslator.FromHtml("#000000")
+                        axisLabel: ColorTranslator.FromHtml("#000000"),
+                        titleLabel: ColorTranslator.FromHtml("#000000")
                         );
                     break;
 
                 case (Style.Control):
                     existingPlot.Style(
-                        figBg: SystemColors.Control,
-                        dataBg: Color.White,
+                        figureBackground: SystemColors.Control,
+                        dataBackground: Color.White,
                         grid: ColorTranslator.FromHtml("#efefef"),
                         tick: Color.Black,
-                        label: Color.Black,
-                        title: Color.Black
+                        axisLabel: Color.Black,
+                        titleLabel: Color.Black
                         );
                     break;
 
                 case (Style.Seaborn):
                     existingPlot.Style(
-                        figBg: Color.White,
-                        dataBg: ColorTranslator.FromHtml("#eaeaf2"),
+                        figureBackground: Color.White,
+                        dataBackground: ColorTranslator.FromHtml("#eaeaf2"),
                         grid: Color.White,
                         tick: ColorTranslator.FromHtml("#AAAAAA"),
-                        label: Color.Black,
-                        title: Color.Black
+                        axisLabel: Color.Black,
+                        titleLabel: Color.Black
                         );
-                    existingPlot.Frame(false);
-                    existingPlot.Ticks(displayTicksXminor: false, displayTicksYminor: false);
                     break;
 
                 default:
                     existingPlot.Style(
-                        figBg: Color.White,
-                        dataBg: Color.White,
+                        figureBackground: Color.White,
+                        dataBackground: Color.White,
                         grid: ColorTranslator.FromHtml("#efefef"),
                         tick: Color.Black,
-                        label: Color.Black,
-                        title: Color.Black
+                        axisLabel: Color.Black,
+                        titleLabel: Color.Black
                         );
                     break;
             }

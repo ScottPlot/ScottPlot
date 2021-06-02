@@ -18,6 +18,7 @@ namespace ScottPlot.Renderable
         public double LowerBound { get; private set; } = double.NegativeInfinity;
         public double UpperBound { get; private set; } = double.PositiveInfinity;
         public bool HasBeenSet { get; private set; } = false;
+        public bool IsNan => double.IsNaN(Min) || double.IsNaN(Max);
 
         public double Span => Max - Min;
         public double Center => (Max + Min) / 2;
@@ -93,7 +94,8 @@ namespace ScottPlot.Renderable
 
         public void Zoom(double frac = 1, double? zoomTo = null)
         {
-            zoomTo = zoomTo ?? Center;
+            zoomTo ??= Center;
+            (Min, Max) = RationalLimits();
             double spanLeft = zoomTo.Value - Min;
             double spanRight = Max - zoomTo.Value;
             Min = zoomTo.Value - spanLeft / frac;

@@ -44,11 +44,12 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            plt.AddLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
             plt.Title("Line/Scatter");
 
             TestTools.SaveFig(plt);
@@ -61,17 +62,18 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotSignal(
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                xOffset: xs[0],
-                color: Color.Blue,
-                markerSize: 0
-                );
+                color: Color.Blue);
+            sig.MarkerSize = 0;
+            sig.OffsetX = xs[0];
+
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
             plt.Title("Signal");
 
             TestTools.SaveFig(plt);
@@ -84,17 +86,17 @@ namespace ScottPlotTests.Misc
             double[] ys = { 1e6 - 100, 1e6 - 75, 1e6 - 200, 1e6 - 220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotSignal(
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                xOffset: xs[0],
-                color: Color.Blue,
-                markerSize: 0
-                );
+                color: Color.Blue);
+            sig.MarkerSize = 0;
+            sig.OffsetX = xs[0];
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
             plt.Title("Large Value Signal");
 
             TestTools.SaveFig(plt);
@@ -108,8 +110,8 @@ namespace ScottPlotTests.Misc
             double[] ys = DataGen.RandomWalk(rand, xs.Length, .5);
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotScatter(xs, ys, markerSize: 0);
-            plt.PlotScatter(ys, xs, markerSize: 0);
+            plt.AddScatter(xs, ys, markerSize: 0);
+            plt.AddScatter(ys, xs, markerSize: 0);
             plt.AxisAuto(0, 0);
 
             TestTools.SaveFig(plt);
@@ -120,7 +122,7 @@ namespace ScottPlotTests.Misc
         {
             // this makes the horizontal axis tick near 2.0 look bad
             var plt = new ScottPlot.Plot(400, 300);
-            plt.Axis(0, 3, 0, 3);
+            plt.SetAxisLimits(0, 3, 0, 3);
             TestTools.SaveFig(plt);
         }
 
@@ -145,6 +147,34 @@ namespace ScottPlotTests.Misc
                     $"measures: {stringSize.Width}px x {stringSize.Height}px");
 
                 Console.WriteLine(sb);
+            }
+        }
+
+        [Test]
+        public void Test_LettersDontRenderAsRectangles_SerifFont()
+        {
+            // this test ensures letters don't render as rectangles
+            // https://github.com/ScottPlot/ScottPlot/issues/1079
+
+            System.Drawing.Bitmap bmp = new(200, 100);
+            using var gfx = Graphics.FromImage(bmp);
+            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+            gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+
+            string[] fontNames = { InstalledFont.Serif(), InstalledFont.Sans(), InstalledFont.Monospace() };
+
+            foreach (string fontName in fontNames)
+            {
+                gfx.Clear(Color.Navy);
+                System.Drawing.Font fnt = new(fontName, 18);
+
+                gfx.DrawString("tttt", fnt, Brushes.Yellow, 10, 10);
+                string hash1 = ScottPlot.Tools.BitmapHash(bmp);
+
+                gfx.DrawString("eeee", fnt, Brushes.Yellow, 10, 10);
+                string hash2 = ScottPlot.Tools.BitmapHash(bmp);
+
+                Assert.AreNotEqual(hash1, hash2);
             }
         }
     }

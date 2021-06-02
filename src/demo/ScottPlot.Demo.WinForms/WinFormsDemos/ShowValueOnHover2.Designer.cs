@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbTooltip = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -39,43 +37,35 @@
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.Location = new System.Drawing.Point(12, 33);
+            this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
+            this.formsPlot1.Location = new System.Drawing.Point(14, 38);
+            this.formsPlot1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(582, 305);
+            this.formsPlot1.Size = new System.Drawing.Size(679, 352);
             this.formsPlot1.TabIndex = 0;
             this.formsPlot1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseMove);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(14, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 21);
             this.label1.TabIndex = 1;
             this.label1.Text = "Message";
             // 
-            // cbTooltip
-            // 
-            this.cbTooltip.AutoSize = true;
-            this.cbTooltip.Location = new System.Drawing.Point(536, 14);
-            this.cbTooltip.Name = "cbTooltip";
-            this.cbTooltip.Size = new System.Drawing.Size(58, 17);
-            this.cbTooltip.TabIndex = 2;
-            this.cbTooltip.Text = "Tooltip";
-            this.cbTooltip.UseVisualStyleBackColor = true;
-            // 
             // ShowValueOnHover2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(606, 350);
-            this.Controls.Add(this.cbTooltip);
+            this.ClientSize = new System.Drawing.Size(707, 404);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.formsPlot1);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "ShowValueOnHover2";
-            this.Text = "Highlightable Scatter Demo";
-            this.Load += new System.EventHandler(this.ShowValueOnHover2_Load);
+            this.Text = "Show Value Nearest Cursor";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -85,6 +75,5 @@
 
         private FormsPlot formsPlot1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox cbTooltip;
     }
 }

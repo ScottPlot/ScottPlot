@@ -1,47 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class LinkedPlots : Form
     {
+        readonly FormsPlot[] FormsPlots;
+
         public LinkedPlots()
         {
             InitializeComponent();
+            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
+            formsPlot2.Plot.AddSignal(DataGen.Cos(51));
+
+            // create a list of plot controls we can easily iterate through later
+            FormsPlots = new FormsPlot[] { formsPlot1, formsPlot2 };
+            foreach (var fp in FormsPlots)
+                fp.AxesChanged += OnAxesChanged;
         }
 
-        private void LinkedPlots_Load(object sender, EventArgs e)
+        private void OnAxesChanged(object sender, EventArgs e)
         {
-            Random rand = new Random(0);
-            int pointCount = 5000;
-            double[] dataXs = DataGen.Consecutive(pointCount);
-            double[] dataSin = DataGen.NoisySin(rand, pointCount);
-            double[] dataCos = DataGen.NoisySin(rand, pointCount);
+            if (cbLinked.Checked == false)
+                return;
 
-            formsPlot1.plt.PlotScatter(dataXs, dataSin);
-            formsPlot1.Render();
+            FormsPlot changedPlot = (FormsPlot)sender;
+            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
 
-            formsPlot2.plt.PlotScatter(dataXs, dataCos);
-            formsPlot2.Render();
-        }
+            foreach (var fp in FormsPlots)
+            {
+                if (fp == changedPlot)
+                    continue;
 
-        private void formsPlot1_AxesChanged(object sender, EventArgs e)
-        {
-            formsPlot2.plt.MatchAxis(formsPlot1.plt);
-            formsPlot2.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
-        }
-
-        private void formsPlot2_AxesChanged(object sender, EventArgs e)
-        {
-            formsPlot1.plt.MatchAxis(formsPlot2.plt);
-            formsPlot1.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
+                // disable events briefly to avoid an infinite loop
+                fp.Configuration.AxesChangedEventEnabled = false;
+                fp.Plot.SetAxisLimits(newAxisLimits);
+                fp.Render();
+                fp.Configuration.AxesChangedEventEnabled = true;
+            }
         }
     }
 }

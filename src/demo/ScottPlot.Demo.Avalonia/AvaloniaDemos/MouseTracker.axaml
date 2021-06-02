@@ -11,20 +11,22 @@
 	<DockPanel Margin="5">
 		<Grid DockPanel.Dock="Top" Name="mainGrid"
 			  ColumnDefinitions="auto, auto, auto"
-			  RowDefinitions="auto, auto, auto"
+			  RowDefinitions="auto, auto, auto, auto"
 			  >
 
-			<TextBlock Text="X" Grid.Row="1" Grid.Column="0" FontWeight="Bold"/>
-			<TextBlock Text="Y" Grid.Row="2" Grid.Column="0" FontWeight="Bold"/>
+			<TextBlock Text="X" Grid.Row="1" Grid.Column="0" FontWeight="Bold" Padding="3"/>
+			<TextBlock Text="Y" Grid.Row="2" Grid.Column="0" FontWeight="Bold" Padding="3"/>
 
-			<TextBlock Text="Pixel" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
-			<TextBlock Text="Coordinate" Grid.Row="0" Grid.Column="2" FontWeight="Bold"/>
+			<TextBlock Text="Pixel" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Padding="3" Width="75"/>
+			<TextBlock Text="Coordinate" Grid.Row="0" Grid.Column="2" FontWeight="Bold" Padding="3" Width="75"/>
 
-			<TextBlock Name="XPixelLabel" Text="123.456" Grid.Row="1" Grid.Column="1" FontFamily="consolas" />
-			<TextBlock Name="YPixelLabel" Text="123.456" Grid.Row="2" Grid.Column="1" FontFamily="consolas" />
+			<TextBlock Name="XPixelLabel" Text="123.456" Grid.Row="1" Grid.Column="1" FontFamily="consolas" Padding="3" />
+			<TextBlock Name="YPixelLabel" Text="123.456" Grid.Row="2" Grid.Column="1" FontFamily="consolas" Padding="3" />
 
-			<TextBlock Name="XCoordinateLabel" Text="123.456" Grid.Row="1" Grid.Column="2" FontFamily="consolas" />
-			<TextBlock Name="YCoordinateLabel" Text="123.456" Grid.Row="2" Grid.Column="2" FontFamily="consolas" />
+			<TextBlock Name="XCoordinateLabel" Text="123.456" Grid.Row="1" Grid.Column="2" FontFamily="consolas" Padding="3" />
+			<TextBlock Name="YCoordinateLabel" Text="123.456" Grid.Row="2" Grid.Column="2" FontFamily="consolas" Padding="3" />
+
+      <TextBlock Name="MouseTrackerMessage" Text="Mouse not yet tracked..." Grid.Row="3" Grid.Column="2" FontFamily="consolas" Padding="3"/>
 
 		</Grid>
 		<ScottPlot:AvaPlot Name="avaPlot1" Height="400" Width="600"/>

@@ -26,24 +26,24 @@ namespace ScottPlot.Renderable
         public float ShadowOffsetX = 2;
         public float ShadowOffsetY = 2;
 
-        private string _fontName = InstalledFont.Default();
-        public string FontName { get { return _fontName; } set { _fontName = InstalledFont.ValidFontName(FontName); } }
-        public float FontSize = 14;
-        public Color FontColor = Color.Black;
-        public bool FontBold = false;
+        public Drawing.Font Font = new Drawing.Font();
+        public string FontName { set { Font.Name = value; } }
+        public float FontSize { set { Font.Size = value; } }
+        public Color FontColor { set { Font.Color = value; } }
+        public bool FontBold { set { Font.Bold = value; } }
 
         public float Padding = 5;
-        private float SymbolWidth { get { return 40 * FontSize / 12; } }
-        private float SymbolPad { get { return FontSize / 3; } }
-        private float MarkerWidth { get { return FontSize / 2; } }
+        private float SymbolWidth { get { return 40 * Font.Size / 12; } }
+        private float SymbolPad { get { return Font.Size / 3; } }
+        private float MarkerWidth { get { return Font.Size / 2; } }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible is false || LegendItems is null || LegendItems.Length == 0)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);
                 var (x, y) = GetLocationPx(dims, width, height);
@@ -51,20 +51,25 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public Bitmap GetBitmap()
+        public Bitmap GetBitmap(bool lowQuality = false, double scale = 1.0)
         {
-            using (var bmpTemp = new Bitmap(1, 1))
-            using (var gfxTemp = GDI.Graphics(bmpTemp, true))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
-            {
-                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, LegendItems, font);
-                Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
+            if (LegendItems is null)
+                throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
 
-                using (var gfx = Graphics.FromImage(bmp))
-                    RenderOnBitmap(gfx, LegendItems, font, 0, 0, width, height, maxLabelHeight);
+            // use a temporary bitmap and graphics (without scaling) to measure how large the final image should be
+            using var tempBitmap = new Bitmap(1, 1);
+            using var tempGfx = GDI.Graphics(tempBitmap, lowQuality, scale);
+            using var legendFont = GDI.Font(Font);
+            var (maxLabelWidth, maxLabelHeight, totalLabelWidth, totalLabelHeight) = GetDimensions(tempGfx, LegendItems, legendFont);
 
-                return bmp;
-            }
+            // create the actual legend bitmap based on the scaled measured size
+            int width = (int)(totalLabelWidth * scale);
+            int height = (int)(totalLabelHeight * scale);
+            Bitmap bmp = new(width, height, PixelFormat.Format32bppPArgb);
+            using var gfx = GDI.Graphics(bmp, lowQuality, scale);
+            RenderOnBitmap(gfx, LegendItems, legendFont, 0, 0, totalLabelWidth, totalLabelHeight, maxLabelHeight);
+
+            return bmp;
         }
 
         private (float maxLabelWidth, float maxLabelHeight, float width, float height)
@@ -92,15 +97,9 @@ namespace ScottPlot.Renderable
         {
             using (var fillBrush = new SolidBrush(FillColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
-            using (var textBrush = new SolidBrush(FontColor))
+            using (var textBrush = new SolidBrush(Font.Color))
             using (var outlinePen = new Pen(OutlineColor))
             {
-                if (AntiAlias)
-                {
-                    gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                }
-
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
 
@@ -145,8 +144,11 @@ namespace ScottPlot.Renderable
                     else
                     {
                         // draw a line
-                        using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
+                        if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
+                        {
+                            using var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false);
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                        }
 
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
@@ -159,12 +161,11 @@ namespace ScottPlot.Renderable
         }
 
         private LegendItem[] LegendItems;
-        public void UpdateLegendItems(IRenderable[] renderables)
+        public void UpdateLegendItems(IPlottable[] renderables)
         {
-            LegendItems = renderables.Where(x => x is IHasLegendItems)
-                                     .Select(x => (IHasLegendItems)x)
-                                     .Where(x => x.LegendItems != null)
-                                     .SelectMany(x => x.LegendItems)
+            LegendItems = renderables.Where(x => x.GetLegendItems() != null)
+                                     .Where(x => x.IsVisible)
+                                     .SelectMany(x => x.GetLegendItems())
                                      .Where(x => !string.IsNullOrWhiteSpace(x.label))
                                      .ToArray();
             if (ReverseOrder)

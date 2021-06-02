@@ -1,96 +1,35 @@
 ﻿using NUnit.Framework;
-using ScottPlot;
 using System;
+
+#pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace ScottPlotTests
 {
     class Multiplot
     {
-        private ScottPlot.MultiPlot SampleMultiPlot()
-        {
-            var multiplot = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
-
-            // plot an increasng spread of data in each subplot
-            Random rand = new Random(0);
-            int pointCount = 100;
-            for (int i = 0; i < multiplot.subplots.Length; i += 1)
-            {
-                double zoom = Math.Pow(i + 1, 2);
-                multiplot.subplots[i].Title($"#{i}");
-                multiplot.subplots[i].PlotScatter(
-                        xs: ScottPlot.DataGen.Random(rand, pointCount, multiplier: zoom, offset: -.5 * zoom),
-                        ys: ScottPlot.DataGen.Random(rand, pointCount, multiplier: zoom, offset: -.5 * zoom)
-                    );
-            }
-            return multiplot;
-        }
-
-        private void DisplayAxisInfo(ScottPlot.MultiPlot multiplot)
-        {
-            for (int i = 0; i < multiplot.subplots.Length; i += 1)
-                Console.WriteLine($"Subplot index {i} {multiplot.subplots[i].AxisLimits()}");
-        }
-
-        [Test]
-        public void Test_MultiPlot_DefaultScales()
-        {
-            ScottPlot.MultiPlot multiplot = SampleMultiPlot();
-
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            string filePath = System.IO.Path.GetFullPath(name + ".png");
-            multiplot.SaveFig(filePath);
-            Console.WriteLine($"Saved {filePath}");
-
-            DisplayAxisInfo(multiplot);
-        }
-
         [Test]
         public void Test_MultiPlot_MatchAxis()
         {
-            ScottPlot.MultiPlot multiplot = SampleMultiPlot();
+            // render each subplot as a Bitmap
+            var plt1 = new ScottPlot.Plot(300, 250);
+            plt1.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt1.Title("Subplot A");
+            System.Drawing.Bitmap bmp1 = plt1.Render();
 
-            // update the lower left (index 2) plot to use the scale of the lower right (index 3)
-            multiplot.subplots[2].MatchAxis(multiplot.subplots[3]);
-            multiplot.subplots[2].Title("#2 (matched to #3)");
+            var plt2 = new ScottPlot.Plot(300, 250);
+            plt2.AddSignal(ScottPlot.DataGen.Cos(51));
+            plt2.Title("Subplot B");
+            System.Drawing.Bitmap bmp2 = plt2.Render();
 
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            string filePath = System.IO.Path.GetFullPath(name + ".png");
-            multiplot.SaveFig(filePath);
-            Console.WriteLine($"Saved {filePath}");
-            DisplayAxisInfo(multiplot);
-
-            var matchedAxisLimits = multiplot.subplots[2].AxisLimits();
-            Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
-            Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
-        }
-
-        [Test]
-        public void Test_MultiPlot_MatchJustOneAxis()
-        {
-            ScottPlot.MultiPlot multiplot = SampleMultiPlot();
-
-            multiplot.subplots[1].MatchAxis(multiplot.subplots[3], horizontal: false);
-            multiplot.subplots[1].MatchLayout(multiplot.subplots[3], horizontal: false);
-            multiplot.subplots[1].Title("#1 (matched vertical to #3)");
-
-            multiplot.subplots[2].MatchAxis(multiplot.subplots[3], vertical: false);
-            multiplot.subplots[2].MatchLayout(multiplot.subplots[3], vertical: false);
-            multiplot.subplots[2].Title("#2 (matched hoizontal to #3)");
-
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            string filePath = System.IO.Path.GetFullPath(name + ".png");
-            multiplot.SaveFig(filePath);
-            Console.WriteLine($"Saved {filePath}");
-
-            DisplayAxisInfo(multiplot);
-            var matchedVerticalLimits = multiplot.subplots[1].AxisLimits();
-            var matchedHorizontalLimits = multiplot.subplots[1].AxisLimits();
-
-            Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
-            Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);
-
-            Assert.Greater(matchedHorizontalLimits.XMax, matchedHorizontalLimits.XMin);
-            Assert.Greater(matchedHorizontalLimits.YMax, matchedHorizontalLimits.YMin);
+            // combine subplot bitmaps into one large bitmap
+            using (var bmp = new System.Drawing.Bitmap(600, 250))
+            using (var gfx = System.Drawing.Graphics.FromImage(bmp))
+            {
+                gfx.DrawImage(bmp1, 0, 0);
+                gfx.DrawImage(bmp2, 300, 0);
+                //bmp.Save("test.bmp");
+                TestTools.SaveFig(bmp);
+            }
         }
     }
 }

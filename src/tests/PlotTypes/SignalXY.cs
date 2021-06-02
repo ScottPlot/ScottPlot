@@ -22,8 +22,8 @@ namespace ScottPlotTests.PlotTypes
             }
 
             var plt = new ScottPlot.Plot(500, 350);
-            plt.PlotSignalXY(xs, ys);
-            plt.Axis(20530, 20560, -61, -57);
+            plt.AddSignalXY(xs, ys);
+            plt.SetAxisLimits(20530, 20560, -61, -57);
             TestTools.SaveFig(plt);
         }
 
@@ -42,7 +42,7 @@ namespace ScottPlotTests.PlotTypes
             }
 
             var plt = new ScottPlot.Plot(500, 350);
-            Assert.Throws<ArgumentException>(() => { plt.PlotSignalXY(xs, ys); });
+            Assert.Throws<ArgumentException>(() => { plt.AddSignalXY(xs, ys); });
         }
 
         [Test]
@@ -52,8 +52,10 @@ namespace ScottPlotTests.PlotTypes
             double[] xs = ScottPlot.DataGen.Consecutive(100_000);
             double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100_000);
             var plt = new ScottPlot.Plot(500, 350);
-            plt.PlotSignalXY(xs, ys, minRenderIndex: 4000, maxRenderIndex: 5000);
-            plt.Axis(y1: -200, y2: 200);
+            var sig = plt.AddSignalXY(xs, ys);
+            sig.MinRenderIndex = 4_000;
+            sig.MaxRenderIndex = 5_000;
+            plt.SetAxisLimits(yMin: -200, yMax: 200);
             TestTools.SaveFig(plt);
         }
     }

@@ -13,23 +13,23 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // initialize with thin green line and diamond markers
-            var scatter = plt.PlotScatter(xs: xs, ys: ys,
+            var scatter = plt.AddScatter(xs: xs, ys: ys,
                 color: System.Drawing.Color.Green, lineWidth: 2, markerSize: 10,
                 markerShape: ScottPlot.MarkerShape.filledDiamond);
 
 
             // modify for thick magenta line and circle markers
-            scatter.lineWidth = 10;
-            scatter.color = System.Drawing.Color.Magenta;
-            scatter.markerSize = 20;
-            scatter.markerShape = ScottPlot.MarkerShape.filledCircle;
+            scatter.LineWidth = 10;
+            scatter.Color = System.Drawing.Color.Magenta;
+            scatter.MarkerSize = 20;
+            scatter.MarkerShape = ScottPlot.MarkerShape.filledCircle;
 
             // do the same for a scatter plot
-            var signal = plt.PlotSignal(ys: ys, yOffset: 5,
-                color: System.Drawing.Color.Green, lineWidth: 2, markerSize: 10); // TODO: marker shape not currently supported?
-            signal.lineWidth = 10;
-            signal.color = System.Drawing.Color.Orange;
-            signal.markerSize = 20;
+            var signal = plt.AddSignal(ys: ys, color: System.Drawing.Color.Green);
+            signal.OffsetY = 5;
+            signal.LineWidth = 10;
+            signal.Color = System.Drawing.Color.Orange;
+            signal.MarkerSize = 20;
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));

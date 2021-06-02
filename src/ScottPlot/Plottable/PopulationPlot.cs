@@ -1,59 +1,62 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
 {
-    public class PopulationPlot : IRenderable, IHasLegendItems, IUsesAxes
+    /// <summary>
+    /// Population plots are designed to show collections of data.
+    /// A Population is a 1D array of values, and statistics are calculated automatically.
+    /// Populations can be displayed as bar plots, box plots, or scatter plots.
+    /// Public methods, fields, and properties allow extensive customization.
+    /// This plottable supports higher-order grouping (groups of groups).
+    /// </summary>
+    public class PopulationPlot : IPlottable
     {
-        public readonly PopulationMultiSeries popMultiSeries;
-        public int groupCount { get { return popMultiSeries.groupCount; } }
-        public int seriesCount { get { return popMultiSeries.seriesCount; } }
-        public string[] labels { get { return popMultiSeries.seriesLabels; } }
+        public readonly PopulationMultiSeries MultiSeries;
+        public int GroupCount { get { return MultiSeries.groupCount; } }
+        public int SeriesCount { get { return MultiSeries.seriesCount; } }
+        public string[] SeriesLabels { get { return MultiSeries.seriesLabels; } }
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
-
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
-
-        public bool displayDistributionCurve = true;
-        public LineStyle distributionCurveLineStyle = LineStyle.Solid;
-        public Color distributionCurveColor = Color.Black;
-        public Color scatterOutlineColor = Color.Black;
-        public DisplayItems displayItems = DisplayItems.BoxAndScatter;
-        public BoxStyle boxStyle = BoxStyle.BoxMedianQuartileOutlier;
+        public bool DistributionCurve = true;
+        public LineStyle DistributionCurveLineStyle = LineStyle.Solid;
+        public Color DistributionCurveColor = Color.Black;
+        public Color ScatterOutlineColor = Color.Black;
+        public DisplayItems DataFormat = DisplayItems.BoxAndScatter;
+        public BoxStyle DataBoxStyle = BoxStyle.BoxMedianQuartileOutlier;
 
         public PopulationPlot(PopulationMultiSeries groupedSeries)
         {
-            popMultiSeries = groupedSeries;
+            MultiSeries = groupedSeries;
         }
 
         public PopulationPlot(Population[] populations, string label = null, Color? color = null)
         {
             var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
-            popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
+            MultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
         public PopulationPlot(PopulationSeries populationSeries)
         {
-            popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { populationSeries });
+            MultiSeries = new PopulationMultiSeries(new PopulationSeries[] { populationSeries });
         }
 
         public PopulationPlot(Population population, string label = null, Color? color = null)
         {
             var populations = new Population[] { population };
             var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
-            popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
+            MultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
         public override string ToString()
         {
-            return $"PlottableSeries with {popMultiSeries.groupCount} groups, {popMultiSeries.seriesCount} series, and {PointCount} total points";
+            return $"PlottableSeries with {MultiSeries.groupCount} groups, {MultiSeries.seriesCount} series, and {PointCount} total points";
         }
 
         public int PointCount
@@ -61,29 +64,29 @@ namespace ScottPlot.Plottable
             get
             {
                 int pointCount = 0;
-                foreach (var group in popMultiSeries.multiSeries)
+                foreach (var group in MultiSeries.multiSeries)
                     foreach (var population in group.populations)
                         pointCount += population.count;
                 return pointCount;
             }
         }
 
-        public LegendItem[] LegendItems
+        public void ValidateData(bool deep = false)
         {
-            get
-            {
-                return popMultiSeries.multiSeries
-                    .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
-                    .ToArray();
-            }
+            if (MultiSeries is null)
+                throw new InvalidOperationException("population multi-series cannot be null");
         }
+
+        public LegendItem[] GetLegendItems() => MultiSeries.multiSeries
+                .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                .ToArray();
 
         public AxisLimits GetAxisLimits()
         {
             double minValue = double.PositiveInfinity;
             double maxValue = double.NegativeInfinity;
 
-            foreach (var series in popMultiSeries.multiSeries)
+            foreach (var series in MultiSeries.multiSeries)
             {
                 foreach (var population in series.populations)
                 {
@@ -95,7 +98,7 @@ namespace ScottPlot.Plottable
             }
 
             double positionMin = 0;
-            double positionMax = popMultiSeries.groupCount - 1;
+            double positionMax = MultiSeries.groupCount - 1;
 
             // padd slightly
             positionMin -= .5;
@@ -108,19 +111,19 @@ namespace ScottPlot.Plottable
         {
             Random rand = new Random(0);
             double groupWidth = .8;
-            var popWidth = groupWidth / seriesCount;
+            var popWidth = groupWidth / SeriesCount;
 
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++)
+            for (int seriesIndex = 0; seriesIndex < SeriesCount; seriesIndex++)
             {
-                for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+                for (int groupIndex = 0; groupIndex < GroupCount; groupIndex++)
                 {
-                    var series = popMultiSeries.multiSeries[seriesIndex];
+                    var series = MultiSeries.multiSeries[seriesIndex];
                     var population = series.populations[groupIndex];
                     var groupLeft = groupIndex - groupWidth / 2;
                     var popLeft = groupLeft + popWidth * seriesIndex;
 
                     Position scatterPos, boxPos;
-                    switch (displayItems)
+                    switch (DataFormat)
                     {
                         case DisplayItems.BoxAndScatter:
                             boxPos = Position.Left;
@@ -142,12 +145,12 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, scatterOutlineColor, 128, scatterPos);
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
 
-                    if (displayDistributionCurve)
-                        Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, distributionCurveColor, scatterPos, distributionCurveLineStyle);
+                    if (DistributionCurve)
+                        Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
 
-                    switch (boxStyle)
+                    switch (DataBoxStyle)
                     {
                         case BoxStyle.BarMeanStdErr:
                             Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
@@ -176,7 +179,7 @@ namespace ScottPlot.Plottable
 
         public enum Position { Hide, Center, Left, Right }
 
-        public static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
         {
             // adjust edges to accomodate special positions
@@ -205,7 +208,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, LineStyle lineStyle)
         {
             // adjust edges to accomodate special positions
@@ -238,7 +241,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -281,7 +284,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -337,7 +340,7 @@ namespace ScottPlot.Plottable
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
         public enum HorizontalAlignment { Left, Center, Right }
 
-        public static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {

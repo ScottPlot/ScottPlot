@@ -12,6 +12,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Viridis : IColormap
     {
+        public string Name => "Viridis";
+
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
             byte[] bytes = BitConverter.GetBytes(rgb[value]);

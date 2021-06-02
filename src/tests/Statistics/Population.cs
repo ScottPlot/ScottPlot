@@ -20,10 +20,10 @@ namespace ScottPlotTests.Statistics
             double[] curveYs = ages.GetDistribution(curveXs, false);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(ages.values, DataGen.Random(rand, ages.values.Length),
-                markerSize: 10, markerShape: MarkerShape.openCircle, lineWidth: 0);
-            plt.PlotScatter(curveXs, curveYs, markerSize: 0);
-            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.AddScatterPoints(ages.values, DataGen.Random(rand, ages.values.Length),
+                markerSize: 10, markerShape: MarkerShape.openCircle);
+            plt.AddScatterLines(curveXs, curveYs);
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
 
             TestTools.SaveFig(plt);
         }
@@ -38,10 +38,10 @@ namespace ScottPlotTests.Statistics
             double[] curveYs = ages.GetDistribution(curveXs, false);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(DataGen.Random(rand, ages.values.Length), ages.values,
-                markerSize: 10, markerShape: MarkerShape.openCircle, lineWidth: 0);
-            plt.PlotScatter(curveYs, curveXs, markerSize: 0);
-            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.AddScatterPoints(DataGen.Random(rand, ages.values.Length), ages.values,
+                markerSize: 10, markerShape: MarkerShape.openCircle);
+            plt.AddScatterLines(curveYs, curveXs);
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
 
             TestTools.SaveFig(plt);
         }

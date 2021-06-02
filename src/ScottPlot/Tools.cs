@@ -35,6 +35,7 @@ namespace ScottPlot
             return Color.FromArgb(r, g, b);
         }
 
+        [Obsolete("use ScottPlot.Plot.Version", true)]
         public static string GetVersionString(bool justThreeDigits = true)
         {
             Version ver = typeof(Plot).Assembly.GetName().Version;
@@ -120,8 +121,8 @@ namespace ScottPlot
             double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
             plt.AxisAuto(0);
             plt.Title("ScottPlot User Control");
             plt.YLabel("Sample Data");
@@ -272,72 +273,105 @@ namespace ScottPlot
             return hash;
         }
 
-        public enum IntensityMode
+        public static double[,] XYToIntensitiesGaussian(int[] xs, int[] ys, int width, int height, int sigma)
         {
-            gaussian,
-            density
-        }
-
-        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
-        {
-            double NormPDF(double x, double mu, double sigma)
-            {
-                return (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
-            }
+            static double NormPDF(double x, double mu, double sigma) =>
+                (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
 
             double[,] output = new double[height, width];
-            if (mode == IntensityMode.gaussian)
-            {
-                for (int i = 0; i < xs.Length; i++)
-                {
+            double[,] intermediate = new double[height, width]; // Each cell has the number of hits. This is the array before any blurring
 
-                    for (int j = -2 * sampleWidth; j < 2 * sampleWidth; j++) // 2 Standard deviations is ~0.95, i.e. close enough
-                    {
-                        for (int k = -2 * sampleWidth; k < 2 * sampleWidth; k++)
-                        {
-                            if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
-                            {
-                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleWidth);
-                            }
-                        }
-                    }
+            int radius = 2; // 2 Standard deviations is ~0.95, i.e. close enough
+            for (int i = 0; i < xs.Length; i++)
+            {
+                if (xs[i] >= 0 && xs[i] < width && ys[i] >= 0 && ys[i] < height)
+                {
+                    intermediate[ys[i], xs[i]] += 1;
                 }
             }
-            else if (mode == IntensityMode.density)
-            {
-                (int x, int y)[] points = xs.Zip(ys, (x, y) => (x, y)).ToArray();
-                points = points.OrderBy(p => p.x).ToArray();
-                int[] xs_sorted = points.Select(p => p.x).ToArray();
 
-                for (int i = 0; i < height - height % sampleWidth; i += sampleWidth)
+            double[] kernel = new double[2 * radius * sigma + 1];
+            for (int i = 0; i < kernel.Length; i++)
+            {
+                kernel[i] = NormPDF(i - kernel.Length / 2, 0, sigma);
+            }
+
+            for (int i = 0; i < height; i++) // Blurs up and down, i.e. a vertical kernel. Gaussian Blurs are special in that it can be decomposed this way, saving time
+            {
+                for (int j = 0; j < width; j++)
                 {
-                    for (int j = 0; j < width - width % sampleWidth; j += sampleWidth)
+                    double sum = 0;
+                    double kernelSum = 0; // The kernelSum can be precomputed, but this gives incorrect output at the edges of the image
+                    for (int k = -radius * sigma; k <= radius * sigma; k++)
                     {
-                        int count = 0;
-                        for (int k = 0; k < sampleWidth; k++)
+                        if (i + k >= 0 && i + k < height)
                         {
-                            for (int l = 0; l < sampleWidth; l++)
+                            sum += intermediate[i + k, j] * kernel[k + kernel.Length / 2];
+                            kernelSum += kernel[k + kernel.Length / 2];
+                        }
+                    }
+
+                    output[i, j] = sum / kernelSum;
+                }
+            }
+
+            for (int i = 0; i < height; i++) // Blurs left and right, i.e. a horizontal kernel
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    double sum = 0;
+                    double kernelSum = 0;
+                    for (int k = -radius * sigma; k <= radius * sigma; k++)
+                    {
+                        if (j + k >= 0 && j + k < width)
+                        {
+                            sum += output[i, j + k] * kernel[k + kernel.Length / 2];
+                            kernelSum += kernel[k + kernel.Length / 2];
+                        }
+                    }
+
+                    output[i, j] = sum / kernelSum;
+                }
+            }
+
+            return output;
+        }
+
+        public static double[,] XYToIntensitiesDensity(int[] xs, int[] ys, int width, int height, int sampleWidth)
+        {
+            double[,] output = new double[height, width];
+            (int x, int y)[] points = xs.Zip(ys, (x, y) => (x, y)).ToArray();
+            points = points.OrderBy(p => p.x).ToArray();
+            int[] xs_sorted = points.Select(p => p.x).ToArray();
+
+            for (int i = 0; i < height - height % sampleWidth; i += sampleWidth)
+            {
+                for (int j = 0; j < width - width % sampleWidth; j += sampleWidth)
+                {
+                    int count = 0;
+                    for (int k = 0; k < sampleWidth; k++)
+                    {
+                        for (int l = 0; l < sampleWidth; l++)
+                        {
+                            int index = Array.BinarySearch(xs_sorted, j + l);
+                            if (index > 0)
                             {
-                                int index = Array.BinarySearch(xs_sorted, j + l);
-                                if (index > 0)
-                                {
-                                    for (int m = index; m < xs.Length; m++)
-                                    { //Multiple points w/ same x value
-                                        if (points[m].x == j + l && points[m].y == i + k)
-                                        {
-                                            count++;
-                                        }
+                                for (int m = index; m < xs.Length; m++)
+                                { //Multiple points w/ same x value
+                                    if (points[m].x == j + l && points[m].y == i + k)
+                                    {
+                                        count++; // Increments number of hits in sampleWidth sized square
                                     }
                                 }
                             }
                         }
+                    }
 
-                        for (int k = 0; k < sampleWidth; k++)
+                    for (int k = 0; k < sampleWidth; k++)
+                    {
+                        for (int l = 0; l < sampleWidth; l++)
                         {
-                            for (int l = 0; l < sampleWidth; l++)
-                            {
-                                output[i + k, j + l] = count;
-                            }
+                            output[i + k, j + l] = count;
                         }
                     }
                 }
@@ -346,12 +380,21 @@ namespace ScottPlot
             return output;
         }
 
+        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
+        {
+            return mode switch
+            {
+                IntensityMode.Gaussian => XYToIntensitiesGaussian(xs, ys, width, height, sampleWidth),
+                IntensityMode.Density => XYToIntensitiesDensity(xs, ys, width, height, sampleWidth),
+                _ => throw new NotImplementedException($"{nameof(mode)} is not a supported {nameof(IntensityMode)}"),
+            };
+        }
 
-        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
+        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true, char decimalSymbol = '.')
         {
             if (number < 0)
             {
-                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes);
+                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes, decimalSymbol);
             }
             else if (number == 0)
             {
@@ -400,8 +443,8 @@ namespace ScottPlot
                 {
                     output += "0";
                 }
-                output += ".";
-                output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
+                output += decimalSymbol;
+                output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces, dropTrailingZeroes, decimalSymbol);
                 if (dropTrailingZeroes)
                 {
                     while (output.Last() == '0')
@@ -409,7 +452,7 @@ namespace ScottPlot
                         output = output.Substring(0, output.Length - 1);
                     }
 
-                    if (output.Last() == '.')
+                    if (output.Last() == decimalSymbol)
                     {
                         output = output.Substring(0, output.Length - 1);
                     }

@@ -22,12 +22,17 @@ namespace ScottPlot.Avalonia
             Title = windowTitle;
 
             plot.Resize(windowWidth, windowHeight);
-            this.Find<AvaPlot>("avaPlot1").backend.Reset(plot);
+            this.Find<AvaPlot>("avaPlot1").Reset(plot);
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        public void SetWindowOwner(WindowBase owner)
+        {
+            this.Owner = owner;
         }
     }
 }

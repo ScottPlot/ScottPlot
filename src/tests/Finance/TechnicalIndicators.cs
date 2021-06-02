@@ -12,18 +12,32 @@ namespace ScottPlotTests.Finance
     class TechnicalIndicators
     {
         [Test]
+        public void Test_SMA_ProducesExpectedOutput()
+        {
+            double[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            double[] sma = ScottPlot.Statistics.Finance.SMA(values, 3, trimNan: false);
+            double[] expected = { double.NaN, double.NaN, double.NaN, 3, 4, 5, 6, 7, 8, 9 };
+
+            Assert.That(sma, Is.EquivalentTo(expected));
+        }
+
+        [Test]
         public void Test_SMA_DoubleArray()
         {
             Random rand = new Random(0);
             double[] xs = DataGen.Consecutive(150);
             double[] prices = DataGen.RandomWalk(rand, xs.Length, offset: 50);
+
+            // create SMAs and Xs for each
             double[] sma20 = ScottPlot.Statistics.Finance.SMA(prices, 20);
+            double[] sma20xs = xs.Skip(20).ToArray();
             double[] sma50 = ScottPlot.Statistics.Finance.SMA(prices, 50);
+            double[] sma50xs = xs.Skip(50).ToArray();
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(xs, prices, lineWidth: 0, label: "Price");
-            plt.PlotScatter(xs, sma20, label: "20 day SMA", markerSize: 0, lineWidth: 2);
-            plt.PlotScatter(xs, sma50, label: "50 day SMA", markerSize: 0, lineWidth: 2);
+            plt.AddScatter(xs, prices, lineWidth: 0, label: "Price");
+            plt.AddScatter(sma20xs, sma20, label: "20 day SMA", markerSize: 0, lineWidth: 2);
+            plt.AddScatter(sma50xs, sma50, label: "50 day SMA", markerSize: 0, lineWidth: 2);
 
             plt.YLabel("Price");
             plt.XLabel("Days");
@@ -37,18 +51,22 @@ namespace ScottPlotTests.Finance
             Random rand = new Random(0);
             double[] xs = DataGen.Consecutive(150);
             OHLC[] ohlcs = DataGen.RandomStockPrices(rand, xs.Length);
+
+            // create SMAs and Xs for each
             double[] sma20 = ScottPlot.Statistics.Finance.SMA(ohlcs, 20);
+            double[] sma20xs = xs.Skip(20).ToArray();
             double[] sma50 = ScottPlot.Statistics.Finance.SMA(ohlcs, 50);
+            double[] sma50xs = xs.Skip(50).ToArray();
 
             // replace timestamps with a series of numbers starting at 0
             for (int i = 0; i < ohlcs.Length; i++)
-                ohlcs[i].time = i;
+                ohlcs[i].DateTime = DateTime.FromOADate(i);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs);
-            plt.PlotScatter(xs, sma20, label: "20 day SMA",
+            plt.AddCandlesticks(ohlcs);
+            plt.AddScatter(sma20xs, sma20, label: "20 day SMA",
                 color: Color.Blue, markerSize: 0, lineWidth: 2);
-            plt.PlotScatter(xs, sma50, label: "50 day SMA",
+            plt.AddScatter(sma50xs, sma50, label: "50 day SMA",
                 color: Color.Maroon, markerSize: 0, lineWidth: 2);
 
             plt.Title("Simple Moving Average (SMA)");
@@ -65,20 +83,23 @@ namespace ScottPlotTests.Finance
             Random rand = new Random(0);
             double[] xs = DataGen.Consecutive(150);
             OHLC[] ohlcs = DataGen.RandomStockPrices(rand, xs.Length);
-            (var sma, var bolL, var bolU) = ScottPlot.Statistics.Finance.Bollinger(ohlcs);
+
+            // calculate moving average X and Ys
+            (var sma, var bolL, var bolU) = ScottPlot.Statistics.Finance.Bollinger(ohlcs, 20);
+            double[] xs2 = xs.Skip(20).ToArray();
 
             // replace timestamps with a series of numbers starting at 0
             for (int i = 0; i < ohlcs.Length; i++)
-                ohlcs[i].time = i;
+                ohlcs[i].DateTime = DateTime.FromOADate(i);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs);
-            plt.PlotFill(xs, bolL, xs, bolU, fillColor: Color.Blue, fillAlpha: .1);
-            plt.PlotScatter(xs, bolL, color: Color.Navy, markerSize: 0);
-            plt.PlotScatter(xs, bolU, color: Color.Navy, markerSize: 0);
-            plt.PlotScatter(xs, sma, color: Color.Navy, markerSize: 0, lineStyle: LineStyle.Dash);
+            plt.AddCandlesticks(ohlcs);
+            plt.AddFill(xs2, bolL, xs2, bolU, color: Color.FromArgb(10, Color.Blue));
+            plt.AddScatter(xs2, bolL, color: Color.Navy, markerSize: 0, label: "Bollinger Bands");
+            plt.AddScatter(xs2, bolU, color: Color.Navy, markerSize: 0);
+            plt.AddScatter(xs2, sma, color: Color.Navy, markerSize: 0, lineStyle: LineStyle.Dash, label: "SMA 20");
 
-            plt.Title("Bollinger Bands");
+            plt.Title("Moving Average and Standard Deviation");
             plt.YLabel("Price");
             plt.XLabel("Days");
             plt.Legend();

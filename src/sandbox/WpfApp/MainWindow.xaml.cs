@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApp
 {
@@ -24,10 +12,18 @@ namespace WpfApp
         {
             InitializeComponent();
 
-            var xs = new double[] { 1, 2, 3, 4, 5 };
-            var ys = new double[] { 1, 4, 9, 16, 25 };
+            Random rand = new(0);
+            int pointCount = 2_000;
+            double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
 
-            WpfPlot1.plt.PlotScatter(xs, ys);
+            WpfPlot1.Plot.Title("Blocking Render");
+            WpfPlot1.Plot.AddScatter(xs, ys);
+            WpfPlot1.Configuration.UseRenderQueue = false;
+
+            WpfPlot2.Plot.Title("Render Queue");
+            WpfPlot2.Plot.AddScatter(xs, ys);
+            WpfPlot2.Configuration.UseRenderQueue = true;
         }
     }
 }

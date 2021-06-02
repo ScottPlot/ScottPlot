@@ -12,7 +12,7 @@ namespace ScottPlot.Demo.Avalonia
         public MainWindow()
         {
             InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = Tools.GetVersionString();
+            this.Find<TextBlock>("VersionLabel").Text = Plot.Version;
 
             this.Find<Button>("WebsiteLabel").Click += WebsiteLabelClick;
             this.Find<Button>("LaunchCookbookButton").Click += LaunchCookbook;
@@ -83,7 +83,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void WebsiteLabelClick(object sender, RoutedEventArgs e)
         {
-            Tools.LaunchBrowser();
+            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
         }
 
         public void LaunchPlotViewer(object sender, RoutedEventArgs e)

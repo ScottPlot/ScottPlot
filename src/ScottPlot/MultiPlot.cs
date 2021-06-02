@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ScottPlot
 {
+    [Obsolete("This class will be deleted in a future version. See ScottPlot FAQ for details.")]
     public class MultiPlot
     {
         public readonly Plot[] subplots;

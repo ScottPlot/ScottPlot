@@ -12,16 +12,17 @@ namespace ScottPlotTests.Plot
         public void Test_ScaleBar_Simple()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51, mult: 1.5));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51, mult: 1.5));
 
-            plt.PlotScaleBar(5, .25, "5 ms", "250 pA");
+            plt.AddScaleBar(5, .25, "5 ms", "250 pA");
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
             plt.AxisAuto(0);
-            plt.LayoutFrameless();
+            plt.Frameless();
 
             TestTools.SaveFig(plt);
         }

@@ -7,6 +7,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Thermal : IColormap
     {
+        public string Name => "Thermal";
+
         public (byte r, byte g, byte b) GetRGB(byte value) =>
             (cmaplocal[value, 0], cmaplocal[value, 1], cmaplocal[value, 2]);
 

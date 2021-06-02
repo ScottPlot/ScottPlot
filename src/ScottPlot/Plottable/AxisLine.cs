@@ -1,59 +1,104 @@
 ﻿using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class HLine : AxisLine { public HLine() { IsHorizontal = true; } }
-
-    public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
-
-    public abstract class AxisLine : IRenderable, IDraggable, IHasLegendItems, IUsesAxes
+    /// <summary>
+    /// Horizontal line at a Y position
+    /// </summary>
+    public class HLine : AxisLine
     {
-        public double position;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        /// <summary>
+        /// Y position to render the line
+        /// </summary>
+        public double Y { get => Position; set => Position = value; }
+        public override string ToString() => $"Horizontal line at Y={Y}";
+        public HLine() : base(true) { }
+    }
 
-        public LineStyle lineStyle = LineStyle.Solid;
-        public float lineWidth = 1;
-        public Color color = Color.Black;
-        public string label;
-        public bool IsHorizontal = true;
+    /// <summary>
+    /// Vertical line at an X position
+    /// </summary>
+    public class VLine : AxisLine
+    {
+        /// <summary>
+        /// X position to render the line
+        /// </summary>
+        public double X { get => Position; set => Position = value; }
+        public override string ToString() => $"Vertical line at X={X}";
+        public VLine() : base(false) { }
+    }
 
+    public abstract class AxisLine : IDraggable, IPlottable
+    {
+        // orientation and location
+        protected double Position;
+        private readonly bool IsHorizontal;
+
+        /// <summary>
+        /// If true, AxisAuto() will ignore the position of this line when determining axis limits
+        /// </summary>
+        public bool IgnoreAxisAuto = false;
+
+        // customizations
+        public bool IsVisible { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public LineStyle LineStyle = LineStyle.Solid;
+        public float LineWidth = 1;
+        public Color Color = Color.Black;
+        public string Label;
+
+        // mouse interaction
         public bool DragEnabled { get; set; } = false;
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
+        public double DragLimitMin = double.NegativeInfinity;
+        public double DragLimitMax = double.PositiveInfinity;
 
-        public bool IsVisible { get; set; } = true;
-        public override string ToString()
+        /// <summary>
+        /// This event is invoked after the line is dragged 
+        /// </summary>
+        public event EventHandler Dragged = delegate { };
+
+        public AxisLine(bool isHorizontal)
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return IsHorizontal ?
-                $"PlottableHLine{label} at Y={position}" :
-                $"PlottableVLine{label} at X={position}";
+            IsHorizontal = isHorizontal;
         }
 
-        public AxisLimits GetAxisLimits() =>
-            IsHorizontal ?
-            new AxisLimits(double.NaN, double.NaN, position, position) :
-            new AxisLimits(position, position, double.NaN, double.NaN);
+        public AxisLimits GetAxisLimits()
+        {
+            if (IgnoreAxisAuto)
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+
+            if (IsHorizontal)
+                return new AxisLimits(double.NaN, double.NaN, Position, Position);
+            else
+                return new AxisLimits(Position, Position, double.NaN, double.NaN);
+        }
+
+        public void ValidateData(bool deep = false)
+        {
+            if (double.IsNaN(Position) || double.IsInfinity(Position))
+                throw new InvalidOperationException("position must be a valid number");
+        }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var pen = GDI.Pen(color, lineWidth, lineStyle, true))
+            using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
             {
                 if (IsHorizontal)
                 {
                     float pixelX1 = dims.GetPixelX(dims.XMin);
                     float pixelX2 = dims.GetPixelX(dims.XMax);
-                    float pixelY = dims.GetPixelY(position);
+                    float pixelY = dims.GetPixelY(Position);
                     gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
                 }
                 else
                 {
-                    float pixelX = dims.GetPixelX(position);
+                    float pixelX = dims.GetPixelX(Position);
                     float pixelY1 = dims.GetPixelY(dims.YMin);
                     float pixelY2 = dims.GetPixelY(dims.YMax);
                     gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
@@ -61,56 +106,57 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private double dragLimitX1 = double.NegativeInfinity;
-        private double dragLimitX2 = double.PositiveInfinity;
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
-        {
-            dragLimitX1 = x1 ?? dragLimitX1;
-            dragLimitX2 = x2 ?? dragLimitX2;
-            dragLimitY1 = y1 ?? dragLimitY1;
-            dragLimitY2 = y2 ?? dragLimitY2;
-        }
-
-        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
+        /// <summary>
+        /// Move the line to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateX">new X position</param>
+        /// <param name="coordinateY">new Y position</param>
+        /// <param name="fixedSize">This argument is ignored</param>
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
                 return;
 
             if (IsHorizontal)
             {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
-                position = coordinateY;
+                if (coordinateY < DragLimitMin) coordinateY = DragLimitMin;
+                if (coordinateY > DragLimitMax) coordinateY = DragLimitMax;
+                Position = coordinateY;
             }
             else
             {
-                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-                position = coordinateX;
+                if (coordinateX < DragLimitMin) coordinateX = DragLimitMin;
+                if (coordinateX > DragLimitMax) coordinateX = DragLimitMax;
+                Position = coordinateX;
             }
+
+            Dragged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Return True if the line is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position (coordinate space)</param>
+        /// <param name="coordinateY">mouse position (coordinate space)</param>
+        /// <param name="snapX">snap distance (pixels)</param>
+        /// <param name="snapY">snap distance (pixels)</param>
+        /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?
-            Math.Abs(position - coordinateY) <= snapY :
-            Math.Abs(position - coordinateX) <= snapX;
+            Math.Abs(Position - coordinateY) <= snapY :
+            Math.Abs(Position - coordinateX) <= snapX;
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleItem = new LegendItem()
             {
-                var item = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { item };
-            }
+                label = Label,
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleItem };
         }
     }
 }
