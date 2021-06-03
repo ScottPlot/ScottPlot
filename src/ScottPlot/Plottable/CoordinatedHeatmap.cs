@@ -10,13 +10,18 @@ namespace ScottPlot.Plottable
     /// This variation of the Heatmap renders intensity data as a rectangle 
     /// sized to fit user-defined axis limits
     /// </summary>
-    public class CoordinatedHeatmap : Heatmap
+    public class CoordinatedHeatmap : Heatmap, IDraggableModern
     {
         public double XMin { get; set; }
         public double XMax { get; set; }
         public double YMin { get; set; }
         public double YMax { get; set; }
         public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
+        public bool DragEnabled { get; set; } = true;
+
+        public Cursor DragCursor => Cursor.Hand;
+
+        public event EventHandler Dragged = delegate{};
 
         protected override void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
@@ -46,6 +51,30 @@ namespace ScottPlot.Plottable
         public override AxisLimits GetAxisLimits()
         {
             return new AxisLimits(XMin, XMax, YMin, YMax);
+        }
+
+        public void Drag(double coordinateXFrom, double coordinateXTo, double coordinateYFrom, double coordinateYTo, bool fixedSize)
+        {
+            var offsetX = coordinateXTo - coordinateXFrom;
+            var offsetY = coordinateYTo - coordinateYFrom;
+            XMin += offsetX;
+            XMax += offsetX;
+            YMin += offsetY;
+            YMax += offsetY;
+            Dragged(this, EventArgs.Empty);
+        }
+
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            return (coordinateX >= (XMin - snapX))
+                && (coordinateX <= (XMax + snapX))
+                && (coordinateY >= (YMin - snapY))
+                && (coordinateY <= (YMax + snapY));
+        }
+
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

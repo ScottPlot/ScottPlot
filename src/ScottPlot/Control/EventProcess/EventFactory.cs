@@ -47,6 +47,9 @@ namespace ScottPlot.Control.EventProcess
         public IUIEvent CreatePlottableDrag(float x, float y, bool shiftDown, IDraggable draggable) =>
              new PlottableDragEvent(x, y, shiftDown, draggable, Plot, Configuration);
 
+        public IUIEvent CreatePlottableDragModern(double xFrom, double xTo, double yFrom, double yTo, bool shiftDown, IDraggableModern draggable) =>
+             new PlottableDragModernEvent(xFrom, xTo, yFrom, yTo, shiftDown, draggable, Configuration);
+
         public IUIEvent CreateManualLowQualityRender() => new RenderLowQuality();
 
         public IUIEvent CreateManualHighQualityRender() => new RenderHighQuality();

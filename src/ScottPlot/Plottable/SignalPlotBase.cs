@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasPointsGenericX<double, T> where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IDraggableModern, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -169,6 +169,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         private readonly Func<T, T, T> AddYsGenericExpression;
 
+        public event EventHandler Dragged = delegate { };
+
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
@@ -177,7 +179,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a the same type
         /// </summary>
-        private T AddYsGeneric(T y1, T y2) => AddYsGenericExpression(y1, y2);
+        protected T AddYsGeneric(T y1, T y2) => AddYsGenericExpression(y1, y2);
 
         public SignalPlotBase()
         {
@@ -621,6 +623,9 @@ namespace ScottPlot.Plottable
         }
 
         public int PointCount { get => _Ys.Length; }
+        public bool DragEnabled { get; set; } = true;
+
+        public Cursor DragCursor => Cursor.Hand;
 
         public LegendItem[] GetLegendItems()
         {
@@ -723,5 +728,81 @@ namespace ScottPlot.Plottable
             index = Math.Min(index, MaxRenderIndex);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
+
+        public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
+        {
+            double offsetX = coordinateXTo - coordinateXFrom;
+            double offsetY = coordinateYTo - CoordinateYFrom;
+            OffsetX += offsetX;
+            OffsetY = AddYsGeneric(OffsetY, (T)Convert.ChangeType(offsetY, typeof(T)));
+
+            Dragged(this, EventArgs.Empty);
+        }
+
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            var from = (int)(Math.Floor((coordinateX - snapX - OffsetX) / SamplePeriod));
+            var to = (int)(Math.Ceiling((coordinateX + snapX - OffsetX) / SamplePeriod));
+            from = Math.Max(from, MinRenderIndex);
+            from = Math.Min(from, MaxRenderIndex);
+            to = Math.Min(to, MaxRenderIndex);
+            to = Math.Max(to, MinRenderIndex);
+            // intersect with points?
+            for (int i = from; i <= to; i++)
+            {
+                double x = OffsetX + i * SamplePeriod;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                if (x > coordinateX - snapX && x < coordinateX + snapX && y > coordinateY - snapY && y < coordinateY + snapY)
+                    return true;
+            }
+            // intersect with lines?
+            for (int i = from; i < to; i++)
+            {
+                double x = OffsetX + i * SamplePeriod;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                double x1 = OffsetX + (i + 1) * SamplePeriod;
+                double y1 = Convert.ToDouble(AddYsGeneric(Ys[i + 1], OffsetY));
+
+                (double x, double y)[][] boundaryPolys = new (double x, double y)[][]
+                {
+                    new (double x, double y)[]
+                    {
+                        (x, y + snapY),
+                        (x, y - snapY),
+                        (x1, y1 - snapY),
+                        (x1, y1 + snapY),
+                    },
+                    new (double x, double y)[]
+                    {
+                        (x - snapX, y),
+                        (x + snapX, y),
+                        (x1 + snapX, y1),
+                        (x1 - snapX, y1),
+                    }
+                };
+
+                for (int k = 0; k < boundaryPolys.Length; k++)
+                {
+                    bool inside = false;
+                    for (int j = 0, j1 = boundaryPolys[k].Length - 1; j < boundaryPolys[k].Length; j1 = j++)
+                    {
+                        if ((boundaryPolys[k][j].y > coordinateY) != (boundaryPolys[k][j1].y > coordinateY) &&
+                            (coordinateX < (boundaryPolys[k][j1].x - boundaryPolys[k][j].x) * (coordinateY - boundaryPolys[k][j].y) / (boundaryPolys[k][j1].y - boundaryPolys[k][j].y) + boundaryPolys[k][j].x))
+                        {
+                            inside = !inside;
+                        }
+                    }
+                    if (inside)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+

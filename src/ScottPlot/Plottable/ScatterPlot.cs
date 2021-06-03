@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
     /// </summary>
-    public class ScatterPlot : IPlottable, IHasPoints
+    public class ScatterPlot : IPlottable, IHasPoints, IDraggableModern
     {
         // data
         public double[] Xs { get; private set; }
@@ -38,9 +38,14 @@ namespace ScottPlot.Plottable
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
+        public event EventHandler Dragged;
+
         // TODO: think about better/additional API ?
         public int? MinRenderIndex { get; set; }
         public int? MaxRenderIndex { get; set; }
+        public bool DragEnabled { get; set; } = true;
+
+        public Cursor DragCursor => Cursor.Hand;
 
         public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
@@ -362,6 +367,81 @@ namespace ScottPlot.Plottable
             }
 
             return (Xs[minIndex], Ys[minIndex], minIndex);
+        }
+
+        public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
+        {
+            double offsetX = coordinateXTo - coordinateXFrom;
+            double offsetY = coordinateYTo - CoordinateYFrom;
+
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                Xs[i] += offsetX;
+                Ys[i] += offsetY;
+            }
+            Dragged(this, EventArgs.Empty);
+        }
+
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            double cx = coordinateX;
+            double cy = coordinateY;
+            for (int i = 0; i < Xs.Length - 1; i++)
+            {
+                double ax = Xs[i];
+                double ay = Ys[i];
+                double bx = Xs[i + 1];
+                double by = Ys[i + 1];
+
+                double scalar = (cx - ax) * (bx - ax) + (cy - ay) * (by - ay);
+                if (scalar < 0)
+                {
+                    double distanceA = (cx - ax) * (cx - ax) + (cy - ay) * (cy - ay);
+                    if (distanceA < snapX * snapX)
+                        return true;
+
+                }
+                else if ( ((cx - bx) * (ax - bx) + ( cy - by)*(ay - by) )  < 0 )
+                {
+                    double distanceB = (cx - bx) * (cx - bx) + (cy - by) * (cy - by);
+                    if (distanceB < snapX * snapX)
+                        return true;
+                }
+                else
+                {
+
+                    double projectionX;
+                    double projectionY;
+                    if ((bx - ax) == 0)
+                    {
+                         projectionX = ax;
+                         projectionY = cy;
+                    }
+                    else if ((by - ay) == 0)
+                    {
+                         projectionX = cx;
+                         projectionY = ay;
+                    }
+                    else
+                    {
+                        double dx = bx - ax;
+                        double dy = by - ay;
+                        projectionY = (dx * dx / dy * ay + dx * (cx - ax) + dy * cy)
+                            / ((bx - ax) * (bx - ax) / (by - ay) + (by - ay));
+                        projectionX = dx / dy * (projectionY - ay) + ax;
+                    }
+                    double distance = (cx - projectionX) * (cx - projectionX) + (cy - projectionY) * (cy - projectionY);
+                    if (distance < snapX * snapX)
+                        return true;
+                }
+
+            }
+            return false;
+        }
+
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
@@ -31,7 +30,7 @@ namespace ScottPlot.Plottable
         public VLine() : base(false) { }
     }
 
-    public abstract class AxisLine : IDraggable, IPlottable
+    public abstract class AxisLine : IDraggableModern, IPlottable
     {
         // orientation and location
         protected double Position;
@@ -104,6 +103,26 @@ namespace ScottPlot.Plottable
                     gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
                 }
             }
+        }
+
+        public void Drag(double xFrom, double xTo, double yFrom, double yTo, bool fixedSize)
+        {
+            if (!DragEnabled)
+                return;
+
+            if (IsHorizontal)
+            {
+                Position += yTo - yFrom;
+            }
+            else
+            {
+                Position += xTo - xFrom;
+            }
+
+            if (Position < DragLimitMin) Position = DragLimitMin;
+            if (Position > DragLimitMax) Position = DragLimitMax;
+
+            Dragged(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace ScottPlot.Plottable
     /// </summary>
     /// <typeparam name="TX"></typeparam>
     /// <typeparam name="TY"></typeparam>
-    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
+    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IDraggableModern, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
         private TX[] _Xs;
         public TX[] Xs
@@ -287,6 +287,95 @@ namespace ScottPlot.Plottable
         private new(double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
+        }
+
+
+        public new bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            int from;
+            int index = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - 1, coordinateX - OffsetX - snapX);
+            if (index >= 0) // x equal to XS element
+            {
+                from = index;
+            }
+            else
+            {
+                index = ~index;
+                if (index <= MinRenderIndex) // x lower then any MinRenderIndex
+                    from = MinRenderIndex;
+                else if (index > MaxRenderIndex) // x higher then MaxRenderIndex
+                    from = MaxRenderIndex;
+                else
+                    from = index - 1;
+            }
+
+            int to;
+            index = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - 1, coordinateX - OffsetX + snapX);
+            if (index >= 0) // x equal to XS element
+            {
+                to = index;
+            }
+            else 
+            {
+                index = ~index;
+                if (index <= MinRenderIndex) // x lower then any MinRenderIndex
+                    to = MinRenderIndex;
+                else if (index > MaxRenderIndex) // x higher then MaxRenderIndex
+                    to = MaxRenderIndex;
+                else
+                    to = index + 1;
+            }
+
+            // intersect with points?
+            for (int i = from; i <= to; i++)
+            {
+                double x = Convert.ToDouble(Xs[i]) +OffsetX;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                if (x > coordinateX - snapX && x < coordinateX + snapX && y > coordinateY - snapY && y < coordinateY + snapY)
+                    return true;
+            }
+            // intersect with lines?
+            for (int i = from; i < to; i++)
+            {
+                double x = Convert.ToDouble(Xs[i]) + OffsetX;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                double x1 = Convert.ToDouble(Xs[i+1]) + OffsetX;
+                double y1 = Convert.ToDouble(AddYsGeneric(Ys[i + 1], OffsetY));
+
+                (double x, double y)[][] boundaryPolys = new (double x, double y)[][]
+                {
+                    new (double x, double y)[]
+                    {
+                        (x, y + snapY),
+                        (x, y - snapY),
+                        (x1, y1 - snapY),
+                        (x1, y1 + snapY),
+                    },
+                    new (double x, double y)[]
+                    {
+                        (x - snapX, y),
+                        (x + snapX, y),
+                        (x1 + snapX, y1),
+                        (x1 - snapX, y1),
+                    }
+                };
+
+                for (int k = 0; k < boundaryPolys.Length; k++)
+                {
+                    bool inside = false;
+                    for (int j = 0, j1 = boundaryPolys[k].Length - 1; j < boundaryPolys[k].Length; j1 = j++)
+                    {
+                        if ((boundaryPolys[k][j].y > coordinateY) != (boundaryPolys[k][j1].y > coordinateY) &&
+                            (coordinateX < (boundaryPolys[k][j1].x - boundaryPolys[k][j].x) * (coordinateY - boundaryPolys[k][j].y) / (boundaryPolys[k][j1].y - boundaryPolys[k][j].y) + boundaryPolys[k][j].x))
+                        {
+                            inside = !inside;
+                        }
+                    }
+                    if (inside)
+                        return true;
+                }
+            }
+            return false;
         }
 
         private static Func<TX, TX, TX> SubstractExp;
