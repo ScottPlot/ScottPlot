@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         event EventHandler Dragged;
     }
 
-    public interface IDraggableModern: IDraggable
+    public interface IDraggableModern : IDraggable
     {
         void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize);
     }

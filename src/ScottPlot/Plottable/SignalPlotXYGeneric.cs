@@ -315,7 +315,7 @@ namespace ScottPlot.Plottable
             {
                 to = index;
             }
-            else 
+            else
             {
                 index = ~index;
                 if (index <= MinRenderIndex) // x lower then any MinRenderIndex
@@ -329,7 +329,7 @@ namespace ScottPlot.Plottable
             // intersect with points?
             for (int i = from; i <= to; i++)
             {
-                double x = Convert.ToDouble(Xs[i]) +OffsetX;
+                double x = Convert.ToDouble(Xs[i]) + OffsetX;
                 double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
                 if (x > coordinateX - snapX && x < coordinateX + snapX && y > coordinateY - snapY && y < coordinateY + snapY)
                     return true;
@@ -339,7 +339,7 @@ namespace ScottPlot.Plottable
             {
                 double x = Convert.ToDouble(Xs[i]) + OffsetX;
                 double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
-                double x1 = Convert.ToDouble(Xs[i+1]) + OffsetX;
+                double x1 = Convert.ToDouble(Xs[i + 1]) + OffsetX;
                 double y1 = Convert.ToDouble(AddYsGeneric(Ys[i + 1], OffsetY));
 
                 (double x, double y)[][] boundaryPolys = new (double x, double y)[][]

@@ -1,13 +1,8 @@
 ﻿using ScottPlot.Plottable;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Control.EventProcess.Events
 {
-    public class PlottableDragModernEvent: IUIEvent
+    public class PlottableDragModernEvent : IUIEvent
     {
         private readonly double XFrom;
         private readonly double XTo;
@@ -18,7 +13,7 @@ namespace ScottPlot.Control.EventProcess.Events
         private readonly Configuration Configuration;
         public RenderType RenderType => Configuration.QualityConfiguration.MouseInteractiveDragged;
 
-        public PlottableDragModernEvent(double xFrom, double xTo, double yFrom, double yTo,bool shiftDown, IDraggableModern plottable, Configuration config)
+        public PlottableDragModernEvent(double xFrom, double xTo, double yFrom, double yTo, bool shiftDown, IDraggableModern plottable, Configuration config)
         {
             XFrom = xFrom;
             XTo = xTo;

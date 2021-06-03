@@ -401,7 +401,7 @@ namespace ScottPlot.Plottable
                         return true;
 
                 }
-                else if ( ((cx - bx) * (ax - bx) + ( cy - by)*(ay - by) )  < 0 )
+                else if (((cx - bx) * (ax - bx) + (cy - by) * (ay - by)) < 0)
                 {
                     double distanceB = (cx - bx) * (cx - bx) + (cy - by) * (cy - by);
                     if (distanceB < snapX * snapX)
@@ -414,13 +414,13 @@ namespace ScottPlot.Plottable
                     double projectionY;
                     if ((bx - ax) == 0)
                     {
-                         projectionX = ax;
-                         projectionY = cy;
+                        projectionX = ax;
+                        projectionY = cy;
                     }
                     else if ((by - ay) == 0)
                     {
-                         projectionX = cx;
-                         projectionY = ay;
+                        projectionX = cx;
+                        projectionY = ay;
                     }
                     else
                     {

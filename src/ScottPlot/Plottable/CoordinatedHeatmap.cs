@@ -21,7 +21,7 @@ namespace ScottPlot.Plottable
 
         public Cursor DragCursor => Cursor.Hand;
 
-        public event EventHandler Dragged = delegate{};
+        public event EventHandler Dragged = delegate { };
 
         protected override void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
