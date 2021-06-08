@@ -119,18 +119,18 @@ namespace ScottPlot
 
             Backend.StartProcessingEvents();
 
-			Unloaded += WpfPlot_Unloaded;
+            Unloaded += WpfPlot_Unloaded;
         }
 
-		private void WpfPlot_Unloaded(object sender, System.Windows.RoutedEventArgs e)
-		{
+        private void WpfPlot_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
             PlottableCountTimer.Stop(); // Cannot be garbage collected otherwise
-		}
+        }
 
-		/// <summary>
-		/// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
-		/// </summary>
-		public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
+        /// <summary>
+        /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
+        /// </summary>
+        public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
 
         /// <summary>
         /// Return the mouse position (in pixel space) for the last observed mouse position
