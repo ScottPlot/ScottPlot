@@ -119,12 +119,7 @@ namespace ScottPlot
 
             Backend.StartProcessingEvents();
 
-            Unloaded += WpfPlot_Unloaded;
-        }
-
-        private void WpfPlot_Unloaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            PlottableCountTimer.Stop(); // Cannot be garbage collected otherwise
+            Unloaded += (_, _) => PlottableCountTimer.Stop();
         }
 
         /// <summary>
