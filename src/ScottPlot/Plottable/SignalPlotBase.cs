@@ -20,6 +20,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
+        public bool StepDisplay { get; set; } = false;
         public float MarkerSize { get; set; } = 5;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
@@ -276,7 +277,19 @@ namespace ScottPlot.Plottable
                 ValidatePoints(pointsArray);
 
                 if (penLD.Width > 0)
-                    gfx.DrawLines(penLD, pointsArray);
+                    if (StepDisplay)
+                    {
+                        PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
+                        for (int i = 0; i < pointsArray.Length - 1; i++)
+                        {
+                            pointsStep[i * 2] = pointsArray[i];
+                            pointsStep[i * 2 + 1] = new PointF(pointsArray[i + 1].X, pointsArray[i].Y);
+                        }
+                        pointsStep[pointsStep.Length - 1] = pointsArray[pointsArray.Length - 1];
+                        gfx.DrawLines(penLD, pointsStep);
+                    }
+                    else
+                        gfx.DrawLines(penLD, pointsArray);
 
                 if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
                 {
