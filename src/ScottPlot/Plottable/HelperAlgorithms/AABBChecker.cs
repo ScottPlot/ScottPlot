@@ -38,50 +38,5 @@ namespace ScottPlot.Plottable.HelperAlgorithms
             return (x >= CenterX - SnapX && x <= CenterX + SnapX
                 && y >= CenterY - SnapY && y <= CenterY + SnapY);
         }
-
-        /// <summary>
-        /// Chek for any point from array inside axis-aligned bounding box
-        /// </summary>
-        /// <param name="x">x coordinates of points</param>
-        /// <param name="y">y coordinates of points</param>
-        /// <returns>True if any point inside AABB</returns>
-        public bool CheckInsideAABB(double[] x, double[] y)
-        {
-            for (int i = 0; i < x.Length; i++)
-            {
-                if (CheckInsideAABB(x[i], y[i]))
-                    return true;
-            }
-            return false;
-        }
-
-        public bool CheckInsideAABB(Func<int, double> x, Func<int, double> y, int length)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                if (CheckInsideAABB(x(i), y(i)))
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Check if any point inside axis-aligned bounding box
-        /// </summary>
-        /// <param name="x">Function which returns x coordinate by index</param>
-        /// <param name="y">Function which returns y coordinate by index</param>
-        /// <param name="from">start index</param>
-        /// <param name="to">last index</param>
-        /// <returns>True if any point inside AABB</returns>
-        public bool CheckInsideAABB(Func<int, double> x, Func<int, double> y, int from, int to)
-        {
-            for (int i = from; i < to; i++)
-            {
-                if (CheckInsideAABB(x(i), y(i)))
-                    return true;
-            }
-            return false;
-        }
-
     }
 }
