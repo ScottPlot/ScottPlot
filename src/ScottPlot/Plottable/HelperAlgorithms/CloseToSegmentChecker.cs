@@ -1,5 +1,11 @@
 ﻿namespace ScottPlot.Plottable.HelperAlgorithms
 {
+    /// <summary>
+    /// Check if point close to segment
+    /// This algorithm is not completely fair, and cannot be used separately;
+    /// a separate preliminary check for proximity to the ends of the segment (AABBChecker)
+    /// makes the results of this algorithm reliable.
+    /// </summary>
     public class CloseToSegmentChecker
     {
         public double SnapX { get; set; }
