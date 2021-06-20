@@ -43,9 +43,7 @@ using ScottPlot.Control.EventProcess;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
@@ -127,6 +125,16 @@ namespace ScottPlot.Control
         /// Current position of the mouse in pixels
         /// </summary>
         private float MouseLocationY;
+
+        /// <summary>
+        /// Drag started from this x coordinate
+        /// </summary>
+        private double DragFromX;
+
+        /// <summary>
+        /// Drag started from this y coordinate
+        /// </summary>
+        private double DragFromY;
 
         /// <summary>
         /// Holds the plottable actively being dragged with the mouse.
@@ -453,6 +461,10 @@ namespace ScottPlot.Control
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
             PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
+            if (PlottableBeingDragged != null)
+            {
+                (DragFromX, DragFromY) = Plot.GetCoordinate(input.X, input.Y);
+            }
             Settings.MouseDown(input.X, input.Y);
             MouseDownTravelDistance = 0;
         }
@@ -493,7 +505,17 @@ namespace ScottPlot.Control
 
             IUIEvent mouseMoveEvent = null;
             if (PlottableBeingDragged != null)
-                mouseMoveEvent = EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged);
+            {
+                if (PlottableBeingDragged is IDraggableModern draggableModern)
+                {
+                    (double dragToX, double dragToY) = Plot.GetCoordinate(input.X, input.Y);
+                    mouseMoveEvent = EventFactory.CreatePlottableDragModern(DragFromX, dragToX, DragFromY, dragToY, input.ShiftDown, draggableModern);
+                    DragFromX = dragToX;
+                    DragFromY = dragToY;
+                }
+                else
+                    mouseMoveEvent = EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged);
+            }
             else if (IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan)
                 mouseMoveEvent = EventFactory.CreateMousePan(input);
             else if (IsRightDown && Configuration.RightClickDragZoom)
@@ -531,13 +553,15 @@ namespace ScottPlot.Control
                     uiEvent is EventProcess.Events.MousePanEvent ||
                     uiEvent is EventProcess.Events.MouseZoomEvent ||
                     uiEvent is EventProcess.Events.PlottableDragEvent ||
+                    uiEvent is EventProcess.Events.PlottableDragModernEvent ||
                     uiEvent is EventProcess.Events.RenderLowQuality;
 
                 bool allowSkip = lowQuality && Configuration.AllowDroppedFramesWhileDragging;
 
                 Render(lowQuality: lowQuality, skipIfCurrentlyRendering: allowSkip);
 
-                if (uiEvent is EventProcess.Events.PlottableDragEvent)
+                if (uiEvent is EventProcess.Events.PlottableDragEvent
+                    || uiEvent is EventProcess.Events.PlottableDragModernEvent)
                     PlottableDragged(PlottableBeingDragged, EventArgs.Empty);
             }
         }

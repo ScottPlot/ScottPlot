@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Plottable.HelperAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +12,7 @@ namespace ScottPlot.Plottable
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
     /// </summary>
-    public class ScatterPlot : IPlottable, IHasPoints
+    public class ScatterPlot : IPlottable, IHasPoints, IDraggableModern
     {
         // data
         public double[] Xs { get; private set; }
@@ -38,9 +39,14 @@ namespace ScottPlot.Plottable
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
+        public event EventHandler Dragged = delegate { };
+
         // TODO: think about better/additional API ?
         public int? MinRenderIndex { get; set; }
         public int? MaxRenderIndex { get; set; }
+        public bool DragEnabled { get; set; } = true;
+
+        public Cursor DragCursor => Cursor.Hand;
 
         public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
@@ -362,6 +368,81 @@ namespace ScottPlot.Plottable
             }
 
             return (Xs[minIndex], Ys[minIndex], minIndex);
+        }
+
+        /// <summary>
+        /// Move the Scatter to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateXFrom">Move scatter from X coordinate</param>
+        /// <param name="coordinateXTo">Move scatter from Y coordinate</param>
+        /// <param name="CoordinateYFrom">Move scatter to X coordinate</param>
+        /// <param name="coordinateYTo">Move scatter to Y coordinate</param>
+        /// <param name="fixedSize">Unused flag</param>
+        public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
+        {
+            double offsetX = coordinateXTo - coordinateXFrom;
+            double offsetY = coordinateYTo - CoordinateYFrom;
+
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                Xs[i] += offsetX;
+                Ys[i] += offsetY;
+            }
+            Dragged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Return True if either scatter is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if scatter is within a mouse</returns>
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? Xs.Length - 1;
+
+            AABBChecker checker = new AABBChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intersect with points?
+            for (int i = from; i <= to; i++)
+            {
+                if (checker.CheckInsideAABB(Xs[i], Ys[i]))
+                    return true;
+            }
+
+            if (LineWidth == 0)
+                return false;
+
+            CloseToSegmentChecker segmentChecker = new CloseToSegmentChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intesect with lines?
+            for (int i = from; i < to; i++)
+            {
+
+                double x = Xs[i];
+                double y = Ys[i];
+                double x1 = Xs[i + 1];
+                double y1 = Ys[i + 1];
+
+                if (segmentChecker.IsClose(x, y, x1, y1))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Never called 
+        /// </summary>
+        /// <param name="coordinateX"></param>
+        /// <param name="coordinateY"></param>
+        /// <param name="fixedSize"></param>
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

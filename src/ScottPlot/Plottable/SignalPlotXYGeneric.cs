@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Plottable.HelperAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +15,7 @@ namespace ScottPlot.Plottable
     /// </summary>
     /// <typeparam name="TX"></typeparam>
     /// <typeparam name="TY"></typeparam>
-    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
+    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IDraggableModern, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
         private TX[] _Xs;
         public TX[] Xs
@@ -287,6 +288,81 @@ namespace ScottPlot.Plottable
         private new(double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// Return True if either signalXY is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if signal is within a mouse</returns>
+        public new bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            int from;
+            int index = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - 1, coordinateX - OffsetX - snapX);
+            if (index >= 0) // x equal to XS element
+            {
+                from = index;
+            }
+            else
+            {
+                index = ~index;
+                if (index <= MinRenderIndex) // x lower then any MinRenderIndex
+                    from = MinRenderIndex;
+                else if (index > MaxRenderIndex) // x higher then MaxRenderIndex
+                    from = MaxRenderIndex;
+                else
+                    from = index - 1;
+            }
+
+            int to;
+            index = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - 1, coordinateX - OffsetX + snapX);
+            if (index >= 0) // x equal to XS element
+            {
+                to = index;
+            }
+            else
+            {
+                index = ~index;
+                if (index <= MinRenderIndex) // x lower then any MinRenderIndex
+                    to = MinRenderIndex;
+                else if (index > MaxRenderIndex) // x higher then MaxRenderIndex
+                    to = MaxRenderIndex;
+                else
+                    to = index + 1;
+            }
+
+            AABBChecker checker = new AABBChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intersect with points?
+            for (int i = from; i <= to; i++)
+            {
+                double x = Convert.ToDouble(Xs[i]) + OffsetX;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                if (checker.CheckInsideAABB(x, y))
+                    return true;
+            }
+
+            if (LineWidth == 0)
+                return false;
+
+            CloseToSegmentChecker segmentChecker = new CloseToSegmentChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intersect with lines?
+            for (int i = from; i < to; i++)
+            {
+                double x = Convert.ToDouble(Xs[i]) + OffsetX;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                double x1 = Convert.ToDouble(Xs[i + 1]) + OffsetX;
+                double y1 = Convert.ToDouble(AddYsGeneric(Ys[i + 1], OffsetY));
+
+                if (segmentChecker.IsClose(x, y, x1, y1))
+                    return true;
+            }
+            return false;
         }
 
         private static Func<TX, TX, TX> SubstractExp;

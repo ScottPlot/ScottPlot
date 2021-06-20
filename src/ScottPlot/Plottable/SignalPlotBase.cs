@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
+using ScottPlot.Plottable.HelperAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasPointsGenericX<double, T> where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IDraggableModern, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -169,6 +170,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         private readonly Func<T, T, T> AddYsGenericExpression;
 
+        public event EventHandler Dragged = delegate { };
+
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
@@ -177,7 +180,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a the same type
         /// </summary>
-        private T AddYsGeneric(T y1, T y2) => AddYsGenericExpression(y1, y2);
+        protected T AddYsGeneric(T y1, T y2) => AddYsGenericExpression(y1, y2);
 
         public SignalPlotBase()
         {
@@ -621,6 +624,9 @@ namespace ScottPlot.Plottable
         }
 
         public int PointCount { get => _Ys.Length; }
+        public bool DragEnabled { get; set; } = true;
+
+        public Cursor DragCursor => Cursor.Hand;
 
         public LegendItem[] GetLegendItems()
         {
@@ -723,5 +729,82 @@ namespace ScottPlot.Plottable
             index = Math.Min(index, MaxRenderIndex);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
+
+        /// <summary>
+        /// Move the signal to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateXFrom">Move signal from X coordinate</param>
+        /// <param name="coordinateXTo">Move signal from Y coordinate</param>
+        /// <param name="CoordinateYFrom">Move signal to X coordinate</param>
+        /// <param name="coordinateYTo">Move signal to Y coordinate</param>
+        /// <param name="fixedSize">Unused flag</param>
+        public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
+        {
+            double offsetX = coordinateXTo - coordinateXFrom;
+            double offsetY = coordinateYTo - CoordinateYFrom;
+            OffsetX += offsetX;
+            OffsetY = AddYsGeneric(OffsetY, (T)Convert.ChangeType(offsetY, typeof(T)));
+
+            Dragged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Return True if either signal is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if signal is within a mouse</returns>
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            var from = (int)(Math.Floor((coordinateX - snapX - OffsetX) / SamplePeriod));
+            var to = (int)(Math.Ceiling((coordinateX + snapX - OffsetX) / SamplePeriod));
+            from = Math.Max(from, MinRenderIndex);
+            from = Math.Min(from, MaxRenderIndex);
+            to = Math.Min(to, MaxRenderIndex);
+            to = Math.Max(to, MinRenderIndex);
+
+            AABBChecker checker = new AABBChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intersect with points?
+            for (int i = from; i <= to; i++)
+            {
+                double x = OffsetX + i * SamplePeriod;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                if (checker.CheckInsideAABB(x, y))
+                    return true;
+            }
+
+            if (LineWidth == 0)
+                return false;
+
+            CloseToSegmentChecker segmentChecker = new CloseToSegmentChecker(coordinateX, coordinateY, snapX, snapY);
+
+            // intersect with lines?
+            for (int i = from; i < to; i++)
+            {
+                double x = OffsetX + i * SamplePeriod;
+                double y = Convert.ToDouble(AddYsGeneric(Ys[i], OffsetY));
+                double x1 = OffsetX + (i + 1) * SamplePeriod;
+                double y1 = Convert.ToDouble(AddYsGeneric(Ys[i + 1], OffsetY));
+
+                if (segmentChecker.IsClose(x, y, x1, y1))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Never called 
+        /// </summary>
+        /// <param name="coordinateX"></param>
+        /// <param name="coordinateY"></param>
+        /// <param name="fixedSize"></param>
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
