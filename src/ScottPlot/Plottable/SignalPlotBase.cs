@@ -729,6 +729,14 @@ namespace ScottPlot.Plottable
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
 
+        /// <summary>
+        /// Move the signal to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateXFrom">Move signal from X coordinate</param>
+        /// <param name="coordinateXTo">Move signal from Y coordinate</param>
+        /// <param name="CoordinateYFrom">Move signal to X coordinate</param>
+        /// <param name="coordinateYTo">Move signal to Y coordinate</param>
+        /// <param name="fixedSize">Unused flag</param>
         public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
         {
             double offsetX = coordinateXTo - coordinateXFrom;
@@ -739,6 +747,14 @@ namespace ScottPlot.Plottable
             Dragged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Return True if either signal is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if signal is within a mouse</returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             var from = (int)(Math.Floor((coordinateX - snapX - OffsetX) / SamplePeriod));
@@ -799,6 +815,12 @@ namespace ScottPlot.Plottable
             return false;
         }
 
+        /// <summary>
+        /// Never called 
+        /// </summary>
+        /// <param name="coordinateX"></param>
+        /// <param name="coordinateY"></param>
+        /// <param name="fixedSize"></param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             throw new NotImplementedException();

@@ -53,6 +53,14 @@ namespace ScottPlot.Plottable
             return new AxisLimits(XMin, XMax, YMin, YMax);
         }
 
+        /// <summary>
+        /// Move the CoordinatedHeatmap to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateXFrom">Move signal from X coordinate</param>
+        /// <param name="coordinateXTo">Move signal from Y coordinate</param>
+        /// <param name="CoordinateYFrom">Move signal to X coordinate</param>
+        /// <param name="coordinateYTo">Move Signal to Y coordinate</param>
+        /// <param name="fixedSize">Unused flag</param>
         public void Drag(double coordinateXFrom, double coordinateXTo, double coordinateYFrom, double coordinateYTo, bool fixedSize)
         {
             var offsetX = coordinateXTo - coordinateXFrom;
@@ -64,6 +72,14 @@ namespace ScottPlot.Plottable
             Dragged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Return True if either CoordinatedHeatmap is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if signal is within a mouse</returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             return (coordinateX >= (XMin - snapX))
@@ -72,6 +88,12 @@ namespace ScottPlot.Plottable
                 && (coordinateY <= (YMax + snapY));
         }
 
+        /// <summary>
+        /// Never called 
+        /// </summary>
+        /// <param name="coordinateX"></param>
+        /// <param name="coordinateY"></param>
+        /// <param name="fixedSize"></param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             throw new NotImplementedException();

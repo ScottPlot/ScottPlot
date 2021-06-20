@@ -369,6 +369,14 @@ namespace ScottPlot.Plottable
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
 
+        /// <summary>
+        /// Move the Scatter to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateXFrom">Move scatter from X coordinate</param>
+        /// <param name="coordinateXTo">Move scatter from Y coordinate</param>
+        /// <param name="CoordinateYFrom">Move scatter to X coordinate</param>
+        /// <param name="coordinateYTo">Move scatter to Y coordinate</param>
+        /// <param name="fixedSize">Unused flag</param>
         public void Drag(double coordinateXFrom, double coordinateXTo, double CoordinateYFrom, double coordinateYTo, bool fixedSize)
         {
             double offsetX = coordinateXTo - coordinateXFrom;
@@ -382,6 +390,14 @@ namespace ScottPlot.Plottable
             Dragged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Return True if either scatter is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if scatter is within a mouse</returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             double cx = coordinateX;
@@ -439,6 +455,12 @@ namespace ScottPlot.Plottable
             return false;
         }
 
+        /// <summary>
+        /// Never called 
+        /// </summary>
+        /// <param name="coordinateX"></param>
+        /// <param name="coordinateY"></param>
+        /// <param name="fixedSize"></param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             throw new NotImplementedException();

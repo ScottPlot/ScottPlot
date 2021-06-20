@@ -290,6 +290,14 @@ namespace ScottPlot.Plottable
         }
 
 
+        /// <summary>
+        /// Return True if either signalXY is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position X (coordinate space)</param>
+        /// <param name="coordinateY">mouse position Y(coordinate space)</param>
+        /// <param name="snapX">snap distance X axes (coordinate space)</param>
+        /// <param name="snapY">snap distance X axes (coordinate space)</param>
+        /// <returns>True if signal is within a mouse</returns>
         public new bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             int from;
