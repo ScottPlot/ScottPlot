@@ -38,7 +38,7 @@ namespace ScottPlot.Plottable
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
-        public event EventHandler Dragged;
+        public event EventHandler Dragged = delegate { };
 
         // TODO: think about better/additional API ?
         public int? MinRenderIndex { get; set; }

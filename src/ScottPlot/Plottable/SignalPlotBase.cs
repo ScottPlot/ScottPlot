@@ -771,6 +771,10 @@ namespace ScottPlot.Plottable
                 if (x > coordinateX - snapX && x < coordinateX + snapX && y > coordinateY - snapY && y < coordinateY + snapY)
                     return true;
             }
+
+            if (LineWidth == 0)
+                return false;
+
             // intersect with lines?
             for (int i = from; i < to; i++)
             {
