@@ -27,8 +27,8 @@ namespace ScottPlotTests.Documentation
             foreach (MethodInfo info in ScottPlot.Cookbook.Locate.GetPlotMethods())
             {
                 var method = new DocumentedMethod(info, LoadedXmlDocument);
-                Assert.IsTrue(method.HasXmlDocumentation);
-                Assert.IsNotNull(method.Summary);
+                Assert.IsTrue(method.HasXmlDocumentation, $"{method.FullName} has no XML documentation.");
+                Assert.IsNotNull(method.Summary, $"{method.FullName} has no summary.");
             }
         }
 
@@ -38,7 +38,7 @@ namespace ScottPlotTests.Documentation
             foreach (PropertyInfo info in ScottPlot.Cookbook.Locate.GetPlotProperties())
             {
                 var p = new DocumentedProperty(info, LoadedXmlDocument);
-                Assert.IsNotNull(p.Summary);
+                Assert.IsNotNull(p.Summary, $"{p.FullName} has no summary.");
             }
         }
 
@@ -48,7 +48,7 @@ namespace ScottPlotTests.Documentation
             foreach (FieldInfo info in ScottPlot.Cookbook.Locate.GetPlotFields())
             {
                 var f = new DocumentedField(info, LoadedXmlDocument);
-                Assert.IsNotNull(f.Summary);
+                Assert.IsNotNull(f.Summary, $"{f.FullName} has no summary.");
             }
         }
 
@@ -58,7 +58,7 @@ namespace ScottPlotTests.Documentation
             foreach (Type plottableType in ScottPlot.Cookbook.Locate.GetPlottableTypes())
             {
                 var t = new DocumentedClass(plottableType, LoadedXmlDocument);
-                Assert.IsNotNull(t.Summary);
+                Assert.IsNotNull(t.Summary, $"{t.FullName} has no summary.");
             }
         }
 
@@ -78,7 +78,7 @@ namespace ScottPlotTests.Documentation
                         continue;
 
                     var m = new DocumentedMethod(info, LoadedXmlDocument);
-                    Assert.IsNotNull(m.Summary);
+                    Assert.IsNotNull(m.Summary, $"{m.FullName} has no summary.");
                 }
             }
         }
