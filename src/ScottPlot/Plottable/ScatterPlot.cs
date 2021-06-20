@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Plottable.HelperAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -403,16 +404,19 @@ namespace ScottPlot.Plottable
             int from = MinRenderIndex ?? 0;
             int to = MaxRenderIndex ?? Xs.Length - 1;
 
+            AABBChecker checker = new AABBChecker(coordinateX, coordinateY, snapX, snapY);
+
             // intersect with points?
             for (int i = from; i <= to; i++)
             {
-                if (Xs[i] >= coordinateX - snapX && Xs[i] <= coordinateX + snapX
-                    && Ys[i] >= coordinateY - snapY && Ys[i] <= coordinateY + snapY)
+                if (checker.CheckInsideAABB(Xs[i], Ys[i]))
                     return true;
             }
 
             if (LineWidth == 0)
                 return false;
+
+            CloseToSegmentChecker segmentChecker = new CloseToSegmentChecker(coordinateX, coordinateY, snapX, snapY);
 
             // intesect with lines?
             for (int i = from; i < to; i++)
@@ -423,38 +427,8 @@ namespace ScottPlot.Plottable
                 double x1 = Xs[i + 1];
                 double y1 = Ys[i + 1];
 
-                (double x, double y)[][] boundaryPolys = new (double x, double y)[][]
-                {
-                    new (double x, double y)[]
-                    {
-                        (x, y + snapY),
-                        (x, y - snapY),
-                        (x1, y1 - snapY),
-                        (x1, y1 + snapY),
-                    },
-                    new (double x, double y)[]
-                    {
-                        (x - snapX, y),
-                        (x + snapX, y),
-                        (x1 + snapX, y1),
-                        (x1 - snapX, y1),
-                    }
-                };
-
-                for (int k = 0; k < boundaryPolys.Length; k++)
-                {
-                    bool inside = false;
-                    for (int j = 0, j1 = boundaryPolys[k].Length - 1; j < boundaryPolys[k].Length; j1 = j++)
-                    {
-                        if ((boundaryPolys[k][j].y > coordinateY) != (boundaryPolys[k][j1].y > coordinateY) &&
-                            (coordinateX < (boundaryPolys[k][j1].x - boundaryPolys[k][j].x) * (coordinateY - boundaryPolys[k][j].y) / (boundaryPolys[k][j1].y - boundaryPolys[k][j].y) + boundaryPolys[k][j].x))
-                        {
-                            inside = !inside;
-                        }
-                    }
-                    if (inside)
-                        return true;
-                }
+                if (segmentChecker.IsClose(x, y, x1, y1))
+                    return true;
             }
 
             return false;
