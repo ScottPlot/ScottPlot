@@ -400,58 +400,63 @@ namespace ScottPlot.Plottable
         /// <returns>True if scatter is within a mouse</returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
-            double cx = coordinateX;
-            double cy = coordinateY;
-            for (int i = 0; i < Xs.Length - 1; i++)
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? Xs.Length - 1;
+
+            // intersect with points?
+            for (int i = from; i <= to; i++)
             {
-                double ax = Xs[i];
-                double ay = Ys[i];
-                double bx = Xs[i + 1];
-                double by = Ys[i + 1];
-
-                double scalar = (cx - ax) * (bx - ax) + (cy - ay) * (by - ay);
-                if (scalar < 0)
-                {
-                    double distanceA = (cx - ax) * (cx - ax) + (cy - ay) * (cy - ay);
-                    if (distanceA < snapX * snapX)
-                        return true;
-
-                }
-                else if (((cx - bx) * (ax - bx) + (cy - by) * (ay - by)) < 0)
-                {
-                    double distanceB = (cx - bx) * (cx - bx) + (cy - by) * (cy - by);
-                    if (distanceB < snapX * snapX)
-                        return true;
-                }
-                else
-                {
-
-                    double projectionX;
-                    double projectionY;
-                    if ((bx - ax) == 0)
-                    {
-                        projectionX = ax;
-                        projectionY = cy;
-                    }
-                    else if ((by - ay) == 0)
-                    {
-                        projectionX = cx;
-                        projectionY = ay;
-                    }
-                    else
-                    {
-                        double dx = bx - ax;
-                        double dy = by - ay;
-                        projectionY = (dx * dx / dy * ay + dx * (cx - ax) + dy * cy)
-                            / ((bx - ax) * (bx - ax) / (by - ay) + (by - ay));
-                        projectionX = dx / dy * (projectionY - ay) + ax;
-                    }
-                    double distance = (cx - projectionX) * (cx - projectionX) + (cy - projectionY) * (cy - projectionY);
-                    if (distance < snapX * snapX)
-                        return true;
-                }
-
+                if (Xs[i] >= coordinateX - snapX && Xs[i] <= coordinateX + snapX
+                    && Ys[i] >= coordinateY - snapY && Ys[i] <= coordinateY + snapY)
+                    return true;
             }
+
+            if (LineWidth == 0)
+                return false;
+
+            // intesect with lines?
+            for (int i = from; i < to; i++)
+            {
+
+                double x = Xs[i];
+                double y = Ys[i];
+                double x1 = Xs[i + 1];
+                double y1 = Ys[i + 1];
+
+                (double x, double y)[][] boundaryPolys = new (double x, double y)[][]
+                {
+                    new (double x, double y)[]
+                    {
+                        (x, y + snapY),
+                        (x, y - snapY),
+                        (x1, y1 - snapY),
+                        (x1, y1 + snapY),
+                    },
+                    new (double x, double y)[]
+                    {
+                        (x - snapX, y),
+                        (x + snapX, y),
+                        (x1 + snapX, y1),
+                        (x1 - snapX, y1),
+                    }
+                };
+
+                for (int k = 0; k < boundaryPolys.Length; k++)
+                {
+                    bool inside = false;
+                    for (int j = 0, j1 = boundaryPolys[k].Length - 1; j < boundaryPolys[k].Length; j1 = j++)
+                    {
+                        if ((boundaryPolys[k][j].y > coordinateY) != (boundaryPolys[k][j1].y > coordinateY) &&
+                            (coordinateX < (boundaryPolys[k][j1].x - boundaryPolys[k][j].x) * (coordinateY - boundaryPolys[k][j].y) / (boundaryPolys[k][j1].y - boundaryPolys[k][j].y) + boundaryPolys[k][j].x))
+                        {
+                            inside = !inside;
+                        }
+                    }
+                    if (inside)
+                        return true;
+                }
+            }
+
             return false;
         }
 
