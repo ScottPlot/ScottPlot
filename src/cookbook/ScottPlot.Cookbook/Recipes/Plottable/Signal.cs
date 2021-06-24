@@ -102,6 +102,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sig = plt.AddSignal(ys, sampleRate);
             sig.StepDisplay = true;
+            sig.MarkerSize = 0;
         }
     }
 
