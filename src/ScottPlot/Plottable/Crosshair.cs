@@ -102,10 +102,16 @@ namespace ScottPlot.Plottable
 
                 string xLabel = IsDateTimeX ? DateTime.FromOADate(X).ToString(StringFormatX) : X.ToString(StringFormatX);
                 SizeF xLabelSize = Drawing.GDI.MeasureString(xLabel, LabelFont);
-                RectangleF xLabelRect = new(xPixel - xLabelSize.Width / 2, dims.DataOffsetY + dims.DataHeight, xLabelSize.Width, xLabelSize.Height);
+
+                var xPos = xPixel - xLabelSize.Width / 2;
+                var yPos = XAxisIndex == 0
+                    ? dims.DataOffsetY + dims.DataHeight
+                    : dims.DataOffsetY - xLabelSize.Height;
+
+                RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
                 gfx.FillRectangle(fillBrush, xLabelRect);
                 var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
-                gfx.DrawString(xLabel, fnt, fontBrush, xPixel, dims.DataOffsetY + dims.DataHeight, sf);
+                gfx.DrawString(xLabel, fnt, fontBrush, xPixel, yPos, sf);
             }
 
             if (Y >= dims.YMin && Y <= dims.YMax && IsVisibleY)
@@ -116,10 +122,16 @@ namespace ScottPlot.Plottable
 
                 string yLabel = IsDateTimeY ? DateTime.FromOADate(Y).ToString(StringFormatY) : Y.ToString(StringFormatY);
                 SizeF yLabelSize = Drawing.GDI.MeasureString(yLabel, LabelFont);
-                RectangleF xLabelRect = new(dims.DataOffsetX - yLabelSize.Width, yPixel - yLabelSize.Height / 2, yLabelSize.Width, yLabelSize.Height);
+
+                var xPos = YAxisIndex == 0
+                    ? dims.DataOffsetX - yLabelSize.Width
+                    : dims.DataOffsetX + dims.DataWidth;
+                var yPos = yPixel - yLabelSize.Height / 2;
+
+                RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
                 gfx.FillRectangle(fillBrush, xLabelRect);
-                var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Right, VerticalAlignment.Middle);
-                gfx.DrawString(yLabel, fnt, fontBrush, dims.DataOffsetX, yPixel, sf);
+                var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle);
+                gfx.DrawString(yLabel, fnt, fontBrush, xPos, yPixel, sf);
             }
         }
     }
