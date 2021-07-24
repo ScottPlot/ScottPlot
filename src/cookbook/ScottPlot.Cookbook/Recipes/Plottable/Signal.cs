@@ -90,17 +90,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Signal Plot";
         public string ID => "signal_step";
-        public string Title => "Step Signal Plot";
+        public string Title => "Step Display";
         public string Description =>
-            "Signal plots can be displayed as step where points " +
+            "Signal plots can be styled as step plots where points " +
             "are connected by right angles instead of straight lines.";
 
         public void ExecuteRecipe(Plot plt)
         {
             double[] ys = DataGen.Sin(51);
-            int sampleRate = 1;
 
-            var sig = plt.AddSignal(ys, sampleRate);
+            var sig = plt.AddSignal(ys);
             sig.StepDisplay = true;
             sig.MarkerSize = 0;
         }
