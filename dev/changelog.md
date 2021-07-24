@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.17
-* Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
+* Radar Plot: Improved `Update()` default arguments (#1097) _Thanks @arthurits_
+* Crosshair: Added `XLabelOnTop` and `YLabelOnRight` options to improve multi-axis support and label customization (#1147) _Thanks @rutkowskit_
+* Signal Plot: Added `StepDisplay` option to render signal plots as step plots when zoomed in (#1092, #1128) _Thanks @EmanuelFeru_
+* Testing: Improved error reporting on failed XML documentation tests (#1127) _Thanks @StendProg_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
