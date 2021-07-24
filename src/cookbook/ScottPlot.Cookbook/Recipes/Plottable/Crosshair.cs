@@ -115,4 +115,46 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             ch.StringFormatY = "F4";
         }
     }
+
+    public class CrosshairMultipleForDifferentAxes : IRecipe
+    {
+        public string Category => "Plottable: Crosshair";
+        public string ID => "crosshair_multiple_different_axes";
+        public string Title => "Crosshairs on Multiple Axes";
+        public string Description => "Crosshairs label coordinates on the primary axes by default, but " + 
+            "the axis index can be changed allowing multiple crosshairs to label multiple axes.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // add a signal and crosshair to the primary X and Y axis (index 0)
+            var signal1 = plt.AddSignal(DataGen.RandomWalk(null, 100));
+            var cross1 = plt.AddCrosshair(24, 5.29);
+
+            // add a signal and crosshair to the secondary X and Y axis (index 1)
+            var signal2 = plt.AddSignal(DataGen.RandomWalk(null, 50));
+            signal2.YAxisIndex = 1;
+            signal2.XAxisIndex = 1;
+
+            var cross2 = plt.AddCrosshair(33, 5.1);
+            cross2.YAxisIndex = signal2.YAxisIndex;
+            cross2.XAxisIndex = signal2.XAxisIndex;
+            cross2.LineStyle = LineStyle.Dot;
+
+            // apply signal colors to the crosshairs
+            cross1.LineColor = signal1.Color;
+            cross2.LineColor = signal2.Color;
+            cross1.LabelBackgroundColor = signal1.Color;
+            cross2.LabelBackgroundColor = signal2.Color;
+
+            // add axis labels
+            plt.Title("Multiple Crosshairs for different Axes");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+            plt.YAxis2.Label("Signal2 Value");
+
+            // show ticks for axes where ticks are hidden by default
+            plt.YAxis2.Ticks(true);
+            plt.XAxis2.Ticks(true);
+        }
+    }
 }
