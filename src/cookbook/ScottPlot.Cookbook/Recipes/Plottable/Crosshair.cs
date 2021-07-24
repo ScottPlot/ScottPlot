@@ -121,7 +121,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Crosshair";
         public string ID => "crosshair_multiple_different_axes";
         public string Title => "Crosshairs on Multiple Axes";
-        public string Description => "Crosshairs label coordinates on the primary axes by default, but " + 
+        public string Description => "Crosshairs label coordinates on the primary axes by default, but " +
             "the axis index can be changed allowing multiple crosshairs to label multiple axes.";
 
         public void ExecuteRecipe(Plot plt)
