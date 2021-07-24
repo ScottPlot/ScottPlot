@@ -277,41 +277,18 @@ namespace ScottPlot.Plottable
                 ValidatePoints(pointsArray);
 
                 if (StepDisplay)
+                    pointsArray = GetStepPoints(pointsArray);
+
+                if (penLD.Width > 0)
+                    gfx.DrawLines(penLD, pointsArray);
+
+                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
                 {
-                    // add necessary points for step display
-                    PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
-                    for (int i = 0; i < pointsArray.Length - 1; i++)
-                    {
-                        pointsStep[i * 2] = pointsArray[i];
-                        pointsStep[i * 2 + 1] = new PointF(pointsArray[i + 1].X, pointsArray[i].Y);
-                    }
-                    pointsStep[pointsStep.Length - 1] = pointsArray[pointsArray.Length - 1];
-
-                    if (penLD.Width > 0)
-                        gfx.DrawLines(penLD, pointsStep);
-
-                    if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
-                    {
-                        FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsStep, FillType);
-                    }
-                    else if (FillType == FillType.FillAboveAndBelow)
-                    {
-                        FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsStep, BaselineY);
-                    }
+                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, FillType);
                 }
-                else
+                else if (FillType == FillType.FillAboveAndBelow)
                 {
-                    if (penLD.Width > 0)
-                        gfx.DrawLines(penLD, pointsArray);
-
-                    if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
-                    {
-                        FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, FillType);
-                    }
-                    else if (FillType == FillType.FillAboveAndBelow)
-                    {
-                        FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
-                    }
+                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
                 }
 
                 if (MarkerSize > 0)
@@ -334,6 +311,25 @@ namespace ScottPlot.Plottable
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
+        /// by inserting an extra point between each of the original data points.
+        /// </summary>
+        private PointF[] GetStepPoints(PointF[] pointsArray)
+        {
+            PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
+
+            for (int i = 0; i < pointsArray.Length - 1; i++)
+            {
+                pointsStep[i * 2] = pointsArray[i];
+                pointsStep[i * 2 + 1] = new PointF(pointsArray[i + 1].X, pointsArray[i].Y);
+            }
+
+            pointsStep[pointsStep.Length - 1] = pointsArray[pointsArray.Length - 1];
+
+            return pointsStep;
         }
 
         private class IntervalMinMax
