@@ -136,6 +136,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             signal2.XAxisIndex = 1;
 
             var cross2 = plt.AddCrosshair(33, 5.1);
+            cross2.YLabelOnRight = true;
+            cross2.XLabelOnTop = true;
             cross2.YAxisIndex = signal2.YAxisIndex;
             cross2.XAxisIndex = signal2.XAxisIndex;
             cross2.LineStyle = LineStyle.Dot;
