@@ -11,11 +11,41 @@ namespace ScottPlot.Statistics
         private readonly static RNGCryptoServiceProvider Rand = new RNGCryptoServiceProvider();
 
         /// <summary>
-        /// Return the standard deviation of the given values
+        /// Return the minimum, and maximum, and sum of a given array.
         /// </summary>
-        public static double StDev(double[] values)
+        public static (double min, double max, double sum) MinMaxSum(double[] values)
         {
-            double mean = Mean(values);
+            if (values is null)
+                throw new ArgumentNullException();
+
+            if (values.Length == 0)
+                throw new ArgumentException("input cannot be empty");
+
+            double min = double.MaxValue;
+            double max = double.MinValue;
+            double sum = 0;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                min = Math.Min(min, values[i]);
+                max = Math.Max(max, values[i]);
+                sum += values[i];
+            }
+
+            return (min, max, sum);
+        }
+
+        /// <summary>
+        /// Return the standard deviation of the given values.
+        /// </summary>
+        public static double StDev(double[] values) => StDev(values, Mean(values));
+
+        /// <summary>
+        /// Return the standard deviation of the given values.
+        /// This overload is faster because the mean of the values is provided.
+        /// </summary>
+        public static double StDev(double[] values, double mean)
+        {
             double sumVariancesSquared = 0;
             for (int i = 0; i < values.Length; i++)
             {
