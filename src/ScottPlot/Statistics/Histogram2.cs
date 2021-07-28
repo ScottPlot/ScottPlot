@@ -46,7 +46,7 @@ namespace ScottPlot.Statistics
                 {
                     continue;
                 }
-                    
+
                 if (values[i] == max)
                 {
                     hist[values.Length - 1] += 1;
