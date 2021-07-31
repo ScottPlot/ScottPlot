@@ -266,6 +266,52 @@ namespace ScottPlot.Statistics
         }
 
         /// <summary>
+        /// Given a dataset of values return the probability density function at specific X positions.
+        /// Returned values will be normalized such that their integral is 1.
+        /// </summary>
+        /// <param name="values">original dataset</param>
+        /// <param name="xs">Positions (Xs) for which probabilities (Ys) will be returned</param>
+        /// <returns>Densities (Ys) for each of the given Xs</returns>
+        public static double[] ProbabilityDensity(double[] values, double[] xs)
+        {
+            double[] ys = new double[xs.Length];
+            double sum = 0;
+
+            var stats = new ScottPlot.Statistics.BasicStats(values);
+            for (int i = 0; i < xs.Length; i++)
+            {
+                ys[i] = Math.Exp(-.5 * Math.Pow((xs[i] - stats.Mean) / stats.StDev, 2));
+                sum += ys[i];
+            }
+
+            for (int i = 0; i < ys.Length; i++)
+            {
+                ys[i] /= sum;
+            }
+
+            return ys;
+        }
+
+        /// <summary>
+        /// Return the cumulative sum of the given data
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static double[] CumulativeSum(double[] values)
+        {
+            double[] sum = new double[values.Length];
+
+            sum[0] = values[0];
+
+            for (int i = 1; i < values.Length; i++)
+            {
+                sum[i] = sum[i - 1] + values[i];
+            }
+
+            return sum;
+        }
+
+        /// <summary>
         /// Compute the histogram of a dataset.
         /// </summary>
         /// <param name="values">Input data</param>
