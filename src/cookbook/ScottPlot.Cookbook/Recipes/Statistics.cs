@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes
@@ -11,20 +12,21 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "stats_histogram";
         public string Title => "Histogram";
         public string Description =>
-            "The Histogram class makes it easy to get binned population information.";
+            "ScottPlot.Statistics.Common contains methods for creating histograms.";
 
         public void ExecuteRecipe(Plot plt)
         {
             // generate sample heights are based on https://ourworldindata.org/human-height
             Random rand = new(0);
-            double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
+            double[] values = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
 
             // create a histogram
-            var hist = new ScottPlot.Statistics.Histogram(heights, min: 140, max: 220, binSize: 1);
+            (double[] counts, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 140, max: 220);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
 
             // display the histogram counts as a bar plot
-            var bar = plt.AddBar(hist.counts, hist.bins);
-            bar.BarWidth = hist.binSize;
+            var bar = plt.AddBar(values: counts, positions: leftEdges);
+            bar.BarWidth = 1;
 
             // customize the plot style
             plt.YAxis.Label("Count (#)");
@@ -39,28 +41,30 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "stats_histogramProbability";
         public string Title => "Histogram Probability";
         public string Description =>
-            "Binned probability can be displayed instead of raw counts. " +
-            "The probability density is also available for every bin.";
+            "Histograms can be displayed as binned probability instead of binned counts. " +
+            "The ideal probability distribution can also be plotted.";
 
         public void ExecuteRecipe(Plot plt)
         {
             // generate sample heights are based on https://ourworldindata.org/human-height
             Random rand = new(0);
-            double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
+            double[] values = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
 
             // create a histogram
-            var hist = new ScottPlot.Statistics.Histogram(heights, min: 140, max: 220, binSize: 1);
+            (double[] probabilities, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: true, min: 140, max: 220);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
 
             // display histogram probabability as a bar plot
-            var bar = plt.AddBar(values: hist.countsFrac, positions: hist.bins);
+            var bar = plt.AddBar(values: probabilities, positions: leftEdges);
+            bar.BarWidth = 1;
             bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
             bar.BorderColor = ColorTranslator.FromHtml("#82add9");
-            bar.BarWidth = hist.binSize;
 
             // display histogram distribution curve as a line plot
+            double[] densities = ScottPlot.Statistics.Common.ProbabilityDensity(values, binEdges);
             plt.AddScatterLines(
-                xs: hist.bins,
-                ys: hist.probability,
+                xs: binEdges,
+                ys: densities,
                 color: Color.Black,
                 lineWidth: 2,
                 lineStyle: LineStyle.Dash);
@@ -90,31 +94,34 @@ namespace ScottPlot.Cookbook.Recipes
             double[] heightsFemale = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 164.7, stdDev: 7.1);
 
             // calculate histograms for male and female datasets
-            var histMale = new ScottPlot.Statistics.Histogram(heightsMale, min: 140, max: 210, binSize: 1);
-            var histFemale = new ScottPlot.Statistics.Histogram(heightsFemale, min: 140, max: 210, binSize: 1);
+            (double[] probMale, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values: heightsMale, binCount: 70, density: true, min: 140, max: 210);
+            (double[] probFemale, _) = ScottPlot.Statistics.Common.Histogram(values: heightsFemale, binCount: 70, density: true, min: 140, max: 210);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
 
             // plot histograms
-            var barMale = plt.AddBar(values: histMale.countsFrac, positions: histMale.bins);
-            barMale.BarWidth = histMale.binSize;
+            var barMale = plt.AddBar(values: probMale, positions: leftEdges);
+            barMale.BarWidth = 1;
             barMale.FillColor = Color.FromArgb(50, Color.Blue);
             barMale.BorderLineWidth = 0;
 
-            var barFemale = plt.AddBar(values: histFemale.countsFrac, positions: histFemale.bins);
-            barFemale.BarWidth = histFemale.binSize;
+            var barFemale = plt.AddBar(values: probFemale, positions: leftEdges);
+            barFemale.BarWidth = 1;
             barFemale.FillColor = Color.FromArgb(50, Color.Red);
             barFemale.BorderLineWidth = 0;
 
             // plot probability function curves
+            double[] pdfMale = ScottPlot.Statistics.Common.ProbabilityDensity(heightsMale, binEdges);
             plt.AddScatterLines(
-                xs: histMale.bins,
-                ys: histMale.probability,
+                xs: binEdges,
+                ys: pdfMale,
                 color: Color.FromArgb(150, Color.Blue),
                 lineWidth: 3,
                 label: $"Male (n={heightsMale.Length:N0})");
 
+            double[] pdfFemale = ScottPlot.Statistics.Common.ProbabilityDensity(heightsFemale, binEdges);
             plt.AddScatterLines(
-                xs: histFemale.bins,
-                ys: histFemale.probability,
+                xs: binEdges,
+                ys: pdfFemale,
                 color: Color.FromArgb(150, Color.Red),
                 lineWidth: 3,
                 label: $"Female (n={heightsFemale.Length:N0})");
@@ -143,19 +150,15 @@ namespace ScottPlot.Cookbook.Recipes
             Random rand = new Random(0);
             double[] values1 = DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
             double[] values2 = DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25);
-            var hist1 = new ScottPlot.Statistics.Histogram(values1, min: 0, max: 100);
-            var hist2 = new ScottPlot.Statistics.Histogram(values2, min: 0, max: 100);
+            (double[] hist1, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values: values1, binCount: 100, density: true, min: 0, max: 100);
+            (double[] hist2, _) = ScottPlot.Statistics.Common.Histogram(values: values2, binCount: 100, density: true, min: 0, max: 100);
+            double[] cph1 = ScottPlot.Statistics.Common.CumulativeSum(hist1);
+            double[] cph2 = ScottPlot.Statistics.Common.CumulativeSum(hist2);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
 
             // display datasets as step plots
-            var sp1 = plt.AddScatter(hist1.bins, hist1.cumulativeFrac);
-            sp1.Label = "Sample A";
-            sp1.StepDisplay = true;
-            sp1.MarkerSize = 0;
-
-            var sp2 = plt.AddScatter(hist2.bins, hist2.cumulativeFrac);
-            sp2.Label = "Sample B";
-            sp2.StepDisplay = true;
-            sp2.MarkerSize = 0;
+            plt.AddScatterStep(xs: leftEdges, ys: cph1, label: "Sample A");
+            plt.AddScatterStep(xs: leftEdges, ys: cph2, label: "Sample B");
 
             // decorate the plot
             plt.Legend();
