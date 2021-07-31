@@ -13,8 +13,8 @@ namespace ScottPlotTests.Statistics
         public void Test_Histogram_MatchesKnownValues1()
         {
             double[] values = SampleData.NORM_1000_12_34;
-            var (counts, binEdges) = ScottPlot.Statistics.Histogram2.Histogram(values, binCount: 25, density: false, min: -25, max: 100);
-            var (densities, _) = ScottPlot.Statistics.Histogram2.Histogram(values, binCount: 25, density: true, min: -25, max: 100);
+            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: false, min: -25, max: 100);
+            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: true, min: -25, max: 100);
 
             // Values generated with Python and Numpy (see hist.py)
 
@@ -44,8 +44,8 @@ namespace ScottPlotTests.Statistics
         public void Test_Histogram_MatchesKnownValues2()
         {
             double[] values = SampleData.NORM_1000_12_34;
-            var (counts, binEdges) = ScottPlot.Statistics.Histogram2.Histogram(values, binCount: 80, density: false, min: 10, max: 45);
-            var (densities, _) = ScottPlot.Statistics.Histogram2.Histogram(values, binCount: 80, density: true, min: 10, max: 45);
+            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 10, max: 45);
+            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: true, min: 10, max: 45);
 
             // Values generated with Python and Numpy (see hist.py)
 
