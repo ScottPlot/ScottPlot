@@ -64,6 +64,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool IsVisibleY = true;
 
+        /// <summary>
+        /// Control whether the label for the X crosshair appears on the top or bottom edge of the plot
+        /// </summary>
+        public bool XLabelOnTop = false;
+
+        /// <summary>
+        /// Control whether the label for the Y crosshair appears on the left or right edge of the plot
+        /// </summary>
+        public bool YLabelOnRight = false;
+
         public LineStyle LineStyle = LineStyle.Dash;
         public float LineWidth = 1;
         public Color LineColor = Color.FromArgb(150, Color.Red);
@@ -94,33 +104,54 @@ namespace ScottPlot.Plottable
             using var fillBrush = Drawing.GDI.Brush(LabelBackgroundColor);
             using var fontBrush = Drawing.GDI.Brush(LabelFont.Color);
 
-            if (X >= dims.XMin && X <= dims.XMax && IsVisibleX)
-            {
-                // vertical line and label centered at X
-                float xPixel = dims.GetPixelX(X);
-                gfx.DrawLine(pen, xPixel, dims.DataOffsetY, xPixel, dims.DataOffsetY + dims.DataHeight);
+            RenderVerticalLine(dims, gfx, pen, fnt, fillBrush, fontBrush);
+            RenderHorizontalLine(dims, gfx, pen, fnt, fillBrush, fontBrush);
+        }
 
-                string xLabel = IsDateTimeX ? DateTime.FromOADate(X).ToString(StringFormatX) : X.ToString(StringFormatX);
-                SizeF xLabelSize = Drawing.GDI.MeasureString(xLabel, LabelFont);
-                RectangleF xLabelRect = new(xPixel - xLabelSize.Width / 2, dims.DataOffsetY + dims.DataHeight, xLabelSize.Width, xLabelSize.Height);
-                gfx.FillRectangle(fillBrush, xLabelRect);
-                var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
-                gfx.DrawString(xLabel, fnt, fontBrush, xPixel, dims.DataOffsetY + dims.DataHeight, sf);
-            }
+        private void RenderHorizontalLine(PlotDimensions dims, Graphics gfx, Pen pen, Font fnt, Brush fillBrush, Brush fontBrush)
+        {
+            if (!IsVisibleY)
+                return;
 
-            if (Y >= dims.YMin && Y <= dims.YMax && IsVisibleY)
-            {
-                // horizontal line and label centered at Y
-                float yPixel = dims.GetPixelY(Y);
-                gfx.DrawLine(pen, dims.DataOffsetX, yPixel, dims.DataOffsetX + dims.DataWidth, yPixel);
+            if (Y < dims.YMin || Y > dims.YMax)
+                return;
 
-                string yLabel = IsDateTimeY ? DateTime.FromOADate(Y).ToString(StringFormatY) : Y.ToString(StringFormatY);
-                SizeF yLabelSize = Drawing.GDI.MeasureString(yLabel, LabelFont);
-                RectangleF xLabelRect = new(dims.DataOffsetX - yLabelSize.Width, yPixel - yLabelSize.Height / 2, yLabelSize.Width, yLabelSize.Height);
-                gfx.FillRectangle(fillBrush, xLabelRect);
-                var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Right, VerticalAlignment.Middle);
-                gfx.DrawString(yLabel, fnt, fontBrush, dims.DataOffsetX, yPixel, sf);
-            }
+            float yPixel = dims.GetPixelY(Y);
+            gfx.DrawLine(pen, dims.DataOffsetX, yPixel, dims.DataOffsetX + dims.DataWidth, yPixel);
+
+            string yLabel = IsDateTimeY ? DateTime.FromOADate(Y).ToString(StringFormatY) : Y.ToString(StringFormatY);
+            SizeF yLabelSize = Drawing.GDI.MeasureString(yLabel, LabelFont);
+
+            float xPos = YLabelOnRight ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX - yLabelSize.Width;
+            float yPos = yPixel - yLabelSize.Height / 2;
+
+            RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
+            gfx.FillRectangle(fillBrush, xLabelRect);
+            var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle);
+            gfx.DrawString(yLabel, fnt, fontBrush, xPos, yPixel, sf);
+        }
+
+        private void RenderVerticalLine(PlotDimensions dims, Graphics gfx, Pen pen, Font fnt, Brush fillBrush, Brush fontBrush)
+        {
+            if (!IsVisibleX)
+                return;
+
+            if (X < dims.XMin || X > dims.XMax)
+                return;
+
+            float xPixel = dims.GetPixelX(X);
+            gfx.DrawLine(pen, xPixel, dims.DataOffsetY, xPixel, dims.DataOffsetY + dims.DataHeight);
+
+            string xLabel = IsDateTimeX ? DateTime.FromOADate(X).ToString(StringFormatX) : X.ToString(StringFormatX);
+            SizeF xLabelSize = Drawing.GDI.MeasureString(xLabel, LabelFont);
+
+            float xPos = xPixel - xLabelSize.Width / 2;
+            float yPos = XLabelOnTop ? dims.DataOffsetY - xLabelSize.Height : dims.DataOffsetY + dims.DataHeight;
+
+            RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
+            gfx.FillRectangle(fillBrush, xLabelRect);
+            var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
+            gfx.DrawString(xLabel, fnt, fontBrush, xPixel, yPos, sf);
         }
     }
 }
