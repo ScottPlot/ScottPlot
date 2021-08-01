@@ -163,7 +163,6 @@ namespace ScottPlot.Cookbook.Recipes
             // decorate the plot
             plt.Legend();
             plt.SetAxisLimits(yMin: 0, yMax: 1);
-            plt.Grid(lineStyle: LineStyle.Dot);
             plt.Title("Cumulative Probability Histogram");
             plt.XAxis.Label("Probability (fraction)");
             plt.YAxis.Label("Value (units)");
