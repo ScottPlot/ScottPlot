@@ -8,7 +8,7 @@ namespace ScottPlot.Statistics
 {
     public static class Common
     {
-        private readonly static RNGCryptoServiceProvider Rand = new RNGCryptoServiceProvider();
+        private readonly static RNGCryptoServiceProvider Rand = new();
 
         /// <summary>
         /// Return the minimum, and maximum, and sum of a given array.
@@ -16,7 +16,7 @@ namespace ScottPlot.Statistics
         public static (double min, double max, double sum) MinMaxSum(double[] values)
         {
             if (values is null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(values));
 
             if (values.Length == 0)
                 throw new ArgumentException("input cannot be empty");
@@ -283,12 +283,15 @@ namespace ScottPlot.Statistics
         /// </summary>
         /// <param name="values">original dataset</param>
         /// <param name="xs">Positions (Xs) for which probabilities (Ys) will be returned</param>
+        /// <param name="percent">if True, output will be multiplied by 100</param>
         /// <returns>Densities (Ys) for each of the given Xs</returns>
-        public static double[] ProbabilityDensity(double[] values, double[] xs)
+        public static double[] ProbabilityDensity(double[] values, double[] xs, bool percent = false)
         {
             var f = ProbabilityDensityFunction(values);
             double[] ys = xs.Select(x => (double)f(x)).ToArray();
             double sum = ys.Sum();
+            if (percent)
+                sum /= 100;
             for (int i = 0; i < ys.Length; i++)
                 ys[i] /= sum;
             return ys;
