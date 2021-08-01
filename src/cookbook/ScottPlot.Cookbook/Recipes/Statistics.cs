@@ -77,6 +77,111 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    public class HistogramMultiAxis : IRecipe
+    {
+        public string Category => "Statistics";
+        public string ID => "stats_histogramMultiAxis";
+        public string Title => "Histogram Multi-Axis";
+        public string Description =>
+            "This example demonstrates how to display a histogram counts on the primary Y axis " +
+            "and the probability curve on the secondary Y axis.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate sample heights are based on https://ourworldindata.org/human-height
+            Random rand = new(0);
+            double[] values = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
+
+            // create a histogram
+            (double[] probabilities, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 140, max: 220);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
+
+            // display histogram probabability as a bar plot
+            var bar = plt.AddBar(values: probabilities, positions: leftEdges);
+            bar.BarWidth = .6;
+            bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
+            bar.BorderLineWidth = 0;
+
+            // display histogram distribution curve as a line plot on a secondary Y axis
+            double[] densities = ScottPlot.Statistics.Common.ProbabilityDensity(values, binEdges, percent: true);
+            var probPlot = plt.AddScatterLines(
+                xs: binEdges,
+                ys: densities,
+                lineWidth: 2);
+            probPlot.YAxisIndex = 1;
+            plt.YAxis2.Ticks(true);
+            plt.YAxis2.Color(probPlot.Color);
+
+            // customize the plot style
+            plt.Title("Adult Male Height");
+            plt.YAxis.Label("Count (#)");
+            plt.YAxis2.Label("Probability (%)");
+            plt.XAxis.Label("Height (cm)");
+            plt.SetAxisLimits(yMin: 0);
+            plt.SetAxisLimits(yMin: 0, yAxisIndex: 1);
+        }
+    }
+
+    public class HistogramStdev : IRecipe
+    {
+        public string Category => "Statistics";
+        public string ID => "stats_histogramStdev";
+        public string Title => "Histogram Stdev";
+        public string Description =>
+            "This example demonstrates how to display a histogram with labeled mean and standard deviations.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate sample heights are based on https://ourworldindata.org/human-height
+            Random rand = new(0);
+            double[] values = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
+
+            // create a histogram
+            (double[] probabilities, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 140, max: 220);
+            double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
+
+            // display histogram probabability as a bar plot
+            var bar = plt.AddBar(values: probabilities, positions: leftEdges);
+            bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
+            bar.BorderLineWidth = 0;
+
+            // display histogram distribution curve as a line plot on a secondary Y axis
+            double[] smoothEdges = ScottPlot.DataGen.Range(start: binEdges.First(), stop: binEdges.Last(), step: 0.1, includeStop: true);
+            double[] smoothDensities = ScottPlot.Statistics.Common.ProbabilityDensity(values, smoothEdges, percent: true);
+            var probPlot = plt.AddScatterLines(
+                xs: smoothEdges,
+                ys: smoothDensities,
+                lineWidth: 2, 
+                label: "probability");
+            probPlot.YAxisIndex = 1;
+            plt.YAxis2.Ticks(true);
+
+            // display vertical lines at points of interest
+            var stats = new ScottPlot.Statistics.BasicStats(values);
+
+            plt.AddVerticalLine(stats.Mean, Color.Black, 2, LineStyle.Solid, "mean");
+
+            plt.AddVerticalLine(stats.Mean - stats.StDev, Color.Black, 2, LineStyle.Dash, "1 SD");
+            plt.AddVerticalLine(stats.Mean + stats.StDev, Color.Black, 2, LineStyle.Dash);
+
+            plt.AddVerticalLine(stats.Mean - stats.StDev * 2, Color.Black, 2, LineStyle.Dot, "2 SD");
+            plt.AddVerticalLine(stats.Mean + stats.StDev * 2, Color.Black, 2, LineStyle.Dot);
+
+            plt.AddVerticalLine(stats.Min, Color.Gray, 1, LineStyle.Dash, "min/max");
+            plt.AddVerticalLine(stats.Max, Color.Gray, 1, LineStyle.Dash);
+
+            plt.Legend(location: Alignment.UpperRight);
+
+            // customize the plot style
+            plt.Title("Adult Male Height");
+            plt.YAxis.Label("Count (#)");
+            plt.YAxis2.Label("Probability (%)");
+            plt.XAxis.Label("Height (cm)");
+            plt.SetAxisLimits(yMin: 0);
+            plt.SetAxisLimits(yMin: 0, yAxisIndex: 1);
+        }
+    }
+
     public class TwoHistograms : IRecipe
     {
         public string Category => "Statistics";
