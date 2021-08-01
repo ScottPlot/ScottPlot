@@ -25,6 +25,9 @@ namespace ScottPlot.Plottable
             if (ys is null || ys.Length == 0)
                 throw new InvalidOperationException("ys must be an array that contains elements");
 
+            if (xs != null && ys.Length != xs.Length)
+                throw new ArgumentException("bar plot Xs and Ys must have the same number of elements");
+
             Values = ys;
             Positions = xs ?? DataGen.Consecutive(ys.Length);
             ValueErrors = yErr ?? DataGen.Zeros(ys.Length);
