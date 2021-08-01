@@ -320,6 +320,20 @@ namespace ScottPlot.Statistics
         /// Compute the histogram of a dataset.
         /// </summary>
         /// <param name="values">Input data</param>
+        /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
+        /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        /// <param name="binSize">Width of each bin.</param>
+        /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
+        {
+            int binCount = (int)((max - min) / binSize);
+            return Histogram(values, binCount, density, min, max);
+        }
+
+        /// <summary>
+        /// Compute the histogram of a dataset.
+        /// </summary>
+        /// <param name="values">Input data</param>
         /// <param name="binCount">Number of equal-width bins</param>
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
