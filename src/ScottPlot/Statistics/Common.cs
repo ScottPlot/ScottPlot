@@ -266,6 +266,18 @@ namespace ScottPlot.Statistics
         }
 
         /// <summary>
+        /// Given a dataset of values return the probability density function.
+        /// The returned function is a Gaussian curve from 0 to 1 (not normalized)
+        /// </summary>
+        /// <param name="values">original dataset</param>
+        /// <returns>Function to return Y for a given X</returns>
+        public static Func<double, double?> ProbabilityDensityFunction(double[] values)
+        {
+            var stats = new ScottPlot.Statistics.BasicStats(values);
+            return x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
+        }
+
+        /// <summary>
         /// Given a dataset of values return the probability density function at specific X positions.
         /// Returned values will be normalized such that their integral is 1.
         /// </summary>
@@ -274,21 +286,11 @@ namespace ScottPlot.Statistics
         /// <returns>Densities (Ys) for each of the given Xs</returns>
         public static double[] ProbabilityDensity(double[] values, double[] xs)
         {
-            double[] ys = new double[xs.Length];
-            double sum = 0;
-
-            var stats = new ScottPlot.Statistics.BasicStats(values);
-            for (int i = 0; i < xs.Length; i++)
-            {
-                ys[i] = Math.Exp(-.5 * Math.Pow((xs[i] - stats.Mean) / stats.StDev, 2));
-                sum += ys[i];
-            }
-
+            var f = ProbabilityDensityFunction(values);
+            double[] ys = xs.Select(x => (double)f(x)).ToArray();
+            double sum = ys.Sum();
             for (int i = 0; i < ys.Length; i++)
-            {
                 ys[i] /= sum;
-            }
-
             return ys;
         }
 
