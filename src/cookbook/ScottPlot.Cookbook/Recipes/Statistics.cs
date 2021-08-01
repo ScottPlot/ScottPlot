@@ -151,7 +151,7 @@ namespace ScottPlot.Cookbook.Recipes
             var probPlot = plt.AddScatterLines(
                 xs: smoothEdges,
                 ys: smoothDensities,
-                lineWidth: 2, 
+                lineWidth: 2,
                 label: "probability");
             probPlot.YAxisIndex = 1;
             plt.YAxis2.Ticks(true);
@@ -199,7 +199,7 @@ namespace ScottPlot.Cookbook.Recipes
             double[] heightsFemale = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 164.7, stdDev: 7.1);
 
             // calculate histograms for male and female datasets
-            (double[] probMale, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(heightsMale, min: 140, max: 210, binSize: 1, density: true) ;
+            (double[] probMale, double[] binEdges) = ScottPlot.Statistics.Common.Histogram(heightsMale, min: 140, max: 210, binSize: 1, density: true);
             (double[] probFemale, _) = ScottPlot.Statistics.Common.Histogram(heightsFemale, min: 140, max: 210, binSize: 1, density: true);
             double[] leftEdges = binEdges.Take(binEdges.Length - 1).ToArray();
 
