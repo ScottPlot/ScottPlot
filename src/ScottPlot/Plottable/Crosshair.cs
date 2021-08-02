@@ -44,6 +44,11 @@ namespace ScottPlot.Plottable
         public bool IsDateTimeX = false;
 
         /// <summary>
+        /// If defined, this function will be used to generate labels from X position, value of StringFormatX and IsDateTimeX will be ignored
+        /// </summary>
+        public Func<double, string> ManualStringFormatterX = null;
+
+        /// <summary>
         /// If false, the vertical line marking the X position will not be rendered.
         /// </summary>
         public bool IsVisibleX = true;
@@ -58,6 +63,11 @@ namespace ScottPlot.Plottable
         /// If true, the Y position will be converted to DateTime before applying the format string
         /// </summary>
         public bool IsDateTimeY = false;
+
+        /// <summary>
+        /// If defined, this function will be used to generate labels from Y position, value of StringFormatY and IsDateTimeY will be ignored
+        /// </summary>
+        public Func<double, string> ManualStringFormatterY = null;
 
         /// <summary>
         /// If false, the horizontal line marking the Y position will not be rendered.
@@ -119,7 +129,7 @@ namespace ScottPlot.Plottable
             float yPixel = dims.GetPixelY(Y);
             gfx.DrawLine(pen, dims.DataOffsetX, yPixel, dims.DataOffsetX + dims.DataWidth, yPixel);
 
-            string yLabel = IsDateTimeY ? DateTime.FromOADate(Y).ToString(StringFormatY) : Y.ToString(StringFormatY);
+            string yLabel = ManualStringFormatterY != null ? ManualStringFormatterY(Y) : IsDateTimeY ? DateTime.FromOADate(Y).ToString(StringFormatY) : Y.ToString(StringFormatY);
             SizeF yLabelSize = Drawing.GDI.MeasureString(yLabel, LabelFont);
 
             float xPos = YLabelOnRight ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX - yLabelSize.Width;
@@ -142,7 +152,7 @@ namespace ScottPlot.Plottable
             float xPixel = dims.GetPixelX(X);
             gfx.DrawLine(pen, xPixel, dims.DataOffsetY, xPixel, dims.DataOffsetY + dims.DataHeight);
 
-            string xLabel = IsDateTimeX ? DateTime.FromOADate(X).ToString(StringFormatX) : X.ToString(StringFormatX);
+            string xLabel = ManualStringFormatterX != null ? ManualStringFormatterX(X) : IsDateTimeX ? DateTime.FromOADate(X).ToString(StringFormatX) : X.ToString(StringFormatX);
             SizeF xLabelSize = Drawing.GDI.MeasureString(xLabel, LabelFont);
 
             float xPos = xPixel - xLabelSize.Width / 2;
