@@ -161,10 +161,6 @@ namespace ScottPlot
             return bmp;
         }
 
-        [Obsolete("Use one of the other overloads of this function", error: true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] // disable intellisense suggestion
-        public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
-
         /// <summary>
         /// Create a new Bitmap, render the plot onto it, and return it
         /// </summary>
