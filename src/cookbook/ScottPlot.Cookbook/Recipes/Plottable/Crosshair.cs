@@ -154,8 +154,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var ch = plt.AddCrosshair(20, 0);
 
             // use the custom formatter for crosshair labels
-            ch.ManualStringFormatterX = customTickFormatter;
-            ch.ManualStringFormatterY = customTickFormatter;
+            ch.NumericStringFormatterX = customTickFormatter;
+            ch.NumericStringFormatterY = customTickFormatter;
         }
     }
 

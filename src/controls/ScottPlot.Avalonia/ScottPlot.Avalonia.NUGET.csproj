@@ -16,9 +16,9 @@ Release cookbook: http://swharden.com/scottplot/cookbook
 Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>false</IncludeSymbols>
-    <Version>4.1.17</Version>
-    <AssemblyVersion>4.1.17.0</AssemblyVersion>
-    <FileVersion>4.1.17.0</FileVersion>
+    <Version>4.1.16</Version>
+    <AssemblyVersion>4.1.16.0</AssemblyVersion>
+    <FileVersion>4.1.16.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
