@@ -7,18 +7,10 @@
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
-<DockPanel>
-    <TabControl>
-        <TabItem Header="Blocking Render">
-            <DockPanel>
-                <ScottPlot:WpfPlot Name="WpfPlot1"/>
-            </DockPanel>
-        </TabItem>
-        <TabItem Header="Render Queue">
-            <DockPanel>
-                <ScottPlot:WpfPlot Name="WpfPlot2"/>
-            </DockPanel>
-        </TabItem>
-    </TabControl>
-</DockPanel>
+    <DockPanel>
+        <WrapPanel>
+            <Button Content="Launch 10" Click="Button_Launch"/>
+            <Button Content="Close All" Click="Button_Close"/>
+        </WrapPanel>
+    </DockPanel>
 </Window>
