@@ -9,8 +9,18 @@
         Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
     <DockPanel>
         <WrapPanel>
-            <Button Content="Launch 10" Click="Button_Launch"/>
-            <Button Content="Close All" Click="Button_Close"/>
+            <Button 
+                Content="Open Windows" 
+                FontSize="30"
+                Margin="5"
+                Padding="10"
+                Click="Button_Open"/>
+            <Button 
+                Content="Close Windows" 
+                FontSize="30"
+                Margin="5"
+                Padding="10"
+                Click="Button_Close"/>
         </WrapPanel>
     </DockPanel>
 </Window>
