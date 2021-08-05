@@ -12,6 +12,8 @@ namespace WinFormsFrameworkApp
         {
             InitializeComponent();
             formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(100));
+            var vline = formsPlot1.Plot.AddVerticalLine(50);
+            vline.DragEnabled = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
