@@ -16,6 +16,7 @@
 * Axis: Axis ticks now have a `Ticks()` overload which allows selective control over major tick lines and major tick labels separately (#1118) _Thanks @kegesch_
 * Plot: `AxisAuto()` now has `xAxisIndex` and `yAxisIndex` arguments to selectively adjust axes to fit data on a specified index (#1123)
 * Crosshair: Added support for custom formatters (`Func<double, string>`) allowing users full control over label text. See cookbook for details. (#1173, #1172) _Thanks @Maoyao233_
+* ClevelandDotPlot: Improve automatic axis limit detection (#1185) _Thanks @Nextra_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
