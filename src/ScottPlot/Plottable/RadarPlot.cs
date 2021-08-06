@@ -227,68 +227,7 @@ namespace ScottPlot.Plottable
             using (System.Drawing.Font font = GDI.Font(Font))
             using (Brush fontBrush = GDI.Brush(Font.Color))
             {
-                for (int i = 0; i < radii.Length; i++)
-                {
-                    double hypotenuse = (radii[i] / radii[radii.Length - 1]);
-
-                    if (AxisType == RadarAxis.Circle)
-                    {
-                        gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
-                    }
-                    else if (AxisType == RadarAxis.Polygon)
-                    {
-                        PointF[] points = new PointF[numCategories];
-                        for (int j = 0; j < numCategories; j++)
-                        {
-                            float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
-                            float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
-
-                            points[j] = new PointF(x, y);
-                        }
-                        gfx.DrawPolygon(pen, points);
-                    }
-                    if (ShowAxisValues)
-                    {
-                        if (IndependentAxes)
-                        {
-                            for (int j = 0; j < numCategories; j++)
-                            {
-                                float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
-                                float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
-
-                                sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
-                                sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
-
-                                double val = NormMaxes[j] * radii[i] / minScale;
-                                gfx.DrawString($"{val:f1}", font, fontBrush, x, y, sf2);
-                            }
-                        }
-                        else
-                        {
-                            double val = NormMax * radii[i] / minScale;
-                            gfx.DrawString($"{val:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
-                        }
-                    }
-                }
-
-                for (int i = 0; i < numCategories; i++)
-                {
-                    PointF destination = new PointF((float)(1.1 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X), (float)(1.1 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
-                    gfx.DrawLine(pen, origin, destination);
-
-                    if (CategoryLabels != null)
-                    {
-                        PointF textDestination = new PointF(
-                            (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
-                            (float)(1.3 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
-
-                        if (Math.Abs(textDestination.X - origin.X) < 0.1)
-                            sf.Alignment = StringAlignment.Center;
-                        else
-                            sf.Alignment = dims.GetCoordinateX(textDestination.X) < 0 ? StringAlignment.Far : StringAlignment.Near;
-                        gfx.DrawString(CategoryLabels[i], font, fontBrush, textDestination, sf);
-                    }
-                }
+                RenderAxis(gfx, dims, bmp, lowQuality);
 
                 for (int i = 0; i < numGroups; i++)
                 {
@@ -304,6 +243,24 @@ namespace ScottPlot.Plottable
                     gfx.DrawPolygon(pen, points);
                 }
             }
+        }
+
+        private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            StarAxis axis = new()
+            {
+                Norm = Norm,
+                NormMax = NormMax,
+                NormMaxes = NormMaxes,
+                CategoryLabels = CategoryLabels,
+                AxisType = AxisType,
+                WebColor = WebColor,
+                IndependentAxes = IndependentAxes,
+                ShowAxisValues = ShowAxisValues,
+                Graphics = gfx
+            };
+
+            axis.Render(dims, bmp, lowQuality);
         }
     }
 }
