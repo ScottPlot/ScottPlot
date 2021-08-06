@@ -747,6 +747,21 @@ namespace ScottPlot
             return plottable;
         }
 
+        public CoxcombPlot AddCoxcomb(double[] values)
+		{
+            Color[] colors = Enumerable.Range(0, values.Length)
+                           .Select(i => settings.PlottablePalette.GetColor(i))
+                           .ToArray();
+
+            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+
+            CoxcombPlot plottable = new(values, colors);
+            Add(plottable);
+
+            return plottable;
+
+        }
+
         /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
