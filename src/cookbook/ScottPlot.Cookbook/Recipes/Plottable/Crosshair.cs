@@ -116,6 +116,45 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class CrosshairCustomLabelFormatter : IRecipe
+    {
+        public string Category => "Plottable: Crosshair";
+        public string ID => "crosshair_customlabelformatting";
+        public string Title => "Custom Label Format";
+        public string Description =>
+            "For ultimate control over crosshair label format you can create " +
+            "a custom formatter function and use that to convert positions to labels. " +
+            "This allows logic to be used to format crosshair labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+
+            var ch = plt.AddCrosshair(20, 0);
+
+            // create a custom formatter as a static class
+            static string customFormatter(double position)
+            {
+                if (position == 0)
+                    return "zero";
+                else if (position > 0)
+                    return $"+{position:F2}";
+                else
+                    return $"({Math.Abs(position):F2})";
+            }
+
+            // use the custom formatter for X and Y crosshair labels
+            ch.NumericStringFormatterX = customFormatter;
+            ch.NumericStringFormatterY = customFormatter;
+
+            // style the plot
+            plt.Title("Crosshair with Custom Label Formmater");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+        }
+    }
+
     public class CrosshairMultipleForDifferentAxes : IRecipe
     {
         public string Category => "Plottable: Crosshair";

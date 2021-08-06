@@ -14,6 +14,16 @@ namespace ScottPlot
         private readonly Settings settings = new Settings();
 
         /// <summary>
+        /// Plot image width (pixels)
+        /// </summary>
+        public float Width { get => settings.Width; set => Resize(value, settings.Height); }
+
+        /// <summary>
+        /// Plot image height (pixels)
+        /// </summary>
+        public float Height { get => settings.Height; set => Resize(settings.Width, value); }
+
+        /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
         /// </summary>
         /// <param name="width">default width (pixels) to use when rendering</param>

@@ -58,7 +58,7 @@ namespace ScottPlot.Renderable
                 if (MajorTickVisible)
                     AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
 
-                if (MajorTickVisible && TickLabelVisible)
+                if (TickLabelVisible)
                     AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
 
                 if (MinorTickVisible)
