@@ -54,6 +54,21 @@ namespace ScottPlot.Avalonia
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
+        /// <summary>
+        /// This event is invoked every time the plot is reset and is ready to be configured.
+        /// </summary>
+        public event EventHandler PlotInitialized
+        {
+            add
+            {
+                Backend.PlotInitialized += value;
+            }
+            remove
+            {
+                Backend.PlotInitialized -= value;
+            }
+        }
+
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();

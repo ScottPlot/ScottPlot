@@ -50,6 +50,21 @@ namespace ScottPlot
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
+        /// <summary>
+        /// This event is invoked every time the plot is reset and is ready to be configured.
+        /// </summary>
+        public event EventHandler PlotInitialized
+        {
+            add
+            {
+                Backend.PlotInitialized += value;
+            }
+            remove
+            {
+                Backend.PlotInitialized -= value;
+            }
+        }
+
         private readonly Control.ControlBackEnd Backend = new(1, 1);
         private readonly Dictionary<Cursor, System.Windows.Forms.Cursor> Cursors;
         private readonly bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";

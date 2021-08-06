@@ -98,6 +98,11 @@ namespace ScottPlot.Control
         public event EventHandler PlottableDropped = delegate { };
 
         /// <summary>
+        /// This event is invoked every time the plot is reset and is ready to be configured.
+        /// </summary>
+        public event EventHandler PlotInitialized = delegate { };
+
+        /// <summary>
         /// The control configuration object stores advanced customization and behavior settings
         /// for mouse-interactive plots.
         /// </summary>
@@ -258,6 +263,8 @@ namespace ScottPlot.Control
             Settings = Plot.GetSettings(false);
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             Resize(width, height, useDelayedRendering: false);
+
+            PlotInitialized.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>
