@@ -8,6 +8,7 @@
 * Testing: Improved error reporting on failed XML documentation tests (#1127) _Thanks @StendProg_
 * Histogram: Marked `ScottPlot.Statistics.Histogram` obsolete in favor of static methods in `ScottPlot.Statistics.Common` designed to create histograms and probability function curves (#1051, #1166). See cookbook for usage examples. _Thanks @breakwinz and @bclehmann_
 * WpfPlot: Improve memory management for dynamically created and destroyed WpfPlot controls by properly unloading the dispatcher timer (#1115, #1117) _Thanks @RamsayGit, @bclehmann, @StendProg, and @Orace_
+* ClevelandDotPlot: Improve automatic axis limit detection (#1185) _Thanks @Nextra_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
