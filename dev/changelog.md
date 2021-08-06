@@ -12,7 +12,7 @@
 * Rendering: Fixed clipping bug that caused some plot types to be rendered above data area frames (#1084)
 * Plot: Added `Width` and `Height` properties
 * Plot: `GetImageBytes()` now returns bytes for a PNG file for easier storage in cloud applications (#1107)
-* Axis: Added a `GetSettings()` method for developers, testers, and experimenters to gain access to experimental objects which are normally private for extreme customization (#1118)
+* Axis: Added a `GetSettings()` method for developers, testers, and experimenters to gain access to experimental objects which are normally private for extreme customization (#1118) _Thanks @kegesch_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
