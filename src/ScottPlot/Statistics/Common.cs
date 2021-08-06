@@ -8,14 +8,44 @@ namespace ScottPlot.Statistics
 {
     public static class Common
     {
-        private readonly static RNGCryptoServiceProvider Rand = new RNGCryptoServiceProvider();
+        private readonly static RNGCryptoServiceProvider Rand = new();
 
         /// <summary>
-        /// Return the standard deviation of the given values
+        /// Return the minimum, and maximum, and sum of a given array.
         /// </summary>
-        public static double StDev(double[] values)
+        public static (double min, double max, double sum) MinMaxSum(double[] values)
         {
-            double mean = Mean(values);
+            if (values is null)
+                throw new ArgumentNullException(nameof(values));
+
+            if (values.Length == 0)
+                throw new ArgumentException("input cannot be empty");
+
+            double min = double.MaxValue;
+            double max = double.MinValue;
+            double sum = 0;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                min = Math.Min(min, values[i]);
+                max = Math.Max(max, values[i]);
+                sum += values[i];
+            }
+
+            return (min, max, sum);
+        }
+
+        /// <summary>
+        /// Return the standard deviation of the given values.
+        /// </summary>
+        public static double StDev(double[] values) => StDev(values, Mean(values));
+
+        /// <summary>
+        /// Return the standard deviation of the given values.
+        /// This overload is faster because the mean of the values is provided.
+        /// </summary>
+        public static double StDev(double[] values, double mean)
+        {
             double sumVariancesSquared = 0;
             for (int i = 0; i < values.Length; i++)
             {
@@ -233,6 +263,133 @@ namespace ScottPlot.Statistics
             values[pivotIndex] = tmp2;
 
             return pivotIndex;
+        }
+
+        /// <summary>
+        /// Given a dataset of values return the probability density function.
+        /// The returned function is a Gaussian curve from 0 to 1 (not normalized)
+        /// </summary>
+        /// <param name="values">original dataset</param>
+        /// <returns>Function to return Y for a given X</returns>
+        public static Func<double, double?> ProbabilityDensityFunction(double[] values)
+        {
+            var stats = new ScottPlot.Statistics.BasicStats(values);
+            return x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
+        }
+
+        /// <summary>
+        /// Given a dataset of values return the probability density function at specific X positions.
+        /// Returned values will be normalized such that their integral is 1.
+        /// </summary>
+        /// <param name="values">original dataset</param>
+        /// <param name="xs">Positions (Xs) for which probabilities (Ys) will be returned</param>
+        /// <param name="percent">if True, output will be multiplied by 100</param>
+        /// <returns>Densities (Ys) for each of the given Xs</returns>
+        public static double[] ProbabilityDensity(double[] values, double[] xs, bool percent = false)
+        {
+            var f = ProbabilityDensityFunction(values);
+            double[] ys = xs.Select(x => (double)f(x)).ToArray();
+            double sum = ys.Sum();
+            if (percent)
+                sum /= 100;
+            for (int i = 0; i < ys.Length; i++)
+                ys[i] /= sum;
+            return ys;
+        }
+
+        /// <summary>
+        /// Return the cumulative sum of the given data
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static double[] CumulativeSum(double[] values)
+        {
+            double[] sum = new double[values.Length];
+
+            sum[0] = values[0];
+
+            for (int i = 1; i < values.Length; i++)
+            {
+                sum[i] = sum[i - 1] + values[i];
+            }
+
+            return sum;
+        }
+
+        /// <summary>
+        /// Compute the histogram of a dataset.
+        /// </summary>
+        /// <param name="values">Input data</param>
+        /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
+        /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        /// <param name="binSize">Width of each bin.</param>
+        /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
+        {
+            int binCount = (int)((max - min) / binSize);
+            return Histogram(values, binCount, density, min, max);
+        }
+
+        /// <summary>
+        /// Compute the histogram of a dataset.
+        /// </summary>
+        /// <param name="values">Input data</param>
+        /// <param name="binCount">Number of equal-width bins</param>
+        /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
+        /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        /// <returns></returns>
+        public static (double[] hist, double[] binEdges) Histogram(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
+        {
+            /* note: function signature loosely matches numpy: 
+             * https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
+             */
+
+            // determine min/max based on the data (if not provided)
+            if (double.IsNaN(min) || double.IsNaN(max))
+            {
+                var stats = new BasicStats(values);
+                if (double.IsNaN(min))
+                    min = stats.Min;
+                if (double.IsNaN(max))
+                    max = stats.Max;
+            }
+
+            // create evenly sized bins
+            double binWidth = (max - min) / binCount;
+            double[] binEdges = new double[binCount + 1];
+            for (int i = 0; i < binEdges.Length; i++)
+                binEdges[i] = min + binWidth * i;
+
+            // place values in histogram
+            double[] hist = new double[binCount];
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] < min || values[i] > max)
+                {
+                    continue;
+                }
+
+                if (values[i] == max)
+                {
+                    hist[values.Length - 1] += 1;
+                    continue;
+                }
+
+                double distanceFromMin = values[i] - min;
+                int binsFromMin = (int)(distanceFromMin / binWidth);
+                hist[binsFromMin] += 1;
+            }
+
+            // optionally normalize the data
+            if (density)
+            {
+                double binScale = hist.Sum() * binWidth;
+                for (int i = 0; i < hist.Length; i++)
+                    hist[i] /= binScale;
+            }
+
+            return (hist, binEdges);
         }
     }
 }

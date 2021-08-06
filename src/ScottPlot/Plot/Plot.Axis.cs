@@ -390,8 +390,26 @@ namespace ScottPlot
         /// </summary>
         /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
         /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1) =>
-            settings.AxisAutoAll(horizontalMargin, verticalMargin);
+        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1, int? xAxisIndex = null, int? yAxisIndex = null)
+        {
+            if (xAxisIndex is null && yAxisIndex is null)
+            {
+                settings.AxisAutoAll(horizontalMargin, verticalMargin);
+                return;
+            }
+
+            if (xAxisIndex is null)
+                settings.AxisAutoAllX(horizontalMargin);
+            else
+                settings.AxisAutoX(xAxisIndex.Value, horizontalMargin);
+
+            if (yAxisIndex is null)
+                settings.AxisAutoAllY(verticalMargin);
+            else
+                settings.AxisAutoY(yAxisIndex.Value, verticalMargin);
+        }
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data
@@ -399,6 +417,8 @@ namespace ScottPlot
         /// <param name="margin">amount of space to the left and right of the data (as a fraction of its width)</param>
         public void AxisAutoX(double margin = .05)
         {
+            // TODO: improve support for non-primary axis indexes
+
             if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(yMin: -10, yMax: 10);
@@ -416,6 +436,8 @@ namespace ScottPlot
         /// <param name="margin">amount of space above and below the data (as a fraction of its height)</param>
         public void AxisAutoY(double margin = .1)
         {
+            // TODO: improve support for non-primary axis indexes
+
             if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(xMin: -10, xMax: 10);

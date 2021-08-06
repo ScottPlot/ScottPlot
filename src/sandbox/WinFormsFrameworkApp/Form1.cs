@@ -1,4 +1,5 @@
-﻿using ScottPlot.Plottable;
+﻿using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -11,19 +12,18 @@ namespace WinFormsFrameworkApp
         public Form1()
         {
             InitializeComponent();
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(100));
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AxisAutoX();
-            formsPlot1.Render();
-        }
+            double[,] data = DataGen.Random2D(new Random(), 10, 10);
+            var hm = formsPlot1.Plot.AddHeatmap(data, lockScales: false);
+            formsPlot1.Plot.AddColorbar(hm.Colormap);
+            formsPlot1.Plot.SetAxisLimits(2.5, 2.6, 2.5, 2.6);
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AxisAutoY();
-            formsPlot1.Render();
+            // hide major tick marks (but not labels)
+            formsPlot1.Plot.YAxis.Ticks(major: false, minor: true, majorLabels: true);
+
+            // make ticks 0 to allow labels to be placed close to the edge of the plot
+            (_, var ticks, _) = formsPlot1.Plot.YAxis.GetSettings(showWarning: false);
+            ticks.MajorTickLength = 0;
         }
     }
 }
