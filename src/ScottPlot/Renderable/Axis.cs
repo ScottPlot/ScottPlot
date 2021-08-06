@@ -322,10 +322,10 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set visibility of individual tick components
         /// </summary>
-        public void Ticks(bool major, bool minor = true, bool majorLabels = true)
+        public void Ticks(bool major, bool minor, bool majorLabels = true)
         {
             AxisTicks.MajorTickVisible = major;
-            AxisTicks.TickLabelVisible = major && majorLabels;
+            AxisTicks.TickLabelVisible = majorLabels;
             AxisTicks.MinorTickVisible = minor;
         }
 
