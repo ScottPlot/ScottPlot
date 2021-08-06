@@ -111,13 +111,15 @@ namespace ScottPlot
             RightClicked += DefaultRightClickEvent;
             PlottableCountTimer.Tick += PlottableCountTimer_Tick;
             PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
-            PlottableCountTimer.Start();
 
             InitializeComponent();
 
             ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
 
             Backend.StartProcessingEvents();
+
+            Loaded += (_, _) => PlottableCountTimer.Start();
+            Unloaded += (_, _) => PlottableCountTimer.Stop();
         }
 
         /// <summary>

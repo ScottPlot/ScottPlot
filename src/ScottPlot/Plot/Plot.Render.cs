@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 
 namespace ScottPlot
@@ -161,14 +162,24 @@ namespace ScottPlot
             return bmp;
         }
 
-        [Obsolete("Use one of the other overloads of this function", error: true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] // disable intellisense suggestion
-        public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
-
         /// <summary>
         /// Create a new Bitmap, render the plot onto it, and return it
         /// </summary>
         public Bitmap GetBitmap(bool lowQuality = false, double scale = 1.0) => Render(settings.Width, settings.Height, lowQuality, scale);
+
+        /// <summary>
+        /// Render the plot and return the bytes for a PNG file.
+        /// This method is useful for rendering in stateless cloud environments that do not use a traditional filesystem.
+        /// </summary>
+        /// <returns></returns>
+        public byte[] GetImageBytes(bool lowQuality = false, double scale = 1.0)
+        {
+            using MemoryStream stream = new();
+            Bitmap bmp = GetBitmap(lowQuality, scale);
+            bmp.Save(stream, ImageFormat.Png);
+            byte[] imageBytes = stream.ToArray();
+            return imageBytes;
+        }
 
         /// <summary>
         /// Return a new Bitmap containing only the legend

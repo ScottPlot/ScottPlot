@@ -18,8 +18,7 @@ namespace ScottPlot
 
 namespace ScottPlot.Statistics
 {
-    // TODO: This class needs refactoring to improve names.
-    // Use numpy.histogram as a reference: https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
+    [Obsolete("This module is obsolete. Use ScottPlot.Statistics.Common methods instead.", error: false)]
     public class Histogram
     {
         /// <summary>

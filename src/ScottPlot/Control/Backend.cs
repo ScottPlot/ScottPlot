@@ -521,6 +521,7 @@ namespace ScottPlot.Control
             }
             else
             {
+                //Console.WriteLine($"[{DateTime.Now:ss.ffff}] PROCESSING: {uiEvent}");
                 uiEvent.ProcessEvent();
 
                 if (uiEvent.RenderType == RenderType.ProcessMouseEventsOnly)
@@ -570,7 +571,6 @@ namespace ScottPlot.Control
         public void MouseUp(InputState input)
         {
             var droppedPlottable = PlottableBeingDragged;
-            PlottableBeingDragged = null;
 
             IUIEvent mouseEvent;
             if (IsZoomingRectangle && MouseDownDragged && Configuration.MiddleClickDragZoom)
@@ -592,6 +592,10 @@ namespace ScottPlot.Control
 
             if (droppedPlottable != null)
                 PlottableDropped(droppedPlottable, EventArgs.Empty);
+
+            PlottableBeingDragged = null;
+            if (droppedPlottable != null)
+                ProcessEvent(EventFactory.CreateMouseUpClearRender());
         }
 
         /// <summary>

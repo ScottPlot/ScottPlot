@@ -1,10 +1,20 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.17
+* Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
 * Radar Plot: Improved `Update()` default arguments (#1097) _Thanks @arthurits_
 * Crosshair: Added `XLabelOnTop` and `YLabelOnRight` options to improve multi-axis support and label customization (#1147) _Thanks @rutkowskit_
 * Signal Plot: Added `StepDisplay` option to render signal plots as step plots when zoomed in (#1092, #1128) _Thanks @EmanuelFeru_
 * Testing: Improved error reporting on failed XML documentation tests (#1127) _Thanks @StendProg_
+* Histogram: Marked `ScottPlot.Statistics.Histogram` obsolete in favor of static methods in `ScottPlot.Statistics.Common` designed to create histograms and probability function curves (#1051, #1166). See cookbook for usage examples. _Thanks @breakwinz and @bclehmann_
+* WpfPlot: Improve memory management for dynamically created and destroyed WpfPlot controls by properly unloading the dispatcher timer (#1115, #1117) _Thanks @RamsayGit, @bclehmann, @StendProg, and @Orace_
+* Mouse Processing: Improved bug that affected fast drag-dropping of draggable objects (#1076)
+* Rendering: Fixed clipping bug that caused some plot types to be rendered above data area frames (#1084)
+* Plot: Added `Width` and `Height` properties
+* Plot: `GetImageBytes()` now returns bytes for a PNG file for easier storage in cloud applications (#1107)
+* Axis: Added a `GetSettings()` method for developers, testers, and experimenters to gain access to experimental objects which are normally private for extreme customization
+* Axis: Axis ticks now have a `Ticks()` overload which allows selective control over major tick lines and major tick labels separately (#1118) _Thanks @kegesch_
+* Plot: `AxisAuto()` now has `xAxisIndex` and `yAxisIndex` arguments to selectively adjust axes to fit data on a specified index (#1123)
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_

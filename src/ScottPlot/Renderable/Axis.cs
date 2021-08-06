@@ -60,6 +60,23 @@ namespace ScottPlot.Renderable
         private readonly AxisLine AxisLine = new AxisLine();
 
         /// <summary>
+        /// Return configuration objects to allow deep customization of axis settings.
+        /// WARNING: This API may not be stable across future versions.
+        /// </summary>
+        public (AxisLabel, AxisTicks, AxisLine) GetSettings(bool showWarning = true)
+        {
+            if (showWarning)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    "WARNING: GetSettings() is only for development and testing. " +
+                    "Not all features may be fully implemented. " +
+                    "Its API may not be stable across future versions.");
+            }
+
+            return (AxisLabel, AxisTicks, AxisLine);
+        }
+
+        /// <summary>
         /// Define the size limits for this axis (in pixel units).
         /// </summary>
         public void SetSizeLimit(float? min = null, float? max = null, float? pad = null)
@@ -305,10 +322,10 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set visibility of individual tick components
         /// </summary>
-        public void Ticks(bool major, bool minor = true, bool majorLabels = true)
+        public void Ticks(bool major, bool minor, bool majorLabels = true)
         {
             AxisTicks.MajorTickVisible = major;
-            AxisTicks.TickLabelVisible = major && majorLabels;
+            AxisTicks.TickLabelVisible = majorLabels;
             AxisTicks.MinorTickVisible = minor;
         }
 
