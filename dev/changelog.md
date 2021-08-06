@@ -5,6 +5,7 @@
 * Crosshair: Added `XLabelOnTop` and `YLabelOnRight` options to improve multi-axis support and label customization (#1147) _Thanks @rutkowskit_
 * Signal Plot: Added `StepDisplay` option to render signal plots as step plots when zoomed in (#1092, #1128) _Thanks @EmanuelFeru_
 * Testing: Improved error reporting on failed XML documentation tests (#1127) _Thanks @StendProg_
+* Crosshair: Added support for custom formatters (`Func<double, string>`) allowing users full control over label text. See cookbook for details. (#1173, #1172) _Thanks @Maoyao233_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
