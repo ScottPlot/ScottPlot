@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Crosshair";
         public string ID => "crosshair_customlabelformatting";
-        public string Title => "Custom Axis Label";
+        public string Title => "Custom Label Format";
         public string Description =>
             "For ultimate control over crosshair label format you can create " +
             "a custom formatter function and use that to convert positions to labels. " +
@@ -128,15 +128,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Title("Crosshair with Custom Label Formmater");
-            plt.XLabel("Horizontal Axis");
-            plt.YLabel("Vertical Axis");
-
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
             plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
+            var ch = plt.AddCrosshair(20, 0);
+
             // create a custom formatter as a static class
-            static string customTickFormatter(double position)
+            static string customFormatter(double position)
             {
                 if (position == 0)
                     return "zero";
@@ -146,16 +144,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                     return $"({Math.Abs(position):F2})";
             }
 
-            // use the custom formatter for horizontal and vertical tick labels
-            plt.XAxis.TickLabelFormat(customTickFormatter);
-            plt.YAxis.TickLabelFormat(customTickFormatter);
+            // use the custom formatter for X and Y crosshair labels
+            ch.NumericStringFormatterX = customFormatter;
+            ch.NumericStringFormatterY = customFormatter;
 
-            // add a crosshair
-            var ch = plt.AddCrosshair(20, 0);
-
-            // use the custom formatter for crosshair labels
-            ch.NumericStringFormatterX = customTickFormatter;
-            ch.NumericStringFormatterY = customTickFormatter;
+            // style the plot
+            plt.Title("Crosshair with Custom Label Formmater");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
