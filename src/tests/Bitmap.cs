@@ -50,5 +50,22 @@ namespace ScottPlotTests
                 }
             }
         }
+        [Test]
+        public void Test_Plot_WidthAndHeight()
+        {
+            var plt = new ScottPlot.Plot(111, 222);
+            Assert.AreEqual(111, plt.Width);
+            Assert.AreEqual(222, plt.Height);
+
+            plt.Resize(333, 444);
+            Assert.AreEqual(333, plt.Width);
+            Assert.AreEqual(444, plt.Height);
+
+            plt.Width = 123;
+            plt.Height = 321;
+            var bmp = plt.GetBitmap();
+            Assert.AreEqual(123, bmp.Width);
+            Assert.AreEqual(321, bmp.Height);
+        }
     }
 }
