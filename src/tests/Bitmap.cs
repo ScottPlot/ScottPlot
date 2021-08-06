@@ -50,6 +50,23 @@ namespace ScottPlotTests
                 }
             }
         }
+
+        [Test]
+        public void Test_GetBitmapBytes_IsValidPng()
+        {
+            string outputFilePath = Path.GetFullPath("imageBytes.png");
+
+            var plt = new ScottPlot.Plot(321, 123);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+            byte[] bytes = plt.GetImageBytes();
+            File.WriteAllBytes(outputFilePath, bytes);
+
+            var bmp = new System.Drawing.Bitmap(outputFilePath);
+            Assert.AreEqual(plt.Width, bmp.Width);
+            Assert.AreEqual(plt.Height, bmp.Height);
+        }
+
         [Test]
         public void Test_Plot_WidthAndHeight()
         {

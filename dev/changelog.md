@@ -11,6 +11,7 @@
 * Mouse Processing: Improved bug that affected fast drag-dropping of draggable objects (#1076)
 * Rendering: Fixed clipping bug that caused some plot types to be rendered above data area frames (#1084)
 * Plot: Added `Width` and `Height` properties
+* Plot: `GetImageBytes()` now returns bytes for a PNG file for easier storage in cloud applications (#1107)
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
