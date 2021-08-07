@@ -19,6 +19,7 @@
 * ClevelandDotPlot: Improve automatic axis limit detection (#1185) _Thanks @Nextra_
 * ScatterPlotList: Improved legend formatting (#1190) _Thanks @Maoyao233_
 * Plot: Added an optional argument to `Frameless()` to reverse its behavior and deprecated `Frame()` (#1112, #1192) _Thanks @arthurits_
+* AxisLine: Added `PositionLabel` option for displaying position as text (using a user-customizable formatter function) on the axis (#1122, #1195, #1172, #1173) _Thanks @EmanuelFeru and @Maoyao233_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
