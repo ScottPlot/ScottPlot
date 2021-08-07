@@ -91,12 +91,30 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
-    class TicksHideX : IRecipe
+    class Frameless : IRecipe
     {
         public string Category => "Axis and Ticks";
-        public string ID => "ticks_hidex";
-        public string Title => "Disable X Ticks";
-        public string Description => "Ticks can be hidden on a single axis.";
+        public string ID => "asis_frameless";
+        public string Title => "Frameless Plots";
+        public string Description => "Frameless plots can display data that appraoches the edge of the figure.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+            plt.AxisAuto(0, 0); // zero margin between data and edge of plot
+            plt.Frameless();
+        }
+    }
+
+    class OneAxisOnly : IRecipe
+    {
+        public string Category => "Axis and Ticks";
+        public string ID => "one_axisonly";
+        public string Title => "One Axis Only";
+        public string Description => "Axis ticks and lines can be disabled. " +
+            "Note that hiding them in this way preserves their whitespace. " +
+            "Setting XAxis.IsVisible to false would collapse the axis entirely. ";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -106,6 +124,11 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
             // hide just the horizontal axis ticks
             plt.XAxis.Ticks(false);
+
+            // hide the lines on the bottom, right, and top of the plot
+            plt.XAxis.Line(false);
+            plt.YAxis2.Line(false);
+            plt.XAxis2.Line(false);
         }
     }
 
