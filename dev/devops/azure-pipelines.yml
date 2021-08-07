@@ -6,7 +6,7 @@ schedules:
     displayName: Daily midnight build
     branches:
       include:
-        - master
+      - master
     always: true
 
 strategy:
