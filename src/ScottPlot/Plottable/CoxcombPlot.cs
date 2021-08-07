@@ -14,13 +14,14 @@ namespace ScottPlot.Plottable
 		public double[] Values
 		{
 			get => _values;
-			set {
+			set
+			{
 				_values = value;
 				Normalized = Normalize(value);
 			}
 		}
 		public Color[] FillColors { get; set; }
-		public Color WebColor { get; set; }
+		public Color WebColor { get; set; } = Color.Gray;
 
 		/// <summary>
 		/// Controls rendering style of the concentric circles (ticks) of the web
@@ -29,6 +30,14 @@ namespace ScottPlot.Plottable
 		public bool IsVisible { get; set; } = true;
 		public int XAxisIndex { get; set; } = 0;
 		public int YAxisIndex { get; set; } = 0;
+		public bool ShowAxisValues { get; set; } = true;
+
+		/// <summary>
+		/// Labels for each category.
+		/// Length must be equal to the number of columns (categories) in the original data.
+		/// </summary>
+		public string[] SliceLabels;
+		public string Label;
 
 		private double[] Normalized;
 
@@ -43,14 +52,14 @@ namespace ScottPlot.Plottable
 			int numCategories = Normalized.Length;
 			PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 			double sweepAngle = 360f / numCategories;
-			double maxDiameterPixels = .9 * Math.Min(dims.DataWidth, dims.DataHeight);
+			double maxRadiusPixels = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
+			double maxDiameterPixels = maxRadiusPixels * 2;
+
 
 			using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 			using SolidBrush sliceFillBrush = (SolidBrush)GDI.Brush(Color.Black);
 
-
 			RenderAxis(gfx, dims, bmp, lowQuality);
-
 
 			double start = -90;
 			for (int i = 0; i < numCategories; i++)
@@ -74,7 +83,7 @@ namespace ScottPlot.Plottable
 		private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
 		{
 			double[,] Norm = new double[Normalized.Length, 1];
-			for(int i = 0; i < Normalized.Length; i++)
+			for (int i = 0; i < Normalized.Length; i++)
 			{
 				Norm[i, 0] = Normalized[i];
 			}
@@ -82,14 +91,16 @@ namespace ScottPlot.Plottable
 			StarAxis axis = new()
 			{
 				Norm = Norm,
-				NormMax = Normalized.Max(),
+				NormMax = Values.Max(),
 				NormMaxes = null,
-				CategoryLabels = null,
+				CategoryLabels = SliceLabels,
 				AxisType = AxisType,
 				WebColor = WebColor,
 				IndependentAxes = false,
-				ShowAxisValues = true,
-				Graphics = gfx
+				ShowAxisValues = ShowAxisValues,
+				Graphics = gfx,
+				ShowCategoryLabels = false,
+				NumberOfSpokes = Values.Length
 			};
 
 			axis.Render(dims, bmp, lowQuality);
@@ -99,7 +110,7 @@ namespace ScottPlot.Plottable
 		{
 			double Max = values.Max();
 
-			if(Max == 0)
+			if (Max == 0)
 			{
 				return values.Select(_ => 0.0).ToArray();
 			}
@@ -109,10 +120,22 @@ namespace ScottPlot.Plottable
 
 		public LegendItem[] GetLegendItems()
 		{
-			return null; // TODO: Do once we have labels
+			if (SliceLabels is null)
+				return null;
+
+			return Enumerable
+				.Range(0, Values.Length)
+				.Select(i => new LegendItem() { label = SliceLabels[i], color = FillColors[i], lineWidth = 10 })
+				.ToArray();
 		}
-		
-		public AxisLimits GetAxisLimits() => new AxisLimits(-0.5, 0.5, -1, 1);
+
+		public AxisLimits GetAxisLimits() => new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+
+		public override string ToString()
+		{
+			string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
+			return $"PlottableCoxcomb {label} with {Values.Length} categories";
+		}
 
 		public void ValidateData(bool deep = false)
 		{

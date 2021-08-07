@@ -21,1050 +21,1056 @@ using System.Linq;
 
 namespace ScottPlot
 {
-    public partial class Plot
-    {
-        /// <summary>
-        /// Display text in the data area at a pixel location (not a X/Y coordinates)
-        /// </summary>
-        public Annotation AddAnnotation(string label, double x, double y)
-        {
-            var plottable = new Annotation() { Label = label, X = x, Y = y };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Display an arrow pointing to a spot in coordinate space
-        /// </summary>
-        public ScatterPlot AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
-        {
-            double[] xs = { xBase, xTip };
-            double[] ys = { yBase, yTip };
-            var plottable = new ScatterPlot(xs, ys)
-            {
-                LineWidth = lineWidth,
-                MarkerSize = 0,
-                Color = color ?? GetNextColor(),
-                ArrowheadLength = 3,
-                ArrowheadWidth = 3
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a Cleveland Dot plot for the given values. Cleveland Dots will be placed at X positions 0, 1, 2, etc.
-        /// </summary>
-        public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2)
-        {
-            double[] xs = DataGen.Consecutive(ys1.Length);
-            var plottable = new ClevelandDotPlot(xs, ys1, ys2);
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a Cleveland Dot plot for the given values using defined dot positions.
-        /// </summary>
-        public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2, double[] positions)
-        {
-            var plottable = new ClevelandDotPlot(positions, ys1, ys2);
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a Lollipop plot for the given values. Lollipops will be placed at X positions 0, 1, 2, etc.
-        /// </summary>
-        public LollipopPlot AddLollipop(double[] values, Color? color = null)
-        {
-            double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new LollipopPlot(xs, values)
-            {
-                LollipopColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a lollipop plot for the given values using defined lollipop positions
-        /// </summary>
-        public LollipopPlot AddLollipop(double[] values, double[] positions, Color? color = null)
-        {
-            var plottable = new LollipopPlot(positions, values)
-            {
-                LollipopColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
-        /// </summary>
-        public BarPlot AddBar(double[] values, Color? color = null)
-        {
-            double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new BarPlot(xs, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a bar plot for the given values using defined bar positions
-        /// </summary>
-        public BarPlot AddBar(double[] values, double[] positions, Color? color = null)
-        {
-            var plottable = new BarPlot(positions, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a bar plot (values +/- errors) using defined positions
-        /// </summary>
-        public BarPlot AddBar(double[] values, double[] errors, double[] positions, Color? color = null)
-        {
-            var plottable = new BarPlot(positions, values, errors, null)
-            {
-                FillColor = color ?? GetNextColor(),
-                FillColorNegative = color ?? GetNextColor(),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Create a series of bar plots and customize the ticks and legend
-        /// </summary>
-        public BarPlot[] AddBarGroups(string[] groupLabels, string[] seriesLabels, double[][] ys, double[][] yErr)
-        {
-            if (groupLabels is null || seriesLabels is null || ys is null)
-                throw new ArgumentException("labels and ys cannot be null");
-
-            if (seriesLabels.Length != ys.Length)
-                throw new ArgumentException("groupLabels and ys must be the same length");
-
-            foreach (double[] subArray in ys)
-                if (subArray.Length != groupLabels.Length)
-                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
-
-            double groupWidthFraction = 0.8;
-            double barWidthFraction = 0.8;
-            double errorCapSize = 0.38;
-
-            int seriesCount = ys.Length;
-            double barWidth = groupWidthFraction / seriesCount;
-            BarPlot[] bars = new BarPlot[seriesCount];
-            bool containsNegativeY = false;
-            for (int i = 0; i < seriesCount; i++)
-            {
-                double[] barYs = ys[i];
-                double[] barYerr = yErr?[i];
-                double[] barXs = DataGen.Consecutive(barYs.Length);
-                containsNegativeY |= barYs.Where(y => y < 0).Any();
-                var bar = new BarPlot(barXs, barYs, barYerr, null)
-                {
-                    Label = seriesLabels[i],
-                    BarWidth = barWidth * barWidthFraction,
-                    PositionOffset = i * barWidth,
-                    ErrorCapSize = errorCapSize,
-                    FillColor = GetNextColor()
-                };
-                bars[i] = bar;
-                Add(bar);
-            }
-
-            if (containsNegativeY)
-                AxisAuto();
-
-            double[] groupPositions = DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2);
-            XTicks(groupPositions, groupLabels);
-
-            return bars;
-        }
-
-        /// <summary>
-        /// Add an empty bubble plot. Call it's Add() method to add bubbles with custom position and styling.
-        /// </summary>
-        public BubblePlot AddBubblePlot()
-        {
-            BubblePlot bubblePlot = new();
-            Add(bubblePlot);
-            return bubblePlot;
-        }
-
-        /// <summary>
-        /// Add a bubble plot with multiple bubbles at the given positions all styled the same.
-        /// Call the Add() method to add bubbles manually, allowing further customization of size and style.
-        /// </summary>
-        public BubblePlot AddBubblePlot(double[] xs, double[] ys, double radius = 10, Color? fillColor = null, double edgeWidth = 1, Color? edgeColor = null)
-        {
-            BubblePlot bubblePlot = new();
-            bubblePlot.Add(xs, ys, radius, fillColor ?? GetNextColor(), edgeWidth, edgeColor ?? Color.Black);
-            Add(bubblePlot);
-            return bubblePlot;
-        }
-
-        /// <summary>
-        /// Add candlesticks to the chart from OHLC (open, high, low, close) data
-        /// </summary>
-        public FinancePlot AddCandlesticks(OHLC[] ohlcs)
-        {
-            FinancePlot plottable = new FinancePlot(ohlcs)
-            {
-                Candle = true,
-                ColorUp = ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = ColorTranslator.FromHtml("#ef5350"),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a colorbar to display a colormap beside the data area
-        /// </summary>
-        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
-        {
-            var cb = new Colorbar(colormap);
-            Add(cb);
-            YAxis2.SetSizeLimit(min: space);
-            return cb;
-        }
-
-        /// <summary>
-        /// Add a colorbar initialized with settings from a heatmap
-        /// </summary>
-        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
-        {
-            var cb = new Colorbar(heatmap.Colormap);
-            cb.AddTick(0, heatmap.ColorbarMin);
-            cb.AddTick(1, heatmap.ColorbarMax);
-            Add(cb);
-            YAxis2.SetSizeLimit(min: space);
-            return cb;
-        }
-
-        /// <summary>
-        /// Add a crosshair to the plot
-        /// </summary>
-        /// <param name="x">position of vertical line (axis units)</param>
-        /// <param name="y">position of horizontal line (axis units)</param>
-        /// <returns>the crosshair that was just created</returns>
-        public Crosshair AddCrosshair(double x, double y)
-        {
-            Crosshair ch = new() { X = x, Y = y };
-            Add(ch);
-            return ch;
-        }
-
-        /// <summary>
-        /// Create a polygon to fill the area between Y values and a baseline.
-        /// </summary>
-        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
-        {
-            var plottable = new Polygon(
-                xs: Tools.Pad(xs, cloneEdges: true),
-                ys: Tools.Pad(ys, 1, baseline, baseline))
-            {
-                Fill = true,
-                FillColor = color ?? GetNextColor(.5),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Create a polygon to fill the area between Y values of two curves.
-        /// </summary>
-        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)
-        {
-            // combine xs and ys to make one big curve
-            int pointCount = xs1.Length + xs2.Length;
-            double[] bothX = new double[pointCount];
-            double[] bothY = new double[pointCount];
-
-            // copy the first dataset as-is
-            Array.Copy(xs1, 0, bothX, 0, xs1.Length);
-            Array.Copy(ys1, 0, bothY, 0, ys1.Length);
-
-            // copy the second dataset in reverse order
-            for (int i = 0; i < xs2.Length; i++)
-            {
-                bothX[xs1.Length + i] = xs2[xs2.Length - 1 - i];
-                bothY[ys1.Length + i] = ys2[ys2.Length - 1 - i];
-            }
-
-            var plottable = new Polygon(bothX, bothY)
-            {
-                Fill = true,
-                FillColor = color ?? GetNextColor(.5),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Create a polygon to fill the area between Y values and a baseline
-        /// that uses two different colors for area above and area below the baseline.
-        /// </summary>
-        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
-        {
-            var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
-
-            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
-            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
-            Add(polyAbove);
-            Add(polyBelow);
-
-            return (polyAbove, polyBelow);
-        }
-
-        /// <summary>
-        /// Add a line plot that uses a function (rather than X/Y points) to place the curve
-        /// </summary>
-        public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
-        {
-            FunctionPlot plottable = new FunctionPlot(function)
-            {
-                Color = color ?? settings.GetNextColor(),
-                LineWidth = lineWidth,
-                LineStyle = lineStyle
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a heatmap to the plot automatically-sized so each cell is 1x1.
-        /// </summary>
-        /// <param name="intensities">2D array of intensities. 
-        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
-        /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
-        /// <returns>
-        /// Returns the heatmap that was added to the plot.
-        /// Act on its public fields and methods to customize it or update its data.
-        /// </returns>
-        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
-        {
-            if (lockScales)
-                AxisScaleLock(true);
-
-            var plottable = new Heatmap();
-            plottable.Update(intensities, colormap);
-            Add(plottable);
-
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a heatmap to the plot automatically-sized so each cell is 1x1.
-        /// </summary>
-        /// <param name="intensities">2D array of intensities. 
-        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
-        /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
-        /// <returns>
-        /// Returns the heatmap that was added to the plot.
-        /// Act on its public fields and methods to customize it or update its data.
-        /// </returns>
-        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
-        {
-            if (lockScales)
-                AxisScaleLock(true);
-
-            var plottable = new Heatmap();
-            plottable.Update(intensities, colormap);
-            Add(plottable);
-
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add heatmap to the plot stretched to fit the given dimensions.
-        /// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
-        /// this heatmap stretches the array so that it covers the defined X and Y spans.
-        /// </summary>
-        /// <param name="intensities">2D array of intensities. 
-        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
-        /// <param name="xMin">position of the left edge of the far left column</param>
-        /// <param name="xMax">position of the left edge of the far right column</param>
-        /// <param name="yMin">position of the upper edge of the bottom row</param>
-        /// <param name="yMax">position of the upper edge of the top row</param>
-        /// <param name="colormap"></param>
-        /// <returns>
-        /// Returns the heatmap that was added to the plot.
-        /// Act on its public fields and methods to customize it or update its data.
-        /// </returns>
-        public CoordinatedHeatmap AddHeatmapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
-        {
-            var plottable = new CoordinatedHeatmap();
-
-            // Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
-            if (xMin == null && xMax == null)
-            {
-                plottable.XMin = 0;
-                plottable.XMax = 0 + intensities.GetLength(0);
-            }
-            else if (xMin == null)
-            {
-                plottable.XMax = xMax.Value;
-                plottable.XMin = xMax.Value - intensities.GetLength(0);
-            }
-            else if (xMax == null)
-            {
-                plottable.XMin = xMin.Value;
-                plottable.XMax = xMin.Value + intensities.GetLength(0);
-            }
-            else
-            {
-                plottable.XMin = xMin.Value;
-                plottable.XMax = xMax.Value;
-            }
-
-            if (yMin == null && yMax == null)
-            {
-                plottable.YMin = 0;
-                plottable.YMax = 0 + intensities.GetLength(1);
-            }
-            else if (yMin == null)
-            {
-                plottable.YMax = yMax.Value;
-                plottable.YMin = yMax.Value - intensities.GetLength(1);
-            }
-            else if (yMax == null)
-            {
-                plottable.YMin = yMin.Value;
-                plottable.YMax = yMin.Value + intensities.GetLength(1);
-            }
-            else
-            {
-                plottable.YMin = yMin.Value;
-                plottable.YMax = yMax.Value;
-            }
-
-            plottable.Update(intensities, colormap);
-            Add(plottable);
-
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add heatmap to the plot stretched to fit the given dimensions.
-        /// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
-        /// this heatmap stretches the array so that it covers the defined X and Y spans.
-        /// </summary>
-        /// <param name="intensities">2D array of intensities. 
-        /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
-        /// <param name="xMin">position of the left edge of the far left column</param>
-        /// <param name="xMax">position of the left edge of the far right column</param>
-        /// <param name="yMin">position of the upper edge of the bottom row</param>
-        /// <param name="yMax">position of the upper edge of the top row</param>
-        /// <param name="colormap"></param>
-        /// <returns>
-        /// Returns the heatmap that was added to the plot.
-        /// Act on its public fields and methods to customize it or update its data.
-        /// </returns>
-        public CoordinatedHeatmap AddHeatmapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
-        {
-            var plottable = new CoordinatedHeatmap();
-
-            // Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
-            if (xMin == null && xMax == null)
-            {
-                plottable.XMin = 0;
-                plottable.XMax = 0 + intensities.GetLength(0);
-            }
-            else if (xMin == null)
-            {
-                plottable.XMax = xMax.Value;
-                plottable.XMin = xMax.Value - intensities.GetLength(0);
-            }
-            else if (xMax == null)
-            {
-                plottable.XMin = xMin.Value;
-                plottable.XMax = xMin.Value + intensities.GetLength(0);
-            }
-            else
-            {
-                plottable.XMin = xMin.Value;
-                plottable.XMax = xMax.Value;
-            }
-
-            if (yMin == null && yMax == null)
-            {
-                plottable.YMin = 0;
-                plottable.YMax = 0 + intensities.GetLength(1);
-            }
-            else if (yMin == null)
-            {
-                plottable.YMax = yMax.Value;
-                plottable.YMin = yMax.Value - intensities.GetLength(1);
-            }
-            else if (yMax == null)
-            {
-                plottable.YMin = yMin.Value;
-                plottable.YMax = yMin.Value + intensities.GetLength(1);
-            }
-            else
-            {
-                plottable.YMin = yMin.Value;
-                plottable.YMax = yMax.Value;
-            }
-
-            plottable.Update(intensities, colormap);
-            Add(plottable);
-
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a horizontal axis line at a specific Y position
-        /// </summary>
-        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
-        {
-            HLine plottable = new HLine()
-            {
-                Y = y,
-                Color = color ?? settings.GetNextColor(),
-                LineWidth = width,
-                LineStyle = style,
-                Label = label,
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a horizontal span (shades the region between two X positions)
-        /// </summary>
-        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string label = null)
-        {
-            var plottable = new HSpan()
-            {
-                X1 = xMin,
-                X2 = xMax,
-                Color = color ?? GetNextColor(.5),
-                Label = label,
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Display an image at a specific coordinate
-        /// </summary>
-        public Plottable.Image AddImage(Bitmap bitmap, double x, double y)
-        {
-            Plottable.Image plottable = new Plottable.Image()
-            {
-                Bitmap = bitmap,
-                X = x,
-                Y = y,
-            };
-
-            settings.Plottables.Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a line (a scatter plot with two points) to the plot
-        /// </summary>
-        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
-        {
-            return AddScatter(new double[] { x1, x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
-        }
-
-        /// <summary>
-        /// Add a line (a scatter plot with two points) to the plot
-        /// </summary>
-        public ScatterPlot AddLine(double slope, double offset, (double x1, double x2) xLimits, Color? color = null, float lineWidth = 1)
-        {
-            double y1 = xLimits.x1 * slope + offset;
-            double y2 = xLimits.x2 * slope + offset;
-            return AddScatter(new double[] { xLimits.x1, xLimits.x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
-        }
-
-        /// <summary>
-        /// Add OHLC (open, high, low, close) data to the plot
-        /// </summary>
-        public FinancePlot AddOHLCs(OHLC[] ohlcs)
-        {
-            FinancePlot plottable = new FinancePlot(ohlcs)
-            {
-                Candle = false,
-                ColorUp = ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = ColorTranslator.FromHtml("#ef5350"),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a pie chart to the plot
-        /// </summary>
-        public PiePlot AddPie(double[] values, bool hideGridAndFrame = true)
-        {
-            Color[] colors = Enumerable.Range(0, values.Length)
-                                       .Select(i => settings.PlottablePalette.GetColor(i))
-                                       .ToArray();
-
-            PiePlot pie = new PiePlot(values, null, colors);
-            Add(pie);
-
-            if (hideGridAndFrame)
-            {
-                Grid(false);
-                Frameless();
-            }
-
-            return pie;
-        }
-
-        /// <summary>
-        /// Add a point (a scatter plot with a single marker)
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="color">color of the marker</param>
-        /// <param name="size">size of the marker</param>
-        /// <param name="shape">maker shape</param>
-        /// <param name="label">text to appear in the legend</param>
-        /// <returns>
-        /// The scatter plot that was created and added to the plot. 
-        /// Interact with its public fields and methods to customize style and update data.
-        /// </returns>
-        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
-        {
-            var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
-            {
-                Color = color ?? settings.GetNextColor(),
-                MarkerSize = size,
-                MarkerShape = shape,
-                Label = label
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a polygon to the plot
-        /// </summary>
-        public Polygon AddPolygon(double[] xs, double[] ys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
-        {
-            var plottable = new Polygon(xs, ys)
-            {
-                LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
-                FillColor = fillColor ?? settings.GetNextColor(),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add many polygons using an optimized rendering method
-        /// </summary>
-        public Polygons AddPolygons(List<List<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
-        {
-            var plottable = new Polygons(polys)
-            {
-                LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
-                FillColor = fillColor ?? settings.GetNextColor(),
-            };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a population to the plot
-        /// </summary>
-        public PopulationPlot AddPopulation(Population population, string label = null)
-        {
-            var plottable = new PopulationPlot(population, label, settings.GetNextColor());
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add multiple populations to the plot as a single series
-        /// </summary>
-        public PopulationPlot AddPopulations(Population[] populations, string label = null)
-        {
-            var plottable = new PopulationPlot(populations, label, settings.GetNextColor());
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add multiple populations to the plot as a single series
-        /// </summary>
-        public PopulationPlot AddPopulations(PopulationMultiSeries multiSeries)
-        {
-            for (int i = 0; i < multiSeries.multiSeries.Length; i++)
-                multiSeries.multiSeries[i].color = settings.PlottablePalette.GetColor(i);
-
-            var plottable = new PopulationPlot(multiSeries);
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Add a radar plot (a two-dimensional chart of three or more quantitative variables represented on axes starting from the same point)
-        /// </summary>
-        /// <param name="values">2D array containing categories (columns) and groups (rows)</param>
-        /// <param name="independentAxes">if true, axis (category) values are scaled independently</param>
-        /// <param name="maxValues">if provided, each category (column) is normalized to these values</param>
-        /// <param name="disableFrameAndGrid">also make the plot frameless and disable its grid</param>
-        /// <returns>the radar plot that was just created and added to the plot</returns>
-        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
-        {
-
-            Color[] colors = Enumerable.Range(0, values.Length)
-                                       .Select(i => settings.PlottablePalette.GetColor(i))
-                                       .ToArray();
-
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
-
-            RadarPlot plottable = new(values, colors, fills, independentAxes, maxValues);
-            Add(plottable);
-
-            if (disableFrameAndGrid)
-            {
-                Frameless();
-                Grid(enable: false);
-            }
-
-            return plottable;
-        }
-
-        public CoxcombPlot AddCoxcomb(double[] values)
+	public partial class Plot
+	{
+		/// <summary>
+		/// Display text in the data area at a pixel location (not a X/Y coordinates)
+		/// </summary>
+		public Annotation AddAnnotation(string label, double x, double y)
 		{
-            Color[] colors = Enumerable.Range(0, values.Length)
-                           .Select(i => settings.PlottablePalette.GetColor(i))
-                           .ToArray();
+			var plottable = new Annotation() { Label = label, X = x, Y = y };
+			Add(plottable);
+			return plottable;
+		}
 
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+		/// <summary>
+		/// Display an arrow pointing to a spot in coordinate space
+		/// </summary>
+		public ScatterPlot AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
+		{
+			double[] xs = { xBase, xTip };
+			double[] ys = { yBase, yTip };
+			var plottable = new ScatterPlot(xs, ys)
+			{
+				LineWidth = lineWidth,
+				MarkerSize = 0,
+				Color = color ?? GetNextColor(),
+				ArrowheadLength = 3,
+				ArrowheadWidth = 3
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-            CoxcombPlot plottable = new(values, colors);
-            Add(plottable);
+		/// <summary>
+		/// Add a Cleveland Dot plot for the given values. Cleveland Dots will be placed at X positions 0, 1, 2, etc.
+		/// </summary>
+		public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2)
+		{
+			double[] xs = DataGen.Consecutive(ys1.Length);
+			var plottable = new ClevelandDotPlot(xs, ys1, ys2);
+			Add(plottable);
+			return plottable;
+		}
 
-            return plottable;
+		/// <summary>
+		/// Add a Cleveland Dot plot for the given values using defined dot positions.
+		/// </summary>
+		public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2, double[] positions)
+		{
+			var plottable = new ClevelandDotPlot(positions, ys1, ys2);
+			Add(plottable);
+			return plottable;
+		}
 
-        }
+		/// <summary>
+		/// Add a Lollipop plot for the given values. Lollipops will be placed at X positions 0, 1, 2, etc.
+		/// </summary>
+		public LollipopPlot AddLollipop(double[] values, Color? color = null)
+		{
+			double[] xs = DataGen.Consecutive(values.Length);
+			var plottable = new LollipopPlot(xs, values)
+			{
+				LollipopColor = color ?? GetNextColor()
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add an L-shaped scalebar to the corner of the plot
-        /// </summary>
-        public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
-        {
-            var scalebar = new ScaleBar()
-            {
-                Width = width,
-                Height = height,
-                HorizontalLabel = xLabel,
-                VerticalLabel = yLabel,
-            };
-            Add(scalebar);
-            return scalebar;
-        }
+		/// <summary>
+		/// Add a lollipop plot for the given values using defined lollipop positions
+		/// </summary>
+		public LollipopPlot AddLollipop(double[] values, double[] positions, Color? color = null)
+		{
+			var plottable = new LollipopPlot(positions, values)
+			{
+				LollipopColor = color ?? GetNextColor()
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a scatter plot from X/Y pairs. 
-        /// Lines and markers are shown by default.
-        /// Scatter plots are slower than Signal plots.
-        /// </summary>
-        public ScatterPlot AddScatter(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            float lineWidth = 1,
-            float markerSize = 5,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid,
-            string label = null)
-        {
-            var plottable = new ScatterPlot(xs, ys, null, null)
-            {
-                Color = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                MarkerSize = markerSize,
-                Label = label,
-                MarkerShape = markerShape,
-                LineStyle = lineStyle
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
+		/// </summary>
+		public BarPlot AddBar(double[] values, Color? color = null)
+		{
+			double[] xs = DataGen.Consecutive(values.Length);
+			var plottable = new BarPlot(xs, values, null, null)
+			{
+				FillColor = color ?? GetNextColor()
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a scatter plot from X/Y pairs connected by lines (no markers).
-        /// Scatter plots are slower than Signal plots.
-        /// </summary>
-        public ScatterPlot AddScatterLines(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            float lineWidth = 1,
-            LineStyle lineStyle = LineStyle.Solid,
-            string label = null)
-        {
-            var plottable = new ScatterPlot(xs, ys, null, null)
-            {
-                Color = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                MarkerSize = 0,
-                Label = label,
-                LineStyle = lineStyle
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Add a bar plot for the given values using defined bar positions
+		/// </summary>
+		public BarPlot AddBar(double[] values, double[] positions, Color? color = null)
+		{
+			var plottable = new BarPlot(positions, values, null, null)
+			{
+				FillColor = color ?? GetNextColor()
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a scatter plot from X/Y pairs using markers at points (no lines).
-        /// Scatter plots are slower than Signal plots.
-        /// </summary>
-        public ScatterPlot AddScatterPoints(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            float markerSize = 5,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            string label = null)
-        {
-            var plottable = new ScatterPlot(xs, ys, null, null)
-            {
-                Color = color ?? GetNextColor(),
-                LineWidth = 0,
-                MarkerSize = markerSize,
-                Label = label,
-                MarkerShape = markerShape
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Add a bar plot (values +/- errors) using defined positions
+		/// </summary>
+		public BarPlot AddBar(double[] values, double[] errors, double[] positions, Color? color = null)
+		{
+			var plottable = new BarPlot(positions, values, errors, null)
+			{
+				FillColor = color ?? GetNextColor(),
+				FillColorNegative = color ?? GetNextColor(),
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a step plot is a type of line plot where points are connected with right angles instead of straight lines.
-        /// </summary>
-        public ScatterPlot AddScatterStep(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            float lineWidth = 1,
-            string label = null)
-        {
-            var plottable = new ScatterPlot(xs, ys, null, null)
-            {
-                Color = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                Label = label,
-                MarkerSize = 0,
-                StepDisplay = true
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Create a series of bar plots and customize the ticks and legend
+		/// </summary>
+		public BarPlot[] AddBarGroups(string[] groupLabels, string[] seriesLabels, double[][] ys, double[][] yErr)
+		{
+			if (groupLabels is null || seriesLabels is null || ys is null)
+				throw new ArgumentException("labels and ys cannot be null");
 
-        /// <summary>
-        /// Scatter plot with Add() and Clear() methods for updating data
-        /// </summary>
-        public ScatterPlotList AddScatterList(
-            Color? color = null,
-            float lineWidth = 1,
-            float markerSize = 5,
-            string label = null,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid)
-        {
-            var spl = new ScatterPlotList()
-            {
-                Color = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                MarkerSize = markerSize,
-                Label = label,
-                MarkerShape = markerShape,
-                LineStyle = lineStyle
-            };
+			if (seriesLabels.Length != ys.Length)
+				throw new ArgumentException("groupLabels and ys must be the same length");
 
-            Add(spl);
-            return spl;
-        }
+			foreach (double[] subArray in ys)
+				if (subArray.Length != groupLabels.Length)
+					throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
 
-        /// <summary>
-        /// Signal plots have evenly-spaced X points and render very fast.
-        /// </summary>
-        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
-        {
-            SignalPlot signal = new SignalPlot()
-            {
-                Ys = ys,
-                SampleRate = sampleRate,
-                Color = color ?? settings.GetNextColor(),
-                Label = label,
+			double groupWidthFraction = 0.8;
+			double barWidthFraction = 0.8;
+			double errorCapSize = 0.38;
 
-                // TODO: FIX THIS!!!
-                MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
-            };
-            Add(signal);
-            return signal;
-        }
+			int seriesCount = ys.Length;
+			double barWidth = groupWidthFraction / seriesCount;
+			BarPlot[] bars = new BarPlot[seriesCount];
+			bool containsNegativeY = false;
+			for (int i = 0; i < seriesCount; i++)
+			{
+				double[] barYs = ys[i];
+				double[] barYerr = yErr?[i];
+				double[] barXs = DataGen.Consecutive(barYs.Length);
+				containsNegativeY |= barYs.Where(y => y < 0).Any();
+				var bar = new BarPlot(barXs, barYs, barYerr, null)
+				{
+					Label = seriesLabels[i],
+					BarWidth = barWidth * barWidthFraction,
+					PositionOffset = i * barWidth,
+					ErrorCapSize = errorCapSize,
+					FillColor = GetNextColor()
+				};
+				bars[i] = bar;
+				Add(bar);
+			}
 
-        /// <summary>
-        /// SignalConts plots have evenly-spaced X points and render faster than Signal plots
-        /// but data in source arrays cannot be changed after it is loaded.
-        /// Methods can be used to update all or portions of the data.
-        /// </summary>
-        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
-        {
-            SignalPlotConst<T> plottable = new SignalPlotConst<T>()
-            {
-                Ys = ys,
-                SampleRate = sampleRate,
-                Color = color ?? settings.GetNextColor(),
-                Label = label,
-                MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
-            };
-            Add(plottable);
-            return plottable;
-        }
+			if (containsNegativeY)
+				AxisAuto();
 
-        /// <summary>
-        /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
-        /// </summary>
-        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string label = null)
-        {
-            SignalPlotXY plottable = new SignalPlotXY()
-            {
-                Xs = xs,
-                Ys = ys,
-                Color = color ?? settings.GetNextColor(),
-                Label = label,
-                MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
-            };
-            Add(plottable);
-            return plottable;
-        }
+			double[] groupPositions = DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2);
+			XTicks(groupPositions, groupLabels);
+
+			return bars;
+		}
+
+		/// <summary>
+		/// Add an empty bubble plot. Call it's Add() method to add bubbles with custom position and styling.
+		/// </summary>
+		public BubblePlot AddBubblePlot()
+		{
+			BubblePlot bubblePlot = new();
+			Add(bubblePlot);
+			return bubblePlot;
+		}
+
+		/// <summary>
+		/// Add a bubble plot with multiple bubbles at the given positions all styled the same.
+		/// Call the Add() method to add bubbles manually, allowing further customization of size and style.
+		/// </summary>
+		public BubblePlot AddBubblePlot(double[] xs, double[] ys, double radius = 10, Color? fillColor = null, double edgeWidth = 1, Color? edgeColor = null)
+		{
+			BubblePlot bubblePlot = new();
+			bubblePlot.Add(xs, ys, radius, fillColor ?? GetNextColor(), edgeWidth, edgeColor ?? Color.Black);
+			Add(bubblePlot);
+			return bubblePlot;
+		}
+
+		/// <summary>
+		/// Add candlesticks to the chart from OHLC (open, high, low, close) data
+		/// </summary>
+		public FinancePlot AddCandlesticks(OHLC[] ohlcs)
+		{
+			FinancePlot plottable = new FinancePlot(ohlcs)
+			{
+				Candle = true,
+				ColorUp = ColorTranslator.FromHtml("#26a69a"),
+				ColorDown = ColorTranslator.FromHtml("#ef5350"),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a colorbar to display a colormap beside the data area
+		/// </summary>
+		public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
+		{
+			var cb = new Colorbar(colormap);
+			Add(cb);
+			YAxis2.SetSizeLimit(min: space);
+			return cb;
+		}
+
+		/// <summary>
+		/// Add a colorbar initialized with settings from a heatmap
+		/// </summary>
+		public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+		{
+			var cb = new Colorbar(heatmap.Colormap);
+			cb.AddTick(0, heatmap.ColorbarMin);
+			cb.AddTick(1, heatmap.ColorbarMax);
+			Add(cb);
+			YAxis2.SetSizeLimit(min: space);
+			return cb;
+		}
+
+		/// <summary>
+		/// Add a crosshair to the plot
+		/// </summary>
+		/// <param name="x">position of vertical line (axis units)</param>
+		/// <param name="y">position of horizontal line (axis units)</param>
+		/// <returns>the crosshair that was just created</returns>
+		public Crosshair AddCrosshair(double x, double y)
+		{
+			Crosshair ch = new() { X = x, Y = y };
+			Add(ch);
+			return ch;
+		}
+
+		/// <summary>
+		/// Create a polygon to fill the area between Y values and a baseline.
+		/// </summary>
+		public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
+		{
+			var plottable = new Polygon(
+				xs: Tools.Pad(xs, cloneEdges: true),
+				ys: Tools.Pad(ys, 1, baseline, baseline))
+			{
+				Fill = true,
+				FillColor = color ?? GetNextColor(.5),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Create a polygon to fill the area between Y values of two curves.
+		/// </summary>
+		public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)
+		{
+			// combine xs and ys to make one big curve
+			int pointCount = xs1.Length + xs2.Length;
+			double[] bothX = new double[pointCount];
+			double[] bothY = new double[pointCount];
+
+			// copy the first dataset as-is
+			Array.Copy(xs1, 0, bothX, 0, xs1.Length);
+			Array.Copy(ys1, 0, bothY, 0, ys1.Length);
+
+			// copy the second dataset in reverse order
+			for (int i = 0; i < xs2.Length; i++)
+			{
+				bothX[xs1.Length + i] = xs2[xs2.Length - 1 - i];
+				bothY[ys1.Length + i] = ys2[ys2.Length - 1 - i];
+			}
+
+			var plottable = new Polygon(bothX, bothY)
+			{
+				Fill = true,
+				FillColor = color ?? GetNextColor(.5),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Create a polygon to fill the area between Y values and a baseline
+		/// that uses two different colors for area above and area below the baseline.
+		/// </summary>
+		public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
+		{
+			var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
+
+			var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
+			var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
+			Add(polyAbove);
+			Add(polyBelow);
+
+			return (polyAbove, polyBelow);
+		}
+
+		/// <summary>
+		/// Add a line plot that uses a function (rather than X/Y points) to place the curve
+		/// </summary>
+		public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
+		{
+			FunctionPlot plottable = new FunctionPlot(function)
+			{
+				Color = color ?? settings.GetNextColor(),
+				LineWidth = lineWidth,
+				LineStyle = lineStyle
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a heatmap to the plot automatically-sized so each cell is 1x1.
+		/// </summary>
+		/// <param name="intensities">2D array of intensities. 
+		/// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+		/// <param name="colormap"></param>
+		/// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+		/// <returns>
+		/// Returns the heatmap that was added to the plot.
+		/// Act on its public fields and methods to customize it or update its data.
+		/// </returns>
+		public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+		{
+			if (lockScales)
+				AxisScaleLock(true);
+
+			var plottable = new Heatmap();
+			plottable.Update(intensities, colormap);
+			Add(plottable);
+
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a heatmap to the plot automatically-sized so each cell is 1x1.
+		/// </summary>
+		/// <param name="intensities">2D array of intensities. 
+		/// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+		/// <param name="colormap"></param>
+		/// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+		/// <returns>
+		/// Returns the heatmap that was added to the plot.
+		/// Act on its public fields and methods to customize it or update its data.
+		/// </returns>
+		public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+		{
+			if (lockScales)
+				AxisScaleLock(true);
+
+			var plottable = new Heatmap();
+			plottable.Update(intensities, colormap);
+			Add(plottable);
+
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add heatmap to the plot stretched to fit the given dimensions.
+		/// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
+		/// this heatmap stretches the array so that it covers the defined X and Y spans.
+		/// </summary>
+		/// <param name="intensities">2D array of intensities. 
+		/// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+		/// <param name="xMin">position of the left edge of the far left column</param>
+		/// <param name="xMax">position of the left edge of the far right column</param>
+		/// <param name="yMin">position of the upper edge of the bottom row</param>
+		/// <param name="yMax">position of the upper edge of the top row</param>
+		/// <param name="colormap"></param>
+		/// <returns>
+		/// Returns the heatmap that was added to the plot.
+		/// Act on its public fields and methods to customize it or update its data.
+		/// </returns>
+		public CoordinatedHeatmap AddHeatmapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+		{
+			var plottable = new CoordinatedHeatmap();
+
+			// Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
+			if (xMin == null && xMax == null)
+			{
+				plottable.XMin = 0;
+				plottable.XMax = 0 + intensities.GetLength(0);
+			}
+			else if (xMin == null)
+			{
+				plottable.XMax = xMax.Value;
+				plottable.XMin = xMax.Value - intensities.GetLength(0);
+			}
+			else if (xMax == null)
+			{
+				plottable.XMin = xMin.Value;
+				plottable.XMax = xMin.Value + intensities.GetLength(0);
+			}
+			else
+			{
+				plottable.XMin = xMin.Value;
+				plottable.XMax = xMax.Value;
+			}
+
+			if (yMin == null && yMax == null)
+			{
+				plottable.YMin = 0;
+				plottable.YMax = 0 + intensities.GetLength(1);
+			}
+			else if (yMin == null)
+			{
+				plottable.YMax = yMax.Value;
+				plottable.YMin = yMax.Value - intensities.GetLength(1);
+			}
+			else if (yMax == null)
+			{
+				plottable.YMin = yMin.Value;
+				plottable.YMax = yMin.Value + intensities.GetLength(1);
+			}
+			else
+			{
+				plottable.YMin = yMin.Value;
+				plottable.YMax = yMax.Value;
+			}
+
+			plottable.Update(intensities, colormap);
+			Add(plottable);
+
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add heatmap to the plot stretched to fit the given dimensions.
+		/// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
+		/// this heatmap stretches the array so that it covers the defined X and Y spans.
+		/// </summary>
+		/// <param name="intensities">2D array of intensities. 
+		/// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
+		/// <param name="xMin">position of the left edge of the far left column</param>
+		/// <param name="xMax">position of the left edge of the far right column</param>
+		/// <param name="yMin">position of the upper edge of the bottom row</param>
+		/// <param name="yMax">position of the upper edge of the top row</param>
+		/// <param name="colormap"></param>
+		/// <returns>
+		/// Returns the heatmap that was added to the plot.
+		/// Act on its public fields and methods to customize it or update its data.
+		/// </returns>
+		public CoordinatedHeatmap AddHeatmapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+		{
+			var plottable = new CoordinatedHeatmap();
+
+			// Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
+			if (xMin == null && xMax == null)
+			{
+				plottable.XMin = 0;
+				plottable.XMax = 0 + intensities.GetLength(0);
+			}
+			else if (xMin == null)
+			{
+				plottable.XMax = xMax.Value;
+				plottable.XMin = xMax.Value - intensities.GetLength(0);
+			}
+			else if (xMax == null)
+			{
+				plottable.XMin = xMin.Value;
+				plottable.XMax = xMin.Value + intensities.GetLength(0);
+			}
+			else
+			{
+				plottable.XMin = xMin.Value;
+				plottable.XMax = xMax.Value;
+			}
+
+			if (yMin == null && yMax == null)
+			{
+				plottable.YMin = 0;
+				plottable.YMax = 0 + intensities.GetLength(1);
+			}
+			else if (yMin == null)
+			{
+				plottable.YMax = yMax.Value;
+				plottable.YMin = yMax.Value - intensities.GetLength(1);
+			}
+			else if (yMax == null)
+			{
+				plottable.YMin = yMin.Value;
+				plottable.YMax = yMin.Value + intensities.GetLength(1);
+			}
+			else
+			{
+				plottable.YMin = yMin.Value;
+				plottable.YMax = yMax.Value;
+			}
+
+			plottable.Update(intensities, colormap);
+			Add(plottable);
+
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a horizontal axis line at a specific Y position
+		/// </summary>
+		public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+		{
+			HLine plottable = new HLine()
+			{
+				Y = y,
+				Color = color ?? settings.GetNextColor(),
+				LineWidth = width,
+				LineStyle = style,
+				Label = label,
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a horizontal span (shades the region between two X positions)
+		/// </summary>
+		public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string label = null)
+		{
+			var plottable = new HSpan()
+			{
+				X1 = xMin,
+				X2 = xMax,
+				Color = color ?? GetNextColor(.5),
+				Label = label,
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Display an image at a specific coordinate
+		/// </summary>
+		public Plottable.Image AddImage(Bitmap bitmap, double x, double y)
+		{
+			Plottable.Image plottable = new Plottable.Image()
+			{
+				Bitmap = bitmap,
+				X = x,
+				Y = y,
+			};
+
+			settings.Plottables.Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a line (a scatter plot with two points) to the plot
+		/// </summary>
+		public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
+		{
+			return AddScatter(new double[] { x1, x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
+		}
+
+		/// <summary>
+		/// Add a line (a scatter plot with two points) to the plot
+		/// </summary>
+		public ScatterPlot AddLine(double slope, double offset, (double x1, double x2) xLimits, Color? color = null, float lineWidth = 1)
+		{
+			double y1 = xLimits.x1 * slope + offset;
+			double y2 = xLimits.x2 * slope + offset;
+			return AddScatter(new double[] { xLimits.x1, xLimits.x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
+		}
+
+		/// <summary>
+		/// Add OHLC (open, high, low, close) data to the plot
+		/// </summary>
+		public FinancePlot AddOHLCs(OHLC[] ohlcs)
+		{
+			FinancePlot plottable = new FinancePlot(ohlcs)
+			{
+				Candle = false,
+				ColorUp = ColorTranslator.FromHtml("#26a69a"),
+				ColorDown = ColorTranslator.FromHtml("#ef5350"),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a pie chart to the plot
+		/// </summary>
+		public PiePlot AddPie(double[] values, bool hideGridAndFrame = true)
+		{
+			Color[] colors = Enumerable.Range(0, values.Length)
+									   .Select(i => settings.PlottablePalette.GetColor(i))
+									   .ToArray();
+
+			PiePlot pie = new PiePlot(values, null, colors);
+			Add(pie);
+
+			if (hideGridAndFrame)
+			{
+				Grid(false);
+				Frameless();
+			}
+
+			return pie;
+		}
+
+		/// <summary>
+		/// Add a point (a scatter plot with a single marker)
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="color">color of the marker</param>
+		/// <param name="size">size of the marker</param>
+		/// <param name="shape">maker shape</param>
+		/// <param name="label">text to appear in the legend</param>
+		/// <returns>
+		/// The scatter plot that was created and added to the plot. 
+		/// Interact with its public fields and methods to customize style and update data.
+		/// </returns>
+		public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
+		{
+			var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
+			{
+				Color = color ?? settings.GetNextColor(),
+				MarkerSize = size,
+				MarkerShape = shape,
+				Label = label
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a polygon to the plot
+		/// </summary>
+		public Polygon AddPolygon(double[] xs, double[] ys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+		{
+			var plottable = new Polygon(xs, ys)
+			{
+				LineWidth = lineWidth,
+				LineColor = lineColor ?? Color.Black,
+				FillColor = fillColor ?? settings.GetNextColor(),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add many polygons using an optimized rendering method
+		/// </summary>
+		public Polygons AddPolygons(List<List<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+		{
+			var plottable = new Polygons(polys)
+			{
+				LineWidth = lineWidth,
+				LineColor = lineColor ?? Color.Black,
+				FillColor = fillColor ?? settings.GetNextColor(),
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a population to the plot
+		/// </summary>
+		public PopulationPlot AddPopulation(Population population, string label = null)
+		{
+			var plottable = new PopulationPlot(population, label, settings.GetNextColor());
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add multiple populations to the plot as a single series
+		/// </summary>
+		public PopulationPlot AddPopulations(Population[] populations, string label = null)
+		{
+			var plottable = new PopulationPlot(populations, label, settings.GetNextColor());
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add multiple populations to the plot as a single series
+		/// </summary>
+		public PopulationPlot AddPopulations(PopulationMultiSeries multiSeries)
+		{
+			for (int i = 0; i < multiSeries.multiSeries.Length; i++)
+				multiSeries.multiSeries[i].color = settings.PlottablePalette.GetColor(i);
+
+			var plottable = new PopulationPlot(multiSeries);
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a radar plot (a two-dimensional chart of three or more quantitative variables represented on axes starting from the same point)
+		/// </summary>
+		/// <param name="values">2D array containing categories (columns) and groups (rows)</param>
+		/// <param name="independentAxes">if true, axis (category) values are scaled independently</param>
+		/// <param name="maxValues">if provided, each category (column) is normalized to these values</param>
+		/// <param name="disableFrameAndGrid">also make the plot frameless and disable its grid</param>
+		/// <returns>the radar plot that was just created and added to the plot</returns>
+		public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
+		{
+
+			Color[] colors = Enumerable.Range(0, values.Length)
+									   .Select(i => settings.PlottablePalette.GetColor(i))
+									   .ToArray();
+
+			Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+
+			RadarPlot plottable = new(values, colors, fills, independentAxes, maxValues);
+			Add(plottable);
+
+			if (disableFrameAndGrid)
+			{
+				Frameless();
+				Grid(enable: false);
+			}
+
+			return plottable;
+		}
+
+		public CoxcombPlot AddCoxcomb(double[] values, bool hideGridAndFrame = true)
+		{
+			Color[] colors = Enumerable.Range(0, values.Length)
+						   .Select(i => settings.PlottablePalette.GetColor(i))
+						   .ToArray();
+
+			Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+
+			CoxcombPlot plottable = new(values, colors);
+			Add(plottable);
+
+			if (hideGridAndFrame)
+			{
+				Grid(false);
+				Frameless();
+			}
+
+			return plottable;
+
+		}
+
+		/// <summary>
+		/// Add an L-shaped scalebar to the corner of the plot
+		/// </summary>
+		public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
+		{
+			var scalebar = new ScaleBar()
+			{
+				Width = width,
+				Height = height,
+				HorizontalLabel = xLabel,
+				VerticalLabel = yLabel,
+			};
+			Add(scalebar);
+			return scalebar;
+		}
+
+		/// <summary>
+		/// Add a scatter plot from X/Y pairs. 
+		/// Lines and markers are shown by default.
+		/// Scatter plots are slower than Signal plots.
+		/// </summary>
+		public ScatterPlot AddScatter(
+			double[] xs,
+			double[] ys,
+			Color? color = null,
+			float lineWidth = 1,
+			float markerSize = 5,
+			MarkerShape markerShape = MarkerShape.filledCircle,
+			LineStyle lineStyle = LineStyle.Solid,
+			string label = null)
+		{
+			var plottable = new ScatterPlot(xs, ys, null, null)
+			{
+				Color = color ?? GetNextColor(),
+				LineWidth = lineWidth,
+				MarkerSize = markerSize,
+				Label = label,
+				MarkerShape = markerShape,
+				LineStyle = lineStyle
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a scatter plot from X/Y pairs connected by lines (no markers).
+		/// Scatter plots are slower than Signal plots.
+		/// </summary>
+		public ScatterPlot AddScatterLines(
+			double[] xs,
+			double[] ys,
+			Color? color = null,
+			float lineWidth = 1,
+			LineStyle lineStyle = LineStyle.Solid,
+			string label = null)
+		{
+			var plottable = new ScatterPlot(xs, ys, null, null)
+			{
+				Color = color ?? GetNextColor(),
+				LineWidth = lineWidth,
+				MarkerSize = 0,
+				Label = label,
+				LineStyle = lineStyle
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a scatter plot from X/Y pairs using markers at points (no lines).
+		/// Scatter plots are slower than Signal plots.
+		/// </summary>
+		public ScatterPlot AddScatterPoints(
+			double[] xs,
+			double[] ys,
+			Color? color = null,
+			float markerSize = 5,
+			MarkerShape markerShape = MarkerShape.filledCircle,
+			string label = null)
+		{
+			var plottable = new ScatterPlot(xs, ys, null, null)
+			{
+				Color = color ?? GetNextColor(),
+				LineWidth = 0,
+				MarkerSize = markerSize,
+				Label = label,
+				MarkerShape = markerShape
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Add a step plot is a type of line plot where points are connected with right angles instead of straight lines.
+		/// </summary>
+		public ScatterPlot AddScatterStep(
+			double[] xs,
+			double[] ys,
+			Color? color = null,
+			float lineWidth = 1,
+			string label = null)
+		{
+			var plottable = new ScatterPlot(xs, ys, null, null)
+			{
+				Color = color ?? GetNextColor(),
+				LineWidth = lineWidth,
+				Label = label,
+				MarkerSize = 0,
+				StepDisplay = true
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Scatter plot with Add() and Clear() methods for updating data
+		/// </summary>
+		public ScatterPlotList AddScatterList(
+			Color? color = null,
+			float lineWidth = 1,
+			float markerSize = 5,
+			string label = null,
+			MarkerShape markerShape = MarkerShape.filledCircle,
+			LineStyle lineStyle = LineStyle.Solid)
+		{
+			var spl = new ScatterPlotList()
+			{
+				Color = color ?? GetNextColor(),
+				LineWidth = lineWidth,
+				MarkerSize = markerSize,
+				Label = label,
+				MarkerShape = markerShape,
+				LineStyle = lineStyle
+			};
+
+			Add(spl);
+			return spl;
+		}
+
+		/// <summary>
+		/// Signal plots have evenly-spaced X points and render very fast.
+		/// </summary>
+		public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
+		{
+			SignalPlot signal = new SignalPlot()
+			{
+				Ys = ys,
+				SampleRate = sampleRate,
+				Color = color ?? settings.GetNextColor(),
+				Label = label,
+
+				// TODO: FIX THIS!!!
+				MinRenderIndex = 0,
+				MaxRenderIndex = ys.Length - 1,
+			};
+			Add(signal);
+			return signal;
+		}
+
+		/// <summary>
+		/// SignalConts plots have evenly-spaced X points and render faster than Signal plots
+		/// but data in source arrays cannot be changed after it is loaded.
+		/// Methods can be used to update all or portions of the data.
+		/// </summary>
+		public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
+		{
+			SignalPlotConst<T> plottable = new SignalPlotConst<T>()
+			{
+				Ys = ys,
+				SampleRate = sampleRate,
+				Color = color ?? settings.GetNextColor(),
+				Label = label,
+				MinRenderIndex = 0,
+				MaxRenderIndex = ys.Length - 1,
+			};
+			Add(plottable);
+			return plottable;
+		}
+
+		/// <summary>
+		/// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
+		/// </summary>
+		public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string label = null)
+		{
+			SignalPlotXY plottable = new SignalPlotXY()
+			{
+				Xs = xs,
+				Ys = ys,
+				Color = color ?? settings.GetNextColor(),
+				Label = label,
+				MinRenderIndex = 0,
+				MaxRenderIndex = ys.Length - 1,
+			};
+			Add(plottable);
+			return plottable;
+		}
 
 
-        /// <summary>
-        /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
-        /// Faster than SignalXY but values cannot be modified after loading.
-        /// </summary>
-        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string label = null)
-            where TX : struct, IComparable where TY : struct, IComparable
-        {
-            SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
-            {
-                Xs = xs,
-                Ys = ys,
-                Color = color ?? settings.GetNextColor(),
-                Label = label,
-                MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
-            };
-            Add(signal);
-            return signal;
-        }
+		/// <summary>
+		/// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
+		/// Faster than SignalXY but values cannot be modified after loading.
+		/// </summary>
+		public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string label = null)
+			where TX : struct, IComparable where TY : struct, IComparable
+		{
+			SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
+			{
+				Xs = xs,
+				Ys = ys,
+				Color = color ?? settings.GetNextColor(),
+				Label = label,
+				MinRenderIndex = 0,
+				MaxRenderIndex = ys.Length - 1,
+			};
+			Add(signal);
+			return signal;
+		}
 
-        /// <summary>
-        /// Display text at specific X/Y coordinates
-        /// </summary>
-        public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
-            AddText(label, x, y, new Drawing.Font() { Size = size, Color = color ?? GetNextColor() });
+		/// <summary>
+		/// Display text at specific X/Y coordinates
+		/// </summary>
+		public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
+			AddText(label, x, y, new Drawing.Font() { Size = size, Color = color ?? GetNextColor() });
 
-        /// <summary>
-        /// Display text at specific X/Y coordinates
-        /// </summary>
-        public Text AddText(string label, double x, double y, Drawing.Font font)
-        {
-            var plottable = new Text()
-            {
-                Label = label,
-                X = x,
-                Y = y,
-                Font = font
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Display text at specific X/Y coordinates
+		/// </summary>
+		public Text AddText(string label, double x, double y, Drawing.Font font)
+		{
+			var plottable = new Text()
+			{
+				Label = label,
+				X = x,
+				Y = y,
+				Font = font
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Display a text bubble that points to an X/Y location on the plot
-        /// </summary>
-        public Tooltip AddTooltip(string label, double x, double y)
-        {
-            var plottable = new Tooltip() { Label = label, X = x, Y = y };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Display a text bubble that points to an X/Y location on the plot
+		/// </summary>
+		public Tooltip AddTooltip(string label, double x, double y)
+		{
+			var plottable = new Tooltip() { Label = label, X = x, Y = y };
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a 2D vector field to the plot
-        /// </summary>
-        public VectorField AddVectorField(
-            Vector2[,] vectors,
-            double[] xs,
-            double[] ys,
-            string label = null,
-            Color? color = null,
-            Drawing.Colormap colormap = null,
-            double scaleFactor = 1
-            )
-        {
-            // TODO: refactor constructor to eliminate styling arguments
-            var vectorField = new VectorField(vectors, xs, ys,
-                colormap, scaleFactor, color ?? settings.GetNextColor())
-            { Label = label };
+		/// <summary>
+		/// Add a 2D vector field to the plot
+		/// </summary>
+		public VectorField AddVectorField(
+			Vector2[,] vectors,
+			double[] xs,
+			double[] ys,
+			string label = null,
+			Color? color = null,
+			Drawing.Colormap colormap = null,
+			double scaleFactor = 1
+			)
+		{
+			// TODO: refactor constructor to eliminate styling arguments
+			var vectorField = new VectorField(vectors, xs, ys,
+				colormap, scaleFactor, color ?? settings.GetNextColor())
+			{ Label = label };
 
-            Add(vectorField);
-            return vectorField;
-        }
+			Add(vectorField);
+			return vectorField;
+		}
 
-        /// <summary>
-        /// Add a vertical axis line at a specific Y position
-        /// </summary>
-        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
-        {
-            VLine plottable = new VLine()
-            {
-                X = x,
-                Color = color ?? settings.GetNextColor(),
-                LineWidth = width,
-                LineStyle = style,
-                Label = label
-            };
-            Add(plottable);
-            return plottable;
-        }
+		/// <summary>
+		/// Add a vertical axis line at a specific Y position
+		/// </summary>
+		public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+		{
+			VLine plottable = new VLine()
+			{
+				X = x,
+				Color = color ?? settings.GetNextColor(),
+				LineWidth = width,
+				LineStyle = style,
+				Label = label
+			};
+			Add(plottable);
+			return plottable;
+		}
 
-        /// <summary>
-        /// Add a horizontal span (shades the region between two X positions)
-        /// </summary>
-        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
-        {
-            var plottable = new VSpan()
-            {
-                Y1 = yMin,
-                Y2 = yMax,
-                Color = color ?? GetNextColor(.5),
-                Label = label,
-            };
-            Add(plottable);
-            return plottable;
-        }
-    }
+		/// <summary>
+		/// Add a horizontal span (shades the region between two X positions)
+		/// </summary>
+		public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
+		{
+			var plottable = new VSpan()
+			{
+				Y1 = yMin,
+				Y2 = yMax,
+				Color = color ?? GetNextColor(.5),
+				Label = label,
+			};
+			Add(plottable);
+			return plottable;
+		}
+	}
 }

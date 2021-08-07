@@ -217,7 +217,6 @@ namespace ScottPlot.Plottable
             double sweepAngle = 2 * Math.PI / numCategories;
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
-            double[] radii = new double[] { 0.25 * minScale, 0.5 * minScale, 1 * minScale };
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(WebColor))

@@ -52,6 +52,16 @@ namespace ScottPlot
         /// </summary>
         public bool ShowAxisValues { get; set; } = true;
 
+        /// <summary>
+        /// If true, category labels will be written in text on the plot (provided they exist)
+        /// </summary>
+        public bool ShowCategoryLabels { get; set; } = true;
+
+        /// <summary>
+        /// If set, this will override the number of spokes drawn.
+        /// </summary>
+        public int? NumberOfSpokes { get; set; }
+
         public Graphics Graphics { get; set; }
 
         /// <summary>
@@ -63,8 +73,8 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            int numCategories = Norm.GetUpperBound(1) + 1;
-            double sweepAngle = 2 * Math.PI / numCategories;
+            int numSpokes = NumberOfSpokes ?? Norm.GetUpperBound(1) + 1;
+            double sweepAngle = 2 * Math.PI / numSpokes;
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
             double[] radii = new double[] { 0.25 * minScale, 0.5 * minScale, 1 * minScale };
@@ -85,8 +95,8 @@ namespace ScottPlot
                 }
                 else if (AxisType == RadarAxis.Polygon)
                 {
-                    PointF[] points = new PointF[numCategories];
-                    for (int j = 0; j < numCategories; j++)
+                    PointF[] points = new PointF[numSpokes];
+                    for (int j = 0; j < numSpokes; j++)
                     {
                         float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
                         float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
@@ -99,7 +109,7 @@ namespace ScottPlot
                 {
                     if (IndependentAxes)
                     {
-                        for (int j = 0; j < numCategories; j++)
+                        for (int j = 0; j < numSpokes; j++)
                         {
                             float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
                             float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
@@ -119,12 +129,12 @@ namespace ScottPlot
                 }
             }
 
-            for (int i = 0; i < numCategories; i++)
+            for (int i = 0; i < numSpokes; i++)
             {
                 PointF destination = new PointF((float)(1.1 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X), (float)(1.1 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
                 Graphics.DrawLine(pen, origin, destination);
 
-                if (CategoryLabels != null)
+                if (CategoryLabels != null && ShowCategoryLabels)
                 {
                     PointF textDestination = new PointF(
                         (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
