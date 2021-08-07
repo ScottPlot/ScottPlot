@@ -18,6 +18,7 @@
 * Crosshair: Added support for custom formatters (`Func<double, string>`) allowing users full control over label text. See cookbook for details. (#1173, #1172) _Thanks @Maoyao233_
 * ClevelandDotPlot: Improve automatic axis limit detection (#1185) _Thanks @Nextra_
 * ScatterPlotList: Improved legend formatting (#1190) _Thanks @Maoyao233_
+* Plot: Added an optional argument to `Frameless()` to reverse its behavior and deprecated `Frame()` (#1112, #1192) _Thanks @arthurits_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
