@@ -753,8 +753,6 @@ namespace ScottPlot
                            .Select(i => settings.PlottablePalette.GetColor(i))
                            .ToArray();
 
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
-
             CoxcombPlot plottable = new(values, colors);
             Add(plottable);
 
