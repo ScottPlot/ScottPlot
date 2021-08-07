@@ -93,10 +93,10 @@ namespace ScottPlot
         /// Axes are hidden by making them invisible and setting their size to zero.
         /// This causes the data area to go right up to the edge of the plot.
         /// </summary>
-        public void Frameless(bool enable = true)
+        public void Frameless(bool hideAllAxes = true)
         {
             foreach (var axis in settings.Axes)
-                axis.Hide(enable);
+                axis.Hide(hideAllAxes);
         }
 
         /// <summary>
