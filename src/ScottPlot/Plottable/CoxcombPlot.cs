@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A Pie chart where the angle of slices is constant but the radii are not.
+    /// </summary>
     public class CoxcombPlot : IPlottable
     {
         private double[] _values;
+
+        /// <summary>
+        /// The data to be plotted
+        /// </summary>
         public double[] Values
         {
             get => _values;
@@ -20,16 +27,24 @@ namespace ScottPlot.Plottable
                 Normalized = Normalize(value);
             }
         }
+        /// <summary>
+        /// The colors of each slice
+        /// </summary>
         public Color[] FillColors { get; set; }
+
+        /// <summary>
+        /// The color to draw the axis in
+        /// </summary>
         public Color WebColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
         /// </summary>
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
-        public bool IsVisible { get; set; } = true;
-        public int XAxisIndex { get; set; } = 0;
-        public int YAxisIndex { get; set; } = 0;
+
+        /// <summary>
+        /// If true, each value will be written in text on the plot.
+        /// </summary>
         public bool ShowAxisValues { get; set; } = true;
 
         /// <summary>
@@ -37,6 +52,10 @@ namespace ScottPlot.Plottable
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
         public string[] SliceLabels;
+        public bool IsVisible { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+
         public string Label;
 
         private double[] Normalized;
