@@ -226,7 +226,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // customize figure styling
             plt.Layout(padding: 12);
             plt.Style(figureBackground: Color.Black, dataBackground: Color.Black);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.TickLabelStyle(color: Color.White);
             plt.XAxis.TickMarkColor(ColorTranslator.FromHtml("#333333"));
             plt.XAxis.MajorGrid(color: ColorTranslator.FromHtml("#333333"));
