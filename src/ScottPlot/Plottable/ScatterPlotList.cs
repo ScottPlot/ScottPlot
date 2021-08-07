@@ -125,7 +125,11 @@ namespace ScottPlot.Plottable
             var singleLegendItem = new LegendItem()
             {
                 label = Label,
-                color = Color.Black
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
+                markerShape = MarkerShape,
+                markerSize = MarkerSize
             };
             return new LegendItem[] { singleLegendItem };
         }
