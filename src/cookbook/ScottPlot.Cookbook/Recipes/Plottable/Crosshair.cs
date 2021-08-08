@@ -27,28 +27,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class CrosshairOne : IRecipe
-    {
-        public string Category => "Plottable: Crosshair";
-        public string ID => "crosshair_one";
-        public string Title => "Crosshair 1 Axis";
-        public string Description =>
-            "The Crosshair displays a line and label marking both axes by default, but " +
-            "vertical and horizontal elements can be hidden if desired.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            plt.AddSignal(ScottPlot.DataGen.Sin(51));
-            plt.AddSignal(ScottPlot.DataGen.Cos(51));
-            var ch = plt.AddCrosshair(42, 0.48);
-            ch.IsVisibleX = false;
-
-            plt.Title("Crosshair on One Axis Only");
-            plt.XLabel("Horizontal Axis");
-            plt.YLabel("Vertical Axis");
-        }
-    }
-
     public class CrosshairCustomize : IRecipe
     {
         public string Category => "Plottable: Crosshair";
@@ -67,12 +45,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
             var ch = plt.AddCrosshair(42, 0.48);
-            ch.LabelBackgroundColor = System.Drawing.Color.LightBlue;
-            ch.LabelFont.Color = System.Drawing.Color.Black;
-            ch.LabelFont.Name = ScottPlot.Drawing.InstalledFont.Monospace();
-            ch.LabelFont.Size = 16;
-            ch.LineStyle = LineStyle.Dot;
-            ch.LineColor = System.Drawing.Color.Blue;
+
+            // you can style both lines at the same time
+            ch.LineStyle = LineStyle.Dash;
+            ch.Color = System.Drawing.Color.Blue;
+            ch.LineWidth = 2;
+
+            // or reach in and style lines individually
+            ch.HorizontalLine.PositionLabelFont.Size = 16;
+            ch.VerticalLine.PositionLabelFont.Size = 8;
+            ch.VerticalLine.LineStyle = LineStyle.Dot;
         }
     }
 
@@ -106,13 +88,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // indicaite horizontal axis is DateTime and give a proper DateTime format string
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
-            ch.IsDateTimeX = true;
-            ch.StringFormatX = "d";
+            ch.VerticalLine.PositionFormatter = pos => DateTime.FromOADate(pos).ToString("d");
 
             // use a numeric vertical axis but customize the format string
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
-            ch.IsDateTimeY = false;
-            ch.StringFormatY = "F4";
+            ch.VerticalLine.PositionFormatter = pos => pos.ToString("F4");
         }
     }
 
@@ -145,8 +125,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             // use the custom formatter for X and Y crosshair labels
-            ch.NumericStringFormatterX = customFormatter;
-            ch.NumericStringFormatterY = customFormatter;
+            ch.HorizontalLine.PositionFormatter = customFormatter;
+            ch.VerticalLine.PositionFormatter = customFormatter;
 
             // style the plot
             plt.Title("Crosshair with Custom Label Formmater");
@@ -168,6 +148,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // add a signal and crosshair to the primary X and Y axis (index 0)
             var signal1 = plt.AddSignal(DataGen.RandomWalk(null, 100));
             var cross1 = plt.AddCrosshair(24, 5.29);
+            cross1.LineWidth = 2;
 
             // add a signal and crosshair to the secondary X and Y axis (index 1)
             var signal2 = plt.AddSignal(DataGen.RandomWalk(null, 50));
@@ -175,17 +156,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             signal2.XAxisIndex = 1;
 
             var cross2 = plt.AddCrosshair(33, 5.1);
-            cross2.YLabelOnRight = true;
-            cross2.XLabelOnTop = true;
+            cross2.HorizontalLine.PositionLabelOppositeAxis = true;
+            cross2.VerticalLine.PositionLabelOppositeAxis = true;
             cross2.YAxisIndex = signal2.YAxisIndex;
             cross2.XAxisIndex = signal2.XAxisIndex;
             cross2.LineStyle = LineStyle.Dot;
+            cross2.LineWidth = 2;
 
             // apply signal colors to the crosshairs
-            cross1.LineColor = signal1.Color;
-            cross2.LineColor = signal2.Color;
-            cross1.LabelBackgroundColor = signal1.Color;
-            cross2.LabelBackgroundColor = signal2.Color;
+            cross1.Color = signal1.Color;
+            cross2.Color = signal2.Color;
 
             // add axis labels
             plt.Title("Multiple Crosshairs for different Axes");
