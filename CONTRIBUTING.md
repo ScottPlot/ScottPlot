@@ -12,3 +12,7 @@
 dotnet tool update -g dotnet-format
 dotnet format
 ```
+
+## Code Diagram
+
+![](dev/code-diagram.svg)
