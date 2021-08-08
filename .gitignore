@@ -304,4 +304,3 @@ dev/nuget/nuget.exe
 .vscode/tasks.json
 tests/data/sample.csproj
 src/ScottPlot/ScottPlot.xml
-dev/code-diagram.svg

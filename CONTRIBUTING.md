@@ -15,4 +15,4 @@ dotnet format
 
 ## Code Diagram
 
-![](dev/code-diagram.svg)
+* https://octo-repo-visualization.vercel.app/?repo=scottplot%2Fscottplot
