@@ -1009,7 +1009,7 @@ namespace ScottPlot
             Drawing.Colormap colormap = null,
             double scaleFactor = 1,
             bool fancyCaps = false,
-            bool anchorAtStart = false  )
+            bool anchorAtStart = false)
         {
             // TODO: refactor constructor to eliminate styling arguments
             var vectorField = new VectorField(vectors, xs, ys,
