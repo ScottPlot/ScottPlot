@@ -44,15 +44,20 @@ namespace ScottPlot.Renderable
         public Edge Edge;
         public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+
+        public bool IsVisible { get; set; } = true;
+
         public bool RulerMode = false;
         public bool SnapPx = true;
         public float PixelOffset = 0;
-        public bool IsVisible { get; set; } = true;
 
         // TODO: store the TickCollection in the Axis module, not in the Ticks module.
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (!IsVisible)
+                return;
+
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
             {
                 if (MajorTickVisible)

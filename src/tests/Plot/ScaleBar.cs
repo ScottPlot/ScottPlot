@@ -18,7 +18,7 @@ namespace ScottPlotTests.Plot
             plt.AddScaleBar(5, .25, "5 ms", "250 pA");
 
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
             plt.AxisAuto(0);

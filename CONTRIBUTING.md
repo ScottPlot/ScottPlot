@@ -12,3 +12,7 @@
 dotnet tool update -g dotnet-format
 dotnet format
 ```
+
+## Code Diagram
+
+* https://octo-repo-visualization.vercel.app/?repo=scottplot%2Fscottplot

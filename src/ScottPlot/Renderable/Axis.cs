@@ -89,6 +89,7 @@ namespace ScottPlot.Renderable
         // private styling variables
         private float PixelSize; // how large this axis is
         private float PixelOffset; // distance from the data area
+        private bool Collapsed = false; // true if axes are hidden
         private float PixelSizeMinimum = 5;
         private float PixelSizeMaximum = float.PositiveInfinity;
         private float PixelSizePadding = 3;
@@ -410,16 +411,16 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Disable all visibility and set size to 0px
+        /// Hide this axis by forcing its size to always be zero.
         /// </summary>
-        public void Hide()
+        public void Hide(bool hidden = true)
         {
-            AxisLine.IsVisible = false;
-            AxisTicks.MajorTickVisible = false;
-            AxisTicks.MinorTickVisible = false;
-            PixelSizeMinimum = 0;
-            PixelSizeMaximum = 0;
-            PixelSizePadding = 0;
+            // NOTE: Don't set this.IsVisible because that will control the grid
+            AxisTicks.MajorTickVisible = !hidden;
+            AxisTicks.MinorTickVisible = !hidden;
+            AxisTicks.TickLabelVisible = !hidden;
+            AxisLine.IsVisible = !hidden;
+            Collapsed = hidden;
         }
 
         /// <summary>
@@ -432,6 +433,12 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void RecalculateAxisSize()
         {
+            if (Collapsed)
+            {
+                PixelSize = 0;
+                return;
+            }
+
             using (var tickFont = GDI.Font(AxisTicks.TickLabelFont))
             using (var titleFont = GDI.Font(AxisLabel.Font))
             {

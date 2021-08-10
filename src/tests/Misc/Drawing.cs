@@ -47,7 +47,7 @@ namespace ScottPlotTests.Misc
             plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
             plt.AddLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless(false);
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
             plt.Title("Line/Scatter");
@@ -71,7 +71,7 @@ namespace ScottPlotTests.Misc
             sig.OffsetX = xs[0];
 
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
             plt.Title("Signal");
@@ -94,7 +94,7 @@ namespace ScottPlotTests.Misc
             sig.MarkerSize = 0;
             sig.OffsetX = xs[0];
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
             plt.Title("Large Value Signal");
