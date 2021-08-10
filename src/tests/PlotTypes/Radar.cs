@@ -17,8 +17,8 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
 
             double[,] values = {
-                { 78,  83, 84, 76, 43 },
-                { 100, 50, 70, 60, 90 }
+                { 78,  83, 0, 76, 43 },
+                { 100, 50, 0, 60, 90 }
             };
 
             double[] maxValues = { 100, 100, 0, 100, 100 };
