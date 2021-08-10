@@ -177,7 +177,10 @@ namespace ScottPlot.Plottable
             {
                 for (int j = 0; j < input.GetLength(1); j++)
                 {
-                    input[i, j] /= maxes[j];
+                    if (maxes[j] == 0)
+                        input[i, j] = 0;
+                    else
+                        input[i, j] /= maxes[j];
                 }
             }
 
