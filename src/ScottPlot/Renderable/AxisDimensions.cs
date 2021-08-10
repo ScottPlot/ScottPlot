@@ -55,6 +55,12 @@ namespace ScottPlot.Renderable
         public double UpperBound { get; private set; } = double.PositiveInfinity;
 
         /// <summary>
+        /// Size of the view boundaries.
+        /// This should always be greater or equal to the Span.
+        /// </summary>
+        public double SpanBound => UpperBound - LowerBound;
+
+        /// <summary>
         /// False until axes are intentionally set.
         /// Unset axes default to NaN min/max limits.
         /// </summary>
@@ -163,9 +169,26 @@ namespace ScottPlot.Renderable
         /// </summary>
         private void ApplyBounds()
         {
-            // TODO: issue #1148 may be fixed here
-            Min = Math.Max(Min, LowerBound);
-            Max = Math.Min(Max, UpperBound);
+            if (Span > SpanBound)
+            {
+                Min = LowerBound;
+                Max = UpperBound;
+                return;
+            }
+
+            if (Min < LowerBound)
+            {
+                double span = Span;
+                Min = LowerBound;
+                Max = LowerBound + span;
+            }
+
+            if (Max > UpperBound)
+            {
+                double span = Span;
+                Max = UpperBound;
+                Min = UpperBound - span;
+            }
         }
 
         /// <summary>
