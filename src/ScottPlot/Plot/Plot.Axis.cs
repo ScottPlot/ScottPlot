@@ -531,8 +531,9 @@ namespace ScottPlot
         {
             if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAutoAll();
+
             settings.XAxis.Dims.Pan(dx);
-            settings.XAxis.Dims.Pan(dy);
+            settings.YAxis.Dims.Pan(dy);
         }
 
         #endregion
