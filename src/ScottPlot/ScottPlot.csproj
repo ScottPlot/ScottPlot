@@ -12,7 +12,6 @@
     <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms, WPF, or Avalonia applications are available as separate NuGet packages.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://swharden.com/scottplot/</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
     <PackageReleaseNotes>https://github.com/ScottPlot/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
