@@ -15,7 +15,6 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
     <PackageReleaseNotes>https://github.com/ScottPlot/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>4.1.16</Version>
     <AssemblyVersion>4.1.16.0</AssemblyVersion>
     <FileVersion>4.1.16.0</FileVersion>

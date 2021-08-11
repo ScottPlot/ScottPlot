@@ -17,7 +17,6 @@
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>4.1.16</Version>
     <AssemblyVersion>4.1.16.0</AssemblyVersion>
     <FileVersion>4.1.16.0</FileVersion>
