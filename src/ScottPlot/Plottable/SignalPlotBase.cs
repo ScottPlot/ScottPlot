@@ -28,11 +28,38 @@ namespace ScottPlot.Plottable
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+
+        /// <summary>
+        /// If enabled, parallel processing will be used to calculate pixel positions for high density datasets.
+        /// </summary>
         public bool UseParallel { get; set; } = true;
-        public int BaselineY { get; set; } = 0;
+
+
+        /// <summary>
+        /// If fill above and/or below is enabled, this defines the baseline level.
+        /// </summary>
         public double BaselineY { get; set; } = 0;
+
+        /// <summary>
+        /// If fill is enabled, a baseline will be drawn using this color.
+        /// </summary>
+        public Color BaselineColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// If fill is enabled, a baseline will be drawn using this width.
+        /// </summary>
+        public float BaselineWidth { get; set; } = 1;
+
+        /// <summary>
+        /// If fill is enabled, this color will be used to fill the area below the curve above BaselineY.
+        /// </summary>
         public Color? GradientFillColor1 { get; set; } = null;
+
+        /// <summary>
+        /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
+        /// </summary>
         public Color? GradientFillColor2 { get; set; } = null;
+
         private bool ShowMarkers { get; set; } = false; // this gets set in the render loop
 
         protected T[] _Ys;
