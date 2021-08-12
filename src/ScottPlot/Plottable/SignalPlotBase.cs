@@ -30,6 +30,7 @@ namespace ScottPlot.Plottable
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public bool UseParallel { get; set; } = true;
         public int BaselineY { get; set; } = 0;
+        public double BaselineY { get; set; } = 0;
         public Color? GradientFillColor1 { get; set; } = null;
         public Color? GradientFillColor2 { get; set; } = null;
         private bool ShowMarkers { get; set; } = false; // this gets set in the render loop
@@ -429,7 +430,7 @@ namespace ScottPlot.Plottable
             }
             else if (FillType == FillType.FillAboveAndBelow)
             {
-                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, this.BaselineY);
+                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, BaselineY);
             }
         }
 
@@ -488,9 +489,9 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
+        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
         {
-            baseline = (int)dims.GetPixelY(baseline);
+            int baseline = (int)dims.GetPixelY(baselineY);
 
             PointF first = new(xPxStart, baseline);
             PointF last = new(xPxEnd, baseline);
@@ -545,7 +546,7 @@ namespace ScottPlot.Plottable
             }
 
             // Draw baseline
-            using var baselinePen = GDI.Pen(Color.Black);
+            using var baselinePen = GDI.Pen(BaselineColor, BaselineWidth);
             gfx.DrawLine(baselinePen, baselinePointStart, baselinePointEnd);
         }
 
