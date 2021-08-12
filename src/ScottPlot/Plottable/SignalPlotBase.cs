@@ -466,7 +466,7 @@ namespace ScottPlot.Plottable
             if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
             {
                 float minVal = 0;
-                float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
+                float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1)) + dims.DataOffsetY;
 
                 PointF first = new(xPxStart, maxVal);
                 PointF last = new(xPxEnd, maxVal);
