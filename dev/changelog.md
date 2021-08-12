@@ -22,6 +22,7 @@
 * AxisLine: Added `PositionLabel` option for displaying position as text (using a user-customizable formatter function) on the axis (#1122, #1195, #1172, #1173) _Thanks @EmanuelFeru and @Maoyao233_
 * Radar Plot: Fixed rendering artifact that occurred when axis maximum is zero (#1139) _Thanks @petersesztak and @bclehmann_
 * Mouse Processing: Improved panning behavior when view limits (axis boundaries) are active (#1148, #1203) _Thanks @at2software_
+* Signal Plot: Fixed bug causing render artifacts when using fill modes (#1163, #1205)
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
