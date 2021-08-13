@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
                 HorizontalLine.LineStyle = value;
                 VerticalLine.LineStyle = value;
             }
-            [Obsolete]
+            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.LineStyle and VerticalLine.LineStyle instead.")]
             get => HorizontalLine.LineStyle;
         }
 
@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
                 HorizontalLine.LineWidth = value;
                 VerticalLine.LineWidth = value;
             }
-            [Obsolete]
+            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.LineWidth and VerticalLine.LineWidth instead.")]
             get => HorizontalLine.LineWidth;
         }
 
@@ -71,19 +71,19 @@ namespace ScottPlot.Plottable
                 HorizontalLine.PositionLabelFont = value;
                 VerticalLine.PositionLabelFont = value;
             }
-            [Obsolete]
+            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.PositionLabelFont and VerticalLine.PositionLabelFont instead.")]
             get => HorizontalLine.PositionLabelFont;
         }
 
         public Color LabelBackgroundColor
         {
-            [Obsolete]
-            get => HorizontalLine.PositionLabelBackground;
             set
             {
                 HorizontalLine.PositionLabelBackground = value;
                 VerticalLine.PositionLabelBackground = value;
             }
+            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.PositionLabelBackground and VerticalLine.PositionLabelBackground instead.")]
+            get => HorizontalLine.PositionLabelBackground;
         }
 
         /// <summary>
