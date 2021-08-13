@@ -219,7 +219,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sig = plt.AddSignal(data);
             sig.FillType = FillType.FillBelow;
-            sig.FillColor1 = Color.Blue;
+            sig.FillColor1 = Color.FromArgb(100, Color.Blue);
 
             plt.AxisAutoX(0);
         }
