@@ -64,6 +64,9 @@ namespace ScottPlot.Plottable
             get => HorizontalLine.LineWidth;
         }
 
+        /// <summary>
+        /// Sets font of the position labels for horizontal and vertical lines
+        /// </summary>
         public Drawing.Font LabelFont
         {
             set
@@ -75,6 +78,9 @@ namespace ScottPlot.Plottable
             get => HorizontalLine.PositionLabelFont;
         }
 
+        /// <summary>
+        /// Sets background color of the position labels for horizontal and vertical lines
+        /// </summary>
         public Color LabelBackgroundColor
         {
             set
