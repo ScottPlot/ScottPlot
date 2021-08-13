@@ -60,7 +60,10 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Color? GradientFillColor2 { get; set; } = null;
 
-        private bool ShowMarkers { get; set; } = false; // this gets set in the render loop
+        /// <summary>
+        /// When markers are visible on the line (low density mode) this is True
+        /// </summary>
+        private bool ShowMarkersInLegend { get; set; } = false;
 
         protected T[] _Ys;
         public virtual T[] Ys
@@ -265,6 +268,9 @@ namespace ScottPlot.Plottable
                 yMax: yMax + offsetY);
         }
 
+        /// <summary>
+        /// Render when the data is zoomed out so much that it just looks like a vertical line.
+        /// </summary>
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
@@ -275,9 +281,12 @@ namespace ScottPlot.Plottable
             gfx.DrawLine(penHD, point1, point2);
         }
 
+        /// <summary>
+        /// Render when the data is zoomed in such that there is more than 1 column per data point.
+        /// Rendering is accomplished by drawing a straight line from point to point.
+        /// </summary>
         private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
-            // this function is for when the graph is zoomed in so individual data points can be seen
             int capacity = visibleIndex2 - visibleIndex1 + 2;
             List<PointF> linePoints = new(capacity);
             if (visibleIndex2 > _Ys.Length - 2)
@@ -336,7 +345,7 @@ namespace ScottPlot.Plottable
                     float markerPxRadius = markerPxDiameter / 2;
                     if (markerPxRadius > .25)
                     {
-                        ShowMarkers = true;
+                        ShowMarkersInLegend = true;
 
                         // adjust marker offset to improve rendering on Linux and MacOS
                         float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
@@ -344,6 +353,10 @@ namespace ScottPlot.Plottable
                             gfx.FillEllipse(brush: brush,
                                 x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
                                 width: markerPxDiameter, height: markerPxDiameter);
+                    }
+                    else
+                    {
+                        ShowMarkersInLegend = false;
                     }
                 }
             }
@@ -408,6 +421,11 @@ namespace ScottPlot.Plottable
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
+        /// <summary>
+        /// Render the data when there is more than one data point per pixel column.
+        /// Each pixel column therefore represents multiple data points.
+        /// Rendering is optimized by determining the min/max for each pixel column, then a single line is drawn connecting those values.
+        /// </summary>
         private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
@@ -605,6 +623,9 @@ namespace ScottPlot.Plottable
             return rectangle;
         }
 
+        /// <summary>
+        /// Render similar to high density mode except use multiple colors to represent density distributions.
+        /// </summary>
         private void RenderHighDensityDistributionParallel(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
@@ -705,8 +726,8 @@ namespace ScottPlot.Plottable
                 color = Color,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
-                markerShape = ShowMarkers ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = ShowMarkers ? MarkerSize : 0
+                markerShape = ShowMarkersInLegend ? MarkerShape.filledCircle : MarkerShape.none,
+                markerSize = ShowMarkersInLegend ? MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
         }
@@ -728,22 +749,19 @@ namespace ScottPlot.Plottable
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / dims.DataWidth;
             double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
-
+            bool densityLevelsAvailable = DensityLevelCount > 0 && pointsPerPixelColumn > DensityLevelCount;
             double firstPointX = dims.GetPixelX(OffsetX);
             double lastPointX = dims.GetPixelX(_SamplePeriod * (_Ys.Length - 1) + OffsetX);
             double dataWidthPx = lastPointX - firstPointX;
+            double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
-            // set this now, and let the render function change it if it happens
-            ShowMarkers = false;
-
-            // use different rendering methods based on how dense the data is on screen
-            if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
+            if (columnsWithData < 1)
             {
                 RenderSingleLine(dims, gfx, penHD);
             }
             else if (pointsPerPixelColumn > 1)
             {
-                if (DensityLevelCount > 0 && pointsPerPixelColumn > DensityLevelCount)
+                if (densityLevelsAvailable)
                     RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
                 else
                     RenderHighDensity(dims, gfx, offsetPoints, columnPointCount, penHD);
