@@ -157,6 +157,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sp2 = plt.AddSignal(data);
             sp2.DensityColors = colors;
+            sp2.Color = colors[0];
 
             plt.Title("Color by Density vs. Solid Color");
             plt.AxisAuto(0, .1);
