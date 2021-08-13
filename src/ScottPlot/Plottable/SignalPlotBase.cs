@@ -517,7 +517,7 @@ namespace ScottPlot.Plottable
                     x: (int)first.X,
                     y: (int)minVal - (fillToPositiveInfinity ? 2 : 0),
                     width: (int)(last.X - first.X),
-                    height: (int)(maxVal - minVal) + 2 * (fillToPositiveInfinity ? -1 : 1));
+                    height: (int)dims.Height);
 
             using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
             gfx.FillPolygon(brush, points);
