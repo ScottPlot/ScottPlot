@@ -46,6 +46,8 @@ namespace ScottPlot.Plottable
                 HorizontalLine.LineStyle = value;
                 VerticalLine.LineStyle = value;
             }
+            [Obsolete]
+            get => HorizontalLine.LineStyle;
         }
 
         /// <summary>
@@ -57,6 +59,30 @@ namespace ScottPlot.Plottable
             {
                 HorizontalLine.LineWidth = value;
                 VerticalLine.LineWidth = value;
+            }
+            [Obsolete]
+            get => HorizontalLine.LineWidth;
+        }
+
+        public Drawing.Font LabelFont
+        {
+            set
+            {
+                HorizontalLine.PositionLabelFont = value;
+                VerticalLine.PositionLabelFont = value;
+            }
+            [Obsolete]
+            get => HorizontalLine.PositionLabelFont;
+        }
+
+        public Color LabelBackgroundColor
+        {
+            [Obsolete]
+            get => HorizontalLine.PositionLabelBackground;
+            set
+            {
+                HorizontalLine.PositionLabelBackground = value;
+                VerticalLine.PositionLabelBackground = value;
             }
         }
 
@@ -91,8 +117,6 @@ namespace ScottPlot.Plottable
             LineStyle = LineStyle.Dash;
             LineWidth = 1;
             Color = Color.FromArgb(200, Color.Red);
-            VerticalLine.PositionLabel = true;
-            HorizontalLine.PositionLabel = true;
             PositionLabel = true;
         }
 
@@ -109,6 +133,84 @@ namespace ScottPlot.Plottable
 
             HorizontalLine.Render(dims, bmp, lowQuality);
             VerticalLine.Render(dims, bmp, lowQuality);
+        }
+
+        [Obsolete("Use VerticalLine.PositionFormatter()")]
+        public bool IsDateTimeX
+        {
+            get => isDateTimeX;
+            set
+            {
+                isDateTimeX = value;
+                VerticalLine.PositionFormatter = value ?
+                    position => DateTime.FromOADate(position).ToString(stringFormatX) :
+                    position => position.ToString(stringFormatX);
+            }
+        }
+
+        [Obsolete]
+        private bool isDateTimeX = false;
+
+        [Obsolete("Use VerticalLine.PositionFormatter()")]
+        public string StringFormatX
+        {
+            get => stringFormatX;
+            set
+            {
+                stringFormatX = value;
+                VerticalLine.PositionFormatter = isDateTimeX ?
+                    position => DateTime.FromOADate(position).ToString(stringFormatX) :
+                    position => position.ToString(stringFormatX);
+            }
+        }
+
+        [Obsolete]
+        private string stringFormatX = "F2";
+
+        [Obsolete("Use VerticalLine.IsVisible")]
+        public bool IsVisibleX
+        {
+            get => VerticalLine.IsVisible;
+            set => VerticalLine.IsVisible = value;
+        }
+
+        [Obsolete("Use HorizontalLine.PositionFormatter()")]
+        public bool IsDateTimeY
+        {
+            get => isDateTimeY;
+            set
+            {
+                isDateTimeY = value;
+                HorizontalLine.PositionFormatter = value ?
+                    position => DateTime.FromOADate(position).ToString(stringFormatY) :
+                    (position) => position.ToString(stringFormatY);
+            }
+        }
+
+        [Obsolete]
+        private bool isDateTimeY = false;
+
+        [Obsolete("Use HorizontalLine.PositionFormat()")]
+        public string StringFormatY
+        {
+            get => stringFormatY;
+            set
+            {
+                stringFormatY = value;
+                HorizontalLine.PositionFormatter = isDateTimeY ?
+                    position => DateTime.FromOADate(position).ToString(stringFormatY) :
+                    position => position.ToString(stringFormatY);
+            }
+        }
+
+        [Obsolete]
+        private string stringFormatY = "F2";
+
+        [Obsolete("Use HorizontalLine.IsVisible")]
+        public bool IsVisibleY
+        {
+            get => HorizontalLine.IsVisible;
+            set => HorizontalLine.IsVisible = value;
         }
     }
 }
