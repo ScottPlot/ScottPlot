@@ -428,14 +428,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((MaxRenderIndex - offsetPoints) / columnPointCount);
-            xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
-            if (xPxStart >= xPxEnd)
+            int dataColumnFirst = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
+            int dataColumnLast = (int)Math.Ceiling((MaxRenderIndex - offsetPoints) / columnPointCount);
+            dataColumnFirst = Math.Max(0, dataColumnFirst);
+            dataColumnLast = Math.Min((int)dims.DataWidth, dataColumnLast);
+            if (dataColumnFirst >= dataColumnLast)
                 return;
 
-            var columns = Enumerable.Range(xPxStart, xPxEnd - xPxStart);
+            var columns = Enumerable.Range(dataColumnFirst, dataColumnLast - dataColumnFirst);
+            float xPixelStart = dataColumnFirst + dims.DataOffsetX;
+            float xPixelEnd = dataColumnLast + dims.DataOffsetX;
 
             IEnumerable<IntervalMinMax> intervals;
             if (UseParallel)
@@ -482,13 +484,13 @@ namespace ScottPlot.Plottable
                 case FillType.NoFill:
                     break;
                 case FillType.FillAbove:
-                    FillToInfinity(dims, gfx, xPxStart, xPxEnd, linePoints, true);
+                    FillToInfinity(dims, gfx, xPixelStart, xPixelEnd, linePoints, true);
                     break;
                 case FillType.FillBelow:
-                    FillToInfinity(dims, gfx, xPxStart, xPxEnd, linePoints, false);
+                    FillToInfinity(dims, gfx, xPixelStart, xPixelEnd, linePoints, false);
                     break;
                 case FillType.FillAboveAndBelow:
-                    FillToBaseline(dims, gfx, xPxStart, xPxEnd, linePoints, BaselineY);
+                    FillToBaseline(dims, gfx, xPixelStart, xPixelEnd, linePoints, BaselineY);
                     break;
                 default:
                     throw new InvalidOperationException("unsupported fill type");
