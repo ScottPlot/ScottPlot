@@ -310,13 +310,21 @@ namespace ScottPlot.Plottable
                 if (penLD.Width > 0)
                     gfx.DrawLines(penLD, pointsArray);
 
-                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+                switch (FillType)
                 {
-                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, FillType);
-                }
-                else if (FillType == FillType.FillAboveAndBelow)
-                {
-                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
+                    case FillType.NoFill:
+                        break;
+                    case FillType.FillAbove:
+                        FillToInfinity(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, true);
+                        break;
+                    case FillType.FillBelow:
+                        FillToInfinity(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, false);
+                        break;
+                    case FillType.FillAboveAndBelow:
+                        FillToBaseline(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
+                        break;
+                    default:
+                        throw new InvalidOperationException("unsupported fill type");
                 }
 
                 if (MarkerSize > 0)
@@ -451,44 +459,48 @@ namespace ScottPlot.Plottable
                 gfx.DrawLines(penHD, linePoints);
             }
 
-            if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+            switch (FillType)
             {
-                FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints, FillType);
-            }
-            else if (FillType == FillType.FillAboveAndBelow)
-            {
-                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, BaselineY);
+                case FillType.NoFill:
+                    break;
+                case FillType.FillAbove:
+                    FillToInfinity(dims, gfx, xPxStart, xPxEnd, linePoints, true);
+                    break;
+                case FillType.FillBelow:
+                    FillToInfinity(dims, gfx, xPxStart, xPxEnd, linePoints, false);
+                    break;
+                case FillType.FillAboveAndBelow:
+                    FillToBaseline(dims, gfx, xPxStart, xPxEnd, linePoints, BaselineY);
+                    break;
+                default:
+                    throw new InvalidOperationException("unsupported fill type");
             }
         }
 
-        private void FillAboveOrBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
+        /// <summary>
+        /// Shade the region abvove or below the curve (to infinity) by drawing a polygon to the edge of the visible plot area.
+        /// </summary>
+        private void FillToInfinity(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, bool fillToPositiveInfinity)
         {
-            if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
-            {
-                float minVal = 0;
-                float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1)) + dims.DataOffsetY;
+            float minVal = 0;
+            float maxVal = (dims.DataHeight * (fillToPositiveInfinity ? -1 : 1)) + dims.DataOffsetY;
 
-                PointF first = new(xPxStart, maxVal);
-                PointF last = new(xPxEnd, maxVal);
+            PointF first = new(xPxStart, maxVal);
+            PointF last = new(xPxEnd, maxVal);
 
-                PointF[] points = new PointF[] { first }
-                                .Concat(linePoints)
-                                .Concat(new PointF[] { last })
-                                .ToArray();
+            PointF[] points = new PointF[] { first }
+                            .Concat(linePoints)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
 
-                Rectangle gradientRectangle = new(
-                        x: (int)first.X,
-                        y: (int)minVal - (fillType == FillType.FillAbove ? 2 : 0),
-                        width: (int)(last.X - first.X),
-                        height: (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1));
+            Rectangle gradientRectangle = new(
+                    x: (int)first.X,
+                    y: (int)minVal - (fillToPositiveInfinity ? 2 : 0),
+                    width: (int)(last.X - first.X),
+                    height: (int)(maxVal - minVal) + 2 * (fillToPositiveInfinity ? -1 : 1));
 
-                using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
-                gfx.FillPolygon(brush, points);
-            }
-            else
-            {
-                throw new Exception("Invalid fill type");
-            }
+            using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
+            gfx.FillPolygon(brush, points);
         }
 
         private PointF? GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
@@ -516,7 +528,10 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
+        /// <summary>
+        /// Shade the region abvove and below the curve (to the baseline level) by drawing two polygons
+        /// </summary>
+        private void FillToBaseline(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
         {
             int baseline = (int)dims.GetPixelY(baselineY);
 
@@ -649,18 +664,27 @@ namespace ScottPlot.Plottable
 
                 PointF[] pointsArray = linePoints.ToArray();
                 ValidatePoints(pointsArray);
+
                 using (Pen densityPen = GDI.Pen(PenColorsByDensity[i]))
                 {
                     gfx.DrawLines(densityPen, pointsArray);
                 }
 
-                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+                switch (FillType)
                 {
-                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, FillType);
-                }
-                else if (FillType == FillType.FillAboveAndBelow)
-                {
-                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, BaselineY);
+                    case FillType.NoFill:
+                        break;
+                    case FillType.FillAbove:
+                        FillToInfinity(dims, gfx, xPxStart, xPxEnd, pointsArray, true);
+                        break;
+                    case FillType.FillBelow:
+                        FillToInfinity(dims, gfx, xPxStart, xPxEnd, pointsArray, false);
+                        break;
+                    case FillType.FillAboveAndBelow:
+                        FillToBaseline(dims, gfx, xPxStart, xPxEnd, pointsArray, BaselineY);
+                        break;
+                    default:
+                        throw new InvalidOperationException("unsupported fill type");
                 }
             }
         }
