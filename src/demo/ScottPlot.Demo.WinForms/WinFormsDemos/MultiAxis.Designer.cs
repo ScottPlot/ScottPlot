@@ -30,10 +30,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void InitializeComponent()
         {
             this.formsPlot1 = new ScottPlot.FormsPlot();
-            this.rbPrimary = new System.Windows.Forms.RadioButton();
-            this.rbSecondary = new System.Windows.Forms.RadioButton();
-            this.rbTertiary = new System.Windows.Forms.RadioButton();
-            this.rbAll = new System.Windows.Forms.RadioButton();
+            this.cbPrimary = new System.Windows.Forms.CheckBox();
+            this.cbSecondary = new System.Windows.Forms.CheckBox();
+            this.cbTertiary = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -44,71 +43,58 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
             this.formsPlot1.Location = new System.Drawing.Point(12, 43);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(739, 370);
+            this.formsPlot1.Size = new System.Drawing.Size(594, 326);
             this.formsPlot1.TabIndex = 0;
             // 
-            // rbPrimary
+            // cbPrimary
             // 
-            this.rbPrimary.AutoSize = true;
-            this.rbPrimary.Checked = true;
-            this.rbPrimary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbPrimary.ForeColor = System.Drawing.Color.Red;
-            this.rbPrimary.Location = new System.Drawing.Point(12, 12);
-            this.rbPrimary.Name = "rbPrimary";
-            this.rbPrimary.Size = new System.Drawing.Size(84, 25);
-            this.rbPrimary.TabIndex = 1;
-            this.rbPrimary.TabStop = true;
-            this.rbPrimary.Text = "Primary";
-            this.rbPrimary.UseVisualStyleBackColor = true;
-            this.rbPrimary.CheckedChanged += new System.EventHandler(this.rbPrimary_CheckedChanged);
+            this.cbPrimary.AutoSize = true;
+            this.cbPrimary.Checked = true;
+            this.cbPrimary.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbPrimary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPrimary.ForeColor = System.Drawing.Color.Magenta;
+            this.cbPrimary.Location = new System.Drawing.Point(12, 12);
+            this.cbPrimary.Name = "cbPrimary";
+            this.cbPrimary.Size = new System.Drawing.Size(85, 25);
+            this.cbPrimary.TabIndex = 7;
+            this.cbPrimary.Text = "Primary";
+            this.cbPrimary.UseVisualStyleBackColor = true;
+            this.cbPrimary.CheckedChanged += new System.EventHandler(this.cbPrimary_CheckedChanged);
             // 
-            // rbSecondary
+            // cbSecondary
             // 
-            this.rbSecondary.AutoSize = true;
-            this.rbSecondary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbSecondary.ForeColor = System.Drawing.Color.Green;
-            this.rbSecondary.Location = new System.Drawing.Point(102, 12);
-            this.rbSecondary.Name = "rbSecondary";
-            this.rbSecondary.Size = new System.Drawing.Size(106, 25);
-            this.rbSecondary.TabIndex = 2;
-            this.rbSecondary.Text = "Secondary";
-            this.rbSecondary.UseVisualStyleBackColor = true;
-            this.rbSecondary.CheckedChanged += new System.EventHandler(this.rbSecondary_CheckedChanged);
+            this.cbSecondary.AutoSize = true;
+            this.cbSecondary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSecondary.ForeColor = System.Drawing.Color.Green;
+            this.cbSecondary.Location = new System.Drawing.Point(103, 12);
+            this.cbSecondary.Name = "cbSecondary";
+            this.cbSecondary.Size = new System.Drawing.Size(107, 25);
+            this.cbSecondary.TabIndex = 8;
+            this.cbSecondary.Text = "Secondary";
+            this.cbSecondary.UseVisualStyleBackColor = true;
+            this.cbSecondary.CheckedChanged += new System.EventHandler(this.cbSecondary_CheckedChanged);
             // 
-            // rbTertiary
+            // cbTertiary
             // 
-            this.rbTertiary.AutoSize = true;
-            this.rbTertiary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbTertiary.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.rbTertiary.Location = new System.Drawing.Point(214, 12);
-            this.rbTertiary.Name = "rbTertiary";
-            this.rbTertiary.Size = new System.Drawing.Size(83, 25);
-            this.rbTertiary.TabIndex = 3;
-            this.rbTertiary.Text = "Tertiary";
-            this.rbTertiary.UseVisualStyleBackColor = true;
-            this.rbTertiary.CheckedChanged += new System.EventHandler(this.rbTertiary_CheckedChanged);
-            // 
-            // rbAll
-            // 
-            this.rbAll.AutoSize = true;
-            this.rbAll.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbAll.Location = new System.Drawing.Point(303, 12);
-            this.rbAll.Name = "rbAll";
-            this.rbAll.Size = new System.Drawing.Size(85, 25);
-            this.rbAll.TabIndex = 4;
-            this.rbAll.Text = "Lock All";
-            this.rbAll.UseVisualStyleBackColor = true;
-            this.rbAll.CheckedChanged += new System.EventHandler(this.rbAll_CheckedChanged);
+            this.cbTertiary.AutoSize = true;
+            this.cbTertiary.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbTertiary.ForeColor = System.Drawing.Color.Navy;
+            this.cbTertiary.Location = new System.Drawing.Point(216, 12);
+            this.cbTertiary.Name = "cbTertiary";
+            this.cbTertiary.Size = new System.Drawing.Size(84, 25);
+            this.cbTertiary.TabIndex = 9;
+            this.cbTertiary.Text = "Tertiary";
+            this.cbTertiary.UseVisualStyleBackColor = true;
+            this.cbTertiary.CheckedChanged += new System.EventHandler(this.cbTertiary_CheckedChanged);
             // 
             // MultiAxis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(763, 425);
-            this.Controls.Add(this.rbAll);
-            this.Controls.Add(this.rbTertiary);
-            this.Controls.Add(this.rbSecondary);
-            this.Controls.Add(this.rbPrimary);
+            this.ClientSize = new System.Drawing.Size(618, 381);
+            this.Controls.Add(this.cbTertiary);
+            this.Controls.Add(this.cbSecondary);
+            this.Controls.Add(this.cbPrimary);
             this.Controls.Add(this.formsPlot1);
             this.Name = "MultiAxis";
             this.Text = "MultiAxis";
@@ -120,9 +106,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         #endregion
 
         private FormsPlot formsPlot1;
-        private System.Windows.Forms.RadioButton rbPrimary;
-        private System.Windows.Forms.RadioButton rbSecondary;
-        private System.Windows.Forms.RadioButton rbTertiary;
-        private System.Windows.Forms.RadioButton rbAll;
+        private System.Windows.Forms.CheckBox cbPrimary;
+        private System.Windows.Forms.CheckBox cbSecondary;
+        private System.Windows.Forms.CheckBox cbTertiary;
     }
 }
