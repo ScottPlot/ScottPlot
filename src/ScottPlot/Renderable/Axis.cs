@@ -473,5 +473,13 @@ namespace ScottPlot.Renderable
                 PixelSize += PixelSizePadding;
             }
         }
+
+        /// <summary>
+        /// Lock min/max limits so it cannot be changed (until it's unlocked)
+        /// </summary>
+        public void LockLimits(bool locked = true)
+        {
+            Dims.LockLimits(locked);
+        }
     }
 }
