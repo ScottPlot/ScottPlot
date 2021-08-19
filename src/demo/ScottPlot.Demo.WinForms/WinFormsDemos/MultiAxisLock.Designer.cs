@@ -1,7 +1,7 @@
 ﻿
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
-    partial class MultiAxis
+    partial class MultiAxisLock
     {
         /// <summary>
         /// Required designer variable.

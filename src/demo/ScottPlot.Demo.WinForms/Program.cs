@@ -17,8 +17,7 @@ namespace ScottPlot.Demo.WinForms
             //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormMain());
-            Application.Run(new WinFormsDemos.MultiAxis());
+            Application.Run(new FormMain());
         }
     }
 }

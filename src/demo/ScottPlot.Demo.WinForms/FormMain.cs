@@ -96,5 +96,10 @@ namespace ScottPlot.Demo.WinForms
         {
             Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
         }
+
+        private void MultiAxisLockButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.MultiAxisLock().ShowDialog();
+        }
     }
 }

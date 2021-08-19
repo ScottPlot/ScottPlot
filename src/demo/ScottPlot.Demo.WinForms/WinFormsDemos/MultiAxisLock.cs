@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
-    public partial class MultiAxis : Form
+    public partial class MultiAxisLock : Form
     {
         private readonly ScottPlot.Renderable.Axis YAxis3;
 
-        public MultiAxis()
+        public MultiAxisLock()
         {
             InitializeComponent();
             Random rand = new Random();
