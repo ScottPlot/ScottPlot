@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
+using System;
 
 namespace ScottPlot.Demo.Avalonia
 {
@@ -29,9 +30,10 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchPlotInAScrollViewerButton").Click += LaunchPlotInAScrollViewer;
             this.Find<Button>("LaunchAxisLimitsButton").Click += LaunchAxisLimits;
             this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
+            this.Find<Button>("LaunchMultiAxisLockButton").Click += LaunchMultiAxisLock;
         }
 
-        public void InitializeComponent()
+		public void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
@@ -114,6 +116,12 @@ namespace ScottPlot.Demo.Avalonia
         public void LaunchLayout(object sender, RoutedEventArgs e)
         {
             new AvaloniaDemos.Layout().ShowDialog(this);
+        }	
+        public void LaunchMultiAxisLock(object sender, RoutedEventArgs e)
+		{
+            new AvaloniaDemos.MultiAxisLock().ShowDialog(this);
         }
+
+
     }
 }
