@@ -23,6 +23,7 @@
 * Radar Plot: Fixed rendering artifact that occurred when axis maximum is zero (#1139) _Thanks @petersesztak and @bclehmann_
 * Mouse Processing: Improved panning behavior when view limits (axis boundaries) are active (#1148, #1203) _Thanks @at2software_
 * Signal Plot: Fixed bug causing render artifacts when using fill modes (#1163, #1205)
+* Scatter Plot: Added support for `OffsetX` and `OffsetY` (#1164, #1213)
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
