@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,23 +13,37 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class PlotsInScrollViewer : Form
     {
-        Random rand = new Random();
-
         public PlotsInScrollViewer()
         {
             InitializeComponent();
 
-            FormsPlot[] formsPlots = { formsPlot1, formsPlot2, formsPlot3 };
+            Random rand = new Random();
+            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
+            formsPlot2.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
+            formsPlot3.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
 
-            foreach (FormsPlot formsPlot in formsPlots)
-            {
-                for (int i = 0; i < 3; i++)
-                    formsPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
+            formsPlot1.MouseWheel += FormsPlot_MouseWheel;
+            formsPlot2.MouseWheel += FormsPlot_MouseWheel;
+            formsPlot3.MouseWheel += FormsPlot_MouseWheel;
+        }
 
-                formsPlot.Configuration.ScrollWheelZoom = false;
+        private void FormsPlot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ((HandledMouseEventArgs)e).Handled = rbZoom.Checked;
+        }
 
-                formsPlot.Render();
-            }
+        private void rbScroll_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.Configuration.ScrollWheelZoom = false;
+            formsPlot2.Configuration.ScrollWheelZoom = false;
+            formsPlot3.Configuration.ScrollWheelZoom = false;
+        }
+
+        private void rbZoom_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.Configuration.ScrollWheelZoom = true;
+            formsPlot2.Configuration.ScrollWheelZoom = true;
+            formsPlot3.Configuration.ScrollWheelZoom = true;
         }
     }
 }
