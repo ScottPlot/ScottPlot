@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,21 +20,40 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class PlotInScrollViewer : Window
     {
-        Random rand = new Random();
+        private readonly WpfPlot[] WpfPlots;
+        private bool MouseWheelScrollsPanel => ScrollRadio.IsChecked.Value;
 
         public PlotInScrollViewer()
         {
             InitializeComponent();
 
-            WpfPlot[] wpfPlots = { wpfPlot1, wpfPlot2, wpfPlot3 };
+            // create an array of all the controls to make them easy to iterate over later
+            WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2, wpfPlot3 };
 
-            foreach (WpfPlot wpfPlot in wpfPlots)
+            // initialize plots with random data
+            Random Rand = new Random(0);
+            foreach (WpfPlot wpfPlot in WpfPlots)
+                wpfPlot.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer myScrollViewer = (ScrollViewer)sender;
+
+            if (ScrollRadio.IsChecked.Value)
             {
-                for (int i = 0; i < 3; i++)
-                    wpfPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
+                // manually scroll the window then mark the event as handled so it does not zoom
+                double scrollOffset = myScrollViewer.VerticalOffset - (e.Delta * .2);
+                myScrollViewer.ScrollToVerticalOffset(scrollOffset);
+                e.Handled = true;
+                return;
+            }
 
-                wpfPlot.Configuration.ScrollWheelZoom = false;
-                wpfPlot.Render();
+            if (ZoomRadio.IsChecked.Value)
+            {
+                // manually scroll (zero offset) to complete the scroll action, then proceed to zooming
+                myScrollViewer.ScrollToVerticalOffset(myScrollViewer.VerticalOffset);
+                return;
             }
         }
     }
