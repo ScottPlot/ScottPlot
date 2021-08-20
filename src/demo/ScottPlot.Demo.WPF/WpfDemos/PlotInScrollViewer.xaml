@@ -33,9 +33,7 @@
             </WrapPanel>
         </GroupBox>
         
-        <ScrollViewer 
-            x:Name="MyScrollViewer"
-            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+        <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <StackPanel>
                 <ScottPlot:WpfPlot Height="300" Name="wpfPlot1"/>
                 <ScottPlot:WpfPlot Height="300" Name="wpfPlot2"/>

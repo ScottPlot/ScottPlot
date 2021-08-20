@@ -20,20 +20,15 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class PlotInScrollViewer : Window
     {
-        private readonly WpfPlot[] WpfPlots;
-        private bool MouseWheelScrollsPanel => ScrollRadio.IsChecked.Value;
-
         public PlotInScrollViewer()
         {
             InitializeComponent();
 
-            // create an array of all the controls to make them easy to iterate over later
-            WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2, wpfPlot3 };
-
             // initialize plots with random data
             Random Rand = new Random(0);
-            foreach (WpfPlot wpfPlot in WpfPlots)
-                wpfPlot.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+            wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+            wpfPlot2.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+            wpfPlot3.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
