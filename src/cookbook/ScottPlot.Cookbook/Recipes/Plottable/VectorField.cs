@@ -1,7 +1,5 @@
 ﻿using ScottPlot.Statistics;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -117,6 +115,32 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             plt.AddVectorField(vectors, xs, ys, scaleFactor: 0.3);
+        }
+    }
+    public class FancyVectorField : IRecipe
+    {
+        public string Category => "Plottable: Vector Field";
+        public string ID => "vectorField_fancytips";
+        public string Title => "Scaled Arrowheads";
+        public string Description => "Use a slower drawing method that draws tips that are proportional to the length of the arrows.";
+
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xPositions = DataGen.Range(0, 10);
+            double[] yPositions = DataGen.Range(0, 10);
+            Vector2[,] vectors = new Vector2[xPositions.Length, yPositions.Length];
+
+            for (int x = 0; x < xPositions.Length; x++)
+                for (int y = 0; y < yPositions.Length; y++)
+                    vectors[x, y] = new Vector2(
+                          x: Math.Sin(xPositions[x]),
+                          y: Math.Sin(yPositions[y]));
+
+            var vf = plt.AddVectorField(vectors, xPositions, yPositions);
+            vf.ScaledArrowheads = true;
+            vf.Anchor = ScottPlot.Plottable.VectorField.VectorAnchor.Base;
+            vf.MarkerSize = 3;
         }
     }
 }
