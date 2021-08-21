@@ -25,6 +25,7 @@
 * Signal Plot: Fixed bug causing render artifacts when using fill modes (#1163, #1205)
 * Scatter Plot: Added support for `OffsetX` and `OffsetY` (#1164, #1213)
 * Coxcomb: Added a new plot type for categorical data. See cookbook for examples. (#1188) _Thanks @bclehmann_
+* Axes: Added `LockLimits()` to control pan/zoom manipulation so individual axes can be manipulated in multi-axis plots. See demo application for example. (#1179, #1210) _Thanks @kkaiser41_
 * Vector Plot: Add additional options to customize arrowhead style and position. See cookbook for examples. (#1202) _Thanks @hhubschle_
 
 ## ScottPlot 4.1.16

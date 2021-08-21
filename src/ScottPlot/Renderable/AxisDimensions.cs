@@ -105,6 +105,11 @@ namespace ScottPlot.Renderable
         private double MaxRemembered = double.NaN;
 
         /// <summary>
+        /// If true, min/max cannot bet set.
+        /// </summary>
+        private bool LockedLimits = false;
+
+        /// <summary>
         /// Limit remember/recall is used while mouse dragging
         /// </summary>
         public void Remember() => (MinRemembered, MaxRemembered) = (Min, Max);
@@ -196,10 +201,13 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void SetAxis(double? min, double? max)
         {
+            if (LockedLimits)
+                return;
+
+            HasBeenSet = true;
             Min = min ?? Min;
             Max = max ?? Max;
             ApplyBounds();
-            HasBeenSet = true;
         }
 
         /// <summary>
@@ -207,6 +215,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void Pan(double units)
         {
+            if (LockedLimits)
+                return;
+
             Min += units;
             Max += units;
             ApplyBounds();
@@ -217,6 +228,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void PanPx(float pixels)
         {
+            if (LockedLimits)
+                return;
+
             Pan(pixels * UnitsPerPx);
         }
 
@@ -227,6 +241,9 @@ namespace ScottPlot.Renderable
         /// <param name="zoomTo">If given, zoom toward/from this alternative center point.</param>
         public void Zoom(double frac = 1, double? zoomTo = null)
         {
+            if (LockedLimits)
+                return;
+
             zoomTo ??= Center;
             (Min, Max) = RationalLimits();
             double spanLeft = zoomTo.Value - Min;
@@ -254,6 +271,14 @@ namespace ScottPlot.Renderable
         {
             double pxFromMin = IsInverted ? DataSizePx + DataOffsetPx - pixel : pixel - DataOffsetPx;
             return pxFromMin * UnitsPerPx + Min;
+        }
+
+        /// <summary>
+        /// Sets a flag indicating whether axis limits are mutable.
+        /// </summary>
+        public void LockLimits(bool locked = true)
+        {
+            LockedLimits = locked;
         }
     }
 }

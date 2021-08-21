@@ -32,7 +32,6 @@ namespace ScottPlot
         /// </summary>
         public Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
 
-        // renderable objects the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
         public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
@@ -41,35 +40,79 @@ namespace ScottPlot
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
         public Palette PlottablePalette = Palette.Category10;
 
-        // the Axes list stores styling info for each axis and its limits
-        public List<Axis> Axes = new List<Axis>() {
+        /// <summary>
+        /// List of all axes used in this plot.
+        /// Axes can be added, but existing ones should not be removed.
+        /// </summary>
+        public List<Axis> Axes = new()
+        {
             new DefaultLeftAxis(),
             new DefaultRightAxis(),
             new DefaultBottomAxis(),
             new DefaultTopAxis()
         };
 
-        public int[] XAxisIndexes => Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
-        public int[] YAxisIndexes => Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
+        /// <summary>
+        /// Get an array containing just horizontal axes
+        /// </summary>
+        public Axis[] HorizontalAxes => Axes.Where(x => x.IsHorizontal).Distinct().ToArray();
+
+        /// <summary>
+        /// Get an array containing just vertical axes
+        /// </summary>
+        public Axis[] VerticalAxes => Axes.Where(x => x.IsVertical).Distinct().ToArray();
+
+        /// <summary>
+        /// Return the first horizontal axis with the given axis index
+        /// </summary>
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+
+        /// <summary>
+        /// Return the first vertical axis with the given axis index
+        /// </summary>
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
+        /// <summary>
+        /// Indicates whether unset axes are present.
+        /// If true, the user may want to call AxisAuto() or SetAxisLimits().
+        /// </summary>
         public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
 
-        public EqualScaleMode EqualScaleMode = EqualScaleMode.Disabled;
+        /// <summary>
+        /// Controls relationship between X and Y axis scales.
+        /// See documentation for enumeration members.
+        /// </summary>
+        public EqualScaleMode EqualScaleMode { get; set; } = EqualScaleMode.Disabled;
 
-        // shortcuts to fixed axes indexes
+        /// <summary>
+        /// Primary vertical axis (on the left of the plot)
+        /// </summary>
         public Axis YAxis => Axes[0];
+
+        /// <summary>
+        /// Secondary vertical axis (on the right of the plot)
+        /// </summary>
         public Axis YAxis2 => Axes[1];
+
+        /// <summary>
+        /// Primary horizontal axis (on the bottom of the plot)
+        /// </summary>
         public Axis XAxis => Axes[2];
+
+        /// <summary>
+        /// Secondary horizontal axis (on the top of the plot)
+        /// </summary>
         public Axis XAxis2 => Axes[3];
 
-        // public fields represent primary X and Y axes
+        /// <summary>
+        /// Width of the figure (in pixels)
+        /// </summary>
         public int Width => (int)XAxis.Dims.FigureSizePx;
+
+        /// <summary>
+        /// Height of the figure (in pixels)
+        /// </summary>
         public int Height => (int)YAxis.Dims.FigureSizePx;
-        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
-        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
-        public float DataWidth => XAxis.Dims.DataSizePx;
-        public float DataHeight => YAxis.Dims.DataSizePx;
 
         public Settings()
         {
@@ -148,23 +191,15 @@ namespace ScottPlot
         /// </summary>
         public void AxesPanPx(float dxPx, float dyPx)
         {
-            List<int> modifiedXs = new List<int>();
-            foreach (Axis axis in Axes.Where(x => x.IsHorizontal))
+            foreach (Axis axis in Axes)
             {
-                if (!modifiedXs.Contains(axis.AxisIndex))
+                if (axis.IsHorizontal)
                 {
-                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
-                    modifiedXs.Add(axis.AxisIndex);
+                    axis.Dims.PanPx(dxPx);
                 }
-            }
-
-            List<int> modifiedYs = new List<int>();
-            foreach (Axis axis in Axes.Where(x => x.IsVertical))
-            {
-                if (!modifiedYs.Contains(axis.AxisIndex))
+                else
                 {
-                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
-                    modifiedYs.Add(axis.AxisIndex);
+                    axis.Dims.PanPx(dyPx);
                 }
             }
         }
@@ -214,34 +249,28 @@ namespace ScottPlot
         /// </summary>
         public void AxisAutoUnsetAxes()
         {
-            /* Extra logic here ensures axes index only get auto-set once 
-             * in the case that multiple axes share the same axis index
-             */
+            Axis[] unsetAxesX = HorizontalAxes
+                .Where(x => !x.Dims.HasBeenSet && x.Dims.IsNan)
+                .Select(x => x.AxisIndex)
+                .Distinct()
+                .Select(x => GetXAxis(x))
+                .ToArray();
 
-            var xAxes = Axes.Where(x => x.IsHorizontal);
-            var yAxes = Axes.Where(x => x.IsVertical);
+            Axis[] unsetAxesY = VerticalAxes
+                .Where(x => !x.Dims.HasBeenSet && x.Dims.IsNan)
+                .Select(x => x.AxisIndex)
+                .Distinct()
+                .Select(x => GetYAxis(x))
+                .ToArray();
 
-            var setIndexesX = xAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
-            var setIndexesY = yAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
-
-            foreach (Axis axis in xAxes)
+            foreach (Axis xAxis in unsetAxesX)
             {
-                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
-                    continue;
-                if (setIndexesX.Contains(axis.AxisIndex))
-                    continue;
-                setIndexesX.Add(axis.AxisIndex);
-                AxisAutoX(axis.AxisIndex);
+                AxisAutoX(xAxis.AxisIndex);
             }
 
-            foreach (Axis axis in yAxes)
+            foreach (Axis yAxis in unsetAxesY)
             {
-                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
-                    continue;
-                if (setIndexesY.Contains(axis.AxisIndex))
-                    continue;
-                setIndexesY.Add(axis.AxisIndex);
-                AxisAutoY(axis.AxisIndex);
+                AxisAutoY(yAxis.AxisIndex);
             }
         }
 
@@ -426,7 +455,7 @@ namespace ScottPlot
             else
             {
                 // TODO: dont require data offset shifting prior to calling this
-                ZoomRectangle.Set(left - DataOffsetX, top - DataOffsetY, width, height);
+                ZoomRectangle.Set(left - XAxis.Dims.DataOffsetPx, top - YAxis.Dims.DataOffsetPx, width, height);
             }
         }
 
@@ -438,18 +467,29 @@ namespace ScottPlot
             foreach (Axis axis in Axes)
             {
                 if (axis.IsHorizontal)
-                    axis.Dims.Resize(Width, DataWidth, DataOffsetX);
+                    axis.Dims.Resize(Width, XAxis.Dims.DataSizePx, XAxis.Dims.DataOffsetPx);
                 else
-                    axis.Dims.Resize(Height, DataHeight, DataOffsetY);
+                    axis.Dims.Resize(Height, YAxis.Dims.DataSizePx, YAxis.Dims.DataOffsetPx);
             }
         }
 
+        /// <summary>
+        /// Automatically adjust the layout for every axis
+        /// </summary>
         public void LayoutAuto()
         {
-            foreach (int xAxisIndex in XAxisIndexes)
+            int[] xIndexes = HorizontalAxes.Select(x => x.AxisIndex).Distinct().ToArray();
+            int[] yIndexes = VerticalAxes.Select(x => x.AxisIndex).Distinct().ToArray();
+
+            foreach (int xAxisIndex in xIndexes)
+            {
                 LayoutAuto(xAxisIndex, 0);
-            foreach (int yAxisIndex in YAxisIndexes)
+            }
+
+            foreach (int yAxisIndex in yIndexes)
+            {
                 LayoutAuto(0, yAxisIndex);
+            }
         }
 
         private void LayoutAuto(int xAxisIndex, int yAxisIndex)
@@ -493,8 +533,8 @@ namespace ScottPlot
             RecalculateDataPadding();
 
             // now recalculate ticks based on new layout
-            var dataSize = new SizeF(DataWidth, DataHeight);
-            var dataOffset = new PointF(DataOffsetX, DataOffsetY);
+            var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
+            var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
             var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits, scaleFactor: 1.0);
             foreach (var axis in Axes)

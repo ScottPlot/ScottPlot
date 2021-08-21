@@ -54,8 +54,8 @@
 							</TextBlock>
 						</Button>
 						<TextBlock >
-              Simple examples that demonstrate the primary features of ScottPlot
-            </TextBlock>
+							Simple examples that demonstrate the primary features of ScottPlot
+						</TextBlock>
 					</DockPanel>
 				</StackPanel>
 			</Border>
@@ -72,8 +72,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Create a ScottPlot programmatically then display it in an interactive window
-              </TextBlock>
+								Create a ScottPlot programmatically then display it in an interactive window
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -83,8 +83,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display the position under the mouse cursor
-              </TextBlock>
+								Display the position under the mouse cursor
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -105,8 +105,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Advanced styling and behavior customization
-              </TextBlock>
+								Advanced styling and behavior customization
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -116,8 +116,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Link the axes of two plots together so adjusting one changes the other
-              </TextBlock>
+								Link the axes of two plots together so adjusting one changes the other
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -127,8 +127,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display live data from a fixed-length array that continuously changes
-              </TextBlock>
+								Display live data from a fixed-length array that continuously changes
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -138,8 +138,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display live data that grows with time
-              </TextBlock>
+								Display live data that grows with time
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -149,8 +149,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display the value of the data point nearest the cursor
-              </TextBlock>
+								Display the value of the data point nearest the cursor
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -160,8 +160,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Demonstrate a control with a transparent background
-              </TextBlock>
+								Demonstrate a control with a transparent background
+							</TextBlock>
 						</DockPanel>
 
 						<!-- I think doing this in Avalonia means a rewrite and I barely understand templates
@@ -184,8 +184,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display a custom menu (or perform a different action) when the control is right-clicked
-              </TextBlock>
+								Display a custom menu (or perform a different action) when the control is right-clicked
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -195,8 +195,8 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-                Display multiple plots in a scrolling control
-              </TextBlock>
+								Display multiple plots in a scrolling control
+							</TextBlock>
 						</DockPanel>
 
 						<DockPanel>
@@ -217,8 +217,19 @@
 								</TextBlock>
 							</Button>
 							<TextBlock>
-                Demonstrate how axis boundaries can be used to constrain axis limits in interactive plots
-              </TextBlock>
+								Demonstrate how axis boundaries can be used to constrain axis limits in interactive plots
+							</TextBlock>
+						</DockPanel>
+
+						<DockPanel>
+							<Button DockPanel.Dock="Left" Name="LaunchMultiAxisLockButton">
+								<TextBlock TextAlignment="Center">
+									MultiAxisLock
+								</TextBlock>
+							</Button>
+							<TextBlock>
+								Selectively pan/zoom individual axes in multi-axis plots
+							</TextBlock>
 						</DockPanel>
 
 					</StackPanel>

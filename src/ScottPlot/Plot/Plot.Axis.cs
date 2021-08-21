@@ -470,13 +470,13 @@ namespace ScottPlot
         {
             if (unitsPerPixelX != null)
             {
-                double spanX = unitsPerPixelX.Value * settings.DataWidth;
+                double spanX = unitsPerPixelX.Value * settings.XAxis.Dims.DataSizePx;
                 SetAxisLimits(xMin: settings.XAxis.Dims.Center - spanX / 2, xMax: settings.XAxis.Dims.Center + spanX / 2);
             }
 
             if (unitsPerPixelY != null)
             {
-                double spanY = unitsPerPixelY.Value * settings.DataHeight;
+                double spanY = unitsPerPixelY.Value * settings.YAxis.Dims.DataSizePx;
                 SetAxisLimits(xMin: settings.YAxis.Dims.Center - spanY / 2, xMax: settings.YAxis.Dims.Center + spanY / 2);
             }
         }
