@@ -1,0 +1,42 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ScottPlot.Demo.Avalonia.AvaloniaDemos.MultiAxisLock"
+        Title="Multi-Axis Lock" 
+        Height="400"
+        Width="600">
+    <DockPanel LastChildFill="True">
+        <WrapPanel DockPanel.Dock="Top">
+            <CheckBox 
+                Content="Primary" 
+                Margin="5"
+                FontWeight="SemiBold"
+                IsChecked="{Binding Primary}"
+                Foreground="Magenta"
+                x:Name="PrimaryCheckbox"
+                />
+            
+            <CheckBox 
+                Content="Secondary" 
+                Margin="5"
+                FontWeight="SemiBold"
+                IsChecked="{Binding Secondary}"
+                Foreground="Green"
+                x:Name="SecondaryCheckbox"
+                />
+            
+            <CheckBox 
+                Content="Tertiary" 
+                Margin="5" 
+                FontWeight="SemiBold"
+                IsChecked="{Binding Tertiary}"
+                Foreground="Navy"
+                x:Name="TertiaryCheckbox"
+                />
+        </WrapPanel>
+		<ScottPlot:AvaPlot Name="AvaPlot1"/>
+    </DockPanel>
+</Window>
