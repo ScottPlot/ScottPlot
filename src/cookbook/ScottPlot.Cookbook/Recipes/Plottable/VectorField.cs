@@ -19,8 +19,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             for (int x = 0; x < xPositions.Length; x++)
                 for (int y = 0; y < yPositions.Length; y++)
                     vectors[x, y] = new Vector2(
-                          x: Math.Sin(xPositions[x]),
-                          y: Math.Sin(yPositions[y]));
+                        x: Math.Sin(xPositions[x]),
+                        y: Math.Sin(yPositions[y]));
 
             plt.AddVectorField(vectors, xPositions, yPositions);
         }
@@ -51,7 +51,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 }
             }
 
-            var vf = plt.AddVectorField(vectors, xs, ys);
+            plt.AddVectorField(vectors, xs, ys);
         }
     }
 
