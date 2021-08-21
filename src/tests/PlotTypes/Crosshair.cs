@@ -26,40 +26,5 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
-
-        [Test]
-        public void Test_CrossHair_DateTime()
-        {
-            var plt = new ScottPlot.Plot(400, 300);
-
-            plt.Title("Crosshair with DateTime Axis");
-            plt.XLabel("Horizontal Axis");
-            plt.YLabel("Vertical Axis");
-
-            // plot DateTime data on the horizontal axis
-            int pointCount = 100;
-            Random rand = new(0);
-            double[] ys = ScottPlot.DataGen.RandomWalk(rand, pointCount);
-            double[] xs = Enumerable.Range(0, pointCount)
-                                    .Select(x => new DateTime(2016, 06, 27).AddDays(x))
-                                    .Select(x => x.ToOADate()).ToArray();
-            plt.AddScatter(xs, ys);
-            plt.XAxis.DateTimeFormat(true);
-
-            // add a crosshair
-            var ch = plt.AddCrosshair(xs[50], ys[50]);
-
-            // indicaite horizontal axis is DateTime and give a proper DateTime format string
-            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
-            ch.IsDateTimeX = true;
-            ch.StringFormatX = "d";
-
-            // use a numeric vertical axis but customize the format string
-            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
-            ch.IsDateTimeY = false;
-            ch.StringFormatY = "F4";
-
-            TestTools.SaveFig(plt);
-        }
     }
 }

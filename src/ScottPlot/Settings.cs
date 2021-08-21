@@ -297,7 +297,7 @@ namespace ScottPlot
                 AxisAutoY(i, margin);
         }
 
-        private void AxisAutoX(int xAxisIndex, double margin = .1)
+        public void AxisAutoX(int xAxisIndex, double margin = .1)
         {
             double min = double.NaN;
             double max = double.NaN;
@@ -326,7 +326,7 @@ namespace ScottPlot
             xAxis.Dims.Zoom(zoomFrac);
         }
 
-        private void AxisAutoY(int yAxisIndex, double margin = .1)
+        public void AxisAutoY(int yAxisIndex, double margin = .1)
         {
             double min = double.NaN;
             double max = double.NaN;

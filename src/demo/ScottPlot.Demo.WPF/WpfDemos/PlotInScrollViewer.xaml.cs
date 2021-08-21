@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,21 +20,35 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class PlotInScrollViewer : Window
     {
-        Random rand = new Random();
-
         public PlotInScrollViewer()
         {
             InitializeComponent();
 
-            WpfPlot[] wpfPlots = { wpfPlot1, wpfPlot2, wpfPlot3 };
+            // initialize plots with random data
+            Random Rand = new Random(0);
+            wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+            wpfPlot2.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+            wpfPlot3.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+        }
 
-            foreach (WpfPlot wpfPlot in wpfPlots)
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer myScrollViewer = (ScrollViewer)sender;
+
+            if (ScrollRadio.IsChecked.Value)
             {
-                for (int i = 0; i < 3; i++)
-                    wpfPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
+                // manually scroll the window then mark the event as handled so it does not zoom
+                double scrollOffset = myScrollViewer.VerticalOffset - (e.Delta * .2);
+                myScrollViewer.ScrollToVerticalOffset(scrollOffset);
+                e.Handled = true;
+                return;
+            }
 
-                wpfPlot.Configuration.ScrollWheelZoom = false;
-                wpfPlot.Render();
+            if (ZoomRadio.IsChecked.Value)
+            {
+                // manually scroll (zero offset) to complete the scroll action, then proceed to zooming
+                myScrollViewer.ScrollToVerticalOffset(myScrollViewer.VerticalOffset);
+                return;
             }
         }
     }

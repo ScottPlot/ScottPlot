@@ -98,7 +98,17 @@ namespace ScottPlot.Drawing
             Graphics gfx = Graphics(bmp, lowQuality, dims.ScaleFactor);
 
             if (clipToDataArea)
-                gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));
+            {
+                /* These dimensions are withdrawn by 1 pixel to leave room for a 1px wide data frame.
+                 * Rounding is intended to exactly match rounding used when frame placement is determined.
+                 */
+                float left = (int)Math.Round(dims.DataOffsetX) + 1;
+                float top = (int)Math.Round(dims.DataOffsetY) + 1;
+                float width = (int)Math.Round(dims.DataWidth) - 1;
+                float height = (int)Math.Round(dims.DataHeight) - 1;
+                gfx.Clip = new Region(new RectangleF(left, top, width, height));
+            }
+
             return gfx;
         }
 

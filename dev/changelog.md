@@ -9,6 +9,21 @@
 * Histogram: Marked `ScottPlot.Statistics.Histogram` obsolete in favor of static methods in `ScottPlot.Statistics.Common` designed to create histograms and probability function curves (#1051, #1166). See cookbook for usage examples. _Thanks @breakwinz and @bclehmann_
 * WpfPlot: Improve memory management for dynamically created and destroyed WpfPlot controls by properly unloading the dispatcher timer (#1115, #1117) _Thanks @RamsayGit, @bclehmann, @StendProg, and @Orace_
 * Mouse Processing: Improved bug that affected fast drag-dropping of draggable objects (#1076)
+* Rendering: Fixed clipping bug that caused some plot types to be rendered above data area frames (#1084)
+* Plot: Added `Width` and `Height` properties
+* Plot: `GetImageBytes()` now returns bytes for a PNG file for easier storage in cloud applications (#1107)
+* Axis: Added a `GetSettings()` method for developers, testers, and experimenters to gain access to experimental objects which are normally private for extreme customization
+* Axis: Axis ticks now have a `Ticks()` overload which allows selective control over major tick lines and major tick labels separately (#1118) _Thanks @kegesch_
+* Plot: `AxisAuto()` now has `xAxisIndex` and `yAxisIndex` arguments to selectively adjust axes to fit data on a specified index (#1123)
+* Crosshair: Refactored to use two `AxisLine`s so custom formatters can now be used and lines can be independently styled (#1173, #1172, #1122, 1195) _Thanks @Maoyao233 and @EmanuelFeru_
+* ClevelandDotPlot: Improve automatic axis limit detection (#1185) _Thanks @Nextra_
+* ScatterPlotList: Improved legend formatting (#1190) _Thanks @Maoyao233_
+* Plot: Added an optional argument to `Frameless()` to reverse its behavior and deprecated `Frame()` (#1112, #1192) _Thanks @arthurits_
+* AxisLine: Added `PositionLabel` option for displaying position as text (using a user-customizable formatter function) on the axis (#1122, #1195, #1172, #1173) _Thanks @EmanuelFeru and @Maoyao233_
+* Radar Plot: Fixed rendering artifact that occurred when axis maximum is zero (#1139) _Thanks @petersesztak and @bclehmann_
+* Mouse Processing: Improved panning behavior when view limits (axis boundaries) are active (#1148, #1203) _Thanks @at2software_
+* Signal Plot: Fixed bug causing render artifacts when using fill modes (#1163, #1205)
+* Scatter Plot: Added support for `OffsetX` and `OffsetY` (#1164, #1213)
 * Coxcomb: Added a new plot type for categorical data. See cookbook for examples. (#1188) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.16

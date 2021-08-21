@@ -74,6 +74,7 @@ namespace ScottPlot
         /// <param name="right">visibility of the right axis (YAxis2) line</param>
         /// <param name="bottom">visibility of the bottom axis (XAxis) line</param>
         /// <param name="top">visibility of the top axis (XAxis2) line</param>
+        [Obsolete("This method has been deprecated. Visibility and customization can be controlled with methods like YAxis.Hide(), YAxis.Line(), etc.", true)]
         public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
@@ -88,14 +89,21 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Give the plot a frameless appearance by setting the size of all axes to zero.
+        /// Give the plot a frameless appearance by hiding all axes.
+        /// Axes are hidden by making them invisible and setting their size to zero.
         /// This causes the data area to go right up to the edge of the plot.
         /// </summary>
-        public void Frameless()
+        public void Frameless(bool hideAllAxes = true)
         {
             foreach (var axis in settings.Axes)
-                axis.Hide();
+                axis.Hide(hideAllAxes);
         }
+
+        /// <summary>
+        /// Control visibility of axes.
+        /// </summary>
+        [Obsolete("This method is deprecated. Call Frameless() to control axis visibility.")]
+        public void Frame(bool enable) => Frameless(!enable);
 
         /// <summary>
         /// Customize basic options for the primary X and Y axes. 
@@ -390,8 +398,26 @@ namespace ScottPlot
         /// </summary>
         /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
         /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1) =>
-            settings.AxisAutoAll(horizontalMargin, verticalMargin);
+        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1, int? xAxisIndex = null, int? yAxisIndex = null)
+        {
+            if (xAxisIndex is null && yAxisIndex is null)
+            {
+                settings.AxisAutoAll(horizontalMargin, verticalMargin);
+                return;
+            }
+
+            if (xAxisIndex is null)
+                settings.AxisAutoAllX(horizontalMargin);
+            else
+                settings.AxisAutoX(xAxisIndex.Value, horizontalMargin);
+
+            if (yAxisIndex is null)
+                settings.AxisAutoAllY(verticalMargin);
+            else
+                settings.AxisAutoY(yAxisIndex.Value, verticalMargin);
+        }
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data
@@ -399,6 +425,8 @@ namespace ScottPlot
         /// <param name="margin">amount of space to the left and right of the data (as a fraction of its width)</param>
         public void AxisAutoX(double margin = .05)
         {
+            // TODO: improve support for non-primary axis indexes
+
             if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(yMin: -10, yMax: 10);
@@ -416,6 +444,8 @@ namespace ScottPlot
         /// <param name="margin">amount of space above and below the data (as a fraction of its height)</param>
         public void AxisAutoY(double margin = .1)
         {
+            // TODO: improve support for non-primary axis indexes
+
             if (settings.Plottables.Count == 0)
             {
                 SetAxisLimits(xMin: -10, xMax: 10);
@@ -501,8 +531,9 @@ namespace ScottPlot
         {
             if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAutoAll();
+
             settings.XAxis.Dims.Pan(dx);
-            settings.XAxis.Dims.Pan(dy);
+            settings.YAxis.Dims.Pan(dy);
         }
 
         #endregion

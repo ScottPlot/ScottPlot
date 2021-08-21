@@ -21,7 +21,7 @@ namespace ScottPlotTests.PlotTypes
             plt.Legend();
 
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
 
@@ -42,7 +42,7 @@ namespace ScottPlotTests.PlotTypes
             plt.Legend();
 
             plt.Grid(false);
-            plt.Frame(false);
+            plt.Frameless();
             plt.XAxis.Ticks(false);
             plt.YAxis.Ticks(false);
 

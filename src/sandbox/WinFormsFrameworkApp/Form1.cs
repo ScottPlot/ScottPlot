@@ -1,4 +1,5 @@
-﻿using ScottPlot.Plottable;
+﻿using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -11,21 +12,11 @@ namespace WinFormsFrameworkApp
         public Form1()
         {
             InitializeComponent();
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(100));
-            var vline = formsPlot1.Plot.AddVerticalLine(50);
-            vline.DragEnabled = true;
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AxisAutoX();
-            formsPlot1.Render();
-        }
+            double[] values = DataGen.RandomWalk(new Random(0), 100);
+            formsPlot1.Plot.AddSignal(values);
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AxisAutoY();
-            formsPlot1.Render();
+            formsPlot1.Plot.SetViewLimits(yMin: 0);
         }
     }
 }
