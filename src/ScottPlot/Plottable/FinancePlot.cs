@@ -118,6 +118,11 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
+            if (OHLCs.Count() == 0)
+            {
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+            }
+
             // TODO: dont use an array here
             double[] limits = new double[4];
             limits[0] = OHLCs[0].DateTime.ToOADate();
