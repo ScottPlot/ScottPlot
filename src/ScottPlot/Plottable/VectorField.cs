@@ -17,7 +17,6 @@ namespace ScottPlot.Plottable
         private readonly double[] Ys;
         private readonly Vector2[,] Vectors;
         private readonly Color[] VectorColors;
-        private readonly PointF[] _poly = new PointF[5];
 
         public string Label;
         public bool IsVisible { get; set; } = true;
@@ -86,8 +85,8 @@ namespace ScottPlot.Plottable
 
             double[] flattenedIntensities = intensities.Cast<double>().ToArray();
             VectorColors = colormap is null ?
-                 Enumerable.Range(0, flattenedIntensities.Length).Select(x => defaultColor).ToArray() :
-                 Colormap.GetColors(flattenedIntensities, colormap);
+                Enumerable.Range(0, flattenedIntensities.Length).Select(x => defaultColor).ToArray() :
+                Colormap.GetColors(flattenedIntensities, colormap);
 
             this.Vectors = vectors;
             this.Xs = xs;
@@ -205,12 +204,15 @@ namespace ScottPlot.Plottable
             var corner2X = tipX - hypLen * cosA2;
             var corner2Y = tipY - hypLen * sinA2;
 
-            _poly[0] = new PointF(baseX, baseY);
-            _poly[1] = new PointF(tipX, tipY);
-            _poly[2] = new PointF(corner1X, corner1Y);
-            _poly[3] = new PointF(tipX, tipY);
-            _poly[4] = new PointF(corner2X, corner2Y);
-            gfx.DrawLines(pen, _poly);
+            PointF[] arrowPoints =
+            {
+                new PointF(baseX, baseY),
+                new PointF(tipX, tipY),
+                new PointF(corner1X, corner1Y),
+                new PointF(tipX, tipY),
+                new PointF(corner2X, corner2Y),
+            };
+            gfx.DrawLines(pen, arrowPoints);
         }
 
 
