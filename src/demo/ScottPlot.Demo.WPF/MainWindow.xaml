@@ -197,6 +197,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="MultiAxisLock">
+                            <TextBlock TextAlignment="Center">
+                                MultiAxisLock
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Selectively pan/zoom individual axes in multi-axis plots
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

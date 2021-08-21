@@ -21,6 +21,12 @@
 * Plot: Added an optional argument to `Frameless()` to reverse its behavior and deprecated `Frame()` (#1112, #1192) _Thanks @arthurits_
 * AxisLine: Added `PositionLabel` option for displaying position as text (using a user-customizable formatter function) on the axis (#1122, #1195, #1172, #1173) _Thanks @EmanuelFeru and @Maoyao233_
 * Radar Plot: Fixed rendering artifact that occurred when axis maximum is zero (#1139) _Thanks @petersesztak and @bclehmann_
+* Mouse Processing: Improved panning behavior when view limits (axis boundaries) are active (#1148, #1203) _Thanks @at2software_
+* Signal Plot: Fixed bug causing render artifacts when using fill modes (#1163, #1205)
+* Scatter Plot: Added support for `OffsetX` and `OffsetY` (#1164, #1213)
+* Coxcomb: Added a new plot type for categorical data. See cookbook for examples. (#1188) _Thanks @bclehmann_
+* Axes: Added `LockLimits()` to control pan/zoom manipulation so individual axes can be manipulated in multi-axis plots. See demo application for example. (#1179, #1210) _Thanks @kkaiser41_
+* Vector Plot: Add additional options to customize arrowhead style and position. See cookbook for examples. (#1202) _Thanks @hhubschle_
 * Finance Plot: Fixed bug affecting plots with no data points (#1200) _Thanks @Maoyao233_
 
 ## ScottPlot 4.1.16

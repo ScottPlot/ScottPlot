@@ -124,5 +124,10 @@ namespace ScottPlot.Demo.WPF
         {
             Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
         }
+
+        private void MultiAxisLock(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.MultiAxisLock().ShowDialog();
+        }
     }
 }
