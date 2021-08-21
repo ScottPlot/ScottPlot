@@ -748,6 +748,30 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// A Pie chart where the angle of slices is constant but the radii are not.
+        /// </summary>
+        /// <param name="values">The data to plot</param>
+        /// <param name="hideGridAndFrame">Whether to make the plot frameless and disable the grid</param>
+        public CoxcombPlot AddCoxcomb(double[] values, bool hideGridAndFrame = true)
+        {
+            Color[] colors = Enumerable.Range(0, values.Length)
+                           .Select(i => settings.PlottablePalette.GetColor(i))
+                           .ToArray();
+
+            CoxcombPlot plottable = new(values, colors);
+            Add(plottable);
+
+            if (hideGridAndFrame)
+            {
+                Grid(false);
+                Frameless();
+            }
+
+            return plottable;
+
+        }
+
+        /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
         public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)

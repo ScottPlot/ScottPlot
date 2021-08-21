@@ -28,11 +28,42 @@ namespace ScottPlot.Plottable
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+
+        /// <summary>
+        /// If enabled, parallel processing will be used to calculate pixel positions for high density datasets.
+        /// </summary>
         public bool UseParallel { get; set; } = true;
-        public int BaselineY { get; set; } = 0;
+
+
+        /// <summary>
+        /// If fill above and/or below is enabled, this defines the baseline level.
+        /// </summary>
+        public double BaselineY { get; set; } = 0;
+
+        /// <summary>
+        /// If fill is enabled, a baseline will be drawn using this color.
+        /// </summary>
+        public Color BaselineColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// If fill is enabled, a baseline will be drawn using this width.
+        /// </summary>
+        public float BaselineWidth { get; set; } = 1;
+
+        /// <summary>
+        /// If fill is enabled, this color will be used to fill the area below the curve above BaselineY.
+        /// </summary>
         public Color? GradientFillColor1 { get; set; } = null;
+
+        /// <summary>
+        /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
+        /// </summary>
         public Color? GradientFillColor2 { get; set; } = null;
-        private bool ShowMarkers { get; set; } = false; // this gets set in the render loop
+
+        /// <summary>
+        /// When markers are visible on the line (low density mode) this is True
+        /// </summary>
+        private bool ShowMarkersInLegend { get; set; } = false;
 
         protected T[] _Ys;
         public virtual T[] Ys
@@ -237,6 +268,9 @@ namespace ScottPlot.Plottable
                 yMax: yMax + offsetY);
         }
 
+        /// <summary>
+        /// Render when the data is zoomed out so much that it just looks like a vertical line.
+        /// </summary>
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
@@ -247,9 +281,12 @@ namespace ScottPlot.Plottable
             gfx.DrawLine(penHD, point1, point2);
         }
 
+        /// <summary>
+        /// Render when the data is zoomed in such that there is more than 1 column per data point.
+        /// Rendering is accomplished by drawing a straight line from point to point.
+        /// </summary>
         private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
-            // this function is for when the graph is zoomed in so individual data points can be seen
             int capacity = visibleIndex2 - visibleIndex1 + 2;
             List<PointF> linePoints = new(capacity);
             if (visibleIndex2 > _Ys.Length - 2)
@@ -282,13 +319,21 @@ namespace ScottPlot.Plottable
                 if (penLD.Width > 0)
                     gfx.DrawLines(penLD, pointsArray);
 
-                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+                switch (FillType)
                 {
-                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, FillType);
-                }
-                else if (FillType == FillType.FillAboveAndBelow)
-                {
-                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
+                    case FillType.NoFill:
+                        break;
+                    case FillType.FillAbove:
+                        FillToInfinity(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, true);
+                        break;
+                    case FillType.FillBelow:
+                        FillToInfinity(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, false);
+                        break;
+                    case FillType.FillAboveAndBelow:
+                        FillToBaseline(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
+                        break;
+                    default:
+                        throw new InvalidOperationException("unsupported fill type");
                 }
 
                 if (MarkerSize > 0)
@@ -300,7 +345,7 @@ namespace ScottPlot.Plottable
                     float markerPxRadius = markerPxDiameter / 2;
                     if (markerPxRadius > .25)
                     {
-                        ShowMarkers = true;
+                        ShowMarkersInLegend = true;
 
                         // adjust marker offset to improve rendering on Linux and MacOS
                         float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
@@ -308,6 +353,10 @@ namespace ScottPlot.Plottable
                             gfx.FillEllipse(brush: brush,
                                 x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
                                 width: markerPxDiameter, height: markerPxDiameter);
+                    }
+                    else
+                    {
+                        ShowMarkersInLegend = false;
                     }
                 }
             }
@@ -372,16 +421,23 @@ namespace ScottPlot.Plottable
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
+        /// <summary>
+        /// Render the data when there is more than one data point per pixel column.
+        /// Each pixel column therefore represents multiple data points.
+        /// Rendering is optimized by determining the min/max for each pixel column, then a single line is drawn connecting those values.
+        /// </summary>
         private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((MaxRenderIndex - offsetPoints) / columnPointCount);
-            xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
-            if (xPxStart >= xPxEnd)
+            int dataColumnFirst = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
+            int dataColumnLast = (int)Math.Ceiling((MaxRenderIndex - offsetPoints) / columnPointCount);
+            dataColumnFirst = Math.Max(0, dataColumnFirst);
+            dataColumnLast = Math.Min((int)dims.DataWidth, dataColumnLast);
+            if (dataColumnFirst >= dataColumnLast)
                 return;
 
-            var columns = Enumerable.Range(xPxStart, xPxEnd - xPxStart);
+            var columns = Enumerable.Range(dataColumnFirst, dataColumnLast - dataColumnFirst);
+            float xPixelStart = dataColumnFirst + dims.DataOffsetX;
+            float xPixelEnd = dataColumnLast + dims.DataOffsetX;
 
             IEnumerable<IntervalMinMax> intervals;
             if (UseParallel)
@@ -423,44 +479,48 @@ namespace ScottPlot.Plottable
                 gfx.DrawLines(penHD, linePoints);
             }
 
-            if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+            switch (FillType)
             {
-                FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints, FillType);
-            }
-            else if (FillType == FillType.FillAboveAndBelow)
-            {
-                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, this.BaselineY);
+                case FillType.NoFill:
+                    break;
+                case FillType.FillAbove:
+                    FillToInfinity(dims, gfx, xPixelStart, xPixelEnd, linePoints, true);
+                    break;
+                case FillType.FillBelow:
+                    FillToInfinity(dims, gfx, xPixelStart, xPixelEnd, linePoints, false);
+                    break;
+                case FillType.FillAboveAndBelow:
+                    FillToBaseline(dims, gfx, xPixelStart, xPixelEnd, linePoints, BaselineY);
+                    break;
+                default:
+                    throw new InvalidOperationException("unsupported fill type");
             }
         }
 
-        private void FillAboveOrBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
+        /// <summary>
+        /// Shade the region abvove or below the curve (to infinity) by drawing a polygon to the edge of the visible plot area.
+        /// </summary>
+        private void FillToInfinity(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, bool fillToPositiveInfinity)
         {
-            if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
-            {
-                float minVal = 0;
-                float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
+            float minVal = 0;
+            float maxVal = (dims.DataHeight * (fillToPositiveInfinity ? -1 : 1)) + dims.DataOffsetY;
 
-                PointF first = new(xPxStart + dims.DataOffsetX, maxVal);
-                PointF last = new(xPxEnd + dims.DataOffsetX, maxVal);
+            PointF first = new(xPxStart, maxVal);
+            PointF last = new(xPxEnd, maxVal);
 
-                PointF[] points = new PointF[] { first }
-                                .Concat(linePoints)
-                                .Concat(new PointF[] { last })
-                                .ToArray();
+            PointF[] points = new PointF[] { first }
+                            .Concat(linePoints)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
 
-                Rectangle gradientRectangle = new(
-                        x: (int)first.X,
-                        y: (int)minVal - (fillType == FillType.FillAbove ? 2 : 0),
-                        width: (int)(last.X - first.X),
-                        height: (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1));
+            Rectangle gradientRectangle = new(
+                    x: (int)first.X,
+                    y: (int)minVal - (fillToPositiveInfinity ? 2 : 0),
+                    width: (int)(last.X - first.X),
+                    height: (int)dims.Height);
 
-                using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
-                gfx.FillPolygon(brush, points);
-            }
-            else
-            {
-                throw new Exception("Invalid fill type");
-            }
+            using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
+            gfx.FillPolygon(brush, points);
         }
 
         private PointF? GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
@@ -488,12 +548,15 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
+        /// <summary>
+        /// Shade the region abvove and below the curve (to the baseline level) by drawing two polygons
+        /// </summary>
+        private void FillToBaseline(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
         {
-            baseline = (int)dims.GetPixelY(baseline);
+            int baseline = (int)dims.GetPixelY(baselineY);
 
-            PointF first = new(xPxStart + dims.DataOffsetX, baseline);
-            PointF last = new(xPxEnd + dims.DataOffsetX, baseline);
+            PointF first = new(xPxStart, baseline);
+            PointF last = new(xPxEnd, baseline);
 
             PointF[] points = new PointF[] { first }
                             .Concat(linePoints)
@@ -545,7 +608,7 @@ namespace ScottPlot.Plottable
             }
 
             // Draw baseline
-            using var baselinePen = GDI.Pen(Color.Black);
+            using var baselinePen = GDI.Pen(BaselineColor, BaselineWidth);
             gfx.DrawLine(baselinePen, baselinePointStart, baselinePointEnd);
         }
 
@@ -562,6 +625,9 @@ namespace ScottPlot.Plottable
             return rectangle;
         }
 
+        /// <summary>
+        /// Render similar to high density mode except use multiple colors to represent density distributions.
+        /// </summary>
         private void RenderHighDensityDistributionParallel(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
@@ -621,18 +687,27 @@ namespace ScottPlot.Plottable
 
                 PointF[] pointsArray = linePoints.ToArray();
                 ValidatePoints(pointsArray);
+
                 using (Pen densityPen = GDI.Pen(PenColorsByDensity[i]))
                 {
                     gfx.DrawLines(densityPen, pointsArray);
                 }
 
-                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+                switch (FillType)
                 {
-                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, FillType);
-                }
-                else if (FillType == FillType.FillAboveAndBelow)
-                {
-                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, BaselineY);
+                    case FillType.NoFill:
+                        break;
+                    case FillType.FillAbove:
+                        FillToInfinity(dims, gfx, xPxStart, xPxEnd, pointsArray, true);
+                        break;
+                    case FillType.FillBelow:
+                        FillToInfinity(dims, gfx, xPxStart, xPxEnd, pointsArray, false);
+                        break;
+                    case FillType.FillAboveAndBelow:
+                        FillToBaseline(dims, gfx, xPxStart, xPxEnd, pointsArray, BaselineY);
+                        break;
+                    default:
+                        throw new InvalidOperationException("unsupported fill type");
                 }
             }
         }
@@ -653,8 +728,8 @@ namespace ScottPlot.Plottable
                 color = Color,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
-                markerShape = ShowMarkers ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = ShowMarkers ? MarkerSize : 0
+                markerShape = ShowMarkersInLegend ? MarkerShape.filledCircle : MarkerShape.none,
+                markerSize = ShowMarkersInLegend ? MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
         }
@@ -676,22 +751,19 @@ namespace ScottPlot.Plottable
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / dims.DataWidth;
             double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
-
+            bool densityLevelsAvailable = DensityLevelCount > 0 && pointsPerPixelColumn > DensityLevelCount;
             double firstPointX = dims.GetPixelX(OffsetX);
             double lastPointX = dims.GetPixelX(_SamplePeriod * (_Ys.Length - 1) + OffsetX);
             double dataWidthPx = lastPointX - firstPointX;
+            double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
-            // set this now, and let the render function change it if it happens
-            ShowMarkers = false;
-
-            // use different rendering methods based on how dense the data is on screen
-            if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
+            if (columnsWithData < 1)
             {
                 RenderSingleLine(dims, gfx, penHD);
             }
             else if (pointsPerPixelColumn > 1)
             {
-                if (DensityLevelCount > 0 && pointsPerPixelColumn > DensityLevelCount)
+                if (densityLevelsAvailable)
                     RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
                 else
                     RenderHighDensity(dims, gfx, offsetPoints, columnPointCount, penHD);

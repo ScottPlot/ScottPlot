@@ -8,20 +8,13 @@
     <PackageIcon>icon.png</PackageIcon>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms or WPF applications are available as separate packages.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms, WPF, or Avalonia applications are available as separate NuGet packages.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://swharden.com/scottplot/</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageTags>plot graph data chart signal line bar C#</PackageTags>
-    <PackageReleaseNotes>Interactive WinForms control: https://www.nuget.org/packages/ScottPlot.WinForms
-Interactive WPF control: https://www.nuget.org/packages/ScottPlot.WPF
-Interactive Avalonia control: https://www.nuget.org/packages/ScottPlot.Avalonia
-
-Release notes: https://github.com/swharden/ScottPlot/releases
-Release cookbook: https://swharden.com/scottplot/cookbook
-Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
+    <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+    <PackageReleaseNotes>https://github.com/ScottPlot/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>4.1.16</Version>
     <AssemblyVersion>4.1.16.0</AssemblyVersion>
     <FileVersion>4.1.16.0</FileVersion>
@@ -41,6 +34,7 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <!-- MacOS requires a special DLL to use System.Drawing -->
