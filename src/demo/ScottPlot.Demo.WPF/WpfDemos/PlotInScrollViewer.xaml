@@ -5,12 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos" xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="ScottPlot in a ScrollViewer" Height="450" Width="800">
-    <ScrollViewer>
-        <StackPanel>
-            <ScottPlot:WpfPlot Height="300" Name="wpfPlot1"/>
-            <ScottPlot:WpfPlot Height="300" Name="wpfPlot2"/>
-            <ScottPlot:WpfPlot Height="300" Name="wpfPlot3"/>
-        </StackPanel>
-    </ScrollViewer>
+        Title="ScottPlot in a ScrollViewer" Height="400" Width="500">
+    <DockPanel LastChildFill="True"
+            Background="WhiteSmoke">
+        <GroupBox 
+            Header="Mouse Wheel Action"
+            FontSize="16"
+            Margin="10 0 10 10"
+            DockPanel.Dock="Top">
+            <WrapPanel>
+                <RadioButton 
+                    x:Name="ScrollRadio"
+                    Content="Scroll Up/Down" 
+                    Margin="10"
+                    FontSize="16"
+                    Padding="2,-5,0,0"
+                    IsChecked="True"
+                    />
+                <RadioButton 
+                    x:Name="ZoomRadio"
+                    Content="Zoom In/Out"
+                    Margin="10"
+                    FontSize="16"
+                    Padding="2,-5,0,0"
+                    IsChecked="False"
+                    />
+            </WrapPanel>
+        </GroupBox>
+        
+        <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <StackPanel>
+                <ScottPlot:WpfPlot Height="300" Name="wpfPlot1"/>
+                <ScottPlot:WpfPlot Height="300" Name="wpfPlot2"/>
+                <ScottPlot:WpfPlot Height="300" Name="wpfPlot3"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

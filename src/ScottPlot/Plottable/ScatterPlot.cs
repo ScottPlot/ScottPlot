@@ -19,6 +19,16 @@ namespace ScottPlot.Plottable
         public double[] XError { get; set; }
         public double[] YError { get; set; }
 
+        /// <summary>
+        /// Add this value to each X value before plotting (axis units)
+        /// </summary>
+        public double OffsetX { get; set; } = 0;
+
+        /// <summary>
+        /// Add this value to each Y value before plotting (axis units)
+        /// </summary>
+        public double OffsetY { get; set; } = 0;
+
         public int PointCount => Ys.Length;
 
         // customization
@@ -189,7 +199,11 @@ namespace ScottPlot.Plottable
             if (double.IsInfinity(limits[2]) || double.IsInfinity(limits[3]))
                 throw new InvalidOperationException("Y data must not contain Infinity");
 
-            return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
+            return new AxisLimits(
+                xMin: limits[0] + OffsetX,
+                xMax: limits[1] + OffsetX,
+                yMin: limits[2] + OffsetY,
+                yMax: limits[3] + OffsetY);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -206,8 +220,8 @@ namespace ScottPlot.Plottable
                 PointF[] points = new PointF[to - from + 1];
                 for (int i = from; i <= to; i++)
                 {
-                    float x = dims.GetPixelX(Xs[i]);
-                    float y = dims.GetPixelY(Ys[i]);
+                    float x = dims.GetPixelX(Xs[i] + OffsetX);
+                    float y = dims.GetPixelY(Ys[i] + OffsetY);
                     if (float.IsNaN(x) || float.IsNaN(y))
                         throw new NotImplementedException("Data must not contain NaN");
                     points[i - from] = new PointF(x, y);
@@ -217,8 +231,9 @@ namespace ScottPlot.Plottable
                 {
                     for (int i = 0; i < points.Count(); i++)
                     {
-                        float yBot = dims.GetPixelY(Ys[i + from] - YError[i + from]);
-                        float yTop = dims.GetPixelY(Ys[i + from] + YError[i + from]);
+                        double yWithOffset = Ys[i] + OffsetY;
+                        float yBot = dims.GetPixelY(yWithOffset - YError[i + from]);
+                        float yTop = dims.GetPixelY(yWithOffset + YError[i + from]);
                         gfx.DrawLine(penLineError, points[i].X, yBot, points[i].X, yTop);
                         gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yBot, points[i].X + ErrorCapSize, yBot);
                         gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yTop, points[i].X + ErrorCapSize, yTop);
@@ -229,8 +244,9 @@ namespace ScottPlot.Plottable
                 {
                     for (int i = 0; i < points.Length; i++)
                     {
-                        float xLeft = dims.GetPixelX(Xs[i + from] - XError[i + from]);
-                        float xRight = dims.GetPixelX(Xs[i + from] + XError[i + from]);
+                        double xWithOffset = Xs[i] + OffsetX;
+                        float xLeft = dims.GetPixelX(xWithOffset - XError[i + from]);
+                        float xRight = dims.GetPixelX(xWithOffset + XError[i + from]);
                         gfx.DrawLine(penLineError, xLeft, points[i].Y, xRight, points[i].Y);
                         gfx.DrawLine(penLineError, xLeft, points[i].Y - ErrorCapSize, xLeft, points[i].Y + ErrorCapSize);
                         gfx.DrawLine(penLineError, xRight, points[i].Y - ErrorCapSize, xRight, points[i].Y + ErrorCapSize);
