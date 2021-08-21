@@ -1007,13 +1007,12 @@ namespace ScottPlot
             string label = null,
             Color? color = null,
             Drawing.Colormap colormap = null,
-            double scaleFactor = 1,
-            bool fancyCaps = false,
-            bool anchorAtStart = false)
+            double scaleFactor = 1
+            )
         {
             // TODO: refactor constructor to eliminate styling arguments
             var vectorField = new VectorField(vectors, xs, ys,
-                colormap, scaleFactor, color ?? settings.GetNextColor(), fancyCaps, anchorAtStart)
+                colormap, scaleFactor, color ?? settings.GetNextColor())
             { Label = label };
 
             Add(vectorField);

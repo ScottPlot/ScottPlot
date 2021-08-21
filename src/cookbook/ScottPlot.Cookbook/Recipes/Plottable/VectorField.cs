@@ -51,7 +51,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 }
             }
 
-            plt.AddVectorField(vectors, xs, ys);
+            var vf = plt.AddVectorField(vectors, xs, ys);
         }
     }
 
@@ -121,7 +121,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Vector Field";
         public string ID => "vectorField_fancytips";
-        public string Title => "Nice tips";
+        public string Title => "Scaled Arrowheads";
         public string Description => "Use a slower drawing method that draws tips that are proportional to the length of the arrows.";
 
 
@@ -137,7 +137,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                           x: Math.Sin(xPositions[x]),
                           y: Math.Sin(yPositions[y]));
 
-            plt.AddVectorField(vectors, xPositions, yPositions, fancyCaps: true, anchorAtStart: true);
+            var vf = plt.AddVectorField(vectors, xPositions, yPositions);
+            vf.ScaledArrowheads = true;
+            vf.Anchor = ScottPlot.Plottable.VectorField.VectorAnchor.Base;
+            vf.MarkerSize = 3;
         }
     }
 }

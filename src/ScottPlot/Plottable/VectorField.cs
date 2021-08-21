@@ -15,31 +15,48 @@ namespace ScottPlot.Plottable
         // data
         private readonly double[] Xs;
         private readonly double[] Ys;
-        private readonly bool fancyCaps;
-        private readonly bool anchorAtStart;
         private readonly Vector2[,] Vectors;
         private readonly Color[] VectorColors;
         private readonly PointF[] _poly = new PointF[5];
 
-        // customization
         public string Label;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        public enum VectorAnchor { Base, Center, Tip, }
+
         /// <summary>
-        /// 
+        /// Describes which part of the vector line will be placed at the data coordinates.
         /// </summary>
-        /// <param name="vectors"></param>
-        /// <param name="xs"></param>
-        /// <param name="ys"></param>
-        /// <param name="colormap"></param>
-        /// <param name="scaleFactor"></param>
-        /// <param name="defaultColor"></param>
-        /// <param name="fancyCaps">Plot custom arrow heads; slower but nicer looking.</param>
-        /// <param name="anchorAtStart">Draw arrow starting from the x,y coordinate, instead of centering the arrow on the x,y coordinate.</param>
-        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor,
-              bool fancyCaps = false, bool anchorAtStart = false)
+        public VectorAnchor Anchor = VectorAnchor.Center;
+
+        /// <summary>
+        /// If enabled arrowheads will be drawn as lines scaled to each vector's magnitude.
+        /// </summary>
+        public bool ScaledArrowheads;
+
+        /// <summary>
+        /// When using scaled arrowheads this defines the width of the arrow relative to the vector line's length.
+        /// </summary>
+        public double ScaledArrowheadWidth = 0.15;
+
+        /// <summary>
+        /// When using scaled arrowheads this defines length of the arrowhead relative to the vector line's length.
+        /// </summary>
+        public double ScaledArrowheadLength = 0.5;
+
+        /// <summary>
+        /// Marker drawn at each coordinate
+        /// </summary>
+        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+
+        /// <summary>
+        /// Size of markers to be drawn at each coordinate
+        /// </summary>
+        public float MarkerSize = 0;
+
+        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
             double minMagnitudeSquared = vectors[0, 0].LengthSquared();
             double maxMagnitudeSquared = vectors[0, 0].LengthSquared();
@@ -75,8 +92,6 @@ namespace ScottPlot.Plottable
             this.Vectors = vectors;
             this.Xs = xs;
             this.Ys = ys;
-            this.fancyCaps = fancyCaps;
-            this.anchorAtStart = anchorAtStart;
         }
 
         public void ValidateData(bool deep = false) { /* validation occurs in constructor */ }
@@ -102,22 +117,11 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             {
-                float tipScale = 0;
-                float headAngle = 0;
-                if (!fancyCaps)
-                {
-                    pen.CustomEndCap = new AdjustableArrowCap(2, 2);
-                }
-                else
-                {
-                    // The width of the arrow head part, relative to the length of the arrow.
-                    var arrowheadWidth = 0.15f;
-                    // The length of the arrow head part, relative to the total length of the arrow.
-                    var arrowheadLength = 0.5f;
+                float tipScale = (float)Math.Sqrt(ScaledArrowheadLength * ScaledArrowheadLength + ScaledArrowheadWidth * ScaledArrowheadWidth);
+                float headAngle = (float)Math.Atan2(ScaledArrowheadWidth, ScaledArrowheadLength);
 
-                    tipScale = (float)Math.Sqrt(arrowheadLength * arrowheadLength + arrowheadWidth * arrowheadWidth);
-                    headAngle = (float)Math.Atan2(arrowheadWidth, arrowheadLength);
-                }
+                if (!ScaledArrowheads)
+                    pen.CustomEndCap = new AdjustableArrowCap(2, 2);
 
                 for (int i = 0; i < Xs.Length; i++)
                 {
@@ -125,25 +129,42 @@ namespace ScottPlot.Plottable
                     {
                         Vector2 v = Vectors[i, j];
                         float tailX, tailY, endX, endY;
-                        if (anchorAtStart)
+
+                        switch (Anchor)
                         {
-                            tailX = dims.GetPixelX(Xs[i]);
-                            tailY = dims.GetPixelY(Ys[j]);
-                            endX = dims.GetPixelX(Xs[i] + v.X);
-                            endY = dims.GetPixelY(Ys[j] + v.Y);
+                            case VectorAnchor.Base:
+                                tailX = dims.GetPixelX(Xs[i]);
+                                tailY = dims.GetPixelY(Ys[j]);
+                                endX = dims.GetPixelX(Xs[i] + v.X);
+                                endY = dims.GetPixelY(Ys[j] + v.Y);
+                                break;
+                            case VectorAnchor.Center:
+                                tailX = dims.GetPixelX(Xs[i] - v.X / 2);
+                                tailY = dims.GetPixelY(Ys[j] - v.Y / 2);
+                                endX = dims.GetPixelX(Xs[i] + v.X / 2);
+                                endY = dims.GetPixelY(Ys[j] + v.Y / 2);
+                                break;
+                            case VectorAnchor.Tip:
+                                tailX = dims.GetPixelX(Xs[i] - v.X);
+                                tailY = dims.GetPixelY(Ys[j] - v.Y);
+                                endX = dims.GetPixelX(Xs[i]);
+                                endY = dims.GetPixelY(Ys[j]);
+                                break;
+                            default:
+                                throw new NotImplementedException("unsupported anchor type");
                         }
-                        else
-                        {
-                            tailX = dims.GetPixelX(Xs[i] - v.X / 2);
-                            tailY = dims.GetPixelY(Ys[j] - v.Y / 2);
-                            endX = dims.GetPixelX(Xs[i] + v.X / 2);
-                            endY = dims.GetPixelY(Ys[j] + v.Y / 2);
-                        }
+
                         pen.Color = VectorColors[i * Ys.Length + j];
-                        if (fancyCaps)
+                        if (ScaledArrowheads)
                             DrawFancyArrow(gfx, pen, tailX, tailY, endX, endY, headAngle, tipScale);
                         else
                             gfx.DrawLine(pen, tailX, tailY, endX, endY);
+
+                        if (MarkerShape != MarkerShape.none && MarkerSize > 0)
+                        {
+                            PointF markerPoint = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[j]));
+                            MarkerTools.DrawMarker(gfx, markerPoint, MarkerShape, MarkerSize, pen.Color);
+                        }
                     }
                 }
             }

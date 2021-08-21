@@ -21,6 +21,7 @@
 * Plot: Added an optional argument to `Frameless()` to reverse its behavior and deprecated `Frame()` (#1112, #1192) _Thanks @arthurits_
 * AxisLine: Added `PositionLabel` option for displaying position as text (using a user-customizable formatter function) on the axis (#1122, #1195, #1172, #1173) _Thanks @EmanuelFeru and @Maoyao233_
 * Radar Plot: Fixed rendering artifact that occurred when axis maximum is zero (#1139) _Thanks @petersesztak and @bclehmann_
+* Vector Plot: Add additional options to customize arrowhead style and position. See cookbook for examples. (#1202) _Thanks @hhubschle_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
