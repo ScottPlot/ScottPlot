@@ -28,6 +28,7 @@
 * Axes: Added `LockLimits()` to control pan/zoom manipulation so individual axes can be manipulated in multi-axis plots. See demo application for example. (#1179, #1210) _Thanks @kkaiser41_
 * Vector Plot: Add additional options to customize arrowhead style and position. See cookbook for examples. (#1202) _Thanks @hhubschle_
 * Finance Plot: Fixed bug affecting plots with no data points (#1200) _Thanks @Maoyao233_
+* Ticks: Improve display of rotated ticks on secondary axes (#1201) _Thanks @gigios_
 
 ## ScottPlot 4.1.16
 * Made it easier to use custom color palettes (see cookbook) (#1058, #1082) _Thanks @EmanuelFeru_
