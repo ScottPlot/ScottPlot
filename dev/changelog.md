@@ -1,8 +1,18 @@
 # ScottPlot 4.0 Changelog
 
-## ScottPlot 4.0.46
+## ScottPlot 4.0.49
 * Improved ticks for small plots (#724) _Thanks @Saklut_
 * Improved display of manual ticks (#724) _Thanks @bclehmann_
+* Fixed bug affecting scatter plots with a single point (#948, #979) _Thanks @bclehmann_
+
+## ScottPlot 4.0.48
+* Signal Plot: Improved fill above and below (#676)
+
+## ScottPlot 4.0.47
+* Ticks: Improved tick label formatting (#657)
+
+## ScottPlot 4.0.46
+* Signal Plot: Improved automatic axis limit detection when xOffset is in use
 
 ## ScottPlot 4.0.45
 * Fixed a bug that affected very small plots with the benchmark enabled (#626) _Thanks @martin-brajer_
