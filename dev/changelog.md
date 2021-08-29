@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.18
+* Ticks: Improve placement when axis scale lock is enabled (#1229, #1197)
+
 ## ScottPlot 4.1.17
 * Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
 * Radar Plot: Improved `Update()` default arguments (#1097) _Thanks @arthurits_
