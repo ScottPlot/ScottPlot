@@ -10,9 +10,9 @@ namespace ScottPlotTests.Plot
     {
         /// <summary>
         /// Fraction to assert X scale matches Y scale.
-        /// 0.1% used to allow for floating-point math errors.
+        /// 1% used to allow for floating-point math errors.
         /// </summary>
-        private const double ScaleLockPrecision = .001;
+        private const double ScaleLockPrecision = .01;
 
         private (double xUnitsPerPixel, double yUnitsPerPixel) getUnitsPerPixel(ScottPlot.Plot plt)
         {
