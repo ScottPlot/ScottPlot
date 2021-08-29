@@ -2,6 +2,7 @@
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
+using ScottPlot.Drawing.Colormaps;
 
 namespace ScottPlot.Plottable
 {
@@ -33,8 +34,49 @@ namespace ScottPlot.Plottable
 
     public abstract class AxisLine : IDraggable, IPlottable
     {
-        // orientation and location
+        /// <summary>
+        /// Location of the line (Y position if horizontal line, X position if vertical line)
+        /// </summary>
         protected double Position;
+
+        /// <summary>
+        /// If True, the position will be labeled on the axis using the PositionFormatter
+        /// </summary>
+        public bool PositionLabel = false;
+
+        /// <summary>
+        /// Font to use for position labels (labels drawn over the axis)
+        /// </summary>
+        public Drawing.Font PositionLabelFont = new() { Color = Color.White, Bold = true };
+
+        /// <summary>
+        /// Color to use behind the position labels
+        /// </summary>
+        public Color PositionLabelBackground = Color.Black;
+
+        /// <summary>
+        /// If true the position label will be drawn on the right or top of the data area.
+        /// </summary>
+        public bool PositionLabelOppositeAxis = false;
+
+        /// <summary>
+        /// This method generates the position label text for numeric (non-DateTime) axes.
+        /// For DateTime axes assign your own format string that uses DateTime.FromOADate(position).
+        /// </summary>
+        public Func<double, string> PositionFormatter = position => position.ToString("F2");
+
+        /// <summary>
+        /// Position of the axis line in DateTime (OADate) units.
+        /// </summary>
+        public DateTime DateTime
+        {
+            get => DateTime.FromOADate(Position);
+            set => Position = value.ToOADate();
+        }
+
+        /// <summary>
+        /// Indicates whether the line is horizontal (position in Y units) or vertical (position in X units)
+        /// </summary>
         private readonly bool IsHorizontal;
 
         /// <summary>
@@ -42,23 +84,40 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool IgnoreAxisAuto = false;
 
-        // customizations
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public LineStyle LineStyle = LineStyle.Solid;
         public float LineWidth = 1;
         public Color Color = Color.Black;
+
+        /// <summary>
+        /// Text that appears in the legend
+        /// </summary>
         public string Label;
 
-        // mouse interaction
+        /// <summary>
+        /// Indicates whether this line is draggable in user controls.
+        /// </summary>
         public bool DragEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Cursor to display while hovering over this line if dragging is enabled.
+        /// </summary>
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
+
+        /// <summary>
+        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// </summary>
         public double DragLimitMin = double.NegativeInfinity;
+
+        /// <summary>
+        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// </summary>
         public double DragLimitMax = double.PositiveInfinity;
 
         /// <summary>
-        /// This event is invoked after the line is dragged 
+        /// This event is invoked after the line is dragged
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
@@ -82,27 +141,81 @@ namespace ScottPlot.Plottable
         {
             if (double.IsNaN(Position) || double.IsInfinity(Position))
                 throw new InvalidOperationException("position must be a valid number");
+
+            if (PositionFormatter is null)
+                throw new NullReferenceException(nameof(PositionFormatter));
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
+            if (!IsVisible)
+                return;
+
+            RenderLine(dims, bmp, lowQuality);
+
+            if (PositionLabel)
+                RenderPositionLabel(dims, bmp, lowQuality);
+        }
+
+        public void RenderLine(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using var pen = GDI.Pen(Color, LineWidth, LineStyle, true);
+
+            if (IsHorizontal)
             {
-                if (IsHorizontal)
-                {
-                    float pixelX1 = dims.GetPixelX(dims.XMin);
-                    float pixelX2 = dims.GetPixelX(dims.XMax);
-                    float pixelY = dims.GetPixelY(Position);
-                    gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
-                }
-                else
-                {
-                    float pixelX = dims.GetPixelX(Position);
-                    float pixelY1 = dims.GetPixelY(dims.YMin);
-                    float pixelY2 = dims.GetPixelY(dims.YMax);
-                    gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
-                }
+                float pixelX1 = dims.GetPixelX(dims.XMin);
+                float pixelX2 = dims.GetPixelX(dims.XMax);
+                float pixelY = dims.GetPixelY(Position);
+                gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
+            }
+            else
+            {
+                float pixelX = dims.GetPixelX(Position);
+                float pixelY1 = dims.GetPixelY(dims.YMin);
+                float pixelY2 = dims.GetPixelY(dims.YMax);
+                gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
+            }
+        }
+
+        private void RenderPositionLabel(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality, clipToDataArea: false);
+            using var pen = GDI.Pen(Color, LineWidth, LineStyle, true);
+
+            using var fnt = GDI.Font(PositionLabelFont);
+            using var fillBrush = GDI.Brush(PositionLabelBackground);
+            using var fontBrush = GDI.Brush(PositionLabelFont.Color);
+
+            if (IsHorizontal)
+            {
+                if (Position > dims.YMax || Position < dims.YMin)
+                    return;
+
+                float pixelY = dims.GetPixelY(Position);
+                string yLabel = PositionFormatter(Position);
+                SizeF yLabelSize = GDI.MeasureString(yLabel, PositionLabelFont);
+                float xPos = PositionLabelOppositeAxis ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX - yLabelSize.Width;
+                float yPos = pixelY - yLabelSize.Height / 2;
+                RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
+                gfx.FillRectangle(fillBrush, xLabelRect);
+                var sf = GDI.StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle);
+                gfx.DrawString(yLabel, fnt, fontBrush, xPos, pixelY, sf);
+            }
+            else
+            {
+                if (Position > dims.XMax || Position < dims.XMin)
+                    return;
+
+                float pixelX = dims.GetPixelX(Position);
+                string xLabel = PositionFormatter(Position);
+                SizeF xLabelSize = GDI.MeasureString(xLabel, PositionLabelFont);
+                float xPos = pixelX - xLabelSize.Width / 2;
+                float yPos = PositionLabelOppositeAxis ? dims.DataOffsetY - xLabelSize.Height : dims.DataOffsetY + dims.DataHeight;
+                RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
+                gfx.FillRectangle(fillBrush, xLabelRect);
+                var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
+                gfx.DrawString(xLabel, fnt, fontBrush, pixelX, yPos, sf);
             }
         }
 

@@ -61,6 +61,38 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class AxisLineWithPositionLabels : IRecipe
+    {
+        public string Category => "Plottable: Axis Line and Span";
+        public string ID => "axisLine_positionLabels";
+        public string Title => "Position Labels";
+        public string Description =>
+            "Axis line positions can be labeled on the axis on top of axis ticks and tick labels. " +
+            "Custom position formatters allow for full customization of the text displayed in these labels. " +
+            "If using a DateTime axis, implement a custom formatter that uses DateTime.FromOADate().";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            var hline = plt.AddHorizontalLine(.85);
+            hline.LineWidth = 2;
+            hline.PositionLabel = true;
+            hline.PositionLabelBackground = hline.Color;
+            hline.DragEnabled = true;
+
+            var vline = plt.AddVerticalLine(23);
+            vline.LineWidth = 2;
+            vline.PositionLabel = true;
+            vline.PositionLabelBackground = vline.Color;
+            vline.DragEnabled = true;
+
+            Func<double, string> xFormatter = x => $"X={x:F2}";
+            vline.PositionFormatter = xFormatter;
+        }
+    }
+
     public class AxisSpan : IRecipe
     {
         public string Category => "Plottable: Axis Line and Span";

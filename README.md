@@ -52,9 +52,17 @@ formsPlot1.Plot.AddScatter(xs, ys);
 
 **This figure is an example of ScottPlot running in the cloud.** Every hour an [Azure Function](https://azure.microsoft.com/en-us/services/functions/) hits the [GitHub API](https://docs.github.com/en/rest) to get an updated list of stargazers, then uses ScottPlot to create a figure from this data and saves it to web-accessible blob storage. Since this automatically-generated plot is just a static image accessible by a URL, it can be displayed in places where JavaScript is not permitted (like in this readme file). Creating plots as images on a server allows dynamic plots to be displayed in many interesting places!
 
+
+
 <p align="center">
-  <a href="https://stargraph.z20.web.core.windows.net/scottplot-stars.png" target="_blank">
+  <a href="https://stargraph.z20.web.core.windows.net/scottplot-stars.png?" target="_blank">
     <img src="https://stargraph.z20.web.core.windows.net/scottplot-stars.png?">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://nugetppt.z20.web.core.windows.net/plots/scottplot.png?" target="_blank">
+    <img src="https://nugetppt.z20.web.core.windows.net/plots/scottplot.png?">
   </a>
 </p>
 

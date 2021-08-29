@@ -8,17 +8,15 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
     <Description>This package provides an Avalonia control to interactively display ScottPlot graphs in Avalonia applications. This package targets both .NET Framework and .NET Core.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
-    <PackageTags>plot graph data chart signal line bar C# WPF control interactive</PackageTags>
-    <PackageReleaseNotes>Release notes: https://github.com/swharden/ScottPlot/releases
-Release cookbook: http://swharden.com/scottplot/cookbook
-Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
+    <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive avalonia</PackageTags>
+    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>false</IncludeSymbols>
-    <Version>4.1.15</Version>
-    <AssemblyVersion>4.1.15.0</AssemblyVersion>
-    <FileVersion>4.1.15.0</FileVersion>
+    <Version>4.1.17</Version>
+    <AssemblyVersion>4.1.17.0</AssemblyVersion>
+    <FileVersion>4.1.17.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -26,15 +24,16 @@ Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <Company>Harden Technologies, LLC</Company>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <PackageReference Include="Avalonia" Version="0.10.*" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
   </ItemGroup>
-  
+
 </Project>

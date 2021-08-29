@@ -86,6 +86,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class CustomLineStep : IRecipe
+    {
+        public string Category => "Plottable: Signal Plot";
+        public string ID => "signal_step";
+        public string Title => "Step Display";
+        public string Description =>
+            "Signal plots can be styled as step plots where points " +
+            "are connected by right angles instead of straight lines.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] ys = DataGen.Sin(51);
+
+            var sig = plt.AddSignal(ys);
+            sig.StepDisplay = true;
+            sig.MarkerSize = 0;
+        }
+    }
+
     public class RandomWalk_5millionPoints_Signal : IRecipe
     {
         public string Category => "Plottable: Signal Plot";
@@ -138,6 +157,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sp2 = plt.AddSignal(data);
             sp2.DensityColors = colors;
+            sp2.Color = colors[0];
 
             plt.Title("Color by Density vs. Solid Color");
             plt.AxisAuto(0, .1);
@@ -199,7 +219,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sig = plt.AddSignal(data);
             sig.FillType = FillType.FillBelow;
-            sig.FillColor1 = Color.Blue;
+            sig.FillColor1 = Color.FromArgb(100, Color.Blue);
 
             plt.AxisAutoX(0);
         }

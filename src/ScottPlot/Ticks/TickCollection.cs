@@ -64,6 +64,11 @@ namespace ScottPlot.Ticks
         public string numericFormatString;
         public string dateTimeFormatString;
 
+        /// <summary>
+        /// If defined, this function will be used to generate tick labels from positions
+        /// </summary>
+        public Func<double, string> ManualTickFormatter = null;
+
         public int radix = 10;
         public string prefix = null;
 
@@ -372,7 +377,7 @@ namespace ScottPlot.Ticks
                 double adjustedPosition = (positions[i] - offset) / multiplier;
                 if (invertSign)
                     adjustedPosition *= -1;
-                labels[i] = FormatLocal(adjustedPosition, culture);
+                labels[i] = ManualTickFormatter is null ? FormatLocal(adjustedPosition, culture) : ManualTickFormatter(adjustedPosition);
                 if (labels[i] == "-0")
                     labels[i] = "0";
             }

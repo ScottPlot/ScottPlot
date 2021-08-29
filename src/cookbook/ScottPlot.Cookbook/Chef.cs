@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,11 @@ namespace ScottPlot.Cookbook
             var recipes = Locate.GetRecipes();
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
 
+            int thumbJpegQuality = 95;
+            EncoderParameters thumbJpegEncoderParameters = new EncoderParameters(1);
+            thumbJpegEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, thumbJpegQuality);
+            ImageCodecInfo thumbJpegEncoder = ImageCodecInfo.GetImageEncoders().Where(x => x.MimeType == "image/jpeg").First();
+
             Parallel.ForEach(recipes, recipe =>
             {
                 Debug.WriteLine($"Executing {recipe.ID}");
@@ -53,7 +59,7 @@ namespace ScottPlot.Cookbook
                 Bitmap thumb = Drawing.GDI.Resize(bmp, thumbWidth, thumbHeight);
                 string thumbFileName = (recipe.ID + ExtThumb).ToLower();
                 string thumbFilePath = Path.Combine(outputPath, thumbFileName);
-                thumb.Save(thumbFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                thumb.Save(thumbFilePath, thumbJpegEncoder, thumbJpegEncoderParameters);
             });
 
         }

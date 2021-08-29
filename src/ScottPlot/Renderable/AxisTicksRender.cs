@@ -80,100 +80,77 @@ namespace ScottPlot.Renderable
             if (tc.tickLabels is null || tc.tickLabels.Length == 0)
                 return;
 
-            using (var font = GDI.Font(tickFont))
-            using (var brush = GDI.Brush(tickFont.Color))
-            using (var sf = GDI.StringFormat())
+            using var font = GDI.Font(tickFont);
+            using var brush = GDI.Brush(tickFont.Color);
+            using var sf = GDI.StringFormat();
+
+            if (edge == Edge.Bottom)
             {
-                // TODO: Refactor to improve rotated tick label rendering:
-                //  1) rotation should always be assumed
-                //  2) a separate function should translate/rotate/render/reset
-                //  3) all edges should support rotation
-                if (edge == Edge.Bottom)
+                for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
                 {
-                    if (rotation == 0)
-                    {
-                        sf.Alignment = rulerMode ? StringAlignment.Near : StringAlignment.Center;
-                        sf.LineAlignment = StringAlignment.Near;
-                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                            gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
-                                x: dims.GetPixelX(tc.tickPositionsMajor[i]),
-                                y: dims.DataOffsetY + dims.DataHeight + PixelOffset + MajorTickLength);
+                    float x = dims.GetPixelX(tc.tickPositionsMajor[i]);
+                    float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength;
 
-                        sf.Alignment = StringAlignment.Far;
-                        gfx.DrawString(tc.CornerLabel, font, brush, format: sf,
-                            x: dims.DataOffsetX + dims.DataWidth,
-                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + tc.LargestLabelHeight);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                        {
-                            float x = dims.GetPixelX(tc.tickPositionsMajor[i]);
-                            float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength + 3;
-
-                            gfx.TranslateTransform(x, y);
-                            gfx.RotateTransform(-rotation);
-                            sf.Alignment = StringAlignment.Far;
-                            sf.LineAlignment = StringAlignment.Center;
-                            gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
-                            gfx.ResetTransform();
-                        }
-                    }
-                }
-                else if (edge == Edge.Top)
-                {
-                    sf.Alignment = rulerMode ? StringAlignment.Near : StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Far;
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
-                            x: dims.GetPixelX(tc.tickPositionsMajor[i]),
-                            y: dims.DataOffsetY - PixelOffset - MajorTickLength);
-                }
-                else if (edge == Edge.Left)
-                {
-                    if (rotation == 0)
-                    {
-                        sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
-                        sf.Alignment = StringAlignment.Far;
-                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                            gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
-                                x: dims.DataOffsetX - PixelOffset - MajorTickLength,
-                                y: dims.GetPixelY(tc.tickPositionsMajor[i]));
-
-                        sf.LineAlignment = StringAlignment.Far;
-                        sf.Alignment = StringAlignment.Near;
-                        gfx.DrawString(tc.CornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                        {
-                            float x = dims.DataOffsetX - PixelOffset - MajorTickLength;
-                            float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
-
-                            gfx.TranslateTransform(x, y);
-                            gfx.RotateTransform(-rotation);
-                            sf.Alignment = StringAlignment.Far;
-                            sf.LineAlignment = StringAlignment.Center;
-                            gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
-                            gfx.ResetTransform();
-                        }
-                    }
-                }
-                else if (edge == Edge.Right)
-                {
-                    sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Near;
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth,
-                            y: dims.GetPixelY(tc.tickPositionsMajor[i]));
-                }
-                else
-                {
-                    throw new NotImplementedException();
+                    gfx.TranslateTransform(x, y);
+                    gfx.RotateTransform(-rotation);
+                    sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Far;
+                    if (rulerMode) sf.Alignment = StringAlignment.Near;
+                    sf.LineAlignment = rotation == 0 ? StringAlignment.Near : StringAlignment.Center;
+                    gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                    gfx.ResetTransform();
                 }
             }
+            else if (edge == Edge.Top)
+            {
+                for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                {
+                    float x = dims.GetPixelX(tc.tickPositionsMajor[i]);
+                    float y = dims.DataOffsetY - MajorTickLength;
+
+                    gfx.TranslateTransform(x, y);
+                    gfx.RotateTransform(-rotation);
+                    sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Near;
+                    if (rulerMode) sf.Alignment = StringAlignment.Near;
+                    sf.LineAlignment = rotation == 0 ? StringAlignment.Far : StringAlignment.Center;
+                    gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                    gfx.ResetTransform();
+                }
+            }
+            else if (edge == Edge.Left)
+            {
+                for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                {
+                    float x = dims.DataOffsetX - PixelOffset - MajorTickLength;
+                    float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
+
+                    gfx.TranslateTransform(x, y);
+                    gfx.RotateTransform(-rotation);
+                    sf.Alignment = StringAlignment.Far;
+                    sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
+                    gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                    gfx.ResetTransform();
+                }
+            }
+            else if (edge == Edge.Right)
+            {
+                for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                {
+                    float x = dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth;
+                    float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
+
+                    gfx.TranslateTransform(x, y);
+                    gfx.RotateTransform(-rotation);
+                    sf.Alignment = StringAlignment.Near;
+                    sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
+                    gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                    gfx.ResetTransform();
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
         }
     }
 }

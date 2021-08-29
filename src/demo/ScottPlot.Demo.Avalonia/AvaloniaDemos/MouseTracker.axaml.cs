@@ -8,8 +8,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class MouseTracker : Window
     {
-        Plottable.VLine vLine;
-        Plottable.HLine hLine;
+        Plottable.Crosshair Crosshair;
         AvaPlot avaPlot1;
 
         public MouseTracker()
@@ -22,8 +21,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
             avaPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
-            vLine = avaPlot1.Plot.AddVerticalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
-            hLine = avaPlot1.Plot.AddHorizontalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
+            Crosshair = avaPlot1.Plot.AddCrosshair(0, 0);
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += OnMouseMove;
@@ -49,8 +47,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
             this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
-            vLine.X = coordinateX;
-            hLine.Y = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
             avaPlot1.Render();
         }
@@ -59,8 +57,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             this.Find<TextBlock>("MouseTrackerMessage").Text = "Mouse ENTERED the plot";
 
-            vLine.IsVisible = true;
-            hLine.IsVisible = true;
+            Crosshair.IsVisible = true;
         }
 
         private void OnMouseLeave(object sender, PointerEventArgs e)
@@ -71,8 +68,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("XCoordinateLabel").Text = "--";
             this.Find<TextBlock>("YCoordinateLabel").Text = "--";
 
-            vLine.IsVisible = false;
-            hLine.IsVisible = false;
+            Crosshair.IsVisible = false;
             avaPlot1.Render();
         }
     }

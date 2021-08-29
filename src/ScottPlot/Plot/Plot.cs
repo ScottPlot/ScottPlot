@@ -14,6 +14,16 @@ namespace ScottPlot
         private readonly Settings settings = new Settings();
 
         /// <summary>
+        /// Plot image width (pixels)
+        /// </summary>
+        public float Width { get => settings.Width; set => Resize(value, settings.Height); }
+
+        /// <summary>
+        /// Plot image height (pixels)
+        /// </summary>
+        public float Height { get => settings.Height; set => Resize(settings.Width, value); }
+
+        /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
         /// </summary>
         /// <param name="width">default width (pixels) to use when rendering</param>
@@ -108,6 +118,29 @@ namespace ScottPlot
 
             if (settings.Plottables.Count == 0)
                 settings.ResetAxisLimits();
+        }
+
+        /// <summary>
+        /// Move a plottable in the list. Plottables near the end are rendered last (on top).
+        /// </summary>
+        public void Move(int oldIndex, int newIndex) => settings.Plottables.Move(oldIndex, newIndex);
+
+        /// <summary>
+        /// Move a plottable to the front so it is rendered first and appears beneath all others.
+        /// </summary>
+        public void MoveFirst(IPlottable plottable)
+        {
+            settings.Plottables.Remove(plottable);
+            settings.Plottables.Insert(0, plottable);
+        }
+
+        /// <summary>
+        /// Move a plottable to the end so it is rendered last and appears above all others.
+        /// </summary>
+        public void MoveLast(IPlottable plottable)
+        {
+            settings.Plottables.Remove(plottable);
+            settings.Plottables.Add(plottable);
         }
 
         /// <summary>

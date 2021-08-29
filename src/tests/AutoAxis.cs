@@ -179,5 +179,27 @@ namespace ScottPlotTests
             Assert.That(limitsB.YMin < limitsC.YMin);
             Assert.That(limitsB.YMax > limitsC.YMax);
         }
+
+        [Test]
+        public void Test_MultiAxis_AutoAxis()
+        {
+            double[] xs = { 1, 2, 3 };
+            double[] ys = { 4, 5, 6 };
+
+            var plt = new ScottPlot.Plot(400, 300);
+            var sp = plt.AddScatter(xs, ys);
+            sp.YAxisIndex = 1;
+            sp.XAxisIndex = 1;
+            plt.Render();
+            var limitsA = plt.GetAxisLimits(1, 1);
+
+            xs[0] = 999;
+            ys[0] = 999;
+            plt.AxisAuto(0.05, .01, 1, 1);
+            plt.Render();
+            var limitsB = plt.GetAxisLimits(1, 1);
+            Assert.Greater(limitsB.XMax, limitsA.XMax);
+            Assert.Greater(limitsB.YMax, limitsA.YMax);
+        }
     }
 }

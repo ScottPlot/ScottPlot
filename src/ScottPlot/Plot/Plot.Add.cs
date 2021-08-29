@@ -253,6 +253,19 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a crosshair to the plot
+        /// </summary>
+        /// <param name="x">position of vertical line (axis units)</param>
+        /// <param name="y">position of horizontal line (axis units)</param>
+        /// <returns>the crosshair that was just created</returns>
+        public Crosshair AddCrosshair(double x, double y)
+        {
+            Crosshair ch = new() { X = x, Y = y };
+            Add(ch);
+            return ch;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
         public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
@@ -732,6 +745,30 @@ namespace ScottPlot
             }
 
             return plottable;
+        }
+
+        /// <summary>
+        /// A Pie chart where the angle of slices is constant but the radii are not.
+        /// </summary>
+        /// <param name="values">The data to plot</param>
+        /// <param name="hideGridAndFrame">Whether to make the plot frameless and disable the grid</param>
+        public CoxcombPlot AddCoxcomb(double[] values, bool hideGridAndFrame = true)
+        {
+            Color[] colors = Enumerable.Range(0, values.Length)
+                           .Select(i => settings.PlottablePalette.GetColor(i))
+                           .ToArray();
+
+            CoxcombPlot plottable = new(values, colors);
+            Add(plottable);
+
+            if (hideGridAndFrame)
+            {
+                Grid(false);
+                Frameless();
+            }
+
+            return plottable;
+
         }
 
         /// <summary>

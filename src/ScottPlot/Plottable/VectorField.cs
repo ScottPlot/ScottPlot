@@ -18,11 +18,42 @@ namespace ScottPlot.Plottable
         private readonly Vector2[,] Vectors;
         private readonly Color[] VectorColors;
 
-        // customization
         public string Label;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+
+        public enum VectorAnchor { Base, Center, Tip, }
+
+        /// <summary>
+        /// Describes which part of the vector line will be placed at the data coordinates.
+        /// </summary>
+        public VectorAnchor Anchor = VectorAnchor.Center;
+
+        /// <summary>
+        /// If enabled arrowheads will be drawn as lines scaled to each vector's magnitude.
+        /// </summary>
+        public bool ScaledArrowheads;
+
+        /// <summary>
+        /// When using scaled arrowheads this defines the width of the arrow relative to the vector line's length.
+        /// </summary>
+        public double ScaledArrowheadWidth = 0.15;
+
+        /// <summary>
+        /// When using scaled arrowheads this defines length of the arrowhead relative to the vector line's length.
+        /// </summary>
+        public double ScaledArrowheadLength = 0.5;
+
+        /// <summary>
+        /// Marker drawn at each coordinate
+        /// </summary>
+        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+
+        /// <summary>
+        /// Size of markers to be drawn at each coordinate
+        /// </summary>
+        public float MarkerSize = 0;
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
@@ -85,22 +116,106 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             {
-                pen.CustomEndCap = new AdjustableArrowCap(2, 2);
+                float tipScale = (float)Math.Sqrt(ScaledArrowheadLength * ScaledArrowheadLength + ScaledArrowheadWidth * ScaledArrowheadWidth);
+                float headAngle = (float)Math.Atan2(ScaledArrowheadWidth, ScaledArrowheadLength);
+
+                if (!ScaledArrowheads)
+                    pen.CustomEndCap = new AdjustableArrowCap(2, 2);
+
                 for (int i = 0; i < Xs.Length; i++)
                 {
                     for (int j = 0; j < Ys.Length; j++)
                     {
                         Vector2 v = Vectors[i, j];
-                        float tailX = dims.GetPixelX(Xs[i] - v.X / 2);
-                        float tailY = dims.GetPixelY(Ys[j] - v.Y / 2);
-                        float endX = dims.GetPixelX(Xs[i] + v.X / 2);
-                        float endY = dims.GetPixelY(v.Y + Ys[j] - v.Y / 2);
+                        float tailX, tailY, endX, endY;
+
+                        switch (Anchor)
+                        {
+                            case VectorAnchor.Base:
+                                tailX = dims.GetPixelX(Xs[i]);
+                                tailY = dims.GetPixelY(Ys[j]);
+                                endX = dims.GetPixelX(Xs[i] + v.X);
+                                endY = dims.GetPixelY(Ys[j] + v.Y);
+                                break;
+                            case VectorAnchor.Center:
+                                tailX = dims.GetPixelX(Xs[i] - v.X / 2);
+                                tailY = dims.GetPixelY(Ys[j] - v.Y / 2);
+                                endX = dims.GetPixelX(Xs[i] + v.X / 2);
+                                endY = dims.GetPixelY(Ys[j] + v.Y / 2);
+                                break;
+                            case VectorAnchor.Tip:
+                                tailX = dims.GetPixelX(Xs[i] - v.X);
+                                tailY = dims.GetPixelY(Ys[j] - v.Y);
+                                endX = dims.GetPixelX(Xs[i]);
+                                endY = dims.GetPixelY(Ys[j]);
+                                break;
+                            default:
+                                throw new NotImplementedException("unsupported anchor type");
+                        }
+
                         pen.Color = VectorColors[i * Ys.Length + j];
-                        gfx.DrawLine(pen, tailX, tailY, endX, endY);
+                        if (ScaledArrowheads)
+                            DrawFancyArrow(gfx, pen, tailX, tailY, endX, endY, headAngle, tipScale);
+                        else
+                            gfx.DrawLine(pen, tailX, tailY, endX, endY);
+
+                        if (MarkerShape != MarkerShape.none && MarkerSize > 0)
+                        {
+                            PointF markerPoint = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[j]));
+                            MarkerTools.DrawMarker(gfx, markerPoint, MarkerShape, MarkerSize, pen.Color);
+                        }
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// Draw arrow with tips without using CustomEndCap.
+        /// </summary>
+        /// <param name="gfx"></param>
+        /// <param name="pen"></param>
+        /// <param name="baseX"></param>
+        /// <param name="baseY"></param>
+        /// <param name="tipX"></param>
+        /// <param name="tipY"></param>
+        /// <param name="headAngle">Determines how 'pointy' the tip is.</param>
+        /// <param name="tipScale">Length of tip part, relative to total length.</param>
+        private void DrawFancyArrow(
+           Graphics gfx, Pen pen,
+           float baseX,
+           float baseY,
+           float tipX,
+           float tipY,
+           float headAngle,
+           float tipScale)
+        {
+            var dx = tipX - baseX;
+            var dy = tipY - baseY;
+            var arrowAngle = (float)Math.Atan2(dy, dx);
+            var sinA1 = (float)Math.Sin(headAngle - arrowAngle);
+            var cosA1 = (float)Math.Cos(headAngle - arrowAngle);
+            var sinA2 = (float)Math.Sin(headAngle + arrowAngle);
+            var cosA2 = (float)Math.Cos(headAngle + arrowAngle);
+            var len = (float)Math.Sqrt(dx * dx + dy * dy);
+            var hypLen = len * tipScale;
+
+            var corner1X = tipX - hypLen * cosA1;
+            var corner1Y = tipY + hypLen * sinA1;
+            var corner2X = tipX - hypLen * cosA2;
+            var corner2Y = tipY - hypLen * sinA2;
+
+            PointF[] arrowPoints =
+            {
+                new PointF(baseX, baseY),
+                new PointF(tipX, tipY),
+                new PointF(corner1X, corner1Y),
+                new PointF(tipX, tipY),
+                new PointF(corner2X, corner2Y),
+            };
+            gfx.DrawLines(pen, arrowPoints);
+        }
+
+
 
         public override string ToString()
         {

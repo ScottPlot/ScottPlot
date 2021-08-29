@@ -13,15 +13,13 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class MouseTracker : Form
     {
-        private readonly VLine vLine;
-        private readonly HLine hLine;
+        private readonly Crosshair Crosshair;
 
         public MouseTracker()
         {
             InitializeComponent();
             formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
-            vLine = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 1, LineStyle.Dash);
-            hLine = formsPlot1.Plot.AddHorizontalLine(0, Color.Red, 1, LineStyle.Dash);
+            Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
         }
 
         private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
@@ -34,8 +32,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
             YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
 
-            vLine.X = coordinateX;
-            hLine.Y = coordinateY;
+            Crosshair.X = coordinateX;
+            Crosshair.Y = coordinateY;
 
             formsPlot1.Render();
         }
@@ -43,8 +41,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void formsPlot1_MouseEnter(object sender, EventArgs e)
         {
             lblMouse.Text = "Mouse ENTERED the plot";
-            hLine.IsVisible = true;
-            vLine.IsVisible = true;
+            Crosshair.IsVisible = true;
         }
 
         private void formsPlot1_MouseLeave(object sender, EventArgs e)
@@ -56,8 +53,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             XCoordinateLabel.Text = $"--";
             YCoordinateLabel.Text = $"--";
 
-            hLine.IsVisible = false;
-            vLine.IsVisible = false;
+            Crosshair.IsVisible = false;
             formsPlot1.Render();
         }
     }
