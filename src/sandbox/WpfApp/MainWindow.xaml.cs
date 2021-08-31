@@ -22,7 +22,10 @@ namespace WpfApp
                     yBase: rand.NextDouble() * 10,
                     lineWidth: 1);
             }
-            WpfPlot1.Plot.AxisScaleLock(true);
+
+            //WpfPlot1.Plot.AxisScaleLock(true);
+            WpfPlot1.Plot.SetInnerViewLimits(0, 10, 0, 10);
+            WpfPlot1.Plot.SetOuterViewLimits(-10, 20, -10, 20);
 
             WpfPlot1.Render();
         }
