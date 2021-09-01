@@ -8,6 +8,7 @@
         <PackageReference Include="Avalonia" Version="0.10.*" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.*" />
+        <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
