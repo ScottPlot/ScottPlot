@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.18
+* Plot: `SetViewLimits()` replaced by `SetOuterViewLimits()` and `SetInnerViewLimits()` (#1197) _Thanks @noob765_
+
 ## ScottPlot 4.1.17
 * Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
 * Radar Plot: Improved `Update()` default arguments (#1097) _Thanks @arthurits_
