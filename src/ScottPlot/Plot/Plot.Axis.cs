@@ -373,20 +373,36 @@ namespace ScottPlot
             settings.AxisSet(limits, xAxisIndex, yAxisIndex);
 
         /// <summary>
-        /// Set limits of the view for the primary axes. 
-        /// View limits define the boundaries of axis limits.
-        /// You cannot zoom, pan, or set axis limits beyond view limits.
+        /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
         /// </summary>
-        /// <param name="xMin">lower limit of the horizontal axis</param>
-        /// <param name="xMax">upper limit of the horizontal axis</param>
-        /// <param name="yMin">lower limit of the vertical axis</param>
-        /// <param name="yMax">upper limit of the vertical axis</param>
+        [Obsolete("use SetOuterViewLimits() or SetInnerViewLimits()", true)]
         public void SetViewLimits(
+            double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity) =>
+            SetOuterViewLimits(xMin, xMax, yMin, yMax);
+
+        /// <summary>
+        /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
+        /// </summary>
+        public void SetOuterViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
         {
-            settings.XAxis.Dims.SetBounds(xMin, xMax);
-            settings.YAxis.Dims.SetBounds(yMin, yMax);
+            // TODO: arguments to specify axis limits
+            settings.XAxis.Dims.SetBoundsOuter(xMin, xMax);
+            settings.YAxis.Dims.SetBoundsOuter(yMin, yMax);
+        }
+
+        /// <summary>
+        /// Set minimum innter limits which will always be visible on the plot.
+        /// </summary>
+        public void SetInnerViewLimits(
+            double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
+        {
+            // TODO: arguments to specify axis limits
+            settings.XAxis.Dims.SetBoundsInner(xMin, xMax);
+            settings.YAxis.Dims.SetBoundsInner(yMin, yMax);
         }
 
         #endregion
@@ -486,7 +502,7 @@ namespace ScottPlot
         /// </summary>
         /// <param name="enable">if true, scales are locked such that zooming one zooms the other</param>
         /// <param name="scaleMode">defines behavior for how to adjust axis limits to achieve equal scales</param>
-        public void AxisScaleLock(bool enable, EqualScaleMode scaleMode = EqualScaleMode.PreserveY)
+        public void AxisScaleLock(bool enable, EqualScaleMode scaleMode = EqualScaleMode.PreserveSmallest)
         {
             settings.AxisAutoUnsetAxes();
             settings.EqualScaleMode = enable ? scaleMode : EqualScaleMode.Disabled;

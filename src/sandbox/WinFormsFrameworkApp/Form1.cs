@@ -15,8 +15,7 @@ namespace WinFormsFrameworkApp
 
             double[] values = DataGen.RandomWalk(new Random(0), 100);
             formsPlot1.Plot.AddSignal(values);
-
-            formsPlot1.Plot.SetViewLimits(yMin: 0);
+            formsPlot1.Plot.SetOuterViewLimits(yMin: 0);
         }
     }
 }
