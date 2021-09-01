@@ -502,7 +502,7 @@ namespace ScottPlot
         /// </summary>
         /// <param name="enable">if true, scales are locked such that zooming one zooms the other</param>
         /// <param name="scaleMode">defines behavior for how to adjust axis limits to achieve equal scales</param>
-        public void AxisScaleLock(bool enable, EqualScaleMode scaleMode = EqualScaleMode.PreserveY)
+        public void AxisScaleLock(bool enable, EqualScaleMode scaleMode = EqualScaleMode.PreserveSmallest)
         {
             settings.AxisAutoUnsetAxes();
             settings.EqualScaleMode = enable ? scaleMode : EqualScaleMode.Disabled;

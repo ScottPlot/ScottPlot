@@ -279,7 +279,23 @@ namespace ScottPlot
         /// </summary>
         public void EnforceEqualAxisScales()
         {
-            switch (EqualScaleMode)
+            EqualScaleMode mode = EqualScaleMode;
+
+            if (mode is EqualScaleMode.PreserveLargest)
+            {
+                mode = XAxis.Dims.DataSizePx > YAxis.Dims.DataSizePx
+                    ? EqualScaleMode.PreserveX
+                    : EqualScaleMode.PreserveY;
+            }
+
+            if (mode is EqualScaleMode.PreserveSmallest)
+            {
+                mode = XAxis.Dims.DataSizePx < YAxis.Dims.DataSizePx
+                    ? EqualScaleMode.PreserveX
+                    : EqualScaleMode.PreserveY;
+            }
+
+            switch (mode)
             {
                 case EqualScaleMode.Disabled:
                     return;
@@ -300,6 +316,12 @@ namespace ScottPlot
                     double halfY = (YAxis.Dims.DataSizePx / 2) * maxUnitsPerPx;
                     AxisSet(XAxis.Dims.Center - halfX, XAxis.Dims.Center + halfX, YAxis.Dims.Center - halfY, YAxis.Dims.Center + halfY);
                     return;
+
+                case EqualScaleMode.PreserveLargest:
+                    throw new InvalidOperationException("this mode should have been converted to preserve X or Y");
+
+                case EqualScaleMode.PreserveSmallest:
+                    throw new InvalidOperationException("this mode should have been converted to preserve X or Y");
 
                 default:
                     throw new InvalidOperationException("unknown scale lock mode");
