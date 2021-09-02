@@ -29,7 +29,11 @@ namespace ScottPlot
             settings.AxisAutoUnsetAxes();
             settings.EnforceEqualAxisScales();
             settings.LayoutAuto();
-            settings.EnforceEqualAxisScales();
+            if (settings.EqualScaleMode != EqualScaleMode.Disabled)
+            {
+                settings.EnforceEqualAxisScales();
+                settings.LayoutAuto();
+            }
 
             PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
             RenderClear(bmp, lowQuality, primaryDims);

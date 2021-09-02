@@ -28,6 +28,18 @@
         /// After axes are set, the largest scale (most units per pixel) is applied to both axes.
         /// Apply the most zoomed-out scale to both axes.
         /// </summary>
-        ZoomOut
+        ZoomOut,
+
+
+        /// <summary>
+        /// Apply the scale of the larger axis to both axes.
+        /// </summary>
+        PreserveLargest,
+
+
+        /// <summary>
+        /// Apply the scale of the smaller axis to both axes.
+        /// </summary>
+        PreserveSmallest
     }
 }

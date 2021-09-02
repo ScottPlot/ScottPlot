@@ -43,22 +43,30 @@ namespace ScottPlot.Renderable
         public double Max { get; private set; } = double.NaN;
 
         /// <summary>
-        /// Lower boundary of the coordinate space.
-        /// The plot cannot zoom/pan beyond this value.
+        /// Limit beyond which the plot cannot be zoomed in
         /// </summary>
-        public double LowerBound { get; private set; } = double.NegativeInfinity;
+        public double OuterBoundaryMin { get; private set; } = double.NegativeInfinity;
 
         /// <summary>
-        /// Upper boundary of the coordinate space.
-        /// The plot cannot zoom/pan beyond this value.
+        /// Limit beyond which the plot cannot be zoomed in
         /// </summary>
-        public double UpperBound { get; private set; } = double.PositiveInfinity;
+        public double OuterBoundaryMax { get; private set; } = double.PositiveInfinity;
+
+        /// <summary>
+        /// Limit which will always be visible on the data area
+        /// </summary>
+        public double InnerBoundaryMin { get; private set; } = double.PositiveInfinity;
+
+        /// <summary>
+        /// Limit which will always be visible on the data area
+        /// </summary>
+        public double InnerBoundaryMax { get; private set; } = double.NegativeInfinity;
 
         /// <summary>
         /// Size of the view boundaries.
         /// This should always be greater or equal to the Span.
         /// </summary>
-        public double SpanBound => UpperBound - LowerBound;
+        public double SpanBound => OuterBoundaryMax - OuterBoundaryMin;
 
         /// <summary>
         /// False until axes are intentionally set.
@@ -163,10 +171,19 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set boundaries beyond which this axis cannot be panned or zoomed
         /// </summary>
-        public void SetBounds(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
+        public void SetBoundsOuter(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
         {
-            LowerBound = lower;
-            UpperBound = upper;
+            OuterBoundaryMin = lower;
+            OuterBoundaryMax = upper;
+        }
+
+        /// <summary>
+        /// Set boundaries beyond which this axis cannot be panned or zoomed
+        /// </summary>
+        public void SetBoundsInner(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
+        {
+            InnerBoundaryMin = lower;
+            InnerBoundaryMax = upper;
         }
 
         /// <summary>
@@ -176,24 +193,30 @@ namespace ScottPlot.Renderable
         {
             if (Span > SpanBound)
             {
-                Min = LowerBound;
-                Max = UpperBound;
+                Min = OuterBoundaryMin;
+                Max = OuterBoundaryMax;
                 return;
             }
 
-            if (Min < LowerBound)
+            if (Min < OuterBoundaryMin)
             {
                 double span = Span;
-                Min = LowerBound;
-                Max = LowerBound + span;
+                Min = OuterBoundaryMin;
+                Max = OuterBoundaryMin + span;
             }
 
-            if (Max > UpperBound)
+            if (Max > OuterBoundaryMax)
             {
                 double span = Span;
-                Max = UpperBound;
-                Min = UpperBound - span;
+                Max = OuterBoundaryMax;
+                Min = OuterBoundaryMax - span;
             }
+
+            if (Min > InnerBoundaryMin)
+                Min = InnerBoundaryMin;
+
+            if (Max < InnerBoundaryMax)
+                Max = InnerBoundaryMax;
         }
 
         /// <summary>

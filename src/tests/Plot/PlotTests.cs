@@ -8,6 +8,12 @@ namespace ScottPlotTests.Plot
     [TestFixture]
     public class PlotTests
     {
+        /// <summary>
+        /// Fraction to assert X scale matches Y scale.
+        /// 1% used to allow for floating-point math errors.
+        /// </summary>
+        private const double ScaleLockPrecision = .01;
+
         private (double xUnitsPerPixel, double yUnitsPerPixel) getUnitsPerPixel(ScottPlot.Plot plt)
         {
             plt.Render();
@@ -23,7 +29,7 @@ namespace ScottPlotTests.Plot
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
-            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);
+            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * ScaleLockPrecision);
         }
 
         [Test]
@@ -37,7 +43,7 @@ namespace ScottPlotTests.Plot
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
-            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);
+            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * ScaleLockPrecision);
         }
 
         [TestCase(640, 300)]
@@ -54,7 +60,7 @@ namespace ScottPlotTests.Plot
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
-            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);
+            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * ScaleLockPrecision);
         }
 
         [TestCase(912, 542)]
@@ -73,7 +79,8 @@ namespace ScottPlotTests.Plot
             plt.Resize(width, height);
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
-            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);
+
+            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * ScaleLockPrecision);
         }
 
         [TestCase(0, 5)]
@@ -93,7 +100,7 @@ namespace ScottPlotTests.Plot
             plt.GetSettings(false).AxesZoomPx(dx, dy);
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
-            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);
+            Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * ScaleLockPrecision);
         }
     }
 }
