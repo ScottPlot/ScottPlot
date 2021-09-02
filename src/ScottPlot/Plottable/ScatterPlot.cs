@@ -184,7 +184,7 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                var YsAndError = Ys.Zip(XError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
+                var YsAndError = Ys.Zip(YError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
                 limits[2] = YsAndError.Min(p => p.y - p.e);
                 limits[3] = YsAndError.Max(p => p.y + p.e);
             }
