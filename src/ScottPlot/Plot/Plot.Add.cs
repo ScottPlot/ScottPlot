@@ -748,6 +748,33 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a radial gauge plot: a circular chart where data is represented by a circular gauge
+        /// </summary>
+        /// <param name="values">Single array containing scalar data</param>
+        /// <param name="disableFrameAndGrid">Also make the plot frameless and disable its grid</param>
+        /// <returns>The radial gaugle plot that was just created and added to the plot</returns>
+        public ScottPlot.Plottable.RadialGaugePlot AddRadialGauge(double[] values, bool disableFrameAndGrid = true)
+        {
+
+            Color[] colors = Enumerable.Range(0, values.Length)
+                                       .Select(i => this.GetSettings(false).PlottablePalette.GetColor(i))
+                                       .ToArray();
+
+            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+
+            ScottPlot.Plottable.RadialGaugePlot plottable = new(values, colors);
+            Add(plottable);
+
+            if (disableFrameAndGrid)
+            {
+                Frameless();
+                Grid(enable: false);
+            }
+
+            return plottable;
+        }
+
+        /// <summary>
         /// A Pie chart where the angle of slices is constant but the radii are not.
         /// </summary>
         /// <param name="values">The data to plot</param>
