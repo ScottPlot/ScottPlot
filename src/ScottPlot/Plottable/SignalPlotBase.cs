@@ -801,9 +801,9 @@ namespace ScottPlot.Plottable
 
             // check misc styling options
             if (FillColor1MustBeSetPromise)
-                throw new InvalidOperationException("A fill color needs to be specified if fill is used");
+                throw new InvalidOperationException($"A Color must be assigned to FillColor1 to use fill type '{FillType}'");
             if (FillColor2MustBeSetPromise)
-                throw new InvalidOperationException("Two fill colors needs to be specified if fill above and below is used");
+                throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{FillType}'");
         }
 
         /// <summary>
