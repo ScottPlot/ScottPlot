@@ -69,6 +69,24 @@ namespace ScottPlotTests.PlottableRenderTests
         }
 
         [Test]
+        public void Test_Scatter_ChangeOnlyYErrorData()
+        {
+            var plt = new ScottPlot.Plot();
+
+            // set errorY but NOT errorX
+            double[] xs = { 1, 2, 3, 4 };
+            double[] ys = { 1, 4, 9, 16 };
+            double[] yErr = { .5, .5, 1, 1 };
+            var splt = new ScatterPlot(xs, ys, errorY: yErr) { };
+
+            plt.Add(splt);
+            var bmp = TestTools.GetLowQualityBitmap(plt);
+            Console.WriteLine(new MeanPixel(bmp));
+
+            Assert.That(bmp != null);
+        }
+
+        [Test]
         public void Test_Scatter_LineWidth()
         {
             var plt = new ScottPlot.Plot();

@@ -127,6 +127,11 @@ namespace ScottPlot.Renderable
                     gfx.RotateTransform(-rotation);
                     sf.Alignment = StringAlignment.Far;
                     sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
+                    if (rotation == 90)
+                    {
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Far;
+                    }
                     gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
                     gfx.ResetTransform();
                 }
@@ -142,6 +147,11 @@ namespace ScottPlot.Renderable
                     gfx.RotateTransform(-rotation);
                     sf.Alignment = StringAlignment.Near;
                     sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
+                    if (rotation == 90)
+                    {
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Near;
+                    }
                     gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
                     gfx.ResetTransform();
                 }
