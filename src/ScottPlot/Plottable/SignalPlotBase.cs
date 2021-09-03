@@ -500,7 +500,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Shade the region abvove or below the curve (to infinity) by drawing a polygon to the edge of the visible plot area.
         /// </summary>
-        private void FillToInfinity(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, bool fillToPositiveInfinity)
+        internal void FillToInfinity(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, bool fillToPositiveInfinity)
         {
             float minVal = 0;
             float maxVal = (dims.DataHeight * (fillToPositiveInfinity ? -1 : 1)) + dims.DataOffsetY;
@@ -551,7 +551,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Shade the region abvove and below the curve (to the baseline level) by drawing two polygons
         /// </summary>
-        private void FillToBaseline(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
+        internal void FillToBaseline(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, double baselineY)
         {
             int baseline = (int)dims.GetPixelY(baselineY);
 
