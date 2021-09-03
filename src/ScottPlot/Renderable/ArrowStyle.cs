@@ -30,6 +30,16 @@ namespace ScottPlot.Renderable
         public double ScaledArrowheadLength = 0.5;
 
         /// <summary>
+        /// Size of the arrowhead if custom/scaled arrowheads are not in use
+        /// </summary>
+        public float NonScaledArrowheadWidth = 2;
+
+        /// <summary>
+        /// Size of the arrowhead if custom/scaled arrowheads are not in use
+        /// </summary>
+        public float NonScaledArrowheadLength = 2;
+
+        /// <summary>
         /// Marker drawn at each coordinate
         /// </summary>
         public MarkerShape MarkerShape = MarkerShape.filledCircle;
@@ -55,7 +65,7 @@ namespace ScottPlot.Renderable
 
             using Pen pen = Drawing.GDI.Pen(Color.Black);
             if (!ScaledArrowheads)
-                pen.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(2, 2);
+                pen.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(NonScaledArrowheadWidth, NonScaledArrowheadLength);
 
             for (int i = 0; i < xs.Length; i++)
             {
@@ -102,7 +112,7 @@ namespace ScottPlot.Renderable
                 }
             }
         }
-        
+
         private void DrawFancyArrow(Graphics gfx, Pen pen, float x1, float y1, float x2, float y2, float headAngle, float tipScale)
         {
             var dx = x2 - x1;
