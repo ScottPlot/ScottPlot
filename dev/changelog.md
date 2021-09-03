@@ -6,6 +6,7 @@
 * Plot: `EqualScaleMode` (an enumeration accepted by `AxisScaleLock()`) now has `PreserveSmallest` and `PreserveLargest` members to indicate which axis to prioritize when adjusting zoom level. The new default is `PreserveSmallest` which prevents data from falling off the edge of the plot when resizing. (#1197) _Thanks @noob765_
 * Axis: Improved alignment of 90º rotated ticks (#1194, #1201) _Thanks @gigios_
 * Controls: Fix bug where middle-click-drag zoom rectangle would persist if combined with scroll wheel events (#1226) _Thanks @Elgot_
+* Scatter Plot: Fixed bug affecting plots where `YError` is set but `XError` is not (#1237, #1238) _Thanks @simmdan_
 
 ## ScottPlot 4.1.17
 * Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
