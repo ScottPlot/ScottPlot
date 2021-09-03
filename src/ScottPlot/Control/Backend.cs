@@ -477,11 +477,12 @@ namespace ScottPlot.Control
         public void MouseMove(InputState input)
         {
             bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
-            if (IsZoomingRectangle && altWasLifted)
+            bool middleButtonLifted = IsZoomingRectangle && !input.MiddleWasJustPressed;
+            if (IsZoomingRectangle && (altWasLifted || middleButtonLifted))
                 Settings.ZoomRectangle.Clear();
 
             IsZoomingWithAlt = IsLeftDown && input.AltDown;
-            bool isMiddleClickDragZooming = IsMiddleDown;
+            bool isMiddleClickDragZooming = IsMiddleDown && !middleButtonLifted;
             bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
             IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom && MouseDownDragged;
 
