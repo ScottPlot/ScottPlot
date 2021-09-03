@@ -249,4 +249,27 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AxisAuto(0, 0.1);
         }
     }
+
+    public class PaletteMicrocharts : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_Microcharts";
+        public string Title => "Microcharts";
+        public string Description => "This is the default 12-color palette used by Microcharts.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Microcharts;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAuto(0, 0.1);
+        }
+    }
 }
