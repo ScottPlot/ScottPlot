@@ -8,6 +8,7 @@
 * Controls: Fix bug where middle-click-drag zoom rectangle would persist if combined with scroll wheel events (#1226) _Thanks @Elgot_
 * Scatter Plot: Fixed bug affecting plots where `YError` is set but `XError` is not (#1237, #1238) _Thanks @simmdan_
 * Palette: Added `Microcharts` colorset (#1235) _Thanks @arthurits_
+* SignalPlotXY: Added support for `FillType` (#1232) _Thanks @ddrrrr_
 * Arrow: New plot type for rendering arrows on plots. Arrowhead functionality of scatter plots has been deprecated. (#1241, #1240)
 
 ## ScottPlot 4.1.17
