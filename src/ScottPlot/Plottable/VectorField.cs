@@ -15,29 +15,18 @@ namespace ScottPlot.Plottable
         private readonly double[] Ys;
         private readonly Vector2[,] Vectors;
         private readonly Color[] VectorColors;
-        public readonly Renderable.ArrowStyle ArrowStyle = new();
         public string Label;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        [Obsolete("use ArrowStyle.Anchor", true)]
-        public ArrowAnchor Anchor;
-
-        [Obsolete("use ArrowStyle.ScaledArrowheads", true)]
-        public bool ScaledArrowheads;
-
-        [Obsolete("use ArrowStyle.ScaledArrowheadWidth", true)]
-        public double ScaledArrowheadWidth;
-
-        [Obsolete("use ArrowStyle.ScaledArrowheadLength", true)]
-        public double ScaledArrowheadLength;
-
-        [Obsolete("use ArrowStyle.MarkerShape", true)]
-        public MarkerShape MarkerShape = MarkerShape.filledCircle;
-
-        [Obsolete("use ArrowStyle.MarkerSize", true)]
-        public float MarkerSize = 0;
+        private readonly Renderable.ArrowStyle ArrowStyle = new();
+        public ArrowAnchor Anchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+        public bool ScaledArrowheads { get => ArrowStyle.ScaledArrowheads; set => ArrowStyle.ScaledArrowheads = value; }
+        public double ScaledArrowheadWidth { get => ArrowStyle.ScaledArrowheadWidth; set => ArrowStyle.ScaledArrowheadWidth = value; }
+        public double ScaledArrowheadLength { get => ArrowStyle.ScaledArrowheadLength; set => ArrowStyle.ScaledArrowheadLength = value; }
+        public MarkerShape MarkerShape { get => ArrowStyle.MarkerShape; set => ArrowStyle.MarkerShape = value; }
+        public float MarkerSize { get => ArrowStyle.MarkerSize; set => ArrowStyle.MarkerSize = value; }
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {

@@ -138,9 +138,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                           y: Math.Sin(yPositions[y]));
 
             var vf = plt.AddVectorField(vectors, xPositions, yPositions);
-            vf.ArrowStyle.ScaledArrowheads = true;
-            vf.ArrowStyle.Anchor = ArrowAnchor.Base;
-            vf.ArrowStyle.MarkerSize = 3;
+            vf.ScaledArrowheads = true;
+            vf.Anchor = ArrowAnchor.Base;
+            vf.MarkerSize = 3;
         }
     }
 }
