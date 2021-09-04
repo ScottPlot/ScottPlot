@@ -117,13 +117,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddVectorField(vectors, xs, ys, scaleFactor: 0.3);
         }
     }
+
     public class FancyVectorField : IRecipe
     {
         public string Category => "Plottable: Vector Field";
         public string ID => "vectorField_fancytips";
         public string Title => "Scaled Arrowheads";
         public string Description => "Use a slower drawing method that draws tips that are proportional to the length of the arrows.";
-
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -139,7 +139,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var vf = plt.AddVectorField(vectors, xPositions, yPositions);
             vf.ScaledArrowheads = true;
-            vf.Anchor = ScottPlot.Plottable.VectorField.VectorAnchor.Base;
+            vf.Anchor = ArrowAnchor.Base;
             vf.MarkerSize = 3;
         }
     }
