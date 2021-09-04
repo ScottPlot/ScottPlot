@@ -31,6 +31,8 @@ namespace ScottPlot
     {
         public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color)
         {
+            if (size == 0 || shape == MarkerShape.none)
+                return;
 
             Pen pen = new Pen(color);
 
