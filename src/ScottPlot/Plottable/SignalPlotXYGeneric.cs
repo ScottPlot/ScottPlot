@@ -199,6 +199,24 @@ namespace ScottPlot.Plottable
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
 
+                // Fill below the line
+                switch (FillType)
+                {
+                    case FillType.NoFill:
+                        break;
+                    case FillType.FillAbove:
+                        FillToInfinity(dims, gfx, PointsToDraw[0].X, PointsToDraw[PointsToDraw.Length - 1].X, PointsToDraw, true);
+                        break;
+                    case FillType.FillBelow:
+                        FillToInfinity(dims, gfx, PointsToDraw[0].X, PointsToDraw[PointsToDraw.Length - 1].X, PointsToDraw, false);
+                        break;
+                    case FillType.FillAboveAndBelow:
+                        FillToBaseline(dims, gfx, PointsToDraw[0].X, PointsToDraw[PointsToDraw.Length - 1].X, PointsToDraw, BaselineY);
+                        break;
+                    default:
+                        throw new InvalidOperationException("unsupported fill type");
+                }
+
                 // Draw lines
                 if (PointsToDraw.Length > 1)
                     gfx.DrawLines(penHD, PointsToDraw.ToArray());
