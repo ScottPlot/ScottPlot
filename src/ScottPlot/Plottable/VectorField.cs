@@ -21,11 +21,35 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         private readonly Renderable.ArrowStyle ArrowStyle = new();
+
+        /// <summary>
+        /// Describes which part of the vector line will be placed at the data coordinates.
+        /// </summary>
         public ArrowAnchor Anchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+
+        /// <summary>
+        /// If enabled arrowheads will be drawn as lines scaled to each vector's magnitude.
+        /// </summary>
         public bool ScaledArrowheads { get => ArrowStyle.ScaledArrowheads; set => ArrowStyle.ScaledArrowheads = value; }
+
+        /// <summary>
+        /// When using scaled arrowheads this defines the width of the arrow relative to the vector line's length.
+        /// </summary>
         public double ScaledArrowheadWidth { get => ArrowStyle.ScaledArrowheadWidth; set => ArrowStyle.ScaledArrowheadWidth = value; }
+
+        /// <summary>
+        /// When using scaled arrowheads this defines length of the arrowhead relative to the vector line's length.
+        /// </summary>
         public double ScaledArrowheadLength { get => ArrowStyle.ScaledArrowheadLength; set => ArrowStyle.ScaledArrowheadLength = value; }
+
+        /// <summary>
+        /// Marker drawn at each coordinate
+        /// </summary>
         public MarkerShape MarkerShape { get => ArrowStyle.MarkerShape; set => ArrowStyle.MarkerShape = value; }
+
+        /// <summary>
+        /// Size of markers to be drawn at each coordinate
+        /// </summary>
         public float MarkerSize { get => ArrowStyle.MarkerSize; set => ArrowStyle.MarkerSize = value; }
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
