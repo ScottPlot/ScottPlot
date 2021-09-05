@@ -21,6 +21,7 @@ namespace WinFormsApp
             double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
             double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
             formsPlot1.Plot.AddScatter(xs, ys);
+            formsPlot1.Render();
         }
     }
 }
