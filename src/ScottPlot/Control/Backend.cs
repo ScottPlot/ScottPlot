@@ -358,7 +358,7 @@ namespace ScottPlot.Control
             if (WasManuallyRendered == false)
             {
                 string message = $"ScottPlot {Plot.Version} WARNING:\n" +
-                    $"{ControlName}.Render() must be called at lesat once\n" +
+                    $"{ControlName}.Render() must be called at least once\n" +
                     $"after adding or removing plottable objects.";
                 Debug.WriteLine(message);
                 AddErrorMessage(Bmp, message);
