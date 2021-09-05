@@ -30,6 +30,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             // add your own custom event
             wpfPlot1.RightClicked += DeployCustomMenu;
+
+            // perform an initial render
+            wpfPlot1.Render();
         }
 
         private void DeployCustomMenu(object sender, EventArgs e)
