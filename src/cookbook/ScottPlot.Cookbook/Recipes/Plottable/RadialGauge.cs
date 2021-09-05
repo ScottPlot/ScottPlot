@@ -9,7 +9,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_quickstart";
-        public string Title => "Radial gauge";
+        public string Title => "Radial Gauge";
         public string Description =>
             "A radial gauge chart displays scalar data as circular gauges. ";
 
@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_negative";
-        public string Title => "Negative values";
+        public string Title => "Negative Values";
         public string Description =>
             "It works best with positive data, " +
             "but it also plots negative values.";
@@ -42,7 +42,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_mode";
-        public string Title => "Sequential gauge mode";
+        public string Title => "Sequential Gauge Mode";
         public string Description =>
             "The gauges can be plotted in three different modes: " +
             "stacked (default), sequential, and as a single gauge.";
@@ -61,7 +61,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_single";
-        public string Title => "Single gauge mode";
+        public string Title => "Single Gauge Mode";
         public string Description =>
             "The SingleGauge mode draws ones single gauge with all values stacked together. " +
             "This is useful for showing a progress-type plot.";
@@ -82,7 +82,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_direction";
-        public string Title => "Gauge direction";
+        public string Title => "Gauge Direction";
         public string Description =>
             "The gauges can be plotted either clockwise (default) or anti-clockwise.";
 
@@ -100,7 +100,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_order";
-        public string Title => "Gauge order";
+        public string Title => "Gauge Order";
         public string Description =>
             "Values can be plotted starting from the inside (default) or the outside.";
 
@@ -118,10 +118,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_line";
-        public string Title => "Gauge line size";
+        public string Title => "Gauge Line Size";
         public string Description =>
             "It's not recommended, but the width of all gauges can be manually set in pixels. " +
-            "If less than 0 (-1 is the default value), then it will be automatically calculated from the available space.";
+            "Since his is a nullable type, when equal to null he size will be automatically calculated from the available plot space.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -137,7 +137,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_size";
-        public string Title => "Gauge size";
+        public string Title => "Gauge Size";
         public string Description =>
             "The empty space between gauges can be adjusted as a percentage of the gauges' width. " +
             "A value of 100 means that both widths are equal whereas a value of 50 (default) means that space is half the width of the gauges'.";
@@ -156,10 +156,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_caps";
-        public string Title => "Gauge caps";
+        public string Title => "Gauge Caps";
         public string Description =>
             "Caps can be set for both the starting and ending points. " +
-            "Accepts values from System.Drawing.Drawing2D.LineCap enum.";
+            "Accepts values from System.Drawing.Drawing2D.LineCap enum. " +
+            "Default values are Round for the starting point and Triangle for the ending point.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -177,7 +178,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_start";
-        public string Title => "Gauge staring angle";
+        public string Title => "Gauge Starting Angle";
         public string Description =>
             "Angle (in degrees) at which the gauges start: 270 for North (default value), 0 for East, 90 for South, 180 for West, and so on. " +
             "Expected values in the range [0-360]";
@@ -196,7 +197,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_range";
-        public string Title => "Gauge angular range";
+        public string Title => "Gauge Angular Range";
         public string Description =>
             "The maximum angular interval that the gauges will consist of. " +
             "It takes values in the range [0-360], default value is 360 (full circle).";
@@ -215,7 +216,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_labels";
-        public string Title => "Gauge labels";
+        public string Title => "Gauge Labels";
         public string Description =>
             "By default, labels are drawn over the gauges.";
 
@@ -233,7 +234,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_labelpos";
-        public string Title => "Gauge label position";
+        public string Title => "Gauge Label Position";
         public string Description =>
             "The position of the gauges' labels can be adjusted as a percentage of the gauges' angular length. " +
             "A value of 100 (default) draws the labels at the gauges' end whereas a value of 0 does it at the gauge's beginning.";
@@ -252,7 +253,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_labelfontpct";
-        public string Title => "Gauge label font percentage";
+        public string Title => "Gauge Label Font Percentage";
         public string Description =>
             "Size of the gague label text as a percentage of the gauge width. " +
             "Values in the range [0-100], default value is 75 [percent].";
@@ -271,7 +272,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_labelcolor";
-        public string Title => "Gauge label color";
+        public string Title => "Gauge Label Color";
         public string Description =>
             "Color of the labels.";
 
@@ -289,7 +290,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_backdim";
-        public string Title => "Background gauges dim";
+        public string Title => "Background Gauges Dim";
         public string Description =>
             "Dimmed percentage used to draw the gauges' background. Values in the range [0-100], default value is 90 [percent]. " +
             "A value of 100 renders invisible the background gauges.";
@@ -308,7 +309,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: RadialGauge";
         public string ID => "radialgauge_backnorm";
-        public string Title => "Background gauges normalization";
+        public string Title => "Background Gauges Normalization";
         public string Description =>
             "The gauges' background are drawn as full circles by default. If normalization is set to true, background gauges are limited to the values of StartingAngle and AngleRange.";
 

@@ -54,7 +54,7 @@ namespace ScottPlot.Plottable
 
         /// <summary>
         /// The maximum value for scaling the gauges.
-        /// This value is associated to <see cref="StartingAngleGauges"/> + <see cref="AngleRange"/>.
+        /// This value is associated to <see cref="StartingAngleGauges"/> and <see cref="AngleRange"/>.
         /// </summary>
         protected double MaxScale
         {
@@ -69,7 +69,7 @@ namespace ScottPlot.Plottable
 
         /// <summary>
         /// The minimum value for scaling the gauges.
-        /// This value is associated to <see cref="StartingAngleGauges"/> + <see cref="AngleRange"/>.
+        /// This value is associated to <see cref="StartingAngleGauges"/> and <see cref="AngleRange"/>.
         /// </summary>
         protected double MinScale
         {
@@ -114,13 +114,13 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray;
+        //public Color WebColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// Gets or sets the size (in pixels) of each gauge.
         /// If less than 0, then it will be calculated from the available space.
         /// </summary>
-        public float LineWidth { get; set; } = -1;
+        public float? LineWidth { get; set; }
 
         /// <summary>
         /// Dimmed percentage used to draw the gauges' background.
@@ -250,10 +250,6 @@ namespace ScottPlot.Plottable
 
         public System.Drawing.Drawing2D.LineCap StartCap { get; set; } = System.Drawing.Drawing2D.LineCap.Round;
 
-        /// <summary>
-        /// Controls rendering style of the concentric circles (ticks) of the web
-        /// </summary>
-        //public RadarAxis AxisType { get; set; } = RadarAxis.None;
 
         // These 3 properties are needed as part of IPlottable
         public bool IsVisible { get; set; } = true;
@@ -404,15 +400,15 @@ namespace ScottPlot.Plottable
         /// Reduces an angle into the range [0°-360°]
         /// </summary>
         /// <param name="angle">Angle value</param>
-        /// <returns>Return the angle whithin [0°-360°]</returns>
+        /// <returns>Angle whithin [0°-360°]</returns>
         private double ReduceAngle(double angle)
         {
-            double reduced = angle;
+            // This reduces the angle to [-360 - 360]. More concise would be: angle % 360
+            double reduced = angle - 360 * (int)(angle / 360);
 
-            if (angle > 360.0)
-                reduced -= 360 * (int)(angle / 360);
-            else if (angle < -360.0)
-                reduced += 360 * (int)(angle / 360);
+            // This reduces the angle to [0 - 360]
+            if (reduced < 0)
+                reduced += 360;
 
             return reduced;
         }
@@ -426,15 +422,15 @@ namespace ScottPlot.Plottable
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             int numGroups = DataRaw.Length;
-            double minScale = new double[] { dims.GetPixelX(1), dims.GetPixelY(1) }.Min();  // Not sure why, but GetPixelX(1) returns a reasonable dimension to draw the plot
+            double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitY }.Min();  // Not sure why, but GetPixelX(1) returns a reasonable dimension to draw the plot
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using Pen pen = GDI.Pen(WebColor);
-            using Pen penCircle = GDI.Pen(WebColor);
+            using Pen pen = GDI.Pen(Color.Black);
+            using Pen penCircle = GDI.Pen(Color.Black);
             using Brush labelBrush = GDI.Brush(GaugeLabelsColor);
 
-            float lineWidth = (LineWidth < 0) ? (float)(minScale / ((numGroups) * (GaugeSpacePercentage + 100) / 100)) : LineWidth;
+            float lineWidth = (LineWidth.HasValue) ? LineWidth.Value : (float)(minScale / ((numGroups) * (GaugeSpacePercentage + 100) / 100));
             float radiusSpace = lineWidth * (GaugeSpacePercentage + 100) / 100;
             float gaugeRadius = numGroups * radiusSpace;  // By default, the outer-most radius is computed
             float maxBackAngle = (GaugeDirection == RadialGaugeDirection.AntiClockwise ? -1 : 1) * (NormBackGauge ? (float)AngleRange : 360);
@@ -448,50 +444,46 @@ namespace ScottPlot.Plottable
 
             using System.Drawing.Font fontGauge = new(Font.Name, lineWidth * GaugeLabelsFontPct / 100, FontStyle.Bold);
 
-            lock (this)
+            int index;
+            for (int i = 0; i < numGroups; i++)
             {
-                int index;
-                for (int i = 0; i < numGroups; i++)
+                // Data is reversed in case SingleGauge is selected
+                // If OutsideToInside is selected, radius is reversed
+                if (GaugeMode != RadialGaugeMode.SingleGauge)
                 {
-                    // Data is reversed in case SingleGauge is selected
-                    // If OutsideToInside is selected, radius is reversed
-                    if (GaugeMode != RadialGaugeMode.SingleGauge)
-                    {
-                        index = i;
-                        gaugeRadius = (GaugeOrder == RadialGaugeOrder.InsideToOutside ? i + 1 : (numGroups - i)) * radiusSpace;
-                    }
-                    else
-                    {
-                        index = numGroups - i - 1;
-                    }
+                    index = i;
+                    gaugeRadius = (GaugeOrder == RadialGaugeOrder.InsideToOutside ? i + 1 : (numGroups - i)) * radiusSpace;
+                }
+                else
+                {
+                    index = numGroups - i - 1;
+                }
 
-                    // Set color values
-                    pen.Color = GaugeColors[index];
-                    penCircle.Color = LightenBy(GaugeColors[index], DimPercentage);
+                // Set color values
+                pen.Color = GaugeColors[index];
+                penCircle.Color = LightenBy(GaugeColors[index], DimPercentage);
 
-                    // Draw gauge background
-                    if (GaugeMode != RadialGaugeMode.SingleGauge)
-                        gfx.DrawArc(penCircle, (origin.X - gaugeRadius), (origin.Y - gaugeRadius), (gaugeRadius * 2), (gaugeRadius * 2), _StartingAngleBackGauges, maxBackAngle);
+                // Draw gauge background
+                if (GaugeMode != RadialGaugeMode.SingleGauge)
+                    gfx.DrawArc(penCircle, (origin.X - gaugeRadius), (origin.Y - gaugeRadius), (gaugeRadius * 2), (gaugeRadius * 2), _StartingAngleBackGauges, maxBackAngle);
 
-                    // Draw gauge
-                    gfx.DrawArc(pen, (origin.X - gaugeRadius), (origin.Y - gaugeRadius), (gaugeRadius * 2), (gaugeRadius * 2), (float)DataAngular[index, 0], (float)DataAngular[index, 1]);
+                // Draw gauge
+                gfx.DrawArc(pen, (origin.X - gaugeRadius), (origin.Y - gaugeRadius), (gaugeRadius * 2), (gaugeRadius * 2), (float)DataAngular[index, 0], (float)DataAngular[index, 1]);
 
-                    // Draw gauge labels
-                    if (ShowGaugeValues)
-                    {
-                        DrawTextOnCircle(gfx,
-                            fontGauge,
-                            labelBrush,
-                            new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight),
-                            gaugeRadius,
-                            (float)DataAngular[index, 0],
-                            (float)DataAngular[index, 1],
-                            origin.X,
-                            origin.Y,
-                            DataRaw[index].ToString("0.##"),    // Could be set as a user-choice paremeter?
-                            _GaugeLabelPos);
-                    }
-
+                // Draw gauge labels
+                if (ShowGaugeValues)
+                {
+                    DrawTextOnCircle(gfx,
+                        fontGauge,
+                        labelBrush,
+                        new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight),
+                        gaugeRadius,
+                        (float)DataAngular[index, 0],
+                        (float)DataAngular[index, 1],
+                        origin.X,
+                        origin.Y,
+                        DataRaw[index].ToString("0.##"),    // Could be set as a user-choice paremeter?
+                        _GaugeLabelPos);
                 }
 
             }
@@ -514,13 +506,14 @@ namespace ScottPlot.Plottable
 
             if (correctionFactor < 0)
             {
-                correctionFactor = 1 + correctionFactor;
+                correctionFactor = correctionFactor < -1 ? 0 : 1 + correctionFactor;
                 red *= correctionFactor;
                 green *= correctionFactor;
                 blue *= correctionFactor;
             }
             else
             {
+                if (correctionFactor > 1) correctionFactor = 1;
                 red = (255 - red) * correctionFactor + red;
                 green = (255 - green) * correctionFactor + green;
                 blue = (255 - blue) * correctionFactor + blue;
@@ -550,22 +543,22 @@ namespace ScottPlot.Plottable
         /// <param name="brush"><see langword="keyword">Brush</see> used to draw the text</param>
         /// <param name="clientRectangle"><see langword="keyword">Rectangle</see> of the ScottPlot control</param>
         /// <param name="radius">Radius of the circle in pixels</param>
-        /// <param name="angleInit">Staring angle (in degrees) of the circle</param>
-        /// <param name="angleSwept">Angular span (in degrees) of the circle</param>
+        /// <param name="start">Staring angle (in degrees) of the circle</param>
+        /// <param name="sweep">Angular span (in degrees) of the circle</param>
         /// <param name="cx">The x-coordinate of the circle centre</param>
         /// <param name="cy">The y-coordinate of the circle centre</param>
         /// <param name="text">String to be drawn</param>
-        /// <param name="posPct">Position of text as a percentage of the angle swept</param>
+        /// <param name="pos">Position of text as a percentage of the angle swept</param>
         /// <seealso href="http://csharphelper.com/blog/2018/02/draw-text-on-a-circle-in-c/"/>
         protected virtual void DrawTextOnCircle(Graphics gfx, System.Drawing.Font font,
-            Brush brush, RectangleF clientRectangle, float radius, float angleInit, float angleSwept, float cx, float cy,
-            string text, float posPct)
+            Brush brush, RectangleF clientRectangle, float radius, float start, float sweep, float cx, float cy,
+            string text, float pos)
         {
             // Modify anglePos to be in the range [0, 360]
-            if (angleInit >= 0)
-                angleInit -= 360f * (int)(angleInit / 360);
+            if (start >= 0)
+                start -= 360f * (int)(start / 360);
             else
-                angleInit += 360f;
+                start += 360f;
 
             // Use a StringFormat to draw the middle top of each character at (0, 0).
             using StringFormat string_format = new StringFormat();
@@ -578,13 +571,12 @@ namespace ScottPlot.Plottable
 
             // Measure the characters. Use LINQ to add up the character widths.
             List<RectangleF> rects = MeasureCharacters(gfx, font, clientRectangle, text);
-            var width_query = from RectangleF rect in rects select rect.Width;
-            double text_width = width_query.Sum() / radius;
+            double text_width = (rects.Select(rect => rect.Width)).Sum() / radius;
 
             // Angular data
-            bool isPositive = angleSwept >= 0;
-            double angle = ReduceAngle(angleInit + angleSwept * (posPct / 100));
-            angle += (1 - 2 * (posPct / 100)) * (isPositive ? 1 : -1) * RadToDeg * text_width / 2; // Set the position to the middle of the text
+            bool isPositive = sweep >= 0;
+            double angle = ReduceAngle(start + sweep * (pos / 100));
+            angle += (1 - 2 * (pos / 100)) * (isPositive ? 1 : -1) * RadToDeg * text_width / 2; // Set the position to the middle of the text
 
             bool isBelow = angle < 180 && angle > 0;
             double theta = angle * Math.PI / 180;
@@ -684,7 +676,8 @@ namespace ScottPlot.Plottable
                     MeasureCharactersInWord(gfx, font, clientRectangle, substring);
 
                 // Remove lead-in for the first character.
-                if (start == 0) x += rects[0].Left;
+                if (start == 0)
+                    x += rects[0].Left;
 
                 // Save all but the last rectangle.
                 for (int i = 0; i < rects.Count + 1 - 1; i++)
