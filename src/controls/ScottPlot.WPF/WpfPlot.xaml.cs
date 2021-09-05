@@ -57,9 +57,8 @@ namespace ScottPlot
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
-        private readonly Control.ControlBackEnd Backend = new(1, 1);
+        private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
         private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
         private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
@@ -88,6 +87,7 @@ namespace ScottPlot
                 }
             }
 
+            Backend = new Control.ControlBackEnd(1, 1, GetType().Name);
             Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -109,17 +109,12 @@ namespace ScottPlot
             };
 
             RightClicked += DefaultRightClickEvent;
-            PlottableCountTimer.Tick += PlottableCountTimer_Tick;
-            PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
 
             InitializeComponent();
 
             ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
 
             Backend.StartProcessingEvents();
-
-            Loaded += (_, _) => PlottableCountTimer.Start();
-            Unloaded += (_, _) => PlottableCountTimer.Stop();
         }
 
         /// <summary>
@@ -146,7 +141,11 @@ namespace ScottPlot
         /// Re-render the plot and update the image displayed by this control.
         /// </summary>
         /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
-        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void Render(bool lowQuality = false)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.Render(lowQuality);
+        }
 
         /// <summary>
         /// Request the control re-render the next time it is available.
@@ -154,7 +153,6 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];

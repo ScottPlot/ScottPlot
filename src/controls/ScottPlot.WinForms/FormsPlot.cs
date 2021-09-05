@@ -50,7 +50,7 @@ namespace ScottPlot
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
-        private readonly Control.ControlBackEnd Backend = new(1, 1);
+        private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Forms.Cursor> Cursors;
         private readonly bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
@@ -80,6 +80,7 @@ namespace ScottPlot
                 }
             }
 
+            Backend = new Control.ControlBackEnd(1, 1, GetType().Name);
             Backend.Resize(Width, Height, useDelayedRendering: false);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -140,6 +141,7 @@ namespace ScottPlot
         public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             Application.DoEvents();
+            Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
 
@@ -149,7 +151,6 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }

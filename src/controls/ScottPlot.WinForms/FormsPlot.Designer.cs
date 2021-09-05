@@ -40,7 +40,6 @@ namespace ScottPlot
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.openInNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PlottableCountTimer = new System.Windows.Forms.Timer(this.components);
             this.rtbErrorMessage = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.DefaultRightClickMenu.SuspendLayout();
@@ -127,12 +126,6 @@ namespace ScottPlot
             this.openInNewWindowMenuItem.Text = "Open in New Window";
             this.openInNewWindowMenuItem.Click += new System.EventHandler(this.RightClickMenu_OpenInNewWindow_Click);
             // 
-            // PlottableCountTimer
-            // 
-            this.PlottableCountTimer.Enabled = true;
-            this.PlottableCountTimer.Interval = 10;
-            this.PlottableCountTimer.Tick += new System.EventHandler(this.PlottableCountTimer_Tick);
-            // 
             // rtbErrorMessage
             // 
             this.rtbErrorMessage.BackColor = System.Drawing.Color.Maroon;
@@ -171,7 +164,6 @@ namespace ScottPlot
         private System.Windows.Forms.ToolStripMenuItem copyMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.Timer PlottableCountTimer;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem openInNewWindowMenuItem;
         private System.Windows.Forms.RichTextBox rtbErrorMessage;

@@ -27,6 +27,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             // create a list of plot controls we can easily iterate through later
             WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2 };
+
+            // perform an initial render
+            wpfPlot1.Render();
+            wpfPlot2.Render();
         }
 
         private void AxesChanged(object sender, EventArgs e)
