@@ -57,7 +57,6 @@ namespace ScottPlot.Avalonia
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
-        private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
@@ -87,9 +86,6 @@ namespace ScottPlot.Avalonia
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
 
             RightClicked += DefaultRightClickEvent;
-            PlottableCountTimer.Tick += PlottableCountTimer_Tick;
-            PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
-            PlottableCountTimer.Start();
 
             InitializeLayout();
             Backend.StartProcessingEvents();
@@ -105,7 +101,6 @@ namespace ScottPlot.Avalonia
             Backend.Render(lowQuality);
         }
         public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
         {

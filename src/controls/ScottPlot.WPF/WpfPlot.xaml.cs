@@ -59,7 +59,6 @@ namespace ScottPlot
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
         private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
         private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
@@ -110,17 +109,12 @@ namespace ScottPlot
             };
 
             RightClicked += DefaultRightClickEvent;
-            PlottableCountTimer.Tick += PlottableCountTimer_Tick;
-            PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
 
             InitializeComponent();
 
             ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
 
             Backend.StartProcessingEvents();
-
-            Loaded += (_, _) => PlottableCountTimer.Start();
-            Unloaded += (_, _) => PlottableCountTimer.Stop();
         }
 
         /// <summary>
@@ -159,7 +153,6 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];

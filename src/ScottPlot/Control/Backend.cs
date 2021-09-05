@@ -45,7 +45,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
@@ -358,10 +357,11 @@ namespace ScottPlot.Control
 
             if (WasManuallyRendered == false)
             {
-                AddErrorMessage(Bmp,
-                    $"ScottPlot {Plot.Version} WARNING:\n" +
+                string message = $"ScottPlot {Plot.Version} WARNING:\n" +
                     $"{ControlName}.Render() must be called at lesat once\n" +
-                    $"after adding or removing plottable objects.");
+                    $"after adding or removing plottable objects.";
+                Debug.WriteLine(message);
+                AddErrorMessage(Bmp, message);
             }
 
             AxisLimits newLimits = Plot.GetAxisLimits();
@@ -467,6 +467,7 @@ namespace ScottPlot.Control
             }
         }
 
+        [Obsolete("Automatic render timer has been removed. Call Render() manually.", true)]
         /// <summary>
         /// Check if the number of plottibles has changed and if so request a render.
         /// This is typically called by a continuously running timer in the user control.

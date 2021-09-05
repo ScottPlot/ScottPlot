@@ -104,6 +104,7 @@ namespace ScottPlot.Control
         /// </summary>
         public bool LockHorizontalAxis = false;
 
+        [Obsolete("Automatic render timer has been removed. Call Render() manually.", true)]
         /// <summary>
         /// If enabled the control will automatically re-render as plottables are added and removed
         /// </summary>
