@@ -77,7 +77,7 @@ namespace ScottPlot.Avalonia
                 [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
             };
 
-            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
+            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height, GetType().Name);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -99,7 +99,11 @@ namespace ScottPlot.Avalonia
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
         public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
-        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void Render(bool lowQuality = false)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.Render(lowQuality);
+        }
         public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
 

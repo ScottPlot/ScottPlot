@@ -57,7 +57,7 @@ namespace ScottPlot
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
-        private readonly Control.ControlBackEnd Backend = new(1, 1);
+        private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
         private readonly DispatcherTimer PlottableCountTimer = new();
         private readonly Control.DisplayScale DisplayScale = new();
@@ -88,6 +88,7 @@ namespace ScottPlot
                 }
             }
 
+            Backend = new Control.ControlBackEnd(1, 1, GetType().Name);
             Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -146,7 +147,11 @@ namespace ScottPlot
         /// Re-render the plot and update the image displayed by this control.
         /// </summary>
         /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
-        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void Render(bool lowQuality = false)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.Render(lowQuality);
+        }
 
         /// <summary>
         /// Request the control re-render the next time it is available.
