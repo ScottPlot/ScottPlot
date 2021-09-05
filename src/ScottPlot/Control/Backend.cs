@@ -411,23 +411,29 @@ namespace ScottPlot.Control
                 width: messageRect.Width,
                 height: messageRect.Height);
 
-            if (messageSize.Width > bmp.Width || messageSize.Height > bmp.Height)
-            {
-                messageRect = new(0, 0, bmp.Width, bmp.Height);
-                sf.Alignment = System.Drawing.StringAlignment.Near;
-                sf.LineAlignment = System.Drawing.StringAlignment.Near;
-                message = message.Replace("\n", " ");
-            }
-
             using System.Drawing.SolidBrush foreBrush = new(foreColor);
             using System.Drawing.Pen forePen = new(foreColor, width: 5);
             using System.Drawing.SolidBrush backBrush = new(backColor);
             using System.Drawing.SolidBrush shadowBrush = new(shadowColor);
 
-            gfx.FillRectangle(shadowBrush, shadowRect);
-            gfx.FillRectangle(backBrush, messageRect);
-            gfx.DrawRectangle(forePen, System.Drawing.Rectangle.Round(messageRect));
-            gfx.DrawString(message, font, foreBrush, messageRect, sf);
+            if (messageSize.Width > bmp.Width || messageSize.Height > bmp.Height)
+            {
+                System.Drawing.RectangleF plotRect = new(0, 0, bmp.Width, bmp.Height);
+                sf.Alignment = System.Drawing.StringAlignment.Near;
+                sf.LineAlignment = System.Drawing.StringAlignment.Near;
+                message = message.Replace("\n", " ");
+
+                using System.Drawing.Font fontSmall = new(System.Drawing.FontFamily.GenericSansSerif, 12, System.Drawing.FontStyle.Bold);
+                gfx.Clear(backColor);
+                gfx.DrawString(message, fontSmall, foreBrush, plotRect, sf);
+            }
+            else
+            {
+                gfx.FillRectangle(shadowBrush, shadowRect);
+                gfx.FillRectangle(backBrush, messageRect);
+                gfx.DrawRectangle(forePen, System.Drawing.Rectangle.Round(messageRect));
+                gfx.DrawString(message, font, foreBrush, messageRect, sf);
+            }
         }
 
         /// <summary>
