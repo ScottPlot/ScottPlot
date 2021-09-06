@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
-using static System.Net.WebRequestMethods;
 
 // Credits:
 //
@@ -108,11 +107,6 @@ namespace ScottPlot.Plottable
         /// Length must be equal to the length of data passed to either the constructor or the <see cref="Update(double[])"/> method.
         /// </summary>
         public Color[] GaugeColors;
-
-        /// <summary>
-        /// Color of the axis lines and concentric circles representing ticks
-        /// </summary>
-        //public Color WebColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// Gets or sets the size (in pixels) of each gauge.
