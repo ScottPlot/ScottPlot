@@ -89,8 +89,7 @@ namespace ScottPlot.Plottable
         {
             set
             {
-                // Modify value to be in the range [0, 360]
-                _AngleRange = value > 360 ? 360 : (value < 0 ? 0 : value);
+                _AngleRange = TrimAngle(value);
                 ComputeAngularData();
             }
             get => _AngleRange;
@@ -394,12 +393,16 @@ namespace ScottPlot.Plottable
             (GaugeLabels != null) ? new AxisLimits(-3.5, 3.5, -3.5, 3.5) : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
 
         /// <summary>
-        /// Reduces an angle into the range [0°-360°]
+        /// Reduces an angle into the range [0°-360°].
+        /// Angles greater than 360 will roll-over (370º becomes 10º).
+        /// Angles less than 0 will roll-under (-10º becomes 350º).
         /// </summary>
         /// <param name="angle">Angle value</param>
         /// <returns>Angle whithin [0°-360°]</returns>
         private double ReduceAngle(double angle)
         {
+            // TODO: support angles greater than 720º
+
             // This reduces the angle to [-360 - 360]. More concise would be: angle % 360
             double reduced = angle - 360 * (int)(angle / 360);
 
@@ -408,6 +411,16 @@ namespace ScottPlot.Plottable
                 reduced += 360;
 
             return reduced;
+        }
+
+        /// <summary>
+        /// Return the given angle trimmed so it is never less than 0 or greater than 360
+        /// </summary>
+        private double TrimAngle(double angle)
+        {
+            angle = Math.Min(360, angle);
+            angle = Math.Max(0, angle);
+            return angle;
         }
 
         /// <summary>
