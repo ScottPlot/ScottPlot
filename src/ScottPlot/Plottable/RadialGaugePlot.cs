@@ -326,17 +326,10 @@ namespace ScottPlot.Plottable
             return legendItems.ToArray();
         }
 
-        /// <summary>
-        /// Needed as part of IPlottable in ScottPlot.ScottForm
-        /// </summary>
-        /// <returns></returns>
         public AxisLimits GetAxisLimits()
         {
-            // TODO: update this to depend on line width and number of groups
-            if (GaugeLabels is null)
-                return new AxisLimits(-2.5, 2.5, -2.5, 2.5);
-            else
-                return new AxisLimits(-3.5, 3.5, -3.5, 3.5);
+            double radius = GaugeCount / 4;
+            return new AxisLimits(-radius, radius, -radius, radius);
         }
 
         /// <summary>
