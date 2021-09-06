@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Drawing
@@ -47,6 +48,13 @@ namespace ScottPlot.Drawing
         public Color GetColor(int index)
         {
             return Color.FromArgb(GetInt32(index));
+        }
+
+        public Color[] GetColors(int count, int offset = 0)
+        {
+            return Enumerable.Range(0, count)
+                .Select(x => Color.FromArgb(GetInt32(x + offset)))
+                .ToArray();
         }
 
         public int Count()
