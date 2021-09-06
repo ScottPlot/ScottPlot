@@ -22,8 +22,8 @@ namespace ScottPlot.Avalonia
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
-        public Plot Plot => Backend.Plot;
-        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
+        public readonly Plot Plot;
+        public readonly ScottPlot.Control.Configuration Configuration;
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -84,6 +84,8 @@ namespace ScottPlot.Avalonia
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Plot = Backend.Plot;
+            Configuration = Backend.Configuration;
 
             RightClicked += DefaultRightClickEvent;
 
