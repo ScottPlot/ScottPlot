@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ScottPlotTests.PlotTypes
 {
@@ -9,6 +10,13 @@ namespace ScottPlotTests.PlotTypes
         [Test]
         public void Test_RecipeHashes_DoNotChange()
         {
+            // only run hash tests on Windows
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == false)
+            {
+                Assert.Pass();
+                return;
+            }
+
             Dictionary<string, string> hashesByID = new()
             {
                 { "radialgauge_quickstart", "B68EC793BB724E7BA8F38D46A4647B0F" },
