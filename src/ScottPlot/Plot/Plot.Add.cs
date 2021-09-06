@@ -748,20 +748,14 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a radial gauge plot: a circular chart where data is represented by a circular gauge
+        /// Add a radial gauge plot (a chart where data is represented by concentric circular gauges)
         /// </summary>
-        /// <param name="values">Single array containing scalar data</param>
+        /// <param name="values">Array of gauge values</param>
         /// <param name="disableFrameAndGrid">Also make the plot frameless and disable its grid</param>
         /// <returns>The radial gaugle plot that was just created and added to the plot</returns>
         public ScottPlot.Plottable.RadialGaugePlot AddRadialGauge(double[] values, bool disableFrameAndGrid = true)
         {
-
-            Color[] colors = Enumerable.Range(0, values.Length)
-                                       .Select(i => this.GetSettings(false).PlottablePalette.GetColor(i))
-                                       .ToArray();
-
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
-
+            Color[] colors = Palette.GetColors(values.Length);
             ScottPlot.Plottable.RadialGaugePlot plottable = new(values, colors);
             Add(plottable);
 
