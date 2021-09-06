@@ -96,24 +96,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class RadialGaugeOrder : IRecipe
-    {
-        public string Category => "Plottable: RadialGauge";
-        public string ID => "radialgauge_order";
-        public string Title => "Gauge Order";
-        public string Description =>
-            "Values can be plotted starting from the inside (default) or the outside.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
-            double[] values = { 100, 80, 65, 45, 20 };
-
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeOrder = ScottPlot.RadialGaugeOrder.OutsideToInside;
-        }
-    }
-
     public class RadialGaugeLine : IRecipe
     {
         public string Category => "Plottable: RadialGauge";
@@ -254,8 +236,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_labelpos";
         public string Title => "Gauge Label Position";
         public string Description =>
-            "The position of the gauges' labels can be adjusted as a percentage of the gauges' angular length. " +
-            "A value of 100 (default) draws the labels at the gauges' end whereas a value of 0 does it at the gauge's beginning.";
+            "Gauge labels are positioned at the tip of each gauge by default, " +
+            "but this position can be adjusted by the user.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -263,7 +245,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeLabelPos = 50;
+            RadialGauge.GaugeLabelPosition = .5;
         }
     }
 
@@ -273,8 +255,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_labelfontpct";
         public string Title => "Gauge Label Font Percentage";
         public string Description =>
-            "Size of the gague label text as a percentage of the gauge width. " +
-            "Values in the range [0-100], default value is 75 [percent].";
+            "Size of the gague label text as a fraction of the gauge width.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -282,7 +263,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeLabelsFontPct = 50;
+            RadialGauge.FontSizeFraction = .5;
         }
     }
 
@@ -319,7 +300,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.DimPercentage = 50;
+            RadialGauge.ColorDimFraction = .5;
         }
     }
 

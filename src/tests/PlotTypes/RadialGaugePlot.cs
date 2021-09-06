@@ -24,7 +24,6 @@ namespace ScottPlotTests.PlotTypes
                 { "radialgauge_mode", "D574820285FBDF6907DC3CCA83033A6E" },
                 { "radialgauge_single", "904D563886949C1A2DE671F1026A81C2" },
                 { "radialgauge_direction", "FC968088AE1A1C97013E50085889D5D2" },
-                { "radialgauge_order", "47E59F0DEF41C67B5C51C02F632DC5E3" },
                 { "radialgauge_line", "F286CD5B1A8E9D315278C5B3C851E087" },
                 { "radialgauge_size", "B5D95CA6CFAEC8797700D4B5585F3661" },
                 { "radialgauge_caps", "95C2FC1C7C01714FBC405A30DB64D35D" },
