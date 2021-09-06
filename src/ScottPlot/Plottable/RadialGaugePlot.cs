@@ -387,7 +387,7 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             int numGroups = DataRaw.Length;
-            double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitY }.Min();  // Not sure why, but GetPixelX(1) returns a reasonable dimension to draw the plot
+            double pxPerUnit = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
@@ -395,7 +395,7 @@ namespace ScottPlot.Plottable
             using Pen penCircle = GDI.Pen(Color.Black);
             using Brush labelBrush = GDI.Brush(GaugeLabelsColor);
 
-            float lineWidth = (LineWidth.HasValue) ? LineWidth.Value : (float)(minScale / ((numGroups) * (GaugeSpacePercentage + 100) / 100));
+            float lineWidth = (LineWidth.HasValue) ? LineWidth.Value : (float)(pxPerUnit / ((numGroups) * (GaugeSpacePercentage + 100) / 100));
             float radiusSpace = lineWidth * (GaugeSpacePercentage + 100) / 100;
             float gaugeRadius = numGroups * radiusSpace;  // By default, the outer-most radius is computed
             float maxBackAngle = (GaugeDirection == RadialGaugeDirection.AntiClockwise ? -1 : 1) * (NormBackGauge ? (float)AngleRange : 360);
