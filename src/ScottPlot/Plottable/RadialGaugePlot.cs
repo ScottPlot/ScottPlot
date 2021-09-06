@@ -43,18 +43,18 @@ namespace ScottPlot.Plottable
         /// Data to be plotted.
         /// It's copied from of the data passed to either the constructor or the <see cref="Update(double[])"/> method.
         /// </summary>
-        protected double[] DataRaw;
+        private double[] DataRaw;
 
         /// <summary>
         /// Angular data (first column: initial angle; second column: swept angle) computed from <see cref="DataRaw"/>.
         /// </summary>
-        protected double[,] DataAngular;
+        private double[,] DataAngular;
 
         /// <summary>
         /// The maximum value for scaling the gauges.
         /// This value is associated to <see cref="StartingAngleGauges"/> and <see cref="AngleRange"/>.
         /// </summary>
-        protected double MaxScale
+        private double MaxScale
         {
             get => _MaxScale;
             set
@@ -69,7 +69,7 @@ namespace ScottPlot.Plottable
         /// The minimum value for scaling the gauges.
         /// This value is associated to <see cref="StartingAngleGauges"/> and <see cref="AngleRange"/>.
         /// </summary>
-        protected double MinScale
+        private double MinScale
         {
             get => _MinScale;
             set
@@ -423,7 +423,7 @@ namespace ScottPlot.Plottable
         /// <param name="dims">Plot dimensions</param>
         /// <param name="bmp">Bitmap where the drawing is done</param>
         /// <param name="lowQuality">Image quality</param>
-        public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             int numGroups = DataRaw.Length;
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitY }.Min();  // Not sure why, but GetPixelX(1) returns a reasonable dimension to draw the plot
@@ -549,7 +549,7 @@ namespace ScottPlot.Plottable
         /// <param name="text">String to be drawn</param>
         /// <param name="pos">Position of text as a percentage of the angle swept</param>
         /// <seealso href="http://csharphelper.com/blog/2018/02/draw-text-on-a-circle-in-c/"/>
-        protected virtual void DrawTextOnCircle(Graphics gfx, System.Drawing.Font font,
+        private void DrawTextOnCircle(Graphics gfx, System.Drawing.Font font,
             Brush brush, RectangleF clientRectangle, float radius, float start, float sweep, float cx, float cy,
             string text, float pos)
         {
