@@ -4,24 +4,8 @@ using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
 
-// Credits:
-//
-// Inspired (and expanding) by https://github.com/dotnet-ad/Microcharts/blob/main/Sources/Microcharts/Charts/RadialGaugeChart.cs
-//
-// Lighten or darken color
-// https://stackoverflow.com/questions/801406/c-create-a-lighter-darker-color-based-on-a-system-color
-// https://www.pvladov.com/2012/09/make-color-lighter-or-darker.html
-// https://gist.github.com/zihotki/09fc41d52981fb6f93a81ebf20b35cd5
-//
-// Circular Segment
-// https://github.com/falahati/CircularProgressBar/blob/master/CircularProgressBar/CircularProgressBar.cs
-// https://github.com/aalitor/AltoControls/blob/on-development/AltoControls/Controls/Circular%20Progress%20Bar.cs
-//
-// http://csharphelper.com/blog/2015/02/draw-lines-with-custom-end-caps-in-c/
-//
-// Text on path
-// http://csharphelper.com/blog/2018/02/draw-text-on-a-circle-in-c/
-// http://csharphelper.com/blog/2016/01/draw-text-on-a-curve-in-c/
+// Inspired by MicroCharts:
+// https://github.com/dotnet-ad/Microcharts/blob/main/Sources/Microcharts/Charts/RadialGaugeChart.cs
 
 namespace ScottPlot.Plottable
 {
@@ -380,6 +364,10 @@ namespace ScottPlot.Plottable
         /// <param name="lowQuality">Image quality</param>
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            // TODO: attribution / licensing
+            // https://github.com/falahati/CircularProgressBar/blob/master/CircularProgressBar/CircularProgressBar.cs
+            // https://github.com/aalitor/AltoControls/blob/on-development/AltoControls/Controls/Circular%20Progress%20Bar.cs
+
             int numGroups = DataRaw.Length;
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
@@ -475,8 +463,12 @@ namespace ScottPlot.Plottable
         /// <seealso href="http://gist.github.com/zihotki/09fc41d52981fb6f93a81ebf20b35cd5"/>
         private Color ChangeColorBrightness(Color color, float correctionFactor)
         {
-            // TODO: ensure proper licensing/attribution for this method.
             // TODO: consider replacing this with a simple alpha modulation.
+
+            // TODO: ensure proper licensing/attribution for this method.
+            // https://stackoverflow.com/questions/801406/c-create-a-lighter-darker-color-based-on-a-system-color
+            // https://www.pvladov.com/2012/09/make-color-lighter-or-darker.html
+            // https://gist.github.com/zihotki/09fc41d52981fb6f93a81ebf20b35cd5
 
             float red = (float)color.R;
             float green = (float)color.G;
@@ -520,8 +512,12 @@ namespace ScottPlot.Plottable
             Brush brush, RectangleF clientRectangle, float radius, float start, float sweep, float cx, float cy,
             string text, double positionFraction)
         {
-            // TODO: verify source / license / attribution.
             // TODO: move to Drawing module.
+
+            // TODO: verify source / license / attribution.
+            // Text on path
+            // http://csharphelper.com/blog/2018/02/draw-text-on-a-circle-in-c/
+            // http://csharphelper.com/blog/2016/01/draw-text-on-a-curve-in-c/
 
             // Modify anglePos to be in the range [0, 360]
             if (start >= 0)
