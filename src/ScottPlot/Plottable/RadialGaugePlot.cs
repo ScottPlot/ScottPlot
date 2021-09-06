@@ -40,7 +40,6 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class RadialGaugePlot : IPlottable
     {
-        #region Properties & fields
         /// <summary>
         /// Data to be plotted.
         /// It's copied from of the data passed to either the constructor or the <see cref="Update(double[])"/> method.
@@ -255,8 +254,6 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-
-        #endregion Properties & fields
 
         /// <summary>
         /// Initializes the plot instance.
@@ -490,8 +487,6 @@ namespace ScottPlot.Plottable
 
         }
 
-        #region Color routines
-
         /// <summary>Creates color with corrected brightness.</summary>
         /// <param name="color">Color to correct.</param>
         /// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1. 
@@ -532,9 +527,6 @@ namespace ScottPlot.Plottable
             return ChangeColorBrightness(color, -1f * percent / 100f);
         }
 
-        #endregion Color routines
-
-        #region DrawText routines
         /// <summary>
         /// Draw text centered on the top and the bottom of the circle.
         /// </summary>
@@ -695,8 +687,5 @@ namespace ScottPlot.Plottable
             // Return the results.
             return results;
         }
-
-        #endregion DrawText routines
-
     }
 }
