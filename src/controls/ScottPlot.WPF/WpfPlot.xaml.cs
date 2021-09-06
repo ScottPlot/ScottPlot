@@ -21,12 +21,12 @@ namespace ScottPlot
         /// This is the plot displayed by the user control.
         /// After modifying it you may need to call Render() to request the plot be redrawn on the screen.
         /// </summary>
-        public Plot Plot => Backend.Plot;
+        public readonly Plot Plot;
 
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public Control.Configuration Configuration => Backend.Configuration;
+        public readonly Control.Configuration Configuration;
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -68,10 +68,23 @@ namespace ScottPlot
 
         public WpfPlot()
         {
+            Backend = new Control.ControlBackEnd(1, 1, GetType().Name);
+            Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
+            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
+            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.RightClicked += new EventHandler(OnRightClicked);
+            Backend.AxesChanged += new EventHandler(OnAxesChanged);
+            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
+            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Plot = Backend.Plot;
+            Configuration = Backend.Configuration;
+
             if (DesignerProperties.GetIsInDesignMode(this))
             {
                 try
                 {
+                    Backend.WasManuallyRendered = true;
                     Plot.Title($"ScottPlot {Plot.Version}");
                     Plot.Render();
                 }
@@ -86,16 +99,6 @@ namespace ScottPlot
                     return;
                 }
             }
-
-            Backend = new Control.ControlBackEnd(1, 1, GetType().Name);
-            Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
-            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
-            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            Backend.CursorChanged += new EventHandler(OnCursorChanged);
-            Backend.RightClicked += new EventHandler(OnRightClicked);
-            Backend.AxesChanged += new EventHandler(OnAxesChanged);
-            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
-            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
 
             Cursors = new Dictionary<Cursor, System.Windows.Input.Cursor>()
             {
