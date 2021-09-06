@@ -111,7 +111,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeSpacePercentage = 20;
+            RadialGauge.GaugeSpaceFraction = .2;
         }
     }
 

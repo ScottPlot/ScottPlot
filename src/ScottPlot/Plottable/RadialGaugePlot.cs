@@ -177,17 +177,17 @@ namespace ScottPlot.Plottable
         /// The empty space between gauges as a percentage of the gauge width.
         /// Values in the range [0-100], default value is 50 [percent]. Other values might produce unexpected side-effects.
         /// </summary>
-        public float GaugeSpacePercentage
+        public double GaugeSpaceFraction
         {
-            get => _GaugeSpacePercentage;
+            get => _GaugeSpaceFraction;
             set
             {
-                if (value < 0 || value > 100)
-                    throw new InvalidOperationException("percentage must be [0-100]");
-                _GaugeSpacePercentage = value;
+                if (value < 0 || value > 1)
+                    throw new InvalidOperationException("fraction must be from 0 to 1");
+                _GaugeSpaceFraction = value;
             }
         }
-        private float _GaugeSpacePercentage = 50f;
+        private double _GaugeSpaceFraction = .5f;
 
         /// <summary>
         /// <see langword="Color"/> of the value labels drawn inside the gauges.
@@ -389,8 +389,8 @@ namespace ScottPlot.Plottable
             using Pen penCircle = GDI.Pen(Color.Black);
             using Brush labelBrush = GDI.Brush(GaugeLabelsColor);
 
-            float lineWidth = pxPerUnit / (numGroups * (GaugeSpacePercentage + 100) / 100);
-            float radiusSpace = lineWidth * (GaugeSpacePercentage + 100) / 100;
+            float lineWidth = pxPerUnit / (numGroups * ((float)GaugeSpaceFraction + 1));
+            float radiusSpace = lineWidth * ((float)GaugeSpaceFraction + 1);
             float gaugeRadius = numGroups * radiusSpace;  // By default, the outer-most radius is computed
             float maxBackAngle = (GaugeDirection == RadialGaugeDirection.AntiClockwise ? -1 : 1) * (NormBackGauge ? (float)AngleRange : 360);
 
