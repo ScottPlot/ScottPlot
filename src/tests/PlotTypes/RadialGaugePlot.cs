@@ -28,6 +28,7 @@ namespace ScottPlotTests.PlotTypes
                 { "radialgauge_labelcolor", "5173393FD875CDDCBCE481DA2F30C377" },
                 { "radialgauge_backdim", "8DA1E966A416465BBDF35692E4C63800" },
                 { "radialgauge_backnorm", "00125CA2A66C509257A38170887A930D" },
+                { "radialgauge_legend", "D2E0883ED03523BE5EB94B79E3604E01" },
             };
 
             foreach (var recipe in ScottPlot.Cookbook.Locate.GetRecipes("Plottable: RadialGauge"))
@@ -37,7 +38,7 @@ namespace ScottPlotTests.PlotTypes
                 string hash = ScottPlot.Tools.BitmapHash(plt.GetBitmap());
                 TestTools.SaveFig(plt, recipe.ID);
 
-                //Console.WriteLine($"{recipe.ID} {hash}");
+                Console.WriteLine($"{recipe.ID} {hash}");
                 Assert.AreEqual(hashesByID[recipe.ID], hash);
             }
         }

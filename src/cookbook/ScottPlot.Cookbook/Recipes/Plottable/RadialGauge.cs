@@ -230,6 +230,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class RadialGaugeLegend : IRecipe
+    {
+        public string Category => "Plottable: RadialGauge";
+        public string ID => "radialgauge_legend";
+        public string Title => "Gauge Labels in Legend";
+        public string Description =>
+            "Radial gauge labels will appear in the legend if they are assigned.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            double[] values = { 100, 80, 65, 45, 20 };
+            var rg = plt.AddRadialGauge(values);
+            rg.GaugeLabels = new string[] { "alpha", "beta", "gamma", "delta", "epsilon" };
+            plt.Legend(true);
+        }
+    }
+
     public class RadialGaugeLabelPos : IRecipe
     {
         public string Category => "Plottable: RadialGauge";
