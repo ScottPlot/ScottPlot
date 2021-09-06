@@ -96,25 +96,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class RadialGaugeLine : IRecipe
-    {
-        public string Category => "Plottable: RadialGauge";
-        public string ID => "radialgauge_line";
-        public string Title => "Gauge Line Size";
-        public string Description =>
-            "It's not recommended, but the width of all gauges can be manually set in pixels. " +
-            "Since his is a nullable type, when equal to null he size will be automatically calculated from the available plot space.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
-            double[] values = { 100, 80, 65, 45, 20 };
-
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.LineWidth = 10;
-        }
-    }
-
     public class RadialGaugeSize : IRecipe
     {
         public string Category => "Plottable: RadialGauge";

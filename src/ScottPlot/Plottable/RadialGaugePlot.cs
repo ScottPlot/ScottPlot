@@ -87,12 +87,6 @@ namespace ScottPlot.Plottable
         public Color[] GaugeColors; // TODO: make this private and accept it as an argument in the contstructor and Update?
 
         /// <summary>
-        /// Gets or sets the size (in pixels) of each gauge.
-        /// If less than 0, then it will be calculated from the available space.
-        /// </summary>
-        public float? LineWidth { get; set; }
-
-        /// <summary>
         /// Describes how intense the color of each gauge is (0 to 1).
         /// Low values are white-washed, high values are intense colors.
         /// </summary>
@@ -387,7 +381,7 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             int numGroups = DataRaw.Length;
-            double pxPerUnit = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+            float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
@@ -395,7 +389,7 @@ namespace ScottPlot.Plottable
             using Pen penCircle = GDI.Pen(Color.Black);
             using Brush labelBrush = GDI.Brush(GaugeLabelsColor);
 
-            float lineWidth = (LineWidth.HasValue) ? LineWidth.Value : (float)(pxPerUnit / ((numGroups) * (GaugeSpacePercentage + 100) / 100));
+            float lineWidth = pxPerUnit / (numGroups * (GaugeSpacePercentage + 100) / 100);
             float radiusSpace = lineWidth * (GaugeSpacePercentage + 100) / 100;
             float gaugeRadius = numGroups * radiusSpace;  // By default, the outer-most radius is computed
             float maxBackAngle = (GaugeDirection == RadialGaugeDirection.AntiClockwise ? -1 : 1) * (NormBackGauge ? (float)AngleRange : 360);
