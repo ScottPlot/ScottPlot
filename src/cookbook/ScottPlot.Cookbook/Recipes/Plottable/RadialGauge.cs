@@ -131,7 +131,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.NormBackGauge = true;
+            RadialGauge.CircularBackground = false;
             RadialGauge.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
             RadialGauge.EndCap = System.Drawing.Drawing2D.LineCap.DiamondAnchor;
         }
@@ -189,7 +189,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.ShowGaugeValues = false;
+            RadialGauge.ShowValueLabels = false;
         }
     }
 
@@ -206,7 +206,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
             var rg = plt.AddRadialGauge(values);
-            rg.GaugeLabels = new string[] { "alpha", "beta", "gamma", "delta", "epsilon" };
+            rg.Labels = new string[] { "alpha", "beta", "gamma", "delta", "epsilon" };
             plt.Legend(true);
         }
     }
@@ -244,7 +244,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.FontSizeFraction = .5;
+            RadialGauge.FontSize = .5;
         }
     }
 
@@ -262,7 +262,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeLabelsColor = Color.Yellow;
+            RadialGauge.Font.Color = Color.Yellow;
         }
     }
 
@@ -299,7 +299,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.NormBackGauge = true;
+            RadialGauge.CircularBackground = false;
             RadialGauge.AngleRange = 180;
         }
     }

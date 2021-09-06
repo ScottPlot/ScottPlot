@@ -19,23 +19,22 @@ namespace ScottPlotTests.PlotTypes
 
             Dictionary<string, string> hashesByID = new()
             {
-                { "radialgauge_quickstart", "B68EC793BB724E7BA8F38D46A4647B0F" },
-                { "radialgauge_negative", "8121D0F1B1D1206E0ADF8F86D36FEC8C" },
-                { "radialgauge_mode", "D574820285FBDF6907DC3CCA83033A6E" },
-                { "radialgauge_single", "904D563886949C1A2DE671F1026A81C2" },
-                { "radialgauge_direction", "FC968088AE1A1C97013E50085889D5D2" },
-                { "radialgauge_line", "F286CD5B1A8E9D315278C5B3C851E087" },
-                { "radialgauge_size", "B5D95CA6CFAEC8797700D4B5585F3661" },
-                { "radialgauge_caps", "95C2FC1C7C01714FBC405A30DB64D35D" },
-                { "radialgauge_start", "0721BAFDA21ED65A7DD63FA49B4F9706" },
-                { "radialgauge_range", "0FEF6C842831BF58A0F6FF111D2BA1EC" },
-                { "radialgauge_labels", "2C1C0310462E05A0A25326D82AD15CF5" },
-                { "radialgauge_labelpos", "753458E32A6A427DFA19727909C9F3C4" },
-                { "radialgauge_labelfontpct", "7F16EF435B3D7B5D88C39D823167F7A1" },
-                { "radialgauge_labelcolor", "5173393FD875CDDCBCE481DA2F30C377" },
-                { "radialgauge_backdim", "8DA1E966A416465BBDF35692E4C63800" },
-                { "radialgauge_backnorm", "00125CA2A66C509257A38170887A930D" },
-                { "radialgauge_legend", "D2E0883ED03523BE5EB94B79E3604E01" },
+                { "radialgauge_quickstart", "7DADD0FF9E3C8665AB7C37C74753442C" },
+                { "radialgauge_negative", "A412A15974E8292593538A66AB2DB8F0" },
+                { "radialgauge_mode", "E6031401433AAB2104E23A48415048BC" },
+                { "radialgauge_single", "913F824E76A5EC2FBE7E0687FDA57A3C" },
+                { "radialgauge_direction", "D618F1C370C7EFA1FF93830612F6AB8B" },
+                { "radialgauge_size", "59E3FA1BD594F89C8F8409A3D74F4D1F" },
+                { "radialgauge_caps", "743FC4A378006B711328F74C2B8DCEF0" },
+                { "radialgauge_start", "EEC1E7678C4CCD442AC32FB70A1992F5" },
+                { "radialgauge_range", "7D80A0239C37B254C2B65702FE646D75" },
+                { "radialgauge_labels", "0D47E5AD3B48594417EE97582CA712B9" },
+                { "radialgauge_legend", "FED31EFA0FEEFC5C5D96F1463C78DAE7" },
+                { "radialgauge_labelpos", "2C5456E6AB6617A30C1D098A921BFEC4" },
+                { "radialgauge_labelfontpct", "237A90626F9F704393E68EEDAB5FBF0B" },
+                { "radialgauge_labelcolor", "92745AB300107F9848210445F372652B" },
+                { "radialgauge_backdim", "678DBF75D6CAD14163F5C47A2742A092" },
+                { "radialgauge_backnorm", "CE83805F9BB956B6004F040463687992" },
             };
 
             foreach (var recipe in ScottPlot.Cookbook.Locate.GetRecipes("Plottable: RadialGauge"))
@@ -45,7 +44,7 @@ namespace ScottPlotTests.PlotTypes
                 string hash = ScottPlot.Tools.BitmapHash(plt.GetBitmap());
                 TestTools.SaveFig(plt, recipe.ID);
 
-                Console.WriteLine($"{recipe.ID} {hash}");
+                Console.WriteLine($"{{\"{recipe.ID}\", \"{hash}\"}},");
                 Assert.AreEqual(hashesByID[recipe.ID], hash);
             }
         }
