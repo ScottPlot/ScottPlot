@@ -30,22 +30,23 @@ namespace ScottPlot.Plottable
         /// Maximum size (degrees) for the gauge.
         /// 180 is a semicircle and 360 is a full circle.
         /// </summary>
-        public double GaugeSize = 360;
+        public double MaximumAngle = 360;
 
         /// <summary>
         /// Controls whether the backgrounds of the gauges are full circles or stop at the maximum angle.
         /// </summary>
-        public bool CircularBackground { get; set; } = true;
+        public bool CircularBackground = true;
 
         /// <summary>
         /// Labels that appear in the legend for each gauge.
+        /// Number of labels must equal number of gauges.
         /// May be null if gauges are not to appear in the legend.
         /// </summary>
         public string[] Labels;
 
         /// <summary>
-        /// Base colors for each gauge.
-        /// These colors are adjusted at rendering time.
+        /// Colors for each gauge.
+        /// Number of colors must equal number of gauges.
         /// </summary>
         public Color[] Colors;
 
@@ -57,6 +58,7 @@ namespace ScottPlot.Plottable
 
         /// <summary>
         /// Indicates whether gauges fill clockwise as levels increase.
+        /// If false, gauges will fill counter-clockwise (anti-clockwise).
         /// </summary>
         public bool Clockwise = true;
 
@@ -77,15 +79,16 @@ namespace ScottPlot.Plottable
         public double LabelPositionFraction = 1;
 
         /// <summary>
-        /// Angle (in degrees) at which the gauges start: 270° for North (default value), 0° for East, 90° for South, 180° for West, and so on.
+        /// Angle (degrees) at which the gauges start.
+        /// 270° for North (default value), 0° for East, 90° for South, 180° for West, etc.
         /// Expected values in the range [0°-360°], otherwise unexpected side-effects might happen.
         /// </summary>
-        public float StartingAngleGauges = 270;
+        public float StartingAngle = 270;
 
         /// <summary>
         /// The empty space between gauges as a fraction of the gauge width.
         /// </summary>
-        public double GaugeSpaceFraction = .5f;
+        public double SpaceFraction = .5f;
 
         /// <summary>
         /// Size of the gague label text as a fraction of the gauge width.
@@ -206,14 +209,14 @@ namespace ScottPlot.Plottable
             if (Labels != null && Labels.Length != GaugeCount)
                 throw new InvalidOperationException($"If {nameof(Labels)} is not null, it must be the same length as the number of values");
 
-            if (GaugeSize < 0 || GaugeSize > 360)
-                throw new InvalidOperationException($"{nameof(GaugeSize)} must be [0-360]");
+            if (MaximumAngle < 0 || MaximumAngle > 360)
+                throw new InvalidOperationException($"{nameof(MaximumAngle)} must be [0-360]");
 
             if (LabelPositionFraction < 0 || LabelPositionFraction > 1)
                 throw new InvalidOperationException($"{nameof(LabelPositionFraction)} must be a value from 0 to 1");
 
-            if (GaugeSpaceFraction < 0 || GaugeSpaceFraction > 1)
-                throw new InvalidOperationException($"{nameof(GaugeSpaceFraction)} must be from 0 to 1");
+            if (SpaceFraction < 0 || SpaceFraction > 1)
+                throw new InvalidOperationException($"{nameof(SpaceFraction)} must be from 0 to 1");
         }
 
         public LegendItem[] GetLegendItems()
@@ -249,8 +252,8 @@ namespace ScottPlot.Plottable
 
             (double[] startAngles, double[] sweepAngles, double StartingAngleBackGauges) = GetGaugeAngles(
                 values: Levels,
-                angleStart: StartingAngleGauges,
-                angleRange: GaugeSize,
+                angleStart: StartingAngle,
+                angleRange: MaximumAngle,
                 clockwise: Clockwise,
                 mode: GaugeMode);
 
@@ -258,8 +261,8 @@ namespace ScottPlot.Plottable
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
-            float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)GaugeSpaceFraction + 1));
-            float radiusPixels = gaugeWidthPx * ((float)GaugeSpaceFraction + 1);
+            float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));
+            float radiusPixels = gaugeWidthPx * ((float)SpaceFraction + 1);
 
             int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
             backgroundAlpha = Math.Max(0, backgroundAlpha);
@@ -282,7 +285,7 @@ namespace ScottPlot.Plottable
 
                 RadialGauge gauge = new()
                 {
-                    MaximumSizeAngle = GaugeSize,
+                    MaximumSizeAngle = MaximumAngle,
                     StartAngle = startAngles[index],
                     SweepAngle = sweepAngles[index],
                     Color = Colors[index],
