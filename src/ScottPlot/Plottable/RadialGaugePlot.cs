@@ -16,8 +16,8 @@ namespace ScottPlot.Plottable
     public class RadialGaugePlot : IPlottable
     {
         /// <summary>
-        /// This array holds a copy of the original values used to calculate radial gauge positions.
-        /// Values are stored here so positions can be recalculated if configuration options change.
+        /// This array holds the original levels passed-in by the user. 
+        /// These levels are used to calculate radial gauge positions on every render.
         /// </summary>
         public double[] Levels { get; private set; }
 
@@ -129,25 +129,24 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"RadialGaugePlot with {GaugeCount} gauges.";
 
         /// <summary>
-        /// Replace gauge levels and labels with new ones.
+        /// Replace gauge levels with new ones.
         /// </summary>
-        public void Update(double[] values, Color[] colors = null)
+        public void Update(double[] levels, Color[] colors = null)
         {
-            if (values is null || values.Length == 0)
+            if (levels is null || levels.Length == 0)
                 throw new ArgumentException("values must not be null or empty");
 
-            bool numberOfGroupsChanged = (Levels is null) || (values.Length != Levels.Length);
+            bool numberOfGroupsChanged = (Levels is null) || (levels.Length != Levels.Length);
             if (numberOfGroupsChanged)
             {
-                if (colors is null || colors.Length != values.Length)
+                if (colors is null || colors.Length != levels.Length)
                     throw new ArgumentException("when changing the number of values a new colors array must be provided");
 
                 Colors = new Color[colors.Length];
                 Array.Copy(colors, 0, Colors, 0, colors.Length);
             }
 
-            Levels = new double[values.Length];
-            Array.Copy(values, 0, Levels, 0, values.Length);
+            Levels = levels;
         }
 
         /// <summary>
