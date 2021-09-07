@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// This class represents a single radial gauge.
     /// It has level and styling options and can be rendered onto an existing bitmap using any radius.
     /// </summary>
-    public class RadialGauge
+    internal class RadialGauge
     {
         /// <summary>
         /// Location of the base of the gauge (degrees)
