@@ -11,6 +11,7 @@
 * SignalPlotXY: Added support for `FillType` (#1232) _Thanks @ddrrrr_
 * Arrow: New plot type for rendering arrows on plots. Arrowhead functionality of scatter plots has been deprecated. (#1241, #1240)
 * Controls: Automatic rendering has been deprecated. Users must call Render() manually at least once. (#1165, #1117)
+* Radial Gauge Plots: `AddRadialGauge()` now adds a radial gauge plot (a new circular plot type where values are represented as arcs spanning a curve). See cookbook for examples and documentation. (#1242) _Thanks @arthurits_
 
 ## ScottPlot 4.1.17
 * Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
