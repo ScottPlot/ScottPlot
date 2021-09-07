@@ -22,8 +22,8 @@ namespace ScottPlot.Avalonia
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
-        public Plot Plot => Backend.Plot;
-        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
+        public readonly Plot Plot;
+        public readonly ScottPlot.Control.Configuration Configuration;
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -57,7 +57,6 @@ namespace ScottPlot.Avalonia
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
-        private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
@@ -77,7 +76,7 @@ namespace ScottPlot.Avalonia
                 [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
             };
 
-            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height);
+            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height, GetType().Name);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -85,11 +84,10 @@ namespace ScottPlot.Avalonia
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Plot = Backend.Plot;
+            Configuration = Backend.Configuration;
 
             RightClicked += DefaultRightClickEvent;
-            PlottableCountTimer.Tick += PlottableCountTimer_Tick;
-            PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
-            PlottableCountTimer.Start();
 
             InitializeLayout();
             Backend.StartProcessingEvents();
@@ -99,9 +97,12 @@ namespace ScottPlot.Avalonia
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
         public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
-        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        public void Render(bool lowQuality = false)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.Render(lowQuality);
+        }
         public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
         {

@@ -22,6 +22,7 @@ namespace ScottPlot.Drawing
         // Misc
         public static Palette OneHalfDark => new Palette(new Colorsets.OneHalfDark());
         public static Palette OneHalf => new Palette(new Colorsets.OneHalf());
+        public static Palette Microcharts => new Palette(new Colorsets.Microcharts());
 
         private readonly IColorset cset;
         public readonly string Name;

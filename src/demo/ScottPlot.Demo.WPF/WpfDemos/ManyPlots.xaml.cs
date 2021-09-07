@@ -24,6 +24,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             this.rowIndex = rowIndex;
             wpfPlot = new WpfPlot();
             wpfPlot.Reset(plt);
+            wpfPlot.Render();
         }
     }
 

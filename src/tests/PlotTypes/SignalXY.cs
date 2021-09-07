@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.PlotTypes
@@ -57,6 +59,25 @@ namespace ScottPlotTests.PlotTypes
             sig.MaxRenderIndex = 5_000;
             plt.SetAxisLimits(yMin: -200, yMax: 200);
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_SignalXY_FillAboveAndBelow()
+        {
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(100_000);
+            double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100_000);
+            var plt = new ScottPlot.Plot(500, 350);
+            var sig = plt.AddSignalXY(xs, ys, Color.Black);
+            sig.FillColor1 = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Blue);
+            sig.FillColor2 = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
+            foreach (ScottPlot.FillType fillType in Enum.GetValues(typeof(ScottPlot.FillType)))
+            {
+                string fillTypeName = fillType.ToString();
+                sig.FillType = fillType;
+                plt.Title($"Signal Plot FillType = {fillTypeName}");
+                TestTools.SaveFig(plt, fillTypeName);
+            }
         }
     }
 }

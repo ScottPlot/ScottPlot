@@ -23,6 +23,12 @@ namespace ScottPlotTests.Axis
             plt.YAxis.TickLabelStyle(rotation: 45);
             plt.YAxis2.TickLabelStyle(rotation: 45);
             TestTools.SaveFig(plt, "2");
+
+            plt.XAxis.TickLabelStyle(rotation: 90);
+            plt.XAxis2.TickLabelStyle(rotation: 90);
+            plt.YAxis.TickLabelStyle(rotation: 90);
+            plt.YAxis2.TickLabelStyle(rotation: 90);
+            TestTools.SaveFig(plt, "3");
         }
 
         [Test]

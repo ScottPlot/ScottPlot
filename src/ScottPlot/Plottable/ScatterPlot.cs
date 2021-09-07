@@ -44,8 +44,14 @@ namespace ScottPlot.Plottable
         public float ErrorCapSize = 3;
         public float MarkerSize = 5;
         public bool StepDisplay = false;
+
+        [Obsolete("Scatter plot arrowheads have been deprecated. Use the Arrow plot type instead.", true)]
         public bool IsArrow { get => ArrowheadWidth > 0 && ArrowheadLength > 0; }
+
+        [Obsolete("Scatter plot arrowheads have been deprecated. Use the Arrow plot type instead.", true)]
         public float ArrowheadWidth = 0;
+
+        [Obsolete("Scatter plot arrowheads have been deprecated. Use the Arrow plot type instead.", true)]
         public float ArrowheadLength = 0;
 
         // TODO: think about better/additional API ?
@@ -184,7 +190,7 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                var YsAndError = Ys.Zip(XError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
+                var YsAndError = Ys.Zip(YError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
                 limits[2] = YsAndError.Min(p => p.y - p.e);
                 limits[3] = YsAndError.Max(p => p.y + p.e);
             }
@@ -269,12 +275,6 @@ namespace ScottPlot.Plottable
                     }
                     else
                     {
-                        if (IsArrow)
-                        {
-                            penLine.CustomEndCap = new AdjustableArrowCap(ArrowheadWidth, ArrowheadLength, true);
-                            penLine.StartCap = LineCap.Flat;
-                        }
-
                         gfx.DrawLines(penLine, points);
                     }
                 }

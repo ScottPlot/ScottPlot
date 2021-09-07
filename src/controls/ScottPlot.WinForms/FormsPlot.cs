@@ -14,12 +14,12 @@ namespace ScottPlot
         /// This is the plot displayed by the user control.
         /// After modifying it you may need to call Render() to request the plot be redrawn on the screen.
         /// </summary>
-        public Plot Plot => Backend.Plot;
+        public readonly Plot Plot;
 
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public Control.Configuration Configuration => Backend.Configuration;
+        public readonly Control.Configuration Configuration;
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -50,7 +50,7 @@ namespace ScottPlot
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
-        private readonly Control.ControlBackEnd Backend = new(1, 1);
+        private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Forms.Cursor> Cursors;
         private readonly bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
@@ -59,10 +59,23 @@ namespace ScottPlot
 
         public FormsPlot()
         {
+            Backend = new Control.ControlBackEnd(1, 1, "FormsPlot");
+            Backend.Resize(Width, Height, useDelayedRendering: false);
+            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
+            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.RightClicked += new EventHandler(OnRightClicked);
+            Backend.AxesChanged += new EventHandler(OnAxesChanged);
+            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
+            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Plot = Backend.Plot;
+            Configuration = Backend.Configuration;
+
             if (IsDesignerMode)
             {
                 try
                 {
+                    Backend.WasManuallyRendered = true;
                     Plot.Title($"ScottPlot {Plot.Version}");
                     Plot.Render();
                 }
@@ -79,15 +92,6 @@ namespace ScottPlot
                     return;
                 }
             }
-
-            Backend.Resize(Width, Height, useDelayedRendering: false);
-            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
-            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            Backend.CursorChanged += new EventHandler(OnCursorChanged);
-            Backend.RightClicked += new EventHandler(OnRightClicked);
-            Backend.AxesChanged += new EventHandler(OnAxesChanged);
-            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
-            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
 
             Cursors = new Dictionary<Cursor, System.Windows.Forms.Cursor>()
             {
@@ -140,6 +144,7 @@ namespace ScottPlot
         public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             Application.DoEvents();
+            Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
 
@@ -149,7 +154,6 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
 
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableListChanged();
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }

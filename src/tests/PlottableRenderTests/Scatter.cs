@@ -69,6 +69,24 @@ namespace ScottPlotTests.PlottableRenderTests
         }
 
         [Test]
+        public void Test_Scatter_ChangeOnlyYErrorData()
+        {
+            var plt = new ScottPlot.Plot();
+
+            // set errorY but NOT errorX
+            double[] xs = { 1, 2, 3, 4 };
+            double[] ys = { 1, 4, 9, 16 };
+            double[] yErr = { .5, .5, 1, 1 };
+            var splt = new ScatterPlot(xs, ys, errorY: yErr) { };
+
+            plt.Add(splt);
+            var bmp = TestTools.GetLowQualityBitmap(plt);
+            Console.WriteLine(new MeanPixel(bmp));
+
+            Assert.That(bmp != null);
+        }
+
+        [Test]
         public void Test_Scatter_LineWidth()
         {
             var plt = new ScottPlot.Plot();
@@ -235,35 +253,6 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // change the plottable
             splt.StepDisplay = true;
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
-
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
-
-            Assert.That(after.IsDarkerThan(before));
-        }
-
-        [Test]
-        public void Test_Scatter_Arrow()
-        {
-            var plt = new ScottPlot.Plot();
-
-            // start with default settings
-            double[] xs = { 1, 2, 3, 4 };
-            double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlot(xs, ys) { };
-
-            plt.Add(splt);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
-
-            // change the plottable
-            splt.ArrowheadLength = 5;
-            splt.ArrowheadWidth = 5;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

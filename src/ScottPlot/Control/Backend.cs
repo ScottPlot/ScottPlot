@@ -45,7 +45,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
@@ -222,18 +221,31 @@ namespace ScottPlot.Control
         /// </summary>
         private bool MouseDownDragged => MouseDownTravelDistance > Configuration.IgnoreMouseDragDistance;
 
+
+        /// <summary>
+        /// Indicates whether Render() has been explicitly called by the user.
+        /// Renders requested by resize events do not count.
+        /// </summary>
+        public bool WasManuallyRendered;
+
+        /// <summary>
+        /// Variable name for the user control tied to this backend.
+        /// </summary>
+        public readonly string ControlName;
+
         /// <summary>
         /// Create a back-end for a user control
         /// </summary>
         /// <param name="width">initial bitmap size (pixels)</param>
         /// <param name="height">initial bitmap size (pixels)</param>
-        public ControlBackEnd(float width, float height)
+        /// <param name="name">variable name of the user control using this backend</param>
+        public ControlBackEnd(float width, float height, string name = "UnamedControl")
         {
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             EventsProcessor = new EventsProcessor(
                     renderAction: (lowQuality) => Render(lowQuality),
                     renderDelay: (int)Configuration.ScrollWheelZoomHighQualityDelay);
-
+            ControlName = name;
             Reset(width, height);
         }
 
@@ -257,6 +269,7 @@ namespace ScottPlot.Control
             Plot = newPlot;
             Settings = Plot.GetSettings(false);
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
+            WasManuallyRendered = false;
             Resize(width, height, useDelayedRendering: false);
         }
 
@@ -342,6 +355,15 @@ namespace ScottPlot.Control
             RenderCount += 1;
             PlottablesIdentifierAtLastRender = Settings.PlottablesIdentifier;
 
+            if (WasManuallyRendered == false)
+            {
+                string message = $"ScottPlot {Plot.Version} WARNING:\n" +
+                    $"{ControlName}.Render() must be called at least once\n" +
+                    $"after adding or removing plottable objects.";
+                Debug.WriteLine(message);
+                AddErrorMessage(Bmp, message);
+            }
+
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
                 AxesChanged(null, EventArgs.Empty);
@@ -359,6 +381,59 @@ namespace ScottPlot.Control
             }
 
             currentlyRendering = false;
+        }
+
+        /// <summary>
+        /// Add error text on top of the rendered plot
+        /// </summary>
+        private static void AddErrorMessage(System.Drawing.Bitmap bmp, string message)
+        {
+            System.Drawing.Color foreColor = System.Drawing.Color.Red;
+            System.Drawing.Color backColor = System.Drawing.Color.Yellow;
+            System.Drawing.Color shadowColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Black);
+            int padding = 10;
+            int shadowOffset = 7;
+
+            using var gfx = System.Drawing.Graphics.FromImage(bmp);
+            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            using System.Drawing.StringFormat sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
+            using System.Drawing.Font font = new(System.Drawing.FontFamily.GenericSansSerif, 16, System.Drawing.FontStyle.Bold);
+            System.Drawing.SizeF messageSize = gfx.MeasureString(message, font);
+            System.Drawing.RectangleF messageRect = new(
+                x: bmp.Width / 2 - messageSize.Width / 2 - padding,
+                y: bmp.Height / 2 - messageSize.Height / 2 - padding,
+                width: messageSize.Width + padding * 2,
+                height: messageSize.Height + padding * 2);
+            System.Drawing.RectangleF shadowRect = new(
+                x: messageRect.X + shadowOffset,
+                y: messageRect.Y + shadowOffset,
+                width: messageRect.Width,
+                height: messageRect.Height);
+
+            using System.Drawing.SolidBrush foreBrush = new(foreColor);
+            using System.Drawing.Pen forePen = new(foreColor, width: 5);
+            using System.Drawing.SolidBrush backBrush = new(backColor);
+            using System.Drawing.SolidBrush shadowBrush = new(shadowColor);
+
+            if (messageSize.Width > bmp.Width || messageSize.Height > bmp.Height)
+            {
+                System.Drawing.RectangleF plotRect = new(0, 0, bmp.Width, bmp.Height);
+                sf.Alignment = System.Drawing.StringAlignment.Near;
+                sf.LineAlignment = System.Drawing.StringAlignment.Near;
+                message = message.Replace("\n", " ");
+
+                using System.Drawing.Font fontSmall = new(System.Drawing.FontFamily.GenericSansSerif, 12, System.Drawing.FontStyle.Bold);
+                gfx.Clear(backColor);
+                gfx.DrawString(message, fontSmall, foreBrush, plotRect, sf);
+            }
+            else
+            {
+                gfx.FillRectangle(shadowBrush, shadowRect);
+                gfx.FillRectangle(backBrush, messageRect);
+                gfx.DrawRectangle(forePen, System.Drawing.Rectangle.Round(messageRect));
+                gfx.DrawString(message, font, foreBrush, messageRect, sf);
+            }
         }
 
         /// <summary>
@@ -398,6 +473,7 @@ namespace ScottPlot.Control
             }
         }
 
+        [Obsolete("Automatic render timer has been removed. Call Render() manually.", true)]
         /// <summary>
         /// Check if the number of plottibles has changed and if so request a render.
         /// This is typically called by a continuously running timer in the user control.
@@ -477,11 +553,12 @@ namespace ScottPlot.Control
         public void MouseMove(InputState input)
         {
             bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
-            if (IsZoomingRectangle && altWasLifted)
+            bool middleButtonLifted = IsZoomingRectangle && !input.MiddleWasJustPressed;
+            if (IsZoomingRectangle && (altWasLifted || middleButtonLifted))
                 Settings.ZoomRectangle.Clear();
 
             IsZoomingWithAlt = IsLeftDown && input.AltDown;
-            bool isMiddleClickDragZooming = IsMiddleDown;
+            bool isMiddleClickDragZooming = IsMiddleDown && !middleButtonLifted;
             bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
             IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom && MouseDownDragged;
 

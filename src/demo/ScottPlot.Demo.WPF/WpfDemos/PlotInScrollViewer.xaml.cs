@@ -29,6 +29,11 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
             wpfPlot2.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
             wpfPlot3.Plot.AddSignal(DataGen.RandomWalk(Rand, 50));
+
+            // perform an initial render for each control
+            wpfPlot1.Render();
+            wpfPlot2.Render();
+            wpfPlot3.Render();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

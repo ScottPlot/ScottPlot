@@ -35,6 +35,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             signalPlot = wpfPlot1.Plot.AddSignal(data);
             wpfPlot1.Plot.YLabel("Value");
             wpfPlot1.Plot.XLabel("Sample Number");
+            wpfPlot1.Render();
 
             // create a timer to modify the data
             _updateDataTimer = new DispatcherTimer();

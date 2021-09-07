@@ -36,8 +36,9 @@ namespace ScottPlot
         /// <summary>
         /// Display an arrow pointing to a spot in coordinate space
         /// </summary>
-        public ScatterPlot AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
+        public ArrowCoordinated AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
         {
+            /*
             double[] xs = { xBase, xTip };
             double[] ys = { yBase, yTip };
             var plottable = new ScatterPlot(xs, ys)
@@ -47,6 +48,12 @@ namespace ScottPlot
                 Color = color ?? GetNextColor(),
                 ArrowheadLength = 3,
                 ArrowheadWidth = 3
+            };
+            */
+            var plottable = new ArrowCoordinated(xBase, yBase, xTip, yTip)
+            {
+                LineWidth = lineWidth,
+                Color = color ?? GetNextColor(),
             };
             Add(plottable);
             return plottable;
