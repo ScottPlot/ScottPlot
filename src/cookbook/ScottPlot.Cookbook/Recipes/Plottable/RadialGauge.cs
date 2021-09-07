@@ -15,8 +15,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
+            plt.AddRadialGauge(values);
+        }
+    }
+
+    public class RadialGaugeColormap : IRecipe
+    {
+        public string Category => "Plottable: RadialGauge";
+        public string ID => "radialgauge_colors";
+        public string Title => "Gauge Colors";
+        public string Description =>
+            "Gauge colors can be customized by changing the default pallete. ";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 100, 80, 65, 45, 20 };
+            plt.Palette = ScottPlot.Drawing.Palette.Nord;
             plt.AddRadialGauge(values);
         }
     }
@@ -27,13 +42,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_negative";
         public string Title => "Negative Values";
         public string Description =>
-            "It works best with positive data, " +
-            "but it also plots negative values.";
+            "Radial gauge plots support positive and negative values.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
-            double[] values = { 100, 80, 65, 45, -20 };
+            double[] values = { 100, 80, -65, 45, -20 };
             plt.AddRadialGauge(values);
         }
     }
@@ -44,16 +58,35 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_mode";
         public string Title => "Sequential Gauge Mode";
         public string Description =>
-            "The gauges can be plotted in three different modes: " +
-            "stacked (default), sequential, and as a single gauge.";
+            "Sequential gauge mode indicates that the base of each gauge starts " +
+            "at the tip of the previous gauge.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
-            double[] values = { 100, 80, 65, 45, 20 };
+            double[] values = { 100, 80, 65, 45, 50 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeMode = ScottPlot.RadialGaugeMode.Sequential;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.GaugeMode = ScottPlot.RadialGaugeMode.Sequential;
+        }
+    }
+
+    public class RadialGaugeReverse : IRecipe
+    {
+        public string Category => "Plottable: RadialGauge";
+        public string ID => "radialgauge_reverse";
+        public string Title => "Reverse Order";
+        public string Description =>
+            "Gauges are displayed from the center outward by default but the order can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            double[] values = { 100, 80, 65, 45, 50 };
+
+            var gauges = plt.AddRadialGauge(values);
+            gauges.GaugeMode = ScottPlot.RadialGaugeMode.Sequential;
+            gauges.OrderInsideOut = false;
         }
     }
 
@@ -63,18 +96,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_single";
         public string Title => "Single Gauge Mode";
         public string Description =>
-            "The SingleGauge mode draws ones single gauge with all values stacked together. " +
-            "This is useful for showing a progress-type plot.";
+            "The SingleGauge mode draws all gauges stacked together as a single gauge. " +
+            "This is useful for showing a progress gauges composed of many individual smaller gauges.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeMode = ScottPlot.RadialGaugeMode.SingleGauge;
-            RadialGauge.GaugeSize = 180;
-            RadialGauge.StartingAngleGauges = 180;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.GaugeMode = ScottPlot.RadialGaugeMode.SingleGauge;
+            gauges.GaugeSize = 180;
+            gauges.StartingAngleGauges = 180;
         }
     }
 
@@ -84,15 +117,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_direction";
         public string Title => "Gauge Direction";
         public string Description =>
-            "The gauges can be plotted either clockwise (default) or anti-clockwise.";
+            "The direction of gauges can be customized. Clockwise is used by default.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.Clockwise = false;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.Clockwise = false;
         }
     }
 
@@ -102,16 +135,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_size";
         public string Title => "Gauge Size";
         public string Description =>
-            "The empty space between gauges can be adjusted as a percentage of the gauges' width. " +
-            "A value of 100 means that both widths are equal whereas a value of 50 (default) means that space is half the width of the gauges'.";
+            "The empty space between gauges can be adjusted as a fraction of their width. ";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
-
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeSpaceFraction = .2;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.GaugeSpaceFraction = .05;
         }
     }
 
@@ -121,19 +152,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_caps";
         public string Title => "Gauge Caps";
         public string Description =>
-            "Caps can be set for both the starting and ending points. " +
-            "Accepts values from System.Drawing.Drawing2D.LineCap enum. " +
-            "Default values are Round for the starting point and Triangle for the ending point.";
+            "Caps can be customized for the starting and end of the gauges. ";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.CircularBackground = false;
-            RadialGauge.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
-            RadialGauge.EndCap = System.Drawing.Drawing2D.LineCap.DiamondAnchor;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.CircularBackground = false;
+            gauges.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
+            gauges.EndCap = System.Drawing.Drawing2D.LineCap.DiamondAnchor;
         }
     }
 
@@ -143,16 +172,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_start";
         public string Title => "Gauge Starting Angle";
         public string Description =>
-            "Angle (in degrees) at which the gauges start: 270 for North (default value), 0 for East, 90 for South, 180 for West, and so on. " +
-            "Expected values in the range [0-360]";
+            "The starting angle for gauges can be customized. " +
+            "270 for North (default value), 0 for East, 90 for South, 180 for West, etc.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.StartingAngleGauges = 180;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.StartingAngleGauges = 180;
         }
     }
 
@@ -162,52 +191,35 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_range";
         public string Title => "Gauge Angular Range";
         public string Description =>
-            "The maximum angular interval that the gauges will consist of. " +
-            "It takes values in the range [0-360], default value is 360 (full circle).";
+            "By default gauges are full circles (360 degrees) but smaller gauges can be created " +
+            "by customizing the gauge size.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeSize = 180;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.GaugeSize = 180;
         }
     }
 
     public class RadialGaugeLabels : IRecipe
     {
         public string Category => "Plottable: RadialGauge";
-        public string ID => "radialgauge_labels";
-        public string Title => "Gauge Labels";
+        public string ID => "radialgauge_levels";
+        public string Title => "Show Levels";
         public string Description =>
-            "By default, labels are drawn over the gauges.";
+            "The value of each gauge is displayed as text by default but this behavior can be overridden. " +
+            "Note that this is different than the labels fiels which is what appears in the legened.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.ShowValueLabels = false;
-        }
-    }
-
-    public class RadialGaugeLegend : IRecipe
-    {
-        public string Category => "Plottable: RadialGauge";
-        public string ID => "radialgauge_legend";
-        public string Title => "Gauge Labels in Legend";
-        public string Description =>
-            "Radial gauge labels will appear in the legend if they are assigned.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
-            double[] values = { 100, 80, 65, 45, 20 };
-            var rg = plt.AddRadialGauge(values);
-            rg.Labels = new string[] { "alpha", "beta", "gamma", "delta", "epsilon" };
-            plt.Legend(true);
+            var gauges = plt.AddRadialGauge(values);
+            gauges.ShowLevels = false;
         }
     }
 
@@ -217,7 +229,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_labelpos";
         public string Title => "Gauge Label Position";
         public string Description =>
-            "Gauge labels are positioned at the tip of each gauge by default, " +
+            "Gauge level text is positioned at the tip of each gauge by default, " +
             "but this position can be adjusted by the user.";
 
         public void ExecuteRecipe(Plot plt)
@@ -225,26 +237,26 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.LabelPositionFraction = .5;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.LabelPositionFraction = 0;
         }
     }
 
     public class RadialGaugeLabelFontPct : IRecipe
     {
         public string Category => "Plottable: RadialGauge";
-        public string ID => "radialgauge_labelfontpct";
+        public string ID => "radialgauge_labelfontsize";
         public string Title => "Gauge Label Font Percentage";
         public string Description =>
-            "Size of the gague label text as a fraction of the gauge width.";
+            "Size of the gauge level text as a fraction of the gauge width.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.FontSizeFraction = .5;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.FontSizeFraction = .4;
         }
     }
 
@@ -254,15 +266,34 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_labelcolor";
         public string Title => "Gauge Label Color";
         public string Description =>
-            "Color of the labels.";
+            "Level text fonts may be customized.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.Font.Color = Color.Yellow;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.Font.Color = Color.Black;
+        }
+    }
+
+    public class RadialGaugeLegend : IRecipe
+    {
+        public string Category => "Plottable: RadialGauge";
+        public string ID => "radialgauge_legend";
+        public string Title => "Gauge Labels in Legend";
+        public string Description =>
+            "Radial gauge labels will appear in the legend if they are assigned. ";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            double[] values = { 100, 80, 65, 45, 20 };
+
+            var gauges = plt.AddRadialGauge(values);
+            gauges.Labels = new string[] { "alpha", "beta", "gamma", "delta", "epsilon" };
+            plt.Legend(true);
         }
     }
 
@@ -272,16 +303,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_backdim";
         public string Title => "Background Gauges Dim";
         public string Description =>
-            "Dimmed percentage used to draw the gauges' background. Values in the range [0-100], default value is 90 [percent]. " +
-            "A value of 100 renders invisible the background gauges.";
+            "By default the full range of each gauge is drawn as a semitransparent ring. " +
+            "The amount of transparency can be adjusted as desired.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.BackgroundTransparencyFraction = .5;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.BackgroundTransparencyFraction = .5;
         }
     }
 
@@ -291,16 +322,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_backnorm";
         public string Title => "Background Gauges Normalization";
         public string Description =>
-            "The gauges' background are drawn as full circles by default. If normalization is set to true, background gauges are limited to the values of StartingAngle and AngleRange.";
+            "Gauge backgrounds are drawn as full circles by default. " +
+            "This behavior can be disabled to draw partial backgrounds for non-circular gauges.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.Palette = ScottPlot.Drawing.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
-            var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.CircularBackground = false;
-            RadialGauge.GaugeSize = 180;
+            var gauges = plt.AddRadialGauge(values);
+            gauges.CircularBackground = false;
+            gauges.GaugeSize = 180;
+            gauges.StartingAngleGauges = 180;
         }
     }
 }

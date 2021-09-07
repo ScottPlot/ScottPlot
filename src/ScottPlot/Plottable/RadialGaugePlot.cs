@@ -68,7 +68,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Controls whether gauges will be dwan inside-out (true) or outside-in (false)
         /// </summary>
-        public bool OrderInsideFirst = true;
+        public bool OrderInsideOut = true;
 
         /// <summary>
         /// Defines where the gauge label is written on the gage as a fraction of its length.
@@ -100,7 +100,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Controls if value labels are shown inside the gauges.
         /// </summary>
-        public bool ShowValueLabels { get; set; } = true;
+        public bool ShowLevels { get; set; } = true;
+
+        /// <summary>
+        /// String formatter to use for converting gauge levels to text
+        /// </summary>
+        public string LevelTextFormat = "0.##";
 
         /// <summary>
         /// Style of the tip of the gauge
@@ -257,6 +262,10 @@ namespace ScottPlot.Plottable
             float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)GaugeSpaceFraction + 1));
             float radiusPixels = gaugeWidthPx * ((float)GaugeSpaceFraction + 1);
 
+            int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
+            backgroundAlpha = Math.Max(0, backgroundAlpha);
+            backgroundAlpha = Math.Min(255, backgroundAlpha);
+
             int index;
             int position;
             for (int i = 0; i < GaugeCount; i++)
@@ -269,15 +278,8 @@ namespace ScottPlot.Plottable
                 else
                 {
                     index = i;
-                    position = OrderInsideFirst ? i + 1 : (GaugeCount - i);
-
+                    position = OrderInsideOut ? i + 1 : (GaugeCount - i);
                 }
-                float radiusPx = position * radiusPixels;
-
-                int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
-                backgroundAlpha = Math.Max(0, backgroundAlpha);
-                backgroundAlpha = Math.Min(255, backgroundAlpha);
-                Color backgroundColor = Color.FromArgb(backgroundAlpha, Colors[index]);
 
                 RadialGauge gauge = new()
                 {
@@ -285,7 +287,7 @@ namespace ScottPlot.Plottable
                     StartAngle = startAngles[index],
                     SweepAngle = sweepAngles[index],
                     Color = Colors[index],
-                    BackgroundColor = backgroundColor,
+                    BackgroundColor = Color.FromArgb(backgroundAlpha, Colors[index]),
                     Width = gaugeWidthPx,
                     CircularBackground = CircularBackground,
                     Clockwise = Clockwise,
@@ -295,11 +297,12 @@ namespace ScottPlot.Plottable
                     Mode = GaugeMode,
                     Font = Font,
                     FontSizeFraction = FontSizeFraction,
-                    Label = Levels[index].ToString("0.##"),
+                    Label = Levels[index].ToString(LevelTextFormat),
                     LabelPositionFraction = LabelPositionFraction,
-                    ShowLabels = ShowValueLabels,
+                    ShowLabels = ShowLevels,
                 };
 
+                float radiusPx = position * radiusPixels;
                 gauge.Render(gfx, centerPixel, radiusPx);
             }
         }
