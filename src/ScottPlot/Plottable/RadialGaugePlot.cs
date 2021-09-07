@@ -66,6 +66,11 @@ namespace ScottPlot.Plottable
         public RadialGaugeMode GaugeMode = RadialGaugeMode.Stacked;
 
         /// <summary>
+        /// Controls whether gauges will be dwan inside-out (true) or outside-in (false)
+        /// </summary>
+        public bool OrderInsideFirst = true;
+
+        /// <summary>
         /// Defines where the gauge label is written on the gage as a fraction of its length.
         /// Low values place the label near the base and high values place the label at its tip.
         /// </summary>
@@ -252,15 +257,22 @@ namespace ScottPlot.Plottable
             float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)GaugeSpaceFraction + 1));
             float radiusPixels = gaugeWidthPx * ((float)GaugeSpaceFraction + 1);
 
+            int index;
+            int position;
             for (int i = 0; i < GaugeCount; i++)
             {
-                int index = i;
                 if (GaugeMode == RadialGaugeMode.SingleGauge)
+                {
                     index = GaugeCount - i - 1;
+                    position = i + 1;
+                }
+                else
+                {
+                    index = i;
+                    position = OrderInsideFirst ? i + 1 : (GaugeCount - i);
 
-                float radiusPx = (i + 1) * radiusPixels;
-                if (GaugeMode == RadialGaugeMode.SingleGauge)
-                    radiusPx = GaugeCount * radiusPixels;
+                }
+                float radiusPx = position * radiusPixels;
 
                 int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
                 backgroundAlpha = Math.Max(0, backgroundAlpha);
