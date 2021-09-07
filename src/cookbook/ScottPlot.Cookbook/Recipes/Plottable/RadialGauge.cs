@@ -26,7 +26,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radialgauge_colors";
         public string Title => "Gauge Colors";
         public string Description =>
-            "Gauge colors can be customized by changing the default pallete. ";
+            "Gauge colors can be customized by changing the default palette. ";
 
         public void ExecuteRecipe(Plot plt)
         {
