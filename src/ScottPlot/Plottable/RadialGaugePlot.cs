@@ -12,57 +12,25 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// A radial gauge chart is a graphical method of displaying scalar data in the form of 
     /// a chart made of circular gauges so that each scalar is represented by each gauge.
-    /// 
-    /// Data is managed using a single array where each element is asigned to each gauge.
-    /// Internally this data is stored in a single array and is converted to angular paramters,
-    /// through ComputeAngularData(), which are more suitable for drawing purposes and stored in a 2D array.
     /// </summary>
     public class RadialGaugePlot : IPlottable
     {
         /// <summary>
-        /// Scalar data values (arbitrary units) used to create the angular values.
-        /// This array is copied from the input given during construction or Update().
+        /// This array holds a copy of the original values used to calculate radial gauge positions.
+        /// Values are stored here so positions can be recalculated if configuration options change.
         /// </summary>
-        public double[] DataRaw { get; private set; }
+        public double[] Levels { get; private set; }
 
         /// <summary>
         /// Number of gauges.
         /// </summary>
-        public int GaugeCount => DataRaw.Length;
+        public int GaugeCount => Levels.Length;
 
         /// <summary>
-        /// Angular data calculated from DataRaw according to RadialGaugeMode.
-        /// Columns represent initial and swept angles.
+        /// Maximum size (degrees) for the gauge.
+        /// 180 is a semicircle and 360 is a full circle.
         /// </summary>
-        private double[,] DataAngular;
-
-        /// <summary>
-        /// The maximum value (in arbitrary data units) used for scaling the gauges
-        /// </summary>
-        private double MaxScale;
-
-        /// <summary>
-        /// The minimum value (in arbitrary data units) used for scaling the gauges
-        /// </summary>
-        private double MinScale;
-
-        /// <summary>
-        /// The maximum angle (degrees) for the gauges.
-        /// Value must be 0-360.
-        /// </summary>
-        public double AngleRange
-        {
-            set
-            {
-                if (value < 0 || value > 360)
-                    throw new InvalidOperationException("Maximum angle must be [0-360]");
-                _AngleRange = value;
-                ComputeAngularData();
-            }
-            get => _AngleRange;
-
-        }
-        private double _AngleRange = 360;
+        public double GaugeSize = 360;
 
         /// <summary>
         /// Controls whether the backgrounds of the gauges are full circles or stop at the maximum angle.
@@ -70,112 +38,49 @@ namespace ScottPlot.Plottable
         public bool CircularBackground { get; set; } = true;
 
         /// <summary>
-        /// Labels for each gauge.
-        /// Array must contain same number of elements as the original data.
+        /// Labels that appear in the legend for each gauge.
+        /// May be null if gauges are not to appear in the legend.
         /// </summary>
         public string[] Labels;
 
         /// <summary>
-        /// Colors for each gauge (optionally dimmed at render time). 
-        /// Array must contain same number of elements as the original data.
+        /// Base colors for each gauge.
+        /// These colors are adjusted at rendering time.
         /// </summary>
-        public Color[] Colors; // TODO: make this private and accept it as an argument in the contstructor and Update?
+        public Color[] Colors;
 
         /// <summary>
-        /// Describes how intense the color of each gauge is (0 to 1).
-        /// Low values are white-washed, high values are intense colors.
+        /// Describes how transparent the unfilled background of each gauge is (0 to 1).
+        /// The larger the number the darker the background becomes.
         /// </summary>
-        public double ColorDimFraction
-        {
-            get => _ColorDimFraction;
-            set
-            {
-                if (value < 0 || value > 1)
-                    throw new InvalidOperationException("fraction must be 0 to 1");
-                _ColorDimFraction = value;
-            }
-        }
-        private double _ColorDimFraction = .9;
+        public double BackgroundTransparencyFraction = .15;
 
         /// <summary>
-        /// Determines whether the gauges are drawn clockwise (default value) or anti-clockwise (counter clockwise).
+        /// Indicates whether gauges fill clockwise as levels increase.
         /// </summary>
-        public RadialGaugeDirection GaugeDirection
-        {
-            get => _GaugeDirection;
-            set
-            {
-                _GaugeDirection = value;
-                ComputeAngularData();
-            }
-        }
-        private RadialGaugeDirection _GaugeDirection = RadialGaugeDirection.Clockwise;
+        public bool Clockwise = true;
 
         /// <summary>
         /// Determines whether the gauges are drawn stacked (dafault value), sequentially, or as a single gauge (ressembling a pie plot).
         /// </summary>
-        public RadialGaugeMode GaugeMode
-        {
-            get => _GaugeMode;
-            set
-            {
-                _GaugeMode = value;
-                ComputeMaxMin();
-                ComputeAngularData();
-            }
-        }
-        private RadialGaugeMode _GaugeMode = RadialGaugeMode.Stacked;
+        public RadialGaugeMode GaugeMode = RadialGaugeMode.Stacked;
 
         /// <summary>
         /// Defines where the gauge label is written on the gage as a fraction of its length.
         /// Low values place the label near the base and high values place the label at its tip.
         /// </summary>
-        public double GaugeLabelPosition
-        {
-            get => _GaugeLabelPosition;
-            set
-            {
-                if (value < 0 || value > 1)
-                    throw new InvalidOperationException("position must be a value from 0 to 1");
-                _GaugeLabelPosition = value;
-            }
-        }
-        private double _GaugeLabelPosition = 1;
+        public double GaugeLabelPosition = 1;
 
         /// <summary>
         /// Angle (in degrees) at which the gauges start: 270° for North (default value), 0° for East, 90° for South, 180° for West, and so on.
         /// Expected values in the range [0°-360°], otherwise unexpected side-effects might happen.
         /// </summary>
-        public float StartingAngleGauges
-        {
-            get => _StartingAngleGauges;
-            set
-            {
-                _StartingAngleGauges = (float)ReduceAngle(value);
-                ComputeAngularData();
-            }
-        }
-        private float _StartingAngleGauges = 270f;
-
-        /// <summary>
-        /// The initial angle (in degrees) where the background gauges begin. Default value is 270° the same as <see cref="StartingAngleGauges"/>.
-        /// </summary>
-        private float StartingAngleBackGauges = 270f;
+        public float StartingAngleGauges = 270;
 
         /// <summary>
         /// The empty space between gauges as a fraction of the gauge width.
         /// </summary>
-        public double GaugeSpaceFraction
-        {
-            get => _GaugeSpaceFraction;
-            set
-            {
-                if (value < 0 || value > 1)
-                    throw new InvalidOperationException("fraction must be from 0 to 1");
-                _GaugeSpaceFraction = value;
-            }
-        }
-        private double _GaugeSpaceFraction = .5f;
+        public double GaugeSpaceFraction = .5f;
 
         /// <summary>
         /// Size of the gague label text as a fraction of the gauge width.
@@ -183,17 +88,23 @@ namespace ScottPlot.Plottable
         public double FontSize = .75;
 
         /// <summary>
-        /// <see langword="Font"/> used for labeling values on the plot
+        /// Describes labels drawn on each gauge.
         /// </summary>
-        public Drawing.Font Font { get; set; } = new() { Bold = true, Color = Color.White };
+        public readonly Drawing.Font Font = new() { Bold = true, Color = Color.White };
 
         /// <summary>
         /// Controls if value labels are shown inside the gauges.
         /// </summary>
         public bool ShowValueLabels { get; set; } = true;
 
+        /// <summary>
+        /// Style of the tip of the gauge
+        /// </summary>
         public System.Drawing.Drawing2D.LineCap EndCap { get; set; } = System.Drawing.Drawing2D.LineCap.Triangle;
 
+        /// <summary>
+        /// Style of the base of the gauge
+        /// </summary>
         public System.Drawing.Drawing2D.LineCap StartCap { get; set; } = System.Drawing.Drawing2D.LineCap.Round;
 
         public bool IsVisible { get; set; } = true;
@@ -207,8 +118,7 @@ namespace ScottPlot.Plottable
         /// <param name="colors">Gauge background colors.</param>
         public RadialGaugePlot(double[] values, Color[] colors)
         {
-            Colors = colors;
-            Update(values);
+            Update(values, colors);
         }
 
         public override string ToString() => $"RadialGaugePlot with {GaugeCount} gauges.";
@@ -216,85 +126,102 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Replace gauge levels and labels with new ones.
         /// </summary>
-        public void Update(double[] values)
+        public void Update(double[] values, Color[] colors = null)
         {
-            DataRaw = new double[values.Length];
-            Array.Copy(values, 0, DataRaw, 0, values.Length);
+            if (values is null || values.Length == 0)
+                throw new ArgumentException("values must not be null or empty");
 
-            // Compute MaxScale and MinScale values and transform DataRaw into DataAngular
-            ComputeMaxMin();
-            ComputeAngularData();
+            bool numberOfGroupsChanged = (Levels is null) || (values.Length != Levels.Length);
+            if (numberOfGroupsChanged)
+            {
+                if (colors is null || colors.Length != values.Length)
+                    throw new ArgumentException("when changing the number of values a new colors array must be provided");
+
+                Colors = new Color[colors.Length];
+                Array.Copy(colors, 0, Colors, 0, colors.Length);
+            }
+
+            Levels = new double[values.Length];
+            Array.Copy(values, 0, Levels, 0, values.Length);
         }
 
         /// <summary>
-        /// Returns the original data in case it should be needed.
+        /// Calculates angular gauge positions from the raw data
         /// </summary>
-        /// <returns>Original data vector</returns>
-        public double[] GetData() => DataRaw;
-
-        /// <summary>
-        /// Returns the computed angular data in case it should be needed.
-        /// </summary>
-        /// <returns>Angular data vector</returns>
-        public double[,] GetAngularData() => DataAngular;
-
-        /// <summary>
-        /// Converts <see cref="DataRaw"/> into <see cref="DataAngular"/>.
-        /// Depends on <see cref="DataRaw"/>, <see cref="GaugeMode"/>, <see cref="GaugeDirection"/>, <see cref="StartingAngleGauges"/>, <see cref="AngleRange"/>, and <see cref="MaxScale"/>
-        /// </summary>
-        private void ComputeAngularData()
+        private static (double[] startAngles, double[] sweepAngles, double backStartAngle) ComputeAngularData(
+            double[] values,
+            double angleStart,
+            double angleRange,
+            bool clockwise,
+            RadialGaugeMode mode)
         {
-            // Check if there's data
-            if (DataRaw == null) return;
-            DataAngular = new double[DataRaw.Length, 2];
+            (double scaleMin, double scaleMax) = ComputeMaxMin(values, mode);
+            double scaleRange = scaleMax - scaleMin;
 
-            // Internal variables
-            float angleSum = StartingAngleGauges;
+            int gaugeCount = values.Length;
+            double[] startAngles = new double[gaugeCount];
+            double[] sweepAngles = new double[gaugeCount];
 
-            // Loop through DataRaw and compute DataAngular
-            for (int i = 0; i < DataRaw.Length; i++)
+            angleStart = ReduceAngle(angleStart);
+            double angleSum = angleStart;
+            for (int i = 0; i < gaugeCount; i++)
             {
-                float angleSwept = (float)(AngleRange * DataRaw[i] / (MaxScale - MinScale));
-                if (GaugeDirection == RadialGaugeDirection.AntiClockwise)
+                double angleSwept = angleRange * values[i] / scaleRange;
+                if (!clockwise)
                     angleSwept *= -1;
 
-                double initialAngle = GaugeMode == RadialGaugeMode.Stacked ? StartingAngleGauges : angleSum;
+                double initialAngle = (mode == RadialGaugeMode.Stacked) ? angleStart : angleSum;
                 angleSum += angleSwept;
 
-                DataAngular[i, 0] = initialAngle;
-                DataAngular[i, 1] = angleSwept;
+                startAngles[i] = initialAngle;
+                sweepAngles[i] = angleSwept;
             }
 
             // Compute the initial angle for the background gauges
-            StartingAngleBackGauges = StartingAngleGauges;
-            StartingAngleBackGauges += (GaugeDirection == RadialGaugeDirection.AntiClockwise ? -1 : 1) * (float)(AngleRange * MinScale / (MaxScale - MinScale));
+            double backOffset = angleRange * scaleMin / scaleRange;
+            if (!clockwise)
+                backOffset *= -1;
+
+            double backStartAngle = angleStart + backOffset;
+
+            return (startAngles, sweepAngles, backStartAngle);
         }
 
         /// <summary>
-        /// Sets the value of <see cref="MaxScale"/> and <see cref="MinScale"/> properties
+        /// Return the min/max values to use for the gauge with the given scale mode
         /// </summary>
-        private void ComputeMaxMin()
+        private static (double min, double max) ComputeMaxMin(double[] values, RadialGaugeMode mode)
         {
-            if (GaugeMode == RadialGaugeMode.Sequential || GaugeMode == RadialGaugeMode.SingleGauge)
+            if (mode == RadialGaugeMode.Sequential || mode == RadialGaugeMode.SingleGauge)
             {
-                MaxScale = DataRaw.Sum(x => Math.Abs(x));
-                MinScale = 0;
+                double max = values.Sum(x => Math.Abs(x));
+                double min = 0;
+                return (min, max);
             }
             else
             {
-                MaxScale = DataRaw.Max(x => Math.Abs(x));
-                var min = DataRaw.Min();
-                MinScale = min < 0 ? min : 0;
+                double max = values.Max(x => Math.Abs(x));
+                double min = Math.Min(0, values.Min());
+                return (min, max);
             }
         }
 
         public void ValidateData(bool deep = false)
         {
             if (Colors.Length != GaugeCount)
-                throw new InvalidOperationException("Colors must be an array with length equal to number of values");
+                throw new InvalidOperationException($"{nameof(Colors)} must be an array with length equal to number of values");
 
             if (Labels != null && Labels.Length != GaugeCount)
-                throw new InvalidOperationException("If Labels is not null, it must be the same length as the number of values");
+                throw new InvalidOperationException($"If {nameof(Labels)} is not null, it must be the same length as the number of values");
+
+            if (GaugeSize < 0 || GaugeSize > 360)
+                throw new InvalidOperationException($"{nameof(GaugeSize)} must be [0-360]");
+
+            if (GaugeLabelPosition < 0 || GaugeLabelPosition > 1)
+                throw new InvalidOperationException($"{nameof(GaugeLabelPosition)} must be a value from 0 to 1");
+
+            if (GaugeSpaceFraction < 0 || GaugeSpaceFraction > 1)
+                throw new InvalidOperationException($"{nameof(GaugeSpaceFraction)} must be from 0 to 1");
         }
 
         public LegendItem[] GetLegendItems()
@@ -331,7 +258,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="angle">Angle value</param>
         /// <returns>Angle whithin [0°-360°]</returns>
-        private double ReduceAngle(double angle)
+        private static double ReduceAngle(double angle)
         {
             angle %= 360;
 
@@ -353,28 +280,35 @@ namespace ScottPlot.Plottable
             // https://github.com/falahati/CircularProgressBar/blob/master/CircularProgressBar/CircularProgressBar.cs
             // https://github.com/aalitor/AltoControls/blob/on-development/AltoControls/Controls/Circular%20Progress%20Bar.cs
 
+            (double[] startAngles, double[] sweepAngles, double StartingAngleBackGauges) = ComputeAngularData(
+                values: Levels,
+                angleStart: StartingAngleGauges,
+                angleRange: GaugeSize,
+                clockwise: Clockwise,
+                mode: GaugeMode);
+
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
             using Pen pen = GDI.Pen(Color.Black);
-            using Pen penCircle = GDI.Pen(Color.Black);
+            using Pen backgroundPen = GDI.Pen(Color.Black);
             using Brush labelBrush = GDI.Brush(Font.Color);
 
             float lineWidth = pxPerUnit / (GaugeCount * ((float)GaugeSpaceFraction + 1));
             float radiusSpace = lineWidth * ((float)GaugeSpaceFraction + 1);
             float gaugeRadius = GaugeCount * radiusSpace;  // By default, the outer-most radius is computed
 
-            float maxBackAngle = CircularBackground ? 360 : (float)AngleRange;
-            if (GaugeDirection == RadialGaugeDirection.AntiClockwise)
+            float maxBackAngle = CircularBackground ? 360 : (float)GaugeSize;
+            if (!Clockwise)
                 maxBackAngle = -maxBackAngle;
 
             pen.Width = (float)lineWidth;
             pen.StartCap = StartCap;
             pen.EndCap = EndCap;
-            penCircle.Width = (float)lineWidth;
-            penCircle.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-            penCircle.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+            backgroundPen.Width = (float)lineWidth;
+            backgroundPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            backgroundPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
             using System.Drawing.Font fontGauge = new(Font.Name, lineWidth * (float)FontSize, FontStyle.Bold);
 
@@ -399,17 +333,20 @@ namespace ScottPlot.Plottable
 
                 // Set color values
                 pen.Color = Colors[index];
-                penCircle.Color = ChangeColorBrightness(Colors[index], (float)ColorDimFraction);
+                int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
+                backgroundAlpha = Math.Max(0, backgroundAlpha);
+                backgroundAlpha = Math.Min(255, backgroundAlpha);
+                backgroundPen.Color = Color.FromArgb(backgroundAlpha, Colors[index]);
 
                 // Draw gauge background
                 if (GaugeMode != RadialGaugeMode.SingleGauge)
                     gfx.DrawArc(
-                        penCircle,
+                        backgroundPen,
                         (origin.X - gaugeRadius),
                         (origin.Y - gaugeRadius),
                         (gaugeRadius * 2),
                         (gaugeRadius * 2),
-                        StartingAngleBackGauges,
+                        (float)StartingAngleBackGauges,
                         maxBackAngle);
 
                 // Draw gauge
@@ -419,8 +356,8 @@ namespace ScottPlot.Plottable
                     (origin.Y - gaugeRadius),
                     (gaugeRadius * 2),
                     (gaugeRadius * 2),
-                    (float)DataAngular[index, 0],
-                    (float)DataAngular[index, 1]);
+                    (float)startAngles[index],
+                    (float)sweepAngles[index]);
 
                 // Draw gauge labels
                 if (ShowValueLabels)
@@ -430,54 +367,16 @@ namespace ScottPlot.Plottable
                         labelBrush,
                         new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight),
                         gaugeRadius,
-                        (float)DataAngular[index, 0],
-                        (float)DataAngular[index, 1],
+                        (float)startAngles[index],
+                        (float)sweepAngles[index],
                         origin.X,
                         origin.Y,
-                        DataRaw[index].ToString("0.##"),    // Could be set as a user-choice paremeter?
+                        Levels[index].ToString("0.##"),    // Could be set as a user-choice paremeter?
                         GaugeLabelPosition);
                 }
 
             }
 
-        }
-
-        /// <summary>Creates color with corrected brightness.</summary>
-        /// <param name="color">Color to correct.</param>
-        /// <param name="correctionFactor">The brightness correction factor. Must be between -1 and 1. 
-        /// Negative values produce darker colors.</param>
-        /// <returns>Corrected <see cref="Color"/> structure.</returns>
-        /// <seealso href="http://gist.github.com/zihotki/09fc41d52981fb6f93a81ebf20b35cd5"/>
-        private Color ChangeColorBrightness(Color color, float correctionFactor)
-        {
-            // TODO: consider replacing this with a simple alpha modulation.
-
-            // TODO: ensure proper licensing/attribution for this method.
-            // https://stackoverflow.com/questions/801406/c-create-a-lighter-darker-color-based-on-a-system-color
-            // https://www.pvladov.com/2012/09/make-color-lighter-or-darker.html
-            // https://gist.github.com/zihotki/09fc41d52981fb6f93a81ebf20b35cd5
-
-            float red = (float)color.R;
-            float green = (float)color.G;
-            float blue = (float)color.B;
-
-            if (correctionFactor < 0)
-            {
-                correctionFactor = correctionFactor < -1 ? 0 : 1 + correctionFactor;
-                red *= correctionFactor;
-                green *= correctionFactor;
-                blue *= correctionFactor;
-            }
-            else
-            {
-                if (correctionFactor > 1) correctionFactor = 1;
-                red = (255 - red) * correctionFactor + red;
-                green = (255 - green) * correctionFactor + green;
-                blue = (255 - blue) * correctionFactor + blue;
-            }
-
-            // TODO: this may throw if <0 or >255
-            return Color.FromArgb(color.A, (int)red, (int)green, (int)blue);
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var RadialGauge = plt.AddRadialGauge(values);
             RadialGauge.GaugeMode = ScottPlot.RadialGaugeMode.SingleGauge;
-            RadialGauge.AngleRange = 180;
+            RadialGauge.GaugeSize = 180;
             RadialGauge.StartingAngleGauges = 180;
         }
     }
@@ -92,7 +92,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeDirection = ScottPlot.RadialGaugeDirection.AntiClockwise;
+            RadialGauge.Clockwise = false;
         }
     }
 
@@ -171,7 +171,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.AngleRange = 180;
+            RadialGauge.GaugeSize = 180;
         }
     }
 
@@ -281,7 +281,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.ColorDimFraction = .5;
+            RadialGauge.BackgroundTransparencyFraction = .5;
         }
     }
 
@@ -300,7 +300,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var RadialGauge = plt.AddRadialGauge(values);
             RadialGauge.CircularBackground = false;
-            RadialGauge.AngleRange = 180;
+            RadialGauge.GaugeSize = 180;
         }
     }
 }
