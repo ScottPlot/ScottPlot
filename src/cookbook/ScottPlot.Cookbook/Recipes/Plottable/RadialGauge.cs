@@ -226,7 +226,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.GaugeLabelPosition = .5;
+            RadialGauge.LabelPositionFraction = .5;
         }
     }
 
@@ -244,7 +244,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var RadialGauge = plt.AddRadialGauge(values);
-            RadialGauge.FontSize = .5;
+            RadialGauge.FontSizeFraction = .5;
         }
     }
 
