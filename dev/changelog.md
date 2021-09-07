@@ -4,6 +4,7 @@
 * Ticks: Improve placement when axis scale lock is enabled (#1229, #1197)
 * Plot: `SetViewLimits()` replaced by `SetOuterViewLimits()` and `SetInnerViewLimits()` (#1197) _Thanks @noob765_
 * Plot: `EqualScaleMode` (an enumeration accepted by `AxisScaleLock()`) now has `PreserveSmallest` and `PreserveLargest` members to indicate which axis to prioritize when adjusting zoom level. The new default is `PreserveSmallest` which prevents data from falling off the edge of the plot when resizing. (#1197) _Thanks @noob765_
+* Radial Gauge Plots: `AddRadialGauge()` now adds a radial gauge plot (a new circular plot type where values are represented as arcs spanning a curve). See cookbook for examples and documentation. (#1242) _Thanks @arthurits_
 
 ## ScottPlot 4.1.17
 * Improved `RadarPlot.Update()` default arguments (#1097) _Thanks @arthurits_
