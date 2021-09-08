@@ -8,6 +8,7 @@ namespace ScottPlot.Demo.WinForms
         public FormCookbook()
         {
             InitializeComponent();
+            formsPlot1.Configuration.WarnIfRenderNotCalledManually = false;
             LoadTreeWithDemosNew();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             treeView1.HideSelection = false;

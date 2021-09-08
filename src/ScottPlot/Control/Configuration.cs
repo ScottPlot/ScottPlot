@@ -131,5 +131,11 @@ namespace ScottPlot.Control
         /// A number slightly above zero allows middle-click to call AxisAuto() even if it was draged a few pixels by accident.
         /// </summary>
         public int IgnoreMouseDragDistance = 5;
+
+        /// <summary>
+        /// Now that the timer-based auto-render functionality has been removed users must manually call Render() at least once.
+        /// This option controls whether a warning message is shown if the user did not call Render() manually.
+        /// </summary>
+        public bool WarnIfRenderNotCalledManually = true;
     }
 }

@@ -22,18 +22,7 @@ namespace ScottPlot.Demo.WPF
         public CookbookControl()
         {
             InitializeComponent();
-        }
-
-        private BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
-        {
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png); // use PNG to support transparency
-            BitmapImage bmpImage = new BitmapImage();
-            bmpImage.BeginInit();
-            stream.Seek(0, System.IO.SeekOrigin.Begin);
-            bmpImage.StreamSource = stream;
-            bmpImage.EndInit();
-            return bmpImage;
+            wpfPlot1.Configuration.WarnIfRenderNotCalledManually = false;
         }
 
         public void LoadDemo(string id)

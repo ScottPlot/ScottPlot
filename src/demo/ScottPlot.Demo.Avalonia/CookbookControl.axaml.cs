@@ -12,8 +12,7 @@ namespace ScottPlot.Demo.Avalonia
         public CookbookControl()
         {
             this.InitializeComponent();
-
-            //this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1").Backend.Rendered += AvaPlot1_Rendered;
+            this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1").Configuration.WarnIfRenderNotCalledManually = false;
         }
 
         private void InitializeComponent()
