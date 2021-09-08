@@ -101,7 +101,11 @@ namespace ScottPlot.Avalonia
             Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality);
         }
-        public void RenderRequest(RenderType renderType) => Backend.RenderRequest(renderType);
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.RenderRequest(renderType);
+        }
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
         {

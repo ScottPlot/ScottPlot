@@ -153,7 +153,11 @@ namespace ScottPlot
         /// Request the control re-render the next time it is available.
         /// This method does not block the calling thread.
         /// </summary>
-        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => Backend.RenderRequest(renderType);
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
+        {
+            Backend.WasManuallyRendered = true;
+            Backend.RenderRequest(renderType);
+        }
 
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
