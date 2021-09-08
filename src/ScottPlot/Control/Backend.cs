@@ -473,11 +473,11 @@ namespace ScottPlot.Control
             }
         }
 
-        [Obsolete("Automatic render timer has been removed. Call Render() manually.", true)]
         /// <summary>
         /// Check if the number of plottibles has changed and if so request a render.
         /// This is typically called by a continuously running timer in the user control.
         /// </summary>
+        [Obsolete("Automatic render timer has been removed. Call Render() manually.", true)]
         public void RenderIfPlottableListChanged()
         {
             if (Configuration.RenderIfPlottableListChanges == false)
