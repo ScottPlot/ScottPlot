@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.19
+* Controls: Fixed bug where render warning message is not hidden if `RenderRequest()` is called (#1165) _Thanks @gigios_
+
 ## ScottPlot 4.1.18
 * Ticks: Improve placement when axis scale lock is enabled (#1229, #1197)
 * Plot: `SetViewLimits()` replaced by `SetOuterViewLimits()` and `SetInnerViewLimits()` (#1197) _Thanks @noob765_
