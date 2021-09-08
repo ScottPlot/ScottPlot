@@ -275,7 +275,7 @@ namespace ScottPlot.Plottable
                 if (GaugeMode == RadialGaugeMode.SingleGauge)
                 {
                     index = GaugeCount - i - 1;
-                    position = i + 1;
+                    position = GaugeCount;
                 }
                 else
                 {
