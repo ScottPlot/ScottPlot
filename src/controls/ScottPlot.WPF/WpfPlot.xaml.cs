@@ -21,7 +21,7 @@ namespace ScottPlot
         /// This is the plot displayed by the user control.
         /// After modifying it you may need to call Render() to request the plot be redrawn on the screen.
         /// </summary>
-        public readonly Plot Plot;
+        public Plot Plot => Backend.Plot;
 
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
@@ -77,7 +77,6 @@ namespace ScottPlot
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
-            Plot = Backend.Plot;
             Configuration = Backend.Configuration;
 
             if (DesignerProperties.GetIsInDesignMode(this))

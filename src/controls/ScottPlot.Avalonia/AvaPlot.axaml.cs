@@ -22,7 +22,7 @@ namespace ScottPlot.Avalonia
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl
     {
-        public readonly Plot Plot;
+        public Plot Plot => Backend.Plot;
         public readonly ScottPlot.Control.Configuration Configuration;
 
         /// <summary>
@@ -84,7 +84,6 @@ namespace ScottPlot.Avalonia
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
-            Plot = Backend.Plot;
             Configuration = Backend.Configuration;
 
             RightClicked += DefaultRightClickEvent;
