@@ -13,9 +13,9 @@ namespace WinFormsFrameworkApp
         {
             InitializeComponent();
 
-            double[] values = DataGen.RandomWalk(new Random(0), 100);
-            formsPlot1.Plot.AddSignal(values);
-            formsPlot1.Plot.SetOuterViewLimits(yMin: 0);
+            formsPlot1.Plot.AddLine(-1e5, -1e10, 1e5, 1e10);
+            formsPlot1.Plot.XAxis.TickLabelNotation(multiplier: true);
+            formsPlot1.Plot.YAxis.TickLabelNotation(multiplier: true);
             formsPlot1.Render();
         }
     }
