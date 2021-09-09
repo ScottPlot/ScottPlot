@@ -17,9 +17,9 @@
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
-    <Version>4.1.19</Version>
-    <AssemblyVersion>4.1.19.0</AssemblyVersion>
-    <FileVersion>4.1.19.0</FileVersion>
+    <Version>4.1.20</Version>
+    <AssemblyVersion>4.1.20.0</AssemblyVersion>
+    <FileVersion>4.1.20.0</FileVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
