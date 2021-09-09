@@ -49,5 +49,7 @@ The [**ScottPlot Cookbook**](https://swharden.com/scottplot/cookbook) demonstrat
 # Interactive ScottPlot Controls
 
 ScottPlot WinForms control: https://www.nuget.org/packages/ScottPlot.WinForms
+
 ScottPlot WPF control: https://www.nuget.org/packages/ScottPlot.WPF
+
 ScottPlot Avalonia control: https://www.nuget.org/packages/ScottPlot.Avalonia
