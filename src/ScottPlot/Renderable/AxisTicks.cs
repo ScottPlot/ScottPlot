@@ -58,23 +58,22 @@ namespace ScottPlot.Renderable
             if (!IsVisible)
                 return;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            {
-                if (MajorTickVisible)
-                    AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
 
-                if (TickLabelVisible)
-                    AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
+            if (MajorTickVisible)
+                AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
 
-                if (MinorTickVisible)
-                    AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor, Edge, PixelOffset);
+            if (TickLabelVisible)
+                AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
 
-                if (MajorGridVisible)
-                    AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
+            if (MinorTickVisible)
+                AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor, Edge, PixelOffset);
 
-                if (MinorGridVisible)
-                    AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
-            }
+            if (MajorGridVisible)
+                AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
+
+            if (MinorGridVisible)
+                AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
         }
     }
 }
