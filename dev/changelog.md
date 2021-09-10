@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.21
+* Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
+
 ## ScottPlot 4.1.20
 * Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @@DavidBergstromSWE_
 

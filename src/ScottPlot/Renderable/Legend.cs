@@ -56,6 +56,9 @@ namespace ScottPlot.Renderable
             if (LegendItems is null)
                 throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
 
+            if (LegendItems.Length == 0)
+                throw new InvalidOperationException("The legend is empty (there are no visible plot objects with a label)");
+
             // use a temporary bitmap and graphics (without scaling) to measure how large the final image should be
             using var tempBitmap = new Bitmap(1, 1);
             using var tempGfx = GDI.Graphics(tempBitmap, lowQuality, scale);
