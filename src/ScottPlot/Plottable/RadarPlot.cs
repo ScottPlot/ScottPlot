@@ -76,6 +76,11 @@ namespace ScottPlot.Plottable
         public bool ShowAxisValues { get; set; } = true;
 
         /// <summary>
+        /// If true, each category name will be written in text at every corner of the radar
+        /// </summary>
+        public bool ShowCategoryLabels { get; set; } = true;
+
+        /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
         /// </summary>
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
@@ -273,7 +278,7 @@ namespace ScottPlot.Plottable
                 NumberOfSpokes = Norm.GetLength(1),
                 AxisType = AxisType,
                 WebColor = WebColor,
-                ShowCategoryLabels = IndependentAxes,
+                ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,
                 Graphics = gfx
