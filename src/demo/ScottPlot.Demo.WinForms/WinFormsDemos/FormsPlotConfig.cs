@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Plot.AddScatter(dataXs, dataSin);
             formsPlot1.Plot.AddScatter(dataXs, dataCos);
 
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbPannable_CheckedChanged(object sender, EventArgs e)
@@ -62,7 +62,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void cbEqualAxes_CheckedChanged(object sender, EventArgs e)
         {
             formsPlot1.Plot.AxisScaleLock(cbEqualAxes.Checked);
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbDoubleClickBenchmark_CheckedChanged(object sender, EventArgs e)

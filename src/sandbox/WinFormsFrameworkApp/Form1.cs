@@ -16,7 +16,7 @@ namespace WinFormsFrameworkApp
             formsPlot1.Plot.AddLine(-1e5, -1e10, 1e5, 1e10);
             formsPlot1.Plot.XAxis.TickLabelNotation(multiplier: true);
             formsPlot1.Plot.YAxis.TickLabelNotation(multiplier: true);
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

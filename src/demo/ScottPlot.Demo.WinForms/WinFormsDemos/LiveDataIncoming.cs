@@ -65,7 +65,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             if (cbAutoAxis.Checked)
                 formsPlot1.Plot.AxisAuto();
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbAutoAxis_CheckedChanged(object sender, EventArgs e)

@@ -12,7 +12,7 @@ namespace ScottPlot
     {
         /// <summary>
         /// This is the plot displayed by the user control.
-        /// After modifying it you may need to call Render() to request the plot be redrawn on the screen.
+        /// After modifying it you may need to call Refresh() to request the plot be redrawn on the screen.
         /// </summary>
         public Plot Plot => Backend.Plot;
 
@@ -140,22 +140,30 @@ namespace ScottPlot
         /// </summary>
         /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
         /// <param name="skipIfCurrentlyRendering"></param>
-        public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
+        public void Refresh(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             Application.DoEvents();
             Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
 
+        [Obsolete("This method is deprecated. Call Refresh() instead.")]
+        public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
+            => Refresh(lowQuality, skipIfCurrentlyRendering);
+
         /// <summary>
-        /// Request the control re-render the next time it is available.
+        /// Request the control to refresh the next time it is available.
         /// This method does not block the calling thread.
         /// </summary>
-        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
+        public void RefreshRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
         {
             Backend.WasManuallyRendered = true;
             Backend.RenderRequest(renderType);
         }
+
+        [Obsolete("This method is deprecated. Call RefreshRequest() instead.")]
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) =>
+            RefreshRequest(renderType);
 
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
@@ -195,7 +203,7 @@ namespace ScottPlot
         public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
-        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
+        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new FormsPlotViewer(Plot).Show();
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {

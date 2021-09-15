@@ -70,7 +70,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void timerRender_Tick(object sender, EventArgs e)
         {
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void runCheckbox_CheckedChanged(object sender, EventArgs e)
