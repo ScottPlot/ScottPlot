@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             wpfPlot1.Plot.Style(figureBackground: System.Drawing.Color.Transparent);
             wpfPlot1.Plot.Style(dataBackground: System.Drawing.Color.Transparent);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

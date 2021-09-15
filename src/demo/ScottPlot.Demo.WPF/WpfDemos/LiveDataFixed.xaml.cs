@@ -37,7 +37,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.Plot.AddSignal(liveData);
             wpfPlot1.Plot.AxisAutoX(margin: 0);
             wpfPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
 
             // create a traditional timer to update the data
             _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
@@ -67,7 +67,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         void Render(object sender, EventArgs e)
         {
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

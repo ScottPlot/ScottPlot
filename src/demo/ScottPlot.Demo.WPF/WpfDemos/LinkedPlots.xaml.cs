@@ -29,8 +29,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2 };
 
             // perform an initial render
-            wpfPlot1.Render();
-            wpfPlot2.Render();
+            wpfPlot1.Refresh();
+            wpfPlot2.Refresh();
         }
 
         private void AxesChanged(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                 // disable events briefly to prevent an infinite loop
                 wp.Configuration.AxesChangedEventEnabled = false;
                 wp.Plot.SetAxisLimits(newAxisLimits);
-                wp.Render();
+                wp.Refresh();
                 wp.Configuration.AxesChangedEventEnabled = true;
             }
         }
