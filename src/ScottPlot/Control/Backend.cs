@@ -355,7 +355,7 @@ namespace ScottPlot.Control
             RenderCount += 1;
             PlottablesIdentifierAtLastRender = Settings.PlottablesIdentifier;
 
-            if (WasManuallyRendered == false && Configuration.WarnIfRenderNotCalledManually)
+            if (WasManuallyRendered == false && Settings.Plottables.Count > 0 && Configuration.WarnIfRenderNotCalledManually)
             {
                 string message = $"ScottPlot {Plot.Version} WARNING:\n" +
                     $"{ControlName}.Render() must be called at least once\n" +
