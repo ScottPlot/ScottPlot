@@ -48,7 +48,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Plot.Layout(left: 20, top: 50, bottom: 100, right: 20);
             //avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
 
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }

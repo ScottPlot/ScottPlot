@@ -96,16 +96,22 @@ namespace ScottPlot.Avalonia
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
         public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
-        public void Render(bool lowQuality = false)
+        public void Refresh(bool lowQuality = false)
         {
             Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality);
         }
-        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
+        public void RefreshRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
         {
             Backend.WasManuallyRendered = true;
             Backend.RenderRequest(renderType);
         }
+
+        [Obsolete("This method is deprecated. Call Refresh() instead.")]
+        public void Render(bool lowQuality = false) => Refresh(lowQuality);
+
+        [Obsolete("This method is deprecated. Call RefreshRequest() instead.")]
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
         {
@@ -242,7 +248,7 @@ namespace ScottPlot.Avalonia
         public void DefaultRightClickEvent(object sender, EventArgs e) => GetDefaultContextMenu().Open(this);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => throw new NotImplementedException();
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new HelpWindow().Show();
-        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
+        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog { InitialFileName = "ScottPlot.png" };
@@ -289,7 +295,7 @@ namespace ScottPlot.Avalonia
             if (e.Property.Name == "Bounds")
             {
                 Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
-                Render();
+                Refresh();
             }
         }
     }

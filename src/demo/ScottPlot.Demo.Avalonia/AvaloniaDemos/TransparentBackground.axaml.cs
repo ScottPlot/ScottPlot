@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1.Plot.Style(figureBackground: System.Drawing.Color.Transparent);
             avaPlot1.Plot.Style(dataBackground: System.Drawing.Color.Transparent);
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void InitializeComponent()

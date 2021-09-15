@@ -26,10 +26,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AvaPlots = new AvaPlot[] { avaPlot1, avaPlot2 };
 
             avaPlot1.Plot.AddScatter(dataXs, dataSin);
-            avaPlot1.Render();
+            avaPlot1.Refresh();
 
             avaPlot2.Plot.AddScatter(dataXs, dataCos);
-            avaPlot2.Render();
+            avaPlot2.Refresh();
         }
 
         private void InitializeComponent()
@@ -50,7 +50,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
                 // disable this briefly to avoid infinite loop
                 ap.Configuration.AxesChangedEventEnabled = false;
                 ap.Plot.SetAxisLimits(newAxisLimits);
-                ap.Render();
+                ap.Refresh();
                 ap.Configuration.AxesChangedEventEnabled = true;
             }
         }

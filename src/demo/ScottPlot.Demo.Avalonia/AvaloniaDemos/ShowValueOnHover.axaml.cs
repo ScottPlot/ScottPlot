@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             if (LastHighlightedIndex != pointIndex)
             {
                 LastHighlightedIndex = pointIndex;
-                avaPlot1.Render();
+                avaPlot1.Refresh();
             }
 
             // update the GUI to describe the highlighted point

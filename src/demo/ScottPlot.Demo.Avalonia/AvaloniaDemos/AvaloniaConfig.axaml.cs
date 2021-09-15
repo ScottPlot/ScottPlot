@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1.Plot.AddScatter(dataXs, dataSin);
             avaPlot1.Plot.AddScatter(dataXs, dataCos);
-            avaPlot1.Render();
+            avaPlot1.Refresh();
 
         }
 
@@ -43,10 +43,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         private void VerticalUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockVerticalAxis = false; }
         private void HorizontalLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockHorizontalAxis = true; }
         private void HorizontalUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockHorizontalAxis = false; }
-        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Plot.AxisScaleLock(true); avaPlot1.Render(); }
+        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Plot.AxisScaleLock(true); avaPlot1.Refresh(); }
         private void EqualAxisUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Plot.AxisScaleLock(false); }
-        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = true; avaPlot1.Render(); }
-        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = false; avaPlot1.Render(); }
+        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = true; avaPlot1.Refresh(); }
+        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = false; avaPlot1.Refresh(); }
 
         private void RightClickMenuEnable(object sender, RoutedEventArgs e)
         {

@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
                 //avaPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
 
-                avaPlot.Render();
+                avaPlot.Refresh();
             }
 
         }

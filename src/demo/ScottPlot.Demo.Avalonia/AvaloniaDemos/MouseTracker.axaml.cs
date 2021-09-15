@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
             Crosshair = avaPlot1.Plot.AddCrosshair(0, 0);
-            avaPlot1.Render();
+            avaPlot1.Refresh();
 
             avaPlot1.PointerMoved += OnMouseMove;
             avaPlot1.PointerLeave += OnMouseLeave;
@@ -50,7 +50,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             Crosshair.X = coordinateX;
             Crosshair.Y = coordinateY;
 
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void OnMouseEnter(object sender, PointerEventArgs e)
@@ -69,7 +69,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("YCoordinateLabel").Text = "--";
 
             Crosshair.IsVisible = false;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }

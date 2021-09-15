@@ -60,7 +60,7 @@ namespace ScottPlot.Demo.Avalonia
             imagePlot1.IsVisible = false;
             avaPlot1.IsVisible = true;
             recipe.ExecuteRecipe(avaPlot1.Plot);
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }
