@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.21
 * Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
 * Radar: Improved support for category labels. (#1261, #1262) _Thanks @Rayffer_
+* Controls: Now have a `Refresh()` method as an alias of `Render()` for manually redrawing the plot and updating the image on the screen. Using `Render()` in user controls is more similar to similar plotting libraries and less likely to be confused with `Plot.Render()` in documentation and warning messages. (#1264, #1270, #1263, #1245, #1165)
 
 ## ScottPlot 4.1.20
 * Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @@DavidBergstromSWE_
