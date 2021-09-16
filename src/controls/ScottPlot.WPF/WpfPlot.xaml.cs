@@ -149,7 +149,11 @@ namespace ScottPlot
             Backend.Render(lowQuality);
         }
 
-        [Obsolete("This method is deprecated. Call Refresh() instead.")]
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
+        /// <summary>
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
+        /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
         public void Render(bool lowQuality = false) => Refresh(lowQuality);
 
         /// <summary>
@@ -162,7 +166,11 @@ namespace ScottPlot
             Backend.RenderRequest(renderType);
         }
 
-        [Obsolete("This method is deprecated. Call RefreshRequest() instead.")]
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
+        /// <summary>
+        /// Request the control to refresh the next time it is available.
+        /// This method does not block the calling thread.
+        /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());

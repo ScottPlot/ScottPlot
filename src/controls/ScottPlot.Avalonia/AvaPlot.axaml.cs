@@ -107,10 +107,10 @@ namespace ScottPlot.Avalonia
             Backend.RenderRequest(renderType);
         }
 
-        [Obsolete("This method is deprecated. Call Refresh() instead.")]
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
         public void Render(bool lowQuality = false) => Refresh(lowQuality);
 
-        [Obsolete("This method is deprecated. Call RefreshRequest() instead.")]
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
         private Task SetImagePlot(Func<Ava.Media.Imaging.Bitmap> getBmp)
