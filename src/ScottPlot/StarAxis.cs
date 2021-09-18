@@ -134,22 +134,22 @@ namespace ScottPlot
                 }
             }
 
-            if (CategoryImages != null)
+            if (CategoryImages is not null)
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {
-                    double cosine = Math.Cos(sweepAngle * i - Math.PI / 2);
-                    double sine = Math.Sin(sweepAngle * i - Math.PI / 2);
+                    double cosinus = Math.Cos(sweepAngle * i - Math.PI / 2);
+                    double sinus = Math.Sin(sweepAngle * i - Math.PI / 2);
                     int imageWidth = CategoryImages[i].Width;
                     int imageHeight = CategoryImages[i].Height;
                     PointF imageDestination = new(
-                        (float)(1.45 * cosine * minScale + origin.X - imageWidth / 2 * cosine),
-                        (float)(1.45 * sine * minScale + origin.Y - imageHeight / 2 * sine));
+                        (float)(1.45 * cosinus * minScale + origin.X - imageWidth / 2 * cosinus),
+                        (float)(1.45 * sinus * minScale + origin.Y - imageHeight / 2 * sinus));
 
                     Graphics.DrawImage(CategoryImages[i], new RectangleF(imageDestination.X - CategoryImages[i].Width / 2, imageDestination.Y - CategoryImages[i].Height / 2, CategoryImages[i].Width, CategoryImages[i].Height));
                 }
             }
-            else if (CategoryLabels != null && ShowCategoryLabels)
+            else if (CategoryLabels is not null && ShowCategoryLabels)
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {
