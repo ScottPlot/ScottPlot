@@ -181,7 +181,10 @@ namespace ScottPlot.Plottable
             double angleSum = angleStart;
             for (int i = 0; i < gaugeCount; i++)
             {
-                double angleSwept = angleRange * values[i] / scaleRange;
+                double angleSwept = 0;
+                if (scaleRange > 0)
+                    angleSwept = angleRange * values[i] / scaleRange;
+
                 if (!clockwise)
                     angleSwept *= -1;
 
