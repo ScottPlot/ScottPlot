@@ -142,7 +142,7 @@ namespace ScottPlot
                     double sine = Math.Sin(sweepAngle * i - Math.PI / 2);
                     int imageWidth = CategoryImages[i].Width;
                     int imageHeight = CategoryImages[i].Height;
-                    PointF imageDestination = new (
+                    PointF imageDestination = new(
                         (float)(1.45 * cosine * minScale + origin.X - imageWidth / 2 * cosine),
                         (float)(1.45 * sine * minScale + origin.Y - imageHeight / 2 * sine));
 
