@@ -74,7 +74,7 @@ namespace ScottPlot
             {
                 try
                 {
-                    Backend.WasManuallyRendered = true;
+                    Configuration.WarnIfRenderNotCalledManually = false;
                     Plot.Title($"ScottPlot {Plot.Version}");
                     Plot.Render();
                 }

@@ -136,6 +136,6 @@ namespace ScottPlot.Control
         /// Now that the timer-based auto-render functionality has been removed users must manually call Render() at least once.
         /// This option controls whether a warning message is shown if the user did not call Render() manually.
         /// </summary>
-        public bool WarnIfRenderNotCalledManually = true;
+        public bool WarnIfRenderNotCalledManually { get; set; } = true;
     }
 }
