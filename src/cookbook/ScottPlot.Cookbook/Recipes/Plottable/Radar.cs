@@ -148,8 +148,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             double[,] values = {
-                { 5, 3, 10, 15 },
-                { 5, 2, 10, 10 },
+                { 5, 15, 3, 2 },
+                { 5, 10, 1, 4 },
             };
 
             var radar = plt.AddRadar(values);
