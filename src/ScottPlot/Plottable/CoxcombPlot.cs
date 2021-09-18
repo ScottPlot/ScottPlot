@@ -52,6 +52,13 @@ namespace ScottPlot.Plottable
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
         public string[] SliceLabels;
+
+        /// <summary>
+        /// Icons for each category.
+        /// Length must be equal to the number of columns (categories) in the original data. 
+        /// </summary>
+        public System.Drawing.Image[] CategoryImages { get; set; }
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -133,6 +140,7 @@ namespace ScottPlot.Plottable
                 AxisType = AxisType,
                 WebColor = WebColor,
                 ShowAxisValues = ShowAxisValues,
+                CategoryImages = CategoryImages,
                 Graphics = gfx,
                 ShowCategoryLabels = false,
                 NumberOfSpokes = Values.Length

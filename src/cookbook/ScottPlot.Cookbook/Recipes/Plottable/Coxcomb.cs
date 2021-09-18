@@ -21,4 +21,30 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
+    public class CoxcombWithIcons : IRecipe
+    {
+        public string Category => "Plottable: Coxcomb";
+        public string ID => "coxcomb_iconValue";
+        public string Title => "Coxcomb Chart with icons";
+        public string Description =>
+            "A Pie chart where the angle of slices is constant but the radii are not, icons are used for quick reference.";
+
+        public System.Drawing.Image[] CategoryImages = new[]
+{
+            System.Drawing.Image.FromFile("Images/bicycle.png"),
+            System.Drawing.Image.FromFile("Images/zeppelin.png"),
+            System.Drawing.Image.FromFile("Images/submarine.png"),
+            System.Drawing.Image.FromFile("Images/ufo.png"),
+            System.Drawing.Image.FromFile("Images/rocket.png")
+        };
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 11, 16, 7, 3, 14 };
+            var coxcomb = plt.AddCoxcomb(values);
+            coxcomb.CategoryImages = CategoryImages;
+
+            plt.Legend();
+        }
+    }
 }
