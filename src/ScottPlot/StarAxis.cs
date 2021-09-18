@@ -56,14 +56,6 @@ namespace ScottPlot
         public bool ShowCategoryLabels { get; set; } = true;
 
         /// <summary>
-        /// If true, category icons will be drawn on the plot (provided they exist)
-        /// </summary>
-        /// <remarks>
-        /// Icons take precedence over Labels when showing category information
-        /// </remarks>
-        public bool ShowCategoryImages { get; set; } = true;
-
-        /// <summary>
         /// Determines whether each spoke should be labeled, or just the first
         /// </summary>
         public bool LabelEachSpoke { get; set; } = false;
@@ -142,7 +134,7 @@ namespace ScottPlot
                 }
             }
 
-            if (CategoryImages != null && ShowCategoryImages)
+            if (CategoryImages != null)
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {

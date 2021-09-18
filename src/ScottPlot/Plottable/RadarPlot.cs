@@ -93,14 +93,6 @@ namespace ScottPlot.Plottable
         public bool ShowCategoryLabels { get; set; } = true;
 
         /// <summary>
-        /// If true, each category icon will be drawn at every corner of the radar.
-        /// </summary>
-        /// <remarks>
-        /// If set and <seealso cref="CategoryImages"/> is set, category labels will be ignored.
-        /// </remarks>
-        public bool ShowCategoryImages { get; set; } = true;
-
-        /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
         /// </summary>
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
@@ -299,7 +291,6 @@ namespace ScottPlot.Plottable
                 NumberOfSpokes = Norm.GetLength(1),
                 AxisType = AxisType,
                 WebColor = WebColor,
-                ShowCategoryImages = ShowCategoryImages,
                 ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,

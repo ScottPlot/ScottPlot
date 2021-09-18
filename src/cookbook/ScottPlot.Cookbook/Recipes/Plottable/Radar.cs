@@ -104,7 +104,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Radar";
         public string ID => "radar_labelValue";
         public string Title => "Labeled Values";
-        public string Description => "Icons can be displayed on the arms of the radar chart.";
+        public string Description => "Labels can be displayed on the arms of the radar chart.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -116,7 +116,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var radar = plt.AddRadar(values);
             radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
-            radar.ShowCategoryImages = true;
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
@@ -135,7 +134,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Radar";
         public string ID => "radar_iconValue";
         public string Title => "Categories with images";
-        public string Description => "Images can be displayed on the arms of the radar chart in place of labels if desired. " +
+        public string Description => "Images can be displayed on the arms of the radar chart. " +
             "When using images, labels will be ignored so setting them will have no effect.";
         public System.Drawing.Image[] CategoryImages = new[]
 {
