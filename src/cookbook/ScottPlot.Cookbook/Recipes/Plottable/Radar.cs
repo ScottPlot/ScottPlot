@@ -104,7 +104,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Radar";
         public string ID => "radar_labelValue";
         public string Title => "Labeled Values";
-        public string Description => "Labels can be displayed on the arms of the radar chart.";
+        public string Description => "Icons can be displayed on the arms of the radar chart.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -115,6 +115,46 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var radar = plt.AddRadar(values);
             radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+
+            // customize the plot
+            plt.Title("2010 Formula One World Championship");
+            plt.Legend();
+
+            /* Data represents the 2010 Formula One World Championship
+             * https://en.wikipedia.org/wiki/2010_Formula_One_World_Championship
+             * Note: Alonso did not finish (DNF) in the Malaysian GP, but was included 
+             * here because he completed >90% of the race distance.
+             */
+        }
+    }
+
+    public class RadarWithIcons : IRecipe
+    {
+        public string Category => "Plottable: Radar";
+        public string ID => "radar_iconValue";
+        public string Title => "Categories with images";
+        public string Description => "Images can be displayed on the arms of the radar chart in place of labels if desired. " +
+            "When using images, labels will be ignored so setting them will have no effect.";
+        public System.Drawing.Image[] CategoryImages = new[]
+{
+            System.Drawing.Image.FromFile("Images/wins.png"),
+            System.Drawing.Image.FromFile("Images/poles.png"),
+            System.Drawing.Image.FromFile("Images/podiums.png"),
+            System.Drawing.Image.FromFile("Images/pointsfinishes.png"),
+            System.Drawing.Image.FromFile("Images/didnotfinish.png"),
+            System.Drawing.Image.FromFile("Images/fastestLaps.png")
+        };
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] values = {
+                { 5, 3, 10, 15, 3, 2 },
+                { 5, 2, 10, 10, 1, 4 },
+            };
+
+            var radar = plt.AddRadar(values);
+            radar.CategoryImages = CategoryImages;
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
 
             // customize the plot
