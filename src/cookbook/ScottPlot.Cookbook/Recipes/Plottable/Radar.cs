@@ -142,9 +142,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             System.Drawing.Image.FromFile("Images/wins.png"),
             System.Drawing.Image.FromFile("Images/poles.png"),
             System.Drawing.Image.FromFile("Images/podiums.png"),
-            System.Drawing.Image.FromFile("Images/pointsfinishes.png"),
-            System.Drawing.Image.FromFile("Images/didnotfinish.png"),
-            System.Drawing.Image.FromFile("Images/fastestLaps.png")
+            System.Drawing.Image.FromFile("Images/points_finishes.png"),
+            System.Drawing.Image.FromFile("Images/did_not_finish.png"),
+            System.Drawing.Image.FromFile("Images/fastest_laps.png")
         };
 
         public void ExecuteRecipe(Plot plt)
