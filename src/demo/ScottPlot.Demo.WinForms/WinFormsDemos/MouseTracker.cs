@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             Crosshair.X = coordinateX;
             Crosshair.Y = coordinateY;
 
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void formsPlot1_MouseEnter(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             YCoordinateLabel.Text = $"--";
 
             Crosshair.IsVisible = false;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

@@ -83,7 +83,7 @@ namespace ScottPlot
             {
                 try
                 {
-                    Backend.WasManuallyRendered = true;
+                    Configuration.WarnIfRenderNotCalledManually = false;
                     Plot.Title($"ScottPlot {Plot.Version}");
                     Plot.Render();
                 }
@@ -143,21 +143,35 @@ namespace ScottPlot
         /// Re-render the plot and update the image displayed by this control.
         /// </summary>
         /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
-        public void Render(bool lowQuality = false)
+        public void Refresh(bool lowQuality = false)
         {
             Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality);
         }
 
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
         /// <summary>
-        /// Request the control re-render the next time it is available.
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
+        /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
+        public void Render(bool lowQuality = false) => Refresh(lowQuality);
+
+        /// <summary>
+        /// Request the control to refresh the next time it is available.
         /// This method does not block the calling thread.
         /// </summary>
-        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
+        public void RefreshRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed)
         {
             Backend.WasManuallyRendered = true;
             Backend.RenderRequest(renderType);
         }
+
+        // TODO: mark this obsolete in ScottPlot 5.0 (favor Refresh)
+        /// <summary>
+        /// Request the control to refresh the next time it is available.
+        /// This method does not block the calling thread.
+        /// </summary>
+        public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
@@ -239,7 +253,7 @@ namespace ScottPlot
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new WPF.HelpWindow().Show();
         private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new WpfPlotViewer(Plot).Show();
-        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
+        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog

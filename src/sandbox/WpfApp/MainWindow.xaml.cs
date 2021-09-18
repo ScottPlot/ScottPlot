@@ -14,7 +14,7 @@ namespace WpfApp
 
             WpfPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
             WpfPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51));
-            WpfPlot1.Render();
+            WpfPlot1.Refresh();
         }
     }
 }

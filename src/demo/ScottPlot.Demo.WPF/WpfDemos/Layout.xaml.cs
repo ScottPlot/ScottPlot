@@ -44,7 +44,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.Plot.AxisAuto();
             wpfPlot1.Plot.Layout(left: 20, top: 50, bottom: 100, right: 20);
 
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

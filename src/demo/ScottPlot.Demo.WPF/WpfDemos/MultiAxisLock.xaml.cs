@@ -70,7 +70,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             // adjust axis limits to fit the data once before locking them
             WpfPlot1.Plot.AxisAuto();
-            WpfPlot1.Render();
+            WpfPlot1.Refresh();
             CheckChanged(null, null);
         }
 

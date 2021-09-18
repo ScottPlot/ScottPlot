@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             formsPlot1.Plot.AddSignal(DataGen.Sin(51));
             formsPlot1.Plot.AddSignal(DataGen.Cos(51));
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void CustomRightClickEvent(object sender, EventArgs e)
@@ -39,14 +39,14 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] data = DataGen.Sin(51, phase: rand.NextDouble() * 1000);
             formsPlot1.Plot.AddSignal(data);
             formsPlot1.Plot.AxisAuto();
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void ClearPlot(object sender, EventArgs e)
         {
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.AxisAuto();
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

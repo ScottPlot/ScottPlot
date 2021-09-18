@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             wpfPlot1.Plot.AddSignal(DataGen.Cos(51));
             wpfPlot1.Plot.AxisAuto();
             wpfPlot1.Plot.SetOuterViewLimits(0, 50, -1, 1);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
 
         }
 

@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             if (LastHighlightedIndex != pointIndex)
             {
                 LastHighlightedIndex = pointIndex;
-                formsPlot1.Render();
+                formsPlot1.Refresh();
             }
 
             // update the GUI to describe the highlighted point

@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
             wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
             wpfPlot1.Plot.AddSignal(DataGen.Cos(51));
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         // TODO: use proper binding (perhaps with the configuration object itself?)
@@ -36,10 +36,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         private void VerticalUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockVerticalAxis = false; }
         private void HorizontalLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockHorizontalAxis = true; }
         private void HorizontalUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockHorizontalAxis = false; }
-        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Plot.AxisScaleLock(true); wpfPlot1.Render(); }
+        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Plot.AxisScaleLock(true); wpfPlot1.Refresh(); }
         private void EqualAxisUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Plot.AxisScaleLock(false); }
-        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = true; wpfPlot1.Render(); }
-        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = false; wpfPlot1.Render(); }
+        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = true; wpfPlot1.Refresh(); }
+        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = false; wpfPlot1.Refresh(); }
 
         private void RightClickMenuEnable(object sender, RoutedEventArgs e)
         {

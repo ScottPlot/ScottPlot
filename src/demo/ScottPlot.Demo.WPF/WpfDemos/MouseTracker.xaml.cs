@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
             wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
             Crosshair = wpfPlot1.Plot.AddCrosshair(0, 0);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -44,7 +44,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             Crosshair.X = coordinateX;
             Crosshair.Y = coordinateY;
 
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void wpfPlot1_MouseEnter(object sender, MouseEventArgs e)
@@ -62,7 +62,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             YCoordinateLabel.Content = "--";
 
             Crosshair.IsVisible = false;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

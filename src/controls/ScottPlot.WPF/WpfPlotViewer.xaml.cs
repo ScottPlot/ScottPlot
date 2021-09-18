@@ -26,7 +26,7 @@ namespace ScottPlot
             Title = windowTitle;
 
             wpfPlot1.Reset(plot);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

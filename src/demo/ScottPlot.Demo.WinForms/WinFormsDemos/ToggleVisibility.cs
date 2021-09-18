@@ -33,26 +33,26 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             vline1 = formsPlot1.Plot.AddVerticalLine(0);
             vline2 = formsPlot1.Plot.AddVerticalLine(50);
 
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbSin_CheckedChanged(object sender, EventArgs e)
         {
             sinPlot.IsVisible = cbSin.Checked;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbCos_CheckedChanged(object sender, EventArgs e)
         {
             cosPlot.IsVisible = cbCos.Checked;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void cbLines_CheckedChanged(object sender, EventArgs e)
         {
             vline1.IsVisible = cbLines.Checked;
             vline2.IsVisible = cbLines.Checked;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

@@ -355,12 +355,15 @@ namespace ScottPlot.Control
             RenderCount += 1;
             PlottablesIdentifierAtLastRender = Settings.PlottablesIdentifier;
 
-            if (WasManuallyRendered == false && Configuration.WarnIfRenderNotCalledManually)
+            if (WasManuallyRendered == false &&
+                Settings.Plottables.Count > 0 &&
+                Configuration.WarnIfRenderNotCalledManually &&
+                Debugger.IsAttached)
             {
                 string message = $"ScottPlot {Plot.Version} WARNING:\n" +
-                    $"{ControlName}.Render() must be called at least once\n" +
-                    $"after adding or removing plottable objects.";
-                Debug.WriteLine(message);
+                    $"{ControlName}.Refresh() must be called\n" +
+                    $"after modifying the plot or its data.";
+                Debug.WriteLine(message.Replace("\n", " "));
                 AddErrorMessage(Bmp, message);
             }
 

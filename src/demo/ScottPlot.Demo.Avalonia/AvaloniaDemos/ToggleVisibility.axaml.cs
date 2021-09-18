@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             vline1 = avaPlot1.Plot.AddVerticalLine(0);
             vline2 = avaPlot1.Plot.AddVerticalLine(50);
 
-            avaPlot1.Render();
+            avaPlot1.Refresh();
 
             this.Find<CheckBox>("sineCheckbox").Checked += SinShow;
             this.Find<CheckBox>("sineCheckbox").Unchecked += SinHide;
@@ -51,28 +51,28 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             if (avaPlot1 is null) return;
             sinPlot.IsVisible = false;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void SinShow(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
             sinPlot.IsVisible = true;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void CosShow(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
             cosPlot.IsVisible = true;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void CosHide(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
             cosPlot.IsVisible = false;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void LinesShow(object sender, RoutedEventArgs e)
@@ -80,7 +80,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             if (avaPlot1 is null) return;
             vline1.IsVisible = true;
             vline2.IsVisible = true;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void LinesHide(object sender, RoutedEventArgs e)
@@ -88,7 +88,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             if (avaPlot1 is null) return;
             vline1.IsVisible = false;
             vline2.IsVisible = false;
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }

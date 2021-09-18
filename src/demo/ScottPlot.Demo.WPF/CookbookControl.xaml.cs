@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.WPF
 
             wpfPlot1.Reset();
             recipe.ExecuteRecipe(wpfPlot1.Plot);
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }
