@@ -294,7 +294,8 @@ namespace ScottPlot.Plottable
                 ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,
-                Graphics = gfx
+                Graphics = gfx,
+                AxisChartType = AxisChart.Radar
             };
 
             axis.Render(dims, bmp, lowQuality);

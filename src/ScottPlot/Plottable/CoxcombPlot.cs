@@ -143,7 +143,8 @@ namespace ScottPlot.Plottable
                 CategoryImages = CategoryImages,
                 Graphics = gfx,
                 ShowCategoryLabels = false,
-                NumberOfSpokes = Values.Length
+                NumberOfSpokes = Values.Length,
+                AxisChartType = AxisChart.CoxComb
             };
 
             axis.Render(dims, bmp, lowQuality);
