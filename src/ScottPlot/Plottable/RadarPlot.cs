@@ -35,7 +35,19 @@ namespace ScottPlot.Plottable
         /// Labels for each category.
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
+        /// <remarks>
+        /// If showing icons, labels will be ignored.
+        /// </remarks>
         public string[] CategoryLabels;
+
+        /// <summary>
+        /// Icons for each category.
+        /// Length must be equal to the number of columns (categories) in the original data. 
+        /// </summary>
+        /// <remarks>
+        /// If showing icons, labels will be ignored.
+        /// </remarks>
+        public System.Drawing.Image[] CategoryImages;
 
         /// <summary>
         /// Labels for each group.
@@ -79,6 +91,14 @@ namespace ScottPlot.Plottable
         /// If true, each category name will be written in text at every corner of the radar
         /// </summary>
         public bool ShowCategoryLabels { get; set; } = true;
+
+        /// <summary>
+        /// If true, each category icon will be drawn at every corner of the radar.
+        /// </summary>
+        /// <remarks>
+        /// If set and <seealso cref="CategoryImages"/> is set, category labels will be ignored.
+        /// </remarks>
+        public bool ShowCategoryImages { get; set; } = true;
 
         /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
@@ -275,9 +295,11 @@ namespace ScottPlot.Plottable
                     }
                 },
                 CategoryLabels = CategoryLabels,
+                CategoryImages = CategoryImages,
                 NumberOfSpokes = Norm.GetLength(1),
                 AxisType = AxisType,
                 WebColor = WebColor,
+                ShowCategoryImages = ShowCategoryImages,
                 ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,

@@ -1,10 +1,7 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot
 {
@@ -33,6 +30,12 @@ namespace ScottPlot
         public string[] CategoryLabels;
 
         /// <summary>
+        /// Icons for each category.
+        /// Length must be equal to the number of columns (categories) in the original data.
+        /// </summary>
+        public Image[] CategoryImages;
+
+        /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
         /// </summary>
         public RadarAxis AxisType { get; set; }
@@ -53,6 +56,14 @@ namespace ScottPlot
         public bool ShowCategoryLabels { get; set; } = true;
 
         /// <summary>
+        /// If true, category icons will be drawn on the plot (provided they exist)
+        /// </summary>
+        /// <remarks>
+        /// Icons take precedence over Labels when showing category information
+        /// </remarks>
+        public bool ShowCategoryImages { get; set; } = true;
+
+        /// <summary>
         /// Determines whether each spoke should be labeled, or just the first
         /// </summary>
         public bool LabelEachSpoke { get; set; } = false;
@@ -63,6 +74,7 @@ namespace ScottPlot
         /// Font used for labeling values on the plot
         /// </summary>
         public Drawing.Font Font = new();
+
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
@@ -130,11 +142,23 @@ namespace ScottPlot
                 }
             }
 
-            if (CategoryLabels != null && ShowCategoryLabels)
+            if (CategoryImages != null && ShowCategoryImages)
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {
+                    double cosinus = Math.Cos(sweepAngle * i - Math.PI / 2);
+                    double sinus = Math.Sin(sweepAngle * i - Math.PI / 2);
+                    PointF iconDestination = new PointF(
+                        (float)(1.45 * cosinus * minScale + origin.X - 12 * cosinus),
+                        (float)(1.45 * sinus * minScale + origin.Y - 12 * sinus));
 
+                    Graphics.DrawImage(CategoryImages[i], new RectangleF(iconDestination.X - 12, iconDestination.Y - 12, 24, 24));
+                }
+            }
+            else if (CategoryLabels != null && ShowCategoryLabels)
+            {
+                for (int i = 0; i < NumberOfSpokes; i++)
+                {
                     PointF textDestination = new PointF(
                         (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
                         (float)(1.3 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
