@@ -116,6 +116,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var radar = plt.AddRadar(values);
             radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.ShowCategoryImages = true;
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
