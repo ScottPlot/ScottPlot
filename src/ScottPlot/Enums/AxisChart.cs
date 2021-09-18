@@ -1,4 +1,4 @@
-﻿namespace ScottPlot 
+﻿namespace ScottPlot
 {
     public enum AxisChart
     {
