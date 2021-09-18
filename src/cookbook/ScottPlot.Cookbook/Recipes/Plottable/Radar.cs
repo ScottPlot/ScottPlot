@@ -139,9 +139,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public System.Drawing.Image[] CategoryImages = new[]
 {
             System.Drawing.Image.FromFile("Images/wins.png"),
-            System.Drawing.Image.FromFile("Images/poles.png"),
-            System.Drawing.Image.FromFile("Images/podiums.png"),
-            System.Drawing.Image.FromFile("Images/points_finishes.png"),
+            System.Drawing.Image.FromFile("Images/points.png"),
             System.Drawing.Image.FromFile("Images/did_not_finish.png"),
             System.Drawing.Image.FromFile("Images/fastest_laps.png")
         };
