@@ -3,9 +3,10 @@
 ## ScottPlot 4.1.21
 * Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
 * Radar: Improved support for category labels. (#1261, #1262) _Thanks @Rayffer_
+* Radial Gaugue Plot: Fixed divide-by-zero bug affecting normalized gauges (#1272) _Thanks @arthurits_
 
 ## ScottPlot 4.1.20
-* Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @@DavidBergstromSWE_
+* Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @DavidBergstromSWE_
 
 ## ScottPlot 4.1.19
 * Controls: Fixed bug where render warning message is not hidden if `RenderRequest()` is called (#1165) _Thanks @gigios_
