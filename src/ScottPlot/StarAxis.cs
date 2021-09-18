@@ -41,6 +41,11 @@ namespace ScottPlot
         public RadarAxis AxisType { get; set; }
 
         /// <summary>
+        /// Indicates the type of axis chart to render
+        /// </summary>
+        public AxisChart AxisChartType { get; set; }
+
+        /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
         public Color WebColor { get; set; } = Color.Gray;
@@ -138,10 +143,12 @@ namespace ScottPlot
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {
-                    double cosinus = Math.Cos(sweepAngle * i - Math.PI / 2);
-                    double sinus = Math.Sin(sweepAngle * i - Math.PI / 2);
+                    double sweepOffset = AxisChartType == AxisChart.CoxComb ? sweepAngle / 2 : 0;
+                    double cosinus = Math.Cos(sweepAngle * i + sweepOffset - Math.PI / 2);
+                    double sinus = Math.Sin(sweepAngle * i + sweepOffset - Math.PI / 2);
                     int imageWidth = CategoryImages[i].Width;
                     int imageHeight = CategoryImages[i].Height;
+
                     PointF imageDestination = new(
                         (float)(1.45 * cosinus * minScale + origin.X - imageWidth / 2 * cosinus),
                         (float)(1.45 * sinus * minScale + origin.Y - imageHeight / 2 * sinus));
