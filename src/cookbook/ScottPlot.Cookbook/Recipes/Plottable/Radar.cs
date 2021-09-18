@@ -136,6 +136,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Title => "Categories with images";
         public string Description => "Images can be displayed on the arms of the radar chart. " +
             "When using images, labels will be ignored so setting them will have no effect.";
+
         public System.Drawing.Image[] CategoryImages = new[]
 {
             System.Drawing.Image.FromFile("Images/wins.png"),
@@ -147,8 +148,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             double[,] values = {
-                { 5, 3, 10, 15, 3, 2 },
-                { 5, 2, 10, 10, 1, 4 },
+                { 5, 3, 10, 15 },
+                { 5, 2, 10, 10 },
             };
 
             var radar = plt.AddRadar(values);
