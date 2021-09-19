@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.RightClicked += DeployCustomMenu;
 
             // perform an initial render
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void DeployCustomMenu(object sender, EventArgs e)

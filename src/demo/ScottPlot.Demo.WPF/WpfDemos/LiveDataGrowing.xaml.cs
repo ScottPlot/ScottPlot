@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             signalPlot = wpfPlot1.Plot.AddSignal(data);
             wpfPlot1.Plot.YLabel("Value");
             wpfPlot1.Plot.XLabel("Sample Number");
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
 
             // create a timer to modify the data
             _updateDataTimer = new DispatcherTimer();
@@ -82,7 +82,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         {
             if (AutoAxisCheckbox.IsChecked == true)
                 wpfPlot1.Plot.AxisAuto();
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)

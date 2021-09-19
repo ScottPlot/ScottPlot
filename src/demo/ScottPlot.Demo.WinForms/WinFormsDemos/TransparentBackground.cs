@@ -72,14 +72,14 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             }
 
             BackgroundImage = bmp;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
 
         private void SetBackground(Color bgcolor)
         {
             BackgroundImage = null;
             BackColor = bgcolor;
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

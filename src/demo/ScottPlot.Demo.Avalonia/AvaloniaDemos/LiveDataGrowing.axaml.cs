@@ -90,7 +90,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             if (AutoAxisCheckbox.IsChecked == true)
                 avaPlot1.Plot.AxisAuto();
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)

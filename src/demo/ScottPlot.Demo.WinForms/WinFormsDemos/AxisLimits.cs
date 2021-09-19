@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Plot.AddSignal(DataGen.Cos(51));
             formsPlot1.Plot.AxisAuto();
             formsPlot1.Plot.SetOuterViewLimits(0, 50, -1, 1);
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }

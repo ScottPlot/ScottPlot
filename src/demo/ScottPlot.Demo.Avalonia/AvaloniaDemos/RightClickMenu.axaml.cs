@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1.Plot.AddSignal(DataGen.Sin(51));
             avaPlot1.Plot.AddSignal(DataGen.Cos(51));
-            avaPlot1.Render();
+            avaPlot1.Refresh();
 
             List<ContextMenuItem> contextMenu = new List<ContextMenuItem>
             {
@@ -58,14 +58,14 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             Random rand = new Random();
             avaPlot1.Plot.AddSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
             avaPlot1.Plot.AxisAuto();
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
 
         private void ClearPlot()
         {
             avaPlot1.Plot.Clear();
             avaPlot1.Plot.AxisAuto();
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }

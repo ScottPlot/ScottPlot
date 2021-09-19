@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 // disable events briefly to avoid an infinite loop
                 fp.Configuration.AxesChangedEventEnabled = false;
                 fp.Plot.SetAxisLimits(newAxisLimits);
-                fp.Render();
+                fp.Refresh();
                 fp.Configuration.AxesChangedEventEnabled = true;
             }
         }

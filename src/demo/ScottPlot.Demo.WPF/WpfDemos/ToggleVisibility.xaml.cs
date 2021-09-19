@@ -35,35 +35,35 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             vline1 = wpfPlot1.Plot.AddVerticalLine(0);
             vline2 = wpfPlot1.Plot.AddVerticalLine(50);
 
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void SinHide(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
             sinPlot.IsVisible = false;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void SinShow(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
             sinPlot.IsVisible = true;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void CosShow(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
             cosPlot.IsVisible = true;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void CosHide(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
             cosPlot.IsVisible = false;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void LinesShow(object sender, RoutedEventArgs e)
@@ -71,7 +71,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (wpfPlot1 is null) return;
             vline1.IsVisible = true;
             vline2.IsVisible = true;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
 
         private void LinesHide(object sender, RoutedEventArgs e)
@@ -79,7 +79,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (wpfPlot1 is null) return;
             vline1.IsVisible = false;
             vline2.IsVisible = false;
-            wpfPlot1.Render();
+            wpfPlot1.Refresh();
         }
     }
 }

@@ -54,7 +54,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
     {
         private readonly ScottPlot.Renderable.Axis YAxis3;
         private readonly AvaPlot avaPlot1;
-        private bool initialized = false;
         private readonly MultiAxisLockViewModel viewModel;
 
         public MultiAxisLock()
@@ -108,10 +107,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Plot.AxisAuto();
             CheckChanged();
         }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            initialized = true;
         }
 
         private void CheckChanged()

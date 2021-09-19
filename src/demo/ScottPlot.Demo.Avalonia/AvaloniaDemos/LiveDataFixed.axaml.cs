@@ -68,7 +68,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         void Render(object sender, EventArgs e)
         {
-            avaPlot1.Render();
+            avaPlot1.Refresh();
         }
     }
 }

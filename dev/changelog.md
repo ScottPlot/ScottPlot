@@ -3,9 +3,12 @@
 ## ScottPlot 4.1.21
 * Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
 * Radar: Improved support for category labels. (#1261, #1262) _Thanks @Rayffer_
+* Controls: Now have a `Refresh()` method as an alias of `Render()` for manually redrawing the plot and updating the image on the screen. Using `Render()` in user controls is more similar to similar plotting libraries and less likely to be confused with `Plot.Render()` in documentation and warning messages. (#1264, #1270, #1263, #1245, #1165)
+* Controls: Decreased visibility of the render warning (introduced in ScottPlot 4.1.19) by allowing it only to appear when the debugger is attached (#1165, #1264)
+* Radial Gaugue Plot: Fixed divide-by-zero bug affecting normalized gauges (#1272) _Thanks @arthurits_
 
 ## ScottPlot 4.1.20
-* Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @@DavidBergstromSWE_
+* Ticks: Fixed bug where corner labels would not render when multiplier or offset notation is in use (#1252, #1253) _Thanks @DavidBergstromSWE_
 
 ## ScottPlot 4.1.19
 * Controls: Fixed bug where render warning message is not hidden if `RenderRequest()` is called (#1165) _Thanks @gigios_

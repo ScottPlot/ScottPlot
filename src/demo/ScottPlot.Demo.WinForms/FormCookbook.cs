@@ -59,7 +59,7 @@ namespace ScottPlot.Demo.WinForms
 
             formsPlot1.Reset();
             recipe.ExecuteRecipe(formsPlot1.Plot);
-            formsPlot1.Render();
+            formsPlot1.Refresh();
         }
     }
 }
