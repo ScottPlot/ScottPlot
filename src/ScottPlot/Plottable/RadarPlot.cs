@@ -239,7 +239,7 @@ namespace ScottPlot.Plottable
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(WebColor))
+            using (Pen pen = GDI.Pen(WebColor, 2))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             using (StringFormat sf2 = new StringFormat())
@@ -295,7 +295,7 @@ namespace ScottPlot.Plottable
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,
                 Graphics = gfx,
-                AxisChartType = AxisChart.Radar
+                ImagePlacement = ImagePlacement.Outside
             };
 
             axis.Render(dims, bmp, lowQuality);

@@ -43,7 +43,7 @@ namespace ScottPlot
         /// <summary>
         /// Indicates the type of axis chart to render
         /// </summary>
-        public AxisChart AxisChartType { get; set; }
+        public ImagePlacement ImagePlacement { get; set; }
 
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
@@ -143,7 +143,7 @@ namespace ScottPlot
             {
                 for (int i = 0; i < NumberOfSpokes; i++)
                 {
-                    double sweepOffset = AxisChartType == AxisChart.CoxComb ? sweepAngle / 2 : 0;
+                    double sweepOffset = ImagePlacement == ImagePlacement.Inside ? sweepAngle / 2 : 0;
                     double cosinus = Math.Cos(sweepAngle * i + sweepOffset - Math.PI / 2);
                     double sinus = Math.Sin(sweepAngle * i + sweepOffset - Math.PI / 2);
                     int imageWidth = CategoryImages[i].Width;
