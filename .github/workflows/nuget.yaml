@@ -1,37 +1,26 @@
-name: Publish NuGet Packages
+name: Publish on NuGet
 
 on:
   workflow_dispatch:
 
 jobs:
   publish:
-    strategy:
-      matrix:
-        include:
-          - projectDirectory: src/ScottPlot
-            packageName: ScottPlot
-          - projectDirectory: src/controls/ScottPlot.WinForms
-            projectFileName: ScottPlot.csproj
-            packageName: ScottPlot.WinForms
-          - projectDirectory: src/controls/ScottPlot.WPF
-            projectFileName: ScottPlot.WPF.NUGET.csproj
-            packageName: ScottPlot.WPF
-          - projectDirectory: src/controls/ScottPlot.Avalonia
-            projectFileName: ScottPlot.Avalonia.NUGET.csproj
-            packageName: ScottPlot.Avalonia
     runs-on: windows-latest
-    name: ${{ matrix.packageName }}
+    name: Build and Publish
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
       - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore
-        working-directory: ${{ matrix.projectDirectory }}
+        working-directory: src
         run: dotnet restore
       - name: 🐌 MSBuild
-        working-directory: ${{ matrix.projectDirectory }}
-        run: msbuild ${{ matrix.projectFileName }} -property:Configuration=Release -verbosity:minimal
+        working-directory: src
+        run: msbuild -property:Configuration=Release -verbosity:minimal
       - name: 🚀 Publish
-        working-directory: ${{ matrix.projectDirectory }}
-        run: nuget push bin/Release/*.nupkg
+        run: |
+          nuget push src/ScottPlot/bin/Release/*.nupkg
+          nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
+          nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg
+          nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
