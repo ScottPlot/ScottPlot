@@ -10,7 +10,7 @@ namespace ScottPlotTests.PlotTypes
 {
     class StarAxis
     {
-        [Test]
+        //[Test]
         public void Test_RecipeHashes_DoNotChange()
         {
             // only run hash tests on Windows
