@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -29,11 +29,11 @@ jobs:
 
   testLinux:
     runs-on: ubuntu-latest
-    name: Linux Tests
+    name: Test (Linux)
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -49,11 +49,11 @@ jobs:
 
   testWindows:
     runs-on: windows-latest
-    name: Windows Tests
+    name: Test (Windows)
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -69,11 +69,11 @@ jobs:
 
   testMacOS:
     runs-on: macos-latest
-    name: MacOS Tests
+    name: Test (MacOS)
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -89,13 +89,13 @@ jobs:
 
   rebuildWindows:
     runs-on: windows-latest
-    name: Full Rebuild
+    name: Build Solution
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
