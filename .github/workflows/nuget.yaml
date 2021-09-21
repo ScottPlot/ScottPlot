@@ -8,13 +8,16 @@ jobs:
     strategy:
       matrix:
         include:
-          - dir: src/ScottPlot
+          - projectDirectory: src/ScottPlot
             packageName: ScottPlot
-          - dir: src/controls/ScottPlot.WinForms/ScottPlot.csproj
+          - projectDirectory: src/controls/ScottPlot.WinForms
+            projectFileName: ScottPlot.csproj
             packageName: ScottPlot.WinForms
-          - dir: src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
+          - projectDirectory: src/controls/ScottPlot.WPF
+            projectFileName: ScottPlot.WPF.NUGET.csproj
             packageName: ScottPlot.WPF
-          - dir: src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
+          - projectDirectory: src/controls/ScottPlot.Avalonia
+            projectFileName: ScottPlot.Avalonia.NUGET.csproj
             packageName: ScottPlot.Avalonia
     runs-on: windows-latest
     name: ${{ matrix.packageName }}
@@ -24,14 +27,11 @@ jobs:
       - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore
-        working-directory: ${{ matrix.dir }}
-        run: dotnet restore
+        working-directory: ${{ matrix.projectDirectory }}
+        run: dotnet restore ${{ matrix.projectFileName }}
       - name: 🐌 MSBuild
-        working-directory: ${{ matrix.dir }}
-        run: msbuild -property:Configuration=Release -verbosity:minimal
-      - name: 🧪 Test
-        working-directory: ${{ matrix.dir }}
-        run: dotnet test --no-restore
+        working-directory: ${{ matrix.projectDirectory }}
+        run: msbuild ${{ matrix.projectFileName }} -property:Configuration=Release -verbosity:minimal
       - name: 🚀 Publish
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.projectDirectory }}
         run: nuget push bin/Release/*.nupkg
