@@ -1,4 +1,4 @@
-name: test
+name: Run Tests
 
 on:
   workflow_dispatch:
@@ -14,9 +14,15 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+          - os: macos-latest
+            osName: MacOS
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }}
+    name: ${{ matrix.osName }}
 
     steps:
       - name: 🛒 Checkout
