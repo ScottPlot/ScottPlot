@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.22
+* Palette: Added overloads for `GetColor()` and `GetColors()` to support transparency
+
 ## ScottPlot 4.1.21
 * Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
 * Radar: Improved support for category labels. (#1261, #1262) _Thanks @Rayffer_
