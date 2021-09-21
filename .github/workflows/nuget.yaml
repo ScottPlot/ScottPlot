@@ -28,7 +28,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore
         working-directory: ${{ matrix.projectDirectory }}
-        run: dotnet restore ${{ matrix.projectFileName }}
+        run: dotnet restore
       - name: 🐌 MSBuild
         working-directory: ${{ matrix.projectDirectory }}
         run: msbuild ${{ matrix.projectFileName }} -property:Configuration=Release -verbosity:minimal
