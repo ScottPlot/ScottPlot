@@ -25,17 +25,13 @@ jobs:
           dotnet-version: "5.0.x"
 
       - name: 🚚 NuGet Restore
-        working-directory: src/tests
+        working-directory: src
         run: dotnet restore
 
-      - name: 🛠️ Build ScottPlot
-        working-directory: src/ScottPlot
-        run: dotnet build --configuration Release --no-restore
-
-      - name: 🛠️ Build Tests
-        working-directory: src/tests
+      - name: 🛠️ Build Solution
+        working-directory: src
         run: dotnet build --configuration Release --no-restore
 
       - name: 🧪 Run Tests
-        working-directory: src/tests
+        working-directory: src
         run: dotnet test --no-restore
