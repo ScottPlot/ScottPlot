@@ -114,28 +114,13 @@ namespace ScottPlot.Plottable
                 Norm[i, 0] = Normalized[i];
             }
 
-            double max = Values.Max();
+            StarAxisTick[] Ticks = new double[] { 0.25, 0.5, 1 }
+                .Select(x => new StarAxisTick(x, Values.Max()))
+                .ToArray();
 
             StarAxis axis = new()
             {
-                Ticks = new StarAxisTick[]
-                {
-                    new StarAxisTick
-                    {
-                        Location = 0.25,
-                        Labels = new[] {max * 0.25}
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 0.5,
-                        Labels = new[] {max * 0.5}
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 1,
-                        Labels = new[] {max}
-                    }
-                },
+                Ticks = Ticks,
                 CategoryLabels = SliceLabels,
                 AxisType = AxisType,
                 WebColor = WebColor,
