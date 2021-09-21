@@ -52,6 +52,13 @@ namespace ScottPlot.Plottable
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
         public string[] SliceLabels;
+
+        /// <summary>
+        /// Icons for each category.
+        /// Length must be equal to the number of columns (categories) in the original data. 
+        /// </summary>
+        public System.Drawing.Image[] CategoryImages { get; set; }
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -107,35 +114,22 @@ namespace ScottPlot.Plottable
                 Norm[i, 0] = Normalized[i];
             }
 
-            double max = Values.Max();
+            StarAxisTick[] Ticks = new double[] { 0.25, 0.5, 1 }
+                .Select(x => new StarAxisTick(x, Values.Max()))
+                .ToArray();
 
             StarAxis axis = new()
             {
-                Ticks = new StarAxisTick[]
-                {
-                    new StarAxisTick
-                    {
-                        Location = 0.25,
-                        Labels = new[] {max * 0.25}
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 0.5,
-                        Labels = new[] {max * 0.5}
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 1,
-                        Labels = new[] {max}
-                    }
-                },
+                Ticks = Ticks,
                 CategoryLabels = SliceLabels,
                 AxisType = AxisType,
                 WebColor = WebColor,
                 ShowAxisValues = ShowAxisValues,
+                CategoryImages = CategoryImages,
                 Graphics = gfx,
                 ShowCategoryLabels = false,
-                NumberOfSpokes = Values.Length
+                NumberOfSpokes = Values.Length,
+                ImagePlacement = ImagePlacement.Inside
             };
 
             axis.Render(dims, bmp, lowQuality);

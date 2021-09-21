@@ -51,10 +51,15 @@ namespace ScottPlot.Drawing
             return Color.FromArgb(GetInt32(index));
         }
 
-        public Color[] GetColors(int count, int offset = 0)
+        public Color GetColor(int index, double alpha = 1)
         {
-            return Enumerable.Range(0, count)
-                .Select(x => Color.FromArgb(GetInt32(x + offset)))
+            return Color.FromArgb(alpha: (int)(alpha * 255), baseColor: GetColor(index));
+        }
+
+        public Color[] GetColors(int count, int offset = 0, double alpha = 1)
+        {
+            return Enumerable.Range(offset, count)
+                .Select(x => GetColor(x, alpha))
                 .ToArray();
         }
 

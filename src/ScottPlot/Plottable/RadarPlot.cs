@@ -35,7 +35,19 @@ namespace ScottPlot.Plottable
         /// Labels for each category.
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
+        /// <remarks>
+        /// If showing icons, labels will be ignored.
+        /// </remarks>
         public string[] CategoryLabels;
+
+        /// <summary>
+        /// Icons for each category.
+        /// Length must be equal to the number of columns (categories) in the original data. 
+        /// </summary>
+        /// <remarks>
+        /// If showing icons, labels will be ignored.
+        /// </remarks>
+        public System.Drawing.Image[] CategoryImages;
 
         /// <summary>
         /// Labels for each group.
@@ -252,36 +264,29 @@ namespace ScottPlot.Plottable
             }
         }
 
+        private StarAxisTick GetTick(double location) =>
+            IndependentAxes
+                ? new StarAxisTick(location, NormMaxes.Select(x => x * location).ToArray())
+                : new StarAxisTick(location, NormMax);
+
         private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
+            double[] tickLocations = new[] { 0.25, 0.5, 1 };
+            StarAxisTick[] ticks = tickLocations.Select(x => GetTick(x)).ToArray();
+
             StarAxis axis = new()
             {
-                Ticks = new StarAxisTick[]
-                {
-                    new StarAxisTick
-                    {
-                        Location = 0.25,
-                        Labels = IndependentAxes ? NormMaxes.Select(x => x * 0.25).ToArray() : new[] { NormMax * 0.25 }
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 0.5,
-                        Labels = IndependentAxes ? NormMaxes.Select(x => x * 0.5).ToArray() : new[] { NormMax * 0.5 }
-                    },
-                    new StarAxisTick
-                    {
-                        Location = 1,
-                        Labels = IndependentAxes ? NormMaxes : new[] { NormMax }
-                    }
-                },
+                Ticks = ticks,
                 CategoryLabels = CategoryLabels,
+                CategoryImages = CategoryImages,
                 NumberOfSpokes = Norm.GetLength(1),
                 AxisType = AxisType,
                 WebColor = WebColor,
                 ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,
-                Graphics = gfx
+                Graphics = gfx,
+                ImagePlacement = ImagePlacement.Outside
             };
 
             axis.Render(dims, bmp, lowQuality);
