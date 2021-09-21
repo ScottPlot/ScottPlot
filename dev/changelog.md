@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.22
+* Coxcomb Plots: Added support for image labels (#1265, #1275) _Thanks @Rayffer_
 * Palette: Added overloads for `GetColor()` and `GetColors()` to support transparency
 
 ## ScottPlot 4.1.21
