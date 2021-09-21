@@ -100,7 +100,7 @@ jobs:
         with:
           dotnet-version: "5.0.x"
       - name: 🚚 Restore
-        working-directory: src/tests
+        working-directory: src
         run: dotnet restore
       - name: 🐌 MSBuild
         working-directory: src
