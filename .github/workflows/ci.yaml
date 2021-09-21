@@ -11,47 +11,97 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  linuxTest:
+  checkFormat:
     runs-on: ubuntu-latest
-    name: Linux Tests
-
+    name: Code Format
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-
       - name: ✨ Setup .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
+      - name: ✒️ Install dotnet-format
+        run: dotnet tool install -g dotnet-format
+      - name: 🧐 Check Code Format
+        working-directory: src
+        run: dotnet-format --check
 
+  testLinux:
+    runs-on: ubuntu-latest
+    name: Linux Tests
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
       - name: 🚚 Restore
         working-directory: src/tests
         run: dotnet restore
-
       - name: 🛠️ Build
         working-directory: src/tests
         run: dotnet build --configuration Release --no-restore
-
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --no-restore
 
-  autoFormat:
-    runs-on: ubuntu-latest
-    name: Code Format
-
+  testWindows:
+    runs-on: windows-latest
+    name: Windows Tests
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-
       - name: ✨ Setup .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release --no-restore
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --no-restore
 
-      - name: ✒️ Install dotnet-format
-        run: dotnet tool install -g dotnet-format
+  testMacOS:
+    runs-on: macos-latest
+    name: MacOS Tests
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release --no-restore
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --no-restore
 
-      - name: 🧐 Check Code Format
+  rebuildWindows:
+    runs-on: windows-latest
+    name: Full Rebuild
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🐌 MSBuild
         working-directory: src
-        run: dotnet-format --check
+        run: msbuild /p:Configuration=Release
