@@ -16,6 +16,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    name: Test on ${{ matrix.os }}
 
     steps:
       - name: 🛒 Checkout
@@ -28,7 +29,7 @@ jobs:
 
       - name: 🚚 NuGet Restore
         working-directory: src/tests
-        run: dotnet
+        run: dotnet restore
 
       - name: 🛠️ Build ScottPlot
         working-directory: src/ScottPlot
