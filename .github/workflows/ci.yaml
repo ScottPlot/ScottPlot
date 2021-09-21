@@ -13,7 +13,7 @@ on:
 jobs:
   rebuildWindows:
     runs-on: windows-latest
-    name: Build
+    name: Build Solution
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
 
   checkFormat:
     runs-on: ubuntu-latest
-    name: Code Format
+    name: Check Formatting
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
-      - name: ✒️ Install dotnet-format
+      - name: ✒️ Set up dotnet-format
         run: dotnet tool install -g dotnet-format
       - name: 🧐 Check Code Format
         working-directory: src
@@ -44,7 +44,7 @@ jobs:
 
   testLinux:
     runs-on: ubuntu-latest
-    name: Test (Linux)
+    name: Test on Linux
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
 
   testWindows:
     runs-on: windows-latest
-    name: Test (Windows)
+    name: Test on Windows
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -84,7 +84,7 @@ jobs:
 
   testMacOS:
     runs-on: macos-latest
-    name: Test (MacOS)
+    name: Test on MacOS
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
