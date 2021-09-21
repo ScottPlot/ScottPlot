@@ -1,0 +1,41 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Linux
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+
+      - name: ✨ Use .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+
+      - name: 🚚 NuGet Restore
+        working-directory: src/tests
+        run: dotnet restore
+
+      - name: 🛠️ Build ScottPlot
+        working-directory: src/ScottPlot
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🛠️ Build Tests
+        working-directory: src/tests
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🧪 Run Tests
+        working-directory: src/tests
+        run: dotnet test --no-restore

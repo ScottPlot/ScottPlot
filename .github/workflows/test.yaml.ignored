@@ -16,7 +16,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    name: Test on ${{ matrix.os }}
+    name: ${{ matrix.os }}
 
     steps:
       - name: 🛒 Checkout
