@@ -1,4 +1,4 @@
-name: NuGet
+name: Publish NuGet Packages
 
 on:
   workflow_dispatch:
@@ -10,14 +10,14 @@ jobs:
         include:
           - dir: src/ScottPlot
             packageName: ScottPlot
-          - dir: src/controls/ScottPlot.WinForms
+          - dir: src/controls/ScottPlot.WinForms/ScottPlot.csproj
             packageName: ScottPlot.WinForms
-          - dir: src/controls/ScottPlot.WPF
+          - dir: src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
             packageName: ScottPlot.WPF
-          - dir: src/controls/ScottPlot.Avalonia
+          - dir: src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
             packageName: ScottPlot.Avalonia
     runs-on: windows-latest
-    name: Publish ${{ matrix.packageName }}
+    name: ${{ matrix.packageName }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
