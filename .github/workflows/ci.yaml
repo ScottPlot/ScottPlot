@@ -93,7 +93,7 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: 🐢 Setup MSBuild
+      - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
@@ -104,4 +104,4 @@ jobs:
         run: dotnet restore
       - name: 🐌 MSBuild
         working-directory: src
-        run: msbuild /p:Configuration=Release
+        run: msbuild -property:Configuration=Release -verbosity:minimal
