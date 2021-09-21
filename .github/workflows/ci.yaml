@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    name: Build and Test
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+
+      - name: ✨ .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+
+      # - name: 🚚 Restore
+      #   working-directory: src/tests
+      #   run: dotnet restore
+
+      # - name: 🛠️ Build
+      #   working-directory: src/tests
+      #   run: dotnet build --configuration Release --no-restore
+
+      # - name: 🧪 Test
+      #   working-directory: src/tests
+      #   run: dotnet test --no-restore
+
+      - name: ✒️ Install dotnet-format
+        run: dotnet tool install -g dotnet-format
+
+      - name: 🧐 Run dotnet-format
+        run: dotnet-format >> $FORMAT_OUTPUT
+
+      - run: echo "${{ env.FORMAT_OUTPUT }}"
+
+  Format:
+    runs-on: ubuntu-latest
+    name: Check Code Format
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+
+      - name: ✨ .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --no-restore
