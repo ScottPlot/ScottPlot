@@ -1,7 +1,6 @@
 # ScottPlot
 
-[![](https://img.shields.io/azure-devops/build/swharden/ScottPlot/15/master?logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
-[![](https://img.shields.io/azure-devops/tests/swharden/ScottPlot/15/master?logo=azure%20pipelines)](https://dev.azure.com/swharden/ScottPlot/_build?definitionId=15)
+[![](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci.yaml/badge.svg)](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci.yaml)
 [![](https://img.shields.io/nuget/dt/scottplot?color=004880&label=downloads&logo=NuGet)](https://www.nuget.org/packages/ScottPlot/)
 [![](https://img.shields.io/nuget/vpre/scottplot?color=%23004880&label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![GitHub](https://img.shields.io/github/license/scottplot/scottplot?color=%231281c0)](LICENSE)
