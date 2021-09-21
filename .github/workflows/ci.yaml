@@ -19,7 +19,7 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
 
-      - name: ✨ .NET 5.0
+      - name: ✨ Setup .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -39,10 +39,8 @@ jobs:
       - name: ✒️ Install dotnet-format
         run: dotnet tool install -g dotnet-format
 
-      - name: 🧐 Run dotnet-format
-        run: dotnet-format >> $FORMAT_OUTPUT
-
-      - run: echo "${{ env.FORMAT_OUTPUT }}"
+      - name: 🧐 Check Code Format
+        run: dotnet-format --check
 
   Format:
     runs-on: ubuntu-latest
