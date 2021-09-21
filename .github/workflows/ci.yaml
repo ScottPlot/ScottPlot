@@ -44,6 +44,11 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
 
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+
       - name: ✒️ Install dotnet-format
         run: dotnet tool install -g dotnet-format
 
