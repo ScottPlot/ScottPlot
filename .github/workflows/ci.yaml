@@ -79,6 +79,8 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
+      - name: 🐢 Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
       - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
