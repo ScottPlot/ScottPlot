@@ -76,13 +76,14 @@ jobs:
   pack:
     runs-on: windows-latest
     name: Build Packages
-    #needs: setup
+    #needs: test
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
       - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
-      - uses: 🛠️ nuget/setup-nuget@v1
+      - name: 🛠️ Set up NuGet
+        uses: nuget/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: ✨ Set up .NET 5.0
