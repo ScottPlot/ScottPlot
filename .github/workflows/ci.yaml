@@ -74,7 +74,7 @@ jobs:
         run: dotnet test --no-restore
 
   pack:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: Build Packages
     steps:
       - name: 🛒 Checkout
