@@ -82,6 +82,9 @@ jobs:
         uses: actions/checkout@v2
       - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
+      - uses: 🛠️ nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
@@ -98,6 +101,7 @@ jobs:
       - name: 🚀 Publish ScottPlot
         # Only gets published on NuGet it if the version number was bumped
         run: |
-          dotnet nuget push ./src/ScottPlot/bin/Release/*.nupkg \
-            --api-key ${{ secrets.NUGET_API_KEY }} \
-            --source https://api.nuget.org/v3/index.json
+          nuget push /bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
+          nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
+          nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
+          nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
