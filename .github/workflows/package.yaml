@@ -28,10 +28,6 @@ jobs:
           dotnet-version: "6.0.x"
           include-prerelease: true
 
-      - name: 🧪 Test
-        working-directory: src/tests
-        run: dotnet test
-
       - name: 📦 Pack
         run: |
           dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
