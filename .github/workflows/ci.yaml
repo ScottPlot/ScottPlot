@@ -97,7 +97,7 @@ jobs:
       - name: 🚀 Publish Packages
         # Only gets published on NuGet it if the version number was bumped
         run: |
-          dotnet nuget push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate
-          dotnet nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate
-          dotnet nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg --skip-duplicate
-          dotnet nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg --skip-duplicate
+          dotnet nuget push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+          dotnet nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+          dotnet nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+          dotnet nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
