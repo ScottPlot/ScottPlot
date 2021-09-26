@@ -25,6 +25,14 @@ jobs:
       - name: 🐌 MSBuild
         working-directory: src
         run: msbuild -property:Configuration=Release -verbosity:minimal
+      - name: 📦 Package ScottPlot
+        run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
+      - name: 📦 Package ScottPlot.WinForms
+        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --output packages --configuration Release
+      - name: 📦 Package ScottPlot.WPF
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --output packages --configuration Release
+      - name: 📦 Package ScottPlot.Avalonia
+        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --output packages --configuration Release
 
   format:
     runs-on: ubuntu-latest
@@ -72,22 +80,3 @@ jobs:
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --no-restore
-
-  pack:
-    runs-on: windows-latest
-    name: Build Packages
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-      - name: ✨ Set up .NET 5.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "5.0.x"
-      - name: 📦 ScottPlot
-        run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
-      - name: 📦 ScottPlot.WinForms
-        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --output packages --configuration Release
-      - name: 📦 ScottPlot.WPF
-        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --output packages --configuration Release
-      - name: 📦 ScottPlot.Avalonia
-        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --output packages --configuration Release
