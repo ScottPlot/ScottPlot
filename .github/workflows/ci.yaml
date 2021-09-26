@@ -76,6 +76,7 @@ jobs:
   pack:
     runs-on: windows-latest
     name: Build Packages
+    #needs: setup
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -85,19 +86,18 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
-      - name: 📦 ScottPlot
+      - name: 📦 Pack ScottPlot
         run: dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
-      - name: 📦 ScottPlot.WinForms
+      - name: 📦 Pack ScottPlot.WinForms
         run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-      - name: 📦 ScottPlot.WPF
+      - name: 📦 Pack ScottPlot.WPF
         run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-      - name: 📦 ScottPlot.Avalonia
+      - name: 📦 Pack ScottPlot.Avalonia
         # Avalonia control requires package to be made at build time
         run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-      - name: 🚀 Publish Packages
+      - name: 🚀 Publish ScottPlot
         # Only gets published on NuGet it if the version number was bumped
         run: |
-          dotnet nuget push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-          dotnet nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-          dotnet nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-          dotnet nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+          dotnet nuget push ./src/ScottPlot/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json
