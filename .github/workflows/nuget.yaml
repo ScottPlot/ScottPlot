@@ -19,13 +19,18 @@ jobs:
       - name: 🚚 Restore
         working-directory: src
         run: dotnet restore
-      - name: 📦 Pack ScottPlot
-        run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
-      - name: 📦 Pack ScottPlot.WinForms
-        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --output packages --configuration Release
-      - name: 📦 Pack ScottPlot.WPF
-        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --output packages --configuration Release
-      - name: 📦 Pack ScottPlot.Avalonia
-        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --output packages --configuration Release
+      - name: 📦 ScottPlot
+        run: dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
+      - name: 📦 ScottPlot.WinForms
+        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+      - name: 📦 ScottPlot.WPF
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+      - name: 📦 ScottPlot.Avalonia
+        # Avalonia control requires package to be made at build time
+        run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
       - name: 🚀 Publish
-        run: nuget push packages/*.nupkg
+        run: |
+          nuget push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate
+          nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate
+          nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg --skip-duplicate
+          nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg --skip-duplicate
