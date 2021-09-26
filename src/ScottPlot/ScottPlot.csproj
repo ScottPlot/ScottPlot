@@ -7,7 +7,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
     <StartupObject />
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms, WPF, or Avalonia applications are available as separate NuGet packages.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -27,10 +26,19 @@
     <RepositoryUrl>https://github.com/swharden/ScottPlot</RepositoryUrl>
     <DocumentationFile>ScottPlot.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <DebugType>portable</DebugType>
+    <!--<SymbolPackageFormat>snupkg</SymbolPackageFormat> -->    <!-- https://github.com/NuGet/Home/issues/10791 -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
