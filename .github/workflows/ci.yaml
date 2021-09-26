@@ -72,3 +72,16 @@ jobs:
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --no-restore
+
+  pack:
+    runs-on: ubuntu-latest
+    name: Build Packages
+    steps:
+      - name: 📦 ScottPlot
+        run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
+      - name: 📦 ScottPlot.WinForms
+        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --output packages --configuration Release
+      - name: 📦 ScottPlot.WPF
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --output packages --configuration Release
+      - name: 📦 ScottPlot.Avalonia
+        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --output packages --configuration Release

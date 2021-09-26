@@ -19,15 +19,13 @@ jobs:
       - name: 🚚 Restore
         working-directory: src
         run: dotnet restore
-      - name: 🛠️ Build
-        run: |
-          dotnet build src/ScottPlot/ScottPlot.csproj --verbosity quiet --configuration Release
-          dotnet build src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --verbosity quiet --configuration Release
-          dotnet build src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --verbosity quiet --configuration Release
-          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --verbosity quiet --configuration Release
+      - name: 📦 Pack ScottPlot
+        run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
+      - name: 📦 Pack ScottPlot.WinForms
+        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --output packages --configuration Release
+      - name: 📦 Pack ScottPlot.WPF
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --output packages --configuration Release
+      - name: 📦 Pack ScottPlot.Avalonia
+        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --output packages --configuration Release
       - name: 🚀 Publish
-        run: |
-          nuget push src/ScottPlot/bin/Release/*.nupkg
-          nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
-          nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg
-          nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
+        run: nuget push packages/*.nupkg
