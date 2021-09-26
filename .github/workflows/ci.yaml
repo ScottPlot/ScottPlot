@@ -79,6 +79,8 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
+      - name: 🐢 Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
       - name: ✨ Set up .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
@@ -88,8 +90,8 @@ jobs:
       - name: 📦 ScottPlot.WinForms
         run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
       - name: 📦 ScottPlot.WPF
-        # Fails when packed explicitly. Succeeds when package is set to generate on build.
-        run: dotnet build src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-      - name: 📦 ScottPlot.Avalonia
-        # Fails when packed explicitly. Succeeds when package is set to generate on build.
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+      - name: 🛠️ Build Avalonia
         run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+      - name: 📦 ScottPlot.Avalonia
+        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
