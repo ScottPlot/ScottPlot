@@ -23,7 +23,7 @@ namespace ScottPlot.Avalonia
 
             plot.Resize(windowWidth, windowHeight);
             this.Find<AvaPlot>("avaPlot1").Reset(plot);
-            this.Find<AvaPlot>("avaPlot1").Refresh(plot);
+            this.Find<AvaPlot>("avaPlot1").Refresh();
         }
 
         private void InitializeComponent()
