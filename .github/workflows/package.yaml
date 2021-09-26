@@ -7,9 +7,30 @@ on:
       - created
 
 jobs:
-  deploy:
+  test:
     runs-on: windows-latest
-    name: Build Packages
+    name: Run Tests
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --configuration Release
+
+  deploy:
+    needs: test
+    runs-on: windows-latest
+    name: Package and Deploy
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -27,18 +48,6 @@ jobs:
         with:
           dotnet-version: "6.0.x"
           include-prerelease: true
-
-      - name: 🚚 Restore Tests
-        working-directory: src/tests
-        run: dotnet restore
-
-      - name: 🛠️ Build Tests
-        working-directory: src/tests
-        run: dotnet build --configuration Release
-
-      - name: 🧪 Run Tests
-        working-directory: src/tests
-        run: dotnet test
 
       - name: 📦 Pack
         run: |

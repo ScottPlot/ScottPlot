@@ -68,7 +68,7 @@ jobs:
         run: dotnet restore
       - name: 🛠️ Build
         working-directory: src/tests
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release
       - name: 🧪 Test
         working-directory: src/tests
-        run: dotnet test --no-restore
+        run: dotnet test --configuration Release
