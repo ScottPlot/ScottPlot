@@ -29,24 +29,25 @@ namespace WinFormsFrameworkApp
         /// </summary>
         private void InitializeComponent()
         {
-            this.formsPlot1 = new ScottPlot.FormsPlot();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // formsPlot1
+            // button1
             // 
-            this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
-            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.formsPlot1.Location = new System.Drawing.Point(0, 0);
-            this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(548, 303);
-            this.formsPlot1.TabIndex = 0;
+            this.button1.Location = new System.Drawing.Point(139, 78);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(548, 303);
-            this.Controls.Add(this.formsPlot1);
+            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "ScottPlot Sandbox - WinForms (.NET Framework)";
             this.ResumeLayout(false);
@@ -55,7 +56,7 @@ namespace WinFormsFrameworkApp
 
         #endregion
 
-        private ScottPlot.FormsPlot formsPlot1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

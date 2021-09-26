@@ -1,6 +1,4 @@
-﻿using ScottPlot;
-using ScottPlot.Plottable;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -12,11 +10,16 @@ namespace WinFormsFrameworkApp
         public Form1()
         {
             InitializeComponent();
+        }
 
-            formsPlot1.Plot.AddLine(-1e5, -1e10, 1e5, 1e10);
-            formsPlot1.Plot.XAxis.TickLabelNotation(multiplier: true);
-            formsPlot1.Plot.YAxis.TickLabelNotation(multiplier: true);
-            formsPlot1.Refresh();
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            var plt = new ScottPlot.Plot();
+            plt.AddSignal(ScottPlot.DataGen.RandomWalk(rand, 100));
+
+            var v = new ScottPlot.FormsPlotViewer(plt);
+            v.Show();
         }
     }
 }
