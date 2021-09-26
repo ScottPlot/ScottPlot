@@ -29,6 +29,7 @@
     <!--<SymbolPackageFormat>snupkg</SymbolPackageFormat> -->    <!-- https://github.com/NuGet/Home/issues/10791 -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>    <!-- https://github.com/dotnet/sourcelink/issues/91 -->
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
