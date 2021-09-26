@@ -91,5 +91,7 @@ jobs:
         run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
       - name: 📦 ScottPlot.WPF
         run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+      - name: 🛠️ Build Avalonia
+        run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
       - name: 📦 ScottPlot.Avalonia
         run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
