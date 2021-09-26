@@ -1,10 +1,12 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.23
+* NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)
+
 ## ScottPlot 4.1.22
 * Coxcomb Plots: Added support for image labels (#1265, #1275) _Thanks @Rayffer_
 * Palette: Added overloads for `GetColor()` and `GetColors()` to support transparency
 * Plot Viewer: fixed bug causing render warning to appear in WinForms and Avalonia plot viewers (#1265, #1238) _Thanks @bukkideme, @Nexus452, and @bclehmann_
-* NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)
 
 ## ScottPlot 4.1.21
 * Legend: Throw an exception if `RenderLegend()` is called on a plot with no labeled plottables (#1257)
