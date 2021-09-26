@@ -102,7 +102,7 @@ jobs:
       - name: 🚀 Publish ScottPlot
         # Only gets published on NuGet it if the version number was bumped
         run: |
-          nuget push /bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
-          nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
-          nuget push src/controls/ScottPlot.WPF/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
-          nuget push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg -SkipDuplicate --Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
