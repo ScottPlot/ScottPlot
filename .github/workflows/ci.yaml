@@ -94,3 +94,10 @@ jobs:
       - name: 📦 ScottPlot.Avalonia
         # Avalonia control requires package to be made at build time
         run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+      - name: 🚀 Publish Packages
+        # Only gets published on NuGet it if the version number was bumped
+        run: |
+          dotnet push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate
+          dotnet push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate
+          dotnet push src/controls/ScottPlot.WPF/bin/Release/*.nupkg --skip-duplicate
+          dotnet push src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg --skip-duplicate
