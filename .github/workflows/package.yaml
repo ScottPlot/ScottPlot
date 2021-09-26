@@ -22,11 +22,12 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
-      - name: ✨ Setup .NET 5.0
+      - name: ✨ Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "5.0.x"
-
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+          
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test
