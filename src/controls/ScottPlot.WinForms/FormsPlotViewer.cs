@@ -20,6 +20,7 @@ namespace ScottPlot
             Text = windowTitle;
 
             formsPlot1.Reset(plot);
+            formsPlot1.Refresh();
         }
     }
 }
