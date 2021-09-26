@@ -27,7 +27,7 @@ jobs:
         with:
           dotnet-version: "6.0.x"
           include-prerelease: true
-          
+
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test
@@ -39,6 +39,17 @@ jobs:
           dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
           dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
 
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          name: nupkg
+          path: |
+            src\ScottPlot\bin\Release\*.nupkg
+            src\controls\ScottPlot.WinForms\bin\Release\*.nupkg
+            src\controls\ScottPlot.WPF\bin\Release\*.nupkg
+            src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg
+
+      #  publishing only works if version number was bumped
       - name: 🚀 Publish
         run: |
           nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
