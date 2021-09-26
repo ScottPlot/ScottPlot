@@ -77,6 +77,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Packages
     steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Set up .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
       - name: 📦 ScottPlot
         run: dotnet pack src/ScottPlot/ScottPlot.csproj --output packages --configuration Release
       - name: 📦 ScottPlot.WinForms
