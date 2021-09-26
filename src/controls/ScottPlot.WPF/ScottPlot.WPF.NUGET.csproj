@@ -15,7 +15,6 @@
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive WPF</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <Version>4.1.21</Version>
     <AssemblyVersion>4.1.21.0</AssemblyVersion>
@@ -26,10 +25,20 @@
     <Authors>Scott Harden</Authors>
     <Company>Harden Technologies, LLC</Company>
     <LangVersion>latest</LangVersion>
+    <DebugType>portable</DebugType>
+    <!--<SymbolPackageFormat>snupkg</SymbolPackageFormat> -->    <!-- https://github.com/NuGet/Home/issues/10791 -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>    <!-- https://github.com/dotnet/sourcelink/issues/91 -->
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
