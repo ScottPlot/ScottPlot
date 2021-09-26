@@ -2,6 +2,9 @@ name: Publish on NuGet
 
 on:
   workflow_dispatch:
+  release:
+    types:
+      - created
 
 jobs:
   publish:
@@ -28,7 +31,7 @@ jobs:
       - name: 📦 ScottPlot.Avalonia
         # Avalonia control requires package to be made at build time
         run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-      - name: 🚀 Publish
+      - name: 🚀 Publish Packages
         run: |
           nuget push src/ScottPlot/bin/Release/*.nupkg --skip-duplicate
           nuget push src/controls/ScottPlot.WinForms/bin/Release/*.nupkg --skip-duplicate
