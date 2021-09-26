@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Set up .NET 5.0
+      - name: ✨ Setup .NET 5.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
@@ -72,37 +72,3 @@ jobs:
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --no-restore
-
-  pack:
-    runs-on: windows-latest
-    name: Build Packages
-    #needs: test
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-      - name: 🐢 Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.0.3
-      - name: 🛠️ Set up NuGet
-        uses: nuget/setup-nuget@v1
-        with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-      - name: ✨ Set up .NET 5.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "5.0.x"
-      - name: 📦 Pack ScottPlot
-        run: dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
-      - name: 📦 Pack ScottPlot.WinForms
-        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-      - name: 📦 Pack ScottPlot.WPF
-        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-      - name: 📦 Pack ScottPlot.Avalonia
-        # Avalonia control requires package to be made at build time
-        run: dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-      - name: 🚀 Publish ScottPlot
-        # Only gets published on NuGet it if the version number was bumped
-        run: |
-          nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
