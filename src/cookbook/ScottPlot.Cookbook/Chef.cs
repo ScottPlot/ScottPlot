@@ -81,5 +81,33 @@ namespace ScottPlot.Cookbook
                 Debug.WriteLine($"Saved: {filePath}");
             });
         }
+
+        /// <summary>
+        /// Read all .cs files in the source folder to identify IRecipe source code, isolate just the recipe 
+        /// component of each source file, and save the output as a text file using the recipe ID as its base filename.
+        /// </summary>
+        public void CreateCookbookSourceV2(string sourcePath, string outputPath)
+        {
+            outputPath = Path.GetFullPath(outputPath);
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
+
+            RecipeSource[] sources = SourceParsing.GetRecipeSources(sourcePath, Width, Height);
+            Console.WriteLine($"Creating source code for {sources.Length} recipes in: {outputPath}");
+
+            foreach(RecipeSource recipe in sources)
+            {
+                StringBuilder sb = new();
+                sb.AppendLine("/// ID: " + recipe.ID);
+                sb.AppendLine("/// TITLE: " + recipe.Title);
+                sb.AppendLine("/// CATEGORY: " + recipe.Category);
+                sb.AppendLine("/// DESCRIPTION: " + recipe.Description);
+                sb.Append(recipe.Code);
+
+                string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".cs");
+                File.WriteAllText(filePath, sb.ToString());
+                Debug.WriteLine($"Saved: {filePath}");
+            }
+        }
     }
 }

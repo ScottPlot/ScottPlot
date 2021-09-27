@@ -28,7 +28,7 @@ namespace CookbookGenerator
             Stopwatch sw = Stopwatch.StartNew();
             var chef = new ScottPlot.Cookbook.Chef();
             chef.CreateCookbookImages(opts.SaveImages);
-            chef.CreateCookbookSource(opts.CookbookFolder, opts.SaveSource);
+            chef.CreateCookbookSourceV2(opts.CookbookFolder, opts.SaveSource);
             Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:F3} seconds");
         }
     }
