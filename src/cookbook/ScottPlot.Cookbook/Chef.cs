@@ -95,7 +95,7 @@ namespace ScottPlot.Cookbook
             RecipeSource[] sources = SourceParsing.GetRecipeSources(sourcePath, Width, Height);
             Console.WriteLine($"Creating source code for {sources.Length} recipes in: {outputPath}");
 
-            foreach(RecipeSource recipe in sources)
+            foreach (RecipeSource recipe in sources)
             {
                 StringBuilder sb = new();
                 sb.AppendLine("/// ID: " + recipe.ID);
