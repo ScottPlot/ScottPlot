@@ -19,14 +19,11 @@ namespace ScottPlot.Cookbook
         public int Width = 600;
         public int Height = 400;
 
-        const string Ext = ".png";
-        const string ExtThumb = "_thumb.jpg";
-
         /// <summary>
         /// Use reflection to determine all IRecipe objects in the project, execute each of them, 
         /// and save the output using the recipe ID as its base filename.
         /// </summary>
-        public void CreateCookbookImages(string outputPath)
+        public void CreateCookbookImages(string outputPath, int thumbJpegQuality = 95)
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
@@ -35,32 +32,29 @@ namespace ScottPlot.Cookbook
             var recipes = Locate.GetRecipes();
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
 
-            int thumbJpegQuality = 95;
-            EncoderParameters thumbJpegEncoderParameters = new EncoderParameters(1);
+            EncoderParameters thumbJpegEncoderParameters = new(1);
             thumbJpegEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, thumbJpegQuality);
             ImageCodecInfo thumbJpegEncoder = ImageCodecInfo.GetImageEncoders().Where(x => x.MimeType == "image/jpeg").First();
 
             Parallel.ForEach(recipes, recipe =>
             {
-                Debug.WriteLine($"Executing {recipe.ID}");
                 var plt = new Plot(Width, Height);
                 recipe.ExecuteRecipe(plt);
 
                 // save full size image
                 Bitmap bmp = plt.Render();
-                string fileName = (recipe.ID + Ext).ToLower();
-                string filePath = Path.Combine(outputPath, fileName);
-                bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".png");
+                bmp.Save(filePath, ImageFormat.Png);
+                Debug.WriteLine($"Saved: {filePath}");
 
                 // thumbnail
                 int thumbHeight = 180;
                 int thumbWidth = thumbHeight * bmp.Width / bmp.Height;
                 Bitmap thumb = Drawing.GDI.Resize(bmp, thumbWidth, thumbHeight);
-                string thumbFileName = (recipe.ID + ExtThumb).ToLower();
-                string thumbFilePath = Path.Combine(outputPath, thumbFileName);
+                string thumbFilePath = Path.Combine(outputPath, recipe.ID.ToLower() + "_thumb.jpg");
                 thumb.Save(thumbFilePath, thumbJpegEncoder, thumbJpegEncoderParameters);
+                Debug.WriteLine($"Saved: {thumbFilePath}");
             });
-
         }
 
         /// <summary>
@@ -71,7 +65,7 @@ namespace ScottPlot.Cookbook
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
-                throw new ArgumentException($"output path does not exist: {outputPath}");
+                Directory.CreateDirectory(outputPath);
 
             var sources = SourceParsing.GetRecipeSources(sourcePath, Width, Height);
             Console.WriteLine($"Creating source code for {sources.Length} recipes in: {outputPath}");
@@ -84,6 +78,7 @@ namespace ScottPlot.Cookbook
                 sb.AppendLine("// " + recipe.Description);
                 sb.Append(recipe.Code);
                 File.WriteAllText(filePath, sb.ToString());
+                Debug.WriteLine($"Saved: {filePath}");
             });
         }
     }
