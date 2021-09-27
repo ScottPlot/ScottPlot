@@ -57,7 +57,6 @@ namespace ScottPlot.Plottable
             var baseLimits = base.GetAxisLimits();
             var newXMin = Convert.ToDouble(Xs[MinRenderIndex]) + OffsetX;
             var newXMax = Convert.ToDouble(Xs[MaxRenderIndex]) + OffsetX;
-            Debug.WriteLine($"Limits: {newXMin} {newXMax}");
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 
