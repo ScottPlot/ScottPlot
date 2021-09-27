@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.452
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
 EndProject
@@ -47,6 +47,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Versioner", "..\dev\tools\Versioner\Versioner.csproj", "{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Cookbook", "cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj", "{1CD9CD76-65C7-47B7-A7BA-F09A9459E3E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookbookGenerator", "cookbook\CookbookGenerator\CookbookGenerator.csproj", "{DE7CF85E-6C13-4B73-B999-D8FD488ADE01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,10 @@ Global
 		{1CD9CD76-65C7-47B7-A7BA-F09A9459E3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CD9CD76-65C7-47B7-A7BA-F09A9459E3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CD9CD76-65C7-47B7-A7BA-F09A9459E3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE7CF85E-6C13-4B73-B999-D8FD488ADE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE7CF85E-6C13-4B73-B999-D8FD488ADE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE7CF85E-6C13-4B73-B999-D8FD488ADE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE7CF85E-6C13-4B73-B999-D8FD488ADE01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5} = {2211896B-D6E5-4500-A576-A495A11C5524}
 		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 		{1CD9CD76-65C7-47B7-A7BA-F09A9459E3E1} = {21ED0CBA-9D21-4096-98CF-3660FC465ADD}
+		{DE7CF85E-6C13-4B73-B999-D8FD488ADE01} = {21ED0CBA-9D21-4096-98CF-3660FC465ADD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
