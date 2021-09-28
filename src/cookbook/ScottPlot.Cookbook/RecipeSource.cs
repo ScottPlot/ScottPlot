@@ -16,5 +16,14 @@
             Description = recipe.Description;
             Code = source;
         }
+
+        public RecipeSource(string id, string category, string title, string description, string code)
+        {
+            ID = id;
+            Category = category;
+            Title = title;
+            Description = description;
+            Code = code;
+        }
     }
 }

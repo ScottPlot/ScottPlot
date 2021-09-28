@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -86,8 +87,7 @@ namespace ScottPlot.Cookbook
 
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes() => _categorizedRecipeList;
 
-        public static string RecipeSourceCode(IRecipe recipe) => RecipeSourceCode(recipe.ID);
-
+        [Obsolete("use RecipeJson.Locate()", true)]
         public static string RecipeSourceCode(string id)
         {
             string[] possiblePaths = {
