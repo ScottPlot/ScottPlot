@@ -9,6 +9,39 @@ namespace ScottPlot.Cookbook
     public static class RecipeJson
     {
         /// <summary>
+        /// Use SOURCE CODE FILE PARSING to locate all recipes in the project and store their information in a JSON file
+        /// </summary>
+        /// <returns>array of recipes found using source code file parsing</returns>
+        public static RecipeSource[] Generate(string cookbookFolder, string saveFilePath, int width = 600, int height = 400)
+        {
+            RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, width, height);
+
+            using var stream = File.OpenWrite(saveFilePath);
+            var options = new JsonWriterOptions() { Indented = true };
+            using var writer = new Utf8JsonWriter(stream, options);
+
+            writer.WriteStartObject();
+            writer.WriteString("version", ScottPlot.Plot.Version);
+            writer.WriteString("generated", DateTime.UtcNow);
+
+            writer.WriteStartArray("recipes");
+            foreach (RecipeSource recipe in recipes)
+            {
+                writer.WriteStartObject();
+                writer.WriteString("id", recipe.ID.ToLower());
+                writer.WriteString("category", recipe.Category);
+                writer.WriteString("title", recipe.Title);
+                writer.WriteString("description", recipe.Description);
+                writer.WriteString("code", recipe.Code.Replace("\r", ""));
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+
+            return recipes;
+        }
+
+        /// <summary>
         /// Return information about all recipes stored in a JSON file
         /// </summary>
         /// <param name="jsonFile">Path to the JSON file. If not provided it will attempt to be found.</param>

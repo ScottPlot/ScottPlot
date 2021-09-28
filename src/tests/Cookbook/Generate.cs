@@ -28,13 +28,13 @@ namespace ScottPlotTests.Cookbook
             // GENERATE IMAGES
             Console.Write($"Generating PNGs...");
             Stopwatch sw = Stopwatch.StartNew();
-            IRecipe[] imageRecipes = Chef.CreateCookbookImages(Path.Join(OUTPUT_FOLDER, "images"));
+            IRecipe[] imageRecipes = RecipeImages.Generate(Path.Join(OUTPUT_FOLDER, "images"));
             Console.WriteLine($" {sw.Elapsed.TotalSeconds:F4} sec");
 
             // GENERATE JSON
             Console.Write($"Generating JSON...");
             sw.Restart();
-            RecipeSource[] sourceRecipes = Chef.CreateRecipesJson(COOKBOOK_PROJECT_FOLDER, JSON_FILE);
+            RecipeSource[] sourceRecipes = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER, JSON_FILE);
             Console.WriteLine($" {sw.Elapsed.TotalSeconds:F4} sec");
 
             // READ JSON BACK

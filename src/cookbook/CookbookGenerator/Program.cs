@@ -3,8 +3,6 @@ using System.Diagnostics;
 using CommandLine;
 using ScottPlot.Cookbook;
 using System.IO;
-using System.Text;
-using System.Text.Json;
 
 namespace CookbookGenerator
 {
@@ -51,10 +49,10 @@ namespace CookbookGenerator
             Stopwatch sw = Stopwatch.StartNew();
 
             Console.WriteLine($"Generating images: {outputImageFolder}");
-            Chef.CreateCookbookImages(outputImageFolder);
+            RecipeImages.Generate(outputImageFolder);
 
             Console.WriteLine($"Generating source: {outputCodeFolder}");
-            Chef.CreateRecipesJson(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
+            RecipeJson.Generate(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
 
             Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:F3} seconds");
         }
