@@ -25,7 +25,6 @@ namespace ScottPlotTests.Cookbook
         public void Test_CookbookRecipes_AllHaveValidSourceCode()
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
-            var chef = new ScottPlot.Cookbook.Chef();
             var sources = ScottPlot.Cookbook.SourceParsing.GetRecipeSources(SourceFolder, 333, 222);
 
             // ensure every recipe has source code
@@ -77,9 +76,10 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_TitlesInsideACategoryAreUnique()
         {
+            List<string> titles = new();
             foreach (var cat in ScottPlot.Cookbook.Locate.GetCategorizedRecipes())
             {
-                HashSet<string> seen = new HashSet<string>();
+                HashSet<string> seen = new();
                 foreach (string title in cat.Value.Select(x => x.Title))
                 {
                     if (seen.Contains(title))
@@ -94,20 +94,7 @@ namespace ScottPlotTests.Cookbook
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
             string[] ids = recipes.Select(x => x.ID.ToLower()).ToArray();
-
-            foreach (string id in ids)
-                if (ids.Where(x => x == id).Count() > 1)
-                    Assert.Fail($"duplicate id: {id}");
-        }
-
-        [Test]
-        public void Test_CookbookRecipes_CategoriesRemainUniqueAfterSanitization()
-        {
-            var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
-            int uniqueFull = recipes.Select(x => x.Category).Distinct().Count();
-            int uniqueClean = recipes.Select(x => x.Category)
-                .Select(x => ScottPlot.Cookbook.Website.Page.Sanitize(x)).Distinct().Count();
-            Assert.AreEqual(uniqueClean, uniqueFull);
+            string[] duplicates = TestTools.GetDuplicates(ids);
         }
     }
 }

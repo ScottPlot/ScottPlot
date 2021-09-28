@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using CommandLine;
+using ScottPlot.Cookbook;
+using System.IO;
 
 namespace CookbookGenerator
 {
@@ -8,27 +10,50 @@ namespace CookbookGenerator
     {
         public class CommandLineOptions
         {
-            [Option(longName: "cookbookFolder", Required = true, HelpText = "folder containing cookbook csproj file")]
+            [Option(longName: "cookbook", Required = true, HelpText = "folder containing cookbook csproj file")]
             public string CookbookFolder { get; set; }
 
-            [Option(longName: "saveImages", Required = true, HelpText = "folder to save images into")]
-            public string SaveImages { get; set; }
+            [Option(longName: "imageFolder", Required = true, HelpText = "folder to save images into")]
+            public string OutImageFolder { get; set; }
 
-            [Option(longName: "saveSource", Required = true, HelpText = "folder to save source code into")]
-            public string SaveSource { get; set; }
+            [Option(longName: "sourceFile", Required = true, HelpText = "file path to save recipes in JSON format")]
+            public string OutJsonFile { get; set; }
         }
 
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(RunOptions);
+            if (Debugger.IsAttached)
+            {
+                string dllFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                string outputFolder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dllFilePath), "../../../../../cookbook/output"));
+                if (!Directory.Exists(outputFolder))
+                    Directory.CreateDirectory(outputFolder);
+                string cookbookFolder = Path.GetFullPath(Path.Combine(outputFolder, "../ScottPlot.Cookbook"));
+                string outputFolderImages = Path.Combine(outputFolder, "images");
+                string outputJsonFile = Path.Combine(outputFolder, "recipes.json");
+                GenerateEverything(outputFolderImages, outputJsonFile, cookbookFolder);
+            }
+            else
+            {
+                var res = Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(RunOptions);
+            }
         }
 
         static void RunOptions(CommandLineOptions opts)
         {
+            GenerateEverything(opts.OutImageFolder, opts.OutJsonFile, opts.CookbookFolder);
+        }
+
+        private static void GenerateEverything(string outputImageFolder, string outputJsonFile, string cookbookFolder)
+        {
             Stopwatch sw = Stopwatch.StartNew();
-            var chef = new ScottPlot.Cookbook.Chef();
-            chef.CreateCookbookImages(opts.SaveImages);
-            chef.CreateCookbookSourceV2(opts.CookbookFolder, opts.SaveSource);
+
+            Console.WriteLine($"Generating images: {outputImageFolder}");
+            RecipeImages.Generate(outputImageFolder);
+
+            Console.WriteLine($"Generating source: {outputJsonFile}");
+            RecipeJson.Generate(cookbookFolder, outputJsonFile);
+
             Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:F3} seconds");
         }
     }

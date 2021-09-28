@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -137,6 +138,22 @@ namespace ScottPlotTests
             }
 
             return (A / pixelCount, R / pixelCount, G / pixelCount, B / pixelCount);
+        }
+
+        /// <summary>
+        /// Return an array containing names that appear more than once in the given array.
+        /// An empty array is returned if there are no duplicates.
+        /// </summary>
+        public static string[] GetDuplicates(string[] names, bool ignoreCase = true)
+        {
+            HashSet<string> duplicates = new();
+            HashSet<string> seen = new();
+            foreach (string name in names)
+            {
+                if (seen.Add(ignoreCase ? name.ToLowerInvariant() : name))
+                    duplicates.Add(name);
+            }
+            return duplicates.ToArray();
         }
     }
 }
