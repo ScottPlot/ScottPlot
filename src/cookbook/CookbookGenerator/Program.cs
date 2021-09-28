@@ -37,7 +37,7 @@ namespace CookbookGenerator
             }
             else
             {
-                Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(RunOptions);
+                var res = Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(RunOptions);
             }
         }
 
@@ -49,64 +49,14 @@ namespace CookbookGenerator
         private static void GenerateEverything(string outputImageFolder, string outputCodeFolder, string cookbookFolder)
         {
             Stopwatch sw = Stopwatch.StartNew();
+
             Console.WriteLine($"Generating images: {outputImageFolder}");
             Chef.CreateCookbookImages(outputImageFolder);
 
             Console.WriteLine($"Generating source: {outputCodeFolder}");
-            CreateMultiFileCookbookSource(cookbookFolder, outputCodeFolder);
-            CreateRecipesJson(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
+            Chef.CreateRecipesJson(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
 
             Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:F3} seconds");
-        }
-
-        private static void CreateMultiFileCookbookSource(string sourcePath, string outputPath)
-        {
-            outputPath = Path.GetFullPath(outputPath);
-            if (!Directory.Exists(outputPath))
-                Directory.CreateDirectory(outputPath);
-
-            RecipeSource[] sources = SourceParsing.GetRecipeSources(sourcePath, 600, 400);
-
-            foreach (RecipeSource recipe in sources)
-            {
-                StringBuilder sb = new();
-                sb.AppendLine("/// ID: " + recipe.ID);
-                sb.AppendLine("/// TITLE: " + recipe.Title);
-                sb.AppendLine("/// CATEGORY: " + recipe.Category);
-                sb.AppendLine("/// DESCRIPTION: " + recipe.Description);
-                sb.Append(recipe.Code);
-
-                string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".cs");
-                File.WriteAllText(filePath, sb.ToString());
-                Debug.WriteLine($"Saved: {filePath}");
-            }
-        }
-
-        private static void CreateRecipesJson(string cookbookFolder, string saveFilePath)
-        {
-            RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, 600, 400);
-
-            using var stream = File.OpenWrite(saveFilePath);
-            var options = new JsonWriterOptions() { Indented = true };
-            using var writer = new Utf8JsonWriter(stream, options);
-
-            writer.WriteStartObject();
-            writer.WriteString("version", ScottPlot.Plot.Version);
-            writer.WriteString("generated", DateTime.UtcNow);
-
-            writer.WriteStartArray("recipes");
-            foreach (RecipeSource recipe in recipes)
-            {
-                writer.WriteStartObject();
-                writer.WriteString("id", recipe.ID.ToLower());
-                writer.WriteString("category", recipe.Category);
-                writer.WriteString("title", recipe.Title);
-                writer.WriteString("description", recipe.Description);
-                writer.WriteString("code", recipe.Code.Replace("\r", ""));
-                writer.WriteEndObject();
-            }
-            writer.WriteEndArray();
-            writer.WriteEndObject();
         }
     }
 }

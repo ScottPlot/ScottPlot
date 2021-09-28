@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -51,10 +52,34 @@ namespace ScottPlot.Cookbook
             });
         }
 
-        /// <summary>
-        /// Read all .cs files in the source folder to identify IRecipe source code, isolate just the recipe 
-        /// component of each source file, and save the output as a text file using the recipe ID as its base filename.
-        /// </summary>
+        public static void CreateRecipesJson(string cookbookFolder, string saveFilePath, int width = 600, int height = 400)
+        {
+            RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, width, height);
+
+            using var stream = File.OpenWrite(saveFilePath);
+            var options = new JsonWriterOptions() { Indented = true };
+            using var writer = new Utf8JsonWriter(stream, options);
+
+            writer.WriteStartObject();
+            writer.WriteString("version", ScottPlot.Plot.Version);
+            writer.WriteString("generated", DateTime.UtcNow);
+
+            writer.WriteStartArray("recipes");
+            foreach (RecipeSource recipe in recipes)
+            {
+                writer.WriteStartObject();
+                writer.WriteString("id", recipe.ID.ToLower());
+                writer.WriteString("category", recipe.Category);
+                writer.WriteString("title", recipe.Title);
+                writer.WriteString("description", recipe.Description);
+                writer.WriteString("code", recipe.Code.Replace("\r", ""));
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
+
+        [Obsolete("use json method", true)]
         public static void CreateCookbookSource(string sourcePath, string outputPath, int width = 600, int height = 400)
         {
             outputPath = Path.GetFullPath(outputPath);
