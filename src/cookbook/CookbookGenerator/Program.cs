@@ -54,7 +54,7 @@ namespace CookbookGenerator
 
             Console.WriteLine($"Generating source: {outputCodeFolder}");
             CreateMultiFileCookbookSource(cookbookFolder, outputCodeFolder);
-            CreateSingleFileCookbookSource(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
+            CreateRecipesJson(cookbookFolder, Path.Combine(outputCodeFolder, "recipes.json"));
 
             Console.WriteLine($"Finished in {sw.Elapsed.TotalSeconds:F3} seconds");
         }
@@ -82,7 +82,7 @@ namespace CookbookGenerator
             }
         }
 
-        private static void CreateSingleFileCookbookSource(string cookbookFolder, string saveFilePath)
+        private static void CreateRecipesJson(string cookbookFolder, string saveFilePath)
         {
             RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, 600, 400);
 
@@ -91,18 +91,18 @@ namespace CookbookGenerator
             using var writer = new Utf8JsonWriter(stream, options);
 
             writer.WriteStartObject();
-            writer.WriteString("Version", ScottPlot.Plot.Version);
-            writer.WriteString("DateTime", DateTime.UtcNow);
+            writer.WriteString("version", ScottPlot.Plot.Version);
+            writer.WriteString("generated", DateTime.UtcNow);
 
             writer.WriteStartArray("recipes");
             foreach (RecipeSource recipe in recipes)
             {
                 writer.WriteStartObject();
-                writer.WriteString("id", recipe.ID);
+                writer.WriteString("id", recipe.ID.ToLower());
                 writer.WriteString("category", recipe.Category);
                 writer.WriteString("title", recipe.Title);
                 writer.WriteString("description", recipe.Description);
-                writer.WriteString("code", recipe.Code);
+                writer.WriteString("code", recipe.Code.Replace("\r", ""));
                 writer.WriteEndObject();
             }
             writer.WriteEndArray();
