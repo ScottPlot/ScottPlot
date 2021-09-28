@@ -18,16 +18,16 @@ namespace ScottPlot.Cookbook
     public static class Chef
     {
         /// <summary>
-        /// Use reflection to determine all IRecipe objects in the project, execute each of them, 
-        /// and save the output using the recipe ID as its base filename.
+        /// Use REFLECTION to locate all recipes, execute them and save the output images.
         /// </summary>
-        public static void CreateCookbookImages(string outputPath, int width = 600, int height = 400, int thumbJpegQuality = 95)
+        /// <returns>array of recipes found using reflection</returns>
+        public static IRecipe[] CreateCookbookImages(string outputPath, int width = 600, int height = 400, int thumbJpegQuality = 95)
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
-            var recipes = Locate.GetRecipes();
+            IRecipe[] recipes = Locate.GetRecipes();
 
             EncoderParameters thumbJpegEncoderParameters = new(1);
             thumbJpegEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, thumbJpegQuality);
@@ -50,9 +50,15 @@ namespace ScottPlot.Cookbook
                 string thumbFilePath = Path.Combine(outputPath, recipe.ID.ToLower() + "_thumb.jpg");
                 thumb.Save(thumbFilePath, thumbJpegEncoder, thumbJpegEncoderParameters);
             });
+
+            return recipes;
         }
 
-        public static void CreateRecipesJson(string cookbookFolder, string saveFilePath, int width = 600, int height = 400)
+        /// <summary>
+        /// Use SOURCE CODE FILE PARSING to locate all recipes in the project and store their information in a JSON file
+        /// </summary>
+        /// <returns>array of recipes found using source code file parsing</returns>
+        public static RecipeSource[] CreateRecipesJson(string cookbookFolder, string saveFilePath, int width = 600, int height = 400)
         {
             RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, width, height);
 
@@ -77,26 +83,8 @@ namespace ScottPlot.Cookbook
             }
             writer.WriteEndArray();
             writer.WriteEndObject();
-        }
 
-        [Obsolete("use json method", true)]
-        public static void CreateCookbookSource(string sourcePath, string outputPath, int width = 600, int height = 400)
-        {
-            outputPath = Path.GetFullPath(outputPath);
-            if (!Directory.Exists(outputPath))
-                Directory.CreateDirectory(outputPath);
-
-            var sources = SourceParsing.GetRecipeSources(sourcePath, width, height);
-
-            Parallel.ForEach(sources, recipe =>
-            {
-                string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".cs");
-                StringBuilder sb = new();
-                sb.AppendLine("// " + recipe.Title);
-                sb.AppendLine("// " + recipe.Description);
-                sb.Append(recipe.Code);
-                File.WriteAllText(filePath, sb.ToString());
-            });
+            return recipes;
         }
     }
 }
