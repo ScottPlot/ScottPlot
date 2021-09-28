@@ -14,23 +14,19 @@ namespace ScottPlot.Cookbook
     /// <summary>
     /// The Chef can execute recipes (making Bitmaps) and describe recipes (reporting source code)
     /// </summary>
-    public class Chef
+    public static class Chef
     {
-        public int Width = 600;
-        public int Height = 400;
-
         /// <summary>
         /// Use reflection to determine all IRecipe objects in the project, execute each of them, 
         /// and save the output using the recipe ID as its base filename.
         /// </summary>
-        public void CreateCookbookImages(string outputPath, int thumbJpegQuality = 95)
+        public static void CreateCookbookImages(string outputPath, int width = 600, int height = 400, int thumbJpegQuality = 95)
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
             var recipes = Locate.GetRecipes();
-            Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
 
             EncoderParameters thumbJpegEncoderParameters = new(1);
             thumbJpegEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, thumbJpegQuality);
@@ -38,14 +34,13 @@ namespace ScottPlot.Cookbook
 
             Parallel.ForEach(recipes, recipe =>
             {
-                var plt = new Plot(Width, Height);
+                var plt = new Plot(width, height);
                 recipe.ExecuteRecipe(plt);
 
                 // save full size image
                 Bitmap bmp = plt.Render();
                 string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".png");
                 bmp.Save(filePath, ImageFormat.Png);
-                Debug.WriteLine($"Saved: {filePath}");
 
                 // thumbnail
                 int thumbHeight = 180;
@@ -53,7 +48,6 @@ namespace ScottPlot.Cookbook
                 Bitmap thumb = Drawing.GDI.Resize(bmp, thumbWidth, thumbHeight);
                 string thumbFilePath = Path.Combine(outputPath, recipe.ID.ToLower() + "_thumb.jpg");
                 thumb.Save(thumbFilePath, thumbJpegEncoder, thumbJpegEncoderParameters);
-                Debug.WriteLine($"Saved: {thumbFilePath}");
             });
         }
 
@@ -61,14 +55,13 @@ namespace ScottPlot.Cookbook
         /// Read all .cs files in the source folder to identify IRecipe source code, isolate just the recipe 
         /// component of each source file, and save the output as a text file using the recipe ID as its base filename.
         /// </summary>
-        public void CreateCookbookSource(string sourcePath, string outputPath)
+        public static void CreateCookbookSource(string sourcePath, string outputPath, int width = 600, int height = 400)
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
-            var sources = SourceParsing.GetRecipeSources(sourcePath, Width, Height);
-            Console.WriteLine($"Creating source code for {sources.Length} recipes in: {outputPath}");
+            var sources = SourceParsing.GetRecipeSources(sourcePath, width, height);
 
             Parallel.ForEach(sources, recipe =>
             {
@@ -78,36 +71,7 @@ namespace ScottPlot.Cookbook
                 sb.AppendLine("// " + recipe.Description);
                 sb.Append(recipe.Code);
                 File.WriteAllText(filePath, sb.ToString());
-                Debug.WriteLine($"Saved: {filePath}");
             });
-        }
-
-        /// <summary>
-        /// Read all .cs files in the source folder to identify IRecipe source code, isolate just the recipe 
-        /// component of each source file, and save the output as a text file using the recipe ID as its base filename.
-        /// </summary>
-        public void CreateCookbookSourceV2(string sourcePath, string outputPath)
-        {
-            outputPath = Path.GetFullPath(outputPath);
-            if (!Directory.Exists(outputPath))
-                Directory.CreateDirectory(outputPath);
-
-            RecipeSource[] sources = SourceParsing.GetRecipeSources(sourcePath, Width, Height);
-            Console.WriteLine($"Creating source code for {sources.Length} recipes in: {outputPath}");
-
-            foreach (RecipeSource recipe in sources)
-            {
-                StringBuilder sb = new();
-                sb.AppendLine("/// ID: " + recipe.ID);
-                sb.AppendLine("/// TITLE: " + recipe.Title);
-                sb.AppendLine("/// CATEGORY: " + recipe.Category);
-                sb.AppendLine("/// DESCRIPTION: " + recipe.Description);
-                sb.Append(recipe.Code);
-
-                string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".cs");
-                File.WriteAllText(filePath, sb.ToString());
-                Debug.WriteLine($"Saved: {filePath}");
-            }
         }
     }
 }

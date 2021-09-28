@@ -25,7 +25,6 @@ namespace ScottPlotTests.Cookbook
         public void Test_CookbookRecipes_AllHaveValidSourceCode()
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
-            var chef = new ScottPlot.Cookbook.Chef();
             var sources = ScottPlot.Cookbook.SourceParsing.GetRecipeSources(SourceFolder, 333, 222);
 
             // ensure every recipe has source code

@@ -45,9 +45,8 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_Cookbook_ImagesAndCode()
         {
-            var chef = new Chef();
-            chef.CreateCookbookImages(Path.Join(WebsitePath, "images"));
-            chef.CreateCookbookSource(SourceFolder, RecipeFolder);
+            Chef.CreateCookbookImages(Path.Join(WebsitePath, "images"));
+            Chef.CreateCookbookSource(SourceFolder, RecipeFolder);
         }
 
         [Test]
