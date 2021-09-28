@@ -1,3 +1,4 @@
+src/cookbook/output
 nuget.exe
 
 ## Ignore Visual Studio temporary files, build results, and
