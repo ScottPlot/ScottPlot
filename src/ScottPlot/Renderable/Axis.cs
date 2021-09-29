@@ -271,12 +271,21 @@ namespace ScottPlot.Renderable
         public void PixelSnap(bool enable) => AxisTicks.SnapPx = enable;
 
         /// <summary>
-        /// Set style of the tick mark lines
+        /// Apply the same color to major and minor tick marks
         /// </summary>
         public void TickMarkColor(Color color)
         {
             AxisTicks.MajorTickColor = color;
             AxisTicks.MinorTickColor = color;
+        }
+
+        /// <summary>
+        /// Set colors for major and minor tick marks
+        /// </summary>
+        public void TickMarkColor(Color majorColor, Color minorColor)
+        {
+            AxisTicks.MajorTickColor = majorColor;
+            AxisTicks.MinorTickColor = minorColor;
         }
 
         /// <summary>
