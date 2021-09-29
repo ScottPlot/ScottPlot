@@ -1,4 +1,6 @@
-﻿namespace ScottPlot
+﻿using System.Linq;
+
+namespace ScottPlot
 {
     public static class Style
     {
@@ -15,6 +17,15 @@
         public static Styles.IStyle Light2 => new Styles.Light2();
         public static Styles.IStyle Monospace => new Styles.Monospace();
         public static Styles.IStyle Seaborn => new Styles.Seaborn();
+        
+        /// <summary>
+        /// Return an array containing every available style
+        /// </summary>
+        public static Styles.IStyle[] GetStyles() => typeof(Style)
+            .GetProperties()
+            .Select(x => x.GetValue(typeof(Style)))
+            .Select(x => (Styles.IStyle)x)
+            .ToArray();
     }
 
 }
