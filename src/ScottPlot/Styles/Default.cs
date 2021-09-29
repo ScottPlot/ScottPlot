@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.Themes
+namespace ScottPlot.Styles
 {
-    public class Default : ITheme
+    public class Default : IStyle
     {
         public virtual Color FigureBackgroundColor => Color.White;
         public virtual Color DataBackgroundColor => Color.White;

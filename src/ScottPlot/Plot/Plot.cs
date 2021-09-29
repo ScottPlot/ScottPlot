@@ -207,33 +207,27 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set colors of all plot components using pre-defined styles
-        /// </summary>
-        /// <param name="style">a pre-defined style</param>
-        public void Style(Style style) => StyleTools.SetStyle(this, style);
-
-        /// <summary>
         /// Set the colors and fonts of many plot components at once using a predefined theme
         /// </summary>
-        public void Theme(Themes.ITheme theme)
+        public void Style(Styles.IStyle style)
         {
-            if (theme is null)
-                throw new ArgumentException(nameof(theme));
+            if (style is null)
+                throw new ArgumentException(nameof(style));
 
-            settings.FigureBackground.Color = theme.FigureBackgroundColor;
-            settings.DataBackground.Color = theme.DataBackgroundColor;
+            settings.FigureBackground.Color = style.FigureBackgroundColor;
+            settings.DataBackground.Color = style.DataBackgroundColor;
 
             foreach (var axis in settings.Axes)
             {
-                axis.LabelStyle(color: theme.AxisLabelColor, fontName: theme.AxisLabelFontName);
-                axis.TickLabelStyle(color: theme.TickLabelColor, fontName: theme.TickLabelFontName);
-                axis.MajorGrid(color: theme.GridLineColor);
-                axis.MinorGrid(color: theme.GridLineColor);
-                axis.TickMarkColor(majorColor: theme.TickMajorColor, minorColor: theme.TickMinorColor);
-                axis.Line(color: theme.FrameColor);
+                axis.LabelStyle(color: style.AxisLabelColor, fontName: style.AxisLabelFontName);
+                axis.TickLabelStyle(color: style.TickLabelColor, fontName: style.TickLabelFontName);
+                axis.MajorGrid(color: style.GridLineColor);
+                axis.MinorGrid(color: style.GridLineColor);
+                axis.TickMarkColor(majorColor: style.TickMajorColor, minorColor: style.TickMinorColor);
+                axis.Line(color: style.FrameColor);
             }
 
-            XAxis2.LabelStyle(color: theme.TitleFontColor, fontName: theme.TitleFontName);
+            XAxis2.LabelStyle(color: style.TitleFontColor, fontName: style.TitleFontName);
         }
 
         /// <summary>

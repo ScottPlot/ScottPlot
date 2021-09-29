@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.Themes
+namespace ScottPlot.Styles
 {
     /// <summary>
     /// A theme describes a collection of colors and fonts that can be used to style a plot
     /// </summary>
-    public interface ITheme
+    public interface IStyle
     {
         Color FigureBackgroundColor { get; }
         Color DataBackgroundColor { get; }
