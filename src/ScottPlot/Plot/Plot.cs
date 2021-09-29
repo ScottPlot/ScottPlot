@@ -213,6 +213,30 @@ namespace ScottPlot
         public void Style(Style style) => StyleTools.SetStyle(this, style);
 
         /// <summary>
+        /// Set the colors and fonts of many plot components at once using a predefined theme
+        /// </summary>
+        public void Theme(Themes.ITheme theme)
+        {
+            if (theme is null)
+                throw new ArgumentException(nameof(theme));
+
+            settings.FigureBackground.Color = theme.FigureBackgroundColor;
+            settings.DataBackground.Color = theme.DataBackgroundColor;
+
+            foreach (var axis in settings.Axes)
+            {
+                axis.LabelStyle(color: theme.AxisLabelColor, fontName: theme.AxisLabelFontName);
+                axis.TickLabelStyle(color: theme.TickLabelColor, fontName: theme.TickLabelFontName);
+                axis.MajorGrid(color: theme.GridLineColor);
+                axis.MinorGrid(color: theme.GridLineColor);
+                axis.TickMarkColor(majorColor: theme.TickMajorColor, minorColor: theme.TickMinorColor);
+                axis.Line(color: theme.FrameColor);
+            }
+
+            XAxis2.LabelStyle(color: theme.TitleFontColor, fontName: theme.TitleFontName);
+        }
+
+        /// <summary>
         /// Set the color of specific plot components
         /// </summary>
         /// <param name="figureBackground">Color for area beneath the axis ticks and labels and around the data area</param>
