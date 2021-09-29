@@ -311,6 +311,19 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Customize styling of the label (without changing its content)
+        /// </summary>
+        public void LabelStyle(
+            Color? color = null,
+            string fontName = null,
+            float? fontSize = null)
+        {
+            AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
+            AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
+            AxisLabel.Font.Size = fontSize ?? AxisLabel.Font.Size;
+        }
+
+        /// <summary>
         /// Set visibility of all ticks
         /// </summary>
         public void Ticks(bool enable)
