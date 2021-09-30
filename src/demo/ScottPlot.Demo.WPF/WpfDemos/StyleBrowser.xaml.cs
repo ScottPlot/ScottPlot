@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             foreach (var style in ScottPlot.Style.GetStyles())
                 ListBoxStyle.Items.Add(style);
 
-            foreach (var palette in ScottPlot.Drawing.Palette.GetPalettes())
+            foreach (var palette in ScottPlot.Palette.GetPalettes())
                 ListBoxPalette.Items.Add(palette);
 
             WpfPlot1.Plot.XLabel("Horizontal Axis");
