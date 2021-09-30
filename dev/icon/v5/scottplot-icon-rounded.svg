@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 135.46666 135.46667"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="scottplot-icon.svg"
+   inkscape:export-filename="C:\Users\scott\Documents\GitHub\ScottPlot\dev\icon\v5\scottplot-icon-rounded-128.png"
+   inkscape:export-xdpi="24"
+   inkscape:export-ydpi="24">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="316.50814"
+     inkscape:cy="257.21431"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:pagecheckerboard="true"
+     borderlayer="true"
+     inkscape:showpageshadow="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showborder="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid833"
+       spacingx="8.4666666"
+       spacingy="8.4666666" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect835"
+       style="opacity:1;fill:#67217a;fill-opacity:1;stroke:#ffffff;stroke-width:0.755906;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.0645161"
+       d="M 128 0 C 57.088004 0 0 57.088004 0 128 L 0 362.88672 L 147.19531 207.47656 L 263.32617 289.15625 L 488.67188 54.134766 C 465.53924 21.342617 427.35552 0 384 0 L 128 0 z M 512 139.02734 L 272.95312 388.33984 L 157.14648 306.88867 L 19.544922 452.17773 C 42.151668 488.16713 82.186824 512 128 512 L 384 512 C 454.912 512 512 454.912 512 384 L 512 139.02734 z "
+       transform="scale(0.26458333)" />
+    <path
+       id="rect835-5"
+       style="fill:#9a4993;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 512 139.02344 L 272.95312 388.33984 L 157.14648 306.88672 L 19.544922 452.17773 C 42.151668 488.16713 82.186825 512 128 512 L 384 512 C 454.91199 512 512 454.91203 512 384 L 512 139.02344 z "
+       transform="scale(0.26458333)" />
+    <path
+       id="rect835-8"
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.0645161"
+       d="M 129.29392,14.323157 69.671715,76.505924 38.944909,54.894839 -5.1858333e-4,96.013777 V 101.6 c 0,6.64073 1.89435848333,12.82194 5.17125998333,18.03869 L 41.577823,81.197626 72.218329,102.74825 135.46615,36.784317 v -2.917651 c 0,-7.290985 -2.28209,-14.028938 -6.17223,-19.543509 z" />
+  </g>
+</svg>
