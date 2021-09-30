@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.24 (in progress...)
+* Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
+
 ## ScottPlot 4.1.23
 * NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)
 

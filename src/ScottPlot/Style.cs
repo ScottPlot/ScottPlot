@@ -17,7 +17,7 @@ namespace ScottPlot
         public static Styles.IStyle Light2 => new Styles.Light2();
         public static Styles.IStyle Monospace => new Styles.Monospace();
         public static Styles.IStyle Seaborn => new Styles.Seaborn();
-        
+
         /// <summary>
         /// Return an array containing every available style
         /// </summary>
