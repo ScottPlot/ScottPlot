@@ -129,5 +129,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.MultiAxisLock().ShowDialog();
         }
+
+        private void StyleBrowser(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.StyleBrowser().ShowDialog();
+        }
     }
 }
