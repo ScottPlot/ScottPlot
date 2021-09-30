@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="ScottPlot Style Browser" Height="450" Width="800">
+        Title="ScottPlot Style Browser" Height="450" Width="900">
     <DockPanel Margin="10">
         <GroupBox Header="Styles" FontSize="16" DockPanel.Dock="Left" Width="200" >
-            <ListBox Name="ListBox1" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
+            <ListBox Name="ListBoxStyle" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
+        </GroupBox>
+        <GroupBox Header="Palettes" FontSize="16" DockPanel.Dock="Left" Width="200" >
+            <ListBox Name="ListBoxPalette" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
         </GroupBox>
         <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="10"/>
     </DockPanel>
