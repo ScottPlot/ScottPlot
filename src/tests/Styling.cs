@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace ScottPlotTests
 {
@@ -33,6 +34,16 @@ namespace ScottPlotTests
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
+        }
+
+        [Test]
+        public void Test_List_Styles()
+        {
+            var styles = ScottPlot.Style.GetStyles();
+            Assert.IsNotNull(styles);
+            Assert.IsNotEmpty(styles);
+            foreach (var style in styles)
+                Console.WriteLine(style);
         }
     }
 }

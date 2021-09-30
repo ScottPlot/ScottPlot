@@ -207,10 +207,28 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set colors of all plot components using pre-defined styles
+        /// Set the colors and fonts of many plot components at once using a predefined theme
         /// </summary>
-        /// <param name="style">a pre-defined style</param>
-        public void Style(Style style) => StyleTools.SetStyle(this, style);
+        public void Style(Styles.IStyle style)
+        {
+            if (style is null)
+                throw new ArgumentException(nameof(style));
+
+            settings.FigureBackground.Color = style.FigureBackgroundColor;
+            settings.DataBackground.Color = style.DataBackgroundColor;
+
+            foreach (var axis in settings.Axes)
+            {
+                axis.LabelStyle(color: style.AxisLabelColor, fontName: style.AxisLabelFontName);
+                axis.TickLabelStyle(color: style.TickLabelColor, fontName: style.TickLabelFontName);
+                axis.MajorGrid(color: style.GridLineColor);
+                axis.MinorGrid(color: style.GridLineColor);
+                axis.TickMarkColor(majorColor: style.TickMajorColor, minorColor: style.TickMinorColor);
+                axis.Line(color: style.FrameColor);
+            }
+
+            XAxis2.LabelStyle(color: style.TitleFontColor, fontName: style.TitleFontName);
+        }
 
         /// <summary>
         /// Set the color of specific plot components

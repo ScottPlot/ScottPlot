@@ -208,6 +208,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="StyleBrowser">
+                            <TextBlock TextAlignment="Center">
+                                Style Browser
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            View available predefined plot styles
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

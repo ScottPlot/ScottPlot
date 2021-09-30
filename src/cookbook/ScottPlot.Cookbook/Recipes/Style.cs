@@ -8,35 +8,37 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_Default";
-        public string Title => "Default";
+        public string Title => "Default Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Default);
+            plt.Title("Style.Default");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
-    public class StyleControl : IRecipe
+    public class StyleMonospace : IRecipe
     {
         public string Category => "Style";
-        public string ID => "style_Control";
-        public string Title => "Control";
+        public string ID => "style_monospace";
+        public string Title => "Monospace Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
-            plt.Style(Style.Control);
+            plt.Style(Style.Monospace);
+            plt.Title("Style.Monospace");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -44,17 +46,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_blue1";
-        public string Title => "Blue1";
+        public string Title => "Blue1 Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Blue1);
+            plt.Title("Style.Blue1");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -62,35 +65,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_blue2";
-        public string Title => "Blue2";
+        public string Title => "Blue2 Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Blue2);
-        }
-    }
-
-    public class StyleBlue3 : IRecipe
-    {
-        public string Category => "Style";
-        public string ID => "style_blue3";
-        public string Title => "Blue3";
-        public string Description => "Customize many plot features using style presets";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // plot sample data
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51));
-
-            // customize the plot style
-            plt.Style(Style.Blue3);
+            plt.Title("Style.Blue2");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -98,35 +84,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_light1";
-        public string Title => "Light1";
+        public string Title => "Light1 Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Light1);
-        }
-    }
-
-    public class StyleLight2 : IRecipe
-    {
-        public string Category => "Style";
-        public string ID => "style_light2";
-        public string Title => "Light2";
-        public string Description => "Customize many plot features using style presets";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // plot sample data
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51));
-
-            // customize the plot style
-            plt.Style(Style.Light2);
+            plt.Title("Style.Light1");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -134,35 +103,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_Gray1";
-        public string Title => "Gray1";
+        public string Title => "Gray1 Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Gray1);
-        }
-    }
-
-    public class StyleGray2 : IRecipe
-    {
-        public string Category => "Style";
-        public string ID => "style_Gray2";
-        public string Title => "Gray2";
-        public string Description => "Customize many plot features using style presets";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // plot sample data
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51));
-
-            // customize the plot style
-            plt.Style(Style.Gray2);
+            plt.Title("Style.Gray1");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -170,17 +122,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_Black";
-        public string Title => "Black";
+        public string Title => "Black Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Black);
+            plt.Title("Style.Black");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -188,17 +141,18 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public string Category => "Style";
         public string ID => "style_Seaborn";
-        public string Title => "Seaborn";
+        public string Title => "Seaborn Style";
         public string Description => "Customize many plot features using style presets";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // customize the plot style
             plt.Style(Style.Seaborn);
+            plt.Title("Style.Seaborn");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 }
