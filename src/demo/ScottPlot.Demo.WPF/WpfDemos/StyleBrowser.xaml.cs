@@ -46,6 +46,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             WpfPlot1.Plot.Style(style);
             WpfPlot1.Plot.Title($"Style: {style}\nPalette: {palette}");
+            WpfPlot1.Plot.Palette = palette;
 
             WpfPlot1.Plot.Clear();
             for (int i = 0; i < palette.Count(); i++)
@@ -58,6 +59,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                 sig.LineWidth = 3;
                 sig.MarkerSize = 0;
             }
+
+            WpfPlot1.Plot.AxisAuto(horizontalMargin: 0);
             WpfPlot1.Refresh();
         }
     }
