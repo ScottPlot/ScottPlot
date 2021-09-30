@@ -67,5 +67,14 @@ namespace ScottPlot.Drawing
         {
             return cset.Count();
         }
+
+        /// <summary>
+        /// Return an array containing every available palette
+        /// </summary>
+        public static Palette[] GetPalettes() => typeof(Palette)
+            .GetProperties()
+            .Select(x => x.GetValue(typeof(Palette)))
+            .Select(x => (Palette)x)
+            .ToArray();
     }
 }
