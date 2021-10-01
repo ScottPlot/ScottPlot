@@ -1,45 +1,64 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 
-namespace ScottPlot
+namespace ScottPlot.Drawing
 {
-    public static class Palette
+    public class Palette
     {
-        // TODO: in ScottPlot 5 move palettes (colorsets) and colormaps out of the Drawing namespace
-        // and put them in the top level ScottPlot namespace.
+        public static Palette Aurora => new(new Colorsets.Aurora());
+        public static Palette Category10 => new(new Colorsets.Category10());
+        public static Palette Category20 => new(new Colorsets.Category20());
+        public static Palette Frost => new(new Colorsets.Frost());
+        public static Palette Microcharts => new(new Colorsets.Microcharts());
+        public static Palette Nord => new(new Colorsets.Nord());
+        public static Palette OneHalf => new(new Colorsets.OneHalf());
+        public static Palette OneHalfDark => new(new Colorsets.OneHalfDark());
+        public static Palette PolarNight => new(new Colorsets.PolarNight());
+        public static Palette SnowStorm => new(new Colorsets.Snowstorm());
 
-        // This class/API was created so the cookbook can start using this new API and the switch
-        // may be less disruptive if people start referencing this file earlier than later.
+        private readonly IPalette cset;
+        public readonly string Name;
 
-        public static Drawing.Palette Aurora => new(new Drawing.Colorsets.Aurora());
-        public static Drawing.Palette Category10 => new(new Drawing.Colorsets.Category10());
-        public static Drawing.Palette Category20 => new(new Drawing.Colorsets.Category20());
-        public static Drawing.Palette Frost => new(new Drawing.Colorsets.Frost());
-        public static Drawing.Palette Nord => new(new Drawing.Colorsets.Nord());
-        public static Drawing.Palette PolarNight => new(new Drawing.Colorsets.PolarNight());
-        public static Drawing.Palette SnowStorm => new(new Drawing.Colorsets.Snowstorm());
-        public static Drawing.Palette OneHalfDark => new(new Drawing.Colorsets.OneHalfDark());
-        public static Drawing.Palette OneHalf => new(new Drawing.Colorsets.OneHalf());
-        public static Drawing.Palette Microcharts => new(new Drawing.Colorsets.Microcharts());
-
-
-        /// <summary>
-        /// Return an array containing every available palette
-        /// </summary>
-        public static Drawing.Palette[] GetPalettes()
+        public Palette(IPalette colorset)
         {
-            return typeof(Drawing.Palette)
-                .GetProperties()
-                .Select(x => x.GetValue(typeof(Drawing.Palette)))
-                .Select(x => (Drawing.Palette)x)
+            cset = colorset ?? new Colorsets.Category10();
+            Name = cset.GetType().Name;
+        }
+
+        public Palette(string[] htmlColors, string name = "Custom")
+        {
+            cset = new Colorsets.Custom(htmlColors);
+            Name = name;
+        }
+
+        public override string ToString() => $"{Name} Palette ({Count()} colors)";
+
+        public int GetInt32(int index)
+        {
+            var (r, g, b) = cset.GetRGB(index);
+            return 255 << 24 | r << 16 | g << 8 | b;
+        }
+
+        public Color GetColor(int index)
+        {
+            return Color.FromArgb(GetInt32(index));
+        }
+
+        public Color GetColor(int index, double alpha = 1)
+        {
+            return Color.FromArgb(alpha: (int)(alpha * 255), baseColor: GetColor(index));
+        }
+
+        public Color[] GetColors(int count, int offset = 0, double alpha = 1)
+        {
+            return Enumerable.Range(offset, count)
+                .Select(x => GetColor(x, alpha))
                 .ToArray();
         }
 
-        /// <summary>
-        /// Create a custom palette from an array of HTML colors
-        /// </summary>
-        public static Drawing.Palette FromHtmlColors(string[] htmlColors)
+        public int Count()
         {
-            return new Drawing.Palette(htmlColors);
+            return cset.Count();
         }
     }
 }
