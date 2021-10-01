@@ -1,8 +1,49 @@
 ﻿using System.Drawing;
 using System.Linq;
 
+/* 
+ * Palettes are collections of colors that control the default colors for new plottables added to the plot.
+ * This file contains code that bridges the gap between ScottPlot 4 Colorsets and ScottPlot 5 Palettes.
+ */
+
+namespace ScottPlot
+{
+    /* This module will be expanded in ScottPlot 5 */
+    public static class Palette
+    {
+        public static ScottPlot.Drawing.Palette Aurora => new(new ScottPlot.Drawing.Colorsets.Aurora());
+        public static ScottPlot.Drawing.Palette Category10 => new(new ScottPlot.Drawing.Colorsets.Category10());
+        public static ScottPlot.Drawing.Palette Category20 => new(new ScottPlot.Drawing.Colorsets.Category20());
+        public static ScottPlot.Drawing.Palette Frost => new(new ScottPlot.Drawing.Colorsets.Frost());
+        public static ScottPlot.Drawing.Palette Microcharts => new(new ScottPlot.Drawing.Colorsets.Microcharts());
+        public static ScottPlot.Drawing.Palette Nord => new(new ScottPlot.Drawing.Colorsets.Nord());
+        public static ScottPlot.Drawing.Palette OneHalf => new(new ScottPlot.Drawing.Colorsets.OneHalf());
+        public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
+        public static ScottPlot.Drawing.Palette PolarNight => new(new ScottPlot.Drawing.Colorsets.PolarNight());
+        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
+
+        /// <summary>
+        /// Create a new color palette from an array of HTML colors
+        /// </summary>
+        public static ScottPlot.Drawing.Palette FromHtmlColors(string[] htmlColors)
+        {
+            return new ScottPlot.Drawing.Palette(htmlColors);
+        }
+
+        /// <summary>
+        /// Return an array containing every available style
+        /// </summary>
+        public static ScottPlot.Drawing.Palette[] GetPalettes() => typeof(ScottPlot.Drawing.Palette)
+            .GetProperties()
+            .Select(x => x.GetValue(typeof(ScottPlot.Drawing.Palette)))
+            .Select(x => (ScottPlot.Drawing.Palette)x)
+            .ToArray();
+    }
+}
+
 namespace ScottPlot.Drawing
 {
+    /* This module will be retired in ScottPlot 5 */
     public class Palette
     {
         public static Palette Aurora => new(new Colorsets.Aurora());
