@@ -72,7 +72,7 @@ namespace ScottPlot.Drawing
             Name = name;
         }
 
-        public override string ToString() => $"{Name} Palette ({Count()} colors)";
+        public override string ToString() => Name;
 
         public int GetInt32(int index)
         {
@@ -97,6 +97,7 @@ namespace ScottPlot.Drawing
                 .ToArray();
         }
 
+        // TODO: make this a property in ScottPlot 5
         public int Count()
         {
             return cset.Count();
