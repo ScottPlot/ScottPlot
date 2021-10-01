@@ -14,9 +14,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive avalonia</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.1.24</Version>
-    <AssemblyVersion>4.1.24.0</AssemblyVersion>
-    <FileVersion>4.1.24.0</FileVersion>
+    <Version>$(ScottPlotVersion)</Version>
+    <AssemblyVersion>$(ScottPlotVersion).0</AssemblyVersion>
+    <FileVersion>$(ScottPlotVersion).0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>

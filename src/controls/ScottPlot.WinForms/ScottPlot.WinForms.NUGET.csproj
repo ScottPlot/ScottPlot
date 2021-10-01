@@ -15,9 +15,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive winforms windows forms</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
-    <Version>4.1.24</Version>
-    <AssemblyVersion>4.1.24.0</AssemblyVersion>
-    <FileVersion>4.1.24.0</FileVersion>
+    <Version>$(ScottPlotVersion)</Version>
+    <AssemblyVersion>$(ScottPlotVersion).0</AssemblyVersion>
+    <FileVersion>$(ScottPlotVersion).0</FileVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>

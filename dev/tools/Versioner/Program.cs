@@ -8,7 +8,7 @@ namespace Versioner
     class Program
     {
         /// <summary>
-        /// This program increments version numbers in all ScottPlot NuGet package csproj files
+        /// This program increments the version number in Directory.Packages.props
         /// </summary>
         static void Main(string[] args)
         {
@@ -16,26 +16,24 @@ namespace Versioner
                 throw new ArgumentException("argument required: path to src folder");
 
             string srcPath = Path.GetFullPath(args[0]);
-            string slnPath = Path.Combine(srcPath, "ScottPlot.sln");
-            if (!File.Exists(slnPath))
-                throw new ArgumentException($"bad path: {slnPath}");
+            string directoryBuildPath = Path.Combine(srcPath, "Directory.Build.props");
+            
+            if (!File.Exists(directoryBuildPath))
+                throw new ArgumentException($"bad path: {directoryBuildPath}");
 
-            (Version version, string suffix) = GetCurrentVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"));
-            IncrementVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj"), version, suffix);
+            (Version version, string suffix) = GetCurrentVersion(Path.Combine(directoryBuildPath));
+            IncrementVersion(directoryBuildPath, version, suffix);
 
             Console.WriteLine("COMPLETE");
         }
 
-        public static (Version version, string suffix) GetCurrentVersion(string csprojPath)
+        public static (Version version, string suffix) GetCurrentVersion(string directoryBuildPath)
         {
-            csprojPath = Path.GetFullPath(csprojPath);
-            Console.WriteLine($"Reading version from {csprojPath}");
+            directoryBuildPath = Path.GetFullPath(directoryBuildPath);
+            Console.WriteLine($"Reading version from {directoryBuildPath}");
 
-            XDocument doc = XDocument.Load(csprojPath);
-            string versionString = doc.Element("Project").Element("PropertyGroup").Element("Version").Value;
+            XDocument doc = XDocument.Load(directoryBuildPath);
+            string versionString = doc.Element("Project").Element("PropertyGroup").Element("ScottPlotVersion").Value;
 
             if (versionString.Contains('-'))
             {
@@ -53,28 +51,23 @@ namespace Versioner
             }
         }
 
-        public static void IncrementVersion(string csprojPath, Version oldVersion, string suffix)
+        public static void IncrementVersion(string directoryBuildPath, Version oldVersion, string suffix)
         {
             // prepare new version strings
             Version newVersion = new Version(oldVersion.Major, oldVersion.Minor, oldVersion.Build + 1);
-            string newVersionNumber = newVersion.ToString() + ".0";
             string newVersionName = newVersion.ToString();
             if (suffix != null)
                 newVersionName += "-" + suffix;
-            Console.WriteLine($"{oldVersion} -> {newVersion} {System.IO.Path.GetFileName(csprojPath)}");
+            Console.WriteLine($"{oldVersion} -> {newVersion} {System.IO.Path.GetFileName(directoryBuildPath)}");
 
             // modify only those lines in the csproj file
-            string[] lines = System.IO.File.ReadAllLines(csprojPath);
+            string[] lines = File.ReadAllLines(directoryBuildPath);
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].StartsWith("    <Version>"))
-                    lines[i] = $"    <Version>{newVersionName}</Version>";
-                if (lines[i].StartsWith("    <AssemblyVersion>"))
-                    lines[i] = $"    <AssemblyVersion>{newVersionNumber}</AssemblyVersion>";
-                if (lines[i].StartsWith("    <FileVersion>"))
-                    lines[i] = $"    <FileVersion>{newVersionNumber}</FileVersion>";
+                if (lines[i].StartsWith("        <ScottPlotVersion>"))
+                    lines[i] = $"        <ScottPlotVersion>{newVersionName}</ScottPlotVersion>";
             }
-            File.WriteAllLines(csprojPath, lines);
+            File.WriteAllLines(directoryBuildPath, lines);
         }
     }
 }
