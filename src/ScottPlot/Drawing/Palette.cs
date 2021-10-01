@@ -16,10 +16,10 @@ namespace ScottPlot.Drawing
         public static Palette PolarNight => new(new Colorsets.PolarNight());
         public static Palette SnowStorm => new(new Colorsets.Snowstorm());
 
-        private readonly IColorset cset;
+        private readonly IPalette cset;
         public readonly string Name;
 
-        public Palette(IColorset colorset)
+        public Palette(IPalette colorset)
         {
             cset = colorset ?? new Colorsets.Category10();
             Name = cset.GetType().Name;

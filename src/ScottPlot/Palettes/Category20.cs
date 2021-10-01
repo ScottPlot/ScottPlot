@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace ScottPlot.Drawing.Colorsets
 {
-    public class Category20 : HexColorset, IColorset
+    public class Category20 : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

@@ -3,7 +3,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class OneHalfDark : HexColorset, IColorset
+    class OneHalfDark : HexColorset, IPalette
     {
         // suggested background: #2e3440
         public override string[] hexColors => new string[]

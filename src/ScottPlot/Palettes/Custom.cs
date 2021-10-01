@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Drawing.Colorsets
 {
-    public class Custom : HexColorset, IColorset
+    public class Custom : HexColorset, IPalette
     {
         public override string[] hexColors { get; }
 

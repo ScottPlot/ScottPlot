@@ -3,7 +3,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class OneHalf : HexColorset, IColorset
+    class OneHalf : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {
