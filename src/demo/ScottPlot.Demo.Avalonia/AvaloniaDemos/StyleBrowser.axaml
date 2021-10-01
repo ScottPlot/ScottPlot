@@ -8,11 +8,19 @@
 		Width="800" Height="450"
         Title="Style Browser">
 	<DockPanel Margin="10">
-		<StackPanel>
+		<StackPanel Margin="2">
 			<TextBlock FontSize="16">Styles</TextBlock>
 			<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
 				<ContentControl DockPanel.Dock="Left" Width="200">
-					<ListBox Name="ListBox1" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" Padding="5"/>
+					<ListBox Name="ListBoxStyle" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" Padding="5"/>
+				</ContentControl>
+			</Border>
+		</StackPanel>
+		<StackPanel Margin="2">
+			<TextBlock FontSize="16">Palettes</TextBlock>
+			<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+				<ContentControl DockPanel.Dock="Left" Width="200">
+					<ListBox Name="ListBoxPalette" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" Padding="5"/>
 				</ContentControl>
 			</Border>
 		</StackPanel>

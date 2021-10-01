@@ -11,7 +11,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
     public partial class StyleBrowser : Window
     {
         private readonly AvaPlot avaPlot;
-        private readonly ListBox listBox;
+        private readonly ListBox listBoxStyle;
+        private readonly ListBox listBoxPalette;
         public StyleBrowser()
         {
             InitializeComponent();
@@ -20,17 +21,12 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 #endif
 
             avaPlot = this.Find<AvaPlot>("AvaPlot1");
-            listBox = this.Find<ListBox>("ListBox1");
+            listBoxStyle = this.Find<ListBox>("ListBoxStyle");
+            listBoxPalette = this.Find<ListBox>("ListBoxPalette");
 
-            var listItems = new List<IStyle>();
+            listBoxStyle.Items = ScottPlot.Style.GetStyles();
+            listBoxPalette.Items = ScottPlot.Palette.GetPalettes();
 
-            foreach (var style in ScottPlot.Style.GetStyles())
-                listItems.Add(style);
-
-            listBox.Items = listItems;
-
-            avaPlot.Plot.AddSignal(DataGen.Sin(51));
-            avaPlot.Plot.AddSignal(DataGen.Cos(51));
             avaPlot.Plot.XLabel("Horizontal Axis");
             avaPlot.Plot.YLabel("Vertical Axis");
             avaPlot.Plot.Title("Default Style");
@@ -43,13 +39,29 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         }
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var style = (ScottPlot.Styles.IStyle)listBox.SelectedItem;
+            var style = (ScottPlot.Styles.IStyle)listBoxStyle.SelectedItem;
+            var palette = (ScottPlot.Drawing.Palette)listBoxPalette.SelectedItem;
 
-            if (style is null)
+            if (style is null || palette is null)
                 return;
 
             avaPlot.Plot.Style(style);
-            avaPlot.Plot.Title(style.ToString());
+            avaPlot.Plot.Palette = palette;
+            avaPlot.Plot.Title($"Style: {style}\nPalette: {palette}");
+            avaPlot.Plot.Clear();
+
+            for (int i = 0; i < palette.Count(); i++)
+            {
+                double offset = 1 + i * 1.1;
+                double mult = 10 + i;
+                double phase = i * .3 / palette.Count();
+                double[] ys = DataGen.Sin(51, 1, offset, mult, phase);
+                var sig = avaPlot.Plot.AddSignal(ys);
+                sig.LineWidth = 3;
+                sig.MarkerSize = 0;
+            }
+
+            avaPlot.Plot.AxisAuto(horizontalMargin: 0);
             avaPlot.Refresh();
         }
     }
