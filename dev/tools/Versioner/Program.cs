@@ -18,7 +18,7 @@ namespace Versioner
 
             string srcPath = Path.GetFullPath(args[0]);
             string directoryBuildPath = Path.Combine(srcPath, "Directory.Build.props");
-            
+
             if (!File.Exists(directoryBuildPath))
                 throw new ArgumentException($"bad path: {directoryBuildPath}");
 
