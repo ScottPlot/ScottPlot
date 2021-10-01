@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Versioner
@@ -33,7 +34,7 @@ namespace Versioner
             Console.WriteLine($"Reading version from {directoryBuildPath}");
 
             XDocument doc = XDocument.Load(directoryBuildPath);
-            string versionString = doc.Element("Project").Element("PropertyGroup").Element("ScottPlotVersion").Value;
+            string versionString = doc.Element("Project").Elements("PropertyGroup").Last().Element("ScottPlotVersion").Value;
 
             if (versionString.Contains('-'))
             {
