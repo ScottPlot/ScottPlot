@@ -31,6 +31,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchAxisLimitsButton").Click += LaunchAxisLimits;
             this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
             this.Find<Button>("LaunchMultiAxisLockButton").Click += LaunchMultiAxisLock;
+            this.Find<Button>("LaunchStyleBrowserButton").Click += LaunchStyleBrowser;
         }
 
         public void InitializeComponent()
@@ -122,6 +123,10 @@ namespace ScottPlot.Demo.Avalonia
             new AvaloniaDemos.MultiAxisLock().ShowDialog(this);
         }
 
+        public void LaunchStyleBrowser(object sender, RoutedEventArgs e)
+        {
+            new AvaloniaDemos.StyleBrowser().ShowDialog(this);
+        }
 
     }
 }
