@@ -15,7 +15,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Category10;
+            plt.Palette = ScottPlot.Palette.Category10;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -41,7 +41,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Category20;
+            plt.Palette = ScottPlot.Palette.Category20;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -64,7 +64,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Aurora;
+            plt.Palette = ScottPlot.Palette.Aurora;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -87,7 +87,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Frost;
+            plt.Palette = ScottPlot.Palette.Frost;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -110,7 +110,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -134,7 +134,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.PolarNight;
+            plt.Palette = ScottPlot.Palette.PolarNight;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -158,7 +158,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.SnowStorm;
+            plt.Palette = ScottPlot.Palette.SnowStorm;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -181,7 +181,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.OneHalf;
+            plt.Palette = ScottPlot.Palette.OneHalf;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -205,7 +205,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.OneHalfDark;
+            plt.Palette = ScottPlot.Palette.OneHalfDark;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -236,7 +236,7 @@ namespace ScottPlot.Cookbook.Recipes
             string[] customColors = { "#019d9f", "#7d3091", "#57e075", "#e5b5fa", "#009118" };
 
             // create a custom palette and set it in the plot module
-            plt.Palette = new ScottPlot.Drawing.Palette(customColors);
+            plt.Palette = ScottPlot.Palette.FromHtmlColors(customColors);
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
@@ -259,7 +259,7 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Microcharts;
+            plt.Palette = ScottPlot.Palette.Microcharts;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
