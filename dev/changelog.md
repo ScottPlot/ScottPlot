@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.24 (in progress...)
+* Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 
 ## ScottPlot 4.1.23

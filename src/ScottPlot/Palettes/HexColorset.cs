@@ -5,7 +5,7 @@ namespace ScottPlot.Drawing.Colorsets
 {
     // hex colorsets store web-formatted colors (e.g., '#FFAA66') in a string array.
 
-    public abstract class HexColorset : IColorset
+    public abstract class HexColorset : IPalette
     {
         public (byte r, byte g, byte b) GetRGB(int index)
         {

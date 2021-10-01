@@ -8,7 +8,7 @@
 
 namespace ScottPlot.Drawing
 {
-    public interface IColorset
+    public interface IPalette
     {
         (byte r, byte g, byte b) GetRGB(int index);
         int Count();

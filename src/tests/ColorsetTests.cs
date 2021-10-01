@@ -11,7 +11,7 @@ namespace ScottPlotTests
     class ColorsetTests
     {
         private Color darkColor = ColorTranslator.FromHtml("#2e3440");
-        private ScottPlot.Plot TestColormap(Palette cset, int lineWidth, bool dark = false)
+        private ScottPlot.Plot TestColormap(ScottPlot.Drawing.Palette cset, int lineWidth, bool dark = false)
         {
             var plt = new ScottPlot.Plot(600, 400);
 
@@ -37,26 +37,26 @@ namespace ScottPlotTests
 
         [Test]
         public void Test_Colorset_Aurora() =>
-            TestTools.SaveFig(TestColormap(Palette.Aurora, 3));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.Aurora, 3));
 
         [Test]
         public void Test_Colorset_Nord() =>
-            TestTools.SaveFig(TestColormap(Palette.Nord, 3));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.Nord, 3));
 
         [Test]
         public void Test_Colorset_Cat10() =>
-            TestTools.SaveFig(TestColormap(Palette.Category10, 2));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.Category10, 2));
 
         [Test]
         public void Test_Colorset_Cat20() =>
-            TestTools.SaveFig(TestColormap(Palette.Category20, 1));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.Category20, 1));
 
         [Test]
         public void Test_Colorset_Half() =>
-            TestTools.SaveFig(TestColormap(Palette.OneHalf, 3));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.OneHalf, 3));
 
         [Test]
         public void Test_Colorset_HalfDark() =>
-            TestTools.SaveFig(TestColormap(Palette.OneHalfDark, 3, true));
+            TestTools.SaveFig(TestColormap(ScottPlot.Drawing.Palette.OneHalfDark, 3, true));
     }
 }

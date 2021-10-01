@@ -4,11 +4,11 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class PolarNight : HexColorset, IColorset
+    class Aurora : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {
-            "#2E3440", "#3B4252", "#434C5E", "#4C566A",
+            "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD",
         };
     }
 }

@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ScottPlot.Styles;
 
 namespace ScottPlot.Demo.WPF.WpfDemos
 {
@@ -26,10 +25,11 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
 
             foreach (var style in ScottPlot.Style.GetStyles())
-                ListBox1.Items.Add(style);
+                ListBoxStyle.Items.Add(style);
 
-            WpfPlot1.Plot.AddSignal(DataGen.Sin(51));
-            WpfPlot1.Plot.AddSignal(DataGen.Cos(51));
+            foreach (var palette in ScottPlot.Palette.GetPalettes())
+                ListBoxPalette.Items.Add(palette);
+
             WpfPlot1.Plot.XLabel("Horizontal Axis");
             WpfPlot1.Plot.YLabel("Vertical Axis");
             WpfPlot1.Plot.Title("Default Style");
@@ -38,13 +38,29 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var style = (ScottPlot.Styles.IStyle)ListBox1.SelectedItem;
+            var style = (ScottPlot.Styles.IStyle)ListBoxStyle.SelectedItem;
+            var palette = (ScottPlot.Drawing.Palette)ListBoxPalette.SelectedItem;
 
-            if (style is null)
+            if (style is null || palette is null)
                 return;
 
             WpfPlot1.Plot.Style(style);
-            WpfPlot1.Plot.Title(style.ToString());
+            WpfPlot1.Plot.Title($"Style: {style}\nPalette: {palette}");
+            WpfPlot1.Plot.Palette = palette;
+
+            WpfPlot1.Plot.Clear();
+            for (int i = 0; i < palette.Count(); i++)
+            {
+                double offset = 1 + i * 1.1;
+                double mult = 10 + i;
+                double phase = i * .3 / palette.Count();
+                double[] ys = DataGen.Sin(51, 1, offset, mult, phase);
+                var sig = WpfPlot1.Plot.AddSignal(ys);
+                sig.LineWidth = 3;
+                sig.MarkerSize = 0;
+            }
+
+            WpfPlot1.Plot.AxisAuto(horizontalMargin: 0);
             WpfPlot1.Refresh();
         }
     }
