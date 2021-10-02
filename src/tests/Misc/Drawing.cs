@@ -154,14 +154,10 @@ namespace ScottPlotTests.Misc
         [Test]
         public void Test_LettersDontRenderAsRectangles_SerifFont()
         {
-            // this test ensures letters don't render as rectangles
+            // This test ensures letters don't render as rectangles.
+            // This can happen if System.Drawing.Common is not properly installed.
             // https://github.com/ScottPlot/ScottPlot/issues/1079
-
-            // https://github.com/ScottPlot/ScottPlot/pull/1310#issuecomment-932638916
-            // Some potential change to the default fonts provided for the linux image,
-            // will still run through the test on the windows portion of CI
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Pass();
+            // https://github.com/ScottPlot/ScottPlot/pull/1310
 
             System.Drawing.Bitmap bmp = new(200, 100);
             using var gfx = Graphics.FromImage(bmp);
