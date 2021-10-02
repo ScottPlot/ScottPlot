@@ -23,9 +23,9 @@
 
 ### Questions and Feedback
 
-* **Ask questions** in [Discussions](https://github.com/swharden/ScottPlot/discussions/categories/q-a), [Issues](https://github.com/swharden/ScottPlot/issues), or [on StackOverflow]((https://stackoverflow.com/questions/ask?tags=scottplot))
+* **Ask questions** in [Discussions](https://github.com/ScottPlot/ScottPlot/discussions/categories/q-a), [Issues](https://github.com/ScottPlot/ScottPlot/issues), or [on StackOverflow]((https://stackoverflow.com/questions/ask?tags=scottplot))
 
-* [**Create an issue**](https://github.com/swharden/ScottPlot/issues) for a feature suggestion or bug report
+* [**Create an issue**](https://github.com/ScottPlot/ScottPlot/issues) for a feature suggestion or bug report
 
 * If you enjoy ScottPlot **give us a star!** ⭐
 
