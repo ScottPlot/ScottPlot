@@ -5,8 +5,9 @@
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
 * New Palettes:
+  * `ColorblindFriendly` modeled after [Wong 2011](https://www.nature.com/articles/nmeth.1618.pdf) (#1312) _Thanks @arthurits_
   * `Dark` 8-color palette LCD and print friendly (#1313) _Thanks @arthurits_
-  * `DarkPastel` 8-color palette of LCD and print-friendly colors (#1313) _Thanks @arthurits_
+  * `DarkPastel` 8-color palette of LCD and print-friendly colors (#1314) _Thanks @arthurits_
 
 ## ScottPlot 4.1.23
 * NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)
