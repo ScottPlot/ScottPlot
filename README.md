@@ -5,19 +5,19 @@
 [![](https://img.shields.io/nuget/vpre/scottplot?color=%23004880&label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![GitHub](https://img.shields.io/github/license/scottplot/scottplot?color=%231281c0)](LICENSE)
 
-**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [**ScottPlot Cookbook**](https://swharden.com/scottplot/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [**ScottPlot Cookbook**](https://scottplot.net/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
-* **[ScottPlot Cookbook](https://swharden.com/scottplot/cookbook)** 👈 _Learn how to use ScottPlot_
+* **[ScottPlot Cookbook](https://scottplot.net/cookbook)** 👈 _Learn how to use ScottPlot_
 
-* **[ScottPlot Demo](https://swharden.com/scottplot/demo)** 👈 _See what ScottPlot can do_
+* **[ScottPlot Demo](https://scottplot.net/demo/)** 👈 _See what ScottPlot can do_
 
-* **Quickstart:** [**WinForms**](https://swharden.com/scottplot/quickstart#windows-forms-quickstart), [**WPF**](https://swharden.com/scottplot/quickstart#wpf-quickstart), [**Avalonia**](https://swharden.com/scottplot/quickstart#avalonia-quickstart), [**Console**](https://swharden.com/scottplot/quickstart#console-quickstart)
+* **Quickstart:** [**WinForms**](https://scottplot.net/quickstart/winforms/), [**WPF**](https://scottplot.net/quickstart/wpf/), [**Avalonia**](https://scottplot.net/quickstart/avalonia/), [**Console**](https://scottplot.net/quickstart/console/)
 
 <div align='center'>
 
-<a href='https://swharden.com/scottplot'><img src='dev/graphics/ScottPlot.gif'></a>
+<a href='https://scottplot.net'><img src='dev/graphics/ScottPlot.gif'></a>
 
-<a href='https://swharden.com/scottplot/cookbook'><img src='dev/graphics/cookbook.jpg'></a>
+<a href='https://scottplot.net/cookbook'><img src='dev/graphics/cookbook.jpg'></a>
 
 </div>
 
@@ -42,10 +42,10 @@ formsPlot1.Plot.AddScatter(xs, ys);
 ![](dev/graphics/winforms-quickstart.png)
 
 **More Quickstarts:**
-* [**Console Application** Quickstart](https://swharden.com/scottplot/quickstart#console-quickstart)
-* [**Windows Forms** Quickstart](https://swharden.com/scottplot/quickstart#windows-forms-quickstart)
-* [**WPF** Quickstart](https://swharden.com/scottplot/quickstart#wpf-quickstart)
-* [**Avalonia** Quickstart](https://swharden.com/scottplot/quickstart#avalonia-quickstart)
+* [**Console Application** Quickstart](https://scottplot.net/quickstart/console/)
+* [**Windows Forms** Quickstart](https://scottplot.net/quickstart/winforms/)
+* [**WPF** Quickstart](https://scottplot.net/quickstart/wpf/)
+* [**Avalonia** Quickstart](https://scottplot.net/quickstart/avalonia/)
 
 ### Plot in the Cloud with ScottPlot
 
