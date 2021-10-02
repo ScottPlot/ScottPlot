@@ -15,6 +15,8 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette Category10 => new(new ScottPlot.Drawing.Colorsets.Category10());
         public static ScottPlot.Drawing.Palette Category20 => new(new ScottPlot.Drawing.Colorsets.Category20());
         public static ScottPlot.Drawing.Palette ColorblindFriendly => new(new ScottPlot.Drawing.Colorsets.ColorblindFriendly());
+        public static ScottPlot.Drawing.Palette Dark => new(new ScottPlot.Drawing.Colorsets.Dark());
+        public static ScottPlot.Drawing.Palette DarkPastel => new(new ScottPlot.Drawing.Colorsets.DarkPastel());
         public static ScottPlot.Drawing.Palette Frost => new(new ScottPlot.Drawing.Colorsets.Frost());
         public static ScottPlot.Drawing.Palette Microcharts => new(new ScottPlot.Drawing.Colorsets.Microcharts());
         public static ScottPlot.Drawing.Palette Nord => new(new ScottPlot.Drawing.Colorsets.Nord());
@@ -51,6 +53,8 @@ namespace ScottPlot.Drawing
         public static Palette Category10 => new(new Colorsets.Category10());
         public static Palette Category20 => new(new Colorsets.Category20());
         public static Palette ColorblindFriendly => new(new Colorsets.ColorblindFriendly());
+        public static Palette Dark => new(new Colorsets.Dark());
+        public static Palette DarkPastel => new(new Colorsets.DarkPastel());
         public static Palette Frost => new(new Colorsets.Frost());
         public static Palette Microcharts => new(new Colorsets.Microcharts());
         public static Palette Nord => new(new Colorsets.Nord());
