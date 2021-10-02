@@ -272,27 +272,4 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AxisAuto(0, 0.1);
         }
     }
-
-    public class PaletteDark : IRecipe
-    {
-        public string Category => "Palette";
-        public string ID => "palette_Dark";
-        public string Title => "Dark";
-        public string Description => "An 8-colors dark-palette that's both LCD and print friendly.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            plt.Palette = ScottPlot.Palette.Dark;
-
-            for (int i = 0; i < plt.Palette.Count(); i++)
-            {
-                double[] xs = DataGen.Consecutive(100);
-                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
-                plt.AddScatterLines(xs, ys, lineWidth: 3);
-            }
-
-            plt.Title($"{plt.Palette}");
-            plt.AxisAuto(0, 0.1);
-        }
-    }
 }
