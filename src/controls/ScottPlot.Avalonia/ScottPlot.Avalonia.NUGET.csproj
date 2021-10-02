@@ -14,9 +14,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive avalonia</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>$(ScottPlotVersion)</Version>
-    <AssemblyVersion>$(ScottPlotVersion).0</AssemblyVersion>
-    <FileVersion>$(ScottPlotVersion).0</FileVersion>
+    <Version>4.1.24</Version>
+    <AssemblyVersion>4.1.24.0</AssemblyVersion>
+    <FileVersion>4.1.24.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -26,14 +26,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+    <PackageReference Include="Avalonia" Version="0.10.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <PackageReference Include="Avalonia" Version="0.10.*" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
   </ItemGroup>
 
 </Project>

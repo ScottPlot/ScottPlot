@@ -14,9 +14,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
     <PackageReleaseNotes>https://github.com/ScottPlot/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
-    <Version>$(ScottPlotVersion)</Version>
-    <AssemblyVersion>$(ScottPlotVersion).0</AssemblyVersion>
-    <FileVersion>$(ScottPlotVersion).0</FileVersion>
+    <Version>4.1.24</Version>
+    <AssemblyVersion>4.1.24.0</AssemblyVersion>
+    <FileVersion>4.1.24.0</FileVersion>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
@@ -34,8 +34,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
+    <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -43,20 +43,18 @@
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <Folder Include="Palettes\" />
   </ItemGroup>
 
   <!-- MacOS requires a special DLL to use System.Drawing -->
   <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
-    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
   </ItemGroup>
 
   <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="System.ValueTuple" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Palettes\" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
