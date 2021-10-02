@@ -51,7 +51,6 @@
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <Folder Include="Palettes\" />
   </ItemGroup>
 
   <!-- MacOS requires a special DLL to use System.Drawing -->

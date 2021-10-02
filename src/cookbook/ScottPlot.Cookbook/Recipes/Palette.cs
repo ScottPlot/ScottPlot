@@ -272,4 +272,27 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AxisAuto(0, 0.1);
         }
     }
+
+    public class PaletteDarkLight : IRecipe
+    {
+        public string Category => "Palette";
+        public string ID => "palette_DarkLight";
+        public string Title => "DarkLight";
+        public string Description => "This a qualitative 8-color palette which is the lighter-color version of the 'Dark' palette.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Palette = ScottPlot.Palette.DarkLight;
+
+            for (int i = 0; i < plt.Palette.Count(); i++)
+            {
+                double[] xs = DataGen.Consecutive(100);
+                double[] ys = DataGen.Sin(100, phase: -i * .5 / plt.Palette.Count());
+                plt.AddScatterLines(xs, ys, lineWidth: 3);
+            }
+
+            plt.Title($"{plt.Palette}");
+            plt.AxisAuto(0, 0.1);
+        }
+    }
 }
