@@ -30,7 +30,7 @@ jobs:
         run: msbuild -property:Configuration=Release -verbosity:minimal
 
   format:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: Check Formatting
     steps:
       - name: 🛒 Checkout
@@ -47,6 +47,7 @@ jobs:
 
   test:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -73,6 +74,41 @@ jobs:
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --configuration Release
+
+  pack:
+    name: Build NuGet Packages
+    if: github.event_name != 'release'
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+      - name: 📦 Pack
+        run: |
+          dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          name: ScottPlot-Packages
+          retention-days: 1
+          path: |
+            src/ScottPlot/bin/Release/*.nupkg
+            src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
+            src/controls/ScottPlot.WPF/bin/Release/*.nupkg
+            src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
 
   deploy:
     name: Package and Deploy
@@ -102,7 +138,8 @@ jobs:
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: nupkg
+          name: ScottPlot-Packages
+          retention-days: 30
           path: |
             src/ScottPlot/bin/Release/*.nupkg
             src/controls/ScottPlot.WinForms/bin/Release/*.nupkg

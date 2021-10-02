@@ -26,14 +26,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 
+      Logic here ensures .NET Framework apps get the older (4.6.1) package by default.
+      Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
+      is associated with assembly issues that break .NET Framework projects on Windows.
+      https://github.com/ScottPlot/ScottPlot/issues/1004
+    -->
+    <PackageVersion Condition="!$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageVersion Condition="$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <PackageReference Include="Avalonia" Version="0.10.*" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
   </ItemGroup>
 
 </Project>

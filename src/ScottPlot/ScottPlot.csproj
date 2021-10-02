@@ -34,7 +34,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+    <!-- 
+      Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
+      Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
+      is associated with assembly issues that break .NET Framework projects on Windows.
+      https://github.com/ScottPlot/ScottPlot/issues/1004
+    -->
     <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -43,6 +51,7 @@
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <Folder Include="Palettes\" />
   </ItemGroup>
 
   <!-- MacOS requires a special DLL to use System.Drawing -->
@@ -54,9 +63,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Palettes\" />
   </ItemGroup>
 
 </Project>

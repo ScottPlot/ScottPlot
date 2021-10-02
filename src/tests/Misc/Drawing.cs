@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ScottPlotTests.Misc
@@ -153,8 +154,10 @@ namespace ScottPlotTests.Misc
         [Test]
         public void Test_LettersDontRenderAsRectangles_SerifFont()
         {
-            // this test ensures letters don't render as rectangles
+            // This test ensures letters don't render as rectangles.
+            // This can happen if System.Drawing.Common is not properly installed.
             // https://github.com/ScottPlot/ScottPlot/issues/1079
+            // https://github.com/ScottPlot/ScottPlot/pull/1310
 
             System.Drawing.Bitmap bmp = new(200, 100);
             using var gfx = Graphics.FromImage(bmp);
