@@ -160,7 +160,7 @@ namespace ScottPlotTests.Misc
             // https://github.com/ScottPlot/ScottPlot/pull/1310#issuecomment-932638916
             // Some potential change to the default fonts provided for the linux image,
             // will still run through the test on the windows portion of CI
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) 
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 Assert.Pass();
 
             System.Drawing.Bitmap bmp = new(200, 100);
