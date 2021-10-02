@@ -232,6 +232,17 @@
 							</TextBlock>
 						</DockPanel>
 
+						<DockPanel>
+							<Button DockPanel.Dock="Left" Name="LaunchStyleBrowserButton">
+								<TextBlock TextAlignment="Center">
+									Style Browser
+								</TextBlock>
+							</Button>
+							<TextBlock >
+								View available predefined plot styles
+							</TextBlock>
+						</DockPanel>
+
 					</StackPanel>
 				</StackPanel>
 			</Border>
