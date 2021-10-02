@@ -15,10 +15,18 @@
         <PackageVersion Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <!-- 
+        Old .NET Framework Windows projects break when upgrading from 
+        System.Drawing.Common 4 to 5 then trying to downgrade back to 4.
+        Logic here ensures .NET Framework apps get the older package by default.
+        Users may always upgrade (but be aware downgrading poses problems).
+        https://github.com/ScottPlot/ScottPlot/issues/1004
+        https://docs.microsoft.com/en-us/dotnet/standard/frameworks
+     -->
+    <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
         <PackageVersion Include="System.Drawing.Common" Version="5.0.2" />
     </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)' != 'net5.0'">
+    <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
         <PackageVersion Include="System.Drawing.Common" Version="4.6.1" />
     </ItemGroup>
 </Project>
