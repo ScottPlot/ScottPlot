@@ -273,16 +273,18 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
-    public class PaletteColorBlindness : IRecipe
+    public class PaletteColorblindFriendly : IRecipe
     {
         public string Category => "Palette";
         public string ID => "palette_ColorBlindness";
         public string Title => "ColorBlindness";
-        public string Description => "8-color palette that has good overall variability and can be differentiated by individuals with red-green color blindness.";
+        public string Description => "8-color palette that has good overall variability and " +
+        "can be differentiated by individuals with red-green color blindness. " +
+        "Colors originated from Wong 2011 (https://pubmed.ncbi.nlm.nih.gov/21850730).";
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Palette.ColorBlindness;
+            plt.Palette = ScottPlot.Palette.ColorblindFriendly;
 
             for (int i = 0; i < plt.Palette.Count(); i++)
             {
