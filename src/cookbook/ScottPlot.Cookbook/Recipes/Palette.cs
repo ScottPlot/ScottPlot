@@ -276,7 +276,7 @@ namespace ScottPlot.Cookbook.Recipes
     public class PaletteColorblindFriendly : IRecipe
     {
         public string Category => "Palette";
-        public string ID => "palette_ColorBlindness";
+        public string ID => "palette_ColorblindFriendly";
         public string Title => "Colorblind Friendly";
         public string Description => "8-color palette that has good overall variability and " +
             "can be differentiated by individuals with red-green color blindness. " +
