@@ -279,8 +279,8 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "palette_ColorBlindness";
         public string Title => "ColorBlindness";
         public string Description => "8-color palette that has good overall variability and " +
-        "can be differentiated by individuals with red-green color blindness. " +
-        "Colors originated from Wong 2011 (https://pubmed.ncbi.nlm.nih.gov/21850730).";
+            "can be differentiated by individuals with red-green color blindness. " +
+            "Colors originated from Wong 2011, https://www.nature.com/articles/nmeth.1618.pdf";
 
         public void ExecuteRecipe(Plot plt)
         {
