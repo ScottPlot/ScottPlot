@@ -1,6 +1,6 @@
 ﻿/* This a qualitative 8-color palette generated using:
  * https://colorbrewer2.org
- * which is the lighter-color version of the "Dark" palette.
+ * which is the lighter-color version of the 'Dark' palette.
  */
 namespace ScottPlot.Drawing.Colorsets
 {
