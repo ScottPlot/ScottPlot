@@ -102,7 +102,8 @@ jobs:
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: nupkg
+          name: ScottPlot-Packages
+          retention-days: 1
           path: |
             src/ScottPlot/bin/Release/*.nupkg
             src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
@@ -137,7 +138,8 @@ jobs:
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: nupkg
+          name: ScottPlot-Packages
+          retention-days: 30
           path: |
             src/ScottPlot/bin/Release/*.nupkg
             src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
