@@ -32,8 +32,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             WpfPlot1.Plot.XLabel("Horizontal Axis");
             WpfPlot1.Plot.YLabel("Vertical Axis");
-            WpfPlot1.Plot.Title("Default Style");
-            WpfPlot1.Refresh();
+
+            ListBoxStyle.SelectedIndex = 0;
+            ListBoxPalette.SelectedIndex = 0;
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

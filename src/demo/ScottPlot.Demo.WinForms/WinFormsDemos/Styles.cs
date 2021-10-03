@@ -13,8 +13,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             formsPlot1.Plot.XLabel("Horizontal Axis");
             formsPlot1.Plot.YLabel("Vertical Axis");
-            formsPlot1.Plot.Title("Default Style");
-            formsPlot1.Refresh();
+
+            lbStyles.SelectedIndex = 0;
+            lbPalettes.SelectedIndex = 0;
         }
 
         private void UpdatePlot()
