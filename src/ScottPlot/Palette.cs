@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 /* 
  * Palettes are collections of colors that control the default colors for new plottables added to the plot.
@@ -14,6 +17,9 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette Aurora => new(new ScottPlot.Drawing.Colorsets.Aurora());
         public static ScottPlot.Drawing.Palette Category10 => new(new ScottPlot.Drawing.Colorsets.Category10());
         public static ScottPlot.Drawing.Palette Category20 => new(new ScottPlot.Drawing.Colorsets.Category20());
+        public static ScottPlot.Drawing.Palette ColorblindFriendly => new(new ScottPlot.Drawing.Colorsets.ColorblindFriendly());
+        public static ScottPlot.Drawing.Palette Dark => new(new ScottPlot.Drawing.Colorsets.Dark());
+        public static ScottPlot.Drawing.Palette DarkPastel => new(new ScottPlot.Drawing.Colorsets.DarkPastel());
         public static ScottPlot.Drawing.Palette Frost => new(new ScottPlot.Drawing.Colorsets.Frost());
         public static ScottPlot.Drawing.Palette Microcharts => new(new ScottPlot.Drawing.Colorsets.Microcharts());
         public static ScottPlot.Drawing.Palette Nord => new(new ScottPlot.Drawing.Colorsets.Nord());
@@ -21,6 +27,7 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
         public static ScottPlot.Drawing.Palette PolarNight => new(new ScottPlot.Drawing.Colorsets.PolarNight());
         public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
+        public static ScottPlot.Drawing.Palette xgfs25 => new(new ScottPlot.Drawing.Colorsets.Tsitsulin());
 
         /// <summary>
         /// Create a new color palette from an array of HTML colors
@@ -33,11 +40,18 @@ namespace ScottPlot
         /// <summary>
         /// Return an array containing every available style
         /// </summary>
-        public static ScottPlot.Drawing.Palette[] GetPalettes() => typeof(ScottPlot.Drawing.Palette)
-            .GetProperties()
-            .Select(x => x.GetValue(typeof(ScottPlot.Drawing.Palette)))
-            .Select(x => (ScottPlot.Drawing.Palette)x)
-            .ToArray();
+        public static ScottPlot.Drawing.Palette[] GetPalettes()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(x => x.IsClass)
+                .Where(x => !x.IsAbstract)
+                .Where(x => x.GetInterfaces().Contains(typeof(ScottPlot.Drawing.IPalette)))
+                .Select(x => (ScottPlot.Drawing.IPalette)FormatterServices.GetUninitializedObject(x))
+                .Select(x => new ScottPlot.Drawing.Palette(x))
+                .Where(x => x.Count() > 0)
+                .ToArray();
+        }
     }
 }
 
@@ -49,6 +63,9 @@ namespace ScottPlot.Drawing
         public static Palette Aurora => new(new Colorsets.Aurora());
         public static Palette Category10 => new(new Colorsets.Category10());
         public static Palette Category20 => new(new Colorsets.Category20());
+        public static Palette ColorblindFriendly => new(new Colorsets.ColorblindFriendly());
+        public static Palette Dark => new(new Colorsets.Dark());
+        public static Palette DarkPastel => new(new Colorsets.DarkPastel());
         public static Palette Frost => new(new Colorsets.Frost());
         public static Palette Microcharts => new(new Colorsets.Microcharts());
         public static Palette Nord => new(new Colorsets.Nord());
@@ -56,6 +73,7 @@ namespace ScottPlot.Drawing
         public static Palette OneHalfDark => new(new Colorsets.OneHalfDark());
         public static Palette PolarNight => new(new Colorsets.PolarNight());
         public static Palette SnowStorm => new(new Colorsets.Snowstorm());
+        public static Palette xgfs25 => new(new Colorsets.Tsitsulin());
 
         private readonly IPalette cset;
         public readonly string Name;

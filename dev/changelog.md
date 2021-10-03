@@ -4,6 +4,13 @@
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
+* New Palettes:
+  * `ColorblindFriendly` modeled after [Wong 2011](https://www.nature.com/articles/nmeth.1618.pdf) (#1312) _Thanks @arthurits_
+  * `Dark` 8-color palette LCD and print friendly (#1313) _Thanks @arthurits_
+  * `DarkPastel` 8-color palette of LCD and print-friendly colors (#1314) _Thanks @arthurits_
+  * `Tsitsulin` 25-color optimal qualitative palette ([described here](http://tsitsul.in/blog/coloropt)) by [Anton Tsitsulin](http://tsitsul.in) (#1318) _Thanks @arthurits_
+* New Styles:
+  * `Burgundy` (#1319) _Thanks @arthurits_
 
 ## ScottPlot 4.1.23
 * NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)

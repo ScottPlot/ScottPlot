@@ -11,6 +11,7 @@ namespace ScottPlot
         public static IStyle Blue1 => new Blue1();
         public static IStyle Blue2 => new Blue2();
         public static IStyle Blue3 => new Blue3();
+        public static IStyle Burgundy => new Burgundy();
         public static IStyle Control => new Styles.Control();
         public static IStyle Default => new Default();
         public static IStyle Gray1 => new Gray1();
