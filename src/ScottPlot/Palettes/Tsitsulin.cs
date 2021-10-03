@@ -1,12 +1,10 @@
-﻿/* A 25-color pelette based on Anton Tsitsulin's 12-color palette discussed:
- * http://tsitsul.in/blog/coloropt/
- * At the time the license file was accessed (2021-09-03) in the github address:
+﻿/* A 25-color pelette based on Anton Tsitsulin's 12-color palette
+ * http://tsitsul.in/blog/coloropt
  * https://github.com/xgfs/coloropt
- * the original work was released under a MIT License.
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class xgfs25 : HexColorset, IPalette
+    class Tsitsulin : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {
