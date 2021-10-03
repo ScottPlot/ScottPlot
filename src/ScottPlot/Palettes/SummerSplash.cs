@@ -1,4 +1,4 @@
-namespace ScottPlot.Drawing.Colorsets
+﻿namespace ScottPlot.Drawing.Colorsets
 {
     class SummerSplash : HexColorset, IPalette
     {
