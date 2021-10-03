@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 /* 
  * Palettes are collections of colors that control the default colors for new plottables added to the plot.
@@ -36,11 +39,18 @@ namespace ScottPlot
         /// <summary>
         /// Return an array containing every available style
         /// </summary>
-        public static ScottPlot.Drawing.Palette[] GetPalettes() => typeof(ScottPlot.Drawing.Palette)
-            .GetProperties()
-            .Select(x => x.GetValue(typeof(ScottPlot.Drawing.Palette)))
-            .Select(x => (ScottPlot.Drawing.Palette)x)
-            .ToArray();
+        public static ScottPlot.Drawing.Palette[] GetPalettes()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(x => x.IsClass)
+                .Where(x => !x.IsAbstract)
+                .Where(x => x.GetInterfaces().Contains(typeof(ScottPlot.Drawing.IPalette)))
+                .Select(x => (ScottPlot.Drawing.IPalette)FormatterServices.GetUninitializedObject(x))
+                .Select(x => new ScottPlot.Drawing.Palette(x))
+                .Where(x => x.Count() > 0)
+                .ToArray();
+        }
     }
 }
 

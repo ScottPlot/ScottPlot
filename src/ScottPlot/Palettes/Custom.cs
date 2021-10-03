@@ -8,7 +8,7 @@ namespace ScottPlot.Drawing.Colorsets
 {
     public class Custom : HexColorset, IPalette
     {
-        public override string[] hexColors { get; }
+        public override string[] hexColors { get; } = new string[] { };
 
         public Custom(string[] htmlColors)
         {
