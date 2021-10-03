@@ -23,7 +23,7 @@ namespace ScottPlot.Drawing.Colorsets
             return (color.R, color.G, color.B);
         }
 
-        public int Count() => hexColors.Length;
+        public int Count() => hexColors is null ? 0 : hexColors.Length;
 
         public abstract string[] hexColors { get; }
     }
