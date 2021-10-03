@@ -9,6 +9,7 @@ namespace ScottPlot
         public static Styles.IStyle Blue1 => new Styles.Blue1();
         public static Styles.IStyle Blue2 => new Styles.Blue2();
         public static Styles.IStyle Blue3 => new Styles.Blue3();
+        public static Styles.IStyle Burgundy => new Styles.Burgundy();
         public static Styles.IStyle Control => new Styles.Control();
         public static Styles.IStyle Default => new Styles.Default();
         public static Styles.IStyle Gray1 => new Styles.Gray1();
