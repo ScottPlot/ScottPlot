@@ -1,32 +1,39 @@
-﻿using System.Linq;
+﻿using ScottPlot.Styles;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace ScottPlot
 {
     public static class Style
     {
-        /* PLEASE KEEP THIS LIST ALPHABETIZED */
-        public static Styles.IStyle Black => new Styles.Black();
-        public static Styles.IStyle Blue1 => new Styles.Blue1();
-        public static Styles.IStyle Blue2 => new Styles.Blue2();
-        public static Styles.IStyle Blue3 => new Styles.Blue3();
-        public static Styles.IStyle Burgundy => new Styles.Burgundy();
-        public static Styles.IStyle Control => new Styles.Control();
-        public static Styles.IStyle Default => new Styles.Default();
-        public static Styles.IStyle Gray1 => new Styles.Gray1();
-        public static Styles.IStyle Gray2 => new Styles.Gray2();
-        public static Styles.IStyle Light1 => new Styles.Light1();
-        public static Styles.IStyle Light2 => new Styles.Light2();
-        public static Styles.IStyle Monospace => new Styles.Monospace();
-        public static Styles.IStyle Seaborn => new Styles.Seaborn();
+        public static IStyle Black => new Black();
+        public static IStyle Blue1 => new Blue1();
+        public static IStyle Blue2 => new Blue2();
+        public static IStyle Blue3 => new Blue3();
+        public static IStyle Burgundy => new Burgundy();
+        public static IStyle Control => new Styles.Control();
+        public static IStyle Default => new Default();
+        public static IStyle Gray1 => new Gray1();
+        public static IStyle Gray2 => new Gray2();
+        public static IStyle Light1 => new Light1();
+        public static IStyle Light2 => new Light2();
+        public static IStyle Monospace => new Monospace();
+        public static IStyle Seaborn => new Seaborn();
 
         /// <summary>
         /// Return an array containing every available style
         /// </summary>
-        public static Styles.IStyle[] GetStyles() => typeof(Style)
-            .GetProperties()
-            .Select(x => x.GetValue(typeof(Style)))
-            .Select(x => (Styles.IStyle)x)
-            .ToArray();
+        public static IStyle[] GetStyles()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(x => x.IsClass)
+                .Where(x => !x.IsAbstract)
+                .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
+                .Select(x => (IStyle)FormatterServices.GetUninitializedObject(x))
+                .ToArray();
+        }
     }
 
 }

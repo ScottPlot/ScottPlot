@@ -29,8 +29,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot.Plot.XLabel("Horizontal Axis");
             avaPlot.Plot.YLabel("Vertical Axis");
-            avaPlot.Plot.Title("Default Style");
-            avaPlot.Refresh();
+
+            listBoxPalette.SelectedIndex = 0;
+            listBoxStyle.SelectedIndex = 0;
         }
 
         private void InitializeComponent()

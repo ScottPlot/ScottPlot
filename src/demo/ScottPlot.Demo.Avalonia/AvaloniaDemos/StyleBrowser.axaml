@@ -5,7 +5,7 @@
         xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         mc:Ignorable="d"
         x:Class="ScottPlot.Demo.Avalonia.AvaloniaDemos.StyleBrowser"
-		Width="800" Height="450"
+		Width="1000" Height="450"
         Title="Style Browser">
 	<DockPanel Margin="10">
 		<StackPanel Margin="2">
