@@ -19,7 +19,7 @@ namespace ScottPlot.Styles
         public override Color TickLabelColor => Color.Brown;
         public override Color TickMajorColor => Color.Brown;
         public override Color TickMinorColor => Color.Brown;
-               
+
 
     }
 }
