@@ -26,9 +26,9 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette OneHalf => new(new ScottPlot.Drawing.Colorsets.OneHalf());
         public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
         public static ScottPlot.Drawing.Palette PolarNight => new(new ScottPlot.Drawing.Colorsets.PolarNight());
-        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
-        public static ScottPlot.Drawing.Palette xgfs25 => new(new ScottPlot.Drawing.Colorsets.Tsitsulin());
         public static ScottPlot.Drawing.Palette Redness => new(new ScottPlot.Drawing.Colorsets.Redness());
+        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
+        public static ScottPlot.Drawing.Palette xgfs25 => new(new ScottPlot.Drawing.Colorsets.Tsitsulin());        
 
         /// <summary>
         /// Create a new color palette from an array of HTML colors
@@ -73,10 +73,10 @@ namespace ScottPlot.Drawing
         public static Palette OneHalf => new(new Colorsets.OneHalf());
         public static Palette OneHalfDark => new(new Colorsets.OneHalfDark());
         public static Palette PolarNight => new(new Colorsets.PolarNight());
+        public static Palette Redness => new(new Colorsets.Redness());
         public static Palette SnowStorm => new(new Colorsets.Snowstorm());
         public static Palette xgfs25 => new(new Colorsets.Tsitsulin());
-        public static ScottPlot.Drawing.Palette Redness => new(new ScottPlot.Drawing.Colorsets.Redness());
-
+        
         private readonly IPalette cset;
         public readonly string Name;
 
