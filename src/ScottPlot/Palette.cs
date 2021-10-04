@@ -27,7 +27,7 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
         public static ScottPlot.Drawing.Palette PolarNight => new(new ScottPlot.Drawing.Colorsets.PolarNight());
         public static ScottPlot.Drawing.Palette Redness => new(new ScottPlot.Drawing.Colorsets.Redness());
-        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());        
+        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
         public static ScottPlot.Drawing.Palette Tsitsulin => new(new ScottPlot.Drawing.Colorsets.Tsitsulin());
 
         /// <summary>
