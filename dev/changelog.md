@@ -188,7 +188,7 @@ PassionateDeveloper86 and @StendProg_
 
 ## ScottPlot 4.1.5-beta
 * Helper methods were added for creating scatter plots with just lines (`AddScatterLines()`) or just markers (`AddScatterPoints()`).
-* Scatter and Signal plots have `GetPointNearest()` which now has a `xyRatio` argument to support identifying points near the cursor in pixel space (#709, #722) _Thanks @olofszymczak, @StendProg, @bclehmann_
+* Scatter and Signal plots have `GetPointNearest()` which now has a `xyRatio` argument to support identifying points near the cursor in pixel space (#709, #722) _Thanks @oszymczak, @StendProg, @bclehmann_
 * Improved display of manual tick labels (#724) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.4-beta
