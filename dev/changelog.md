@@ -4,7 +4,7 @@
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
-* Avalonia Control: Now targets .NET 5 (#1306, #1309) _Thanks @blcehmann_
+* Avalonia Control: Now targets .NET 5 (#1306, #1309) _Thanks @bclehmann_
 * New Palettes:
   * `ColorblindFriendly` modeled after [Wong 2011](https://www.nature.com/articles/nmeth.1618.pdf) (#1312) _Thanks @arthurits_
   * `Dark` 8-color palette LCD and print friendly (#1313) _Thanks @arthurits_
