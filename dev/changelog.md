@@ -517,7 +517,7 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
 * Improved responsiveness while dragging axis lines and axis spans (#228) _Thanks @StendProg_
 
 ## ScottPlot 4.0.16
-* Improved support for MacOS and Linux (#211, #212, #216) _Thanks @Hexxonite and @StendProg_
+* Improved support for MacOS and Linux (#211, #212, #216) _Thanks @hexxone and @StendProg_
 * Fixed a few display bugs
   * Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
   * Enabled `visible` argument in `Title()`, `XLabel()`, and `YLabel()` (#222) _Thanks @ckovamees_
@@ -541,8 +541,8 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
 * Improved `MatchAxis()` and `MatchLayout()` (#217) _Thanks @ckovamees and @StendProg_
 
 ## ScottPlot 4.0.13
-* Improved support for Linux and MacOS _Thanks @Hexxonite_
-* Improved font validation (#211, #212) _Thanks @Hexxonite and @StendProg_
+* Improved support for Linux and MacOS _Thanks @hexxone_
+* Improved font validation (#211, #212) _Thanks @hexxone and @StendProg_
 
 ## ScottPlot 4.0.11
 * User controls now have a `cursor` property which can be set to allow custom cursors. (#187) _Thanks @gobikulandaisamy_
@@ -583,7 +583,7 @@ This release updated the ScottPlot.WinForms package only.
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
 
 #### Minor Changes
-* improved spacing for non-uniformly distributed OHLC and candlestick plots (#184) _Thanks @satyat110_
+* improved spacing for non-uniformly distributed OHLC and candlestick plots (#184) _Thanks @Luvnet-890_
 * added `fixedLineWidth` to Legend() to allow the user to control whether legend lines are dynamically sized (#185) _Thanks @ab-tools_
 * legend now hides lines or markers of they're hidden in the plottable
 * DateTime axes now use local display format (#108) _Thanks @FadyDev2_
@@ -591,7 +591,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
 ## ScottPlot 4.0.4
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
 
-* PlotText() now supports a background frame (#181) _Thanks @satyat110_
+* PlotText() now supports a background frame (#181) _Thanks @Luvnet-890_
 * OHLC objects can be created with a double or a DateTime (#182) _Thanks @Minu476_
 * Improved AxisAuto() fixes bug for mixed 2d and axis line plots
 
