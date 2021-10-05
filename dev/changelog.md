@@ -394,7 +394,7 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
   * now support `OHLC` objects with variable widths defined with a new `timeSpan` argument in the OHLC constructor. (#346) _Thanks @Minu476_
   * now support custom up/down colors including those with transparency (#346) _Thanks @Minu476_
   * have a new `sequential` argument to plot data based on array index rather than `OHLC.time`. This is a new, simpler way to display unevenly-spaced data (e.g., gaps over weekends) in a way that makes the gaps invisible. (#346) _Thanks @Minu476_
-* Fixed a marker/line alignment issue that only affeced low-density Signal plots on Linux and MacOS (#340) _Thanks @SeisChr_
+* Fixed a marker/line alignment issue that only affeced low-density Signal plots on Linux and MacOS (#340) _Thanks @SeidChr_
 * WPF control now appears in Toolbox (#151) _Thanks @RalphLAtGitHub_
 * Plot titles are now center-aligned with the data area, not the figure. This improves the look of small plots with titles. (#365) _Thanks @Resonanz_
 * Fixed bug that ignored `Configure(enableRightClickMenu: false)` in WPF and WinForms user controls. (#365) _Thanks @thunderstatic_
