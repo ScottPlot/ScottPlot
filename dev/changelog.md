@@ -274,7 +274,7 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
 * Added RenderLock() and RenderUnlock() to the Plot module to facilitate multi-threaded plot modification (#609) _Thanks @ZTaiIT1025_
 
 ## ScottPlot 4.0.44
-* Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
+* Improved limits for fixed-size axis spans (#586) _Thanks @Ichibot200 and @StendProg_
 * Mouse drag/drop events now send useful event arguments (#593) _Thanks @charlescao460 and @StendProg_
 * Fixed a bug that affected plots with extremely small (<1E-10) axis spans (#607) _Thanks @RFIsoft_
 * Plot.SaveFig() now returns the full path to the file it created (#608)
@@ -289,8 +289,8 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
 * Improved positions for base16 ticks (#582, #581) _Thanks @bclehmann_
 
 ## ScottPlot 4.0.42
-* Improved DPI scaling support when using WinForms in .NET Core applications (#563) _Thanks @citizen3942_
-* Improved DPI scaling support for draggable axis lines and spans (#563) _Thanks @citizen3942_
+* Improved DPI scaling support when using WinForms in .NET Core applications (#563) _Thanks @Ichibot200_
+* Improved DPI scaling support for draggable axis lines and spans (#563) _Thanks @Ichibot200_
 
 ## ScottPlot 4.0.41
 * Improved density of DateTime ticks (#564, #561) _Thanks @StendProg and @waynetheron_
@@ -359,10 +359,10 @@ ScottPlot 4.0 source code (including all cookbook examples and demo applications
 
 ## ScottPlot 4.0.34
 * Improve display of `PlotSignalXY()` by not rendering markers when zoomed very far out (#402) _Thanks @gobikulandaisamy_
-* Optimized rendering of solid lines which have a user-definable `LineStyle` property. This modification improves grid line rendering and increases performance for most types of plots. (#401, #327) _Thanks @bukkideme and @citizen3942_
+* Optimized rendering of solid lines which have a user-definable `LineStyle` property. This modification improves grid line rendering and increases performance for most types of plots. (#401, #327) _Thanks @bukkideme and @Ichibot200_
 
 ## ScottPlot 4.0.33
-* Force grid lines to always draw using anti-aliasing. This compensates for a bug in `System.Drawing` that may cause diagonal line artifacts to appear when the user controls were panned or zoomed. (#401, #327) _Thanks @bukkideme and @citizen3942_
+* Force grid lines to always draw using anti-aliasing. This compensates for a bug in `System.Drawing` that may cause diagonal line artifacts to appear when the user controls were panned or zoomed. (#401, #327) _Thanks @bukkideme and @Ichibot200_
 
 ## ScottPlot 4.0.32
 * User controls now have a `GetMouseCoordinates()` method which returns the DPI-aware position of the mouse in graph coordinates (#379, #380) _Thanks @bclehmann_
@@ -627,8 +627,8 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 * **The WPF control has its own package** ([ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/)) targeting .NET Core 3.0.
 
 #### Minor Changes
-* better layout system and control of padding (Thanks @citizen3942)
-* added ruler mode to `plt.Ticks()` (Thanks @citizen3942)
+* better layout system and control of padding (Thanks @Ichibot200)
+* added ruler mode to `plt.Ticks()` (Thanks @Ichibot200)
 * `plt.MatchLayout()` no longer throws exceptions
 * eliminated `MouseTracker` class (tracking is now in user controls)
 * Use NUnit (not MSTest) for tests
@@ -642,8 +642,8 @@ _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-10-20_
 * fully deleted the outdated `ScottPlotUC`
 * fixed infinite zoom bug caused by calling AxisAuto() when plotting a single point (or perfectly straight horizontal or vertical line)
 * added `ToolboxItem` and `DesignTimeVisible` delegates to WpfPlot control to try to get it to appear in the toolbox (but it doesn't seem to be working)
-* improved figure padding when axes frames are disabled (Thanks @citizen3942)
-* improved rendering of ticks at the edge of the plottable area (Thanks @citizen3942)
+* improved figure padding when axes frames are disabled (Thanks @Ichibot200)
+* improved rendering of ticks at the edge of the plottable area (Thanks @Ichibot200)
 * added `AxesChanged` event to user control to make it easier to sync axes between multiple plots (see linked plots demo)
 * disabled drawing of arrows on user control in designer mode
 
