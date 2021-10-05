@@ -281,7 +281,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public float GetPixel(double unit)
         {
-            double unitsFromMin = IsInverted ? unit - Min : unit - Min;
+            double unitsFromMin = IsInverted ? Max - unit : unit - Min;
             double pxFromMin = unitsFromMin * PxPerUnit;
             double pixel = DataOffsetPx + pxFromMin;
             return (float)pixel;

@@ -5,13 +5,18 @@
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
 * Avalonia Control: Now targets .NET 5 (#1306, #1309) _Thanks @bclehmann_
+* Plot: Fixed bug causing `GetPixel()` to return incorrect values for some axes (#1329, #1330) _Thanks @riquich_
 * New Palettes:
   * `ColorblindFriendly` modeled after [Wong 2011](https://www.nature.com/articles/nmeth.1618.pdf) (#1312) _Thanks @arthurits_
-  * `Dark` 8-color palette LCD and print friendly (#1313) _Thanks @arthurits_
-  * `DarkPastel` 8-color palette of LCD and print-friendly colors (#1314) _Thanks @arthurits_
+  * `Dark` (#1313) _Thanks @arthurits_
+  * `DarkPastel` (#1314) _Thanks @arthurits_
+  * `Redness` (#1322) _Thanks @wbalbo_
+  * `SummerSplash (#1317)` _Thanks @KanishkKhurana_
   * `Tsitsulin` 25-color optimal qualitative palette ([described here](http://tsitsul.in/blog/coloropt)) by [Anton Tsitsulin](http://tsitsul.in) (#1318) _Thanks @arthurits_
 * New Styles:
   * `Burgundy` (#1319) _Thanks @arthurits_
+  * `Earth` (#1320) _Thanks @martinkleppe_
+  * `Pink` (#1234) _Thanks @nanrod_
 
 ## ScottPlot 4.1.23
 * NuGet: use deterministic builds, add source link support, and include compiler flags (#1285)
