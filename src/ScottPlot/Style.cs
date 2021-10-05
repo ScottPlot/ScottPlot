@@ -19,6 +19,7 @@ namespace ScottPlot
         public static IStyle Light1 => new Light1();
         public static IStyle Light2 => new Light2();
         public static IStyle Monospace => new Monospace();
+        public static IStyle Pink => new Pink();
         public static IStyle Seaborn => new Seaborn();
 
         /// <summary>
