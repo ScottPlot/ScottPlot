@@ -12,9 +12,10 @@
     <Description>This package provides a WPF control to interactively display ScottPlot graphs in WPF applications. This package targets both .NET Framework and .NET Core.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
+    <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive WPF</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <Version>4.1.24</Version>
     <AssemblyVersion>4.1.24.0</AssemblyVersion>
@@ -58,7 +59,6 @@
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
-    <None Include="README.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>

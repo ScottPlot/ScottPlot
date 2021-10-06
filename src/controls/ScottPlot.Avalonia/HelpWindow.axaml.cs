@@ -37,7 +37,7 @@ namespace ScottPlot.Avalonia
         {
             using (Process proc = new Process())
             {
-                proc.StartInfo.FileName = "http://swharden.com/scottplot/";
+                proc.StartInfo.FileName = "https://ScottPlot.NET";
                 proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }

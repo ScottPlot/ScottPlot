@@ -26,7 +26,7 @@ namespace ScottPlot.WPF
 
         private void LaunchScottPlotWebsite(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://swharden.com/scottplot/");
+            System.Diagnostics.Process.Start("https://ScottPlot.NET");
         }
 
         private void CloseButtonClicked(object sender, RoutedEventArgs e)
