@@ -1,0 +1,41 @@
+name: Demo
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    name: Publish Demo Apps
+    if: github.event_name != 'release'
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+      - name: 🚚 Restore
+        working-directory: src
+        run: dotnet restore
+      - name: 🐌 MSBuild
+        run: msbuild src -property:Configuration=Release -verbosity:minimal
+      - name: 📦 Zip WinForms Demo
+        uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
+        with:
+          type: "zip"
+          filename: "ScottPlot-Demo-WinForms.zip"
+          path: "src/demo/ScottPlot.Demo.WinForms/bin"
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          name: ScottPlot-Packages
+          retention-days: 1
+          path: |
+            ScottPlot-Demo-WinForms.zip
