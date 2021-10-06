@@ -17,6 +17,8 @@ jobs:
     runs-on: windows-latest
     env:
       CSPROJ_FOLDER: src/demo/ScottPlot.Demo.WinForms
+      ZIP_FILENAME: ScottPlot-Demo-WinForms.zip
+
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -36,13 +38,86 @@ jobs:
         uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
         with:
           type: "zip"
-          directory: "${{ env.CSPROJ_FOLDER }}/bin" # The working directory where the zip or tar actually runs.
-          filename: "ScottPlot-Demo-WinForms.zip" # The filename for the generated archive, relative to directory.
-          path: "." # The path to the files or directory that should be archived, relative to directory
+          directory: "${{ env.CSPROJ_FOLDER }}/bin/Release"
+          filename: "${{ env.ZIP_FILENAME }}"
+          path: "."
 
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: ScottPlot-Demo-WinForms
           retention-days: 1
-          path: ${{ env.CSPROJ_FOLDER }}/bin/ScottPlot-Demo-WinForms.zip
+          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
+
+
+  wpf-demo:
+    name: WPF Demo
+    runs-on: windows-latest
+    env:
+      CSPROJ_FOLDER: src/demo/ScottPlot.Demo.WPF
+      ZIP_FILENAME: ScottPlot-Demo-WPF.zip
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+
+      - name: 🚚 Restore
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: dotnet restore
+
+      - name: 🐌 MSBuild
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: msbuild -property:Configuration=Release -verbosity:minimal
+
+      - name: 📦 Zip
+        uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
+        with:
+          type: "zip"
+          directory: "${{ env.CSPROJ_FOLDER }}/bin/Release"
+          filename: "${{ env.ZIP_FILENAME }}"
+          path: "."
+
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          retention-days: 1
+          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
+
+
+  avalonia-demo:
+    name: Avalonia Demo
+    runs-on: windows-latest
+    env:
+      CSPROJ_FOLDER: src/demo/ScottPlot.Demo.Avalonia
+      ZIP_FILENAME: ScottPlot-Demo-Avalonia.zip
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+
+      - name: 🚚 Restore
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: dotnet restore
+
+      - name: 🐌 MSBuild
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: msbuild -property:Configuration=Release -verbosity:minimal
+
+      - name: 📦 Zip
+        uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
+        with:
+          type: "zip"
+          directory: "${{ env.CSPROJ_FOLDER }}/bin/Release"
+          filename: "${{ env.ZIP_FILENAME }}"
+          path: "."
+
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          retention-days: 1
+          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
