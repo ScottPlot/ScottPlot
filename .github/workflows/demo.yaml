@@ -42,11 +42,11 @@ jobs:
           filename: "${{ env.ZIP_FILENAME }}"
           path: "."
 
-      - name: 💾 Store
-        uses: actions/upload-artifact@v2
-        with:
-          retention-days: 1
-          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
+      # - name: 💾 Store
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     retention-days: 1
+      #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
 
 
   wpf-demo:
@@ -79,11 +79,11 @@ jobs:
           filename: "${{ env.ZIP_FILENAME }}"
           path: "."
 
-      - name: 💾 Store
-        uses: actions/upload-artifact@v2
-        with:
-          retention-days: 1
-          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
+      # - name: 💾 Store
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     retention-days: 1
+      #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
 
 
   avalonia-demo:
@@ -116,8 +116,8 @@ jobs:
           filename: "${{ env.ZIP_FILENAME }}"
           path: "."
 
-      - name: 💾 Store
-        uses: actions/upload-artifact@v2
-        with:
-          retention-days: 1
-          path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
+      # - name: 💾 Store
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     retention-days: 1
+      #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
