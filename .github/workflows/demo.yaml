@@ -21,16 +21,11 @@ jobs:
         uses: actions/checkout@v2
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
-      - name: ✨ Setup .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "6.0.x"
-          include-prerelease: true
-      - name: 🚚 Restore
+      - name: 🚚 Restore WinForms Demo
         working-directory: src
-        run: dotnet restore
-      - name: 🐌 MSBuild
-        run: msbuild src -property:Configuration=Release -verbosity:minimal
+        run: dotnet restore src/demo/ScottPlot.Demo.WinForms
+      - name: 🐌 Build WinForms Demo
+        run: msbuild "src/demo/ScottPlot.Demo.WinForms" -property:Configuration=Release -verbosity:minimal
       - name: 📦 Zip WinForms Demo
         uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
         with:
