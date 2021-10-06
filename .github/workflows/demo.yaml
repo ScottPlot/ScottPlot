@@ -22,7 +22,6 @@ jobs:
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore WinForms Demo
-        working-directory: src
         run: dotnet restore src/demo/ScottPlot.Demo.WinForms
       - name: 🐌 Build WinForms Demo
         run: msbuild "src/demo/ScottPlot.Demo.WinForms" -property:Configuration=Release -verbosity:minimal
