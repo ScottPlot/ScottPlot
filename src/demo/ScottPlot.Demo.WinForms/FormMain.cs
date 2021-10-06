@@ -11,7 +11,7 @@ namespace ScottPlot.Demo.WinForms
             versionLabel.Text = Plot.Version;
         }
 
-        private void WebsiteLink_Click(object sender, EventArgs e) => Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
+        private void WebsiteLink_Click(object sender, EventArgs e) => Tools.LaunchBrowser("https://ScottPlot.NET/demo");
         private void CookbookButton_Click(object sender, EventArgs e) => new FormCookbook().ShowDialog();
         private void MouseTrackerButton_Click(object sender, EventArgs e) => new WinFormsDemos.MouseTracker().ShowDialog();
         private void ToggleVisibilityButton_Click(object sender, EventArgs e) => new WinFormsDemos.ToggleVisibility().ShowDialog();

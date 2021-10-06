@@ -194,7 +194,7 @@ namespace ScottPlot
             return (xs, ys);
         }
 
-        public static void LaunchBrowser(string url = "http://swharden.com/scottplot/")
+        public static void LaunchBrowser(string url = "https://ScottPlot.NET")
         {
             // A cross-platform .NET-Core-safe function to launch a URL in the browser
             Debug.WriteLine($"Launching URL: {url}");

@@ -122,8 +122,8 @@ namespace ScottPlot.Drawing
                  * Setting DashPattern automatically sets a pen's DashStyle to custom.
                  * Custom DashStyles are slower and can cause diagonal rendering artifacts.
                  * Instead use the solid DashStyle.
-                 * https://github.com/swharden/ScottPlot/issues/327
-                 * https://github.com/swharden/ScottPlot/issues/401
+                 * https://github.com/ScottPlot/ScottPlot/issues/327
+                 * https://github.com/ScottPlot/ScottPlot/issues/401
                  */
                 pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
             }

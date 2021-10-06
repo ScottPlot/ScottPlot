@@ -122,7 +122,7 @@ namespace ScottPlot.Demo.WPF
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
+            Tools.LaunchBrowser("https://ScottPlot.NET/demo");
         }
 
         private void MultiAxisLock(object sender, RoutedEventArgs e)
