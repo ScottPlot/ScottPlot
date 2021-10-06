@@ -12,29 +12,38 @@ on:
       - created
 
 jobs:
-  publish:
-    name: Publish Demo Apps
-    if: github.event_name != 'release'
+  winforms-demo:
+    name: WinForms Demo
     runs-on: windows-latest
+    env:
+      CSPROJ_FOLDER: src/demo/ScottPlot.Demo.WinForms
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
+
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
-      - name: 🚚 Restore WinForms Demo
-        run: dotnet restore src/demo/ScottPlot.Demo.WinForms
-      - name: 🐌 Build WinForms Demo
-        run: msbuild "src/demo/ScottPlot.Demo.WinForms" -property:Configuration=Release -verbosity:minimal
-      - name: 📦 Zip WinForms Demo
+
+      - name: 🚚 Restore
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: dotnet restore
+
+      - name: 🐌 MSBuild
+        working-directory: ${{ env.CSPROJ_FOLDER }}
+        run: msbuild -property:Configuration=Release -verbosity:minimal
+
+      - name: 📦 Zip
         uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
         with:
+          working-directory: ${{ env.CSPROJ_FOLDER }}
           type: "zip"
           filename: "ScottPlot-Demo-WinForms.zip"
-          directory: "src/demo/ScottPlot.Demo.WinForms/bin"
+          directory: "bin"
+
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
+          working-directory: ${{ env.CSPROJ_FOLDER }}/bin
           name: ScottPlot-Demo
           retention-days: 1
-          path: |
-            src/demo/ScottPlot.Demo.WinForms/bin/ScottPlot-Demo-WinForms.zip
+          path: ScottPlot-Demo-WinForms.zip
