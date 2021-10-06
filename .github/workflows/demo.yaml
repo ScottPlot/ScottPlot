@@ -30,11 +30,11 @@ jobs:
         with:
           type: "zip"
           filename: "ScottPlot-Demo-WinForms.zip"
-          path: "src/demo/ScottPlot.Demo.WinForms/bin"
+          directory: "src/demo/ScottPlot.Demo.WinForms/bin"
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: ScottPlot-Packages
+          name: ScottPlot-Demo
           retention-days: 1
           path: |
-            ScottPlot-Demo-WinForms.zip
+            src/demo/ScottPlot.Demo.WinForms/bin/ScottPlot-Demo-WinForms.zip
