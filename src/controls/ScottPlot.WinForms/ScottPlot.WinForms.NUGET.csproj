@@ -11,9 +11,10 @@
     <Description>This package provides a Windows Forms user control to interactively display ScottPlot graphs. This package targets both .NET Framework and .NET Core.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
+    <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive winforms windows forms</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <Version>4.1.24</Version>
     <AssemblyVersion>4.1.24.0</AssemblyVersion>
