@@ -1,6 +1,9 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.24 (in progress...)
+## ScottPlot 4.1.25 
+_In development / not yet on NuGet_
+
+## ScottPlot 4.1.24
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
