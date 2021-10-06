@@ -48,15 +48,6 @@ jobs:
       #     retention-days: 1
       #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
 
-      - name: 🚀 Upload
-        uses: bayssmekanique/action-simple-file-upload@6a5813e1d0efe83cb6101cbba69ca59d3aed90b3
-        with:
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          host: scottplot.net
-          src: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
-          dest: /scottplot.net/public_html/demo/${{ env.ZIP_FILENAME }}
-
   wpf-demo:
     name: WPF Demo
     runs-on: windows-latest
@@ -93,15 +84,6 @@ jobs:
       #     retention-days: 1
       #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
 
-      - name: 🚀 Upload
-        uses: bayssmekanique/action-simple-file-upload@6a5813e1d0efe83cb6101cbba69ca59d3aed90b3
-        with:
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          host: scottplot.net
-          src: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
-          dest: /scottplot.net/public_html/demo/${{ env.ZIP_FILENAME }}
-
   avalonia-demo:
     name: Avalonia Demo
     runs-on: windows-latest
@@ -137,12 +119,3 @@ jobs:
       #   with:
       #     retention-days: 1
       #     path: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
-
-      - name: 🚀 Upload
-        uses: bayssmekanique/action-simple-file-upload@6a5813e1d0efe83cb6101cbba69ca59d3aed90b3
-        with:
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          host: scottplot.net
-          src: ${{ env.CSPROJ_FOLDER }}/bin/Release/${{ env.ZIP_FILENAME }}
-          dest: /scottplot.net/public_html/demo/${{ env.ZIP_FILENAME }}
