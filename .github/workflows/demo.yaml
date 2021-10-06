@@ -35,15 +35,14 @@ jobs:
       - name: 📦 Zip
         uses: thedoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d # v0.6.0
         with:
-          working-directory: ${{ env.CSPROJ_FOLDER }}
           type: "zip"
-          filename: "ScottPlot-Demo-WinForms.zip"
-          directory: "bin"
+          directory: "${{ env.CSPROJ_FOLDER }}/bin" # The working directory where the zip or tar actually runs.
+          filename: "ScottPlot-Demo-WinForms.zip" # The filename for the generated archive, relative to directory.
+          path: "." # The path to the files or directory that should be archived, relative to directory
 
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          working-directory: ${{ env.CSPROJ_FOLDER }}/bin
-          name: ScottPlot-Demo
+          name: ScottPlot-Demo-WinForms
           retention-days: 1
-          path: ScottPlot-Demo-WinForms.zip
+          path: ${{ env.CSPROJ_FOLDER }}/bin/ScottPlot-Demo-WinForms.zip
