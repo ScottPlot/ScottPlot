@@ -144,6 +144,9 @@ namespace ScottPlot.Control
         /// </summary>
         private bool IsZoomingWithAlt;
 
+        /// <summary>
+        /// True if a zoom rectangle is being actively drawn using left click
+        /// </summary>
         private bool IsZoomingWithLeft;
 
         /// <summary>
