@@ -35,6 +35,11 @@ namespace ScottPlot.Control
         public bool LeftClickDragPan = true;
 
         /// <summary>
+        /// Control whether to swap left drag pan to middle drag pan and middle drag zoom to left drag zoom
+        /// </summary>
+        public bool SwapDragLeftMiddle = false;
+
+        /// <summary>
         /// Control whether right-click-drag zooming is enabled
         /// </summary>
         public bool RightClickDragZoom = true;

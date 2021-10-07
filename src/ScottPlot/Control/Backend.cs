@@ -34,6 +34,7 @@
  *    - middle-click auto-axis margin
  *    - double-click benchmark toggle
  *    - scrollwheel zoom
+ *    - swap left-click-drag pan / middle-click-drag zoom
  *    - quality (anti-aliasing on/off) for various actions
  *    - delayed high quality render after low-quality interactive renders
  *   
@@ -142,6 +143,8 @@ namespace ScottPlot.Control
         /// True if a zoom rectangle is being actively drawn using ALT + left click
         /// </summary>
         private bool IsZoomingWithAlt;
+
+        private bool IsZoomingWithLeft;
 
         /// <summary>
         /// The plot underlying this control.
@@ -555,14 +558,18 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseMove(InputState input)
         {
+            bool leftWasLifted = IsZoomingWithLeft && !input.LeftWasJustPressed && Configuration.SwapDragLeftMiddle;
             bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
-            bool middleButtonLifted = IsZoomingRectangle && !input.MiddleWasJustPressed;
-            if (IsZoomingRectangle && (altWasLifted || middleButtonLifted))
+            bool middleWasLifted = IsZoomingRectangle && !input.MiddleWasJustPressed && !Configuration.SwapDragLeftMiddle;
+
+            if (IsZoomingRectangle && (leftWasLifted || altWasLifted || middleWasLifted))
                 Settings.ZoomRectangle.Clear();
 
-            IsZoomingWithAlt = IsLeftDown && input.AltDown;
-            bool isMiddleClickDragZooming = IsMiddleDown && !middleButtonLifted;
-            bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
+            IsZoomingWithLeft = IsLeftDown && Configuration.SwapDragLeftMiddle;
+            IsZoomingWithAlt = (IsLeftDown && input.AltDown && !Configuration.SwapDragLeftMiddle) || (IsMiddleDown && input.AltDown && Configuration.SwapDragLeftMiddle);
+            bool isZoomingWithMiddle = IsMiddleDown && !middleWasLifted && !Configuration.SwapDragLeftMiddle;
+
+            bool isZooming = IsZoomingWithLeft || IsZoomingWithAlt || isZoomingWithMiddle;
             IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom && MouseDownDragged;
 
             MouseDownTravelDistance += Math.Abs(input.X - MouseLocationX);
@@ -574,7 +581,7 @@ namespace ScottPlot.Control
             IUIEvent mouseMoveEvent = null;
             if (PlottableBeingDragged != null)
                 mouseMoveEvent = EventFactory.CreatePlottableDrag(input.X, input.Y, input.ShiftDown, PlottableBeingDragged);
-            else if (IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan)
+            else if ((IsLeftDown && !input.AltDown && Configuration.LeftClickDragPan && !Configuration.SwapDragLeftMiddle) || (IsMiddleDown && !input.AltDown && Configuration.SwapDragLeftMiddle))
                 mouseMoveEvent = EventFactory.CreateMousePan(input);
             else if (IsRightDown && Configuration.RightClickDragZoom)
                 mouseMoveEvent = EventFactory.CreateMouseZoom(input);
