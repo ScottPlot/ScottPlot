@@ -15,7 +15,7 @@ _In development / not yet on NuGet_
   * `DarkPastel` (#1314) _Thanks @arthurits_
   * `Redness` (#1322) _Thanks @wbalbo_
   * `SummerSplash (#1317)` _Thanks @KanishkKhurana_
-  * `Tsitsulin` 25-color optimal qualitative palette ([described here](http://tsitsul.in/blog/coloropt)) by [Anton Tsitsulin](http://tsitsul.in) (#1318) _Thanks @arthurits_
+  * `Tsitsulin` 25-color optimal qualitative palette ([described here](http://tsitsul.in/blog/coloropt)) by [Anton Tsitsulin](http://tsitsul.in) (#1318) _Thanks @arthurits and @xgfs_
 * New Styles:
   * `Burgundy` (#1319) _Thanks @arthurits_
   * `Earth` (#1320) _Thanks @martinkleppe_
