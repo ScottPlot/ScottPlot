@@ -410,29 +410,46 @@ namespace ScottPlot
         #region axis limits: fit to plottable data
 
         /// <summary>
+        /// Auto-scale the axis limits to fit the data. This function is an alias for AxisAuto().
+        /// </summary>
+        /// <param name="x">horizontal margin in the range [0, 1]</param>
+        /// <param name="y">vertical margin in the range [0, 1]</param>
+        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
+        /// <returns>Current default margins for automatic axis scaling</returns>
+        public (double x, double y) Margins(double? x = null, double? y = null, int? xAxisIndex = null, int? yAxisIndex = null)
+        {
+            AxisAuto(x, y, xAxisIndex, yAxisIndex);
+            return (settings.MarginsX, settings.MarginsY);
+        }
+
+        /// <summary>
         /// Automatically adjust axis limits to fit the data
         /// </summary>
         /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
         /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
         /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
         /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1, int? xAxisIndex = null, int? yAxisIndex = null)
+        public void AxisAuto(double? horizontalMargin = null, double? verticalMargin = null, int? xAxisIndex = null, int? yAxisIndex = null)
         {
+            settings.MarginsX = horizontalMargin ?? settings.MarginsX;
+            settings.MarginsY = verticalMargin ?? settings.MarginsY;
+
             if (xAxisIndex is null && yAxisIndex is null)
             {
-                settings.AxisAutoAll(horizontalMargin, verticalMargin);
+                settings.AxisAutoAll(settings.MarginsX, settings.MarginsY);
                 return;
             }
 
             if (xAxisIndex is null)
-                settings.AxisAutoAllX(horizontalMargin);
+                settings.AxisAutoAllX(settings.MarginsX);
             else
-                settings.AxisAutoX(xAxisIndex.Value, horizontalMargin);
+                settings.AxisAutoX(xAxisIndex.Value, settings.MarginsX);
 
             if (yAxisIndex is null)
-                settings.AxisAutoAllY(verticalMargin);
+                settings.AxisAutoAllY(settings.MarginsY);
             else
-                settings.AxisAutoY(yAxisIndex.Value, verticalMargin);
+                settings.AxisAutoY(yAxisIndex.Value, settings.MarginsY);
         }
 
         /// <summary>
@@ -620,10 +637,10 @@ namespace ScottPlot
         [Obsolete("use AxisScaleLock()", true)]
         public bool EqualAxis;
 
-        [Obsolete("Use AxisAuto()", true)]
+        [Obsolete("Use AxisAuto() or Margins()", true)]
         public double[] AutoAxis() => null;
 
-        [Obsolete("Use AxisAuto()", true)]
+        [Obsolete("Use AxisAuto() or Margins()", true)]
         public double[] AutoScale() => null;
 
 
