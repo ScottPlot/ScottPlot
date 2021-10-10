@@ -362,12 +362,12 @@ namespace ScottPlot
         /// </returns>
         public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
-            if (lockScales)
-                AxisScaleLock(true);
-
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
+
+            if (lockScales)
+                AxisScaleLock(true);
 
             return plottable;
         }
@@ -385,12 +385,12 @@ namespace ScottPlot
         /// </returns>
         public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
-            if (lockScales)
-                AxisScaleLock(true);
-
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
+
+            if (lockScales)
+                AxisScaleLock(true);
 
             return plottable;
         }
