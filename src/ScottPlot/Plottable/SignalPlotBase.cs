@@ -366,7 +366,7 @@ namespace ScottPlot.Plottable
         /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
         /// by inserting an extra point between each of the original data points.
         /// </summary>
-        private PointF[] GetStepPoints(PointF[] pointsArray)
+        protected PointF[] GetStepPoints(PointF[] pointsArray)
         {
             PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
 
@@ -774,7 +774,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void ValidatePoints(PointF[] points)
+        protected void ValidatePoints(PointF[] points)
         {
             foreach (PointF pt in points)
                 if (float.IsNaN(pt.Y))

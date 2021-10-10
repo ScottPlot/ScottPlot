@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.25 
 _In development / not yet on NuGet_
+* SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
 
 ## ScottPlot 4.1.24
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)

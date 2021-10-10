@@ -218,7 +218,15 @@ namespace ScottPlot.Plottable
 
                 // Draw lines
                 if (PointsToDraw.Length > 1)
-                    gfx.DrawLines(penHD, PointsToDraw.ToArray());
+                {
+                    PointF[] pointsArray = PointsToDraw.ToArray();
+                    ValidatePoints(pointsArray);
+
+                    if (StepDisplay)
+                        pointsArray = GetStepPoints(pointsArray);
+
+                    gfx.DrawLines(penHD, pointsArray);
+                }
 
                 // draw markers
                 if (PointsToDraw.Length > 1)
