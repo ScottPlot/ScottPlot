@@ -4,6 +4,7 @@
 _In development / not yet on NuGet_
 * SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
 * Heatmap: Improve automatic axis limit detection (#1278) _Thanks @bclehmann_
+* Plot: Added `Margins()` to set default margins to use when `AxisAuto()` is called without arguments (#1345)
 
 ## ScottPlot 4.1.24
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)

@@ -82,11 +82,13 @@ namespace ScottPlot.Control
         /// <summary>
         /// Horizontal margin between the edge of the data and the edge of the plot when middle-click AutoAxis is called
         /// </summary>
+        [Obsolete("Set default margins with Plot.Margins()", error: true)]
         public double MiddleClickAutoAxisMarginX = .05;
 
         /// <summary>
         /// Vertical margin between the edge of the data and the edge of the plot when middle-click AutoAxis is called
         /// </summary>
+        [Obsolete("Set default margins with Plot.Margins()", error: true)]
         public double MiddleClickAutoAxisMarginY = .1;
 
         /// <summary>

@@ -114,6 +114,16 @@ namespace ScottPlot
         /// </summary>
         public int Height => (int)YAxis.Dims.FigureSizePx;
 
+        /// <summary>
+        /// Default padding to use when AxisAuto() or Margins() is called without a specified margin
+        /// </summary>
+        public double MarginsX = .05;
+
+        /// <summary>
+        /// Default padding to use when AxisAuto() or Margins() is called without a specified margin
+        /// </summary>
+        public double MarginsY = .1;
+
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
