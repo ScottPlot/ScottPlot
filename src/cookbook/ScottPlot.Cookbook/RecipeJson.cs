@@ -82,6 +82,7 @@ namespace ScottPlot.Cookbook
             string[] possiblePaths =
             {
                 // potential paths relative to this EXE
+                "",
                 "cookbook",
                 "cookbook/source",
 
