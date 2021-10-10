@@ -57,7 +57,14 @@ namespace ScottPlot.Demo.WinForms
                 return;
 
             var recipe = Cookbook.Locate.GetRecipe(id);
-            string source = Recipes is null ? Cookbook.RecipeJson.NotFoundMessage : Recipes[id].Code;
+
+            string source = Cookbook.RecipeJson.NotFoundMessage;
+            if (Recipes != null)
+            {
+                if (Recipes.ContainsKey(id))
+                    source = Recipes[id].Code;
+            }
+
             DemoNameLabel.Text = recipe.Title;
             DescriptionTextbox.Text = recipe.Description;
             sourceCodeTextbox.Text = source.Replace("\n", Environment.NewLine);
