@@ -182,9 +182,12 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 return new AxisLimits();
 
-            return ShowAxisLabels ?
-                new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
-                new AxisLimits(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+            if (ShowAxisLabels)
+            {
+                return new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height);
+            }
+
+            return new AxisLimits(0, BmpHeatmap.Width, 0, BmpHeatmap.Height);
         }
 
         public void ValidateData(bool deepValidation = false)
