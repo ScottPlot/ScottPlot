@@ -31,7 +31,6 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public LiveDataFixed()
         {
             InitializeComponent();
-            wpfPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
             wpfPlot1.Plot.AddSignal(liveData);
