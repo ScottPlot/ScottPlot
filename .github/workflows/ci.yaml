@@ -22,6 +22,7 @@ jobs:
         run: |
           curl \
               -X POST \
+              -H 'authorization: Bearer ${{ secrets.WORKFLOW_TOKEN }}' \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/CI/dispatches \
               -d '{"ref":"ref"}'
