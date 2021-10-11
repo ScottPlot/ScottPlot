@@ -31,6 +31,8 @@ namespace ScottPlot.Plottable
         public double? TransparencyThreshold;
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
+
+        [Obsolete("This feature has been deprecated (see cookbook for recommended usage)")]
         public bool ShowAxisLabels;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -182,9 +184,14 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 return new AxisLimits();
 
-            return ShowAxisLabels ?
-                new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
-                new AxisLimits(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (ShowAxisLabels)
+            {
+                return new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height);
+            }
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            return new AxisLimits(0, BmpHeatmap.Width, 0, BmpHeatmap.Height);
         }
 
         public void ValidateData(bool deepValidation = false)
@@ -204,8 +211,10 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
+#pragma warning disable CS0618 // Type or member is obsolete
             if (ShowAxisLabels)
                 RenderAxis(dims, bmp, lowQuality);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)

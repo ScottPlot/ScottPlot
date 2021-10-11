@@ -19,6 +19,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddHeatmap(data2D);
         }
     }
+    public class HeatmapMargins : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_margins";
+        public string Title => "Heatmap with Tight Margins";
+        public string Description =>
+            "The heatmap can fit the plot area exactly if margins are " +
+            "set to zero and the square axis lock is disabled.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
+
+            plt.AddHeatmap(data2D, lockScales: false);
+            plt.Margins(0, 0);
+        }
+    }
 
     public class HeatmapColorbar : IRecipe
     {
@@ -33,8 +51,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] data2D = { { 1, 2, 3 },
                                  { 4, 5, 6 } };
 
-            var hm = plt.AddHeatmap(data2D);
+            var hm = plt.AddHeatmap(data2D, lockScales: false);
             var cb = plt.AddColorbar(hm);
+            plt.Margins(0, 0);
         }
     }
 
@@ -55,8 +74,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var hm = plt.AddHeatmap(data2D, lockScales: false);
             hm.Smooth = true;
-
-            plt.SetAxisLimits(-2, 6, -1, 6);
         }
     }
 
