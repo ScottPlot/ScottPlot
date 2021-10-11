@@ -14,6 +14,18 @@ on:
       - created
 
 jobs:
+  changelog:
+    name: Update Changelog Webpage
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚡ Trigger ScottPlot.NET CI
+        run: |
+          curl \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/CI/dispatches \
+              -d '{"ref":"ref"}'
+
   build:
     runs-on: windows-latest
     name: Build Solution
