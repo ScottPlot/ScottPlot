@@ -14,19 +14,6 @@ on:
       - created
 
 jobs:
-  changelog:
-    name: Update Changelog Webpage
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⚡ Trigger ScottPlot.NET CI
-        run: |
-          curl \
-              -X POST \
-              -H 'authorization: Bearer ${{ secrets.WORKFLOW_TOKEN }}' \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/ci.yaml/dispatches \
-              -d '{"ref":"main"}'
-
   build:
     runs-on: windows-latest
     name: Build Solution
