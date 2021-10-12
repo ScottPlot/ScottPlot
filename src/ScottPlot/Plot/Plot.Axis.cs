@@ -148,11 +148,11 @@ namespace ScottPlot
         /// <param name="vertical">if true, vertical layout will be matched</param>
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-                sourcePlot.AxisAuto();
-
-            if (!settings.AllAxesHaveBeenSet)
-                AxisAuto();
+            // TODO: WHY DO THESE NEED TO BE DISABLED???
+            //if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
+                //sourcePlot.AxisAuto();
+            //if (!settings.AllAxesHaveBeenSet)
+                //AxisAuto();
 
             var sourceSettings = sourcePlot.GetSettings(false);
 
