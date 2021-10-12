@@ -58,9 +58,13 @@ jobs:
           retention-days: 30
           path: |
             src/ScottPlot/bin/Release/*.nupkg
+            src/ScottPlot/bin/Release/*.snupkg
             src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
+            src/controls/ScottPlot.WinForms/bin/Release/*.snupkg
             src/controls/ScottPlot.WPF/bin/Release/*.nupkg
+            src/controls/ScottPlot.WPF/bin/Release/*.snupkg
             src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
+            src/controls/ScottPlot.Avalonia/bin/Release/*.snupkg
       - name: 🚀 Publish
         run: |
           nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

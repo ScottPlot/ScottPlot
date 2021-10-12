@@ -7,6 +7,7 @@ _In development / not yet on NuGet_
 * Plot: Added `Margins()` to set default margins to use when `AxisAuto()` is called without arguments (#1345)
 * Heatmap: Deprecated `ShowAxisLabels` in favor of tight margins (see cookbook) (#1278) _Thanks @bclehmann_
 * Histogram: Fixed bug affecting binning of values at the upper edge of the final bin (#1348, #1350) _Thanks @jw-suh_
+* NuGet: Packages have improved debug experience with SourceLink and snupkg format symbols (#1285)
 
 ## ScottPlot 4.1.24
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
