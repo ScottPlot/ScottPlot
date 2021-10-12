@@ -170,6 +170,26 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Get the axis limits for the given plot and apply them to this plot
+        /// </summary>
+        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            var sourceLimits = sourcePlot.GetAxisLimits();
+
+            AxisAuto();
+
+            if (horizontal)
+            {
+                SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax);
+            }
+
+            if (vertical)
+            {
+                SetAxisLimitsY(sourceLimits.YMin, sourceLimits.YMax);
+            }
+        }
+
+        /// <summary>
         /// Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
         /// <param name="labels">new tick labels for the X axis</param>
@@ -627,9 +647,6 @@ namespace ScottPlot
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public double[] Axis(double[] axisLimits) => null;
-
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
