@@ -150,9 +150,9 @@ namespace ScottPlot
         {
             // TODO: WHY DO THESE NEED TO BE DISABLED???
             //if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-                //sourcePlot.AxisAuto();
+            //sourcePlot.AxisAuto();
             //if (!settings.AllAxesHaveBeenSet)
-                //AxisAuto();
+            //AxisAuto();
 
             var sourceSettings = sourcePlot.GetSettings(false);
 
