@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
