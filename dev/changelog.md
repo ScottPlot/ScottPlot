@@ -1,5 +1,7 @@
 # ScottPlot Changelog
 
+* Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
+
 ## ScottPlot 4.1.25 
 _In development / not yet on NuGet_
 * SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
