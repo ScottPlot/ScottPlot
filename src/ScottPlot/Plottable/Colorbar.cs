@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,6 +26,8 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
         public int Width = 20;
+
+        private readonly Drawing.Font TickLabelFont = new() { Size = 12 };
 
         public Colorbar(Colormap colormap = null)
         {
@@ -78,6 +80,21 @@ namespace ScottPlot.Plottable
         {
             ClearTicks();
             AddTicks(fractions, labels);
+        }
+
+        /// <summary>
+        /// Customize styling of the tick labels
+        /// </summary>
+        public void TickLabelStyle(
+            Color? color = null,
+            string fontName = null,
+            float? fontSize = null,
+            bool? fontBold = null)
+        {
+            TickLabelFont.Color = color ?? TickLabelFont.Color;
+            TickLabelFont.Name = fontName ?? TickLabelFont.Name;
+            TickLabelFont.Size = fontSize ?? TickLabelFont.Size;
+            TickLabelFont.Bold = fontBold ?? TickLabelFont.Bold;
         }
 
         public LegendItem[] GetLegendItems() => null;
@@ -161,9 +178,9 @@ namespace ScottPlot.Plottable
             float tickLabelPx = tickRightPx + tickLabelPadding;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            using (var pen = GDI.Pen(Color.Black))
-            using (var brush = GDI.Brush(Color.Black))
-            using (var font = GDI.Font(null, 12))
+            using (var pen = GDI.Pen(TickLabelFont.Color))
+            using (var brush = GDI.Brush(TickLabelFont.Color))
+            using (var font = GDI.Font(TickLabelFont.Name, TickLabelFont.Size, TickLabelFont.Bold))
             using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             {
                 for (int i = 0; i < TickLabels.Count; i++)
