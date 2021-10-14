@@ -27,7 +27,10 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get => 0; set { } }
         public int Width = 20;
 
-        private readonly Drawing.Font TickLabelFont = new() { Size = 12 };
+        public readonly Drawing.Font TickLabelFont = new();
+        public readonly Color TickMarkColor = Color.Black;
+        public readonly float TickMarkLength = 3;
+        public readonly float TickMarkWidth = 1;
 
         public Colorbar(Colormap colormap = null)
         {
@@ -80,21 +83,6 @@ namespace ScottPlot.Plottable
         {
             ClearTicks();
             AddTicks(fractions, labels);
-        }
-
-        /// <summary>
-        /// Customize styling of the tick labels
-        /// </summary>
-        public void TickLabelStyle(
-            Color? color = null,
-            string fontName = null,
-            float? fontSize = null,
-            bool? fontBold = null)
-        {
-            TickLabelFont.Color = color ?? TickLabelFont.Color;
-            TickLabelFont.Name = fontName ?? TickLabelFont.Name;
-            TickLabelFont.Size = fontSize ?? TickLabelFont.Size;
-            TickLabelFont.Bold = fontBold ?? TickLabelFont.Bold;
         }
 
         public LegendItem[] GetLegendItems() => null;
@@ -170,24 +158,23 @@ namespace ScottPlot.Plottable
 
         private void RenderTicks(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
         {
-            float tickLengh = 4;
             float tickLabelPadding = 2;
 
             float tickLeftPx = colorbarRect.Right;
-            float tickRightPx = tickLeftPx + tickLengh;
+            float tickRightPx = tickLeftPx + TickMarkLength;
             float tickLabelPx = tickRightPx + tickLabelPadding;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            using (var pen = GDI.Pen(TickLabelFont.Color))
-            using (var brush = GDI.Brush(TickLabelFont.Color))
-            using (var font = GDI.Font(TickLabelFont.Name, TickLabelFont.Size, TickLabelFont.Bold))
+            using (var tickMarkPen = GDI.Pen(TickMarkColor, TickMarkWidth))
+            using (var tickLabelBrush = GDI.Brush(TickLabelFont.Color))
+            using (var tickFont = GDI.Font(TickLabelFont))
             using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             {
                 for (int i = 0; i < TickLabels.Count; i++)
                 {
                     float y = colorbarRect.Top + (float)((1 - TickFractions[i]) * colorbarRect.Height);
-                    gfx.DrawLine(pen, tickLeftPx, y, tickRightPx, y);
-                    gfx.DrawString(TickLabels[i], font, brush, tickLabelPx, y, sf);
+                    gfx.DrawLine(tickMarkPen, tickLeftPx, y, tickRightPx, y);
+                    gfx.DrawString(TickLabels[i], tickFont, tickLabelBrush, tickLabelPx, y, sf);
                 }
             }
         }
