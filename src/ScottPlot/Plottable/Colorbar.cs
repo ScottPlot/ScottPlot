@@ -23,9 +23,9 @@ namespace ScottPlot.Plottable
         public int Width = 20;
 
         public readonly Drawing.Font TickLabelFont = new();
-        public readonly Color TickMarkColor = Color.Black;
-        public readonly float TickMarkLength = 3;
-        public readonly float TickMarkWidth = 1;
+        public Color TickMarkColor = Color.Black;
+        public float TickMarkLength = 3;
+        public float TickMarkWidth = 1;
 
         public Colorbar(Colormap colormap = null)
         {
