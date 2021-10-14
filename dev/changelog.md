@@ -1,7 +1,8 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.27
-_In development / not yet available via NuGet_
+_In development / not yet on NuGet_
+* Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_

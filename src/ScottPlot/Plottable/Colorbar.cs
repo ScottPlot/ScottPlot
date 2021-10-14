@@ -1,11 +1,6 @@
 ﻿using ScottPlot.Drawing;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
@@ -19,13 +14,18 @@ namespace ScottPlot.Plottable
 
         private Colormap Colormap;
         private Bitmap BmpScale;
-        private readonly List<string> TickLabels = new List<string>();
-        private readonly List<double> TickFractions = new List<double>();
+        private readonly List<string> TickLabels = new();
+        private readonly List<double> TickFractions = new();
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
         public int Width = 20;
+
+        public readonly Drawing.Font TickLabelFont = new();
+        public Color TickMarkColor = Color.Black;
+        public float TickMarkLength = 3;
+        public float TickMarkWidth = 1;
 
         public Colorbar(Colormap colormap = null)
         {
@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
         public void AddTicks(double[] fractions, string[] labels)
         {
             if (fractions.Length != labels.Length)
-                throw new ArgumentException("fractions and labels must have the same length");
+                throw new("fractions and labels must have the same length");
 
             for (int i = 0; i < fractions.Length; i++)
             {
@@ -82,12 +82,12 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems() => null;
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+        public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)
         {
             if (TickLabels.Count != TickFractions.Count)
-                throw new InvalidOperationException("Tick labels and positions must have the same length");
+                throw new("Tick labels and positions must have the same length");
         }
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace ScottPlot.Plottable
         {
             float scaleLeftPad = 10;
 
-            PointF location = new PointF(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
-            SizeF size = new SizeF(Width, dims.DataHeight);
-            RectangleF rect = new RectangleF(location, size);
+            PointF location = new(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
+            SizeF size = new(Width, dims.DataHeight);
+            RectangleF rect = new(location, size);
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality: true, clipToDataArea: false))
             using (var pen = GDI.Pen(Color.Black))
@@ -153,25 +153,21 @@ namespace ScottPlot.Plottable
 
         private void RenderTicks(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
         {
-            float tickLengh = 4;
-            float tickLabelPadding = 2;
-
             float tickLeftPx = colorbarRect.Right;
-            float tickRightPx = tickLeftPx + tickLengh;
-            float tickLabelPx = tickRightPx + tickLabelPadding;
+            float tickRightPx = tickLeftPx + TickMarkLength;
+            float tickLabelPx = tickRightPx + 2;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            using (var pen = GDI.Pen(Color.Black))
-            using (var brush = GDI.Brush(Color.Black))
-            using (var font = GDI.Font(null, 12))
-            using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center })
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            using var tickMarkPen = GDI.Pen(TickMarkColor, TickMarkWidth);
+            using var tickLabelBrush = GDI.Brush(TickLabelFont.Color);
+            using var tickFont = GDI.Font(TickLabelFont);
+            using var sf = new StringFormat() { LineAlignment = StringAlignment.Center };
+
+            for (int i = 0; i < TickLabels.Count; i++)
             {
-                for (int i = 0; i < TickLabels.Count; i++)
-                {
-                    float y = colorbarRect.Top + (float)((1 - TickFractions[i]) * colorbarRect.Height);
-                    gfx.DrawLine(pen, tickLeftPx, y, tickRightPx, y);
-                    gfx.DrawString(TickLabels[i], font, brush, tickLabelPx, y, sf);
-                }
+                float y = colorbarRect.Top + (float)((1 - TickFractions[i]) * colorbarRect.Height);
+                gfx.DrawLine(tickMarkPen, tickLeftPx, y, tickRightPx, y);
+                gfx.DrawString(TickLabels[i], tickFont, tickLabelBrush, tickLabelPx, y, sf);
             }
         }
     }
