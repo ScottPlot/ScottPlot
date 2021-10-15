@@ -59,7 +59,7 @@ namespace ScottPlot
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly Control.DisplayScale DisplayScale = new();
+        public readonly Control.DisplayScale DisplayScale = new();
         private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
         private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
 
@@ -77,6 +77,7 @@ namespace ScottPlot
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            DisplayScale.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -181,6 +182,7 @@ namespace ScottPlot
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+        private void OnScaleChanged(object sender, EventArgs e) => OnSizeChanged(null, null);
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
