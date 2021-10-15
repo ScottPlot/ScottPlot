@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * This file contains code related to Axes including:
  *   - Unit/Pixel conversions
  *   - Configuring axis limits and boundaries
