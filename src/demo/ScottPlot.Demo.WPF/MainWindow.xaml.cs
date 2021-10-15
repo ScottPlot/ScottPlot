@@ -134,5 +134,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.StyleBrowser().ShowDialog();
         }
+
+        private void DisplayScaling(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.DisplayScaling().ShowDialog();
+        }
     }
 }
