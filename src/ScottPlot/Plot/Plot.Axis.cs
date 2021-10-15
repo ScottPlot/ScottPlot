@@ -486,7 +486,7 @@ namespace ScottPlot
             }
 
             AxisLimits originalLimits = GetAxisLimits();
-            AxisAuto(horizontalMargin: margin);
+            AxisAuto(verticalMargin: margin);
             SetAxisLimits(xMin: originalLimits.XMin, xMax: originalLimits.XMax);
         }
 

@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.27
 _In development / not yet on NuGet_
 * Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
+* Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
