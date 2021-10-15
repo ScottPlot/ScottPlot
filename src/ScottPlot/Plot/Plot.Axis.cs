@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * This file contains code related to Axes including:
  *   - Unit/Pixel conversions
  *   - Configuring axis limits and boundaries
@@ -486,7 +486,7 @@ namespace ScottPlot
             }
 
             AxisLimits originalLimits = GetAxisLimits();
-            AxisAuto(horizontalMargin: margin);
+            AxisAuto(verticalMargin: margin);
             SetAxisLimits(xMin: originalLimits.XMin, xMax: originalLimits.XMax);
         }
 
