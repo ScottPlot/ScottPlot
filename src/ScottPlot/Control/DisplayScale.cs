@@ -67,11 +67,7 @@ namespace ScottPlot.Control
         /// </summary>
         public void Measure()
         {
-            const int DEFAULT_DPI = 96;
-            using System.Drawing.Bitmap bmp = new(1, 1);
-            using System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
-            double ratio = gfx.DpiX / DEFAULT_DPI;
-
+            double ratio = Drawing.GDI.GetScaleRatio();
             if (SystemScaleRatio != ratio)
             {
                 SystemScaleRatio = (float)ratio;
