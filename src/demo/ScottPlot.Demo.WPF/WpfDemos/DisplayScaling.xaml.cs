@@ -32,10 +32,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (WpfPlot1 is null)
                 return;
 
-            WpfPlot1.DisplayScale.Enabled = true;
+            WpfPlot1.Configuration.DpiStretch = true;
             WpfPlot1.Plot.Title(
-                $"System Scaling: {WpfPlot1.DisplayScale.SystemScaleRatio * 100}%\n" +
-                $"Plot Scaling: Enabled");
+                $"System Scaling: {Drawing.GDI.GetScaleRatio() * 100}%\n" +
+                $"DPI Stretch Ratio: {WpfPlot1.Configuration.DpiStretchRatio}");
             WpfPlot1.Refresh();
         }
 
@@ -44,10 +44,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (WpfPlot1 is null)
                 return;
 
-            WpfPlot1.DisplayScale.Enabled = false;
+            WpfPlot1.Configuration.DpiStretch = false;
             WpfPlot1.Plot.Title(
-                $"System Scaling: {WpfPlot1.DisplayScale.SystemScaleRatio * 100}%\n" +
-                $"Plot Scaling: Disabled");
+                $"System Scaling: {Drawing.GDI.GetScaleRatio() * 100}%\n" +
+                $"DPI Stretch Ratio: {WpfPlot1.Configuration.DpiStretchRatio}");
             WpfPlot1.Refresh();
         }
     }

@@ -59,9 +59,8 @@ namespace ScottPlot
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        public readonly Control.DisplayScale DisplayScale = new();
-        private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
-        private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
+        private float ScaledWidth => (float)(ActualWidth * Configuration.DpiStretchRatio);
+        private float ScaledHeight => (float)(ActualHeight * Configuration.DpiStretchRatio);
 
         [Obsolete("Reference Plot instead of plt")]
         public Plot plt => Plot;
@@ -77,7 +76,7 @@ namespace ScottPlot
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
-            DisplayScale.ScaleChanged += new EventHandler(OnScaleChanged);
+            Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -194,8 +193,8 @@ namespace ScottPlot
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
             {
-                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
-                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
+                X = (float)e.GetPosition(this).X * Configuration.DpiStretchRatio,
+                Y = (float)e.GetPosition(this).Y * Configuration.DpiStretchRatio,
                 LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
                 RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
                 MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
