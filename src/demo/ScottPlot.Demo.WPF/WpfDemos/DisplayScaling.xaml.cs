@@ -32,8 +32,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (WpfPlot1 is null)
                 return;
 
-            WpfPlot1.DisplayScale.Enable();
-            WpfPlot1.Plot.Title("Display Scaling: Enabled");
+            WpfPlot1.DisplayScale.Enabled = true;
+            WpfPlot1.Plot.Title(
+                $"System Scaling: {WpfPlot1.DisplayScale.SystemScaleRatio * 100}%\n" +
+                $"Plot Scaling: Enabled");
             WpfPlot1.Refresh();
         }
 
@@ -42,9 +44,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             if (WpfPlot1 is null)
                 return;
 
-            WpfPlot1.DisplayScale.Disable();
-            WpfPlot1.Width = WpfPlot1.Width;
-            WpfPlot1.Plot.Title("Display Scaling: Disabled");
+            WpfPlot1.DisplayScale.Enabled = false;
+            WpfPlot1.Plot.Title(
+                $"System Scaling: {WpfPlot1.DisplayScale.SystemScaleRatio * 100}%\n" +
+                $"Plot Scaling: Disabled");
             WpfPlot1.Refresh();
         }
     }

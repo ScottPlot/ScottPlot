@@ -4,28 +4,51 @@ namespace ScottPlot.Control
 {
     /// <summary>
     /// This class detects and stores display scale.
-    /// The scale ratio stored here is used to translate mouse coordinates to real pixel coordinates 
-    /// in user controls on systems that use display scaling.
+    /// The scale ratio is used to calculate plot size and
+    /// translate mouse coordinates to real pixel coordinates.
     /// </summary>
     public class DisplayScale
     {
-        private float _scaleRatio;
+        /// <summary>
+        /// Scale ratio in use by the active display.
+        /// This ratio is used when scaling is enabled.
+        /// </summary>
+        public float SystemScaleRatio { get; private set; } = 1.0f;
 
         /// <summary>
-        /// Current display scale ratio. 
-        /// 100% scaling (ratio of 1.0) means no scaling.
+        /// Scale ratio to use if scaling is disabled.
         /// </summary>
-        public float ScaleRatio
+        public float ManualScaleRatio { get; private set; } = 1.0f;
+
+        private bool _enabled = true;
+
+        /// <summary>
+        /// Control whether the plot bitmap should be stretched if display scaling is active.
+        /// When enabled text will be large but may be blurry.
+        /// When disabled text will be sharp but may be too small to read on high-resolution displays.
+        /// </summary>
+        public bool Enabled
         {
             get
             {
-                return _scaleRatio;
+                return _enabled;
             }
-            private set
+            set
             {
-                _scaleRatio = value;
-                ScaleChanged?.Invoke(this, EventArgs.Empty);
+                if (value != _enabled)
+                {
+                    _enabled = value;
+                    ScaleChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
+        }
+
+        /// <summary>
+        /// Current display scale ratio. 
+        /// </summary>
+        public float ScaleRatio
+        {
+            get => Enabled ? SystemScaleRatio : ManualScaleRatio;
         }
 
         /// <summary>
@@ -35,44 +58,25 @@ namespace ScottPlot.Control
 
         public DisplayScale()
         {
-            Enable();
+            Measure();
         }
 
         /// <summary>
-        /// Enable display scaling using the measured scale ratio.
-        /// Call this method if you suspect display scaling has changed.
+        /// Update the scale ratio using that of the active display.
+        /// Call this method if you expect the display scale has changed.
         /// </summary>
-        public void Enable()
-        {
-            ScaleRatio = MeasureScaleRatio();
-        }
-
-        /// <summary>
-        /// Enable display scaling using a defined scale ratio (e.g., 150% scaling is ratio 1.5)
-        /// </summary>
-        public void Enable(double ratio)
-        {
-            ScaleRatio = (float)ratio;
-        }
-
-        /// <summary>
-        /// Disable display scaling (use 100% scaling regardless of display setting)
-        /// </summary>
-        public void Disable()
-        {
-            ScaleRatio = 1;
-        }
-
-        /// <summary>
-        /// Return the display scale ratio being used.
-        /// A scaling ratio of 1.0 means scaling is not active.
-        /// </summary>
-        private static float MeasureScaleRatio()
+        public void Measure()
         {
             const int DEFAULT_DPI = 96;
             using System.Drawing.Bitmap bmp = new(1, 1);
             using System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
-            return gfx.DpiX / DEFAULT_DPI;
+            double ratio = gfx.DpiX / DEFAULT_DPI;
+
+            if (SystemScaleRatio != ratio)
+            {
+                SystemScaleRatio = (float)ratio;
+                ScaleChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }
