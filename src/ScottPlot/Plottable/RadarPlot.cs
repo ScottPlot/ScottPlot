@@ -100,7 +100,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Determines the width of each spoke and the axis lines.
         /// </summary>
-        public int LineWidth { get; set; }
+        public int LineWidth { get; set; } = 1;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
