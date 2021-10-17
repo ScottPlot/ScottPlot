@@ -77,12 +77,20 @@ namespace ScottPlot
         /// </summary>
         public bool LabelEachSpoke { get; set; } = false;
 
+        /// <summary>
+        /// The drawing surface to use.
+        /// </summary>
         public Graphics Graphics { get; set; }
 
         /// <summary>
         /// Font used for labeling values on the plot
         /// </summary>
         public Drawing.Font Font = new();
+
+        /// <summary>
+        /// Determines the width of each spoke and the axis lines.
+        /// </summary>
+        public int LineWidth { get; set; } = 1;
 
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -108,7 +116,7 @@ namespace ScottPlot
 
         private void RenderRings(PointF origin, double minScale, double sweepAngle)
         {
-            using Pen pen = GDI.Pen(WebColor);
+            using Pen pen = GDI.Pen(WebColor, LineWidth);
 
             foreach (var tick in Ticks)
             {
@@ -138,7 +146,7 @@ namespace ScottPlot
 
         private void RenderSpokes(PointF origin, double minScale, double sweepAngle)
         {
-            using Pen pen = GDI.Pen(WebColor);
+            using Pen pen = GDI.Pen(WebColor, LineWidth);
             using System.Drawing.Font font = GDI.Font(Font);
             using Brush fontBrush = GDI.Brush(Font.Color);
             using StringFormat sf = new();
