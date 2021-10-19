@@ -4,6 +4,7 @@
 _In development / not yet on NuGet_
 * Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
 * Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
+* Controls: Stretching due to display scaling can be disabled with `Configuration.DpiStretch` in WPF and Avalonia controls (#1352, #1364) _Thanks @ktheijs and @bclehmann_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
