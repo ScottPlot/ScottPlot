@@ -130,8 +130,7 @@ _Published 2021-10-12_
 
 ## ScottPlot 4.1.12-beta
 * Added "Open in New Window" option to right-click menu (#958, #969) _Thanks @ademkaya and @bclehmann_
-* User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @
-PassionateDeveloper86 and @StendProg_
+* User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @PassionateDeveloper86 and @StendProg_
 * Added options to `Plot.AxisScaleLock()` to let the user define scaling behavior when the plot is resized (#933, #857) _Thanks @ricecakebear and @StendProg_
 * Improved XML documentation for `DataGen` module (#903, #902) _Thanks @bclehmann_
 * Fixed bug where tick labels would not render for axes with a single tick (#945, #828, #725, #925) _Thanks @saklanmazozgur and @audun_
@@ -644,7 +643,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 
 #### Major Changes
 * **ScottPlot now targets .NET Standard 2.0** so in addition to .NET Framework projects it can now be used in .NET Core applications, ASP projects, Xamarin apps, etc.
-* **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. Thanks for your early efforts on this @petarpetrovt
+* **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. _Thanks @petarpetrovt_
 * **The WPF control has its own package** ([ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/)) targeting .NET Core 3.0.
 
 #### Minor Changes
@@ -747,7 +746,7 @@ _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-12_
 * improved rendering of extremely zoomed-out signals 
 * rendering speed increased now that Format32bppPArgb is the default PixelFormat (thanks @StendProg)
 * DataGen.NoisySin() was added
-* Code was tested in .NET Core 3.0 preview and compiled without error. Therefore, the next release will likely be for .NET Core 3.0 (Thanks @petarpetrovt)
+* Code was tested in .NET Core 3.0 preview and compiled without error. Therefore, the next release will likely be for .NET Core 3.0 _Thanks @petarpetrovt_
 * User controls now render graphs with anti-alias mode off (faster) while the mouse is being dragged. Upon release a high quality render is performed.
 
 ## ScottPlot 3.0.8
