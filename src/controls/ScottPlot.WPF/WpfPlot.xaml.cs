@@ -59,9 +59,8 @@ namespace ScottPlot
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly Control.DisplayScale DisplayScale = new();
-        private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
-        private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
+        private float ScaledWidth => (float)(ActualWidth * Configuration.DpiStretchRatio);
+        private float ScaledHeight => (float)(ActualHeight * Configuration.DpiStretchRatio);
 
         [Obsolete("Reference Plot instead of plt")]
         public Plot plt => Plot;
@@ -77,6 +76,7 @@ namespace ScottPlot
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -181,6 +181,7 @@ namespace ScottPlot
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+        private void OnScaleChanged(object sender, EventArgs e) => OnSizeChanged(null, null);
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
@@ -192,8 +193,8 @@ namespace ScottPlot
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
             {
-                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
-                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
+                X = (float)e.GetPosition(this).X * Configuration.DpiStretchRatio,
+                Y = (float)e.GetPosition(this).Y * Configuration.DpiStretchRatio,
                 LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
                 RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
                 MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
