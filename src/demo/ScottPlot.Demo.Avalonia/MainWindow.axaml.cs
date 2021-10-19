@@ -32,6 +32,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
             this.Find<Button>("LaunchMultiAxisLockButton").Click += LaunchMultiAxisLock;
             this.Find<Button>("LaunchStyleBrowserButton").Click += LaunchStyleBrowser;
+            this.Find<Button>("LaunchDisplayScalingButton").Click += LaunchDisplayScaling;
         }
 
         public void InitializeComponent()
@@ -126,6 +127,11 @@ namespace ScottPlot.Demo.Avalonia
         public void LaunchStyleBrowser(object sender, RoutedEventArgs e)
         {
             new AvaloniaDemos.StyleBrowser().ShowDialog(this);
+        }
+
+        public void LaunchDisplayScaling(object sender, RoutedEventArgs e)
+        {
+            new AvaloniaDemos.DisplayScaling().ShowDialog(this);
         }
 
     }

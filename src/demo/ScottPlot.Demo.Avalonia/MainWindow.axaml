@@ -243,6 +243,17 @@
 							</TextBlock>
 						</DockPanel>
 
+            <DockPanel>
+              <Button DockPanel.Dock="Left" Name="LaunchDisplayScalingButton">
+                <TextBlock TextAlignment="Center">
+                  Display Scaling
+                </TextBlock>
+              </Button>
+              <TextBlock >
+                Enable/Disable Display Scaling
+              </TextBlock>
+            </DockPanel>
+
 					</StackPanel>
 				</StackPanel>
 			</Border>
