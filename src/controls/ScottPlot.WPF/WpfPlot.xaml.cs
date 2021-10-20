@@ -197,7 +197,7 @@ namespace ScottPlot
                 return;
             }
 
-            // copy updated bitmap to writeable source using WritePixels (reuses the WriteableSourceBitmap to avoid unneded
+            // copy updated bitmap to writeable source using WritePixels (reuses the WriteableSourceBitmap to avoid unneeded
             // allocations and rebinding the image source property)
             var data = bitmap.LockBits(
                 new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -206,19 +206,11 @@ namespace ScottPlot
 
             try
             {
-                WriteableSourceBitmap.Lock();
-                try
-                {
-                    WriteableSourceBitmap.WritePixels(
-                        new System.Windows.Int32Rect(0, 0, data.Width, data.Height),
-                        data.Scan0,
-                        data.Stride * data.Height,
-                        data.Stride);
-                }
-                finally
-                {
-                    WriteableSourceBitmap.Unlock();
-                }
+                WriteableSourceBitmap.WritePixels(
+                    new System.Windows.Int32Rect(0, 0, data.Width, data.Height),
+                    data.Scan0,
+                    data.Stride * data.Height,
+                    data.Stride);
             }
             finally
             {
