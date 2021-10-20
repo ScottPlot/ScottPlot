@@ -38,9 +38,18 @@ namespace ScottPlot.Control.EventProcess.Events
             }
             else
             {
-                float x = Input.ShiftDown ? Settings.MouseDownX : Input.X;
-                float y = Input.CtrlDown ? Settings.MouseDownY : Input.Y;
-                Settings.MouseZoom(x, y);
+                Settings.RecallAxisLimits();
+
+                float dx = Settings.MouseDownX - Input.X;
+                float dy = Input.Y - Settings.MouseDownY;
+
+                double xFrac = 1 - (dx / 95);
+                double yFrac = 1 - (dy / 95);
+
+                if (Input.CtrlDown) yFrac = 1;
+                if (Input.ShiftDown) xFrac = 1;
+
+                Settings.AxesZoomTo(xFrac <= 0 ? 0.1 : xFrac, yFrac <= 0 ? 0.1 : yFrac, Settings.MouseDownX, Settings.MouseDownY);
             }
 
             if (Configuration.LockHorizontalAxis)
