@@ -173,8 +173,58 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
-        private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
-        private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
+        /// <summary>
+        /// WriteableBitmap used as a source for the main WPF image element.
+        /// </summary>
+        private WriteableBitmap WriteableSourceBitmap;
+
+        private void OnBitmapChanged(object sender, EventArgs e)
+        {
+            // Resize (and init) writeable source to new bitmap
+            WriteableSourceBitmap = new WriteableBitmap(BmpImageFromBmp(Backend.GetLatestBitmap()));
+            PlotImage.Source = WriteableSourceBitmap;
+        }
+
+        private void OnBitmapUpdated(object sender, EventArgs e)
+        {
+            var bitmap = Backend.GetLatestBitmap();
+            if (WriteableSourceBitmap == null)
+            {
+                // catch OnBitmapUpdated happening before OnBitmapChanged and init writeable source
+                WriteableSourceBitmap = new WriteableBitmap(BmpImageFromBmp(bitmap));
+                PlotImage.Source = WriteableSourceBitmap;
+                // no need to copy since we initialized the source with the bitmap
+                return;
+            }
+
+            // copy updated bitmap to writeable source using WritePixels (reuses the WriteableSourceBitmap to avoid unneded
+            // allocations and rebinding the image source property)
+            var data = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly,
+                bitmap.PixelFormat);
+
+            try
+            {
+                WriteableSourceBitmap.Lock();
+                try
+                {
+                    WriteableSourceBitmap.WritePixels(
+                        new System.Windows.Int32Rect(0, 0, data.Width, data.Height),
+                        data.Scan0,
+                        data.Stride * data.Height,
+                        data.Stride);
+                }
+                finally
+                {
+                    WriteableSourceBitmap.Unlock();
+                }
+            }
+            finally
+            {
+                bitmap.UnlockBits(data);
+            }
+        }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
