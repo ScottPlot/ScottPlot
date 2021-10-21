@@ -427,25 +427,35 @@ namespace ScottPlot.Ticks
             return minorTicks.ToArray();
         }
 
-        public double[] MinorFromMajorLog(double[] majorTicks, double lowerLimit, double upperLimit)
+        /// <summary>
+        /// Return an array of log-spaced minor tick marks for the given range
+        /// </summary>
+        /// <param name="majorTickPositions">Locations of visible major ticks. Must be evenly spaced.</param>
+        /// <param name="min">Do not include minor ticks less than this value.</param>
+        /// <param name="max">Do not include minor ticks greater than this value.</param>
+        /// <param name="divisions">Number of minor ranges to divide each major range into. (A range is the space between tick marks)</param>
+        /// <returns>Array of minor tick positions (empty at positions occupied by major ticks)</returns>
+        public double[] MinorFromMajorLog(double[] majorTickPositions, double min, double max, int divisions = 5)
         {
-            if ((majorTicks == null) || (majorTicks.Length < 2))
-                return null;
-
-            double majorTickSpacing = majorTicks[1] - majorTicks[0];
-            double lowerBound = majorTicks.First() - majorTickSpacing;
-            double upperBound = majorTicks.Last() + majorTickSpacing;
-
-            List<double> minorTicks = new List<double>();
-            for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
+            if ((majorTickPositions is null) || (majorTickPositions.Length < 2))
             {
-                minorTicks.Add(majorTick + majorTickSpacing * (.5));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125 + .0625));
+                // if too few major ticks are visible, don't attempt to render minor ticks
+                return null;
             }
 
-            return minorTicks.Where(x => x >= lowerLimit && x <= upperLimit).ToArray();
+            double majorTickSpacing = majorTickPositions[1] - majorTickPositions[0];
+            double lowerBound = majorTickPositions.First() - majorTickSpacing;
+            double upperBound = majorTickPositions.Last() + majorTickSpacing;
+
+            double[] offsets = Enumerable.Range(1, divisions - 1).Select(x => majorTickSpacing * Math.Log10(x * 10 / divisions)).ToArray();
+
+            List<double> minorTicks = new();
+            for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
+            {
+                minorTicks.AddRange(offsets.Select(x => majorTick + x));
+            }
+
+            return minorTicks.Where(x => x >= min && x <= max).ToArray();
         }
 
         public static string[] GetDateLabels(double[] ticksOADate, CultureInfo culture)
