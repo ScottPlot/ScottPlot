@@ -93,6 +93,12 @@ namespace ScottPlot.Ticks
         /// </summary>
         public double MinimumTickSpacing = 0;
 
+        /// <summary>
+        /// If True, non-integer tick positions will not be used.
+        /// This may be desired for log10-scaled axes so tick marks are even powers of 10.
+        /// </summary>
+        public bool IntegerPositionsOnly = false;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -262,27 +268,22 @@ namespace ScottPlot.Ticks
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
 
-            if (LabelFormat == TickLabelFormat.DateTime)
-            {
-                tickLabels = GetDateLabels(tickPositionsMajor, Culture);
-                tickPositionsMinor = null;
-            }
-            else
-            {
-                (tickLabels, CornerLabel) = GetPrettyTickLabels(
-                        tickPositionsMajor,
-                        useMultiplierNotation,
-                        useOffsetNotation,
-                        useExponentialNotation,
-                        invertSign: LabelUsingInvertedSign,
-                        culture: Culture
-                    );
+            if (IntegerPositionsOnly)
+                tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
 
-                if (MinorTickDistribution == MinorTickDistribution.log)
-                    tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
-                else
-                    tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
-            }
+            (tickLabels, CornerLabel) = GetPrettyTickLabels(
+                    tickPositionsMajor,
+                    useMultiplierNotation,
+                    useOffsetNotation,
+                    useExponentialNotation,
+                    invertSign: LabelUsingInvertedSign,
+                    culture: Culture
+                );
+
+            if (MinorTickDistribution == MinorTickDistribution.log)
+                tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
+            else
+                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
         }
 
         public override string ToString()
@@ -427,25 +428,35 @@ namespace ScottPlot.Ticks
             return minorTicks.ToArray();
         }
 
-        public double[] MinorFromMajorLog(double[] majorTicks, double lowerLimit, double upperLimit)
+        /// <summary>
+        /// Return an array of log-spaced minor tick marks for the given range
+        /// </summary>
+        /// <param name="majorTickPositions">Locations of visible major ticks. Must be evenly spaced.</param>
+        /// <param name="min">Do not include minor ticks less than this value.</param>
+        /// <param name="max">Do not include minor ticks greater than this value.</param>
+        /// <param name="divisions">Number of minor ranges to divide each major range into. (A range is the space between tick marks)</param>
+        /// <returns>Array of minor tick positions (empty at positions occupied by major ticks)</returns>
+        public double[] MinorFromMajorLog(double[] majorTickPositions, double min, double max, int divisions = 5)
         {
-            if ((majorTicks == null) || (majorTicks.Length < 2))
-                return null;
-
-            double majorTickSpacing = majorTicks[1] - majorTicks[0];
-            double lowerBound = majorTicks.First() - majorTickSpacing;
-            double upperBound = majorTicks.Last() + majorTickSpacing;
-
-            List<double> minorTicks = new List<double>();
-            for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
+            if ((majorTickPositions is null) || (majorTickPositions.Length < 2))
             {
-                minorTicks.Add(majorTick + majorTickSpacing * (.5));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125));
-                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125 + .0625));
+                // if too few major ticks are visible, don't attempt to render minor ticks
+                return null;
             }
 
-            return minorTicks.Where(x => x >= lowerLimit && x <= upperLimit).ToArray();
+            double majorTickSpacing = majorTickPositions[1] - majorTickPositions[0];
+            double lowerBound = majorTickPositions.First() - majorTickSpacing;
+            double upperBound = majorTickPositions.Last() + majorTickSpacing;
+
+            double[] offsets = Enumerable.Range(1, divisions - 1).Select(x => majorTickSpacing * Math.Log10(x * 10 / divisions)).ToArray();
+
+            List<double> minorTicks = new();
+            for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
+            {
+                minorTicks.AddRange(offsets.Select(x => majorTick + x));
+            }
+
+            return minorTicks.Where(x => x >= min && x <= max).ToArray();
         }
 
         public static string[] GetDateLabels(double[] ticksOADate, CultureInfo culture)
@@ -488,6 +499,47 @@ namespace ScottPlot.Ticks
                 }
             }
             return labels;
+        }
+
+        private Tick[] GetMajorTicks()
+        {
+            if (tickPositionsMajor is null || tickPositionsMajor.Length == 0)
+                return new Tick[] { };
+
+            Tick[] ticks = new Tick[tickPositionsMajor.Length];
+            for (int i = 0; i < ticks.Length; i++)
+            {
+                ticks[i] = new Tick(
+                    position: tickPositionsMajor[i],
+                    label: tickLabels[i],
+                    isMajor: true,
+                    isDateTime: LabelFormat == TickLabelFormat.DateTime);
+            }
+
+            return ticks;
+        }
+
+        private Tick[] GetMinorTicks()
+        {
+            if (tickPositionsMinor is null || tickPositionsMinor.Length == 0)
+                return new Tick[] { };
+
+            Tick[] ticks = new Tick[tickPositionsMinor.Length];
+            for (int i = 0; i < ticks.Length; i++)
+            {
+                ticks[i] = new Tick(
+                    position: tickPositionsMinor[i],
+                    label: null,
+                    isMajor: false,
+                    isDateTime: LabelFormat == TickLabelFormat.DateTime);
+            }
+
+            return ticks;
+        }
+
+        public Tick[] GetTicks()
+        {
+            return GetMajorTicks().Concat(GetMinorTicks()).ToArray();
         }
     }
 }
