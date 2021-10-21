@@ -93,6 +93,12 @@ namespace ScottPlot.Ticks
         /// </summary>
         public double MinimumTickSpacing = 0;
 
+        /// <summary>
+        /// If True, non-integer tick positions will not be used.
+        /// This may be desired for log10-scaled axes so tick marks are even powers of 10.
+        /// </summary>
+        public bool IntegerPositionsOnly = false;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -262,27 +268,22 @@ namespace ScottPlot.Ticks
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
 
-            if (LabelFormat == TickLabelFormat.DateTime)
-            {
-                tickLabels = GetDateLabels(tickPositionsMajor, Culture);
-                tickPositionsMinor = null;
-            }
-            else
-            {
-                (tickLabels, CornerLabel) = GetPrettyTickLabels(
-                        tickPositionsMajor,
-                        useMultiplierNotation,
-                        useOffsetNotation,
-                        useExponentialNotation,
-                        invertSign: LabelUsingInvertedSign,
-                        culture: Culture
-                    );
+            if (IntegerPositionsOnly)
+                tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
 
-                if (MinorTickDistribution == MinorTickDistribution.log)
-                    tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
-                else
-                    tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
-            }
+            (tickLabels, CornerLabel) = GetPrettyTickLabels(
+                    tickPositionsMajor,
+                    useMultiplierNotation,
+                    useOffsetNotation,
+                    useExponentialNotation,
+                    invertSign: LabelUsingInvertedSign,
+                    culture: Culture
+                );
+
+            if (MinorTickDistribution == MinorTickDistribution.log)
+                tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
+            else
+                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
         }
 
         public override string ToString()
