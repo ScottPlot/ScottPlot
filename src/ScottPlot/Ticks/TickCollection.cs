@@ -499,5 +499,46 @@ namespace ScottPlot.Ticks
             }
             return labels;
         }
+
+        private Tick[] GetMajorTicks()
+        {
+            if (tickPositionsMajor is null || tickPositionsMajor.Length == 0)
+                return new Tick[] { };
+
+            Tick[] ticks = new Tick[tickPositionsMajor.Length];
+            for (int i = 0; i < ticks.Length; i++)
+            {
+                ticks[i] = new Tick(
+                    position: tickPositionsMajor[i],
+                    label: tickLabels[i],
+                    isMajor: true,
+                    isDateTime: LabelFormat == TickLabelFormat.DateTime);
+            }
+
+            return ticks;
+        }
+
+        private Tick[] GetMinorTicks()
+        {
+            if (tickPositionsMinor is null || tickPositionsMinor.Length == 0)
+                return new Tick[] { };
+
+            Tick[] ticks = new Tick[tickPositionsMinor.Length];
+            for (int i = 0; i < ticks.Length; i++)
+            {
+                ticks[i] = new Tick(
+                    position: tickPositionsMinor[i],
+                    label: null,
+                    isMajor: false,
+                    isDateTime: LabelFormat == TickLabelFormat.DateTime);
+            }
+
+            return ticks;
+        }
+
+        public Tick[] GetTicks()
+        {
+            return GetMajorTicks().Concat(GetMinorTicks()).ToArray();
+        }
     }
 }

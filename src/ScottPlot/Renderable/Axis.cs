@@ -503,5 +503,13 @@ namespace ScottPlot.Renderable
         {
             Dims.LockLimits(locked);
         }
+
+        /// <summary>
+        /// Return the ticks displayed in the previous render
+        /// </summary>
+        public Tick[] GetTicks()
+        {
+            return AxisTicks.TickCollection.GetTicks();
+        }
     }
 }
