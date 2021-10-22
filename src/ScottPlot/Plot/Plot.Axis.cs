@@ -10,6 +10,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -148,24 +149,18 @@ namespace ScottPlot
         /// <param name="vertical">if true, vertical layout will be matched</param>
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            // TODO: WHY DO THESE NEED TO BE DISABLED???
-            //if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-            //sourcePlot.AxisAuto();
-            //if (!settings.AllAxesHaveBeenSet)
-            //AxisAuto();
-
             var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)
             {
-                YAxis.SetSize(sourceSettings.YAxis.GetSize());
-                YAxis2.SetSize(sourceSettings.YAxis2.GetSize());
+                YAxis.SetSizeLimit(sourceSettings.YAxis.GetSize());
+                YAxis2.SetSizeLimit(sourceSettings.YAxis2.GetSize());
             }
 
             if (vertical)
             {
-                XAxis.SetSize(sourceSettings.XAxis.GetSize());
-                XAxis2.SetSize(sourceSettings.XAxis2.GetSize());
+                XAxis.SetSizeLimit(sourceSettings.XAxis.GetSize());
+                XAxis2.SetSizeLimit(sourceSettings.XAxis2.GetSize());
             }
         }
 
