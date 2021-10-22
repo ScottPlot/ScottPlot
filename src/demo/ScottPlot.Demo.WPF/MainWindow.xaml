@@ -230,6 +230,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="LaunchLayout">
+                            <TextBlock TextAlignment="Center">
+                                Advanced Layout
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Match data area sizes across multiple plot controls
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 
