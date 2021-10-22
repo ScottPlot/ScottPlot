@@ -174,47 +174,26 @@ namespace ScottPlot
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
         /// <summary>
-        /// WriteableBitmap used as a source for the main WPF image element.
+        /// This object stores the bitmap that is displayed in the PlotImage.
+        /// When this control is created or resized this bitmap is replaced by a new one.
+        /// When new renders are requested (without resizing) they are drawn onto this existing bitmap.
         /// </summary>
-        private WriteableBitmap WriteableSourceBitmap;
+        private WriteableBitmap PlotBitmap;
 
         private void OnBitmapChanged(object sender, EventArgs e)
         {
-            // Resize (and init) writeable source to new bitmap
-            WriteableSourceBitmap = new WriteableBitmap(BmpImageFromBmp(Backend.GetLatestBitmap()));
-            PlotImage.Source = WriteableSourceBitmap;
+            ReplacePlotBitmap(Backend.GetLatestBitmap());
         }
 
         private void OnBitmapUpdated(object sender, EventArgs e)
         {
-            var bitmap = Backend.GetLatestBitmap();
-            if (WriteableSourceBitmap == null)
+            if (PlotBitmap is null)
             {
-                // catch OnBitmapUpdated happening before OnBitmapChanged and init writeable source
-                WriteableSourceBitmap = new WriteableBitmap(BmpImageFromBmp(bitmap));
-                PlotImage.Source = WriteableSourceBitmap;
-                // no need to copy since we initialized the source with the bitmap
-                return;
+                ReplacePlotBitmap(Backend.GetLatestBitmap());
             }
-
-            // copy updated bitmap to writeable source using WritePixels (reuses the WriteableSourceBitmap to avoid unneeded
-            // allocations and rebinding the image source property)
-            var data = bitmap.LockBits(
-                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                System.Drawing.Imaging.ImageLockMode.ReadOnly,
-                bitmap.PixelFormat);
-
-            try
+            else
             {
-                WriteableSourceBitmap.WritePixels(
-                    new System.Windows.Int32Rect(0, 0, data.Width, data.Height),
-                    data.Scan0,
-                    data.Stride * data.Height,
-                    data.Stride);
-            }
-            finally
-            {
-                bitmap.UnlockBits(data);
+                UpdatePlotBitmap(Backend.GetLatestBitmap());
             }
         }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
@@ -261,6 +240,41 @@ namespace ScottPlot
             bitmapImage.Freeze();
 
             return bitmapImage;
+        }
+
+        /// <summary>
+        /// Replace the existing PlotImage with a new one created from a System.Drawing.Bitmap
+        /// </summary>
+        public void ReplacePlotBitmap(System.Drawing.Bitmap bmp)
+        {
+            BitmapImage bmpImage = BmpImageFromBmp(bmp);
+            PlotBitmap = new WriteableBitmap(bmpImage);
+            PlotImage.Source = PlotBitmap;
+        }
+
+        /// <summary>
+        /// Copy the pixel data from a System.Drawing.Bitmap into the PlotBitmap
+        /// </summary>
+        /// <param name="bmp"></param>
+        private void UpdatePlotBitmap(System.Drawing.Bitmap bmp)
+        {
+            var rect1 = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+            var flags = System.Drawing.Imaging.ImageLockMode.ReadOnly;
+            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect1, flags, bmp.PixelFormat);
+
+            try
+            {
+                var rect2 = new System.Windows.Int32Rect(0, 0, bmpData.Width, bmpData.Height);
+                PlotBitmap.WritePixels(
+                    sourceRect: rect2,
+                    buffer: bmpData.Scan0,
+                    bufferSize: bmpData.Stride * bmpData.Height,
+                    stride: bmpData.Stride);
+            }
+            finally
+            {
+                bmp.UnlockBits(bmpData);
+            }
         }
 
         /// <summary>
