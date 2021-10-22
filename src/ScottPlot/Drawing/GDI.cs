@@ -25,7 +25,8 @@ namespace ScottPlot.Drawing
         public static float GetScaleRatio()
         {
             const int DEFAULT_DPI = 96;
-            using Graphics gfx = GDI.Graphics(new Bitmap(1, 1));
+            using Bitmap bmp = new(1, 1);
+            using Graphics gfx = GDI.Graphics(bmp);
             return gfx.DpiX / DEFAULT_DPI;
         }
 

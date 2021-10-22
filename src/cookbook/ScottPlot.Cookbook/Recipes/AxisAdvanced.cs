@@ -282,38 +282,31 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "asis_log";
         public string Title => "Log Scale";
         public string Description =>
-            "ScottPlot will only display data on a linear 2D plane, however you can log-transform " +
-            "data before plotting it to give the appearance of log scales. Customizing tick options " +
-            "for log-spaced minor ticks further improves appearance of these graphs.";
+            "ScottPlot is designed to display 2D data on linear X and Y axes, but you can log-transform " +
+            "data before plotting it and customize the ticks and grid to give the appearance of logarithmic scales.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate some interesting log-distributed data
-            int pointCount = 200;
-            double[] dataXs = new double[pointCount];
-            double[] dataYs = new double[pointCount];
-            Random rand = new Random(0);
-            for (int i = 0; i < pointCount; i++)
-            {
-                double x = 10.0 * i / pointCount;
-                dataXs[i] = x;
-                dataYs[i] = Math.Pow(2, x) + rand.NextDouble() * i;
-            }
+            // These are the dat we will plot with a linear X scale but log Y scale
+            double[] xs = { 1, 2, 3, 4, 5 };
+            double[] ys = { 10, 2_000, 50_000, 1_000_000, 1_500_000 };
 
-            // this tool can convert linear data to log data
-            double[] dataYsLog = ScottPlot.Tools.Log10(dataYs);
-            plt.AddScatter(dataXs, dataYsLog, lineWidth: 0);
+            // Plot the Log10 of all the Y values
+            double[] logYs = ys.Select(y => Math.Log10(y)).ToArray();
+            var scatter = plt.AddScatter(xs, logYs, lineWidth: 2, markerSize: 10);
 
-            // place minor ticks to simulate a log scale
+            // Use a custom formatter to control the label for each tick mark
+            static string logTickLabels(double y) => Math.Pow(10, y).ToString("N0");
+            plt.YAxis.TickLabelFormat(logTickLabels);
+
+            // Use log-spaced minor tick marks and grid lines to make it more convincing
             plt.YAxis.MinorLogScale(true);
+            plt.YAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
+            plt.YAxis.MinorGrid(true, Color.FromArgb(20, Color.Black));
+            plt.XAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
 
-            // make minor grid lines visible for added effect
-            plt.YAxis.MinorGrid(enable: true, color: Color.FromArgb(10, Color.Black));
-
-            // decorate the plot
-            plt.Title("Data (Log Scale)");
-            plt.YLabel("Vertical Units (10^x)");
-            plt.XLabel("Horizontal Units");
+            // Set the axis limits manually to ensure edges terminate at desirable locations
+            plt.SetAxisLimits(0, 6, 0, Math.Log10(10_000_000));
         }
     }
 

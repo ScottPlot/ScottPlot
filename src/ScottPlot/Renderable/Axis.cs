@@ -377,8 +377,12 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
-        public void MinorLogScale(bool enable) => AxisTicks.TickCollection.MinorTickDistribution =
-            enable ? MinorTickDistribution.log : MinorTickDistribution.even;
+        public void MinorLogScale(bool enable, bool roundMajorTicks = true)
+        {
+            AxisTicks.TickCollection.MinorTickDistribution = enable ? MinorTickDistribution.log : MinorTickDistribution.even;
+            if (roundMajorTicks)
+                AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
+        }
 
         /// <summary>
         /// Configure the line drawn along the edge of the axis
@@ -505,6 +509,14 @@ namespace ScottPlot.Renderable
         public void LockLimits(bool locked = true)
         {
             Dims.LockLimits(locked);
+        }
+
+        /// <summary>
+        /// Return the ticks displayed in the previous render
+        /// </summary>
+        public Tick[] GetTicks()
+        {
+            return AxisTicks.TickCollection.GetTicks();
         }
     }
 }

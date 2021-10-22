@@ -139,5 +139,58 @@ namespace ScottPlot.Control
         /// This option controls whether a warning message is shown if the user did not call Render() manually.
         /// </summary>
         public bool WarnIfRenderNotCalledManually { get; set; } = true;
+
+        private bool _dpiStretch = true;
+
+        /// <summary>
+        /// Control whether the plot should be stretched when DPI scaling is in use.
+        /// Enabling stretching may result in blurry plots.
+        /// Disabling stretching may results in plots with text that is too small.
+        /// </summary>
+        public bool DpiStretch
+        {
+            get => _dpiStretch;
+            set
+            {
+                if (_dpiStretch != value)
+                {
+                    _dpiStretch = value;
+                    ScaleChanged?.Invoke(null, null);
+                }
+            }
+        }
+
+        private float _dpiStretchRatio = Drawing.GDI.GetScaleRatio();
+
+        /// <summary>
+        /// DPI scaling ratio to use for plot size and mouse tracking.
+        /// Will return 1.0 if <see cref="DpiStretch"/> is enabled.
+        /// </summary>
+        public float DpiStretchRatio
+        {
+            get
+            {
+                return DpiStretch ? 1.0f : _dpiStretchRatio;
+            }
+            set
+            {
+                if (_dpiStretchRatio != value)
+                {
+                    _dpiStretchRatio = value;
+                    ScaleChanged?.Invoke(null, null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This event is invoked whenever the display scale is changed.
+        /// </summary>
+        public event EventHandler ScaleChanged = delegate { };
+
+        /// <summary>
+        /// Set the DpiStretchRatio to that of the active display.
+        /// Call this if you suspect DPI scaling has changed.
+        /// </summary>
+        public void DpiMeasure() => DpiStretchRatio = Drawing.GDI.GetScaleRatio();
     }
 }

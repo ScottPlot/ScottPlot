@@ -1,15 +1,26 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.25 
+## ScottPlot 4.1.27
 _In development / not yet on NuGet_
+* Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
+* Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
+* Radar Plot: `LineWidth` may now be customized (#1277, #1369) _Thanks @bclehmann_
+* Controls: Stretching due to display scaling can be disabled with `Configuration.DpiStretch` in WPF and Avalonia controls (#1352, #1364) _Thanks @ktheijs and @bclehmann_
+* Axes: Improved support for log-distributed minor tick and grid lines (#1386, #1393) _Thanks @at2software_
+* Axes: `GetTicks()` can be used to get the tick positions and labels from the previous render
+* WPF Control: Improved responsiveness while dragging with the mouse to pan or zoom (#1387, #1388) _Thanks @jbuckmccready_
+* Layout: `MatchLayout()` has improved alignment for plots containing colorbars (#1338, #1349, #1351) _Thanks @dhgigisoave_
+
+## ScottPlot 4.1.26
+_Published 2021-10-12_
 * SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
 * Heatmap: Improve automatic axis limit detection (#1278) _Thanks @bclehmann_
 * Plot: Added `Margins()` to set default margins to use when `AxisAuto()` is called without arguments (#1345)
 * Heatmap: Deprecated `ShowAxisLabels` in favor of tight margins (see cookbook) (#1278) _Thanks @bclehmann_
 * Histogram: Fixed bug affecting binning of values at the upper edge of the final bin (#1348, #1350) _Thanks @jw-suh_
-* Layout: `MatchLayout()` has improved alignment for plots containing colorbars (#1338, #1349, #1351) _Thanks @dhgigisoave_
+* NuGet: Packages have improved debug experience with SourceLink and snupkg format symbols (#1285)
 
-## ScottPlot 4.1.24
+## ScottPlot 4.1.25
 * Palette: `ScottPlot.Palette` has been created and cookbook recipes have been updated to use it. The module it replaces (`ScottPlot.Drawing.Palette`) will not be marked obsolete until ScottPlot 5. (#1299, #1304)
 * Style: Refactored to use static classes instead of enumeration members (#1299, #1291)
 * NuGet: Improved System.Drawing.Common dependencies in user control packages (#1311, #1310) _Thanks @Kritner_
@@ -123,8 +134,7 @@ _In development / not yet on NuGet_
 
 ## ScottPlot 4.1.12-beta
 * Added "Open in New Window" option to right-click menu (#958, #969) _Thanks @ademkaya and @bclehmann_
-* User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @
-PassionateDeveloper86 and @StendProg_
+* User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @PassionateDeveloper86 and @StendProg_
 * Added options to `Plot.AxisScaleLock()` to let the user define scaling behavior when the plot is resized (#933, #857) _Thanks @ricecakebear and @StendProg_
 * Improved XML documentation for `DataGen` module (#903, #902) _Thanks @bclehmann_
 * Fixed bug where tick labels would not render for axes with a single tick (#945, #828, #725, #925) _Thanks @saklanmazozgur and @audun_
@@ -637,7 +647,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 
 #### Major Changes
 * **ScottPlot now targets .NET Standard 2.0** so in addition to .NET Framework projects it can now be used in .NET Core applications, ASP projects, Xamarin apps, etc.
-* **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. Thanks for your early efforts on this @petarpetrovt
+* **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. _Thanks @petarpetrovt_
 * **The WPF control has its own package** ([ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/)) targeting .NET Core 3.0.
 
 #### Minor Changes
@@ -740,7 +750,7 @@ _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-12_
 * improved rendering of extremely zoomed-out signals 
 * rendering speed increased now that Format32bppPArgb is the default PixelFormat (thanks @StendProg)
 * DataGen.NoisySin() was added
-* Code was tested in .NET Core 3.0 preview and compiled without error. Therefore, the next release will likely be for .NET Core 3.0 (Thanks @petarpetrovt)
+* Code was tested in .NET Core 3.0 preview and compiled without error. Therefore, the next release will likely be for .NET Core 3.0 _Thanks @petarpetrovt_
 * User controls now render graphs with anti-alias mode off (faster) while the mouse is being dragged. Upon release a high quality render is performed.
 
 ## ScottPlot 3.0.8

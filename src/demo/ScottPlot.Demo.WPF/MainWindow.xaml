@@ -219,6 +219,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="DisplayScaling">
+                            <TextBlock TextAlignment="Center">
+                                Display Scaling
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Enable/Disable Display Scaling
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

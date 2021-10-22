@@ -1,0 +1,15 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.DisplayScaling"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
+        mc:Ignorable="d"
+        Title="DisplayScaling" Height="450" Width="800">
+    <DockPanel>
+        <Viewbox Height="16" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="10">
+            <CheckBox IsChecked="True" Content="DPI Stretch" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        </Viewbox>
+        <WpfPlot Name="WpfPlot1" />
+    </DockPanel>
+</Window>
