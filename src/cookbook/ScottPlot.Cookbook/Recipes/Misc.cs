@@ -100,13 +100,13 @@ namespace ScottPlot.Cookbook.Recipes
         {
             var sig1 = plt.AddSignal(DataGen.Sin(51));
             sig1.Label = "Sin";
-            sig1.MarkerSize = 10;
-            sig1.LineWidth = 3;
+            sig1.MarkerSize = 7;
+            sig1.LineWidth = 2;
 
             var sig2 = plt.AddSignal(DataGen.Cos(51));
-            sig2.Label = "Sin";
-            sig2.MarkerSize = 15;
-            sig2.LineWidth = 4;
+            sig2.Label = "Cos";
+            sig2.MarkerSize = 7;
+            sig2.LineWidth = 2;
 
             var legend = plt.Legend();
             legend.FontSize = 24;
@@ -119,8 +119,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.LabelStyle(fontSize: 24);
             plt.XAxis2.LabelStyle(fontSize: 36);
 
-            plt.YAxis.TickLabelStyle(fontSize: 16);
-            plt.XAxis.TickLabelStyle(fontSize: 16);
+            plt.YAxis.TickLabelStyle(fontSize: 18);
+            plt.XAxis.TickLabelStyle(fontSize: 18);
 
             plt.YAxis.MajorGrid(lineWidth: 2);
             plt.XAxis.MajorGrid(lineWidth: 2);
