@@ -6,6 +6,7 @@ _In development / not yet on NuGet_
 * Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
 * Radar Plot: `LineWidth` may now be customized (#1277, #1369) _Thanks @bclehmann_
 * Controls: Stretching due to display scaling can be disabled with `Configuration.DpiStretch` in WPF and Avalonia controls (#1352, #1364) _Thanks @ktheijs and @bclehmann_
+* WPF Control: Improved responsiveness while dragging with the mouse to pan or zoom (#1387, #1388) _Thanks @jbuckmccready_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
