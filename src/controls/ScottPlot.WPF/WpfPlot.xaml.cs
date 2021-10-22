@@ -180,22 +180,8 @@ namespace ScottPlot
         /// </summary>
         private WriteableBitmap PlotBitmap;
 
-        private void OnBitmapChanged(object sender, EventArgs e)
-        {
-            ReplacePlotBitmap(Backend.GetLatestBitmap());
-        }
-
-        private void OnBitmapUpdated(object sender, EventArgs e)
-        {
-            if (PlotBitmap is null)
-            {
-                ReplacePlotBitmap(Backend.GetLatestBitmap());
-            }
-            else
-            {
-                UpdatePlotBitmap(Backend.GetLatestBitmap());
-            }
-        }
+        private void OnBitmapChanged(object sender, EventArgs e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
+        private void OnBitmapUpdated(object sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
@@ -243,21 +229,26 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Replace the existing PlotImage with a new one created from a System.Drawing.Bitmap
+        /// Replace the existing PlotBitmap with a new one.
         /// </summary>
         public void ReplacePlotBitmap(System.Drawing.Bitmap bmp)
         {
-            BitmapImage bmpImage = BmpImageFromBmp(bmp);
-            PlotBitmap = new WriteableBitmap(bmpImage);
+            PlotBitmap = new WriteableBitmap(BmpImageFromBmp(bmp));
             PlotImage.Source = PlotBitmap;
         }
 
         /// <summary>
-        /// Copy the pixel data from a System.Drawing.Bitmap into the PlotBitmap
+        /// Update the PlotBitmap with pixel data from the latest render.
+        /// If a PlotBitmap does not exist one will be created.
         /// </summary>
-        /// <param name="bmp"></param>
         private void UpdatePlotBitmap(System.Drawing.Bitmap bmp)
         {
+            if (PlotBitmap is null)
+            {
+                ReplacePlotBitmap(Backend.GetLatestBitmap());
+                return;
+            }
+
             var rect1 = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
             var flags = System.Drawing.Imaging.ImageLockMode.ReadOnly;
             System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect1, flags, bmp.PixelFormat);
