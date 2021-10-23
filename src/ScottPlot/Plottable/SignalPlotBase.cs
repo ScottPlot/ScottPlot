@@ -825,10 +825,12 @@ namespace ScottPlot.Plottable
         public void FillDisable()
         {
             FillType = FillType.FillBelow;
+            GradientFillColor1 = null;
+            GradientFillColor2 = null;
         }
 
         /// <summary>
-        /// Configure the signal plot to show a solid color beneath the curve
+        /// Show a solid color beneath the curve
         /// </summary>
         public void FillBelow(System.Drawing.Color? color = null, double alpha = .2)
         {
@@ -837,7 +839,17 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Configure the signal plot to show a solid color above the curve
+        /// Show a two-color gradient beneath the curve
+        /// </summary>
+        public void FillBelow(System.Drawing.Color upperColor, System.Drawing.Color lowerColor, double alpha = .2)
+        {
+            FillType = FillType.FillBelow;
+            FillColor1 = GDI.Semitransparent(upperColor, alpha);
+            GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
+        }
+
+        /// <summary>
+        /// Show a solid color above the curve
         /// </summary>
         public void FillAbove(System.Drawing.Color? color = null, double alpha = .2)
         {
@@ -846,7 +858,17 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Configure the signal plot to show solid colors above and beneath the curve
+        /// Show a two-color gradient above the curve
+        /// </summary>
+        public void FillAbove(System.Drawing.Color lowerColor, System.Drawing.Color upperColor, double alpha = .2)
+        {
+            FillType = FillType.FillAbove;
+            FillColor1 = GDI.Semitransparent(upperColor, alpha);
+            GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
+        }
+
+        /// <summary>
+        /// Fill the area between the curve and the <see cref="BaselineY"/> value
         /// </summary>
         public void FillAboveAndBelow(System.Drawing.Color colorAbove, System.Drawing.Color colorBelow, double alpha = .2)
         {
