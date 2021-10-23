@@ -116,5 +116,42 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Signal_FillBelowMethod()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), 10);
+            var sig = plt.AddSignal(ys);
+            sig.FillBelow();
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Signal_FillAboveMethod()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), 10);
+            var sig = plt.AddSignal(ys);
+            sig.FillAbove();
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Signal_FillAboveAndBelowMethod()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), 10);
+            var sig = plt.AddSignal(ys);
+            sig.FillAboveAndBelow(System.Drawing.Color.Magenta, System.Drawing.Color.Green);
+            sig.BaselineY = 1.5;
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

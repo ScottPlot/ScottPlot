@@ -818,5 +818,41 @@ namespace ScottPlot.Plottable
             index = Math.Min(index, MaxRenderIndex);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
+
+        /// <summary>
+        /// Configure the signal plot to only show the curve with no filled area above or below it
+        /// </summary>
+        public void FillDisable()
+        {
+            FillType = FillType.FillBelow;
+        }
+
+        /// <summary>
+        /// Configure the signal plot to show a solid color beneath the curve
+        /// </summary>
+        public void FillBelow(System.Drawing.Color? color = null, double alpha = .2)
+        {
+            FillType = FillType.FillBelow;
+            FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
+        }
+
+        /// <summary>
+        /// Configure the signal plot to show a solid color above the curve
+        /// </summary>
+        public void FillAbove(System.Drawing.Color? color = null, double alpha = .2)
+        {
+            FillType = FillType.FillAbove;
+            FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
+        }
+
+        /// <summary>
+        /// Configure the signal plot to show solid colors above and beneath the curve
+        /// </summary>
+        public void FillAboveAndBelow(System.Drawing.Color colorAbove, System.Drawing.Color colorBelow, double alpha = .2)
+        {
+            FillType = FillType.FillAboveAndBelow;
+            FillColor1 = GDI.Semitransparent(colorAbove, alpha);
+            FillColor2 = GDI.Semitransparent(colorBelow, alpha);
+        }
     }
 }
