@@ -238,6 +238,9 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar to display a colormap beside the data area
         /// </summary>
+        /// <param name="colormap">Colormap to display in this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
         public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
         {
             var cb = new Colorbar(colormap);
@@ -249,11 +252,12 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar initialized with settings from a heatmap
         /// </summary>
-        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+        /// <param name="heatmap">A heatmap-containing plottable to connect with this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
+        public Colorbar AddColorbar(IHasColormap heatmap, int space = 100)
         {
-            var cb = new Colorbar(heatmap.Colormap);
-            cb.AddTick(0, heatmap.ColorbarMin);
-            cb.AddTick(1, heatmap.ColorbarMax);
+            var cb = new Colorbar(heatmap);
             Add(cb);
             YAxis2.SetSizeLimit(min: space);
             return cb;
