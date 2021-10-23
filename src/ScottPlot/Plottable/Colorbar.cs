@@ -27,6 +27,28 @@ namespace ScottPlot.Plottable
         public float TickMarkLength = 3;
         public float TickMarkWidth = 1;
 
+
+        /// <summary>
+        /// Controls whether ticks are automatically re-calcualted based on a target tick density before every frame.
+        /// Disable this to manage ticks with <see cref="AddTick(double, string)"/> and <see cref="ClearTicks"/>.
+        /// </summary>
+        public bool AutomaticTicks = true;
+
+        /// <summary>
+        /// Minimum number of pixels to space-out ticks when <see cref="AutomaticTicks"/> is enabled.
+        /// </summary>
+        public int AutomaticTickMinimumSpacing = 40;
+
+        /// <summary>
+        /// Value represented by the bottom of the colorbar
+        /// </summary>
+        public double Min => (Plottable is object) ? Plottable.ColormapMin : 0;
+
+        /// <summary>
+        /// Value represented by the top of the colorbar
+        /// </summary>
+        public double Max => (Plottable is object) ? Plottable.ColormapMax : 0;
+
         /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
         /// </summary>
@@ -141,7 +163,25 @@ namespace ScottPlot.Plottable
                 UpdateBitmap();
 
             RectangleF colorbarRect = RenderColorbar(dims, bmp);
+
+            if (AutomaticTicks)
+                RecalculateTicks(colorbarRect.Height);
+
             RenderTicks(dims, bmp, lowQuality, colorbarRect);
+        }
+
+        private void RecalculateTicks(float height)
+        {
+            ClearTicks();
+            int tickCount = (int)(height / AutomaticTickMinimumSpacing);
+            double spacingFraction = 1.0 / tickCount;
+            double valueSpan = Max - Min;
+            for (int i = 0; i <= tickCount; i++)
+            {
+                double frac = spacingFraction * i;
+                double value = Min + frac * valueSpan;
+                AddTick(frac, $"{value:F2}");
+            }
         }
 
         private RectangleF RenderColorbar(PlotDimensions dims, Bitmap bmp)
