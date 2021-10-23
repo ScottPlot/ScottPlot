@@ -38,9 +38,6 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public double ColormapMin { get; set; }
-        public double ColormapMax { get; set; }
-
         /// <summary>
         /// If true, heatmap squares will be smoothed using bitmap interpolation.
         /// If false, heatmap squares will look like sharp rectangles.
@@ -88,8 +85,8 @@ namespace ScottPlot.Plottable
             }
 
             // labels for colorbar ticks
-            ColormapMin = (ScaleMin.HasValue && ScaleMin > Min) ? ScaleMin.Value : Min;
-            ColormapMax = (ScaleMax.HasValue && ScaleMax < Max) ? ScaleMax.Value : Max;
+            Colormap.Min = (ScaleMin.HasValue && ScaleMin > Min) ? ScaleMin.Value : Min;
+            Colormap.Max = (ScaleMax.HasValue && ScaleMax < Max) ? ScaleMax.Value : Max;
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;

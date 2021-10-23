@@ -40,16 +40,6 @@ namespace ScottPlot.Plottable
         public int AutomaticTickMinimumSpacing = 40;
 
         /// <summary>
-        /// Value represented by the bottom of the colorbar
-        /// </summary>
-        public double Min => (Plottable is object) ? Plottable.ColormapMin : 0;
-
-        /// <summary>
-        /// Value represented by the top of the colorbar
-        /// </summary>
-        public double Max => (Plottable is object) ? Plottable.ColormapMax : 0;
-
-        /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
         /// </summary>
         private IHasColormap Plottable;
@@ -175,11 +165,11 @@ namespace ScottPlot.Plottable
             ClearTicks();
             int tickCount = (int)(height / AutomaticTickMinimumSpacing);
             double spacingFraction = 1.0 / tickCount;
-            double valueSpan = Max - Min;
+            double valueSpan = Colormap.Max - Colormap.Min;
             for (int i = 0; i <= tickCount; i++)
             {
                 double frac = spacingFraction * i;
-                double value = Min + frac * valueSpan;
+                double value = Colormap.Min + frac * valueSpan;
                 AddTick(frac, $"{value:F2}");
             }
         }
