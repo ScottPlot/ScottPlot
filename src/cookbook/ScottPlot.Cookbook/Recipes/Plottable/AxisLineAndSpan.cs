@@ -30,6 +30,39 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class FiniteAxisLine : IRecipe
+    {
+        public string Category => "Plottable: Axis Line and Span";
+        public string ID => "axisLine_finite";
+        public string Title => "Finite Axis Line";
+        public string Description =>
+            "Axis lines can have lower and/or upper bounds. This can be useful for labeling points of interest.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var x_squared = plt.AddFunction(x => x * x);
+
+            var line1 = plt.AddHorizontalLine(1);
+            line1.Max = 1;
+            line1.Color = Color.Gray;
+
+            var line2 = plt.AddVerticalLine(1);
+            line2.Max = 1;
+            line2.Color = Color.Gray;
+
+
+            var line3 = plt.AddHorizontalLine(4);
+            line3.Max = 2;
+            line3.Color = Color.Gray;
+
+            var line4 = plt.AddVerticalLine(2);
+            line4.Max = 4;
+            line4.Color = Color.Gray;
+
+            plt.SetAxisLimits(0, 5, 0, 5);
+        }
+    }
+
     public class Draggable : IRecipe
     {
         public string Category => "Plottable: Axis Line and Span";
