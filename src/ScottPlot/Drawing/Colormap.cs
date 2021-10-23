@@ -40,7 +40,20 @@ namespace ScottPlot.Drawing
 
         private readonly IColormap ThisColormap;
 
+        /// <summary>
+        /// Name of this colormap
+        /// </summary>
         public string Name => ThisColormap.Name;
+
+        /// <summary>
+        /// Value corresponding to the bottom of this colormap
+        /// </summary>
+        public double Min { get; set; } = 0;
+
+        /// <summary>
+        /// Value corresponding to the top of this colormap
+        /// </summary>
+        public double Max { get; set; } = 1;
 
         private static readonly ColormapFactory ColormapFactory = new ColormapFactory();
 
