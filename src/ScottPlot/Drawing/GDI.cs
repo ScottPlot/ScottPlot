@@ -259,5 +259,10 @@ namespace ScottPlot.Drawing
 
             return bmp2;
         }
+
+        public static System.Drawing.Color Semitransparent(System.Drawing.Color color, double alpha)
+        {
+            return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(alpha * 255), color);
+        }
     }
 }
