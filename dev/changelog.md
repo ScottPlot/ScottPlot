@@ -9,6 +9,7 @@ _In development / not yet on NuGet_
 * Axes: Improved support for log-distributed minor tick and grid lines (#1386, #1393) _Thanks @at2software_
 * Axes: `GetTicks()` can be used to get the tick positions and labels from the previous render
 * WPF Control: Improved responsiveness while dragging with the mouse to pan or zoom (#1387, #1388) _Thanks @jbuckmccready_
+* Layout: `MatchLayout()` has improved alignment for plots containing colorbars (#1338, #1349, #1351) _Thanks @dhgigisoave_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_

@@ -10,6 +10,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -148,24 +149,38 @@ namespace ScottPlot
         /// <param name="vertical">if true, vertical layout will be matched</param>
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-                sourcePlot.AxisAuto();
-
-            if (!settings.AllAxesHaveBeenSet)
-                AxisAuto();
-
             var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)
             {
-                YAxis.SetSize(sourceSettings.YAxis.GetSize());
-                YAxis2.SetSize(sourceSettings.YAxis2.GetSize());
+                YAxis.SetSizeLimit(sourceSettings.YAxis.GetSize());
+                YAxis2.SetSizeLimit(sourceSettings.YAxis2.GetSize());
             }
 
             if (vertical)
             {
-                XAxis.SetSize(sourceSettings.XAxis.GetSize());
-                XAxis2.SetSize(sourceSettings.XAxis2.GetSize());
+                XAxis.SetSizeLimit(sourceSettings.XAxis.GetSize());
+                XAxis2.SetSizeLimit(sourceSettings.XAxis2.GetSize());
+            }
+        }
+
+        /// <summary>
+        /// Get the axis limits for the given plot and apply them to this plot
+        /// </summary>
+        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            var sourceLimits = sourcePlot.GetAxisLimits();
+
+            AxisAuto();
+
+            if (horizontal)
+            {
+                SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax);
+            }
+
+            if (vertical)
+            {
+                SetAxisLimitsY(sourceLimits.YMin, sourceLimits.YMax);
             }
         }
 
@@ -627,9 +642,6 @@ namespace ScottPlot
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public double[] Axis(double[] axisLimits) => null;
-
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();

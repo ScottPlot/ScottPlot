@@ -5,50 +5,104 @@ using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 using ScottPlot.Renderable;
 using System;
+using System.Linq;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class Layout : Window
     {
-        AvaPlot avaPlot1;
+        AvaPlot mainPlot;
+        AvaPlot rightPlot;
+        AvaPlot lowerPlot;
 
         public Layout()
         {
-            this.InitializeComponent();
+            AvaloniaXamlLoader.Load(this);
 #if DEBUG
             this.AttachDevTools();
 #endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
-            this.Find<Button>("PlotButton").Click += PlotRandomData;
+            mainPlot = this.Find<AvaPlot>("mainPlot");
+            rightPlot = this.Find<AvaPlot>("rightPlot");
+            lowerPlot = this.Find<AvaPlot>("lowerPlot");
+
+            // generate sample data
+            Random rand = new Random(0);
+            int[] xs = DataGen.RandomNormal(rand, 3000, 20, 10).Select(x => (int)x).ToArray();
+            int[] ys = DataGen.RandomNormal(rand, 3000, 20, 10).Select(y => (int)y).ToArray();
+            double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
+                xs: xs, ys: ys, width: 100, height: 70, sampleWidth: 4);
+
+            // main plot
+            var hmc = mainPlot.Plot.AddHeatmap(intensities, lockScales: false);
+            var cb = mainPlot.Plot.AddColorbar(hmc);
+            mainPlot.Plot.Margins(0, 0);
+            mainPlot.Plot.Title("Control Rod\nTemperature");
+            mainPlot.Plot.XLabel("Horizontal Position");
+            mainPlot.Plot.YLabel("Vertical Position");
+            mainPlot.Refresh();
+
+            // right plot
+            double[] rowSums = SumHorizontally(intensities).Reverse().ToArray();
+            var rightBars = rightPlot.Plot.AddBar(rowSums);
+            rightBars.Orientation = Orientation.Horizontal;
+            rightBars.PositionOffset = .5;
+            rightPlot.Plot.Margins(0, 0);
+            rightPlot.Refresh();
+
+            // lower plot
+            double[] colSums = SumVertically(intensities);
+            var lowerBars = lowerPlot.Plot.AddBar(colSums);
+            lowerBars.PositionOffset = .5;
+            lowerPlot.Plot.Margins(0, 0);
+            lowerPlot.Refresh();
+
+            UpdateChildPlots();
+
+            mainPlot.AxesChanged += MainPlot_AxesChanged;
         }
 
-        private void InitializeComponent()
+        private void MainPlot_AxesChanged(object sender, EventArgs e) => UpdateChildPlots();
+
+        private void UpdateChildPlots()
         {
-            AvaloniaXamlLoader.Load(this);
+            lowerPlot.Plot.MatchAxis(mainPlot.Plot, horizontal: true, vertical: false);
+            rightPlot.Plot.MatchAxis(mainPlot.Plot, horizontal: false, vertical: true);
+
+            lowerPlot.Plot.MatchLayout(mainPlot.Plot, horizontal: true, vertical: false);
+            rightPlot.Plot.MatchLayout(mainPlot.Plot, horizontal: false, vertical: true);
+
+            lowerPlot.Refresh();
+            rightPlot.Refresh();
         }
 
-        private void PlotRandomData(object sender, RoutedEventArgs e)
+        private double[] SumHorizontally(double[,] data)
         {
-            avaPlot1.Reset();
+            double[] sums = new double[data.GetLength(0)];
+            for (int y = 0; y < data.GetLength(0); y++)
+            {
+                double sum = 0;
+                for (int x = 0; x < data.GetLength(1); x++)
+                {
+                    sum += data[y, x];
+                }
+                sums[y] = sum; ;
+            }
+            return sums;
+        }
 
-            int pointCount = 5;
-            Random rand = new Random();
-            double[] dataX = DataGen.Consecutive(pointCount);
-            double[] dataY = DataGen.Random(rand, pointCount);
-            string[] labels = { "One", "Two", "Three", "Four", "Five" };
-
-            avaPlot1.Plot.AddScatter(dataX, dataY, label: "series 1");
-            avaPlot1.Plot.Title("Plot Title");
-            avaPlot1.Plot.XLabel("Horizontal Axis");
-            avaPlot1.Plot.YLabel("Vertical Axis");
-
-            avaPlot1.Plot.XTicks(dataX, labels);
-            avaPlot1.Plot.XAxis.TickLabelStyle(rotation: 90);
-            avaPlot1.Plot.AxisAuto();
-            avaPlot1.Plot.Layout(left: 20, top: 50, bottom: 100, right: 20);
-            //avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
-
-            avaPlot1.Refresh();
+        private double[] SumVertically(double[,] data)
+        {
+            double[] sums = new double[data.GetLength(1)];
+            for (int x = 0; x < data.GetLength(1); x++)
+            {
+                double sum = 0;
+                for (int y = 0; y < data.GetLength(0); y++)
+                {
+                    sum += data[y, x];
+                }
+                sums[x] = sum;
+            }
+            return sums;
         }
     }
 }

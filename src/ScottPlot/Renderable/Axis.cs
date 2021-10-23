@@ -77,7 +77,7 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Define the size limits for this axis (in pixel units).
+        /// Define the minimum and maximum limits for the pixel size of this axis
         /// </summary>
         public void SetSizeLimit(float? min = null, float? max = null, float? pad = null)
         {
@@ -85,6 +85,11 @@ namespace ScottPlot.Renderable
             PixelSizeMaximum = max ?? PixelSizeMaximum;
             PixelSizePadding = pad ?? PixelSizePadding;
         }
+
+        /// <summary>
+        /// Size this axis to an exact number of pixels
+        /// </summary>
+        public void SetSizeLimit(float px) => SetSizeLimit(px, px, 0);
 
         // private styling variables
         private float PixelSize; // how large this axis is
@@ -101,11 +106,9 @@ namespace ScottPlot.Renderable
         public void SetOffset(float pixels) => PixelOffset = pixels;
 
         /// <summary>
-        /// Define how large this axis is in pixels.
-        /// RecalculateAxisSize() populates this value.
+        /// Returns the number of pixels occupied by this axis
         /// </summary>
-        public void SetSize(float pixels) => PixelSize = pixels;
-        public float GetSize() => IsVisible ? PixelSize : 0;
+        public float GetSize() => IsVisible ? PixelSize + PixelSizePadding : 0;
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
