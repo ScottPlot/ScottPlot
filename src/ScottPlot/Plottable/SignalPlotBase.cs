@@ -591,11 +591,14 @@ namespace ScottPlot.Plottable
                 }
             }
 
+            var dataAreaRect = new Rectangle(0, 0, (int)dims.Width, (int)dims.Height);
+
             // Above graph
-            var aboveRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillAbove);
-            if (aboveRect.Height != 0 && aboveRect.Width != 0)
+            if (dataAreaRect.Height > 0 && dataAreaRect.Width > 0)
             {
-                using var brush = new LinearGradientBrush(aboveRect, _FillColor1.Value, _GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
+                var color = _GradientFillColor1 ?? _FillColor1.Value;
+                var edgeColor = _FillColor1.Value;
+                using var brush = new LinearGradientBrush(dataAreaRect, color, edgeColor, LinearGradientMode.Vertical);
                 gfx.FillPolygon(brush,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
@@ -604,10 +607,11 @@ namespace ScottPlot.Plottable
             }
 
             // Below graph
-            var belowRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillBelow);
-            if (belowRect.Height != 0 && belowRect.Width != 0)
+            if (dataAreaRect.Height > 0 && dataAreaRect.Width > 0)
             {
-                using var brush = new LinearGradientBrush(belowRect, _FillColor2.Value, _GradientFillColor2 ?? _FillColor2.Value, LinearGradientMode.Vertical);
+                var color = _FillColor2.Value;
+                var edgeColor = _GradientFillColor2 ?? _FillColor2.Value;
+                using var brush = new LinearGradientBrush(dataAreaRect, color, edgeColor, LinearGradientMode.Vertical);
                 gfx.FillPolygon(brush,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
@@ -618,19 +622,6 @@ namespace ScottPlot.Plottable
             // Draw baseline
             using var baselinePen = GDI.Pen(BaselineColor, BaselineWidth);
             gfx.DrawLine(baselinePen, baselinePointStart, baselinePointEnd);
-        }
-
-        private Rectangle GetFillRectangle(PlotDimensions dims, float startX, float xPxEnd, FillType fillType)
-        {
-            float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
-
-            Rectangle rectangle = new(
-                x: (int)startX,
-                y: (int)dims.DataOffsetY,
-                width: (int)(xPxEnd - startX),
-                height: (int)maxVal);
-
-            return rectangle;
         }
 
         /// <summary>
@@ -888,16 +879,21 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Fill the area between the curve and the edge of the display area using two gradients
         /// </summary>
-        public void FillAboveAndBelow(System.Drawing.Color above, System.Drawing.Color below,
-            System.Drawing.Color upperEdge, System.Drawing.Color lowerEdge, double alpha = .2)
+        /// <param name="above1">Color above the line next to the curve</param>
+        /// <param name="above2">Color above the line next to the upper edge of the plot area</param>
+        /// <param name="below1">Color below the line next to the curve</param>
+        /// <param name="below2">Color below the line next to the lower edge of the plot area</param>
+        /// <param name="alpha">Apply this opacity to all colors</param>
+        public void FillAboveAndBelow(System.Drawing.Color above1, System.Drawing.Color above2,
+            System.Drawing.Color below1, System.Drawing.Color below2, double alpha = .2)
         {
             _FillType = FillType.FillAboveAndBelow;
 
-            _FillColor1 = GDI.Semitransparent(above, alpha);
-            _GradientFillColor1 = GDI.Semitransparent(upperEdge, alpha);
+            _FillColor1 = GDI.Semitransparent(above1, alpha);
+            _GradientFillColor1 = GDI.Semitransparent(above2, alpha);
 
-            _FillColor2 = GDI.Semitransparent(below, alpha);
-            _GradientFillColor2 = GDI.Semitransparent(lowerEdge, alpha);
+            _FillColor2 = GDI.Semitransparent(below2, alpha);
+            _GradientFillColor2 = GDI.Semitransparent(below1, alpha);
         }
     }
 }
