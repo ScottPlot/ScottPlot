@@ -221,7 +221,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sig.FillType = FillType.FillBelow;
             sig.FillColor1 = Color.FromArgb(100, Color.Blue);
 
-            plt.AxisAutoX(0);
+            plt.Margins(x: 0);
         }
     }
 
@@ -242,7 +242,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sig.FillColor1 = Color.Blue;
             sig.GradientFillColor1 = Color.Transparent;
 
-            plt.AxisAutoX(0);
+            plt.Margins(x: 0);
         }
     }
 
@@ -263,7 +263,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sig.FillColor1 = Color.Blue;
             sig.GradientFillColor1 = Color.Transparent;
 
-            plt.AxisAutoX(0);
+            plt.Margins(x: 0);
         }
     }
 
@@ -287,7 +287,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sig.GradientFillColor2 = Color.Red;
             sig.BaselineY = 5;
 
-            plt.AxisAutoX(0);
+            plt.Margins(x: 0);
         }
     }
 
@@ -315,7 +315,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sig.GradientFillColor2 = Color.Transparent;
             sig.BaselineY = 5;
 
-            plt.AxisAutoX(0);
+            plt.Margins(x: 0);
         }
     }
 }
