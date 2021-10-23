@@ -12,6 +12,8 @@ _In development / not yet on NuGet_
 * Layout: `MatchLayout()` has improved alignment for plots containing colorbars (#1338, #1349, #1351) _Thanks @dhgigisoave_
 * Axes: Added multi-axis support for `SetInnerViewLimits()` and `SetOuterViewLimits()` (#1357, #1361) _Thanks @saroldhand_
 * Axes: Created simplified overloads for `AxisAuto()` and `Margins()` that lack multi-axis arguments (#1367) _Thanks @cdytoby_
+* Signal Plot: `FillAbove()`, `FillBelow()`, and `FillAboveAndBelow()` methods have been added to simplify configuration and reduce run-time errors. Direct access to fill-related fields has been deprecated. (#1401)
+* Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_

@@ -259,5 +259,16 @@ namespace ScottPlot.Drawing
 
             return bmp2;
         }
+
+        public static System.Drawing.Color Semitransparent(System.Drawing.Color color, double alpha)
+        {
+            return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(color.A * alpha), color);
+        }
+
+        public static System.Drawing.Color Semitransparent(string htmlColor, double alpha)
+        {
+            System.Drawing.Color color = ColorTranslator.FromHtml(htmlColor);
+            return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(color.A * alpha), color);
+        }
     }
 }
