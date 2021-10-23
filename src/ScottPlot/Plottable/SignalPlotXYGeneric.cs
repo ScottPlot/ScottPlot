@@ -199,7 +199,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // Fill below the line
-                switch (FillType)
+                switch (_FillType)
                 {
                     case FillType.NoFill:
                         break;

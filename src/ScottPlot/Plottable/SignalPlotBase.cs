@@ -53,12 +53,20 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If fill is enabled, this color will be used to fill the area below the curve above BaselineY.
         /// </summary>
-        public Color? GradientFillColor1 { get; set; } = null;
+        [Obsolete("Use the Fill() methods of this object to configure this setting")]
+        public Color? GradientFillColor1 { get => _GradientFillColor1; set => _GradientFillColor1 = value; }
+        public Color? _GradientFillColor1 = null;
 
         /// <summary>
         /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
         /// </summary>
-        public Color? GradientFillColor2 { get; set; } = null;
+        [Obsolete("Use the Fill() methods of this object to configure this setting")]
+        public Color? GradientFillColor2 { get => _GradientFillColor2; set => _GradientFillColor2 = value; }
+        public Color? _GradientFillColor2 = null;
+
+        protected FillType _FillType = FillType.NoFill;
+        protected Color? _FillColor1 = null;
+        protected Color? _FillColor2 = null;
 
         /// <summary>
         /// When markers are visible on the line (low density mode) this is True
@@ -158,7 +166,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private FillType _FillType = FillType.NoFill;
+        [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public FillType FillType
         {
             get => _FillType;
@@ -172,7 +180,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private Color? _FillColor1 = null;
+        [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? FillColor1
         {
             get => _FillColor1;
@@ -184,7 +192,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private Color? _FillColor2 = null;
+        [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? FillColor2
         {
             get => _FillColor2;
@@ -319,7 +327,7 @@ namespace ScottPlot.Plottable
                 if (penLD.Width > 0)
                     gfx.DrawLines(penLD, pointsArray);
 
-                switch (FillType)
+                switch (_FillType)
                 {
                     case FillType.NoFill:
                         break;
@@ -479,7 +487,7 @@ namespace ScottPlot.Plottable
                 gfx.DrawLines(penHD, linePoints);
             }
 
-            switch (FillType)
+            switch (_FillType)
             {
                 case FillType.NoFill:
                     break;
@@ -519,7 +527,7 @@ namespace ScottPlot.Plottable
                     width: (int)(last.X - first.X),
                     height: (int)dims.Height);
 
-            using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
+            using var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, _GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
             gfx.FillPolygon(brush, points);
         }
 
@@ -587,7 +595,7 @@ namespace ScottPlot.Plottable
             var aboveRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillAbove);
             if (aboveRect.Height != 0 && aboveRect.Width != 0)
             {
-                using var brush = new LinearGradientBrush(aboveRect, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
+                using var brush = new LinearGradientBrush(aboveRect, _FillColor1.Value, _GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical);
                 gfx.FillPolygon(brush,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
@@ -599,7 +607,7 @@ namespace ScottPlot.Plottable
             var belowRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillBelow);
             if (belowRect.Height != 0 && belowRect.Width != 0)
             {
-                using var brush = new LinearGradientBrush(belowRect, _FillColor2.Value, GradientFillColor2 ?? _FillColor2.Value, LinearGradientMode.Vertical);
+                using var brush = new LinearGradientBrush(belowRect, _FillColor2.Value, _GradientFillColor2 ?? _FillColor2.Value, LinearGradientMode.Vertical);
                 gfx.FillPolygon(brush,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
@@ -693,7 +701,7 @@ namespace ScottPlot.Plottable
                     gfx.DrawLines(densityPen, pointsArray);
                 }
 
-                switch (FillType)
+                switch (_FillType)
                 {
                     case FillType.NoFill:
                         break;
@@ -801,9 +809,9 @@ namespace ScottPlot.Plottable
 
             // check misc styling options
             if (FillColor1MustBeSetPromise)
-                throw new InvalidOperationException($"A Color must be assigned to FillColor1 to use fill type '{FillType}'");
+                throw new InvalidOperationException($"A Color must be assigned to FillColor1 to use fill type '{_FillType}'");
             if (FillColor2MustBeSetPromise)
-                throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{FillType}'");
+                throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{_FillType}'");
         }
 
         /// <summary>
@@ -824,9 +832,9 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillDisable()
         {
-            FillType = FillType.FillBelow;
-            GradientFillColor1 = null;
-            GradientFillColor2 = null;
+            _FillType = FillType.FillBelow;
+            _GradientFillColor1 = null;
+            _GradientFillColor2 = null;
         }
 
         /// <summary>
@@ -834,8 +842,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillBelow(System.Drawing.Color? color = null, double alpha = .2)
         {
-            FillType = FillType.FillBelow;
-            FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
+            _FillType = FillType.FillBelow;
+            _FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
         }
 
         /// <summary>
@@ -843,9 +851,9 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillBelow(System.Drawing.Color upperColor, System.Drawing.Color lowerColor, double alpha = .2)
         {
-            FillType = FillType.FillBelow;
-            FillColor1 = GDI.Semitransparent(upperColor, alpha);
-            GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
+            _FillType = FillType.FillBelow;
+            _FillColor1 = GDI.Semitransparent(upperColor, alpha);
+            _GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
         }
 
         /// <summary>
@@ -853,8 +861,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillAbove(System.Drawing.Color? color = null, double alpha = .2)
         {
-            FillType = FillType.FillAbove;
-            FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
+            _FillType = FillType.FillAbove;
+            _FillColor1 = GDI.Semitransparent(color ?? Color, alpha);
         }
 
         /// <summary>
@@ -862,9 +870,9 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillAbove(System.Drawing.Color lowerColor, System.Drawing.Color upperColor, double alpha = .2)
         {
-            FillType = FillType.FillAbove;
-            FillColor1 = GDI.Semitransparent(upperColor, alpha);
-            GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
+            _FillType = FillType.FillAbove;
+            _FillColor1 = GDI.Semitransparent(upperColor, alpha);
+            _GradientFillColor1 = GDI.Semitransparent(lowerColor, alpha);
         }
 
         /// <summary>
@@ -872,9 +880,24 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillAboveAndBelow(System.Drawing.Color colorAbove, System.Drawing.Color colorBelow, double alpha = .2)
         {
-            FillType = FillType.FillAboveAndBelow;
-            FillColor1 = GDI.Semitransparent(colorAbove, alpha);
-            FillColor2 = GDI.Semitransparent(colorBelow, alpha);
+            _FillType = FillType.FillAboveAndBelow;
+            _FillColor1 = GDI.Semitransparent(colorAbove, alpha);
+            _FillColor2 = GDI.Semitransparent(colorBelow, alpha);
+        }
+
+        /// <summary>
+        /// Fill the area between the curve and the <see cref="BaselineY"/> value using two gradients
+        /// </summary>
+        public void FillAboveAndBelow(System.Drawing.Color aboveColor, System.Drawing.Color belowColor,
+            System.Drawing.Color aboveEdge, System.Drawing.Color belowEdge, double alpha = .2)
+        {
+            _FillType = FillType.FillAboveAndBelow;
+
+            _FillColor1 = GDI.Semitransparent(aboveColor, alpha);
+            _GradientFillColor1 = GDI.Semitransparent(aboveEdge, alpha);
+
+            _FillColor2 = GDI.Semitransparent(belowEdge, alpha);
+            _GradientFillColor2 = GDI.Semitransparent(belowColor, alpha);
         }
     }
 }
