@@ -401,11 +401,11 @@ namespace ScottPlot
         /// </summary>
         public void SetOuterViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            // TODO: arguments to specify axis limits
-            settings.XAxis.Dims.SetBoundsOuter(xMin, xMax);
-            settings.YAxis.Dims.SetBoundsOuter(yMin, yMax);
+            settings.GetXAxis(xAxisIndex).Dims.SetBoundsOuter(xMin, xMax);
+            settings.GetYAxis(yAxisIndex).Dims.SetBoundsOuter(yMin, yMax);
         }
 
         /// <summary>
@@ -413,11 +413,11 @@ namespace ScottPlot
         /// </summary>
         public void SetInnerViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            // TODO: arguments to specify axis limits
-            settings.XAxis.Dims.SetBoundsInner(xMin, xMax);
-            settings.YAxis.Dims.SetBoundsInner(yMin, yMax);
+            settings.GetXAxis(xAxisIndex).Dims.SetBoundsInner(xMin, xMax);
+            settings.GetYAxis(yAxisIndex).Dims.SetBoundsInner(yMin, yMax);
         }
 
         #endregion
