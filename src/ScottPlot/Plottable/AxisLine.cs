@@ -121,6 +121,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
+        /// <summary>
+        /// The lower bound of the axis line.
+        /// </summary>
+        public double? Min = null;
+
+        /// <summary>
+        /// The upper bound of the axis line.
+        /// </summary>
+        public double? Max = null;
+
         public AxisLine(bool isHorizontal)
         {
             IsHorizontal = isHorizontal;
@@ -164,16 +174,16 @@ namespace ScottPlot.Plottable
 
             if (IsHorizontal)
             {
-                float pixelX1 = dims.GetPixelX(dims.XMin);
-                float pixelX2 = dims.GetPixelX(dims.XMax);
+                float pixelX1 = dims.GetPixelX(Min ?? dims.XMin);
+                float pixelX2 = dims.GetPixelX(Max ?? dims.XMax);
                 float pixelY = dims.GetPixelY(Position);
                 gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
             }
             else
             {
                 float pixelX = dims.GetPixelX(Position);
-                float pixelY1 = dims.GetPixelY(dims.YMin);
-                float pixelY2 = dims.GetPixelY(dims.YMax);
+                float pixelY1 = dims.GetPixelY(Min ?? dims.YMin);
+                float pixelY2 = dims.GetPixelY(Max ?? dims.YMax);
                 gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
             }
         }
