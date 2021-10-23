@@ -27,9 +27,20 @@ namespace ScottPlot.Plottable
         public float TickMarkLength = 3;
         public float TickMarkWidth = 1;
 
+        /// <summary>
+        /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
+        /// </summary>
+        private IHasColormap Plottable;
+
         public Colorbar(Colormap colormap = null)
         {
             UpdateColormap(colormap ?? Colormap.Viridis);
+        }
+
+        public Colorbar(IHasColormap plottable)
+        {
+            Plottable = plottable;
+            UpdateColormap(plottable.Colormap ?? Colormap.Viridis);
         }
 
         /// <summary>
