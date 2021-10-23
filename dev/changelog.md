@@ -13,6 +13,7 @@ _In development / not yet on NuGet_
 * Axes: Added multi-axis support for `SetInnerViewLimits()` and `SetOuterViewLimits()` (#1357, #1361) _Thanks @saroldhand_
 * Axes: Created simplified overloads for `AxisAuto()` and `Margins()` that lack multi-axis arguments (#1367) _Thanks @cdytoby_
 * Signal Plot: `FillAbove()` and `FillBelow()` methods simplify styling configuration (#1401)
+* Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_

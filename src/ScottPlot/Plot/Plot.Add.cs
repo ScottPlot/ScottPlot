@@ -289,6 +289,25 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Create a polygon to fill the area between two Y curves that share the same X positions.
+        /// </summary>
+        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null)
+        {
+            double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
+            double[] polyYs = ys1.Concat(ys2.Reverse()).ToArray();
+
+            var plottable = new Polygon(polyXs, polyYs)
+            {
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
+                LineWidth = 0,
+            };
+
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values of two curves.
         /// </summary>
         public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)

@@ -62,6 +62,36 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class PolygonFillBetween : IRecipe
+    {
+        public string Category => "Plottable: Polygon";
+        public string ID => "polygon_fillBetween";
+        public string Title => "Fill Between Curves";
+        public string Description =>
+            "A shaded area between two curves can be created by enclosing the area as a polygon. " +
+            "For this to work the two curves must share the same X points.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(0);
+            int pointCount = 100;
+            double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
+
+            // plot a shaded region
+            double[] lower = ScottPlot.DataGen.Sin(pointCount, 5, offset: 3);
+            double[] upper = ScottPlot.DataGen.Cos(pointCount, 5, offset: -3);
+            var poly = plt.AddFill(xs, lower, upper);
+            poly.FillColor = Color.FromArgb(50, Color.Green);
+
+            // plot a line within that region
+            double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
+            var sig = plt.AddSignal(ys);
+            sig.Color = plt.Palette.GetColor(0);
+
+            plt.Margins(0, .5);
+        }
+    }
+
     public class PolygonStackedFilledLinePlot : IRecipe
     {
         public string Category => "Plottable: Polygon";
