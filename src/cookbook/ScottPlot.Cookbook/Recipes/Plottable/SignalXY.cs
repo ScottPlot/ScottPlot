@@ -126,8 +126,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
 
             var sigxy = plt.AddSignalXY(xs, ys);
-            sigxy.FillColor1 = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Blue);
-            sigxy.FillType = FillType.FillBelow;
+            sigxy.FillBelow();
 
             plt.Margins(x: 0);
         }
