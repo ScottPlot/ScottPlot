@@ -204,4 +204,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddScatterStep(xs, ys);
         }
     }
+
+    public class AddMarker : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_AddMarker";
+        public string Title => "Add markers";
+        public string Description => "Want to place a marker at a position in X/Y space? " +
+            "AddMarker() will create a scatter plot with a single point.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(0);
+            for (int i = 0; i < 100; i++)
+            {
+                double x = rand.Next(100);
+                double y = rand.Next(100);
+                double fraction = rand.NextDouble();
+                double size = (fraction + .1) * 30;
+                var color = Drawing.Colormap.Turbo.GetColor(fraction, alpha: .8);
+                var shape = Marker.Random(rand);
+                plt.AddMarker(x, y, shape, size, color);
+            }
+        }
+    }
 }
