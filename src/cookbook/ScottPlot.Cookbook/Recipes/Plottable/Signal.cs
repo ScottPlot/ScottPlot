@@ -300,7 +300,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var sig = plt.AddSignal(data);
             sig.MarkerSize = 0;
             sig.Color = Color.Black;
-            sig.FillAboveAndBelow(Color.Green, Color.Red, Color.Transparent, Color.Transparent, 1);
+            sig.FillAboveAndBelow(Color.Green, Color.Transparent, Color.Transparent, Color.Red, 1);
             sig.BaselineY = 5;
 
             plt.Margins(x: 0);
