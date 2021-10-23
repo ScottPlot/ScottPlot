@@ -429,42 +429,52 @@ namespace ScottPlot
         /// </summary>
         /// <param name="x">horizontal margin in the range [0, 1]</param>
         /// <param name="y">vertical margin in the range [0, 1]</param>
-        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
         /// <returns>Current default margins for automatic axis scaling</returns>
-        public (double x, double y) Margins(double? x = null, double? y = null, int? xAxisIndex = null, int? yAxisIndex = null)
+        public (double x, double y) Margins(double? x = null, double? y = null)
+        {
+            return Margins(x, y, 0, 0);
+        }
+
+        /// <summary>
+        /// Auto-scale the axis limits to fit the data. This function is an alias for AxisAuto().
+        /// This overload is for multi-axis plots (plots with multiple X and Y axes) and will only adjust the specified axes.
+        /// </summary>
+        /// <param name="x">horizontal margin in the range [0, 1]</param>
+        /// <param name="y">vertical margin in the range [0, 1]</param>
+        /// <param name="xAxisIndex">Only adjust the specified axis (for plots with multiple X axes)</param>
+        /// <param name="yAxisIndex">Only adjust the specified axis (for plots with multiple Y axes)</param>
+        /// <returns>Current default margins for automatic axis scaling</returns>
+        public (double x, double y) Margins(double? x, double? y, int xAxisIndex, int yAxisIndex)
         {
             AxisAuto(x, y, xAxisIndex, yAxisIndex);
             return (settings.MarginsX, settings.MarginsY);
         }
 
         /// <summary>
-        /// Automatically adjust axis limits to fit the data
+        /// Automatically set axis limits to fit the data.
         /// </summary>
-        /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
-        /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
-        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        public void AxisAuto(double? horizontalMargin = null, double? verticalMargin = null, int? xAxisIndex = null, int? yAxisIndex = null)
+        /// <param name="horizontalMargin">Extra space (fraction) to add to the left and right of the limits of the data</param>
+        /// <param name="verticalMargin">Extra space (fraction) to add above and below the limits of the data</param>
+        public void AxisAuto(double? horizontalMargin = null, double? verticalMargin = null)
+        {
+            AxisAuto(horizontalMargin, verticalMargin, xAxisIndex: 0, yAxisIndex: 0);
+        }
+
+        /// <summary>
+        /// Automatically set axis limits to fit the data.
+        /// This overload is designed for multi-axis plots (with multiple X axes or multiple Y axes).
+        /// </summary>
+        /// <param name="horizontalMargin">Extra space (fraction) to add to the left and right of the limits of the data</param>
+        /// <param name="verticalMargin">Extra space (fraction) to add above and below the limits of the data</param>
+        /// <param name="xAxisIndex">Only adjust the specified axis (for plots with multiple X axes)</param>
+        /// <param name="yAxisIndex">Only adjust the specified axis (for plots with multiple Y axes)</param>
+        public void AxisAuto(double? horizontalMargin, double? verticalMargin, int xAxisIndex, int yAxisIndex)
         {
             settings.MarginsX = horizontalMargin ?? settings.MarginsX;
             settings.MarginsY = verticalMargin ?? settings.MarginsY;
 
-            if (xAxisIndex is null && yAxisIndex is null)
-            {
-                settings.AxisAutoAll(settings.MarginsX, settings.MarginsY);
-                return;
-            }
-
-            if (xAxisIndex is null)
-                settings.AxisAutoAllX(settings.MarginsX);
-            else
-                settings.AxisAutoX(xAxisIndex.Value, settings.MarginsX);
-
-            if (yAxisIndex is null)
-                settings.AxisAutoAllY(settings.MarginsY);
-            else
-                settings.AxisAutoY(yAxisIndex.Value, settings.MarginsY);
+            settings.AxisAutoX(xAxisIndex, settings.MarginsX);
+            settings.AxisAutoY(yAxisIndex, settings.MarginsY);
         }
 
         /// <summary>
