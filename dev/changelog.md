@@ -16,6 +16,7 @@ _In development / not yet on NuGet_
 * Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
 * Palette: Made all `Palette` classes public (#1394) _Thanks @Terebi42_
 * Colorbar: Added `Min` and `Max` fields to describe the values represented by the color range (#1403, #1362)
+* Colorbar: Added `AutomaticTickFormatter` to let the user define how positions are translated to tick labels (#1403, #1362)
 * Heatmap: Improved support for automatic tick placement in colorbars (#1403, #1362)
 
 ## ScottPlot 4.1.26

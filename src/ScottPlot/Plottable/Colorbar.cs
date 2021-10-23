@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -38,6 +39,11 @@ namespace ScottPlot.Plottable
         /// Minimum number of pixels to space-out ticks when <see cref="AutomaticTicks"/> is enabled.
         /// </summary>
         public int AutomaticTickMinimumSpacing = 40;
+
+        /// <summary>
+        /// Formatting method to generate the labels used for automatic ticks
+        /// </summary>
+        public Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
         /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
@@ -164,13 +170,14 @@ namespace ScottPlot.Plottable
         {
             ClearTicks();
             int tickCount = (int)(height / AutomaticTickMinimumSpacing);
-            double spacingFraction = 1.0 / tickCount;
+            double tickSpacingFraction = 1.0 / tickCount;
             double valueSpan = Colormap.Max - Colormap.Min;
             for (int i = 0; i <= tickCount; i++)
             {
-                double frac = spacingFraction * i;
-                double value = Colormap.Min + frac * valueSpan;
-                AddTick(frac, $"{value:F2}");
+                double colorbarFraction = tickSpacingFraction * i;
+                double tickPosition = Colormap.Min + colorbarFraction * valueSpan;
+                string tickLabel = AutomaticTickFormatter(tickPosition);
+                AddTick(colorbarFraction, tickLabel);
             }
         }
 
