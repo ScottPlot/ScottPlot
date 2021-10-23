@@ -626,7 +626,7 @@ namespace ScottPlot.Plottable
 
             Rectangle rectangle = new(
                 x: (int)startX,
-                y: 0,
+                y: (int)dims.DataOffsetY,
                 width: (int)(xPxEnd - startX),
                 height: (int)maxVal);
 
