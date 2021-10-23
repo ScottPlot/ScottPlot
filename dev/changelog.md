@@ -15,6 +15,8 @@ _In development / not yet on NuGet_
 * Signal Plot: `FillAbove()`, `FillBelow()`, and `FillAboveAndBelow()` methods have been added to simplify configuration and reduce run-time errors. Direct access to fill-related fields has been deprecated. (#1401)
 * Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
 * Palette: Made all `Palette` classes public (#1394) _Thanks @Terebi42_
+* Marker: Created a new `Marker` class to simplify the marker API. Currently it is a pass-through for `MarkerShape` enumeration members.
+* Plot: `AddMarker()` makes it easy to place a styled marker at an X/Y position on the plot. (#1391)
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
