@@ -886,18 +886,18 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Fill the area between the curve and the <see cref="BaselineY"/> value using two gradients
+        /// Fill the area between the curve and the edge of the display area using two gradients
         /// </summary>
-        public void FillAboveAndBelow(System.Drawing.Color aboveColor, System.Drawing.Color belowColor,
-            System.Drawing.Color aboveEdge, System.Drawing.Color belowEdge, double alpha = .2)
+        public void FillAboveAndBelow(System.Drawing.Color above, System.Drawing.Color below,
+            System.Drawing.Color upperEdge, System.Drawing.Color lowerEdge, double alpha = .2)
         {
             _FillType = FillType.FillAboveAndBelow;
 
-            _FillColor1 = GDI.Semitransparent(aboveColor, alpha);
-            _GradientFillColor1 = GDI.Semitransparent(aboveEdge, alpha);
+            _FillColor1 = GDI.Semitransparent(above, alpha);
+            _GradientFillColor1 = GDI.Semitransparent(upperEdge, alpha);
 
-            _FillColor2 = GDI.Semitransparent(belowEdge, alpha);
-            _GradientFillColor2 = GDI.Semitransparent(belowColor, alpha);
+            _FillColor2 = GDI.Semitransparent(below, alpha);
+            _GradientFillColor2 = GDI.Semitransparent(lowerEdge, alpha);
         }
     }
 }
