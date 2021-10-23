@@ -5,7 +5,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class ColorblindFriendly : HexColorset, IPalette
+    public class ColorblindFriendly : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

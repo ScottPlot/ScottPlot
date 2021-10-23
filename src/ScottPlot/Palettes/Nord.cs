@@ -4,7 +4,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Nord : HexColorset, IPalette
+    public class Nord : HexColorset, IPalette
     {
         // suggested background: #2e3440
         public override string[] hexColors => new string[]

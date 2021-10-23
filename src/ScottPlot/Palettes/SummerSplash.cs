@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Drawing.Colorsets
 {
-    class SummerSplash : HexColorset, IPalette
+    public class SummerSplash : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

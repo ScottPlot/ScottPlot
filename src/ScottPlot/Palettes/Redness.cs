@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Redness : HexColorset, IPalette
+    public class Redness : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

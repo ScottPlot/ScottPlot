@@ -5,7 +5,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Microcharts : HexColorset, IPalette
+    public class Microcharts : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

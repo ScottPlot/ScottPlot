@@ -14,6 +14,7 @@ _In development / not yet on NuGet_
 * Axes: Created simplified overloads for `AxisAuto()` and `Margins()` that lack multi-axis arguments (#1367) _Thanks @cdytoby_
 * Signal Plot: `FillAbove()`, `FillBelow()`, and `FillAboveAndBelow()` methods have been added to simplify configuration and reduce run-time errors. Direct access to fill-related fields has been deprecated. (#1401)
 * Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
+* Palette: Made all `Palette` classes public (#1394) _Thanks @Terebi42_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_

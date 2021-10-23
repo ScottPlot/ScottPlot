@@ -4,7 +4,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Dark : HexColorset, IPalette
+    public class Dark : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {
