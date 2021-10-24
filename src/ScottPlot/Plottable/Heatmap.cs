@@ -17,9 +17,41 @@ namespace ScottPlot.Plottable
         // these fields are updated when the intensities are analyzed
         private double Min;
         private double Max;
-        private int Width;
-        private int Height;
+
+        /// <summary>
+        /// Number of columns in the heatmap data
+        /// </summary>
+        private int DataWidth;
+
+        /// <summary>
+        /// Number of rows in the heatmap data
+        /// </summary>
+        private int DataHeight;
+
+        /// <summary>
+        /// Pre-rendered heatmap image
+        /// </summary>
         protected Bitmap BmpHeatmap;
+
+        /// <summary>
+        /// Horizontal location of the lower-left cell
+        /// </summary>
+        public double OffsetX = 0;
+
+        /// <summary>
+        /// Vertical location of the lower-left cell
+        /// </summary>
+        public double OffsetY = 0;
+
+        /// <summary>
+        /// Width of each cell composing the heatmap
+        /// </summary>
+        public double CellWidth = 1;
+
+        /// <summary>
+        /// Width of each cell composing the heatmap
+        /// </summary>
+        public double CellHeight = 1;
 
         /// <summary>
         /// Text to appear in the legend
@@ -97,8 +129,8 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
-            Width = intensities.GetLength(1);
-            Height = intensities.GetLength(0);
+            DataWidth = intensities.GetLength(1);
+            DataHeight = intensities.GetLength(0);
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
@@ -135,8 +167,8 @@ namespace ScottPlot.Plottable
             int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
             BmpHeatmap?.Dispose();
-            BmpHeatmap = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            Rectangle rect = new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
+            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
             BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
             BmpHeatmap.UnlockBits(bmpData);
@@ -175,13 +207,13 @@ namespace ScottPlot.Plottable
                 return null;
             }
 
-            min = min ?? input.Min();
-            max = max ?? input.Max();
+            min ??= input.Min();
+            max ??= input.Max();
 
             min = (scaleMin.HasValue && scaleMin.Value < min) ? scaleMin.Value : min;
             max = (scaleMax.HasValue && scaleMax.Value > max) ? scaleMax.Value : max;
 
-            double?[] normalized = input.AsParallel().AsOrdered().Select<double?, double?>(i => NormalizePreserveNull(i)).ToArray();
+            double?[] normalized = input.AsParallel().AsOrdered().Select(i => NormalizePreserveNull(i)).ToArray();
 
             if (scaleMin.HasValue)
             {
@@ -215,7 +247,11 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 return new AxisLimits();
 
-            return new AxisLimits(0, BmpHeatmap.Width, 0, BmpHeatmap.Height);
+            return new AxisLimits(
+                xMin: OffsetX,
+                xMax: OffsetX + DataWidth * CellWidth,
+                yMin: OffsetY,
+                yMax: OffsetY + DataHeight * CellHeight);
         }
 
         public void ValidateData(bool deepValidation = false)
@@ -225,9 +261,9 @@ namespace ScottPlot.Plottable
 
             if (deepValidation)
             {
-                if (Width > 1e6 || Height > 1e6)
+                if (DataWidth > 1e6 || DataHeight > 1e6)
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with edges larger than 1 million values");
-                if (Width * Height > 1e7)
+                if (DataWidth * DataHeight > 1e7)
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with more than 10 million values");
             }
         }
@@ -243,13 +279,14 @@ namespace ScottPlot.Plottable
             gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
             gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
-            int fromX = (int)Math.Round(dims.GetPixelX(0));
-            int fromY = (int)Math.Round(dims.GetPixelY(Height));
-            int width = (int)Math.Round(dims.GetPixelX(Width) - fromX);
-            int height = (int)Math.Round(dims.GetPixelY(0) - fromY);
-            Rectangle destRect = new Rectangle(fromX, fromY, width, height);
+            int fromX = (int)Math.Round(dims.GetPixelX(OffsetX));
+            int fromY = (int)Math.Round(dims.GetPixelY(OffsetY + DataHeight * CellHeight));
+            int width = (int)Math.Round(dims.GetPixelX(OffsetX + DataWidth * CellWidth) - fromX);
+            int height = (int)Math.Round(dims.GetPixelY(OffsetY) - fromY);
 
-            ImageAttributes attr = new ImageAttributes();
+            Rectangle destRect = new(fromX, fromY, width, height);
+
+            ImageAttributes attr = new();
             attr.SetWrapMode(WrapMode.TileFlipXY);
 
             if (BackgroundImage != null && !DisplayImageAbove)

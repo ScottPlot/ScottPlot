@@ -254,6 +254,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapDimensions : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_dimensions";
+        public string Title => "Custom Dimensions";
+        public string Description =>
+            "By default heatmaps start at the origin and each rectangle (cell) is 1 unit in size, but " +
+            "heatmap offset and cell size can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
+
+            var hm = plt.AddHeatmap(data2D, lockScales: false);
+            hm.OffsetX = 10;
+            hm.OffsetY = 20;
+            hm.CellWidth = 5;
+            hm.CellHeight = 10;
+        }
+    }
+
     public class HeatmapTransparent : IRecipe
     {
         public string Category => "Plottable: Heatmap";
