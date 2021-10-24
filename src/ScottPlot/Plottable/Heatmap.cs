@@ -21,16 +21,37 @@ namespace ScottPlot.Plottable
         private int Height;
         protected Bitmap BmpHeatmap;
 
-        // these fields are customized by the user
-        public string Label;
-        public Colormap Colormap { get; private set; }
-        public double[] AxisOffsets;
-        public double[] AxisMultipliers;
-        public double? ScaleMin;
-        public double? ScaleMax;
-        public double? TransparencyThreshold;
-        public Bitmap BackgroundImage;
-        public bool DisplayImageAbove;
+        /// <summary>
+        /// Text to appear in the legend
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// Colormap used to translate heatmap values to colors
+        /// </summary>
+        public Colormap Colormap { get; private set; } = Colormap.Viridis;
+
+        /// <summary>
+        /// If defined, colors will be "clipped" to this value such that lower values (lower colors) will not be shown
+        /// </summary>
+        public double? ScaleMin { get; set; }
+
+        /// <summary>
+        /// If defined, colors will be "clipped" to this value such that greater values (higher colors) will not be shown
+        /// </summary>
+        public double? ScaleMax { get; set; }
+
+        /// <summary>
+        /// Heatmap values below this number (if defined) will be made transparent
+        /// </summary>
+        public double? TransparencyThreshold { get; set; }
+
+        /// <summary>
+        /// Image to display beneath the heatmap (only seen through transparent squares)
+        /// </summary>
+        public Bitmap BackgroundImage { get; set; }
+
+        public bool DisplayImageAbove { get; set; }
 
         [Obsolete("This feature has been deprecated. Use CoordinatedHeatmap or add Text objects to the plot instead.", true)]
         public bool ShowAxisLabels;
@@ -64,13 +85,6 @@ namespace ScottPlot.Plottable
         /// If false, heatmap squares will look like sharp rectangles.
         /// </summary>
         public bool Smooth = false;
-
-        public Heatmap()
-        {
-            AxisOffsets = new double[] { 0, 0 };
-            AxisMultipliers = new double[] { 1, 1 };
-            Colormap = Colormap.Viridis;
-        }
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -217,60 +231,59 @@ namespace ScottPlot.Plottable
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with more than 10 million values");
             }
         }
-
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
         }
 
-        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            {
-                gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                gfx.PixelOffsetMode = PixelOffsetMode.Half;
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
-                int fromX = (int)Math.Round(dims.GetPixelX(0));
-                int fromY = (int)Math.Round(dims.GetPixelY(Height));
-                int width = (int)Math.Round(dims.GetPixelX(Width) - fromX);
-                int height = (int)Math.Round(dims.GetPixelY(0) - fromY);
-                Rectangle destRect = new Rectangle(fromX, fromY, width, height);
+            gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+            gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
-                ImageAttributes attr = new ImageAttributes();
-                attr.SetWrapMode(WrapMode.TileFlipXY);
+            int fromX = (int)Math.Round(dims.GetPixelX(0));
+            int fromY = (int)Math.Round(dims.GetPixelY(Height));
+            int width = (int)Math.Round(dims.GetPixelX(Width) - fromX);
+            int height = (int)Math.Round(dims.GetPixelY(0) - fromY);
+            Rectangle destRect = new Rectangle(fromX, fromY, width, height);
 
-                if (BackgroundImage != null && !DisplayImageAbove)
-                    gfx.DrawImage(
-                            image: BackgroundImage,
-                            destRect: destRect,
-                            srcX: 0,
-                            srcY: 0,
-                            srcWidth: BackgroundImage.Width,
-                            srcHeight: BackgroundImage.Height,
-                            srcUnit: GraphicsUnit.Pixel,
-                            imageAttr: attr);
+            ImageAttributes attr = new ImageAttributes();
+            attr.SetWrapMode(WrapMode.TileFlipXY);
 
+            if (BackgroundImage != null && !DisplayImageAbove)
                 gfx.DrawImage(
-                        image: BmpHeatmap,
+                        image: BackgroundImage,
                         destRect: destRect,
                         srcX: 0,
                         srcY: 0,
-                        BmpHeatmap.Width,
-                        BmpHeatmap.Height,
-                        GraphicsUnit.Pixel,
-                        attr);
+                        srcWidth: BackgroundImage.Width,
+                        srcHeight: BackgroundImage.Height,
+                        srcUnit: GraphicsUnit.Pixel,
+                        imageAttr: attr);
 
-                if (BackgroundImage != null && DisplayImageAbove)
-                    gfx.DrawImage(
-                            image: BackgroundImage,
-                            destRect: destRect,
-                            srcX: 0,
-                            srcY: 0,
-                            srcWidth: BackgroundImage.Width,
-                            srcHeight: BackgroundImage.Height,
-                            srcUnit: GraphicsUnit.Pixel,
-                            imageAttr: attr);
-            }
+            gfx.DrawImage(
+                    image: BmpHeatmap,
+                    destRect: destRect,
+                    srcX: 0,
+                    srcY: 0,
+                    BmpHeatmap.Width,
+                    BmpHeatmap.Height,
+                    GraphicsUnit.Pixel,
+                    attr);
+
+            if (BackgroundImage != null && DisplayImageAbove)
+                gfx.DrawImage(
+                        image: BackgroundImage,
+                        destRect: destRect,
+                        srcX: 0,
+                        srcY: 0,
+                        srcWidth: BackgroundImage.Width,
+                        srcHeight: BackgroundImage.Height,
+                        srcUnit: GraphicsUnit.Pixel,
+                        imageAttr: attr);
+
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
