@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using ScottPlot.Ticks;
+using System.Linq;
 
 namespace ScottPlot.Plottable
 {
@@ -33,6 +34,7 @@ namespace ScottPlot.Plottable
 
         private readonly List<Tick> ManualTicks = new();
         private bool AutomaticTickEnable = true;
+        private bool AutomaticTickGreaterLesser = false;
         private int AutomaticTickMinimumSpacing = 40;
         private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
@@ -58,7 +60,8 @@ namespace ScottPlot.Plottable
         /// <param name="enable"></param>
         /// <param name="minimumSpacing">Minimum number of vertical pixels between tick positions</param>
         /// <param name="formatter">Optional custom string formatter to translate tick positions to labels</param>
-        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null)
+        /// <param name="greaterLesser">Prefix the min and max labels with ≥ and ≤</param>
+        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null, bool greaterLesser = false)
         {
             if (enable)
                 ManualTicks.Clear();
@@ -66,6 +69,7 @@ namespace ScottPlot.Plottable
             AutomaticTickEnable = enable;
             AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
             AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
+            AutomaticTickGreaterLesser = greaterLesser;
         }
 
         /// <summary>
@@ -177,13 +181,20 @@ namespace ScottPlot.Plottable
             {
                 double colorbarFraction = tickSpacingFraction * i;
                 double tickPosition = Colormap.Min + colorbarFraction * valueSpan;
-                Tick tick = new(
-                    position: colorbarFraction,
-                    label: AutomaticTickFormatter(tickPosition),
-                    isMajor: true,
-                    isDateTime: false);
+
+                string tickLabel = AutomaticTickFormatter(tickPosition);
+                if (AutomaticTickGreaterLesser)
+                {
+                    if (i == 0)
+                        tickLabel = "≤" + tickLabel;
+                    else if (i == tickCount)
+                        tickLabel = "≥" + tickLabel;
+                }
+
+                Tick tick = new(colorbarFraction, tickLabel, isMajor: true, isDateTime: false);
                 ticks.Add(tick);
             }
+
             return ticks;
         }
 

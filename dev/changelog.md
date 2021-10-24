@@ -15,8 +15,7 @@ _In development / not yet on NuGet_
 * Signal Plot: `FillAbove()`, `FillBelow()`, and `FillAboveAndBelow()` methods have been added to simplify configuration and reduce run-time errors. Direct access to fill-related fields has been deprecated. (#1401)
 * Plot: `AddFill()` now has an overload to fill between two Y curves with shared X values
 * Palette: Made all `Palette` classes public (#1394) _Thanks @Terebi42_
-* Colorbar: Added `Min` and `Max` fields to describe the values represented by the color range (#1403, #1362)
-* Colorbar: Added `AutomaticTickFormatter` to let the user define how positions are translated to tick labels (#1403, #1362)
+* Colorbar: Added `AutomaticTicks()` to let the user further customize tick positions and labels (#1403, #1362) _Thanks @bclehmann_
 * Heatmap: Improved support for automatic tick placement in colorbars (#1403, #1362)
 * Marker: Created a new `Marker` class to simplify the marker API. Currently it is a pass-through for `MarkerShape` enumeration members.
 * Plot: `AddMarker()` makes it easy to place a styled marker at an X/Y position on the plot. (#1391)
