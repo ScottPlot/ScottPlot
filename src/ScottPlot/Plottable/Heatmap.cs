@@ -32,8 +32,9 @@ namespace ScottPlot.Plottable
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
 
-        [Obsolete("This feature has been deprecated (see cookbook for recommended usage)")]
+        [Obsolete("This feature has been deprecated. Use CoordinatedHeatmap or add Text objects to the plot instead.", true)]
         public bool ShowAxisLabels;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -200,13 +201,6 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 return new AxisLimits();
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            if (ShowAxisLabels)
-            {
-                return new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height);
-            }
-#pragma warning restore CS0618 // Type or member is obsolete
-
             return new AxisLimits(0, BmpHeatmap.Width, 0, BmpHeatmap.Height);
         }
 
@@ -227,10 +221,6 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
-#pragma warning disable CS0618 // Type or member is obsolete
-            if (ShowAxisLabels)
-                RenderAxis(dims, bmp, lowQuality);
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
@@ -280,24 +270,6 @@ namespace ScottPlot.Plottable
                             srcHeight: BackgroundImage.Height,
                             srcUnit: GraphicsUnit.Pixel,
                             imageAttr: attr);
-            }
-        }
-
-        private void RenderAxis(PlotDimensions dims, Bitmap bmp, bool lowQuality)
-        {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(Color.Black))
-            using (var axisFont = GDI.Font(null, 12))
-            using (StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center })
-            using (StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
-            {
-                double offset = -2;
-                double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
-                gfx.DrawString($"{AxisOffsets[0]:f3}", axisFont, brush, dims.GetPixelX(0), dims.GetPixelY(offset), centre_top);
-                gfx.DrawString($"{AxisOffsets[0] + AxisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((Width * minScale) + dims.GetPixelX(0)), dims.GetPixelY(offset)), centre_top);
-                gfx.DrawString($"{AxisOffsets[1]:f3}", axisFont, brush, dims.GetPixelX(offset), dims.GetPixelY(0), right_centre);
-                gfx.DrawString($"{AxisOffsets[1] + AxisMultipliers[1]:f3}", axisFont, brush, new PointF(dims.GetPixelX(offset), dims.GetPixelY(0) - (float)(Height * minScale)), right_centre);
             }
         }
 
