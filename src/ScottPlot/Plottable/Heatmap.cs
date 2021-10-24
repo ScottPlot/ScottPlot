@@ -14,8 +14,14 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class Heatmap : IPlottable, IHasColormap
     {
-        // these fields are updated when the intensities are analyzed
+        /// <summary>
+        /// Minimum heatmap value
+        /// </summary>
         private double Min;
+
+        /// <summary>
+        /// Maximum heatmap value
+        /// </summary>
         private double Max;
 
         /// <summary>
@@ -52,6 +58,36 @@ namespace ScottPlot.Plottable
         /// Width of each cell composing the heatmap
         /// </summary>
         public double CellHeight = 1;
+
+        /// <summary>
+        /// Position of the left edge of the heatmap
+        /// </summary>
+        public double XMin
+        {
+            get => OffsetX;
+            set => OffsetX = value;
+        }
+
+        /// <summary>
+        /// Position of the right edge of the heatmap
+        /// </summary>
+        public double XMax
+        {
+            get => OffsetX + DataWidth * CellWidth;
+            set => CellWidth = (value - OffsetX) / DataWidth;
+        }
+
+        public double YMin
+        {
+            get => OffsetY;
+            set => OffsetY = value;
+        }
+
+        public double YMax
+        {
+            get => OffsetY + DataHeight * CellHeight;
+            set => CellHeight = (value - OffsetY) / DataHeight;
+        }
 
         /// <summary>
         /// Text to appear in the legend

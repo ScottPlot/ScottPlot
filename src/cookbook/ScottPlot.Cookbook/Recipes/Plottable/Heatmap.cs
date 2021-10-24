@@ -275,4 +275,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var cb = plt.AddColorbar(hmc);
         }
     }
+
+    public class HeatmapPlacement : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_placement";
+        public string Title => "Size and Placement";
+        public string Description =>
+            "Edges of the heatmap can be defined as an alternative to defining offset and cell size,";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var hm = plt.AddHeatmap(imageData, lockScales: false);
+
+            hm.XMin = -100;
+            hm.XMax = 100;
+            hm.YMin = -10;
+            hm.YMax = 10;
+        }
+    }
 }
