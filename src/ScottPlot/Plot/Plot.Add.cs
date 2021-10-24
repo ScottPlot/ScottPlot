@@ -238,6 +238,9 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar to display a colormap beside the data area
         /// </summary>
+        /// <param name="colormap">Colormap to display in this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
         public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
         {
             var cb = new Colorbar(colormap);
@@ -249,11 +252,12 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar initialized with settings from a heatmap
         /// </summary>
-        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+        /// <param name="heatmap">A heatmap-containing plottable to connect with this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
+        public Colorbar AddColorbar(IHasColormap heatmap, int space = 100)
         {
-            var cb = new Colorbar(heatmap.Colormap);
-            cb.AddTick(0, heatmap.ColorbarMin);
-            cb.AddTick(1, heatmap.ColorbarMax);
+            var cb = new Colorbar(heatmap);
             Add(cb);
             YAxis2.SetSizeLimit(min: space);
             return cb;
@@ -284,6 +288,25 @@ namespace ScottPlot
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
             };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a polygon to fill the area between two Y curves that share the same X positions.
+        /// </summary>
+        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null)
+        {
+            double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
+            double[] polyYs = ys1.Concat(ys2.Reverse()).ToArray();
+
+            var plottable = new Polygon(polyXs, polyYs)
+            {
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
+                LineWidth = 0,
+            };
+
             Add(plottable);
             return plottable;
         }
@@ -598,6 +621,21 @@ namespace ScottPlot
             double y1 = xLimits.x1 * slope + offset;
             double y2 = xLimits.x2 * slope + offset;
             return AddScatter(new double[] { xLimits.x1, xLimits.x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
+        }
+
+        /// <summary>
+        /// Add a marker at a specific X/Y position.
+        /// This method really creates a scatter plot with a single point.
+        /// </summary>
+        public ScatterPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        {
+            return AddScatter(
+                xs: new double[] { x },
+                ys: new double[] { y },
+                markerShape: shape,
+                markerSize: (float)size,
+                color: color ?? GetNextColor(),
+                label: label);
         }
 
         /// <summary>

@@ -4,7 +4,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Aurora : HexColorset, IPalette
+    public class Aurora : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

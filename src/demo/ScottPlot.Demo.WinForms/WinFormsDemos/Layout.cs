@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Forms;
 
-namespace ScottPlot.Demo.WPF.WpfDemos
+namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
-    /// <summary>
-    /// Interaction logic for Layout.xaml
-    /// </summary>
-    public partial class Layout : Window
+    public partial class Layout : Form
     {
         public Layout()
         {
@@ -55,14 +48,11 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             lowerPlot.Refresh();
 
             UpdateChildPlots();
-
-            this.SizeChanged += Layout_SizeChanged1;
-            mainPlot.AxesChanged += MainPlot_AxesChanged;
         }
 
-        private void MainPlot_AxesChanged(object sender, EventArgs e) => UpdateChildPlots();
+        private void mainPlot_AxesChanged(object sender, EventArgs e) => UpdateChildPlots();
 
-        private void Layout_SizeChanged1(object sender, SizeChangedEventArgs e) => UpdateChildPlots();
+        private void Layout_SizeChanged(object sender, EventArgs e) => UpdateChildPlots();
 
         private void UpdateChildPlots()
         {

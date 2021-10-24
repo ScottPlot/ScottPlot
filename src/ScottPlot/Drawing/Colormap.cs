@@ -40,6 +40,9 @@ namespace ScottPlot.Drawing
 
         private readonly IColormap ThisColormap;
 
+        /// <summary>
+        /// Name of this colormap
+        /// </summary>
         public string Name => ThisColormap.Name;
 
         private static readonly ColormapFactory ColormapFactory = new ColormapFactory();

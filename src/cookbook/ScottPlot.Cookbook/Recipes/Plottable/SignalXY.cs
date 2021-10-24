@@ -17,16 +17,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate random, unevenly-spaced data
-            Random rand = new Random(0);
-            int pointCount = 100_000;
-            double[] ys = new double[pointCount];
-            double[] xs = new double[pointCount];
-            for (int i = 1; i < ys.Length; i++)
-            {
-                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
-                xs[i] = xs[i - 1] + rand.NextDouble();
-            }
+            (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
 
             plt.AddSignalXY(xs, ys);
         }
@@ -42,16 +33,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate random, unevenly-spaced data
-            var rand = new Random(2);
-            int pointCount = 100_000;
-            double[] ys = new double[pointCount];
-            double[] xs = new double[pointCount];
-            for (int i = 1; i < ys.Length; i++)
-            {
-                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
-                xs[i] = xs[i - 1] + rand.NextDouble();
-            }
+            (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
 
             var sig = plt.AddSignalXY(xs, ys);
             sig.OffsetX = 10_000;
@@ -69,14 +51,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             var rand = new Random(0);
-            int pointCount = 1_000_000;
+            int pointCount = 10_000;
             double[] sine = DataGen.Sin(pointCount, 3);
             double[] noise = DataGen.RandomNormal(rand, pointCount, 0, 0.5);
             double[] ys = sine.Zip(noise, (s, n) => s + n).ToArray();
             double[] xs = Enumerable.Range(0, pointCount)
                 .Select(x => (double)x)
-                .Select(x => x > 500_000 ? x + 1_000_000 : x)
-                .Select(x => x > 200_000 ? x + 100_000 : x)
+                .Select(x => x > 3_000 ? x + 10_000 : x)
+                .Select(x => x > 7_000 ? x + 20_000 : x)
                 .ToArray();
 
             plt.AddSignalXY(xs, ys);
@@ -92,21 +74,19 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            Random rand = new Random(0);
-            int pointCount = 1_000_000;
+            Random rand = new(0);
+            int pointCount = 5_000;
             double[] sine = DataGen.Sin(pointCount, 3);
             double[] noise = DataGen.RandomNormal(rand, pointCount, 0, 0.5);
             double[] ys = sine.Zip(noise, (s, n) => s + n).ToArray();
             double[] xs = new double[pointCount];
 
-            double currentX = 0;
+            double x = 0;
             for (int i = 0; i < pointCount; i++)
             {
-                if ((i % 100000) < 10)
-                    currentX += 10;
-                else
-                    currentX += 0.0001;
-                xs[i] = currentX;
+                bool lowDensityPoint = (i % 1_000) < 10;
+                x += lowDensityPoint ? 10 : .05;
+                xs[i] = x;
             }
 
             plt.AddSignalXY(xs, ys);
@@ -123,20 +103,32 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate random, unevenly-spaced data
-            Random rand = new Random(0);
-            int pointCount = 100_000;
-            double[] ys = new double[pointCount];
-            double[] xs = new double[pointCount];
-            for (int i = 1; i < ys.Length; i++)
-            {
-                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
-                xs[i] = xs[i - 1] + rand.NextDouble();
-            }
+            (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
 
             var sigxy = plt.AddSignalXY(xs, ys);
             sigxy.StepDisplay = true;
-            plt.SetAxisLimits(18700, 18730, -49.25, -46.75);
+            sigxy.MarkerSize = 0;
+
+            plt.SetAxisLimits(110, 140, 17.5, 27.5);
+        }
+    }
+
+    public class SignalXYFillBelow : IRecipe
+    {
+        public string Category => "Plottable: SignalXY";
+        public string ID => "signalxy_fillBelow";
+        public string Title => "SignalXY with Fill";
+        public string Description =>
+            "Various options allow shading above/below the signal data.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
+
+            var sigxy = plt.AddSignalXY(xs, ys);
+            sigxy.FillBelow();
+
+            plt.Margins(x: 0);
         }
     }
 }

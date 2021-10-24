@@ -4,7 +4,7 @@
  */
 namespace ScottPlot.Drawing.Colorsets
 {
-    class Tsitsulin : HexColorset, IPalette
+    public class Tsitsulin : HexColorset, IPalette
     {
         public override string[] hexColors => new string[]
         {

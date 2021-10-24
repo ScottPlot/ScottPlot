@@ -65,12 +65,24 @@ namespace ScottPlot
         /// <summary>
         /// Return the first horizontal axis with the given axis index
         /// </summary>
-        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+        public Axis GetXAxis(int xAxisIndex)
+        {
+            Axis[] axes = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).ToArray();
+            if (axes.Length == 0)
+                throw new InvalidOperationException($"There no X axes with an axis index of {xAxisIndex}");
+            return axes[0];
+        }
 
         /// <summary>
         /// Return the first vertical axis with the given axis index
         /// </summary>
-        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+        public Axis GetYAxis(int yAxisIndex)
+        {
+            Axis[] axes = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).ToArray();
+            if (axes.Length == 0)
+                throw new InvalidOperationException($"There no Y axes with an axis index of {yAxisIndex}");
+            return axes[0];
+        }
 
         /// <summary>
         /// Indicates whether unset axes are present.

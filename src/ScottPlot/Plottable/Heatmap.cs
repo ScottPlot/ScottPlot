@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
     /// A heatmap displays a 2D array of intensities as small rectangles on the plot
     /// colored according to their intensity value according to a colormap.
     /// </summary>
-    public class Heatmap : IPlottable
+    public class Heatmap : IPlottable, IHasColormap
     {
         // these fields are updated when the intensities are analyzed
         private double Min;
@@ -38,8 +38,15 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public string ColorbarMin { get; private set; }
-        public string ColorbarMax { get; private set; }
+        /// <summary>
+        /// Value of the the lower edge of the colormap
+        /// </summary>
+        public double ColormapMin { get; private set; } = 0;
+
+        /// <summary>
+        /// Value of the the upper edge of the colormap
+        /// </summary>
+        public double ColormapMax { get; private set; } = 1;
 
         /// <summary>
         /// If true, heatmap squares will be smoothed using bitmap interpolation.
@@ -88,8 +95,8 @@ namespace ScottPlot.Plottable
             }
 
             // labels for colorbar ticks
-            ColorbarMin = (ScaleMin.HasValue && ScaleMin > Min) ? $"≤ {ScaleMin:f3}" : $"{Min:f3}";
-            ColorbarMax = (ScaleMax.HasValue && ScaleMax < Max) ? $"≥ {ScaleMax:f3}" : $"{Max:f3}";
+            ColormapMin = (ScaleMin.HasValue && ScaleMin > Min) ? ScaleMin.Value : Min;
+            ColormapMax = (ScaleMax.HasValue && ScaleMax < Max) ? ScaleMax.Value : Max;
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
