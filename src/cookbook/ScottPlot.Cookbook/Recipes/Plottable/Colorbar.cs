@@ -58,19 +58,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class ColorbarLesserGreater : IRecipe
+    public class ColorbarClip : IRecipe
     {
         public string Category => "Plottable: Colorbar";
-        public string ID => "colorbar_lesserGreater";
-        public string Title => "Lesser and Greater Tick Labels";
+        public string ID => "colorbar_clip";
+        public string Title => "Clipped value range";
         public string Description =>
-            "The lowest and highest tick label can optionally display lesser and greater symbols " +
-            "to indicate that values outside the colorbar range will be clamped to the colors at the edges.";
+            "If data values extend behond the min/max range displayed by a colorbar " +
+            "you can indicate the colormap is clipping the data values and inequality symbols will be " +
+            "displayed in the tick labeles at the edge of the colorbar.";
 
         public void ExecuteRecipe(Plot plt)
         {
             var cb = plt.AddColorbar(Drawing.Colormap.Turbo);
-            cb.AutomaticTicks(greaterLesser: true);
+            cb.Min = -10;
+            cb.Max = 10;
+            cb.MinIsClipped = true;
+            cb.MaxIsClipped = true;
         }
     }
 }

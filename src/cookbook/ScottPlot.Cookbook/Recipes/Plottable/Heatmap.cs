@@ -158,6 +158,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapClip : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_clip";
+        public string Title => "Color Clipping";
+        public string Description =>
+            "The value range displayed by the colormap can restricted to a narrow subset of the full data range. " +
+            "Tick labels at the edges of the colorbar can be made to show inequality symbols to indicate " +
+            "the range of data is being clipped when translating values to colors.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var heatmap = plt.AddHeatmap(imageData);
+            heatmap.Update(imageData, min: 75, max: 125);
+            var cb = plt.AddColorbar(heatmap);
+        }
+    }
+
     public class HeatmapDensity : IRecipe
     {
         public string Category => "Plottable: Heatmap";

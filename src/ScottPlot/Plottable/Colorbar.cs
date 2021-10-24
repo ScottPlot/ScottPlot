@@ -34,7 +34,6 @@ namespace ScottPlot.Plottable
 
         private readonly List<Tick> ManualTicks = new();
         private bool AutomaticTickEnable = true;
-        private bool AutomaticTickGreaterLesser = false;
         private int AutomaticTickMinimumSpacing = 40;
         private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
@@ -50,6 +49,20 @@ namespace ScottPlot.Plottable
         {
             get => (Plottable is IHasColormap p) ? p.ColormapMax : _Max;
             set => _Max = value;
+        }
+
+        private bool _MinIsClipped = false;
+        public bool MinIsClipped
+        {
+            get => (Plottable is IHasColormap p) ? p.ColormapMinIsClipped : _MinIsClipped;
+            set => _MinIsClipped = value;
+        }
+
+        private bool _MaxIsClipped = false;
+        public bool MaxIsClipped
+        {
+            get => (Plottable is IHasColormap p) ? p.ColormapMaxIsClipped : _MaxIsClipped;
+            set => _MaxIsClipped = value;
         }
 
         /// <summary>
@@ -74,8 +87,7 @@ namespace ScottPlot.Plottable
         /// <param name="enable"></param>
         /// <param name="minimumSpacing">Minimum number of vertical pixels between tick positions</param>
         /// <param name="formatter">Optional custom string formatter to translate tick positions to labels</param>
-        /// <param name="greaterLesser">Prefix the min and max labels with ≥ and ≤</param>
-        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null, bool greaterLesser = false)
+        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null)
         {
             if (enable)
                 ManualTicks.Clear();
@@ -83,7 +95,6 @@ namespace ScottPlot.Plottable
             AutomaticTickEnable = enable;
             AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
             AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
-            AutomaticTickGreaterLesser = greaterLesser;
         }
 
         /// <summary>
@@ -198,13 +209,10 @@ namespace ScottPlot.Plottable
                 double tickPosition = Min + colorbarFraction * valueSpan;
 
                 string tickLabel = AutomaticTickFormatter(tickPosition);
-                if (AutomaticTickGreaterLesser)
-                {
-                    if (i == 0)
-                        tickLabel = "≤" + tickLabel;
-                    else if (i == tickCount)
-                        tickLabel = "≥" + tickLabel;
-                }
+                if (MinIsClipped && i == 0)
+                    tickLabel = "≤" + tickLabel;
+                if (MaxIsClipped && i == tickCount)
+                    tickLabel = "≥" + tickLabel;
 
                 Tick tick = new(colorbarFraction, tickLabel, isMajor: true, isDateTime: false);
                 ticks.Add(tick);

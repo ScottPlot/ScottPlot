@@ -41,12 +41,22 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Value of the the lower edge of the colormap
         /// </summary>
-        public double ColormapMin { get; private set; } = 0;
+        public double ColormapMin => ScaleMin ?? 0;
 
         /// <summary>
         /// Value of the the upper edge of the colormap
         /// </summary>
-        public double ColormapMax { get; private set; } = 1;
+        public double ColormapMax => ScaleMax ?? 1;
+
+        /// <summary>
+        /// Indicates whether values extend beyond the lower edge of the colormap
+        /// </summary>
+        public bool ColormapMinIsClipped { get; private set; } = false;
+
+        /// <summary>
+        /// Indicates whether values extend beyond the upper edge of the colormap
+        /// </summary>
+        public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
         /// If true, heatmap squares will be smoothed using bitmap interpolation.
@@ -94,9 +104,8 @@ namespace ScottPlot.Plottable
                     Max = curr.Value;
             }
 
-            // labels for colorbar ticks
-            ColormapMin = (ScaleMin.HasValue && ScaleMin > Min) ? ScaleMin.Value : Min;
-            ColormapMax = (ScaleMax.HasValue && ScaleMax < Max) ? ScaleMax.Value : Max;
+            ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
+            ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
