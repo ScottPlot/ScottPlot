@@ -6,19 +6,9 @@ using System.Drawing.Imaging;
 
 namespace ScottPlot.Plottable
 {
-    /// <summary>
-    /// This variation of the Heatmap renders intensity data as a rectangle 
-    /// sized to fit user-defined axis limits
-    /// </summary>
-    [Obsolete("This plot type has been deprecated. (min/max functionality now exists in Heatmap)")]
+    [Obsolete("This plot type has been deprecated. Min/max and interpolation settings are exposed in the regular Heatmap.")]
     public class CoordinatedHeatmap : Heatmap
     {
-        public double XMin { get; set; }
-        public double XMax { get; set; }
-        public double YMin { get; set; }
-        public double YMax { get; set; }
-        public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
-
         protected override void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
