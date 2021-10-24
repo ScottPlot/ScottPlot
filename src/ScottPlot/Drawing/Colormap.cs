@@ -108,6 +108,12 @@ namespace ScottPlot.Drawing
             return Color.FromArgb(GetInt32(fraction, alphaByte));
         }
 
+        public Color RandomColor(Random rand, double alpha = 1.0)
+        {
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(rand.NextDouble(), alphaByte));
+        }
+
         public void Apply(Bitmap bmp)
         {
             System.Drawing.Imaging.ColorPalette pal = bmp.Palette;
