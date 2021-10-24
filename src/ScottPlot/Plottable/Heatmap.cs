@@ -148,10 +148,19 @@ namespace ScottPlot.Plottable
         public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
-        /// If true, heatmap squares will be smoothed using bitmap interpolation.
-        /// If false, heatmap squares will look like sharp rectangles.
+        /// If true, heatmap squares will be smoothed using high quality bicubic interpolation.
+        /// If false, heatmap squares will look like sharp rectangles (nearest neighbor interpolation).
         /// </summary>
-        public bool Smooth = false;
+        public bool Smooth
+        {
+            get => Interpolation != InterpolationMode.NearestNeighbor;
+            set => Interpolation = value ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+        }
+
+        /// <summary>
+        /// Controls which interpolation mode is used when zooming into the heatmap.
+        /// </summary>
+        public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -311,7 +320,7 @@ namespace ScottPlot.Plottable
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
-            gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+            gfx.InterpolationMode = Interpolation;
             gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
             int fromX = (int)Math.Round(dims.GetPixelX(OffsetX));
