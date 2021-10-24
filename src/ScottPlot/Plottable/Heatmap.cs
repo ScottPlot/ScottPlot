@@ -78,11 +78,10 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double? TransparencyThreshold { get; set; }
 
-        /// <summary>
-        /// Image to display beneath the heatmap (only seen through transparent squares)
-        /// </summary>
+        [Obsolete("This feature has been deprecated. Use AddImage() to place a bitmap beneath or above the heatmap.", true)]
         public Bitmap BackgroundImage { get; set; }
 
+        [Obsolete("This feature has been deprecated. Use AddImage() to place a bitmap beneath or above the heatmap.", true)]
         public bool DisplayImageAbove { get; set; }
 
         [Obsolete("This feature has been deprecated. Use Plot.AddText() to add text to the plot.", true)]
@@ -289,17 +288,6 @@ namespace ScottPlot.Plottable
             ImageAttributes attr = new();
             attr.SetWrapMode(WrapMode.TileFlipXY);
 
-            if (BackgroundImage != null && !DisplayImageAbove)
-                gfx.DrawImage(
-                        image: BackgroundImage,
-                        destRect: destRect,
-                        srcX: 0,
-                        srcY: 0,
-                        srcWidth: BackgroundImage.Width,
-                        srcHeight: BackgroundImage.Height,
-                        srcUnit: GraphicsUnit.Pixel,
-                        imageAttr: attr);
-
             gfx.DrawImage(
                     image: BmpHeatmap,
                     destRect: destRect,
@@ -309,18 +297,6 @@ namespace ScottPlot.Plottable
                     BmpHeatmap.Height,
                     GraphicsUnit.Pixel,
                     attr);
-
-            if (BackgroundImage != null && DisplayImageAbove)
-                gfx.DrawImage(
-                        image: BackgroundImage,
-                        destRect: destRect,
-                        srcX: 0,
-                        srcY: 0,
-                        srcWidth: BackgroundImage.Width,
-                        srcHeight: BackgroundImage.Height,
-                        srcUnit: GraphicsUnit.Pixel,
-                        imageAttr: attr);
-
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
