@@ -40,24 +40,37 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            var x_squared = plt.AddFunction(x => x * x);
+            plt.AddFunction(x => Math.Pow(x, 2), lineStyle: LineStyle.Dash);
+            plt.AddFunction(x => Math.Sqrt(x), lineStyle: LineStyle.Dash);
 
-            var line1 = plt.AddHorizontalLine(1);
-            line1.Max = 1;
-            line1.Color = Color.Gray;
+            // mark a coordinate from the lower left
+            var point1 = plt.AddPoint(1, 1, size: 10, shape: MarkerShape.openCircle);
+            var hLine1 = plt.AddHorizontalLine(1, width: 2);
+            hLine1.Max = 1;
+            hLine1.Color = point1.Color;
+            var vLine1 = plt.AddVerticalLine(1, width: 2);
+            vLine1.Max = 1;
+            vLine1.Color = point1.Color;
 
-            var line2 = plt.AddVerticalLine(1);
-            line2.Max = 1;
-            line2.Color = Color.Gray;
+            // use finate upper and lower limits draw a cross on a point
+            var point2 = plt.AddPoint(4, 2, size: 10, shape: MarkerShape.openCircle);
+            var vLine2 = plt.AddVerticalLine(4, width: 2);
+            vLine2.Min = 1.5;
+            vLine2.Max = 2.5;
+            vLine2.Color = point2.Color;
+            var hLine2 = plt.AddHorizontalLine(2, width: 2);
+            hLine2.Min = 3.5;
+            hLine2.Max = 4.5;
+            hLine2.Color = point2.Color;
 
-
-            var line3 = plt.AddHorizontalLine(4);
-            line3.Max = 2;
-            line3.Color = Color.Gray;
-
-            var line4 = plt.AddVerticalLine(2);
-            line4.Max = 4;
-            line4.Color = Color.Gray;
+            // mark a coordinate from the top right
+            var point3 = plt.AddPoint(2, 4, size: 10, shape: MarkerShape.openCircle);
+            var hLine3 = plt.AddHorizontalLine(4, width: 2);
+            hLine3.Min = 2;
+            hLine3.Color = point3.Color;
+            var vLine3 = plt.AddVerticalLine(2, width: 2);
+            vLine3.Min = 4;
+            vLine3.Color = point3.Color;
 
             plt.SetAxisLimits(0, 5, 0, 5);
         }
