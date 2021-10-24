@@ -8,6 +8,6 @@ namespace ScottPlot.Plottable
 {
     public interface IHasColormap
     {
-        Drawing.Colormap Colormap { get; set; }
+        Drawing.Colormap Colormap { get; }
     }
 }

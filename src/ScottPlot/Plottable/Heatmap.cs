@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
 
         // these fields are customized by the user
         public string Label;
-        public Colormap Colormap { get; set; }
+        public Colormap Colormap { get; private set; }
         public double[] AxisOffsets;
         public double[] AxisMultipliers;
         public double? ScaleMin;
