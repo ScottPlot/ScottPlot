@@ -64,7 +64,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "colorbar_clip";
         public string Title => "Clipped value range";
         public string Description =>
-            "If data values extend behond the min/max range displayed by a colorbar " +
+            "If data values extend beyond the min/max range displayed by a colorbar " +
             "you can indicate the colormap is clipping the data values and inequality symbols will be " +
             "displayed in the tick labeles at the edge of the colorbar.";
 
