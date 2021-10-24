@@ -41,12 +41,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Value of the the lower edge of the colormap
         /// </summary>
-        public double ColormapMin => ScaleMin ?? 0;
+        public double ColormapMin => ScaleMin ?? Min;
 
         /// <summary>
         /// Value of the the upper edge of the colormap
         /// </summary>
-        public double ColormapMax => ScaleMax ?? 1;
+        public double ColormapMax => ScaleMax ?? Max;
 
         /// <summary>
         /// Indicates whether values extend beyond the lower edge of the colormap
