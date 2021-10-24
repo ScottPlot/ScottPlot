@@ -1,37 +1,9 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using ScottPlot.Drawing.Colormaps;
 
 namespace ScottPlot.Plottable
 {
-    /// <summary>
-    /// Horizontal line at a Y position
-    /// </summary>
-    public class HLine : AxisLine
-    {
-        /// <summary>
-        /// Y position to render the line
-        /// </summary>
-        public double Y { get => Position; set => Position = value; }
-        public override string ToString() => $"Horizontal line at Y={Y}";
-        public HLine() : base(true) { }
-    }
-
-    /// <summary>
-    /// Vertical line at an X position
-    /// </summary>
-    public class VLine : AxisLine
-    {
-        /// <summary>
-        /// X position to render the line
-        /// </summary>
-        public double X { get => Position; set => Position = value; }
-        public override string ToString() => $"Vertical line at X={X}";
-        public VLine() : base(false) { }
-    }
-
     public abstract class AxisLine : IDraggable, IPlottable
     {
         /// <summary>
