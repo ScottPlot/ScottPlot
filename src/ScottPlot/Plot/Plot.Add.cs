@@ -624,6 +624,21 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a marker at a specific X/Y position.
+        /// This method really creates a scatter plot with a single point.
+        /// </summary>
+        public ScatterPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        {
+            return AddScatter(
+                xs: new double[] { x },
+                ys: new double[] { y },
+                markerShape: shape,
+                markerSize: (float)size,
+                color: color ?? GetNextColor(),
+                label: label);
+        }
+
+        /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)

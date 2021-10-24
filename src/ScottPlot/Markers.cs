@@ -10,7 +10,7 @@ namespace ScottPlot
 {
     public enum MarkerShape
     {
-        // TODO: capitalize these in ScottPlot 4.1
+        // TODO: replace this with ScottPlot.Marker in the next major version of ScottPlot
         none,
         filledCircle,
         filledSquare,
