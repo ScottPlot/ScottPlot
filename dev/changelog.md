@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.27
+## ScottPlot 4.1.28
 _In development / not yet on NuGet_
+
+## ScottPlot 4.1.27
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
 * Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
 * Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
 * Radar Plot: `LineWidth` may now be customized (#1277, #1369) _Thanks @bclehmann_
@@ -25,7 +28,7 @@ _In development / not yet on NuGet_
 * Axis lines: Added `Min` and `Max` properties to terminate the line at a finite point (#1390, #1399) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.26
-_Published 2021-10-12_
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-12_
 * SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
 * Heatmap: Improve automatic axis limit detection (#1278) _Thanks @bclehmann_
 * Plot: Added `Margins()` to set default margins to use when `AxisAuto()` is called without arguments (#1345)
