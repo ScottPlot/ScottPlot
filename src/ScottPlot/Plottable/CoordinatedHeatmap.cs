@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// This variation of the Heatmap renders intensity data as a rectangle 
     /// sized to fit user-defined axis limits
     /// </summary>
-    [Obsolete("This plot type has been deprecated. Use a regular heatmap and modify its Offset and CellSize fields.")]
+    [Obsolete("This plot type has been deprecated. (min/max functionality now exists in Heatmap)")]
     public class CoordinatedHeatmap : Heatmap
     {
         public double XMin { get; set; }
