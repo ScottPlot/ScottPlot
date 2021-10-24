@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Plottable
 {
@@ -15,12 +16,14 @@ namespace ScottPlot.Plottable
 
         private Colormap Colormap;
         private Bitmap BmpScale;
-        private readonly List<string> TickLabels = new();
-        private readonly List<double> TickFractions = new();
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
+
+        /// <summary>
+        /// Width of the colorbar rectangle
+        /// </summary>
         public int Width = 20;
 
         public readonly Drawing.Font TickLabelFont = new();
@@ -28,22 +31,10 @@ namespace ScottPlot.Plottable
         public float TickMarkLength = 3;
         public float TickMarkWidth = 1;
 
-
-        /// <summary>
-        /// Controls whether ticks are automatically re-calcualted based on a target tick density before every frame.
-        /// Disable this to manage ticks with <see cref="AddTick(double, string)"/> and <see cref="ClearTicks"/>.
-        /// </summary>
-        public bool AutomaticTicks = true;
-
-        /// <summary>
-        /// Minimum number of pixels to space-out ticks when <see cref="AutomaticTicks"/> is enabled.
-        /// </summary>
-        public int AutomaticTickMinimumSpacing = 40;
-
-        /// <summary>
-        /// Formatting method to generate the labels used for automatic ticks
-        /// </summary>
-        public Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
+        private readonly List<Tick> ManualTicks = new();
+        private bool AutomaticTickEnable = true;
+        private int AutomaticTickMinimumSpacing = 40;
+        private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
         /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
@@ -62,27 +53,42 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Clear all tick marks and labels
+        /// Configure ticks that are automatically generated in the absense of manually-added ticks
         /// </summary>
-        public void ClearTicks()
+        /// <param name="enable"></param>
+        /// <param name="minimumSpacing">Minimum number of vertical pixels between tick positions</param>
+        /// <param name="formatter">Optional custom string formatter to translate tick positions to labels</param>
+        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null)
         {
-            TickFractions.Clear();
-            TickLabels.Clear();
+            if (enable)
+                ManualTicks.Clear();
+
+            AutomaticTickEnable = enable;
+            AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
+            AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
         }
 
         /// <summary>
-        /// Add a tick mark and label
+        /// Clear the list of manually-defined ticks.
+        /// To enable automatic tick placement call 
+        /// </summary>
+        public void ClearTicks()
+        {
+            ManualTicks.Clear();
+        }
+
+        /// <summary>
+        /// Add a tick to the list of manually-defined ticks (disabling automatic tick placement)
         /// </summary>
         /// <param name="fraction">from 0 (darkest) to 1 (brightest)</param>
         /// <param name="label">string displayed beside the tick</param>
         public void AddTick(double fraction, string label)
         {
-            TickFractions.Add(fraction);
-            TickLabels.Add(label);
+            ManualTicks.Add(new(fraction, label, true, false));
         }
 
         /// <summary>
-        /// Add tick marks and labels
+        /// Manually define ticks (disabling automatic tick placement)
         /// </summary>
         /// <param name="fractions">from 0 (darkest) to 1 (brightest)</param>
         /// <param name="labels">strings displayed beside the ticks</param>
@@ -93,18 +99,20 @@ namespace ScottPlot.Plottable
 
             for (int i = 0; i < fractions.Length; i++)
             {
-                TickFractions.Add(fractions[i]);
-                TickLabels.Add(labels[i]);
+                ManualTicks.Add(new(fractions[i], labels[i], true, false));
             }
         }
 
         /// <summary>
-        /// Define a tick marks and labels
+        /// Manually define ticks (disabling automatic tick placement)
         /// </summary>
         /// <param name="fractions">from 0 (darkest) to 1 (brightest)</param>
         /// <param name="labels">strings displayed beside the ticks</param>
         public void SetTicks(double[] fractions, string[] labels)
         {
+            if (fractions.Length != labels.Length)
+                throw new("fractions and labels must have the same length");
+
             ClearTicks();
             AddTicks(fractions, labels);
         }
@@ -113,11 +121,7 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
-        public void ValidateData(bool deep = false)
-        {
-            if (TickLabels.Count != TickFractions.Count)
-                throw new("Tick labels and positions must have the same length");
-        }
+        public void ValidateData(bool deep = false) { }
 
         /// <summary>
         /// Re-Render the colorbar using a new colormap
@@ -160,25 +164,27 @@ namespace ScottPlot.Plottable
 
             RectangleF colorbarRect = RenderColorbar(dims, bmp);
 
-            if (AutomaticTicks)
-                RecalculateTicks(colorbarRect.Height);
-
             RenderTicks(dims, bmp, lowQuality, colorbarRect);
         }
 
-        private void RecalculateTicks(float height)
+        private List<Tick> CalculateTicks(float height, double tickSpacing)
         {
-            ClearTicks();
-            int tickCount = (int)(height / AutomaticTickMinimumSpacing);
+            List<Tick> ticks = new();
+            int tickCount = (int)(height / tickSpacing);
             double tickSpacingFraction = 1.0 / tickCount;
             double valueSpan = Colormap.Max - Colormap.Min;
             for (int i = 0; i <= tickCount; i++)
             {
                 double colorbarFraction = tickSpacingFraction * i;
                 double tickPosition = Colormap.Min + colorbarFraction * valueSpan;
-                string tickLabel = AutomaticTickFormatter(tickPosition);
-                AddTick(colorbarFraction, tickLabel);
+                Tick tick = new(
+                    position: colorbarFraction,
+                    label: AutomaticTickFormatter(tickPosition),
+                    isMajor: true,
+                    isDateTime: false);
+                ticks.Add(tick);
             }
+            return ticks;
         }
 
         private RectangleF RenderColorbar(PlotDimensions dims, Bitmap bmp)
@@ -211,11 +217,14 @@ namespace ScottPlot.Plottable
             using var tickFont = GDI.Font(TickLabelFont);
             using var sf = new StringFormat() { LineAlignment = StringAlignment.Center };
 
-            for (int i = 0; i < TickLabels.Count; i++)
+            bool useManualTicks = (ManualTicks.Count > 0 || AutomaticTickEnable == false);
+            List<Tick> ticks = useManualTicks ? ManualTicks : CalculateTicks(colorbarRect.Height, AutomaticTickMinimumSpacing);
+
+            foreach (Tick tick in ticks)
             {
-                float y = colorbarRect.Top + (float)((1 - TickFractions[i]) * colorbarRect.Height);
+                float y = colorbarRect.Top + (float)((1 - tick.Position) * colorbarRect.Height);
                 gfx.DrawLine(tickMarkPen, tickLeftPx, y, tickRightPx, y);
-                gfx.DrawString(TickLabels[i], tickFont, tickLabelBrush, tickLabelPx, y, sf);
+                gfx.DrawString(tick.Label, tickFont, tickLabelBrush, tickLabelPx, y, sf);
             }
         }
     }
