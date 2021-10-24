@@ -21,6 +21,7 @@ _In development / not yet on NuGet_
 * Coordinated Heatmap: This plot type has been deprecated now that the special functionality it provided is present in the standard `Heatmap` (#1405)
 * Marker: Created a new `Marker` class to simplify the marker API. Currently it is a pass-through for `MarkerShape` enumeration members.
 * Plot: `AddMarker()` makes it easy to place a styled marker at an X/Y position on the plot. (#1391)
+* Plottable: `AddPoint()` now returns a `MarkerPlot` rather than a `ScatterPlot` with a single point (#1407)
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
