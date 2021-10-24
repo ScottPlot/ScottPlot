@@ -37,18 +37,18 @@ namespace ScottPlot.Plottable
         private int AutomaticTickMinimumSpacing = 40;
         private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
-        private double _Min = 0;
-        public double Min
+        private double _MinValue = 0;
+        public double MinValue
         {
-            get => (Plottable is IHasColormap p) ? p.ColormapMin : _Min;
-            set => _Min = value;
+            get => (Plottable is IHasColormap p) ? p.ColormapMin : _MinValue;
+            set => _MinValue = value;
         }
 
-        private double _Max = 1;
-        public double Max
+        private double _MaxValue = 1;
+        public double MaxValue
         {
-            get => (Plottable is IHasColormap p) ? p.ColormapMax : _Max;
-            set => _Max = value;
+            get => (Plottable is IHasColormap p) ? p.ColormapMax : _MaxValue;
+            set => _MaxValue = value;
         }
 
         private bool _MinIsClipped = false;
@@ -64,6 +64,12 @@ namespace ScottPlot.Plottable
             get => (Plottable is IHasColormap p) ? p.ColormapMaxIsClipped : _MaxIsClipped;
             set => _MaxIsClipped = value;
         }
+
+        private double _MinColor = 0;
+        public double MinColor { get => _MinColor; set { _MinColor = value; UpdateBitmap(); } }
+
+        private double _MaxColor = 1;
+        public double MaxColor { get => _MaxColor; set { _MaxColor = value; UpdateBitmap(); } }
 
         /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
@@ -174,7 +180,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <returns></returns>
         public Bitmap GetBitmap() =>
-            Colormap.Colorbar(Colormap, Width, 256, true);
+            Colormap.Colorbar(Colormap, Width, 256, true, MinColor, MaxColor);
 
         /// <summary>
         /// Return a Bitmap of just the color portion of the colorbar
@@ -184,7 +190,7 @@ namespace ScottPlot.Plottable
         /// <param name="vertical">if true, colormap will be vertically oriented (tall and skinny)</param>
         /// <returns></returns>
         public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
-            Colormap.Colorbar(Colormap, width, height, vertical);
+            Colormap.Colorbar(Colormap, width, height, vertical, MinColor, MaxColor);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -208,11 +214,11 @@ namespace ScottPlot.Plottable
             int tickCount = (int)(height / tickSpacing);
             tickCount = Math.Max(tickCount, 1);
             double tickSpacingFraction = 1.0 / tickCount;
-            double valueSpan = Max - Min;
+            double valueSpan = MaxValue - MinValue;
             for (int i = 0; i <= tickCount; i++)
             {
                 double colorbarFraction = tickSpacingFraction * i;
-                double tickPosition = Min + colorbarFraction * valueSpan;
+                double tickPosition = MinValue + colorbarFraction * valueSpan;
 
                 string tickLabel = AutomaticTickFormatter(tickPosition);
                 if (MinIsClipped && i == 0)
