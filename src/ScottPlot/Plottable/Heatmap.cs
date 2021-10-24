@@ -85,7 +85,7 @@ namespace ScottPlot.Plottable
 
         public bool DisplayImageAbove { get; set; }
 
-        [Obsolete("This feature has been deprecated. Use CoordinatedHeatmap or add Text objects to the plot instead.", true)]
+        [Obsolete("This feature has been deprecated. Use Plot.AddText() to add text to the plot.", true)]
         public bool ShowAxisLabels;
 
         public bool IsVisible { get; set; } = true;
