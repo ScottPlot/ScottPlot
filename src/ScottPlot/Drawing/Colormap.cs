@@ -108,6 +108,12 @@ namespace ScottPlot.Drawing
             return Color.FromArgb(GetInt32(fraction, alphaByte));
         }
 
+        public Color RandomColor(Random rand, double alpha = 1.0)
+        {
+            byte alphaByte = (byte)(255 * alpha);
+            return Color.FromArgb(GetInt32(rand.NextDouble(), alphaByte));
+        }
+
         public void Apply(Bitmap bmp)
         {
             System.Drawing.Imaging.ColorPalette pal = bmp.Palette;
@@ -179,34 +185,47 @@ namespace ScottPlot.Drawing
             return colors;
         }
 
-        public static Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false)
+        /// <summary>
+        /// Return a bitmap showing the gradient of colors in a colormap.
+        /// Defining min/max will create an image containing only part of the colormap.
+        /// </summary>
+        public static Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false, double min = 0, double max = 1)
         {
             if (width < 1 || height < 1)
                 return null;
 
-            Bitmap bmp = new Bitmap(width, height);
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            using (Pen pen = new Pen(Color.Magenta))
+            if (min < 0)
+                throw new ArgumentException($"{nameof(min)} must be >= 0");
+            if (max > 1)
+                throw new ArgumentException($"{nameof(max)} must be <= 1");
+            if (min >= max)
+                throw new ArgumentException($"{nameof(min)} must < {nameof(max)}");
+
+            Bitmap bmp = new(width, height);
+            using Graphics gfx = Graphics.FromImage(bmp);
+            using Pen pen = new(Color.Magenta);
+
+            if (vertical)
             {
-                if (vertical)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
-                    {
-                        double fraction = (double)y / (height);
-                        pen.Color = cmap.GetColor(fraction);
-                        gfx.DrawLine(pen, 0, height - y - 1, width - 1, height - y - 1);
-                    }
-                }
-                else
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        double fraction = (double)x / width;
-                        pen.Color = cmap.GetColor(fraction);
-                        gfx.DrawLine(pen, x, 0, x, height - 1);
-                    }
+                    double fraction = (double)y / (height);
+                    fraction = fraction * (max - min) + min;
+                    pen.Color = cmap.GetColor(fraction);
+                    gfx.DrawLine(pen, 0, height - y - 1, width - 1, height - y - 1);
                 }
             }
+            else
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    double fraction = (double)x / width;
+                    fraction = fraction * (max - min) + min;
+                    pen.Color = cmap.GetColor(fraction);
+                    gfx.DrawLine(pen, x, 0, x, height - 1);
+                }
+            }
+
             return bmp;
         }
     }

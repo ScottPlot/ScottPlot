@@ -158,6 +158,34 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapClip : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_clip";
+        public string Title => "Color Clipping";
+        public string Description =>
+            "The value range displayed by the colormap can restricted to a narrow subset of the full data range. " +
+            "Tick labels at the edges of the colorbar can be made to show inequality symbols to indicate " +
+            "the range of data is being clipped when translating values to colors.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var heatmap = plt.AddHeatmap(imageData);
+            heatmap.Update(imageData, min: 75, max: 125);
+
+            var cb = plt.AddColorbar(heatmap);
+
+            // configure the colorbar to only show a small range of the colormap
+            cb.MinColor = 75 / 255.0;
+            cb.MaxColor = 125 / 255.0;
+
+            // configure the colorbar to display inequality operators at the edges
+            cb.MaxIsClipped = true;
+            cb.MinIsClipped = true;
+        }
+    }
+
     public class HeatmapDensity : IRecipe
     {
         public string Category => "Plottable: Heatmap";
@@ -203,26 +231,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class HeatmapCoordinated : IRecipe
+    public class HeatmapDimensions : IRecipe
     {
         public string Category => "Plottable: Heatmap";
-        public string ID => "heatmap_coordinated";
-        public string Title => "Coordinated Heatmap";
+        public string ID => "heatmap_dimensions";
+        public string Title => "Custom Dimensions";
         public string Description =>
-            "CoordinatedHeatmap is type of Heatmap stretched to fit user-defined boundaries in coordinate space. " +
-            "This plot type displays two-dimensional intensities on a rectangular surface according to a colormap.";
+            "By default heatmaps start at the origin and each rectangle (cell) is 1 unit in size, but " +
+            "heatmap offset and cell size can be customized.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            Random rand = new Random(0);
-            int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
-            int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
 
-            double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
-                xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
-
-            var hmc = plt.AddHeatmapCoordinated(intensities, xMin: -100, xMax: 500, yMin: 200, yMax: 201);
-            var cb = plt.AddColorbar(hmc);
+            var hm = plt.AddHeatmap(data2D, lockScales: false);
+            hm.OffsetX = 10;
+            hm.OffsetY = 20;
+            hm.CellWidth = 5;
+            hm.CellHeight = 10;
         }
     }
 
@@ -246,6 +273,26 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var hmc = plt.AddHeatmap(intensities);
             var cb = plt.AddColorbar(hmc);
+        }
+    }
+
+    public class HeatmapPlacement : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_placement";
+        public string Title => "Size and Placement";
+        public string Description =>
+            "Edges of the heatmap can be defined as an alternative to defining offset and cell size,";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var hm = plt.AddHeatmap(imageData, lockScales: false);
+
+            hm.XMin = -100;
+            hm.XMax = 100;
+            hm.YMin = -10;
+            hm.YMax = 10;
         }
     }
 }

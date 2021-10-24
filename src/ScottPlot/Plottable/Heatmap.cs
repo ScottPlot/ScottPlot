@@ -14,26 +14,115 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class Heatmap : IPlottable, IHasColormap
     {
-        // these fields are updated when the intensities are analyzed
+        /// <summary>
+        /// Minimum heatmap value
+        /// </summary>
         private double Min;
+
+        /// <summary>
+        /// Maximum heatmap value
+        /// </summary>
         private double Max;
-        private int Width;
-        private int Height;
+
+        /// <summary>
+        /// Number of columns in the heatmap data
+        /// </summary>
+        private int DataWidth;
+
+        /// <summary>
+        /// Number of rows in the heatmap data
+        /// </summary>
+        private int DataHeight;
+
+        /// <summary>
+        /// Pre-rendered heatmap image
+        /// </summary>
         protected Bitmap BmpHeatmap;
 
-        // these fields are customized by the user
-        public string Label;
-        public Colormap Colormap { get; private set; }
-        public double[] AxisOffsets;
-        public double[] AxisMultipliers;
-        public double? ScaleMin;
-        public double? ScaleMax;
-        public double? TransparencyThreshold;
-        public Bitmap BackgroundImage;
-        public bool DisplayImageAbove;
+        /// <summary>
+        /// Horizontal location of the lower-left cell
+        /// </summary>
+        public double OffsetX = 0;
 
-        [Obsolete("This feature has been deprecated (see cookbook for recommended usage)")]
+        /// <summary>
+        /// Vertical location of the lower-left cell
+        /// </summary>
+        public double OffsetY = 0;
+
+        /// <summary>
+        /// Width of each cell composing the heatmap
+        /// </summary>
+        public double CellWidth = 1;
+
+        /// <summary>
+        /// Width of each cell composing the heatmap
+        /// </summary>
+        public double CellHeight = 1;
+
+        /// <summary>
+        /// Position of the left edge of the heatmap
+        /// </summary>
+        public double XMin
+        {
+            get => OffsetX;
+            set => OffsetX = value;
+        }
+
+        /// <summary>
+        /// Position of the right edge of the heatmap
+        /// </summary>
+        public double XMax
+        {
+            get => OffsetX + DataWidth * CellWidth;
+            set => CellWidth = (value - OffsetX) / DataWidth;
+        }
+
+        public double YMin
+        {
+            get => OffsetY;
+            set => OffsetY = value;
+        }
+
+        public double YMax
+        {
+            get => OffsetY + DataHeight * CellHeight;
+            set => CellHeight = (value - OffsetY) / DataHeight;
+        }
+
+        /// <summary>
+        /// Text to appear in the legend
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// Colormap used to translate heatmap values to colors
+        /// </summary>
+        public Colormap Colormap { get; private set; } = Colormap.Viridis;
+
+        /// <summary>
+        /// If defined, colors will be "clipped" to this value such that lower values (lower colors) will not be shown
+        /// </summary>
+        public double? ScaleMin { get; set; }
+
+        /// <summary>
+        /// If defined, colors will be "clipped" to this value such that greater values (higher colors) will not be shown
+        /// </summary>
+        public double? ScaleMax { get; set; }
+
+        /// <summary>
+        /// Heatmap values below this number (if defined) will be made transparent
+        /// </summary>
+        public double? TransparencyThreshold { get; set; }
+
+        [Obsolete("This feature has been deprecated. Use AddImage() to place a bitmap beneath or above the heatmap.", true)]
+        public Bitmap BackgroundImage { get; set; }
+
+        [Obsolete("This feature has been deprecated. Use AddImage() to place a bitmap beneath or above the heatmap.", true)]
+        public bool DisplayImageAbove { get; set; }
+
+        [Obsolete("This feature has been deprecated. Use Plot.AddText() to add text to the plot.", true)]
         public bool ShowAxisLabels;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -41,25 +130,28 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Value of the the lower edge of the colormap
         /// </summary>
-        public double ColormapMin { get; private set; } = 0;
+        public double ColormapMin => ScaleMin ?? Min;
 
         /// <summary>
         /// Value of the the upper edge of the colormap
         /// </summary>
-        public double ColormapMax { get; private set; } = 1;
+        public double ColormapMax => ScaleMax ?? Max;
+
+        /// <summary>
+        /// Indicates whether values extend beyond the lower edge of the colormap
+        /// </summary>
+        public bool ColormapMinIsClipped { get; private set; } = false;
+
+        /// <summary>
+        /// Indicates whether values extend beyond the upper edge of the colormap
+        /// </summary>
+        public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
         /// If true, heatmap squares will be smoothed using bitmap interpolation.
         /// If false, heatmap squares will look like sharp rectangles.
         /// </summary>
         public bool Smooth = false;
-
-        public Heatmap()
-        {
-            AxisOffsets = new double[] { 0, 0 };
-            AxisMultipliers = new double[] { 1, 1 };
-            Colormap = Colormap.Viridis;
-        }
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -72,8 +164,8 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
-            Width = intensities.GetLength(1);
-            Height = intensities.GetLength(0);
+            DataWidth = intensities.GetLength(1);
+            DataHeight = intensities.GetLength(0);
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
@@ -94,9 +186,8 @@ namespace ScottPlot.Plottable
                     Max = curr.Value;
             }
 
-            // labels for colorbar ticks
-            ColormapMin = (ScaleMin.HasValue && ScaleMin > Min) ? ScaleMin.Value : Min;
-            ColormapMax = (ScaleMax.HasValue && ScaleMax < Max) ? ScaleMax.Value : Max;
+            ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
+            ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
@@ -111,8 +202,8 @@ namespace ScottPlot.Plottable
             int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
             BmpHeatmap?.Dispose();
-            BmpHeatmap = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            Rectangle rect = new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
+            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
             BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
             BmpHeatmap.UnlockBits(bmpData);
@@ -151,13 +242,13 @@ namespace ScottPlot.Plottable
                 return null;
             }
 
-            min = min ?? input.Min();
-            max = max ?? input.Max();
+            min ??= input.Min();
+            max ??= input.Max();
 
             min = (scaleMin.HasValue && scaleMin.Value < min) ? scaleMin.Value : min;
             max = (scaleMax.HasValue && scaleMax.Value > max) ? scaleMax.Value : max;
 
-            double?[] normalized = input.AsParallel().AsOrdered().Select<double?, double?>(i => NormalizePreserveNull(i)).ToArray();
+            double?[] normalized = input.AsParallel().AsOrdered().Select(i => NormalizePreserveNull(i)).ToArray();
 
             if (scaleMin.HasValue)
             {
@@ -191,14 +282,11 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 return new AxisLimits();
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            if (ShowAxisLabels)
-            {
-                return new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height);
-            }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            return new AxisLimits(0, BmpHeatmap.Width, 0, BmpHeatmap.Height);
+            return new AxisLimits(
+                xMin: OffsetX,
+                xMax: OffsetX + DataWidth * CellWidth,
+                yMin: OffsetY,
+                yMax: OffsetY + DataHeight * CellHeight);
         }
 
         public void ValidateData(bool deepValidation = false)
@@ -208,88 +296,43 @@ namespace ScottPlot.Plottable
 
             if (deepValidation)
             {
-                if (Width > 1e6 || Height > 1e6)
+                if (DataWidth > 1e6 || DataHeight > 1e6)
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with edges larger than 1 million values");
-                if (Width * Height > 1e7)
+                if (DataWidth * DataHeight > 1e7)
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with more than 10 million values");
             }
         }
-
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
-#pragma warning disable CS0618 // Type or member is obsolete
-            if (ShowAxisLabels)
-                RenderAxis(dims, bmp, lowQuality);
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            {
-                gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                gfx.PixelOffsetMode = PixelOffsetMode.Half;
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
-                int fromX = (int)Math.Round(dims.GetPixelX(0));
-                int fromY = (int)Math.Round(dims.GetPixelY(Height));
-                int width = (int)Math.Round(dims.GetPixelX(Width) - fromX);
-                int height = (int)Math.Round(dims.GetPixelY(0) - fromY);
-                Rectangle destRect = new Rectangle(fromX, fromY, width, height);
+            gfx.InterpolationMode = Smooth ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+            gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
-                ImageAttributes attr = new ImageAttributes();
-                attr.SetWrapMode(WrapMode.TileFlipXY);
+            int fromX = (int)Math.Round(dims.GetPixelX(OffsetX));
+            int fromY = (int)Math.Round(dims.GetPixelY(OffsetY + DataHeight * CellHeight));
+            int width = (int)Math.Round(dims.GetPixelX(OffsetX + DataWidth * CellWidth) - fromX);
+            int height = (int)Math.Round(dims.GetPixelY(OffsetY) - fromY);
 
-                if (BackgroundImage != null && !DisplayImageAbove)
-                    gfx.DrawImage(
-                            image: BackgroundImage,
-                            destRect: destRect,
-                            srcX: 0,
-                            srcY: 0,
-                            srcWidth: BackgroundImage.Width,
-                            srcHeight: BackgroundImage.Height,
-                            srcUnit: GraphicsUnit.Pixel,
-                            imageAttr: attr);
+            Rectangle destRect = new(fromX, fromY, width, height);
 
-                gfx.DrawImage(
-                        image: BmpHeatmap,
-                        destRect: destRect,
-                        srcX: 0,
-                        srcY: 0,
-                        BmpHeatmap.Width,
-                        BmpHeatmap.Height,
-                        GraphicsUnit.Pixel,
-                        attr);
+            ImageAttributes attr = new();
+            attr.SetWrapMode(WrapMode.TileFlipXY);
 
-                if (BackgroundImage != null && DisplayImageAbove)
-                    gfx.DrawImage(
-                            image: BackgroundImage,
-                            destRect: destRect,
-                            srcX: 0,
-                            srcY: 0,
-                            srcWidth: BackgroundImage.Width,
-                            srcHeight: BackgroundImage.Height,
-                            srcUnit: GraphicsUnit.Pixel,
-                            imageAttr: attr);
-            }
-        }
-
-        private void RenderAxis(PlotDimensions dims, Bitmap bmp, bool lowQuality)
-        {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(Color.Black))
-            using (var axisFont = GDI.Font(null, 12))
-            using (StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center })
-            using (StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
-            {
-                double offset = -2;
-                double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
-                gfx.DrawString($"{AxisOffsets[0]:f3}", axisFont, brush, dims.GetPixelX(0), dims.GetPixelY(offset), centre_top);
-                gfx.DrawString($"{AxisOffsets[0] + AxisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((Width * minScale) + dims.GetPixelX(0)), dims.GetPixelY(offset)), centre_top);
-                gfx.DrawString($"{AxisOffsets[1]:f3}", axisFont, brush, dims.GetPixelX(offset), dims.GetPixelY(0), right_centre);
-                gfx.DrawString($"{AxisOffsets[1] + AxisMultipliers[1]:f3}", axisFont, brush, new PointF(dims.GetPixelX(offset), dims.GetPixelY(0) - (float)(Height * minScale)), right_centre);
-            }
+            gfx.DrawImage(
+                    image: BmpHeatmap,
+                    destRect: destRect,
+                    srcX: 0,
+                    srcY: 0,
+                    BmpHeatmap.Width,
+                    BmpHeatmap.Height,
+                    GraphicsUnit.Pixel,
+                    attr);
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";

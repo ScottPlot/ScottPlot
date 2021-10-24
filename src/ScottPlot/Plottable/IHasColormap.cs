@@ -11,5 +11,7 @@ namespace ScottPlot.Plottable
         Drawing.Colormap Colormap { get; }
         double ColormapMin { get; }
         double ColormapMax { get; }
+        bool ColormapMinIsClipped { get; }
+        bool ColormapMaxIsClipped { get; }
     }
 }

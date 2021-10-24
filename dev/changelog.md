@@ -17,8 +17,11 @@ _In development / not yet on NuGet_
 * Palette: Made all `Palette` classes public (#1394) _Thanks @Terebi42_
 * Colorbar: Added `AutomaticTicks()` to let the user further customize tick positions and labels (#1403, #1362) _Thanks @bclehmann_
 * Heatmap: Improved support for automatic tick placement in colorbars (#1403, #1362)
+* Heatmap: Added `XMin`, `XMax`, `YMin`, and `YMax` to help configure placement and edge alignment (#1405) _Thanks @bclehmann_
+* Coordinated Heatmap: This plot type has been deprecated now that the special functionality it provided is present in the standard `Heatmap` (#1405)
 * Marker: Created a new `Marker` class to simplify the marker API. Currently it is a pass-through for `MarkerShape` enumeration members.
 * Plot: `AddMarker()` makes it easy to place a styled marker at an X/Y position on the plot. (#1391)
+* Plottable: `AddPoint()` now returns a `MarkerPlot` rather than a `ScatterPlot` with a single point (#1407)
 * Axis lines: Added `Min` and `Max` properties to terminate the line at a finite point (#1390, #1399) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.26
