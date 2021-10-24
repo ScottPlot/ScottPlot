@@ -175,6 +175,7 @@ namespace ScottPlot.Plottable
         {
             List<Tick> ticks = new();
             int tickCount = (int)(height / tickSpacing);
+            tickCount = Math.Max(tickCount, 1);
             double tickSpacingFraction = 1.0 / tickCount;
             double valueSpan = Colormap.Max - Colormap.Min;
             for (int i = 0; i <= tickCount; i++)
