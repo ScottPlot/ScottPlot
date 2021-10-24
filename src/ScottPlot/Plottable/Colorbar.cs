@@ -196,7 +196,13 @@ namespace ScottPlot.Plottable
             RenderTicks(dims, bmp, lowQuality, colorbarRect);
         }
 
-        private List<Tick> CalculateTicks(float height, double tickSpacing)
+        /// <summary>
+        /// Return a list of ticks evenly spaced between the min and max values.
+        /// </summary>
+        /// <param name="height">height of the vertical colorbar</param>
+        /// <param name="tickSpacing">minimum pixel distance between adjacent ticks</param>
+        /// <returns></returns>
+        private List<Tick> GetEvenlySpacedTicks(float height, double tickSpacing)
         {
             List<Tick> ticks = new();
             int tickCount = (int)(height / tickSpacing);
@@ -252,7 +258,7 @@ namespace ScottPlot.Plottable
             using var sf = new StringFormat() { LineAlignment = StringAlignment.Center };
 
             bool useManualTicks = (ManualTicks.Count > 0 || AutomaticTickEnable == false);
-            List<Tick> ticks = useManualTicks ? ManualTicks : CalculateTicks(colorbarRect.Height, AutomaticTickMinimumSpacing);
+            List<Tick> ticks = useManualTicks ? ManualTicks : GetEvenlySpacedTicks(colorbarRect.Height, AutomaticTickMinimumSpacing);
 
             foreach (Tick tick in ticks)
             {
