@@ -627,15 +627,19 @@ namespace ScottPlot
         /// Add a marker at a specific X/Y position.
         /// This method really creates a scatter plot with a single point.
         /// </summary>
-        public ScatterPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        public MarkerPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
         {
-            return AddScatter(
-                xs: new double[] { x },
-                ys: new double[] { y },
-                markerShape: shape,
-                markerSize: (float)size,
-                color: color ?? GetNextColor(),
-                label: label);
+            var plottable = new MarkerPlot()
+            {
+                X = x,
+                Y = y,
+                MarkerShape = shape,
+                MarkerSize = size,
+                Color = color ?? GetNextColor(),
+                Label = label,
+            };
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>
@@ -687,14 +691,16 @@ namespace ScottPlot
         /// The scatter plot that was created and added to the plot. 
         /// Interact with its public fields and methods to customize style and update data.
         /// </returns>
-        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
+        public MarkerPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
         {
-            var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
+            var plottable = new MarkerPlot()
             {
-                Color = color ?? settings.GetNextColor(),
-                MarkerSize = size,
+                X = x,
+                Y = y,
                 MarkerShape = shape,
-                Label = label
+                MarkerSize = size,
+                Color = color ?? GetNextColor(),
+                Label = label,
             };
             Add(plottable);
             return plottable;
