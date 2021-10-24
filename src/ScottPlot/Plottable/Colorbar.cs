@@ -49,7 +49,7 @@ namespace ScottPlot.Plottable
         public Colorbar(IHasColormap plottable)
         {
             Plottable = plottable;
-            UpdateColormap(plottable.Colormap ?? Colormap.Viridis);
+            UpdateColormap(plottable.Colormap);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void UpdateColormap(Colormap newColormap)
         {
-            Colormap = newColormap;
+            Colormap = newColormap ?? Colormap.Viridis;
             UpdateBitmap();
         }
 
