@@ -46,36 +46,6 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("text cannot be null or whitespace");
         }
 
-        /// <summary>
-        /// Returns the point in pixel space shifted by the necessary amount to apply text alignment
-        /// </summary>
-        private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
-        {
-            switch (Font.Alignment)
-            {
-                case Alignment.LowerCenter:
-                    return (pixelX - stringWidth / 2, pixelY - stringHeight);
-                case Alignment.LowerLeft:
-                    return (pixelX, pixelY - stringHeight);
-                case Alignment.LowerRight:
-                    return (pixelX - stringWidth, pixelY - stringHeight);
-                case Alignment.MiddleLeft:
-                    return (pixelX, pixelY - stringHeight / 2);
-                case Alignment.MiddleRight:
-                    return (pixelX - stringWidth, pixelY - stringHeight / 2);
-                case Alignment.UpperCenter:
-                    return (pixelX - stringWidth / 2, pixelY);
-                case Alignment.UpperLeft:
-                    return (pixelX, pixelY);
-                case Alignment.UpperRight:
-                    return (pixelX - stringWidth, pixelY);
-                case Alignment.MiddleCenter:
-                    return (pixelX - stringWidth / 2, pixelY - stringHeight / 2);
-                default:
-                    throw new InvalidEnumArgumentException("that alignment is not recognized");
-            }
-        }
-
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (string.IsNullOrWhiteSpace(Label) || IsVisible == false)
@@ -90,9 +60,6 @@ namespace ScottPlot.Plottable
                 float pixelY = dims.GetPixelY(Y);
                 SizeF stringSize = GDI.MeasureString(gfx, Label, font);
 
-                if (Font.Rotation == 0)
-                    (pixelX, pixelY) = ApplyAlignmentOffset(pixelX, pixelY, stringSize.Width, stringSize.Height);
-
                 gfx.TranslateTransform(pixelX, pixelY);
                 gfx.RotateTransform(Font.Rotation);
 
@@ -102,7 +69,8 @@ namespace ScottPlot.Plottable
                     gfx.FillRectangle(frameBrush, stringRect);
                 }
 
-                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
+                StringFormat sf = GDI.StringFormat(Font.Alignment);
+                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0), sf);
 
                 gfx.ResetTransform();
             }

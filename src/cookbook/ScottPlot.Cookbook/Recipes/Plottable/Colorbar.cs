@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -16,6 +17,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             plt.AddColorbar();
+
+            // direct attention to the colorbar
+            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            text.Alignment = Alignment.MiddleRight;
+            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
 
@@ -30,6 +37,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             plt.AddColorbar(Drawing.Colormap.Turbo);
+
+            // direct attention to the colorbar
+            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            text.Alignment = Alignment.MiddleRight;
+            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
 
@@ -44,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            var cb = plt.AddColorbar();
+            var cb = plt.AddColorbar(Drawing.Colormap.Turbo);
 
             // Add manual ticks (disabling automatic ticks)
             cb.AddTick(0, "-123");
@@ -53,24 +66,64 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             cb.AddTick(.25, "-61.5");
             cb.AddTick(.75, "+61.5");
 
-            // To re-enable automatic ticks call:
-            // cb.AutomaticTicks(true);
+            // To re-enable automatic ticks call cb.AutomaticTicks(true)
+
+            // direct attention to the colorbar
+            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            text.Alignment = Alignment.MiddleRight;
+            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
 
-    public class ColorbarLesserGreater : IRecipe
+    public class ColorbarRange : IRecipe
     {
         public string Category => "Plottable: Colorbar";
-        public string ID => "colorbar_lesserGreater";
-        public string Title => "Lesser and Greater Tick Labels";
+        public string ID => "colorbar_Range";
+        public string Title => "Color Range";
         public string Description =>
-            "The lowest and highest tick label can optionally display lesser and greater symbols " +
-            "to indicate that values outside the colorbar range will be clamped to the colors at the edges.";
+            "You can restrict a colorbar to only show a small range of a colormap. " +
+            "In this example we only use the middle of a rainbow colormap.";
 
         public void ExecuteRecipe(Plot plt)
         {
             var cb = plt.AddColorbar(Drawing.Colormap.Turbo);
-            cb.AutomaticTicks(greaterLesser: true);
+            cb.MinValue = -10;
+            cb.MaxValue = 10;
+            cb.MinColor = .25;
+            cb.MaxColor = .75;
+
+            // direct attention to the colorbar
+            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            text.Alignment = Alignment.MiddleRight;
+            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.SetAxisLimits(-10, 10, -10, 10);
+        }
+    }
+
+    public class ColorbarClip : IRecipe
+    {
+        public string Category => "Plottable: Colorbar";
+        public string ID => "colorbar_clip";
+        public string Title => "Clipped value range";
+        public string Description =>
+            "If data values extend beyond the min/max range displayed by a colorbar " +
+            "you can indicate the colormap is clipping the data values and inequality symbols will be " +
+            "displayed in the tick labeles at the edge of the colorbar.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var cb = plt.AddColorbar(Drawing.Colormap.Turbo);
+            cb.MinValue = -10;
+            cb.MaxValue = 10;
+            cb.MinIsClipped = true;
+            cb.MaxIsClipped = true;
+
+            // direct attention to the colorbar
+            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            text.Alignment = Alignment.MiddleRight;
+            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
 }

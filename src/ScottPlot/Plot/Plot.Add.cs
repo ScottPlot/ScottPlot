@@ -434,6 +434,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
+        [Obsolete("This plot type has been deprecated. (min/max functionality now exists in Heatmap)")]
         public CoordinatedHeatmap AddHeatmapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();
@@ -503,6 +504,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
+        [Obsolete("This plot type has been deprecated. Use a regular heatmap and modify its Offset and CellSize fields.")]
         public CoordinatedHeatmap AddHeatmapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();

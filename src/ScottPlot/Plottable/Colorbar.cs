@@ -34,23 +34,42 @@ namespace ScottPlot.Plottable
 
         private readonly List<Tick> ManualTicks = new();
         private bool AutomaticTickEnable = true;
-        private bool AutomaticTickGreaterLesser = false;
         private int AutomaticTickMinimumSpacing = 40;
         private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
-        private double _Min = 0;
-        public double Min
+        private double _MinValue = 0;
+        public double MinValue
         {
-            get => (Plottable is IHasColormap p) ? p.ColormapMin : _Min;
-            set => _Min = value;
+            get => (Plottable is IHasColormap p) ? p.ColormapMin : _MinValue;
+            set => _MinValue = value;
         }
 
-        private double _Max = 1;
-        public double Max
+        private double _MaxValue = 1;
+        public double MaxValue
         {
-            get => (Plottable is IHasColormap p) ? p.ColormapMax : _Max;
-            set => _Max = value;
+            get => (Plottable is IHasColormap p) ? p.ColormapMax : _MaxValue;
+            set => _MaxValue = value;
         }
+
+        private bool _MinIsClipped = false;
+        public bool MinIsClipped
+        {
+            get => (Plottable is IHasColormap p) ? p.ColormapMinIsClipped : _MinIsClipped;
+            set => _MinIsClipped = value;
+        }
+
+        private bool _MaxIsClipped = false;
+        public bool MaxIsClipped
+        {
+            get => (Plottable is IHasColormap p) ? p.ColormapMaxIsClipped : _MaxIsClipped;
+            set => _MaxIsClipped = value;
+        }
+
+        private double _MinColor = 0;
+        public double MinColor { get => _MinColor; set { _MinColor = value; UpdateBitmap(); } }
+
+        private double _MaxColor = 1;
+        public double MaxColor { get => _MaxColor; set { _MaxColor = value; UpdateBitmap(); } }
 
         /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
@@ -74,8 +93,7 @@ namespace ScottPlot.Plottable
         /// <param name="enable"></param>
         /// <param name="minimumSpacing">Minimum number of vertical pixels between tick positions</param>
         /// <param name="formatter">Optional custom string formatter to translate tick positions to labels</param>
-        /// <param name="greaterLesser">Prefix the min and max labels with ≥ and ≤</param>
-        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null, bool greaterLesser = false)
+        public void AutomaticTicks(bool enable = true, int? minimumSpacing = null, Func<double, string> formatter = null)
         {
             if (enable)
                 ManualTicks.Clear();
@@ -83,7 +101,6 @@ namespace ScottPlot.Plottable
             AutomaticTickEnable = enable;
             AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
             AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
-            AutomaticTickGreaterLesser = greaterLesser;
         }
 
         /// <summary>
@@ -163,7 +180,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <returns></returns>
         public Bitmap GetBitmap() =>
-            Colormap.Colorbar(Colormap, Width, 256, true);
+            Colormap.Colorbar(Colormap, Width, 256, true, MinColor, MaxColor);
 
         /// <summary>
         /// Return a Bitmap of just the color portion of the colorbar
@@ -173,7 +190,7 @@ namespace ScottPlot.Plottable
         /// <param name="vertical">if true, colormap will be vertically oriented (tall and skinny)</param>
         /// <returns></returns>
         public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
-            Colormap.Colorbar(Colormap, width, height, vertical);
+            Colormap.Colorbar(Colormap, width, height, vertical, MinColor, MaxColor);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -185,26 +202,29 @@ namespace ScottPlot.Plottable
             RenderTicks(dims, bmp, lowQuality, colorbarRect);
         }
 
-        private List<Tick> CalculateTicks(float height, double tickSpacing)
+        /// <summary>
+        /// Return a list of ticks evenly spaced between the min and max values.
+        /// </summary>
+        /// <param name="height">height of the vertical colorbar</param>
+        /// <param name="tickSpacing">minimum pixel distance between adjacent ticks</param>
+        /// <returns></returns>
+        private List<Tick> GetEvenlySpacedTicks(float height, double tickSpacing)
         {
             List<Tick> ticks = new();
             int tickCount = (int)(height / tickSpacing);
             tickCount = Math.Max(tickCount, 1);
             double tickSpacingFraction = 1.0 / tickCount;
-            double valueSpan = Max - Min;
+            double valueSpan = MaxValue - MinValue;
             for (int i = 0; i <= tickCount; i++)
             {
                 double colorbarFraction = tickSpacingFraction * i;
-                double tickPosition = Min + colorbarFraction * valueSpan;
+                double tickPosition = MinValue + colorbarFraction * valueSpan;
 
                 string tickLabel = AutomaticTickFormatter(tickPosition);
-                if (AutomaticTickGreaterLesser)
-                {
-                    if (i == 0)
-                        tickLabel = "≤" + tickLabel;
-                    else if (i == tickCount)
-                        tickLabel = "≥" + tickLabel;
-                }
+                if (MinIsClipped && i == 0)
+                    tickLabel = "≤" + tickLabel;
+                if (MaxIsClipped && i == tickCount)
+                    tickLabel = "≥" + tickLabel;
 
                 Tick tick = new(colorbarFraction, tickLabel, isMajor: true, isDateTime: false);
                 ticks.Add(tick);
@@ -244,7 +264,7 @@ namespace ScottPlot.Plottable
             using var sf = new StringFormat() { LineAlignment = StringAlignment.Center };
 
             bool useManualTicks = (ManualTicks.Count > 0 || AutomaticTickEnable == false);
-            List<Tick> ticks = useManualTicks ? ManualTicks : CalculateTicks(colorbarRect.Height, AutomaticTickMinimumSpacing);
+            List<Tick> ticks = useManualTicks ? ManualTicks : GetEvenlySpacedTicks(colorbarRect.Height, AutomaticTickMinimumSpacing);
 
             foreach (Tick tick in ticks)
             {
