@@ -1,37 +1,9 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using ScottPlot.Drawing.Colormaps;
 
 namespace ScottPlot.Plottable
 {
-    /// <summary>
-    /// Horizontal line at a Y position
-    /// </summary>
-    public class HLine : AxisLine
-    {
-        /// <summary>
-        /// Y position to render the line
-        /// </summary>
-        public double Y { get => Position; set => Position = value; }
-        public override string ToString() => $"Horizontal line at Y={Y}";
-        public HLine() : base(true) { }
-    }
-
-    /// <summary>
-    /// Vertical line at an X position
-    /// </summary>
-    public class VLine : AxisLine
-    {
-        /// <summary>
-        /// X position to render the line
-        /// </summary>
-        public double X { get => Position; set => Position = value; }
-        public override string ToString() => $"Vertical line at X={X}";
-        public VLine() : base(false) { }
-    }
-
     public abstract class AxisLine : IDraggable, IPlottable
     {
         /// <summary>
@@ -121,6 +93,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
+        /// <summary>
+        /// The lower bound of the axis line.
+        /// </summary>
+        public double Min = double.NegativeInfinity;
+
+        /// <summary>
+        /// The upper bound of the axis line.
+        /// </summary>
+        public double Max = double.PositiveInfinity;
+
         public AxisLine(bool isHorizontal)
         {
             IsHorizontal = isHorizontal;
@@ -164,16 +146,24 @@ namespace ScottPlot.Plottable
 
             if (IsHorizontal)
             {
-                float pixelX1 = dims.GetPixelX(dims.XMin);
-                float pixelX2 = dims.GetPixelX(dims.XMax);
                 float pixelY = dims.GetPixelY(Position);
+
+                double xMin = Math.Max(Min, dims.XMin);
+                double xMax = Math.Min(Max, dims.XMax);
+                float pixelX1 = dims.GetPixelX(xMin);
+                float pixelX2 = dims.GetPixelX(xMax);
+
                 gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
             }
             else
             {
                 float pixelX = dims.GetPixelX(Position);
-                float pixelY1 = dims.GetPixelY(dims.YMin);
-                float pixelY2 = dims.GetPixelY(dims.YMax);
+
+                double yMin = Math.Max(Min, dims.YMin);
+                double yMax = Math.Min(Max, dims.YMax);
+                float pixelY1 = dims.GetPixelY(yMin);
+                float pixelY2 = dims.GetPixelY(yMax);
+
                 gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
             }
         }

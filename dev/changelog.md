@@ -22,6 +22,7 @@ _In development / not yet on NuGet_
 * Marker: Created a new `Marker` class to simplify the marker API. Currently it is a pass-through for `MarkerShape` enumeration members.
 * Plot: `AddMarker()` makes it easy to place a styled marker at an X/Y position on the plot. (#1391)
 * Plottable: `AddPoint()` now returns a `MarkerPlot` rather than a `ScatterPlot` with a single point (#1407)
+* Axis lines: Added `Min` and `Max` properties to terminate the line at a finite point (#1390, #1399) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.26
 _Published 2021-10-12_
