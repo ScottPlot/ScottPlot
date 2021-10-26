@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -14,6 +13,7 @@ namespace ScottPlot
     /* This module will be expanded in ScottPlot 5 */
     public static class Palette
     {
+        public static ScottPlot.Drawing.Palette Amber => new(new ScottPlot.Drawing.Colorsets.Amber());
         public static ScottPlot.Drawing.Palette Aurora => new(new ScottPlot.Drawing.Colorsets.Aurora());
         public static ScottPlot.Drawing.Palette Category10 => new(new ScottPlot.Drawing.Colorsets.Category10());
         public static ScottPlot.Drawing.Palette Category20 => new(new ScottPlot.Drawing.Colorsets.Category20());
