@@ -1,6 +1,4 @@
-﻿/* Custom
-*/
-namespace ScottPlot.Drawing.Colorsets
+﻿namespace ScottPlot.Drawing.Colorsets
 {
     public class Nero : HexColorset, IPalette
     {
