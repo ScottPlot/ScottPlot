@@ -22,6 +22,7 @@ namespace ScottPlot
         public static ScottPlot.Drawing.Palette DarkPastel => new(new ScottPlot.Drawing.Colorsets.DarkPastel());
         public static ScottPlot.Drawing.Palette Frost => new(new ScottPlot.Drawing.Colorsets.Frost());
         public static ScottPlot.Drawing.Palette Microcharts => new(new ScottPlot.Drawing.Colorsets.Microcharts());
+        public static ScottPlot.Drawing.Palette Nero => new(new ScottPlot.Drawing.Colorsets.Nero());
         public static ScottPlot.Drawing.Palette Nord => new(new ScottPlot.Drawing.Colorsets.Nord());
         public static ScottPlot.Drawing.Palette OneHalf => new(new ScottPlot.Drawing.Colorsets.OneHalf());
         public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
