@@ -16,6 +16,7 @@ namespace ScottPlot
         public static IStyle Default => new Default();
         public static IStyle Gray1 => new Gray1();
         public static IStyle Gray2 => new Gray2();
+        public static IStyle Hazel => new Hazel();
         public static IStyle Light1 => new Light1();
         public static IStyle Light2 => new Light2();
         public static IStyle Monospace => new Monospace();
