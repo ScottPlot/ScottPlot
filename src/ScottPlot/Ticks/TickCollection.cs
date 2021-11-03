@@ -544,5 +544,48 @@ namespace ScottPlot.Ticks
         {
             return GetMajorTicks().Concat(GetMinorTicks()).ToArray();
         }
+
+        public Tick[] GetVisibleMajorTicks(PlotDimensions dims)
+        {
+            double high, low;
+            if (Orientation == AxisOrientation.Vertical)
+            {
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+            }
+            else
+            {
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+            }
+
+            return GetMajorTicks()
+                .Where(t => t.Position >= low && t.Position <= high)
+                .ToArray();
+        }
+
+        public Tick[] GetVisibleMinorTicks(PlotDimensions dims)
+        {
+            double high, low;
+            if (Orientation == AxisOrientation.Vertical)
+            {
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+            }
+            else
+            {
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+            }
+
+            return GetMinorTicks()
+                .Where(t => t.Position >= low && t.Position <= high)
+                .ToArray();
+        }
+
+        public Tick[] GetVisibleTicks(PlotDimensions dims)
+        {
+            return GetVisibleMajorTicks(dims).Concat(GetVisibleMinorTicks(dims)).ToArray();
+        }
     }
 }
