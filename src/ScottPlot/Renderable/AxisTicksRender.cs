@@ -84,12 +84,14 @@ namespace ScottPlot.Renderable
             using var brush = GDI.Brush(tickFont.Color);
             using var sf = GDI.StringFormat();
 
+            Tick[] visibleMajorTicks = tc.GetVisibleMajorTicks(dims);
+
             switch (edge)
             {
                 case Edge.Bottom:
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                    for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
-                        float x = dims.GetPixelX(tc.tickPositionsMajor[i]);
+                        float x = dims.GetPixelX(visibleMajorTicks[i].Position);
                         float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength;
 
                         gfx.TranslateTransform(x, y);
@@ -97,15 +99,15 @@ namespace ScottPlot.Renderable
                         sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Far;
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Near : StringAlignment.Center;
-                        gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
                         gfx.ResetTransform();
                     }
                     break;
 
                 case Edge.Top:
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                    for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
-                        float x = dims.GetPixelX(tc.tickPositionsMajor[i]);
+                        float x = dims.GetPixelX(visibleMajorTicks[i].Position);
                         float y = dims.DataOffsetY - MajorTickLength;
 
                         gfx.TranslateTransform(x, y);
@@ -113,16 +115,16 @@ namespace ScottPlot.Renderable
                         sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Near;
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Far : StringAlignment.Center;
-                        gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
                         gfx.ResetTransform();
                     }
                     break;
 
                 case Edge.Left:
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                    for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
                         float x = dims.DataOffsetX - PixelOffset - MajorTickLength;
-                        float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
+                        float y = dims.GetPixelY(visibleMajorTicks[i].Position);
 
                         gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
@@ -133,16 +135,16 @@ namespace ScottPlot.Renderable
                             sf.Alignment = StringAlignment.Center;
                             sf.LineAlignment = StringAlignment.Far;
                         }
-                        gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
                         gfx.ResetTransform();
                     }
                     break;
 
                 case Edge.Right:
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                    for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
                         float x = dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth;
-                        float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
+                        float y = dims.GetPixelY(visibleMajorTicks[i].Position);
 
                         gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
@@ -153,7 +155,7 @@ namespace ScottPlot.Renderable
                             sf.Alignment = StringAlignment.Center;
                             sf.LineAlignment = StringAlignment.Near;
                         }
-                        gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
                         gfx.ResetTransform();
                     }
                     break;
