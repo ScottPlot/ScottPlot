@@ -268,6 +268,9 @@ namespace ScottPlot.Ticks
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
 
+            if (tickPositionsMajor.Length < 2)
+                tickPositionsMajor = new double[] { tickPositionsMajor.Length > 0 ? tickPositionsMajor[0] : low - firstTickOffset, low - firstTickOffset + tickSpacing };
+
             if (IntegerPositionsOnly)
                 tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
 
