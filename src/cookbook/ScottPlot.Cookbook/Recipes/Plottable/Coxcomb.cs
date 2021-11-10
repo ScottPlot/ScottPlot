@@ -16,8 +16,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] values = { 11, 16, 7, 3, 14 };
             var coxcomb = plt.AddCoxcomb(values);
-            coxcomb.SliceLabels = new string[] { "Category 1", "Category 2", "Category 3", "Category 4", "Category 5" };
-
+            coxcomb.FillColors = plt.Palette.GetColors(5, 0, .5);
+            coxcomb.SliceLabels = new string[] { "bikes", "blimps", "subs", "saucers", "rockets" };
             plt.Legend();
         }
     }
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             "A Pie chart where the angle of slices is constant but the radii are not, icons are used for quick reference.";
 
         public System.Drawing.Image[] CategoryImages = new[]
-{
+        {
             System.Drawing.Image.FromFile("Images/bicycle.png"),
             System.Drawing.Image.FromFile("Images/zeppelin.png"),
             System.Drawing.Image.FromFile("Images/submarine.png"),
@@ -43,7 +43,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 11, 16, 7, 3, 14 };
             var coxcomb = plt.AddCoxcomb(values);
             coxcomb.CategoryImages = CategoryImages;
-
+            coxcomb.FillColors = plt.Palette.GetColors(5, 0, .5);
             plt.Legend();
         }
     }
