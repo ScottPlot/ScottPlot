@@ -146,7 +146,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var radar = plt.AddRadar(values);
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
             radar.OutlineThickness = 3;
-            
             // customize the plot
             plt.Title("2010 Formula One World Championship");
             plt.Legend();
