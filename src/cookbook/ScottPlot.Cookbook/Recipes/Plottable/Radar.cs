@@ -129,6 +129,36 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class RadarWithOutlineThickness : IRecipe
+    {
+        public string Category => "Plottable: Radar";
+        public string ID => "radar_customizePolygonOutline";
+        public string Title => "Customizable polygon outline";
+        public string Description => "Labels can be displayed on the arms of the radar chart.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] values = {
+                { 5, 3, 10, 15, 3, 2 },
+                { 5, 2, 10, 10, 1, 4 },
+            };
+
+            var radar = plt.AddRadar(values);
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.OutlineThickness = 3;
+            
+            // customize the plot
+            plt.Title("2010 Formula One World Championship");
+            plt.Legend();
+
+            /* Data represents the 2010 Formula One World Championship
+             * https://en.wikipedia.org/wiki/2010_Formula_One_World_Championship
+             * Note: Alonso did not finish (DNF) in the Malaysian GP, but was included 
+             * here because he completed >90% of the race distance.
+             */
+        }
+    }
+
     public class RadarWithIcons : IRecipe
     {
         public string Category => "Plottable: Radar";

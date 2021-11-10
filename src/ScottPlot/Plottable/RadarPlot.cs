@@ -101,6 +101,8 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        public float OutlineThickness { get; set; } = 1;
+
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
             LineColors = lineColors;
@@ -239,7 +241,7 @@ namespace ScottPlot.Plottable
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(WebColor))
+            using (Pen pen = GDI.Pen(WebColor, OutlineThickness))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             using (StringFormat sf2 = new StringFormat())
