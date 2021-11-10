@@ -134,7 +134,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Category => "Plottable: Radar";
         public string ID => "radar_customizePolygonOutline";
         public string Title => "Customizable polygon outline";
-        public string Description => "Labels can be displayed on the arms of the radar chart.";
+        public string Description => "The outline thickness of the chart's polygons can be customized.";
 
         public void ExecuteRecipe(Plot plt)
         {
