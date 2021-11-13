@@ -6,13 +6,30 @@ namespace ScottPlot.Cookbook
 {
     public static class Locate
     {
-        private static readonly IRecipe[] Recipes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(x => x.IsAbstract == false)
-            .Where(x => x.IsInterface == false)
-            .Where(p => typeof(IRecipe).IsAssignableFrom(p))
-            .Select(x => (IRecipe)Activator.CreateInstance(x))
-            .ToArray();
+        private static IRecipe[] LocateRecipes()
+        {
+            var res = new List<IRecipe>();
+
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try // Eto.Forms seem to bundle something which may not load due to missing dependencies
+                {
+                    foreach (var type in asm.GetTypes())
+                    {
+                        if (!type.IsAbstract && !type.IsInterface && typeof(IRecipe).IsAssignableFrom(type))
+                        {
+                            res.Add((IRecipe)Activator.CreateInstance(type));
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            return res.ToArray();
+        }
+        private static readonly IRecipe[] Recipes = LocateRecipes();
 
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
             .GroupBy(x => x.Category)
