@@ -13,8 +13,9 @@ namespace ScottPlot.Eto
 
             Title = windowTitle;
 
-            PlotView?.Reset(plot);
-            PlotView?.Refresh();
+            PlotView = new PlotView();
+            PlotView.Reset(plot);
+            PlotView.Refresh();
 
             Content = PlotView;
         }

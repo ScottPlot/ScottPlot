@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Eto", "controls\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EtoApp", "sandbox\EtoApp\EtoApp.csproj", "{14BE3145-C0A1-472C-B229-C9EF3B798312}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eto.Forms Demo", "demo\ScottPlot.Demo.Eto\Eto.Forms Demo.csproj", "{35AE2BEA-066D-4764-AF51-DA179299A7BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{14BE3145-C0A1-472C-B229-C9EF3B798312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14BE3145-C0A1-472C-B229-C9EF3B798312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14BE3145-C0A1-472C-B229-C9EF3B798312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35AE2BEA-066D-4764-AF51-DA179299A7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35AE2BEA-066D-4764-AF51-DA179299A7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35AE2BEA-066D-4764-AF51-DA179299A7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AE2BEA-066D-4764-AF51-DA179299A7BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{73D4E956-FAC9-4200-A03C-9D74FED9B4F1} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 		{67B0D689-4324-45A7-A17E-03E4FD0CB386} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
 		{14BE3145-C0A1-472C-B229-C9EF3B798312} = {2211896B-D6E5-4500-A576-A495A11C5524}
+		{35AE2BEA-066D-4764-AF51-DA179299A7BE} = {D0040AB2-4D89-4BBE-B1CB-FAB64E741336}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
