@@ -1,0 +1,18 @@
+<Project Sdk="Eto.Forms/2.5.11">
+
+    <!--
+    Set the BuildPlatform property to the Eto platform you wish to build for.
+    The default is the platform you are building on.
+    Valid values: Wpf, Windows, Mac64, XamMac2, Gtk, Direct2D
+  -->
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <BuildPlatform>Windows</BuildPlatform>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\controls\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+    </ItemGroup>
+
+</Project>
