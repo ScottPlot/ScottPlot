@@ -23,7 +23,6 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LiveDataUpdate()
         {
             InitializeComponent();
-            formsPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once and we can updates its values later
             formsPlot1.Plot.AddSignal(liveData);

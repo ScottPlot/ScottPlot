@@ -89,5 +89,17 @@ namespace ScottPlotTests.Statistics
             for (int i = 0; i < expectedDensities.Length; i++)
                 Assert.AreEqual(expectedDensities[i], densities[i], 1e-10);
         }
+
+        [Test]
+        public void Test_Histogram_jwsuh()
+        {
+            // https://github.com/ScottPlot/ScottPlot/issues/1348
+
+            var values = new double[] { 10, 20, 20, 10, 20, 10, 20, 10, 10, 20, 10, 10, 20, 15, 10, 30 };
+            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, 15, 30, 1, false);
+
+            Console.WriteLine("Counts:" + String.Join(", ", counts.Select(x => x.ToString())));
+            Console.WriteLine("Edges:" + String.Join(", ", binEdges.Select(x => x.ToString())));
+        }
     }
 }

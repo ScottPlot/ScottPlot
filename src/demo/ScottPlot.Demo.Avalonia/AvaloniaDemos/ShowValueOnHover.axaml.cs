@@ -12,7 +12,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
     {
         AvaPlot avaPlot1;
         private readonly ScatterPlot MyScatterPlot;
-        private readonly ScatterPlot HighlightedPoint;
+        private readonly MarkerPlot HighlightedPoint;
         private int LastHighlightedIndex = -1;
 
         public ShowValueOnHover()
@@ -53,8 +53,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             (double pointX, double pointY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
 
             // place the highlight over the point of interest
-            HighlightedPoint.Xs[0] = pointX;
-            HighlightedPoint.Ys[0] = pointY;
+            HighlightedPoint.X = pointX;
+            HighlightedPoint.Y = pointY;
             HighlightedPoint.IsVisible = true;
 
             // render if the highlighted point chnaged

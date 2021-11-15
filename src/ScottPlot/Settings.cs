@@ -38,7 +38,7 @@ namespace ScottPlot
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
-        public Palette PlottablePalette = Palette.Category10;
+        public Drawing.Palette PlottablePalette = Palette.Category10;
 
         /// <summary>
         /// List of all axes used in this plot.
@@ -65,12 +65,24 @@ namespace ScottPlot
         /// <summary>
         /// Return the first horizontal axis with the given axis index
         /// </summary>
-        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+        public Axis GetXAxis(int xAxisIndex)
+        {
+            Axis[] axes = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).ToArray();
+            if (axes.Length == 0)
+                throw new InvalidOperationException($"There no X axes with an axis index of {xAxisIndex}");
+            return axes[0];
+        }
 
         /// <summary>
         /// Return the first vertical axis with the given axis index
         /// </summary>
-        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+        public Axis GetYAxis(int yAxisIndex)
+        {
+            Axis[] axes = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).ToArray();
+            if (axes.Length == 0)
+                throw new InvalidOperationException($"There no Y axes with an axis index of {yAxisIndex}");
+            return axes[0];
+        }
 
         /// <summary>
         /// Indicates whether unset axes are present.
@@ -113,6 +125,16 @@ namespace ScottPlot
         /// Height of the figure (in pixels)
         /// </summary>
         public int Height => (int)YAxis.Dims.FigureSizePx;
+
+        /// <summary>
+        /// Default padding to use when AxisAuto() or Margins() is called without a specified margin
+        /// </summary>
+        public double MarginsX = .05;
+
+        /// <summary>
+        /// Default padding to use when AxisAuto() or Margins() is called without a specified margin
+        /// </summary>
+        public double MarginsY = .1;
 
         public Settings()
         {

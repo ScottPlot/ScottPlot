@@ -323,6 +323,23 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Generate unevenly-spaced X/Y points.
+        /// X values walk upward (by values from 0 to 1)
+        /// Y values walk randomly (by values from -1 to 1)
+        /// </summary>
+        public static (double[] xs, double[] ys) RandomWalk2D(Random rand, int pointCount)
+        {
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 1; i < ys.Length; i++)
+            {
+                ys[i] = ys[i - 1] + (rand.NextDouble() - .5) * 2;
+                xs[i] = xs[i - 1] + rand.NextDouble();
+            }
+            return (xs, ys);
+        }
+
+        /// <summary>
         /// Return OHLC array with random prices X positions as DateTime.ToOATime() values using the given time delta
         /// </summary>
         /// <param name="rand">The random object to use.</param>

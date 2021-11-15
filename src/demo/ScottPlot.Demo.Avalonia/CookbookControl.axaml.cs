@@ -4,14 +4,18 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using System;
+using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia
 {
     public class CookbookControl : UserControl
     {
+        readonly Dictionary<string, Cookbook.RecipeSource> Recipes;
+
         public CookbookControl()
         {
             this.InitializeComponent();
+            Recipes = Cookbook.RecipeJson.GetRecipes();
             this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1").Configuration.WarnIfRenderNotCalledManually = false;
         }
 
@@ -53,8 +57,8 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<TextBlock>("DemoNameLabel").Text = recipe.Title;
             this.Find<TextBlock>("SourceCodeLabel").Text = "Source Code";
             this.Find<TextBox>("DescriptionTextbox").Text = recipe.Description;
-            string sourceCode = Cookbook.Locate.RecipeSourceCode(id);
-            this.Find<TextBox>("SourceTextBox").Text = sourceCode;
+            string source = Recipes is null ? Cookbook.RecipeJson.NotFoundMessage : Recipes[id].Code;
+            this.Find<TextBox>("SourceTextBox").Text = source.Replace("\n", Environment.NewLine);
 
             avaPlot1.Reset();
             imagePlot1.IsVisible = false;

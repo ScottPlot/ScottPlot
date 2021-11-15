@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Build Solution
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: 🐢 Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+      - name: 🚚 Restore
+        working-directory: src
+        run: dotnet restore
+      - name: 🐌 MSBuild
+        working-directory: src
+        run: msbuild -property:Configuration=Release -verbosity:minimal
+
+  format:
+    runs-on: windows-latest
+    name: Check Formatting
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Set up .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: ✒️ Set up dotnet-format
+        run: dotnet tool install -g dotnet-format
+      - name: 🧐 Check Code Format
+        working-directory: src
+        run: dotnet-format --check
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+          - os: macos-latest
+            osName: MacOS
+    runs-on: ${{ matrix.os }}
+    name: Test on ${{ matrix.osName }}
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --configuration Release

@@ -208,6 +208,39 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="StyleBrowser">
+                            <TextBlock TextAlignment="Center">
+                                Style Browser
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            View available predefined plot styles
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="DisplayScaling">
+                            <TextBlock TextAlignment="Center">
+                                Display Scaling
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Enable/Disable Display Scaling
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel Margin="0px 5px">
+                        <Button DockPanel.Dock="Left" Click="LaunchLayout">
+                            <TextBlock TextAlignment="Center">
+                                Advanced Layout
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Match data area sizes across multiple plot controls
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

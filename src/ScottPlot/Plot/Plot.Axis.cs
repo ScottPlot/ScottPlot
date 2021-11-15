@@ -10,6 +10,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -148,24 +149,38 @@ namespace ScottPlot
         /// <param name="vertical">if true, vertical layout will be matched</param>
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-                sourcePlot.AxisAuto();
-
-            if (!settings.AllAxesHaveBeenSet)
-                AxisAuto();
-
             var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)
             {
-                YAxis.SetSize(sourceSettings.YAxis.GetSize());
-                YAxis2.SetSize(sourceSettings.YAxis2.GetSize());
+                YAxis.SetSizeLimit(sourceSettings.YAxis.GetSize());
+                YAxis2.SetSizeLimit(sourceSettings.YAxis2.GetSize());
             }
 
             if (vertical)
             {
-                XAxis.SetSize(sourceSettings.XAxis.GetSize());
-                XAxis2.SetSize(sourceSettings.XAxis2.GetSize());
+                XAxis.SetSizeLimit(sourceSettings.XAxis.GetSize());
+                XAxis2.SetSizeLimit(sourceSettings.XAxis2.GetSize());
+            }
+        }
+
+        /// <summary>
+        /// Get the axis limits for the given plot and apply them to this plot
+        /// </summary>
+        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            var sourceLimits = sourcePlot.GetAxisLimits();
+
+            AxisAuto();
+
+            if (horizontal)
+            {
+                SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax);
+            }
+
+            if (vertical)
+            {
+                SetAxisLimitsY(sourceLimits.YMin, sourceLimits.YMax);
             }
         }
 
@@ -386,11 +401,11 @@ namespace ScottPlot
         /// </summary>
         public void SetOuterViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            // TODO: arguments to specify axis limits
-            settings.XAxis.Dims.SetBoundsOuter(xMin, xMax);
-            settings.YAxis.Dims.SetBoundsOuter(yMin, yMax);
+            settings.GetXAxis(xAxisIndex).Dims.SetBoundsOuter(xMin, xMax);
+            settings.GetYAxis(yAxisIndex).Dims.SetBoundsOuter(yMin, yMax);
         }
 
         /// <summary>
@@ -398,11 +413,11 @@ namespace ScottPlot
         /// </summary>
         public void SetInnerViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
+            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            // TODO: arguments to specify axis limits
-            settings.XAxis.Dims.SetBoundsInner(xMin, xMax);
-            settings.YAxis.Dims.SetBoundsInner(yMin, yMax);
+            settings.GetXAxis(xAxisIndex).Dims.SetBoundsInner(xMin, xMax);
+            settings.GetYAxis(yAxisIndex).Dims.SetBoundsInner(yMin, yMax);
         }
 
         #endregion
@@ -410,29 +425,56 @@ namespace ScottPlot
         #region axis limits: fit to plottable data
 
         /// <summary>
-        /// Automatically adjust axis limits to fit the data
+        /// Auto-scale the axis limits to fit the data. This function is an alias for AxisAuto().
         /// </summary>
-        /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
-        /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
-        /// <param name="xAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        /// <param name="yAxisIndex">only modify the given axis (otherwise all axes will be adjusted)</param>
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1, int? xAxisIndex = null, int? yAxisIndex = null)
+        /// <param name="x">horizontal margin in the range [0, 1]</param>
+        /// <param name="y">vertical margin in the range [0, 1]</param>
+        /// <returns>Current default margins for automatic axis scaling</returns>
+        public (double x, double y) Margins(double? x = null, double? y = null)
         {
-            if (xAxisIndex is null && yAxisIndex is null)
-            {
-                settings.AxisAutoAll(horizontalMargin, verticalMargin);
-                return;
-            }
+            return Margins(x, y, 0, 0);
+        }
 
-            if (xAxisIndex is null)
-                settings.AxisAutoAllX(horizontalMargin);
-            else
-                settings.AxisAutoX(xAxisIndex.Value, horizontalMargin);
+        /// <summary>
+        /// Auto-scale the axis limits to fit the data. This function is an alias for AxisAuto().
+        /// This overload is for multi-axis plots (plots with multiple X and Y axes) and will only adjust the specified axes.
+        /// </summary>
+        /// <param name="x">horizontal margin in the range [0, 1]</param>
+        /// <param name="y">vertical margin in the range [0, 1]</param>
+        /// <param name="xAxisIndex">Only adjust the specified axis (for plots with multiple X axes)</param>
+        /// <param name="yAxisIndex">Only adjust the specified axis (for plots with multiple Y axes)</param>
+        /// <returns>Current default margins for automatic axis scaling</returns>
+        public (double x, double y) Margins(double? x, double? y, int xAxisIndex, int yAxisIndex)
+        {
+            AxisAuto(x, y, xAxisIndex, yAxisIndex);
+            return (settings.MarginsX, settings.MarginsY);
+        }
 
-            if (yAxisIndex is null)
-                settings.AxisAutoAllY(verticalMargin);
-            else
-                settings.AxisAutoY(yAxisIndex.Value, verticalMargin);
+        /// <summary>
+        /// Automatically set axis limits to fit the data.
+        /// </summary>
+        /// <param name="horizontalMargin">Extra space (fraction) to add to the left and right of the limits of the data</param>
+        /// <param name="verticalMargin">Extra space (fraction) to add above and below the limits of the data</param>
+        public void AxisAuto(double? horizontalMargin = null, double? verticalMargin = null)
+        {
+            AxisAuto(horizontalMargin, verticalMargin, xAxisIndex: 0, yAxisIndex: 0);
+        }
+
+        /// <summary>
+        /// Automatically set axis limits to fit the data.
+        /// This overload is designed for multi-axis plots (with multiple X axes or multiple Y axes).
+        /// </summary>
+        /// <param name="horizontalMargin">Extra space (fraction) to add to the left and right of the limits of the data</param>
+        /// <param name="verticalMargin">Extra space (fraction) to add above and below the limits of the data</param>
+        /// <param name="xAxisIndex">Only adjust the specified axis (for plots with multiple X axes)</param>
+        /// <param name="yAxisIndex">Only adjust the specified axis (for plots with multiple Y axes)</param>
+        public void AxisAuto(double? horizontalMargin, double? verticalMargin, int xAxisIndex, int yAxisIndex)
+        {
+            settings.MarginsX = horizontalMargin ?? settings.MarginsX;
+            settings.MarginsY = verticalMargin ?? settings.MarginsY;
+
+            settings.AxisAutoX(xAxisIndex, settings.MarginsX);
+            settings.AxisAutoY(yAxisIndex, settings.MarginsY);
         }
 
         /// <summary>
@@ -469,7 +511,7 @@ namespace ScottPlot
             }
 
             AxisLimits originalLimits = GetAxisLimits();
-            AxisAuto(horizontalMargin: margin);
+            AxisAuto(verticalMargin: margin);
             SetAxisLimits(xMin: originalLimits.XMin, xMax: originalLimits.XMax);
         }
 
@@ -612,18 +654,15 @@ namespace ScottPlot
         public double[] Axis(double[] axisLimits) => null;
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
-
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
         [Obsolete("use AxisScaleLock()", true)]
         public bool EqualAxis;
 
-        [Obsolete("Use AxisAuto()", true)]
+        [Obsolete("Use AxisAuto() or Margins()", true)]
         public double[] AutoAxis() => null;
 
-        [Obsolete("Use AxisAuto()", true)]
+        [Obsolete("Use AxisAuto() or Margins()", true)]
         public double[] AutoScale() => null;
 
 

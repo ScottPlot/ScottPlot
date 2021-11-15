@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d"
+        x:Class="ScottPlot.Demo.Avalonia.AvaloniaDemos.StyleBrowser"
+		Width="1000" Height="450"
+        Title="Style Browser">
+	<DockPanel Margin="10">
+		<StackPanel Margin="2">
+			<TextBlock FontSize="16">Styles</TextBlock>
+			<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+				<ContentControl DockPanel.Dock="Left" Width="200">
+					<ListBox Name="ListBoxStyle" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" Padding="5"/>
+				</ContentControl>
+			</Border>
+		</StackPanel>
+		<StackPanel Margin="2">
+			<TextBlock FontSize="16">Palettes</TextBlock>
+			<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+				<ContentControl DockPanel.Dock="Left" Width="200">
+					<ListBox Name="ListBoxPalette" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" Padding="5"/>
+				</ContentControl>
+			</Border>
+		</StackPanel>
+		<ScottPlot:AvaPlot x:Name="AvaPlot1" Margin="10"/>
+	</DockPanel>
+</Window>

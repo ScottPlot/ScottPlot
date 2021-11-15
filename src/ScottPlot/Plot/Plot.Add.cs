@@ -238,6 +238,9 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar to display a colormap beside the data area
         /// </summary>
+        /// <param name="colormap">Colormap to display in this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
         public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
         {
             var cb = new Colorbar(colormap);
@@ -249,11 +252,12 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar initialized with settings from a heatmap
         /// </summary>
-        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+        /// <param name="heatmap">A heatmap-containing plottable to connect with this colorbar</param>
+        /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <returns>the colorbar that was just created</returns>
+        public Colorbar AddColorbar(IHasColormap heatmap, int space = 100)
         {
-            var cb = new Colorbar(heatmap.Colormap);
-            cb.AddTick(0, heatmap.ColorbarMin);
-            cb.AddTick(1, heatmap.ColorbarMax);
+            var cb = new Colorbar(heatmap);
             Add(cb);
             YAxis2.SetSizeLimit(min: space);
             return cb;
@@ -284,6 +288,25 @@ namespace ScottPlot
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
             };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a polygon to fill the area between two Y curves that share the same X positions.
+        /// </summary>
+        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null)
+        {
+            double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
+            double[] polyYs = ys1.Concat(ys2.Reverse()).ToArray();
+
+            var plottable = new Polygon(polyXs, polyYs)
+            {
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
+                LineWidth = 0,
+            };
+
             Add(plottable);
             return plottable;
         }
@@ -362,12 +385,12 @@ namespace ScottPlot
         /// </returns>
         public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
-            if (lockScales)
-                AxisScaleLock(true);
-
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
+
+            if (lockScales)
+                AxisScaleLock(true);
 
             return plottable;
         }
@@ -385,12 +408,12 @@ namespace ScottPlot
         /// </returns>
         public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
-            if (lockScales)
-                AxisScaleLock(true);
-
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
+
+            if (lockScales)
+                AxisScaleLock(true);
 
             return plottable;
         }
@@ -411,6 +434,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
+        [Obsolete("This plot type has been deprecated. (min/max functionality now exists in Heatmap)")]
         public CoordinatedHeatmap AddHeatmapCoordinated(double?[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();
@@ -480,6 +504,7 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
+        [Obsolete("This plot type has been deprecated. Use a regular heatmap and modify its Offset and CellSize fields.")]
         public CoordinatedHeatmap AddHeatmapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
         {
             var plottable = new CoordinatedHeatmap();
@@ -601,6 +626,25 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a marker at a specific X/Y position.
+        /// This method really creates a scatter plot with a single point.
+        /// </summary>
+        public MarkerPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        {
+            var plottable = new MarkerPlot()
+            {
+                X = x,
+                Y = y,
+                MarkerShape = shape,
+                MarkerSize = size,
+                Color = color ?? GetNextColor(),
+                Label = label,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)
@@ -649,14 +693,16 @@ namespace ScottPlot
         /// The scatter plot that was created and added to the plot. 
         /// Interact with its public fields and methods to customize style and update data.
         /// </returns>
-        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
+        public MarkerPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
         {
-            var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
+            var plottable = new MarkerPlot()
             {
-                Color = color ?? settings.GetNextColor(),
-                MarkerSize = size,
+                X = x,
+                Y = y,
                 MarkerShape = shape,
-                Label = label
+                MarkerSize = size,
+                Color = color ?? GetNextColor(),
+                Label = label,
             };
             Add(plottable);
             return plottable;

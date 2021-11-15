@@ -57,6 +57,8 @@ namespace ScottPlot.Avalonia
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
+        private float ScaledWidth => (float)(Bounds.Width * Configuration.DpiStretchRatio);
+        private float ScaledHeight => (float)(Bounds.Height * Configuration.DpiStretchRatio);
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
@@ -76,7 +78,7 @@ namespace ScottPlot.Avalonia
                 [ScottPlot.Cursor.Question] = new Ava.Input.Cursor(StandardCursorType.Help),
             };
 
-            Backend = new ScottPlot.Control.ControlBackEnd((float)this.Bounds.Width, (float)this.Bounds.Height, GetType().Name);
+            Backend = new ScottPlot.Control.ControlBackEnd((float)Bounds.Width, (float)Bounds.Height, GetType().Name);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
@@ -84,6 +86,7 @@ namespace ScottPlot.Avalonia
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
             RightClicked += DefaultRightClickEvent;
@@ -94,8 +97,8 @@ namespace ScottPlot.Avalonia
 
         public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
-        public void Reset() => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height);
-        public void Reset(Plot newPlot) => Backend.Reset((float)this.Bounds.Width, (float)this.Bounds.Height, newPlot);
+        public void Reset() => Backend.Reset(ScaledWidth, ScaledHeight);
+        public void Reset(Plot newPlot) => Backend.Reset(ScaledWidth, ScaledHeight, newPlot);
         public void Refresh(bool lowQuality = false)
         {
             Backend.WasManuallyRendered = true;
@@ -131,7 +134,8 @@ namespace ScottPlot.Avalonia
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
-        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+        private void OnScaleChanged(object sender, EventArgs e) { System.Diagnostics.Debug.WriteLine("SCALECHANGED"); OnSizeChanged(null, null); }
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
         private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
@@ -145,8 +149,8 @@ namespace ScottPlot.Avalonia
         private ScottPlot.Control.InputState GetInputState(PointerEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
-                X = (float)e.GetPosition(this).X,
-                Y = (float)e.GetPosition(this).Y,
+                X = (float)e.GetPosition(this).X * Configuration.DpiStretchRatio,
+                Y = (float)e.GetPosition(this).Y * Configuration.DpiStretchRatio,
                 LeftWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed,
                 RightWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed,
                 MiddleWasJustPressed = e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed,
@@ -294,7 +298,9 @@ namespace ScottPlot.Avalonia
         {
             if (e.Property.Name == "Bounds")
             {
-                Backend.Resize((float)Bounds.Width, (float)Bounds.Height, useDelayedRendering: true);
+                Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+                PlotImage.Width = ScaledWidth;
+                PlotImage.Height = ScaledHeight;
                 Refresh();
             }
         }

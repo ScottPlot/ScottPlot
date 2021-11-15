@@ -372,7 +372,7 @@ namespace ScottPlot.Statistics
 
                 if (values[i] == max)
                 {
-                    hist[values.Length - 1] += 1;
+                    hist[hist.Length - 1] += 1;
                     continue;
                 }
 

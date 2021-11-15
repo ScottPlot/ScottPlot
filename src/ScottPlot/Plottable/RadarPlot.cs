@@ -97,6 +97,11 @@ namespace ScottPlot.Plottable
         /// </summary>
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
 
+        /// <summary>
+        /// Determines the width of each spoke and the axis lines.
+        /// </summary>
+        public int LineWidth { get; set; } = 1;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -284,6 +289,7 @@ namespace ScottPlot.Plottable
                 NumberOfSpokes = Norm.GetLength(1),
                 AxisType = AxisType,
                 WebColor = WebColor,
+                LineWidth = LineWidth,
                 ShowCategoryLabels = ShowCategoryLabels,
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,

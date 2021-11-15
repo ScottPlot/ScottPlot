@@ -64,6 +64,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.TransparentBackgroundButton = new System.Windows.Forms.Button();
+            this.StyleBrowserButton = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +81,7 @@
             this.cookbookButton.TabIndex = 0;
             this.cookbookButton.Text = "Launch ScottPlot Cookbook";
             this.cookbookButton.UseVisualStyleBackColor = false;
-            this.cookbookButton.Click += new System.EventHandler(this.cookbookButton_Click);
+            this.cookbookButton.Click += new System.EventHandler(this.CookbookButton_Click);
             // 
             // label1
             // 
@@ -125,6 +127,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label17);
+            this.groupBox2.Controls.Add(this.StyleBrowserButton);
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.MultiAxisLockButton);
             this.groupBox2.Controls.Add(this.richTextBox1);
@@ -156,7 +160,7 @@
             this.groupBox2.Controls.Add(this.TransparentBackgroundButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 153);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(303, 879);
+            this.groupBox2.Size = new System.Drawing.Size(303, 940);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "WinForms Control Demos";
@@ -193,7 +197,7 @@
             this.richTextBox1.Size = new System.Drawing.Size(291, 111);
             this.richTextBox1.TabIndex = 30;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
-            this.richTextBox1.Click += new System.EventHandler(this.richTextBox1_Click);
+            this.richTextBox1.Click += new System.EventHandler(this.WebsiteLink_Click);
             // 
             // label15
             // 
@@ -214,7 +218,7 @@
             this.btnColormapViewer.TabIndex = 28;
             this.btnColormapViewer.Text = "Colormap Viewer";
             this.btnColormapViewer.UseVisualStyleBackColor = true;
-            this.btnColormapViewer.Click += new System.EventHandler(this.btnColormapViewer_Click);
+            this.btnColormapViewer.Click += new System.EventHandler(this.ColormapViewerButton_Click);
             // 
             // label14
             // 
@@ -321,7 +325,7 @@
             this.btnShowOnHover.TabIndex = 18;
             this.btnShowOnHover.Text = "Show Value on Hover";
             this.btnShowOnHover.UseVisualStyleBackColor = true;
-            this.btnShowOnHover.Click += new System.EventHandler(this.btnShowOnHover_Click);
+            this.btnShowOnHover.Click += new System.EventHandler(this.ShowOnHover_Click);
             // 
             // label9
             // 
@@ -470,6 +474,27 @@
             this.TransparentBackgroundButton.UseVisualStyleBackColor = true;
             this.TransparentBackgroundButton.Click += new System.EventHandler(this.TransparentBackgroundButton_Click);
             // 
+            // StyleBrowserButton
+            // 
+            this.StyleBrowserButton.Location = new System.Drawing.Point(6, 878);
+            this.StyleBrowserButton.Name = "StyleBrowserButton";
+            this.StyleBrowserButton.Size = new System.Drawing.Size(75, 47);
+            this.StyleBrowserButton.TabIndex = 33;
+            this.StyleBrowserButton.Text = "Style Browser";
+            this.StyleBrowserButton.UseVisualStyleBackColor = true;
+            this.StyleBrowserButton.Click += new System.EventHandler(this.StyleBrowserButton_Click);
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.Location = new System.Drawing.Point(88, 877);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(210, 47);
+            this.label17.TabIndex = 34;
+            this.label17.Text = "View available predefined styles";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -484,7 +509,6 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScottPlot Demo (WinForms)";
-            this.Load += new System.EventHandler(this.FormStartup_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -529,5 +553,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button MultiAxisLockButton;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button StyleBrowserButton;
     }
 }

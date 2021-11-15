@@ -1,32 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Drawing
 {
+    /* This module will be retired in ScottPlot 5 in favor of ScottPlot.Palette */
     public class Palette
     {
-        // Matplotlib/D3/Vega/Tableau
-        public static Palette Category10 => new Palette(new Colorsets.Category10());
-        public static Palette Category20 => new Palette(new Colorsets.Category20());
+        /* These properties have been included for backwards compatibility.
+         * They are named identical to members of the old enumeration with the same name as this class.
+         * This list does not have to be expanded as new palettes are added.
+         */
+        public static Palette Aurora => new(new Colorsets.Aurora());
+        public static Palette Category10 => new(new Colorsets.Category10());
+        public static Palette Category20 => new(new Colorsets.Category20());
+        public static Palette ColorblindFriendly => new(new Colorsets.ColorblindFriendly());
+        public static Palette Dark => new(new Colorsets.Dark());
+        public static Palette DarkPastel => new(new Colorsets.DarkPastel());
+        public static Palette Frost => new(new Colorsets.Frost());
+        public static Palette Microcharts => new(new Colorsets.Microcharts());
+        public static Palette Nord => new(new Colorsets.Nord());
+        public static Palette OneHalf => new(new Colorsets.OneHalf());
+        public static Palette OneHalfDark => new(new Colorsets.OneHalfDark());
+        public static Palette PolarNight => new(new Colorsets.PolarNight());
+        public static Palette SnowStorm => new(new Colorsets.Snowstorm());
 
-        // Nord
-        public static Palette Aurora => new Palette(new Colorsets.Aurora());
-        public static Palette Frost => new Palette(new Colorsets.Frost());
-        public static Palette Nord => new Palette(new Colorsets.Nord());
-        public static Palette PolarNight => new Palette(new Colorsets.PolarNight());
-        public static Palette SnowStorm => new Palette(new Colorsets.Snowstorm());
-
-        // Misc
-        public static Palette OneHalfDark => new Palette(new Colorsets.OneHalfDark());
-        public static Palette OneHalf => new Palette(new Colorsets.OneHalf());
-        public static Palette Microcharts => new Palette(new Colorsets.Microcharts());
-
-        private readonly IColorset cset;
+        private readonly IPalette cset;
         public readonly string Name;
-        public Palette(IColorset colorset)
+
+        public Palette(IPalette colorset)
         {
             cset = colorset ?? new Colorsets.Category10();
             Name = cset.GetType().Name;
@@ -38,7 +39,7 @@ namespace ScottPlot.Drawing
             Name = name;
         }
 
-        public override string ToString() => $"{Name} Palette ({Count()} colors)";
+        public override string ToString() => Name;
 
         public int GetInt32(int index)
         {
@@ -63,6 +64,7 @@ namespace ScottPlot.Drawing
                 .ToArray();
         }
 
+        // TODO: make this a property in ScottPlot 5
         public int Count()
         {
             return cset.Count();

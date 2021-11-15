@@ -57,7 +57,6 @@ namespace ScottPlot.Plottable
             var baseLimits = base.GetAxisLimits();
             var newXMin = Convert.ToDouble(Xs[MinRenderIndex]) + OffsetX;
             var newXMax = Convert.ToDouble(Xs[MaxRenderIndex]) + OffsetX;
-            Debug.WriteLine($"Limits: {newXMin} {newXMax}");
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 
@@ -200,7 +199,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // Fill below the line
-                switch (FillType)
+                switch (_FillType)
                 {
                     case FillType.NoFill:
                         break;
@@ -219,7 +218,15 @@ namespace ScottPlot.Plottable
 
                 // Draw lines
                 if (PointsToDraw.Length > 1)
-                    gfx.DrawLines(penHD, PointsToDraw.ToArray());
+                {
+                    PointF[] pointsArray = PointsToDraw.ToArray();
+                    ValidatePoints(pointsArray);
+
+                    if (StepDisplay)
+                        pointsArray = GetStepPoints(pointsArray);
+
+                    gfx.DrawLines(penHD, pointsArray);
+                }
 
                 // draw markers
                 if (PointsToDraw.Length > 1)

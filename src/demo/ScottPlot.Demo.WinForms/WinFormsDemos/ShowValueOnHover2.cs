@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
     public partial class ShowValueOnHover2 : Form
     {
         private readonly ScatterPlot MyScatterPlot;
-        private readonly ScatterPlot HighlightedPoint;
+        private readonly MarkerPlot HighlightedPoint;
         private int LastHighlightedIndex = -1;
 
         public ShowValueOnHover2()
@@ -38,8 +38,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             (double pointX, double pointY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
 
             // place the highlight over the point of interest
-            HighlightedPoint.Xs[0] = pointX;
-            HighlightedPoint.Ys[0] = pointY;
+            HighlightedPoint.X = pointX;
+            HighlightedPoint.Y = pointY;
             HighlightedPoint.IsVisible = true;
 
             // render if the highlighted point chnaged

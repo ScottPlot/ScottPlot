@@ -55,4 +55,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddSignalXYConst(xs, ys);
         }
     }
+
+    public class SignalXYConstStep : IRecipe
+    {
+        public string Category => "Plottable: SignalXYConst";
+        public string ID => "signalxyconst_step";
+        public string Title => "SignalConst Step Mode";
+        public string Description =>
+            "Data points can be connected with steps (instead of straight lines).";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate random, unevenly-spaced data
+            Random rand = new Random(0);
+            int pointCount = 100_000;
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 1; i < ys.Length; i++)
+            {
+                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
+                xs[i] = xs[i - 1] + rand.NextDouble();
+            }
+
+            var sigxyconst = plt.AddSignalXYConst(xs, ys);
+            sigxyconst.StepDisplay = true;
+            plt.SetAxisLimits(18700, 18730, -49.25, -46.75);
+        }
+    }
 }

@@ -59,9 +59,8 @@ namespace ScottPlot
 
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
-        private readonly Control.DisplayScale DisplayScale = new();
-        private float ScaledWidth => (float)ActualWidth * DisplayScale.ScaleRatio;
-        private float ScaledHeight => (float)ActualHeight * DisplayScale.ScaleRatio;
+        private float ScaledWidth => (float)(ActualWidth * Configuration.DpiStretchRatio);
+        private float ScaledHeight => (float)(ActualHeight * Configuration.DpiStretchRatio);
 
         [Obsolete("Reference Plot instead of plt")]
         public Plot plt => Plot;
@@ -77,6 +76,7 @@ namespace ScottPlot
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
+            Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -173,14 +173,22 @@ namespace ScottPlot
         /// </summary>
         public void RenderRequest(RenderType renderType = RenderType.LowQualityThenHighQualityDelayed) => RefreshRequest(renderType);
 
-        private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
-        private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
+        /// <summary>
+        /// This object stores the bitmap that is displayed in the PlotImage.
+        /// When this control is created or resized this bitmap is replaced by a new one.
+        /// When new renders are requested (without resizing) they are drawn onto this existing bitmap.
+        /// </summary>
+        private WriteableBitmap PlotBitmap;
+
+        private void OnBitmapChanged(object sender, EventArgs e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
+        private void OnBitmapUpdated(object sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+        private void OnScaleChanged(object sender, EventArgs e) => OnSizeChanged(null, null);
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
@@ -192,8 +200,8 @@ namespace ScottPlot
         private Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
             {
-                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
-                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
+                X = (float)e.GetPosition(this).X * Configuration.DpiStretchRatio,
+                Y = (float)e.GetPosition(this).Y * Configuration.DpiStretchRatio,
                 LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
                 RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
                 MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
@@ -218,6 +226,46 @@ namespace ScottPlot
             bitmapImage.Freeze();
 
             return bitmapImage;
+        }
+
+        /// <summary>
+        /// Replace the existing PlotBitmap with a new one.
+        /// </summary>
+        public void ReplacePlotBitmap(System.Drawing.Bitmap bmp)
+        {
+            PlotBitmap = new WriteableBitmap(BmpImageFromBmp(bmp));
+            PlotImage.Source = PlotBitmap;
+        }
+
+        /// <summary>
+        /// Update the PlotBitmap with pixel data from the latest render.
+        /// If a PlotBitmap does not exist one will be created.
+        /// </summary>
+        private void UpdatePlotBitmap(System.Drawing.Bitmap bmp)
+        {
+            if (PlotBitmap is null)
+            {
+                ReplacePlotBitmap(Backend.GetLatestBitmap());
+                return;
+            }
+
+            var rect1 = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+            var flags = System.Drawing.Imaging.ImageLockMode.ReadOnly;
+            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect1, flags, bmp.PixelFormat);
+
+            try
+            {
+                var rect2 = new System.Windows.Int32Rect(0, 0, bmpData.Width, bmpData.Height);
+                PlotBitmap.WritePixels(
+                    sourceRect: rect2,
+                    buffer: bmpData.Scan0,
+                    bufferSize: bmpData.Stride * bmpData.Height,
+                    stride: bmpData.Stride);
+            }
+            finally
+            {
+                bmp.UnlockBits(bmpData);
+            }
         }
 
         /// <summary>

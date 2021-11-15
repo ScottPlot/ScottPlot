@@ -4,7 +4,7 @@
  * An InvalidOperationException is usually (but not always) thrown unless you
  * wait for IsRendering to become false before modifying the plot.
  * 
- * See discussion in https://github.com/swharden/ScottPlot/issues/609
+ * See discussion in https://github.com/ScottPlot/ScottPlot/issues/609
  * 
  */
 using NUnit.Framework;

@@ -77,7 +77,7 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Define the size limits for this axis (in pixel units).
+        /// Define the minimum and maximum limits for the pixel size of this axis
         /// </summary>
         public void SetSizeLimit(float? min = null, float? max = null, float? pad = null)
         {
@@ -85,6 +85,11 @@ namespace ScottPlot.Renderable
             PixelSizeMaximum = max ?? PixelSizeMaximum;
             PixelSizePadding = pad ?? PixelSizePadding;
         }
+
+        /// <summary>
+        /// Size this axis to an exact number of pixels
+        /// </summary>
+        public void SetSizeLimit(float px) => SetSizeLimit(px, px, 0);
 
         // private styling variables
         private float PixelSize; // how large this axis is
@@ -101,11 +106,9 @@ namespace ScottPlot.Renderable
         public void SetOffset(float pixels) => PixelOffset = pixels;
 
         /// <summary>
-        /// Define how large this axis is in pixels.
-        /// RecalculateAxisSize() populates this value.
+        /// Returns the number of pixels occupied by this axis
         /// </summary>
-        public void SetSize(float pixels) => PixelSize = pixels;
-        public float GetSize() => IsVisible ? PixelSize : 0;
+        public float GetSize() => IsVisible ? PixelSize + PixelSizePadding : 0;
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
@@ -271,12 +274,21 @@ namespace ScottPlot.Renderable
         public void PixelSnap(bool enable) => AxisTicks.SnapPx = enable;
 
         /// <summary>
-        /// Set style of the tick mark lines
+        /// Apply the same color to major and minor tick marks
         /// </summary>
         public void TickMarkColor(Color color)
         {
             AxisTicks.MajorTickColor = color;
             AxisTicks.MinorTickColor = color;
+        }
+
+        /// <summary>
+        /// Set colors for major and minor tick marks
+        /// </summary>
+        public void TickMarkColor(Color majorColor, Color minorColor)
+        {
+            AxisTicks.MajorTickColor = majorColor;
+            AxisTicks.MinorTickColor = minorColor;
         }
 
         /// <summary>
@@ -308,6 +320,19 @@ namespace ScottPlot.Renderable
             AxisTicks.TickLabelFont.Size = fontSize ?? AxisTicks.TickLabelFont.Size;
             AxisTicks.TickLabelFont.Bold = fontBold ?? AxisTicks.TickLabelFont.Bold;
             AxisTicks.TickLabelRotation = rotation ?? AxisTicks.TickLabelRotation;
+        }
+
+        /// <summary>
+        /// Customize styling of the label (without changing its content)
+        /// </summary>
+        public void LabelStyle(
+            Color? color = null,
+            string fontName = null,
+            float? fontSize = null)
+        {
+            AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
+            AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
+            AxisLabel.Font.Size = fontSize ?? AxisLabel.Font.Size;
         }
 
         /// <summary>
@@ -352,8 +377,12 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
-        public void MinorLogScale(bool enable) => AxisTicks.TickCollection.MinorTickDistribution =
-            enable ? MinorTickDistribution.log : MinorTickDistribution.even;
+        public void MinorLogScale(bool enable, bool roundMajorTicks = true)
+        {
+            AxisTicks.TickCollection.MinorTickDistribution = enable ? MinorTickDistribution.log : MinorTickDistribution.even;
+            if (roundMajorTicks)
+                AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
+        }
 
         /// <summary>
         /// Configure the line drawn along the edge of the axis
@@ -480,6 +509,14 @@ namespace ScottPlot.Renderable
         public void LockLimits(bool locked = true)
         {
             Dims.LockLimits(locked);
+        }
+
+        /// <summary>
+        /// Return the ticks displayed in the previous render
+        /// </summary>
+        public Tick[] GetTicks()
+        {
+            return AxisTicks.TickCollection.GetTicks();
         }
     }
 }

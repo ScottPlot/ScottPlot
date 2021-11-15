@@ -28,8 +28,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 #endif
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
-
             // plot the data array only once
             avaPlot1.Plot.AddSignal(liveData);
             avaPlot1.Plot.AxisAutoX(margin: 0);

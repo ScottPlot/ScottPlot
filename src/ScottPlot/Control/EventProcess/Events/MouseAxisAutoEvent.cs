@@ -25,9 +25,7 @@
             if (Configuration.LockVerticalAxis)
                 return;
 
-            Plot.AxisAuto(
-                horizontalMargin: Configuration.MiddleClickAutoAxisMarginX,
-                verticalMargin: Configuration.MiddleClickAutoAxisMarginY);
+            Plot.AxisAuto();
         }
     }
 }

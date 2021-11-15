@@ -25,7 +25,8 @@ namespace ScottPlot.Drawing
         public static float GetScaleRatio()
         {
             const int DEFAULT_DPI = 96;
-            using Graphics gfx = GDI.Graphics(new Bitmap(1, 1));
+            using Bitmap bmp = new(1, 1);
+            using Graphics gfx = GDI.Graphics(bmp);
             return gfx.DpiX / DEFAULT_DPI;
         }
 
@@ -122,8 +123,8 @@ namespace ScottPlot.Drawing
                  * Setting DashPattern automatically sets a pen's DashStyle to custom.
                  * Custom DashStyles are slower and can cause diagonal rendering artifacts.
                  * Instead use the solid DashStyle.
-                 * https://github.com/swharden/ScottPlot/issues/327
-                 * https://github.com/swharden/ScottPlot/issues/401
+                 * https://github.com/ScottPlot/ScottPlot/issues/327
+                 * https://github.com/ScottPlot/ScottPlot/issues/401
                  */
                 pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
             }
@@ -216,6 +217,26 @@ namespace ScottPlot.Drawing
             return new System.Drawing.Font(validFontName, fontSize, fontStyle, GraphicsUnit.Pixel);
         }
 
+        public static StringFormat StringFormat(Alignment algnment)
+        {
+            return algnment switch
+            {
+                Alignment.UpperLeft => StringFormat(HorizontalAlignment.Left, VerticalAlignment.Upper),
+                Alignment.UpperCenter => StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper),
+                Alignment.UpperRight => StringFormat(HorizontalAlignment.Right, VerticalAlignment.Upper),
+
+                Alignment.MiddleLeft => StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle),
+                Alignment.MiddleCenter => StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle),
+                Alignment.MiddleRight => StringFormat(HorizontalAlignment.Right, VerticalAlignment.Middle),
+
+                Alignment.LowerLeft => StringFormat(HorizontalAlignment.Left, VerticalAlignment.Lower),
+                Alignment.LowerCenter => StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower),
+                Alignment.LowerRight => StringFormat(HorizontalAlignment.Right, VerticalAlignment.Lower),
+
+                _ => throw new NotImplementedException(),
+            };
+        }
+
         public static StringFormat StringFormat(HorizontalAlignment h = HorizontalAlignment.Left, VerticalAlignment v = VerticalAlignment.Lower)
         {
             var sf = new StringFormat();
@@ -257,6 +278,17 @@ namespace ScottPlot.Drawing
             }
 
             return bmp2;
+        }
+
+        public static System.Drawing.Color Semitransparent(System.Drawing.Color color, double alpha)
+        {
+            return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(color.A * alpha), color);
+        }
+
+        public static System.Drawing.Color Semitransparent(string htmlColor, double alpha)
+        {
+            System.Drawing.Color color = ColorTranslator.FromHtml(htmlColor);
+            return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(color.A * alpha), color);
         }
     }
 }

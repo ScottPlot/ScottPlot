@@ -31,6 +31,8 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchAxisLimitsButton").Click += LaunchAxisLimits;
             this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
             this.Find<Button>("LaunchMultiAxisLockButton").Click += LaunchMultiAxisLock;
+            this.Find<Button>("LaunchStyleBrowserButton").Click += LaunchStyleBrowser;
+            this.Find<Button>("LaunchDisplayScalingButton").Click += LaunchDisplayScaling;
         }
 
         public void InitializeComponent()
@@ -85,7 +87,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void WebsiteLabelClick(object sender, RoutedEventArgs e)
         {
-            Tools.LaunchBrowser("https://swharden.com/scottplot/demo");
+            Tools.LaunchBrowser("https://ScottPlot.NET/demo");
         }
 
         public void LaunchPlotViewer(object sender, RoutedEventArgs e)
@@ -122,6 +124,15 @@ namespace ScottPlot.Demo.Avalonia
             new AvaloniaDemos.MultiAxisLock().ShowDialog(this);
         }
 
+        public void LaunchStyleBrowser(object sender, RoutedEventArgs e)
+        {
+            new AvaloniaDemos.StyleBrowser().ShowDialog(this);
+        }
+
+        public void LaunchDisplayScaling(object sender, RoutedEventArgs e)
+        {
+            new AvaloniaDemos.DisplayScaling().ShowDialog(this);
+        }
 
     }
 }

@@ -1,0 +1,73 @@
+name: Package
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test on Linux
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: 🚚 Restore
+        working-directory: src/tests
+        run: dotnet restore
+      - name: 🛠️ Build
+        working-directory: src/tests
+        run: dotnet build --configuration Release
+      - name: 🧪 Test
+        working-directory: src/tests
+        run: dotnet test --configuration Release
+
+  deploy:
+    name: Package and Deploy
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+      - name: 📦 Pack
+        run: |
+          dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+      - name: 💾 Store
+        uses: actions/upload-artifact@v2
+        with:
+          name: ScottPlot-Packages
+          retention-days: 30
+          path: |
+            src/ScottPlot/bin/Release/*.nupkg
+            src/ScottPlot/bin/Release/*.snupkg
+            src/controls/ScottPlot.WinForms/bin/Release/*.nupkg
+            src/controls/ScottPlot.WinForms/bin/Release/*.snupkg
+            src/controls/ScottPlot.WPF/bin/Release/*.nupkg
+            src/controls/ScottPlot.WPF/bin/Release/*.snupkg
+            src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
+            src/controls/ScottPlot.Avalonia/bin/Release/*.snupkg
+      - name: 🚀 Publish
+        run: |
+          nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

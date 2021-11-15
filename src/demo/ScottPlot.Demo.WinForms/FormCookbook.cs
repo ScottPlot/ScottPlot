@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms
 {
     public partial class FormCookbook : Form
     {
+        readonly Dictionary<string, Cookbook.RecipeSource> Recipes;
+
         public FormCookbook()
         {
             InitializeComponent();
+            Recipes = Cookbook.RecipeJson.GetRecipes();
             formsPlot1.Configuration.WarnIfRenderNotCalledManually = false;
             LoadTreeWithDemosNew();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -53,9 +57,17 @@ namespace ScottPlot.Demo.WinForms
                 return;
 
             var recipe = Cookbook.Locate.GetRecipe(id);
+
+            string source = Cookbook.RecipeJson.NotFoundMessage;
+            if (Recipes != null)
+            {
+                if (Recipes.ContainsKey(id))
+                    source = Recipes[id].Code;
+            }
+
             DemoNameLabel.Text = recipe.Title;
             DescriptionTextbox.Text = recipe.Description;
-            sourceCodeTextbox.Text = Cookbook.Locate.RecipeSourceCode(id);
+            sourceCodeTextbox.Text = source.Replace("\n", Environment.NewLine);
 
             formsPlot1.Reset();
             recipe.ExecuteRecipe(formsPlot1.Plot);

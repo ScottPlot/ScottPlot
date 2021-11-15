@@ -261,4 +261,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
              */
         }
     }
+
+    public class RadarCustomization : IRecipe
+    {
+        public string Category => "Plottable: Radar";
+        public string ID => "radar_customization";
+        public string Title => "Customization";
+        public string Description =>
+            "Radar charts support customization of the line color and width.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] values = {
+                { 78,  83, 84, 76, 43 },
+                { 100, 50, 70, 60, 90 }
+            };
+
+            var radar = plt.AddRadar(values);
+            radar.WebColor = System.Drawing.Color.Red;
+            radar.LineWidth = 3;
+        }
+    }
 }
