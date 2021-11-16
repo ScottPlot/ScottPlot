@@ -269,7 +269,12 @@ namespace ScottPlot.Ticks
                                            .ToArray();
 
             if (tickPositionsMajor.Length < 2)
-                tickPositionsMajor = new double[] { tickPositionsMajor.Length > 0 ? tickPositionsMajor[0] : low - firstTickOffset, low - firstTickOffset + tickSpacing };
+            {
+                double tickBelow = low - firstTickOffset;
+                double firstTick = tickPositionsMajor.Length > 0 ? tickPositionsMajor[0] : tickBelow;
+                double nextTick = tickBelow + tickSpacing;
+                tickPositionsMajor = new double[] { firstTick, nextTick };
+            }
 
             if (IntegerPositionsOnly)
                 tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
