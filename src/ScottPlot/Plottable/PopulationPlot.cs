@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
+        public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
         public bool DistributionCurve = true;
         public LineStyle DistributionCurveLineStyle = LineStyle.Solid;
@@ -123,19 +123,28 @@ namespace ScottPlot.Plottable
                     var popLeft = groupLeft + popWidth * seriesIndex;
 
                     Position scatterPos, boxPos;
+                    byte boxAlpha = 0;
                     switch (DataFormat)
                     {
                         case DisplayItems.BoxAndScatter:
                             boxPos = Position.Left;
                             scatterPos = Position.Right;
+                            boxAlpha = 255;
                             break;
                         case DisplayItems.BoxOnly:
                             boxPos = Position.Center;
                             scatterPos = Position.Hide;
+                            boxAlpha = 255;
                             break;
                         case DisplayItems.ScatterAndBox:
                             boxPos = Position.Right;
                             scatterPos = Position.Left;
+                            boxAlpha = 255;
+                            break;
+                        case DisplayItems.ScatterOnBox:
+                            boxPos = Position.Center;
+                            scatterPos = Position.Center;
+                            boxAlpha = 128;
                             break;
                         case DisplayItems.ScatterOnly:
                             boxPos = Position.Hide;
@@ -153,22 +162,22 @@ namespace ScottPlot.Plottable
                     switch (DataBoxStyle)
                     {
                         case BoxStyle.BarMeanStdErr:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.BarMeanStDev:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: false);
                             break;
                         case BoxStyle.BoxMeanStdevStderr:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.StdevStderrMean);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.StdevStderrMean);
                             break;
                         case BoxStyle.BoxMedianQuartileOutlier:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.OutlierQuartileMedian);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.OutlierQuartileMedian);
                             break;
                         case BoxStyle.MeanAndStderr:
-                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.MeanAndStdev:
-                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: false);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -242,7 +251,7 @@ namespace ScottPlot.Plottable
         }
 
         private static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
-            double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
+            double popLeft, double popWidth, Color color, byte alpha, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -274,8 +283,8 @@ namespace ScottPlot.Plottable
             float radius = 5;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(color, 2))
-            using (Brush brush = GDI.Brush(color))
+            using (Pen pen = GDI.Pen(Color.FromArgb(alpha, color), 2))
+            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, color)))
             {
                 gfx.FillEllipse(brush, (float)(xPx - radius), (float)(yPx - radius), radius * 2, radius * 2);
                 gfx.DrawLine(pen, (float)xPx, (float)errorMinPx, (float)xPx, (float)errorMaxPx);
@@ -285,7 +294,7 @@ namespace ScottPlot.Plottable
         }
 
         private static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
-            double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
+            double popLeft, double popWidth, Color color, byte alpha, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -327,7 +336,7 @@ namespace ScottPlot.Plottable
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(color))
+            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, color)))
             {
                 gfx.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
                 gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
@@ -341,7 +350,7 @@ namespace ScottPlot.Plottable
         public enum HorizontalAlignment { Left, Center, Right }
 
         private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
-            double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat,
+            double popLeft, double popWidth, Color color, byte alpha, Position position, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {
             // adjust edges to accomodate special positions
@@ -415,7 +424,7 @@ namespace ScottPlot.Plottable
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(color))
+            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, color)))
             {
                 // draw the box
                 gfx.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
