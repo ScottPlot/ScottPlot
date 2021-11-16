@@ -2,6 +2,9 @@
 
 ## ScottPlot 4.1.28
 _In development / not yet on NuGet_
+* Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
+* Palette: Added Amber and Nero palettes (#1411, #1412) _Thanks @gauravagrwal_
+* Style: Hazel style (#1414) _Thanks @gauravagrwal_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
