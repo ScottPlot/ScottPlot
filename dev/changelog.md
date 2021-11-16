@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.28
 _In development / not yet on NuGet_
+* Radar Plot: `OutlineWidth` now allows customization of the line around radar plots (#1426, #1277) _Thanks @Rayffer_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
