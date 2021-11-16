@@ -268,8 +268,22 @@ namespace ScottPlot.Ticks
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
 
+            if (tickPositionsMajor.Length < 2)
+            {
+                double tickBelow = low - firstTickOffset;
+                double firstTick = tickPositionsMajor.Length > 0 ? tickPositionsMajor[0] : tickBelow;
+                double nextTick = tickBelow + tickSpacing;
+                tickPositionsMajor = new double[] { firstTick, nextTick };
+            }
+
             if (IntegerPositionsOnly)
+            {
+                int firstTick = (int)tickPositionsMajor[0];
                 tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
+
+                if (tickPositionsMajor.Length < 2)
+                    tickPositionsMajor = new double[] { firstTick - 1, firstTick, firstTick + 1 };
+            }
 
             (tickLabels, CornerLabel) = GetPrettyTickLabels(
                     tickPositionsMajor,
@@ -540,6 +554,49 @@ namespace ScottPlot.Ticks
         public Tick[] GetTicks()
         {
             return GetMajorTicks().Concat(GetMinorTicks()).ToArray();
+        }
+
+        public Tick[] GetVisibleMajorTicks(PlotDimensions dims)
+        {
+            double high, low;
+            if (Orientation == AxisOrientation.Vertical)
+            {
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+            }
+            else
+            {
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+            }
+
+            return GetMajorTicks()
+                .Where(t => t.Position >= low && t.Position <= high)
+                .ToArray();
+        }
+
+        public Tick[] GetVisibleMinorTicks(PlotDimensions dims)
+        {
+            double high, low;
+            if (Orientation == AxisOrientation.Vertical)
+            {
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+            }
+            else
+            {
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+            }
+
+            return GetMinorTicks()
+                .Where(t => t.Position >= low && t.Position <= high)
+                .ToArray();
+        }
+
+        public Tick[] GetVisibleTicks(PlotDimensions dims)
+        {
+            return GetVisibleMajorTicks(dims).Concat(GetVisibleMinorTicks(dims)).ToArray();
         }
     }
 }
