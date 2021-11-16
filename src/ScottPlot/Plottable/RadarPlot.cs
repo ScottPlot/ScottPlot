@@ -102,11 +102,14 @@ namespace ScottPlot.Plottable
         /// </summary>
         public int LineWidth { get; set; } = 1;
 
+        /// <summary>
+        /// Determines the width of the line at the edge of each area polygon.
+        /// </summary>
+        public float OutlineWidth { get; set; } = 1;
+
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-
-        public float OutlineThickness { get; set; } = 1;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
@@ -246,7 +249,7 @@ namespace ScottPlot.Plottable
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(WebColor, OutlineThickness))
+            using (Pen pen = GDI.Pen(WebColor, OutlineWidth))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             using (StringFormat sf2 = new StringFormat())
