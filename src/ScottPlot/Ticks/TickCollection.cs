@@ -277,7 +277,13 @@ namespace ScottPlot.Ticks
             }
 
             if (IntegerPositionsOnly)
+            {
+                int firstTick = (int)tickPositionsMajor[0];
                 tickPositionsMajor = tickPositionsMajor.Where(x => x == (int)x).Distinct().ToArray();
+
+                if (tickPositionsMajor.Length < 2)
+                    tickPositionsMajor = new double[] { firstTick - 1, firstTick, firstTick + 1 };
+            }
 
             (tickLabels, CornerLabel) = GetPrettyTickLabels(
                     tickPositionsMajor,
