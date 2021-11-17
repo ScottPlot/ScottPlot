@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -80,6 +81,47 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // tighten the axis limits so we don't see lines on the edges
             plt.SetAxisLimits(xMin: 0, xMax: 10);
+        }
+    }
+
+    public class HatchedFill : IRecipe
+    {
+        public string Category => "Plottable: Fill";
+        public string ID => "fill_hatched";
+        public string Title => "Hatched Fill";
+        public string Description => "Hatched Fills are useful for when there are overlapping fills, such as this diagram depicting the ranges of possible producer surpluses under a price floor.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double SupplyFunction(double q) => 5 * q + 1;
+            double DemandFunction(double q) => -3 * q + 17;
+
+            const double priceFloor = 12.5;
+            double[] xs = DataGen.Consecutive(5);
+            double[] supply = xs.Select(SupplyFunction).ToArray();
+            double[] demand = xs.Select(DemandFunction).ToArray();
+
+            plt.AddScatter(xs, supply, markerShape: MarkerShape.none, label: "Supply");
+            plt.AddScatter(xs, demand, markerShape: MarkerShape.none, label: "Demand");
+            plt.AddHorizontalLine(priceFloor, label: "Price Floor");
+
+            double[] maxProducerSurplusBounds = new double[] { 0, 1.5 };
+            var maxProducerSurplus = plt.AddFill(maxProducerSurplusBounds, maxProducerSurplusBounds.Select(SupplyFunction).ToArray(), maxProducerSurplusBounds, Enumerable.Repeat(priceFloor, 2).ToArray());
+            maxProducerSurplus.LineWidth = 0;
+            maxProducerSurplus.FillColor = Color.LawnGreen;
+            maxProducerSurplus.HatchColor = Color.Transparent;
+            maxProducerSurplus.HatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
+            maxProducerSurplus.Label = "Maximum Possible Producer Surplus";
+
+            double[] minProducerSurplusBounds = new double[] { 1.2, 2.3 };
+            var minProducerSurplus = plt.AddFill(minProducerSurplusBounds, minProducerSurplusBounds.Select(SupplyFunction).ToArray(), minProducerSurplusBounds, Enumerable.Repeat(priceFloor, 2).ToArray());
+            minProducerSurplus.LineWidth = 0;
+            minProducerSurplus.FillColor = Color.Transparent;
+            minProducerSurplus.HatchColor = Color.Red;
+            minProducerSurplus.HatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
+            minProducerSurplus.Label = "Minimum Possible Producer Surplus";
+
+            plt.Legend();
         }
     }
 }
