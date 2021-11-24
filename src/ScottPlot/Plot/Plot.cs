@@ -294,9 +294,9 @@ namespace ScottPlot
                 var scalebar = plottable as ScaleBar;
                 if (scalebar != null)
                 {
-                    if (tick.HasValue) 
+                    if (tick.HasValue)
                         scalebar.LineColor = tick.Value;
-                    if (axisLabel.HasValue) 
+                    if (axisLabel.HasValue)
                         scalebar.FontColor = axisLabel.Value;
                 }
             }
