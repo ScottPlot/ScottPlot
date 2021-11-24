@@ -56,7 +56,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     public class StyledScaleBar : IRecipe
     {
         public string Category => "Plottable: Scale Bar";
-        public string ID => "styled_scalebar";
+        public string ID => "scalebar_styled";
         public string Title => "Styled Scale Bar";
         public string Description =>
             "An L-shaped scalebar can be added in the corner of any plot. " +
@@ -75,8 +75,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // add an L-shaped scalebar
             plt.AddScaleBar(5, .25, "100 ms", "250 mV");
 
+            // add style
             plt.Style(Style.Black);
         }
     }
-
 }
