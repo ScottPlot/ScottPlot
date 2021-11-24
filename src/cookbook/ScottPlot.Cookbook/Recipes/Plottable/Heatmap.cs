@@ -136,6 +136,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class StyledHeatmapColormap : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "styled_heatmap_colormap";
+        public string Title => "Styled Colormap";
+        public string Description =>
+            "Viridis is the default colormap, but several alternatives are available.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] intensities = new double[100, 100];
+            for (int x = 0; x < 100; x++)
+                for (int y = 0; y < 100; y++)
+                    intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
+
+            var hm = plt.AddHeatmap(intensities, Drawing.Colormap.Turbo);
+            var cb = plt.AddColorbar(hm);
+
+            plt.Style(Style.Black);
+        }
+    }
+
     public class HeatmapLimitScale : IRecipe
     {
         public string Category => "Plottable: Heatmap";
