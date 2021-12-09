@@ -207,9 +207,9 @@ namespace ScottPlot.Plottable
             return new RectangleF(left, top, width, height);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var brush = GDI.Brush(Color))
             {
                 RectangleF rect = GetClippedRectangle(dims);

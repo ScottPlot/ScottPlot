@@ -80,12 +80,12 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false || (string.IsNullOrWhiteSpace(Label) && ImageLabel == null))
                 return;
 
-            using var gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            gfx.ClipToDataArea(dims, false);
             (float x, float y) = GetAxisCenter(dims);
 
             if (ImageLabel is null)

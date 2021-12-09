@@ -9,10 +9,9 @@ namespace ScottPlot.Plottable
     [Obsolete("This plot type has been deprecated. Min/max and interpolation settings are exposed in the regular Heatmap.")]
     public class CoordinatedHeatmap : Heatmap
     {
-        protected override void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        protected override void RenderHeatmap(PlotDimensions dims, Graphics gfx)
         {
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-
+            gfx.ClipToDataArea(dims);
             gfx.InterpolationMode = Interpolation;
             gfx.PixelOffsetMode = PixelOffsetMode.Half;
 

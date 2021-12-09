@@ -151,12 +151,12 @@ namespace ScottPlot.Plottable
             return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (Candle)
-                RenderCandles(dims, bmp, lowQuality);
+                RenderCandles(dims, gfx);
             else
-                RenderOhlc(dims, bmp, lowQuality);
+                RenderOhlc(dims, gfx);
         }
 
         public void ValidateData(bool deepValidation = false)
@@ -173,11 +173,11 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderCandles(PlotDimensions dims, Graphics gfx)
         {
             double fractionalTickWidth = .7;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using Pen pen = new Pen(Color.Magenta);
             using SolidBrush brush = new SolidBrush(Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
@@ -237,11 +237,11 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderOhlc(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderOhlc(PlotDimensions dims, Graphics gfx)
         {
             double fractionalTickWidth = .7;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using Pen pen = new Pen(Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
             {

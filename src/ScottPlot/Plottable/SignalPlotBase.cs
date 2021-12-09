@@ -733,9 +733,9 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-        public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public virtual void Render(PlotDimensions dims, Graphics gfx)
         {
-            using var gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using var brush = GDI.Brush(Color);
             using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
             using var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true);

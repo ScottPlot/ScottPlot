@@ -95,7 +95,7 @@ namespace ScottPlot
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             double sweepAngle = 2 * Math.PI / NumberOfSpokes;
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();

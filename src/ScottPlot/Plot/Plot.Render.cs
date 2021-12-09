@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -36,26 +37,59 @@ namespace ScottPlot
             }
 
             PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
-            RenderClear(bmp, lowQuality, primaryDims);
+
+            using var gfx = GDI.Graphics(bmp, primaryDims, lowQuality);
+
+            RenderClear(gfx, primaryDims);
             if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
             {
-                RenderBeforePlottables(bmp, lowQuality, primaryDims);
-                RenderPlottables(bmp, lowQuality, scale);
-                RenderAfterPlottables(bmp, lowQuality, primaryDims);
+                RenderBeforePlottables(gfx, primaryDims);
+                RenderPlottables(gfx, scale);
+                RenderAfterPlottables(gfx, primaryDims);
             }
 
             IsRendering = false;
             return bmp;
         }
 
-        private void RenderClear(Bitmap bmp, bool lowQuality, PlotDimensions primaryDims)
+        /// <summary>
+        /// Render the plot onto an existing Graphics element
+        /// </summary>
+        /// <param name="gfx">an existing Graphics element to render onto</param>
+        /// <param name="rectPrintArea">Area where to render the plot</param>
+        public void Render(Graphics gfx, RectangleF rectPrintArea)
         {
-            settings.FigureBackground.Render(primaryDims, bmp, lowQuality);
+            settings.BenchmarkMessage.Restart();
+            settings.Resize((int)(rectPrintArea.Width), (int)(rectPrintArea.Height), (int)(rectPrintArea.X), (int)(rectPrintArea.Y));
+            settings.CopyPrimaryLayoutToAllAxes();
+            settings.AxisAutoUnsetAxes();
+            settings.EnforceEqualAxisScales();
+            settings.LayoutAuto();
+            if (settings.EqualScaleMode != EqualScaleMode.Disabled)
+            {
+                settings.EnforceEqualAxisScales();
+                settings.LayoutAuto();
+            }
+
+            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, 1);
+
+            RenderClear(gfx, primaryDims);
+            if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
+            {
+                RenderBeforePlottables(gfx, primaryDims);
+                RenderPlottables(gfx, 1);
+                RenderAfterPlottables(gfx, primaryDims);
+            }
         }
 
-        private void RenderBeforePlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
+        private void RenderClear(Graphics gfx, PlotDimensions primaryDims)
         {
-            settings.DataBackground.Render(dims, bmp, lowQuality);
+            settings.FigureBackground.Render(primaryDims, gfx);
+        }
+
+        private void RenderBeforePlottables(Graphics gfx, PlotDimensions dims)
+        {
+            settings.DataBackground.Render(dims, gfx);
 
             foreach (var axis in settings.Axes)
             {
@@ -65,7 +99,7 @@ namespace ScottPlot
 
                 try
                 {
-                    axis.Render(dims2, bmp, lowQuality);
+                    axis.Render(dims2, gfx);
                 }
                 catch (OverflowException)
                 {
@@ -74,7 +108,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderPlottables(Bitmap bmp, bool lowQuality, double scaleFactor)
+        private void RenderPlottables(Graphics gfx, double scaleFactor)
         {
             foreach (var plottable in settings.Plottables)
             {
@@ -89,7 +123,7 @@ namespace ScottPlot
 
                 try
                 {
-                    plottable.Render(dims, bmp, lowQuality);
+                    plottable.Render(dims, gfx);
                 }
                 catch (OverflowException)
                 {
@@ -98,16 +132,16 @@ namespace ScottPlot
             }
         }
 
-        private void RenderAfterPlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
+        private void RenderAfterPlottables(Graphics gfx, PlotDimensions dims)
         {
             settings.CornerLegend.UpdateLegendItems(GetPlottables());
-            settings.CornerLegend.Render(dims, bmp, lowQuality);
+            settings.CornerLegend.Render(dims, gfx);
 
             settings.BenchmarkMessage.Stop();
 
-            settings.ZoomRectangle.Render(dims, bmp, lowQuality);
-            settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
-            settings.ErrorMessage.Render(dims, bmp, lowQuality);
+            settings.ZoomRectangle.Render(dims, gfx);
+            settings.BenchmarkMessage.Render(dims, gfx);
+            settings.ErrorMessage.Render(dims, gfx);
         }
 
         #endregion

@@ -55,12 +55,11 @@ namespace ScottPlot.Plottable
 
         // TODO: the negative coordiante thing is silly. Use alignment fields to control this behavior.
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible)
                 return;
-
-            using var gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            gfx.ClipToDataArea(dims);
             using var font = GDI.Font(Font);
             using var fontBrush = new SolidBrush(Font.Color);
             using var shadowBrush = new SolidBrush(ShadowColor);

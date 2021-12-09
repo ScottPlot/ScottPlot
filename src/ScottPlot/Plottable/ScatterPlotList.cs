@@ -98,13 +98,13 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             PointF[] points = new PointF[Count];
             for (int i = 0; i < Count; i++)
                 points[i] = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var linePen = GDI.Pen(Color, LineWidth, LineStyle, true))
             {
                 if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)

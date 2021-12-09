@@ -15,6 +15,11 @@ namespace ScottPlot.Renderable
         public float FigureSizePx { get; private set; }
 
         /// <summary>
+        /// Offset of the data area (in pixels) relative to the left or top edge of the figure.
+        /// </summary>
+        public float OffsetPx { get; private set; }
+
+        /// <summary>
         /// Side of just the data area (in pixels).
         /// The data area is the inner rectangle that displays plots.
         /// </summary>
@@ -152,11 +157,18 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Resize/reposition this axis according to the given pixel units
         /// </summary>
-        public void Resize(float figureSizePx, float? dataSizePx = null, float? dataOffsetPx = null)
+        public void Resize(float figureSizePx, float figureOffsetPx, float? dataSizePx = null, float? dataOffsetPx = null)
         {
             FigureSizePx = figureSizePx;
-            DataSizePx = dataSizePx ?? DataSizePx;
-            DataOffsetPx = dataOffsetPx ?? DataOffsetPx;
+            OffsetPx = figureOffsetPx;
+            if (dataSizePx != null)
+            {
+                DataSizePx = dataSizePx ?? DataSizePx;
+            }
+            if (dataOffsetPx != null)
+            {
+                DataOffsetPx = dataOffsetPx ?? DataOffsetPx;
+            }
         }
 
         /// <summary>

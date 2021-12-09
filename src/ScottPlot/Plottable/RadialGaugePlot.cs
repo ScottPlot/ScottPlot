@@ -249,7 +249,7 @@ namespace ScottPlot.Plottable
             return new AxisLimits(-radius, radius, -radius, radius);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             ValidateData();
 
@@ -261,7 +261,7 @@ namespace ScottPlot.Plottable
                 mode: GaugeMode);
 
             PointF centerPixel = new(dims.GetPixelX(0), dims.GetPixelY(0));
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
 
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));

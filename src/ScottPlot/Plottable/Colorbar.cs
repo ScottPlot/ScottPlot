@@ -192,14 +192,14 @@ namespace ScottPlot.Plottable
         public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
             Colormap.Colorbar(Colormap, width, height, vertical, MinColor, MaxColor);
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (BmpScale is null)
                 UpdateBitmap();
 
-            RectangleF colorbarRect = RenderColorbar(dims, bmp);
+            RectangleF colorbarRect = RenderColorbar(dims, gfx);
 
-            RenderTicks(dims, bmp, lowQuality, colorbarRect);
+            RenderTicks(dims, gfx, colorbarRect);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace ScottPlot.Plottable
             return ticks;
         }
 
-        private RectangleF RenderColorbar(PlotDimensions dims, Bitmap bmp)
+        private RectangleF RenderColorbar(PlotDimensions dims, Graphics gfx)
         {
             float scaleLeftPad = 10;
 
@@ -241,7 +241,7 @@ namespace ScottPlot.Plottable
             SizeF size = new(Width, dims.DataHeight);
             RectangleF rect = new(location, size);
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality: true, clipToDataArea: false))
+            gfx.ClipToDataArea(dims, false, true);
             using (var pen = GDI.Pen(Color.Black))
             {
                 gfx.DrawImage(BmpScale, location.X, location.Y, size.Width, size.Height + 1);
@@ -251,13 +251,13 @@ namespace ScottPlot.Plottable
             return rect;
         }
 
-        private void RenderTicks(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
+        private void RenderTicks(PlotDimensions dims, Graphics gfx, RectangleF colorbarRect)
         {
             float tickLeftPx = colorbarRect.Right;
             float tickRightPx = tickLeftPx + TickMarkLength;
             float tickLabelPx = tickRightPx + 2;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            gfx.ClipToDataArea(dims, false);
             using var tickMarkPen = GDI.Pen(TickMarkColor, TickMarkWidth);
             using var tickLabelBrush = GDI.Brush(TickLabelFont.Color);
             using var tickFont = GDI.Font(TickLabelFont);

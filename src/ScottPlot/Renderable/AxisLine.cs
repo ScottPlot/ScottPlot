@@ -14,12 +14,12 @@ namespace ScottPlot.Renderable
         public Edge Edge;
         public float PixelOffset;
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            gfx.ClipToDataArea(dims, false);
             using (var pen = GDI.Pen(Color, Width))
             {
                 float left = dims.DataOffsetX;

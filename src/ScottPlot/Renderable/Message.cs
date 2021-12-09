@@ -61,12 +61,12 @@ namespace ScottPlot.Renderable
 
         public bool IsVisible { get; set; } = false;
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible || string.IsNullOrWhiteSpace(Text))
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            gfx.ClipToDataArea(dims, false);
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var fillBrush = new SolidBrush(FillColor))

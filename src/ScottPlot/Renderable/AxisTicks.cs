@@ -54,13 +54,12 @@ namespace ScottPlot.Renderable
 
         // TODO: store the TickCollection in the Axis module, not in the Ticks module.
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible)
                 return;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
-
+            gfx.ClipToDataArea(dims, false);
             double[] visibleMajorTicks = TickCollection.GetVisibleMajorTicks(dims)
                 .Select(t => t.Position)
                 .ToArray();

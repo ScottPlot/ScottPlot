@@ -16,12 +16,22 @@ namespace ScottPlot
         /// <summary>
         /// Plot image width (pixels)
         /// </summary>
-        public float Width { get => settings.Width; set => Resize(value, settings.Height); }
+        public float Width { get => settings.Width; set => Resize(value, settings.Height, settings.OffsetX, settings.OffsetY); }
 
         /// <summary>
         /// Plot image height (pixels)
         /// </summary>
-        public float Height { get => settings.Height; set => Resize(settings.Width, value); }
+        public float Height { get => settings.Height; set => Resize(settings.Width, value, settings.OffsetX, settings.OffsetY); }
+
+        /// <summary>
+        /// Plot image Offset (pixels)
+        /// </summary>
+        public float OffsetX { get => settings.Width; set => Resize(settings.Width, settings.Height, value, settings.OffsetY); }
+
+        /// <summary>
+        /// Plot image Offset (pixels)
+        /// </summary>
+        public float OffsetY { get => settings.Height; set => Resize(settings.Width, settings.Height, settings.OffsetX, value); }
 
         /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
@@ -187,7 +197,9 @@ namespace ScottPlot
         /// </summary>
         /// <param name="width">width (pixels) for future renders</param>
         /// <param name="height">height (pixels) for future renders</param>
-        public void Resize(float width, float height) => settings.Resize(width, height);
+        /// <param name="x">Offset X (pixels) for future renders</param>
+        /// <param name="y">Offset Y (pixels) for future renders</param>
+        public void Resize(float width, float height, float x = 0, float y = 0) => settings.Resize(width, height, x, y);
 
         /// <summary>
         /// Return a new color from the Pallette based on the number of plottables already in the plot.

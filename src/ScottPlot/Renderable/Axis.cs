@@ -121,7 +121,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Render all components of this axis onto the given Bitmap
         /// </summary>
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
@@ -132,12 +132,10 @@ namespace ScottPlot.Renderable
             AxisLabel.PixelSize = PixelSize;
             AxisLine.PixelOffset = PixelOffset;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            {
-                AxisTicks.Render(dims, bmp, lowQuality);
-                AxisLabel.Render(dims, bmp, lowQuality);
-                AxisLine.Render(dims, bmp, lowQuality);
-            }
+            gfx.ClipToDataArea(dims, false);
+            AxisTicks.Render(dims, gfx);
+            AxisLabel.Render(dims, gfx);
+            AxisLine.Render(dims, gfx);
         }
 
         /// <summary>

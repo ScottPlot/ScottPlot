@@ -109,12 +109,12 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using Brush brush = GDI.Brush(Color.Magenta);
             using Pen pen = GDI.Pen(Color.Black);
 

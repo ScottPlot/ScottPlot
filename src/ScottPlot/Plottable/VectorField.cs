@@ -108,12 +108,12 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => Vectors.Length; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
 
             ArrowStyle.Render(dims, gfx, Xs, Ys, Vectors, VectorColors);
         }

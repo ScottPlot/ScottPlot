@@ -73,7 +73,7 @@ namespace ScottPlot.Plottable
             FillColors = fillColors;
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             int numCategories = Normalized.Length;
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
@@ -81,11 +81,10 @@ namespace ScottPlot.Plottable
             double maxRadiusPixels = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
             double maxDiameterPixels = maxRadiusPixels * 2;
 
-
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using SolidBrush sliceFillBrush = (SolidBrush)GDI.Brush(Color.Black);
 
-            RenderAxis(gfx, dims, bmp, lowQuality);
+            RenderAxis(gfx, dims);
 
             double start = -90;
             for (int i = 0; i < numCategories; i++)
@@ -106,7 +105,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderAxis(Graphics gfx, PlotDimensions dims)
         {
             double[,] Norm = new double[Normalized.Length, 1];
             for (int i = 0; i < Normalized.Length; i++)
@@ -132,7 +131,7 @@ namespace ScottPlot.Plottable
                 ImagePlacement = ImagePlacement.Inside
             };
 
-            axis.Render(dims, bmp, lowQuality);
+            axis.Render(dims, gfx);
         }
 
         private static double[] Normalize(double[] values)

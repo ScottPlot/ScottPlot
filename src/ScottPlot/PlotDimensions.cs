@@ -10,6 +10,8 @@ namespace ScottPlot
         // plot dimensions
         public readonly float Width;
         public readonly float Height;
+        public readonly float OffsetX;
+        public readonly float OffsetY;
         public readonly float DataWidth;
         public readonly float DataHeight;
         public readonly float DataOffsetX;
@@ -42,11 +44,12 @@ namespace ScottPlot
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
         public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
 
-        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset,
+        public PlotDimensions(SizeF figureSize, PointF figureOffset, SizeF dataSize, PointF dataOffset,
             (double xMin, double xMax, double yMin, double yMax) axisLimits,
             double scaleFactor)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
+            (OffsetX, OffsetY) = (figureOffset.X, figureOffset.Y);
             (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);
             (DataOffsetX, DataOffsetY) = (dataOffset.X, dataOffset.Y);
             (XMin, XMax, YMin, YMax) = (axisLimits.xMin, axisLimits.xMax, axisLimits.yMin, axisLimits.yMax);

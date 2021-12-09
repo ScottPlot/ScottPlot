@@ -94,13 +94,13 @@ namespace ScottPlot.Renderable
                         float x = dims.GetPixelX(visibleMajorTicks[i].Position);
                         float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength;
 
-                        gfx.TranslateTransform(x, y);
+                        //gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
                         sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Far;
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Near : StringAlignment.Center;
-                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, x, y, sf);
+                        //gfx.ResetTransform();
                     }
                     break;
 
@@ -110,13 +110,13 @@ namespace ScottPlot.Renderable
                         float x = dims.GetPixelX(visibleMajorTicks[i].Position);
                         float y = dims.DataOffsetY - MajorTickLength;
 
-                        gfx.TranslateTransform(x, y);
+                        //gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
                         sf.Alignment = rotation == 0 ? StringAlignment.Center : StringAlignment.Near;
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Far : StringAlignment.Center;
-                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, x, y, sf);
+                        //gfx.ResetTransform();
                     }
                     break;
 
@@ -126,7 +126,7 @@ namespace ScottPlot.Renderable
                         float x = dims.DataOffsetX - PixelOffset - MajorTickLength;
                         float y = dims.GetPixelY(visibleMajorTicks[i].Position);
 
-                        gfx.TranslateTransform(x, y);
+                        //gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
                         sf.Alignment = StringAlignment.Far;
                         sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
@@ -135,8 +135,8 @@ namespace ScottPlot.Renderable
                             sf.Alignment = StringAlignment.Center;
                             sf.LineAlignment = StringAlignment.Far;
                         }
-                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, x, y, sf);
+                        //gfx.ResetTransform();
                     }
                     break;
 
@@ -146,7 +146,7 @@ namespace ScottPlot.Renderable
                         float x = dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth;
                         float y = dims.GetPixelY(visibleMajorTicks[i].Position);
 
-                        gfx.TranslateTransform(x, y);
+                        //gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
                         sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
@@ -155,8 +155,8 @@ namespace ScottPlot.Renderable
                             sf.Alignment = StringAlignment.Center;
                             sf.LineAlignment = StringAlignment.Near;
                         }
-                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        gfx.DrawString(visibleMajorTicks[i].Label, font, brush, x, y, sf);
+                        //gfx.ResetTransform();
                     }
                     break;
 

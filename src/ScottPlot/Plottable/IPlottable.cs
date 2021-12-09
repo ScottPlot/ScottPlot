@@ -1,9 +1,11 @@
-﻿namespace ScottPlot.Plottable
+﻿using System.Drawing;
+
+namespace ScottPlot.Plottable
 {
     public interface IPlottable
     {
         bool IsVisible { get; set; }
-        void Render(PlotDimensions dims, System.Drawing.Bitmap bmp, bool lowQuality = false);
+        void Render(PlotDimensions dims, Graphics gfx);
 
         int XAxisIndex { get; set; }
         int YAxisIndex { get; set; }

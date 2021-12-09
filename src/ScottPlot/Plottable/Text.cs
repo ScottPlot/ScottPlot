@@ -46,12 +46,12 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("text cannot be null or whitespace");
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (string.IsNullOrWhiteSpace(Label) || IsVisible == false)
                 return;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var font = GDI.Font(Font))
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var frameBrush = new SolidBrush(BackgroundColor))

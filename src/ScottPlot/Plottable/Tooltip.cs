@@ -49,12 +49,12 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Y must be a real number");
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, clipToDataArea: true))
+            gfx.ClipToDataArea(dims);
             using (var font = GDI.Font(Font))
             using (var fillBrush = GDI.Brush(FillColor))
             using (var fontBrush = GDI.Brush(Font.Color))

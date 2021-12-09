@@ -107,7 +107,7 @@ namespace ScottPlot.Plottable
             return new AxisLimits(positionMin, positionMax, minValue, maxValue);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             Random rand = new Random(0);
             double groupWidth = .8;
@@ -145,30 +145,30 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
+                    Scatter(dims, gfx, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
 
                     if (DistributionCurve)
-                        Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
+                        Distribution(dims, gfx, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
 
                     switch (DataBoxStyle)
                     {
                         case BoxStyle.BarMeanStdErr:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            Bar(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.BarMeanStDev:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            Bar(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
                             break;
                         case BoxStyle.BoxMeanStdevStderr:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.StdevStderrMean);
+                            Box(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.StdevStderrMean);
                             break;
                         case BoxStyle.BoxMedianQuartileOutlier:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.OutlierQuartileMedian);
+                            Box(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, BoxFormat.OutlierQuartileMedian);
                             break;
                         case BoxStyle.MeanAndStderr:
-                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            MeanAndError(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.MeanAndStdev:
-                            MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            MeanAndError(dims, gfx, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -179,7 +179,7 @@ namespace ScottPlot.Plottable
 
         public enum Position { Hide, Center, Left, Right }
 
-        private static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Scatter(PlotDimensions dims, Graphics gfx, Population pop, Random rand,
             double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
         {
             // adjust edges to accomodate special positions
@@ -194,7 +194,7 @@ namespace ScottPlot.Plottable
 
             float radius = 5;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen penEdge = GDI.Pen(Color.FromArgb(alpha, edgeColor)))
             using (Brush brushFill = GDI.Brush(Color.FromArgb(alpha, fillColor)))
             {
@@ -208,7 +208,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Distribution(PlotDimensions dims, Graphics gfx, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, LineStyle lineStyle)
         {
             // adjust edges to accomodate special positions
@@ -234,14 +234,14 @@ namespace ScottPlot.Plottable
                 points[i] = new PointF(x, y);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen pen = GDI.Pen(color, 1, lineStyle, true))
             {
                 gfx.DrawLines(pen, points);
             }
         }
 
-        private static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void MeanAndError(PlotDimensions dims, Graphics gfx, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -273,7 +273,7 @@ namespace ScottPlot.Plottable
             double capPx2 = dims.GetPixelX(centerX + capWidth / 2);
             float radius = 5;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen pen = GDI.Pen(color, 2))
             using (Brush brush = GDI.Brush(color))
             {
@@ -284,7 +284,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Bar(PlotDimensions dims, Graphics gfx, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -325,7 +325,7 @@ namespace ScottPlot.Plottable
 
             RectangleF rect = new RectangleF((float)leftPx, (float)yPxTop, (float)(rightPx - leftPx), (float)(yPxBase - yPxTop));
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(color))
             {
@@ -340,7 +340,7 @@ namespace ScottPlot.Plottable
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
         public enum HorizontalAlignment { Left, Center, Right }
 
-        private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Box(PlotDimensions dims, Graphics gfx, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {
@@ -413,7 +413,7 @@ namespace ScottPlot.Plottable
                     throw new NotImplementedException();
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(color))
             {

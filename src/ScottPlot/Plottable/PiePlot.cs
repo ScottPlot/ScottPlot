@@ -80,9 +80,9 @@ namespace ScottPlot.Plottable
             // TODO: ensure the length of colors and group names matches expected length
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen backgroundPen = GDI.Pen(BackgroundColor))
             using (Pen outlinePen = GDI.Pen(OutlineColor, OutlineSize))
             using (Brush sliceFillBrush = GDI.Brush(Color.Black))

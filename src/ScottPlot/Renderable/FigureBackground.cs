@@ -8,12 +8,10 @@ namespace ScottPlot.Renderable
         public Color Color { get; set; } = Color.White;
         public bool IsVisible { get; set; } = true;
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality: true, false))
-            {
-                gfx.Clear(Color);
-            }
+            gfx.ClipToDataArea(dims, false, true);
+            gfx.Clear(Color);
         }
     }
 }

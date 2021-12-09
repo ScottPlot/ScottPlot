@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -111,12 +112,11 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Base and Tip coordinates must be finite");
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
-
-            using Graphics gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             using Pen penLine = Drawing.GDI.Pen(Color, LineWidth, LineStyle, true);
 
             Pixel basePixel = dims.GetPixel(Base);

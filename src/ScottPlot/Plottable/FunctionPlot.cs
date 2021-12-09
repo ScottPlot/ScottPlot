@@ -51,7 +51,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get; private set; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
@@ -92,7 +92,7 @@ namespace ScottPlot.Plottable
                 MarkerShape = MarkerShape.none,
                 LineStyle = LineStyle
             };
-            scatter.Render(dims, bmp, lowQuality);
+            scatter.Render(dims, gfx);
         }
 
         public void ValidateData(bool deepValidation = false)

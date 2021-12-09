@@ -50,9 +50,9 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Width and Height cannot be Infinity");
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var font = GDI.Font(Font))
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var linePen = new Pen(LineColor, LineWidth))

@@ -89,13 +89,13 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             PointF[] points = new PointF[Xs.Length];
             for (int i = 0; i < Xs.Length; i++)
                 points[i] = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Brush fillBrush = GDI.Brush(FillColor, HatchColor, HatchStyle))
             using (Pen outlinePen = GDI.Pen(LineColor, (float)LineWidth))
             {

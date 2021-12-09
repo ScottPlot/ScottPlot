@@ -132,13 +132,13 @@ namespace ScottPlot.Plottable
 
         public void ValidateData(bool deep = false) { }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
 
-            HorizontalLine.Render(dims, bmp, lowQuality);
-            VerticalLine.Render(dims, bmp, lowQuality);
+            HorizontalLine.Render(dims, gfx);
+            VerticalLine.Render(dims, gfx);
         }
 
         [Obsolete("Use VerticalLine.PositionFormatter()")]

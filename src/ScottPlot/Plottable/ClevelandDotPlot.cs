@@ -180,9 +180,9 @@ namespace ScottPlot.Plottable
         // NOTE: These render methods contains a lot of code and complexity not required to render this plot type.
         // TODO: Delete as much of this code as possible and simplify the render methods.
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             for (int barIndex = 0; barIndex < Values.Length; barIndex++)
             {
                 if (Orientation == Orientation.Vertical)

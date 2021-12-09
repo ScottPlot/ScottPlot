@@ -14,7 +14,7 @@ namespace ScottPlot.Plottable
         public ScatterPlotHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
                                     base(xs, ys, xErr, yErr) => HighlightClear();
 
-        public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false) => throw new NotImplementedException();
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false) => throw new NotImplementedException();
         public void HighlightClear() => throw new NotImplementedException();
         public (double x, double y, int index) HighlightPoint(int index) => throw new NotImplementedException();
         public (double x, double y, int index) HighlightPointNearestX(double x) => throw new NotImplementedException();

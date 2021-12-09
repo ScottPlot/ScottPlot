@@ -127,6 +127,16 @@ namespace ScottPlot
         public int Height => (int)YAxis.Dims.FigureSizePx;
 
         /// <summary>
+        /// Width of the figure (in pixels)
+        /// </summary>
+        public int OffsetX => (int)XAxis.Dims.OffsetPx;
+
+        /// <summary>
+        /// Height of the figure (in pixels)
+        /// </summary>
+        public int OffsetY => (int)YAxis.Dims.OffsetPx;
+
+        /// <summary>
         /// Default padding to use when AxisAuto() or Margins() is called without a specified margin
         /// </summary>
         public double MarginsX = .05;
@@ -151,6 +161,7 @@ namespace ScottPlot
 
             // determine figure dimensions based on primary X and Y axis
             var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
+            var figureOffset = new PointF(XAxis.Dims.OffsetPx, YAxis.Dims.OffsetPx);
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
@@ -159,16 +170,16 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             var limits = (xMin, xMax, yMin, yMax);
 
-            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
+            return new PlotDimensions(figureSize, figureOffset, dataSize, dataOffset, limits, scaleFactor);
         }
 
         /// <summary>
-        /// Set the default size for rendering images
+        /// Set the default size and offset for rendering images
         /// </summary>
-        public void Resize(float width, float height)
+        public void Resize(float width, float height, float X = 0, float Y = 0)
         {
             foreach (Axis axis in Axes)
-                axis.Dims.Resize(axis.IsHorizontal ? width : height);
+                axis.Dims.Resize(axis.IsHorizontal ? width : height, axis.IsHorizontal ? X : Y);
         }
 
         /// <summary>
@@ -511,9 +522,9 @@ namespace ScottPlot
             foreach (Axis axis in Axes)
             {
                 if (axis.IsHorizontal)
-                    axis.Dims.Resize(Width, XAxis.Dims.DataSizePx, XAxis.Dims.DataOffsetPx);
+                    axis.Dims.Resize(Width, OffsetX, XAxis.Dims.DataSizePx, XAxis.Dims.DataOffsetPx);
                 else
-                    axis.Dims.Resize(Height, YAxis.Dims.DataSizePx, YAxis.Dims.DataOffsetPx);
+                    axis.Dims.Resize(Height, OffsetY, YAxis.Dims.DataSizePx, YAxis.Dims.DataOffsetPx);
             }
         }
 
@@ -560,7 +571,7 @@ namespace ScottPlot
             var figSize = new SizeF(Width, Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits, scaleFactor: 1);
+            var dimsFull = new PlotDimensions(figSize, new PointF(0, 0), figSize, new PointF(0, 0), limits, scaleFactor: 1);
 
             foreach (var axis in Axes)
             {
@@ -578,9 +589,10 @@ namespace ScottPlot
 
             // now recalculate ticks based on new layout
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
+            var figureOffset = new PointF(XAxis.Dims.OffsetPx, YAxis.Dims.OffsetPx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits, scaleFactor: 1.0);
+            var dims3 = new PlotDimensions(figSize, figureOffset, dataSize, dataOffset, limits, scaleFactor: 1.0);
             foreach (var axis in Axes)
             {
                 bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;

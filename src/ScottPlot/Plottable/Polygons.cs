@@ -134,9 +134,9 @@ namespace ScottPlot.Plottable
             return (maxX - minX > smallerThenPixelX || maxY - minY > smallerThenPixelY);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Brush brush = GDI.Brush(FillColor, HatchColor, HatchStyle))
             using (Pen pen = GDI.Pen(LineColor, LineWidth))
             {

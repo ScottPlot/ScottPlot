@@ -212,12 +212,12 @@ namespace ScottPlot.Plottable
                 yMax: limits[3] + OffsetY);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible == false)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
             using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
             {

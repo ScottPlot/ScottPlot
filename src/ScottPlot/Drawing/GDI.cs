@@ -94,6 +94,7 @@ namespace ScottPlot.Drawing
             return gfx;
         }
 
+
         public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false, bool clipToDataArea = true)
         {
             Graphics gfx = Graphics(bmp, lowQuality, dims.ScaleFactor);
@@ -111,6 +112,30 @@ namespace ScottPlot.Drawing
             }
 
             return gfx;
+        }
+
+        public static void ClipToDataArea(this Graphics gfx, PlotDimensions dims, bool clipToDataArea = true, bool lowQuality = false)
+        {
+            gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
+            if (gfx.Transform.OffsetX != dims.OffsetX || gfx.Transform.OffsetY != dims.OffsetY)
+                gfx.TranslateTransform(dims.OffsetX, dims.OffsetY);
+
+            if (clipToDataArea)
+            {
+                /* These dimensions are withdrawn by 1 pixel to leave room for a 1px wide data frame.
+                 * Rounding is intended to exactly match rounding used when frame placement is determined.
+                 */
+                float left = (int)Math.Round(dims.DataOffsetX) + 1;
+                float top = (int)Math.Round(dims.DataOffsetY) + 1;
+                float width = (int)Math.Round(dims.DataWidth) - 1;
+                float height = (int)Math.Round(dims.DataHeight) - 1;
+                gfx.Clip = new Region(new RectangleF(left, top, width, height));
+            }
+            else
+            {
+                gfx.ResetClip();
+            }
         }
 
         public static System.Drawing.Pen Pen(System.Drawing.Color color, double width = 1, LineStyle lineStyle = LineStyle.Solid, bool rounded = false)

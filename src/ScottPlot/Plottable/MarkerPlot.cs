@@ -58,14 +58,13 @@ namespace ScottPlot.Plottable
             Validate.AssertIsReal(nameof(Y), Y);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible)
                 return;
 
             PointF point = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
-            using Graphics gfx = Drawing.GDI.Graphics(bmp, lowQuality);
             MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
         }
     }

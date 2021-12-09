@@ -19,12 +19,12 @@ namespace ScottPlot.Renderable
         public void Set(float x, float y, float width, float height) =>
             (X, Y, Width, Height, IsVisible) = (x, y, width, height, true);
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (!IsVisible)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality: true, false))
+            gfx.ClipToDataArea(dims, false, true);
             using (var fillBrush = GDI.Brush(FillColor))
             using (var borderPen = GDI.Pen(BorderColor))
             {

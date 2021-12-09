@@ -34,9 +34,9 @@ namespace ScottPlot.Plottable
             ValueOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            gfx.ClipToDataArea(dims);
             for (int barIndex = 0; barIndex < Values.Length; barIndex++)
             {
                 if (Orientation == Orientation.Vertical)

@@ -103,9 +103,9 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public override void Render(PlotDimensions dims, Graphics gfx)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var brush = new SolidBrush(Color))
             using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
             {
@@ -309,7 +309,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
-        private new(double x, TY y, int index) GetPointNearestX(double x)
+        private new (double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
         }

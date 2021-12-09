@@ -37,12 +37,12 @@ namespace ScottPlot.Renderable
         private float SymbolPad { get { return Font.Size / 3; } }
         private float MarkerWidth { get { return Font.Size / 2; } }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             if (IsVisible is false || LegendItems is null || LegendItems.Length == 0)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            gfx.ClipToDataArea(dims, false);
             using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);

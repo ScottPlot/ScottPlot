@@ -240,7 +240,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => Norm.Length; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             int numGroups = Norm.GetUpperBound(0) + 1;
             int numCategories = Norm.GetUpperBound(1) + 1;
@@ -248,7 +248,7 @@ namespace ScottPlot.Plottable
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (Pen pen = GDI.Pen(WebColor, OutlineWidth))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
@@ -256,7 +256,7 @@ namespace ScottPlot.Plottable
             using (System.Drawing.Font font = GDI.Font(Font))
             using (Brush fontBrush = GDI.Brush(Font.Color))
             {
-                RenderAxis(gfx, dims, bmp, lowQuality);
+                RenderAxis(gfx, dims);
 
                 for (int i = 0; i < numGroups; i++)
                 {
@@ -279,7 +279,7 @@ namespace ScottPlot.Plottable
                 ? new StarAxisTick(location, NormMaxes.Select(x => x * location).ToArray())
                 : new StarAxisTick(location, NormMax);
 
-        private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderAxis(Graphics gfx, PlotDimensions dims)
         {
             double[] tickLocations = new[] { 0.25, 0.5, 1 };
             StarAxisTick[] ticks = tickLocations.Select(x => GetTick(x)).ToArray();
@@ -300,7 +300,7 @@ namespace ScottPlot.Plottable
                 ImagePlacement = ImagePlacement.Outside
             };
 
-            axis.Render(dims, bmp, lowQuality);
+            axis.Render(dims, gfx);
         }
     }
 }

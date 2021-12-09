@@ -311,15 +311,14 @@ namespace ScottPlot.Plottable
                     throw new ArgumentException("Heatmaps may be unreliable for arrays with more than 10 million values");
             }
         }
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
-            RenderHeatmap(dims, bmp, lowQuality);
+            RenderHeatmap(dims, gfx);
         }
 
-        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        protected virtual void RenderHeatmap(PlotDimensions dims, Graphics gfx)
         {
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-
+            gfx.ClipToDataArea(dims);
             gfx.InterpolationMode = Interpolation;
             gfx.PixelOffsetMode = PixelOffsetMode.Half;
 

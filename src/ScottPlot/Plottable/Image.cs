@@ -59,12 +59,12 @@ namespace ScottPlot.Plottable
             };
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Graphics gfx)
         {
             PointF defaultPoint = new PointF(dims.GetPixelX(X), dims.GetPixelY(Y));
             PointF textLocationPoint = (Rotation == 0) ? TextLocation(defaultPoint) : defaultPoint;
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
+            gfx.ClipToDataArea(dims);
             using (var framePen = new Pen(BorderColor, BorderSize * 2))
             {
                 gfx.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
