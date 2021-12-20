@@ -6,6 +6,8 @@ _In development / not yet on NuGet_
 * Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
 * Palette: Added Amber and Nero palettes (#1411, #1412) _Thanks @gauravagrwal_
 * Style: Hazel style (#1414) _Thanks @gauravagrwal_
+* MarkerPlot: Improved data area clipping (#1423, #1459) _Thanks @PremekTill, @lucabat, and @AndXaf_
+* MarkerPlot: Improved key in legend (#1459, #1454) _Thanks @PremekTill and @Logicman111_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
