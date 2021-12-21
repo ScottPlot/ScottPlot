@@ -68,6 +68,43 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class PopulationDataOverBox : IRecipe
+    {
+        public string Category => "Plottable: Population";
+        public string ID => "population_data_over_bar";
+        public string Title => "Data points over bar";
+        public string Description =>
+            "Alternate styling options allow data points to be displayed over the box and whisker plots.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create sample data to represent test scores
+            Random rand = new Random(0);
+            double[] valuesA = DataGen.RandomNormal(rand, 35, 85, 5);
+            double[] valuesB = DataGen.RandomNormal(rand, 42, 87, 3);
+            double[] valuesC = DataGen.RandomNormal(rand, 23, 92, 3);
+
+            // create population objects for each set of data values
+            var popA = new Statistics.Population(valuesA);
+            var popB = new Statistics.Population(valuesB);
+            var popC = new Statistics.Population(valuesC);
+
+            // combine several populations into an array and plot it
+            var poulations = new Statistics.Population[] { popA, popB, popC };
+            string[] populationNames = { "Group A", "Group B", "Group C" };
+
+            // customize the data display format
+            var popPlot = plt.AddPopulations(poulations);
+            popPlot.DistributionCurve = false;
+            popPlot.DataFormat = ScottPlot.Plottable.PopulationPlot.DisplayItems.ScatterOnBox;
+            popPlot.DataBoxStyle = ScottPlot.Plottable.PopulationPlot.BoxStyle.BarMeanStDev;
+
+            // improve the style of the plot
+            plt.XAxis.Grid(false);
+            plt.XTicks(populationNames);
+        }
+    }
+
     public class MultipleSeries : IRecipe
     {
         public string Category => "Plottable: Population";
