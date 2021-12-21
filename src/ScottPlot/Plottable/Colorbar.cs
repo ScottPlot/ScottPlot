@@ -248,7 +248,7 @@ namespace ScottPlot.Plottable
             RectangleF rect = new(location, size);
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality: true, clipToDataArea: false))
-            using (var pen = GDI.Pen(Color.Black))
+            using (var pen = GDI.Pen(TickMarkColor))
             {
                 gfx.DrawImage(BmpScale, location.X, location.Y, size.Width, size.Height + 1);
                 gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
