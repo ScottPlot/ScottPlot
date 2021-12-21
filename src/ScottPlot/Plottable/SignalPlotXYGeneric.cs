@@ -309,7 +309,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
-        private new (double x, TY y, int index) GetPointNearestX(double x)
+        private new(double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
         }
