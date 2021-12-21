@@ -212,7 +212,7 @@ namespace ScottPlot
         public void Style(Styles.IStyle style)
         {
             if (style is null)
-                throw new ArgumentException(nameof(style));
+                throw new ArgumentNullException(nameof(style));
 
             settings.FigureBackground.Color = style.FigureBackgroundColor;
             settings.DataBackground.Color = style.DataBackgroundColor;
@@ -229,22 +229,8 @@ namespace ScottPlot
 
             XAxis2.LabelStyle(color: style.TitleFontColor, fontName: style.TitleFontName);
 
-            foreach (var plottable in settings.Plottables)
-            {
-                var colorbar = plottable as Colorbar;
-                if (colorbar != null)
-                {
-                    colorbar.TickMarkColor = style.TickMajorColor;
-                    colorbar.TickLabelFont.Color = style.TickLabelColor;
-                }
-
-                var scalebar = plottable as ScaleBar;
-                if (scalebar != null)
-                {
-                    scalebar.LineColor = style.FrameColor;
-                    scalebar.FontColor = style.TickLabelColor;
-                }
-            }
+            foreach (IStylable plottable in settings.Plottables.Where(x => x is IStylable))
+                plottable.SetStyle(style.TickMajorColor, style.TickLabelColor);
         }
 
         /// <summary>
@@ -280,26 +266,8 @@ namespace ScottPlot
 
             XAxis2.Label(color: titleLabel);
 
-            foreach (var plottable in settings.Plottables)
-            {
-                var colorbar = plottable as Colorbar;
-                if (colorbar != null)
-                {
-                    if (tick.HasValue)
-                        colorbar.TickMarkColor = tick.Value;
-                    if (axisLabel.HasValue)
-                        colorbar.TickLabelFont.Color = axisLabel.Value;
-                }
-
-                var scalebar = plottable as ScaleBar;
-                if (scalebar != null)
-                {
-                    if (tick.HasValue)
-                        scalebar.LineColor = tick.Value;
-                    if (axisLabel.HasValue)
-                        scalebar.FontColor = axisLabel.Value;
-                }
-            }
+            foreach (IStylable plottable in settings.Plottables.Where(x => x is IStylable))
+                plottable.SetStyle(tick, axisLabel);
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// A colorbar translates numeric intensity values to colors.
     /// The Colorbar plot type displays a Colorbar along an edge of the plot.
     /// </summary>
-    public class Colorbar : IPlottable
+    public class Colorbar : IPlottable, IStylable
     {
         public Renderable.Edge Edge = Renderable.Edge.Right;
 
@@ -85,6 +85,12 @@ namespace ScottPlot.Plottable
         {
             Plottable = plottable;
             UpdateColormap(plottable.Colormap);
+        }
+
+        public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
+        {
+            TickMarkColor = tickMarkColor ?? TickMarkColor;
+            TickLabelFont.Color = tickFontColor ?? TickLabelFont.Color;
         }
 
         /// <summary>
