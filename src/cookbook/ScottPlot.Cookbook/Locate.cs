@@ -6,30 +6,58 @@ namespace ScottPlot.Cookbook
 {
     public static class Locate
     {
-        private static IRecipe[] LocateRecipes()
-        {
-            var res = new List<IRecipe>();
+        private static readonly IRecipe[] Recipes = TryLocateRecipes();
 
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        /// <summary>
+        /// Carefully locate recipes using try/catch to improve support for platforms like Eto
+        /// </summary>
+        public static IRecipe[] TryLocateRecipes()
+        {
+            List<IRecipe> recipes = new();
+
+            foreach (var assemblies in AppDomain.CurrentDomain.GetAssemblies())
             {
-                try // Eto.Forms seem to bundle something which may not load due to missing dependencies
+                try
                 {
-                    foreach (var type in asm.GetTypes())
+                    foreach (Type assemblyType in assemblies.GetTypes())
                     {
-                        if (!type.IsAbstract && !type.IsInterface && typeof(IRecipe).IsAssignableFrom(type))
+                        if (assemblyType.IsAbstract || assemblyType.IsInterface)
+                            continue;
+
+                        if (typeof(IRecipe).IsAssignableFrom(assemblyType))
                         {
-                            res.Add((IRecipe)Activator.CreateInstance(type));
+                            IRecipe instantiatedRecipe = (IRecipe)Activator.CreateInstance(assemblyType);
+                            recipes.Add(instantiatedRecipe);
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    if (ex is System.Reflection.ReflectionTypeLoadException)
+                    {
+                        continue; // Eto seem to bundle something which may not load due to missing dependencies
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
-            return res.ToArray();
+            return recipes.ToArray();
         }
-        private static readonly IRecipe[] Recipes = LocateRecipes();
+
+        /// <summary>
+        /// Locate recipes using LINQ (may crash if reflection fails on platforms like Eto)
+        /// </summary>
+        [Obsolete("use TryLocateRecipes() for improved safety during reflection")]
+        public static IRecipe[] LocateRecipes() => AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(x => x.IsAbstract == false)
+            .Where(x => x.IsInterface == false)
+            .Where(p => typeof(IRecipe).IsAssignableFrom(p))
+            .Select(x => (IRecipe)Activator.CreateInstance(x))
+            .ToArray();
 
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
             .GroupBy(x => x.Category)
