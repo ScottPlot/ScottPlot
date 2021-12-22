@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.28
 _In development / not yet on NuGet_
+* Eto Control: New ScottPlot control for the Eto GUI framework (#1425, #1438) _Thanks @rafntor_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
