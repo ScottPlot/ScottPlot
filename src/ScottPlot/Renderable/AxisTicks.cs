@@ -9,6 +9,7 @@ using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace ScottPlot.Renderable
 {
@@ -60,20 +61,28 @@ namespace ScottPlot.Renderable
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
 
+            double[] visibleMajorTicks = TickCollection.GetVisibleMajorTicks(dims)
+                .Select(t => t.Position)
+                .ToArray();
+
+            double[] visibleMinorTicks = TickCollection.GetVisibleMinorTicks(dims)
+                .Select(t => t.Position)
+                .ToArray();
+
             if (MajorTickVisible)
-                AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
 
             if (TickLabelVisible)
                 AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
 
             if (MinorTickVisible)
-                AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, MinorTickLength, MinorTickColor, Edge, PixelOffset);
 
             if (MajorGridVisible)
-                AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
+                AxisTicksRender.RenderGridLines(dims, gfx, visibleMajorTicks, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
 
             if (MinorGridVisible)
-                AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
+                AxisTicksRender.RenderGridLines(dims, gfx, visibleMinorTicks, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
         }
     }
 }

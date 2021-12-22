@@ -60,5 +60,27 @@ namespace ScottPlotTests.PlotTypes
             plt.SetAxisLimits(yMin: -200, yMax: 200);
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_SignalXY_FillBelow_ZoomOut()
+        {
+            // addresses issue #1476 where zooming far out causes the width of the
+            // fill to be zero and a hard crash
+            // https://github.com/ScottPlot/ScottPlot/issues/1476
+
+            var plt = new ScottPlot.Plot(400, 300);
+
+            var line = plt.AddSignalXY(
+                xs: ScottPlot.DataGen.Consecutive(100),
+                ys: ScottPlot.DataGen.RandomWalk(100));
+
+            line.FillBelow();
+
+            for (int i = 0; i < 10; i++)
+            {
+                plt.AxisZoom(.1, .1);
+                plt.Render();
+            }
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace ScottPlot.Plottable
             {
                 label = Label,
                 markerShape = MarkerShape,
+                markerSize = MarkerSize,
                 color = Color
             };
 
@@ -65,7 +66,7 @@ namespace ScottPlot.Plottable
 
             PointF point = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
-            using Graphics gfx = Drawing.GDI.Graphics(bmp, lowQuality);
+            using Graphics gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality);
             MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
         }
     }

@@ -3,6 +3,15 @@
 ## ScottPlot 4.1.28
 _In development / not yet on NuGet_
 * Eto Control: New ScottPlot control for the Eto GUI framework (#1425, #1438) _Thanks @rafntor_
+* Radar Plot: `OutlineWidth` now allows customization of the line around radar plots (#1426, #1277) _Thanks @Rayffer_
+* Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
+* Palette: Added Amber and Nero palettes (#1411, #1412) _Thanks @gauravagrwal_
+* Style: Hazel style (#1414) _Thanks @gauravagrwal_
+* MarkerPlot: Improved data area clipping (#1423, #1459) _Thanks @PremekTill, @lucabat, and @AndXaf_
+* MarkerPlot: Improved key in legend (#1459, #1454) _Thanks @PremekTill and @Logicman111_
+* Style: Plottables that implement `IStylable` are now styled when `Plot.Style()` is called. Styles are now improved for `ScaleBar` and `Colorbar` plot types. (#1451, #1447) _Thanks @diluculo_
+* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) Thanks _@Syntaxrabbit_
+* SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) _Thanks @chenxuuu_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_

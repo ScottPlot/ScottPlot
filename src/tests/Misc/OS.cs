@@ -55,5 +55,25 @@ namespace ScottPlotTests.Misc
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_AxisAuto_DoesNotThrow()
+        {
+            // This code block is reported to throw an exception on Linux
+            // https://github.com/ScottPlot/ScottPlot/issues/1431
+
+            ScottPlot.Plot plt = new(600, 400);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51), label: "sin");
+            plt.AddSignal(ScottPlot.DataGen.Cos(51), label: "cos");
+            plt.Legend(location: ScottPlot.Alignment.UpperCenter);
+            plt.YAxis.Label("vertical axis");
+            plt.XAxis.Label("horizontal axis");
+            plt.XAxis.TickLabelStyle(fontSize: 24);
+            plt.YAxis.TickLabelStyle(fontSize: 24);
+            plt.Legend(location: ScottPlot.Alignment.UpperCenter);
+            plt.AxisAuto(0.05, 0.5); // <= EXCEPTION HERE?
+            plt.SetAxisLimits(yMin: 0);
+            TestTools.SaveFig(plt);
+        }
     }
 }

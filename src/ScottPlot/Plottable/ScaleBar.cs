@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using ScottPlot.Drawing;
+using ScottPlot.Styles;
 
 namespace ScottPlot.Plottable
 {
     /// <summary>
     /// An L-shaped scalebar rendered in the corner of the data area
     /// </summary>
-    public class ScaleBar : IPlottable
+    public class ScaleBar : IPlottable, IStylable
     {
         /// <summary>
         /// Width of the scalebar in cooridinate units
@@ -41,6 +42,12 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
         public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
         public LegendItem[] GetLegendItems() => null;
+
+        public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
+        {
+            LineColor = tickMarkColor ?? LineColor;
+            FontColor = tickFontColor ?? Font.Color;
+        }
 
         public void ValidateData(bool deep = false)
         {
