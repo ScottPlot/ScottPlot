@@ -116,13 +116,13 @@ namespace ScottPlot.Eto
             Backend.RenderRequest(renderType);
         }
 
-        private void OnBitmapChanged(object sender, EventArgs e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
-        private void OnBitmapUpdated(object sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
-        private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
-        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
-        private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
-        private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
-        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
+        private void OnBitmapChanged(object? sender, EventArgs e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
+        private void OnBitmapUpdated(object? sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
+        private void OnCursorChanged(object? sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
+        private void OnRightClicked(object? sender, EventArgs e) => RightClicked?.Invoke(this, e);
+        private void OnPlottableDragged(object? sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
+        private void OnPlottableDropped(object? sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
+        private void OnAxesChanged(object? sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         protected override void OnSizeChanged(EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
         protected override void OnMouseDown(MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
         protected override void OnMouseUp(MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
@@ -165,7 +165,7 @@ namespace ScottPlot.Eto
         /// <summary>
         /// Launch the default right-click menu.
         /// </summary>
-        public void DefaultRightClickEvent(object sender, EventArgs e)
+        public void DefaultRightClickEvent(object? sender, EventArgs e)
         {
             var cm = new ContextMenu();
 
@@ -198,11 +198,11 @@ namespace ScottPlot.Eto
             cm.Show();
         }
 
-        private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.Instance.Image = Plot.Render().ToEto();
-        private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
-        private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new PlotViewForm(Plot).Show();
-        private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
-        private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
+        private void RightClickMenu_Copy_Click(object? sender, EventArgs e) => Clipboard.Instance.Image = Plot.Render().ToEto();
+        private void RightClickMenu_Help_Click(object? sender, EventArgs e) => new FormHelp().Show();
+        private void RightClickMenu_OpenInNewWindow_Click(object? sender, EventArgs e) => new PlotViewForm(Plot).Show();
+        private void RightClickMenu_AutoAxis_Click(object? sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
+        private void RightClickMenu_SaveImage_Click(object? sender, EventArgs e)
         {
             var sfd = new SaveFileDialog { FileName = "ScottPlot.png" };
 

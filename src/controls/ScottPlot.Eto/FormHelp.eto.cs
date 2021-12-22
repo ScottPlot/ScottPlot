@@ -7,9 +7,6 @@ namespace ScottPlot.Eto
     {
         private void InitializeComponent()
         {
-            this.lblTitle = new Label();
-            this.lblVersion = new Label();
-            this.lblMessage = new Label();
             this.SuspendLayout();
 
             this.Content = new DynamicLayout(lblTitle, lblVersion, lblMessage) { Padding = 10 };
@@ -38,8 +35,8 @@ namespace ScottPlot.Eto
             this.ResumeLayout();
         }
 
-        private Label lblTitle;
-        private Label lblVersion;
-        private Label lblMessage;
+        private Label lblTitle = new Label();
+        private Label lblVersion = new Label();
+        private Label lblMessage = new Label();
     }
 }
