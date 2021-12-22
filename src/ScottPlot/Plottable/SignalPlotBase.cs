@@ -510,6 +510,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         internal void FillToInfinity(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, bool fillToPositiveInfinity)
         {
+            if ((int)(xPxEnd - xPxStart) == 0 || (int)dims.Height == 0)
+                return;
             float minVal = 0;
             float maxVal = (dims.DataHeight * (fillToPositiveInfinity ? -1 : 1)) + dims.DataOffsetY;
 
