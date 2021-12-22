@@ -24,7 +24,10 @@ namespace ScottPlotTests.Cookbook
             Assert.IsNotEmpty(recipes2);
 
             Assert.AreEqual(recipes1.Length, recipes2.Length);
-            Assert.AreEqual(recipes1, recipes2);
+
+            string[] recipeIds1 = recipes1.Select(x => x.ID).ToArray();
+            string[] recipeIds2 = recipes2.Select(x => x.ID).ToArray();
+            Assert.AreEqual(recipeIds1, recipeIds2);
         }
     }
 }
