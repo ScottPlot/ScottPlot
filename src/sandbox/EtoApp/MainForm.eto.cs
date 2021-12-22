@@ -39,8 +39,8 @@ namespace EtoApp
                 {
                     // File submenu
                     new SubMenuItem { Text = "&File", Items = { clickMe } },
-                    // new SubMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
-                    // new SubMenuItem { Text = "&View", Items = { /* commands/items */ } },
+                    new SubMenuItem { Text = "&Edit", Items = { clickMe } },
+                    new SubMenuItem { Text = "&View", Items = { clickMe } },
                 },
                 ApplicationItems =
                 {
@@ -51,7 +51,7 @@ namespace EtoApp
                 AboutItem = aboutCommand
             };
 
-            // create toolbar			
+            // create toolbar
             ToolBar = new ToolBar { Items = { clickMe } };
         }
     }

@@ -19,19 +19,16 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             // 
             this.formsPlot1.BackgroundColor = Colors.Transparent;
             this.formsPlot1.Size = new Size(-1, 201);
-            this.formsPlot1.TabIndex = 0;
             // 
             // formsPlot2
             // 
             this.formsPlot2.BackgroundColor = Colors.Transparent;
             this.formsPlot2.Size = new Size(-1, 201);
-            this.formsPlot2.TabIndex = 1;
             // 
             // cbLinked
             // 
             this.cbLinked.Checked = true;
             this.cbLinked.Size = new Size(119, 19);
-            this.cbLinked.TabIndex = 1;
             this.cbLinked.Text = "link axes together";
             // 
             // LinkedPlots

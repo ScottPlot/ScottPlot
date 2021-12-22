@@ -27,7 +27,6 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             formsPlot3.MouseWheel += FormsPlot_MouseWheel;
 
             // todo - find way to capture scroll-event
-            panel2.MouseWheel += FormsPlot_MouseWheel;
             panel1.MouseWheel += FormsPlot_MouseWheel;
             panel1.Content.MouseWheel += FormsPlot_MouseWheel;
             Content.MouseWheel += FormsPlot_MouseWheel;

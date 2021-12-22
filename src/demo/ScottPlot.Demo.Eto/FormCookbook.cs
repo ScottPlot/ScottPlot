@@ -13,6 +13,9 @@ namespace ScottPlot.Demo.Eto
             InitializeComponent();
             Recipes = Cookbook.RecipeJson.GetRecipes();
             formsPlot1.Configuration.WarnIfRenderNotCalledManually = false;
+
+            this.treeView1.SelectedItemChanged += TreeView1_SelectedItemChanged;
+
             LoadTreeWithDemosNew();
             // todo
             //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
