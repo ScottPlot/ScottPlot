@@ -9,6 +9,7 @@ _In development / not yet on NuGet_
 * MarkerPlot: Improved data area clipping (#1423, #1459) _Thanks @PremekTill, @lucabat, and @AndXaf_
 * MarkerPlot: Improved key in legend (#1459, #1454) _Thanks @PremekTill and @Logicman111_
 * Style: Plottables that implement `IStylable` are now styled when `Plot.Style()` is called. Styles are now improved for `ScaleBar` and `Colorbar` plot types. (#1451, #1447) _Thanks @diluculo_
+* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) Thanks _@Syntaxrabbit_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
