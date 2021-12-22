@@ -72,6 +72,7 @@ namespace ScottPlot.Eto
 
             RightClicked += DefaultRightClickEvent;
 
+            Backend.Configuration.UseRenderQueue = true;
             Backend.StartProcessingEvents();
         }
 
