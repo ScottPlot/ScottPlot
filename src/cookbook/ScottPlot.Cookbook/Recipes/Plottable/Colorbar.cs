@@ -126,4 +126,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
+
+    public class ColorbarScatter : IRecipe
+    {
+        public string Category => "Plottable: Colorbar";
+        public string ID => "colorbar_scatter";
+        public string Title => "Scatter Plot with Colorbar";
+        public string Description =>
+            "This example shows how to add differently colored markers to the plot to " +
+            "simulate a scatter plot with points colored according to a colorbar. " +
+            "Note that the colormap generates the colors, and that a colorbar just displays a colormap";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var cmap = ScottPlot.Drawing.Colormap.Viridis;
+            plt.AddColorbar(cmap);
+
+            Random rand = new(0);
+            for (int i = 0; i < 1000; i++)
+            {
+                double x = ScottPlot.DataGen.RandomNormalValue(rand, mean: 0, stdDev: .5);
+                double y = ScottPlot.DataGen.RandomNormalValue(rand, mean: 0, stdDev: .5);
+                double colorFraction = Math.Sqrt(x * x + y * y);
+                System.Drawing.Color c = ScottPlot.Drawing.Colormap.Viridis.GetColor(colorFraction);
+                plt.AddPoint(x, y, c);
+            }
+        }
+    }
 }
