@@ -1,14 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net472;netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>ScottPlot.Eto</AssemblyName>
     <RootNamespace>ScottPlot</RootNamespace>
-    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
-    <Description>This package provides an Eto user control to interactively display ScottPlot graphs. This package targets both .NET Framework and .NET Core.</Description>
+    <Description>This package provides an Eto user control to interactively display ScottPlot graphs.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>

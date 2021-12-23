@@ -9,7 +9,6 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <BuildPlatform>Windows</BuildPlatform>
     </PropertyGroup>
 
     <ItemGroup>
