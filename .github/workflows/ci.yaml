@@ -17,6 +17,10 @@ jobs:
         uses: actions/checkout@v2
       - name: 🐢 Set up MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
+      - name: ✨ Set up .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
       - name: 🚚 Restore
         working-directory: src
         run: dotnet restore
