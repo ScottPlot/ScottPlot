@@ -12,6 +12,7 @@ _In development / not yet on NuGet_
 * Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) Thanks _@Syntaxrabbit_
 * SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) _Thanks @chenxuuu_
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) _Thanks @obnews_
+* Ticks: Added option to invert tick mark direction (#1489, #1475) _Thanks @wangyexiang_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_

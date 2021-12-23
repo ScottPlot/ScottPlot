@@ -22,6 +22,7 @@ namespace ScottPlot.Renderable
         public bool TickLabelVisible = true;
         public float TickLabelRotation = 0;
         public Drawing.Font TickLabelFont = new Drawing.Font() { Size = 11 };
+        public bool TicksExtendOutward = true;
 
         // major tick/grid styling
         public bool MajorTickVisible = true;
@@ -69,20 +70,32 @@ namespace ScottPlot.Renderable
                 .Select(t => t.Position)
                 .ToArray();
 
-            if (MajorTickVisible)
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
-
-            if (TickLabelVisible)
-                AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
-
-            if (MinorTickVisible)
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, MinorTickLength, MinorTickColor, Edge, PixelOffset);
-
             if (MajorGridVisible)
                 AxisTicksRender.RenderGridLines(dims, gfx, visibleMajorTicks, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
 
             if (MinorGridVisible)
                 AxisTicksRender.RenderGridLines(dims, gfx, visibleMinorTicks, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
+
+            if (MinorTickVisible)
+            {
+                float tickLength = TicksExtendOutward ? MinorTickLength : -MinorTickLength;
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, tickLength, MinorTickColor, Edge, PixelOffset);
+            }
+
+            if (MajorTickVisible)
+            {
+                float tickLength = MajorTickLength;
+
+                if (RulerMode)
+                    tickLength *= 4;
+
+                tickLength = TicksExtendOutward ? tickLength : -tickLength;
+
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset);
+            }
+
+            if (TickLabelVisible)
+                AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
         }
     }
 }

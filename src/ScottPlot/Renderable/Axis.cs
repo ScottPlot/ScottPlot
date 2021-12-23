@@ -292,6 +292,14 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Control whether tick marks point outward or inward
+        /// </summary>
+        public void TickMarkDirection(bool outward)
+        {
+            AxisTicks.TicksExtendOutward = outward;
+        }
+
+        /// <summary>
         /// Set the culture to use for unit-to-string tick mark conversion
         /// </summary>
         public void SetCulture(System.Globalization.CultureInfo culture) => AxisTicks.TickCollection.Culture = culture;
