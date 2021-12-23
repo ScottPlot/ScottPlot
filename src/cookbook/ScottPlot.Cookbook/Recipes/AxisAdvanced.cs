@@ -481,4 +481,23 @@ namespace ScottPlot.Cookbook.Recipes
             plt.YAxis.TickLabelFormat(customTickFormatter);
         }
     }
+
+    class TickMarksInvertDirection : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "ticks_invert_tick_mark_direction";
+        public string Title => "Invert tick mark direction";
+        public string Description =>
+            "Tick marks can be outward (default) or inverted to appear as " +
+            "inward lines relative to the edge of the plot area.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.XAxis.TickMarkDirection(outward: false);
+            plt.YAxis.TickMarkDirection(outward: false);
+        }
+    }
 }
