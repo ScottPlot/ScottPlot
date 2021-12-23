@@ -47,6 +47,7 @@ namespace ScottPlot.Plottable
                 if (!Clockwise) maxBackAngle = -maxBackAngle;
                 return maxBackAngle;
             }
+            private set { BackEndAngle = value; } // Added for the sweepAngle check in DrawArc due to System.Drawing throwing an OutOfMemoryException.
         }
 
         /// <summary>
@@ -133,6 +134,10 @@ namespace ScottPlot.Plottable
             backgroundPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
             backgroundPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
+            // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
+            if (BackEndAngle <= 0.01)
+                BackEndAngle = 0;
+
             gfx.DrawArc(backgroundPen,
                         (center.X - radius),
                         (center.Y - radius),
@@ -148,6 +153,10 @@ namespace ScottPlot.Plottable
             pen.Width = (float)Width;
             pen.StartCap = StartCap;
             pen.EndCap = EndCap;
+
+            // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
+            if (SweepAngle <= 0.01)
+                SweepAngle = 0;
 
             gfx.DrawArc(
                 pen,
