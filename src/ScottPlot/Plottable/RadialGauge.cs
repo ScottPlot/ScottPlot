@@ -135,7 +135,7 @@ namespace ScottPlot.Plottable
             backgroundPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
             // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
-            if (BackEndAngle <= 0.01)
+            if (Math.Abs(BackEndAngle) <= 0.01)
                 BackEndAngle = 0;
 
             gfx.DrawArc(backgroundPen,
@@ -155,7 +155,7 @@ namespace ScottPlot.Plottable
             pen.EndCap = EndCap;
 
             // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
-            if (SweepAngle <= 0.01)
+            if (Math.Abs(SweepAngle) <= 0.01)
                 SweepAngle = 0;
 
             gfx.DrawArc(
