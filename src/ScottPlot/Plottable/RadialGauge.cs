@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         public double SweepAngle;
 
         /// <summary>
-        /// Maximum size of the gauge (degrees)
+        /// Maximum angular size of the gauge (swept degrees)
         /// </summary>
         public double MaximumSizeAngle;
 
@@ -37,9 +37,9 @@ namespace ScottPlot.Plottable
         public bool Clockwise;
 
         /// <summary>
-        /// BackStartAngle plus rotation considering MaximumSizeAngle or CircularBackground
+        /// Used internally to get the angle swept by the gauge background. It's equal to 360 degrees if CircularBackground is set to true. Also, returns a positive value is the gauge is drawn clockwise and a negative one otherwise
         /// </summary>
-        public double BackEndAngle
+        internal double BackAngleSweep
         {
             get
             {
@@ -47,7 +47,7 @@ namespace ScottPlot.Plottable
                 if (!Clockwise) maxBackAngle = -maxBackAngle;
                 return maxBackAngle;
             }
-            private set { BackEndAngle = value; } // Added for the sweepAngle check in DrawArc due to System.Drawing throwing an OutOfMemoryException.
+            private set { BackAngleSweep = value; } // Added for the sweepAngle check in DrawArc due to System.Drawing throwing an OutOfMemoryException.
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace ScottPlot.Plottable
             backgroundPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
             // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
-            if (Math.Abs(BackEndAngle) <= 0.01)
-                BackEndAngle = 0;
+            if (Math.Abs(BackAngleSweep) <= 0.01)
+                BackAngleSweep = 0;
 
             gfx.DrawArc(backgroundPen,
                         (center.X - radius),
@@ -144,7 +144,7 @@ namespace ScottPlot.Plottable
                         (radius * 2),
                         (radius * 2),
                         (float)BackStartAngle,
-                        (float)BackEndAngle);
+                        (float)BackAngleSweep);
         }
 
         public void RenderGaugeForeground(Graphics gfx, PointF center, float radius)
