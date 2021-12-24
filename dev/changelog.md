@@ -14,6 +14,7 @@ _In development / not yet on NuGet_
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) _Thanks @obnews_
 * Ticks: Added option to invert tick mark direction (#1489, #1475) _Thanks @wangyexiang_
 * FormsPlot: Improved support for WinForms 6 (#1430, #1483) _Thanks @SuperDaveOsbourne_
+* Axes: Fixed bug where `AxisAuto()` failed to adjust all axes in multi-axis plots (#1497) _Thanks @Niravk1997_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_

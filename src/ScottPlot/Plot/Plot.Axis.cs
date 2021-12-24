@@ -457,7 +457,7 @@ namespace ScottPlot
         /// <param name="verticalMargin">Extra space (fraction) to add above and below the limits of the data</param>
         public void AxisAuto(double? horizontalMargin = null, double? verticalMargin = null)
         {
-            AxisAuto(horizontalMargin, verticalMargin, xAxisIndex: 0, yAxisIndex: 0);
+            settings.AxisAutoAll(horizontalMargin ?? .1, verticalMargin ?? .1);
         }
 
         /// <summary>
