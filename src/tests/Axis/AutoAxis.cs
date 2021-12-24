@@ -91,5 +91,52 @@ namespace ScottPlotTests.Axis
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_AxisAuto_AdjustsAllAxes()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            var sig1 = plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            sig1.XAxisIndex = 0;
+            sig1.YAxisIndex = 0;
+
+            var sig2 = plt.AddSignal(ScottPlot.DataGen.Cos(51));
+            sig2.XAxisIndex = 1;
+            sig2.YAxisIndex = 1;
+
+            // on startup all axes are reset with AxisAuto()
+            plt.Render();
+            plt.AxisAuto();
+            var originalLimitsPrimary = plt.GetAxisLimits(0);
+            var originalLimitsSecondary = plt.GetAxisLimits(1);
+
+            // zoom out on all axes
+            plt.AxisZoom(.1, .1, xAxisIndex: 0, yAxisIndex: 0);
+            plt.AxisZoom(.1, .1, xAxisIndex: 1, yAxisIndex: 1);
+
+            var zoomedOutLimitsPrimary = plt.GetAxisLimits(0);
+            Assert.Greater(zoomedOutLimitsPrimary.XSpan, originalLimitsPrimary.XSpan);
+            Assert.Greater(zoomedOutLimitsPrimary.YSpan, originalLimitsPrimary.YSpan);
+
+            var zoomedOutLimitsSecondary = plt.GetAxisLimits(1);
+            Assert.Greater(zoomedOutLimitsSecondary.XSpan, originalLimitsSecondary.XSpan);
+            Assert.Greater(zoomedOutLimitsSecondary.YSpan, originalLimitsSecondary.YSpan);
+
+            // call AxisAuto() which is now expected to act on all axes
+            plt.AxisAuto();
+
+            var resetLimitsPrimary = plt.GetAxisLimits(0);
+            var resetLimitsSecondary = plt.GetAxisLimits(1);
+            Assert.AreEqual(resetLimitsPrimary.XSpan, originalLimitsPrimary.XSpan);
+            Assert.AreEqual(resetLimitsPrimary.YSpan, originalLimitsPrimary.YSpan);
+            Assert.AreEqual(resetLimitsSecondary.XSpan, originalLimitsSecondary.XSpan);
+            Assert.AreEqual(resetLimitsSecondary.YSpan, originalLimitsSecondary.YSpan);
+
+            TestTools.SaveFig(plt);
+
+            //var limits = plt.GetAxisLimits();
+            //Console.WriteLine(limits);
+        }
     }
 }
