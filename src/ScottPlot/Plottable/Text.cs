@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a text label at an X/Y position in coordinate space
     /// </summary>
-    public class Text : IPlottable
+    public class Text : IPlottable, IHasPixelOffset
     {
         // data
         public double X;
@@ -29,6 +29,8 @@ namespace ScottPlot.Plottable
         public bool FontBold { set => Font.Bold = value; }
         public Alignment Alignment { set => Font.Alignment = value; }
         public float Rotation { set => Font.Rotation = value; }
+        public float PixelOffsetX { get; set; } = 0;
+        public float PixelOffsetY { get; set; } = 0;
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
@@ -56,8 +58,8 @@ namespace ScottPlot.Plottable
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var frameBrush = new SolidBrush(BackgroundColor))
             {
-                float pixelX = dims.GetPixelX(X);
-                float pixelY = dims.GetPixelY(Y);
+                float pixelX = dims.GetPixelX(X) + PixelOffsetX;
+                float pixelY = dims.GetPixelY(Y) - PixelOffsetY;
                 SizeF stringSize = GDI.MeasureString(gfx, Label, font);
 
                 gfx.TranslateTransform(pixelX, pixelY);
