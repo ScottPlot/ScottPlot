@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// An arrow with X/Y coordinates for the base and the tip
     /// </summary>
-    public class ArrowCoordinated : IPlottable
+    public class ArrowCoordinated : IPlottable, IHasPixelOffset
     {
         /// <summary>
         /// Location of the arrow base in coordinate space
@@ -70,6 +70,8 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+        public float PixelOffsetX { get; set; } = 0;
+        public float PixelOffsetY { get; set; } = 0;
 
         public ArrowCoordinated(Coordinate arrowBase, Coordinate arrowTip)
         {
@@ -121,6 +123,9 @@ namespace ScottPlot.Plottable
 
             Pixel basePixel = dims.GetPixel(Base);
             Pixel tipPixel = dims.GetPixel(Tip);
+
+            basePixel.Translate(PixelOffsetX, -PixelOffsetY);
+            tipPixel.Translate(PixelOffsetX, -PixelOffsetY);
 
             float lengthPixels = basePixel.Distance(tipPixel);
             if (lengthPixels < MinimumLengthPixels)
