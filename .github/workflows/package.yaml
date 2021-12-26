@@ -17,6 +17,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "5.0.x"
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
       - name: 🚚 Restore
         working-directory: src/tests
         run: dotnet restore
@@ -44,13 +48,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "6.0.x"
-          include-prerelease: true
       - name: 📦 Pack
         run: |
           dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet pack src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
@@ -65,9 +69,12 @@ jobs:
             src/controls/ScottPlot.WPF/bin/Release/*.snupkg
             src/controls/ScottPlot.Avalonia/bin/Release/*.nupkg
             src/controls/ScottPlot.Avalonia/bin/Release/*.snupkg
+            src/controls/ScottPlot.Eto/bin/Release/*.nupkg
+            src/controls/ScottPlot.Eto/bin/Release/*.snupkg
       - name: 🚀 Publish
         run: |
           nuget push "src\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
           nuget push "src\controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
           nuget push "src\controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
           nuget push "src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\controls\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
