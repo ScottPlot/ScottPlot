@@ -13,6 +13,7 @@ _In development / not yet on NuGet_
 * SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) _Thanks @chenxuuu_
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) _Thanks @obnews_
 * Ticks: Added option to invert tick mark direction (#1489, #1475) _Thanks @wangyexiang_
+* Radial Gauge Plot: Fixed bug affecting rendering of extremely small gauge angles (#1492, #1474) _Thanks @arthurits_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
