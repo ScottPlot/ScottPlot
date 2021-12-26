@@ -220,5 +220,32 @@ namespace ScottPlotTests.PlottableRenderTests
 
             Assert.That(after.IsDarkerThan(before));
         }
+
+        [Test]
+        public void Test_Text_PixelOffset()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            plt.AddPoint(30, .5, System.Drawing.Color.Black, 10);
+
+            var txt = plt.AddText("TEST", 30, .5);
+            txt.FontSize = 20;
+            txt.BackgroundColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Black);
+            txt.BackgroundFill = true;
+
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+            txt.PixelOffsetX = 10;
+            txt.PixelOffsetY = -10;
+
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+
+            // measure what changed
+            //TestTools.SaveFig(bmp1, "1");
+            //TestTools.SaveFig(bmp2, "2");
+
+            var before = new MeanPixel(bmp1);
+            var after = new MeanPixel(bmp2);
+            Assert.That(after.IsDifferentThan(before));
+        }
     }
 }

@@ -37,5 +37,14 @@ namespace ScottPlot
             double dY = Math.Abs(other.Y - Y);
             return (float)Math.Sqrt(dX * dX + dY * dY);
         }
+
+        /// <summary>
+        /// Shift the pixel location by the given deltas
+        /// </summary>
+        public void Translate(float deltaX, float deltaY)
+        {
+            X += deltaX;
+            Y += deltaY;
+        }
     }
 }
