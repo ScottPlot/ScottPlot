@@ -12,11 +12,39 @@ namespace ScottPlot.Plottable
     public class Image : IPlottable
     {
         public bool IsVisible { get; set; } = true;
+
+        /// <summary>
+        /// Position of the primary corner (based on Alginment)
+        /// </summary>
         public double X;
+
+        /// <summary>
+        /// Position of the primary corner (based on Alginment)
+        /// </summary>
         public double Y;
+
+        /// <summary>
+        /// Multiply the size of the image (in pixel units) by this scale factor.
+        /// The primary corner (based on Alginment) will remain anchored.
+        /// </summary>
+        public float Scale = 1.0f;
+
+        /// <summary>
+        /// Rotate the image clockwise around its primary corner (defined by Alignment) by this number of degrees
+        /// </summary>
         public double Rotation;
-        public Bitmap Bitmap;
+
+        /// <summary>
+        /// Image to display
+        /// </summary>
+        public System.Drawing.Image Bitmap;
+
+        /// <summary>
+        /// Indicates which corner of the Bitmap is described by X and Y.
+        /// This corner will be the axis of Rotation, and the center of Scale.
+        /// </summary>
         public Alignment Alignment;
+
         public Color BorderColor;
         public float BorderSize;
         public string Label;
@@ -73,7 +101,8 @@ namespace ScottPlot.Plottable
                 if (BorderSize > 0)
                     gfx.DrawRectangle(framePen, new Rectangle(0, 0, Bitmap.Width - 1, Bitmap.Height - 1));
 
-                gfx.DrawImage(Bitmap, new PointF(0, 0));
+                RectangleF rect = new(0, 0, Bitmap.Width * Scale, Bitmap.Height * Scale);
+                gfx.DrawImage(Bitmap, rect);
                 gfx.ResetTransform();
             }
         }

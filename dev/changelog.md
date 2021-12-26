@@ -18,6 +18,7 @@ _In development / not yet on NuGet_
 * Axes: Fixed bug where `AxisAuto()` failed to adjust all axes in multi-axis plots (#1497) _Thanks @Niravk1997_
 * Radial Gauge Plot: Fixed bug affecting rendering of extremely small gauge angles (#1492, #1474) _Thanks @arthurits_
 * Text plot and arrow plot: Now have `PixelOffsetX` and `PixelOffsetY` to facilitate small adjustments at render time (#1392)
+* Image: New `Scale` property allows customization of image size (#1406)
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
