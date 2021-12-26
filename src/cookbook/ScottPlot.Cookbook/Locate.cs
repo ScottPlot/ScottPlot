@@ -6,7 +6,52 @@ namespace ScottPlot.Cookbook
 {
     public static class Locate
     {
-        private static readonly IRecipe[] Recipes = AppDomain.CurrentDomain.GetAssemblies()
+        private static readonly IRecipe[] Recipes = TryLocateRecipes();
+
+        /// <summary>
+        /// Carefully locate recipes using try/catch to improve support for platforms like Eto
+        /// </summary>
+        public static IRecipe[] TryLocateRecipes()
+        {
+            List<IRecipe> recipes = new();
+
+            foreach (var assemblies in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    foreach (Type assemblyType in assemblies.GetTypes())
+                    {
+                        if (assemblyType.IsAbstract || assemblyType.IsInterface)
+                            continue;
+
+                        if (typeof(IRecipe).IsAssignableFrom(assemblyType))
+                        {
+                            IRecipe instantiatedRecipe = (IRecipe)Activator.CreateInstance(assemblyType);
+                            recipes.Add(instantiatedRecipe);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is System.Reflection.ReflectionTypeLoadException)
+                    {
+                        continue; // Eto seem to bundle something which may not load due to missing dependencies
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return recipes.ToArray();
+        }
+
+        /// <summary>
+        /// Locate recipes using LINQ (may crash if reflection fails on platforms like Eto)
+        /// </summary>
+        [Obsolete("use TryLocateRecipes() for improved safety during reflection")]
+        public static IRecipe[] LocateRecipes() => AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(x => x.IsAbstract == false)
             .Where(x => x.IsInterface == false)

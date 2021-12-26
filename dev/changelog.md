@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.28
 _In development / not yet on NuGet_
+* Eto Control: New ScottPlot control for the Eto GUI framework (#1425, #1438) _Thanks @rafntor_
 * Radar Plot: `OutlineWidth` now allows customization of the line around radar plots (#1426, #1277) _Thanks @Rayffer_
 * Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
 * Palette: Added Amber and Nero palettes (#1411, #1412) _Thanks @gauravagrwal_
@@ -13,6 +14,8 @@ _In development / not yet on NuGet_
 * SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) _Thanks @chenxuuu_
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) _Thanks @obnews_
 * Ticks: Added option to invert tick mark direction (#1489, #1475) _Thanks @wangyexiang_
+* FormsPlot: Improved support for WinForms 6 (#1430, #1483) _Thanks @SuperDaveOsbourne_
+* Axes: Fixed bug where `AxisAuto()` failed to adjust all axes in multi-axis plots (#1497) _Thanks @Niravk1997_
 * Radial Gauge Plot: Fixed bug affecting rendering of extremely small gauge angles (#1492, #1474) _Thanks @arthurits_
 
 ## ScottPlot 4.1.27
