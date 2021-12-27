@@ -308,7 +308,7 @@ namespace ScottPlot.Plottable
                 };
 
                 float radiusPx = position * radiusPixels;
-                gauge.Render(gfx, centerPixel, radiusPx);
+                gauge.Render(gfx, dims, centerPixel, radiusPx);
             }
         }
     }
