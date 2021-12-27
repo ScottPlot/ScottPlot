@@ -103,7 +103,7 @@ namespace ScottPlot.Plottable
 
                 RectangleF rect = new(0, 0, Bitmap.Width * Scale, Bitmap.Height * Scale);
                 gfx.DrawImage(Bitmap, rect);
-                gfx.ResetTransform();
+                GDI.ResetTransformPreservingScale(gfx);
             }
         }
     }

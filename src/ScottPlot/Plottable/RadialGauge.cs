@@ -208,7 +208,7 @@ namespace ScottPlot.Plottable
                 gfx.RotateTransform((float)rotation);
                 gfx.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append);
                 gfx.DrawString(Label[i].ToString(), font, brush, 0, 0, sf);
-                gfx.ResetTransform();
+                GDI.ResetTransformPreservingScale(gfx);
 
                 theta -= letterRectangles[i].Width / 2 / radius * sign;
             }

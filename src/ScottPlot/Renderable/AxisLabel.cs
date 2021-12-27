@@ -118,7 +118,7 @@ namespace ScottPlot.Renderable
 
             gfx.TranslateTransform(x, y);
             gfx.DrawImage(ImageLabel, xOffset, yOffset);
-            gfx.ResetTransform();
+            GDI.ResetTransformPreservingScale(gfx);
         }
 
         private void RenderTextLabel(Graphics gfx, float x, float y)
@@ -150,7 +150,7 @@ namespace ScottPlot.Renderable
             gfx.TranslateTransform(x, y);
             gfx.RotateTransform(rotation);
             gfx.DrawString(Label, font, brush, 0, padding, sf);
-            gfx.ResetTransform();
+            GDI.ResetTransformPreservingScale(gfx);
         }
 
         /// <summary>
