@@ -207,6 +207,13 @@ namespace ScottPlot.Drawing
             }
         }
 
+        public static void ResetTransformPreservingScale(System.Drawing.Graphics gfx)
+        {
+            float originalScale = gfx.Transform.Elements[0];
+            gfx.ResetTransform();
+            gfx.ScaleTransform(originalScale, originalScale);
+        }
+
         public static System.Drawing.Font Font(ScottPlot.Drawing.Font font) =>
             Font(font.Name, font.Size, font.Bold);
 
