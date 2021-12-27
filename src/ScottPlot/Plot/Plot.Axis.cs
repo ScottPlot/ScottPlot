@@ -332,6 +332,45 @@ namespace ScottPlot
         #region axis limits: get and set
 
         /// <summary>
+        /// Return the limits of the data contained by this plot (regardless of the axis limits).
+        /// WARNING: This method iterates all data points in the plot and may be slow for large datasets.
+        /// </summary>
+        public AxisLimits GetDataLimits(int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            double xMin = double.PositiveInfinity;
+            double xMax = double.NegativeInfinity;
+            double yMin = double.PositiveInfinity;
+            double yMax = double.NegativeInfinity;
+
+            foreach (var plottable in GetPlottables())
+            {
+                if (plottable.IsVisible == false)
+                    continue;
+
+                bool xAxisMatch = plottable.XAxisIndex == xAxisIndex;
+                bool yAxisMatch = plottable.YAxisIndex == yAxisIndex;
+                if (!(xAxisMatch || yAxisMatch))
+                    continue;
+
+                AxisLimits limits = plottable.GetAxisLimits();
+
+                if (xAxisMatch)
+                {
+                    xMin = Math.Min(xMin, limits.XMin);
+                    xMax = Math.Max(xMax, limits.XMax);
+                }
+
+                if (yAxisMatch)
+                {
+                    yMin = Math.Min(yMin, limits.YMin);
+                    yMax = Math.Max(yMax, limits.YMax);
+                }
+            }
+
+            return new AxisLimits(xMin, xMax, yMin, yMax);
+        }
+
+        /// <summary>
         /// Returns the current limits for a given pair of axes.
         /// </summary>
         /// <param name="xAxisIndex">which axis index to reference</param>
