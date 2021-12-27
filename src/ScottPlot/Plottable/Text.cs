@@ -74,7 +74,7 @@ namespace ScottPlot.Plottable
                 StringFormat sf = GDI.StringFormat(Font.Alignment);
                 gfx.DrawString(Label, font, fontBrush, new PointF(0, 0), sf);
 
-                gfx.ResetTransform();
+                GDI.ResetTransformPreservingScale(gfx, dims);
             }
         }
     }

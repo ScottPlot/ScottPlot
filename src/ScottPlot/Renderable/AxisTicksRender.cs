@@ -100,7 +100,7 @@ namespace ScottPlot.Renderable
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Near : StringAlignment.Center;
                         gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        GDI.ResetTransformPreservingScale(gfx, dims);
                     }
                     break;
 
@@ -116,7 +116,7 @@ namespace ScottPlot.Renderable
                         if (rulerMode) sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = rotation == 0 ? StringAlignment.Far : StringAlignment.Center;
                         gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        GDI.ResetTransformPreservingScale(gfx, dims);
                     }
                     break;
 
@@ -136,7 +136,7 @@ namespace ScottPlot.Renderable
                             sf.LineAlignment = StringAlignment.Far;
                         }
                         gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        GDI.ResetTransformPreservingScale(gfx, dims);
                     }
                     break;
 
@@ -156,7 +156,7 @@ namespace ScottPlot.Renderable
                             sf.LineAlignment = StringAlignment.Near;
                         }
                         gfx.DrawString(visibleMajorTicks[i].Label, font, brush, 0, 0, sf);
-                        gfx.ResetTransform();
+                        GDI.ResetTransformPreservingScale(gfx, dims);
                     }
                     break;
 

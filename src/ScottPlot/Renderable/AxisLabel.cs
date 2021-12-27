@@ -89,12 +89,12 @@ namespace ScottPlot.Renderable
             (float x, float y) = GetAxisCenter(dims);
 
             if (ImageLabel is null)
-                RenderTextLabel(gfx, x, y);
+                RenderTextLabel(gfx, dims, x, y);
             else
-                RenderImageLabel(gfx, x, y);
+                RenderImageLabel(gfx, dims, x, y);
         }
 
-        private void RenderImageLabel(Graphics gfx, float x, float y)
+        private void RenderImageLabel(Graphics gfx, PlotDimensions dims, float x, float y)
         {
             // TODO: use ImagePadding instead of fractional padding
 
@@ -118,10 +118,10 @@ namespace ScottPlot.Renderable
 
             gfx.TranslateTransform(x, y);
             gfx.DrawImage(ImageLabel, xOffset, yOffset);
-            gfx.ResetTransform();
+            GDI.ResetTransformPreservingScale(gfx, dims);
         }
 
-        private void RenderTextLabel(Graphics gfx, float x, float y)
+        private void RenderTextLabel(Graphics gfx, PlotDimensions dims, float x, float y)
         {
             // TODO: should padding be inverted if "bottom or right"?
             float padding = (Edge == Edge.Bottom) ? -PixelSizePadding : PixelSizePadding;
@@ -150,7 +150,7 @@ namespace ScottPlot.Renderable
             gfx.TranslateTransform(x, y);
             gfx.RotateTransform(rotation);
             gfx.DrawString(Label, font, brush, 0, padding, sf);
-            gfx.ResetTransform();
+            GDI.ResetTransformPreservingScale(gfx, dims);
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -205,6 +206,12 @@ namespace ScottPlot.Drawing
                     return null;
 
             }
+        }
+
+        public static void ResetTransformPreservingScale(System.Drawing.Graphics gfx, PlotDimensions dims)
+        {
+            gfx.ResetTransform();
+            gfx.ScaleTransform((float)dims.ScaleFactor, (float)dims.ScaleFactor);
         }
 
         public static System.Drawing.Font Font(ScottPlot.Drawing.Font font) =>

@@ -115,13 +115,14 @@ namespace ScottPlot.Plottable
         /// Render the gauge onto an existing Bitmap
         /// </summary>
         /// <param name="gfx">active graphics object</param>
+        /// <param name="dims">plot dimensions (used to determine pixel scaling)</param>
         /// <param name="centerPixel">pixel location on the bitmap to center the gauge on</param>
         /// <param name="radius">distance from the center (pixel units) to render the gauge</param>
-        public void Render(Graphics gfx, PointF centerPixel, float radius)
+        public void Render(Graphics gfx, PlotDimensions dims, PointF centerPixel, float radius)
         {
             RenderBackground(gfx, centerPixel, radius);
             RenderGaugeForeground(gfx, centerPixel, radius);
-            RenderGaugeLabels(gfx, centerPixel, radius);
+            RenderGaugeLabels(gfx, dims, centerPixel, radius);
         }
 
         private void RenderBackground(Graphics gfx, PointF center, float radius)
@@ -170,7 +171,7 @@ namespace ScottPlot.Plottable
 
         private const double DEG_PER_RAD = 180.0 / Math.PI;
 
-        private void RenderGaugeLabels(Graphics gfx, PointF center, float radius)
+        private void RenderGaugeLabels(Graphics gfx, PlotDimensions dims, PointF center, float radius)
         {
             if (!ShowLabels)
                 return;
@@ -208,7 +209,7 @@ namespace ScottPlot.Plottable
                 gfx.RotateTransform((float)rotation);
                 gfx.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append);
                 gfx.DrawString(Label[i].ToString(), font, brush, 0, 0, sf);
-                gfx.ResetTransform();
+                GDI.ResetTransformPreservingScale(gfx, dims);
 
                 theta -= letterRectangles[i].Width / 2 / radius * sign;
             }
