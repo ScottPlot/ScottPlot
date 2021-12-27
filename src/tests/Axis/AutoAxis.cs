@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Axis
@@ -137,6 +138,43 @@ namespace ScottPlotTests.Axis
 
             //var limits = plt.GetAxisLimits();
             //Console.WriteLine(limits);
+        }
+
+        [Test]
+        public void Test_GetDataLimits()
+        {
+            var plt = new ScottPlot.Plot();
+
+            Random rand = new(0);
+            double[] xs = ScottPlot.DataGen.Random(rand, 100);
+            double[] ys = ScottPlot.DataGen.Random(rand, 100);
+            plt.AddScatter(xs, ys);
+            plt.Render();
+
+            // default axis limits contain padding and should be larger than data
+            var axisLimitsDefault = plt.GetAxisLimits();
+            Console.WriteLine(axisLimitsDefault);
+            Assert.Less(axisLimitsDefault.XMin, xs.Min());
+            Assert.Greater(axisLimitsDefault.XMax, xs.Max());
+            Assert.Less(axisLimitsDefault.YMin, ys.Min());
+            Assert.Greater(axisLimitsDefault.YMax, ys.Max());
+
+            // axis limits after tight margins should make axis limts equal data limits
+            plt.Margins(0, 0);
+            var axisLimitsTight = plt.GetAxisLimits();
+            Console.WriteLine(axisLimitsTight);
+            Assert.AreEqual(axisLimitsTight.XMin, xs.Min(), 1e-8);
+            Assert.AreEqual(axisLimitsTight.XMax, xs.Max(), 1e-8);
+            Assert.AreEqual(axisLimitsTight.YMin, ys.Min(), 1e-8);
+            Assert.AreEqual(axisLimitsTight.YMax, ys.Max(), 1e-8);
+
+            // data limits should be the same numbers without modifying the axes
+            var dataLimits = plt.GetDataLimits();
+            Console.WriteLine(dataLimits);
+            Assert.AreEqual(dataLimits.XMin, xs.Min());
+            Assert.AreEqual(dataLimits.XMax, xs.Max());
+            Assert.AreEqual(dataLimits.YMin, ys.Min());
+            Assert.AreEqual(dataLimits.YMax, ys.Max());
         }
     }
 }
