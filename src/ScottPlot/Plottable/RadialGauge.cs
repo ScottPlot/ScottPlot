@@ -115,6 +115,7 @@ namespace ScottPlot.Plottable
         /// Render the gauge onto an existing Bitmap
         /// </summary>
         /// <param name="gfx">active graphics object</param>
+        /// <param name="dims">plot dimensions (used to determine pixel scaling)</param>
         /// <param name="centerPixel">pixel location on the bitmap to center the gauge on</param>
         /// <param name="radius">distance from the center (pixel units) to render the gauge</param>
         public void Render(Graphics gfx, PlotDimensions dims, PointF centerPixel, float radius)
