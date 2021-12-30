@@ -19,6 +19,23 @@ Use NuGet to install [`ScottPlot.Eto`](https://www.nuget.org/packages/ScottPlot.
 
 ![](../../../dev/graphics/eto-quickstart-wpf.png)
 ![](../../../dev/graphics/eto-quickstart-gtk.png)
+![](../../../dev/graphics/eto-quickstart-osx.png)
+
+## Notes for Linux and macOS builds
+ScottPlot uses `System.Drawing.Common` which is the graphics library that ships as part of .NET Core.
+On macOS and Linux, it uses [libgdiplus](https://github.com/mono/libgdiplus) as its back-end and this must be installed on the host machine.
+
+You can acquire libgdiplus:
+- For macOS, using the [mono-libgdiplus](https://formulae.brew.sh/formula/mono-libgdiplus)
+Homebrew package
+- For Linux, via the [libgdiplus](https://pkgs.org/download/libgdiplus) package.
+ 
+It is also necessary that your project [explicitly include](https://github.com/ScottPlot/ScottPlot/issues/1220#issuecomment-904233580) a reference to [System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common) :
+```xml
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+  </ItemGroup>
+```
 
 ## ScottPlot Cookbook
 
