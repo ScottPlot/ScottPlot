@@ -16,7 +16,7 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
       - name: 🐢 Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.1.1
+        uses: microsoft/setup-msbuild@v1.1
         with:
           vs-prerelease: true
       - name: ✨ Set up .NET 6.0
