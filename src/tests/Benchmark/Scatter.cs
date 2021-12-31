@@ -2,6 +2,7 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Benchmark
@@ -9,40 +10,32 @@ namespace ScottPlotTests.Benchmark
     class Scatter
     {
         [Test]
-        public void Test_scatter_10kPoints()
+        public void Test_scatter_benchmark()
         {
-            double[] pointCounts = { 10, 100, 1000, 10000 };
+            int[] pointCounts = { 1000, 100, 10 };
             const int REPS = 10;
-            double[] speeds = new double[pointCounts.Length];
 
+            Random rand = new(0);
             for (int i = 0; i < pointCounts.Length; i++)
             {
-                int pointCount = (int)pointCounts[i];
+                int pointCount = pointCounts[i];
                 var plt = new ScottPlot.Plot();
-                Random rand = new Random(0);
                 double[] xs = DataGen.Random(rand, pointCount);
                 double[] ys = DataGen.RandomWalk(rand, pointCount);
                 plt.AddScatter(xs, ys);
                 plt.Render(lowQuality: true);
 
-                List<double> times = new List<double>();
                 for (int j = 0; j < REPS; j++)
                 {
                     plt.Render(lowQuality: true);
-                    times.Add(plt.GetSettings(false).BenchmarkMessage.MSec);
                 }
 
-                var stats = new ScottPlot.Statistics.Population(times.ToArray());
-                speeds[i] = stats.mean;
-                Console.WriteLine($"Rendered {pointCount} points in {stats.mean} ms");
-            }
+                double[] renderTimes = plt.BenchmarkTimes();
+                Assert.AreEqual(REPS + 1, renderTimes.Length);
 
-            var plt2 = new ScottPlot.Plot(400, 300);
-            plt2.Title("Scatter Plot Benchmark");
-            plt2.YLabel("Time (ms)");
-            plt2.XLabel("Number of Points");
-            plt2.AddScatter(pointCounts, speeds);
-            TestTools.SaveFig(plt2);
+                double meanTime = renderTimes.Sum() / renderTimes.Length;
+                Console.WriteLine($"Rendered {pointCount} points in {meanTime:N2} ms (n={renderTimes.Length})");
+            }
         }
     }
 }

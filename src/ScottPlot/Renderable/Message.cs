@@ -2,6 +2,7 @@
 using ScottPlot.Drawing;
 using System.Diagnostics;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ScottPlot.Renderable
 {
@@ -12,12 +13,26 @@ namespace ScottPlot.Renderable
         public double Hz { get { return (MSec > 0) ? 1000.0 / MSec : 0; } }
         public string Message { get => $"Rendered in {MSec:00.00} ms ({Hz:0000.00} Hz)"; }
 
+        private int MaxRenderTimes = 100;
+        private List<double> RenderTimes = new();
+
         public void Restart() => Sw.Restart();
         public void Stop()
         {
             Sw.Stop();
+
+            RenderTimes.Add(Sw.Elapsed.TotalMilliseconds);
+            while (RenderTimes.Count > MaxRenderTimes)
+                RenderTimes.RemoveAt(0);
+
             Text = Message;
         }
+
+        /// <summary>
+        /// Returns an array of render times (in milliseconds) of the last several renders.
+        /// The most recent renders are at the end of the array.
+        /// </summary>
+        public double[] GetRenderTimes() => RenderTimes.ToArray();
 
         public BenchmarkMessage()
         {
