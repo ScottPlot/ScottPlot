@@ -397,9 +397,7 @@ namespace ScottPlot.Control
             int padding = 10;
             int shadowOffset = 7;
 
-            using var gfx = System.Drawing.Graphics.FromImage(bmp);
-            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-
+            using System.Drawing.Graphics gfx = Drawing.GDI.Graphics(bmp);
             using System.Drawing.StringFormat sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
             using System.Drawing.Font font = new(System.Drawing.FontFamily.GenericSansSerif, 16, System.Drawing.FontStyle.Bold);
             System.Drawing.SizeF messageSize = gfx.MeasureString(message, font);
