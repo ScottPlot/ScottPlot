@@ -65,14 +65,16 @@ namespace ScottPlot.Plottable
                 gfx.TranslateTransform(pixelX, pixelY);
                 gfx.RotateTransform(Font.Rotation);
 
+                (float dX, float dY) = GDI.TranslateString(Label, Font);
+                gfx.TranslateTransform(-dX, -dY);
+
                 if (BackgroundFill)
                 {
-                    RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
+                    RectangleF stringRect = new(0, 0, stringSize.Width, stringSize.Height);
                     gfx.FillRectangle(frameBrush, stringRect);
                 }
 
-                StringFormat sf = GDI.StringFormat(Font.Alignment);
-                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0), sf);
+                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
 
                 GDI.ResetTransformPreservingScale(gfx, dims);
             }

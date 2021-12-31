@@ -27,12 +27,13 @@ namespace ScottPlotTests.PlotTypes
                 txt.Font.Color = System.Drawing.Color.Black; ;
                 txt.BackgroundColor = System.Drawing.Color.LightSteelBlue;
                 txt.BackgroundFill = true;
+                txt.Rotation = 5;
 
                 plt.AddPoint(x, y, System.Drawing.Color.Black);
             }
 
             plt.Frameless();
-            plt.Margins(.5, .2);
+            plt.Margins(.5, .5);
             TestTools.SaveFig(plt);
         }
     }
