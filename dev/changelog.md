@@ -26,6 +26,7 @@ _In development / not yet on NuGet_
 * Plot: New `RemoveAxis()` method allows users to remove axes placed by `AddAxis()` (#1458) _Thanks @gobikulandaisamy_
 * Benchmark: `Plot.BenchmarkTimes()` now returns an array of recent frame render times (#1493, #1491) _Thanks @anose001_
 * Ticks: Disabling log-scaled minor ticks now disables tick label integer rounding (#1419) _Thanks @at2software_
+* Rendering: Improve appearance of text by defaulting to ClearType font rendering (#1496, #823) _Thanks @Elgot_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
