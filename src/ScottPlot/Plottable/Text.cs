@@ -29,6 +29,8 @@ namespace ScottPlot.Plottable
         public bool FontBold { set => Font.Bold = value; }
         public Alignment Alignment { set => Font.Alignment = value; }
         public float Rotation { set => Font.Rotation = value; }
+        public float BorderSize { get; set; } = 0;
+        public Color BorderColor { get; set; } = Color.Black;
         public float PixelOffsetX { get; set; } = 0;
         public float PixelOffsetY { get; set; } = 0;
 
@@ -57,6 +59,7 @@ namespace ScottPlot.Plottable
             using (var font = GDI.Font(Font))
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var frameBrush = new SolidBrush(BackgroundColor))
+            using (var outlinePen = new Pen(BorderColor, BorderSize))
             {
                 float pixelX = dims.GetPixelX(X) + PixelOffsetX;
                 float pixelY = dims.GetPixelY(Y) - PixelOffsetY;
@@ -72,6 +75,8 @@ namespace ScottPlot.Plottable
                 {
                     RectangleF stringRect = new(0, 0, stringSize.Width, stringSize.Height);
                     gfx.FillRectangle(frameBrush, stringRect);
+                    if (BorderSize > 0)
+                        gfx.DrawRectangle(outlinePen, stringRect.X, stringRect.Y, stringRect.Width, stringRect.Height);
                 }
 
                 gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
