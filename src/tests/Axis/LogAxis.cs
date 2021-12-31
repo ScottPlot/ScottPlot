@@ -94,5 +94,27 @@ namespace ScottPlotTests.Axis
             foreach (ScottPlot.Ticks.Tick tick in plt.YAxis.GetTicks())
                 Console.WriteLine(tick);
         }
+
+        [Test]
+        public void Test_Log_Unset()
+        {
+            var plt = new ScottPlot.Plot();
+            var bmp1 = plt.Render();
+            double[] ticks1 = plt.YAxis.GetTicks().Select(x => x.Position).ToArray();
+
+            plt.YAxis.MinorLogScale(true);
+            var bmp2 = plt.Render();
+            double[] ticks2 = plt.YAxis.GetTicks().Select(x => x.Position).ToArray();
+
+            plt.YAxis.MinorLogScale(false);
+            var bmp3 = plt.Render();
+            double[] ticks3 = plt.YAxis.GetTicks().Select(x => x.Position).ToArray();
+
+            Assert.AreNotEqual(ticks1.Length, ticks2.Length);
+            Assert.AreEqual(ticks1.Length, ticks3.Length);
+
+            for (int i = 0; i < ticks1.Length; i++)
+                Assert.AreEqual(ticks1[i], ticks3[i]);
+        }
     }
 }
