@@ -277,6 +277,14 @@ namespace ScottPlot
             return axis;
         }
 
+        /// <summary>
+        /// Remove the a specific axis from the plot
+        /// </summary>
+        public void RemoveAxis(Renderable.Axis axis)
+        {
+            settings.Axes.Remove(axis);
+        }
+
         #endregion
 
         #region coordinate/pixel conversions
