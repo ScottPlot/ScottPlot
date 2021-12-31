@@ -21,6 +21,8 @@ _In development / not yet on NuGet_
 * Image: New `Scale` property allows customization of image size (#1406)
 * Axis: `Plot.GetDataLimits()` returns the boundaries of all data from all visible plottables regardless of the current axis limits (#1415) _Thanks @EFeru_
 * Rendering: Improved support for scaled plots when passing scale as a `Plot.Render()` argument (#1416) _Thanks @Andreas_
+* Text: Improved support for rotated text and background fills using custom alignments (#1417, #1516) _Thanks @riquich and @AndXaf_
+* Text: Added options for custom borders (#1417, #1516) _Thanks @AndXaf and @MachineFossil_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
