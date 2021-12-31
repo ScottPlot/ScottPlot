@@ -28,7 +28,7 @@ namespace ScottPlot.Cookbook
             foreach (RecipeSource recipe in recipes)
             {
                 writer.WriteStartObject();
-                writer.WriteString("id", recipe.ID.ToLower());
+                writer.WriteString("id", recipe.ID);
                 writer.WriteString("category", recipe.Category);
                 writer.WriteString("title", recipe.Title);
                 writer.WriteString("description", recipe.Description);
