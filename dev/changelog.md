@@ -24,6 +24,7 @@ _In development / not yet on NuGet_
 * Text: Improved support for rotated text and background fills using custom alignments (#1417, #1516) _Thanks @riquich and @AndXaf_
 * Text: Added options for custom borders (#1417, #1516) _Thanks @AndXaf and @MachineFossil_
 * Plot: New `RemoveAxis()` method allows users to remove axes placed by `AddAxis()` (#1458) _Thanks @gobikulandaisamy_
+* Benchmark: `Plot.BenchmarkTimes()` now returns an array of recent frame render times (#1493, #1491) _Thanks @anose001_
 
 ## ScottPlot 4.1.27
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
