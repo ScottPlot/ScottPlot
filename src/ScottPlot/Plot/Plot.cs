@@ -287,6 +287,12 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Return an array of times for the last several renders.
+        /// The last element of the array is the most recently rendered frame time.
+        /// </summary>
+        public double[] BenchmarkTimes() => settings.BenchmarkMessage.GetRenderTimes();
+
+        /// <summary>
         /// Configure legend visibility and location. 
         /// Optionally you can further customize the legend by interacting with the object it returns.
         /// </summary>
