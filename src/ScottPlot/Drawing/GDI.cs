@@ -71,6 +71,33 @@ namespace ScottPlot.Drawing
             return size;
         }
 
+        private static (float x, float y) AlignmentFraction(Alignment alignment)
+        {
+            return alignment switch
+            {
+                Alignment.UpperLeft => (0, 0),
+                Alignment.UpperRight => (1, 0),
+                Alignment.UpperCenter => (.5f, 0),
+                Alignment.MiddleLeft => (0, .5f),
+                Alignment.MiddleCenter => (.5f, .5f),
+                Alignment.MiddleRight => (1, .5f),
+                Alignment.LowerLeft => (0, 1),
+                Alignment.LowerRight => (1, 1),
+                Alignment.LowerCenter => (.5f, 1),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        /// <summary>
+        /// Return the X and Y distance (pixels) necessary to translate the canvas for the given text/font/alignment
+        /// </summary>
+        public static (float dX, float dY) TranslateString(string text, Font font)
+        {
+            SizeF stringSize = MeasureString(text, font);
+            (float xFrac, float yFrac) = AlignmentFraction(font.Alignment);
+            return (stringSize.Width * xFrac, stringSize.Height * yFrac);
+        }
+
         public static System.Drawing.Color Mix(System.Drawing.Color colorA, System.Drawing.Color colorB, double fracA)
         {
             byte r = (byte)((colorA.R * (1 - fracA)) + colorB.R * fracA);
