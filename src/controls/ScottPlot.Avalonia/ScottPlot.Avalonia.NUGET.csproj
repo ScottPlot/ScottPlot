@@ -15,9 +15,9 @@
     <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.1.28</Version>
-    <AssemblyVersion>4.1.28.0</AssemblyVersion>
-    <FileVersion>4.1.28.0</FileVersion>
+    <Version>4.1.29</Version>
+    <AssemblyVersion>4.1.29.0</AssemblyVersion>
+    <FileVersion>4.1.29.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
