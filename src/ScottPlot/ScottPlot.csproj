@@ -12,9 +12,9 @@
     <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
     <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
-    <Version>4.1.28</Version>
-    <AssemblyVersion>4.1.28.0</AssemblyVersion>
-    <FileVersion>4.1.28.0</FileVersion>
+    <Version>4.1.29</Version>
+    <AssemblyVersion>4.1.29.0</AssemblyVersion>
+    <FileVersion>4.1.29.0</FileVersion>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
