@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
     {
         public string Category => "Quickstart";
         public string ID => "quickstart_add";
-        public string Title => "Manually Add a Plottable";
+        public string Title => "Manually add a Plottable";
         public string Description =>
             "You can create a plot manually, then add it to the plot with Add(). " +
             "This allows you to create custom plot types and add them to the plot.";
@@ -97,11 +97,32 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         }
     }
 
+    class Remove : IRecipe
+    {
+        public string Category => "Quickstart";
+        public string ID => "quickstart_remove";
+        public string Title => "Remove a Plottable";
+        public string Description =>
+            "Call Remove() to remove a specific plottable.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] sin = DataGen.Sin(51);
+            double[] cos = DataGen.Sin(51);
+
+            var sinPlot = plt.AddScatter(xs, sin, color: Color.Red);
+            var cosPlot = plt.AddScatter(xs, cos, color: Color.Blue);
+
+            plt.Remove(sinPlot);
+        }
+    }
+
     class Clear : IRecipe
     {
         public string Category => "Quickstart";
         public string ID => "quickstart_clear";
-        public string Title => "Clear plottables";
+        public string Title => "Clear Plottables";
         public string Description =>
             "Call Clear() to remove all plottables from the plot. " +
             "Overloads of Clear() allow you to remote one type of plottable, or a specific plottable.";
