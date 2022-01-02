@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.28
+## ScottPlot 4.1.29
 _In development / not yet on NuGet_
+
+## ScottPlot 4.1.28
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-01_
 * Eto Control: New ScottPlot control for the Eto GUI framework (#1425, #1438) _Thanks @rafntor_
 * Radar Plot: `OutlineWidth` now allows customization of the line around radar plots (#1426, #1277) _Thanks @Rayffer_
 * Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
