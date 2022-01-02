@@ -2,14 +2,10 @@ name: Package
 
 on:
   workflow_dispatch:
-  release:
-    types:
-      - created
 
 jobs:
   deploy:
     name: Package and Deploy
-    needs: test
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
