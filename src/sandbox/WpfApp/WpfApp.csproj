@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
-    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
+		<ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+	</ItemGroup>
 
 </Project>
