@@ -72,31 +72,31 @@ jobs:
 
       - name: 📦 Package ScottPlot
         run: |
-          dotnet restore src/ScottPlot/ScottPlot.csproj --configuration Release
+          dotnet restore src/ScottPlot/ScottPlot.csproj
           dotnet build src/ScottPlot/ScottPlot.csproj --configuration Release
           dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.WinForms
         run: |
-          dotnet restore src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet restore src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj
           dotnet build src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.WPF
         run: |
-          dotnet restore src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet restore src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
           dotnet build src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.Avalonia
         run: |
-          dotnet restore src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet restore src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
           dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.Eto
         run: |
-          dotnet restore src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
+          dotnet restore src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj
           dotnet build src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
           dotnet pack src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
 
