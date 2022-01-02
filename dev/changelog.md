@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.29
+## ScottPlot 4.1.30
 _In development / not yet on NuGet_
+
+## ScottPlot 4.1.29
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-02_
+* WinForms Control: Improve ClearType text rendering by no longer defaulting to a transparent control background color (#1496)
 
 ## ScottPlot 4.1.28
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-01_
