@@ -78,3 +78,26 @@ jobs:
       - name: 🧪 Test
         working-directory: src/tests
         run: dotnet test --configuration Release
+
+  package:
+    name: Package
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore src
+      - name: 📦 Package ScottPlot
+        run: dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
+      - name: 📦 Package ScottPlot.WinForms
+        run: dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+      - name: 📦 Package ScottPlot.WPF
+        run: dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+      - name: 📦 Package ScottPlot.Avalonia
+        run: dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+      - name: 📦 Package ScottPlot.Eto
+        run: dotnet pack src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
