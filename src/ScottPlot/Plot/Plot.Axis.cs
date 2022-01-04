@@ -352,7 +352,7 @@ namespace ScottPlot
 
             foreach (var plottable in GetPlottables())
             {
-                if (plottable.IsVisible == false)
+                if (plottable.IsVisible == false || plottable is Plottable.AxisLine || plottable is Plottable.AxisSpan)
                     continue;
 
                 bool xAxisMatch = plottable.XAxisIndex == xAxisIndex;
