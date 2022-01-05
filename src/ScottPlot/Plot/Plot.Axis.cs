@@ -352,7 +352,7 @@ namespace ScottPlot
 
             foreach (var plottable in GetPlottables())
             {
-                if (plottable.IsVisible == false || plottable is Plottable.AxisLine || plottable is Plottable.AxisSpan)
+                if (plottable.IsVisible == false)
                     continue;
 
                 bool xAxisMatch = plottable.XAxisIndex == xAxisIndex;
@@ -362,13 +362,13 @@ namespace ScottPlot
 
                 AxisLimits limits = plottable.GetAxisLimits();
 
-                if (xAxisMatch)
+                if (xAxisMatch && !double.IsNaN(limits.XMin) && !double.IsNaN(limits.XMax))
                 {
                     xMin = Math.Min(xMin, limits.XMin);
                     xMax = Math.Max(xMax, limits.XMax);
                 }
 
-                if (yAxisMatch)
+                if (yAxisMatch && !double.IsNaN(limits.YMin) && !double.IsNaN(limits.YMax))
                 {
                     yMin = Math.Min(yMin, limits.YMin);
                     yMax = Math.Max(yMax, limits.YMax);
