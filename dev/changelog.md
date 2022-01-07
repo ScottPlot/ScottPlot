@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.30
 _In development / not yet on NuGet_
+* Plot: Improve values returned by `GetDataLimits()` when axis lines and spans are in use (#1415, #1505, #1532) _Thanks @EFeru_
 
 ## ScottPlot 4.1.29
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-02_
