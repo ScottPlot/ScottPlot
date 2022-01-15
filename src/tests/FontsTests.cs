@@ -46,5 +46,27 @@ namespace ScottPlotTests
                 Assert.That(defaultFontMonospace == "Courier");
             }
         }
+
+        [Test]
+        public void Test_ClearType_Transparency()
+        {
+            ScottPlot.Plot plt = new(300, 200);
+
+            plt.Style(figureBackground: System.Drawing.Color.Transparent);
+
+            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            TestTools.SaveFig(plt, "ClearType-Transparent");
+
+            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            TestTools.SaveFig(plt, "AntiAlias-Transparent");
+            
+            plt.Style(figureBackground: System.Drawing.SystemColors.Control);
+
+            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            TestTools.SaveFig(plt, "ClearType-OnGray");
+
+            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            TestTools.SaveFig(plt, "AntiAlias-OnGray");
+        }
     }
 }
