@@ -3,7 +3,7 @@
 ## ScottPlot 4.1.30
 _In development / not yet on NuGet_
 * Plot: Improve values returned by `GetDataLimits()` when axis lines and spans are in use (#1415, #1505, #1532) _Thanks @EFeru_
-* Rendering: Revert default text hinting from ClearType back to AntiAliased to improve text appearance on transparent backgrounds. Users may call `Drawing.GDI.ClearType(true)` to opt-in to ClearType rendering which is superior for most situations. (#1553, #1550, #1528) _Thanks @r84r, @wangyexiang, @Elgot, @EFeru, and @saklanmazozgur_
+* Rendering: Revert default text hinting from ClearType back to AntiAliased to improve text appearance on transparent backgrounds. Users may call `ScottPlot.Drawing.GDI.ClearType(true)` to opt-in to ClearType rendering which is superior for most situations. (#1553, #1550, #1528) _Thanks @r84r, @wangyexiang, @Elgot, @EFeru, and @saklanmazozgur_
 
 ## ScottPlot 4.1.29
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-02_
