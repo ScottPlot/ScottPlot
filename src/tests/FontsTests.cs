@@ -54,18 +54,18 @@ namespace ScottPlotTests
 
             plt.Style(figureBackground: System.Drawing.Color.Transparent);
 
-            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            ScottPlot.Drawing.GDI.ClearType(true);
             TestTools.SaveFig(plt, "ClearType-Transparent");
 
-            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            ScottPlot.Drawing.GDI.ClearType(false);
             TestTools.SaveFig(plt, "AntiAlias-Transparent");
 
             plt.Style(figureBackground: System.Drawing.SystemColors.Control);
 
-            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            ScottPlot.Drawing.GDI.ClearType(true);
             TestTools.SaveFig(plt, "ClearType-OnGray");
 
-            ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            ScottPlot.Drawing.GDI.ClearType(false);
             TestTools.SaveFig(plt, "AntiAlias-OnGray");
         }
     }
