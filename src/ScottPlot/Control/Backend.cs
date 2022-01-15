@@ -282,24 +282,24 @@ namespace ScottPlot.Control
         /// <summary>
         /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
         /// </summary>
-        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5,int xAxisIndex = 0,int yAxisIndex = 0)
+        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5, int xAxisIndex = 0, int yAxisIndex = 0)
         {
             double xUnitsPerPx;
             double yUnitsPerPx;
-            if (xAxisIndex == 0) 
+            if (xAxisIndex == 0)
             {
                 xUnitsPerPx = Settings.XAxis.Dims.UnitsPerPx;
             }
             else
-            { 
+            {
                 xUnitsPerPx = Settings.XAxis2.Dims.UnitsPerPx;
             }
-            if (yAxisIndex == 0) 
+            if (yAxisIndex == 0)
             {
                 yUnitsPerPx = Settings.YAxis.Dims.UnitsPerPx;
             }
             else
-            { 
+            {
                 yUnitsPerPx = Settings.YAxis2.Dims.UnitsPerPx;
 
             }
@@ -559,9 +559,9 @@ namespace ScottPlot.Control
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
-        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0,int yAxisIndex = 0)
+        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY,xAxisIndex,yAxisIndex);
+            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY, xAxisIndex, yAxisIndex);
             return (double.IsNaN(x) ? 0 : x, double.IsNaN(y) ? 0 : y);
         }
 
