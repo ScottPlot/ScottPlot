@@ -59,7 +59,7 @@ namespace ScottPlotTests
 
             ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             TestTools.SaveFig(plt, "AntiAlias-Transparent");
-            
+
             plt.Style(figureBackground: System.Drawing.SystemColors.Control);
 
             ScottPlot.Drawing.GDI.HighQualityTextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
