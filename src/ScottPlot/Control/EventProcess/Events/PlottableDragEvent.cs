@@ -30,8 +30,8 @@ namespace ScottPlot.Control.EventProcess.Events
 
         public void ProcessEvent()
         {
-            double xCoord = Plot.GetCoordinateX(X);
-            double yCoord = Plot.GetCoordinateY(Y);
+            double xCoord = Plot.GetCoordinateX(X, ((IPlottable)PlottableBeingDragged).XAxisIndex);
+            double yCoord = Plot.GetCoordinateY(Y, ((IPlottable)PlottableBeingDragged).YAxisIndex);
             PlottableBeingDragged.DragTo(xCoord, yCoord, fixedSize: ShiftDown);
         }
     }
