@@ -107,7 +107,7 @@ namespace ScottPlot
 
             rtbErrorMessage.Visible = false;
             pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            Plot.Style(figureBackground: BackColor);
+            Plot.Style(figureBackground: System.Drawing.Color.Transparent);
             pictureBox1.MouseWheel += PictureBox1_MouseWheel;
             RightClicked += DefaultRightClickEvent;
 
