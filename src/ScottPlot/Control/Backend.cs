@@ -287,6 +287,7 @@ namespace ScottPlot.Control
         /// </summary>
         private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
+
             foreach (IDraggable draggable in GetEnabledDraggables())
             {
                 int xAxisIndex = ((IPlottable)draggable).XAxisIndex;
