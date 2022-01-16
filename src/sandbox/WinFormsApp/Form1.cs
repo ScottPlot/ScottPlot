@@ -15,13 +15,14 @@ namespace WinFormsApp
         public Form1()
         {
             InitializeComponent();
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
+            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51));
+            formsPlot1.Refresh();
+        }
 
-            Random rand = new(0);
-            double[] xs = ScottPlot.DataGen.Consecutive(10_000);
-            double[] ys = ScottPlot.DataGen.RandomWalk(rand, 10_000);
-            var sig1 = formsPlot1.Plot.AddSignalXY(xs, ys);
-            sig1.MarkerSize = 20;
-
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            ScottPlot.Drawing.GDI.ClearType(checkBox1.Checked);
             formsPlot1.Refresh();
         }
     }
