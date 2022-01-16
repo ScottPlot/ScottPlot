@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WPF", "ScottPlot.WPF\ScottPlot.WPF.csproj", "{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WinFormsFramework", "ScottPlot.WinFormsFramework\ScottPlot.WinFormsFramework.csproj", "{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinFormsFramework", "ScottPlot.WinFormsFramework\ScottPlot.WinFormsFramework.csproj", "{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.ConsoleApp", "ScottPlot.ConsoleApp\ScottPlot.ConsoleApp.csproj", "{B0F5C4DF-6632-40D3-BA2F-40261AF0C5C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F5C4DF-6632-40D3-BA2F-40261AF0C5C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F5C4DF-6632-40D3-BA2F-40261AF0C5C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F5C4DF-6632-40D3-BA2F-40261AF0C5C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F5C4DF-6632-40D3-BA2F-40261AF0C5C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
