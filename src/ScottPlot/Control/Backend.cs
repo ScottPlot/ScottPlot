@@ -274,24 +274,34 @@ namespace ScottPlot.Control
         }
 
         /// <summary>
-        /// Return a copy of the list of draggable plottables
+        /// Return a copy of the list of draggable plottables with dragging enabled
         /// </summary>
-        private IDraggable[] GetDraggables() =>
-            Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
+        private IDraggable[] GetEnabledDraggables() => Settings.Plottables
+            .Where(x => x is IDraggable)
+            .Select(x => (IDraggable)x)
+            .Where(x => x.DragEnabled)
+            .ToArray();
 
         /// <summary>
         /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
         /// </summary>
         private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            double snapWidth = Settings.XAxis.Dims.UnitsPerPx * snapDistancePixels;
-            double snapHeight = Settings.YAxis.Dims.UnitsPerPx * snapDistancePixels;
 
-            foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(Plot.GetCoordinateX((float)pixelX), Plot.GetCoordinateY((float)pixelY), snapWidth, snapHeight))
-                    if (draggable.DragEnabled)
-                        return draggable;
+            foreach (IDraggable draggable in GetEnabledDraggables())
+            {
+                int xAxisIndex = ((IPlottable)draggable).XAxisIndex;
+                int yAxisIndex = ((IPlottable)draggable).YAxisIndex;
+                double xUnitsPerPx = Settings.GetXAxis(xAxisIndex).Dims.UnitsPerPx;
+                double yUnitsPerPx = Settings.GetYAxis(yAxisIndex).Dims.UnitsPerPx;
 
+                double snapWidth = xUnitsPerPx * snapDistancePixels;
+                double snapHeight = yUnitsPerPx * snapDistancePixels;
+                double xCoords = Plot.GetCoordinateX((float)pixelX, xAxisIndex);
+                double yCoords = Plot.GetCoordinateY((float)pixelY, yAxisIndex);
+                if (draggable.IsUnderMouse(xCoords, yCoords, snapWidth, snapHeight))
+                    return draggable;
+            }
             return null;
         }
 
@@ -537,9 +547,9 @@ namespace ScottPlot.Control
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
-        public (double x, double y) GetMouseCoordinates()
+        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY);
+            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY, xAxisIndex, yAxisIndex);
             return (double.IsNaN(x) ? 0 : x, double.IsNaN(y) ? 0 : y);
         }
 
