@@ -2,45 +2,12 @@
 using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class DraggableMarkerPlot : IDraggable, IPlottable
+    public class DraggableMarkerPlot : MarkerPlot, IDraggable
     {
-        public bool IsVisible { get; set; } = true;
-        public int XAxisIndex { get; set; } = 0;
-        public int YAxisIndex { get; set; } = 0;
-
-        /// <summary>
-        /// Horizontal position in coordinate space
-        /// </summary>
-        public double X { get; set; }
-
-        /// <summary>
-        /// Vertical position in coordinate space
-        /// </summary>
-        public double Y { get; set; }
-
-        /// <summary>
-        /// Marker to draw at this point
-        /// </summary>
-        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
-
-        /// <summary>
-        /// Size of the marker in pixel units
-        /// </summary>
-        public double MarkerSize { get; set; } = 10;
-
-        /// <summary>
-        /// Color of the marker to display at this point
-        /// </summary>
-        public Color Color { get; set; } = Color.Black;
-
-        /// <summary>
-        /// Text to appear in the legend (if populated)
-        /// </summary>
-        public string Label { get; set; }
-
         /// <summary>
         /// Indicates whether this line is draggable in user controls.
         /// </summary>
@@ -85,25 +52,6 @@ namespace ScottPlot.Plottable
         /// The upper bound of the axis line.
         /// </summary>
         public double Max = double.PositiveInfinity;
-
-        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
-
-        public void ValidateData(bool deep = false)
-        {
-            Validate.AssertIsReal(nameof(X), X);
-            Validate.AssertIsReal(nameof(Y), Y);
-        }
-
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-        {
-            if (!IsVisible)
-                return;
-
-            PointF point = new PointF(dims.GetPixelX(X), dims.GetPixelY(Y));
-
-            Graphics gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
-        }
 
         /// <summary>
         /// Move the line to a new coordinate in plot space.
@@ -135,57 +83,13 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) => Math.Abs(Y - coordinateY) <= snapY && Math.Abs(X - coordinateX) <= snapX;
 
-        public LegendItem[] GetLegendItems()
-        {
-            var singleItem = new LegendItem()
-            {
-                label = Label,
-                markerShape = MarkerShape,
-                markerSize = MarkerSize,
-                color = Color
-            };
-            return new LegendItem[] { singleItem };
-        }
     }
 
-    public class DraggableMarkerPlotInVector : IDraggable, IPlottable
+    public class DraggableMarkerPlotInVector : ScatterPlot, IDraggable
     {
-        public bool IsVisible { get; set; } = true;
-        public int XAxisIndex { get; set; } = 0;
-        public int YAxisIndex { get; set; } = 0;
-
-        /// <summary>
-        /// Horizontal position in coordinate space
-        /// </summary>
-        public double[] Xs { get; set; }
-
-        /// <summary>
-        /// Vertical position in coordinate space
-        /// </summary>
-        public double[] Ys { get; set; }
-
-        public int PointCount => Xs.Length;
-
+        public new double[] Xs { get; private set; }
+        public new double[] Ys { get; private set; }
         public int CurrentIndex { get; set; } = 0;
-        /// <summary>
-        /// Marker to draw at this point
-        /// </summary>
-        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
-
-        /// <summary>
-        /// Size of the marker in pixel units
-        /// </summary>
-        public double MarkerSize { get; set; } = 10;
-
-        /// <summary>
-        /// Color of the marker to display at this point
-        /// </summary>
-        public Color Color { get; set; } = Color.Black;
-
-        /// <summary>
-        /// Text to appear in the legend (if populated)
-        /// </summary>
-        public string Label { get; set; }
 
         /// <summary>
         /// Indicates whether this line is draggable in user controls.
@@ -232,31 +136,17 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Max = double.PositiveInfinity;
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
-
-        public void ValidateData(bool deep = false)
-        {
-            Debug.Assert(CurrentIndex >= 0 && CurrentIndex <= PointCount - 1, $"CurrentIndex property is out of bounds, it should be in the [0 - {PointCount - 1} range");
-            Debug.Assert(CurrentIndex <= Xs.Length - 1);
-            Validate.AssertHasElements(nameof(Xs), Xs);
-            Validate.AssertHasElements(nameof(Ys), Ys);
-            Validate.AssertEqualLength("", Xs, Ys);
-            if (deep)
-            {
-                Validate.AssertAllReal(nameof(Xs), Xs);
-                Validate.AssertAllReal(nameof(Ys), Ys);
-            }
-        }
-
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
                 return;
 
-            PointF point = new PointF(dims.GetPixelX(Xs[CurrentIndex]), dims.GetPixelY(Ys[CurrentIndex]));
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
+            {
+                PointF point = new PointF(dims.GetPixelX(Xs[CurrentIndex]), dims.GetPixelY(Ys[CurrentIndex]));
 
-            Graphics gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+                MarkerTools.DrawMarker(gfx, point, MarkerShape.cross, (float)MarkerSize * 10, Color.Red);
+            }
         }
 
         /// <summary>
@@ -301,16 +191,12 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) => Math.Abs(Ys[CurrentIndex] - coordinateY) <= snapY && Math.Abs(Xs[CurrentIndex] - coordinateX) <= snapX;
 
-        public LegendItem[] GetLegendItems()
+        public DraggableMarkerPlotInVector(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null) : base(xs, ys, errorX, errorY)
         {
-            var singleItem = new LegendItem()
-            {
-                label = Label,
-                markerShape = MarkerShape,
-                markerSize = MarkerSize,
-                color = Color
-            };
-            return new LegendItem[] { singleItem };
+            this.Xs = xs;
+            this.Ys = ys;
+            this.XError = errorX;
+            this.YError = errorY;
         }
     }
 }
