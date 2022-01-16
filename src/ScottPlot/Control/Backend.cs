@@ -274,45 +274,32 @@ namespace ScottPlot.Control
         }
 
         /// <summary>
-        /// Return a copy of the list of draggable plottables
+        /// Return a copy of the list of draggable plottables with dragging enabled
         /// </summary>
-        private IDraggable[] GetDraggables() =>
-            Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
+        private IDraggable[] GetEnabledDraggables() => Settings.Plottables
+            .Where(x => x is IDraggable)
+            .Select(x => (IDraggable)x)
+            .Where(x => x.DragEnabled)
+            .ToArray();
 
         /// <summary>
         /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
         /// </summary>
-        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5, int xAxisIndex = 0, int yAxisIndex = 0)
+        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            double xUnitsPerPx;
-            double yUnitsPerPx;
-            if (xAxisIndex == 0)
+            foreach (IDraggable draggable in GetEnabledDraggables())
             {
-                xUnitsPerPx = Settings.XAxis.Dims.UnitsPerPx;
-            }
-            else
-            {
-                xUnitsPerPx = Settings.XAxis2.Dims.UnitsPerPx;
-            }
-            if (yAxisIndex == 0)
-            {
-                yUnitsPerPx = Settings.YAxis.Dims.UnitsPerPx;
-            }
-            else
-            {
-                yUnitsPerPx = Settings.YAxis2.Dims.UnitsPerPx;
+                int xAxisIndex = ((IPlottable)draggable).XAxisIndex;
+                int yAxisIndex = ((IPlottable)draggable).YAxisIndex;
+                double xUnitsPerPx = Settings.GetXAxis(xAxisIndex).Dims.UnitsPerPx;
+                double yUnitsPerPx = Settings.GetYAxis(yAxisIndex).Dims.UnitsPerPx;
 
-            }
-            double snapWidth = xUnitsPerPx * snapDistancePixels;
-            double snapHeight = yUnitsPerPx * snapDistancePixels;
-
-            foreach (IDraggable draggable in GetDraggables())
-            {
-                double xCoords = Plot.GetCoordinateX((float)pixelX, ((IPlottable)draggable).XAxisIndex);
-                double yCoords = Plot.GetCoordinateY((float)pixelY, ((IPlottable)draggable).YAxisIndex);
+                double snapWidth = xUnitsPerPx * snapDistancePixels;
+                double snapHeight = yUnitsPerPx * snapDistancePixels;
+                double xCoords = Plot.GetCoordinateX((float)pixelX, xAxisIndex);
+                double yCoords = Plot.GetCoordinateY((float)pixelY, yAxisIndex);
                 if (draggable.IsUnderMouse(xCoords, yCoords, snapWidth, snapHeight))
-                    if (draggable.DragEnabled)
-                        return draggable;
+                    return draggable;
             }
             return null;
         }

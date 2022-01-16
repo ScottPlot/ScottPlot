@@ -18,25 +18,49 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public MultiAxisLock()
         {
             InitializeComponent();
+
             Random rand = new Random();
+            double[] data1 = DataGen.RandomWalk(rand, 100, mult: 1);
+            double[] data2 = DataGen.RandomWalk(rand, 100, mult: 10);
+            double[] data3 = DataGen.RandomWalk(rand, 100, mult: 100);
+            double avg1 = data1.Sum() / data1.Length;
+            double avg2 = data2.Sum() / data2.Length;
+            double avg3 = data3.Sum() / data3.Length;
 
-            // Add 3 signals each with a different vertical axis index.
-            // Each signal defaults to X axis index 0 so their horizontal axis will be shared.
-
-            var plt1 = formsPlot1.Plot.AddSignal(DataGen.RandomWalk(rand, 100, mult: 1));
+            // Add signals specifying the vertical axis index for each
+            var plt1 = formsPlot1.Plot.AddSignal(data1);
             plt1.YAxisIndex = 0;
             plt1.LineWidth = 3;
             plt1.Color = Color.Magenta;
 
-            var plt2 = formsPlot1.Plot.AddSignal(DataGen.RandomWalk(rand, 100, mult: 10));
+            var plt2 = formsPlot1.Plot.AddSignal(data2);
             plt2.YAxisIndex = 1;
             plt2.LineWidth = 3;
             plt2.Color = Color.Green;
 
-            var plt3 = formsPlot1.Plot.AddSignal(DataGen.RandomWalk(rand, 100, mult: 100));
+            var plt3 = formsPlot1.Plot.AddSignal(data3);
             plt3.YAxisIndex = 2;
             plt3.LineWidth = 3;
             plt3.Color = Color.Navy;
+
+            // Add draggable horizontal lines specifying the vertical axis index for each
+            var hline1 = formsPlot1.Plot.AddHorizontalLine(avg1);
+            hline1.DragEnabled = true;
+            hline1.Color = plt1.Color;
+            hline1.LineStyle = LineStyle.Dash;
+            hline1.YAxisIndex = 0;
+
+            var hline2 = formsPlot1.Plot.AddHorizontalLine(avg2);
+            hline2.DragEnabled = true;
+            hline2.Color = plt2.Color;
+            hline2.LineStyle = LineStyle.Dash;
+            hline2.YAxisIndex = 1;
+
+            var hline3 = formsPlot1.Plot.AddHorizontalLine(avg3);
+            hline3.DragEnabled = true;
+            hline3.Color = plt3.Color;
+            hline3.LineStyle = LineStyle.Dash;
+            hline3.YAxisIndex = 2;
 
             // The horizontal axis is shared by these signal plots (XAxisIndex defaults to 0)
             formsPlot1.Plot.XAxis.Label("Horizontal Axis");
@@ -58,6 +82,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             // adjust axis limits to fit the data once before locking them based on initial check state
             formsPlot1.Plot.AxisAuto();
             SetLocks();
+
+            formsPlot1.Refresh();
         }
 
         private void SetLocks()
