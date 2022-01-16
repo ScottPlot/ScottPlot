@@ -284,25 +284,9 @@ namespace ScottPlot.Control
         /// </summary>
         private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            double xUnitsPerPx;
-            double yUnitsPerPx;
-            if (xAxisIndex == 0)
-            {
-                xUnitsPerPx = Settings.XAxis.Dims.UnitsPerPx;
-            }
-            else
-            {
-                xUnitsPerPx = Settings.XAxis2.Dims.UnitsPerPx;
-            }
-            if (yAxisIndex == 0)
-            {
-                yUnitsPerPx = Settings.YAxis.Dims.UnitsPerPx;
-            }
-            else
-            {
-                yUnitsPerPx = Settings.YAxis2.Dims.UnitsPerPx;
+            double xUnitsPerPx = Settings.GetXAxis(xAxisIndex).Dims.UnitsPerPx;
+            double yUnitsPerPx = Settings.GetYAxis(yAxisIndex).Dims.UnitsPerPx;
 
-            }
             double snapWidth = xUnitsPerPx * snapDistancePixels;
             double snapHeight = yUnitsPerPx * snapDistancePixels;
 
