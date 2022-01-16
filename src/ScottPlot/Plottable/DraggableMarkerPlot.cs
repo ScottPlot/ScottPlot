@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Indicates whether this line is draggable in user controls.
         /// </summary>
-        public bool DragEnabled { get; set; } = false;
+        public bool DragEnabled { get; set; } = true;
 
         /// <summary>
         /// Cursor to display while hovering over this line if dragging is enabled.
@@ -94,7 +94,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Indicates whether this line is draggable in user controls.
         /// </summary>
-        public bool DragEnabled { get; set; } = false;
+        public bool DragEnabled { get; set; } = true;
 
         /// <summary>
         /// Cursor to display while hovering over this line if dragging is enabled.
