@@ -16,7 +16,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Cursor to display while hovering over this line if dragging is enabled.
         /// </summary>
-        public Cursor DragCursor => Cursor.Hand;
+        public Cursor DragCursor { get; set; } = Cursor.Hand;
 
         /// <summary>
         /// If dragging is enabled the line cannot be dragged more negative than this position
