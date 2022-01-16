@@ -27,4 +27,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
         }
     }
+
+    public class MarkerDraggable : IRecipe
+    {
+        public string Category => "Plottable: Marker";
+        public string ID => "marker_draggable";
+        public string Title => "Draggable Marker";
+        public string Description =>
+            "A special type of marker exists which allows dragging with the mouse.";
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+
+            var myDraggableMarker = new ScottPlot.Plottable.DraggableMarkerPlot()
+            {
+                X = 25,
+                Y = .57,
+                Color = Color.Magenta,
+                MarkerShape = MarkerShape.filledDiamond,
+                MarkerSize = 25,
+            };
+
+            plt.Add(myDraggableMarker);
+        }
+    }
 }
