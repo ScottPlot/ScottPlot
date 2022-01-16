@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{66A7A252-D0C5-41FE-8668-0A670ABC88E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WinForms", "ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{3B6F284A-1335-4B3F-9AD1-97AB076483BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{3B6F284A-1335-4B3F-9AD1-97AB076483BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WPF", "ScottPlot.WPF\ScottPlot.WPF.csproj", "{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WPF", "ScottPlot.WPF\ScottPlot.WPF.csproj", "{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WinFormsFramework", "ScottPlot.WinFormsFramework\ScottPlot.WinFormsFramework.csproj", "{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42CF3E00-88DB-4643-A13C-94B0ABAFCB88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E0D78D-8F3F-430D-A59D-3CDF1FDB7041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
