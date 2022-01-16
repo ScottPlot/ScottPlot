@@ -495,12 +495,22 @@ namespace ScottPlot
 
             if (finalize)
             {
-                double x1 = XAxis.Dims.GetUnit(left);
-                double x2 = XAxis.Dims.GetUnit(right);
-                double y1 = YAxis.Dims.GetUnit(bottom);
-                double y2 = YAxis.Dims.GetUnit(top);
-                ZoomRectangle.Clear();
-                AxisSet(x1, x2, y1, y2);
+                foreach (Axis axis in Axes)
+                {
+                    ZoomRectangle.Clear();
+                    if (axis.IsHorizontal)
+                    {
+                        double x1 = axis.Dims.GetUnit(left);
+                        double x2 = axis.Dims.GetUnit(right);
+                        axis.Dims.SetAxis(x1, x2);
+                    }
+                    else
+                    {
+                        double y1 = axis.Dims.GetUnit(bottom);
+                        double y2 = axis.Dims.GetUnit(top);
+                        axis.Dims.SetAxis(y1, y2);
+                    }
+                }
             }
             else
             {
