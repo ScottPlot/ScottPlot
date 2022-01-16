@@ -44,16 +44,6 @@ namespace ScottPlot.Plottable
         public event EventHandler Dragged = delegate { };
 
         /// <summary>
-        /// The lower bound of the axis line.
-        /// </summary>
-        public double Min = double.NegativeInfinity;
-
-        /// <summary>
-        /// The upper bound of the axis line.
-        /// </summary>
-        public double Max = double.PositiveInfinity;
-
-        /// <summary>
         /// Move the line to a new coordinate in plot space.
         /// </summary>
         /// <param name="coordinateX">new X position</param>
@@ -82,7 +72,6 @@ namespace ScottPlot.Plottable
         /// <param name="snapY">snap distance (pixels)</param>
         /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) => Math.Abs(Y - coordinateY) <= snapY && Math.Abs(X - coordinateX) <= snapX;
-
     }
 
     public class DraggableMarkerPlotInVector : ScatterPlot, IDraggable
