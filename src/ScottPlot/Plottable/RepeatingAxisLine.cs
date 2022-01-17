@@ -1,10 +1,8 @@
-using ScottPlot;
-using ScottPlot.Plottable;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
-namespace live_sandbox
+namespace ScottPlot.Plottable
 {
 
     public abstract class RepeatingAxisLine : IDraggable, IPlottable
