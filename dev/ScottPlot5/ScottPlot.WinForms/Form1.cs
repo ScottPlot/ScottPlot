@@ -10,6 +10,7 @@ namespace ScottPlot.WinForms
         public Form1()
         {
             InitializeComponent();
+            Plot.AddDemoSinAndCos();
         }
 
         private void skglControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Graphics;
+using System;
 
 namespace ScottPlot.Experimental;
 
