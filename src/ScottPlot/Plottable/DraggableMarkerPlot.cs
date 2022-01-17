@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
@@ -9,42 +9,42 @@ namespace ScottPlot.Plottable
     public class DraggableMarkerPlot : MarkerPlot, IDraggable
     {
         /// <summary>
-        /// Indicates whether this line is draggable in user controls.
+        /// Indicates whether this marker is draggable in user controls.
         /// </summary>
         public bool DragEnabled { get; set; } = true;
 
         /// <summary>
-        /// Cursor to display while hovering over this line if dragging is enabled.
+        /// Cursor to display while hovering over this marker if dragging is enabled.
         /// </summary>
         public Cursor DragCursor { get; set; } = Cursor.Hand;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// If dragging is enabled the marker cannot be dragged more negative than this position
         /// </summary>
         public double DragXLimitMin = double.NegativeInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// If dragging is enabled the marker cannot be dragged more positive than this position
         /// </summary>
         public double DragXLimitMax = double.PositiveInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// If dragging is enabled the marker cannot be dragged more negative than this position
         /// </summary>
         public double DragYLimitMin = double.NegativeInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// If dragging is enabled the marker cannot be dragged more positive than this position
         /// </summary>
         public double DragYLimitMax = double.PositiveInfinity;
 
         /// <summary>
-        /// This event is invoked after the line is dragged
+        /// This event is invoked after the marker is dragged
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
         /// <summary>
-        /// Move the line to a new coordinate in plot space.
+        /// Move the marker to a new coordinate in plot space.
         /// </summary>
         /// <param name="coordinateX">new X position</param>
         /// <param name="coordinateY">new Y position</param>
@@ -64,7 +64,7 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Return True if the line is within a certain number of pixels (snap) to the mouse
+        /// Return True if the marker is within a certain number of pixels (snap) to the mouse
         /// </summary>
         /// <param name="coordinateX">mouse position (coordinate space)</param>
         /// <param name="coordinateY">mouse position (coordinate space)</param>
@@ -81,37 +81,37 @@ namespace ScottPlot.Plottable
         public int CurrentIndex { get; set; } = 0;
 
         /// <summary>
-        /// Indicates whether this line is draggable in user controls.
+        /// Indicates whether this marker on the scatter plot is draggable in user controls.
         /// </summary>
         public bool DragEnabled { get; set; } = true;
 
         /// <summary>
-        /// Cursor to display while hovering over this line if dragging is enabled.
+        /// Cursor to display while hovering over this marker on the scatter plot if dragging is enabled.
         /// </summary>
         public Cursor DragCursor => Cursor.Crosshair;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// If dragging is enabled the marker on the scatter plot cannot be dragged more negative than this position
         /// </summary>
         public double DragXLimitMin = double.NegativeInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// If dragging is enabled the marker on the scatter plot cannot be dragged more positive than this position
         /// </summary>
         public double DragXLimitMax = double.PositiveInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// If dragging is enabled the marker on the scatter plot cannot be dragged more negative than this position
         /// </summary>
         public double DragYLimitMin = double.NegativeInfinity;
 
         /// <summary>
-        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// If dragging is enabled the marker on the scatter plot cannot be dragged more positive than this position
         /// </summary>
         public double DragYLimitMax = double.PositiveInfinity;
 
         /// <summary>
-        /// This event is invoked after the line is dragged
+        /// This event is invoked after the marker on the scatter plot is dragged
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
