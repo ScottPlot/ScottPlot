@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Drawing;
 using System;
@@ -10,7 +10,7 @@ namespace live_sandbox
     public abstract class RepeatingAxisLine : IDraggable, IPlottable
     {
         /// <summary>
-        /// Location of the line (Y position if horizontal line, X position if vertical line)
+        /// Location of the reference line (Y position if horizontal line, X position if vertical line)
         /// </summary>
         protected double Position;
 
@@ -20,7 +20,7 @@ namespace live_sandbox
         protected int Count = 2;
 
         /// <summary>
-        /// Offset about the Position (in Y position if horizontal line, in X position if vertical line), this offset should be negative
+        /// Offset about Position (in Y position if horizontal line, in X position if vertical line), this offset should be negative
         /// </summary>
         protected int Offset = 0;
 
