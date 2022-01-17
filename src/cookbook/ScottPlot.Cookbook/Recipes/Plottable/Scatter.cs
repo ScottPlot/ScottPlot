@@ -228,4 +228,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
         }
     }
+
+    public class ScatterPlotDraggable : IRecipe
+    {
+        public string Category => "Plottable: Draggable Scatter Plot ";
+        public string ID => "scatter_draggable";
+        public string Title => "Draggable Scatter Plot";
+        public string Description => "Want to modify the scatter points interactively ? " + 
+        "A ScatterPlotDraggable lets you move the points around";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] x = ScottPlot.DataGen.Consecutive(50);
+            double[] y = ScottPlot.DataGen.Cos(50);
+            var scd_plot = new ScottPlot.Plottable.ScatterPlotDraggable(x,y);
+            scd_plot.DragCursor = Cursor.Crosshair;
+            scd_plot.DragEnabled = true;
+            plt.Add(scd_plot);
+        }
+    }
 }
