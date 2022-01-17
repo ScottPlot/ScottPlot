@@ -48,8 +48,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 MarkerShape = MarkerShape.filledDiamond,
                 MarkerSize = 25,
             };
-
             plt.Add(myDraggableMarker);
+        }
+    }
+
+    public class MarkerDraggableInVector : IRecipe
+    {
+        public string Category => "Plottable: Marker";
+        public string ID => "marker_draggableinvector";
+        public string Title => "Draggable Marker in a vector";
+        public string Description =>
+            "A special type of marker which can be dragged with the mouse, but only in a given dataset not on the whole plot. " +
+            "This is practical if you want to show the properties of a specific data point without always following the mouse movement, as in the \"Show Value on Hover\" example";
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(50);
+            double[] ys = DataGen.Random(new Random(0), 50);
+
+            var myDraggableMarkerInVector = new ScottPlot.Plottable.DraggableMarkerPlotInVector();
+            myDraggableMarkerInVector.Xs = xs;
+            myDraggableMarkerInVector.Ys = ys;
+            myDraggableMarkerInVector.DragEnabled = true;
+            myDraggableMarkerInVector.IsVisible = true;
+            myDraggableMarkerInVector.Color = Color.Red;
+            plt.AddScatter(xs, ys);
+            plt.Add(myDraggableMarkerInVector);
         }
     }
 }
