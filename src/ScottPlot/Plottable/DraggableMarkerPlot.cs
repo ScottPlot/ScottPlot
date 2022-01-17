@@ -115,16 +115,6 @@ namespace ScottPlot.Plottable
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
-        /// <summary>
-        /// The lower bound of the axis line.
-        /// </summary>
-        public double Min = double.NegativeInfinity;
-
-        /// <summary>
-        /// The upper bound of the axis line.
-        /// </summary>
-        public double Max = double.PositiveInfinity;
-
         public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
