@@ -1,5 +1,6 @@
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
+using System.Text;
 
 namespace ScottPlot.WinForms
 {
@@ -17,6 +18,19 @@ namespace ScottPlot.WinForms
         {
             ICanvas canvas = new SkiaCanvas() { Canvas = e.Surface.Canvas };
             Plot.Draw(canvas, skglControl1.Width, skglControl1.Height);
+        }
+
+        private void UpdateMessage()
+        {
+        }
+
+        private void skglControl1_MouseMove(object sender, MouseEventArgs e)
+        {
+            StringBuilder sb = new();
+            sb.AppendLine($"Mouse pixel: {e.Location}");
+            sb.AppendLine($"Mouse coordinate: {Plot.LastView.GetCoordinate(e.Location.X, e.Location.Y)}");
+
+            richTextBox1.Text = sb.ToString();
         }
     }
 }

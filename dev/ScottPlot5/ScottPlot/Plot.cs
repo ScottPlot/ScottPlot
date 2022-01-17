@@ -9,10 +9,17 @@ public class Plot
     public readonly PlotLayout Layout = new();
     public readonly PlotStyle Style = new();
     public readonly List<Plottable.IPlottable> Plottables = new();
+    public PlotView LastView { get; private set; } = new PlotView();
 
     public Plot()
     {
     }
+
+    #region pixel/coordinate relationships
+
+    #endregion
+
+    #region testing
 
     public void AddDemoSinAndCos()
     {
@@ -24,6 +31,10 @@ public class Plot
         List<double> ysList = Generate.Cos(51).ToList();
         AddScatterList(xsList, ysList, Colors.Orange);
     }
+
+    #endregion
+
+    #region add/remove plottables
 
     public Plottable.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
@@ -48,6 +59,10 @@ public class Plot
         Plottables.Add(sp);
         return sp;
     }
+
+    #endregion
+
+    #region rendering
 
     public void Draw(ICanvas canvas, float width, float height)
     {
@@ -76,5 +91,9 @@ public class Plot
 
         canvas.StrokeColor = Style.DataBorderColor;
         canvas.DrawRectangle(Layout.DataRect);
+
+        LastView = view;
     }
+
+    #endregion
 }
