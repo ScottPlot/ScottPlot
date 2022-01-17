@@ -30,7 +30,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Cursor to display while hovering over the scatter points if dragging is enabled.
         /// </summary>
-        public ScottPlot.Cursor DragCursor => ScottPlot.Cursor.Crosshair;
+        public ScottPlot.Cursor DragCursor { get; set; } = ScottPlot.Cursor.Crosshair;
 
         /// <summary>
         /// If dragging is enabled the points cannot be dragged more negative than this position
