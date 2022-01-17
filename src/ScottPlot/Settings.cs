@@ -495,9 +495,9 @@ namespace ScottPlot
 
             if (finalize)
             {
+                ZoomRectangle.Clear();
                 foreach (Axis axis in Axes)
                 {
-                    ZoomRectangle.Clear();
                     if (axis.IsHorizontal)
                     {
                         double x1 = axis.Dims.GetUnit(left);
