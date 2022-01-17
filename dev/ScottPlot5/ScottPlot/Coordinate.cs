@@ -17,4 +17,8 @@ public struct Coordinate
     public Pixel ToPixel(PlotView view) => view.GetPixel(X, Y);
 
     public override string ToString() => $"(X={X}, Y={Y})";
+
+    public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Y - b.Y);
+
+    public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Y + b.Y);
 }

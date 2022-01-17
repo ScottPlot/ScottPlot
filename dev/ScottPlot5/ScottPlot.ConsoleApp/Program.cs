@@ -10,6 +10,7 @@ public static class Program
         using SkiaBitmapExportContext context = new(400, 300, 1.0f);
 
         var plt = new ScottPlot.Plot();
+        plt.AddDemoSinAndCos();
         plt.Draw(context.Canvas, context.Width, context.Height);
 
         string filePath = Path.GetFullPath("test.png");

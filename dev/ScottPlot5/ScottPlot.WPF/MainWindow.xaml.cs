@@ -26,6 +26,7 @@ namespace ScottPlot.WPF
         public MainWindow()
         {
             InitializeComponent();
+            Plot.AddDemoSinAndCos();
         }
 
         private void SKElement1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)

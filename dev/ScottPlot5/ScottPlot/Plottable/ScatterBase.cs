@@ -12,9 +12,9 @@ public abstract class ScatterBase : IPlottable
 
     protected abstract PointF[] GetPoints(PlotView view);
 
-    public void Draw(ICanvas canvas, PlotView view)
+    public void Draw(ICanvas canvas, PlotView view, PlotStyle style)
     {
-        canvas.ClipRectangle(view.DataAreaRect);
+        canvas.ClipRectangle(view.DataRect);
         PointF[] points = GetPoints(view);
 
         canvas.StrokeSize = LineWidth;

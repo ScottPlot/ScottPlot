@@ -1,4 +1,6 @@
 ﻿using Microsoft.Maui.Graphics;
+using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,16 +8,28 @@ namespace ScottPlot;
 
 public class Plot
 {
-    public readonly PlotLayout Layout = new();
     public readonly PlotStyle Style = new();
     public readonly List<Plottable.IPlottable> Plottables = new();
-    public PlotView LastView { get; private set; } = new PlotView();
+    private PlotView LastView = new();
 
     public Plot()
     {
+        LastView = new(
+            limits: new CoordinateRect(-10, 60, -2, 2),
+            figure: new RectangleF(0, 0, 400, 300),
+            data: new RectangleF(40, 10, 350, 250));
     }
 
     #region pixel/coordinate relationships
+
+    #endregion
+
+    #region mouse interaction
+
+    public PlotView GetLastView()
+    {
+        return LastView;
+    }
 
     #endregion
 
@@ -66,31 +80,37 @@ public class Plot
 
     public void Draw(ICanvas canvas, float width, float height)
     {
-        Layout.Resize(width, height);
-        RectangleF dataRect = Layout.DataRect;
+        var view = new PlotView()
+            .WithSize(width, height)
+            .WithPadding(40, 10, 20, 10)
+            .WithAxisLimits(-10, 60, -2, 2);
 
-        AxisLimits2D limits = new(-10, 60, -2, 2);
-        PlotView view = new(limits, dataRect);
+        Debug.WriteLine(view);
 
-        if (!Layout.HasFigureArea)
+        Draw(canvas, view);
+    }
+
+    public void Draw(ICanvas canvas, PlotView view)
+    {
+        if (!view.HasFigureArea)
             return;
 
         canvas.FillColor = Style.FigureBackgroundColor;
-        canvas.FillRectangle(Layout.FigureRect);
+        canvas.FillRectangle(view.FigureRect);
 
-        if (!Layout.HasDataArea)
+        if (!view.HasDataArea)
             return;
 
         canvas.FillColor = Style.DataBackgroundColor;
-        canvas.FillRectangle(Layout.DataRect);
+        canvas.FillRectangle(view.DataRect);
 
         foreach (Plottable.IPlottable plottable in Plottables)
         {
-            plottable.Draw(canvas, view);
+            plottable.Draw(canvas, view, Style);
         }
 
         canvas.StrokeColor = Style.DataBorderColor;
-        canvas.DrawRectangle(Layout.DataRect);
+        canvas.DrawRectangle(view.DataRect);
 
         LastView = view;
     }
