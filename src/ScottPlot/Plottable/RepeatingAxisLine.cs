@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
@@ -269,7 +269,7 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Move the line to a new coordinate in plot space.
+        /// Move the reference line to a new coordinate in plot space.
         /// </summary>
         /// <param name="coordinateX">new X position</param>
         /// <param name="coordinateY">new Y position</param>
@@ -296,7 +296,7 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Return True if the line is within a certain number of pixels (snap) to the mouse
+        /// Return True if the reference line is within a certain number of pixels (snap) to the mouse
         /// </summary>
         /// <param name="coordinateX">mouse position (coordinate space)</param>
         /// <param name="coordinateY">mouse position (coordinate space)</param>
@@ -335,7 +335,7 @@ namespace ScottPlot.Plottable
     }
 
     /// <summary>
-    /// Vertical line at an X position
+    /// Repeating Vertical lines with refernce at an X position
     /// </summary>
     public class RepeatingVLine : RepeatingAxisLine
     {
@@ -354,7 +354,7 @@ namespace ScottPlot.Plottable
     }
 
     /// <summary>
-    /// Horizontal line at an Y position
+    /// Repeating horizontHorizontal line at an Y position
     /// </summary>
     public class RepeatingHLine : RepeatingAxisLine
     {
