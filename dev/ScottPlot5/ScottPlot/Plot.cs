@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -15,13 +16,35 @@ public class Plot
 
     public void AddDemoSinAndCos()
     {
-        AddScatter(Generate.Consecutive(51), Generate.Sin(51));
-        AddScatter(Generate.Consecutive(51), Generate.Cos(51));
+        double[] xsArray = Generate.Consecutive(51);
+        double[] ysArray = Generate.Sin(51);
+        AddScatter(xsArray, ysArray, Colors.Yellow);
+
+        List<double> xsList = Generate.Consecutive(51).ToList();
+        List<double> ysList = Generate.Cos(51).ToList();
+        AddScatterList(xsList, ysList, Colors.Orange);
     }
 
-    public Plottable.Scatter<double> AddScatter(double[] xs, double[] ys)
+    public Plottable.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        var sp = new Plottable.Scatter<double>(xs, ys);
+        Plottable.ScatterArray<double> sp = new(xs, ys)
+        {
+            LineColor = color ?? Colors.Blue,
+            MarkerColor = color ?? Colors.Blue,
+        };
+
+        Plottables.Add(sp);
+        return sp;
+    }
+
+    public Plottable.ScatterList<double> AddScatterList(List<double> xs, List<double> ys, Color? color = null)
+    {
+        Plottable.ScatterList<double> sp = new(xs, ys)
+        {
+            LineColor = color ?? Colors.Blue,
+            MarkerColor = color ?? Colors.Blue,
+        };
+
         Plottables.Add(sp);
         return sp;
     }
@@ -34,21 +57,15 @@ public class Plot
         AxisLimits2D limits = new(-10, 60, -2, 2);
         PlotView view = new(limits, dataRect);
 
-        if (Layout.HasFigureArea)
-            DrawFigure(canvas, view);
+        if (!Layout.HasFigureArea)
+            return;
 
-        if (Layout.HasDataArea)
-            DrawDataArea(canvas, view);
-    }
-
-    private void DrawFigure(ICanvas canvas, PlotView view)
-    {
         canvas.FillColor = Style.FigureBackgroundColor;
         canvas.FillRectangle(Layout.FigureRect);
-    }
 
-    private void DrawDataArea(ICanvas canvas, PlotView view)
-    {
+        if (!Layout.HasDataArea)
+            return;
+
         canvas.FillColor = Style.DataBackgroundColor;
         canvas.FillRectangle(Layout.DataRect);
 
