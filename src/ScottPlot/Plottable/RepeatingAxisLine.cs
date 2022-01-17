@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
@@ -240,7 +240,6 @@ namespace ScottPlot.Plottable
                     float xPos = PositionLabelOppositeAxis ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX - yLabelSize.Width;
                     float yPos = pixelY - yLabelSize.Height / 2;
                     RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
-                    //var xLabelRect = RectangleF.FromLTRB(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
                     gfx.FillRectangle(fillBrush, xLabelRect);
                     var sf = GDI.StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle);
                     gfx.DrawString(yLabel, fnt, fontBrush, xPos, pixelY, sf);
@@ -259,8 +258,7 @@ namespace ScottPlot.Plottable
                     SizeF xLabelSize = GDI.MeasureString(xLabel, PositionLabelFont);
                     float xPos = pixelX - xLabelSize.Width / 2;
                     float yPos = PositionLabelOppositeAxis ? dims.DataOffsetY - xLabelSize.Height : dims.DataOffsetY + dims.DataHeight;
-                    //RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
-                    var xLabelRect = RectangleF.FromLTRB(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
+                    RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
                     gfx.FillRectangle(fillBrush, xLabelRect);
                     var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
                     gfx.DrawString(xLabel, fnt, fontBrush, pixelX, yPos, sf);
