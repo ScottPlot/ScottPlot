@@ -6,6 +6,7 @@ _In development / not yet on NuGet_
 * Controls: Improved middle-click-drag zoom rectangle support for plots with multiple axes (#1559, #1537) _Thanks @BambOoxX_
 * Marker: New plot types `DraggableMarkerPlot` and `DraggableMarkerPlotInVector` give users options to add mouse-interactive markers to plots (#1558) _Thanks @BambOoxX_
 * Bar Plot: New `ValueFormatter` option allows users to customize the text displayed above bars (#1542) _Thanks @jankri_
+* Plot: `Title()` now has additional arguments for customizing text above the plot (#1564) _Thanks Hendri_
 
 ## ScottPlot 4.1.30
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-15_
