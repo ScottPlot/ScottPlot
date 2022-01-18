@@ -6,6 +6,9 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// This plot type displays a marker at a point that can be dragged with the mouse.
+    /// </summary>
     public class DraggableMarkerPlot : MarkerPlot, IDraggable
     {
         /// <summary>
@@ -74,6 +77,10 @@ namespace ScottPlot.Plottable
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) => Math.Abs(Y - coordinateY) <= snapY && Math.Abs(X - coordinateX) <= snapX;
     }
 
+    /// <summary>
+    /// This plot type displays a marker at a point that can be dragged with the mouse,
+    /// but when dragged it "snapps" to specific X/Y coordinates defined by two arrays of values.
+    /// </summary>
     public class DraggableMarkerPlotInVector : IDraggable, IPlottable
     {
         public bool IsVisible { get; set; } = true;
