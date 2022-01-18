@@ -83,7 +83,7 @@ namespace ScottPlot.Plottable
                 using (var valueTextFont = GDI.Font(Font))
                 using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center })
-                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
+                    gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
         }
 
         private void RenderBarHorizontal(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
@@ -122,7 +122,7 @@ namespace ScottPlot.Plottable
                 using (var valueTextFont = GDI.Font(Font))
                 using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
-                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
+                    gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
         }
 
         protected void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)

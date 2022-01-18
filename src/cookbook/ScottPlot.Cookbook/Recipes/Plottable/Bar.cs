@@ -146,6 +146,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class BarShowValueCustom : IRecipe
+    {
+        public string Category => "Plottable: Bar Graph";
+        public string ID => "bar_values_custom_formatter";
+        public string Title => "Custom Value Formatter";
+        public string Description => "A custom formatter can be used to generate labels " +
+            "above each bar using the numeric value of the bar itself.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Func<double, string> customFormatter = y => $"Y={y:N2}";
+
+            double[] values = { 27.3, 23.1, 21.2, 16.1, 6.4, 19.2, 18.7, 17.3, 20.3, 13.1 };
+            var bar = plt.AddBar(values);
+            bar.ShowValuesAboveBars = true;
+            bar.ValueFormatter = customFormatter;
+
+            plt.SetAxisLimits(yMin: 0);
+        }
+    }
+
     public class BarPattern : IRecipe
     {
         public string Category => "Plottable: Bar Graph";
