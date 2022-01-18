@@ -56,23 +56,32 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Marker";
         public string ID => "marker_draggableinvector";
-        public string Title => "Draggable Marker in a vector";
+        public string Title => "Draggable Marker Snap";
         public string Description =>
-            "A special type of marker which can be dragged with the mouse, but only in a given dataset not on the whole plot. " +
-            "This is practical if you want to show the properties of a specific data point without always following the mouse movement, as in the \"Show Value on Hover\" example";
+            "This is a type of marker which can be dragged with the mouse, " +
+            "but is restricted to to X/Y positions defined by two arrays.";
         public void ExecuteRecipe(Plot plt)
         {
+            // create random data and display it with a scatter plot
             double[] xs = DataGen.Consecutive(50);
             double[] ys = DataGen.Random(new Random(0), 50);
+            plt.AddScatter(xs, ys, label: "data");
 
-            var myDraggableMarkerInVector = new ScottPlot.Plottable.DraggableMarkerPlotInVector();
-            myDraggableMarkerInVector.Xs = xs;
-            myDraggableMarkerInVector.Ys = ys;
-            myDraggableMarkerInVector.DragEnabled = true;
-            myDraggableMarkerInVector.IsVisible = true;
-            myDraggableMarkerInVector.Color = Color.Red;
-            plt.AddScatter(xs, ys);
-            plt.Add(myDraggableMarkerInVector);
+            // add a draggable marker that "snaps" to data values in that scatter plot
+            var dmpv = new ScottPlot.Plottable.DraggableMarkerPlotInVector()
+            {
+                Xs = xs,
+                Ys = ys,
+                DragEnabled = true,
+                IsVisible = true,
+                MarkerSize = 15,
+                MarkerShape = MarkerShape.filledDiamond,
+                Color = Color.Magenta,
+                Label = "marker",
+            };
+            plt.Add(dmpv);
+
+            plt.Legend();
         }
     }
 }
