@@ -231,20 +231,50 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterPlotDraggable : IRecipe
     {
-        public string Category => "Plottable: Draggable Scatter Plot ";
-        public string ID => "scatter_draggable";
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_draggable_vertical";
         public string Title => "Draggable Scatter Plot";
-        public string Description => "Want to modify the scatter points interactively ? " +
-        "A ScatterPlotDraggable lets you move the points around";
+        public string Description => "Want to modify the scatter points interactively? " +
+            "A ScatterPlotDraggable lets you move the points around with the mouse. " +
+            "As you move the points around, the values in the original arrays change to " +
+            "reflect their new positions.";
 
         public void ExecuteRecipe(Plot plt)
         {
             double[] x = ScottPlot.DataGen.Consecutive(50);
             double[] y = ScottPlot.DataGen.Cos(50);
-            var scd_plot = new ScottPlot.Plottable.ScatterPlotDraggable(x, y);
-            scd_plot.DragCursor = Cursor.Crosshair;
-            scd_plot.DragEnabled = true;
-            plt.Add(scd_plot);
+
+            var scatter = new ScottPlot.Plottable.ScatterPlotDraggable(x, y)
+            {
+                DragCursor = Cursor.Crosshair,
+                DragEnabled = true,
+            };
+
+            plt.Add(scatter);
+        }
+    }
+
+    public class ScatterPlotDraggableVertical : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_draggable";
+        public string Title => "Draggable Scatter Plot Vertical";
+        public string Description => "You can restrict dragging to just X or Y directions.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] x = ScottPlot.DataGen.Consecutive(50);
+            double[] y = ScottPlot.DataGen.Cos(50);
+
+            var scatter = new ScottPlot.Plottable.ScatterPlotDraggable(x, y)
+            {
+                DragCursor = Cursor.Crosshair,
+                DragEnabled = true,   // controls whether anything can be dragged
+                DragEnabledX = false, // controls whether points can be dragged horizontally 
+                DragEnabledY = true,  // controls whether points can be dragged vertically
+            };
+
+            plt.Add(scatter);
         }
     }
 }
