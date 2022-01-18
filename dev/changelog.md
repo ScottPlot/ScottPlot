@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.31
 _In development / not yet on NuGet_
 * MultiAxis: Improved support for draggable items placed on non-primary axes (#1556, #1545) _Thanks @BambOoxX_
+* Controls: Improved middle-click-drag zoom rectangle support for plots with multiple axes (#1559, #1537) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.30
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-15_
