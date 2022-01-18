@@ -212,4 +212,63 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hSpan.IgnoreAxisAuto = true;
         }
     }
+
+    public class RepeatingAxisLine : IRecipe
+    {
+        public string Category => "Plottable: Axis Line and Span";
+        public string ID => "repeatingAxisLine_basics";
+        public string Title => "Repeating Axis Line";
+        public string Description =>
+            "Repeating axis lines allows to plot several axis lines, " +
+            "either horizontal or vertical, draggable or not, whose positions are linked";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            //Generate a single signal containing 3 harmonic signals
+            int sampleCount = 500;
+            double[] signal1 = ScottPlot.DataGen.Sin(sampleCount, 10);
+            double[] signal2 = ScottPlot.DataGen.Sin(sampleCount, 20);
+            double[] signal3 = ScottPlot.DataGen.Sin(sampleCount, 30);
+
+            double[] signal = new double[sampleCount];
+            for (int index = 0; index < sampleCount; index++)
+            {
+                signal[index] = signal1[index] + signal2[index] + signal3[index];
+            }
+
+            // Plot the signal
+            plt.AddSignal(signal);
+
+            // Create a draggable RepeatingVLine with 5 lines spaced evenly by 50 X units, starting at position 0
+            // The first line will be thicker than the others
+            ScottPlot.Plottable.RepeatingVLine vlines1 = new();
+            vlines1.DragEnabled = true;
+            vlines1.count = 5;
+            vlines1.shift = 50;
+            vlines1.Color = System.Drawing.Color.Magenta;
+            vlines1.LineWidth = 2;
+            vlines1.LineStyle = LineStyle.Dash;
+            vlines1.PositionLabel = true;
+            vlines1.PositionLabelBackground = vlines1.Color;
+            vlines1.relativeposition = false;
+            plt.Add(vlines1);
+
+            // Create a draggable RepeatingVLine with 5 lines spaced evenly by 50 X units, starting at position 0, with a -4 offset
+            // The first line will be thicker than the others
+            ScottPlot.Plottable.RepeatingVLine vlines2 = new();
+            vlines2.DragEnabled = true;
+            vlines2.count = 3;
+            vlines2.shift = 50;
+            vlines2.offset = -1;
+            vlines2.Color = System.Drawing.Color.DarkGreen;
+            vlines2.LineWidth = 2;
+            vlines2.LineStyle = LineStyle.Dot;
+            vlines2.PositionLabel = true;
+            vlines2.PositionLabelBackground = vlines2.Color;
+            vlines2.relativeposition = false;
+            plt.Add(vlines2);
+
+            plt.SetAxisLimitsX(-100, 300);
+        }
+    }
 }
