@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.31
 _In development / not yet on NuGet_
 * MultiAxis: Improved support for draggable items placed on non-primary axes (#1556, #1545) _Thanks @BambOoxX_
+* Marker: New plot types `DraggableMarkerPlot` and `DraggableMarkerPlotInVector` give users options to add mouse-interactive markers to plots (#1558) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.30
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-15_
