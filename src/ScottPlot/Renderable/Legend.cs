@@ -17,12 +17,17 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// List of items appearing in the legend during the last render
         /// </summary>
-        private LegendItem[] LegendItems;
+        private LegendItem[] LegendItems = new LegendItem[] { };
 
         /// <summary>
         /// Number of items appearing in the legend during the last render
         /// </summary>
-        public int Count => LegendItems.Length;
+        public int Count => (LegendItems is null) ? 0 : LegendItems.Length;
+
+        /// <summary>
+        /// Returns true if the legend contained items during the last render
+        /// </summary>
+        public bool HasItems => LegendItems is not null && LegendItems.Length > 0;
 
         public Alignment Location = Alignment.LowerRight;
         public bool FixedLineWidth = false;
@@ -61,16 +66,14 @@ namespace ScottPlot.Renderable
             }
         }
 
+        /// <summary>
+        /// Creates and returns a Bitmap containing all legend items displayed at the last render.
+        /// This will be 1px transparent Bitmap if no render was performed previously or if there are no legend items.
+        /// </summary>
         public Bitmap GetBitmap(bool lowQuality = false, double scale = 1.0)
         {
-            if (LegendItems is null)
-                throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
-
             if (LegendItems.Length == 0)
-            {
-                //throw new InvalidOperationException("The legend is empty (there are no visible plot objects with a label)");
-                return new Bitmap(1, 1); // 1 pixel transparent image
-            }
+                return new Bitmap(1, 1);
 
             // use a temporary bitmap and graphics (without scaling) to measure how large the final image should be
             using var tempBitmap = new Bitmap(1, 1);
@@ -186,6 +189,11 @@ namespace ScottPlot.Renderable
             if (ReverseOrder)
                 Array.Reverse(LegendItems);
         }
+
+        /// <summary>
+        /// Returns an array of legend items displayed in the last render
+        /// </summary>
+        public LegendItem[] GetItems() => LegendItems.ToArray();
 
         private (float x, float y) GetLocationPx(PlotDimensions dims, float width, float height)
         {
