@@ -57,7 +57,10 @@ namespace ScottPlot.Renderable
                 throw new InvalidOperationException("must render the plot at least once before getting the legend bitmap");
 
             if (LegendItems.Length == 0)
-                throw new InvalidOperationException("The legend is empty (there are no visible plot objects with a label)");
+            {
+                //throw new InvalidOperationException("The legend is empty (there are no visible plot objects with a label)");
+                return new Bitmap(1, 1); // 1 pixel transparent image
+            }
 
             // use a temporary bitmap and graphics (without scaling) to measure how large the final image should be
             using var tempBitmap = new Bitmap(1, 1);
