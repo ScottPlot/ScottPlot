@@ -3,7 +3,7 @@
 ## ScottPlot 4.1.32
 _In development / not yet on NuGet_
 * Legend: `GetBitmap()` returns a transparent image instead of throwing an exception if there are no items in the legend (#1578) _Thanks @BambOoxX_
-* Legend: Added `Count` and `HasItems` properties so users can determine if they want to display the legend (#1578) _Thanks @BambOoxX_
+* Legend: Added `Count`, `HasItems`, and `GetItems()` so users can inspect legend contents to if/how they want to display it (#1578) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.31
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_
