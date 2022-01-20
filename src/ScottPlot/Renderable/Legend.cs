@@ -14,6 +14,16 @@ namespace ScottPlot.Renderable
 {
     public class Legend : IRenderable
     {
+        /// <summary>
+        /// List of items appearing in the legend during the last render
+        /// </summary>
+        private LegendItem[] LegendItems;
+
+        /// <summary>
+        /// Number of items appearing in the legend during the last render
+        /// </summary>
+        public int Count => LegendItems.Length;
+
         public Alignment Location = Alignment.LowerRight;
         public bool FixedLineWidth = false;
         public bool ReverseOrder = false;
@@ -166,7 +176,6 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private LegendItem[] LegendItems;
         public void UpdateLegendItems(IPlottable[] renderables)
         {
             LegendItems = renderables.Where(x => x.GetLegendItems() != null)
