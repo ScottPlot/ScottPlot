@@ -11,6 +11,8 @@ namespace ScottPlot.Plottable
         public new double[] Xs { get; private set; }
         public new double[] Ys { get; private set; }
         public int CurrentIndex { get; set; } = 0;
+        public double[] XsSorted { get; private set; }
+        public double[] YsSorted { get; private set; }
 
         /// <summary>
         /// Indicates whether scatter points are draggable in user controls.
@@ -53,6 +55,16 @@ namespace ScottPlot.Plottable
         public double DragYLimitMax = double.PositiveInfinity;
 
         /// <summary>
+        /// Indicates whether scatter point horizontal drag is restricted to the space between the two adjacent X coordinates in user controls.
+        /// </summary>
+        public bool DragBoxedX { get; set; } = false;
+
+        /// <summary>
+        /// Indicates whether scatter point vertical drag is restricted to the space between the two adjacent Y coordinates in user controls.
+        /// </summary>
+        public bool DragBoxedY { get; set; } = false;
+
+        /// <summary>
         /// This event is invoked after the plot is dragged
         /// </summary>
         public event EventHandler Dragged = delegate { };
@@ -72,9 +84,32 @@ namespace ScottPlot.Plottable
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;
             if (coordinateX < DragYLimitMin) coordinateY = DragYLimitMin;
             if (coordinateX > DragYLimitMax) coordinateY = DragYLimitMax;
+            if (DragEnabled)
+            {
+                int SortedCurrentIndex = Array.IndexOf(XsSorted, Xs[CurrentIndex]);
 
-            if (DragEnabledX) Xs[CurrentIndex] = coordinateX;
-            if (DragEnabledY) Ys[CurrentIndex] = coordinateY;
+                if (DragEnabledX && DragBoxedX)
+                {
+                    if (SortedCurrentIndex < PointCount && coordinateX > XsSorted[SortedCurrentIndex + 1]) coordinateX = XsSorted[SortedCurrentIndex + 1];
+                    if (SortedCurrentIndex > 0 && coordinateX < XsSorted[SortedCurrentIndex - 1]) coordinateX = XsSorted[SortedCurrentIndex - 1];
+                }
+                if (DragEnabledY && DragBoxedY)
+                {
+                    if (SortedCurrentIndex < PointCount && coordinateY > YsSorted[SortedCurrentIndex + 1]) coordinateY = YsSorted[SortedCurrentIndex + 1];
+                    if (SortedCurrentIndex > 0 && coordinateY < YsSorted[SortedCurrentIndex - 1]) coordinateY = YsSorted[SortedCurrentIndex - 1];   
+                }
+
+                if (DragEnabledX)
+                {
+                    Xs[CurrentIndex] = coordinateX;
+                    Xs[SortedCurrentIndex] = coordinateX;
+                }
+                if (DragEnabledY)
+                {
+                    Ys[CurrentIndex] = coordinateY;
+                    Ys[SortedCurrentIndex] = coordinateY;
+                }
+            }
 
             Dragged(this, EventArgs.Empty);
         }
@@ -104,10 +139,17 @@ namespace ScottPlot.Plottable
 
         public ScatterPlotDraggable(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null) : base(xs, ys, errorX, errorY)
         {
-            this.Xs = xs;
-            this.Ys = ys;
-            this.XError = errorX;
-            this.YError = errorY;
+            Xs = xs;
+            Ys = ys;
+            XError = errorX;
+            YError = errorY;
+            XsSorted = new double[PointCount];
+            Xs.CopyTo(XsSorted, 0);
+            Array.Sort(XsSorted);
+            YsSorted = new double[PointCount];
+            Ys.CopyTo(YsSorted, 0);
+            Array.Sort(YsSorted);
+
         }
     }
 }
