@@ -96,7 +96,7 @@ namespace ScottPlot.Plottable
                 if (DragEnabledY && DragBoxedY)
                 {
                     if (SortedCurrentIndex < PointCount && coordinateY > YsSorted[SortedCurrentIndex + 1]) coordinateY = YsSorted[SortedCurrentIndex + 1];
-                    if (SortedCurrentIndex > 0 && coordinateY < YsSorted[SortedCurrentIndex - 1]) coordinateY = YsSorted[SortedCurrentIndex - 1];   
+                    if (SortedCurrentIndex > 0 && coordinateY < YsSorted[SortedCurrentIndex - 1]) coordinateY = YsSorted[SortedCurrentIndex - 1];
                 }
 
                 if (DragEnabledX)

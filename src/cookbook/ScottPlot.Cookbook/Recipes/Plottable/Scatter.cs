@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -272,6 +272,30 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 DragEnabled = true,   // controls whether anything can be dragged
                 DragEnabledX = false, // controls whether points can be dragged horizontally 
                 DragEnabledY = true,  // controls whether points can be dragged vertically
+            };
+
+            plt.Add(scatter);
+        }
+    }
+
+    public class ScatterPlotDraggableBoxed : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_draggable_boxed";
+        public string Title => "Draggable Scatter Plot with box constraint";
+        public string Description => "You can restrict dragging to adjacent points (separately in X and Y).";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] x = ScottPlot.DataGen.Consecutive(50);
+            double[] y = ScottPlot.DataGen.Cos(50);
+
+            var scatter = new ScottPlot.Plottable.ScatterPlotDraggable(x, y)
+            {
+                DragCursor = Cursor.Crosshair,
+                DragEnabled = true,   // controls whether anything can be dragged
+                DragBoxedX = true, // controls whether dragging in constrained to the adjacent points in X
+                DragBoxedY = true, // controls whether dragging in constrained to the adjacent points in Y
             };
 
             plt.Add(scatter);
