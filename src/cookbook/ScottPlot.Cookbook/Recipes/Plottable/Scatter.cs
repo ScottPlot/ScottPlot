@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -232,7 +232,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     public class ScatterPlotDraggable : IRecipe
     {
         public string Category => "Plottable: Scatter Plot";
-        public string ID => "scatter_draggable_vertical";
+        public string ID => "scatter_draggable";
         public string Title => "Draggable Scatter Plot";
         public string Description => "Want to modify the scatter points interactively? " +
             "A ScatterPlotDraggable lets you move the points around with the mouse. " +
@@ -257,7 +257,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     public class ScatterPlotDraggableVertical : IRecipe
     {
         public string Category => "Plottable: Scatter Plot";
-        public string ID => "scatter_draggable";
+        public string ID => "scatter_draggable_vertical";
         public string Title => "Draggable Scatter Plot Vertical";
         public string Description => "You can restrict dragging to just X or Y directions.";
 
