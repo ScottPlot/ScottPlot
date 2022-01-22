@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,17 +12,17 @@ namespace ScottPlot
 {
     public partial class FormsPlotLegendViewer : Form
     {
-        public FormsPlotLegendViewer(ScottPlot.Plot plot, string windowTitle = "Detached Legend")
+        public FormsPlotLegendViewer(FormsPlot Fplot, string windowTitle = "Detached Legend")
         {
             InitializeComponent();
-            var legend = plot.Legend(false);
-            var li = legend.GetItems();
-            if (legend.HasItems)
+            Legend = Fplot.Plot.Legend(false);
+            Fplot.Refresh();
+            if (Legend.HasItems)
             {
                 this.Show();
-                legend.OutlineColor = Color.White;
-                legend.ShadowColor = Color.White;
-                PictureBoxLegend.Image = legend.GetBitmap();
+                Legend.OutlineColor = Color.White;
+                Legend.ShadowColor = Color.White;
+                PictureBoxLegend.Image = Legend.GetBitmap(false, 5);
                 var frmmaxwidth = PictureBoxLegend.Image.Width + 2 * SystemInformation.VerticalScrollBarWidth;
                 var frmminwidth = frmmaxwidth;
                 var frmmaxheight = PictureBoxLegend.Image.Height + 3 * SystemInformation.HorizontalScrollBarHeight;
@@ -38,5 +38,9 @@ namespace ScottPlot
                 MessageBox.Show("Current legend has no items", "Detached Legend", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+    }
+}
+
+        private Renderable.Legend Legend;
     }
 }
