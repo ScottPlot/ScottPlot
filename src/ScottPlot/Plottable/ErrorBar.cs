@@ -1,0 +1,146 @@
+﻿using ScottPlot.Drawing;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ScottPlot.Plottable
+{
+    public class ErrorBar : IPlottable
+    {
+        public double[] Xs { get; set; }
+        public double[] Ys { get; set; }
+        public double[] XErrorsPositive { get; set; }
+        public double[] XErrorsNegative { get; set; }
+        public double[] YErrorsPositive { get; set; }
+        public double[] YErrorsNegative { get; set; }
+        public int CapSize { get; set; } = 3;
+
+        public bool IsVisible { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public double LineWidth { get; set; } = 1;
+        public Color Color { get; set; } = Color.Gray;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+
+        public ErrorBar(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
+        {
+            Xs = xs;
+            Ys = ys;
+            XErrorsPositive = xErrorsPositive;
+            XErrorsNegative = xErrorsNegative;
+            YErrorsPositive = yErrorsPositive;
+            YErrorsNegative = yErrorsNegative;
+        }
+
+        public AxisLimits GetAxisLimits()
+        {
+            double xMin = double.PositiveInfinity;
+            double xMax = double.NegativeInfinity;
+            double yMin = double.PositiveInfinity;
+            double yMax = double.NegativeInfinity;
+
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                xMin = Math.Min(xMin, Xs[i] - (XErrorsNegative?[i] ?? 0));
+                xMax = Math.Max(xMax, Xs[i] + (XErrorsPositive?[i] ?? 0));
+                yMin = Math.Min(yMin, Ys[i] - (YErrorsNegative?[i] ?? 0));
+                yMax = Math.Max(yMax, Ys[i] + (YErrorsPositive?[i] ?? 0));
+            }
+
+            return new AxisLimits(xMin, xMax, yMin, yMax);
+        }
+
+        public LegendItem[] GetLegendItems()
+        {
+            return new LegendItem[0];
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            using Graphics gfx = Graphics.FromImage(bmp);
+            using Pen pen = GDI.Pen(Color, LineWidth, LineStyle, true);
+
+            if (XErrorsPositive is not null && XErrorsNegative is not null)
+            {
+                DrawErrorBars(dims, gfx, pen, XErrorsPositive, XErrorsNegative, true);
+            }
+
+            if (YErrorsPositive is not null && YErrorsNegative is not null)
+            {
+                DrawErrorBars(dims, gfx, pen, YErrorsPositive, YErrorsNegative, false);
+            }
+        }
+
+        private void DrawErrorBars(PlotDimensions dims, Graphics gfx, Pen pen, double[] errorPositive, double[] errorNegative, bool onXAxis)
+        {
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                // Pixel centre = dims.GetPixel(new Coordinate(Xs[i], Ys[i]));
+
+                if (onXAxis)
+                {
+                    Pixel left = dims.GetPixel(new Coordinate(Xs[i] - errorNegative[i], Ys[i]));
+                    Pixel right = dims.GetPixel(new Coordinate(Xs[i] + errorPositive[i], Ys[i]));
+
+                    gfx.DrawLine(pen, left.X, left.Y, right.X, right.Y);
+                    gfx.DrawLine(pen, left.X, left.Y - CapSize, left.X, left.Y + CapSize);
+                    gfx.DrawLine(pen, right.X, right.Y - CapSize, right.X, right.Y + CapSize);
+                }
+                else
+                {
+                    Pixel top = dims.GetPixel(new Coordinate(Xs[i], Ys[i] - errorNegative[i]));
+                    Pixel bottom = dims.GetPixel(new Coordinate(Xs[i], Ys[i] + errorPositive[i]));
+
+                    gfx.DrawLine(pen, top.X, top.Y, bottom.X, bottom.Y);
+                    gfx.DrawLine(pen, top.X, top.Y - CapSize, top.X, top.Y + CapSize);
+                    gfx.DrawLine(pen, bottom.X, bottom.Y - CapSize, bottom.X, bottom.Y + CapSize);
+                }
+            }
+
+        }
+
+        public void ValidateData(bool deep = false)
+        {
+            Validate.AssertHasElements(nameof(Xs), Xs);
+            Validate.AssertHasElements(nameof(Ys), Ys);
+            Validate.AssertEqualLength($"{nameof(Xs)}, {nameof(Ys)}", Xs, Ys);
+
+            if (XErrorsPositive is not null || XErrorsNegative is not null)
+            {
+                Validate.AssertHasElements(nameof(XErrorsPositive), XErrorsPositive);
+                Validate.AssertHasElements(nameof(XErrorsNegative), XErrorsNegative);
+                Validate.AssertEqualLength($"{Xs} {nameof(XErrorsPositive)}, {nameof(XErrorsNegative)}", Xs, XErrorsPositive, XErrorsNegative);
+            }
+
+            if (YErrorsPositive is not null || YErrorsNegative is not null)
+            {
+                Validate.AssertHasElements(nameof(YErrorsPositive), YErrorsPositive);
+                Validate.AssertHasElements(nameof(YErrorsNegative), YErrorsNegative);
+                Validate.AssertEqualLength($"{Xs} {nameof(YErrorsPositive)}, {nameof(YErrorsNegative)}", Xs, YErrorsPositive, YErrorsNegative);
+            }
+
+            if (deep)
+            {
+                Validate.AssertAllReal(nameof(Xs), Xs);
+                Validate.AssertAllReal(nameof(Ys), Ys);
+
+                if (XErrorsPositive is not null && XErrorsNegative is not null)
+                {
+                    Validate.AssertAllReal(nameof(XErrorsPositive), XErrorsPositive);
+                    Validate.AssertAllReal(nameof(XErrorsNegative), XErrorsNegative);
+                }
+
+                if (YErrorsPositive is not null && YErrorsNegative is not null)
+                {
+                    Validate.AssertAllReal(nameof(YErrorsPositive), YErrorsPositive);
+                    Validate.AssertAllReal(nameof(YErrorsNegative), YErrorsNegative);
+                }
+
+                // TODO: Should we validate that errors are all positive?
+            }
+        }
+    }
+}

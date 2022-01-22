@@ -846,6 +846,23 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Adds error bars to the plot.
+        /// </summary>
+        /// <param name="xs">The data around which the X error is about</param>
+        /// <param name="ys">The data around which the Y error is about</param>
+        /// <param name="xErrorsPositive">The magnitude of the positive X error</param>
+        /// <param name="xErrorsNegative">The magnitude of the negative X error</param>
+        /// <param name="yErrorsPositive">The magnitude of the positive Y error</param>
+        /// <param name="yErrorsNegative">The magnitude of the negative Y error</param>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
+        {
+            ErrorBar errorBar = new(xs, ys, xErrorsPositive, xErrorsNegative, yErrorsPositive, yErrorsNegative);
+            Add(errorBar);
+
+            return errorBar;
+        }
+
+        /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
         public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
