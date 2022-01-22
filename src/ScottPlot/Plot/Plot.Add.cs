@@ -862,6 +862,8 @@ namespace ScottPlot
             return errorBar;
         }
 
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors) => AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors);
+
         /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
