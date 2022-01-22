@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace ScottPlot.Plottable
@@ -85,18 +85,18 @@ namespace ScottPlot.Plottable
             if (DragEnabled)
             {
                 int SortedCurrentIndex = Array.IndexOf(XsSorted, Xs[CurrentIndex]);
-
                 if (DragEnabledX && DragBoxedX)
                 {
-                    if (SortedCurrentIndex < PointCount && coordinateX > XsSorted[SortedCurrentIndex + 1]) coordinateX = XsSorted[SortedCurrentIndex + 1];
-                    if (SortedCurrentIndex > 0 && coordinateX < XsSorted[SortedCurrentIndex - 1]) coordinateX = XsSorted[SortedCurrentIndex - 1];
+                    double lower_bound = SortedCurrentIndex == 0 ? XsSorted[0] : XsSorted[SortedCurrentIndex - 1];
+                    double upper_bound = SortedCurrentIndex == PointCount - 1 ? XsSorted[PointCount - 1] : XsSorted[SortedCurrentIndex + 1];
+                    coordinateX = CompareToBox(coordinateX, lower_bound, upper_bound);
                 }
                 if (DragEnabledY && DragBoxedY)
                 {
-                    if (SortedCurrentIndex < PointCount && coordinateY > YsSorted[SortedCurrentIndex + 1]) coordinateY = YsSorted[SortedCurrentIndex + 1];
-                    if (SortedCurrentIndex > 0 && coordinateY < YsSorted[SortedCurrentIndex - 1]) coordinateY = YsSorted[SortedCurrentIndex - 1];
+                    double lower_bound = SortedCurrentIndex == 0 ? YsSorted[0] : YsSorted[SortedCurrentIndex - 1];
+                    double upper_bound = SortedCurrentIndex == PointCount - 1 ? YsSorted[PointCount - 1] : YsSorted[SortedCurrentIndex + 1];
+                    coordinateY = CompareToBox(coordinateY, lower_bound, upper_bound);
                 }
-
                 if (DragEnabledX)
                 {
                     Xs[CurrentIndex] = coordinateX;
@@ -110,6 +110,26 @@ namespace ScottPlot.Plottable
             }
 
             Dragged(this, EventArgs.Empty);
+        }
+
+        private (double, double) SwapBoundsIfNeeded(double lower_bound, double upper_bound)
+        {
+            if (upper_bound < lower_bound)
+            {
+                return (upper_bound, lower_bound);
+            }
+            else
+            {
+                return (lower_bound, upper_bound);
+            }
+        }
+
+        private double CompareToBox(double coordinate, double lower_bound, double upper_bound)
+        {
+            (lower_bound, upper_bound) = SwapBoundsIfNeeded(lower_bound, upper_bound);
+            if (coordinate >= upper_bound) return upper_bound;
+            if (coordinate <= lower_bound) return lower_bound;
+            return coordinate;
         }
 
         /// <summary>
@@ -141,7 +161,7 @@ namespace ScottPlot.Plottable
             Array.Sort<int>(permutationinds, (a, b) => Xs[a].CompareTo(Xs[b]));
             XsSorted = new double[PointCount];
             YsSorted = new double[PointCount];
-            for (int i = 0;i<PointCount; i++)
+            for (int i = 0; i < PointCount; i++)
             {
                 XsSorted[i] = Xs[permutationinds[i]];
                 YsSorted[i] = Ys[permutationinds[i]];
