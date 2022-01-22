@@ -9,12 +9,9 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class ScatterPlotDraggable : ScatterPlot, IDraggable
     {
-        public new double[] Xs { get; private set; }
-        public new double[] Ys { get; private set; }
         public int CurrentIndex { get; set; } = 0;
         public double[] XsSorted { get; private set; }
         public double[] YsSorted { get; private set; }
-
         /// <summary>
         /// Indicates whether scatter points are draggable in user controls.
         /// </summary>
@@ -140,10 +137,6 @@ namespace ScottPlot.Plottable
 
         public ScatterPlotDraggable(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null) : base(xs, ys, errorX, errorY)
         {
-            //Xs = xs;
-            //Ys = ys;
-            //XError = errorX;
-            //YError = errorY;
             int[] permutationinds = Enumerable.Range(0, PointCount).ToArray();
             Array.Sort<int>(permutationinds, (a, b) => Xs[a].CompareTo(Xs[b]));
             XsSorted = new double[PointCount];
