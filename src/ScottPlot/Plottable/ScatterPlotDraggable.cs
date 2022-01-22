@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 
 namespace ScottPlot.Plottable
 {
@@ -139,17 +140,19 @@ namespace ScottPlot.Plottable
 
         public ScatterPlotDraggable(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null) : base(xs, ys, errorX, errorY)
         {
-            Xs = xs;
-            Ys = ys;
-            XError = errorX;
-            YError = errorY;
+            //Xs = xs;
+            //Ys = ys;
+            //XError = errorX;
+            //YError = errorY;
+            int[] permutationinds = Enumerable.Range(0, PointCount).ToArray();
+            Array.Sort<int>(permutationinds, (a, b) => Xs[a].CompareTo(Xs[b]));
             XsSorted = new double[PointCount];
-            Xs.CopyTo(XsSorted, 0);
-            Array.Sort(XsSorted);
             YsSorted = new double[PointCount];
-            Ys.CopyTo(YsSorted, 0);
-            Array.Sort(YsSorted);
-
+            for (int i = 0;i<PointCount; i++)
+            {
+                XsSorted[i] = Xs[permutationinds[i]];
+                YsSorted[i] = Ys[permutationinds[i]];
+            }
         }
     }
 }
