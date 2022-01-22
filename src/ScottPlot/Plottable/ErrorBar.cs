@@ -95,8 +95,8 @@ namespace ScottPlot.Plottable
                     Pixel bottom = dims.GetPixel(new Coordinate(Xs[i], Ys[i] + errorPositive[i]));
 
                     gfx.DrawLine(pen, top.X, top.Y, bottom.X, bottom.Y);
-                    gfx.DrawLine(pen, top.X, top.Y - CapSize, top.X, top.Y + CapSize);
-                    gfx.DrawLine(pen, bottom.X, bottom.Y - CapSize, bottom.X, bottom.Y + CapSize);
+                    gfx.DrawLine(pen, top.X - CapSize, top.Y, top.X + CapSize, top.Y);
+                    gfx.DrawLine(pen, bottom.X - CapSize, bottom.Y, bottom.X + CapSize, bottom.Y);
                 }
             }
 
