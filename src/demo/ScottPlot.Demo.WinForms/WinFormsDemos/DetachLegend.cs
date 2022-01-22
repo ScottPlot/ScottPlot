@@ -23,10 +23,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             int pointCount = 51;
             Random rand = new Random(0);
             double[] dataXs = DataGen.Consecutive(pointCount);
-            for (int i = 0; i < 50;i++)
+            for (int i = 0; i < 5; i++)
             {
-            var scatter = formsPlot1.Plot.AddScatter(dataXs, DataGen.RandomWalk(rand,pointCount));
-            scatter.Label = $"Label n°{i}";
+                var scatter = formsPlot1.Plot.AddScatter(dataXs, DataGen.RandomWalk(rand, pointCount));
+                scatter.Label = $"Label n°{i}";
             }
             formsPlot1.Plot.Legend();
             formsPlot1.Refresh();
