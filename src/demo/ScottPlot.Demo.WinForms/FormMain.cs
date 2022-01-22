@@ -15,6 +15,7 @@ namespace ScottPlot.Demo.WinForms
         private void CookbookButton_Click(object sender, EventArgs e) => new FormCookbook().ShowDialog();
         private void MouseTrackerButton_Click(object sender, EventArgs e) => new WinFormsDemos.MouseTracker().ShowDialog();
         private void ToggleVisibilityButton_Click(object sender, EventArgs e) => new WinFormsDemos.ToggleVisibility().ShowDialog();
+        private void DetachLegendButton_Click(object sender, EventArgs e) => new WinFormsDemos.DetachLegend().ShowDialog();
         private void ConfigButton_Click(object sender, EventArgs e) => new WinFormsDemos.FormsPlotConfig().ShowDialog();
         private void TransparentBackgroundButton_Click(object sender, EventArgs e) => new WinFormsDemos.TransparentBackground().ShowDialog();
         private void LinkedAxesButton_Click(object sender, EventArgs e) => new WinFormsDemos.LinkedPlots().ShowDialog();
