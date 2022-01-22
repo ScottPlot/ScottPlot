@@ -31,6 +31,7 @@ namespace ScottPlot
                 MaximumSize = new(frmmaxwidth, frmmaxheight);
                 Size = new(frmminwidth, frmminheight);
                 SizeGripStyle = SizeGripStyle.Show;
+                PictureBoxLegend.Cursor = Cursors.Hand;
             }
             else
             {
