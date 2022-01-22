@@ -103,12 +103,12 @@ namespace ScottPlot.Plottable
                 if (DragEnabledX)
                 {
                     Xs[CurrentIndex] = coordinateX;
-                    Xs[SortedCurrentIndex] = coordinateX;
+                    XsSorted[SortedCurrentIndex] = coordinateX;
                 }
                 if (DragEnabledY)
                 {
                     Ys[CurrentIndex] = coordinateY;
-                    Ys[SortedCurrentIndex] = coordinateY;
+                    YsSorted[SortedCurrentIndex] = coordinateY;
                 }
             }
 
