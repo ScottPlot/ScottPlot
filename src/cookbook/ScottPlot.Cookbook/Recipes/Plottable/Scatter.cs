@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -298,6 +298,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 DragBoxedY = true, // controls whether dragging in constrained to the adjacent points in Y
             };
 
+            var vspan = plt.AddVerticalSpan(y[29], y[31], Color.Red);
+            var hspan = plt.AddHorizontalSpan(x[29], x[31], Color.Red);
             plt.Add(scatter);
         }
     }
