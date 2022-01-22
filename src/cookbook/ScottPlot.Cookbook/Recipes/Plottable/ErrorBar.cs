@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class ErrorBarSymmetric: IRecipe
+    public class ErrorBarSymmetric : IRecipe
     {
         public string Category => "Plottable: Error Bar";
         public string ID => "errorBar_symmetric";
@@ -45,15 +45,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] dataX = DataGen.Consecutive(pointCount);
             double[] dataY = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
 
-            double[] errorX= DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
-            double[] errorY= DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] errorX = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] errorY = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
 
             plt.AddScatter(dataX, dataY);
             plt.AddErrorBars(dataX, dataY, errorX, errorY);
         }
     }
 
-    public class ErrorBarOneDimension: IRecipe
+    public class ErrorBarOneDimension : IRecipe
     {
         public string Category => "Plottable: Error Bar";
         public string ID => "errorBar_oneDimension";
@@ -75,7 +75,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class ErrorBarCustomization: IRecipe
+    public class ErrorBarCustomization : IRecipe
     {
         public string Category => "Plottable: Error Bar";
         public string ID => "errorBar_customization";
