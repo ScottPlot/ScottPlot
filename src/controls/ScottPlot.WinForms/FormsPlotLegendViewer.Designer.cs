@@ -29,58 +29,62 @@ namespace ScottPlot
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBoxLegend = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLegend)).BeginInit();
+            this.PanelPictureBox = new System.Windows.Forms.Panel();
+            this.PictureBoxLegend = new System.Windows.Forms.PictureBox();
+            this.PanelPictureBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLegend)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // PanelPictureBox
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.pictureBoxLegend);
-            this.panel1.Location = new System.Drawing.Point(1, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(190, 450);
-            this.panel1.TabIndex = 0;
+            this.PanelPictureBox.AutoScroll = true;
+            this.PanelPictureBox.AutoSize = true;
+            this.PanelPictureBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelPictureBox.BackColor = System.Drawing.Color.White;
+            this.PanelPictureBox.Controls.Add(this.PictureBoxLegend);
+            this.PanelPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.PanelPictureBox.Name = "PanelPictureBox";
+            this.PanelPictureBox.Size = new System.Drawing.Size(1440, 328);
+            this.PanelPictureBox.TabIndex = 0;
             // 
-            // pictureBoxLegend
+            // PictureBoxLegend
             // 
-            this.pictureBoxLegend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxLegend.Location = new System.Drawing.Point(0, 0);
-            this.pictureBoxLegend.Name = "pictureBoxLegend";
-            this.pictureBoxLegend.Size = new System.Drawing.Size(190, 450);
-            this.pictureBoxLegend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBoxLegend.TabIndex = 2;
-            this.pictureBoxLegend.TabStop = false;
+            this.PictureBoxLegend.BackColor = System.Drawing.Color.Transparent;
+            this.PictureBoxLegend.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PictureBoxLegend.Location = new System.Drawing.Point(0, 0);
+            this.PictureBoxLegend.Name = "PictureBoxLegend";
+            this.PictureBoxLegend.Size = new System.Drawing.Size(1440, 328);
+            this.PictureBoxLegend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.PictureBoxLegend.TabIndex = 1;
+            this.PictureBoxLegend.TabStop = false;
             // 
             // FormsPlotLegendViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8.0F, 16.0F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(321, 576);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(284, 349);
+            this.Controls.Add(this.PanelPictureBox);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.Name = "LegendForm";
+            this.Text = "Detached Legend";
             this.Name = "FormsPlotLegendViewer";
             this.ShowIcon = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormsPlotLegendViewer";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLegend)).EndInit();
+            this.PanelPictureBox.ResumeLayout(false);
+            this.PanelPictureBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLegend)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBoxLegend;
+        private System.Windows.Forms.Panel PanelPictureBox;
+        private System.Windows.Forms.PictureBox PictureBoxLegend;
     }
 }

@@ -22,11 +22,15 @@ namespace ScottPlot
                 this.Show();
                 legend.OutlineColor = Color.White;
                 legend.ShadowColor = Color.White;
-                pictureBoxLegend.Image = legend.GetBitmap();
-                var width = pictureBoxLegend.Image.Width + 2*SystemInformation.HorizontalScrollBarHeight;
-                var height = pictureBoxLegend.Image.Height + 2*SystemInformation.CaptionHeight;
-                MinimumSize = new(width, height);
-                MaximumSize = new(width, height);
+                PictureBoxLegend.Image = legend.GetBitmap();
+                var frmmaxwidth = PictureBoxLegend.Image.Width + 2 * SystemInformation.VerticalScrollBarWidth;
+                var frmminwidth = frmmaxwidth;
+                var frmmaxheight = PictureBoxLegend.Image.Height + 3 * SystemInformation.HorizontalScrollBarHeight;
+                var frmminheight = frmmaxheight > 500 ? 500 : frmmaxheight;
+                MinimumSize = new(frmminwidth, frmminheight);
+                MaximumSize = new(frmmaxwidth, frmmaxheight);
+                Size = new(frmminwidth, frmminheight);
+                SizeGripStyle = SizeGripStyle.Show;
             }
             else
             {
