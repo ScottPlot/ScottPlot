@@ -23,5 +23,6 @@ namespace ScottPlot.Plottable
             get { return lineWidth >= 10; }
             set { lineWidth = 10; }
         }
+        public bool plottableVisible;
     }
 }

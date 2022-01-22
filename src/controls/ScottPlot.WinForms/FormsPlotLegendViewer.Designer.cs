@@ -43,6 +43,7 @@ namespace ScottPlot
             this.PanelPictureBox.BackColor = System.Drawing.Color.White;
             this.PanelPictureBox.Controls.Add(this.PictureBoxLegend);
             this.PanelPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.PanelPictureBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PanelPictureBox.Name = "PanelPictureBox";
             this.PanelPictureBox.Size = new System.Drawing.Size(1440, 328);
             this.PanelPictureBox.TabIndex = 0;
@@ -52,6 +53,7 @@ namespace ScottPlot
             this.PictureBoxLegend.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxLegend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBoxLegend.Location = new System.Drawing.Point(0, 0);
+            this.PictureBoxLegend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PictureBoxLegend.Name = "PictureBoxLegend";
             this.PictureBoxLegend.Size = new System.Drawing.Size(1440, 328);
             this.PictureBoxLegend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -60,17 +62,16 @@ namespace ScottPlot
             // 
             // FormsPlotLegendViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8.0F, 16.0F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(284, 349);
+            this.ClientSize = new System.Drawing.Size(284, 436);
             this.Controls.Add(this.PanelPictureBox);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "LegendForm";
-            this.Text = "Detached Legend";
             this.Name = "FormsPlotLegendViewer";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -80,6 +81,7 @@ namespace ScottPlot
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLegend)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

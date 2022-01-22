@@ -295,7 +295,8 @@ namespace ScottPlot.Plottable
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
                 markerShape = MarkerShape,
-                markerSize = MarkerSize
+                markerSize = MarkerSize,
+                plottableVisible = IsVisible
             };
             return new LegendItem[] { singleLegendItem };
         }
