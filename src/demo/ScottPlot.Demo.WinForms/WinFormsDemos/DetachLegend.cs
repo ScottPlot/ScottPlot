@@ -26,7 +26,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             for (int i = 0; i < 5; i++)
             {
                 var scatter = formsPlot1.Plot.AddScatter(dataXs, DataGen.RandomWalk(rand, pointCount));
-                scatter.Label = $"Label n°{i}";
+                if (i > 1 && i < 4)
+                    scatter.Label = $"Label n°{i}";
             }
             formsPlot1.Plot.Legend();
             formsPlot1.Refresh();
