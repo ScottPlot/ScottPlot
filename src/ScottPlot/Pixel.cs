@@ -5,7 +5,7 @@ namespace ScottPlot
     /// <summary>
     /// Describes an X/Y position in pixel space
     /// </summary>
-    public class Pixel
+    public struct Pixel
     {
         public float X;
         public float Y;
