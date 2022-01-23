@@ -966,5 +966,36 @@ namespace ScottPlot
                 return a * (u1 + u2);
             }
         }
+
+        private static double[] HanningWindow(int size, bool normalize = false)
+        {
+            // lifted from https://github.com/swharden/FftSharp (MIT)
+
+            double[] window = new double[size];
+            for (int i = 0; i < size; i++)
+                window[i] = 0.5 - 0.5 * Math.Cos(2 * Math.PI * i / size);
+
+            if (normalize)
+            {
+                double sum = window.Sum();
+                for (int i = 0; i < window.Length; i++)
+                    window[i] /= sum;
+            }
+
+            return window;
+        }
+
+        public static double[] NoisyBellCurve(Random rand, int count, double mult = 1, double noiseFraction = 0.1)
+        {
+            double[] ys = HanningWindow(count, false);
+
+            for (int i = 0; i < count; i++)
+            {
+                ys[i] += (rand.NextDouble() - .5) * noiseFraction;
+                ys[i] *= mult;
+            }
+
+            return ys;
+        }
     }
 }
