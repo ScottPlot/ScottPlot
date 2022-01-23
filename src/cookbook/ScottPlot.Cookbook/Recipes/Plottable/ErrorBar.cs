@@ -17,16 +17,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Random rand = new Random(0);
             int pointCount = 20;
 
-            double[] dataX = DataGen.Consecutive(pointCount);
-            double[] dataY = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
 
-            double[] errorXPositive = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
-            double[] errorXNegative = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
-            double[] errorYPositive = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
-            double[] errorYNegative = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] xErrPos = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] xErrNeg = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] yErrPos = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] yErrNeg = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
 
-            plt.AddScatter(dataX, dataY);
-            plt.AddErrorBars(dataX, dataY, errorXPositive, errorXNegative, errorYPositive, errorYNegative);
+            plt.AddScatter(xs, ys, System.Drawing.Color.Blue, lineStyle: LineStyle.Dot);
+            plt.AddErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg, System.Drawing.Color.Blue);
         }
     }
 
@@ -42,14 +42,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Random rand = new Random(0);
             int pointCount = 20;
 
-            double[] dataX = DataGen.Consecutive(pointCount);
-            double[] dataY = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
 
-            double[] errorX = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
-            double[] errorY = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] xErr = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] yErr = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
 
-            plt.AddScatter(dataX, dataY);
-            plt.AddErrorBars(dataX, dataY, errorX, errorY);
+            plt.AddScatter(xs, ys, System.Drawing.Color.Blue, lineStyle: LineStyle.Dot);
+            plt.AddErrorBars(xs, ys, xErr, yErr, System.Drawing.Color.Blue);
         }
     }
 
@@ -65,13 +65,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Random rand = new Random(0);
             int pointCount = 20;
 
-            double[] dataX = DataGen.Consecutive(pointCount);
-            double[] dataY = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
 
-            double[] error = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] yErr = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
 
-            plt.AddScatter(dataX, dataY);
-            plt.AddErrorBars(dataX, dataY, null, error);
+            plt.AddScatter(xs, ys, System.Drawing.Color.Blue, lineStyle: LineStyle.Dot);
+            plt.AddErrorBars(xs, ys, null, yErr, System.Drawing.Color.Blue);
         }
     }
 
@@ -87,16 +87,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Random rand = new Random(0);
             int pointCount = 20;
 
-            double[] dataX = DataGen.Consecutive(pointCount);
-            double[] dataY = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
 
-            double[] error = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
+            double[] yErr = DataGen.RandomNormal(rand, pointCount).Select(e => Math.Abs(e)).ToArray();
 
-            plt.AddScatter(dataX, dataY);
-            var errorBars = plt.AddErrorBars(dataX, dataY, null, error);
-            errorBars.CapSize = 6;
-            errorBars.Color = System.Drawing.Color.LightBlue;
-            errorBars.LineWidth = 2;
+            plt.AddScatter(xs, ys, System.Drawing.Color.Blue, lineStyle: LineStyle.Dot);
+
+            var errorBars = plt.AddErrorBars(xs, ys, null, yErr);
+            errorBars.CapSize = 8;
+            errorBars.Color = System.Drawing.Color.Green;
+            errorBars.LineWidth = 3;
         }
     }
 }
