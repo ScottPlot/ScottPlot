@@ -37,5 +37,10 @@ namespace ScottPlot
             double dY = Math.Abs(other.Y - Y);
             return Math.Sqrt(dX * dX + dY * dY);
         }
+
+        public static Coordinate FromGeneric<T>(T x, T y)
+        {
+            return new(Convert.ToDouble(x), Convert.ToDouble(y));
+        }
     }
 }
