@@ -16,6 +16,8 @@ namespace ScottPlot
         {
             InitializeComponent();
             Legend = Fplot.Plot.Legend(false);
+            var plottable_array = Fplot.Plot.GetPlottables();
+            Legend.UpdateLegendItems(plottable_array, true);
             Fplot.Refresh();
             if (Legend.HasItems)
             {
