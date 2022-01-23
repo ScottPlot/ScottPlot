@@ -22,6 +22,12 @@ namespace ScottPlot
             (XCenter, YCenter) = (XMin + XSpan / 2, YMin + YSpan / 2);
         }
 
+        // TODO: use this everywhere in the codebase
+        /// <summary>
+        /// AxisLimits representing uninitialized or "no data" limits (all limits are NaN)
+        /// </summary>
+        public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
+
         public bool Equals(AxisLimits other) =>
             other.XMin == XMin &&
             other.XMax == XMax &&
