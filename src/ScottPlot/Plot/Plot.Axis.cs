@@ -59,9 +59,8 @@ namespace ScottPlot
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2)
         /// </summary>
-        /// <param name="label">new text</param>
-        /// <param name="bold">controls font weight</param>
-        public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
+        public void Title(string label, bool? bold = true, Color? color = null, float? size = null, string fontName = null) =>
+            XAxis2.Label(label, color, size, bold, fontName);
 
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area.
@@ -294,23 +293,31 @@ namespace ScottPlot
         /// </summary>
         /// <param name="xPixel">horizontal pixel location</param>
         /// <param name="yPixel">vertical pixel location</param>
+        /// <param name="xAxisIndex">index of the horizontal axis to use</param>
+        /// <param name="yAxisIndex">index of the vertical axis to use</param>
         /// <returns>point in coordinate space</returns>
-        public (double x, double y) GetCoordinate(float xPixel, float yPixel) =>
-            (settings.XAxis.Dims.GetUnit(xPixel), settings.YAxis.Dims.GetUnit(yPixel));
+        public (double x, double y) GetCoordinate(float xPixel, float yPixel, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            double xCoordinate = settings.GetXAxis(xAxisIndex).Dims.GetUnit(xPixel);
+            double yCoordinate = settings.GetYAxis(yAxisIndex).Dims.GetUnit(yPixel);
+            return (xCoordinate, yCoordinate);
+        }
 
         /// <summary>
         /// Return the X position (in coordinate space) for the given pixel column
         /// </summary>
         /// <param name="xPixel">horizontal pixel location</param>
+        /// <param name="xAxisIndex">index of the horizontal axis to use</param>
         /// <returns>horizontal position in coordinate space</returns>
-        public double GetCoordinateX(float xPixel) => settings.XAxis.Dims.GetUnit(xPixel);
+        public double GetCoordinateX(float xPixel, int xAxisIndex = 0) => settings.GetXAxis(xAxisIndex).Dims.GetUnit(xPixel);
 
         /// <summary>
         /// Return the Y position (in coordinate space) for the given pixel row
         /// </summary>
         /// <param name="yPixel">vertical pixel location</param>
+        /// <param name="yAxisIndex">index of the vertical axis to use</param>
         /// <returns>vertical position in coordinate space</returns>
-        public double GetCoordinateY(float yPixel) => settings.YAxis.Dims.GetUnit(yPixel);
+        public double GetCoordinateY(float yPixel, int yAxisIndex = 0) => settings.GetYAxis(yAxisIndex).Dims.GetUnit(yPixel);
 
         /// <summary>
         /// Return the pixel for the given point in coordinate space

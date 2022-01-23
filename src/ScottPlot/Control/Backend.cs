@@ -274,28 +274,6 @@ namespace ScottPlot.Control
         }
 
         /// <summary>
-        /// Return a copy of the list of draggable plottables
-        /// </summary>
-        private IDraggable[] GetDraggables() =>
-            Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
-
-        /// <summary>
-        /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
-        /// </summary>
-        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
-        {
-            double snapWidth = Settings.XAxis.Dims.UnitsPerPx * snapDistancePixels;
-            double snapHeight = Settings.YAxis.Dims.UnitsPerPx * snapDistancePixels;
-
-            foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(Plot.GetCoordinateX((float)pixelX), Plot.GetCoordinateY((float)pixelY), snapWidth, snapHeight))
-                    if (draggable.DragEnabled)
-                        return draggable;
-
-            return null;
-        }
-
-        /// <summary>
         /// Return a multi-line string describing the default mouse interactions.
         /// This can be useful for displaying a help message in a user control.
         /// </summary>
@@ -529,7 +507,7 @@ namespace ScottPlot.Control
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
-            PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
+            PlottableBeingDragged = Plot.GetDraggable(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
             MouseDownTravelDistance = 0;
         }
@@ -537,9 +515,9 @@ namespace ScottPlot.Control
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
-        public (double x, double y) GetMouseCoordinates()
+        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY);
+            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY, xAxisIndex, yAxisIndex);
             return (double.IsNaN(x) ? 0 : x, double.IsNaN(y) ? 0 : y);
         }
 
@@ -636,7 +614,7 @@ namespace ScottPlot.Control
         /// </summary>
         private void UpdateCursor(InputState input)
         {
-            var draggableUnderCursor = GetDraggableUnderMouse(input.X, input.Y);
+            var draggableUnderCursor = Plot.GetDraggable(input.X, input.Y);
             Cursor = (draggableUnderCursor is null) ? Cursor.Arrow : draggableUnderCursor.DragCursor;
             CursorChanged(null, EventArgs.Empty);
         }

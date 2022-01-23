@@ -113,11 +113,24 @@ namespace ScottPlot.Drawing
             return Mix(colorA, colorB, fracA);
         }
 
+        /// <summary>
+        /// Controls whether ClearType (instead of the default AntiAlias) hinting will be used.
+        /// ClearType typically appears superior except when rendered above a transparent background.
+        /// </summary>
+        public static void ClearType(bool enable)
+        {
+            HighQualityTextRenderingHint = enable ? TextRenderingHint.ClearTypeGridFit : TextRenderingHint.AntiAlias;
+        }
+
+        private static TextRenderingHint HighQualityTextRenderingHint = TextRenderingHint.AntiAlias;
+
+        private static TextRenderingHint LowQualityTextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+
         public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
             Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
             gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-            gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.ClearTypeGridFit;
+            gfx.TextRenderingHint = lowQuality ? LowQualityTextRenderingHint : HighQualityTextRenderingHint;
             gfx.ScaleTransform((float)scale, (float)scale);
             return gfx;
         }

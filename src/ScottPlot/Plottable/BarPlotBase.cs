@@ -49,6 +49,11 @@ namespace ScottPlot.Plottable
         public bool ShowValuesAboveBars { get; set; }
 
         /// <summary>
+        /// Function to generate the strings placed above each bar based on its value
+        /// </summary>
+        public Func<double, string> ValueFormatter { get; set; } = x => $"{x}";
+
+        /// <summary>
         /// Bars are drawn from this level and extend according to the sizes defined in Values[]
         /// </summary>
         public double ValueBase { get; set; }
