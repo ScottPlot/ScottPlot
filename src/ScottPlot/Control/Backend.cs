@@ -274,38 +274,6 @@ namespace ScottPlot.Control
         }
 
         /// <summary>
-        /// Return a copy of the list of draggable plottables with dragging enabled
-        /// </summary>
-        private IDraggable[] GetEnabledDraggables() => Settings.Plottables
-            .Where(x => x is IDraggable)
-            .Select(x => (IDraggable)x)
-            .Where(x => x.DragEnabled)
-            .ToArray();
-
-        /// <summary>
-        /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
-        /// </summary>
-        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
-        {
-
-            foreach (IDraggable draggable in GetEnabledDraggables())
-            {
-                int xAxisIndex = ((IPlottable)draggable).XAxisIndex;
-                int yAxisIndex = ((IPlottable)draggable).YAxisIndex;
-                double xUnitsPerPx = Settings.GetXAxis(xAxisIndex).Dims.UnitsPerPx;
-                double yUnitsPerPx = Settings.GetYAxis(yAxisIndex).Dims.UnitsPerPx;
-
-                double snapWidth = xUnitsPerPx * snapDistancePixels;
-                double snapHeight = yUnitsPerPx * snapDistancePixels;
-                double xCoords = Plot.GetCoordinateX((float)pixelX, xAxisIndex);
-                double yCoords = Plot.GetCoordinateY((float)pixelY, yAxisIndex);
-                if (draggable.IsUnderMouse(xCoords, yCoords, snapWidth, snapHeight))
-                    return draggable;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Return a multi-line string describing the default mouse interactions.
         /// This can be useful for displaying a help message in a user control.
         /// </summary>
@@ -539,7 +507,7 @@ namespace ScottPlot.Control
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
-            PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
+            PlottableBeingDragged = Plot.GetDraggable(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
             MouseDownTravelDistance = 0;
         }
@@ -646,7 +614,7 @@ namespace ScottPlot.Control
         /// </summary>
         private void UpdateCursor(InputState input)
         {
-            var draggableUnderCursor = GetDraggableUnderMouse(input.X, input.Y);
+            var draggableUnderCursor = Plot.GetDraggable(input.X, input.Y);
             Cursor = (draggableUnderCursor is null) ? Cursor.Arrow : draggableUnderCursor.DragCursor;
             CursorChanged(null, EventArgs.Empty);
         }
