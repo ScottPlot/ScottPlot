@@ -15,13 +15,17 @@ namespace ScottPlot.Plottable
 
         public event EventHandler Dragged = delegate { };
 
+        public Func<List<double>, List<double>, int, Coordinate, Coordinate> MovePointFunc = (xs, ys, index, moveTo) => moveTo;
+
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled || IndexUnderMouse < 0)
                 return;
 
-            Xs[IndexUnderMouse] = coordinateX;
-            Ys[IndexUnderMouse] = coordinateY;
+            Coordinate requested = new(coordinateX, coordinateY);
+            Coordinate actual = MovePointFunc(Xs, Ys, IndexUnderMouse, requested);
+            Xs[IndexUnderMouse] = actual.X;
+            Ys[IndexUnderMouse] = actual.Y;
 
             Dragged(this, EventArgs.Empty);
         }
