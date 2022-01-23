@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -50,14 +50,7 @@ namespace ScottPlot
             double singleheight = (totheight / ((double)li.Length));
             double proxindex = Math.Floor(e.Y / singleheight);
 
-            if (plottable_array[(int)proxindex].IsVisible)
-            {
-                plottable_array[(int)proxindex].IsVisible = false;
-            }
-            else
-            {
-                plottable_array[(int)proxindex].IsVisible = true;
-            }
+            plottable_array[(int)proxindex].IsVisible = !plottable_array[(int)proxindex].IsVisible;
             Fplot.Refresh();
             Legend.UpdateLegendItems(plottable_array, true);
             PictureBoxLegend.Image = Legend.GetBitmap(false);
