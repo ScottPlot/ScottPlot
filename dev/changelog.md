@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.32
 _In development / not yet on NuGet_
+* Interpolation: New cubic interpolation module with improved stability and simplified API (#1433) _Thanks @allopatin_
 
 ## ScottPlot 4.1.31
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_
