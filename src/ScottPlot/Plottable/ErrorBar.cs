@@ -62,7 +62,7 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using Graphics gfx = Graphics.FromImage(bmp);
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, clipToDataArea: true);
             using Pen pen = GDI.Pen(Color, LineWidth, LineStyle, true);
 
             if (XErrorsPositive is not null && XErrorsNegative is not null)
