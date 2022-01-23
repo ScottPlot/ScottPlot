@@ -846,14 +846,14 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Adds error bars to the plot.
+        /// Add error bars to the plot with custom dimensions in all 4 directions.
         /// </summary>
-        /// <param name="xs">The data around which the X error is about</param>
-        /// <param name="ys">The data around which the Y error is about</param>
-        /// <param name="xErrorsPositive">The magnitude of the positive X error</param>
-        /// <param name="xErrorsNegative">The magnitude of the negative X error</param>
-        /// <param name="yErrorsPositive">The magnitude of the positive Y error</param>
-        /// <param name="yErrorsNegative">The magnitude of the negative Y error</param>
+        /// <param name="xs">Horizontal center of the errorbar</param>
+        /// <param name="ys">Vertical center of each errorbar</param>
+        /// <param name="xErrorsPositive">Magnitude of positive vertical error</param>
+        /// <param name="xErrorsNegative">Magnitude of positive horizontal error</param>
+        /// <param name="yErrorsPositive">Magnitude of negative vertical error</param>
+        /// <param name="yErrorsNegative">Magnitude of negative horizontal error</param>
         public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
         {
             ErrorBar errorBar = new(xs, ys, xErrorsPositive, xErrorsNegative, yErrorsPositive, yErrorsNegative);
@@ -862,6 +862,13 @@ namespace ScottPlot
             return errorBar;
         }
 
+        /// <summary>
+        /// Add error bars to the plot which have symmetrical positive/negative errors
+        /// </summary>
+        /// <param name="xs">Horizontal center of the errorbar</param>
+        /// <param name="ys">Vertical center of each errorbar</param>
+        /// <param name="xErrors">Magnitude of vertical error</param>
+        /// <param name="yErrors">Magnitude of horizontal error</param>
         public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors) => AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors);
 
         /// <summary>
