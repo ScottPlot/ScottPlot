@@ -232,7 +232,7 @@ namespace ScottPlot.Plottable
                 {
                     double lineposition = ComputePosition(Position, Offset, Shift, i, RelativePosition);
                     if (lineposition > dims.YMax || lineposition < dims.YMin)
-                        return;
+                        continue;
 
                     float pixelY = dims.GetPixelY(lineposition);
                     string yLabel = PositionFormatter(lineposition);
@@ -251,7 +251,7 @@ namespace ScottPlot.Plottable
                 {
                     double lineposition = ComputePosition(Position, Offset, Shift, i, RelativePosition);
                     if (lineposition > dims.XMax || lineposition < dims.XMin)
-                        return;
+                        continue;
 
                     float pixelX = dims.GetPixelX(lineposition);
                     string xLabel = PositionFormatter(lineposition);
