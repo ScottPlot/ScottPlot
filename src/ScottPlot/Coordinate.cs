@@ -5,7 +5,7 @@ namespace ScottPlot
     /// <summary>
     /// Describes an X/Y position in coordinate space
     /// </summary>
-    public class Coordinate
+    public struct Coordinate
     {
         public double X;
         public double Y;
