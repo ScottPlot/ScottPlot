@@ -10,6 +10,8 @@ _In development / not yet on NuGet_
 * Repeating Axis Line: Improved display of text labels (#1586, #1557) _Thanks @BambOoxX_
 * Axis: Improved multi-axis support for `GetPixel()` methods (#1584, #1587) _Thanks @ChrisCC6 and @BambOoxX_
 * Error Bar: `Plot.AddErrorBars()` can now be used to place 1D or 2D error bars anywhere on the plot (#1466, #1588) _Thanks @bclehmann_
+* Scatter Plot List: Added generic support to `ScatterPlotList<T>` as demonstrated in the cookbook (#1463, #1592) _Thanks @tyrbentsen_
+* Draggable Scatter Plot: Created a new `ScatterPlotListDraggable` that supports dragging points and custom clamp logic as seen in the cookbook (#1422) _Thanks @EFeru and @BambOoxX_
 
 ## ScottPlot 4.1.31
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_
