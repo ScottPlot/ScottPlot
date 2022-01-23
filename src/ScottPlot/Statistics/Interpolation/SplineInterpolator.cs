@@ -8,6 +8,7 @@ using System;
 
 namespace ScottPlot.Statistics.Interpolation
 {
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public abstract class SplineInterpolator
     {
         public double[] givenYs, givenXs;
