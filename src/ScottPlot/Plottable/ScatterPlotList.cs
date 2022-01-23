@@ -11,8 +11,8 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class ScatterPlotList : IPlottable
     {
-        private readonly List<double> Xs = new List<double>();
-        private readonly List<double> Ys = new List<double>();
+        private readonly List<double> Xs = new();
+        private readonly List<double> Ys = new();
         public int Count => Xs.Count;
 
         public string Label;
@@ -98,25 +98,35 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        /// <summary>
+        /// Return a new array containing pixel locations for each point of the scatter plot
+        /// </summary>
+        private PointF[] GetPoints(PlotDimensions dims)
         {
             PointF[] points = new PointF[Count];
+
+            // TODO: make this thread-safe (in case Xs or Ys changes)
             for (int i = 0; i < Count; i++)
                 points[i] = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
 
-            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var linePen = GDI.Pen(Color, LineWidth, LineStyle, true))
-            {
-                if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)
-                {
-                    gfx.DrawLines(linePen, points);
-                }
+            return points;
+        }
 
-                if (MarkerShape != MarkerShape.none && MarkerSize > 0 && Count > 0)
-                {
-                    foreach (PointF point in points)
-                        MarkerTools.DrawMarker(gfx, point, MarkerShape, MarkerSize, Color);
-                }
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            PointF[] points = GetPoints(dims);
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using var linePen = GDI.Pen(Color, LineWidth, LineStyle, true);
+
+            if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)
+            {
+                gfx.DrawLines(linePen, points);
+            }
+
+            if (MarkerShape != MarkerShape.none && MarkerSize > 0 && Count > 0)
+            {
+                foreach (PointF point in points)
+                    MarkerTools.DrawMarker(gfx, point, MarkerShape, MarkerSize, Color);
             }
         }
 
