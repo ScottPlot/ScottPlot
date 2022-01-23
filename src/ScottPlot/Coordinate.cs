@@ -42,5 +42,10 @@ namespace ScottPlot
         {
             return new(Convert.ToDouble(x), Convert.ToDouble(y));
         }
+
+        public Pixel ToPixel(PlotDimensions dims)
+        {
+            return dims.GetPixel(this);
+        }
     }
 }
