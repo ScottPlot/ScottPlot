@@ -1,21 +1,17 @@
-﻿using ScottPlot;
-using ScottPlot.Plottable;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
-namespace live_sandbox
+namespace ScottPlot.Plottable
 {
-    public abstract class AxisLineVector : IPlottable
+    public abstract class AxisLineVector : IPlottable, IDraggable
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)
         /// </summary>
         protected double[] Positions;
+        public int CurrentIndex { get; set; } = 0;
 
         /// <summary>
         /// Add this value to each datapoint value before plotting (axis units)
@@ -79,6 +75,31 @@ namespace live_sandbox
         /// Text that appears in the legend
         /// </summary>
         public string Label = string.Empty;
+
+        /// <summary>
+        /// Indicates whether this line is draggable in user controls.
+        /// </summary>
+        public bool DragEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Cursor to display while hovering over this line if dragging is enabled.
+        /// </summary>
+        public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
+
+        /// <summary>
+        /// If dragging is enabled the line cannot be dragged more negative than this position
+        /// </summary>
+        public double DragLimitMin = double.NegativeInfinity;
+
+        /// <summary>
+        /// If dragging is enabled the line cannot be dragged more positive than this position
+        /// </summary>
+        public double DragLimitMax = double.PositiveInfinity;
+
+        /// <summary>
+        /// This event is invoked after the line is dragged
+        /// </summary>
+        public event EventHandler Dragged = delegate { };
 
         /// <summary>
         /// The lower bound of the axis line.
@@ -216,6 +237,68 @@ namespace live_sandbox
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Move the reference line to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateX">new X position</param>
+        /// <param name="coordinateY">new Y position</param>
+        /// <param name="fixedSize">This argument is ignored</param>
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        {
+            if (!DragEnabled)
+                return;
+
+            if (IsHorizontal)
+            {
+                if (coordinateY < DragLimitMin) coordinateY = DragLimitMin;
+                if (coordinateY > DragLimitMax) coordinateY = DragLimitMax;
+                Positions[CurrentIndex] = coordinateY;
+            }
+            else
+            {
+                if (coordinateX < DragLimitMin) coordinateX = DragLimitMin;
+                if (coordinateX > DragLimitMax) coordinateX = DragLimitMax;
+                Positions[CurrentIndex] = coordinateX;
+            }
+
+            Dragged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Return True if the reference line is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position (coordinate space)</param>
+        /// <param name="coordinateY">mouse position (coordinate space)</param>
+        /// <param name="snapX">snap distance (pixels)</param>
+        /// <param name="snapY">snap distance (pixels)</param>
+        /// <returns></returns>
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            if (IsHorizontal)
+            {
+                for (int i = 0; i < PointCount; i++)
+                {
+                    if (Math.Abs(Positions[i] - coordinateY) <= snapY)
+                    {
+                        CurrentIndex = i;
+                        return true;
+                    }
+                };
+            }
+            else
+            {
+                for (int i = 0; i < PointCount; i++)
+                {
+                    if (Math.Abs(Positions[i] - coordinateX) <= snapX)
+                    {
+                        CurrentIndex = i;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public LegendItem[] GetLegendItems()

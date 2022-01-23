@@ -395,6 +395,15 @@ namespace ScottPlot
                 }
             }
 
+            if (double.IsPositiveInfinity(xMin))
+                xMin = double.NegativeInfinity;
+            if (double.IsNegativeInfinity(xMax))
+                xMax = double.PositiveInfinity;
+            if (double.IsPositiveInfinity(yMin))
+                yMin = double.NegativeInfinity;
+            if (double.IsNegativeInfinity(yMax))
+                yMax = double.PositiveInfinity;
+
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 

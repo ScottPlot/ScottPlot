@@ -10,6 +10,7 @@ namespace ScottPlot.Statistics.Interpolation
     /// <summary>
     /// The End Slope Spline is a Natural Spline whose first and last point slopes can be defined
     /// </summary>
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public class EndSlopeSpline : SplineInterpolator
     {
         public EndSlopeSpline(double[] xs, double[] ys,
