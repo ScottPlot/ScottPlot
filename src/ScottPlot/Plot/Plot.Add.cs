@@ -997,7 +997,7 @@ namespace ScottPlot
         /// <summary>
         /// Scatter plot with Add() and Clear() methods for updating data
         /// </summary>
-        public ScatterPlotList AddScatterList(
+        public ScatterPlotList<double> AddScatterList(
             Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
@@ -1005,7 +1005,32 @@ namespace ScottPlot
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid)
         {
-            var spl = new ScatterPlotList()
+            var spl = new ScatterPlotList<double>()
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                Label = label,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle
+            };
+
+            Add(spl);
+            return spl;
+        }
+
+        /// <summary>
+        /// Generic ScatterPlotList using generic types (as long as they can be converted to double)
+        /// </summary>
+        public ScatterPlotList<T> AddScatterList<T>(
+            Color? color = null,
+            float lineWidth = 1,
+            float markerSize = 5,
+            string label = null,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid)
+        {
+            var spl = new ScatterPlotList<T>()
             {
                 Color = color ?? GetNextColor(),
                 LineWidth = lineWidth,

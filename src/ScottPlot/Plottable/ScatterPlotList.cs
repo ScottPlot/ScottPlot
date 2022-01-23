@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ScottPlot.Plottable
 {
@@ -9,10 +10,10 @@ namespace ScottPlot.Plottable
     /// A collection of X/Y coordinates that can be displayed as markers and/or connected lines.
     /// Unlike the regular ScatterPlot, this plot type has Add() methods to easily add data.
     /// </summary>
-    public class ScatterPlotList : IPlottable
+    public class ScatterPlotList<T> : IPlottable
     {
-        private readonly List<double> Xs = new();
-        private readonly List<double> Ys = new();
+        private readonly List<T> Xs = new();
+        private readonly List<T> Ys = new();
         public int Count => Xs.Count;
 
         public string Label;
@@ -29,18 +30,6 @@ namespace ScottPlot.Plottable
         {
             if (Xs.Count != Ys.Count)
                 throw new InvalidOperationException("Xs and Ys must be same length");
-
-            if (deep)
-            {
-                for (int i = 0; i < Xs.Count; i++)
-                {
-                    if (double.IsNaN(Xs[i]) || double.IsNaN(Ys[i]))
-                        throw new InvalidOperationException("Xs and Ys cannot contain NaN");
-
-                    if (double.IsInfinity(Xs[i]) || double.IsInfinity(Ys[i]))
-                        throw new InvalidOperationException("Xs and Ys cannot contain Infinity");
-                }
-            }
         }
 
         /// <summary>
@@ -55,7 +44,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add a single point to the list
         /// </summary>
-        public void Add(double x, double y)
+        public void Add(T x, T y)
         {
             Xs.Add(x);
             Ys.Add(y);
@@ -64,7 +53,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add multiple points to the list
         /// </summary>
-        public void AddRange(double[] xs, double[] ys)
+        public void AddRange(T[] xs, T[] ys)
         {
             if (xs is null)
                 throw new ArgumentException("xs must not be null");
@@ -80,22 +69,12 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             if (Count == 0)
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+                return AxisLimits.NoLimits;
 
-            double xMin = Xs[0];
-            double xMax = Xs[0];
-            double yMin = Ys[0];
-            double yMax = Ys[0];
+            var xs = Xs.Select(x => Convert.ToDouble(x));
+            var ys = Ys.Select(y => Convert.ToDouble(y));
 
-            for (int i = 1; i < Count; i++)
-            {
-                xMin = Math.Min(xMin, Xs[i]);
-                xMax = Math.Max(xMax, Xs[i]);
-                yMin = Math.Min(yMin, Ys[i]);
-                yMax = Math.Max(yMax, Ys[i]);
-            }
-
-            return new AxisLimits(xMin, xMax, yMin, yMax);
+            return new AxisLimits(xs.Min(), xs.Max(), ys.Min(), ys.Max());
         }
 
         /// <summary>
@@ -103,13 +82,11 @@ namespace ScottPlot.Plottable
         /// </summary>
         private PointF[] GetPoints(PlotDimensions dims)
         {
-            PointF[] points = new PointF[Count];
-
-            // TODO: make this thread-safe (in case Xs or Ys changes)
-            for (int i = 0; i < Count; i++)
-                points[i] = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
-
-            return points;
+            return Enumerable.Range(0, Count)
+                .Select(i => Coordinate.FromGeneric(Xs[i], Ys[i]))
+                .Select(coord => coord.ToPixel(dims))
+                .Select(px => new PointF(px.X, px.Y))
+                .ToArray();
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
