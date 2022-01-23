@@ -14,7 +14,7 @@ namespace ScottPlotTests.Statistics
         {
             Random rand = new(0);
             (double[] xs, double[] ys) = GetSmoothpData(161);
-            (double[] xs2, double[] ys2) = ScottPlot.Statistics.Interpolation.Cubic.Interpolate(xs, ys, 20);
+            (double[] xs2, double[] ys2) = ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY(xs, ys, 20);
 
             ScottPlot.Plot plt = new();
             plt.AddScatterPoints(xs, ys, label: "original");
@@ -51,25 +51,11 @@ namespace ScottPlotTests.Statistics
         public void Test_Interpolation_ProblematicData()
         {
             (double[] xs, double[] ys) = GetSharpData(161);
-            (double[] xs2, double[] ys2) = ScottPlot.Statistics.Interpolation.Cubic.Interpolate(xs, ys, 20);
+            (double[] xs2, double[] ys2) = ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY(xs, ys, 20);
 
             ScottPlot.Plot plt = new();
             plt.AddScatterPoints(xs, ys, label: "original");
             plt.AddScatterLines(xs2, ys2, label: "interpolation");
-            plt.Legend();
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
-        public void Test_Interpolation_SmoothDataUsingOldMethod()
-        {
-            (double[] xs, double[] ys) = GetSmoothpData(161);
-            var psi = new ScottPlot.Statistics.Interpolation.PeriodicSpline(xs, ys, resolution: 20);
-
-            ScottPlot.Plot plt = new();
-            plt.AddScatterPoints(xs, ys, label: "original");
-            plt.AddScatterLines(psi.interpolatedXs, psi.interpolatedYs, label: "interpolation");
             plt.Legend();
 
             TestTools.SaveFig(plt);

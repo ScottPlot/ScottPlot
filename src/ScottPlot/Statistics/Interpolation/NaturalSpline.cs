@@ -11,6 +11,7 @@ namespace ScottPlot.Statistics.Interpolation
     /// <summary>
     /// Natural Spline data interpolator
     /// </summary>
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public class NaturalSpline : SplineInterpolator
     {
         public NaturalSpline(double[] xs, double[] ys, int resolution = 10) : base(xs, ys, resolution)

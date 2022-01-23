@@ -5,8 +5,11 @@
  *  It is included in ScottPlot under a MIT license with permission from the original author.
  */
 
+using System;
+
 namespace ScottPlot.Statistics.Interpolation
 {
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public class Matrix
     {
         public double[,] a;
