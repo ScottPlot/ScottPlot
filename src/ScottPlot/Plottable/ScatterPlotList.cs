@@ -12,8 +12,8 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class ScatterPlotList<T> : IPlottable
     {
-        private readonly List<T> Xs = new();
-        private readonly List<T> Ys = new();
+        protected readonly List<T> Xs = new();
+        protected readonly List<T> Ys = new();
         public int Count => Xs.Count;
 
         public string Label;
