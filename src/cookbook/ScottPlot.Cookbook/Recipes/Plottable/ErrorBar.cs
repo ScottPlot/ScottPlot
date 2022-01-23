@@ -101,7 +101,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-
     public class ErrorBarMarker : IRecipe
     {
         public string Category => "Plottable: Error Bar";
