@@ -51,6 +51,7 @@ namespace ScottPlot
             // PictureBoxLegend
             // 
             this.PictureBoxLegend.BackColor = System.Drawing.Color.Transparent;
+            this.PictureBoxLegend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxLegend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBoxLegend.Location = new System.Drawing.Point(0, 0);
             this.PictureBoxLegend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -74,6 +75,7 @@ namespace ScottPlot
             this.MinimizeBox = false;
             this.Name = "FormsPlotLegendViewer";
             this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormsPlotLegendViewer";
             this.PanelPictureBox.ResumeLayout(false);

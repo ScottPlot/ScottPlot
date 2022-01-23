@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,8 +31,6 @@ namespace ScottPlot
                 MinimumSize = new(frmminwidth, frmminheight);
                 MaximumSize = new(frmmaxwidth, frmmaxheight);
                 Size = new(frmminwidth, frmminheight);
-                SizeGripStyle = SizeGripStyle.Show;
-                PictureBoxLegend.Cursor = Cursors.Hand;
             }
             else
             {
