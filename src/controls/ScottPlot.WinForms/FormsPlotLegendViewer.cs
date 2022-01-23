@@ -19,7 +19,6 @@ namespace ScottPlot
             Fplot.Refresh();
             if (Legend.HasItems)
             {
-                this.Show();
                 Legend.OutlineColor = Color.White;
                 Legend.ShadowColor = Color.White;
                 PictureBoxLegend.Image = Legend.GetBitmap(false);
@@ -31,6 +30,7 @@ namespace ScottPlot
                 MinimumSize = new(frmminwidth, frmminheight);
                 MaximumSize = new(frmmaxwidth, frmmaxheight);
                 Size = new(frmminwidth, frmminheight);
+                this.Show();
             }
             else
             {
