@@ -7,6 +7,7 @@ _In development / not yet on NuGet_
 * Legend: Added `Count`, `HasItems`, and `GetItems()` so users can inspect legend contents to if/how they want to display it (#1578) _Thanks @BambOoxX_
 * Plot: Exposed `GetDraggable()` to allow users to retrieve the plotted objects at specific pixel positions (#1578) _Thanks @BambOoxX_
 * Axis Limits: Improved handling of axis limits for plots containing no data (#1581) _Thanks @EFeru_
+* Repeating Axis Line: Improved display of text labels (#1586, #1557) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.31
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_

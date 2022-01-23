@@ -271,4 +271,40 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.SetAxisLimitsX(-100, 300);
         }
     }
+
+    public class AxisLineVector : IRecipe
+    {
+        public string Category => "Plottable: Axis Line and Span";
+        public string ID => "axisLine_Vector";
+        public string Title => "Axis Line Vector";
+        public string Description =>
+            "An AxisLineVector allows to setup a series of VLines or HLines, without hassle." +
+            "These lines can optionally be dragged as their counterparts";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+            double[] xs = DataGen.Random(rand, 50);
+            double[] ys = DataGen.Random(rand, 50);
+
+            var scatter = plt.AddScatterPoints(xs, ys, Color.Blue, 10);
+
+            var vlines = new ScottPlot.Plottable.VLineVector();
+            vlines.Xs = new double[] { xs[1], xs[12], xs[35] };
+            vlines.Color = Color.Red;
+            vlines.PositionLabel = true;
+            vlines.PositionLabelBackground = vlines.Color;
+
+            var hlines = new ScottPlot.Plottable.HLineVector();
+            hlines.Ys = new double[] { ys[1], ys[12], ys[35] };
+            hlines.Color = Color.DarkCyan;
+            hlines.PositionLabel = true;
+            hlines.PositionLabelBackground = hlines.Color;
+            hlines.DragEnabled = true;
+
+            plt.Add(scatter);
+            plt.Add(vlines);
+            plt.Add(hlines);
+        }
+    }
 }
