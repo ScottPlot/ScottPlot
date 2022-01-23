@@ -855,11 +855,13 @@ namespace ScottPlot
         /// <param name="yErrorsPositive">Magnitude of negative vertical error</param>
         /// <param name="yErrorsNegative">Magnitude of negative horizontal error</param>
         /// <param name="color">Color (null for next color in palette)</param>
-        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative, Color? color = null)
+        /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative, Color? color = null, float markerSize = 0)
         {
             ErrorBar errorBar = new(xs, ys, xErrorsPositive, xErrorsNegative, yErrorsPositive, yErrorsNegative)
             {
                 Color = color ?? GetNextColor(),
+                MarkerSize = markerSize,
             };
             Add(errorBar);
 
@@ -874,8 +876,9 @@ namespace ScottPlot
         /// <param name="xErrors">Magnitude of vertical error</param>
         /// <param name="yErrors">Magnitude of horizontal error</param>
         /// <param name="color">Color (null for next color in palette)</param>
-        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors, Color? color = null) =>
-            AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors, color);
+        /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors, Color? color = null, float markerSize = 0) =>
+            AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors, color, markerSize);
 
         /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot

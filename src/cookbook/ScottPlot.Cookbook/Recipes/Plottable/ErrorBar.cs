@@ -100,4 +100,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             errorBars.LineWidth = 3;
         }
     }
+
+
+    public class ErrorBarMarker : IRecipe
+    {
+        public string Category => "Plottable: Error Bar";
+        public string ID => "errorBar_marker";
+        public string Title => "Error Bar Marker";
+        public string Description => "An optional marker can be drawn at the center X/Y position for each error bar.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.NoisyBellCurve(rand, pointCount);
+            double[] yErr = DataGen.Random(rand, pointCount, multiplier: .2, offset: .05);
+
+            plt.AddErrorBars(xs, ys, null, yErr, markerSize: 5);
+        }
+    }
 }
