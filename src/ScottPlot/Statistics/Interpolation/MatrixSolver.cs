@@ -10,6 +10,7 @@ using System;
 namespace ScottPlot.Statistics.Interpolation
 {
     // Matrix equation solver using the Gaussian elimination algorithm
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public class MatrixSolver
     {
         public readonly Matrix m;
