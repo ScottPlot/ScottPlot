@@ -24,6 +24,8 @@ namespace ScottPlot.Plottable
         public double LineWidth { get; set; } = 1;
         public Color Color { get; set; } = Color.Gray;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+        public float MarkerSize { get; set; } = 0;
 
         public ErrorBar(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
         {
@@ -72,6 +74,11 @@ namespace ScottPlot.Plottable
             {
                 DrawErrorBars(dims, gfx, pen, YErrorsPositive, YErrorsNegative, false);
             }
+
+            if (MarkerSize > 0 && MarkerShape != MarkerShape.none)
+            {
+                DrawMarkers(dims, gfx);
+            }
         }
 
         private void DrawErrorBars(PlotDimensions dims, Graphics gfx, Pen pen, double[] errorPositive, double[] errorNegative, bool onXAxis)
@@ -99,7 +106,17 @@ namespace ScottPlot.Plottable
                     gfx.DrawLine(pen, bottom.X - CapSize, bottom.Y, bottom.X + CapSize, bottom.Y);
                 }
             }
+        }
 
+        private void DrawMarkers(PlotDimensions dims, Graphics gfx)
+        {
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                float xPixel = dims.GetPixelX(Xs[i]);
+                float yPixel = dims.GetPixelY(Ys[i]);
+                PointF pixel = new(xPixel, yPixel);
+                MarkerTools.DrawMarker(gfx, pixel, MarkerShape, MarkerSize, Color);
+            }
         }
 
         public void ValidateData(bool deep = false)
