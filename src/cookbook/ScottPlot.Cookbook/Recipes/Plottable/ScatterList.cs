@@ -42,4 +42,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             scatterList.Add(5, 25);
         }
     }
+
+    public class ScatterListDraggable : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot List";
+        public string ID => "scatterList_draggable";
+        public string Title => "Scatter List Draggable";
+        public string Description =>
+            "There exists an experimental Scatter Plot List with draggable points.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            var scatter = new ScottPlot.Plottable.ScatterPlotListDraggable();
+            scatter.AddRange(xs, ys);
+
+            plt.Add(scatter);
+        }
+    }
 }
