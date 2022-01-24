@@ -11,6 +11,7 @@ namespace ScottPlot.Statistics.Interpolation
     /// <summary>
     /// The Periodic Spline is a Natural Spline whose first and last point slopes are equal
     /// </summary>
+    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
     public class PeriodicSpline : SplineInterpolator
     {
         public PeriodicSpline(double[] xs, double[] ys, int resolution = 10) : base(xs, ys, resolution)

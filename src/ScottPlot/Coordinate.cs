@@ -5,7 +5,7 @@ namespace ScottPlot
     /// <summary>
     /// Describes an X/Y position in coordinate space
     /// </summary>
-    public class Coordinate
+    public struct Coordinate
     {
         public double X;
         public double Y;
@@ -36,6 +36,16 @@ namespace ScottPlot
             double dX = Math.Abs(other.X - X);
             double dY = Math.Abs(other.Y - Y);
             return Math.Sqrt(dX * dX + dY * dY);
+        }
+
+        public static Coordinate FromGeneric<T>(T x, T y)
+        {
+            return new(Convert.ToDouble(x), Convert.ToDouble(y));
+        }
+
+        public Pixel ToPixel(PlotDimensions dims)
+        {
+            return dims.GetPixel(this);
         }
     }
 }

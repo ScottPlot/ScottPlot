@@ -846,6 +846,41 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add error bars to the plot with custom dimensions in all 4 directions.
+        /// </summary>
+        /// <param name="xs">Horizontal center of the errorbar</param>
+        /// <param name="ys">Vertical center of each errorbar</param>
+        /// <param name="xErrorsPositive">Magnitude of positive vertical error</param>
+        /// <param name="xErrorsNegative">Magnitude of positive horizontal error</param>
+        /// <param name="yErrorsPositive">Magnitude of negative vertical error</param>
+        /// <param name="yErrorsNegative">Magnitude of negative horizontal error</param>
+        /// <param name="color">Color (null for next color in palette)</param>
+        /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative, Color? color = null, float markerSize = 0)
+        {
+            ErrorBar errorBar = new(xs, ys, xErrorsPositive, xErrorsNegative, yErrorsPositive, yErrorsNegative)
+            {
+                Color = color ?? GetNextColor(),
+                MarkerSize = markerSize,
+            };
+            Add(errorBar);
+
+            return errorBar;
+        }
+
+        /// <summary>
+        /// Add error bars to the plot which have symmetrical positive/negative errors
+        /// </summary>
+        /// <param name="xs">Horizontal center of the errorbar</param>
+        /// <param name="ys">Vertical center of each errorbar</param>
+        /// <param name="xErrors">Magnitude of vertical error</param>
+        /// <param name="yErrors">Magnitude of horizontal error</param>
+        /// <param name="color">Color (null for next color in palette)</param>
+        /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors, Color? color = null, float markerSize = 0) =>
+            AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors, color, markerSize);
+
+        /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
         public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
@@ -962,7 +997,7 @@ namespace ScottPlot
         /// <summary>
         /// Scatter plot with Add() and Clear() methods for updating data
         /// </summary>
-        public ScatterPlotList AddScatterList(
+        public ScatterPlotList<double> AddScatterList(
             Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
@@ -970,7 +1005,32 @@ namespace ScottPlot
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid)
         {
-            var spl = new ScatterPlotList()
+            var spl = new ScatterPlotList<double>()
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                Label = label,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle
+            };
+
+            Add(spl);
+            return spl;
+        }
+
+        /// <summary>
+        /// Generic ScatterPlotList using generic types (as long as they can be converted to double)
+        /// </summary>
+        public ScatterPlotList<T> AddScatterList<T>(
+            Color? color = null,
+            float lineWidth = 1,
+            float markerSize = 5,
+            string label = null,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid)
+        {
+            var spl = new ScatterPlotList<T>()
             {
                 Color = color ?? GetNextColor(),
                 LineWidth = lineWidth,

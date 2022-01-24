@@ -11,7 +11,7 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_Mutable()
         {
             var plt = new ScottPlot.Plot();
-            var scatter = new ScottPlot.Plottable.ScatterPlotList();
+            var scatter = new ScottPlot.Plottable.ScatterPlotList<double>();
             plt.Add(scatter);
 
             TestTools.SaveFig(plt, "no_points");

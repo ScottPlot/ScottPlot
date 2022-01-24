@@ -310,6 +310,36 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class LogScaleTickDensity : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_logTickDensity";
+        public string Title => "Log Scale Tick Density";
+        public string Description =>
+            "Numer of minor ticks between major ticks can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] ys = ScottPlot.DataGen.Range(100, 10_000, 100, true);
+            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
+            double[] logYs = ys.Select(y => Math.Log10(y)).ToArray();
+
+            var scatter = plt.AddScatter(xs, logYs);
+
+            static string logTickLabels(double y) => Math.Pow(10, y).ToString("N0");
+            plt.YAxis.TickLabelFormat(logTickLabels);
+
+            // set the number of minor ticks per major tick here
+            plt.YAxis.MinorLogScale(true, minorTickCount: 20);
+
+            // darken grid line colors
+            plt.YAxis.MinorGrid(true);
+            plt.YAxis.MinorGrid(true, Color.FromArgb(20, Color.Black));
+            plt.YAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
+            plt.XAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
+        }
+    }
+
     class Ruler : IRecipe
     {
         public string Category => "Advanced Axis Features";

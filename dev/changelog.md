@@ -1,9 +1,21 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.32
+## ScottPlot 4.1.33
 _In development / not yet on NuGet_
+
+## ScottPlot 4.1.32
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
+* Interpolation: New cubic interpolation module with improved stability and simplified API (#1433) _Thanks @allopatin_
 * Legend: `GetBitmap()` returns a transparent image instead of throwing an exception if there are no items in the legend (#1578) _Thanks @BambOoxX_
 * Legend: Added `Count`, `HasItems`, and `GetItems()` so users can inspect legend contents to if/how they want to display it (#1578) _Thanks @BambOoxX_
+* Plot: Exposed `GetDraggable()` to allow users to retrieve the plotted objects at specific pixel positions (#1578) _Thanks @BambOoxX_
+* Axis Limits: Improved handling of axis limits for plots containing no data (#1581) _Thanks @EFeru_
+* Repeating Axis Line: Improved display of text labels (#1586, #1557) _Thanks @BambOoxX_
+* Axis: Improved multi-axis support for `GetPixel()` methods (#1584, #1587) _Thanks @ChrisCC6 and @BambOoxX_
+* Error Bar: `Plot.AddErrorBars()` can now be used to place 1D or 2D error bars anywhere on the plot (#1466, #1588) _Thanks @bclehmann_
+* Scatter Plot List: Added generic support to `ScatterPlotList<T>` as demonstrated in the cookbook (#1463, #1592) _Thanks @tyrbentsen_
+* Draggable Scatter Plot: Created a new `ScatterPlotListDraggable` that supports dragging points and custom clamp logic as seen in the cookbook (#1422) _Thanks @EFeru and @BambOoxX_
+* Axis: Users may now customize the number of minor ticks and grid lines when log scale is enabled (#1594, #1595, #1583) _Thanks @hibus_
 
 ## ScottPlot 4.1.31
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_

@@ -385,12 +385,16 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
-        public void MinorLogScale(bool enable, bool roundMajorTicks = true)
+        /// <param name="enable">if true, minor tick marks will be logarithmically distributed</param>
+        /// <param name="roundMajorTicks">if true, log-scaled ticks will only show as even powers of ten</param>
+        /// <param name="minorTickCount">This many minor ticks will be placed between each major tick</param>
+        public void MinorLogScale(bool enable, bool roundMajorTicks = true, int minorTickCount = 10)
         {
             if (enable)
             {
                 AxisTicks.TickCollection.MinorTickDistribution = MinorTickDistribution.log;
                 AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
+                AxisTicks.TickCollection.LogScaleMinorTickCount = minorTickCount;
             }
             else
             {

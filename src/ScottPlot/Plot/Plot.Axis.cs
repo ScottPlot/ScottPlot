@@ -324,23 +324,32 @@ namespace ScottPlot
         /// </summary>
         /// <param name="x">horizontal coordinate</param>
         /// <param name="y">vertical coordinate</param>
+        /// <param name="xAxisIndex">index of the horizontal axis to use</param>
+        /// <param name="yAxisIndex">index of the vertical axis to use</param>
         /// <returns>pixel location</returns>
-        public (float xPixel, float yPixel) GetPixel(double x, double y) =>
-            (settings.XAxis.Dims.GetPixel(x), settings.YAxis.Dims.GetPixel(y));
+        public (float xPixel, float yPixel) GetPixel(double x, double y, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            float xPixel = settings.GetXAxis(xAxisIndex).Dims.GetPixel(x);
+            float yPixel = settings.GetYAxis(yAxisIndex).Dims.GetPixel(y);
+            return (xPixel, yPixel);
+
+        }
 
         /// <summary>
         /// Return the horizontal pixel location given position in coordinate space
         /// </summary>
         /// <param name="x">horizontal coordinate</param>
+        /// <param name="xAxisIndex">index of the horizontal axis to use</param>
         /// <returns>horizontal pixel position</returns>
-        public float GetPixelX(double x) => settings.XAxis.Dims.GetPixel(x);
+        public float GetPixelX(double x, int xAxisIndex = 0) => settings.GetXAxis(xAxisIndex).Dims.GetPixel(x);
 
         /// <summary>
         /// Return the vertical pixel location given position in coordinate space
         /// </summary>
         /// <param name="y">vertical coordinate</param>
+        /// <param name="yAxisIndex">index of the vertical axis to use</param>
         /// <returns>vertical pixel position</returns>
-        public float GetPixelY(double y) => settings.YAxis.Dims.GetPixel(y);
+        public float GetPixelY(double y, int yAxisIndex = 0) => settings.GetYAxis(yAxisIndex).Dims.GetPixel(y);
 
         #endregion
 
@@ -385,6 +394,15 @@ namespace ScottPlot
                         yMax = Math.Max(yMax, limits.YMax);
                 }
             }
+
+            if (double.IsPositiveInfinity(xMin))
+                xMin = double.NegativeInfinity;
+            if (double.IsNegativeInfinity(xMax))
+                xMax = double.PositiveInfinity;
+            if (double.IsPositiveInfinity(yMin))
+                yMin = double.NegativeInfinity;
+            if (double.IsNegativeInfinity(yMax))
+                yMax = double.PositiveInfinity;
 
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
