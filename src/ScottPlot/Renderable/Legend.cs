@@ -188,9 +188,14 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public void UpdateLegendItems(IPlottable[] renderables, bool includeall = false)
+        /// <summary>
+        /// Updates de list of legend items associated with the Legend
+        /// </summary>
+        /// <param name="renderables">A list of plottable objects</param>
+        /// <param name="includeInvisibleOrEmptyLabels">Determines if plottables that are invisible or with empty labels are accounted for</param>
+        public void UpdateLegendItems(IPlottable[] renderables, bool includeInvisibleOrEmptyLabels = false)
         {
-            if (includeall)
+            if (includeInvisibleOrEmptyLabels)
             {
                 LegendItems = renderables.Where(x => x.GetLegendItems() != null)
                                          .SelectMany(x => x.GetLegendItems())
