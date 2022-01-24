@@ -598,5 +598,18 @@ namespace ScottPlot.Ticks
         {
             return GetVisibleMajorTicks(dims).Concat(GetVisibleMinorTicks(dims)).ToArray();
         }
+
+        /// <summary>
+        /// Return log-distributed points between (and including) the min/max values
+        /// </summary>
+        public static double[] GetLogDistributedPoints(int count, double min, double max)
+        {
+            double range = max - min;
+            return Enumerable.Range(1, count)
+                .Select(x => x)
+                .Select(x => Math.Log10(x))
+                .Select(x => x * range + min)
+                .ToArray();
+        }
     }
 }

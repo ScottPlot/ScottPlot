@@ -116,5 +116,27 @@ namespace ScottPlotTests.Axis
             for (int i = 0; i < ticks1.Length; i++)
                 Assert.AreEqual(ticks1[i], ticks3[i]);
         }
+        [Test]
+        public void Test_Log_DistributedPoints()
+        {
+            double[] xs = ScottPlot.Ticks.TickCollection.GetLogDistributedPoints(10, 123, 456);
+
+            double[] expected =
+            {
+                123,
+                223.24298855610573,
+                281.88137782164756,
+                323.48597711221146,
+                355.75701144389427,
+                382.12436637775335,
+                404.4176473247475,
+                423.7289656683172,
+                440.7627556432952,
+                456,
+            };
+
+            for (int i = 0; i < xs.Length; i++)
+                Assert.AreEqual(expected[i], xs[i]);
+        }
     }
 }
