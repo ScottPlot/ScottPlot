@@ -99,6 +99,16 @@ namespace ScottPlot.Ticks
         /// </summary>
         public bool IntegerPositionsOnly = false;
 
+        /// <summary>
+        /// If minor tick distribution is log-scaled, place this many minor ticks
+        /// </summary>
+        public int LogScaleMinorTickCount = 10;
+
+        /// <summary>
+        /// Number of minor ticks per major tick
+        /// </summary>
+        public int MinorTickCount = 5;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -295,9 +305,9 @@ namespace ScottPlot.Ticks
                 );
 
             if (MinorTickDistribution == MinorTickDistribution.log)
-                tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
+                tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high, LogScaleMinorTickCount);
             else
-                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
+                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, MinorTickCount, low, high);
         }
 
         public override string ToString()
@@ -450,24 +460,21 @@ namespace ScottPlot.Ticks
         /// <param name="max">Do not include minor ticks greater than this value.</param>
         /// <param name="divisions">Number of minor ranges to divide each major range into. (A range is the space between tick marks)</param>
         /// <returns>Array of minor tick positions (empty at positions occupied by major ticks)</returns>
-        public double[] MinorFromMajorLog(double[] majorTickPositions, double min, double max, int divisions = 5)
+        public double[] MinorFromMajorLog(double[] majorTickPositions, double min, double max, int divisions)
         {
-            if ((majorTickPositions is null) || (majorTickPositions.Length < 2))
-            {
-                // if too few major ticks are visible, don't attempt to render minor ticks
+            // if too few major ticks are visible, don't attempt to render minor ticks
+            if (majorTickPositions is null || majorTickPositions.Length < 2)
                 return null;
-            }
 
             double majorTickSpacing = majorTickPositions[1] - majorTickPositions[0];
             double lowerBound = majorTickPositions.First() - majorTickSpacing;
             double upperBound = majorTickPositions.Last() + majorTickSpacing;
 
-            double[] offsets = Enumerable.Range(1, divisions - 1).Select(x => majorTickSpacing * Math.Log10(x * 10 / divisions)).ToArray();
-
             List<double> minorTicks = new();
             for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
             {
-                minorTicks.AddRange(offsets.Select(x => majorTick + x));
+                double[] positions = GetLogDistributedPoints(divisions, majorTick, majorTick + majorTickSpacing, false);
+                minorTicks.AddRange(positions);
             }
 
             return minorTicks.Where(x => x >= min && x <= max).ToArray();
@@ -597,6 +604,23 @@ namespace ScottPlot.Ticks
         public Tick[] GetVisibleTicks(PlotDimensions dims)
         {
             return GetVisibleMajorTicks(dims).Concat(GetVisibleMinorTicks(dims)).ToArray();
+        }
+
+        /// <summary>
+        /// Return log-distributed points between the min/max values
+        /// </summary>
+        /// <param name="count">number of divisions</param>
+        /// <param name="min">lowest value</param>
+        /// <param name="max">highest value</param>
+        /// <param name="inclusive">if true, returned values will contain the min/max values themselves</param>
+        /// <returns></returns>
+        public static double[] GetLogDistributedPoints(int count, double min, double max, bool inclusive)
+        {
+            double range = max - min;
+            var values = DataGen.Range(1, 10, 10.0 / count)
+                .Select(x => Math.Log10(x))
+                .Select(x => x * range + min);
+            return inclusive ? values.ToArray() : values.Skip(1).Take(count - 2).ToArray();
         }
     }
 }
