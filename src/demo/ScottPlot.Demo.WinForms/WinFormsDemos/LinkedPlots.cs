@@ -13,6 +13,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Plot.AddSignal(DataGen.Sin(51));
             formsPlot2.Plot.AddSignal(DataGen.Cos(51));
 
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+
             // create a list of plot controls we can easily iterate through later
             FormsPlots = new FormsPlot[] { formsPlot1, formsPlot2 };
             foreach (var fp in FormsPlots)

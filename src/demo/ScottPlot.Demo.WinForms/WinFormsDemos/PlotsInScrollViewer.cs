@@ -25,6 +25,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.MouseWheel += FormsPlot_MouseWheel;
             formsPlot2.MouseWheel += FormsPlot_MouseWheel;
             formsPlot3.MouseWheel += FormsPlot_MouseWheel;
+
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
+            formsPlot3.Refresh();
         }
 
         private void FormsPlot_MouseWheel(object sender, MouseEventArgs e)
