@@ -34,5 +34,6 @@ namespace ScottPlot.Demo.WinForms
         private void btnColormapViewer_Click(object sender, EventArgs e) => new WinFormsDemos.ColormapViewer().ShowDialog();
         private void MultiAxisLockButton_Click(object sender, EventArgs e) => new WinFormsDemos.MultiAxisLock().ShowDialog();
         private void StyleBrowserButton_Click(object sender, EventArgs e) => new WinFormsDemos.Styles().ShowDialog();
+        private void SplineInterpolationButton_Click(object sender, EventArgs e) => new WinFormsDemos.SplineInterpolation().ShowDialog();
     }
 }

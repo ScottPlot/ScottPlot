@@ -59,6 +59,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TransparentBackgroundButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.SplineInterpolationButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -414,6 +416,8 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 15);
+            this.tableLayoutPanel1.Controls.Add(this.SplineInterpolationButton, 0, 15);
             this.tableLayoutPanel1.Controls.Add(this.PlotViewerButton, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label14, 1, 11);
             this.tableLayoutPanel1.Controls.Add(this.label17, 1, 14);
@@ -446,7 +450,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label15, 1, 12);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 15;
+            this.tableLayoutPanel1.RowCount = 16;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -462,8 +466,32 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(409, 750);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(409, 950);
             this.tableLayoutPanel1.TabIndex = 65;
+            // 
+            // SplineInterpolationButton
+            // 
+            this.SplineInterpolationButton.Location = new System.Drawing.Point(4, 753);
+            this.SplineInterpolationButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.SplineInterpolationButton.Name = "SplineInterpolationButton";
+            this.SplineInterpolationButton.Size = new System.Drawing.Size(88, 44);
+            this.SplineInterpolationButton.TabIndex = 66;
+            this.SplineInterpolationButton.Text = "Spline Interpolation";
+            this.SplineInterpolationButton.UseVisualStyleBackColor = true;
+            this.SplineInterpolationButton.Click += new System.EventHandler(this.SplineInterpolationButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(104, 750);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(301, 50);
+            this.label1.TabIndex = 67;
+            this.label1.Text = "Demonstrate different types of spline interpolation";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DemoListControl
             // 
@@ -471,7 +499,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "DemoListControl";
-            this.Size = new System.Drawing.Size(409, 750);
+            this.Size = new System.Drawing.Size(409, 1048);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -510,5 +538,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button TransparentBackgroundButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button SplineInterpolationButton;
     }
 }
