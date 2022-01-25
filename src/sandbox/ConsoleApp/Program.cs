@@ -1,5 +1,6 @@
-﻿var xs = new double[] { 1, 2, 3, 4, 5 };
-var ys = new double[] { 1, 4, 9, 16, 25 };
+﻿System.Random rand = new();
+var xs = ScottPlot.DataGen.RandomWalk(rand, 20);
+var ys = ScottPlot.DataGen.RandomWalk(rand, 20);
 
 var plt = new ScottPlot.Plot();
 plt.AddScatter(xs, ys);
