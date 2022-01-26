@@ -205,10 +205,11 @@ namespace ScottPlot
                 WheelScrolledDown = e.Delta < 0,
             };
 
-        /// <summary>
-        /// Launch the default right-click menu.
-        /// </summary>
-        public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
+        public void DefaultRightClickEvent(object sender, EventArgs e)
+        {
+            detachLegendMenuItem.Visible = Plot.Legend(null).Count > 0;
+            DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
+        }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
