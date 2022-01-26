@@ -43,7 +43,6 @@ namespace ScottPlot
             this.PanelPictureBox.BackColor = System.Drawing.Color.White;
             this.PanelPictureBox.Controls.Add(this.PictureBoxLegend);
             this.PanelPictureBox.Location = new System.Drawing.Point(0, 0);
-            this.PanelPictureBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PanelPictureBox.Name = "PanelPictureBox";
             this.PanelPictureBox.Size = new System.Drawing.Size(1440, 328);
             this.PanelPictureBox.TabIndex = 0;
@@ -54,7 +53,6 @@ namespace ScottPlot
             this.PictureBoxLegend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxLegend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBoxLegend.Location = new System.Drawing.Point(0, 0);
-            this.PictureBoxLegend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PictureBoxLegend.Name = "PictureBoxLegend";
             this.PictureBoxLegend.Size = new System.Drawing.Size(1440, 328);
             this.PictureBoxLegend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -63,21 +61,21 @@ namespace ScottPlot
             // 
             // FormsPlotLegendViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(284, 436);
+            this.ClientSize = new System.Drawing.Size(248, 327);
             this.Controls.Add(this.PanelPictureBox);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormsPlotLegendViewer";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormsPlotLegendViewer";
+            this.Text = "Legend";
             this.PanelPictureBox.ResumeLayout(false);
             this.PanelPictureBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLegend)).EndInit();
