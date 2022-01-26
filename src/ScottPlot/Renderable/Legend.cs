@@ -176,7 +176,8 @@ namespace ScottPlot.Renderable
                         if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
                             MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.color);
                     }
-                    if (!item.plottableVisible)
+
+                    if (!item.Parent.IsVisible)
                     {
                         // prepare values for drawing a rectangle
                         PointF hideRectOrigin = new PointF(lineX1, locationY + verticalOffset);
