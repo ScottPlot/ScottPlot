@@ -38,9 +38,9 @@ namespace ScottPlot
 
         private void UpdateLegendImage()
         {
+            FormsPlot.Refresh();
             var allPlottables = FormsPlot.Plot.GetPlottables();
             Legend.UpdateLegendItems(allPlottables, true);
-            FormsPlot.Refresh();
             PictureBoxLegend.Image = Legend.GetBitmap(false);
         }
 
@@ -59,17 +59,13 @@ namespace ScottPlot
 
             // TODO: move this logic inside the Legend class if possible
             // public IPlottable Legend.GetPlottableUnderMouse(float xPixel, float yPixel) { }
-
-            // TODO: I don't think this logic is sound...
-            // some plottables have multiple items in their legend (e.g., coxcomb)
-
-            // TODO: maybe plottables with multiple legend items should not have this click-to-toggle-visibility feature
-
             double legendItemHeight = (double)PictureBoxLegend.Image.Height / Legend.Count;
             int clickedItemIndex = (int)Math.Floor(e2.Y / legendItemHeight);
-            var clickedPlottable = FormsPlot.Plot.GetPlottables()[clickedItemIndex];
+            var clickedPlottable = Legend.GetItems()[clickedItemIndex].Parent;
 
-            clickedPlottable.IsVisible = !clickedPlottable.IsVisible;
+            // only allow toggling of plottables with a single legend item (blocking things like pie charts)
+            if (clickedPlottable.GetLegendItems().Length == 1)
+                clickedPlottable.IsVisible = !clickedPlottable.IsVisible;
 
             UpdateLegendImage();
         }
