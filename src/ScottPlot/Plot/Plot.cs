@@ -325,13 +325,17 @@ namespace ScottPlot
         /// Configure legend visibility and location. 
         /// Optionally you can further customize the legend by interacting with the object it returns.
         /// </summary>
-        /// <param name="enable">whether or not the legend is visible</param>
+        /// <param name="enable">whether or not the legend is visible (or null for no change)</param>
         /// <param name="location">position of the legend relative to the data area</param>
         /// <returns>The legend itself. Use public fields to further customize its appearance and behavior.</returns>
-        public Renderable.Legend Legend(bool enable = true, Alignment location = Alignment.LowerRight)
+        public Renderable.Legend Legend(bool? enable = true, Alignment location = Alignment.LowerRight)
         {
-            settings.CornerLegend.IsVisible = enable;
-            settings.CornerLegend.Location = location;
+            if (enable.HasValue)
+            {
+                settings.CornerLegend.IsVisible = enable.Value;
+                settings.CornerLegend.Location = location;
+            }
+
             return settings.CornerLegend;
         }
 
