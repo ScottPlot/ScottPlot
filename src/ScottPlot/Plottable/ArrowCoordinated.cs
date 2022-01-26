@@ -100,7 +100,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var item = new LegendItem()
+            var item = new LegendItem(this)
             {
                 label = Label
             };

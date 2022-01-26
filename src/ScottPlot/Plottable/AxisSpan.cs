@@ -77,7 +77,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleItem = new LegendItem()
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = Color,

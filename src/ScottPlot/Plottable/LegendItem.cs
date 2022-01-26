@@ -23,5 +23,12 @@ namespace ScottPlot.Plottable
             get { return lineWidth >= 10; }
             set { lineWidth = 10; }
         }
+
+        public readonly IPlottable Parent;
+
+        public LegendItem(IPlottable parent)
+        {
+            Parent = parent;
+        }
     }
 }

@@ -40,6 +40,7 @@ namespace ScottPlot
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.openInNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detachLegendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbErrorMessage = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.DefaultRightClickMenu.SuspendLayout();
@@ -72,7 +73,8 @@ namespace ScottPlot
             this.toolStripSeparator2,
             this.helpMenuItem,
             this.toolStripSeparator3,
-            this.openInNewWindowMenuItem});
+            this.openInNewWindowMenuItem,
+            this.detachLegendMenuItem});
             this.DefaultRightClickMenu.Name = "contextMenuStrip1";
             this.DefaultRightClickMenu.Size = new System.Drawing.Size(191, 132);
             // 
@@ -126,6 +128,13 @@ namespace ScottPlot
             this.openInNewWindowMenuItem.Text = "Open in New Window";
             this.openInNewWindowMenuItem.Click += new System.EventHandler(this.RightClickMenu_OpenInNewWindow_Click);
             // 
+            // detachLegendMenuItem
+            // 
+            this.detachLegendMenuItem.Name = "detachLegendMenuItem";
+            this.detachLegendMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.detachLegendMenuItem.Text = "Detach Legend";
+            this.detachLegendMenuItem.Click += new System.EventHandler(this.RightClickMenu_DetachLegend_Click);
+            // 
             // rtbErrorMessage
             // 
             this.rtbErrorMessage.BackColor = System.Drawing.Color.Maroon;
@@ -166,6 +175,7 @@ namespace ScottPlot
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem openInNewWindowMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detachLegendMenuItem;
         private System.Windows.Forms.RichTextBox rtbErrorMessage;
     }
 }

@@ -118,6 +118,7 @@ namespace ScottPlot.Renderable
             using (var shadowBrush = new SolidBrush(ShadowColor))
             using (var textBrush = new SolidBrush(Font.Color))
             using (var outlinePen = new Pen(OutlineColor))
+            using (var legendItemHideBrush = GDI.Brush(FillColor, 100))
             {
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
@@ -175,17 +176,29 @@ namespace ScottPlot.Renderable
                         if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
                             MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.color);
                     }
+
+                    // Typically invisible legend items don't make it in the list.
+                    // If they do, display them simulating semi-transparency.
+                    if (!item.Parent.IsVisible)
+                    {
+                        PointF hideRectOrigin = new(lineX1, locationY + verticalOffset);
+                        SizeF hideRectSize = new(width, maxLabelHeight);
+                        RectangleF hideRect = new(hideRectOrigin, hideRectSize);
+                        gfx.FillRectangle(legendItemHideBrush, hideRect);
+                    }
                 }
             }
         }
 
-        public void UpdateLegendItems(IPlottable[] renderables)
+        public void UpdateLegendItems(Plot plot, bool includeHidden = false)
         {
-            LegendItems = renderables.Where(x => x.GetLegendItems() != null)
-                                     .Where(x => x.IsVisible)
-                                     .SelectMany(x => x.GetLegendItems())
-                                     .Where(x => !string.IsNullOrWhiteSpace(x.label))
-                                     .ToArray();
+            LegendItems = plot.GetPlottables()
+                .Where(x => x.GetLegendItems() != null)
+                .Where(x => x.IsVisible || includeHidden)
+                .SelectMany(x => x.GetLegendItems())
+                .Where(x => !string.IsNullOrWhiteSpace(x.label))
+                .ToArray();
+
             if (ReverseOrder)
                 Array.Reverse(LegendItems);
         }

@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.WinForms
             InitializeComponent();
         }
 
-        private void PlotViewerButton_Click(object sender, EventArgs e) => new WinFormsDemos.PlotViewerDemo();
+        private void PlotViewerButton_Click(object sender, EventArgs e) => new WinFormsDemos.PlotViewerDemo().ShowDialog();
         private void MouseTrackerButton_Click(object sender, EventArgs e) => new WinFormsDemos.MouseTracker().ShowDialog();
         private void ToggleVisibilityButton_Click(object sender, EventArgs e) => new WinFormsDemos.ToggleVisibility().ShowDialog();
         private void ConfigButton_Click(object sender, EventArgs e) => new WinFormsDemos.FormsPlotConfig().ShowDialog();

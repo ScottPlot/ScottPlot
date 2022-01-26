@@ -64,7 +64,7 @@ namespace ScottPlot.Plottable
 
             return Enumerable
                 .Range(0, Values.Length)
-                .Select(i => new LegendItem() { label = SliceLabels[i], color = SliceFillColors[i], lineWidth = 10 })
+                .Select(i => new LegendItem(this) { label = SliceLabels[i], color = SliceFillColors[i], lineWidth = 10 })
                 .ToArray();
         }
 

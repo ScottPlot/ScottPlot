@@ -288,14 +288,14 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem()
+            var singleLegendItem = new LegendItem(this)
             {
                 label = Label,
                 color = Color,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
                 markerShape = MarkerShape,
-                markerSize = MarkerSize
+                markerSize = MarkerSize,
             };
             return new LegendItem[] { singleLegendItem };
         }

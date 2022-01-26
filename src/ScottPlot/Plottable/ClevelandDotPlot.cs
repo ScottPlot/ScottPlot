@@ -155,7 +155,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var firstDot = new LegendItem()
+            var firstDot = new LegendItem(this)
             {
                 label = Label1,
                 color = Color1,
@@ -163,7 +163,7 @@ namespace ScottPlot.Plottable
                 markerShape = MarkerShape1,
                 markerSize = 5,
             };
-            var secondDot = new LegendItem()
+            var secondDot = new LegendItem(this)
             {
                 label = Label2,
                 color = Color2,
