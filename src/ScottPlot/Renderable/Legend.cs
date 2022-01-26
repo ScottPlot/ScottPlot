@@ -177,39 +177,28 @@ namespace ScottPlot.Renderable
                             MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.color);
                     }
 
+                    // Typically invisible legend items don't make it in the list.
+                    // If they do, display them simulating semi-transparency.
                     if (!item.Parent.IsVisible)
                     {
-                        // prepare values for drawing a rectangle
-                        PointF hideRectOrigin = new PointF(lineX1, locationY + verticalOffset);
-                        SizeF hideRectSize = new SizeF(width, maxLabelHeight);
-                        RectangleF hideRect = new RectangleF(hideRectOrigin, hideRectSize);
+                        PointF hideRectOrigin = new(lineX1, locationY + verticalOffset);
+                        SizeF hideRectSize = new(width, maxLabelHeight);
+                        RectangleF hideRect = new(hideRectOrigin, hideRectSize);
                         gfx.FillRectangle(legendItemHideBrush, hideRect);
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Updates de list of legend items associated with the Legend
-        /// </summary>
-        /// <param name="renderables">A list of plottable objects</param>
-        /// <param name="includeInvisibleOrEmptyLabels">Determines if plottables that are invisible or with empty labels are accounted for</param>
-        public void UpdateLegendItems(IPlottable[] renderables, bool includeInvisibleOrEmptyLabels = false)
+        public void UpdateLegendItems(Plot plot, bool includeHidden = false)
         {
-            if (includeInvisibleOrEmptyLabels)
-            {
-                LegendItems = renderables.Where(x => x.GetLegendItems() != null)
-                                         .SelectMany(x => x.GetLegendItems())
-                                         .ToArray();
-            }
-            else
-            {
-                LegendItems = renderables.Where(x => x.GetLegendItems() != null)
-                                         .Where(x => x.IsVisible)
-                                         .SelectMany(x => x.GetLegendItems())
-                                         .Where(x => !string.IsNullOrWhiteSpace(x.label))
-                                         .ToArray();
-            }
+            LegendItems = plot.GetPlottables()
+                .Where(x => x.GetLegendItems() != null)
+                .Where(x => x.IsVisible || includeHidden)
+                .SelectMany(x => x.GetLegendItems())
+                .Where(x => !string.IsNullOrWhiteSpace(x.label))
+                .ToArray();
+
             if (ReverseOrder)
                 Array.Reverse(LegendItems);
         }

@@ -39,8 +39,7 @@ namespace ScottPlot
         private void UpdateLegendImage()
         {
             FormsPlot.Refresh();
-            var allPlottables = FormsPlot.Plot.GetPlottables();
-            Legend.UpdateLegendItems(allPlottables, true);
+            Legend.UpdateLegendItems(FormsPlot.Plot, includeHidden: true);
             PictureBoxLegend.Image = Legend.GetBitmap(false);
         }
 
@@ -57,8 +56,7 @@ namespace ScottPlot
         {
             MouseEventArgs e2 = (MouseEventArgs)e;
 
-            // TODO: move this logic inside the Legend class if possible
-            // public IPlottable Legend.GetPlottableUnderMouse(float xPixel, float yPixel) { }
+            // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
             double legendItemHeight = (double)PictureBoxLegend.Image.Height / Legend.Count;
             int clickedItemIndex = (int)Math.Floor(e2.Y / legendItemHeight);
             var clickedPlottable = Legend.GetItems()[clickedItemIndex].Parent;

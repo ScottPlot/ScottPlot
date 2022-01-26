@@ -100,7 +100,7 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
         {
-            settings.CornerLegend.UpdateLegendItems(GetPlottables());
+            settings.CornerLegend.UpdateLegendItems(this);
 
             if (settings.CornerLegend.IsVisible)
             {
