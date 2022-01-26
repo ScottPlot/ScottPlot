@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.33
 _In development / not yet on NuGet_
+* Spline Interpolation: Added new methods for data smoothing including Bézier interpolation (#1593, #1606)
 
 ## ScottPlot 4.1.32
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
