@@ -42,7 +42,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            LegendItem item = new()
+            LegendItem item = new(this)
             {
                 label = Label,
                 markerShape = MarkerShape,

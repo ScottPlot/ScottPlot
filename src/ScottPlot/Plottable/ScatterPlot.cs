@@ -288,7 +288,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem()
+            var singleLegendItem = new LegendItem(this)
             {
                 label = Label,
                 color = Color,
@@ -296,7 +296,6 @@ namespace ScottPlot.Plottable
                 lineWidth = LineWidth,
                 markerShape = MarkerShape,
                 markerSize = MarkerSize,
-                plottableVisible = IsVisible
             };
             return new LegendItem[] { singleLegendItem };
         }

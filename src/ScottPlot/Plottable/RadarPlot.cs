@@ -222,7 +222,7 @@ namespace ScottPlot.Plottable
             List<LegendItem> legendItems = new List<LegendItem>();
             for (int i = 0; i < GroupLabels.Length; i++)
             {
-                var item = new LegendItem()
+                var item = new LegendItem(this)
                 {
                     label = GroupLabels[i],
                     color = FillColors[i],

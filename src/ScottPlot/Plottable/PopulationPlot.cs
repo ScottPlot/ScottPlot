@@ -78,7 +78,7 @@ namespace ScottPlot.Plottable
         }
 
         public LegendItem[] GetLegendItems() => MultiSeries.multiSeries
-                .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                .Select(x => new LegendItem(this) { label = x.seriesLabel, color = x.color, lineWidth = 10 })
                 .ToArray();
 
         public AxisLimits GetAxisLimits()

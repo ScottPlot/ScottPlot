@@ -24,5 +24,12 @@ namespace ScottPlot.Plottable
             set { lineWidth = 10; }
         }
         public bool plottableVisible;
+
+        public readonly IPlottable Parent;
+
+        public LegendItem(IPlottable parent)
+        {
+            Parent = parent;
+        }
     }
 }
