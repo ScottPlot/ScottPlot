@@ -118,7 +118,7 @@ namespace ScottPlot.Renderable
             using (var shadowBrush = new SolidBrush(ShadowColor))
             using (var textBrush = new SolidBrush(Font.Color))
             using (var outlinePen = new Pen(OutlineColor))
-            using (var legendItemHideBrush = GDI.Brush(Color.White, 100))
+            using (var legendItemHideBrush = GDI.Brush(FillColor, 100))
             {
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
