@@ -46,8 +46,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 Y = .57,
                 Color = Color.Magenta,
                 MarkerShape = MarkerShape.filledDiamond,
-                MarkerSize = 25,
+                MarkerSize = 15,
+                Text = "drag the point!",
             };
+
+            myDraggableMarker.Font.Size = 16;
+
             plt.Add(myDraggableMarker);
         }
     }
@@ -82,6 +86,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Add(dmpv);
 
             plt.Legend();
+        }
+    }
+
+    public class MarkerLabeled : IRecipe
+    {
+        public string Category => "Plottable: Marker";
+        public string ID => "marker_labeled";
+        public string Title => "Labeled Marker";
+        public string Description =>
+            "Markers have an optional text label.";
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+
+            var marker = plt.AddMarker(35, 0.6);
+            marker.Text = "Interesting Point";
+            marker.Font.Color = Color.Magenta;
+            marker.Font.Alignment = Alignment.UpperCenter;
+            marker.Font.Size = 28;
         }
     }
 }
