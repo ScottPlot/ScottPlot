@@ -47,7 +47,7 @@ namespace ScottPlot.Plottable
         /// Font settings for rendering <see cref="Text"/>.
         /// Alignment and orientation relative to the marker can be configured here.
         /// </summary>
-        public Drawing.Font Font = new();
+        public Drawing.Font TextFont = new();
 
         public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
 
@@ -82,15 +82,15 @@ namespace ScottPlot.Plottable
 
             if (!string.IsNullOrEmpty(Text))
             {
-                SizeF stringSize = Drawing.GDI.MeasureString(gfx, Text, Font);
+                SizeF stringSize = Drawing.GDI.MeasureString(gfx, Text, TextFont.Name, TextFont.Size, TextFont.Bold);
                 gfx.TranslateTransform(point.X, point.Y);
-                gfx.RotateTransform(Font.Rotation);
+                gfx.RotateTransform(TextFont.Rotation);
 
-                (float dX, float dY) = Drawing.GDI.TranslateString(Text, Font);
+                (float dX, float dY) = Drawing.GDI.TranslateString(Text, TextFont);
                 gfx.TranslateTransform(-dX, -dY);
 
-                using var font = Drawing.GDI.Font(Font);
-                using var fontBrush = new SolidBrush(Font.Color);
+                using var font = Drawing.GDI.Font(TextFont);
+                using var fontBrush = new SolidBrush(TextFont.Color);
                 gfx.DrawString(Text, font, fontBrush, new PointF(0, 0));
 
                 Drawing.GDI.ResetTransformPreservingScale(gfx, dims);

@@ -50,7 +50,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 Text = "drag the point!",
             };
 
-            myDraggableMarker.Font.Size = 16;
+            myDraggableMarker.TextFont.Size = 16;
 
             plt.Add(myDraggableMarker);
         }
@@ -102,9 +102,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var marker = plt.AddMarker(35, 0.6);
             marker.Text = "Interesting Point";
-            marker.Font.Color = Color.Magenta;
-            marker.Font.Alignment = Alignment.UpperCenter;
-            marker.Font.Size = 28;
+            marker.TextFont.Color = Color.Magenta;
+            marker.TextFont.Alignment = Alignment.UpperCenter;
+            marker.TextFont.Size = 28;
         }
     }
 }
