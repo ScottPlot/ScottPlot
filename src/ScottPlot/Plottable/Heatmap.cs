@@ -90,6 +90,11 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
+        /// Indicates whether the heatmap's size or location has been modified by the user
+        /// </summary>
+        public bool IsDefaultSizeAndLocation => OffsetX == 0 && OffsetY == 0 && CellHeight == 1 && CellWidth == 1;
+
+        /// <summary>
         /// Text to appear in the legend
         /// </summary>
         public string Label { get; set; }
