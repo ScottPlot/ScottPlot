@@ -383,13 +383,16 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = true)
         {
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
 
-            if (lockScales)
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
                 AxisScaleLock(true);
 
             return plottable;
@@ -406,13 +409,16 @@ namespace ScottPlot
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = null)
         {
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
             Add(plottable);
 
-            if (lockScales)
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
                 AxisScaleLock(true);
 
             return plottable;
