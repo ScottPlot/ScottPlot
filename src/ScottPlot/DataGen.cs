@@ -422,6 +422,8 @@ namespace ScottPlot
                 ? RandomStockPrices(rand, pointCount, mult, startingPrice)
                 : RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
 
+            if (rand is null)
+                rand = new Random(0);
             foreach (OHLC price in prices)
                 price.Volume = rand.NextDouble() * 900 + 100;
 
