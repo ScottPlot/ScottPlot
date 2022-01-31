@@ -277,4 +277,35 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Add(scatter);
         }
     }
+
+    public class ScatterPlotForestPlot : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_forest";
+        public string Title => "Forest Plot";
+        public string Description => "Scatter plots can be used to create forest plots, which are useful for showing the agreement between multiple estimates.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var plot1 = plt.AddScatter(new double[] { 2.5 }, new double[] { 5 }, label: "John Doe et al.");
+            plot1.XError = new double[] { 0.2 };
+
+            var plot2 = plt.AddScatter(new double[] { 2.7 }, new double[] { 4 }, label: "Jane Doe et al.");
+            plot2.XError = new double[] { 0.3 };
+
+            var plot3 = plt.AddScatter(new double[] { 2.3 }, new double[] { 3 }, label: "Jim Doe et al.");
+            plot3.XError = new double[] { 0.6 };
+
+            var plot4 = plt.AddScatter(new double[] { 2.8 }, new double[] { 2 }, label: "Joel Doe et al.");
+            plot4.XError = new double[] { 0.3 };
+
+            var plot5 = plt.AddScatter(new double[] { 2.5 }, new double[] { 1 }, label: "Jacqueline Doe et al.");
+            plot5.XError = new double[] { 0.2 };
+
+            plt.AddVerticalLine(2.6, style: LineStyle.Dash);
+
+            plt.SetAxisLimits(0, 5, 0, 6);
+            plt.Legend();
+        }
+    }
 }
