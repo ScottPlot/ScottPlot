@@ -417,10 +417,15 @@ namespace ScottPlot
         public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1, bool sequential = true)
         {
             TimeSpan ts = TimeSpan.FromMinutes(deltaMinutes) + TimeSpan.FromDays(deltaDays);
-            if (sequential)
-                return RandomStockPrices(rand, pointCount, mult, startingPrice);
-            else
-                return RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
+
+            OHLC[] prices = sequential
+                ? RandomStockPrices(rand, pointCount, mult, startingPrice)
+                : RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
+
+            foreach (OHLC price in prices)
+                price.Volume = rand.NextDouble() * 900 + 100;
+
+            return prices;
         }
 
         /// <summary>
