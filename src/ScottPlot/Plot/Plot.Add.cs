@@ -633,7 +633,6 @@ namespace ScottPlot
 
         /// <summary>
         /// Add a marker at a specific X/Y position.
-        /// This method really creates a scatter plot with a single point.
         /// </summary>
         public MarkerPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
         {
