@@ -15,6 +15,7 @@ namespace ScottPlot
         public double High;
         public double Low;
         public double Close;
+        public double Volume;
         public DateTime DateTime;
         public TimeSpan TimeSpan;
 
@@ -28,12 +29,13 @@ namespace ScottPlot
                 if (IsNanOrInfinity(High)) return false;
                 if (IsNanOrInfinity(Low)) return false;
                 if (IsNanOrInfinity(Close)) return false;
+                if (IsNanOrInfinity(Volume)) return false;
                 return true;
             }
         }
 
         public override string ToString() =>
-            $"OHLC: open={Open}, high={High}, low={Low}, close={Close}, start={DateTime}, span={TimeSpan}";
+            $"OHLC: open={Open}, high={High}, low={Low}, close={Close}, start={DateTime}, span={TimeSpan}, volume={Volume}";
 
         /// <summary>
         /// OHLC price over a specific period of time
@@ -44,7 +46,8 @@ namespace ScottPlot
         /// <param name="close">closing price</param>
         /// <param name="timeStart">open time</param>
         /// <param name="timeSpan">width of the OHLC</param>
-        public OHLC(double open, double high, double low, double close, DateTime timeStart, TimeSpan timeSpan)
+        /// <param name="volume">transaction volume for this time span</param>
+        public OHLC(double open, double high, double low, double close, DateTime timeStart, TimeSpan timeSpan, double volume = 0)
         {
             Open = open;
             High = high;
@@ -52,6 +55,7 @@ namespace ScottPlot
             Close = close;
             DateTime = timeStart;
             TimeSpan = timeSpan;
+            Volume = volume;
         }
 
         /// <summary>
@@ -63,7 +67,8 @@ namespace ScottPlot
         /// <param name="close">closing price</param>
         /// <param name="timeStart">open time (DateTime.ToOADate() units)</param>
         /// <param name="timeSpan">width of the OHLC in days</param>
-        public OHLC(double open, double high, double low, double close, double timeStart, double timeSpan = 1)
+        /// <param name="volume">transaction volume for this time span</param>
+        public OHLC(double open, double high, double low, double close, double timeStart, double timeSpan = 1, double volume = 0)
         {
             Open = open;
             High = high;
@@ -71,6 +76,7 @@ namespace ScottPlot
             Close = close;
             DateTime = DateTime.FromOADate(timeStart);
             TimeSpan = TimeSpan.FromDays(timeSpan);
+            Volume = volume;
         }
     }
 }

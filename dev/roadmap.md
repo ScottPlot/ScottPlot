@@ -1,10 +1,22 @@
 # ScottPlot Roadmap
 
-The forward-looking roadmap is tracked in a pinned "triaged tasks and features" issue on the [**issues page**](https://github.com/ScottPlot/ScottPlot/issues).
+For the latest roadmap related to active development see the pinned topics on the [**issues page**](https://github.com/ScottPlot/ScottPlot/issues).
+
+> ⚠️ **NOTICE: Scott has enacted a temporary feature freeze** over the month of February 2022 to concentrate development effort on the next major version of this library, ScottPlot 5. See the relevant [**pinned issue**](https://github.com/ScottPlot/ScottPlot/issues) for details.
 
 ## Versions
 
-_Detailed notes for each version are in the [changelog](changelog.md) and [releases page](https://github.com/swharden/ScottPlot/releases)_
+_Detailed notes about changes and contributors for each version can be found at https://ScottPlot.NET/changelog/_
+
+* **ScottPlot 5.0** (Jan 2022 / in development...) Major changes include:
+  * No calls to `System.Drawing` (which is no longer supported on Linux or MacOS)
+  * Rendering using `Microsoft.Maui.Graphics` and Skia (optionally with OpenGL)
+  * Significant shift toward statelessness (greatly simplifying GUI testing)
+  * Improved thread safety
+  * Improved tick system
+  * Less reliance on `double[]` and improved ability to use generic arrays, Spans, and Lists
+  * Modern language features (Nullable, Records, etc)
+  * Continued backward compatibility with .NET Framework 4.6.2
 
 * **ScottPlot 4.1** (Nov 2020, released May 2021) Added support for multiple axes. Refactored all plottables and plot components. Rendering system now renders onto a single image (rather than separate figure and data images), and does not store images in memory between renders. Many namespaces and public fields were renamed to promote discoverability.
 
@@ -14,4 +26,4 @@ _Detailed notes for each version are in the [changelog](changelog.md) and [relea
 
 * **ScottPlot 2.0** (Jan, 2019) Clean recode with new API. First version to get its own GitHub project. 
 
-* **ScottPlot 1.0** (June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/projects/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/projects/17-06-24_stretchy_line_plot) to demonstrate how to draw lines interactively with C#.
+* **ScottPlot 1.0** (June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/dev/old/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/dev/old/17-06-24_stretchy_line_plot) to demonstrate how to draw lines interactively with C#.
