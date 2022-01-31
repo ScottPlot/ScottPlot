@@ -90,6 +90,21 @@ namespace ScottPlot.Plottable
         /// </summary>
         public readonly Drawing.Font Font = new();
 
+        /// <summary>
+        /// Replace the arrays used to define positions and values.
+        /// New error arrays will be created and filled with zeros.
+        /// </summary>
+        public void Replace(double[] positions, double[] values)
+        {
+            if (positions is null || values is null || positions.Length != values.Length)
+                throw new ArgumentException();
+
+            Positions = positions;
+            Values = values;
+            ValueErrors = new double[values.Length];
+            ValueOffsets = new double[values.Length];
+        }
+
         public virtual AxisLimits GetAxisLimits()
         {
             double valueMin = double.PositiveInfinity;
