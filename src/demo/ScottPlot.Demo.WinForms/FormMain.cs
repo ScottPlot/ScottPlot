@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             versionLabel.Text = Plot.Version;
-            demoListControl1.Height = demoListControl1.PreferredHeight;
+            demoListControl1.Height = (int)(demoListControl1.Height * 1.1);
         }
 
         private void WebsiteLink_Click(object sender, EventArgs e) => Tools.LaunchBrowser("https://ScottPlot.NET/demo");
