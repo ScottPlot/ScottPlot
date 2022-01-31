@@ -7,9 +7,11 @@ assignees: ''
 
 ---
 
-## Features Suggestion
+## Feature Suggestion
 
-**Feature description:** Describe your question here
+> ⚠️ **NOTICE: Scott has enacted a temporary feature freeze** over the month of February 2022 to concentrate development effort on the next major version of this library, ScottPlot 5. See the relevant [**pinned issue**](https://github.com/ScottPlot/ScottPlot/issues) for details.
+
+**Feature description:** Describe your idea here
 
 **Code example:** If applicable, use this space to demonstrate how you wish the new feature could be used in code.
 
