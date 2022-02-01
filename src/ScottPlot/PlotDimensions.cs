@@ -41,7 +41,7 @@ namespace ScottPlot
 
         public Coordinate GetCoordinate(Pixel pixel) => new Coordinate(GetCoordinateX(pixel.X), GetCoordinateY(pixel.Y));
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
-        public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
+        public double GetCoordinateY(float pixel) => YMax - (pixel - DataOffsetY) / PxPerUnitY;
 
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits axisLimits, double scaleFactor)
         {
