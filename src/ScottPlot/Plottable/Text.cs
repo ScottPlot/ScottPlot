@@ -109,7 +109,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Indicates whether this marker is draggable in user controls.
         /// </summary>
-        public bool DragEnabled { get; set; } = true;
+        public bool DragEnabled { get; set; } = false;
 
         /// <summary>
         /// Cursor to display while hovering over this marker if dragging is enabled.
