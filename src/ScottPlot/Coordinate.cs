@@ -16,6 +16,8 @@ namespace ScottPlot
             Y = y;
         }
 
+        public override string ToString() => $"(X={X}, Y={Y})";
+
         /// <summary>
         /// True as lone as neither coordinate is NaN or Infinity
         /// </summary>
