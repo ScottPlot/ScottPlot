@@ -157,7 +157,7 @@ namespace ScottPlot
             // determine axis limits based on specific X and Y axes
             (double xMin, double xMax) = xAxis.Dims.RationalLimits();
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
-            var limits = (xMin, xMax, yMin, yMax);
+            AxisLimits limits = new(xMin, xMax, yMin, yMax);
 
             return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
         }
@@ -572,11 +572,10 @@ namespace ScottPlot
 
             // axis limits shall not change
             var dims = GetPlotDimensions(xAxisIndex, yAxisIndex, scaleFactor: 1.0);
-            var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(Width, Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits, scaleFactor: 1);
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), dims.AxisLimits, scaleFactor: 1);
 
             foreach (var axis in Axes)
             {
@@ -596,7 +595,7 @@ namespace ScottPlot
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits, scaleFactor: 1.0);
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, dims.AxisLimits, scaleFactor: 1.0);
             foreach (var axis in Axes)
             {
                 bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
