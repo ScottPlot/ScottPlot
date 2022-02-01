@@ -27,6 +27,7 @@ namespace ScottPlot
         public readonly double YSpan;
         public readonly double XCenter;
         public readonly double YCenter;
+        public readonly AxisLimits AxisLimits;
 
         // pixel/coordinate conversions
         public readonly double PxPerUnitX;
@@ -40,16 +41,15 @@ namespace ScottPlot
 
         public Coordinate GetCoordinate(Pixel pixel) => new Coordinate(GetCoordinateX(pixel.X), GetCoordinateY(pixel.Y));
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
-        public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
+        public double GetCoordinateY(float pixel) => YMax - (pixel - DataOffsetY) / PxPerUnitY;
 
-        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset,
-            (double xMin, double xMax, double yMin, double yMax) axisLimits,
-            double scaleFactor)
+        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits axisLimits, double scaleFactor)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);
             (DataOffsetX, DataOffsetY) = (dataOffset.X, dataOffset.Y);
-            (XMin, XMax, YMin, YMax) = (axisLimits.xMin, axisLimits.xMax, axisLimits.yMin, axisLimits.yMax);
+            AxisLimits = axisLimits;
+            (XMin, XMax, YMin, YMax) = (axisLimits.XMin, axisLimits.XMax, axisLimits.YMin, axisLimits.YMax);
             (XSpan, YSpan) = (XMax - XMin, YMax - YMin);
             (XCenter, YCenter) = ((XMin + XMax) / 2, (YMin + YMax) / 2);
             (PxPerUnitX, PxPerUnitY) = (DataWidth / XSpan, DataHeight / YSpan);
