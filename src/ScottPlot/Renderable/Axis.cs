@@ -108,7 +108,13 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Returns the number of pixels occupied by this axis
         /// </summary>
-        public float GetSize() => IsVisible ? PixelSize + PixelSizePadding : 0;
+        public float GetSize()
+        {
+            if (IsVisible == false || Collapsed)
+                return 0;
+            else
+                return PixelSize + PixelSizePadding;
+        }
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
