@@ -241,10 +241,19 @@ namespace ScottPlot.Plottable
 
         private RectangleF RenderColorbar(PlotDimensions dims, Bitmap bmp)
         {
-            float scaleLeftPad = 10;
-
-            PointF location = new(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
+            float padding = 10;
             SizeF size = new(Width, dims.DataHeight);
+
+            float locationY = dims.DataOffsetY;
+            float locationX;
+            if (Edge == Renderable.Edge.Right)
+                locationX = dims.DataOffsetX + dims.DataWidth + padding;
+            else if (Edge == Renderable.Edge.Left)
+                locationX = padding;
+            else
+                throw new InvalidOperationException($"Unsupported {nameof(Edge)}: {Edge}");
+            PointF location = new(locationX, locationY);
+
             RectangleF rect = new(location, size);
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality: true, clipToDataArea: false))
