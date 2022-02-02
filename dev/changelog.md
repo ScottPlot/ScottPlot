@@ -8,6 +8,7 @@ _In development / not yet on NuGet_
 * Heatmap: Heatmaps with custom X and Y sizing or positioning no longer call `AxisScaleLock()` automatically (#1145) _Thanks @bclehmann_
 * Axis: GetCoordinateY() now returns more accurate coordinate (#1625, #1616) _Thanks @BambOoxX_
 * Text: Now has `IsDraggable` field and improved mouseover detection that supports rotation (#1616) _Thanks @BambOoxX_
+* Plot: `Frameless()` no longer results in an image with a 3 pixel transparent border (#1571, #1605) _Thanks @sjlai1993_
 
 ## ScottPlot 4.1.32
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
