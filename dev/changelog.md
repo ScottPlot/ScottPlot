@@ -9,6 +9,7 @@ _In development / not yet on NuGet_
 * Axis: GetCoordinateY() now returns more accurate coordinate (#1625, #1616) _Thanks @BambOoxX_
 * Text: Now has `IsDraggable` field and improved mouseover detection that supports rotation (#1616, #1599) _Thanks @BambOoxX and @Niravk1997_
 * Plot: `Frameless()` no longer results in an image with a 3 pixel transparent border (#1571, #1605) _Thanks @sjlai1993_
+* Colorbar: `AddColorbar()` has new optional argument to enable placement on the left side of the plot (#1524) _Thanks @Niravk1997_
 
 ## ScottPlot 4.1.32
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_

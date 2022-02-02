@@ -240,12 +240,24 @@ namespace ScottPlot
         /// </summary>
         /// <param name="colormap">Colormap to display in this colorbar</param>
         /// <param name="space">The size of the right axis will be set to this number of pixels to make room for the colorbar</param>
+        /// <param name="rightSide">If false the colorbar will be displayed on the left edge of the plot.</param>
         /// <returns>the colorbar that was just created</returns>
-        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
+        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100, bool rightSide = true)
         {
             var cb = new Colorbar(colormap);
+
+            if (rightSide)
+            {
+                cb.Edge = Renderable.Edge.Right;
+                YAxis2.SetSizeLimit(min: space);
+            }
+            else
+            {
+                cb.Edge = Renderable.Edge.Left;
+                YAxis.SetSizeLimit(min: space);
+            }
+
             Add(cb);
-            YAxis2.SetSizeLimit(min: space);
             return cb;
         }
 
