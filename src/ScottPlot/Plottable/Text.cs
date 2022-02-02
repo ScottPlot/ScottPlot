@@ -96,13 +96,11 @@ namespace ScottPlot.Plottable
                 PointF pointA = new(xA, yA);
                 PointF pointC = new(xC, yC);
 
-                gfx.DrawEllipse(redPen, xA, yA, 2, 2);
-                gfx.DrawEllipse(redPen, xC, yC, 2, 2);
-
-                gfx.DrawString("A", font, fontBrush, pointA);
-                gfx.DrawString("C", font, fontBrush, pointC);
-
-                RectangleUnits = RectangleF.FromLTRB((float)dims.GetCoordinateX(xA), (float)dims.GetCoordinateY(yA), (float)dims.GetCoordinateX(xC), (float)dims.GetCoordinateY(yC));
+                RectangleUnits = RectangleF.FromLTRB(
+                    left: (float)dims.GetCoordinateX(pointA.X),
+                    top: (float)dims.GetCoordinateY(pointC.Y),
+                    right: (float)dims.GetCoordinateX(pointC.X),
+                    bottom: (float)dims.GetCoordinateY(pointA.Y));
             }
         }
 
