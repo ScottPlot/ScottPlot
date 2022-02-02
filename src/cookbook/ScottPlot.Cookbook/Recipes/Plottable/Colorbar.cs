@@ -153,4 +153,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
         }
     }
+
+    public class ColorbarLeft : IRecipe
+    {
+        public string Category => "Plottable: Colorbar";
+        public string ID => "colorbar_left";
+        public string Title => "Colorbar on Left";
+        public string Description =>
+            "A colorbar may be added to the left side of the chart";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddColorbar(rightSide: false);
+        }
+    }
 }
