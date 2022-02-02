@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook.Recipes
             sigSmall.YAxisIndex = 0;
             sigSmall.XAxisIndex = 0;
             plt.XAxis.Label("Primary X Axis");
-            plt.YAxis.Label("Secondary Y Axis");
+            plt.YAxis.Label("Primary Y Axis");
             plt.XAxis.Color(sigSmall.Color);
             plt.YAxis.Color(sigSmall.Color);
 
