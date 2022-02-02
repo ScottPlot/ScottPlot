@@ -26,5 +26,24 @@ namespace ScottPlotTests.Plot
             plt.Frameless(false);
             TestTools.SaveFig(plt, "2");
         }
+
+        [Test]
+        public void Test_Frameless_HasNoFrame()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.Style(figureBackground: System.Drawing.Color.Magenta);
+            plt.Grid(false);
+            plt.Frameless();
+
+            plt.AddSignal(ScottPlot.DataGen.Sin(51), color: System.Drawing.Color.Gray);
+            plt.Margins(0, 0);
+
+            var bmp = TestTools.GetLowQualityBitmap(plt);
+            TestTools.SaveFig(bmp);
+            var after = new MeanPixel(bmp);
+
+            Assert.That(after.IsGray());
+
+        }
     }
 }
