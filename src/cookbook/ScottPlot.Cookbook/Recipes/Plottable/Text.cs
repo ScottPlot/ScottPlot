@@ -54,6 +54,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 txt.Rotation = 5;
                 txt.BorderSize = 2;
                 txt.BorderColor = Color.Navy;
+                txt.DragEnabled = true;
 
                 plt.AddPoint(x, y, Color.Red, 10);
             }
