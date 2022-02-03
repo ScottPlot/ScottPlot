@@ -145,7 +145,7 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Manually define ticks (disabling automatic tick placement)
+        /// Manually define ticks as a fraction from 0 to 1 (disabling automatic tick placement)
         /// </summary>
         /// <param name="fractions">from 0 (darkest) to 1 (brightest)</param>
         /// <param name="labels">strings displayed beside the ticks</param>
@@ -156,6 +156,23 @@ namespace ScottPlot.Plottable
 
             ClearTicks();
             AddTicks(fractions, labels);
+        }
+
+        /// <summary>
+        /// Manually define ticks by value within a range (disabling automatic tick placement)
+        /// </summary>
+        /// <param name="values">position for each tick</param>
+        /// <param name="labels">label for each tick</param>
+        /// <param name="min">colorbar range minimum</param>
+        /// <param name="max">colorbar range maximum</param>
+        public void SetTicks(double[] values, string[] labels, double min, double max)
+        {
+            if (values.Length != labels.Length)
+                throw new("fractions and labels must have the same length");
+
+            double span = max - min;
+            double[] fracs = values.Select(x => (x - min) / span).ToArray();
+            SetTicks(fracs, labels);
         }
 
         public LegendItem[] GetLegendItems() => null;
