@@ -203,10 +203,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var cb = plt.AddColorbar(heatmap);
 
-            // configure the colorbar to only show a small range of the colormap
-            cb.MinColor = 75 / 255.0;
-            cb.MaxColor = 125 / 255.0;
-
             // configure the colorbar to display inequality operators at the edges
             cb.MaxIsClipped = true;
             cb.MinIsClipped = true;
