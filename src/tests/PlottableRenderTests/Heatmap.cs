@@ -80,13 +80,15 @@ namespace ScottPlotTests.PlottableRenderTests
 
             var hmap = plt.AddHeatmap(intensities, cmap, lockScales: false);
             hmap.Interpolation = InterpolationMode.Bicubic;
+            hmap.ScaleMin = 0;
             hmap.Update(intensities, cmap, min: 0, max: 200); // intentionally cut-off data
+            Console.WriteLine(hmap.ScaleMin);
+
+            double[] tickPositions = ScottPlot.DataGen.Range(0, 200, 25, true);
+            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
 
             var cbar = plt.AddColorbar(hmap);
-            cbar.MinValue = 0;
-            double[] tickPositions = ScottPlot.DataGen.Range(-150, 150, 50, true);
-            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
-            cbar.SetTicks(tickPositions, tickLabels, -200, 200);
+            cbar.SetTicks(tickPositions, tickLabels, 0, 200);
 
             plt.Margins(0, 0);
             TestTools.SaveFig(plt);
