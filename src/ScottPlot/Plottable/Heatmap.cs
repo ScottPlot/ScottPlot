@@ -209,11 +209,18 @@ namespace ScottPlot.Plottable
             if (TransparencyThreshold.HasValue)
                 TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
 
-            double?[] NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
+            double minimumIntensity = Min;
+            if (ScaleMin.HasValue)
+                minimumIntensity = ScaleMin.Value;
+            if (TransparencyThreshold.HasValue)
+                minimumIntensity = TransparencyThreshold.Value;
 
-            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThreshold ?? 0);
-            double?[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
-            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
+            double maximumIntensity = Max;
+            if (ScaleMax.HasValue)
+                maximumIntensity = ScaleMax.Value;
+
+            double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
+            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
 
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
