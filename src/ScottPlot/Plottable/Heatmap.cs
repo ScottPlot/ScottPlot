@@ -206,21 +206,22 @@ namespace ScottPlot.Plottable
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
-            if (TransparencyThreshold.HasValue)
-                TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
+            double minimumIntensity = ScaleMin ?? Min;
+            double maximumIntensity = ScaleMax ?? Max;
 
-            double minimumIntensity = Min;
-            if (ScaleMin.HasValue)
-                minimumIntensity = ScaleMin.Value;
             if (TransparencyThreshold.HasValue)
+            {
+                TransparencyThreshold = Normalize(TransparencyThreshold, Min, Max, ScaleMin, ScaleMax);
                 minimumIntensity = TransparencyThreshold.Value;
-
-            double maximumIntensity = Max;
-            if (ScaleMax.HasValue)
-                maximumIntensity = ScaleMax.Value;
+            }
 
             double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
-            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
+
+            int[] flatARGB;
+            if (TransparencyThreshold.HasValue)
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
+            else
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
 
             double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
             double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
