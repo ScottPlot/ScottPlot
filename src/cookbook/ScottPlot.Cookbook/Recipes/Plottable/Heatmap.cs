@@ -173,10 +173,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < 100; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
+            // scale the colors between 0 and 200
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities, min: 0, max: 200);
 
+            // add a colorbar with custom ticks
             var cb = plt.AddColorbar(hm);
+            double[] tickPositions = ScottPlot.DataGen.Range(0, 200, 25, true);
+            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
+            cb.SetTicks(tickPositions, tickLabels, min: 0, max: 200);
         }
     }
 
