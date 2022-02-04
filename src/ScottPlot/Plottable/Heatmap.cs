@@ -222,6 +222,10 @@ namespace ScottPlot.Plottable
             double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
             int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
 
+            double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
+            double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
+            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
+
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
             Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
