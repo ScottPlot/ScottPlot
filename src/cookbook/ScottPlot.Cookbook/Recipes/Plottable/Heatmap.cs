@@ -173,10 +173,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < 100; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
+            // scale the colors between 0 and 200
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities, min: 0, max: 200);
 
+            // add a colorbar with custom ticks
             var cb = plt.AddColorbar(hm);
+            double[] tickPositions = ScottPlot.DataGen.Range(0, 200, 25, true);
+            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
+            cb.SetTicks(tickPositions, tickLabels, min: 0, max: 200);
         }
     }
 
@@ -197,10 +202,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             heatmap.Update(imageData, min: 75, max: 125);
 
             var cb = plt.AddColorbar(heatmap);
-
-            // configure the colorbar to only show a small range of the colormap
-            cb.MinColor = 75 / 255.0;
-            cb.MaxColor = 125 / 255.0;
 
             // configure the colorbar to display inequality operators at the edges
             cb.MaxIsClipped = true;

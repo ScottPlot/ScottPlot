@@ -37,5 +37,61 @@ namespace ScottPlotTests.PlottableRenderTests
 
             Assert.AreNotEqual(hash1, hash2);
         }
+
+        [Test]
+        public void Test_Heatmap_AutoScaling()
+        {
+            // https://github.com/ScottPlot/ScottPlot/issues/1485
+
+            double[,] intensities = new double[100, 100];
+            for (int i = 0; i < 100; i++)
+                for (int j = 0; j < 100; j++)
+                    intensities[i, j] = (Math.Sin(i * .2) + Math.Cos(j * .2)) * 100;
+
+            var plt = new ScottPlot.Plot(500, 400);
+
+            var hmap = plt.AddHeatmap(intensities, ScottPlot.Drawing.Colormap.Viridis, lockScales: false);
+            hmap.Interpolation = InterpolationMode.Bicubic;
+
+            var cbar = plt.AddColorbar(hmap);
+            double[] tickPositions = ScottPlot.DataGen.Range(-150, 150, 50, true);
+            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
+            cbar.SetTicks(tickPositions, tickLabels, -200, 200);
+
+            plt.Margins(0, 0);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Heatmap_ManualScaling()
+        {
+            // The goal is to span the whole colormap only over values 0-200
+            // even though the original data has many values outside this range.
+            // https://github.com/ScottPlot/ScottPlot/issues/1485
+
+            double[,] intensities = new double[100, 100];
+            for (int i = 0; i < 100; i++)
+                for (int j = 0; j < 100; j++)
+                    intensities[i, j] = (Math.Sin(i * .2) + Math.Cos(j * .2)) * 100;
+
+            var plt = new ScottPlot.Plot(500, 400);
+
+            var cmap = ScottPlot.Drawing.Colormap.Viridis;
+
+            var hmap = plt.AddHeatmap(intensities, cmap, lockScales: false);
+            hmap.Interpolation = InterpolationMode.Bicubic;
+            hmap.ScaleMin = 0;
+            hmap.Update(intensities, cmap, min: 0, max: 200); // intentionally cut-off data
+            Console.WriteLine(hmap.ScaleMin);
+
+            double[] tickPositions = ScottPlot.DataGen.Range(0, 200, 25, true);
+            string[] tickLabels = tickPositions.Select(x => x.ToString()).ToArray();
+
+            var cbar = plt.AddColorbar(hmap);
+            cbar.SetTicks(tickPositions, tickLabels, 0, 200);
+
+            plt.Margins(0, 0);
+            TestTools.SaveFig(plt);
+        }
     }
 }
