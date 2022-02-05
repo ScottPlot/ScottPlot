@@ -4,26 +4,17 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - main
       - master
   pull_request:
     types: [opened, synchronize, reopened]
 
+env:
+  SOLUTION_FOLDER: "dev/ScottPlot5/"
+
 jobs:
   format:
     runs-on: windows-latest
-    name: ✒️ Check Formatting
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-      - name: ✨ Set up .NET 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "6.0.x"
-      - name: ✒️ Set up dotnet-format
-        run: dotnet tool install -g dotnet-format
-      - name: 🧐 Check Code Format
-        working-directory: src
-        run: dotnet-format --check
 
   test:
     strategy:
@@ -41,81 +32,13 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "5.0.x"
       - name: ✨ Setup .NET 6.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        working-directory: src/tests
-        run: dotnet restore
+        run: dotnet restore ${{ SOLUTION_FOLDER }}
       - name: 🛠️ Build
-        working-directory: src/tests
-        run: dotnet build --configuration Release
+        run: dotnet build ${{ SOLUTION_FOLDER }} --configuration Release --no-restore
       - name: 🧪 Test
-        working-directory: src/tests
-        run: dotnet test --configuration Release
-
-  package:
-    name: 📦 Create NuGet Packages
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-      - name: ✨ Setup .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "6.0.x"
-
-      - name: 📦 Package ScottPlot
-        run: |
-          dotnet restore src/ScottPlot/ScottPlot.csproj
-          dotnet build src/ScottPlot/ScottPlot.csproj --configuration Release
-          dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
-
-      - name: 📦 Package ScottPlot.WinForms
-        run: |
-          dotnet restore src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj
-          dotnet build src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-
-      - name: 📦 Package ScottPlot.WPF
-        run: |
-          dotnet restore src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
-          dotnet build src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-
-      - name: 📦 Package ScottPlot.Avalonia
-        run: |
-          dotnet restore src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
-          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-
-      - name: 📦 Package ScottPlot.Eto
-        run: |
-          dotnet restore src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj
-          dotnet build src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
-
-  build:
-    runs-on: windows-latest
-    name: 🛠️ Build Entire Solution
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-      - name: 🐢 Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-      - name: ✨ Set up .NET 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "6.0.x"
-          include-prerelease: true
-      - name: 🚚 Restore
-        working-directory: src
-        run: dotnet restore
-      - name: 🐌 MSBuild
-        working-directory: src
-        run: msbuild -property:Configuration=Release -verbosity:minimal
+        run: dotnet test ${{ SOLUTION_FOLDER }} --configuration Release --no-restore --verbosity normal
