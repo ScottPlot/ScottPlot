@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.33
+## ScottPlot 4.1.34
 _In development / not yet on NuGet_
+
+## ScottPlot 4.1.33
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
 * Spline Interpolation: Added new methods for data smoothing including Bézier interpolation (#1593, #1606)
 * Detachable Legend: Added an option to detach the legend to the right-click menu in the Windows Forms control. Clicking items in the detached legend toggles their visibility on the plot (#1589, #1573, #1326) _Thanks @BambOoxX_
 * Marker: Added an optional `Text` (and `TextFont`) for displaying a message that moves with a marker (#1599)
