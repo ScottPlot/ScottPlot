@@ -9,6 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
+  TEST_PROJECT_FOLDER: "dev/ScottPlot5/ScottPlotTests"
   SOLUTION_FOLDER: "dev/ScottPlot5/ScottPlotTests"
 
 jobs:
@@ -38,3 +39,17 @@ jobs:
         run: dotnet build ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore
       - name: 🧪 Test
         run: dotnet test ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore --verbosity normal
+  solution:
+    runs-on: windows-latest
+    name: 🛠️ Build Solution
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore ${{ env.SOLUTION_FOLDER }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore
