@@ -12,9 +12,6 @@ env:
   SOLUTION_FOLDER: "dev/ScottPlot5/"
 
 jobs:
-  format:
-    runs-on: windows-latest
-
   test:
     strategy:
       fail-fast: false
