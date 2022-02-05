@@ -11,5 +11,9 @@
 		<PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.12.852" />
 		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.200-preview.12.852" />
 	</ItemGroup>
-	
+
+	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0-preview.187" />
+	</ItemGroup>
+
 </Project>
