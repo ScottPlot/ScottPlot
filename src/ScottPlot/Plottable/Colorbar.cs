@@ -37,6 +37,8 @@ namespace ScottPlot.Plottable
         private int AutomaticTickMinimumSpacing = 40;
         private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
 
+        public float DataAreaPadding = 10;
+
         private double _MinValue = 0;
         public double MinValue
         {
@@ -258,15 +260,14 @@ namespace ScottPlot.Plottable
 
         private RectangleF RenderColorbar(PlotDimensions dims, Bitmap bmp)
         {
-            float padding = 10;
             SizeF size = new(Width, dims.DataHeight);
 
             float locationY = dims.DataOffsetY;
             float locationX;
             if (Edge == Renderable.Edge.Right)
-                locationX = dims.DataOffsetX + dims.DataWidth + padding;
+                locationX = dims.DataOffsetX + dims.DataWidth + DataAreaPadding;
             else if (Edge == Renderable.Edge.Left)
-                locationX = padding;
+                locationX = DataAreaPadding;
             else
                 throw new InvalidOperationException($"Unsupported {nameof(Edge)}: {Edge}");
             PointF location = new(locationX, locationY);

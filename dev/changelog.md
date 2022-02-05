@@ -11,6 +11,7 @@ _In development / not yet on NuGet_
 * Plot: `Frameless()` no longer results in an image with a 3 pixel transparent border (#1571, #1605) _Thanks @sjlai1993_
 * Colorbar: `AddColorbar()` has new optional argument to enable placement on the left side of the plot (#1524) _Thanks @Niravk1997_
 * Heatmap: Fixed bug affecting manually-scaled heatmaps (#1485) _Thanks @ZPYin, @mYcheng-95, and @bclehmann_
+* Colorbar: Exposed `DataAreaPadding` to improve layout customization for multi-axis plots (#1637) _Thanks @ccopsey_
 
 ## ScottPlot 4.1.32
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
