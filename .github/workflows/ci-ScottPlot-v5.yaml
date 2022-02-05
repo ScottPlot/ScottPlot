@@ -1,4 +1,4 @@
-name: CI (ScottPlot 5)
+name: CI ScottPlot v5
 
 on:
   workflow_dispatch:
