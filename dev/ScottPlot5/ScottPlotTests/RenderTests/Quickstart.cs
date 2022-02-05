@@ -1,14 +1,19 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests;
+namespace ScottPlotTests.RenderTests;
 
 internal class Quickstart
 {
     [Test]
     public void Test_BasicPlot_CanRender()
     {
+        double[] xs = ScottPlot.Generate.Consecutive(51);
+        double[] ys1 = ScottPlot.Generate.Sin(51);
+        double[] ys2 = ScottPlot.Generate.Cos(51);
+
         var plt = new ScottPlot.Plot();
-        plt.AddDemoSinAndCos();
+        plt.AddScatter(xs, ys1);
+        plt.AddScatter(xs, ys2);
 
         string filePath = TestIO.SaveFig(plt);
         Assert.That(System.IO.File.Exists(filePath));

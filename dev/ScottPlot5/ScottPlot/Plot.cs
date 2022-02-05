@@ -13,6 +13,7 @@ public class Plot
     public readonly PlotStyle Style = new();
     public readonly List<Plottable.IPlottable> Plottables = new();
     private PlotView LastView = new();
+    public Palette Palette = Palettes.Default;
 
     public Plot()
     {
@@ -35,29 +36,16 @@ public class Plot
 
     #endregion
 
-    #region testing
-
-    public void AddDemoSinAndCos()
-    {
-        double[] xsArray = Generate.Consecutive(51);
-        double[] ysArray = Generate.Sin(51);
-        AddScatter(xsArray, ysArray, Colors.Yellow);
-
-        List<double> xsList = Generate.Consecutive(51).ToList();
-        List<double> ysList = Generate.Cos(51).ToList();
-        AddScatterList(xsList, ysList, Colors.Orange);
-    }
-
-    #endregion
-
     #region add/remove plottables
 
     public Plottable.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
+        color ??= Palette.GetColor(Plottables.Count);
+
         Plottable.ScatterArray<double> sp = new(xs, ys)
         {
-            LineColor = color ?? Colors.Blue,
-            MarkerColor = color ?? Colors.Blue,
+            LineColor = color,
+            MarkerColor = color,
         };
 
         Plottables.Add(sp);

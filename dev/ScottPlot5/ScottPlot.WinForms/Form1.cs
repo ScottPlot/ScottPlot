@@ -15,7 +15,11 @@ namespace ScottPlot.WinForms
         public Form1()
         {
             InitializeComponent();
-            Plot.AddDemoSinAndCos();
+            double[] xs = ScottPlot.Generate.Consecutive(51);
+            double[] ys1 = ScottPlot.Generate.Sin(51);
+            double[] ys2 = ScottPlot.Generate.Cos(51);
+            Plot.AddScatter(xs, ys1);
+            Plot.AddScatter(xs, ys2);
         }
 
         private void skglControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)
