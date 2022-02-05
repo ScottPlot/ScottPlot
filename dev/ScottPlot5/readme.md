@@ -1,5 +1,7 @@
 # ScottPlot 5
 
+[![Test ScottPlot v5](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci-ScottPlot-v5.yaml/badge.svg)](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci-ScottPlot-v5.yaml)
+
 ### ⚠️ WARNING: This project is pre-alpha and not ready for use
 
 This project explores feasibility of cutting the dependency on `System.Drawing.Common` in favor of a rendering system using `Microsoft.Maui.Graphics` (#1036). Depending on what is discovered here, code here may evolve into the next major version of ScottPlot (version 5).
