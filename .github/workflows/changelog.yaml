@@ -1,4 +1,4 @@
-name: Changelog
+name: Update Changelog Website
 
 on:
   workflow_dispatch:

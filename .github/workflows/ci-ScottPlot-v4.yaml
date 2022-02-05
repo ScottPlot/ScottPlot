@@ -1,4 +1,4 @@
-name: CI ScottPlot v4
+name: Test ScottPlot v4
 
 on:
   workflow_dispatch:
