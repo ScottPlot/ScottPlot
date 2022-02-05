@@ -33,8 +33,8 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        run: dotnet restore ${{ SOLUTION_FOLDER }}
+        run: dotnet restore ${{ env.SOLUTION_FOLDER }}
       - name: 🛠️ Build
-        run: dotnet build ${{ SOLUTION_FOLDER }} --configuration Release --no-restore
+        run: dotnet build ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ SOLUTION_FOLDER }} --configuration Release --no-restore --verbosity normal
+        run: dotnet test ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore --verbosity normal
