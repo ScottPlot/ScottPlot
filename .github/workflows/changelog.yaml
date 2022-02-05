@@ -2,8 +2,8 @@ name: Changelog
 
 on:
   push:
-    branches:
-      - master
+    paths:
+      - "dev/changelog.md"
 
 jobs:
   changelog:
