@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Maui.Graphics.Skia;
+using System.IO;
 
 namespace ScottPlot;
 
@@ -113,6 +115,22 @@ public class Plot
         canvas.DrawRectangle(view.DataRect);
 
         LastView = view;
+    }
+
+    #endregion
+
+    #region IO
+
+    public string SaveFig(string path, int width, int height, float displayScale = 1.0f)
+    {
+        using BitmapExportContext context = SkiaGraphicsService.Instance.CreateBitmapExportContext(width, height, displayScale);
+        GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
+        Draw(context.Canvas, LastView);
+
+        string fullPath = Path.GetFullPath(path);
+        using FileStream fs = new(fullPath, FileMode.Create);
+        context.WriteToStream(fs);
+        return fullPath;
     }
 
     #endregion

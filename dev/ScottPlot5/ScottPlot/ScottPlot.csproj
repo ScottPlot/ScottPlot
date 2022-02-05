@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.12.852" />
+		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.200-preview.12.852" />
 	</ItemGroup>
 	
 </Project>
