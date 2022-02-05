@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  SOLUTION_FOLDER: "dev/ScottPlot5/"
+  SOLUTION_FOLDER: "dev/ScottPlot5/ScottPlotTests"
 
 jobs:
   test:
@@ -33,8 +33,8 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.SOLUTION_FOLDER }}
+        run: dotnet restore ${{ env.TEST_PROJECT_FOLDER }}
       - name: 🛠️ Build
-        run: dotnet build ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore
+        run: dotnet build ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore --verbosity normal
+        run: dotnet test ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore --verbosity normal
