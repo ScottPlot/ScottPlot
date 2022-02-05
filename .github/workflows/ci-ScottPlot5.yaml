@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "dev/ScottPlot5/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  SOLUTION_FOLDER: "dev/ScottPlot5/"
+
+jobs:
+  format:
+    runs-on: windows-latest
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+          - os: macos-latest
+            osName: MacOS
+    runs-on: ${{ matrix.os }}
+    name: 🧪 Test on ${{ matrix.osName }}
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore ${{ SOLUTION_FOLDER }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ SOLUTION_FOLDER }} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{ SOLUTION_FOLDER }} --configuration Release --no-restore --verbosity normal

@@ -3,8 +3,8 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
+    paths:
+      - "src/**"
   pull_request:
     types: [opened, synchronize, reopened]
 
