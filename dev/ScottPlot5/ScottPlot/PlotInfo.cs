@@ -32,6 +32,7 @@ public class PlotInfo
     public double GetCoordinateX(float xPixel) => GetCoordinate(xPixel, false, DataRect.Width, AxisLimits.XMin, UnitsPerPxX, DataRect.Left);
     public double GetCoordinateY(float yPixel) => GetCoordinate(yPixel, true, DataRect.Height, AxisLimits.YMin, UnitsPerPxY, DataRect.Top);
 
+    public Pixel GetPixel(Coordinate coordinate) => new(GetPixelX(coordinate.X), GetPixelY(coordinate.Y));
     public Pixel GetPixel(double x, double y) => new(GetPixelX(x), GetPixelY(y));
     public float GetPixelX(double x) => GetPixel(x, false, AxisLimits.XMax, AxisLimits.XMin, PxPerUnitX, DataRect.Left);
     public float GetPixelY(double y) => GetPixel(y, true, AxisLimits.YMax, AxisLimits.YMin, PxPerUnitY, DataRect.Top);
