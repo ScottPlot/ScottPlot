@@ -2,6 +2,11 @@
 
 namespace ScottPlot.Plottable;
 
+/// <summary>
+/// This class imlpements most scatter plot styling and rendering logic.
+/// Child classes implement this class and are only responsible for managing their data.
+/// It is recommended that child classes make the objects that hold their data private.
+/// </summary>
 public abstract class ScatterBase : IPlottable
 {
     public float LineWidth = 1;
@@ -11,6 +16,8 @@ public abstract class ScatterBase : IPlottable
     public Color MarkerColor = Colors.Black;
 
     protected abstract PointF[] GetPoints(PlotInfo plotInfo);
+
+    protected abstract int Count { get; }
 
     public void Draw(ICanvas canvas, PlotInfo plotInfo)
     {
