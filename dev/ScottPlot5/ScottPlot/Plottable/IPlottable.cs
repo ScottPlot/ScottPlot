@@ -4,5 +4,5 @@ namespace ScottPlot.Plottable;
 
 public interface IPlottable
 {
-    void Draw(ICanvas canvas, PlotView view, PlotStyle style);
+    void Draw(ICanvas canvas, PlotInfo layout);
 }

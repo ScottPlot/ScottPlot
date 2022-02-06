@@ -15,12 +15,10 @@ public class ScatterArray<T> : ScatterBase, IPlottable
         Ys = ys;
     }
 
-    protected override PointF[] GetPoints(PlotView view)
+    protected override PointF[] GetPoints(PlotInfo layout)
     {
         return Enumerable.Range(0, Xs.Length)
-           .Select(x => new PointF(
-               x: view.GetPixelX(Convert.ToDouble(Xs[x])),
-               y: view.GetPixelY(Convert.ToDouble(Ys[x]))))
+           .Select(i => layout.GetPixel(Xs[i], Ys[i]).PointF)
            .ToArray();
     }
 }

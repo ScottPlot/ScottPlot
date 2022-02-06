@@ -5,7 +5,7 @@ namespace ScottPlotTests;
 
 internal static class TestIO
 {
-    public static string SaveFig(ScottPlot.Plot plot, int width = 400, int height = 300)
+    public static string SaveFig(ScottPlot.Plot plot)
     {
         var stackTrace = new System.Diagnostics.StackTrace();
         string callingMethodName = stackTrace.GetFrame(1)!.GetMethod()!.Name;
@@ -16,7 +16,7 @@ internal static class TestIO
         string path = Path.Combine(folder, filename);
 
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        plot.SaveFig(path, width, height);
+        plot.SaveFig(path);
         sw.Stop();
 
         Console.WriteLine($"Saved in {sw.Elapsed.TotalMilliseconds:N3} ms");

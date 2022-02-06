@@ -10,12 +10,12 @@ public abstract class ScatterBase : IPlottable
     public float MarkerSize = 3;
     public Color MarkerColor = Colors.Black;
 
-    protected abstract PointF[] GetPoints(PlotView view);
+    protected abstract PointF[] GetPoints(PlotInfo plotInfo);
 
-    public void Draw(ICanvas canvas, PlotView view, PlotStyle style)
+    public void Draw(ICanvas canvas, PlotInfo plotInfo)
     {
-        canvas.ClipRectangle(view.DataRect);
-        PointF[] points = GetPoints(view);
+        canvas.ClipRectangle(plotInfo.DataRect.RectangleF);
+        PointF[] points = GetPoints(plotInfo);
 
         canvas.StrokeSize = LineWidth;
         canvas.StrokeColor = LineColor;

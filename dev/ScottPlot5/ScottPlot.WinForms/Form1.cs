@@ -9,12 +9,14 @@ namespace ScottPlot.WinForms
     {
         readonly Plot Plot = new();
         Pixel? MouseDownPixel = null;
-        PlotView? MouseDownView = null;
-        PlotView? ViewNow = null;
+        PlotInfo? MouseDownView = null;
+        PlotInfo? ViewNow = null;
 
         public Form1()
         {
             InitializeComponent();
+            Plot.LastRenderInfo = Plot.LastRenderInfo.WithSize(skglControl1.Width, skglControl1.Height);
+
             double[] xs = ScottPlot.Generate.Consecutive(51);
             double[] ys1 = ScottPlot.Generate.Sin(51);
             double[] ys2 = ScottPlot.Generate.Cos(51);
@@ -28,13 +30,18 @@ namespace ScottPlot.WinForms
 
             if (ViewNow is not null)
             {
-                Plot.Draw(canvas, ViewNow.Value);
+                Plot.Draw(canvas, ViewNow);
             }
             else
             {
-                PlotView view = Plot.GetLastView().WithSize(skglControl1.Width, skglControl1.Height);
-                Plot.Draw(canvas, view);
+                Plot.Draw(canvas);
             }
+        }
+
+        private void skglControl1_SizeChanged(object sender, EventArgs e)
+        {
+            Plot.LastRenderInfo = Plot.LastRenderInfo.WithSize(skglControl1.Width, skglControl1.Height);
+            skglControl1.Invalidate();
         }
 
         private void skglControl1_MouseMove(object sender, MouseEventArgs e)
@@ -43,7 +50,7 @@ namespace ScottPlot.WinForms
 
             StringBuilder sb = new();
             sb.AppendLine($"Mouse pixel: {MouseNowPixel}");
-            sb.AppendLine($"Mouse coordinate: {Plot.GetLastView().GetCoordinate(MouseNowPixel)}");
+            sb.AppendLine($"Mouse coordinate: {Plot.LastRenderInfo.GetCoordinate(MouseNowPixel)}");
 
             if (MouseDownPixel.HasValue)
             {
@@ -64,11 +71,14 @@ namespace ScottPlot.WinForms
         private void skglControl1_MouseDown(object sender, MouseEventArgs e)
         {
             MouseDownPixel = new Pixel(e.X, e.Y);
-            MouseDownView = Plot.GetLastView();
+            MouseDownView = Plot.LastRenderInfo;
         }
 
         private void skglControl1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (ViewNow is not null)
+                Plot.LastRenderInfo = ViewNow;
+
             MouseDownPixel = null;
             ViewNow = null;
         }

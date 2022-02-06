@@ -11,9 +11,9 @@ public struct CoordinateRect
     public readonly double YMin;
     public readonly double YMax;
 
-    public double XSpan => XMax - XMin;
-    public double YSpan => YMax - YMin;
-    public double Area => XSpan * YSpan;
+    public double Width => XMax - XMin;
+    public double Height => YMax - YMin;
+    public double Area => Width * Height;
 
     public CoordinateRect(double xMin, double xMax, double yMin, double yMax)
     {

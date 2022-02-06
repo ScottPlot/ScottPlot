@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using Microsoft.Maui.Graphics;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Represents the X/Y location of a point on the screen (in pixel units, not plot units)
@@ -15,11 +17,13 @@ public struct Pixel
         Y = y;
     }
 
-    public Coordinate ToCoordinate(PlotView view) => view.GetCoordinate(X, Y);
-
     public override string ToString() => $"[X={X}, Y={Y}]";
 
     public static Pixel operator -(Pixel a, Pixel b) => new(a.X - b.X, a.Y - b.Y);
 
     public static Pixel operator +(Pixel a, Pixel b) => new(a.X + b.X, a.Y + b.Y);
+
+    public static Pixel Origin => new(0, 0);
+
+    public PointF PointF => new(X, Y);
 }

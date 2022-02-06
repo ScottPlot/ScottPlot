@@ -10,31 +10,31 @@ namespace ScottPlot;
 
 public class Plot
 {
+    // TODO: move style into figure layout so it can be passed into plottables???
+    /// <summary>
+    /// Defines styling for the plot such as background color
+    /// </summary>
     public readonly PlotStyle Style = new();
+
+    /// <summary>
+    /// List of objects drawn on the plot every time a render is requested
+    /// </summary>
     public readonly List<Plottable.IPlottable> Plottables = new();
-    private PlotView LastView = new();
+
+    /// <summary>
+    /// Defines the default colors to use when new plottables are added
+    /// </summary>
     public Palette Palette = Palettes.Default;
+
+    /// <summary>
+    /// Defines plot size, data area, and axis limits.
+    /// Stores minimum state necessary.
+    /// </summary>
+    public PlotInfo LastRenderInfo = PlotInfo.Default;
 
     public Plot()
     {
-        LastView = new(
-            limits: new CoordinateRect(-10, 60, -2, 2),
-            figure: new RectangleF(0, 0, 400, 300),
-            data: new RectangleF(40, 10, 350, 250));
     }
-
-    #region pixel/coordinate relationships
-
-    #endregion
-
-    #region mouse interaction
-
-    public PlotView GetLastView()
-    {
-        return LastView;
-    }
-
-    #endregion
 
     #region add/remove plottables
 
@@ -52,68 +52,45 @@ public class Plot
         return sp;
     }
 
-    public Plottable.ScatterList<double> AddScatterList(List<double> xs, List<double> ys, Color? color = null)
-    {
-        Plottable.ScatterList<double> sp = new(xs, ys)
-        {
-            LineColor = color ?? Colors.Blue,
-            MarkerColor = color ?? Colors.Blue,
-        };
-
-        Plottables.Add(sp);
-        return sp;
-    }
-
     #endregion
 
     #region rendering
 
-    public void Draw(ICanvas canvas, float width, float height)
+    public void Draw(ICanvas canvas)
     {
-        var view = new PlotView()
-            .WithSize(width, height)
-            .WithPadding(40, 10, 20, 10)
-            .WithAxisLimits(-10, 60, -2, 2);
-
-        Debug.WriteLine(view);
-
-        Draw(canvas, view);
+        Draw(canvas, LastRenderInfo);
     }
 
-    public void Draw(ICanvas canvas, PlotView view)
+    public void Draw(ICanvas canvas, PlotInfo info)
     {
-        if (!view.HasFigureArea)
+        if (!info.FigureRect.HasPositiveArea)
             return;
 
         canvas.FillColor = Style.FigureBackgroundColor;
-        canvas.FillRectangle(view.FigureRect);
-
-        if (!view.HasDataArea)
-            return;
+        canvas.FillRectangle(info.FigureRect.RectangleF);
 
         canvas.FillColor = Style.DataBackgroundColor;
-        canvas.FillRectangle(view.DataRect);
+        canvas.FillRectangle(info.DataRect.RectangleF);
 
         foreach (Plottable.IPlottable plottable in Plottables)
         {
-            plottable.Draw(canvas, view, Style);
+            plottable.Draw(canvas, info);
         }
 
         canvas.StrokeColor = Style.DataBorderColor;
-        canvas.DrawRectangle(view.DataRect);
-
-        LastView = view;
+        canvas.DrawRectangle(info.DataRect.RectangleF);
     }
 
-    #endregion
-
-    #region IO
-
-    public string SaveFig(string path, int width, int height, float displayScale = 1.0f)
+    public string SaveFig(string path)
     {
-        using BitmapExportContext context = SkiaGraphicsService.Instance.CreateBitmapExportContext(width, height, displayScale);
+        return SaveFig(path, LastRenderInfo);
+    }
+
+    public string SaveFig(string path, PlotInfo layout)
+    {
+        using BitmapExportContext context = SkiaGraphicsService.Instance.CreateBitmapExportContext((int)layout.Width, (int)layout.Height, layout.DisplayScale);
         GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
-        Draw(context.Canvas, LastView);
+        Draw(context.Canvas, layout);
 
         string fullPath = Path.GetFullPath(path);
         using FileStream fs = new(fullPath, FileMode.Create);
