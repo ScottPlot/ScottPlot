@@ -14,6 +14,8 @@ public struct CoordinateRect
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
     public double Area => Width * Height;
+    public double XCenter => (XMax + XMin) / 2;
+    public double YCenter => (YMax + YMin) / 2;
 
     public CoordinateRect(double xMin, double xMax, double yMin, double yMax)
     {

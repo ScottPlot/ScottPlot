@@ -10,11 +10,12 @@ namespace ScottPlot.WinForms
         readonly Plot Plot = new();
         Pixel? MouseDownPixel = null;
         PlotInfo? MouseDownView = null;
-        PlotInfo? ViewNow = null;
+        PlotInfo? InfoNow = null;
 
         public Form1()
         {
             InitializeComponent();
+            skglControl1.MouseWheel += SkglControl1_MouseWheel;
             Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
 
             double[] xs = ScottPlot.Generate.Consecutive(51);
@@ -28,10 +29,10 @@ namespace ScottPlot.WinForms
         {
             ICanvas canvas = new SkiaCanvas() { Canvas = e.Surface.Canvas };
 
-            if (ViewNow is null)
+            if (InfoNow is null)
                 Plot.Draw(canvas);
             else
-                Plot.Draw(canvas, ViewNow);
+                Plot.Draw(canvas, InfoNow);
         }
 
         private void skglControl1_SizeChanged(object sender, EventArgs e)
@@ -46,7 +47,11 @@ namespace ScottPlot.WinForms
                 return;
 
             Pixel MouseNowPixel = new(e.X, e.Y);
-            ViewNow = MouseDownView?.WithPan(MouseDownPixel.Value, MouseNowPixel);
+            if (e.Button == MouseButtons.Left)
+                InfoNow = MouseDownView?.WithPan(MouseDownPixel.Value, MouseNowPixel);
+            else if (e.Button == MouseButtons.Right)
+                InfoNow = MouseDownView?.WithZoom(MouseDownPixel.Value, MouseNowPixel);
+
             skglControl1.Invalidate();
         }
 
@@ -58,11 +63,20 @@ namespace ScottPlot.WinForms
 
         private void skglControl1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ViewNow is not null)
-                Plot.Info = ViewNow;
+            if (InfoNow is not null)
+                Plot.Info = InfoNow;
 
             MouseDownPixel = null;
-            ViewNow = null;
+            InfoNow = null;
+        }
+
+        private void SkglControl1_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            double fraction = e.Delta > 0 ? 1.15 : 0.85;
+            Pixel MouseNowPixel = new(e.X, e.Y);
+            Plot.Info = Plot.Info.WithZoom(MouseNowPixel, fraction);
+
+            skglControl1.Invalidate();
         }
     }
 }

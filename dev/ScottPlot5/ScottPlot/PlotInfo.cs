@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System;
+
+namespace ScottPlot;
 
 /// <summary>
 /// This object defines the layout and axis limits of a plot figure.
@@ -98,6 +100,41 @@ public class PlotInfo
             yMin: AxisLimits.YMin + delta.Y,
             yMax: AxisLimits.YMax + delta.Y);
 
+        return new PlotInfo(FigureRect.Size, DataRect, newLimits);
+    }
+
+    public PlotInfo WithZoom(Pixel px, double frac)
+    {
+        var coord = GetCoordinate(px);
+        return WithZoom(frac, frac, coord.X, coord.Y);
+    }
+
+    public PlotInfo WithZoom(Pixel px1, Pixel px2)
+    {
+        double deltaX = px2.X - px1.X;
+        double deltaFracX = deltaX / (Math.Abs(deltaX) + Width);
+        double fracX = Math.Pow(10, deltaFracX);
+
+        double deltaY = px2.Y - px1.Y;
+        double deltaFracY = -deltaY / (Math.Abs(deltaY) + Height);
+        double fracY = Math.Pow(10, deltaFracY);
+
+        return WithZoom(fracX, fracY, AxisLimits.XCenter, AxisLimits.YCenter);
+    }
+
+    public PlotInfo WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
+    {
+        double spanLeftX = zoomToX - AxisLimits.XMin;
+        double spanRightX = AxisLimits.XMax - zoomToX;
+        double newMinX = zoomToX - spanLeftX / fracX;
+        double newMaxX = zoomToX + spanRightX / fracX;
+
+        double spanLeftY = zoomToY - AxisLimits.YMin;
+        double spanRightY = AxisLimits.YMax - zoomToY;
+        double newMinY = zoomToY - spanLeftY / fracY;
+        double newMaxY = zoomToY + spanRightY / fracY;
+
+        CoordinateRect newLimits = new(newMinX, newMaxX, newMinY, newMaxY);
         return new PlotInfo(FigureRect.Size, DataRect, newLimits);
     }
 }
