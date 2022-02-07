@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Graphics;
 
-namespace ScottPlot.Plottable;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// This class imlpements most scatter plot styling and rendering logic.

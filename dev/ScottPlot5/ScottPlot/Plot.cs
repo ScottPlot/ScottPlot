@@ -19,7 +19,7 @@ public class Plot
     /// <summary>
     /// List of objects drawn on the plot every time a render is requested
     /// </summary>
-    public readonly List<Plottable.IPlottable> Plottables = new();
+    public readonly List<IPlottable> Plottables = new();
 
     /// <summary>
     /// Defines the default colors to use when new plottables are added
@@ -30,7 +30,17 @@ public class Plot
     /// Defines plot size, data area, and axis limits.
     /// Stores minimum state necessary.
     /// </summary>
-    public PlotInfo LastRenderInfo = PlotInfo.Default;
+    public PlotInfo Info
+    {
+        get => _Info;
+        set
+        {
+            // TODO: recalculate ticks
+            _Info = value;
+        }
+    }
+
+    private PlotInfo _Info = PlotInfo.Default;
 
     public Plot()
     {
@@ -38,11 +48,11 @@ public class Plot
 
     #region add/remove plottables
 
-    public Plottable.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
+    public Plottables.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
         color ??= Palette.GetColor(Plottables.Count);
 
-        Plottable.ScatterArray<double> sp = new(xs, ys)
+        Plottables.ScatterArray<double> sp = new(xs, ys)
         {
             LineColor = color,
             MarkerColor = color,
@@ -56,10 +66,7 @@ public class Plot
 
     #region rendering
 
-    public void Draw(ICanvas canvas)
-    {
-        Draw(canvas, LastRenderInfo);
-    }
+    public void Draw(ICanvas canvas) => Draw(canvas, Info);
 
     public void Draw(ICanvas canvas, PlotInfo info)
     {
@@ -72,18 +79,33 @@ public class Plot
         canvas.FillColor = Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
-        foreach (Plottable.IPlottable plottable in Plottables)
+        foreach (IPlottable plottable in Plottables)
         {
+            canvas.SaveState(); // because we can't trust each plottable to do this
             plottable.Draw(canvas, info);
+            canvas.RestoreState();
         }
 
         canvas.StrokeColor = Style.DataBorderColor;
         canvas.DrawRectangle(info.DataRect.RectangleF);
+
+        // TODO: put this inside tick maker
+        var tickFactory = new TickFactories.NumericTickFactory();
+
+        foreach (Tick tick in tickFactory.GenerateTicks(info, Edge.Bottom))
+            tick.Draw(canvas, info);
+
+        foreach (Tick tick in tickFactory.GenerateTicks(info, Edge.Left))
+            tick.Draw(canvas, info);
     }
+
+    #endregion
+
+    #region IO
 
     public string SaveFig(string path)
     {
-        return SaveFig(path, LastRenderInfo);
+        return SaveFig(path, Info);
     }
 
     public string SaveFig(string path, PlotInfo layout)

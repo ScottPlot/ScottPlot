@@ -67,7 +67,7 @@ public class PlotInfo
         get
         {
             PixelSize figureSize = new(400, 300);
-            PixelRect dataRect = new PixelRect(figureSize).Contract(40, 10, 30, 20);
+            PixelRect dataRect = new PixelRect(figureSize).Contract(40, 20, 30, 20);
             CoordinateRect limits = new(-10, 60, -1.5, 1.5);
             return new(figureSize, dataRect, limits);
         }

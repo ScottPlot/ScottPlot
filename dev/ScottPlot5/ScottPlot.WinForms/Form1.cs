@@ -15,7 +15,7 @@ namespace ScottPlot.WinForms
         public Form1()
         {
             InitializeComponent();
-            Plot.LastRenderInfo = Plot.LastRenderInfo.WithSize(skglControl1.Width, skglControl1.Height);
+            Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
 
             double[] xs = ScottPlot.Generate.Consecutive(51);
             double[] ys1 = ScottPlot.Generate.Sin(51);
@@ -28,56 +28,38 @@ namespace ScottPlot.WinForms
         {
             ICanvas canvas = new SkiaCanvas() { Canvas = e.Surface.Canvas };
 
-            if (ViewNow is not null)
-            {
-                Plot.Draw(canvas, ViewNow);
-            }
-            else
-            {
+            if (ViewNow is null)
                 Plot.Draw(canvas);
-            }
+            else
+                Plot.Draw(canvas, ViewNow);
         }
 
         private void skglControl1_SizeChanged(object sender, EventArgs e)
         {
-            Plot.LastRenderInfo = Plot.LastRenderInfo.WithSize(skglControl1.Width, skglControl1.Height);
+            Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
             skglControl1.Invalidate();
         }
 
         private void skglControl1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (MouseDownPixel is null)
+                return;
+
             Pixel MouseNowPixel = new(e.X, e.Y);
-
-            StringBuilder sb = new();
-            sb.AppendLine($"Mouse pixel: {MouseNowPixel}");
-            sb.AppendLine($"Mouse coordinate: {Plot.LastRenderInfo.GetCoordinate(MouseNowPixel)}");
-
-            if (MouseDownPixel.HasValue)
-            {
-                Pixel mouseDownPixel = MouseDownPixel.Value;
-                Pixel DeltaPixel = MouseNowPixel - MouseDownPixel.Value;
-                sb.AppendLine($"Mouse dragged from {MouseDownPixel} to {MouseNowPixel} (delta {DeltaPixel})");
-                ViewNow = MouseDownView?.WithPan(mouseDownPixel, MouseNowPixel);
-                skglControl1.Invalidate();
-            }
-            else
-            {
-                sb.AppendLine("Mouse buton is not down");
-            }
-
-            richTextBox1.Text = sb.ToString();
+            ViewNow = MouseDownView?.WithPan(MouseDownPixel.Value, MouseNowPixel);
+            skglControl1.Invalidate();
         }
 
         private void skglControl1_MouseDown(object sender, MouseEventArgs e)
         {
             MouseDownPixel = new Pixel(e.X, e.Y);
-            MouseDownView = Plot.LastRenderInfo;
+            MouseDownView = Plot.Info;
         }
 
         private void skglControl1_MouseUp(object sender, MouseEventArgs e)
         {
             if (ViewNow is not null)
-                Plot.LastRenderInfo = ViewNow;
+                Plot.Info = ViewNow;
 
             MouseDownPixel = null;
             ViewNow = null;

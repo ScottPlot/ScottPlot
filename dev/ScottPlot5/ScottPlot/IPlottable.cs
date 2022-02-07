@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Graphics;
 
-namespace ScottPlot.Plottable;
+namespace ScottPlot;
 
 public interface IPlottable
 {

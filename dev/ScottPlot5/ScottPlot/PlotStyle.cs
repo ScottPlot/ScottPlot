@@ -10,9 +10,9 @@ public class PlotStyle
 {
     //TODO: store default font information here
 
-    public Color FigureBackgroundColor = Color.Parse("#003366");
+    public Color FigureBackgroundColor = Colors.White;
 
-    public Color DataBackgroundColor = Color.Parse("#006699");
+    public Color DataBackgroundColor = Colors.White;
 
     public Color DataBorderColor = Colors.Black;
 }

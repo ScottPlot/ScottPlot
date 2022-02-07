@@ -1,7 +1,7 @@
 ﻿using Microsoft.Maui.Graphics;
 using System;
 
-namespace ScottPlot.Plottable;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// Scatter plot that displays generic data types stored in fixed-length arrays.
