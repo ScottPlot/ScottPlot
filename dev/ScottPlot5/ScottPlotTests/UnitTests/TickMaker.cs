@@ -18,7 +18,7 @@ namespace ScottPlotTests.UnitTests
         [Test]
         public static void Test_DefaultTickMaker_AlwaysMakesTicks()
         {
-            var tickFactory = new ScottPlot.TickFactories.NumericTickFactory();
+            var tickFactory = new ScottPlot.TickFactories.SimpleNumericTickFactory();
 
             ScottPlot.Tick[] ticks = tickFactory.GenerateTicks(ScottPlot.PlotInfo.Default, ScottPlot.Edge.Bottom);
 

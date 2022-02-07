@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.TickFactories;
 
-public class NumericTickFactory : ITickFactory
+public class SimpleNumericTickFactory : ITickFactory
 {
     public Tick[] GenerateTicks(PlotInfo info, Edge edge)
     {
@@ -16,7 +18,7 @@ public class NumericTickFactory : ITickFactory
         };
     }
 
-    private Tick[] GetEvenlySpacedTicks(double min, double max, double count, Edge edge)
+    private static Tick[] GetEvenlySpacedTicks(double min, double max, double count, Edge edge)
     {
         List<Tick> ticks = new();
 
@@ -42,4 +44,5 @@ public class NumericTickFactory : ITickFactory
 
         return ticks.ToArray();
     }
+
 }

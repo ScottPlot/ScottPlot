@@ -76,6 +76,9 @@ public class Plot
         canvas.FillColor = Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
 
+        if (!info.DataRect.HasPositiveArea)
+            return;
+
         canvas.FillColor = Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
@@ -90,7 +93,7 @@ public class Plot
         canvas.DrawRectangle(info.DataRect.RectangleF);
 
         // TODO: put this inside tick maker
-        var tickFactory = new TickFactories.NumericTickFactory();
+        var tickFactory = new TickFactories.LegacyNumericTickFactory();
 
         foreach (Tick tick in tickFactory.GenerateTicks(info, Edge.Bottom))
             tick.Draw(canvas, info);
