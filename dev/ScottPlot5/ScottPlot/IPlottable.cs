@@ -5,4 +5,5 @@ namespace ScottPlot;
 public interface IPlottable
 {
     void Draw(ICanvas canvas, PlotInfo layout);
+    CoordinateRect GetDataLimits();
 }

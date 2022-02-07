@@ -64,6 +64,22 @@ public class Plot
 
     #endregion
 
+    #region Axis Manipulation
+
+    public void Autoscale()
+    {
+        CoordinateRect totalLimits = CoordinateRect.AllNan();
+        foreach (IPlottable plottable in Plottables)
+        {
+            CoordinateRect limits = plottable.GetDataLimits();
+            totalLimits = totalLimits.Expand(limits);
+        }
+        Console.WriteLine($"LIMITS: {totalLimits}");
+        Info = Info.WithAxisLimits(totalLimits);
+    }
+
+    #endregion
+
     #region rendering
 
     public void Draw(ICanvas canvas) => Draw(canvas, Info);

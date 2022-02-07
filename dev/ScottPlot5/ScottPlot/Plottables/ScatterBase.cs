@@ -16,6 +16,7 @@ public abstract class ScatterBase : IPlottable
     public Color MarkerColor = Colors.Black;
 
     protected abstract PointF[] GetPoints(PlotInfo plotInfo);
+    public abstract CoordinateRect GetDataLimits();
 
     protected abstract int Count { get; }
 

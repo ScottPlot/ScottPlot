@@ -90,6 +90,8 @@ public class PlotInfo
         return new(newFigureSize, newDataRect, AxisLimits);
     }
 
+    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) => new PlotInfo(FigureRect.Size, DataRect, axisLimits);
+
     public PlotInfo WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
 
     public PlotInfo WithPan(Coordinate delta)

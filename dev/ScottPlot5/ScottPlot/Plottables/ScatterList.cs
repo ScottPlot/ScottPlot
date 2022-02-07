@@ -53,4 +53,15 @@ internal class ScatterList<T> : ScatterBase
     public void RemoveAt(int index) => Points.RemoveAt(index);
 
     public void Clear() => Points.Clear();
+
+    public override CoordinateRect GetDataLimits()
+    {
+        if (Count == 0)
+            return CoordinateRect.AllNan();
+
+        var xs = Points.Select(x => Convert.ToDouble(x.Item1));
+        var ys = Points.Select(x => Convert.ToDouble(x.Item2));
+
+        return new CoordinateRect(xs.Min(), xs.Max(), ys.Min(), ys.Max());
+    }
 }

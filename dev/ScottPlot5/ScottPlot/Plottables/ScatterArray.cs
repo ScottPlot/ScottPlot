@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Graphics;
 using System;
+using System.Linq;
 
 namespace ScottPlot.Plottables;
 
@@ -31,5 +32,16 @@ public class ScatterArray<T> : ScatterBase, IPlottable
         for (int i = 0; i < points.Length; i++)
             points[i] = info.GetPixel(Xs[i], Ys[i]).PointF;
         return points;
+    }
+
+    public override CoordinateRect GetDataLimits()
+    {
+        if (Count == 0)
+            return CoordinateRect.AllNan();
+
+        var xs = Xs.Select(x => Convert.ToDouble(x));
+        var ys = Ys.Select(y => Convert.ToDouble(y));
+
+        return new CoordinateRect(xs.Min(), xs.Max(), ys.Min(), ys.Max());
     }
 }

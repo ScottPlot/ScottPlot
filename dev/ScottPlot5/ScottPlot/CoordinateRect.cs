@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a rectangle on the plot.
@@ -23,6 +25,29 @@ public struct CoordinateRect
         XMax = xMax;
         YMin = yMin;
         YMax = yMax;
+    }
+
+    public static CoordinateRect AllNan() => new(double.NaN, double.NaN, double.NaN, double.NaN);
+
+    public CoordinateRect Expand(CoordinateRect rect)
+    {
+        double xMinNew = rect.XMin;
+        if (!double.IsNaN(XMin) && !double.IsNaN(rect.XMin))
+            xMinNew = Math.Min(rect.XMin, XMin);
+
+        double xMaxNew = rect.XMax;
+        if (!double.IsNaN(XMax) && !double.IsNaN(rect.XMax))
+            xMaxNew = Math.Min(rect.XMax, XMax);
+
+        double yMinNew = rect.YMin;
+        if (!double.IsNaN(YMin) && !double.IsNaN(rect.YMin))
+            yMinNew = Math.Min(rect.YMin, YMin);
+
+        double yMaxNew = rect.YMax;
+        if (!double.IsNaN(YMax) && !double.IsNaN(rect.YMax))
+            yMaxNew = Math.Min(rect.YMax, YMax);
+
+        return new CoordinateRect(xMinNew, xMaxNew, yMinNew, yMaxNew);
     }
 
     public override string ToString() => $"xMin={XMin}, xMax={XMax}, yMin={YMin}, yMax={YMax}";

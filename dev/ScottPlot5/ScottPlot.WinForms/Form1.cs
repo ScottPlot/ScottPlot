@@ -66,6 +66,12 @@ namespace ScottPlot.WinForms
             if (InfoNow is not null)
                 Plot.Info = InfoNow;
 
+            if (e.Button == MouseButtons.Middle)
+            {
+                Plot.Autoscale();
+                skglControl1.Invalidate();
+            }
+
             MouseDownPixel = null;
             InfoNow = null;
         }
@@ -76,7 +82,7 @@ namespace ScottPlot.WinForms
             Pixel MouseNowPixel = new(e.X, e.Y);
             Plot.Info = Plot.Info.WithZoom(MouseNowPixel, fraction);
 
-            skglControl1.Invalidate();
+            skglControl1.Refresh();
         }
     }
 }
