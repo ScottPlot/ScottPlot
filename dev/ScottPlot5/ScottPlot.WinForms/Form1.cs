@@ -15,14 +15,9 @@ namespace ScottPlot.WinForms
         public Form1()
         {
             InitializeComponent();
+            Plot.Info.Style.FigureBackgroundColor = Microsoft.Maui.Graphics.Color.FromInt(SystemColors.Control.ToArgb());
             skglControl1.MouseWheel += SkglControl1_MouseWheel;
             Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
-
-            double[] xs = ScottPlot.Generate.Consecutive(51);
-            double[] ys1 = ScottPlot.Generate.Sin(51);
-            double[] ys2 = ScottPlot.Generate.Cos(51);
-            Plot.AddScatter(xs, ys1);
-            Plot.AddScatter(xs, ys2);
         }
 
         private void skglControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)
@@ -84,5 +79,21 @@ namespace ScottPlot.WinForms
 
             skglControl1.Refresh();
         }
+
+        private void SinePlots(int pointCount)
+        {
+            Plot.Clear();
+            double[] xs = ScottPlot.Generate.Consecutive(pointCount);
+            double[] ys1 = ScottPlot.Generate.Sin(pointCount);
+            double[] ys2 = ScottPlot.Generate.Cos(pointCount);
+            Plot.AddScatter(xs, ys1);
+            Plot.AddScatter(xs, ys2);
+            Plot.Autoscale();
+            skglControl1.Invalidate();
+        }
+
+        private void btnScatterBasic_Click(object sender, EventArgs e) => SinePlots(51);
+
+        private void btnScatter100k_Click(object sender, EventArgs e) => SinePlots(10_000);
     }
 }
