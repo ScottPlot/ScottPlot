@@ -75,6 +75,7 @@ internal class LegacyNumericTickFactory : ITickFactory
         {
             Tick tick = new(tickPositionsMajor[i], edge);
             tick.IsMajor = true;
+            tick.TickLength = 5;
             tick.Label = tickLabels[i];
             ticks.Add(tick);
         }
@@ -83,6 +84,7 @@ internal class LegacyNumericTickFactory : ITickFactory
         {
             Tick tick = new(tickPositionsMinor[i], edge);
             tick.IsMajor = false;
+            tick.TickLength = 3;
             ticks.Add(tick);
         }
 
