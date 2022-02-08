@@ -32,11 +32,11 @@ public class SimpleNumericTickFactory : ITickFactory
             if (i % 5 == 0)
             {
                 tick.Label = $"{position:N2}";
-                tick.IsMajor = true;
+                tick.TickMarkLength = 5;
             }
             else
             {
-                tick.TickLength = 2;
+                tick.TickMarkLength = 2;
             }
 
             ticks.Add(tick);
