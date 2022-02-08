@@ -30,8 +30,11 @@ public abstract class ScatterBase : IPlottable
         for (int i = 0; i < points.Length - 1; i++)
             canvas.DrawLine(points[i], points[i + 1]);
 
-        canvas.FillColor = MarkerColor;
-        for (int i = 0; i < points.Length; i++)
-            canvas.FillCircle(points[i], MarkerSize);
+        if (MarkerSize > 0 && MarkerColor != Colors.Transparent)
+        {
+            canvas.FillColor = MarkerColor;
+            for (int i = 0; i < points.Length; i++)
+                canvas.FillCircle(points[i], MarkerSize);
+        }
     }
 }
