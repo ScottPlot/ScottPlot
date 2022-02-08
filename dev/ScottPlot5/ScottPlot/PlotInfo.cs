@@ -18,6 +18,18 @@ public class PlotInfo
 
     public readonly float DisplayScale = 1.0f;
 
+    /// <summary>
+    /// Defines default styling for the plot such as background color and axis label text colors.
+    /// This object is held in <see cref="PlotInfo"/> so it can be accessed by<see cref="IPlottable"/> objects at render time.
+    /// </summary>
+    public readonly PlotStyle Style = new();
+
+    /// <summary>
+    /// Generates ticks at render time based on the size of the figure and axis limits.
+    /// You can create your own factory and assign it here to customize tick calculation/placement/styling.
+    /// </summary>
+    public ITickFactory TickFactory = new TickFactories.LegacyNumericTickFactory();
+
     public double PxPerUnitX => DataRect.Width / AxisLimits.Width;
     public double PxPerUnitY => DataRect.Height / AxisLimits.Height;
     public double UnitsPerPxX => AxisLimits.Width / DataRect.Width;

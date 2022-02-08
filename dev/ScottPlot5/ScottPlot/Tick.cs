@@ -59,7 +59,7 @@ public class Tick
         if (GridLineWidth > 0)
             canvas.DrawLine(ptGridTop, ptGridBottom);
 
-        // TODO: MEASURE STRING AFTER MAUI GRAPHICS SUPPORTS IT
+        // NOTE: After Maui.Graphics matures, call MeasureString() here
         canvas.FontColor = Color;
         canvas.FontSize = 12;
         canvas.DrawString(Label, pt3.X, pt3.Y + 10, HorizontalAlignment.Center);
@@ -82,7 +82,7 @@ public class Tick
         if (GridLineWidth > 0)
             canvas.DrawLine(ptGridLeft, ptGridRight);
 
-        // TODO: MEASURE STRING AFTER MAUI GRAPHICS SUPPORTS IT
+        // NOTE: After Maui.Graphics matures, call MeasureString() here
         canvas.DrawLine(pt1, pt2);
         canvas.FontColor = Color;
         canvas.FontSize = 12;

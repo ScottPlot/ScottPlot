@@ -10,12 +10,6 @@ namespace ScottPlot;
 
 public class Plot
 {
-    // TODO: move style into figure layout so it can be passed into plottables???
-    /// <summary>
-    /// Defines styling for the plot such as background color
-    /// </summary>
-    public readonly PlotStyle Style = new();
-
     /// <summary>
     /// List of objects drawn on the plot every time a render is requested
     /// </summary>
@@ -27,20 +21,10 @@ public class Plot
     public Palette Palette = Palettes.Default;
 
     /// <summary>
-    /// Defines plot size, data area, and axis limits.
-    /// Stores minimum state necessary.
+    /// This object holds all the information needed to render a plot at an arbitrary size:
+    /// Figure size, data area size, axis limits, tick generator, etc.
     /// </summary>
-    public PlotInfo Info
-    {
-        get => _Info;
-        set
-        {
-            // TODO: recalculate ticks
-            _Info = value;
-        }
-    }
-
-    private PlotInfo _Info = PlotInfo.Default;
+    public PlotInfo Info { get; set; } = PlotInfo.Default;
 
     public Plot()
     {
@@ -89,13 +73,13 @@ public class Plot
         if (!info.FigureRect.HasPositiveArea)
             return;
 
-        canvas.FillColor = Style.FigureBackgroundColor;
+        canvas.FillColor = Info.Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
 
         if (!info.DataRect.HasPositiveArea)
             return;
 
-        canvas.FillColor = Style.DataBackgroundColor;
+        canvas.FillColor = Info.Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
         foreach (IPlottable plottable in Plottables)
@@ -105,16 +89,14 @@ public class Plot
             canvas.RestoreState();
         }
 
-        canvas.StrokeColor = Style.DataBorderColor;
+        canvas.StrokeColor = Info.Style.DataBorderColor;
         canvas.DrawRectangle(info.DataRect.RectangleF);
 
-        // TODO: put this inside tick maker
-        var tickFactory = new TickFactories.LegacyNumericTickFactory();
 
-        foreach (Tick tick in tickFactory.GenerateTicks(info, Edge.Bottom))
+        foreach (Tick tick in info.TickFactory.GenerateTicks(info, Edge.Bottom))
             tick.Draw(canvas, info);
 
-        foreach (Tick tick in tickFactory.GenerateTicks(info, Edge.Left))
+        foreach (Tick tick in info.TickFactory.GenerateTicks(info, Edge.Left))
             tick.Draw(canvas, info);
     }
 
