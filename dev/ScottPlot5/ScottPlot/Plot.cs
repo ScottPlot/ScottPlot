@@ -32,6 +32,8 @@ public class Plot
 
     #region add/remove plottables
 
+    public void Clear() => Plottables.Clear();
+
     public Plottables.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
         color ??= Palette.GetColor(Plottables.Count);
@@ -58,6 +60,13 @@ public class Plot
             CoordinateRect limits = plottable.GetDataLimits();
             totalLimits = totalLimits.Expand(limits);
         }
+
+        if (!totalLimits.HasFiniteWidth)
+            totalLimits = totalLimits.WithX(-10, 10);
+
+        if (!totalLimits.HasFiniteHeight)
+            totalLimits = totalLimits.WithY(-10, 10);
+
         Console.WriteLine($"LIMITS: {totalLimits}");
         Info = Info.WithAxisLimits(totalLimits);
     }

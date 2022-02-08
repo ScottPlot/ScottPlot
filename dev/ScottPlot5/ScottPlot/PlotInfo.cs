@@ -28,18 +28,20 @@ public class PlotInfo
     /// Generates ticks at render time based on the size of the figure and axis limits.
     /// You can create your own factory and assign it here to customize tick calculation/placement/styling.
     /// </summary>
-    public ITickFactory TickFactory = new TickFactories.LegacyNumericTickFactory();
+    public readonly ITickFactory TickFactory;
 
     public double PxPerUnitX => DataRect.Width / AxisLimits.Width;
     public double PxPerUnitY => DataRect.Height / AxisLimits.Height;
     public double UnitsPerPxX => AxisLimits.Width / DataRect.Width;
     public double UnitsPerPxY => AxisLimits.Height / DataRect.Height;
 
-    public PlotInfo(PixelSize figureSize, PixelRect dataRect, CoordinateRect axisLimits)
+    private PlotInfo(PixelSize figureSize, PixelRect dataRect, CoordinateRect axisLimits, PlotStyle style, ITickFactory tickFactory)
     {
         FigureRect = new PixelRect(figureSize);
         DataRect = dataRect;
         AxisLimits = axisLimits;
+        Style = style;
+        TickFactory = tickFactory;
     }
 
     public Coordinate GetCoordinate(Pixel px) => new(GetCoordinateX(px.X), GetCoordinateY(px.Y));
@@ -92,7 +94,9 @@ public class PlotInfo
             PixelSize figureSize = new(400, 300);
             PixelRect dataRect = new PixelRect(figureSize).Contract(40, 20, 30, 20);
             CoordinateRect limits = new(-10, 60, -1.5, 1.5);
-            return new(figureSize, dataRect, limits);
+            PlotStyle style = new();
+            ITickFactory tickFactory = new TickFactories.LegacyNumericTickFactory();
+            return new PlotInfo(figureSize, dataRect, limits, style, tickFactory);
         }
     }
 
@@ -108,10 +112,10 @@ public class PlotInfo
         Pixel newDataOffset = new(padLeft, padTop);
         PixelRect newDataRect = new(newDataSize, newDataOffset);
 
-        return new(newFigureSize, newDataRect, AxisLimits);
+        return new(newFigureSize, newDataRect, AxisLimits, Style, TickFactory);
     }
 
-    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) => new PlotInfo(FigureRect.Size, DataRect, axisLimits);
+    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) => new(FigureRect.Size, DataRect, axisLimits, Style, TickFactory);
 
     public PlotInfo WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
 
@@ -123,7 +127,7 @@ public class PlotInfo
             yMin: AxisLimits.YMin + delta.Y,
             yMax: AxisLimits.YMax + delta.Y);
 
-        return new PlotInfo(FigureRect.Size, DataRect, newLimits);
+        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory);
     }
 
     public PlotInfo WithZoom(Pixel px, double frac)
@@ -158,6 +162,6 @@ public class PlotInfo
         double newMaxY = zoomToY + spanRightY / fracY;
 
         CoordinateRect newLimits = new(newMinX, newMaxX, newMinY, newMaxY);
-        return new PlotInfo(FigureRect.Size, DataRect, newLimits);
+        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory);
     }
 }

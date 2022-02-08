@@ -19,6 +19,11 @@ public struct CoordinateRect
     public double XCenter => (XMax + XMin) / 2;
     public double YCenter => (YMax + YMin) / 2;
 
+    private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
+
+    public bool HasFiniteWidth => IsFinite(XMin) && IsFinite(XMax);
+    public bool HasFiniteHeight => IsFinite(YMin) && IsFinite(YMax);
+
     public CoordinateRect(double xMin, double xMax, double yMin, double yMax)
     {
         XMin = xMin;
@@ -37,7 +42,7 @@ public struct CoordinateRect
 
         double xMaxNew = rect.XMax;
         if (!double.IsNaN(XMax) && !double.IsNaN(rect.XMax))
-            xMaxNew = Math.Min(rect.XMax, XMax);
+            xMaxNew = Math.Max(rect.XMax, XMax);
 
         double yMinNew = rect.YMin;
         if (!double.IsNaN(YMin) && !double.IsNaN(rect.YMin))
@@ -45,10 +50,15 @@ public struct CoordinateRect
 
         double yMaxNew = rect.YMax;
         if (!double.IsNaN(YMax) && !double.IsNaN(rect.YMax))
-            yMaxNew = Math.Min(rect.YMax, YMax);
+            yMaxNew = Math.Max(rect.YMax, YMax);
 
         return new CoordinateRect(xMinNew, xMaxNew, yMinNew, yMaxNew);
     }
+
+    public CoordinateRect WithX(double xMin, double xMax) => new(xMin, xMax, YMin, YMax);
+
+    public CoordinateRect WithY(double yMin, double yMax) => new(XMin, XMax, yMin, yMax);
+
 
     public override string ToString() => $"xMin={XMin}, xMax={XMax}, yMin={YMin}, yMax={YMax}";
 
