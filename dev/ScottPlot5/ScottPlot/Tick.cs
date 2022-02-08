@@ -41,13 +41,13 @@ public class Tick
     {
         PointF pt1 = new(info.GetPixelX(Position), info.DataRect.Bottom);
         PointF pt2 = new(pt1.X, pt1.Y + TickLength);
-        PointF pt3 = new(pt2.X, pt2.Y + TextPadding + 12);
+        PointF pt3 = new(pt2.X, pt2.Y + TextPadding);
 
         // TODO: MEASURE STRING AFTER MAUI GRAPHICS SUPPORTS IT
         canvas.DrawLine(pt1, pt2);
         canvas.FontColor = Color;
         canvas.FontSize = 12;
-        canvas.DrawString(Label, pt3.X, pt3.Y, HorizontalAlignment.Center);
+        canvas.DrawString(Label, pt3.X, pt3.Y + 10, HorizontalAlignment.Center);
     }
 
     private void DrawLeft(ICanvas canvas, PlotInfo info)
@@ -60,6 +60,6 @@ public class Tick
         canvas.DrawLine(pt1, pt2);
         canvas.FontColor = Color;
         canvas.FontSize = 12;
-        canvas.DrawString(Label, pt3.X, pt3.Y, HorizontalAlignment.Right);
+        canvas.DrawString(Label, pt3.X, pt3.Y + 4, HorizontalAlignment.Right);
     }
 }
