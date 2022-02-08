@@ -43,36 +43,45 @@ public class PlotInfo
     }
 
     public Coordinate GetCoordinate(Pixel px) => new(GetCoordinateX(px.X), GetCoordinateY(px.Y));
-    public double GetCoordinateX(float xPixel) => GetCoordinate(xPixel, false, DataRect.Width, AxisLimits.XMin, UnitsPerPxX, DataRect.Left);
-    public double GetCoordinateY(float yPixel) => GetCoordinate(yPixel, true, DataRect.Height, AxisLimits.YMin, UnitsPerPxY, DataRect.Top);
+
+    public double GetCoordinateX(float xPixel)
+    {
+        double pxFromMin = xPixel - DataRect.Left;
+        double distanceFromMin = pxFromMin * UnitsPerPxX;
+        return AxisLimits.XMin + distanceFromMin;
+    }
+
+    public double GetCoordinateY(float yPixel)
+    {
+        double pxFromMin = DataRect.Height + DataRect.Top - yPixel;
+        double distanceFromMin = pxFromMin * UnitsPerPxY;
+        return AxisLimits.YMin + distanceFromMin;
+    }
 
     public Pixel GetPixel(Coordinate coordinate) => new(GetPixelX(coordinate.X), GetPixelY(coordinate.Y));
+
     public Pixel GetPixel(double x, double y) => new(GetPixelX(x), GetPixelY(y));
-    public float GetPixelX(double x) => GetPixel(x, false, AxisLimits.XMax, AxisLimits.XMin, PxPerUnitX, DataRect.Left);
-    public float GetPixelY(double y) => GetPixel(y, true, AxisLimits.YMax, AxisLimits.YMin, PxPerUnitY, DataRect.Top);
 
-
-    // TODO: distribute this logic into the functions above
-    private static float GetPixel(double value, bool inverted, double max, double min, double pxPerUnit, double pxOffset)
+    public float GetPixelX(double x)
     {
-        double unitsFromMin = inverted ? max - value : value - min;
-        double pxFromMin = unitsFromMin * pxPerUnit;
-        double pixel = pxOffset + pxFromMin;
+        double unitsFromMin = x - AxisLimits.XMin;
+        double pxFromMin = unitsFromMin * PxPerUnitX;
+        double pixel = DataRect.Left + pxFromMin;
         return (float)pixel;
     }
 
-
-    // TODO: distribute this logic into the functions above
-    private static double GetCoordinate(float pixel, bool inverted, double dataSizePx, double min, double unitsPerPx, double pxOffset)
+    public float GetPixelY(double y)
     {
-        double pxFromMin = inverted ? dataSizePx + pxOffset - pixel : pixel - pxOffset;
-        return pxFromMin * unitsPerPx + min;
+        double unitsFromMin = AxisLimits.YMax - y;
+        double pxFromMin = unitsFromMin * PxPerUnitY;
+        double pixel = DataRect.Top + pxFromMin;
+        return (float)pixel;
     }
 
     public Pixel GetPixel<T>(T x, T y)
     {
-        double xVal = System.Convert.ToDouble(x);
-        double yVal = System.Convert.ToDouble(y);
+        double xVal = Convert.ToDouble(x);
+        double yVal = Convert.ToDouble(y);
         return GetPixel(xVal, yVal);
     }
 
