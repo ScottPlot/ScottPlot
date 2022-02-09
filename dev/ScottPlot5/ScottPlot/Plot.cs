@@ -26,6 +26,11 @@ public class Plot
     /// </summary>
     public PlotInfo Info { get; set; } = PlotInfo.Default;
 
+    /// <summary>
+    /// This object stores information about previous render performance.
+    /// </summary>
+    public readonly RenderStats Stats = new();
+
     public Plot()
     {
     }
@@ -82,6 +87,8 @@ public class Plot
         if (!info.FigureRect.HasPositiveArea)
             return;
 
+        Stopwatch sw = Stopwatch.StartNew();
+
         canvas.FillColor = Info.Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
 
@@ -107,6 +114,11 @@ public class Plot
 
         foreach (Tick tick in info.TickFactory.GenerateTicks(info, Edge.Left))
             tick.Draw(canvas, info);
+
+        sw.Stop();
+        Stats.AddRenderTime(sw.Elapsed);
+        Stats.Draw(canvas, info);
+
     }
 
     #endregion
@@ -129,6 +141,14 @@ public class Plot
         context.WriteToStream(fs);
         return fullPath;
     }
+
+    #endregion
+
+    #region Testing and Development
+
+    public void Benchmark(bool enable = true) => Stats.IsVisible = enable;
+
+    public bool BenchmarkToggle() => Stats.IsVisible = !Stats.IsVisible;
 
     #endregion
 }

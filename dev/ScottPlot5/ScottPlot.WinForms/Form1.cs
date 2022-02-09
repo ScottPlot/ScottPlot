@@ -80,6 +80,12 @@ namespace ScottPlot.WinForms
             skglControl1.Refresh();
         }
 
+        private void skglControl1_DoubleClick(object sender, EventArgs e)
+        {
+            Plot.BenchmarkToggle();
+            skglControl1.Invalidate();
+        }
+
         private void SinePlots(int pointCount)
         {
             Plot.Clear();

@@ -47,6 +47,7 @@
             this.skglControl1.VSync = true;
             this.skglControl1.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs>(this.skglControl1_PaintSurface);
             this.skglControl1.SizeChanged += new System.EventHandler(this.skglControl1_SizeChanged);
+            this.skglControl1.DoubleClick += new System.EventHandler(this.skglControl1_DoubleClick);
             this.skglControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseDown);
             this.skglControl1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseMove);
             this.skglControl1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseUp);
