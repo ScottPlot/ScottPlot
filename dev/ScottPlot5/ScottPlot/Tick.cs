@@ -30,34 +30,61 @@ public class Tick
         Edge = edge;
     }
 
-    public void Draw(ICanvas canvas, PlotInfo info)
+    public void DrawGridLine(ICanvas canvas, PlotInfo info)
     {
         if (Edge == Edge.Bottom)
-            DrawBottom(canvas, info);
+            DrawVerticalGridLine(canvas, info);
         else if (Edge == Edge.Left)
-            DrawLeft(canvas, info);
+            DrawHorizontalGridLine(canvas, info);
         else
             throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}");
     }
 
-    private void DrawBottom(ICanvas canvas, PlotInfo info)
+    public void DrawTickAndLabel(ICanvas canvas, PlotInfo info)
     {
+        if (Edge == Edge.Bottom)
+            DrawBottomTickAndLabel(canvas, info);
+        else if (Edge == Edge.Left)
+            DrawLeftTickAndLabel(canvas, info);
+        else
+            throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}");
+    }
+
+    private void DrawVerticalGridLine(ICanvas canvas, PlotInfo info)
+    {
+        // TODO: reduce duplication
         float x = info.GetPixelX(Position);
 
-        // draw vertical tick
-        PointF pt1 = new(x, info.DataRect.Bottom);
-        PointF pt2 = new(pt1.X, pt1.Y + TickMarkLength);
-        PointF pt3 = new(pt2.X, pt2.Y + TextPadding);
-        canvas.StrokeColor = TickMarkColor;
-        canvas.DrawLine(pt1, pt2);
-
-        // draw vertical grid line
         PointF ptGridTop = new(x, info.DataRect.Top);
         PointF ptGridBottom = new(x, info.DataRect.Bottom);
         canvas.StrokeSize = GridLineWidth;
         canvas.StrokeColor = GridLineColor;
         if (GridLineWidth > 0)
             canvas.DrawLine(ptGridTop, ptGridBottom);
+    }
+    private void DrawHorizontalGridLine(ICanvas canvas, PlotInfo info)
+    {
+        // TODO: reduce duplication
+        float y = info.GetPixelY(Position);
+
+        PointF ptGridLeft = new(info.DataRect.Left, y);
+        PointF ptGridRight = new(info.DataRect.Right, y);
+        canvas.StrokeSize = GridLineWidth;
+        canvas.StrokeColor = GridLineColor;
+        if (GridLineWidth > 0)
+            canvas.DrawLine(ptGridLeft, ptGridRight);
+    }
+
+    private void DrawBottomTickAndLabel(ICanvas canvas, PlotInfo info)
+    {
+        // TODO: reduce duplication
+        float x = info.GetPixelX(Position);
+
+        PointF pt1 = new(x, info.DataRect.Bottom);
+        PointF pt2 = new(pt1.X, pt1.Y + TickMarkLength);
+        PointF pt3 = new(pt2.X, pt2.Y + TextPadding);
+        canvas.StrokeColor = TickMarkColor;
+        canvas.DrawLine(pt1, pt2);
 
         // NOTE: After Maui.Graphics matures, call MeasureString() here
         canvas.FontColor = Color;
@@ -65,25 +92,18 @@ public class Tick
         canvas.DrawString(Label, pt3.X, pt3.Y + 10, HorizontalAlignment.Center);
     }
 
-    private void DrawLeft(ICanvas canvas, PlotInfo info)
+    private void DrawLeftTickAndLabel(ICanvas canvas, PlotInfo info)
     {
+        // TODO: reduce duplication
         float y = info.GetPixelY(Position);
 
-        // draw horizontal tick
         PointF pt1 = new(info.DataRect.Left, y);
         PointF pt2 = new(pt1.X - TickMarkLength, pt1.Y);
         PointF pt3 = new(pt2.X - TextPadding, pt2.Y);
-
-        // draw horizontal grid line
-        PointF ptGridLeft = new(info.DataRect.Left, y);
-        PointF ptGridRight = new(info.DataRect.Right, y);
-        canvas.StrokeSize = GridLineWidth;
-        canvas.StrokeColor = GridLineColor;
-        if (GridLineWidth > 0)
-            canvas.DrawLine(ptGridLeft, ptGridRight);
+        canvas.StrokeColor = TickMarkColor;
+        canvas.DrawLine(pt1, pt2);
 
         // NOTE: After Maui.Graphics matures, call MeasureString() here
-        canvas.DrawLine(pt1, pt2);
         canvas.FontColor = Color;
         canvas.FontSize = 12;
         canvas.DrawString(Label, pt3.X, pt3.Y + 4, HorizontalAlignment.Right);

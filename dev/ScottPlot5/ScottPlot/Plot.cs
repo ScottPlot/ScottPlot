@@ -89,6 +89,10 @@ public class Plot
 
         Stopwatch sw = Stopwatch.StartNew();
 
+        Tick[] bottomTicks = info.TickFactory.GenerateTicks(info, Edge.Bottom);
+        Tick[] leftTicks = info.TickFactory.GenerateTicks(info, Edge.Left);
+        Tick[] allTicks = bottomTicks.Concat(leftTicks).ToArray();
+
         canvas.FillColor = Info.Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
 
@@ -98,6 +102,9 @@ public class Plot
         canvas.FillColor = Info.Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
+        foreach (Tick tick in allTicks)
+            tick.DrawGridLine(canvas, info);
+
         foreach (IPlottable plottable in Plottables)
         {
             canvas.SaveState(); // because we can't trust each plottable to do this
@@ -105,15 +112,12 @@ public class Plot
             canvas.RestoreState();
         }
 
+        canvas.StrokeSize = 1;
         canvas.StrokeColor = Info.Style.DataBorderColor;
         canvas.DrawRectangle(info.DataRect.RectangleF);
 
-
-        foreach (Tick tick in info.TickFactory.GenerateTicks(info, Edge.Bottom))
-            tick.Draw(canvas, info);
-
-        foreach (Tick tick in info.TickFactory.GenerateTicks(info, Edge.Left))
-            tick.Draw(canvas, info);
+        foreach (Tick tick in allTicks)
+            tick.DrawTickAndLabel(canvas, info);
 
         sw.Stop();
         Stats.AddRenderTime(sw.Elapsed);
