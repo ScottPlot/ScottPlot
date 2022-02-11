@@ -114,7 +114,7 @@ public class Plot
 
         canvas.StrokeSize = 1;
         canvas.StrokeColor = Info.Style.DataBorderColor;
-        canvas.DrawRectangle(info.DataRect.RectangleF);
+        canvas.DrawRectangle(info.DataRect.Expand(.5f).RectangleF);
 
         foreach (Tick tick in allTicks)
             tick.DrawTickAndLabel(canvas, info);

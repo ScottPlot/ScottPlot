@@ -54,6 +54,8 @@ public class PixelRect
         return new PixelRect(Left + left, Right - right, Bottom - bottom, Top + top);
     }
 
+    public PixelRect Expand(float padding) => Expand(padding, padding, padding, padding);
+
     public PixelRect Expand(float left, float right, float bottom, float top)
     {
         return new PixelRect(Left - left, Right + right, Bottom + bottom, Top - top);
