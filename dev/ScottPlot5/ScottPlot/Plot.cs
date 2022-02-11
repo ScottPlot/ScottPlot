@@ -146,7 +146,11 @@ public class Plot
 
     #region Testing and Development
 
-    public void Benchmark(bool enable = true) => Stats.IsVisible = enable;
+    public bool Benchmark(bool enable = true)
+    {
+        Stats.IsVisible = enable;
+        return Stats.IsVisible;
+    }
 
     public bool BenchmarkToggle() => Stats.IsVisible = !Stats.IsVisible;
 

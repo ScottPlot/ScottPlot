@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.WinForms
 {
-    partial class Form1
+    partial class FormsPlotTester
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,29 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.skglControl1 = new SkiaSharp.Views.Desktop.SKGLControl();
             this.btnScatterBasic = new System.Windows.Forms.Button();
             this.btnScatter100k = new System.Windows.Forms.Button();
+            this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            this.cbBenchmark = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
-            // 
-            // skglControl1
-            // 
-            this.skglControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.skglControl1.BackColor = System.Drawing.Color.Black;
-            this.skglControl1.Location = new System.Drawing.Point(12, 66);
-            this.skglControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.skglControl1.Name = "skglControl1";
-            this.skglControl1.Size = new System.Drawing.Size(895, 425);
-            this.skglControl1.TabIndex = 0;
-            this.skglControl1.VSync = true;
-            this.skglControl1.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs>(this.skglControl1_PaintSurface);
-            this.skglControl1.SizeChanged += new System.EventHandler(this.skglControl1_SizeChanged);
-            this.skglControl1.DoubleClick += new System.EventHandler(this.skglControl1_DoubleClick);
-            this.skglControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseDown);
-            this.skglControl1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseMove);
-            this.skglControl1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.skglControl1_MouseUp);
             // 
             // btnScatterBasic
             // 
@@ -72,24 +54,49 @@
             this.btnScatter100k.UseVisualStyleBackColor = true;
             this.btnScatter100k.Click += new System.EventHandler(this.btnScatter100k_Click);
             // 
-            // Form1
+            // formsPlot1
+            // 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.formsPlot1.Location = new System.Drawing.Point(12, 66);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(896, 425);
+            this.formsPlot1.TabIndex = 3;
+            // 
+            // cbBenchmark
+            // 
+            this.cbBenchmark.AutoSize = true;
+            this.cbBenchmark.Checked = true;
+            this.cbBenchmark.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbBenchmark.Location = new System.Drawing.Point(182, 28);
+            this.cbBenchmark.Name = "cbBenchmark";
+            this.cbBenchmark.Size = new System.Drawing.Size(86, 19);
+            this.cbBenchmark.TabIndex = 4;
+            this.cbBenchmark.Text = "Benchmark";
+            this.cbBenchmark.UseVisualStyleBackColor = true;
+            this.cbBenchmark.CheckedChanged += new System.EventHandler(this.cbBenchmark_CheckedChanged);
+            // 
+            // FormsPlotTester
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(920, 503);
+            this.Controls.Add(this.cbBenchmark);
+            this.Controls.Add(this.formsPlot1);
             this.Controls.Add(this.btnScatterBasic);
             this.Controls.Add(this.btnScatter100k);
-            this.Controls.Add(this.skglControl1);
-            this.Name = "Form1";
-            this.Text = "Maui.Graphics model with SkiaSharp OpenGL rendering";
+            this.Name = "FormsPlotTester";
+            this.Text = "ScottPlot 5 - WinForms";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private SkiaSharp.Views.Desktop.SKGLControl skglControl1;
         private Button btnScatterBasic;
         private Button btnScatter100k;
+        private FormsPlot formsPlot1;
+        private CheckBox cbBenchmark;
     }
 }
