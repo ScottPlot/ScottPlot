@@ -100,6 +100,19 @@ public class PlotInfo
         }
     }
 
+    public PlotInfo WithDataRect(PixelRect dataRect) => new(FigureRect.Size, dataRect, AxisLimits, Style, TickFactory);
+
+    public PlotInfo WithPadding(float left, float right, float bottom, float top)
+    {
+        PixelRect dataRect = new(
+            left: left,
+            right: FigureRect.Width - right,
+            bottom: FigureRect.Height - bottom,
+            top: top);
+
+        return this.WithDataRect(dataRect);
+    }
+
     public PlotInfo WithSize(int width, int height)
     {
         float padLeft = DataRect.Left;

@@ -31,8 +31,14 @@ public class Plot
     /// </summary>
     public readonly RenderStats Stats = new();
 
+    public readonly List<AxisLabel> AxisLabels = new();
+
+    public AxisLabel[] GetAxisLabels(Edge edge) => AxisLabels.Where(x => x.Edge == edge).ToArray();
+
     public Plot()
     {
+        AxisLabels.Add(new HorizontalAxisLabel(Edge.Bottom, 30, "Horizontal Axis"));
+        AxisLabels.Add(new VerticalAxisLabel(Edge.Left, 60, "Vertical Axis"));
     }
 
     #region add/remove plottables
@@ -78,6 +84,25 @@ public class Plot
 
     #endregion
 
+    #region Layout and Styling
+
+    public void TightenLayout(float minimum = 10)
+    {
+        float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Size);
+        float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Size);
+        float padBottom = GetAxisLabels(Edge.Bottom).Sum(x => x.Size);
+        float padTop = GetAxisLabels(Edge.Top).Sum(x => x.Size);
+
+        padLeft = Math.Max(minimum, padLeft);
+        padRight = Math.Max(minimum, padRight);
+        padBottom = Math.Max(minimum, padBottom);
+        padTop = Math.Max(minimum, padTop);
+
+        Info = Info.WithPadding(padLeft, padRight, padBottom, padTop);
+    }
+
+    #endregion
+
     #region rendering
 
     public void Draw(ICanvas canvas) => Draw(canvas, Info);
@@ -118,6 +143,11 @@ public class Plot
 
         foreach (Tick tick in allTicks)
             tick.DrawTickAndLabel(canvas, info);
+
+        foreach (AxisLabel ax in AxisLabels)
+        {
+            ax.Draw(canvas, info);
+        }
 
         sw.Stop();
         Stats.AddRenderTime(sw.Elapsed);

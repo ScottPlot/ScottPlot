@@ -10,10 +10,13 @@ public class PixelRect
     public readonly float Top;
     public readonly float Right;
     public readonly float Left;
-    public PixelSize Size => new PixelSize(Width, Height);
+
+    public PixelSize Size => new(Width, Height);
 
     public float Width => Right - Left;
     public float Height => Bottom - Top;
+    public float HorizontalCenter => (Left + Right) / 2;
+    public float VerticalCenter => (Top + Bottom) / 2;
     public bool HasPositiveArea => (Width > 0) && (Height > 0);
 
     public PointF LocationF => new(Left, Top);
