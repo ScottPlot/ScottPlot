@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -26,6 +26,8 @@ namespace ScottPlot
         verticalBar,
         triUp,
         triDown,
+        filledTriangle,
+        openTriangle,
     }
 
     public class MarkerTools
@@ -148,6 +150,31 @@ namespace ScottPlot
 
                     //Draw polygon to screen
                     gfx.DrawPolygon(pen, curvePoints4);
+
+                    break;
+                case MarkerShape.filledTriangle:
+
+                    // Create points that define polygon.
+                    PointF point19 = new PointF(pixelLocation.X, pixelLocation.Y - size);
+                    PointF point20 = new PointF(pixelLocation.X - (float)0.866* size / 2, pixelLocation.Y + size / 2);
+                    PointF point21 = new PointF(pixelLocation.X + (float)0.866* size / 2, pixelLocation.Y + size / 2);
+
+                    PointF[] curvePoints5 = { point19, point20, point21};
+
+                    //Draw polygon to screen
+                    gfx.FillPolygon(brush, curvePoints5);
+                    break;
+                case MarkerShape.openTriangle:
+
+                    // Create points that define polygon.
+                    PointF point22 = new PointF(pixelLocation.X, pixelLocation.Y - size);
+                    PointF point23 = new PointF(pixelLocation.X - (float)0.866 * size / 2, pixelLocation.Y + size / 2);
+                    PointF point24 = new PointF(pixelLocation.X + (float)0.866 * size / 2, pixelLocation.Y + size / 2);
+
+                    PointF[] curvePoints6 = { point22, point23, point24 };
+
+                    //Draw polygon to screen
+                    gfx.DrawPolygon(pen, curvePoints6);
 
                     break;
                 case MarkerShape.none:
@@ -341,6 +368,36 @@ namespace ScottPlot
 
                         //Draw polygon to screen
                         gfx.DrawPolygon(pen, curvePoints4);
+                    }
+
+                    break;
+                case MarkerShape.filledTriangle:
+                    foreach (PointF point in pixelLocations)
+                    {
+                        // Create points that define polygon.
+                        PointF point19 = new PointF(point.X + markerOffsetX, point.Y - halfsize);
+                        PointF point20 = new PointF(point.X + markerOffsetX - quartersqrt3size, point.Y + quartersize);
+                        PointF point21 = new PointF(point.X + markerOffsetX + quartersqrt3size, point.Y + quartersize);
+
+                        PointF[] curvePoints5 = { point19, point20, point21 };
+
+                        //Draw polygon to screen
+                        gfx.FillPolygon(brush, curvePoints5);
+                    }
+
+                    break;
+                case MarkerShape.openTriangle:
+                    foreach (PointF point in pixelLocations)
+                    {
+                        // Create points that define polygon.
+                        PointF point22 = new PointF(point.X + markerOffsetX, point.Y - halfsize);
+                        PointF point23 = new PointF(point.X + markerOffsetX - quartersqrt3size, point.Y + quartersize);
+                        PointF point24 = new PointF(point.X + markerOffsetX + quartersqrt3size, point.Y + quartersize);
+
+                        PointF[] curvePoints6 = { point22, point23, point24 };
+
+                        //Draw polygon to screen
+                        gfx.DrawPolygon(pen, curvePoints6);
                     }
 
                     break;
