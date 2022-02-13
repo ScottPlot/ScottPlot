@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -167,8 +167,11 @@ namespace ScottPlot
             Brush brush = new SolidBrush(color);
 
             float halfsize = size / 2;
+            float quartersize = size / 4;
             float halfsqrt3size = (float)0.866 * size;
             float halfsqrt2size = (float)0.707 * size;
+            float quartersqrt2size = halfsqrt2size / 2;
+            float quartersqrt3size = halfsqrt3size / 2;
 
             // adjust marker offset to improve rendering on Linux and MacOS
             float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
@@ -247,9 +250,9 @@ namespace ScottPlot
                         // vertical line of the *
                         gfx.DrawLine(pen, point.X + markerOffsetX, point.Y - halfsize, point.X + markerOffsetX, point.Y + halfsize);
                         // bottom-left / top-right line of the *
-                        gfx.DrawLine(pen, point.X + markerOffsetX - halfsqrt2size, point.Y - halfsqrt2size, point.X + markerOffsetX + halfsqrt2size, point.Y + halfsqrt2size);
+                        gfx.DrawLine(pen, point.X + markerOffsetX - quartersqrt2size, point.Y - quartersqrt2size, point.X + markerOffsetX + quartersqrt2size, point.Y + quartersqrt2size);
                         // top-left / bottom-right line of the *
-                        gfx.DrawLine(pen, point.X + markerOffsetX - halfsqrt2size, point.Y + halfsqrt2size, point.X + markerOffsetX + halfsqrt2size, point.Y - halfsqrt2size);
+                        gfx.DrawLine(pen, point.X + markerOffsetX - quartersqrt2size, point.Y + quartersqrt2size, point.X + markerOffsetX + quartersqrt2size, point.Y - quartersqrt2size);
                     }
 
                     break;
@@ -284,14 +287,13 @@ namespace ScottPlot
                     //SizeF textSize4 = Drawing.GDI.MeasureString(gfx, "x", drawFont4);
                     //float halfWidth4 = textSize4.Width / (5 / 2);
                     //float quarterHeight4 = textSize4.Height / 2;
-                    float sqrt2size = (float)1.414 * size;
                     foreach (PointF point in pixelLocations)
                     {
                         //gfx.DrawString("x", drawFont4, brush, point.X - halfWidth4, point.Y - quarterHeight4);
                         // bottom-left / top-right line of the x
-                        gfx.DrawLine(pen, point.X + markerOffsetX - sqrt2size, point.Y - sqrt2size, point.X + markerOffsetX + sqrt2size, point.Y + sqrt2size);
+                        gfx.DrawLine(pen, point.X + markerOffsetX - quartersqrt2size, point.Y - quartersqrt2size, point.X + markerOffsetX + quartersqrt2size, point.Y + quartersqrt2size);
                         // top-left / bottom-right line of the x
-                        gfx.DrawLine(pen, point.X + markerOffsetX - sqrt2size, point.Y + sqrt2size, point.X + markerOffsetX + sqrt2size, point.Y - sqrt2size);
+                        gfx.DrawLine(pen, point.X + markerOffsetX - quartersqrt2size, point.Y + quartersqrt2size, point.X + markerOffsetX + quartersqrt2size, point.Y - quartersqrt2size);
                     }
 
                     break;
@@ -312,11 +314,11 @@ namespace ScottPlot
                     foreach (PointF point in pixelLocations)
                     {
                         // Create points that define polygon.
-                        PointF point9 = new PointF(point.X + markerOffsetX, point.Y - size);
+                        PointF point9 = new PointF(point.X + markerOffsetX, point.Y - halfsize);
                         PointF point10 = new PointF(point.X + markerOffsetX, point.Y);
-                        PointF point11 = new PointF(point.X + markerOffsetX - halfsqrt3size, point.Y + halfsize);
+                        PointF point11 = new PointF(point.X + markerOffsetX - quartersqrt3size, point.Y + quartersize);
                         PointF point12 = new PointF(point.X + markerOffsetX, point.Y);
-                        PointF point13 = new PointF(point.X + markerOffsetX + halfsqrt3size, point.Y + halfsize);
+                        PointF point13 = new PointF(point.X + markerOffsetX + quartersqrt3size, point.Y + quartersize);
 
                         PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
 
@@ -329,11 +331,11 @@ namespace ScottPlot
                     foreach (PointF point in pixelLocations)
                     {
                         // Create points that define polygon.
-                        PointF point14 = new PointF(point.X + markerOffsetX, point.Y + size);
+                        PointF point14 = new PointF(point.X + markerOffsetX, point.Y + halfsize);
                         PointF point15 = new PointF(point.X + markerOffsetX, point.Y);
-                        PointF point16 = new PointF(point.X + markerOffsetX - halfsqrt3size, point.Y - halfsize);
+                        PointF point16 = new PointF(point.X + markerOffsetX - quartersqrt3size, point.Y - quartersize);
                         PointF point17 = new PointF(point.X + markerOffsetX, point.Y);
-                        PointF point18 = new PointF(point.X + markerOffsetX + halfsqrt3size, point.Y - halfsize);
+                        PointF point18 = new PointF(point.X + markerOffsetX + quartersqrt3size, point.Y - quartersize);
 
                         PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
 
