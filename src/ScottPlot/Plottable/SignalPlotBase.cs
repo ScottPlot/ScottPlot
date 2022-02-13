@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasPointsGenericX<double, T> where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IIsHighlightable, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -22,12 +22,16 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
         public float MarkerSize { get; set; } = 5;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
         public double LineWidth { get; set; } = 1;
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+
+        public bool IsHighlighted { get; set; } = false;
+        public double HighlightCoefficient { get; set; } = 2;
 
         /// <summary>
         /// If enabled, parallel processing will be used to calculate pixel positions for high density datasets.
@@ -344,7 +348,7 @@ namespace ScottPlot.Plottable
                         throw new InvalidOperationException("unsupported fill type");
                 }
 
-                if (MarkerSize > 0)
+                if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
                     // make markers transition away smoothly by making them smaller as the user zooms out
                     float pixelsBetweenPoints = (float)(_SamplePeriod * dims.DataWidth / dims.XSpan);
@@ -728,9 +732,9 @@ namespace ScottPlot.Plottable
                 label = Label,
                 color = Color,
                 lineStyle = LineStyle,
-                lineWidth = LineWidth,
+                lineWidth = (IsHighlighted ? HighlightCoefficient : 1) * LineWidth,
                 markerShape = ShowMarkersInLegend ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = ShowMarkersInLegend ? MarkerSize : 0
+                markerSize = ShowMarkersInLegend ? (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
         }
@@ -739,8 +743,8 @@ namespace ScottPlot.Plottable
         {
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color);
-            using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
-            using var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true);
+            using var penLD = GDI.Pen(Color, (float)((IsHighlighted ? HighlightCoefficient : 1) * LineWidth), LineStyle, true);
+            using var penHD = GDI.Pen(Color, (float)((IsHighlighted ? HighlightCoefficient : 1) * LineWidth), LineStyle.Solid, true);
 
             double dataSpanUnits = _Ys.Length * _SamplePeriod;
             double columnSpanUnits = dims.XSpan / dims.DataWidth;
