@@ -296,8 +296,8 @@ namespace ScottPlot.Plottable
             {
                 label = Label,
                 color = Color,
-                lineStyle = (IsHighlighted ? HighlightCoefficient : 1)*LineStyle,
-                lineWidth = LineWidth,
+                lineStyle = LineStyle,
+                lineWidth = (IsHighlighted ? HighlightCoefficient : 1) * LineWidth,
                 markerShape = MarkerShape,
                 markerSize = (IsHighlighted ? (float)HighlightCoefficient : 1)*MarkerSize,
             };
