@@ -206,7 +206,7 @@ namespace ScottPlot
             customMenu.Items.Add(new ToolStripMenuItem("Highlight Plottable", null, new EventHandler(PictureBoxLegend_ToggleHighlight)));
             customMenu.Items.Add(new ToolStripMenuItem("Delete Plottable", null, new EventHandler(PictureBoxLegend_DeletePlottable)));
 
-            if (ClickedPlottable is ScatterPlot || ClickedPlottable is SignalPlot)
+            if (ClickedPlottable is IHasLine)
             {
                 var StyleMenu = new ToolStripMenuItem("Style");
                 var LineStyleMenu = new ToolStripMenuItem("Line Style");
@@ -215,12 +215,27 @@ namespace ScottPlot
                     LineStyleMenu.DropDownItems.Add(new ToolStripMenuItem(ls.ToString(), null, new EventHandler(ChangeLineStyle)));
                 }
                 customMenu.Items.Add(LineStyleMenu);
+                var LineWidthMenu = new ToolStripMenuItem("Line Width");
+                foreach (string lw in new string[] { "much thinner", "thinner", "thicker", "much thicker" })
+                {
+                    LineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler(ChangeLineWidth)));
+                }
+                customMenu.Items.Add(LineWidthMenu);
+            }
+            if (ClickedPlottable is IHasMarker)
+            {
                 var MarkerShapeMenu = new ToolStripMenuItem("Marker Shape");
                 foreach (MarkerShape ms in (MarkerShape[])Enum.GetValues(typeof(MarkerShape)))
                 {
                     MarkerShapeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler(ChangeMarkerShape)));
                 }
                 customMenu.Items.Add(MarkerShapeMenu);
+                var MarkerSizeMenu = new ToolStripMenuItem("Marker Size");
+                foreach (string ms in new string[] { "much smaller", "smaller", "bigger", "much bigger" })
+                {
+                    MarkerSizeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler(ChangeMarkerSize)));
+                }
+                customMenu.Items.Add(MarkerSizeMenu);
             }
 
             customMenu.Show(System.Windows.Forms.Cursor.Position);
@@ -239,6 +254,36 @@ namespace ScottPlot
             }
             UpdateLegendImage();
         }
+
+        private void ChangeLineWidth(object sender, EventArgs e)
+        {
+            string lwstring = ((ToolStripMenuItem)sender).Text;
+            if (ClickedPlottable is IHasLine)
+            {
+                switch (((ToolStripMenuItem)sender).Text)
+                {
+                    case "much thinner":
+
+                        ((IHasLine)ClickedPlottable).LineWidth /= 2;
+                        break;
+
+                    case "thinner":
+
+                        ((IHasLine)ClickedPlottable).LineWidth /= 1.5;
+                        break;
+
+                    case "thicker":
+                        ((IHasLine)ClickedPlottable).LineWidth *= 1.5;
+                        break;
+
+                    case "much thicker":
+                        ((IHasLine)ClickedPlottable).LineWidth *= 2;
+                        break;
+                }
+            }
+            UpdateLegendImage();
+        }
+
         private void ChangeMarkerShape(object sender, EventArgs e)
         {
             string msstring = ((ToolStripMenuItem)sender).Text;
@@ -249,6 +294,35 @@ namespace ScottPlot
                     {
                         ((IHasMarker)ClickedPlottable).MarkerShape = ms;
                     }
+            }
+            UpdateLegendImage();
+        }
+
+        private void ChangeMarkerSize(object sender, EventArgs e)
+        {
+            string lwstring = ((ToolStripMenuItem)sender).Text;
+            if (ClickedPlottable is IHasMarker)
+            {
+                switch (((ToolStripMenuItem)sender).Text)
+                {
+                    case "much smaller":
+
+                        ((IHasMarker)ClickedPlottable).MarkerSize /= (float)2;
+                        break;
+
+                    case "smaller":
+
+                        ((IHasMarker)ClickedPlottable).MarkerSize /= (float)1.5;
+                        break;
+
+                    case "bigger":
+                        ((IHasMarker)ClickedPlottable).MarkerSize *= (float)1.5;
+                        break;
+
+                    case "much bigger":
+                        ((IHasMarker)ClickedPlottable).MarkerSize *= (float)2;
+                        break;
+                }
             }
             UpdateLegendImage();
         }
