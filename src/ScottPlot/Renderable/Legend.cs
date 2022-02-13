@@ -209,6 +209,11 @@ namespace ScottPlot.Renderable
         /// </summary>
         public LegendItem[] GetItems() => LegendItems.ToArray();
 
+        /// <summary>
+        /// Returns an array of legend items displayed in the last render, that are children of highlightable plottables
+        /// </summary>
+        public LegendItem[] GetHighlightableItems() => LegendItems.Where(x => x.Parent is IIsHighlightable).ToArray();
+
         private (float x, float y) GetLocationPx(PlotDimensions dims, float width, float height)
         {
             float leftX = dims.DataOffsetX + Padding;

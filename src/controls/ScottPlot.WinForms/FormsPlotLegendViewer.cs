@@ -8,18 +8,16 @@ namespace ScottPlot
     {
         private readonly FormsPlot FormsPlot;
         private readonly Renderable.Legend Legend;
-        private  readonly bool InitialLegendVisibility;
-        private bool[] HighlightedPlottables;
+        private readonly bool InitialLegendVisibility;
         private IPlottable ClickedPlottable;
-        private int ClickedIndex;
 
         public FormsPlotLegendViewer(FormsPlot fPlot, string windowTitle = "Detached Legend")
-        { 
+        {
             // Get current Legend
             Legend = fPlot.Plot.Legend();
             // Do nothing if Legend is already detached
             if (Legend.IsDetached == true) return;
-            
+
             // Get current FormsPlot
             FormsPlot = fPlot;
             // Get initial legend visibility, to be restored upon detached legend closing
@@ -27,10 +25,9 @@ namespace ScottPlot
             // Set detached status
             fPlot.Plot.Legend().IsDetached = true;
             fPlot.Plot.Legend().IsVisible = false;
-            HighlightedPlottables = new bool[Legend.Count];
 
             // Initialize FormsPlotLegendViewer and actions
-            InitializeComponent();            
+            InitializeComponent();
             // Set action that is triggered by Detached legend closing
             this.FormClosed += RestoreVisibleProperties;
 
@@ -117,8 +114,8 @@ namespace ScottPlot
         private void PictureBoxLegend_ToggleHighlight(object sender, EventArgs e)
         {
             // only allow toggling of plottables with a single legend item (blocking things like pie charts)
-            if (ClickedPlottable.GetLegendItems().Length == 1)
-                ToggleHighlight();
+            if (ClickedPlottable is IIsHighlightable)
+                ToggleHighlight((IIsHighlightable)ClickedPlottable);
 
             // Update display
             UpdateLegendImage();
@@ -148,8 +145,8 @@ namespace ScottPlot
         {
             // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
             double legendItemHeight = (double)PictureBoxLegend.Image.Height / Legend.Count;
-            ClickedIndex = (int)Math.Floor(e.Y / legendItemHeight);
-            ClickedPlottable = Legend.GetItems()[ClickedIndex].Parent;
+            int clickedindex = (int)Math.Floor(e.Y / legendItemHeight);
+            ClickedPlottable = Legend.GetItems()[clickedindex].Parent;
         }
 
         /// <summary>
@@ -166,33 +163,9 @@ namespace ScottPlot
         /// Performs highlight toggle on <c>ScatterPlots</c> and <c>SignalPlots</c>.
         /// A plottable is highlighted by multiplying its line width and marker size by 2.
         /// </summary>
-        private void ToggleHighlight()
+        private void ToggleHighlight(IIsHighlightable plottable)
         {
-            var isHighlighted = HighlightedPlottables[ClickedIndex];
-            HighlightedPlottables[ClickedIndex] = !isHighlighted;
-            switch (ClickedPlottable)
-            {
-                case ScatterPlot:
-                    ((ScatterPlot)ClickedPlottable).LineWidth *= MultiplyOrDivide(2,isHighlighted);
-                    ((ScatterPlot)ClickedPlottable).MarkerSize *= (float)MultiplyOrDivide(2, isHighlighted);
-                    
-                    break;
-                case SignalPlot:
-                    ((SignalPlot)ClickedPlottable).LineWidth *= MultiplyOrDivide(2, isHighlighted);
-                    ((SignalPlot)ClickedPlottable).MarkerSize *= (float)MultiplyOrDivide(2, isHighlighted);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Outputs a <c>coefficient</c> or its inverse depending on the value of <c>isInverse</c>
-        /// </summary>
-        /// <param name="coefficient"></param>
-        /// <param name="isInverse"></param>
-        /// <returns></returns>
-        private double MultiplyOrDivide(double coefficient, bool isInverse)
-        {
-            return isInverse ? 1 / coefficient : coefficient;
+            plottable.IsHighlighted = !plottable.IsHighlighted;
         }
 
         /// <summary>
@@ -200,14 +173,9 @@ namespace ScottPlot
         /// </summary>
         private void RemoveHighlight()
         {
-            var legenditems = Legend.GetItems();
-            for (int i = 0; i < legenditems.Length ; i++)
+            foreach (LegendItem item in Legend.GetHighlightableItems())
             {
-                if (HighlightedPlottables[i] == true)
-                {
-                    ToggleHighlight();
-                    HighlightedPlottables[i] = false;
-                }
+                ((IIsHighlightable)item.Parent).IsHighlighted = false;
             }
         }
 
@@ -217,7 +185,7 @@ namespace ScottPlot
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RestoreVisibleProperties(object sender,EventArgs e)
+        private void RestoreVisibleProperties(object sender, EventArgs e)
         {
             RemoveHighlight();
             RestoreLegendVisibility();
@@ -260,49 +228,27 @@ namespace ScottPlot
 
         private void ChangeLineStyle(object sender, EventArgs e)
         {
-            foreach (LineStyle ls in (LineStyle[])Enum.GetValues(typeof(LineStyle)))
+            string lsstring = ((ToolStripMenuItem)sender).Text;
+            if (ClickedPlottable is IHasLine)
             {
-                if (ls.ToString() == ((ToolStripMenuItem)sender).Text)
-                {
-                    switch (ClickedPlottable)
+                foreach (LineStyle ls in (LineStyle[])Enum.GetValues(typeof(LineStyle)))
+                    if (ls.ToString() == lsstring)
                     {
-                        case ScatterPlot:
-                        {
-                            ((ScatterPlot)ClickedPlottable).LineStyle = ls;
-                            break;
-                        }
-                        case SignalPlot:
-                        {
-                            ((ScatterPlot)ClickedPlottable).LineStyle = ls;
-                            break;
-                        }
+                        ((IHasLine)ClickedPlottable).LineStyle = ls;
                     }
-                    break;
-                }
             }
             UpdateLegendImage();
         }
         private void ChangeMarkerShape(object sender, EventArgs e)
         {
-            foreach (MarkerShape ms in (MarkerShape[])Enum.GetValues(typeof(MarkerShape)))
+            string msstring = ((ToolStripMenuItem)sender).Text;
+            if (ClickedPlottable is IHasMarker)
             {
-                if (ms.ToString() == ((ToolStripMenuItem)sender).Text)
-                {
-                    switch (ClickedPlottable)
+                foreach (MarkerShape ms in (MarkerShape[])Enum.GetValues(typeof(MarkerShape)))
+                    if (ms.ToString() == msstring)
                     {
-                        case ScatterPlot:
-                            {
-                                ((ScatterPlot)ClickedPlottable).MarkerShape = ms;
-                                break;
-                            }
-                        case SignalPlot:
-                            {
-                                ((ScatterPlot)ClickedPlottable).MarkerShape = ms;
-                                break;
-                            }
+                        ((IHasMarker)ClickedPlottable).MarkerShape = ms;
                     }
-                    break;
-                }
             }
             UpdateLegendImage();
         }
