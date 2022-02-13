@@ -359,12 +359,8 @@ namespace ScottPlot.Plottable
                     {
                         ShowMarkersInLegend = true;
 
-                        // adjust marker offset to improve rendering on Linux and MacOS
-                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
-                        foreach (PointF point in linePoints)
-                            gfx.FillEllipse(brush: brush,
-                                x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
-                                width: markerPxDiameter, height: markerPxDiameter);
+                        // draw a marker at each point
+                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize, Color);
                     }
                     else
                     {

@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -284,8 +284,9 @@ namespace ScottPlot.Plottable
 
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
-                    for (int i = 0; i < points.Length; i++)
-                        MarkerTools.DrawMarker(gfx, points[i], MarkerShape, (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize, Color);
+                {
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize, Color);
+                }
             }
         }
 
