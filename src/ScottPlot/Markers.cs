@@ -156,10 +156,10 @@ namespace ScottPlot
 
                     // Create points that define polygon.
                     PointF point19 = new PointF(pixelLocation.X, pixelLocation.Y - size);
-                    PointF point20 = new PointF(pixelLocation.X - (float)0.866* size / 2, pixelLocation.Y + size / 2);
-                    PointF point21 = new PointF(pixelLocation.X + (float)0.866* size / 2, pixelLocation.Y + size / 2);
+                    PointF point20 = new PointF(pixelLocation.X - (float)0.866 * size / 2, pixelLocation.Y + size / 2);
+                    PointF point21 = new PointF(pixelLocation.X + (float)0.866 * size / 2, pixelLocation.Y + size / 2);
 
-                    PointF[] curvePoints5 = { point19, point20, point21};
+                    PointF[] curvePoints5 = { point19, point20, point21 };
 
                     //Draw polygon to screen
                     gfx.FillPolygon(brush, curvePoints5);
