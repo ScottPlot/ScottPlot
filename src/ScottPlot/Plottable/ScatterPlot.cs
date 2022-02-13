@@ -299,7 +299,7 @@ namespace ScottPlot.Plottable
                 lineStyle = LineStyle,
                 lineWidth = (IsHighlighted ? HighlightCoefficient : 1) * LineWidth,
                 markerShape = MarkerShape,
-                markerSize = (IsHighlighted ? (float)HighlightCoefficient : 1)*MarkerSize,
+                markerSize = (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize,
             };
             return new LegendItem[] { singleLegendItem };
         }
