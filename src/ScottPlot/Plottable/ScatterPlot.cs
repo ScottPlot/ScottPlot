@@ -43,27 +43,15 @@ namespace ScottPlot.Plottable
         private double _lineWidth = 1;
         public double LineWidth
         {
-            get
-            {
-                return IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
-            }
-            set
-            {
-                _lineWidth = value;
-            }
+            get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            set { _lineWidth = value; }
         }
 
         private double _errorLineWidth = 1;
         public double ErrorLineWidth
         {
-            get
-            {
-                return IsHighlighted ? _errorLineWidth * HighlightCoefficient : _errorLineWidth;
-            }
-            set
-            {
-                _errorLineWidth = value;
-            }
+            get => IsHighlighted ? _errorLineWidth * HighlightCoefficient : _errorLineWidth;
+            set { _errorLineWidth = value; }
         }
 
         public float ErrorCapSize = 3;
@@ -71,14 +59,8 @@ namespace ScottPlot.Plottable
         public float _markerSize = 5;
         public float MarkerSize
         {
-            get
-            {
-                return IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
-            }
-            set
-            {
-                _markerSize = value;
-            }
+            get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            set { _markerSize = value; }
         }
 
         public bool StepDisplay = false;

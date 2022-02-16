@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
@@ -25,14 +24,8 @@ namespace ScottPlot.Plottable
         public float _markerSize = 5;
         public float MarkerSize
         {
-            get
-            {
-                return IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
-            }
-            set
-            {
-                _markerSize = value;
-            }
+            get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            set { _markerSize = value; }
         }
 
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
@@ -42,14 +35,8 @@ namespace ScottPlot.Plottable
         private double _lineWidth = 1;
         public double LineWidth
         {
-            get
-            {
-                return IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
-            }
-            set
-            {
-                _lineWidth = value;
-            }
+            get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            set { _lineWidth = value; }
         }
 
         public string Label { get; set; } = null;
