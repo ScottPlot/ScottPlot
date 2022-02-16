@@ -21,11 +21,37 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
-        public float MarkerSize { get; set; } = 5;
+
+        public float _markerSize = 5;
+        public float MarkerSize
+        {
+            get
+            {
+                return IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            }
+            set
+            {
+                _markerSize = value;
+            }
+        }
+
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
-        public double LineWidth { get; set; } = 1;
+
+        private double _lineWidth = 1;
+        public double LineWidth
+        {
+            get
+            {
+                return IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            }
+            set
+            {
+                _lineWidth = value;
+            }
+        }
+
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
@@ -360,7 +386,7 @@ namespace ScottPlot.Plottable
                         ShowMarkersInLegend = true;
 
                         // draw a marker at each point
-                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize, Color);
+                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, MarkerSize, Color);
                     }
                     else
                     {
@@ -728,9 +754,9 @@ namespace ScottPlot.Plottable
                 label = Label,
                 color = Color,
                 lineStyle = LineStyle,
-                lineWidth = (IsHighlighted ? HighlightCoefficient : 1) * LineWidth,
+                lineWidth = LineWidth,
                 markerShape = ShowMarkersInLegend ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = ShowMarkersInLegend ? (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize : 0
+                markerSize = ShowMarkersInLegend ? MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
         }
@@ -739,8 +765,8 @@ namespace ScottPlot.Plottable
         {
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color);
-            using var penLD = GDI.Pen(Color, (float)((IsHighlighted ? HighlightCoefficient : 1) * LineWidth), LineStyle, true);
-            using var penHD = GDI.Pen(Color, (float)((IsHighlighted ? HighlightCoefficient : 1) * LineWidth), LineStyle.Solid, true);
+            using var penLD = GDI.Pen(Color, LineWidth, LineStyle, true);
+            using var penHD = GDI.Pen(Color, LineWidth, LineStyle.Solid, true);
 
             double dataSpanUnits = _Ys.Length * _SamplePeriod;
             double columnSpanUnits = dims.XSpan / dims.DataWidth;
