@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IIsHighlightable, IHasPointsGenericX<double, T> where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IHighlightable, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
