@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.34
 _In development / not yet on NuGet ..._
+* Bubble plot: Added methods to get the point nearest the cursor (#1657, #1652) _Thanks @BambOoxX and @adgriff2_
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
