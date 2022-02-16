@@ -385,13 +385,14 @@ namespace ScottPlot.Plottable
                     {
                         ShowMarkersInLegend = true;
 
-                        // TODO: call MarkerTools.DrawMarker()
                         // adjust marker offset to improve rendering on Linux and MacOS
-                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                        // float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                        // TODO: this is commented-out now. Is alignment broken on Linux and MacOS?
+
                         foreach (PointF point in linePoints)
-                            gfx.FillEllipse(brush: brush,
-                                x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
-                                width: markerPxDiameter, height: markerPxDiameter);
+                        {
+                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color);
+                        }
                     }
                     else
                     {
