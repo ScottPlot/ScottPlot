@@ -39,14 +39,52 @@ namespace ScottPlot.Plottable
         public Color Color { get; set; } = Color.Black;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
-        public double LineWidth { get; set; } = 1;
-        public double ErrorLineWidth = 1;
+
+        private double _lineWidth = 1;
+        public double LineWidth
+        {
+            get
+            {
+                return IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            }
+            set
+            {
+                _lineWidth = value;
+            }
+        }
+
+        private double _errorLineWidth = 1;
+        public double ErrorLineWidth
+        {
+            get
+            {
+                return IsHighlighted ? _errorLineWidth * HighlightCoefficient : _errorLineWidth;
+            }
+            set
+            {
+                _errorLineWidth = value;
+            }
+        }
+
         public float ErrorCapSize = 3;
-        public float MarkerSize { get; set; } = 5;
+
+        public float _markerSize = 5;
+        public float MarkerSize
+        {
+            get
+            {
+                return IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            }
+            set
+            {
+                _markerSize = value;
+            }
+        }
+
         public bool StepDisplay = false;
 
         public bool IsHighlighted { get; set; } = false;
-        public double HighlightCoefficient { get; set; } = 2;
+        public float HighlightCoefficient { get; set; } = 2;
 
         [Obsolete("Scatter plot arrowheads have been deprecated. Use the Arrow plot type instead.", true)]
         public bool IsArrow { get => ArrowheadWidth > 0 && ArrowheadLength > 0; }
@@ -221,7 +259,7 @@ namespace ScottPlot.Plottable
                 return;
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var penLine = GDI.Pen(Color, (IsHighlighted ? HighlightCoefficient : 1) * LineWidth, LineStyle, true))
+            using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
             using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
             {
                 int from = MinRenderIndex ?? 0;
@@ -285,7 +323,7 @@ namespace ScottPlot.Plottable
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
-                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize, Color);
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, Color);
                 }
             }
         }
@@ -297,9 +335,9 @@ namespace ScottPlot.Plottable
                 label = Label,
                 color = Color,
                 lineStyle = LineStyle,
-                lineWidth = (IsHighlighted ? HighlightCoefficient : 1) * LineWidth,
+                lineWidth = LineWidth,
                 markerShape = MarkerShape,
-                markerSize = (IsHighlighted ? (float)HighlightCoefficient : 1) * MarkerSize,
+                markerSize = MarkerSize,
             };
             return new LegendItem[] { singleLegendItem };
         }

@@ -31,7 +31,7 @@ namespace ScottPlot.Plottable
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         public bool IsHighlighted { get; set; } = false;
-        public double HighlightCoefficient { get; set; } = 2;
+        public float HighlightCoefficient { get; set; } = 2;
 
         /// <summary>
         /// If enabled, parallel processing will be used to calculate pixel positions for high density datasets.

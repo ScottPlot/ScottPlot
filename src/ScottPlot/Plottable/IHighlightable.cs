@@ -7,6 +7,6 @@
         /// <summary>
         /// Scale lines and markers by this fraction (1.0 for no size change)
         /// </summary>
-        double HighlightCoefficient { get; set; }
+        float HighlightCoefficient { get; set; }
     }
 }
