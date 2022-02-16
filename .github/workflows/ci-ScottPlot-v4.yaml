@@ -6,7 +6,8 @@ on:
     paths:
       - "src/**"
   pull_request:
-    types: [opened, synchronize, reopened]
+    paths:
+      - "src/**"
 
 jobs:
   format:

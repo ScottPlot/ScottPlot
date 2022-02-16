@@ -6,7 +6,8 @@ on:
     paths:
       - "dev/ScottPlot5/**"
   pull_request:
-    types: [opened, synchronize, reopened]
+    paths:
+      - "dev/ScottPlot5/**"
 
 env:
   TEST_PROJECT_FOLDER: "dev/ScottPlot5/ScottPlotTests"
