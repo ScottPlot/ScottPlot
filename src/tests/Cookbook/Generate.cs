@@ -26,10 +26,10 @@ namespace ScottPlotTests.Cookbook
             Directory.CreateDirectory(OUTPUT_FOLDER);
 
             // GENERATE IMAGES
-            Console.Write($"Generating PNGs...");
+            Console.WriteLine($"Generating PNGs...");
             Stopwatch sw = Stopwatch.StartNew();
             IRecipe[] imageRecipes = RecipeImages.Generate(Path.Join(OUTPUT_FOLDER, "images"));
-            Console.WriteLine($" {sw.Elapsed.TotalSeconds:F4} sec");
+            Console.WriteLine($"Generated {imageRecipes.Length} PNGs in {sw.Elapsed.TotalSeconds:F4} sec");
 
             // GENERATE JSON
             Console.Write($"Generating JSON...");

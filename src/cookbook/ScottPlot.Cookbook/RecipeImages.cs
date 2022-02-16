@@ -27,6 +27,7 @@ namespace ScottPlot.Cookbook
 
             Parallel.ForEach(recipes, recipe =>
             {
+                var sw = System.Diagnostics.Stopwatch.StartNew();
                 var plt = new Plot(width, height);
                 recipe.ExecuteRecipe(plt);
 
@@ -34,6 +35,9 @@ namespace ScottPlot.Cookbook
                 Bitmap bmp = plt.Render();
                 string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".png");
                 bmp.Save(filePath, ImageFormat.Png);
+
+                // calculate image hash
+                Console.WriteLine($"{recipe.ID},{Tools.BitmapHash(bmp)},{sw.Elapsed.TotalMilliseconds}");
 
                 // thumbnail
                 int thumbHeight = 180;
