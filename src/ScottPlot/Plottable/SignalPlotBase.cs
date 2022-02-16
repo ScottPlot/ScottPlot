@@ -385,8 +385,13 @@ namespace ScottPlot.Plottable
                     {
                         ShowMarkersInLegend = true;
 
-                        // draw a marker at each point
-                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, MarkerSize, Color);
+                        // TODO: call MarkerTools.DrawMarker()
+                        // adjust marker offset to improve rendering on Linux and MacOS
+                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                        foreach (PointF point in linePoints)
+                            gfx.FillEllipse(brush: brush,
+                                x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
+                                width: markerPxDiameter, height: markerPxDiameter);
                     }
                     else
                     {
@@ -765,8 +770,8 @@ namespace ScottPlot.Plottable
         {
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color);
-            using var penLD = GDI.Pen(Color, LineWidth, LineStyle, true);
-            using var penHD = GDI.Pen(Color, LineWidth, LineStyle.Solid, true);
+            using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
+            using var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true);
 
             double dataSpanUnits = _Ys.Length * _SamplePeriod;
             double columnSpanUnits = dims.XSpan / dims.DataWidth;
