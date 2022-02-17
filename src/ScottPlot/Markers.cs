@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -33,6 +34,14 @@ namespace ScottPlot
             Pen pen = new Pen(color);
 
             Brush brush = new SolidBrush(color);
+
+            // Improve marker vs. line alignment on Linux and MacOS
+            // https://github.com/ScottPlot/ScottPlot/issues/340
+            // https://github.com/ScottPlot/ScottPlot/pull/1660
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                pixelLocation = new PointF(pixelLocation.X + .5f, pixelLocation.Y);
+            }
 
             PointF corner1 = new PointF(pixelLocation.X - size / 2, pixelLocation.Y - size / 2);
             PointF corner2 = new PointF(pixelLocation.X + size / 2, pixelLocation.Y + size / 2);
