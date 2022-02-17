@@ -1,0 +1,17 @@
+version: "2"
+services:
+  scottplot-test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ../../:/app
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        cd /app/src/tests/
+        dotnet add package Microsoft.Bcl.AsyncInterfaces
+        dotnet restore
+        dotnet build --no-restore
+        dotnet test --no-restore --diag logs.txt
+        cat logs.txt
