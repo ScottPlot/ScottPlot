@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
                 VerticalLine.LineWidth = value;
             }
             [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.LineWidth and VerticalLine.LineWidth instead.")]
-            get => HorizontalLine.LineWidth;
+            get => (float)HorizontalLine.LineWidth;
         }
 
         /// <summary>
