@@ -16,7 +16,7 @@ namespace ScottPlot.Plottable
     /// MouseMove events to track the location of the mouse and/or with plot types that
     /// have GetPointNearest() methods.
     /// </summary>
-    public class Crosshair : IPlottable
+    public class Crosshair : IPlottable, IHasLine
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -46,21 +46,19 @@ namespace ScottPlot.Plottable
                 HorizontalLine.LineStyle = value;
                 VerticalLine.LineStyle = value;
             }
-            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.LineStyle and VerticalLine.LineStyle instead.")]
             get => HorizontalLine.LineStyle;
         }
 
         /// <summary>
         /// Sets the line width for vertical and horizontal lines
         /// </summary>
-        public float LineWidth
+        public double LineWidth
         {
             set
             {
                 HorizontalLine.LineWidth = value;
                 VerticalLine.LineWidth = value;
             }
-            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.LineWidth and VerticalLine.LineWidth instead.")]
             get => (float)HorizontalLine.LineWidth;
         }
 
@@ -116,7 +114,13 @@ namespace ScottPlot.Plottable
                 HorizontalLine.PositionLabelBackground = value;
                 VerticalLine.PositionLabelBackground = value;
             }
+            get
+            {
+                return HorizontalLine.Color;
+            }
         }
+
+        public Color LineColor { get => Color; set { Color = value; } }
 
         public Crosshair()
         {
