@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -37,6 +34,14 @@ namespace ScottPlot
             Pen pen = new Pen(color);
 
             Brush brush = new SolidBrush(color);
+
+            // Improve marker vs. line alignment on Linux and MacOS
+            // https://github.com/ScottPlot/ScottPlot/issues/340
+            // https://github.com/ScottPlot/ScottPlot/pull/1660
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                pixelLocation = new PointF(pixelLocation.X + .5f, pixelLocation.Y);
+            }
 
             PointF corner1 = new PointF(pixelLocation.X - size / 2, pixelLocation.Y - size / 2);
             PointF corner2 = new PointF(pixelLocation.X + size / 2, pixelLocation.Y + size / 2);
@@ -153,6 +158,14 @@ namespace ScottPlot
                     break;
                 default:
                     throw new NotImplementedException($"unsupported marker type: {shape}");
+            }
+        }
+
+        public static void DrawMarkers(Graphics gfx, ICollection<PointF> pixelLocations, MarkerShape shape, float size, Color color)
+        {
+            foreach (PointF pt in pixelLocations)
+            {
+                DrawMarker(gfx, pt, shape, size, color);
             }
         }
     }

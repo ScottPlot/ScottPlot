@@ -6,11 +6,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class SignalPlotBase<T> : IPlottable, IHasPointsGenericX<double, T> where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IHighlightable, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -21,13 +20,33 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
-        public float MarkerSize { get; set; } = 5;
+
+        public float _markerSize = 5;
+        public float MarkerSize
+        {
+            get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            set { _markerSize = value; }
+        }
+
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
-        public double LineWidth { get; set; } = 1;
+
+        private double _lineWidth = 1;
+        public double LineWidth
+        {
+            get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            set { _lineWidth = value; }
+        }
+
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
+        public Color LineColor { get => Color; set { Color = value; } }
+        public Color MarkerColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+
+        public bool IsHighlighted { get; set; } = false;
+        public float HighlightCoefficient { get; set; } = 2;
 
         /// <summary>
         /// If enabled, parallel processing will be used to calculate pixel positions for high density datasets.
@@ -344,7 +363,7 @@ namespace ScottPlot.Plottable
                         throw new InvalidOperationException("unsupported fill type");
                 }
 
-                if (MarkerSize > 0)
+                if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
                     // make markers transition away smoothly by making them smaller as the user zooms out
                     float pixelsBetweenPoints = (float)(_SamplePeriod * dims.DataWidth / dims.XSpan);
@@ -355,12 +374,10 @@ namespace ScottPlot.Plottable
                     {
                         ShowMarkersInLegend = true;
 
-                        // adjust marker offset to improve rendering on Linux and MacOS
-                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
                         foreach (PointF point in linePoints)
-                            gfx.FillEllipse(brush: brush,
-                                x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
-                                width: markerPxDiameter, height: markerPxDiameter);
+                        {
+                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color);
+                        }
                     }
                     else
                     {
