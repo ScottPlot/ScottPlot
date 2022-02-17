@@ -38,6 +38,7 @@ namespace ScottPlot.Plottable
         public string Label;
         public Color Color { get; set; } = Color.Black;
         public Color LineColor { get => Color; set { Color = value; } }
+        public Color MarkerColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 

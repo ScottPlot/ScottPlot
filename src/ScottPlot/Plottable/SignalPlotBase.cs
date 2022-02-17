@@ -42,6 +42,7 @@ namespace ScottPlot.Plottable
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public Color LineColor { get => Color; set { Color = value; } }
+        public Color MarkerColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         public bool IsHighlighted { get; set; } = false;
