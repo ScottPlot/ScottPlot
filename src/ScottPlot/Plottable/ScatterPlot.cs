@@ -37,6 +37,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public string Label;
         public Color Color { get; set; } = Color.Black;
+        public Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 

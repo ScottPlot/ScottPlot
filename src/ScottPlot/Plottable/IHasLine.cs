@@ -6,6 +6,6 @@ namespace ScottPlot.Plottable
     {
         LineStyle LineStyle { get; set; }
         double LineWidth { get; set; }
-        Color Color { get; set; }
+        Color LineColor { get; set; }
     }
 }
