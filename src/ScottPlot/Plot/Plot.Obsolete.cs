@@ -393,6 +393,57 @@ namespace ScottPlot
             return (polyBelow, polyAbove);
         }
 
+        [Obsolete("Use AddFill() and customize the object it returns")]
+        public (Polygon, Polygon) PlotFillRightLeft(
+           double[] xs,
+           double[] ys,
+           string labelRight = null,
+           string labelLeft = null,
+           double lineWidth = 1,
+           Color? lineColor = null,
+           bool fill = true,
+           Color? fillColorRight = null,
+           Color? fillColorLeft = null,
+           double fillAlpha = 1,
+           double baseline = 0
+           )
+        {
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must all have the same length");
+
+            double[] xs2 = Tools.Pad(xs, padWithLeft: baseline, padWithRight: baseline);
+            double[] ys2 = Tools.Pad(ys, cloneEdges: true);
+
+            double[] xs2below = new double[xs2.Length];
+            double[] xs2above = new double[xs2.Length];
+
+            for (int i = 0; i < xs2.Length; i++)
+            {
+                if (xs2[i] < baseline)
+                {
+                    xs2below[i] = xs2[i];
+                    xs2above[i] = baseline;
+                }
+                else
+                {
+                    xs2above[i] = xs2[i];
+                    xs2below[i] = baseline;
+                }
+            }
+
+            if (fillColorRight is null)
+                fillColorRight = Color.Green;
+            if (fillColorLeft is null)
+                fillColorLeft = Color.Red;
+            if (lineColor is null)
+                lineColor = Color.Black;
+
+            var polyRight = PlotPolygon(xs2above, ys2, labelRight, lineWidth, lineColor, fill, fillColorRight, fillAlpha);
+            var polyLeft = PlotPolygon(xs2below, ys2, labelLeft, lineWidth, lineColor, fill, fillColorLeft, fillAlpha);
+
+            return (polyLeft, polyRight);
+        }
+
         [Obsolete("Use AddFunction() and customize the object it returns")]
         public FunctionPlot PlotFunction(
             Func<double, double?> function,
