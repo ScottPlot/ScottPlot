@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottable
 {
-    public class MarkerPlot : IPlottable
+    public class MarkerPlot : IPlottable, IHasMarker, IHasColor
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -26,12 +26,13 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Size of the marker in pixel units
         /// </summary>
-        public double MarkerSize { get; set; } = 10;
+        public float MarkerSize { get; set; } = 10;
 
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
         public Color Color { get; set; }
+        public Color MarkerColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Text to appear in the legend (if populated)

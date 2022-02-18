@@ -9,13 +9,14 @@ namespace ScottPlot.Plottable
     /// A tooltip displays a text bubble pointing to a specific location in X/Y space.
     /// The position of the bubble moves according to the axis limits to best display the text in the data area.
     /// </summary>
-    public class Tooltip : IPlottable
+    public class Tooltip : IPlottable, IHasColor
     {
         public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
         public Color BorderColor { get; set; } = Color.DarkGray;
         public float BorderWidth = 2;
         public Color FillColor { get; set; } = Color.White;
+        public Color Color { get => FillColor; set => FillColor = value; }
         public int XAxisIndex { get; set; }
         public int YAxisIndex { get; set; }
 

@@ -6,5 +6,6 @@ namespace ScottPlot.Plottable
     {
         float MarkerSize { get; set; }
         MarkerShape MarkerShape { get; set; }
+        Color MarkerColor { get; set; }
     }
 }

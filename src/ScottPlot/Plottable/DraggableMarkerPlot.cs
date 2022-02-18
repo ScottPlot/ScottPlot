@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// This plot type displays a marker at a point that can be dragged with the mouse.
     /// </summary>
-    public class DraggableMarkerPlot : MarkerPlot, IDraggable
+    public class DraggableMarkerPlot : MarkerPlot, IDraggable, IHasMarker, IHasColor
     {
         /// <summary>
         /// Indicates whether this marker is draggable in user controls.

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBar : IPlottable
+    public class ErrorBar : IPlottable, IHasLine, IHasMarker, IHasColor
     {
         public double[] Xs { get; set; }
         public double[] Ys { get; set; }
@@ -23,9 +23,11 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public double LineWidth { get; set; } = 1;
         public Color Color { get; set; } = Color.Gray;
+        public Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public float MarkerSize { get; set; } = 0;
+        public Color MarkerColor { get => Color; set { Color = value; } }
 
         public ErrorBar(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
         {

@@ -653,7 +653,7 @@ namespace ScottPlot
                 X = x,
                 Y = y,
                 MarkerShape = shape,
-                MarkerSize = size,
+                MarkerSize = (float)size,
                 Color = color ?? GetNextColor(),
                 Label = label,
             };

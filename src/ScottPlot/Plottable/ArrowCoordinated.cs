@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// An arrow with X/Y coordinates for the base and the tip
     /// </summary>
-    public class ArrowCoordinated : IPlottable, IHasPixelOffset
+    public class ArrowCoordinated : IPlottable, IHasPixelOffset, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the arrow base in coordinate space
@@ -25,17 +25,22 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the arrow and arrowhead
         /// </summary>
-        public Color Color = Color.Black;
+        public Color Color { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Color of the arrow and arrowhead
+        /// </summary>
+        public Color LineColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Thickness of the arrow line
         /// </summary>
-        public double LineWidth = 2;
+        public double LineWidth { get; set; } = 2;
 
         /// <summary>
         /// Style of the arrow line
         /// </summary>
-        public LineStyle LineStyle = LineStyle.Solid;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         /// <summary>
         /// Label to appear in the legend
