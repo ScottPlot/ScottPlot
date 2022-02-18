@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
     /// </summary>
-    public class ScatterPlot : IPlottable, IHasPoints, IHasLine, IHasMarker, IHighlightable
+    public class ScatterPlot : IPlottable, IHasPoints, IHasLine, IHasMarker, IHighlightable, IHasColor
     {
         // data
         public double[] Xs { get; private set; }

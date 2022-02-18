@@ -11,9 +11,10 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class BarPlot : BarPlotBase, IPlottable
+    public class BarPlot : BarPlotBase, IPlottable, IHasColor
     {
         public string Label;
+        public Color Color { get => FillColor; set { FillColor = value; } }
         public Color FillColor = Color.Green;
         public Color FillColorNegative = Color.Red;
         public Color FillColorHatch = Color.Blue;
