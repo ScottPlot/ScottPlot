@@ -8,7 +8,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// An L-shaped scalebar rendered in the corner of the data area
     /// </summary>
-    public class ScaleBar : IPlottable, IStylable
+    public class ScaleBar : IPlottable, IStylable, IHasColor
     {
         /// <summary>
         /// Width of the scalebar in cooridinate units
@@ -33,7 +33,7 @@ namespace ScottPlot.Plottable
         public float FontSize { set => Font.Size = value; }
         public Color FontColor { set => Font.Color = value; }
         public bool FontBold { set => Font.Bold = value; }
-        public Color Color { set => (LineColor, FontColor) = (value, value); }
+        public Color Color { get => LineColor; set { LineColor = value; FontColor = value; } }
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

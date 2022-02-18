@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"Vertical span between X1={Y1} and X2={Y2}";
     }
 
-    public abstract class AxisSpan : IPlottable, IDraggable
+    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor
     {
         // location and orientation
         protected double Position1;
@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
-        public Color Color = Color.FromArgb(128, Color.Magenta);
+        public Color Color { get; set; } = Color.FromArgb(128, Color.Magenta);
         public string Label;
 
         // mouse interaction
