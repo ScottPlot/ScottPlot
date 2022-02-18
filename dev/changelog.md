@@ -7,6 +7,7 @@ _In development / not yet on NuGet ..._
 * Plottable: Added `IsHighlighted` properties to make some plot types bold (#1660) _Thanks @BambOoxX_
 * Plottable: Segregated existing functionality interfaces for `IHasLine`, `IHasMarker`, and `IHilightable` (#1660) _Thanks @BambOoxX_
 * Plot: `AxisAuto()` now throws an exception of margins are defined outside the allowable range (#450, #1682) _Thanks @xichaoqiang_
+* Plot: Added `PlotFillRightLeft` method for adding horizontal filled scatter plots (#450) _Thanks @xichaoqiang_
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
