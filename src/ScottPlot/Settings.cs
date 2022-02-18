@@ -372,6 +372,9 @@ namespace ScottPlot
 
         public void AxisAutoX(int xAxisIndex, double? margin = null)
         {
+            if (margin < 0 || margin >= 1)
+                throw new ArgumentException("Margins must be greater than 0 and less than 1");
+
             if (margin.HasValue)
                 MarginsX = margin.Value;
 
@@ -404,6 +407,9 @@ namespace ScottPlot
 
         public void AxisAutoY(int yAxisIndex, double? margin = null)
         {
+            if (margin < 0 || margin >= 1)
+                throw new ArgumentException("Margins must be greater than 0 and less than 1");
+
             if (margin.HasValue)
                 MarginsY = margin.Value;
 

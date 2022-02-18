@@ -6,6 +6,7 @@ _In development / not yet on NuGet ..._
 * Markers: Improved alignment of markers and lines on Linux and MacOS by half a pixel (#1660, #340)
 * Plottable: Added `IsHighlighted` properties to make some plot types bold (#1660) _Thanks @BambOoxX_
 * Plottable: Segregated existing functionality interfaces for `IHasLine`, `IHasMarker`, and `IHilightable` (#1660) _Thanks @BambOoxX_
+* Plot: `AxisAuto()` now throws an exception of margins are defined outside the allowable range (#450, #1682) _Thanks @xichaoqiang_
 * Plot: Added `PlotFillRightLeft` method for adding horizontal filled scatter plots (#450) _Thanks @xichaoqiang_
 
 ## ScottPlot 4.1.33
