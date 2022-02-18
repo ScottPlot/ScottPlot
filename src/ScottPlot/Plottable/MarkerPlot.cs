@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottable
 {
-    public class MarkerPlot : IPlottable, IHasMarker
+    public class MarkerPlot : IPlottable, IHasMarker, IHasColor
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

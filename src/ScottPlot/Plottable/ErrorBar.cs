@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBar : IPlottable, IHasLine, IHasMarker
+    public class ErrorBar : IPlottable, IHasLine, IHasMarker, IHasColor
     {
         public double[] Xs { get; set; }
         public double[] Ys { get; set; }

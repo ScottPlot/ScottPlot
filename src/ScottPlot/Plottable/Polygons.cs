@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// This plot type is faster alternative for rendering a large number of polygons
     /// compared to adding a bunch of individual Polygon objects to the plot.
     /// </summary>
-    public class Polygons : IPlottable
+    public class Polygons : IPlottable, IHasColor
     {
         // data
         public readonly List<List<(double x, double y)>> Polys;
@@ -22,6 +22,7 @@ namespace ScottPlot.Plottable
         public Color LineColor;
         public bool Fill = true;
         public Color FillColor;
+        public Color Color { get => FillColor; set { FillColor = value; } }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
