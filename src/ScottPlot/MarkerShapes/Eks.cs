@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class Eks : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class Eks : IMarker
     {
-        gfx.DrawLine(pen, center.X - size, center.Y - size, center.X + size, center.Y + size);
-        gfx.DrawLine(pen, center.X - size, center.Y + size, center.X + size, center.Y - size);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            gfx.DrawLine(pen, center.X - size, center.Y - size, center.X + size, center.Y + size);
+            gfx.DrawLine(pen, center.X - size, center.Y + size, center.X + size, center.Y - size);
+        }
     }
 }

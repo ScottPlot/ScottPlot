@@ -1,11 +1,12 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class VerticalBar : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class VerticalBar : IMarker
     {
-        gfx.DrawLine(pen, center.X, center.Y - size, center.X, center.Y + size);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            gfx.DrawLine(pen, center.X, center.Y - size, center.X, center.Y + size);
+        }
     }
 }

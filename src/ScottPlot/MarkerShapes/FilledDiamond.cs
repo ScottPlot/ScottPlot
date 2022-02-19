@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class FilledDiamond : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class FilledDiamond : IMarker
     {
-        PointF[] points = MarkerTools.DiamondPoints(center, size);
-        gfx.FillPolygon(brush, points);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            PointF[] points = MarkerTools.DiamondPoints(center, size);
+            gfx.FillPolygon(brush, points);
+        }
     }
 }

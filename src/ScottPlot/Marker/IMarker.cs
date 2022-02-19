@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot;
-
-public interface IMarker
+namespace ScottPlot
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen);
+    public interface IMarker
+    {
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen);
+    }
 }

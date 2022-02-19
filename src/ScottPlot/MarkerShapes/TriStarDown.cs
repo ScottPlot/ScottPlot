@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class TriStarDown : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class TriStarDown : IMarker
     {
-        PointF[] points = MarkerTools.TriangleDownPoints(center, size);
-        MarkerTools.DrawRadial(gfx, pen, center, points);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            PointF[] points = MarkerTools.TriangleDownPoints(center, size);
+            MarkerTools.DrawRadial(gfx, pen, center, points);
+        }
     }
 }

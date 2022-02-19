@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class FilledCircle : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class FilledCircle : IMarker
     {
-        RectangleF rect = new(center.X - size, center.Y - size, center.X + size, center.Y + size);
-        gfx.FillEllipse(brush, rect);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            RectangleF rect = new(center.X - size, center.Y - size, center.X + size, center.Y + size);
+            gfx.FillEllipse(brush, rect);
+        }
     }
 }

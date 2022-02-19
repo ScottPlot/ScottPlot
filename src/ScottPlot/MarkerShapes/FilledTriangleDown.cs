@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes;
-
-public class FilledTriangleDown : IMarker
+namespace ScottPlot.MarkerShapes
 {
-    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+    public class FilledTriangleDown : IMarker
     {
-        PointF[] points = MarkerTools.TriangleDownPoints(center, size);
-        gfx.FillPolygon(brush, points);
+        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
+        {
+            PointF[] points = MarkerTools.TriangleDownPoints(center, size);
+            gfx.FillPolygon(brush, points);
+        }
     }
 }
