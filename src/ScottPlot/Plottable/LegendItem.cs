@@ -15,8 +15,12 @@ namespace ScottPlot.Plottable
 
         public LineStyle lineStyle;
         public double lineWidth;
+        public System.Drawing.Color LineColor => Parent is IHasLine p ? p.LineColor : color;
+
         public MarkerShape markerShape;
         public double markerSize;
+        public System.Drawing.Color MarkerColor => Parent is IHasMarker p ? p.MarkerColor : color;
+
         public HatchStyle hatchStyle;
         public bool IsRectangle
         {
