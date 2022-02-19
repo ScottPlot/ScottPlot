@@ -7,7 +7,7 @@ namespace ScottPlot
 {
     public static class MarkerTools
     {
-        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color)
+        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Brush brush, Pen pen)
         {
             if (size == 0 || shape == MarkerShape.none)
                 return;
@@ -15,23 +15,29 @@ namespace ScottPlot
             float diameter = size;
             float radius = diameter / 2;
 
-            // Improve marker vs. line alignment on Linux and MacOS
-            // https://github.com/ScottPlot/ScottPlot/issues/340
-            // https://github.com/ScottPlot/ScottPlot/pull/1660
+            /* Improve marker vs. line alignment on Linux and MacOS
+             * https://github.com/ScottPlot/ScottPlot/issues/340
+             * https://github.com/ScottPlot/ScottPlot/pull/1660
+             */
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
                 pixelLocation = new PointF(pixelLocation.X + .5f, pixelLocation.Y);
-            }
-
-            using Brush brush = new SolidBrush(color);
-            using Pen pen = new(color);
 
             IMarker marker = Marker.Create(shape);
             marker.Draw(gfx, pixelLocation, radius, brush, pen);
         }
 
+        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color)
+        {
+            using Brush brush = new SolidBrush(color);
+            using Pen pen = new(color);
+            DrawMarker(gfx, pixelLocation, shape, size, brush, pen);
+        }
+
         public static void DrawMarkers(Graphics gfx, ICollection<PointF> pixelLocations, MarkerShape shape, float size, Color color)
         {
+            using SolidBrush brush = new(color);
+            using Pen pen = new(color);
+
             foreach (PointF pt in pixelLocations)
             {
                 DrawMarker(gfx, pt, shape, size, color);
