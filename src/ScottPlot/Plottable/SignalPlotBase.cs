@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace ScottPlot.Plottable
         public double LineWidth
         {
             get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
-            set { _lineWidth = value; }
+            set { _lineWidth = value; _markerLineWidth = (float)value / 2; _markerSize = (float)value * 2; }
         }
 
         private float _markerLineWidth;
@@ -383,7 +383,7 @@ namespace ScottPlot.Plottable
 
                         foreach (PointF point in linePoints)
                         {
-                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color);
+                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
                         }
                     }
                     else

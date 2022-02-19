@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
         public double LineWidth
         {
             get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
-            set { _lineWidth = value; }
+            set { _lineWidth = value; _markerLineWidth = (float)value / 2; _markerSize = (float)value * 2; }
         }
 
         private double _errorLineWidth = 1;
