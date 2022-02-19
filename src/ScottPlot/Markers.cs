@@ -63,19 +63,19 @@ namespace ScottPlot
                     DrawOpenDiamond(gfx, rect, color);
                     break;
                 case MarkerShape.asterisk:
-                    DrawString(gfx, rect, color, "*");
+                    DrawAsterisk(gfx, rect, color);
                     break;
                 case MarkerShape.hashTag:
-                    DrawString(gfx, rect, color, "#");
+                    DrawHashtag(gfx, rect, color);
                     break;
                 case MarkerShape.cross:
-                    DrawString(gfx, rect, color, "+");
+                    DrawCross(gfx, rect, color);
                     break;
                 case MarkerShape.eks:
-                    DrawString(gfx, rect, color, "x");
+                    DrawEks(gfx, rect, color);
                     break;
                 case MarkerShape.verticalBar:
-                    DrawString(gfx, rect, color, "|");
+                    DrawVerticalBar(gfx, rect, color);
                     break;
                 case MarkerShape.triUp:
                     DrawTriStarUp(gfx, rect, color);
@@ -152,24 +152,62 @@ namespace ScottPlot
             gfx.DrawPolygon(pen, points);
         }
 
-        private static void DrawString(Graphics gfx, RectangleF rect, Color color, string str)
+        private static void DrawAsterisk(Graphics gfx, RectangleF rect, Color color)
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
 
-            string fontName = Drawing.InstalledFont.Monospace();
-            Font font = new(fontName, rect.Width * 2);
+            using Pen pen = new(color);
+            gfx.DrawLine(pen, centerX, rect.Bottom, centerX, rect.Top);
+            gfx.DrawLine(pen, rect.Left, centerY, rect.Right, centerY);
+            gfx.DrawLine(pen, rect.Left, rect.Bottom, rect.Right, rect.Top);
+            gfx.DrawLine(pen, rect.Left, rect.Top, rect.Right, rect.Bottom);
+        }
 
-            using Brush brush = new SolidBrush(color);
-            var sf = Drawing.GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
-            gfx.DrawString(str, font, brush, centerX, centerY, sf);
+        private static void DrawHashtag(Graphics gfx, RectangleF rect, Color color)
+        {
+            float centerX1 = rect.Left + rect.Width * .33f;
+            float centerX2 = rect.Left + rect.Width * .66f;
+            float centerY1 = rect.Top + rect.Height * .33f;
+            float centerY2 = rect.Top + rect.Height * .66f;
+
+            using Pen pen = new(color);
+            gfx.DrawLine(pen, centerX1, rect.Bottom, centerX1, rect.Top);
+            gfx.DrawLine(pen, centerX2, rect.Bottom, centerX2, rect.Top);
+            gfx.DrawLine(pen, rect.Left, centerY1, rect.Right, centerY1);
+            gfx.DrawLine(pen, rect.Left, centerY2, rect.Right, centerY2);
+        }
+
+        private static void DrawCross(Graphics gfx, RectangleF rect, Color color)
+        {
+            float centerX = rect.Left + rect.Width / 2;
+            float centerY = rect.Top + rect.Height / 2;
+
+            using Pen pen = new(color);
+            gfx.DrawLine(pen, rect.Left, centerY, rect.Right, centerY);
+            gfx.DrawLine(pen, centerX, rect.Top, centerX, rect.Bottom);
+        }
+
+        private static void DrawEks(Graphics gfx, RectangleF rect, Color color)
+        {
+            using Pen pen = new(color);
+            gfx.DrawLine(pen, rect.Left, rect.Top, rect.Right, rect.Bottom);
+            gfx.DrawLine(pen, rect.Left, rect.Bottom, rect.Right, rect.Top);
+        }
+
+        private static void DrawVerticalBar(Graphics gfx, RectangleF rect, Color color)
+        {
+            float centerX = rect.Left + rect.Width / 2;
+
+            using Pen pen = new(color);
+            gfx.DrawLine(pen, centerX, rect.Top, centerX, rect.Bottom);
         }
 
         private static void DrawTriStarUp(Graphics gfx, RectangleF rect, Color color)
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
-            float size = rect.Width;
+            float size = rect.Width / 2;
 
             using Pen pen = new(color);
             gfx.DrawLine(pen, centerX, centerY, centerX, centerY - size);
@@ -181,7 +219,7 @@ namespace ScottPlot
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
-            float size = rect.Width;
+            float size = rect.Width / 2;
 
             using Pen pen = new(color);
             gfx.DrawLine(pen, centerX, centerY, centerX, centerY + size);
