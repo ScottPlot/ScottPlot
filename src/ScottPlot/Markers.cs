@@ -22,6 +22,10 @@ namespace ScottPlot
         verticalBar,
         triUp,
         triDown,
+        filledTriangleUp,
+        filledTriangleDown,
+        openTriangleUp,
+        openTriangleDown,
     }
 
     public class MarkerTools
@@ -82,6 +86,18 @@ namespace ScottPlot
                     break;
                 case MarkerShape.triDown:
                     DrawTriStarDown(gfx, rect, color);
+                    break;
+                case MarkerShape.openTriangleUp:
+                    DrawOpenTriangleUp(gfx, rect, color);
+                    break;
+                case MarkerShape.openTriangleDown:
+                    DrawOpenTriangleDown(gfx, rect, color);
+                    break;
+                case MarkerShape.filledTriangleUp:
+                    DrawFilledTriangleUp(gfx, rect, color);
+                    break;
+                case MarkerShape.filledTriangleDown:
+                    DrawFilledTriangleDown(gfx, rect, color);
                     break;
                 case MarkerShape.none:
                     break;
@@ -156,12 +172,13 @@ namespace ScottPlot
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
+            float dsize = 0.707f * rect.Width / 2;
 
             using Pen pen = new(color);
             gfx.DrawLine(pen, centerX, rect.Bottom, centerX, rect.Top);
             gfx.DrawLine(pen, rect.Left, centerY, rect.Right, centerY);
-            gfx.DrawLine(pen, rect.Left, rect.Bottom, rect.Right, rect.Top);
-            gfx.DrawLine(pen, rect.Left, rect.Top, rect.Right, rect.Bottom);
+            gfx.DrawLine(pen, centerX - dsize, centerY - dsize, centerX + dsize, centerY + dsize);
+            gfx.DrawLine(pen, centerX - dsize, centerY + dsize, centerX + dsize, centerY - dsize);
         }
 
         private static void DrawHashtag(Graphics gfx, RectangleF rect, Color color)
@@ -205,26 +222,85 @@ namespace ScottPlot
 
         private static void DrawTriStarUp(Graphics gfx, RectangleF rect, Color color)
         {
-            float centerX = rect.Left + rect.Width / 2;
-            float centerY = rect.Top + rect.Height / 2;
-            float size = rect.Width / 2;
-
+            (PointF[] points, PointF center) = TriangleUpPoints(rect);
             using Pen pen = new(color);
-            gfx.DrawLine(pen, centerX, centerY, centerX, centerY - size);
-            gfx.DrawLine(pen, centerX, centerY, centerX - size * (float)0.866, centerY + size * (float).5);
-            gfx.DrawLine(pen, centerX, centerY, centerX + size * (float)0.866, centerY + size * (float).5);
+            DrawRadial(gfx, pen, center, points);
+
         }
 
         private static void DrawTriStarDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, PointF center) = TriangleDownPoints(rect);
+            using Pen pen = new(color);
+            DrawRadial(gfx, pen, center, points);
+        }
+
+        private static void DrawRadial(Graphics gfx, Pen pen, PointF center, PointF[] points)
+        {
+            foreach (PointF point in points)
+            {
+                gfx.DrawLine(pen, center, point);
+            }
+        }
+
+        private static (PointF[], PointF) TriangleUpPoints(RectangleF rect)
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
             float size = rect.Width / 2;
 
+            PointF[] points =
+            {
+                new PointF(centerX, centerY - size ),
+                new PointF(centerX - size * 0.866f, centerY + size/2),
+                new PointF(centerX + size * 0.866f, centerY + size/2),
+            };
+
+            return (points, new PointF(centerX, centerY));
+        }
+
+        private static (PointF[], PointF) TriangleDownPoints(RectangleF rect)
+        {
+            float centerX = rect.Left + rect.Width / 2;
+            float centerY = rect.Top + rect.Height / 2;
+            float size = rect.Width / 2;
+
+            PointF[] points =
+            {
+                new PointF(centerX, centerY + size ),
+                new PointF(centerX - size * 0.866f, centerY - size /2),
+                new PointF(centerX + size * 0.866f, centerY - size /2),
+            };
+
+            return (points, new PointF(centerX, centerY));
+        }
+
+        private static void DrawFilledTriangleDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleDownPoints(rect);
+            using SolidBrush brush = new(color);
+            gfx.FillPolygon(brush, points);
+        }
+
+        private static void DrawFilledTriangleUp(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleUpPoints(rect);
+            using SolidBrush brush = new(color);
+            gfx.FillPolygon(brush, points);
+        }
+
+        private static void DrawOpenTriangleDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleDownPoints(rect);
             using Pen pen = new(color);
-            gfx.DrawLine(pen, centerX, centerY, centerX, centerY + size);
-            gfx.DrawLine(pen, centerX, centerY, centerX - size * (float)0.866, centerY - size * (float).5);
-            gfx.DrawLine(pen, centerX, centerY, centerX + size * (float)0.866, centerY - size * (float).5);
+            gfx.DrawPolygon(pen, points);
+        }
+
+        private static void DrawOpenTriangleUp(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleUpPoints(rect);
+            using Pen pen = new(color);
+            gfx.DrawPolygon(pen, points);
         }
     }
 }
