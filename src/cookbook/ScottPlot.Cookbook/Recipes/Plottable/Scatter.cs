@@ -61,14 +61,19 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             int pointCount = 51;
-            double[] x = DataGen.Consecutive(pointCount);
+            double[] xs = DataGen.Consecutive(pointCount);
 
             string[] markerShapeNames = Enum.GetNames(typeof(MarkerShape));
             for (int i = 0; i < markerShapeNames.Length; i++)
             {
                 Enum.TryParse(markerShapeNames[i], out MarkerShape ms);
-                double[] sin = DataGen.Sin(pointCount, 2, -i);
-                plt.AddScatter(x, sin, markerSize: 7, markerShape: ms, label: markerShapeNames[i]);
+                double[] ys = DataGen.Sin(pointCount, 2, -i);
+                var sp = plt.AddScatter(xs, ys);
+                sp.LineWidth = 2;
+                sp.LineColor = Color.FromArgb(50, sp.LineColor);
+                sp.MarkerSize = 7;
+                sp.MarkerShape = ms;
+                sp.Label = ms.ToString();
             }
 
             plt.Grid(enable: false);
