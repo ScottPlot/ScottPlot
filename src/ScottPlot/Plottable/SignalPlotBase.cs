@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
@@ -37,6 +37,13 @@ namespace ScottPlot.Plottable
         {
             get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
             set { _lineWidth = value; }
+        }
+
+        private float _markerLineWidth;
+        public float MarkerLineWidth
+        {
+            get => IsHighlighted ? (float)_markerLineWidth * HighlightCoefficient : _markerLineWidth;
+            set { _markerLineWidth = value; }
         }
 
         public string Label { get; set; } = null;

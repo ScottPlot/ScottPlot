@@ -26,6 +26,7 @@ namespace ScottPlot.Plottable
         public Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+        public float MarkerLineWidth { get; set; } = 1;
         public float MarkerSize { get; set; } = 0;
         public Color MarkerColor { get => Color; set { Color = value; } }
 

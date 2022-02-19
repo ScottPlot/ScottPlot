@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -63,6 +63,12 @@ namespace ScottPlot.Plottable
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
             set { _markerSize = value; }
+        }
+        private float _markerLineWidth = 1;
+        public float MarkerLineWidth
+        {
+            get => IsHighlighted ? (float)_lineWidth * HighlightCoefficient : _markerLineWidth;
+            set { _markerLineWidth = value; }
         }
 
         public bool StepDisplay = false;

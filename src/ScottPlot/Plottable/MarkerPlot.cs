@@ -29,6 +29,11 @@ namespace ScottPlot.Plottable
         public float MarkerSize { get; set; } = 10;
 
         /// <summary>
+        /// Thickness of the marker lines in pixel units
+        /// </summary>
+        public float MarkerLineWidth { get; set; } = 1;
+
+        /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
         public Color Color { get; set; }
