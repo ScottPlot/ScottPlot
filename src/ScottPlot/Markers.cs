@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -172,12 +172,13 @@ namespace ScottPlot
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
+            float dsize = 0.707f * rect.Width / 2;
 
             using Pen pen = new(color);
             gfx.DrawLine(pen, centerX, rect.Bottom, centerX, rect.Top);
             gfx.DrawLine(pen, rect.Left, centerY, rect.Right, centerY);
-            gfx.DrawLine(pen, rect.Left, rect.Bottom, rect.Right, rect.Top);
-            gfx.DrawLine(pen, rect.Left, rect.Top, rect.Right, rect.Bottom);
+            gfx.DrawLine(pen, centerX - dsize, centerY - dsize, centerX + dsize, centerY + dsize);
+            gfx.DrawLine(pen, centerX - dsize, centerY + dsize, centerX + dsize, centerY - dsize);
         }
 
         private static void DrawHashtag(Graphics gfx, RectangleF rect, Color color)
