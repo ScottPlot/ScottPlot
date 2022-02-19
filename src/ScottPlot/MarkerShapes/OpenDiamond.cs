@@ -2,7 +2,7 @@
 
 namespace ScottPlot.MarkerShapes
 {
-    public class OpenDiamond : IMarker
+    public struct OpenDiamond : IMarker
     {
         public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
         {

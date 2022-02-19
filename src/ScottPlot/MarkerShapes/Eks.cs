@@ -2,7 +2,7 @@
 
 namespace ScottPlot.MarkerShapes
 {
-    public class Eks : IMarker
+    public struct Eks : IMarker
     {
         public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
         {

@@ -2,7 +2,7 @@
 
 namespace ScottPlot.MarkerShapes
 {
-    public class HorizontalBar : IMarker
+    public struct HorizontalBar : IMarker
     {
         public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
         {

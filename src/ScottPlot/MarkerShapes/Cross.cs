@@ -2,7 +2,7 @@
 
 namespace ScottPlot.MarkerShapes
 {
-    public class Cross : IMarker
+    public struct Cross : IMarker
     {
         public void Draw(Graphics gfx, PointF center, float radius, Brush brush, Pen pen)
         {

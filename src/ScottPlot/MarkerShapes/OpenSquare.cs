@@ -2,7 +2,7 @@
 
 namespace ScottPlot.MarkerShapes
 {
-    public class OpenSquare : IMarker
+    public struct OpenSquare : IMarker
     {
         public void Draw(Graphics gfx, PointF center, float radius, Brush brush, Pen pen)
         {
