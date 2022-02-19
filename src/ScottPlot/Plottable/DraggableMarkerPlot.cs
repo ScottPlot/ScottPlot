@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
@@ -81,7 +81,7 @@ namespace ScottPlot.Plottable
     /// This plot type displays a marker at a point that can be dragged with the mouse,
     /// but when dragged it "snapps" to specific X/Y coordinates defined by two arrays of values.
     /// </summary>
-    public class DraggableMarkerPlotInVector : IDraggable, IPlottable
+    public class DraggableMarkerPlotInVector : IDraggable, IPlottable, IHasMarker
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -108,12 +108,17 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Size of the marker in pixel units
         /// </summary>
-        public double MarkerSize { get; set; } = 10;
+        public float MarkerSize { get; set; } = 10;
 
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
-        public Color Color { get; set; } = Color.Black;
+        public Color MarkerColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Width of the marker lines in pixel units
+        /// </summary>
+        public float MarkerLineWidth { get; set; } = 1;
 
         /// <summary>
         /// Text to appear in the legend (if populated)
@@ -233,7 +238,7 @@ namespace ScottPlot.Plottable
                 label = Label,
                 markerShape = MarkerShape,
                 markerSize = MarkerSize,
-                color = Color
+                color = MarkerColor,
             };
             return new LegendItem[] { singleItem };
         }

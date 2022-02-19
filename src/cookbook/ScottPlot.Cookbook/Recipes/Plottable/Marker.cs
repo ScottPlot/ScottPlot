@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 IsVisible = true,
                 MarkerSize = 15,
                 MarkerShape = MarkerShape.filledDiamond,
-                Color = Color.Magenta,
+                MarkerColor = Color.Magenta,
                 Label = "marker",
             };
             plt.Add(dmpv);
