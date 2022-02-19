@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Drawing;
 using System.Diagnostics;
@@ -185,7 +185,7 @@ namespace ScottPlot.Plottable
             {
                 PointF point = new PointF(dims.GetPixelX(Xs[CurrentIndex]), dims.GetPixelY(Ys[CurrentIndex]));
 
-                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, MarkerColor, MarkerLineWidth);
             }
         }
 

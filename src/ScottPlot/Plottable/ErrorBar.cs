@@ -113,13 +113,15 @@ namespace ScottPlot.Plottable
 
         private void DrawMarkers(PlotDimensions dims, Graphics gfx)
         {
+            PointF[] pixels = new PointF[Xs.Length];
             for (int i = 0; i < Xs.Length; i++)
             {
                 float xPixel = dims.GetPixelX(Xs[i]);
                 float yPixel = dims.GetPixelY(Ys[i]);
-                PointF pixel = new(xPixel, yPixel);
-                MarkerTools.DrawMarker(gfx, pixel, MarkerShape, MarkerSize, Color);
+                pixels[i] = new(xPixel, yPixel);
+                ;
             }
+            MarkerTools.DrawMarkers(gfx, pixels, MarkerShape, MarkerSize, Color, MarkerLineWidth);
         }
 
         public void ValidateData(bool deep = false)

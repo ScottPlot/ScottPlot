@@ -313,7 +313,7 @@ namespace ScottPlot.Plottable
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
-                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor);
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
                 }
             }
         }
