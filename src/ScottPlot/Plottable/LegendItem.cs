@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
@@ -19,6 +19,8 @@ namespace ScottPlot.Plottable
 
         public MarkerShape markerShape;
         public double markerSize;
+
+        public float markerLineWidth => Parent is IHasMarker p ? System.Math.Min(p.MarkerLineWidth, 3) : (float)lineWidth;
         public System.Drawing.Color MarkerColor => Parent is IHasMarker p ? p.MarkerColor : color;
 
         public HatchStyle hatchStyle;

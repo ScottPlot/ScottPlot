@@ -173,8 +173,8 @@ namespace ScottPlot.Renderable
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
-                        if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
-                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.MarkerColor);
+                        if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0) && (item.markerLineWidth > 0))
+                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, item.markerSize, item.MarkerColor, item.markerLineWidth);
                     }
 
                     // Typically invisible legend items don't make it in the list.
