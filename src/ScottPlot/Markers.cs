@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -205,26 +205,57 @@ namespace ScottPlot
 
         private static void DrawTriStarUp(Graphics gfx, RectangleF rect, Color color)
         {
-            float centerX = rect.Left + rect.Width / 2;
-            float centerY = rect.Top + rect.Height / 2;
-            float size = rect.Width / 2;
-
+            (PointF[] points, PointF center) = TriangleUpPoints(rect);
             using Pen pen = new(color);
-            gfx.DrawLine(pen, centerX, centerY, centerX, centerY - size);
-            gfx.DrawLine(pen, centerX, centerY, centerX - size * (float)0.866, centerY + size * (float).5);
-            gfx.DrawLine(pen, centerX, centerY, centerX + size * (float)0.866, centerY + size * (float).5);
+            DrawRadial(gfx, pen, center, points);
+
         }
 
         private static void DrawTriStarDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, PointF center) = TriangleDownPoints(rect);
+            using Pen pen = new(color);
+            DrawRadial(gfx, pen, center, points);
+        }
+
+        private static void DrawRadial(Graphics gfx, Pen pen, PointF center, PointF[] points)
+        {
+            foreach (PointF point in points)
+            {
+                gfx.DrawLine(pen, center, point);
+            }
+        }
+
+        private static (PointF[], PointF) TriangleUpPoints(RectangleF rect)
         {
             float centerX = rect.Left + rect.Width / 2;
             float centerY = rect.Top + rect.Height / 2;
             float size = rect.Width / 2;
 
-            using Pen pen = new(color);
-            gfx.DrawLine(pen, centerX, centerY, centerX, centerY + size);
-            gfx.DrawLine(pen, centerX, centerY, centerX - size * (float)0.866, centerY - size * (float).5);
-            gfx.DrawLine(pen, centerX, centerY, centerX + size * (float)0.866, centerY - size * (float).5);
+            PointF[] points =
+            {
+                new PointF(centerX, centerY - size ),
+                new PointF(centerX - size * 0.866f, centerY + size/2),
+                new PointF(centerX + size * 0.866f, centerY + size/2),
+            };
+
+            return (points, new PointF(centerX, centerY));
+        }
+
+        private static (PointF[], PointF) TriangleDownPoints(RectangleF rect)
+        {
+            float centerX = rect.Left + rect.Width / 2;
+            float centerY = rect.Top + rect.Height / 2;
+            float size = rect.Width / 2;
+
+            PointF[] points =
+            {
+                new PointF(centerX, centerY + size ),
+                new PointF(centerX - size * 0.866f, centerY - size /2),
+                new PointF(centerX + size * 0.866f, centerY - size /2),
+            };
+
+            return (points, new PointF(centerX, centerY));
         }
     }
 }
