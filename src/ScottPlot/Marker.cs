@@ -23,6 +23,10 @@ namespace ScottPlot
         public static MarkerShape VerticalBar => MarkerShape.verticalBar;
         public static MarkerShape TriangleUp => MarkerShape.triUp;
         public static MarkerShape TriangleDown => MarkerShape.triDown;
+        public static MarkerShape FilledTriangleUp => MarkerShape.filledTriangleUp;
+        public static MarkerShape FilledTriangleDown => MarkerShape.filledTriangleDown;
+        public static MarkerShape OpenTriangleUp => MarkerShape.openTriangleUp;
+        public static MarkerShape OpenTriangleDown => MarkerShape.openTriangleDown;
 
         public static MarkerShape Random() => Random(new Random());
 

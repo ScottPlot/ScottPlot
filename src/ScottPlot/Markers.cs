@@ -22,6 +22,10 @@ namespace ScottPlot
         verticalBar,
         triUp,
         triDown,
+        filledTriangleUp,
+        filledTriangleDown,
+        openTriangleUp,
+        openTriangleDown,
     }
 
     public class MarkerTools
@@ -82,6 +86,18 @@ namespace ScottPlot
                     break;
                 case MarkerShape.triDown:
                     DrawTriStarDown(gfx, rect, color);
+                    break;
+                case MarkerShape.openTriangleUp:
+                    DrawOpenTriangleUp(gfx, rect, color);
+                    break;
+                case MarkerShape.openTriangleDown:
+                    DrawOpenTriangleDown(gfx, rect, color);
+                    break;
+                case MarkerShape.filledTriangleUp:
+                    DrawFilledTriangleUp(gfx, rect, color);
+                    break;
+                case MarkerShape.filledTriangleDown:
+                    DrawFilledTriangleDown(gfx, rect, color);
                     break;
                 case MarkerShape.none:
                     break;
@@ -256,6 +272,34 @@ namespace ScottPlot
             };
 
             return (points, new PointF(centerX, centerY));
+        }
+
+        private static void DrawFilledTriangleDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleDownPoints(rect);
+            using SolidBrush brush = new(color);
+            gfx.FillPolygon(brush, points);
+        }
+
+        private static void DrawFilledTriangleUp(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleUpPoints(rect);
+            using SolidBrush brush = new(color);
+            gfx.FillPolygon(brush, points);
+        }
+
+        private static void DrawOpenTriangleDown(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleDownPoints(rect);
+            using Pen pen = new(color);
+            gfx.DrawPolygon(pen, points);
+        }
+
+        private static void DrawOpenTriangleUp(Graphics gfx, RectangleF rect, Color color)
+        {
+            (PointF[] points, _) = TriangleUpPoints(rect);
+            using Pen pen = new(color);
+            gfx.DrawPolygon(pen, points);
         }
     }
 }
