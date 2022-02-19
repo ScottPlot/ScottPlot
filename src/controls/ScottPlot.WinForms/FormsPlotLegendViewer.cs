@@ -114,8 +114,8 @@ namespace ScottPlot
         private void PictureBoxLegend_ToggleHighlight(object sender, EventArgs e)
         {
             // only allow toggling of plottables with a single legend item (blocking things like pie charts)
-            if (ClickedPlottable is IIsHighlightable)
-                ToggleHighlight((IIsHighlightable)ClickedPlottable);
+            if (ClickedPlottable is IHighlightable)
+                ToggleHighlight((IHighlightable)ClickedPlottable);
 
             // Update display
             UpdateLegendImage();
@@ -163,7 +163,7 @@ namespace ScottPlot
         /// Performs highlight toggle on <c>ScatterPlots</c> and <c>SignalPlots</c>.
         /// A plottable is highlighted by multiplying its line width and marker size by 2.
         /// </summary>
-        private void ToggleHighlight(IIsHighlightable plottable)
+        private void ToggleHighlight(IHighlightable plottable)
         {
             plottable.IsHighlighted = !plottable.IsHighlighted;
         }
@@ -175,7 +175,7 @@ namespace ScottPlot
         {
             foreach (LegendItem item in Legend.GetHighlightableItems())
             {
-                ((IIsHighlightable)item.Parent).IsHighlighted = false;
+                ((IHighlightable)item.Parent).IsHighlighted = false;
             }
         }
 
