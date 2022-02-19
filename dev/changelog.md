@@ -9,6 +9,7 @@ _In development / not yet on NuGet ..._
 * Plot: `AxisAuto()` now throws an exception of margins are defined outside the allowable range (#450, #1682) _Thanks @xichaoqiang_
 * Plot: Added `PlotFillRightLeft` method for adding horizontal filled scatter plots (#450) _Thanks @xichaoqiang_
 * Markers: All shapes are now drawn discretely instead of relying on text rendering for improved performance and consistency (#1668, #1660) _Thanks @BambOoxX_
+* Scatter Plot: Support distinct `LineColor` and `MarkerColor` colors (#1668)
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_

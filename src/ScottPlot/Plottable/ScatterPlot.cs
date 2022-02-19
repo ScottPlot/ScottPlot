@@ -36,9 +36,9 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public string Label;
-        public Color Color { get; set; } = Color.Black;
-        public Color LineColor { get => Color; set { Color = value; } }
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public Color Color { get => LineColor; set { LineColor = value; MarkerColor = value; } }
+        public Color LineColor { get; set; } = Color.Black;
+        public Color MarkerColor { get; set; } = Color.Black;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
@@ -243,8 +243,8 @@ namespace ScottPlot.Plottable
                 return;
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
-            using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
+            using (var penLine = GDI.Pen(LineColor, LineWidth, LineStyle, true))
+            using (var penLineError = GDI.Pen(LineColor, ErrorLineWidth, LineStyle.Solid, true))
             {
                 int from = MinRenderIndex ?? 0;
                 int to = MaxRenderIndex ?? (Xs.Length - 1);
@@ -307,7 +307,7 @@ namespace ScottPlot.Plottable
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
-                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, Color);
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor);
                 }
             }
         }
@@ -317,7 +317,7 @@ namespace ScottPlot.Plottable
             var singleLegendItem = new LegendItem(this)
             {
                 label = Label,
-                color = Color,
+                color = LineColor,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
                 markerShape = MarkerShape,
