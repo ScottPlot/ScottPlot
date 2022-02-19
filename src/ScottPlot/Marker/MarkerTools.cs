@@ -115,18 +115,31 @@ public static class MarkerTools
         gfx.DrawRectangle(pen, rect.Left, rect.Top, rect.Width, rect.Height);
     }
 
-    private static PointF[] DiamondPoints(RectangleF rect)
+    internal static PointF[] DiamondPoints(PointF center, float radius)
+    {
+        PointF[] points =
+        {
+            new PointF(center.X - radius, center.Y),
+            new PointF(center.X, center.Y - radius),
+            new PointF(center.X + radius, center.Y),
+            new PointF(center.X, center.Y + radius),
+        };
+
+        return points;
+    }
+
+    internal static PointF[] DiamondPoints(RectangleF rect)
     {
         float centerX = rect.Left + rect.Width / 2;
         float centerY = rect.Top + rect.Height / 2;
 
         PointF[] points =
         {
-                new PointF(rect.Left, centerY),
-                new PointF(centerX, rect.Top),
-                new PointF(rect.Right, centerY),
-                new PointF(centerX, rect.Bottom),
-            };
+            new PointF(rect.Left, centerY),
+            new PointF(centerX, rect.Top),
+            new PointF(rect.Right, centerY),
+            new PointF(centerX, rect.Bottom),
+        };
 
         return points;
     }
@@ -212,12 +225,24 @@ public static class MarkerTools
         DrawRadial(gfx, pen, center, points);
     }
 
-    private static void DrawRadial(Graphics gfx, Pen pen, PointF center, PointF[] points)
+    internal static void DrawRadial(Graphics gfx, Pen pen, PointF center, PointF[] points)
     {
         foreach (PointF point in points)
         {
             gfx.DrawLine(pen, center, point);
         }
+    }
+
+    internal static PointF[] TriangleUpPoints(PointF center, float size)
+    {
+        RectangleF rect = new(center.X - size, center.Y - size, center.X + size, center.Y + size);
+        return TriangleUpPoints(rect).Item1;
+    }
+
+    internal static PointF[] TriangleDownPoints(PointF center, float size)
+    {
+        RectangleF rect = new(center.X - size, center.Y - size, center.X + size, center.Y + size);
+        return TriangleDownPoints(rect).Item1;
     }
 
     private static (PointF[], PointF) TriangleUpPoints(RectangleF rect)
