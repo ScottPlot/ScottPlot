@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
@@ -14,19 +14,26 @@ namespace ScottPlot.Plottable
         public float borderWith;
 
         public LineStyle lineStyle;
-        public double lineWidth;
+        public double lineWidth
+        {
+            get { return Parent is IHasLine p ? System.Math.Min(p.LineWidth, 10) : 0; }
+            set { }
+        }
         public System.Drawing.Color LineColor => Parent is IHasLine p ? p.LineColor : color;
 
         public MarkerShape markerShape;
-        public double markerSize;
-
+        public float markerSize
+        {
+            get { return Parent is IHasMarker p ? System.Math.Min(p.MarkerSize, 10) : 0; }
+            set { }
+        }
         public float markerLineWidth => Parent is IHasMarker p ? System.Math.Min(p.MarkerLineWidth, 3) : (float)lineWidth;
         public System.Drawing.Color MarkerColor => Parent is IHasMarker p ? p.MarkerColor : color;
 
         public HatchStyle hatchStyle;
         public bool IsRectangle
         {
-            get { return lineWidth >= 10; }
+            get { return lineWidth >= 10 && markerShape == MarkerShape.none; }
             set { lineWidth = 10; }
         }
 
