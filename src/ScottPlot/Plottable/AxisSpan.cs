@@ -215,10 +215,12 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(Color))
+            using (var brush = GDI.Brush(Color, HatchColor, HatchStyle))
+            using (var pen = GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle))
             {
                 RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
+                gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
             }
         }
     }
