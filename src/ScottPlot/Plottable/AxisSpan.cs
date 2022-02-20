@@ -1,4 +1,4 @@
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
@@ -86,8 +86,11 @@ namespace ScottPlot.Plottable
             {
                 label = Label,
                 color = Color,
-                markerSize = 0,
                 borderLineWidth = Math.Min(BorderLineWidth, 3),
+                borderColor = BorderColor,
+                borderLineStyle = BorderLineStyle,
+                hatchColor = HatchColor,
+                hatchStyle = HatchStyle,
             };
             return new LegendItem[] { singleItem };
         }
