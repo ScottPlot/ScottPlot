@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         public System.Drawing.Color color;
         public System.Drawing.Color hatchColor;
         public System.Drawing.Color borderColor;
-        public float borderWith;
+        public float borderLineWidth;
 
         public LineStyle lineStyle;
         public double lineWidth;

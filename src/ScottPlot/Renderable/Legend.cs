@@ -1,4 +1,4 @@
-﻿using ScottPlot.Ticks;
+using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
@@ -155,7 +155,7 @@ namespace ScottPlot.Renderable
                     {
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
+                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderLineWidth))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);

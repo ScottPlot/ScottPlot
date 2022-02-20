@@ -87,7 +87,7 @@ namespace ScottPlot.Plottable
                 label = Label,
                 color = Color,
                 markerSize = 0,
-                lineWidth = 10
+                borderLineWidth = Math.Min(BorderLineWidth, 3),
             };
             return new LegendItem[] { singleItem };
         }
