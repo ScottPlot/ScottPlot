@@ -20,6 +20,8 @@ namespace ScottPlot
         public float OutlineWidth = 0;
         public Color OutlineColor = Colors.Black;
 
+        public bool DebugTestPattern = false;
+
         public TextLabel()
         {
 
@@ -76,6 +78,8 @@ namespace ScottPlot
             };
 
             RectangleF rect = new(x, y, stringSize.Width, stringSize.Height);
+            if (DEBUG_TEST_PATTERN)
+                Dev.Draw.RectangleTestPattern(canvas, rect);
 
             canvas.FontColor = FontColor;
             canvas.FontSize = FontSize - 1; // reduce size to prevent clipping
