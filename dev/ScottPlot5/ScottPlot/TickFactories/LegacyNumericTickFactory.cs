@@ -17,7 +17,9 @@ internal class LegacyNumericTickFactory : ITickFactory
         {
             Edge.Bottom => RecalculatePositionsAutomaticNumeric(info, Edge.Bottom),
             Edge.Left => RecalculatePositionsAutomaticNumeric(info, Edge.Left),
-            _ => throw new NotImplementedException(),
+            Edge.Top => RecalculatePositionsAutomaticNumeric(info, Edge.Top),
+            Edge.Right => RecalculatePositionsAutomaticNumeric(info, Edge.Right),
+            _ => throw new NotImplementedException($"Unsupported {edge.GetType()}: {edge}"),
         };
     }
 

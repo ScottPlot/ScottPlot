@@ -13,6 +13,6 @@ public class TopAxis : AxisBase, IAxis
 
     public void Draw(ICanvas canvas, PlotInfo info)
     {
-        //TODO: render top axis
+        Label.Draw(canvas, info.DataRect.HorizontalCenter, 0, HorizontalAlignment.Center, VerticalAlignment.Top);
     }
 }

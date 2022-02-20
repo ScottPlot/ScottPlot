@@ -13,6 +13,8 @@ public class RightAxis : AxisBase, IAxis
 
     public void Draw(ICanvas canvas, PlotInfo info)
     {
-        // TODO: render right axis
+        float xRight = info.FigureRect.Right - Label.Measure(canvas).Height * 2;
+        float yCenter = info.DataRect.VerticalCenter;
+        Label.Draw(canvas, xRight, yCenter, 90);
     }
 }

@@ -5,7 +5,7 @@ namespace ScottPlot;
 
 public class Tick
 {
-    public readonly Edge Edge = Edge.Bottom;
+    public readonly Edge Edge;
     public Orientation Orientation => (Edge == Edge.Left || Edge == Edge.Right) ? Orientation.Vertical : Orientation.Horizontal;
 
     public readonly double Position;
@@ -52,12 +52,12 @@ public class Tick
 
     public void DrawGridLine(ICanvas canvas, PlotInfo info)
     {
-        if (Edge == Edge.Bottom)
+        if (Orientation is Orientation.Horizontal)
             DrawVerticalGridLine(canvas, info);
-        else if (Edge == Edge.Left)
+        else if (Orientation is Orientation.Vertical)
             DrawHorizontalGridLine(canvas, info);
         else
-            throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}");
+            throw new NotImplementedException($"Unsupported {nameof(Orientation)}: {Orientation}");
     }
 
     public void DrawTickAndLabel(ICanvas canvas, PlotInfo info)
@@ -66,13 +66,16 @@ public class Tick
             DrawBottomTickAndLabel(canvas, info);
         else if (Edge == Edge.Left)
             DrawLeftTickAndLabel(canvas, info);
+        else if (Edge == Edge.Top)
+            DrawTopTickAndLabel(canvas, info);
+        else if (Edge == Edge.Right)
+            DrawRightTickAndLabel(canvas, info);
         else
             throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}");
     }
 
     private void DrawVerticalGridLine(ICanvas canvas, PlotInfo info)
     {
-        // TODO: reduce duplication
         float x = info.GetPixelX(Position);
 
         PointF ptGridTop = new(x, info.DataRect.Top);
@@ -84,7 +87,6 @@ public class Tick
     }
     private void DrawHorizontalGridLine(ICanvas canvas, PlotInfo info)
     {
-        // TODO: reduce duplication
         float y = info.GetPixelY(Position);
 
         PointF ptGridLeft = new(info.DataRect.Left, y);
@@ -97,7 +99,6 @@ public class Tick
 
     private void DrawBottomTickAndLabel(ICanvas canvas, PlotInfo info)
     {
-        // TODO: reduce duplication
         float x = info.GetPixelX(Position);
 
         PointF pt1 = new(x, info.DataRect.Bottom);
@@ -109,9 +110,21 @@ public class Tick
         Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Center, VerticalAlignment.Top);
     }
 
+    private void DrawTopTickAndLabel(ICanvas canvas, PlotInfo info)
+    {
+        float x = info.GetPixelX(Position);
+
+        PointF pt1 = new(x, info.DataRect.Top);
+        PointF pt2 = new(pt1.X, pt1.Y - TickMarkLength);
+        canvas.StrokeColor = TickMarkColor;
+        canvas.DrawLine(pt1, pt2);
+
+        PointF pt3 = new(pt2.X, pt2.Y - TextPadding);
+        Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Center, VerticalAlignment.Bottom);
+    }
+
     private void DrawLeftTickAndLabel(ICanvas canvas, PlotInfo info)
     {
-        // TODO: reduce duplication
         float y = info.GetPixelY(Position);
 
         PointF pt1 = new(info.DataRect.Left, y);
@@ -121,5 +134,18 @@ public class Tick
 
         PointF pt3 = new(pt2.X - TextPadding, pt2.Y);
         Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Right, VerticalAlignment.Center);
+    }
+
+    private void DrawRightTickAndLabel(ICanvas canvas, PlotInfo info)
+    {
+        float y = info.GetPixelY(Position);
+
+        PointF pt1 = new(info.DataRect.Right, y);
+        PointF pt2 = new(pt1.X + TickMarkLength, pt1.Y);
+        canvas.StrokeColor = TickMarkColor;
+        canvas.DrawLine(pt1, pt2);
+
+        PointF pt3 = new(pt2.X + TextPadding, pt2.Y);
+        Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Left, VerticalAlignment.Center);
     }
 }

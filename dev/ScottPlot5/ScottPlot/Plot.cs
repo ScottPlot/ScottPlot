@@ -99,7 +99,6 @@ public class Plot
     {
         Axes.IAxis[] GetAxisLabels(Edge edge) => Axes.Where(x => x.Edge == edge).ToArray();
 
-        // TODO: let the axis report how large it is
         float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Label.Measure(canvas).Height);
         float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Label.Measure(canvas).Height);
         float padBottom = GetAxisLabels(Edge.Bottom).Sum(x => x.Label.Measure(canvas).Height);
@@ -107,10 +106,11 @@ public class Plot
 
         if (allTicks is not null)
         {
-            float maxLeftTickWidth = allTicks.Where(x => x.Edge == Edge.Left).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(0).Max();
-            float maxRightTickWidth = allTicks.Where(x => x.Edge == Edge.Right).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(0).Max();
-            float maxBottomTickHeight = allTicks.Where(x => x.Edge == Edge.Bottom).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(0).Max();
-            float maxTopTickHeight = allTicks.Where(x => x.Edge == Edge.Top).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(0).Max();
+            float noTickPad = 10; // distance to space text from spine if no ticks exist
+            float maxLeftTickWidth = allTicks.Where(x => x.Edge == Edge.Left).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(noTickPad).Max();
+            float maxRightTickWidth = allTicks.Where(x => x.Edge == Edge.Right).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(noTickPad).Max();
+            float maxBottomTickHeight = allTicks.Where(x => x.Edge == Edge.Bottom).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(noTickPad).Max();
+            float maxTopTickHeight = allTicks.Where(x => x.Edge == Edge.Top).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(noTickPad).Max();
 
             padLeft += maxLeftTickWidth;
             padRight += maxRightTickWidth;
@@ -142,7 +142,10 @@ public class Plot
 
         Tick[] bottomTicks = info.TickFactory.GenerateTicks(info, Edge.Bottom);
         Tick[] leftTicks = info.TickFactory.GenerateTicks(info, Edge.Left);
-        Tick[] allTicks = bottomTicks.Concat(leftTicks).ToArray();
+        Tick[] rightTicks = info.TickFactory.GenerateTicks(info, Edge.Right);
+        Tick[] topTicks = info.TickFactory.GenerateTicks(info, Edge.Top);
+
+        Tick[] allTicks = bottomTicks.Concat(leftTicks).Concat(rightTicks).Concat(topTicks).ToArray();
 
         if (TightenLayoutOnNextRender)
         {
