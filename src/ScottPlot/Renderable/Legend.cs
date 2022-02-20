@@ -1,4 +1,4 @@
-using ScottPlot.Ticks;
+﻿using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
@@ -146,22 +146,22 @@ namespace ScottPlot.Renderable
                     float lineX1 = locationX + SymbolPad;
                     float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
 
-                    // prepare values for drawing a rectangle
-                    PointF rectOrigin = new PointF(lineX1, (float)(lineY - item.lineWidth / 2));
-                    SizeF rectSize = new SizeF(lineX2 - lineX1, (float)item.lineWidth);
-                    RectangleF rect = new RectangleF(rectOrigin, rectSize);
 
-                    if (item.IsRectangle)
+                    if (item.Parent is IHasArea)
                     {
+                        // prepare values for drawing a rectangle
+                        PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
+                        SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
+                        RectangleF rect = new RectangleF(rectOrigin, rectSize);
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderLineWidth))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderLineWidth,item.borderLineStyle))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
                         }
                     }
-                    else
+                    else if (item.Parent is IHasLine)
                     {
                         // draw a line
                         if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
@@ -169,7 +169,9 @@ namespace ScottPlot.Renderable
                             using var linePen = GDI.Pen(item.LineColor, item.lineWidth, item.lineStyle, false);
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
                         }
-
+                    }
+                    if (item.Parent is IHasMarker)
+                    { 
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
