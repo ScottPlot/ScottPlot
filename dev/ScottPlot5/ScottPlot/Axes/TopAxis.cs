@@ -11,12 +11,6 @@ public class TopAxis : AxisBase, IAxis
         Orientation = Orientation.Horizontal;
     }
 
-    public PixelSize GetSize(ICanvas canvas)
-    {
-        float height = MeasureHeight(canvas);
-        return new PixelSize(float.NaN, height);
-    }
-
     public void Draw(ICanvas canvas, PlotInfo info)
     {
         //TODO: render top axis

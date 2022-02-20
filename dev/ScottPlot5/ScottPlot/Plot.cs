@@ -99,10 +99,11 @@ public class Plot
     {
         Axes.IAxis[] GetAxisLabels(Edge edge) => Axes.Where(x => x.Edge == edge).ToArray();
 
-        float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.GetSize(canvas).Width);
-        float padRight = GetAxisLabels(Edge.Right).Sum(x => x.GetSize(canvas).Width);
-        float padBottom = GetAxisLabels(Edge.Bottom).Sum(x => x.GetSize(canvas).Height);
-        float padTop = GetAxisLabels(Edge.Top).Sum(x => x.GetSize(canvas).Height);
+        // TODO: let the axis report how large it is
+        float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Label.Measure(canvas).Height);
+        float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Label.Measure(canvas).Height);
+        float padBottom = GetAxisLabels(Edge.Bottom).Sum(x => x.Label.Measure(canvas).Height);
+        float padTop = GetAxisLabels(Edge.Top).Sum(x => x.Label.Measure(canvas).Height);
 
         if (allTicks is not null)
         {

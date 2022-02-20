@@ -6,6 +6,8 @@ namespace ScottPlot;
 public class Tick
 {
     public readonly Edge Edge = Edge.Bottom;
+    public Orientation Orientation => (Edge == Edge.Left || Edge == Edge.Right) ? Orientation.Vertical : Orientation.Horizontal;
+
     public readonly double Position;
     public DateTime DateTime => DateTime.FromOADate(Position);
 
@@ -35,18 +37,17 @@ public class Tick
     {
         PixelSize labelSize = Label.Measure(canvas);
 
-        if (Edge == Edge.Left || Edge == Edge.Right)
+        if (Orientation is Orientation.Vertical)
         {
-            return labelSize.WidenedBy(TickMarkLength + TextPadding);
+            return labelSize.WidenedBy(TickMarkLength + TextPadding * 4);
         }
-        else if (Edge == Edge.Bottom || Edge == Edge.Top)
+
+        if (Orientation is Orientation.Horizontal)
         {
-            return labelSize.HeightenedBy(TickMarkLength + TextPadding);
+            return labelSize.HeightenedBy(TickMarkLength + TextPadding * 2);
         }
-        else
-        {
-            throw new InvalidOperationException($"unsupported edge: {Edge}");
-        }
+
+        throw new InvalidOperationException($"unsupported {Orientation.GetType()}: {Orientation}");
     }
 
     public void DrawGridLine(ICanvas canvas, PlotInfo info)

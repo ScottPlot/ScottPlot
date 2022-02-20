@@ -11,12 +11,6 @@ public class LeftAxis : AxisBase, IAxis
         Orientation = Orientation.Vertical;
     }
 
-    public PixelSize GetSize(ICanvas canvas)
-    {
-        float width = MeasureWidth(canvas);
-        return new PixelSize(width, float.NaN);
-    }
-
     public void Draw(ICanvas canvas, PlotInfo info)
     {
         float xLeft = 0;

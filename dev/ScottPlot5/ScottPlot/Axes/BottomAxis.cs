@@ -11,12 +11,6 @@ public class BottomAxis : AxisBase, IAxis
         Orientation = Orientation.Horizontal;
     }
 
-    public PixelSize GetSize(ICanvas canvas)
-    {
-        float height = MeasureHeight(canvas);
-        return new PixelSize(float.NaN, height);
-    }
-
     public void Draw(ICanvas canvas, PlotInfo info)
     {
         float xCenter = info.DataRect.HorizontalCenter;
