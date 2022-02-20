@@ -22,38 +22,46 @@ namespace ScottPlot.WinForms
         public FormsPlot()
         {
             InitializeComponent();
-            Plot.Info.Style.FigureBackgroundColor = Microsoft.Maui.Graphics.Color.FromInt(SystemColors.Control.ToArgb());
 
-            skglControl1.MouseWheel += SkglControl1_MouseWheel; ;
+            skglControl1.MouseWheel += SkglControl1_MouseWheel;
             skglControl1.PaintSurface += SkglControl1_PaintSurface;
             skglControl1.SizeChanged += SkglControl1_SizeChanged;
             skglControl1.MouseMove += SkglControl1_MouseMove;
             skglControl1.MouseUp += SkglControl1_MouseUp;
             skglControl1.MouseDown += SkglControl1_MouseDown;
-            skglControl1.MouseWheel += SkglControl1_MouseWheel1;
             skglControl1.DoubleClick += SkglControl1_DoubleClick;
 
+            Plot.Info.Style.FigureBackgroundColor = Microsoft.Maui.Graphics.Color.FromInt(SystemColors.Control.ToArgb());
             Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
         }
 
-        public void Redraw()
+        public void Redraw(bool tightenLayout = false)
         {
-            skglControl1.Refresh();
+            skglControl1.Invalidate();
+
+            if (tightenLayout)
+            {
+                // not sure why this sequence is required...
+                skglControl1.Refresh();
+                Plot.TightenLayout();
+                skglControl1.Refresh();
+                skglControl1.Refresh();
+                return;
+            }
         }
 
         private void SkglControl1_DoubleClick(object? sender, EventArgs e)
         {
             Plot.BenchmarkToggle();
-            skglControl1.Invalidate();
+            Redraw();
         }
 
-        private void SkglControl1_MouseWheel1(object? sender, MouseEventArgs e)
+        private void SkglControl1_MouseWheel(object? sender, MouseEventArgs e)
         {
             double fraction = e.Delta > 0 ? 1.15 : 0.85;
             Pixel MouseNowPixel = new(e.X, e.Y);
             Plot.Info = Plot.Info.WithZoom(MouseNowPixel, fraction);
-
-            skglControl1.Refresh();
+            Redraw(tightenLayout: true);
         }
 
         private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)
@@ -75,6 +83,8 @@ namespace ScottPlot.WinForms
 
             MouseDownPixel = null;
             InfoNow = null;
+
+            Redraw(tightenLayout: true);
         }
 
         private void SkglControl1_MouseMove(object? sender, MouseEventArgs e)
@@ -88,13 +98,13 @@ namespace ScottPlot.WinForms
             else if (e.Button == MouseButtons.Right)
                 InfoNow = MouseDownView?.WithZoom(MouseDownPixel.Value, MouseNowPixel);
 
-            skglControl1.Invalidate();
+            Redraw();
         }
 
         private void SkglControl1_SizeChanged(object? sender, EventArgs e)
         {
             Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
-            skglControl1.Invalidate();
+            Redraw(tightenLayout: true);
         }
 
         private void SkglControl1_PaintSurface(object? sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)
@@ -105,12 +115,6 @@ namespace ScottPlot.WinForms
                 Plot.Draw(canvas);
             else
                 Plot.Draw(canvas, InfoNow);
-        }
-
-        private void SkglControl1_MouseWheel(object? sender, MouseEventArgs e)
-        {
-            Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
-            skglControl1.Invalidate();
         }
 
         #region obsolete

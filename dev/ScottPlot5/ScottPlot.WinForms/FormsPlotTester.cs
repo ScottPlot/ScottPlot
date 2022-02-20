@@ -35,11 +35,5 @@ namespace ScottPlot.WinForms
             formsPlot1.Plot.Benchmark(cbBenchmark.Checked);
             formsPlot1.Redraw();
         }
-
-        private void btnTightenLayout_Click(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.TightenLayout();
-            formsPlot1.Redraw();
-        }
     }
 }

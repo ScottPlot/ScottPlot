@@ -13,6 +13,7 @@ public class Tick
     public Color Color = Colors.Black;
     public float TickMarkLength = 5;
     public float TextPadding = 3;
+    public float FontSize = 12;
     public Color TickMarkColor = Colors.Black;
 
     public float GridLineWidth = 0;
@@ -28,6 +29,12 @@ public class Tick
     {
         Position = position.ToOADate();
         Edge = edge;
+    }
+
+    public PixelSize Measure()
+    {
+        // TODO: use Maui
+        return new PixelSize(Label.Length * 10, FontSize * 1.5f);
     }
 
     public void DrawGridLine(ICanvas canvas, PlotInfo info)
@@ -88,7 +95,7 @@ public class Tick
 
         // NOTE: After Maui.Graphics matures, call MeasureString() here
         canvas.FontColor = Color;
-        canvas.FontSize = 12;
+        canvas.FontSize = FontSize;
         canvas.DrawString(Label, pt3.X, pt3.Y + 10, HorizontalAlignment.Center);
     }
 
@@ -105,7 +112,7 @@ public class Tick
 
         // NOTE: After Maui.Graphics matures, call MeasureString() here
         canvas.FontColor = Color;
-        canvas.FontSize = 12;
+        canvas.FontSize = FontSize;
         canvas.DrawString(Label, pt3.X, pt3.Y + 4, HorizontalAlignment.Right);
     }
 }

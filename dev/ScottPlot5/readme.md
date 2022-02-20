@@ -40,5 +40,12 @@ These limitations are because Maui.Graphics is not fully mature yet, but:
 * There is no `Microsoft.Maui.Graphics.ICanvas.MeasureString()`
 * `Microsoft.Maui.Graphics.ICanvas.DrawString()` does not support custom fonts
 
+## Naming
+
+Mimic Matplotlib where possible
+
+![](https://matplotlib.org/stable/_images/sphx_glr_anatomy_001.png)
+* https://matplotlib.org/stable/gallery/showcase/anatomy.html
+
 ### Resources
 * https://maui.graphics
