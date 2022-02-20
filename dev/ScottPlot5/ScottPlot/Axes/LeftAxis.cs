@@ -2,13 +2,13 @@
 
 namespace ScottPlot.Axes;
 
-public class LeftAxis : VerticalAxis, IAxis
+public class LeftAxis : AxisBase, IAxis
 {
-    public Edge Edge => Edge.Left;
-
     public LeftAxis(string text = "")
     {
         Label.Text = text;
+        Edge = Edge.Left;
+        Orientation = Orientation.Vertical;
     }
 
     public PixelSize GetSize(ICanvas canvas)

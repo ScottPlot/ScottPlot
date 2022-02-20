@@ -1,15 +1,14 @@
 ﻿using Microsoft.Maui.Graphics;
-using System;
 
 namespace ScottPlot.Axes;
 
-public class RightAxis : VerticalAxis, IAxis
+public class RightAxis : AxisBase, IAxis
 {
-    public Edge Edge => Edge.Right;
-
     public RightAxis(string text = "")
     {
         Label.Text = text;
+        Edge = Edge.Right;
+        Orientation = Orientation.Vertical;
     }
 
     public PixelSize GetSize(ICanvas canvas)
