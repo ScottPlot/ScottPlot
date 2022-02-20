@@ -20,6 +20,6 @@ public class TopAxis : HorizontalAxis, IAxis
 
     public void Draw(ICanvas canvas, PlotInfo info)
     {
-        //TODO: this
+        //TODO: render top axis
     }
 }

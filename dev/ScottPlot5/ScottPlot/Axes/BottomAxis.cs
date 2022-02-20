@@ -22,7 +22,6 @@ public class BottomAxis : HorizontalAxis, IAxis
     {
         float xCenter = info.DataRect.HorizontalCenter;
         float yBottom = info.Height;
-
-        canvas.DrawString(Label.Text, xCenter, yBottom, HorizontalAlignment.Center);
+        Label.Draw(canvas, xCenter, yBottom, HorizontalAlignment.Center, VerticalAlignment.Bottom);
     }
 }

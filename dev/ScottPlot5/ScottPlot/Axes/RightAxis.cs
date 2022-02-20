@@ -20,6 +20,6 @@ public class RightAxis : VerticalAxis, IAxis
 
     public void Draw(ICanvas canvas, PlotInfo info)
     {
-        // TODO: this
+        // TODO: render right axis
     }
 }

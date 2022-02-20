@@ -9,11 +9,11 @@ public class Tick
     public readonly double Position;
     public DateTime DateTime => DateTime.FromOADate(Position);
 
-    public string Label = string.Empty;
-    public Color Color = Colors.Black;
-    public float TickMarkLength = 5;
+    public readonly TextLabel Label = new();
+
     public float TextPadding = 3;
-    public float FontSize = 12;
+
+    public float TickMarkLength = 5;
     public Color TickMarkColor = Colors.Black;
 
     public float GridLineWidth = 0;
@@ -31,10 +31,22 @@ public class Tick
         Edge = edge;
     }
 
-    public PixelSize Measure()
+    public PixelSize Measure(ICanvas canvas)
     {
-        // TODO: use Maui
-        return new PixelSize(Label.Length * 10, FontSize * 1.5f);
+        PixelSize labelSize = Label.Measure(canvas);
+
+        if (Edge == Edge.Left || Edge == Edge.Right)
+        {
+            return labelSize.WidenedBy(TickMarkLength + TextPadding);
+        }
+        else if (Edge == Edge.Bottom || Edge == Edge.Top)
+        {
+            return labelSize.HeightenedBy(TickMarkLength + TextPadding);
+        }
+        else
+        {
+            throw new InvalidOperationException($"unsupported edge: {Edge}");
+        }
     }
 
     public void DrawGridLine(ICanvas canvas, PlotInfo info)
@@ -89,14 +101,11 @@ public class Tick
 
         PointF pt1 = new(x, info.DataRect.Bottom);
         PointF pt2 = new(pt1.X, pt1.Y + TickMarkLength);
-        PointF pt3 = new(pt2.X, pt2.Y + TextPadding);
         canvas.StrokeColor = TickMarkColor;
         canvas.DrawLine(pt1, pt2);
 
-        // NOTE: After Maui.Graphics matures, call MeasureString() here
-        canvas.FontColor = Color;
-        canvas.FontSize = FontSize;
-        canvas.DrawString(Label, pt3.X, pt3.Y + 10, HorizontalAlignment.Center);
+        PointF pt3 = new(pt2.X, pt2.Y + TextPadding);
+        Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Center, VerticalAlignment.Top);
     }
 
     private void DrawLeftTickAndLabel(ICanvas canvas, PlotInfo info)
@@ -106,13 +115,10 @@ public class Tick
 
         PointF pt1 = new(info.DataRect.Left, y);
         PointF pt2 = new(pt1.X - TickMarkLength, pt1.Y);
-        PointF pt3 = new(pt2.X - TextPadding, pt2.Y);
         canvas.StrokeColor = TickMarkColor;
         canvas.DrawLine(pt1, pt2);
 
-        // NOTE: After Maui.Graphics matures, call MeasureString() here
-        canvas.FontColor = Color;
-        canvas.FontSize = FontSize;
-        canvas.DrawString(Label, pt3.X, pt3.Y + 4, HorizontalAlignment.Right);
+        PointF pt3 = new(pt2.X - TextPadding, pt2.Y);
+        Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Right, VerticalAlignment.Center);
     }
 }

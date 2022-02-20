@@ -31,7 +31,7 @@ public class SimpleNumericTickFactory : ITickFactory
 
             if (i % 5 == 0)
             {
-                tick.Label = $"{position:N2}";
+                tick.Label.Text = $"{position:N2}";
                 tick.TickMarkLength = 5;
             }
             else

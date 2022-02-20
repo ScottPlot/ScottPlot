@@ -52,6 +52,14 @@ public class PixelRect
         Bottom = location.Y + size.Height;
     }
 
+    public PixelRect(RectangleF rect)
+    {
+        Left = rect.Left;
+        Right = rect.Right;
+        Top = rect.Top;
+        Bottom = rect.Bottom;
+    }
+
     public PixelRect Contract(float left, float right, float bottom, float top)
     {
         return new PixelRect(Left + left, Right - right, Bottom - bottom, Top + top);
@@ -59,8 +67,12 @@ public class PixelRect
 
     public PixelRect Expand(float padding) => Expand(padding, padding, padding, padding);
 
+    public PixelRect WithPan(float x, float y) => new(Left + x, Right + x, Bottom + y, Top + y);
+
     public PixelRect Expand(float left, float right, float bottom, float top)
     {
         return new PixelRect(Left - left, Right + right, Bottom + bottom, Top - top);
     }
+
+    public static PixelRect FromRectF(RectangleF rect) => new(rect);
 }

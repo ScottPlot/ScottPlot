@@ -106,10 +106,10 @@ public class Plot
 
         if (allTicks is not null)
         {
-            float maxLeftTickWidth = allTicks.Where(x => x.Edge == Edge.Left).Select(x => x.Measure().Width).DefaultIfEmpty(0).Max();
-            float maxRightTickWidth = allTicks.Where(x => x.Edge == Edge.Right).Select(x => x.Measure().Width).DefaultIfEmpty(0).Max();
-            float maxBottomTickHeight = allTicks.Where(x => x.Edge == Edge.Bottom).Select(x => x.Measure().Height).DefaultIfEmpty(0).Max();
-            float maxTopTickHeight = allTicks.Where(x => x.Edge == Edge.Top).Select(x => x.Measure().Height).DefaultIfEmpty(0).Max();
+            float maxLeftTickWidth = allTicks.Where(x => x.Edge == Edge.Left).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(0).Max();
+            float maxRightTickWidth = allTicks.Where(x => x.Edge == Edge.Right).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(0).Max();
+            float maxBottomTickHeight = allTicks.Where(x => x.Edge == Edge.Bottom).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(0).Max();
+            float maxTopTickHeight = allTicks.Where(x => x.Edge == Edge.Top).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(0).Max();
 
             padLeft += maxLeftTickWidth;
             padRight += maxRightTickWidth;
@@ -197,8 +197,8 @@ public class Plot
 
     public string SaveFig(string path, PlotInfo layout)
     {
-        using BitmapExportContext context = SkiaGraphicsService.Instance.CreateBitmapExportContext((int)layout.Width, (int)layout.Height, layout.DisplayScale);
-        GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
+        using SkiaBitmapExportContext context = new((int)layout.Width, (int)layout.Height, layout.DisplayScale);
+
         Draw(context.Canvas, layout);
 
         string fullPath = Path.GetFullPath(path);

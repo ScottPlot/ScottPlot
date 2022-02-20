@@ -76,7 +76,7 @@ internal class LegacyNumericTickFactory : ITickFactory
             Tick tick = new(tickPositionsMajor[i], edge);
             tick.TickMarkLength = 5;
             tick.GridLineWidth = 1;
-            tick.Label = tickLabels[i];
+            tick.Label.Text = tickLabels[i];
             ticks.Add(tick);
         }
 

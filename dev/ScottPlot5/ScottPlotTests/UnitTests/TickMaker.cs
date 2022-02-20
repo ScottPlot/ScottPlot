@@ -10,10 +10,10 @@ namespace ScottPlotTests.UnitTests
     internal static class TickMaker
     {
         private static string LabelsMajor(this ScottPlot.Tick[] ticks) =>
-            string.Join(", ", ticks.Where(x => !string.IsNullOrWhiteSpace(x.Label)).Select(x => x.Label));
+            string.Join(", ", ticks.Where(x => !string.IsNullOrWhiteSpace(x.Label.Text)).Select(x => x.Label));
 
         private static string PositionsMajor(this ScottPlot.Tick[] ticks) =>
-            string.Join(", ", ticks.Where(x => !string.IsNullOrWhiteSpace(x.Label)).Select(x => x.Position.ToString()));
+            string.Join(", ", ticks.Where(x => !string.IsNullOrWhiteSpace(x.Label.Text)).Select(x => x.Position.ToString()));
 
         [Test]
         public static void Test_DefaultTickMaker_AlwaysMakesTicks()

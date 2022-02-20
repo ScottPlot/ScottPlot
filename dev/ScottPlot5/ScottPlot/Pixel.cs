@@ -26,4 +26,5 @@ public struct Pixel
     public static Pixel Origin => new(0, 0);
 
     public PointF PointF => new(X, Y);
+    public static Pixel FromPointf(PointF pt) => new(pt.X, pt.Y);
 }
