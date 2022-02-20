@@ -1,4 +1,4 @@
-﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"Vertical span between X1={Y1} and X2={Y2}";
     }
 
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor
+    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea
     {
         // location and orientation
         protected double Position1;
@@ -47,6 +47,11 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public Color Color { get; set; } = Color.FromArgb(128, Color.Magenta);
+        public Color BorderColor { get; set; } = Color.Transparent;
+        public float BorderLineWidth { get; set; } = 0;
+        public LineStyle BorderLineStyle { get; set; } = LineStyle.None;
+        public Color HatchColor { get; set; } = Color.Transparent;
+        public HatchStyle HatchStyle { get; set; } = Drawing.HatchStyle.None;
         public string Label;
 
         // mouse interaction
