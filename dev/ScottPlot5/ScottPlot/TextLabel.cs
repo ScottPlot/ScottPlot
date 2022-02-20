@@ -78,7 +78,7 @@ namespace ScottPlot
             };
 
             RectangleF rect = new(x, y, stringSize.Width, stringSize.Height);
-            if (DEBUG_TEST_PATTERN)
+            if (DebugTestPattern)
                 Dev.Draw.RectangleTestPattern(canvas, rect);
 
             canvas.FontColor = FontColor;
