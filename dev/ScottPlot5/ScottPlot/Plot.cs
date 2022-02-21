@@ -74,89 +74,62 @@ public class Plot
 
     #endregion
 
-    #region Layout and Styling
-
-    public void TightenLayout(ICanvas canvas, Tick[]? allTicks = null)
-    {
-        Axes.IAxis[] GetAxisLabels(Edge edge) => Config.Axes.Where(x => x.Edge == edge).ToArray();
-
-        float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Label.Measure(canvas).Height);
-        float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Label.Measure(canvas).Height);
-        float padBottom = GetAxisLabels(Edge.Bottom).Sum(x => x.Label.Measure(canvas).Height);
-        float padTop = GetAxisLabels(Edge.Top).Sum(x => x.Label.Measure(canvas).Height);
-
-        if (allTicks is not null)
-        {
-            float noTickPad = 10; // distance to space text from spine if no ticks exist
-            float maxLeftTickWidth = allTicks.Where(x => x.Edge == Edge.Left).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(noTickPad).Max();
-            float maxRightTickWidth = allTicks.Where(x => x.Edge == Edge.Right).Select(x => x.Measure(canvas).Width).DefaultIfEmpty(noTickPad).Max();
-            float maxBottomTickHeight = allTicks.Where(x => x.Edge == Edge.Bottom).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(noTickPad).Max();
-            float maxTopTickHeight = allTicks.Where(x => x.Edge == Edge.Top).Select(x => x.Measure(canvas).Height).DefaultIfEmpty(noTickPad).Max();
-
-            padLeft += maxLeftTickWidth;
-            padRight += maxRightTickWidth;
-            padBottom += maxBottomTickHeight;
-            padTop += maxTopTickHeight;
-        }
-
-        Config = Config.WithPadding(padLeft, padRight, padBottom, padTop);
-    }
-
-    #endregion
-
     #region rendering
 
-    public void Draw(ICanvas canvas) => Draw(canvas, Config);
+    public void Draw(ICanvas canvas) =>
+        Config = Draw(canvas, Config, true, Plottables, Stats);
 
-    public void Draw(ICanvas canvas, PlotConfig info)
+    public void Draw(ICanvas canvas, PlotConfig config) =>
+        Config = Draw(canvas, config, false, Plottables, Stats);
+
+    private static PlotConfig Draw(ICanvas canvas, PlotConfig config, bool tightenLayout, List<IPlottable> plottables, RenderStats stats)
     {
-        if (!info.FigureRect.HasPositiveArea)
-            return;
+        if (!config.FigureRect.HasPositiveArea)
+            return config;
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        // TODO: remove tighten
-        Tick[]? genericTicks = null;
-        TightenLayout(canvas, genericTicks);
-        Tick[] preliminaryTicks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
-        TightenLayout(canvas, preliminaryTicks);
-        Tick[] ticks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
-        TightenLayout(canvas, ticks);
+        if (tightenLayout)
+            config = config.WithTightLayout(canvas);
 
-        canvas.FillColor = Config.Style.FigureBackgroundColor;
-        canvas.FillRectangle(info.FigureRect.RectangleF);
+        Tick[] ticks = config.GenerateTicks();
 
-        if (!info.DataRect.HasPositiveArea)
-            return;
+        canvas.FillColor = config.Style.FigureBackgroundColor;
+        canvas.FillRectangle(config.FigureRect.RectangleF);
 
-        canvas.FillColor = Config.Style.DataBackgroundColor;
-        canvas.FillRectangle(info.DataRect.RectangleF);
+        if (!config.DataRect.HasPositiveArea)
+            return config;
+
+        canvas.FillColor = config.Style.DataBackgroundColor;
+        canvas.FillRectangle(config.DataRect.RectangleF);
 
         foreach (Tick tick in ticks)
-            tick.DrawGridLine(canvas, info);
+            tick.DrawGridLine(canvas, config);
 
-        foreach (IPlottable plottable in Plottables)
+        foreach (IPlottable plottable in plottables)
         {
             canvas.SaveState(); // because we can't trust each plottable to do this
-            plottable.Draw(canvas, info);
+            plottable.Draw(canvas, config);
             canvas.RestoreState();
         }
 
         canvas.StrokeSize = 1;
-        canvas.StrokeColor = Config.Style.DataBorderColor;
-        canvas.DrawRectangle(info.DataRect.Expand(.5f).RectangleF);
+        canvas.StrokeColor = config.Style.DataBorderColor;
+        canvas.DrawRectangle(config.DataRect.Expand(.5f).RectangleF);
 
         foreach (Tick tick in ticks)
-            tick.DrawTickAndLabel(canvas, info);
+            tick.DrawTickAndLabel(canvas, config);
 
-        foreach (Axes.IAxis ax in Config.Axes)
+        foreach (Axes.IAxis ax in config.Axes)
         {
-            ax.Draw(canvas, info);
+            ax.Draw(canvas, config);
         }
 
         sw.Stop();
-        Stats.AddRenderTime(sw.Elapsed);
-        Stats.Draw(canvas, info);
+        stats.AddRenderTime(sw.Elapsed);
+        stats.Draw(canvas, config);
+
+        return config;
     }
 
     #endregion

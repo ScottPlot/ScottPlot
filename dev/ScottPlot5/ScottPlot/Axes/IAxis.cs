@@ -8,5 +8,6 @@ public interface IAxis
     Orientation Orientation { get; }
     TextLabel Label { get; }
     ITickFactory TickFactory { get; set; }
+    float Size(ICanvas canvas, Tick[]? ticks);
     void Draw(ICanvas canvas, PlotConfig info);
 }

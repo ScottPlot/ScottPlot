@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Maui.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -96,10 +98,55 @@ public class PlotConfig
                 new Axes.BottomAxis("Horizontal Axis", true),
                 new Axes.RightAxis("Secondary Axis", true),
                 new Axes.TopAxis("Title", true),
+
+                /*
+                new Axes.LeftAxis("Vertical Axis #3", true),
+                new Axes.RightAxis("Vertical Axis #4", true),
+                new Axes.LeftAxis("Vertical Axis #5", true),
+                new Axes.RightAxis("Vertical Axis #6", true),
+                new Axes.LeftAxis("Vertical Axis #7", true),
+                new Axes.RightAxis("Vertical Axis #8", true),
+                */
             };
 
             return new PlotConfig(figureSize, dataRect, limits, style, axes);
         }
+    }
+
+    public PlotConfig WithTightLayout(ICanvas canvas)
+    {
+        /* Layout adjustment is a circular problem:
+         *   - Tick label size determines figure edge padding
+         *   - Figure edge padding determines data area size
+         *   - Data area size determines tick labels
+         *   
+         * The solution is:
+         *   - Estimate figure edge padding using generic ticks with fixed size
+         *   - Calculate preliminary ticks using the estimated padding
+         *   - Measure tick labels to determine the final figure edge padding
+         *   - Regenerate ticks using the final layout
+         */
+
+        Tick[]? genericTicks = null;
+        var genericInfo = this.WithTightDataRect(canvas, genericTicks);
+        Tick[] preliminaryTicks = genericInfo.GenerateTicks();
+        var preliminaryInfo = genericInfo.WithTightDataRect(canvas, preliminaryTicks);
+        Tick[] realTicks = preliminaryInfo.GenerateTicks();
+        return preliminaryInfo.WithTightDataRect(canvas, realTicks);
+    }
+
+    public Tick[] GenerateTicks()
+    {
+        return Axes.SelectMany(x => x.TickFactory.GenerateTicks(this)).ToArray();
+    }
+
+    private PlotConfig WithTightDataRect(ICanvas canvas, Tick[]? ticks)
+    {
+        float padL = Axes.Where(x => x.Edge is Edge.Left).Select(x => x.Size(canvas, ticks)).Sum();
+        float padR = Axes.Where(x => x.Edge is Edge.Right).Select(x => x.Size(canvas, ticks)).Sum();
+        float padT = Axes.Where(x => x.Edge is Edge.Top).Select(x => x.Size(canvas, ticks)).Sum();
+        float padB = Axes.Where(x => x.Edge is Edge.Bottom).Select(x => x.Size(canvas, ticks)).Sum();
+        return WithPadding(padL, padR, padB, padT);
     }
 
     public PlotConfig WithDataRect(PixelRect dataRect) =>

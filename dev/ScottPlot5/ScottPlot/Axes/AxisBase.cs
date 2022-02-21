@@ -1,4 +1,7 @@
-﻿namespace ScottPlot.Axes;
+﻿using Microsoft.Maui.Graphics;
+using System.Linq;
+
+namespace ScottPlot.Axes;
 
 public abstract class AxisBase
 {
@@ -28,5 +31,27 @@ public abstract class AxisBase
         TickFactory = enable
             ? new TickFactories.LegacyNumericTickFactory(Edge)
             : new TickFactories.EmptyTickFactory(Edge);
+    }
+
+    public float Size(ICanvas canvas, Tick[]? ticks)
+    {
+        if (Orientation is Orientation.Horizontal)
+        {
+            float size = Label.Measure(canvas).Height;
+
+            if (ticks is not null)
+                size += ticks.Select(x => x.Measure(canvas).Height).Max();
+
+            return size;
+        }
+        else
+        {
+            float size = Label.Measure(canvas).Height;
+
+            if (ticks is not null)
+                size += ticks.Select(x => x.Measure(canvas).Width).Max();
+
+            return size;
+        }
     }
 }
