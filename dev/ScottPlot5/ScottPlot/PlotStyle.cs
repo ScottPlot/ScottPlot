@@ -8,11 +8,13 @@ namespace ScottPlot;
 /// </summary>
 public class PlotStyle
 {
-    //NOTE: when Maui.Graphics matures, default font information can be stored here
+    //NOTE: Eventually default font information can be stored here
 
     public Color FigureBackgroundColor = Colors.White;
 
     public Color DataBackgroundColor = Colors.White;
 
     public Color DataBorderColor = Colors.Black;
+
+    public readonly Palette Palette = Palettes.Default;
 }

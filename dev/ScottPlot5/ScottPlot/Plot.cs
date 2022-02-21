@@ -16,11 +16,6 @@ public class Plot
     public readonly List<IPlottable> Plottables = new();
 
     /// <summary>
-    /// Defines the default colors to use when new plottables are added
-    /// </summary>
-    public Palette Palette = Palettes.Default;
-
-    /// <summary>
     /// This object holds all the information needed to render a plot at an arbitrary size:
     /// Figure size, data area size, axis limits, tick generator, etc.
     /// </summary>
@@ -30,7 +25,6 @@ public class Plot
     /// This object stores information about previous render performance.
     /// </summary>
     public readonly RenderStats Stats = new();
-
 
     public Plot()
     {
@@ -42,7 +36,7 @@ public class Plot
 
     public Plottables.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        color ??= Palette.GetColor(Plottables.Count);
+        color ??= Info.Style.Palette.GetColor(Plottables.Count);
 
         Plottables.ScatterArray<double> sp = new(xs, ys)
         {
