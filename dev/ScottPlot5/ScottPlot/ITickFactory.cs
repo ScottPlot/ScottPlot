@@ -6,6 +6,7 @@ namespace ScottPlot
 {
     public interface ITickFactory
     {
-        public Tick[] GenerateTicks(PlotConfig info, Edge edge);
+        public Edge Edge { get; }
+        public Tick[] GenerateTicks(PlotConfig info);
     }
 }

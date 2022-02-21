@@ -11,15 +11,22 @@ namespace ScottPlot.TickFactories;
 /// </summary>
 internal class LegacyNumericTickFactory : ITickFactory
 {
-    public Tick[] GenerateTicks(PlotConfig info, Edge edge)
+    public Edge Edge { get; private set; }
+
+    public LegacyNumericTickFactory(Edge edge)
     {
-        return edge switch
+        Edge = edge;
+    }
+
+    public Tick[] GenerateTicks(PlotConfig info)
+    {
+        return Edge switch
         {
             Edge.Bottom => RecalculatePositionsAutomaticNumeric(info, Edge.Bottom),
             Edge.Left => RecalculatePositionsAutomaticNumeric(info, Edge.Left),
             Edge.Top => RecalculatePositionsAutomaticNumeric(info, Edge.Top),
             Edge.Right => RecalculatePositionsAutomaticNumeric(info, Edge.Right),
-            _ => throw new NotImplementedException($"Unsupported {edge.GetType()}: {edge}"),
+            _ => throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}"),
         };
     }
 

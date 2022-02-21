@@ -4,11 +4,9 @@ namespace ScottPlot.Axes;
 
 public class BottomAxis : AxisBase, IAxis
 {
-    public BottomAxis(string text = "")
+    public BottomAxis(string text, bool ticks) : base(Edge.Bottom, text)
     {
-        Label.Text = text;
-        Edge = Edge.Bottom;
-        Orientation = Orientation.Horizontal;
+        Ticks(ticks);
     }
 
     public void Draw(ICanvas canvas, PlotConfig info)

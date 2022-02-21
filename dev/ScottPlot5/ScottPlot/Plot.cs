@@ -126,12 +126,7 @@ public class Plot
             TightenLayout(canvas);
         }
 
-        Tick[] bottomTicks = info.TickFactory.GenerateTicks(info, Edge.Bottom);
-        Tick[] leftTicks = info.TickFactory.GenerateTicks(info, Edge.Left);
-        Tick[] rightTicks = info.TickFactory.GenerateTicks(info, Edge.Right);
-        Tick[] topTicks = info.TickFactory.GenerateTicks(info, Edge.Top);
-
-        Tick[] allTicks = bottomTicks.Concat(leftTicks).Concat(rightTicks).Concat(topTicks).ToArray();
+        Tick[] allTicks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
 
         if (TightenLayoutOnNextRender)
         {

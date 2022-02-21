@@ -19,8 +19,6 @@ public class PlotConfig
 
     public readonly PlotStyle Style = new();
 
-    public readonly ITickFactory TickFactory;
-
     public double PxPerUnitX => DataRect.Width / AxisLimits.Width;
     public double PxPerUnitY => DataRect.Height / AxisLimits.Height;
     public double UnitsPerPxX => AxisLimits.Width / DataRect.Width;
@@ -31,14 +29,12 @@ public class PlotConfig
         PixelRect dataRect,
         CoordinateRect axisLimits,
         PlotStyle style,
-        ITickFactory tickFactory,
         List<Axes.IAxis> axes)
     {
         FigureRect = new PixelRect(figureSize);
         DataRect = dataRect;
         AxisLimits = axisLimits;
         Style = style;
-        TickFactory = tickFactory;
         Axes = axes;
     }
 
@@ -93,20 +89,21 @@ public class PlotConfig
             PixelRect dataRect = new PixelRect(figureSize).Contract(40, 20, 30, 20);
             CoordinateRect limits = new(-10, 60, -1.5, 1.5);
             PlotStyle style = new();
-            ITickFactory tickFactory = new TickFactories.LegacyNumericTickFactory();
 
-            List<Axes.IAxis> axes = new();
-            axes.Add(new Axes.LeftAxis("Vertical Axis"));
-            axes.Add(new Axes.BottomAxis("Horizontal Axis"));
-            axes.Add(new Axes.RightAxis("Secondary Axis"));
-            axes.Add(new Axes.TopAxis("Title"));
+            List<Axes.IAxis> axes = new()
+            {
+                new Axes.LeftAxis("Vertical Axis", true),
+                new Axes.BottomAxis("Horizontal Axis", true),
+                new Axes.RightAxis("Secondary Axis", true),
+                new Axes.TopAxis("Title", true),
+            };
 
-            return new PlotConfig(figureSize, dataRect, limits, style, tickFactory, axes);
+            return new PlotConfig(figureSize, dataRect, limits, style, axes);
         }
     }
 
     public PlotConfig WithDataRect(PixelRect dataRect) =>
-        new(FigureRect.Size, dataRect, AxisLimits, Style, TickFactory, Axes);
+        new(FigureRect.Size, dataRect, AxisLimits, Style, Axes);
 
     public PlotConfig WithPadding(float left, float right, float bottom, float top)
     {
@@ -131,11 +128,11 @@ public class PlotConfig
         Pixel newDataOffset = new(padLeft, padTop);
         PixelRect newDataRect = new(newDataSize, newDataOffset);
 
-        return new(newFigureSize, newDataRect, AxisLimits, Style, TickFactory, Axes);
+        return new(newFigureSize, newDataRect, AxisLimits, Style, Axes);
     }
 
     public PlotConfig WithAxisLimits(CoordinateRect axisLimits) =>
-        new(FigureRect.Size, DataRect, axisLimits, Style, TickFactory, Axes);
+        new(FigureRect.Size, DataRect, axisLimits, Style, Axes);
 
     public PlotConfig WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
 
@@ -147,7 +144,7 @@ public class PlotConfig
             yMin: AxisLimits.YMin + delta.Y,
             yMax: AxisLimits.YMax + delta.Y);
 
-        return new PlotConfig(FigureRect.Size, DataRect, newLimits, Style, TickFactory, Axes);
+        return new PlotConfig(FigureRect.Size, DataRect, newLimits, Style, Axes);
     }
 
     public PlotConfig WithZoom(Pixel px, double frac)

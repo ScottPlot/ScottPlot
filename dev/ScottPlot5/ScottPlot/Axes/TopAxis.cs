@@ -4,11 +4,9 @@ namespace ScottPlot.Axes;
 
 public class TopAxis : AxisBase, IAxis
 {
-    public TopAxis(string text = "")
+    public TopAxis(string text, bool ticks) : base(Edge.Top, text)
     {
-        Label.Text = text;
-        Edge = Edge.Top;
-        Orientation = Orientation.Horizontal;
+        Ticks(ticks);
     }
 
     public void Draw(ICanvas canvas, PlotConfig info)

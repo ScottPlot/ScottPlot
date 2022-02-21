@@ -8,9 +8,16 @@ namespace ScottPlot.TickFactories;
 
 public class SimpleNumericTickFactory : ITickFactory
 {
-    public Tick[] GenerateTicks(PlotConfig info, Edge edge)
+    public Edge Edge { get; private set; }
+
+    public SimpleNumericTickFactory(Edge edge)
     {
-        return edge switch
+        Edge = edge;
+    }
+
+    public Tick[] GenerateTicks(PlotConfig info)
+    {
+        return Edge switch
         {
             Edge.Bottom => GetEvenlySpacedTicks(info.AxisLimits.XMin, info.AxisLimits.XMax, 25, Edge.Bottom),
             Edge.Left => GetEvenlySpacedTicks(info.AxisLimits.YMin, info.AxisLimits.YMax, 50, Edge.Left),

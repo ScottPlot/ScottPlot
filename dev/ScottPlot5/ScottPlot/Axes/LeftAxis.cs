@@ -4,11 +4,9 @@ namespace ScottPlot.Axes;
 
 public class LeftAxis : AxisBase, IAxis
 {
-    public LeftAxis(string text = "")
+    public LeftAxis(string text, bool ticks) : base(Edge.Left, text)
     {
-        Label.Text = text;
-        Edge = Edge.Left;
-        Orientation = Orientation.Vertical;
+        Ticks(ticks);
     }
 
     public void Draw(ICanvas canvas, PlotConfig info)
