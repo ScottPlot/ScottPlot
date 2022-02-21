@@ -76,12 +76,6 @@ public class Plot
 
     #region Layout and Styling
 
-    private bool TightenLayoutOnNextRender = true;
-    public void TightenLayout()
-    {
-        TightenLayoutOnNextRender = true;
-    }
-
     public void TightenLayout(ICanvas canvas, Tick[]? allTicks = null)
     {
         Axes.IAxis[] GetAxisLabels(Edge edge) => Config.Axes.Where(x => x.Edge == edge).ToArray();
@@ -121,20 +115,13 @@ public class Plot
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        if (TightenLayoutOnNextRender)
-        {
-            // tighten once without ticks
-            TightenLayout(canvas);
-        }
-
-        Tick[] allTicks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
-
-        if (TightenLayoutOnNextRender)
-        {
-            // tighten again now that we have tick sizes
-            TightenLayout(canvas, allTicks);
-            TightenLayoutOnNextRender = false;
-        }
+        // TODO: remove tighten
+        Tick[]? genericTicks = null;
+        TightenLayout(canvas, genericTicks);
+        Tick[] preliminaryTicks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
+        TightenLayout(canvas, preliminaryTicks);
+        Tick[] ticks = info.Axes.SelectMany(x => x.TickFactory.GenerateTicks(info)).ToArray();
+        TightenLayout(canvas, ticks);
 
         canvas.FillColor = Config.Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
@@ -145,7 +132,7 @@ public class Plot
         canvas.FillColor = Config.Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
-        foreach (Tick tick in allTicks)
+        foreach (Tick tick in ticks)
             tick.DrawGridLine(canvas, info);
 
         foreach (IPlottable plottable in Plottables)
@@ -159,7 +146,7 @@ public class Plot
         canvas.StrokeColor = Config.Style.DataBorderColor;
         canvas.DrawRectangle(info.DataRect.Expand(.5f).RectangleF);
 
-        foreach (Tick tick in allTicks)
+        foreach (Tick tick in ticks)
             tick.DrawTickAndLabel(canvas, info);
 
         foreach (Axes.IAxis ax in Config.Axes)

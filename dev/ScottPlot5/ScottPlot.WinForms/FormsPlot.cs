@@ -35,18 +35,13 @@ namespace ScottPlot.WinForms
             Plot.Config = Plot.Config.WithSize(skglControl1.Width, skglControl1.Height);
         }
 
-        public void Redraw(bool tightenLayout = false)
+        public void Redraw(bool force = false)
         {
             skglControl1.Invalidate();
-
-            if (tightenLayout)
+            if (force)
             {
-                // not sure why this sequence is required...
-                skglControl1.Refresh();
-                Plot.TightenLayout();
                 skglControl1.Refresh();
                 skglControl1.Refresh();
-                return;
             }
         }
 
@@ -61,7 +56,7 @@ namespace ScottPlot.WinForms
             double fraction = e.Delta > 0 ? 1.15 : 0.85;
             Pixel MouseNowPixel = new(e.X, e.Y);
             Plot.Config = Plot.Config.WithZoom(MouseNowPixel, fraction);
-            Redraw(tightenLayout: true);
+            Redraw();
         }
 
         private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)
@@ -84,7 +79,7 @@ namespace ScottPlot.WinForms
             MouseDownPixel = null;
             InfoNow = null;
 
-            Redraw(tightenLayout: true);
+            Redraw(true);
         }
 
         private void SkglControl1_MouseMove(object? sender, MouseEventArgs e)
@@ -104,7 +99,7 @@ namespace ScottPlot.WinForms
         private void SkglControl1_SizeChanged(object? sender, EventArgs e)
         {
             Plot.Config = Plot.Config.WithSize(skglControl1.Width, skglControl1.Height);
-            Redraw(tightenLayout: true);
+            Redraw();
         }
 
         private void SkglControl1_PaintSurface(object? sender, SkiaSharp.Views.Desktop.SKPaintGLSurfaceEventArgs e)
