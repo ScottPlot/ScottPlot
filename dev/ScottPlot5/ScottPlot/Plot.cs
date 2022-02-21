@@ -11,18 +11,19 @@ namespace ScottPlot;
 public class Plot
 {
     /// <summary>
-    /// List of objects drawn on the plot every time a render is requested
+    /// List of objects drawn on the plot every time a render is requested.
     /// </summary>
     public readonly List<IPlottable> Plottables = new();
 
     /// <summary>
     /// This object holds all the information needed to render a plot at an arbitrary size:
-    /// Figure size, data area size, axis limits, tick generator, etc.
+    /// Figure size, data area size, axis limits, tick generators, etc.
+    /// It may be manipulated or replaced by the user.
     /// </summary>
     public PlotConfig Config { get; set; } = PlotConfig.Default;
 
     /// <summary>
-    /// This object stores information about previous render performance.
+    /// This object stores performance information for previous renders.
     /// </summary>
     public readonly RenderStats Stats = new();
 
