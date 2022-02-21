@@ -26,7 +26,7 @@ public class ScatterArray<T> : ScatterBase, IPlottable
         Ys = ys;
     }
 
-    protected override PointF[] GetPoints(PlotInfo info)
+    protected override PointF[] GetPoints(PlotConfig info)
     {
         PointF[] points = new PointF[Xs.Length];
         for (int i = 0; i < points.Length; i++)

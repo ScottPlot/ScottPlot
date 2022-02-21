@@ -11,7 +11,7 @@ public class BottomAxis : AxisBase, IAxis
         Orientation = Orientation.Horizontal;
     }
 
-    public void Draw(ICanvas canvas, PlotInfo info)
+    public void Draw(ICanvas canvas, PlotConfig info)
     {
         float xCenter = info.DataRect.HorizontalCenter;
         float yBottom = info.Height;

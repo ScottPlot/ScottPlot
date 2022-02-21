@@ -11,7 +11,7 @@ public class RightAxis : AxisBase, IAxis
         Orientation = Orientation.Vertical;
     }
 
-    public void Draw(ICanvas canvas, PlotInfo info)
+    public void Draw(ICanvas canvas, PlotConfig info)
     {
         float xRight = info.FigureRect.Right - Label.Measure(canvas).Height * 2;
         float yCenter = info.DataRect.VerticalCenter;

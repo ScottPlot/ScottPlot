@@ -16,8 +16,8 @@ namespace ScottPlot.WinForms
     {
         public readonly Plot Plot = new();
         Pixel? MouseDownPixel = null;
-        PlotInfo? MouseDownView = null;
-        PlotInfo? InfoNow = null;
+        PlotConfig? MouseDownView = null;
+        PlotConfig? InfoNow = null;
 
         public FormsPlot()
         {
@@ -31,8 +31,8 @@ namespace ScottPlot.WinForms
             skglControl1.MouseDown += SkglControl1_MouseDown;
             skglControl1.DoubleClick += SkglControl1_DoubleClick;
 
-            Plot.Info.Style.FigureBackgroundColor = Microsoft.Maui.Graphics.Color.FromInt(SystemColors.Control.ToArgb());
-            Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
+            Plot.Config.Style.FigureBackgroundColor = Microsoft.Maui.Graphics.Color.FromInt(SystemColors.Control.ToArgb());
+            Plot.Config = Plot.Config.WithSize(skglControl1.Width, skglControl1.Height);
         }
 
         public void Redraw(bool tightenLayout = false)
@@ -60,20 +60,20 @@ namespace ScottPlot.WinForms
         {
             double fraction = e.Delta > 0 ? 1.15 : 0.85;
             Pixel MouseNowPixel = new(e.X, e.Y);
-            Plot.Info = Plot.Info.WithZoom(MouseNowPixel, fraction);
+            Plot.Config = Plot.Config.WithZoom(MouseNowPixel, fraction);
             Redraw(tightenLayout: true);
         }
 
         private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)
         {
             MouseDownPixel = new Pixel(e.X, e.Y);
-            MouseDownView = Plot.Info;
+            MouseDownView = Plot.Config;
         }
 
         private void SkglControl1_MouseUp(object? sender, MouseEventArgs e)
         {
             if (InfoNow is not null)
-                Plot.Info = InfoNow;
+                Plot.Config = InfoNow;
 
             if (e.Button == MouseButtons.Middle)
             {
@@ -103,7 +103,7 @@ namespace ScottPlot.WinForms
 
         private void SkglControl1_SizeChanged(object? sender, EventArgs e)
         {
-            Plot.Info = Plot.Info.WithSize(skglControl1.Width, skglControl1.Height);
+            Plot.Config = Plot.Config.WithSize(skglControl1.Width, skglControl1.Height);
             Redraw(tightenLayout: true);
         }
 

@@ -34,7 +34,7 @@ namespace ScottPlot
             return (mean, stdErr, times.Length);
         }
 
-        public void Draw(ICanvas canvas, PlotInfo info)
+        public void Draw(ICanvas canvas, PlotConfig info)
         {
             if (!IsVisible || !RenderTimesMsec.Any())
                 return;

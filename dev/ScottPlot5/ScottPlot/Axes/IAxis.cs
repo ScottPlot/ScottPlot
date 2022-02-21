@@ -7,5 +7,5 @@ public interface IAxis
     Edge Edge { get; }
     Orientation Orientation { get; }
     TextLabel Label { get; }
-    void Draw(ICanvas canvas, PlotInfo info);
+    void Draw(ICanvas canvas, PlotConfig info);
 }

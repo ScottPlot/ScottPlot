@@ -21,7 +21,7 @@ internal class ScatterList<T> : ScatterBase
 
     }
 
-    protected override PointF[] GetPoints(PlotInfo plotInfo)
+    protected override PointF[] GetPoints(PlotConfig plotInfo)
     {
         PointF[] points = new PointF[Points.Count];
         for (int i = 0; i < points.Length; i++)

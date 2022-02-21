@@ -15,12 +15,12 @@ public abstract class ScatterBase : IPlottable
     public float MarkerSize = 3;
     public Color MarkerColor = Colors.Black;
 
-    protected abstract PointF[] GetPoints(PlotInfo plotInfo);
+    protected abstract PointF[] GetPoints(PlotConfig plotInfo);
     public abstract CoordinateRect GetDataLimits();
 
     protected abstract int Count { get; }
 
-    public void Draw(ICanvas canvas, PlotInfo plotInfo)
+    public void Draw(ICanvas canvas, PlotConfig plotInfo)
     {
         canvas.ClipRectangle(plotInfo.DataRect.RectangleF);
         PointF[] points = GetPoints(plotInfo);

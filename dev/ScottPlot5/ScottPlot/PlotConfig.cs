@@ -3,11 +3,7 @@ using System.Collections.Generic;
 
 namespace ScottPlot;
 
-/// <summary>
-/// This object defines the layout and axis limits of a plot figure.
-/// It holds the minimum necessary state required to reproduce a plot.
-/// </summary>
-public class PlotInfo
+public class PlotConfig
 {
     public readonly PixelRect FigureRect;
     public float Width => FigureRect.Width;
@@ -21,16 +17,8 @@ public class PlotInfo
 
     public readonly List<Axes.IAxis> Axes = new();
 
-    /// <summary>
-    /// Defines default styling for the plot such as background color and axis label text colors.
-    /// This object is held in <see cref="PlotInfo"/> so it can be accessed by<see cref="IPlottable"/> objects at render time.
-    /// </summary>
     public readonly PlotStyle Style = new();
 
-    /// <summary>
-    /// Generates ticks at render time based on the size of the figure and axis limits.
-    /// You can create your own factory and assign it here to customize tick calculation/placement/styling.
-    /// </summary>
     public readonly ITickFactory TickFactory;
 
     public double PxPerUnitX => DataRect.Width / AxisLimits.Width;
@@ -38,7 +26,7 @@ public class PlotInfo
     public double UnitsPerPxX => AxisLimits.Width / DataRect.Width;
     public double UnitsPerPxY => AxisLimits.Height / DataRect.Height;
 
-    private PlotInfo(
+    private PlotConfig(
         PixelSize figureSize,
         PixelRect dataRect,
         CoordinateRect axisLimits,
@@ -97,7 +85,7 @@ public class PlotInfo
         return GetPixel(xVal, yVal);
     }
 
-    public static PlotInfo Default
+    public static PlotConfig Default
     {
         get
         {
@@ -113,14 +101,14 @@ public class PlotInfo
             axes.Add(new Axes.RightAxis("Secondary Axis"));
             axes.Add(new Axes.TopAxis("Title"));
 
-            return new PlotInfo(figureSize, dataRect, limits, style, tickFactory, axes);
+            return new PlotConfig(figureSize, dataRect, limits, style, tickFactory, axes);
         }
     }
 
-    public PlotInfo WithDataRect(PixelRect dataRect) =>
+    public PlotConfig WithDataRect(PixelRect dataRect) =>
         new(FigureRect.Size, dataRect, AxisLimits, Style, TickFactory, Axes);
 
-    public PlotInfo WithPadding(float left, float right, float bottom, float top)
+    public PlotConfig WithPadding(float left, float right, float bottom, float top)
     {
         PixelRect dataRect = new(
             left: left,
@@ -131,7 +119,7 @@ public class PlotInfo
         return this.WithDataRect(dataRect);
     }
 
-    public PlotInfo WithSize(int width, int height)
+    public PlotConfig WithSize(int width, int height)
     {
         float padLeft = DataRect.Left;
         float padRight = FigureRect.Width - DataRect.Right;
@@ -146,12 +134,12 @@ public class PlotInfo
         return new(newFigureSize, newDataRect, AxisLimits, Style, TickFactory, Axes);
     }
 
-    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) =>
+    public PlotConfig WithAxisLimits(CoordinateRect axisLimits) =>
         new(FigureRect.Size, DataRect, axisLimits, Style, TickFactory, Axes);
 
-    public PlotInfo WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
+    public PlotConfig WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
 
-    public PlotInfo WithPan(Coordinate delta)
+    public PlotConfig WithPan(Coordinate delta)
     {
         CoordinateRect newLimits = new(
             xMin: AxisLimits.XMin + delta.X,
@@ -159,16 +147,16 @@ public class PlotInfo
             yMin: AxisLimits.YMin + delta.Y,
             yMax: AxisLimits.YMax + delta.Y);
 
-        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory, Axes);
+        return new PlotConfig(FigureRect.Size, DataRect, newLimits, Style, TickFactory, Axes);
     }
 
-    public PlotInfo WithZoom(Pixel px, double frac)
+    public PlotConfig WithZoom(Pixel px, double frac)
     {
         var coord = GetCoordinate(px);
         return WithZoom(frac, frac, coord.X, coord.Y);
     }
 
-    public PlotInfo WithZoom(Pixel px1, Pixel px2)
+    public PlotConfig WithZoom(Pixel px1, Pixel px2)
     {
         double deltaX = px2.X - px1.X;
         double deltaFracX = deltaX / (Math.Abs(deltaX) + Width);
@@ -181,7 +169,7 @@ public class PlotInfo
         return WithZoom(fracX, fracY, AxisLimits.XCenter, AxisLimits.YCenter);
     }
 
-    public PlotInfo WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
+    public PlotConfig WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
         double spanLeftX = zoomToX - AxisLimits.XMin;
         double spanRightX = AxisLimits.XMax - zoomToX;

@@ -19,7 +19,7 @@ public class Plot
     /// This object holds all the information needed to render a plot at an arbitrary size:
     /// Figure size, data area size, axis limits, tick generator, etc.
     /// </summary>
-    public PlotInfo Info { get; set; } = PlotInfo.Default;
+    public PlotConfig Config { get; set; } = PlotConfig.Default;
 
     /// <summary>
     /// This object stores information about previous render performance.
@@ -36,7 +36,7 @@ public class Plot
 
     public Plottables.ScatterArray<double> AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        color ??= Info.Style.Palette.GetColor(Plottables.Count);
+        color ??= Config.Style.Palette.GetColor(Plottables.Count);
 
         Plottables.ScatterArray<double> sp = new(xs, ys)
         {
@@ -68,7 +68,7 @@ public class Plot
             totalLimits = totalLimits.WithY(-10, 10);
 
         Console.WriteLine($"LIMITS: {totalLimits}");
-        Info = Info.WithAxisLimits(totalLimits);
+        Config = Config.WithAxisLimits(totalLimits);
     }
 
     #endregion
@@ -83,7 +83,7 @@ public class Plot
 
     public void TightenLayout(ICanvas canvas, Tick[]? allTicks = null)
     {
-        Axes.IAxis[] GetAxisLabels(Edge edge) => Info.Axes.Where(x => x.Edge == edge).ToArray();
+        Axes.IAxis[] GetAxisLabels(Edge edge) => Config.Axes.Where(x => x.Edge == edge).ToArray();
 
         float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Label.Measure(canvas).Height);
         float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Label.Measure(canvas).Height);
@@ -104,16 +104,16 @@ public class Plot
             padTop += maxTopTickHeight;
         }
 
-        Info = Info.WithPadding(padLeft, padRight, padBottom, padTop);
+        Config = Config.WithPadding(padLeft, padRight, padBottom, padTop);
     }
 
     #endregion
 
     #region rendering
 
-    public void Draw(ICanvas canvas) => Draw(canvas, Info);
+    public void Draw(ICanvas canvas) => Draw(canvas, Config);
 
-    public void Draw(ICanvas canvas, PlotInfo info)
+    public void Draw(ICanvas canvas, PlotConfig info)
     {
         if (!info.FigureRect.HasPositiveArea)
             return;
@@ -140,13 +140,13 @@ public class Plot
             TightenLayoutOnNextRender = false;
         }
 
-        canvas.FillColor = Info.Style.FigureBackgroundColor;
+        canvas.FillColor = Config.Style.FigureBackgroundColor;
         canvas.FillRectangle(info.FigureRect.RectangleF);
 
         if (!info.DataRect.HasPositiveArea)
             return;
 
-        canvas.FillColor = Info.Style.DataBackgroundColor;
+        canvas.FillColor = Config.Style.DataBackgroundColor;
         canvas.FillRectangle(info.DataRect.RectangleF);
 
         foreach (Tick tick in allTicks)
@@ -160,13 +160,13 @@ public class Plot
         }
 
         canvas.StrokeSize = 1;
-        canvas.StrokeColor = Info.Style.DataBorderColor;
+        canvas.StrokeColor = Config.Style.DataBorderColor;
         canvas.DrawRectangle(info.DataRect.Expand(.5f).RectangleF);
 
         foreach (Tick tick in allTicks)
             tick.DrawTickAndLabel(canvas, info);
 
-        foreach (Axes.IAxis ax in Info.Axes)
+        foreach (Axes.IAxis ax in Config.Axes)
         {
             ax.Draw(canvas, info);
         }
@@ -182,10 +182,10 @@ public class Plot
 
     public string SaveFig(string path)
     {
-        return SaveFig(path, Info);
+        return SaveFig(path, Config);
     }
 
-    public string SaveFig(string path, PlotInfo layout)
+    public string SaveFig(string path, PlotConfig layout)
     {
         using SkiaBitmapExportContext context = new((int)layout.Width, (int)layout.Height, layout.DisplayScale);
 

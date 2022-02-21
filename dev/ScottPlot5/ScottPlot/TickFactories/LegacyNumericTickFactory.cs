@@ -11,7 +11,7 @@ namespace ScottPlot.TickFactories;
 /// </summary>
 internal class LegacyNumericTickFactory : ITickFactory
 {
-    public Tick[] GenerateTicks(PlotInfo info, Edge edge)
+    public Tick[] GenerateTicks(PlotConfig info, Edge edge)
     {
         return edge switch
         {
@@ -23,7 +23,7 @@ internal class LegacyNumericTickFactory : ITickFactory
         };
     }
 
-    private static Tick[] RecalculatePositionsAutomaticNumeric(PlotInfo info, Edge edge)
+    private static Tick[] RecalculatePositionsAutomaticNumeric(PlotConfig info, Edge edge)
     {
         float labelWidth = 30;
         float labelHeight = 12;

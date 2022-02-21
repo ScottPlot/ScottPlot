@@ -20,7 +20,7 @@ namespace ScottPlotTests.UnitTests
         {
             var tickFactory = new ScottPlot.TickFactories.SimpleNumericTickFactory();
 
-            ScottPlot.Tick[] ticks = tickFactory.GenerateTicks(ScottPlot.PlotInfo.Default, ScottPlot.Edge.Bottom);
+            ScottPlot.Tick[] ticks = tickFactory.GenerateTicks(ScottPlot.PlotConfig.Default, ScottPlot.Edge.Bottom);
 
             Console.WriteLine(ticks.LabelsMajor());
             Console.WriteLine(ticks.PositionsMajor());

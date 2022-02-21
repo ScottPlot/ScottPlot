@@ -50,7 +50,7 @@ public class Tick
         throw new InvalidOperationException($"unsupported {Orientation.GetType()}: {Orientation}");
     }
 
-    public void DrawGridLine(ICanvas canvas, PlotInfo info)
+    public void DrawGridLine(ICanvas canvas, PlotConfig info)
     {
         if (Orientation is Orientation.Horizontal)
             DrawVerticalGridLine(canvas, info);
@@ -60,7 +60,7 @@ public class Tick
             throw new NotImplementedException($"Unsupported {nameof(Orientation)}: {Orientation}");
     }
 
-    public void DrawTickAndLabel(ICanvas canvas, PlotInfo info)
+    public void DrawTickAndLabel(ICanvas canvas, PlotConfig info)
     {
         if (Edge == Edge.Bottom)
             DrawBottomTickAndLabel(canvas, info);
@@ -74,7 +74,7 @@ public class Tick
             throw new NotImplementedException($"Unsupported {nameof(Edge)}: {Edge}");
     }
 
-    private void DrawVerticalGridLine(ICanvas canvas, PlotInfo info)
+    private void DrawVerticalGridLine(ICanvas canvas, PlotConfig info)
     {
         float x = info.GetPixelX(Position);
 
@@ -85,7 +85,7 @@ public class Tick
         if (GridLineWidth > 0)
             canvas.DrawLine(ptGridTop, ptGridBottom);
     }
-    private void DrawHorizontalGridLine(ICanvas canvas, PlotInfo info)
+    private void DrawHorizontalGridLine(ICanvas canvas, PlotConfig info)
     {
         float y = info.GetPixelY(Position);
 
@@ -97,7 +97,7 @@ public class Tick
             canvas.DrawLine(ptGridLeft, ptGridRight);
     }
 
-    private void DrawBottomTickAndLabel(ICanvas canvas, PlotInfo info)
+    private void DrawBottomTickAndLabel(ICanvas canvas, PlotConfig info)
     {
         float x = info.GetPixelX(Position);
 
@@ -110,7 +110,7 @@ public class Tick
         Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Center, VerticalAlignment.Top);
     }
 
-    private void DrawTopTickAndLabel(ICanvas canvas, PlotInfo info)
+    private void DrawTopTickAndLabel(ICanvas canvas, PlotConfig info)
     {
         float x = info.GetPixelX(Position);
 
@@ -123,7 +123,7 @@ public class Tick
         Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Center, VerticalAlignment.Bottom);
     }
 
-    private void DrawLeftTickAndLabel(ICanvas canvas, PlotInfo info)
+    private void DrawLeftTickAndLabel(ICanvas canvas, PlotConfig info)
     {
         float y = info.GetPixelY(Position);
 
@@ -136,7 +136,7 @@ public class Tick
         Label.Draw(canvas, pt3.X, pt3.Y, HorizontalAlignment.Right, VerticalAlignment.Center);
     }
 
-    private void DrawRightTickAndLabel(ICanvas canvas, PlotInfo info)
+    private void DrawRightTickAndLabel(ICanvas canvas, PlotConfig info)
     {
         float y = info.GetPixelY(Position);
 

@@ -8,7 +8,7 @@ namespace ScottPlot.TickFactories;
 
 public class SimpleNumericTickFactory : ITickFactory
 {
-    public Tick[] GenerateTicks(PlotInfo info, Edge edge)
+    public Tick[] GenerateTicks(PlotConfig info, Edge edge)
     {
         return edge switch
         {

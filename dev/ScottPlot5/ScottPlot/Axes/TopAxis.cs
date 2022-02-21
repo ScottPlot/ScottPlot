@@ -11,7 +11,7 @@ public class TopAxis : AxisBase, IAxis
         Orientation = Orientation.Horizontal;
     }
 
-    public void Draw(ICanvas canvas, PlotInfo info)
+    public void Draw(ICanvas canvas, PlotConfig info)
     {
         Label.Draw(canvas, info.DataRect.HorizontalCenter, 0, HorizontalAlignment.Center, VerticalAlignment.Top);
     }
