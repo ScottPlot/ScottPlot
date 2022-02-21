@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ScottPlot;
 
@@ -18,6 +19,8 @@ public class PlotInfo
 
     public readonly float DisplayScale = 1.0f;
 
+    public readonly List<Axes.IAxis> Axes = new();
+
     /// <summary>
     /// Defines default styling for the plot such as background color and axis label text colors.
     /// This object is held in <see cref="PlotInfo"/> so it can be accessed by<see cref="IPlottable"/> objects at render time.
@@ -35,13 +38,20 @@ public class PlotInfo
     public double UnitsPerPxX => AxisLimits.Width / DataRect.Width;
     public double UnitsPerPxY => AxisLimits.Height / DataRect.Height;
 
-    private PlotInfo(PixelSize figureSize, PixelRect dataRect, CoordinateRect axisLimits, PlotStyle style, ITickFactory tickFactory)
+    private PlotInfo(
+        PixelSize figureSize,
+        PixelRect dataRect,
+        CoordinateRect axisLimits,
+        PlotStyle style,
+        ITickFactory tickFactory,
+        List<Axes.IAxis> axes)
     {
         FigureRect = new PixelRect(figureSize);
         DataRect = dataRect;
         AxisLimits = axisLimits;
         Style = style;
         TickFactory = tickFactory;
+        Axes = axes;
     }
 
     public Coordinate GetCoordinate(Pixel px) => new(GetCoordinateX(px.X), GetCoordinateY(px.Y));
@@ -96,11 +106,19 @@ public class PlotInfo
             CoordinateRect limits = new(-10, 60, -1.5, 1.5);
             PlotStyle style = new();
             ITickFactory tickFactory = new TickFactories.LegacyNumericTickFactory();
-            return new PlotInfo(figureSize, dataRect, limits, style, tickFactory);
+
+            List<Axes.IAxis> axes = new();
+            axes.Add(new Axes.LeftAxis("Vertical Axis"));
+            axes.Add(new Axes.BottomAxis("Horizontal Axis"));
+            axes.Add(new Axes.RightAxis("Secondary Axis"));
+            axes.Add(new Axes.TopAxis("Title"));
+
+            return new PlotInfo(figureSize, dataRect, limits, style, tickFactory, axes);
         }
     }
 
-    public PlotInfo WithDataRect(PixelRect dataRect) => new(FigureRect.Size, dataRect, AxisLimits, Style, TickFactory);
+    public PlotInfo WithDataRect(PixelRect dataRect) =>
+        new(FigureRect.Size, dataRect, AxisLimits, Style, TickFactory, Axes);
 
     public PlotInfo WithPadding(float left, float right, float bottom, float top)
     {
@@ -125,10 +143,11 @@ public class PlotInfo
         Pixel newDataOffset = new(padLeft, padTop);
         PixelRect newDataRect = new(newDataSize, newDataOffset);
 
-        return new(newFigureSize, newDataRect, AxisLimits, Style, TickFactory);
+        return new(newFigureSize, newDataRect, AxisLimits, Style, TickFactory, Axes);
     }
 
-    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) => new(FigureRect.Size, DataRect, axisLimits, Style, TickFactory);
+    public PlotInfo WithAxisLimits(CoordinateRect axisLimits) =>
+        new(FigureRect.Size, DataRect, axisLimits, Style, TickFactory, Axes);
 
     public PlotInfo WithPan(Pixel px1, Pixel px2) => WithPan(GetCoordinate(px1) - GetCoordinate(px2));
 
@@ -140,7 +159,7 @@ public class PlotInfo
             yMin: AxisLimits.YMin + delta.Y,
             yMax: AxisLimits.YMax + delta.Y);
 
-        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory);
+        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory, Axes);
     }
 
     public PlotInfo WithZoom(Pixel px, double frac)
@@ -175,6 +194,6 @@ public class PlotInfo
         double newMaxY = zoomToY + spanRightY / fracY;
 
         CoordinateRect newLimits = new(newMinX, newMaxX, newMinY, newMaxY);
-        return new PlotInfo(FigureRect.Size, DataRect, newLimits, Style, TickFactory);
+        return WithAxisLimits(newLimits);
     }
 }

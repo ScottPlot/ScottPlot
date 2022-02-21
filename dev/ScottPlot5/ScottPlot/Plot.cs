@@ -31,17 +31,9 @@ public class Plot
     /// </summary>
     public readonly RenderStats Stats = new();
 
-    /// <summary>
-    /// Each Axis rests on an Edge of the plot and contains a Label, size/style information, and tick configuration.
-    /// </summary>
-    public readonly List<Axes.IAxis> Axes = new();
 
     public Plot()
     {
-        Axes.Add(new Axes.LeftAxis("Vertical Axis"));
-        Axes.Add(new Axes.BottomAxis("Horizontal Axis"));
-        Axes.Add(new Axes.RightAxis("Secondary Axis"));
-        Axes.Add(new Axes.TopAxis("Title"));
     }
 
     #region add/remove plottables
@@ -97,7 +89,7 @@ public class Plot
 
     public void TightenLayout(ICanvas canvas, Tick[]? allTicks = null)
     {
-        Axes.IAxis[] GetAxisLabels(Edge edge) => Axes.Where(x => x.Edge == edge).ToArray();
+        Axes.IAxis[] GetAxisLabels(Edge edge) => Info.Axes.Where(x => x.Edge == edge).ToArray();
 
         float padLeft = GetAxisLabels(Edge.Left).Sum(x => x.Label.Measure(canvas).Height);
         float padRight = GetAxisLabels(Edge.Right).Sum(x => x.Label.Measure(canvas).Height);
@@ -180,7 +172,7 @@ public class Plot
         foreach (Tick tick in allTicks)
             tick.DrawTickAndLabel(canvas, info);
 
-        foreach (Axes.IAxis ax in Axes)
+        foreach (Axes.IAxis ax in Info.Axes)
         {
             ax.Draw(canvas, info);
         }
