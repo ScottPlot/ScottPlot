@@ -50,5 +50,61 @@ namespace ScottPlotTests.PlotTypes
             plt.AxisAuto(.2, .25);
             TestTools.SaveFig(plt);
         }
+
+        private ScottPlot.Plottable.BubblePlot CreateTestBubblePlot(bool plotToo = false)
+        {
+            int bubbleCount = 10;
+            double[] xs = ScottPlot.DataGen.Consecutive(bubbleCount);
+            double[] ys = ScottPlot.DataGen.Sin(bubbleCount);
+            System.Drawing.Color fillColor = System.Drawing.Color.Green;
+            System.Drawing.Color edgeColor = System.Drawing.Color.Magenta;
+            float edgeWidth = 2;
+            float radius = 5;
+
+            ScottPlot.Plottable.BubblePlot bp = new();
+            bp.Add(xs, ys, radius, fillColor, edgeWidth, edgeColor);
+
+            if (plotToo)
+            {
+                ScottPlot.Plot plt = new();
+                plt.Add(bp);
+                TestTools.SaveFig(plt);
+            }
+
+            return bp;
+        }
+
+        [Test]
+        public void Test_BubblePlot_GetPointNearestX()
+        {
+            ScottPlot.Plottable.BubblePlot bp = CreateTestBubblePlot();
+
+            (double x, double y, int index) = bp.GetPointNearestX(5.1);
+            Assert.AreEqual(5, x);
+            Assert.AreEqual(y, -.3, .1);
+            Assert.AreEqual(index, 5);
+        }
+
+        [Test]
+        public void Test_BubblePlot_GetPointNearestY()
+        {
+            ScottPlot.Plottable.BubblePlot bp = CreateTestBubblePlot();
+
+            (double x, double y, int index) = bp.GetPointNearestY(-0.25);
+            Assert.AreEqual(5, x);
+            Assert.AreEqual(y, -.3, .1);
+            Assert.AreEqual(index, 5);
+        }
+
+        [Test]
+        public void Test_BubblePlot_GetPointNearest()
+        {
+            ScottPlot.Plottable.BubblePlot bp = CreateTestBubblePlot();
+
+            (double x, double y, int index) = bp.GetPointNearest(5.1, -0.25);
+            Assert.AreEqual(5, x);
+            Assert.AreEqual(y, -.3, .1);
+            Assert.AreEqual(index, 5);
+        }
     }
 }
