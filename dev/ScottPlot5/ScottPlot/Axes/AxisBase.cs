@@ -5,7 +5,6 @@ namespace ScottPlot.Axes;
 
 public abstract class AxisBase
 {
-    // TODO: make readonly
     public Edge Edge { get; private set; }
     public Orientation Orientation { get; private set; }
     public ITickFactory TickFactory { get; set; }
@@ -43,7 +42,7 @@ public abstract class AxisBase
         {
             float size = Label.Measure(canvas).Height;
 
-            if (ticks is not null)
+            if (ticks is not null && ticks.Any())
                 size += ticks.Select(x => x.Measure(canvas).Height).Max();
 
             return size;
@@ -52,7 +51,7 @@ public abstract class AxisBase
         {
             float size = Label.Measure(canvas).Height;
 
-            if (ticks is not null)
+            if (ticks is not null && ticks.Any())
                 size += ticks.Select(x => x.Measure(canvas).Width).Max();
 
             return size;

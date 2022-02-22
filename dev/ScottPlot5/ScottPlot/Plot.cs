@@ -93,11 +93,11 @@ public class Plot
             config = config.WithTightLayout(canvas);
         if (!config.DataRect.HasPositiveArea)
             return config;
-        Tick[] allTicks = config.GenerateAllTicks();
+        List<(Axes.IAxis, Tick[])> ticksByAxis = config.GenerateAllTicks();
         DrawDataBackground(canvas, config);
-        DrawGridLines(canvas, config, allTicks);
+        DrawGridLines(canvas, config, ticksByAxis);
         DrawPlottables(canvas, config, plottables);
-        DrawAxisLabelsTicksAndSpines(canvas, config, allTicks);
+        DrawAxisLabelsTicksAndSpines(canvas, config, ticksByAxis);
         sw.Stop();
 
         stats.AddRenderTime(sw.Elapsed);
@@ -118,12 +118,13 @@ public class Plot
         canvas.FillRectangle(config.DataRect.RectangleF);
     }
 
-    private static void DrawGridLines(ICanvas canvas, PlotConfig config, Tick[] allTicks)
+    private static void DrawGridLines(ICanvas canvas, PlotConfig config, List<(Axes.IAxis, Tick[])> ticksByAxis)
     {
-        foreach (Axes.IAxis axis in config.Axes)
+        foreach (var x in ticksByAxis)
         {
-            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == axis.Edge).ToArray();
-            axis.DrawGridLines(canvas, config, axisTicks);
+            Axes.IAxis axis = x.Item1;
+            Tick[] ticks = x.Item2;
+            axis.DrawGridLines(canvas, config, ticks);
         }
     }
 
@@ -137,24 +138,23 @@ public class Plot
         }
     }
 
-    private static void DrawAxisLabelsTicksAndSpines(ICanvas canvas, PlotConfig config, Tick[] allTicks)
+    private static void DrawAxisLabelsTicksAndSpines(ICanvas canvas, PlotConfig config, List<(Axes.IAxis, Tick[])> ticksByAxis)
     {
-        // TODO: improve with linq
-        Dictionary<Edge, float> axisOffsets = new();
-        Edge[] edges = config.Axes.Select(x => x.Edge).Distinct().ToArray();
-        foreach (Edge edge in edges)
-            axisOffsets[edge] = 0;
+        Dictionary<Edge, float> cumulativeOffset = config.Axes
+            .Select(x => x.Edge)
+            .Distinct()
+            .ToDictionary(x => x, x => 0f);
 
-        foreach (Axes.IAxis axis in config.Axes)
+        foreach (var x in ticksByAxis)
         {
-            // TODO: select just the ticks for each axis!
-            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == axis.Edge).ToArray();
-            float axisSize = axis.Measure(canvas, axisTicks);
-            float axisOffset = axisOffsets[axis.Edge];
-            axis.DrawTicks(canvas, config, axisTicks, axisOffset);
+            Axes.IAxis axis = x.Item1;
+            Tick[] ticks = x.Item2;
+            float axisSize = axis.Measure(canvas, ticks);
+            float axisOffset = cumulativeOffset[axis.Edge];
+            axis.DrawTicks(canvas, config, ticks, axisOffset);
             axis.DrawAxisLabel(canvas, config, axisSize, axisOffset);
             axis.DrawSpine(canvas, config, axisOffset);
-            axisOffsets[axis.Edge] += axisSize;
+            cumulativeOffset[axis.Edge] += axisSize;
         }
     }
 

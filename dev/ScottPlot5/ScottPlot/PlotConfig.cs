@@ -126,28 +126,40 @@ public class PlotConfig
          *   - Regenerate ticks using the final layout
          */
 
-        Tick[]? genericTicks = null;
+        List<(Axes.IAxis, Tick[])>? genericTicks = null;
         var genericInfo = this.WithTightDataRect(canvas, genericTicks);
-        Tick[] preliminaryTicks = genericInfo.GenerateAllTicks();
+        List<(Axes.IAxis, Tick[])> preliminaryTicks = genericInfo.GenerateAllTicks();
         var preliminaryInfo = genericInfo.WithTightDataRect(canvas, preliminaryTicks);
-        Tick[] realTicks = preliminaryInfo.GenerateAllTicks();
+        List<(Axes.IAxis, Tick[])> realTicks = preliminaryInfo.GenerateAllTicks();
         return preliminaryInfo.WithTightDataRect(canvas, realTicks);
     }
 
-    /// <summary>
-    /// Regenerate ticks for every axis
-    /// </summary>
-    public Tick[] GenerateAllTicks()
+    public List<(Axes.IAxis, Tick[])> GenerateAllTicks()
     {
-        return Axes.SelectMany(x => x.TickFactory.GenerateTicks(this)).ToArray();
+        // TODO: is there a better datatype for this?
+
+        List<(Axes.IAxis, Tick[])> ticksByAxis = new();
+
+        foreach (Axes.IAxis axis in Axes)
+        {
+            Tick[] ticks = axis.TickFactory.GenerateTicks(this);
+            ticksByAxis.Add((axis, ticks));
+        }
+
+        return ticksByAxis;
     }
 
-    private PlotConfig WithTightDataRect(ICanvas canvas, Tick[]? ticks)
+    private PlotConfig WithTightDataRect(ICanvas canvas, List<(Axes.IAxis, Tick[])> ticksByAxis)
     {
-        float padL = Axes.Where(x => x.Edge is Edge.Left).Select(x => x.Measure(canvas, ticks)).Sum();
-        float padR = Axes.Where(x => x.Edge is Edge.Right).Select(x => x.Measure(canvas, ticks)).Sum();
-        float padT = Axes.Where(x => x.Edge is Edge.Top).Select(x => x.Measure(canvas, ticks)).Sum();
-        float padB = Axes.Where(x => x.Edge is Edge.Bottom).Select(x => x.Measure(canvas, ticks)).Sum();
+        List<Tick> ticks = new();
+        if (ticksByAxis is not null)
+            foreach (var item in ticksByAxis)
+                ticks.AddRange(item.Item2);
+
+        float padL = Axes.Where(x => x.Edge is Edge.Left).Select(x => x.Measure(canvas, ticks.ToArray())).Sum();
+        float padR = Axes.Where(x => x.Edge is Edge.Right).Select(x => x.Measure(canvas, ticks.ToArray())).Sum();
+        float padT = Axes.Where(x => x.Edge is Edge.Top).Select(x => x.Measure(canvas, ticks.ToArray())).Sum();
+        float padB = Axes.Where(x => x.Edge is Edge.Bottom).Select(x => x.Measure(canvas, ticks.ToArray())).Sum();
         return WithPadding(padL, padR, padB, padT);
     }
 
