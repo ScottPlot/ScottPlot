@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         public System.Drawing.Color color;
         public System.Drawing.Color hatchColor;
         public System.Drawing.Color borderColor;
-        public float borderLineWidth;
+        public float borderWidth;
         public LineStyle borderLineStyle;
 
         public LineStyle lineStyle;

@@ -156,7 +156,7 @@ namespace ScottPlot.Plottable
                 hatchColor = FillColorHatch,
                 hatchStyle = HatchStyle,
                 borderColor = BorderColor,
-                borderLineWidth = BorderLineWidth
+                borderWidth = BorderLineWidth
             };
             return new LegendItem[] { singleItem };
         }

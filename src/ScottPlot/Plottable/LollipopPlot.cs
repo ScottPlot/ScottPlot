@@ -58,7 +58,7 @@ namespace ScottPlot.Plottable
                 lineWidth = 10,
                 markerShape = MarkerShape.none,
                 borderColor = BorderColor,
-                borderLineWidth = 1
+                borderWidth = 1
             };
             return new LegendItem[] { singleItem };
         }

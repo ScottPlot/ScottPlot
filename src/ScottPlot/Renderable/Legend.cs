@@ -155,7 +155,7 @@ namespace ScottPlot.Renderable
                         RectangleF rect = new RectangleF(rectOrigin, rectSize);
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderLineWidth, item.borderLineStyle))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderWidth, item.borderLineStyle))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);

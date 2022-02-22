@@ -63,7 +63,7 @@ namespace ScottPlot.Plottable
             {
                 label = Label,
                 color = Color,
-                borderLineWidth = Math.Min(BorderLineWidth, 3),
+                borderWidth = Math.Min(BorderLineWidth, 3),
                 borderColor = BorderColor,
                 borderLineStyle = BorderLineStyle,
                 hatchColor = HatchColor,
