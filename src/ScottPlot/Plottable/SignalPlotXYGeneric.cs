@@ -199,6 +199,10 @@ namespace ScottPlot.Plottable
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
 
+                // Simulate a step display by adding extra points at the corners.
+                if (StepDisplay)
+                    PointsToDraw = GetStepPoints(PointsToDraw);
+
                 // Fill below the line
                 switch (_FillType)
                 {
@@ -220,13 +224,8 @@ namespace ScottPlot.Plottable
                 // Draw lines
                 if (PointsToDraw.Length > 1)
                 {
-                    PointF[] pointsArray = PointsToDraw.ToArray();
-                    ValidatePoints(pointsArray);
-
-                    if (StepDisplay)
-                        pointsArray = GetStepPoints(pointsArray);
-
-                    gfx.DrawLines(penHD, pointsArray);
+                    ValidatePoints(PointsToDraw);
+                    gfx.DrawLines(penHD, PointsToDraw);
                 }
 
                 // draw markers
