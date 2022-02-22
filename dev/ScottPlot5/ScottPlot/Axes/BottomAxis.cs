@@ -9,10 +9,16 @@ public class BottomAxis : AxisBase, IAxis
         Ticks(ticks);
     }
 
-    public void Draw(ICanvas canvas, PlotConfig info)
+    public void Draw(ICanvas canvas, PlotConfig info, Tick[] ticks)
     {
         float xCenter = info.DataRect.HorizontalCenter;
         float yBottom = info.Height;
         Label.Draw(canvas, xCenter, yBottom, HorizontalAlignment.Center, VerticalAlignment.Bottom);
+
+        foreach (Tick tick in ticks)
+        {
+            // TODO: move position logic here
+            tick.DrawTickAndLabel(canvas, info);
+        }
     }
 }

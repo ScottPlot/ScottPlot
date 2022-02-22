@@ -117,12 +117,10 @@ public class Plot
         canvas.StrokeColor = config.Style.DataBorderColor;
         canvas.DrawRectangle(config.DataRect.Expand(.5f).RectangleF);
 
-        foreach (Tick tick in ticks)
-            tick.DrawTickAndLabel(canvas, config);
-
         foreach (Axes.IAxis ax in config.Axes)
         {
-            ax.Draw(canvas, config);
+            Tick[] axisTicks = ticks.Where(tick => tick.Edge == ax.Edge).ToArray();
+            ax.Draw(canvas, config, axisTicks);
         }
 
         sw.Stop();
