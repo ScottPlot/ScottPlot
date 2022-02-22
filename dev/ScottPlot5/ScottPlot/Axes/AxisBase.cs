@@ -37,7 +37,7 @@ public abstract class AxisBase
             : new TickFactories.EmptyTickFactory(Edge);
     }
 
-    public float Size(ICanvas canvas, Tick[]? ticks)
+    public float Measure(ICanvas canvas, Tick[]? ticks)
     {
         if (Orientation is Orientation.Horizontal)
         {

@@ -99,14 +99,13 @@ public class PlotConfig
                 new Axes.RightAxis("Secondary Axis", true),
                 new Axes.TopAxis("Title", true),
 
-                /*
                 new Axes.LeftAxis("Vertical Axis #3", true),
                 new Axes.RightAxis("Vertical Axis #4", true),
                 new Axes.LeftAxis("Vertical Axis #5", true),
                 new Axes.RightAxis("Vertical Axis #6", true),
-                new Axes.LeftAxis("Vertical Axis #7", true),
-                new Axes.RightAxis("Vertical Axis #8", true),
-                */
+
+                new Axes.BottomAxis("Horizontal Axis #7", true),
+                new Axes.TopAxis("Horizontal Axis #8", true),
             };
 
             return new PlotConfig(figureSize, dataRect, limits, style, axes);
@@ -145,10 +144,10 @@ public class PlotConfig
 
     private PlotConfig WithTightDataRect(ICanvas canvas, Tick[]? ticks)
     {
-        float padL = Axes.Where(x => x.Edge is Edge.Left).Select(x => x.Size(canvas, ticks)).Sum();
-        float padR = Axes.Where(x => x.Edge is Edge.Right).Select(x => x.Size(canvas, ticks)).Sum();
-        float padT = Axes.Where(x => x.Edge is Edge.Top).Select(x => x.Size(canvas, ticks)).Sum();
-        float padB = Axes.Where(x => x.Edge is Edge.Bottom).Select(x => x.Size(canvas, ticks)).Sum();
+        float padL = Axes.Where(x => x.Edge is Edge.Left).Select(x => x.Measure(canvas, ticks)).Sum();
+        float padR = Axes.Where(x => x.Edge is Edge.Right).Select(x => x.Measure(canvas, ticks)).Sum();
+        float padT = Axes.Where(x => x.Edge is Edge.Top).Select(x => x.Measure(canvas, ticks)).Sum();
+        float padB = Axes.Where(x => x.Edge is Edge.Bottom).Select(x => x.Measure(canvas, ticks)).Sum();
         return WithPadding(padL, padR, padB, padT);
     }
 

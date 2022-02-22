@@ -39,7 +39,7 @@ namespace ScottPlot
             return PixelSize.FromSizeF(size);
         }
 
-        public void Draw(ICanvas canvas, float x, float y, float rotate)
+        public void Draw(ICanvas canvas, float x, float y, float rotate, bool invert = false)
         {
             // TODO: improve alignment options
             // https://scottplot.net/cookbook/4.1/category/plottable-text/#text-alignment-and-rotation
@@ -47,7 +47,7 @@ namespace ScottPlot
 
             Microsoft.Maui.Graphics.Font font = new(FontName, FontWeight, FontStyle);
             SizeF stringSize = canvas.GetStringSize(Text, font, FontSize);
-            float textHeight = stringSize.Height;
+            float textHeight = invert ? -stringSize.Height : stringSize.Height;
             canvas.SaveState();
             canvas.Translate(x + textHeight, y);
             canvas.Rotate(rotate);
