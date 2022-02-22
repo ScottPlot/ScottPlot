@@ -147,7 +147,7 @@ namespace ScottPlot.Plottable
             double minDistance = Double.PositiveInfinity;
             int minIndex = 0;
             Bubble currBubble = Bubbles.ElementAt(0);
-            for (int i = 0; i <= Bubbles.Count; i++)
+            for (int i = 0; i < Bubbles.Count; i++)
             {
                 currBubble = Bubbles.ElementAt(i);
                 double currDistance = Math.Abs(currBubble.X - x);
@@ -171,7 +171,7 @@ namespace ScottPlot.Plottable
             double minDistance = Double.PositiveInfinity;
             int minIndex = 0;
             Bubble currBubble = Bubbles.ElementAt(0);
-            for (int i = 0; i <= Bubbles.Count; i++)
+            for (int i = 0; i < Bubbles.Count; i++)
             {
                 currBubble = Bubbles.ElementAt(i);
                 double currDistance = Math.Abs(currBubble.Y - y);
@@ -201,7 +201,7 @@ namespace ScottPlot.Plottable
             double minDistance = Double.PositiveInfinity;
             int minIndex = 0;
             Bubble currBubble = Bubbles.ElementAt(0);
-            for (int i = 0; i <= Bubbles.Count; i++)
+            for (int i = 0; i < Bubbles.Count; i++)
             {
                 currBubble = Bubbles.ElementAt(i);
                 double currDistance = pointDistanceSquared(currBubble.X, currBubble.Y);
