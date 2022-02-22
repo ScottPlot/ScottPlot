@@ -144,6 +144,9 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
+
             double minDistance = Double.PositiveInfinity;
             int minIndex = 0;
             Bubble currBubble = Bubbles.ElementAt(0);
@@ -168,6 +171,9 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (double x, double y, int index) GetPointNearestY(double y)
         {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
+
             double minDistance = Double.PositiveInfinity;
             int minIndex = 0;
             Bubble currBubble = Bubbles.ElementAt(0);
@@ -193,6 +199,8 @@ namespace ScottPlot.Plottable
         /// <param name="xyRatio">Ratio of pixels per unit (X/Y) when rendered</param>
         public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1)
         {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
 
             double xyRatioSquared = xyRatio * xyRatio;
             double pointDistanceSquared(double x1, double y1) =>
