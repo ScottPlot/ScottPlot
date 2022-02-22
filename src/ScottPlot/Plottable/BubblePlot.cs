@@ -46,6 +46,7 @@ namespace ScottPlot.Plottable
         /// <param name="edgeColor"></param>
         public void Add(double x, double y, double radius, Color fillColor, double edgeWidth, Color edgeColor)
         {
+            // TODO: inconsistent argumen tnames in overloads (radius vs size)
             Bubbles.Add(new Bubble()
             {
                 X = x,
@@ -147,21 +148,19 @@ namespace ScottPlot.Plottable
             if (Bubbles.Count == 0)
                 throw new InvalidOperationException("BubblePlot is empty");
 
-            double minDistance = Double.PositiveInfinity;
-            int minIndex = 0;
-            Bubble currBubble = Bubbles.ElementAt(0);
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
             for (int i = 0; i < Bubbles.Count; i++)
             {
-                currBubble = Bubbles.ElementAt(i);
-                double currDistance = Math.Abs(currBubble.X - x);
-                if (currDistance < minDistance)
+                double currDistance = Math.Abs(Bubbles[i].X - x);
+                if (currDistance < closestBubbleDistance)
                 {
-                    minIndex = i;
-                    minDistance = currDistance;
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
                 }
             }
 
-            return (currBubble.X, currBubble.Y, minIndex);
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
         }
 
         /// <summary>
@@ -174,21 +173,19 @@ namespace ScottPlot.Plottable
             if (Bubbles.Count == 0)
                 throw new InvalidOperationException("BubblePlot is empty");
 
-            double minDistance = Double.PositiveInfinity;
-            int minIndex = 0;
-            Bubble currBubble = Bubbles.ElementAt(0);
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
             for (int i = 0; i < Bubbles.Count; i++)
             {
-                currBubble = Bubbles.ElementAt(i);
-                double currDistance = Math.Abs(currBubble.Y - y);
-                if (currDistance < minDistance)
+                double currDistance = Math.Abs(Bubbles[i].Y - y);
+                if (currDistance < closestBubbleDistance)
                 {
-                    minIndex = i;
-                    minDistance = currDistance;
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
                 }
             }
 
-            return (currBubble.X, currBubble.Y, minIndex);
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
         }
 
         /// <summary>
@@ -206,21 +203,19 @@ namespace ScottPlot.Plottable
             double pointDistanceSquared(double x1, double y1) =>
                 (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
 
-            double minDistance = Double.PositiveInfinity;
-            int minIndex = 0;
-            Bubble currBubble = Bubbles.ElementAt(0);
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
             for (int i = 0; i < Bubbles.Count; i++)
             {
-                currBubble = Bubbles.ElementAt(i);
-                double currDistance = pointDistanceSquared(currBubble.X, currBubble.Y);
-                if (currDistance < minDistance)
+                double currDistance = pointDistanceSquared(Bubbles[i].X, Bubbles[i].Y);
+                if (currDistance < closestBubbleDistance)
                 {
-                    minIndex = i;
-                    minDistance = currDistance;
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
                 }
             }
 
-            return (currBubble.X, currBubble.Y, minIndex);
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
         }
     }
 }
