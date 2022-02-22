@@ -155,7 +155,7 @@ namespace ScottPlot.Renderable
                         RectangleF rect = new RectangleF(rectOrigin, rectSize);
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderLineWidth,item.borderLineStyle))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderLineWidth, item.borderLineStyle))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
@@ -171,7 +171,7 @@ namespace ScottPlot.Renderable
                         }
                     }
                     if (item.Parent is IHasMarker)
-                    { 
+                    {
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
