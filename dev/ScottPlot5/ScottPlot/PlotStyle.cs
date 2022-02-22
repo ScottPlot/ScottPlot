@@ -14,7 +14,7 @@ public class PlotStyle
 
     public Color DataBackgroundColor = Colors.White;
 
-    public Color DataBorderColor = Colors.Black;
+    public Color SpineColor = Colors.Black;
 
     public readonly Palette Palette = Palettes.Default;
 }

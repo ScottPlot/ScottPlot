@@ -9,5 +9,8 @@ public interface IAxis
     TextLabel Label { get; }
     ITickFactory TickFactory { get; set; }
     float Size(ICanvas canvas, Tick[]? ticks);
-    void Draw(ICanvas canvas, PlotConfig info, Tick[] ticks);
+    void DrawAxisLabel(ICanvas canvas, PlotConfig info);
+    void DrawTicks(ICanvas canvas, PlotConfig info, Tick[] allTicks);
+    void DrawGridLines(ICanvas canvas, PlotConfig info, Tick[] ticks);
+    void DrawSpine(ICanvas canvas, PlotConfig config);
 }

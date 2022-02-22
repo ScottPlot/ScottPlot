@@ -98,6 +98,7 @@ public class Plot
         DrawGridLines(canvas, config, allTicks);
         DrawPlottables(canvas, config, plottables);
         DrawAxisLabelsAndTicks(canvas, config, allTicks);
+        DrawSpines(canvas, config);
         sw.Stop();
 
         stats.AddRenderTime(sw.Elapsed);
@@ -120,8 +121,11 @@ public class Plot
 
     private static void DrawGridLines(ICanvas canvas, PlotConfig config, Tick[] allTicks)
     {
-        foreach (Tick tick in allTicks)
-            tick.DrawGridLine(canvas, config);
+        foreach (Axes.IAxis axis in config.Axes)
+        {
+            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == axis.Edge).ToArray();
+            axis.DrawGridLines(canvas, config, axisTicks);
+        }
     }
 
     private static void DrawPlottables(ICanvas canvas, PlotConfig config, IPlottable[] plottables)
@@ -136,10 +140,19 @@ public class Plot
 
     private static void DrawAxisLabelsAndTicks(ICanvas canvas, PlotConfig config, Tick[] allTicks)
     {
-        foreach (Axes.IAxis ax in config.Axes)
+        foreach (Axes.IAxis axis in config.Axes)
         {
-            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == ax.Edge).ToArray();
-            ax.Draw(canvas, config, axisTicks);
+            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == axis.Edge).ToArray();
+            axis.DrawTicks(canvas, config, axisTicks);
+            axis.DrawAxisLabel(canvas, config);
+        }
+    }
+
+    private static void DrawSpines(ICanvas canvas, PlotConfig config)
+    {
+        foreach (Axes.IAxis axis in config.Axes)
+        {
+            axis.DrawSpine(canvas, config);
         }
     }
 

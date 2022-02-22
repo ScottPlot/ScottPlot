@@ -11,6 +11,10 @@ public abstract class AxisBase
     public ITickFactory TickFactory { get; set; }
     public TextLabel Label { get; } = new();
 
+    public Color SpineColor = Colors.Black;
+    public float SpineLineWidth = 1.0f;
+    public float SpineOffset = 0.5f;
+
     public AxisBase(Edge edge, string text)
     {
         Edge = edge;
@@ -52,6 +56,36 @@ public abstract class AxisBase
                 size += ticks.Select(x => x.Measure(canvas).Width).Max();
 
             return size;
+        }
+    }
+
+    public static void DrawVerticalGridLines(ICanvas canvas, PlotConfig info, Tick[] ticks)
+    {
+        foreach (Tick tick in ticks)
+        {
+            float x = info.GetPixelX(tick.Position);
+
+            PointF ptGridTop = new(x, info.DataRect.Top);
+            PointF ptGridBottom = new(x, info.DataRect.Bottom);
+            canvas.StrokeSize = tick.GridLineWidth;
+            canvas.StrokeColor = tick.GridLineColor;
+            if (tick.GridLineWidth > 0)
+                canvas.DrawLine(ptGridTop, ptGridBottom);
+        }
+    }
+
+    public static void DrawHorizontalGridLines(ICanvas canvas, PlotConfig info, Tick[] ticks)
+    {
+        foreach (Tick tick in ticks)
+        {
+            float y = info.GetPixelY(tick.Position);
+
+            PointF ptGridLeft = new(info.DataRect.Left, y);
+            PointF ptGridRight = new(info.DataRect.Right, y);
+            canvas.StrokeSize = tick.GridLineWidth;
+            canvas.StrokeColor = tick.GridLineColor;
+            if (tick.GridLineWidth > 0)
+                canvas.DrawLine(ptGridLeft, ptGridRight);
         }
     }
 }
