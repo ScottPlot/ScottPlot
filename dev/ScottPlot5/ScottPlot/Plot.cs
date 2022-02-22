@@ -77,57 +77,70 @@ public class Plot
     #region rendering
 
     public void Draw(ICanvas canvas) =>
-        Config = Draw(canvas, Config, true, Plottables, Stats);
+        Config = Draw(canvas, Config, true, Plottables.ToArray(), Stats);
 
     public void Draw(ICanvas canvas, PlotConfig config) =>
-        Config = Draw(canvas, config, false, Plottables, Stats);
+        Config = Draw(canvas, config, false, Plottables.ToArray(), Stats);
 
-    private static PlotConfig Draw(ICanvas canvas, PlotConfig config, bool tightenLayout, List<IPlottable> plottables, RenderStats stats)
+    private static PlotConfig Draw(ICanvas canvas, PlotConfig config, bool tightenLayout, IPlottable[] plottables, RenderStats stats)
     {
         if (!config.FigureRect.HasPositiveArea)
             return config;
 
         Stopwatch sw = Stopwatch.StartNew();
-
+        DrawFigureBackground(canvas, config);
         if (tightenLayout)
             config = config.WithTightLayout(canvas);
-
-        Tick[] ticks = config.GenerateTicks();
-
-        canvas.FillColor = config.Style.FigureBackgroundColor;
-        canvas.FillRectangle(config.FigureRect.RectangleF);
-
         if (!config.DataRect.HasPositiveArea)
             return config;
+        Tick[] allTicks = config.GenerateAllTicks();
+        DrawDataBackground(canvas, config);
+        DrawGridLines(canvas, config, allTicks);
+        DrawPlottables(canvas, config, plottables);
+        DrawAxisLabelsAndTicks(canvas, config, allTicks);
+        sw.Stop();
 
+        stats.AddRenderTime(sw.Elapsed);
+        stats.Draw(canvas, config);
+
+        return config;
+    }
+
+    private static void DrawFigureBackground(ICanvas canvas, PlotConfig config)
+    {
+        canvas.FillColor = config.Style.FigureBackgroundColor;
+        canvas.FillRectangle(config.FigureRect.RectangleF);
+    }
+
+    private static void DrawDataBackground(ICanvas canvas, PlotConfig config)
+    {
         canvas.FillColor = config.Style.DataBackgroundColor;
         canvas.FillRectangle(config.DataRect.RectangleF);
+    }
 
-        foreach (Tick tick in ticks)
+    private static void DrawGridLines(ICanvas canvas, PlotConfig config, Tick[] allTicks)
+    {
+        foreach (Tick tick in allTicks)
             tick.DrawGridLine(canvas, config);
+    }
 
+    private static void DrawPlottables(ICanvas canvas, PlotConfig config, IPlottable[] plottables)
+    {
         foreach (IPlottable plottable in plottables)
         {
             canvas.SaveState(); // because we can't trust each plottable to do this
             plottable.Draw(canvas, config);
             canvas.RestoreState();
         }
+    }
 
-        canvas.StrokeSize = 1;
-        canvas.StrokeColor = config.Style.DataBorderColor;
-        canvas.DrawRectangle(config.DataRect.Expand(.5f).RectangleF);
-
+    private static void DrawAxisLabelsAndTicks(ICanvas canvas, PlotConfig config, Tick[] allTicks)
+    {
         foreach (Axes.IAxis ax in config.Axes)
         {
-            Tick[] axisTicks = ticks.Where(tick => tick.Edge == ax.Edge).ToArray();
+            Tick[] axisTicks = allTicks.Where(tick => tick.Edge == ax.Edge).ToArray();
             ax.Draw(canvas, config, axisTicks);
         }
-
-        sw.Stop();
-        stats.AddRenderTime(sw.Elapsed);
-        stats.Draw(canvas, config);
-
-        return config;
     }
 
     #endregion

@@ -129,13 +129,16 @@ public class PlotConfig
 
         Tick[]? genericTicks = null;
         var genericInfo = this.WithTightDataRect(canvas, genericTicks);
-        Tick[] preliminaryTicks = genericInfo.GenerateTicks();
+        Tick[] preliminaryTicks = genericInfo.GenerateAllTicks();
         var preliminaryInfo = genericInfo.WithTightDataRect(canvas, preliminaryTicks);
-        Tick[] realTicks = preliminaryInfo.GenerateTicks();
+        Tick[] realTicks = preliminaryInfo.GenerateAllTicks();
         return preliminaryInfo.WithTightDataRect(canvas, realTicks);
     }
 
-    public Tick[] GenerateTicks()
+    /// <summary>
+    /// Regenerate ticks for every axis
+    /// </summary>
+    public Tick[] GenerateAllTicks()
     {
         return Axes.SelectMany(x => x.TickFactory.GenerateTicks(this)).ToArray();
     }
