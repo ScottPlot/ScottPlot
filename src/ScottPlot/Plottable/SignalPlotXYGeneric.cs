@@ -180,15 +180,16 @@ namespace ScottPlot.Plottable
 
                 // Interpolate before displayed point to make it x = -1 (close to visible area)
                 // this fix extreme zoom in bug
-                if (PointBefore.Length > 0 && PointsToDraw.Length >= 2)
+                if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
                     float x0 = -1 + dims.DataOffsetX;
                     float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
                     PointsToDraw[0] = new PointF(x0, y0);
                 }
+
                 // Interpolate after displayed point to make it x = datasize.Width(close to visible area)
                 // this fix extreme zoom in bug
-                if (PointAfter.Length > 0 && PointsToDraw.Length >= 2)
+                if (PointAfter.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
@@ -309,7 +310,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
-        private new(double x, TY y, int index) GetPointNearestX(double x)
+        private new (double x, TY y, int index) GetPointNearestX(double x)
         {
             throw new NotImplementedException();
         }
