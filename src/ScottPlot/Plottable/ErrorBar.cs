@@ -119,7 +119,6 @@ namespace ScottPlot.Plottable
                 float xPixel = dims.GetPixelX(Xs[i]);
                 float yPixel = dims.GetPixelY(Ys[i]);
                 pixels[i] = new(xPixel, yPixel);
-                ;
             }
             MarkerTools.DrawMarkers(gfx, pixels, MarkerShape, MarkerSize, Color, MarkerLineWidth);
         }
