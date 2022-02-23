@@ -81,7 +81,7 @@ namespace ScottPlot.Plottable
     /// This plot type displays a marker at a point that can be dragged with the mouse,
     /// but when dragged it "snapps" to specific X/Y coordinates defined by two arrays of values.
     /// </summary>
-    public class DraggableMarkerPlotInVector : IDraggable, IPlottable
+    public class DraggableMarkerPlotInVector : IDraggable, IPlottable, IHasMarker
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -108,12 +108,22 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Size of the marker in pixel units
         /// </summary>
-        public double MarkerSize { get; set; } = 10;
+        public float MarkerSize { get; set; } = 10;
 
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
         public Color Color { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Color of the marker to display at this point
+        /// </summary>
+        public Color MarkerColor { get => Color; set { Color = value; } }
+
+        /// <summary>
+        /// Width of the marker lines in pixel units
+        /// </summary>
+        public float MarkerLineWidth { get; set; } = 1;
 
         /// <summary>
         /// Text to appear in the legend (if populated)
@@ -180,7 +190,7 @@ namespace ScottPlot.Plottable
             {
                 PointF point = new PointF(dims.GetPixelX(Xs[CurrentIndex]), dims.GetPixelY(Ys[CurrentIndex]));
 
-                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color, MarkerLineWidth);
             }
         }
 
@@ -233,7 +243,7 @@ namespace ScottPlot.Plottable
                 label = Label,
                 markerShape = MarkerShape,
                 markerSize = MarkerSize,
-                color = Color
+                color = Color,
             };
             return new LegendItem[] { singleItem };
         }

@@ -64,6 +64,12 @@ namespace ScottPlot.Plottable
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
             set { _markerSize = value; }
         }
+        private float _markerLineWidth = 1;
+        public float MarkerLineWidth
+        {
+            get => IsHighlighted ? (float)_lineWidth * HighlightCoefficient : _markerLineWidth;
+            set { _markerLineWidth = value; }
+        }
 
         public bool StepDisplay = false;
 
@@ -307,7 +313,7 @@ namespace ScottPlot.Plottable
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
-                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor);
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
                 }
             }
         }

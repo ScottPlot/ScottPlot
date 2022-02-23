@@ -26,21 +26,21 @@ namespace ScottPlot
             marker.Draw(gfx, pixelLocation, radius, brush, pen);
         }
 
-        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color)
+        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color, float linewidth = 1)
         {
             using Brush brush = new SolidBrush(color);
-            using Pen pen = new(color);
+            using Pen pen = new(color, linewidth);
             DrawMarker(gfx, pixelLocation, shape, size, brush, pen);
         }
 
-        public static void DrawMarkers(Graphics gfx, ICollection<PointF> pixelLocations, MarkerShape shape, float size, Color color)
+        public static void DrawMarkers(Graphics gfx, ICollection<PointF> pixelLocations, MarkerShape shape, float size, Color color, float linewidth = 1)
         {
             using SolidBrush brush = new(color);
-            using Pen pen = new(color);
+            using Pen pen = new(color, linewidth);
 
             foreach (PointF pt in pixelLocations)
             {
-                DrawMarker(gfx, pt, shape, size, color);
+                DrawMarker(gfx, pt, shape, size, color, linewidth);
             }
         }
 
