@@ -1,4 +1,6 @@
 ﻿using ScottPlot.Drawing;
+using System;
+using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
@@ -8,28 +10,50 @@ namespace ScottPlot.Plottable
     public class LegendItem
     {
         public string label;
-        public System.Drawing.Color color;
-        public System.Drawing.Color hatchColor;
-        public System.Drawing.Color borderColor;
+        public Color color;
+        public Color hatchColor;
+        public Color borderColor;
         public float borderWith;
         public LineStyle borderLineStyle;
 
         public LineStyle lineStyle;
         public double lineWidth
         {
-            get { return Parent is IHasLine p ? System.Math.Min(p.LineWidth, 10) : 0; }
-            set { }
+            get
+            {
+                if (Parent is not IHasLine)
+                    return 0;
+                double lineWidth = ((IHasLine)Parent).LineWidth;
+                return Math.Min(lineWidth, 10);
+            }
+            set
+            {
+                // TODO: !!!!!
+            }
         }
-        public System.Drawing.Color LineColor => Parent is IHasLine p ? p.LineColor : color;
+        public Color LineColor => Parent is IHasLine p ? p.LineColor : color;
 
         public MarkerShape markerShape;
         public float markerSize
         {
-            get { return Parent is IHasMarker p ? System.Math.Min(p.MarkerSize, 10) : 0; }
-            set { }
+            get
+            {
+                if (Parent is not IHasMarker)
+                    return 0;
+                float markerSize = ((IHasMarker)Parent).MarkerSize;
+                return Math.Min(markerSize, 10);
+            }
+            set
+            {
+                // TODO: !!!!!
+            }
         }
-        public float markerLineWidth => Parent is IHasMarker p ? System.Math.Min(p.MarkerLineWidth, 3) : (float)lineWidth;
-        public System.Drawing.Color MarkerColor => Parent is IHasMarker p ? p.MarkerColor : color;
+
+        public float markerLineWidth =>
+            Parent is IHasMarker parent ? Math.Min(parent.MarkerLineWidth, 3) : (float)lineWidth;
+
+        public Color MarkerColor =>
+            Parent is IHasMarker parent ? parent.MarkerColor : color;
 
         public HatchStyle hatchStyle;
         public bool ShowAsRectangleInLegend
@@ -40,7 +64,6 @@ namespace ScottPlot.Plottable
                 bool hasArea = (Parent is not null) && (Parent is IHasArea);
                 return hasVeryLargeLineWidth || hasArea;
             }
-            set { lineWidth = 10; }
         }
 
         public readonly IPlottable Parent;
