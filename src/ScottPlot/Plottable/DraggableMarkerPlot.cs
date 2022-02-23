@@ -113,7 +113,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
-        public Color MarkerColor { get; set; } = Color.Black;
+        public Color Color { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Color of the marker to display at this point
+        /// </summary>
+        public Color MarkerColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Width of the marker lines in pixel units
