@@ -39,6 +39,13 @@ namespace ScottPlot.Plottable
             set { _lineWidth = value; }
         }
 
+        private float _markerLineWidth;
+        public float MarkerLineWidth
+        {
+            get => IsHighlighted ? (float)_markerLineWidth * HighlightCoefficient : _markerLineWidth;
+            set { _markerLineWidth = value; }
+        }
+
         public string Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public Color LineColor { get => Color; set { Color = value; } }
@@ -376,7 +383,7 @@ namespace ScottPlot.Plottable
 
                         foreach (PointF point in linePoints)
                         {
-                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color);
+                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
                         }
                     }
                     else

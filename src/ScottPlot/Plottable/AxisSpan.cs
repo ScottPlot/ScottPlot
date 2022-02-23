@@ -1,34 +1,11 @@
 ﻿using ScottPlot.Drawing;
-using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    /// <summary>
-    /// Shaded horizontal region between two X values
-    /// </summary>
-    public class HSpan : AxisSpan
-    {
-        public double X1 { get => Position1; set => Position1 = value; }
-        public double X2 { get => Position2; set => Position2 = value; }
-        public HSpan() : base(true) { }
-        public override string ToString() => $"Horizontal span between Y1={X1} and Y2={X2}";
-    }
-
-    /// <summary>
-    /// Shade the region between two Y values
-    /// </summary>
-    public class VSpan : AxisSpan
-    {
-        public double Y1 { get => Position1; set => Position1 = value; }
-        public double Y2 { get => Position2; set => Position2 = value; }
-        public VSpan() : base(false) { }
-        public override string ToString() => $"Vertical span between X1={Y1} and X2={Y2}";
-    }
-
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor
+    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea
     {
         // location and orientation
         protected double Position1;
@@ -47,6 +24,11 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public Color Color { get; set; } = Color.FromArgb(128, Color.Magenta);
+        public Color BorderColor { get; set; } = Color.Transparent;
+        public float BorderLineWidth { get; set; } = 0;
+        public LineStyle BorderLineStyle { get; set; } = LineStyle.None;
+        public Color HatchColor { get; set; } = Color.Transparent;
+        public HatchStyle HatchStyle { get; set; } = Drawing.HatchStyle.None;
         public string Label;
 
         // mouse interaction
@@ -81,8 +63,11 @@ namespace ScottPlot.Plottable
             {
                 label = Label,
                 color = Color,
-                markerSize = 0,
-                lineWidth = 10
+                borderWith = Math.Min(BorderLineWidth, 3),
+                borderColor = BorderColor,
+                borderLineStyle = BorderLineStyle,
+                hatchColor = HatchColor,
+                hatchStyle = HatchStyle,
             };
             return new LegendItem[] { singleItem };
         }
@@ -210,10 +195,13 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(Color))
+            using (var brush = GDI.Brush(Color, HatchColor, HatchStyle))
+            using (var pen = GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle))
             {
                 RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
+                if (BorderLineWidth > 0 && BorderColor != Color.Transparent && BorderLineStyle != LineStyle.None)
+                    gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
             }
         }
     }

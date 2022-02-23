@@ -29,6 +29,11 @@ namespace ScottPlot.Plottable
         public float MarkerSize { get; set; } = 10;
 
         /// <summary>
+        /// Thickness of the marker lines in pixel units
+        /// </summary>
+        public float MarkerLineWidth { get; set; } = 1;
+
+        /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
         public Color Color { get; set; }
@@ -79,7 +84,7 @@ namespace ScottPlot.Plottable
             PointF point = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
             using Graphics gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color, MarkerLineWidth);
 
             if (!string.IsNullOrEmpty(Text))
             {

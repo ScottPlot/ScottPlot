@@ -26,6 +26,7 @@ namespace ScottPlot.Plottable
         public Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+        public float MarkerLineWidth { get; set; } = 1;
         public float MarkerSize { get; set; } = 0;
         public Color MarkerColor { get => Color; set { Color = value; } }
 
@@ -112,13 +113,14 @@ namespace ScottPlot.Plottable
 
         private void DrawMarkers(PlotDimensions dims, Graphics gfx)
         {
+            PointF[] pixels = new PointF[Xs.Length];
             for (int i = 0; i < Xs.Length; i++)
             {
                 float xPixel = dims.GetPixelX(Xs[i]);
                 float yPixel = dims.GetPixelY(Ys[i]);
-                PointF pixel = new(xPixel, yPixel);
-                MarkerTools.DrawMarker(gfx, pixel, MarkerShape, MarkerSize, Color);
+                pixels[i] = new(xPixel, yPixel);
             }
+            MarkerTools.DrawMarkers(gfx, pixels, MarkerShape, MarkerSize, Color, MarkerLineWidth);
         }
 
         public void ValidateData(bool deep = false)

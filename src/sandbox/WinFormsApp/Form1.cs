@@ -16,10 +16,15 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            Random rand = new Random(0);
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Sin(51));
-            formsPlot1.Plot.AddSignal(ScottPlot.DataGen.Cos(51));
-            numericUpDown1_ValueChanged(null, null);
+            Random rand = new(0);
+            double[] ys = ScottPlot.DataGen.Random(rand, 10);
+            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
+
+            var sig = formsPlot1.Plot.AddSignalXY(xs, ys);
+            sig.StepDisplay = true;
+            sig.FillAbove(Color.Blue);
+
+            formsPlot1.Refresh();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
