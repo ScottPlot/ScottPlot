@@ -12,6 +12,7 @@ _In development / not yet on NuGet ..._
 * Scatter Plot: Support distinct `LineColor` and `MarkerColor` colors (#1668)
 * SignalXY: Fix bug affecting the edge of the plot when step mode is active (#1703, #1699) _Thanks @PeppermintKing_
 * SignalXY: Improve appearance of filled regions when step mode is active (#1703, #1697) _Thanks @PeppermintKing_
+* Axis Span: Added options to customize fill pattern and border (#1692) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
