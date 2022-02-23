@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
         public double LineWidth
         {
             get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
-            set { _lineWidth = value; _markerLineWidth = (float)value / 2; _markerSize = (float)value * 2; }
+            set { _lineWidth = value; }
         }
 
         private double _errorLineWidth = 1;
