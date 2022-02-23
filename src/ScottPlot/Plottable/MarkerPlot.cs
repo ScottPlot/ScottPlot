@@ -84,7 +84,7 @@ namespace ScottPlot.Plottable
             PointF point = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
             using Graphics gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color, MarkerLineWidth);
 
             if (!string.IsNullOrEmpty(Text))
             {
