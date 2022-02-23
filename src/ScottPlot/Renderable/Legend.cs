@@ -147,7 +147,7 @@ namespace ScottPlot.Renderable
                     float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
 
 
-                    if (item.Parent is IHasArea)
+                    if (item.ShowAsRectangleInLegend)
                     {
                         // prepare values for drawing a rectangle
                         PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
@@ -161,7 +161,7 @@ namespace ScottPlot.Renderable
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
                         }
                     }
-                    else if (item.Parent is IHasLine)
+                    else
                     {
                         // draw a line
                         if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
@@ -169,9 +169,7 @@ namespace ScottPlot.Renderable
                             using var linePen = GDI.Pen(item.LineColor, item.lineWidth, item.lineStyle, false);
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
                         }
-                    }
-                    if (item.Parent is IHasMarker)
-                    {
+
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
