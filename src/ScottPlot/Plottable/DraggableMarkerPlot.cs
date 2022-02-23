@@ -190,7 +190,7 @@ namespace ScottPlot.Plottable
             {
                 PointF point = new PointF(dims.GetPixelX(Xs[CurrentIndex]), dims.GetPixelY(Ys[CurrentIndex]));
 
-                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, MarkerColor, MarkerLineWidth);
+                MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color, MarkerLineWidth);
             }
         }
 
