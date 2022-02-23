@@ -243,7 +243,7 @@ namespace ScottPlot.Plottable
                 label = Label,
                 markerShape = MarkerShape,
                 markerSize = MarkerSize,
-                color = MarkerColor,
+                color = Color,
             };
             return new LegendItem[] { singleItem };
         }
