@@ -17,36 +17,21 @@ namespace ScottPlot.Plottable
         public LineStyle borderLineStyle;
 
         public LineStyle lineStyle;
+
+        private double _lineWidth = 0;
         public double lineWidth
         {
-            get
-            {
-                if (Parent is not IHasLine)
-                    return 0;
-                double lineWidth = ((IHasLine)Parent).LineWidth;
-                return Math.Min(lineWidth, 10);
-            }
-            set
-            {
-                // TODO: !!!!!
-            }
+            get => (Parent is IHasLine parent) ? Math.Min(parent.LineWidth, 10) : _lineWidth;
+            set { _lineWidth = value; }
         }
         public Color LineColor => Parent is IHasLine p ? p.LineColor : color;
 
         public MarkerShape markerShape;
+        private float _markerSize = 0;
         public float markerSize
         {
-            get
-            {
-                if (Parent is not IHasMarker)
-                    return 0;
-                float markerSize = ((IHasMarker)Parent).MarkerSize;
-                return Math.Min(markerSize, 10);
-            }
-            set
-            {
-                // TODO: !!!!!
-            }
+            get => (Parent is IHasMarker parent) ? parent.MarkerSize : _markerSize;
+            set { _markerSize = value; }
         }
 
         public float markerLineWidth =>
