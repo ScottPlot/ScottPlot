@@ -180,11 +180,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             vSpan.DragEnabled = true;
             vSpan.DragLimitMin = -1;
             vSpan.DragLimitMax = 1;
+            vSpan.BorderColor = Color.Red;
+            vSpan.BorderLineStyle = LineStyle.Dot;
+            vSpan.BorderLineWidth = 2;
+            vSpan.HatchColor = Color.FromArgb(100, Color.Blue);
+            vSpan.HatchStyle = Drawing.HatchStyle.SmallCheckerBoard;
+            vSpan.Label = "Customized vSpan";
+
 
             // spans can be configured to allow dragging but disallow resizing
             var hSpan = plt.AddHorizontalSpan(10, 25);
             hSpan.DragEnabled = true;
             hSpan.DragFixedSize = true;
+            hSpan.Label = "Standard hSpan";
+            plt.Legend(true);
         }
     }
 

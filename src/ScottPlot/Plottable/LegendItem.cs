@@ -12,6 +12,7 @@ namespace ScottPlot.Plottable
         public System.Drawing.Color hatchColor;
         public System.Drawing.Color borderColor;
         public float borderWith;
+        public LineStyle borderLineStyle;
 
         public LineStyle lineStyle;
         public double lineWidth
@@ -31,9 +32,14 @@ namespace ScottPlot.Plottable
         public System.Drawing.Color MarkerColor => Parent is IHasMarker p ? p.MarkerColor : color;
 
         public HatchStyle hatchStyle;
-        public bool IsRectangle
+        public bool ShowAsRectangleInLegend
         {
-            get { return lineWidth >= 10 && markerShape == MarkerShape.none; }
+            get
+            {
+                bool hasVeryLargeLineWidth = lineWidth >= 10;
+                bool hasArea = (Parent is not null) && (Parent is IHasArea);
+                return hasVeryLargeLineWidth || hasArea;
+            }
             set { lineWidth = 10; }
         }
 

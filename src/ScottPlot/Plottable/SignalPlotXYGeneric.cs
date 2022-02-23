@@ -180,15 +180,16 @@ namespace ScottPlot.Plottable
 
                 // Interpolate before displayed point to make it x = -1 (close to visible area)
                 // this fix extreme zoom in bug
-                if (PointBefore.Length > 0 && PointsToDraw.Length >= 2)
+                if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
                     float x0 = -1 + dims.DataOffsetX;
                     float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
                     PointsToDraw[0] = new PointF(x0, y0);
                 }
+
                 // Interpolate after displayed point to make it x = datasize.Width(close to visible area)
                 // this fix extreme zoom in bug
-                if (PointAfter.Length > 0 && PointsToDraw.Length >= 2)
+                if (PointAfter.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
@@ -197,6 +198,10 @@ namespace ScottPlot.Plottable
                     float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
+
+                // Simulate a step display by adding extra points at the corners.
+                if (StepDisplay)
+                    PointsToDraw = GetStepPoints(PointsToDraw);
 
                 // Fill below the line
                 switch (_FillType)
@@ -219,13 +224,8 @@ namespace ScottPlot.Plottable
                 // Draw lines
                 if (PointsToDraw.Length > 1)
                 {
-                    PointF[] pointsArray = PointsToDraw.ToArray();
-                    ValidatePoints(pointsArray);
-
-                    if (StepDisplay)
-                        pointsArray = GetStepPoints(pointsArray);
-
-                    gfx.DrawLines(penHD, pointsArray);
+                    ValidatePoints(PointsToDraw);
+                    gfx.DrawLines(penHD, PointsToDraw);
                 }
 
                 // draw markers

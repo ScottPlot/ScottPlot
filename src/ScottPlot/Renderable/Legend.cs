@@ -146,16 +146,16 @@ namespace ScottPlot.Renderable
                     float lineX1 = locationX + SymbolPad;
                     float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
 
-                    // prepare values for drawing a rectangle
-                    PointF rectOrigin = new PointF(lineX1, (float)(lineY - item.lineWidth / 2));
-                    SizeF rectSize = new SizeF(lineX2 - lineX1, (float)item.lineWidth);
-                    RectangleF rect = new RectangleF(rectOrigin, rectSize);
 
-                    if (item.IsRectangle)
+                    if (item.ShowAsRectangleInLegend)
                     {
+                        // prepare values for drawing a rectangle
+                        PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
+                        SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
+                        RectangleF rect = new RectangleF(rectOrigin, rectSize);
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderWith, item.borderLineStyle))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);

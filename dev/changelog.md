@@ -2,7 +2,7 @@
 
 ## ScottPlot 4.1.34
 _In development / not yet on NuGet ..._
-* Bubble plot: Added methods to get the point nearest the cursor (#1657, #1652) _Thanks @BambOoxX and @adgriff2_
+* Bubble plot: Added methods to get the point nearest the cursor (#1657, #1652, #1705) _Thanks @BambOoxX, @Maoyao233, and @adgriff2_
 * Markers: Improved alignment of markers and lines on Linux and MacOS by half a pixel (#1660, #340)
 * Plottable: Added `IsHighlighted` properties to make some plot types bold (#1660) _Thanks @BambOoxX_
 * Plottable: Segregated existing functionality interfaces for `IHasLine`, `IHasMarker`, and `IHilightable` (#1660) _Thanks @BambOoxX_
@@ -10,6 +10,9 @@ _In development / not yet on NuGet ..._
 * Plot: Added `PlotFillRightLeft` method for adding horizontal filled scatter plots (#450) _Thanks @xichaoqiang_
 * Markers: All shapes are now drawn discretely instead of relying on text rendering for improved performance and consistency (#1668, #1660) _Thanks @BambOoxX_
 * Scatter Plot: Support distinct `LineColor` and `MarkerColor` colors (#1668)
+* SignalXY: Fix bug affecting the edge of the plot when step mode is active (#1703, #1699) _Thanks @PeppermintKing_
+* SignalXY: Improve appearance of filled regions when step mode is active (#1703, #1697) _Thanks @PeppermintKing_
+* Axis Span: Added options to customize fill pattern and border (#1692) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
