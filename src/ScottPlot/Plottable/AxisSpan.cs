@@ -200,7 +200,8 @@ namespace ScottPlot.Plottable
             {
                 RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
-                gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+                if (BorderLineWidth > 0 && BorderColor != Color.Transparent && BorderLineStyle != LineStyle.None)
+                    gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
             }
         }
     }
