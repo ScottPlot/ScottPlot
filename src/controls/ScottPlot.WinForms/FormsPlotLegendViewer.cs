@@ -208,34 +208,44 @@ namespace ScottPlot
 
             if (ClickedPlottable is IHasLine)
             {
-                var StyleMenu = new ToolStripMenuItem("Style");
-                var LineStyleMenu = new ToolStripMenuItem("Line Style");
+                var LineMenu = new ToolStripMenuItem("Line");
+                var LineStyleMenu = new ToolStripMenuItem("Style");
                 foreach (LineStyle ls in (LineStyle[])Enum.GetValues(typeof(LineStyle)))
                 {
                     LineStyleMenu.DropDownItems.Add(new ToolStripMenuItem(ls.ToString(), null, new EventHandler(ChangeLineStyle)));
                 }
-                customMenu.Items.Add(LineStyleMenu);
-                var LineWidthMenu = new ToolStripMenuItem("Line Width");
+                LineMenu.DropDownItems.Add(LineStyleMenu);
+                var LineWidthMenu = new ToolStripMenuItem("Thickness");
                 foreach (string lw in new string[] { "much thinner", "thinner", "thicker", "much thicker" })
                 {
                     LineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler(ChangeLineWidth)));
                 }
-                customMenu.Items.Add(LineWidthMenu);
+                LineMenu.DropDownItems.Add(LineWidthMenu);
+                customMenu.Items.Add(LineMenu);
             }
             if (ClickedPlottable is IHasMarker)
             {
-                var MarkerShapeMenu = new ToolStripMenuItem("Marker Shape");
+                var MarkerMenu = new ToolStripMenuItem("Marker");
+                var MarkerShapeMenu = new ToolStripMenuItem("Shape");
                 foreach (MarkerShape ms in (MarkerShape[])Enum.GetValues(typeof(MarkerShape)))
                 {
                     MarkerShapeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler(ChangeMarkerShape)));
                 }
-                customMenu.Items.Add(MarkerShapeMenu);
-                var MarkerSizeMenu = new ToolStripMenuItem("Marker Size");
+                MarkerMenu.DropDownItems.Add(MarkerShapeMenu);
+                var MarkerSizeMenu = new ToolStripMenuItem("Size");
                 foreach (string ms in new string[] { "much smaller", "smaller", "bigger", "much bigger" })
                 {
                     MarkerSizeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler(ChangeMarkerSize)));
                 }
-                customMenu.Items.Add(MarkerSizeMenu);
+                MarkerMenu.DropDownItems.Add(MarkerSizeMenu);
+                customMenu.Items.Add(MarkerMenu);
+                var MarkerLineWidthMenu = new ToolStripMenuItem("Thickness");
+                foreach (string lw in new string[] { "much thinner", "thinner", "thicker", "much thicker" })
+                {
+                    MarkerLineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler(ChangeMarkerLineWidth)));
+                }
+                MarkerMenu.DropDownItems.Add(MarkerLineWidthMenu);
+                customMenu.Items.Add(MarkerMenu);
             }
 
             customMenu.Show(System.Windows.Forms.Cursor.Position);
@@ -257,31 +267,47 @@ namespace ScottPlot
 
         private void ChangeLineWidth(object sender, EventArgs e)
         {
-            string lwstring = ((ToolStripMenuItem)sender).Text;
+            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text);
             if (ClickedPlottable is IHasLine)
             {
-                switch (((ToolStripMenuItem)sender).Text)
-                {
-                    case "much thinner":
-
-                        ((IHasLine)ClickedPlottable).LineWidth /= 2;
-                        break;
-
-                    case "thinner":
-
-                        ((IHasLine)ClickedPlottable).LineWidth /= 1.5;
-                        break;
-
-                    case "thicker":
-                        ((IHasLine)ClickedPlottable).LineWidth *= 1.5;
-                        break;
-
-                    case "much thicker":
-                        ((IHasLine)ClickedPlottable).LineWidth *= 2;
-                        break;
-                }
+                ((IHasLine)ClickedPlottable).LineWidth *= lwcoeff;
             }
             UpdateLegendImage();
+        }
+
+        private void ChangeMarkerLineWidth(object sender, EventArgs e)
+        {
+            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text);
+            if (ClickedPlottable is IHasMarker)
+            {
+                ((IHasMarker)ClickedPlottable).MarkerLineWidth *= lwcoeff;
+            }
+            UpdateLegendImage();
+        }
+
+        private float LineWidthCoefficient(string lwstring)
+        {
+            switch (lwstring)
+            {
+                case "much thinner":
+
+                    return 1/2;
+                    break;
+
+                case "thinner":
+
+                    return 2 / 3;
+                    break;
+
+                case "thicker":
+                    return 3 / 2;
+                    break;
+
+                case "much thicker":
+                    return 2;
+                    break;
+            }
+            throw new NotImplementedException();
         }
 
         private void ChangeMarkerShape(object sender, EventArgs e)
