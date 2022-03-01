@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisLine : IDraggable, IPlottable
+    public abstract class AxisLine : IDraggable, IPlottable, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)
@@ -59,9 +59,10 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public LineStyle LineStyle = LineStyle.Solid;
-        public float LineWidth = 1;
-        public Color Color = Color.Black;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public double LineWidth { get; set; } = 1;
+        public Color Color { get; set; } = Color.Black;
+        public Color LineColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Text that appears in the legend

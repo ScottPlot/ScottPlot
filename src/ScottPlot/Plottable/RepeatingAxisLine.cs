@@ -5,7 +5,7 @@ using System.Drawing;
 namespace ScottPlot.Plottable
 {
 
-    public abstract class RepeatingAxisLine : IDraggable, IPlottable
+    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor
     {
         /// <summary>
         /// Location of the reference line (Y position if horizontal line, X position if vertical line)
@@ -88,7 +88,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public LineStyle LineStyle = LineStyle.Solid;
         public float LineWidth = 1;
-        public Color Color = Color.Black;
+        public Color Color { get; set; } = Color.Black;
 
         /// <summary>
         /// Text that appears in the legend

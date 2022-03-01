@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
     /// </summary>
-    public class ScatterPlot : IPlottable, IHasPoints
+    public class ScatterPlot : IPlottable, IHasPoints, IHasLine, IHasMarker, IHighlightable, IHasColor
     {
         // data
         public double[] Xs { get; private set; }
@@ -36,14 +36,45 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public string Label;
-        public Color Color = Color.Black;
-        public LineStyle LineStyle = LineStyle.Solid;
-        public MarkerShape MarkerShape = MarkerShape.filledCircle;
-        public double LineWidth = 1;
-        public float ErrorLineWidth = 1;
+        public Color Color { get => LineColor; set { LineColor = value; MarkerColor = value; } }
+        public Color LineColor { get; set; } = Color.Black;
+        public Color MarkerColor { get; set; } = Color.Black;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+
+        private double _lineWidth = 1;
+        public double LineWidth
+        {
+            get => IsHighlighted ? _lineWidth * HighlightCoefficient : _lineWidth;
+            set { _lineWidth = value; }
+        }
+
+        private double _errorLineWidth = 1;
+        public double ErrorLineWidth
+        {
+            get => IsHighlighted ? _errorLineWidth * HighlightCoefficient : _errorLineWidth;
+            set { _errorLineWidth = value; }
+        }
+
         public float ErrorCapSize = 3;
-        public float MarkerSize = 5;
+
+        public float _markerSize = 5;
+        public float MarkerSize
+        {
+            get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
+            set { _markerSize = value; }
+        }
+        private float _markerLineWidth = 1;
+        public float MarkerLineWidth
+        {
+            get => IsHighlighted ? (float)_lineWidth * HighlightCoefficient : _markerLineWidth;
+            set { _markerLineWidth = value; }
+        }
+
         public bool StepDisplay = false;
+
+        public bool IsHighlighted { get; set; } = false;
+        public float HighlightCoefficient { get; set; } = 2;
 
         [Obsolete("Scatter plot arrowheads have been deprecated. Use the Arrow plot type instead.", true)]
         public bool IsArrow { get => ArrowheadWidth > 0 && ArrowheadLength > 0; }
@@ -218,8 +249,8 @@ namespace ScottPlot.Plottable
                 return;
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
-            using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
+            using (var penLine = GDI.Pen(LineColor, LineWidth, LineStyle, true))
+            using (var penLineError = GDI.Pen(LineColor, ErrorLineWidth, LineStyle.Solid, true))
             {
                 int from = MinRenderIndex ?? 0;
                 int to = MaxRenderIndex ?? (Xs.Length - 1);
@@ -281,8 +312,9 @@ namespace ScottPlot.Plottable
 
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
-                    for (int i = 0; i < points.Length; i++)
-                        MarkerTools.DrawMarker(gfx, points[i], MarkerShape, MarkerSize, Color);
+                {
+                    MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
+                }
             }
         }
 
@@ -291,7 +323,7 @@ namespace ScottPlot.Plottable
             var singleLegendItem = new LegendItem(this)
             {
                 label = Label,
-                color = Color,
+                color = LineColor,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
                 markerShape = MarkerShape,

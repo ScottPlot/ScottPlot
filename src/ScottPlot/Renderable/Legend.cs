@@ -133,7 +133,7 @@ namespace ScottPlot.Renderable
 
                 for (int i = 0; i < items.Length; i++)
                 {
-                    var item = items[i];
+                    LegendItem item = items[i];
                     float verticalOffset = i * maxLabelHeight;
 
                     // draw text
@@ -146,16 +146,16 @@ namespace ScottPlot.Renderable
                     float lineX1 = locationX + SymbolPad;
                     float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
 
-                    // prepare values for drawing a rectangle
-                    PointF rectOrigin = new PointF(lineX1, (float)(lineY - item.lineWidth / 2));
-                    SizeF rectSize = new SizeF(lineX2 - lineX1, (float)item.lineWidth);
-                    RectangleF rect = new RectangleF(rectOrigin, rectSize);
 
-                    if (item.IsRectangle)
+                    if (item.ShowAsRectangleInLegend)
                     {
+                        // prepare values for drawing a rectangle
+                        PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
+                        SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
+                        RectangleF rect = new RectangleF(rectOrigin, rectSize);
                         // draw a rectangle
                         using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderWith, item.borderLineStyle))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
                             gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
@@ -166,7 +166,7 @@ namespace ScottPlot.Renderable
                         // draw a line
                         if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
                         {
-                            using var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false);
+                            using var linePen = GDI.Pen(item.LineColor, item.lineWidth, item.lineStyle, false);
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
                         }
 
@@ -174,7 +174,7 @@ namespace ScottPlot.Renderable
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
                         if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
-                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.color);
+                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, item.markerSize, item.MarkerColor, item.markerLineWidth);
                     }
 
                     // Typically invisible legend items don't make it in the list.

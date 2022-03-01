@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a text label at an X/Y position in coordinate space
     /// </summary>
-    public class Text : IPlottable, IHasPixelOffset, IDraggable
+    public class Text : IPlottable, IHasPixelOffset, IDraggable, IHasColor
     {
         // data
         public double X;
@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         public bool BackgroundFill = false;
         public Color BackgroundColor;
         public Drawing.Font Font = new Drawing.Font();
-        public Color Color { set => Font.Color = value; }
+        public Color Color { get => Font.Color; set => Font.Color = value; }
         public string FontName { set => Font.Name = value; }
         public float FontSize { set => Font.Size = value; }
         public bool FontBold { set => Font.Bold = value; }

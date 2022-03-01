@@ -46,6 +46,7 @@ namespace ScottPlot.Plottable
         /// <param name="edgeColor"></param>
         public void Add(double x, double y, double radius, Color fillColor, double edgeWidth, Color edgeColor)
         {
+            // TODO: inconsistent argumen tnames in overloads (radius vs size)
             Bubbles.Add(new Bubble()
             {
                 X = x,
@@ -135,6 +136,86 @@ namespace ScottPlot.Plottable
                 pen.Width = bubble.EdgeWidth;
                 gfx.DrawEllipse(pen, rect);
             }
+        }
+
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
+        public (double x, double y, int index) GetPointNearestX(double x)
+        {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
+
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
+            for (int i = 0; i < Bubbles.Count; i++)
+            {
+                double currDistance = Math.Abs(Bubbles[i].X - x);
+                if (currDistance < closestBubbleDistance)
+                {
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
+                }
+            }
+
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
+        }
+
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the Y position
+        /// </summary>
+        /// <param name="y">Y position in plot space</param>
+        /// <returns></returns>
+        public (double x, double y, int index) GetPointNearestY(double y)
+        {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
+
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
+            for (int i = 0; i < Bubbles.Count; i++)
+            {
+                double currDistance = Math.Abs(Bubbles[i].Y - y);
+                if (currDistance < closestBubbleDistance)
+                {
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
+                }
+            }
+
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
+        }
+
+        /// <summary>
+        /// Return the position and index of the data point nearest the given coordinate
+        /// </summary>
+        /// <param name="x">location in coordinate space</param>
+        /// <param name="y">location in coordinate space</param>
+        /// <param name="xyRatio">Ratio of pixels per unit (X/Y) when rendered</param>
+        public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1)
+        {
+            if (Bubbles.Count == 0)
+                throw new InvalidOperationException("BubblePlot is empty");
+
+            double xyRatioSquared = xyRatio * xyRatio;
+            double pointDistanceSquared(double x1, double y1) =>
+                (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
+
+            double closestBubbleDistance = double.PositiveInfinity;
+            int closestBubbleIndex = 0;
+            for (int i = 0; i < Bubbles.Count; i++)
+            {
+                double currDistance = pointDistanceSquared(Bubbles[i].X, Bubbles[i].Y);
+                if (currDistance < closestBubbleDistance)
+                {
+                    closestBubbleIndex = i;
+                    closestBubbleDistance = currDistance;
+                }
+            }
+
+            return (Bubbles[closestBubbleIndex].X, Bubbles[closestBubbleIndex].Y, closestBubbleIndex);
         }
     }
 }

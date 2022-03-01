@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 IsVisible = true,
                 MarkerSize = 15,
                 MarkerShape = MarkerShape.filledDiamond,
-                Color = Color.Magenta,
+                MarkerColor = Color.Magenta,
                 Label = "marker",
             };
             plt.Add(dmpv);
@@ -105,6 +105,42 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             marker.TextFont.Color = Color.Magenta;
             marker.TextFont.Alignment = Alignment.UpperCenter;
             marker.TextFont.Size = 28;
+        }
+    }
+
+    public class MarkerLineWidth : IRecipe
+    {
+        public string Category => "Plottable: Marker";
+        public string ID => "marker_linewidth";
+        public string Title => "Marker Line Width";
+        public string Description =>
+            "Markers have options that can be customized, such as line width.";
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] ys1 = DataGen.Sin(30);
+            var cmap1 = ScottPlot.Drawing.Colormap.Viridis;
+
+            double[] ys2 = DataGen.Cos(30);
+            var cmap2 = ScottPlot.Drawing.Colormap.Turbo;
+
+            for (int i = 0; i < ys1.Length; i++)
+            {
+                double frac = i / (ys1.Length - 1f);
+
+                var circle = plt.AddMarker(i, ys1[i]);
+                circle.MarkerShape = MarkerShape.openCircle;
+                circle.MarkerSize = i + 5;
+                circle.MarkerLineWidth = 1 + i / 2;
+                circle.MarkerColor = cmap1.GetColor(1 - frac, .8);
+
+                var triangle = plt.AddMarker(i, ys2[i]);
+                triangle.MarkerShape = MarkerShape.openTriangleUp;
+                triangle.MarkerSize = i + 5;
+                triangle.MarkerLineWidth = 1 + i / 4;
+                triangle.MarkerColor = cmap2.GetColor(frac, .8);
+            }
+
+            plt.Margins(.2, .2);
         }
     }
 }

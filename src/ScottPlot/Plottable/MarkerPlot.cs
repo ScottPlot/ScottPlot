@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottable
 {
-    public class MarkerPlot : IPlottable
+    public class MarkerPlot : IPlottable, IHasMarker, IHasColor
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -26,12 +26,18 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Size of the marker in pixel units
         /// </summary>
-        public double MarkerSize { get; set; } = 10;
+        public float MarkerSize { get; set; } = 10;
+
+        /// <summary>
+        /// Thickness of the marker lines in pixel units
+        /// </summary>
+        public float MarkerLineWidth { get; set; } = 1;
 
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
         public Color Color { get; set; }
+        public Color MarkerColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Text to appear in the legend (if populated)
@@ -78,7 +84,7 @@ namespace ScottPlot.Plottable
             PointF point = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
             using Graphics gfx = Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color);
+            MarkerTools.DrawMarker(gfx, point, MarkerShape, (float)MarkerSize, Color, MarkerLineWidth);
 
             if (!string.IsNullOrEmpty(Text))
             {
