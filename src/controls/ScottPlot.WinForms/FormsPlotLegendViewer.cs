@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using ScottPlot.Plottable;
 
@@ -171,11 +172,16 @@ namespace ScottPlot
         /// <summary>
         /// Loops over current legend items to remove all highlights.
         /// </summary>
-        private void RemoveHighlight()
+        private void RemoveHighlightFromAllPlottables()
         {
-            foreach (LegendItem item in Legend.GetHighlightableItems())
+            IHighlightable[] highlightables = FormsPlot.Plot.GetPlottables()
+                .Where(x => x is IHighlightable)
+                .Cast<IHighlightable>()
+                .ToArray();
+
+            foreach (IHighlightable highlightable in highlightables)
             {
-                ((IHighlightable)item.Parent).IsHighlighted = false;
+                highlightable.IsHighlighted = false;
             }
         }
 
@@ -187,7 +193,7 @@ namespace ScottPlot
         /// <param name="e"></param>
         private void RestoreVisibleProperties(object sender, EventArgs e)
         {
-            RemoveHighlight();
+            RemoveHighlightFromAllPlottables();
             RestoreLegendVisibility();
         }
 
