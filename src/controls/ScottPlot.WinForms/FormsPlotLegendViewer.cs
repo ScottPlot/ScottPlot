@@ -296,22 +296,13 @@ namespace ScottPlot
             switch (lwstring)
             {
                 case "much thinner":
-
                     return 1 / 2;
-                    break;
-
                 case "thinner":
-
                     return 2 / 3;
-                    break;
-
                 case "thicker":
                     return 3 / 2;
-                    break;
-
                 case "much thicker":
                     return 2;
-                    break;
             }
             throw new NotImplementedException();
         }
