@@ -14,6 +14,7 @@ _In development / not yet on NuGet ..._
 * SignalXY: Improve appearance of filled regions when step mode is active (#1703, #1697) _Thanks @PeppermintKing_
 * Axis Span: Added options to customize fill pattern and border (#1692) _Thanks @BambOoxX_
 * Markers: Additional customization options such as `MarkerLineWidth` (#1690) _Thanks @BambOoxX_
+* Legend Viewer: New functionality to customize line, marker, and highlight options have been added to the the right-click menu of the Windows Forms control (#1655, #1651) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.33
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
