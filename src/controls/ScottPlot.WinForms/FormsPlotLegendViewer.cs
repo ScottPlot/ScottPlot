@@ -9,16 +9,13 @@ namespace ScottPlot
     {
         private readonly FormsPlot FormsPlot;
         private readonly Renderable.Legend Legend;
-        private IPlottable ClickedPlottable; // TODO: request this with each mouse action
+        private IPlottable ClickedPlottable;
 
         public FormsPlotLegendViewer(FormsPlot formsPlot, string windowTitle = "Detached Legend")
         {
             FormsPlot = formsPlot;
             Legend = formsPlot.Plot.Legend();
             Text = windowTitle;
-
-            // TODO: dont even show menu option if legend is already detached 
-            // TODO: dont even show menu option if legend is empty
 
             Legend.IsDetached = true;
             Legend.IsVisible = false;
