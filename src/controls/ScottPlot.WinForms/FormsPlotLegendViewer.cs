@@ -291,7 +291,7 @@ namespace ScottPlot
             {
                 case "much thinner":
 
-                    return 1/2;
+                    return 1 / 2;
                     break;
 
                 case "thinner":
