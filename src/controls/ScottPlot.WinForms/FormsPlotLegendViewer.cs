@@ -119,11 +119,13 @@ namespace ScottPlot
         {
             ContextMenuStrip customMenu = new();
 
-            customMenu.Items.Add(
-                new ToolStripMenuItem("Highlight Plottable", null,
-                new EventHandler(PictureBoxLegend_ToggleHighlight)));
+            var highlightMenuItem = new ToolStripMenuItem("Highlight", null,
+                new EventHandler(PictureBoxLegend_ToggleHighlight));
+            if (ClickedPlottable is IHighlightable h)
+                highlightMenuItem.Checked = h.IsHighlighted;
+            customMenu.Items.Add(highlightMenuItem);
 
-            customMenu.Items.Add(new ToolStripMenuItem("Delete Plottable", null,
+            customMenu.Items.Add(new ToolStripMenuItem("Delete", null,
                 new EventHandler(PictureBoxLegend_DeletePlottable)));
 
             if (ClickedPlottable is IHasLine)
