@@ -207,7 +207,10 @@ namespace ScottPlot
 
         public void DefaultRightClickEvent(object sender, EventArgs e)
         {
-            detachLegendMenuItem.Visible = Plot.Legend(null).Count > 0;
+            var legend = Plot.Legend(null);
+            bool legendIsNotEmpty = legend.Count > 0;
+            bool legendIsNotDetachedAlready = legend.IsDetached == false;
+            detachLegendMenuItem.Visible = legendIsNotEmpty && legendIsNotDetachedAlready;
             DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());

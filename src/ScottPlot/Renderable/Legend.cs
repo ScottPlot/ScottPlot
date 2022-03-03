@@ -34,6 +34,7 @@ namespace ScottPlot.Renderable
         public bool ReverseOrder = false;
         public bool AntiAlias = true;
         public bool IsVisible { get; set; } = false;
+        public bool IsDetached { get; set; } = false;
 
         public Color FillColor = Color.White;
         public Color OutlineColor = Color.Black;

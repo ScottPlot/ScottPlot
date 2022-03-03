@@ -58,6 +58,7 @@ namespace ScottPlot
             this.PictureBoxLegend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.PictureBoxLegend.TabIndex = 1;
             this.PictureBoxLegend.TabStop = false;
+            this.PictureBoxLegend.Click += new System.EventHandler(this.PictureBoxLegend_MouseClick);
             // 
             // FormsPlotLegendViewer
             // 
