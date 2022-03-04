@@ -8,8 +8,13 @@ namespace ScottPlot;
 /// </summary>
 public class PlotStyle
 {
-    public Color FigureBackgroundColor = Color.Parse("#003366");
+    //NOTE: Eventually default font information can be stored here
 
-    public Color DataBackgroundColor = Color.Parse("#006699");
-    public Color DataBorderColor = Colors.Black;
+    public Color FigureBackgroundColor = Colors.White;
+
+    public Color DataBackgroundColor = Colors.White;
+
+    public Color SpineColor = Colors.Black;
+
+    public readonly Palette Palette = Palettes.Default;
 }

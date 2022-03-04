@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace ScottPlotTests.RenderTests;
 
@@ -15,7 +16,6 @@ internal class Quickstart
         plt.AddScatter(xs, ys1);
         plt.AddScatter(xs, ys2);
 
-        string filePath = TestIO.SaveFig(plt);
-        Assert.That(System.IO.File.Exists(filePath));
+        TestIO.SaveFig(plt);
     }
 }
