@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 
