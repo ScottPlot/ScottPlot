@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net6.0-windows;net48;</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
+		<ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+	</ItemGroup>
+
+</Project>

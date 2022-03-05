@@ -2,9 +2,9 @@ name: Update Changelog Website
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "dev/changelog.md"
+  #push:
+    #paths:
+      #- "src/ScottPlot4/changelog.md"
 
 jobs:
   changelog:
