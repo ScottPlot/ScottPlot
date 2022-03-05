@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
-    <ProjectReference Include="..\..\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
-    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+	  <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+	  <ProjectReference Include="..\..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+	  <ProjectReference Include="..\..\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
   </ItemGroup>
 
   <ItemGroup>

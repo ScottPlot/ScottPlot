@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
-      <ProjectReference Include="..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+      <ProjectReference Include="..\..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
     </ItemGroup>
 
 </Project>
