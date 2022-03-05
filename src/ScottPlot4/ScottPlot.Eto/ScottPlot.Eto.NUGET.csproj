@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.5.11" />
-    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
   <ItemGroup>
