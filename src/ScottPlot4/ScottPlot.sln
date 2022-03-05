@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Tests", "ScottPlot.Tests\ScottPlotTests.csproj", "{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Tests", "ScottPlot.Tests\ScottPlot.Tests.csproj", "{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{1561FB75-F36A-44DC-BBA7-DA15DFF997ED}"
 EndProject
