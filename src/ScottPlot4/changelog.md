@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.34
+## ScottPlot 4.1.35
 _In development / not yet on NuGet ..._
+
+## ScottPlot 4.1.34
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-03_
 * Bubble plot: Added methods to get the point nearest the cursor (#1657, #1652, #1705) _Thanks @BambOoxX, @Maoyao233, and @adgriff2_
 * Markers: Improved alignment of markers and lines on Linux and MacOS by half a pixel (#1660, #340)
 * Plottable: Added `IsHighlighted` properties to make some plot types bold (#1660) _Thanks @BambOoxX_
