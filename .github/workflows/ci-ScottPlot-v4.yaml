@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "src/**"
+      - "src/ScottPlot4/**"
   pull_request:
     paths:
-      - "src/**"
+      - "src/ScottPlot4/**"
 
 jobs:
   format:
@@ -23,7 +23,7 @@ jobs:
       - name: ✒️ Set up dotnet-format
         run: dotnet tool install -g dotnet-format
       - name: 🧐 Check Code Format
-        working-directory: src
+        working-directory: src/ScottPlot4
         run: dotnet-format --check
 
   test:
@@ -51,13 +51,13 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        working-directory: src/tests
+        working-directory: src/ScottPlot4/ScottPlot.Tests
         run: dotnet restore
       - name: 🛠️ Build
-        working-directory: src/tests
+        working-directory: src/ScottPlot4/ScottPlot.Tests
         run: dotnet build --configuration Release
       - name: 🧪 Test
-        working-directory: src/tests
+        working-directory: src/ScottPlot4/ScottPlot.Tests
         run: dotnet test --configuration Release
 
   package:
@@ -73,33 +73,33 @@ jobs:
 
       - name: 📦 Package ScottPlot
         run: |
-          dotnet restore src/ScottPlot/ScottPlot.csproj
-          dotnet build src/ScottPlot/ScottPlot.csproj --configuration Release
-          dotnet pack src/ScottPlot/ScottPlot.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot/ScottPlot.csproj
+          dotnet build src/ScottPlot4/ScottPlot/ScottPlot.csproj --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot/ScottPlot.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.WinForms
         run: |
-          dotnet restore src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj
-          dotnet build src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj
+          dotnet build src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.WPF
         run: |
-          dotnet restore src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
-          dotnet build src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
+          dotnet build src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.Avalonia
         run: |
-          dotnet restore src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
-          dotnet build src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
+          dotnet build src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
 
       - name: 📦 Package ScottPlot.Eto
         run: |
-          dotnet restore src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj
-          dotnet build src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
-          dotnet pack src/controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj
+          dotnet build src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
 
   build:
     runs-on: windows-latest
@@ -115,8 +115,8 @@ jobs:
           dotnet-version: "6.0.x"
           include-prerelease: true
       - name: 🚚 Restore
-        working-directory: src
+        working-directory: src/ScottPlot4
         run: dotnet restore
       - name: 🐌 MSBuild
-        working-directory: src
+        working-directory: src/ScottPlot4
         run: msbuild -property:Configuration=Release -verbosity:minimal
