@@ -11,7 +11,7 @@
         <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
-        <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+        <ProjectReference Include="..\..\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
+        <ProjectReference Include="..\..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
     </ItemGroup>
 </Project>

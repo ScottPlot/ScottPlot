@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
-    <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    <ProjectReference Include="..\..\ScottPlot.WPF\ScottPlot.WPF.csproj" />
+    <ProjectReference Include="..\..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 

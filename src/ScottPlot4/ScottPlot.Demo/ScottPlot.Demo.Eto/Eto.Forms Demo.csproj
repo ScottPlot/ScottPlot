@@ -13,8 +13,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\controls\ScottPlot.Eto\ScottPlot.Eto.csproj" />
-        <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+        <ProjectReference Include="..\..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+        <ProjectReference Include="..\..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
     </ItemGroup>
 
     <ItemGroup>
