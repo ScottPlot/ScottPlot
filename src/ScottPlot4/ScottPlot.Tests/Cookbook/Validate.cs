@@ -9,7 +9,7 @@ namespace ScottPlotTests.Cookbook
 {
     class Validate
     {
-        const string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
+        const string SourceFolder = "../../../../ScottPlot.Cookbook";
 
         [Test]
         public void Test_CookbookRecipes_Exist()

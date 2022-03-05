@@ -11,8 +11,8 @@ namespace ScottPlotTests.Cookbook
 {
     class Generate
     {
-        string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../cookbook/ScottPlot.Cookbook");
-        string OUTPUT_FOLDER => Path.GetFullPath("../../../../cookbook/output");
+        string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook");
+        string OUTPUT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook/CookbookOutput");
         string JSON_FILE => Path.Join(OUTPUT_FOLDER, "recipes.json");
 
         [Test]
