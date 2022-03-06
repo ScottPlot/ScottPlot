@@ -70,6 +70,13 @@ namespace ScottPlot.Eto
             BackgroundColor = Colors.Transparent;
             Plot.Style(figureBackground: System.Drawing.Color.Transparent);
 
+            SizeChanged += OnSizeChanged;
+            MouseDoubleClick += OnMouseDoubleClick;
+            MouseWheel += OnMouseWheel;
+            MouseMove += OnMouseMove;
+            MouseDown += OnMouseDown;
+            MouseUp += OnMouseUp;
+
             RightClicked += DefaultRightClickEvent;
 
             Backend.Configuration.UseRenderQueue = true;
@@ -123,13 +130,12 @@ namespace ScottPlot.Eto
         private void OnPlottableDragged(object? sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object? sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object? sender, EventArgs e) => AxesChanged?.Invoke(this, e);
-        protected override void OnSizeChanged(EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
-        protected override void OnMouseDown(MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
-        protected override void OnMouseUp(MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
-        protected override void OnMouseDoubleClick(MouseEventArgs e) => Backend.DoubleClick();
-        protected override void OnMouseWheel(MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
-        protected override void OnMouseMove(MouseEventArgs e) => Backend.MouseMove(GetInputState(e));
-
+        private void OnSizeChanged(object? sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
+        private void OnMouseDown(object? sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
+        private void OnMouseUp(object? sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
+        private void OnMouseDoubleClick(object? sender, MouseEventArgs e) => Backend.DoubleClick();
+        private void OnMouseWheel(object? sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
+        private void OnMouseMove(object? sender, MouseEventArgs e) => Backend.MouseMove(GetInputState(e));
         private Control.InputState GetInputState(MouseEventArgs e) =>
              new()
              {
