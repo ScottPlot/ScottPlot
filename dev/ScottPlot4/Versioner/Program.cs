@@ -22,10 +22,10 @@ namespace Versioner
 
             (Version version, string suffix) = GetCurrentVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"));
             IncrementVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj"), version, suffix);
-            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj"), version, suffix);
 
             Console.WriteLine("COMPLETE");
         }
