@@ -7,7 +7,7 @@ assignees: ''
 ---
 
 ## Before submitting bug reports
-1. Check if your bug is already addressed in the FAQ: https://swharden.com/scottplot/faq/
+1. Check if your bug is already addressed in the FAQ: https://scottplot.net/faq
 2. Search the issues to see if the bug has already been addressed: https://github.com/ScottPlot/ScottPlot/issues
 
 _This header can be deleted before posting_

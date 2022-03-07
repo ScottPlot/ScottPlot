@@ -4,12 +4,9 @@ about: Let us know how ScottPlot can be improved
 title: ''
 labels: 'Feature'
 assignees: ''
-
 ---
 
 ## Feature Suggestion
-
-> ⚠️ **NOTICE: Scott has enacted a temporary feature freeze** over the month of February 2022 to concentrate development effort on the next major version of this library, ScottPlot 5. See the relevant [**pinned issue**](https://github.com/ScottPlot/ScottPlot/issues) for details.
 
 **Feature description:** Describe your idea here
 
@@ -17,8 +14,8 @@ assignees: ''
 
 ```cs
 // a code sample may improve communication
-var examplePlot = new ScottPlot.Plot();
-var meme = ScottPlot.Memes.ICanHaz("Grafixs");
-plt.Add(meme);
-plt.SaveFig("meme.png");
+var plt = new ScottPlot.Plot();
+var myMeme = ScottPlot.Memes.ICanHaz("Grafixs");
+plt.Add(myMeme);
+plt.SaveFig("myMeme.png");
 ```

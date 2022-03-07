@@ -8,14 +8,16 @@ assignees: ''
 
 ## Before submitting a question
 1. Check if your question is already addressed in:
-  * The ScottPlot FAQ: https://swharden.com/scottplot/faq/
-  * The ScottPlot Cookbook: https://swharden.com/scottplot/cookbook
-  * The ScottPlot Demo: https://swharden.com/scottplot/demo
-2. Search the issues and discussions to see if the question has already been addressed: https://github.com/ScottPlot/ScottPlot/issues
+  * The ScottPlot FAQ: https://scottplot.net/faq
+  * The ScottPlot Cookbook: https://scottplot.net/cookbook
+  * The ScottPlot Demo: https://scottplot.net/demo
+2. Search the issues and discussions to see if the question has already been addressed: 
+  * https://github.com/ScottPlot/ScottPlot/issues
+  * https://github.com/ScottPlot/ScottPlot/discussions
 
-## Question Template
+_This header can be deleted before posting_
 
-_Delete this line and the text above it before submitting this issue_
+---------------------------------
 
 **ScottPlot Version:** ???
 
