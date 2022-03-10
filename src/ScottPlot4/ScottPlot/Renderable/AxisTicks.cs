@@ -60,7 +60,11 @@ namespace ScottPlot.Renderable
             if (!IsVisible)
                 return;
 
-            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            using Graphics gfxLow = GDI.Graphics(bmp, dims, true, false);
+            using Graphics gfxHigh = GDI.Graphics(bmp, dims, false, false);
+
+            var gfx = lowQuality ? gfxLow : gfxHigh;
+            var gfxSnap = SnapPx ? gfxLow : gfxHigh;
 
             double[] visibleMajorTicks = TickCollection.GetVisibleMajorTicks(dims)
                 .Select(t => t.Position)
@@ -71,15 +75,15 @@ namespace ScottPlot.Renderable
                 .ToArray();
 
             if (MajorGridVisible)
-                AxisTicksRender.RenderGridLines(dims, gfx, visibleMajorTicks, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
+                AxisTicksRender.RenderGridLines(dims, gfxSnap, visibleMajorTicks, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
 
             if (MinorGridVisible)
-                AxisTicksRender.RenderGridLines(dims, gfx, visibleMinorTicks, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
+                AxisTicksRender.RenderGridLines(dims, gfxSnap, visibleMinorTicks, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
 
             if (MinorTickVisible)
             {
                 float tickLength = TicksExtendOutward ? MinorTickLength : -MinorTickLength;
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, tickLength, MinorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfxSnap, visibleMinorTicks, tickLength, MinorTickColor, Edge, PixelOffset);
             }
 
             if (MajorTickVisible)
@@ -91,7 +95,7 @@ namespace ScottPlot.Renderable
 
                 tickLength = TicksExtendOutward ? tickLength : -tickLength;
 
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfxSnap, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset);
             }
 
             if (TickLabelVisible)

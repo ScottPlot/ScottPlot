@@ -142,7 +142,7 @@ namespace ScottPlot.Renderable
             {
                 AxisTicks.Render(dims, bmp, lowQuality);
                 AxisLabel.Render(dims, bmp, lowQuality);
-                AxisLine.Render(dims, bmp, lowQuality);
+                AxisLine.Render(dims, bmp, AxisTicks.SnapPx || lowQuality);
             }
         }
 
