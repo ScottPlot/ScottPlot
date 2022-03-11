@@ -5194,6 +5194,12 @@
             Return the point and rotation representing the center of the base of this axis
             </summary>
         </member>
+        <member name="F:ScottPlot.Renderable.AxisTicks.SnapPx">
+            <summary>
+            If true, grid lines will be drawn with anti-aliasing off to give the appearance of "snapping"
+            to the nearest pixel and to avoid blurriness associated with drawing single-pixel anti-aliased lines.
+            </summary>
+        </member>
         <member name="T:ScottPlot.Renderable.IRenderable">
             <summary>
             A "renderable" is any object which can be drawn on the figure.
