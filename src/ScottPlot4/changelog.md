@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.35
 _In development / not yet on NuGet ..._
 * Eto.Forms: Improved handling of events (#1719, #1718) _Thanks @rafntor and @VPKSoft_
+* Axis: Allow grid line and tick mark pixel snapping to be disabled (#1721, #1722) _Thanks @Xerxes004_
 
 ## ScottPlot 4.1.34
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-03_

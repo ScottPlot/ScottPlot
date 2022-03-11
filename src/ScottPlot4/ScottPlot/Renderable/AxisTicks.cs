@@ -50,25 +50,38 @@ namespace ScottPlot.Renderable
         public bool IsVisible { get; set; } = true;
 
         public bool RulerMode = false;
+
+        /// <summary>
+        /// If true, grid lines will be drawn with anti-aliasing off to give the appearance of "snapping"
+        /// to the nearest pixel and to avoid blurriness associated with drawing single-pixel anti-aliased lines.
+        /// </summary>
         public bool SnapPx = true;
+
         public float PixelOffset = 0;
 
         // TODO: store the TickCollection in the Axis module, not in the Ticks module.
+        // https://github.com/ScottPlot/ScottPlot/pull/1647
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
                 return;
 
+            double[] majorTicks = TickCollection.GetVisibleMajorTicks(dims)
+                .Select(t => t.Position)
+                .ToArray();
+
+            double[] minorTicks = TickCollection.GetVisibleMinorTicks(dims)
+                .Select(t => t.Position)
+                .ToArray();
+
+            RenderTicksAndGridLines(dims, bmp, lowQuality || SnapPx, majorTicks, minorTicks);
+            RenderTickLabels(dims, bmp, lowQuality);
+        }
+
+        private void RenderTicksAndGridLines(PlotDimensions dims, Bitmap bmp, bool lowQuality, double[] visibleMajorTicks, double[] visibleMinorTicks)
+        {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
-
-            double[] visibleMajorTicks = TickCollection.GetVisibleMajorTicks(dims)
-                .Select(t => t.Position)
-                .ToArray();
-
-            double[] visibleMinorTicks = TickCollection.GetVisibleMinorTicks(dims)
-                .Select(t => t.Position)
-                .ToArray();
 
             if (MajorGridVisible)
                 AxisTicksRender.RenderGridLines(dims, gfx, visibleMajorTicks, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
@@ -93,6 +106,11 @@ namespace ScottPlot.Renderable
 
                 AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset);
             }
+        }
+
+        private void RenderTickLabels(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
 
             if (TickLabelVisible)
                 AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
