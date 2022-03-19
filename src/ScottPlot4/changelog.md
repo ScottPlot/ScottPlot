@@ -1,13 +1,16 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.36
+## ScottPlot 4.1.37
 _In development / not yet on NuGet ..._
 
-## ScottPlot 4.1.35
+## ScottPlot 4.1.36
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-19_
-* Eto.Forms: Improved handling of events (#1719, #1718) _Thanks @rafntor and @VPKSoft_
 * Axis: Allow grid line and tick mark pixel snapping to be disabled (#1721, #1722) _Thanks @Xerxes004_
 * Axis: `ResetLayout()` sets padding to original values to reverse changes made by adding colorbars (#1732, #1736) _Thanks @ccopsey_
+
+## ScottPlot 4.1.35
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-06_
+* Eto.Forms: Improved handling of events (#1719, #1718) _Thanks @rafntor and @VPKSoft_
 
 ## ScottPlot 4.1.34
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-03_
