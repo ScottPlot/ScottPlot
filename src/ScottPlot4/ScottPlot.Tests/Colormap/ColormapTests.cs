@@ -11,6 +11,24 @@ namespace ScottPlotTests.ColormapTests
     class ColormapTests
     {
         [Test]
+        public void Test_Colormap_LayoutCanBeReset()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.Style(figureBackground: System.Drawing.ColorTranslator.FromHtml("#dadada"));
+            var bmpOriginal = new MeanPixel(plt.GetBitmap());
+
+            var cb = plt.AddColorbar();
+            var bmpWithColorbar = new MeanPixel(plt.GetBitmap());
+
+            plt.Remove(cb);
+            plt.YAxis2.ResetLayout();
+            var bmpWithColorbarRemoved = new MeanPixel(plt.GetBitmap());
+
+            Assert.AreNotEqual(bmpOriginal, bmpWithColorbar);
+            Assert.AreEqual(bmpOriginal, bmpWithColorbarRemoved);
+        }
+
+        [Test]
         public void Test_Colormap_MultipleRequests()
         {
             var colormaps = ScottPlot.Drawing.Colormap.GetColormaps();

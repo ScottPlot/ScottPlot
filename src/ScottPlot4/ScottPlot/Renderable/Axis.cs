@@ -77,6 +77,16 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Reset axis padding to the default values
+        /// </summary>
+        public void ResetLayout()
+        {
+            PixelSizeMinimum = 5;
+            PixelSizeMaximum = float.PositiveInfinity;
+            PixelSizePadding = 3;
+        }
+
+        /// <summary>
         /// Define the minimum and maximum limits for the pixel size of this axis
         /// </summary>
         public void SetSizeLimit(float? min = null, float? max = null, float? pad = null)
@@ -95,9 +105,10 @@ namespace ScottPlot.Renderable
         private float PixelSize; // how large this axis is
         private float PixelOffset; // distance from the data area
         private bool Collapsed = false; // true if axes are hidden
-        private float PixelSizeMinimum = 5;
-        private float PixelSizeMaximum = float.PositiveInfinity;
-        private float PixelSizePadding = 3;
+
+        private float PixelSizeMinimum = 5; // also defined in ResetLayout()
+        private float PixelSizeMaximum = float.PositiveInfinity; // also defined in ResetLayout()
+        private float PixelSizePadding = 3; // also defined in ResetLayout()
 
         /// <summary>
         /// Define how many pixels away from the data area this axis will be.
