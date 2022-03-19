@@ -299,6 +299,15 @@ namespace ScottPlot
                 plottable.SetStyle(tick, axisLabel);
         }
 
+        /// <summary>
+        /// Reset axis padding to the default values for all axes
+        /// </summary>
+        public void ResetLayout()
+        {
+            foreach (var axis in settings.Axes)
+                axis.ResetLayout();
+        }
+
         #endregion
 
         #region renderable customization
