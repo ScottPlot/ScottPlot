@@ -17,19 +17,19 @@ namespace WinFormsApp
             InitializeComponent();
 
             Random rand = new(0);
-            double[] ys = ScottPlot.DataGen.Random(rand, 10);
-            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
+            double?[,] data = new double?[1000, 1000];
+            for (int y = 0; y < data.GetLength(0); y++)
+            {
+                for (int x = 0; x < data.GetLength(1); x++)
+                {
+                    if (rand.NextDouble() > .98)
+                        data[y, x] = rand.NextDouble();
+                    else
+                        data[y, x] = null;
+                }
+            }
 
-            var sig = formsPlot1.Plot.AddSignalXY(xs, ys);
-            sig.StepDisplay = true;
-            sig.FillAbove(Color.Blue);
-
-            formsPlot1.Refresh();
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            formsPlot1.Plot.AxisAuto(horizontalMargin: (double)numericUpDown1.Value);
+            formsPlot1.Plot.AddHeatmap(data, lockScales: false);
             formsPlot1.Refresh();
         }
     }
