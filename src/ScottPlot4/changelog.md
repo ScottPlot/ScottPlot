@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.37
+## ScottPlot 4.1.38
 _In development / not yet on NuGet ..._
+
+## ScottPlot 4.1.37
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-25_
+* Controls: Improved multi-axis support for mouse tracking by giving `GetMouseCoordinates()` optional axis index arguments (#1743) _Thanks @kv-gits_
 
 ## ScottPlot 4.1.36
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-19_
