@@ -14,9 +14,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive winforms windows forms</PackageTags>
     <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
-    <Version>4.1.36</Version>
-    <AssemblyVersion>4.1.36.0</AssemblyVersion>
-    <FileVersion>4.1.36.0</FileVersion>
+    <Version>4.1.37</Version>
+    <AssemblyVersion>4.1.37.0</AssemblyVersion>
+    <FileVersion>4.1.37.0</FileVersion>
     <SignAssembly>false</SignAssembly>
     <Authors>Scott Harden</Authors>
     <Company>Harden Technologies, LLC</Company>
