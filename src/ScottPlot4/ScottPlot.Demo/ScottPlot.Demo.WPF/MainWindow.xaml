@@ -8,42 +8,39 @@
         Title="ScottPlot Demo (WPF)" 
         WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke"
-        Height="500" Width="350">
-    <ScrollViewer>
-        <StackPanel>
+        Height="400" Width="700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-            <StackPanel.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="TextWrapping" Value="Wrap" />
-                </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Padding" Value="5" />
-                    <Setter Property="Margin" Value="5" />
-                    <Setter Property="Width" Value="100"/>
-                </Style>
-            </StackPanel.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <Label DockPanel.Dock="Top" Content="ScottPlot Demo" FontSize="24" FontWeight="SemiBold" />
-            <Label DockPanel.Dock="Top" Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
-            <Label Name="WebsiteLabel" ToolTip="Launch ScottPlot Website" Foreground="Gray" DockPanel.Dock="Top" Margin="0,-50,0,0" HorizontalAlignment="Right" Content="🚀" FontSize="24" MouseEnter="WebsiteLabelMouseEnter" MouseLeave="WebsiteLabelMouseLeave" MouseDown="WebsiteLabelMouseDown" MouseUp="WebsiteLabelMouseUp"/>
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <StackPanel>
 
-            <GroupBox Header="ScottPlot Cookbook" Margin="5">
-                <DockPanel>
-                    <Button DockPanel.Dock="Left" Click="LaunchCookbook" Background="#ebf0a1">
-                        <TextBlock TextAlignment="Center">
-                        Launch Cookbook
-                        </TextBlock>
-                    </Button>
-                    <TextBlock >
-                    Simple examples that demonstrate the primary features of ScottPlot
-                    </TextBlock>
-                </DockPanel>
-            </GroupBox>
+                <Label DockPanel.Dock="Top" Content="ScottPlot Demo" FontSize="24" FontWeight="SemiBold" />
+                <Label DockPanel.Dock="Top" Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
+                <Label Name="WebsiteLabel" ToolTip="Launch ScottPlot Website" Foreground="Gray" DockPanel.Dock="Top" Margin="0,-50,0,0" HorizontalAlignment="Right" Content="🚀" FontSize="24" MouseEnter="WebsiteLabelMouseEnter" MouseLeave="WebsiteLabelMouseLeave" MouseDown="WebsiteLabelMouseDown" MouseUp="WebsiteLabelMouseUp"/>
 
-            <GroupBox Header="WPF Control Demos" Margin="5">
-                <StackPanel>
-                    <TextBlock Padding="5">
+                <GroupBox Header="ScottPlot Cookbook" Margin="5">
+                    <DockPanel>
+                        <Button 
+                                DockPanel.Dock="Left"
+                                Click="LaunchCookbook"
+                                Background="#ebf0a1"
+                                Margin="5"
+                                Padding="5"
+                                Content="Launch Cookbook" />
+                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                                Text="Simple examples that demonstrate the primary features of ScottPlot"/>
+                    </DockPanel>
+                </GroupBox>
+
+                <TextBlock Padding="5" TextWrapping="Wrap" Margin="5">
                         These examples demonstrate advanced functionality for the WPF ScottPlot control (WpfPlot).
                         <LineBreak/>
                         <LineBreak/>
@@ -53,197 +50,13 @@
                         </Hyperlink>
                             </Bold>
                         along with additional information and advanced implementation recommendations.
-                    </TextBlock>
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchPlotViewer">
-                            <TextBlock TextAlignment="Center">
-                                Plot Viewer
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Create a ScottPlot programmatically then display it in an interactive window
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchMouseTracker">
-                            <TextBlock TextAlignment="Center">
-                                Mouse Tracker
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display the position under the mouse cursor
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchToggleVisibility">
-                            <TextBlock TextAlignment="Center">
-                        Toggle Visibility
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                    Checkboxes control visibility of individual plot objects
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchWpfConfig">
-                            <TextBlock TextAlignment="Center">
-                        WpfPlot Config
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Advanced styling and behavior customization
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchLinkedAxes">
-                            <TextBlock TextAlignment="Center">
-                                Linked Axes
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Link the axes of two plots together so adjusting one changes the other
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchLiveDataFixed">
-                            <TextBlock TextAlignment="Center">
-                        Live Data
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display live data from a fixed-length array that continuously changes
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchLiveDataIncoming">
-                            <TextBlock TextAlignment="Center">
-                        Growing Data
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display the value of the data point nearest the cursor
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchShowValueUnderMouse">
-                            <TextBlock TextAlignment="Center">
-                                Show Value<LineBreak />Under Mouse
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display the value of the data point nearest the cursor
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchTransparentBackground">
-                            <TextBlock TextAlignment="Center">
-                                Transparent Background
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Demonstrate a control with a transparent background
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchManyPlot">
-                            <TextBlock TextAlignment="Center">
-                                Many Plots
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display a grid of plots created programmatically
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchCustomRightClick">
-                            <TextBlock TextAlignment="Center">
-                                Custom Right-Click Menu
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display a custom menu (or perform a different action) when the control is right-clicked
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchPlotInAScrollViewer">
-                            <TextBlock TextAlignment="Center">
-                                Plot in a ScrollViewer
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Display multiple plots in a scrolling control
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchAxisLimits">
-                            <TextBlock TextAlignment="Center">
-                                Axis Limits
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Demonstrate how axis boundaries can be used to constrain axis limits in interactive plots
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="MultiAxisLock">
-                            <TextBlock TextAlignment="Center">
-                                MultiAxisLock
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Selectively pan/zoom individual axes in multi-axis plots
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="StyleBrowser">
-                            <TextBlock TextAlignment="Center">
-                                Style Browser
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            View available predefined plot styles
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="DisplayScaling">
-                            <TextBlock TextAlignment="Center">
-                                Display Scaling
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Enable/Disable Display Scaling
-                        </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel Margin="0px 5px">
-                        <Button DockPanel.Dock="Left" Click="LaunchLayout">
-                            <TextBlock TextAlignment="Center">
-                                Advanced Layout
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                            Match data area sizes across multiple plot controls
-                        </TextBlock>
-                    </DockPanel>
-
-                </StackPanel>
-            </GroupBox>
-
+                </TextBlock>
+            </StackPanel>
         </StackPanel>
-    </ScrollViewer>
+
+        <ScrollViewer Grid.Row="0" Grid.Column="1">
+            <local:DemoListControl/>
+        </ScrollViewer>
+
+    </Grid>
 </Window>

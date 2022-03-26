@@ -86,7 +86,7 @@ namespace ScottPlot.Eto
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
-        public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
+        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0) => Backend.GetMouseCoordinates(xAxisIndex, yAxisIndex);
 
         /// <summary>
         /// Return the mouse position (in pixel space) for the last observed mouse position

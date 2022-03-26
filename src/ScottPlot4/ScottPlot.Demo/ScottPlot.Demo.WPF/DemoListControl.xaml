@@ -1,0 +1,212 @@
+﻿<UserControl x:Class="ScottPlot.Demo.WPF.DemoListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
+             mc:Ignorable="d" 
+             Background="WhiteSmoke"
+             d:DesignWidth="400">
+    <StackPanel>
+
+        <StackPanel.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Width" Value="100"/>
+            </Style>
+        </StackPanel.Resources>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchPlotViewer">
+                <TextBlock TextAlignment="Center">
+                                Plot Viewer
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Create a ScottPlot programmatically then display it in an interactive window
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchMouseTracker">
+                <TextBlock TextAlignment="Center">
+                                Mouse Tracker
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display the position under the mouse cursor
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchToggleVisibility">
+                <TextBlock TextAlignment="Center">
+                        Toggle Visibility
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                    Checkboxes control visibility of individual plot objects
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchWpfConfig">
+                <TextBlock TextAlignment="Center">
+                        WpfPlot Config
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Advanced styling and behavior customization
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchLinkedAxes">
+                <TextBlock TextAlignment="Center">
+                                Linked Axes
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Link the axes of two plots together so adjusting one changes the other
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchLiveDataFixed">
+                <TextBlock TextAlignment="Center">
+                        Live Data
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display live data from a fixed-length array that continuously changes
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchLiveDataIncoming">
+                <TextBlock TextAlignment="Center">
+                        Growing Data
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display the value of the data point nearest the cursor
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchShowValueUnderMouse">
+                <TextBlock TextAlignment="Center">
+                                Show Value<LineBreak />Under Mouse
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display the value of the data point nearest the cursor
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchTransparentBackground">
+                <TextBlock TextAlignment="Center">
+                                Transparent Background
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Demonstrate a control with a transparent background
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchManyPlot">
+                <TextBlock TextAlignment="Center">
+                                Many Plots
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display a grid of plots created programmatically
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchCustomRightClick">
+                <TextBlock TextAlignment="Center">
+                                Custom Right-Click Menu
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display a custom menu (or perform a different action) when the control is right-clicked
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchPlotInAScrollViewer">
+                <TextBlock TextAlignment="Center">
+                                Plot in a ScrollViewer
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Display multiple plots in a scrolling control
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchAxisLimits">
+                <TextBlock TextAlignment="Center">
+                                Axis Limits
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Demonstrate how axis boundaries can be used to constrain axis limits in interactive plots
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="MultiAxisLock">
+                <TextBlock TextAlignment="Center">
+                                MultiAxisLock
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Selectively pan/zoom individual axes in multi-axis plots
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="StyleBrowser">
+                <TextBlock TextAlignment="Center">
+                                Style Browser
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            View available predefined plot styles
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="DisplayScaling">
+                <TextBlock TextAlignment="Center">
+                                Display Scaling
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Enable/Disable Display Scaling
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchLayout">
+                <TextBlock TextAlignment="Center">
+                                Advanced Layout
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Match data area sizes across multiple plot controls
+            </TextBlock>
+        </DockPanel>
+
+    </StackPanel>
+</UserControl>
