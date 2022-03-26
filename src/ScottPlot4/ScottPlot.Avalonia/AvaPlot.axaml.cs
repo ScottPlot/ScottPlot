@@ -95,7 +95,8 @@ namespace ScottPlot.Avalonia
             Backend.StartProcessingEvents();
         }
 
-        public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
+        public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0) => Backend.GetMouseCoordinates(xAxisIndex, yAxisIndex);
+
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset(ScaledWidth, ScaledHeight);
         public void Reset(Plot newPlot) => Backend.Reset(ScaledWidth, ScaledHeight, newPlot);
