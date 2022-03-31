@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
-    <ProjectReference Include="..\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <ProjectReference Include="..\..\..\src\ScottPlot4\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    <ProjectReference Include="..\..\..\src\ScottPlot4\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
 </Project>

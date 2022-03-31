@@ -25,10 +25,11 @@ namespace CookbookGenerator
             if (Debugger.IsAttached)
             {
                 string dllFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                string outputFolder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dllFilePath), "../../../../../cookbook/output"));
+                string outputFolder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dllFilePath), "../../../output"));
                 if (!Directory.Exists(outputFolder))
                     Directory.CreateDirectory(outputFolder);
-                string cookbookFolder = Path.GetFullPath(Path.Combine(outputFolder, "../ScottPlot.Cookbook"));
+
+                string cookbookFolder = @"C:\Users\scott\Documents\GitHub\ScottPlot\src\ScottPlot4\ScottPlot.Cookbook";
                 string outputFolderImages = Path.Combine(outputFolder, "images");
                 string outputJsonFile = Path.Combine(outputFolder, "recipes.json");
                 GenerateEverything(outputFolderImages, outputJsonFile, cookbookFolder);
