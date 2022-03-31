@@ -3,10 +3,11 @@ name: Test ScottPlot v4
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - "src/ScottPlot4/**"
   pull_request:
-    types: [opened, reopened]
     paths:
       - "src/ScottPlot4/**"
 
