@@ -6,6 +6,7 @@ on:
     paths:
       - "src/ScottPlot4/**"
   pull_request:
+    types: [opened, reopened]
     paths:
       - "src/ScottPlot4/**"
 
