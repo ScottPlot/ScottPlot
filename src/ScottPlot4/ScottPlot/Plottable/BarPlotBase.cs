@@ -114,8 +114,8 @@ namespace ScottPlot.Plottable
 
             for (int i = 0; i < Positions.Length; i++)
             {
-                valueMin = Math.Min(valueMin, Values[i] - ValueErrors[i] + ValueOffsets[i]);
-                valueMax = Math.Max(valueMax, Values[i] + ValueErrors[i] + ValueOffsets[i]);
+                valueMin = Math.Min(valueMin, ValueOffsets[i] - ValueErrors[i]);
+                valueMax = Math.Max(valueMax, ValueOffsets[i] + ValueErrors[i] + Values[i]);
                 positionMin = Math.Min(positionMin, Positions[i]);
                 positionMax = Math.Max(positionMax, Positions[i]);
             }
