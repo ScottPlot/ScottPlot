@@ -353,11 +353,13 @@ namespace ScottPlot.Renderable
         public void LabelStyle(
             Color? color = null,
             string fontName = null,
-            float? fontSize = null)
+            float? fontSize = null,
+            float? rotation = null)
         {
             AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
             AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
             AxisLabel.Font.Size = fontSize ?? AxisLabel.Font.Size;
+            AxisLabel.Font.Rotation = rotation ?? AxisLabel.Font.Rotation;
         }
 
         /// <summary>
