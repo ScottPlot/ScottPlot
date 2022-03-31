@@ -88,10 +88,19 @@ namespace ScottPlot.Renderable
             using var gfx = GDI.Graphics(bmp, dims, lowQuality, false);
             (float x, float y) = GetAxisCenter(dims);
 
-            if (ImageLabel is null)
-                RenderTextLabel(gfx, dims, x, y);
-            else
+            if (ImageLabel is not null)
+            {
                 RenderImageLabel(gfx, dims, x, y);
+                return;
+            }
+
+            if (Font.Rotation != 0)
+            {
+                RenderTextLabelRotated(gfx, dims, x, y);
+                return;
+            }
+
+            RenderTextLabel(gfx, dims, x, y);
         }
 
         private void RenderImageLabel(Graphics gfx, PlotDimensions dims, float x, float y)
@@ -123,7 +132,6 @@ namespace ScottPlot.Renderable
 
         private void RenderTextLabel(Graphics gfx, PlotDimensions dims, float x, float y)
         {
-            // TODO: should padding be inverted if "bottom or right"?
             float padding = (Edge == Edge.Bottom) ? -PixelSizePadding : PixelSizePadding;
 
             int rotation = Edge switch
@@ -150,6 +158,57 @@ namespace ScottPlot.Renderable
             gfx.TranslateTransform(x, y);
             gfx.RotateTransform(rotation);
             gfx.DrawString(Label, font, brush, 0, padding, sf);
+            GDI.ResetTransformPreservingScale(gfx, dims);
+        }
+
+        private void RenderTextLabelRotated(Graphics gfx, PlotDimensions dims, float x, float y)
+        {
+            using var font = GDI.Font(Font);
+            using var brush = GDI.Brush(Font.Color);
+
+            gfx.TranslateTransform(x, y);
+
+            if (Edge == Edge.Right)
+            {
+                if (Font.Rotation != 90)
+                    throw new NotImplementedException("right axis label rotation must be 0 or 90");
+
+                using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower);
+                gfx.RotateTransform(-Font.Rotation);
+                gfx.DrawString(Label, font, brush, 0, 0, sf);
+            }
+            else if (Edge == Edge.Left)
+            {
+                if (Font.Rotation != 90)
+                    throw new NotImplementedException("left axis label rotation must be 0 or 90");
+
+                using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
+                gfx.RotateTransform(-Font.Rotation);
+                gfx.DrawString(Label, font, brush, 0, 0, sf);
+            }
+            else if (Edge == Edge.Bottom)
+            {
+                if (Font.Rotation != 180)
+                    throw new NotImplementedException("bottom axis label rotation must be 0 or 180");
+
+                using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
+                gfx.RotateTransform(-Font.Rotation);
+                gfx.DrawString(Label, font, brush, 0, 0, sf);
+            }
+            else if (Edge == Edge.Top)
+            {
+                if (Font.Rotation != 180)
+                    throw new NotImplementedException("top axis label rotation must be 0 or 180");
+
+                using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower);
+                gfx.RotateTransform(-Font.Rotation);
+                gfx.DrawString(Label, font, brush, 0, 0, sf);
+            }
+            else
+            {
+                throw new NotImplementedException(Edge.ToString());
+            }
+
             GDI.ResetTransformPreservingScale(gfx, dims);
         }
 

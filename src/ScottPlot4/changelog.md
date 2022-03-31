@@ -1,7 +1,9 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.38
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-31_
 * Bar plot: Improved automatic axis limit detection for bars with negative offset (#1750) _Thanks @painstgithub_
+* Axis labels: Added a `rotation` argument to `Axis.LabelStyle()` to support flipping label orientation (#1754, #1194) _Thanks @zeticabrian_
 
 ## ScottPlot 4.1.37
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-25_

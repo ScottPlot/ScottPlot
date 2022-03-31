@@ -47,5 +47,31 @@ namespace ScottPlotTests.Axis
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Label_Rotation()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            plt.XAxis.Label("Test Label");
+            plt.XAxis.TickLabelStyle(rotation: 90);
+            plt.XAxis.LabelStyle(rotation: 180);
+
+            plt.YAxis.Label("Test Label");
+            plt.YAxis.TickLabelStyle(rotation: 90);
+            plt.YAxis.LabelStyle(rotation: 90);
+
+            plt.XAxis2.Label("Test Label");
+            plt.XAxis2.Ticks(true);
+            plt.XAxis2.TickLabelStyle(rotation: 90);
+            plt.XAxis2.LabelStyle(rotation: 180);
+
+            plt.YAxis2.Label("Test Label");
+            plt.YAxis2.Ticks(true);
+            plt.YAxis2.TickLabelStyle(rotation: 90);
+            plt.YAxis2.LabelStyle(rotation: 90);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }
