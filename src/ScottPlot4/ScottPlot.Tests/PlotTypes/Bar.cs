@@ -203,5 +203,40 @@ namespace ScottPlotTests.PlotTypes
             plt.SetAxisLimits(xMin: 0);
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_NegativeBars_AutoAxisProperly()
+        {
+            double[] heights = { 1, 1, 1 };
+            double[] bases = { 0, 1, -1 };
+
+            var plt = new ScottPlot.Plot();
+            var bar = plt.AddBar(heights);
+            bar.ValueOffsets = bases;
+
+            plt.AxisAuto();
+            var limits = plt.GetAxisLimits();
+            Assert.GreaterOrEqual(limits.YMax, 2);
+            Assert.LessOrEqual(limits.YMin, -1);
+        }
+
+        [Test]
+        public void Test_NegativeBars_AutoAxisProperlySin()
+        {
+            // recreates https://github.com/ScottPlot/ScottPlot/issues/1750
+            double[] heights = ScottPlot.DataGen.Ones(21);
+            double[] bases = ScottPlot.DataGen.Sin(21);
+
+            ScottPlot.Plot plt = new(400, 300);
+            var bar = plt.AddBar(heights);
+            bar.ValueOffsets = bases;
+
+            //TestTools.SaveFig(plt);
+
+            plt.AxisAuto();
+            var limits = plt.GetAxisLimits();
+            Assert.GreaterOrEqual(limits.YMax, 2);
+            Assert.LessOrEqual(limits.YMin, -1);
+        }
     }
 }
