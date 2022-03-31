@@ -1,7 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.38
-_In development / not yet on NuGet ..._
+* Bar plot: Improved automatic axis limit detection for bars with negative offset (#1750) _Thanks @painstgithub_
 
 ## ScottPlot 4.1.37
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-25_
