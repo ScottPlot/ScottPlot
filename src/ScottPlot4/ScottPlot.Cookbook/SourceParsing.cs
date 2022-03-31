@@ -18,7 +18,7 @@ namespace ScottPlot.Cookbook
         {
             sourcePath = Path.GetFullPath(sourcePath);
             if (!File.Exists(Path.Combine(sourcePath, "IRecipe.cs")))
-                throw new ArgumentException("IRecipe.cs can not be found in the given source colder");
+                throw new ArgumentException($"IRecipe.cs not be found in: {sourcePath}");
 
             List<RecipeSource> sources = new();
 
