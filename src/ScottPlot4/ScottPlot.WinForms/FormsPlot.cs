@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 #pragma warning disable IDE1006 // lowercase public properties
@@ -207,10 +208,13 @@ namespace ScottPlot
 
         public void DefaultRightClickEvent(object sender, EventArgs e)
         {
-            var legend = Plot.Legend(null);
-            bool legendIsNotEmpty = legend.Count > 0;
+            bool legendHasItems = Plot.GetPlottables()
+                .SelectMany(x => x.GetLegendItems())
+                .Where(x => !string.IsNullOrEmpty(x.label))
+                .Any();
+            var legend = Plot.Legend(enable: null, location: null);
             bool legendIsNotDetachedAlready = legend.IsDetached == false;
-            detachLegendMenuItem.Visible = legendIsNotEmpty && legendIsNotDetachedAlready;
+            detachLegendMenuItem.Visible = legendHasItems && legendIsNotDetachedAlready;
             DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
