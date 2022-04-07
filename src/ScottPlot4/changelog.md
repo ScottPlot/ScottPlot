@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.39
 _In development / not yet on NuGet..._
 * SignalPlotXY: Improved support for custom markers (#1763, #1764) _Thanks @bclehmann and @ChrisCC6_
+* Legend: `Plot.Legend()` accepts a nullable `Location` so legends can be enabled/disabled without changing position (#1765) _Thanks @envine_
 
 ## ScottPlot 4.1.38
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-01_
