@@ -222,7 +222,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // Draw lines
-                if (PointsToDraw.Length > 1)
+                if (PointsToDraw.Length > 1 && LineStyle != LineStyle.None && LineWidth > 0)
                 {
                     ValidatePoints(PointsToDraw);
                     gfx.DrawLines(penHD, PointsToDraw);
@@ -234,23 +234,17 @@ namespace ScottPlot.Plottable
                     float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
                     float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
                     markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
+                    float scaledMarkerSize = markerPxRadius * 2;
+
                     if (markerPxRadius > .3)
                     {
                         // skip not visible before and after points
                         var PointsWithMarkers = PointsToDraw
                                                 .Skip(PointBefore.Length)
-                                                .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length);
-                        foreach (PointF pt in PointsWithMarkers)
-                        {
-                            // adjust marker offset to improve rendering on Linux and MacOS
-                            float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                                                .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length)
+                                                .ToArray();
 
-                            gfx.FillEllipse(brush,
-                                  x: pt.X - markerPxRadius + markerOffsetX,
-                                  y: pt.Y - markerPxRadius,
-                                  width: markerPxRadius * 2,
-                                  height: markerPxRadius * 2);
-                        }
+                        MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, scaledMarkerSize, MarkerColor, MarkerLineWidth);
                     }
                 }
             }

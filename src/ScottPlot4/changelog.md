@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.39
+_In development / not yet on NuGet..._
+* SignalPlotXY: Improved support for custom markers (#1763, #1764) _Thanks @bclehmann and @ChrisCC6_
+
 ## ScottPlot 4.1.38
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-01_
 * SignalPlotXY: Fixed bug where `GetPointNearestX()` did not check proximity to the final point (#1757) _Thanks @MareMare_
