@@ -222,7 +222,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // Draw lines
-                if (PointsToDraw.Length > 1)
+                if (PointsToDraw.Length > 1 && LineStyle != LineStyle.None && LineWidth > 0)
                 {
                     ValidatePoints(PointsToDraw);
                     gfx.DrawLines(penHD, PointsToDraw);
