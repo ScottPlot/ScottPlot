@@ -14,7 +14,7 @@ namespace ScottPlot
         public FormsPlotLegendViewer(FormsPlot formsPlot, string windowTitle = "Detached Legend")
         {
             FormsPlot = formsPlot;
-            Legend = formsPlot.Plot.Legend();
+            Legend = formsPlot.Plot.Legend(enable: true, location: null);
             Text = windowTitle;
 
             Legend.IsDetached = true;
@@ -31,7 +31,7 @@ namespace ScottPlot
         {
             RemoveHighlightFromAllPlottables();
             Legend.IsDetached = false;
-            FormsPlot.Plot.Legend(enable: true);
+            FormsPlot.Plot.Legend(enable: true, location: null);
             FormsPlot.Refresh();
         }
 
