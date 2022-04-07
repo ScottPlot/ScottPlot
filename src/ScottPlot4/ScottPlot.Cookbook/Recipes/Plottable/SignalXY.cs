@@ -131,4 +131,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Margins(x: 0);
         }
     }
+
+    public class SignalCustomMarkers : IRecipe
+    {
+        public string Category => "Plottable: SignalXY";
+        public string ID => "signalxy_markers";
+        public string Title => "Customize Markers";
+        public string Description => "SignalXY plots have markers which only appear when they are zoomed in.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var rand = new Random(0);
+            double[] ys = DataGen.RandomWalk(rand, 200);
+            double[] xs = DataGen.Consecutive(200);
+
+            var sig = plt.AddSignalXY(xs, ys);
+            sig.MarkerShape = MarkerShape.filledTriangleUp;
+            sig.MarkerSize = 10;
+
+            plt.SetAxisLimits(100, 120, 10, 15);
+        }
+    }
 }
