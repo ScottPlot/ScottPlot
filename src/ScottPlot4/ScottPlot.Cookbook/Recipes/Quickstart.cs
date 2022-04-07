@@ -109,7 +109,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         {
             double[] xs = DataGen.Consecutive(51);
             double[] sin = DataGen.Sin(51);
-            double[] cos = DataGen.Sin(51);
+            double[] cos = DataGen.Cos(51);
 
             var sinPlot = plt.AddScatter(xs, sin, color: Color.Red);
             var cosPlot = plt.AddScatter(xs, cos, color: Color.Blue);
@@ -131,11 +131,31 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         {
             double[] xs = DataGen.Consecutive(51);
             double[] sin = DataGen.Sin(51);
-            double[] cos = DataGen.Sin(51);
+            double[] cos = DataGen.Cos(51);
 
             plt.AddScatter(xs, sin, color: Color.Red);
             plt.Clear();
             plt.AddScatter(xs, cos, color: Color.Blue);
+        }
+    }
+
+    class Legend : IRecipe
+    {
+        public string Category => "Quickstart";
+        public string ID => "quickstart_legend";
+        public string Title => "Legend";
+        public string Description =>
+            "Most plottable objects have a Label which defines how they appear in the legend";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] sin = DataGen.Sin(51);
+            double[] cos = DataGen.Cos(51);
+
+            plt.AddScatter(xs, sin, label: "sin");
+            plt.AddScatter(xs, cos, label: "cos");
+            plt.Legend();
         }
     }
 }
