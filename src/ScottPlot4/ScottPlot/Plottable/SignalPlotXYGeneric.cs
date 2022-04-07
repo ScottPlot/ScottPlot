@@ -241,7 +241,7 @@ namespace ScottPlot.Plottable
                                                 .Skip(PointBefore.Length)
                                                 .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length)
                                                 .ToArray();
-                        
+
                         MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
                     }
                 }
