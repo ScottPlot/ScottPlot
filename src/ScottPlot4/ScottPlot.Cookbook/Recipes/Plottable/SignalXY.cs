@@ -19,7 +19,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             (double[] xs, double[] ys) = DataGen.RandomWalk2D(new Random(0), 5_000);
 
-            plt.AddSignalXY(xs, ys);
+            var sig = plt.AddSignalXY(xs, ys);
+            sig.MarkerColor = System.Drawing.Color.Cyan;
+            sig.MarkerShape = MarkerShape.eks;
+            sig.LineWidth = 0;
         }
     }
 

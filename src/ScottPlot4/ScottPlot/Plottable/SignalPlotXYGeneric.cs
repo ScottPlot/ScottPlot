@@ -239,18 +239,10 @@ namespace ScottPlot.Plottable
                         // skip not visible before and after points
                         var PointsWithMarkers = PointsToDraw
                                                 .Skip(PointBefore.Length)
-                                                .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length);
-                        foreach (PointF pt in PointsWithMarkers)
-                        {
-                            // adjust marker offset to improve rendering on Linux and MacOS
-                            float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
-
-                            gfx.FillEllipse(brush,
-                                  x: pt.X - markerPxRadius + markerOffsetX,
-                                  y: pt.Y - markerPxRadius,
-                                  width: markerPxRadius * 2,
-                                  height: markerPxRadius * 2);
-                        }
+                                                .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length)
+                                                .ToArray();
+                        
+                        MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
                     }
                 }
             }
