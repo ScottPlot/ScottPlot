@@ -234,6 +234,8 @@ namespace ScottPlot.Plottable
                     float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
                     float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
                     markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
+                    float scaledMarkerSize = markerPxRadius * 2;
+
                     if (markerPxRadius > .3)
                     {
                         // skip not visible before and after points
@@ -242,7 +244,7 @@ namespace ScottPlot.Plottable
                                                 .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length)
                                                 .ToArray();
 
-                        MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
+                        MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, scaledMarkerSize, MarkerColor, MarkerLineWidth);
                     }
                 }
             }
