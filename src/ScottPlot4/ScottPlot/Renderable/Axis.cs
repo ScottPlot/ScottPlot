@@ -103,7 +103,7 @@ namespace ScottPlot.Renderable
 
         // private styling variables
         private float PixelSize; // how large this axis is
-        private float PixelOffset; // distance from the data area
+        public float PixelOffset { get; private set; } // distance from the data area
         private bool Collapsed = false; // true if axes are hidden
 
         private float PixelSizeMinimum = 5; // also defined in ResetLayout()

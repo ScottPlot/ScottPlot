@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
@@ -30,6 +31,11 @@ namespace ScottPlot.Plottable
         /// If true the position label will be drawn on the right or top of the data area.
         /// </summary>
         public bool PositionLabelOppositeAxis = false;
+
+        /// <summary>
+        /// If provided, the position label will be rendered on this axis
+        /// </summary>
+        public Axis PositionLabelAxis = null;
 
         /// <summary>
         /// This method generates the position label text for numeric (non-DateTime) axes.
@@ -178,6 +184,8 @@ namespace ScottPlot.Plottable
             using var fillBrush = GDI.Brush(PositionLabelBackground);
             using var fontBrush = GDI.Brush(PositionLabelFont.Color);
 
+            float axisOffset = PositionLabelAxis is not null ? PositionLabelAxis.PixelOffset : 0;
+
             if (IsHorizontal)
             {
                 if (Position > dims.YMax || Position < dims.YMin)
@@ -186,7 +194,9 @@ namespace ScottPlot.Plottable
                 float pixelY = dims.GetPixelY(Position);
                 string yLabel = PositionFormatter(Position);
                 SizeF yLabelSize = GDI.MeasureString(yLabel, PositionLabelFont);
-                float xPos = PositionLabelOppositeAxis ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX - yLabelSize.Width;
+                float xPos = PositionLabelOppositeAxis
+                    ? dims.DataOffsetX + dims.DataWidth + axisOffset
+                    : dims.DataOffsetX - yLabelSize.Width - axisOffset;
                 float yPos = pixelY - yLabelSize.Height / 2;
                 RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
                 gfx.FillRectangle(fillBrush, xLabelRect);
@@ -202,7 +212,9 @@ namespace ScottPlot.Plottable
                 string xLabel = PositionFormatter(Position);
                 SizeF xLabelSize = GDI.MeasureString(xLabel, PositionLabelFont);
                 float xPos = pixelX - xLabelSize.Width / 2;
-                float yPos = PositionLabelOppositeAxis ? dims.DataOffsetY - xLabelSize.Height : dims.DataOffsetY + dims.DataHeight;
+                float yPos = PositionLabelOppositeAxis
+                    ? dims.DataOffsetY - xLabelSize.Height - axisOffset
+                    : dims.DataOffsetY + dims.DataHeight + axisOffset;
                 RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
                 gfx.FillRectangle(fillBrush, xLabelRect);
                 var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
