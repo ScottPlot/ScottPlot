@@ -149,7 +149,7 @@ public class PlotConfig
         return ticksByAxis;
     }
 
-    private PlotConfig WithTightDataRect(ICanvas canvas, List<(Axes.IAxis, Tick[])> ticksByAxis)
+    private PlotConfig WithTightDataRect(ICanvas canvas, List<(Axes.IAxis, Tick[])>? ticksByAxis)
     {
         List<Tick> ticks = new();
         if (ticksByAxis is not null)
