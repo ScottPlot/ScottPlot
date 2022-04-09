@@ -21,5 +21,21 @@ namespace ScottPlotTests.Plot
             plt.Render(bmp, scale: 1.5);
             TestTools.SaveBitmap(bmp);
         }
+
+        [Test]
+        public void Test_Render_Html()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.AddSignal(ScottPlot.DataGen.Cos(51));
+
+            string b64 = plt.GetImageBase64();
+            Assert.AreEqual(16984, b64.Length);
+
+            string img = plt.GetImageHTML();
+            Assert.Greater(img.Length, b64.Length);
+
+            TestTools.SaveHtml(img);
+        }
     }
 }

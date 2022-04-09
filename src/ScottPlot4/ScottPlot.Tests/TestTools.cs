@@ -52,6 +52,29 @@ namespace ScottPlotTests
             Console.WriteLine();
         }
 
+        public static void SaveText(string txt, string subName = "")
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+            string fileName = callingMethod + subName + ".txt";
+            string filePath = System.IO.Path.GetFullPath(fileName);
+            System.IO.File.WriteAllText(filePath, txt);
+            Console.WriteLine($"Saved: {filePath}");
+            Console.WriteLine();
+        }
+
+        public static void SaveHtml(string body, string subName = "")
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+            string fileName = callingMethod + subName + ".html";
+            string filePath = System.IO.Path.GetFullPath(fileName);
+            string html = $"<html><head></head><body>{body}</body></html>";
+            System.IO.File.WriteAllText(filePath, html);
+            Console.WriteLine($"Saved: {filePath}");
+            Console.WriteLine();
+        }
+
         private static void SaveArtifact(ScottPlot.Plot plt, string name)
         {
             string osNameShort = ScottPlot.Tools.GetOsName(details: false);
