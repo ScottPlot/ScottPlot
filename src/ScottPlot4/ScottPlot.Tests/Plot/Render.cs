@@ -30,7 +30,7 @@ namespace ScottPlotTests.Plot
             plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
             string b64 = plt.GetImageBase64();
-            Assert.AreEqual(16984, b64.Length);
+            Assert.Greater(1000, b64.Length);
 
             string img = plt.GetImageHTML();
             Assert.Greater(img.Length, b64.Length);
