@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.41
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
+* Plot: Added `Plot.GetImageHTML()` to make it easy to display ScottPlot images in .NET Interactive / Jupyter notebooks (#1772) _Thanks @StendProg and @Regenhardt_
+
 ## ScottPlot 4.1.40
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-07_
 * SignalPlotXY: Improved support for custom markers (#1763, #1764) _Thanks @bclehmann and @ChrisCC6_
