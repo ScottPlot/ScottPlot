@@ -30,7 +30,7 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
-        public void Test_NotAllXsAscend_ThrowsException()
+        public void Test_NotAllXsAscend_ValidateDataThrowsException()
         {
             // generate random, NOT-ALL-ascending, unevenly-spaced data
             Random rand = new Random(0);
@@ -44,7 +44,34 @@ namespace ScottPlotTests.PlotTypes
             }
 
             var plt = new ScottPlot.Plot(500, 350);
-            Assert.Throws<ArgumentException>(() => { plt.AddSignalXY(xs, ys); });
+            var signalXY = plt.AddSignalXY(xs, ys);
+            Assert.Throws<InvalidOperationException>(() => { signalXY.ValidateData(deep: true); });
+        }
+
+        [Test]
+        public void Test_OutsideOfRenderLimitsNotAllXsAscend_ValidateDataDoesNotThrowException()
+        {
+            int pointCount = 1000;
+            int minRenderIndex = 100;
+            int maxRenderIndex = 200;
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 0; i < minRenderIndex; i++)
+            {
+                ys[i] = double.MaxValue;
+                xs[i] = double.MaxValue;
+            }
+            for (int i = minRenderIndex; i <= maxRenderIndex; i++)
+            {
+                ys[i] = i;
+                xs[i] = i;
+            }
+
+            var plt = new ScottPlot.Plot(500, 350);
+            var signalXY = plt.AddSignalXY(xs, ys);
+            signalXY.MinRenderIndex = minRenderIndex;
+            signalXY.MaxRenderIndex = maxRenderIndex;
+            Assert.DoesNotThrow(() => { signalXY.ValidateData(deep: true); });
         }
 
         [Test]

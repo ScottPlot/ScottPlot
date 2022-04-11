@@ -27,10 +27,6 @@ namespace ScottPlot.Plottable
                 if (value.Length == 0)
                     throw new ArgumentException("XS must have at least one element");
 
-                for (int i = 1; i < value.Length; i++)
-                    if (value[i].CompareTo(value[i - 1]) < 0)
-                        throw new ArgumentException("Xs must only contain ascending values");
-
                 _Xs = value;
             }
         }
@@ -250,12 +246,14 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public new void ValidateData(bool deep = false)
+        public override void ValidateData(bool deep = false)
         {
             base.ValidateData(deep);
             Validate.AssertEqualLength("xs and ys", Xs, Ys);
             Validate.AssertHasElements("xs", Xs);
-            Validate.AssertAscending("xs", Xs);
+
+            if (deep)
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
         }
 
         public override string ToString()
