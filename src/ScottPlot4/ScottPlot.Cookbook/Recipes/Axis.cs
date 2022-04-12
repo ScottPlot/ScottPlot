@@ -72,6 +72,29 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
+    class GridAbove : IRecipe
+    {
+        public string Category => "Axis and Ticks";
+        public string ID => "axis_gridAbove";
+        public string Title => "Draw Grid Above Plottables";
+        public string Description =>
+            "Sometimes it's useful to draw the grid lines above the plottables rather than below.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] sines = DataGen.Sin(51);
+            double[] cosines = DataGen.Cos(51);
+
+            plt.AddScatter(xs, sines);
+            plt.AddScatter(xs, cosines);
+            plt.AddFill(xs, sines);
+            plt.AddFill(xs, cosines);
+
+            plt.DrawGridAbovePlottables = true;
+        }
+    }
+
     class GridConfigure : IRecipe
     {
         public string Category => "Axis and Ticks";

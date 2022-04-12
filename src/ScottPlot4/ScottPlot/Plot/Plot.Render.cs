@@ -57,20 +57,9 @@ namespace ScottPlot
         {
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
-            foreach (var axis in settings.Axes)
+            if (!DrawGridAbovePlottables)
             {
-                PlotDimensions dims2 = axis.IsHorizontal ?
-                    settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) :
-                    settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
-
-                try
-                {
-                    axis.Render(dims2, bmp, lowQuality);
-                }
-                catch (OverflowException)
-                {
-                    throw new InvalidOperationException("data cannot contain Infinity");
-                }
+                RenderAxes(bmp, lowQuality, dims);
             }
         }
 
@@ -100,6 +89,11 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
         {
+            if (DrawGridAbovePlottables)
+            {
+                RenderAxes(bmp, lowQuality, dims);
+            }
+
             settings.CornerLegend.UpdateLegendItems(this);
 
             if (settings.CornerLegend.IsVisible)
@@ -112,6 +106,25 @@ namespace ScottPlot
             settings.ZoomRectangle.Render(dims, bmp, lowQuality);
             settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
+        }
+
+        private void RenderAxes(Bitmap bmp, bool lowQuality, PlotDimensions dims)
+        {
+            foreach (var axis in settings.Axes)
+            {
+                PlotDimensions dims2 = axis.IsHorizontal ?
+                    settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) :
+                    settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
+
+                try
+                {
+                    axis.Render(dims2, bmp, lowQuality);
+                }
+                catch (OverflowException)
+                {
+                    throw new InvalidOperationException("data cannot contain Infinity");
+                }
+            }
         }
 
         #endregion
