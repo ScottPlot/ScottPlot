@@ -180,9 +180,9 @@ namespace ScottPlot.Plottable
                 // this fix extreme zoom in bug
                 if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
-                    float x0 = -1 + dims.DataOffsetX;
                     if (PointsToDraw[0].X != PointsToDraw[1].X)
                     {
+                        float x0 = -1 + dims.DataOffsetX;
                         float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
                         PointsToDraw[0] = new PointF(x0, y0);
                     }
