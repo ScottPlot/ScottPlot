@@ -1,11 +1,9 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
@@ -183,8 +181,11 @@ namespace ScottPlot.Plottable
                 if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
                     float x0 = -1 + dims.DataOffsetX;
-                    float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
-                    PointsToDraw[0] = new PointF(x0, y0);
+                    if (PointsToDraw[0].X != PointsToDraw[1].X)
+                    {
+                        float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
+                        PointsToDraw[0] = new PointF(x0, y0);
+                    }
                 }
 
                 // Interpolate after displayed point to make it x = datasize.Width(close to visible area)
@@ -193,10 +194,12 @@ namespace ScottPlot.Plottable
                 {
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
-
-                    float x1 = dims.DataWidth + dims.DataOffsetX;
-                    float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
-                    PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
+                    if (afterPoint.X != lastPoint.X)
+                    {
+                        float x1 = dims.DataWidth + dims.DataOffsetX;
+                        float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
+                        PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
+                    }
                 }
 
                 // Simulate a step display by adding extra points at the corners.

@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlotTests.PlotTypes
 {
@@ -81,6 +78,32 @@ namespace ScottPlotTests.PlotTypes
                 plt.AxisZoom(.1, .1);
                 plt.Render();
             }
+        }
+
+        /// <summary>
+        /// This test for debug purpose only, it always pass
+        /// reproduce #1803 bug
+        /// this test trew OverflowException, but ScottPlot handle it in Plot.Render.RenderPlottables()
+        /// But it possible to catch in debugger
+        /// </summary>
+        [Test]
+        public void Test_SignalXY1803Bug_Throws()
+        {
+            var plt = new ScottPlot.Plot(1200, 800);
+            double[] ys = new double[10000];
+            double[] xs = ys.Select(x => double.PositiveInfinity).ToArray();
+            double r = 0.0;
+            for (int i = 0; i < ys.Length; i++)
+            {
+                r += 0.005;
+                xs[i] = r;
+                ys[i] = Math.Sin(r);
+            }
+            var signalXY = plt.AddSignalXY(xs, ys);
+            plt.AxisAutoY();
+            plt.XAxis.Dims.SetAxis(min: r - 10.0, r);
+            plt.Validate(deep: true);
+            plt.Render();
         }
     }
 }
