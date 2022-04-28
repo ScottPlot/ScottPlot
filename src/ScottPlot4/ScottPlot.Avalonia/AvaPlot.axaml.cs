@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -139,7 +140,7 @@ namespace ScottPlot.Avalonia
         private void OnScaleChanged(object sender, EventArgs e) { System.Diagnostics.Debug.WriteLine("SCALECHANGED"); OnSizeChanged(null, null); }
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
-        private void OnDoubleClick(object sender, PointerEventArgs e) => Backend.DoubleClick();
+        private void OnDoubleClick(object sender, RoutedEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
         private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
         private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
@@ -173,7 +174,7 @@ namespace ScottPlot.Avalonia
             PointerWheelChanged += OnMouseWheel;
             PointerEnter += OnMouseEnter;
             PointerLeave += OnMouseLeave;
-
+            DoubleTapped += OnDoubleClick;
             PropertyChanged += AvaPlot_PropertyChanged;
         }
 
