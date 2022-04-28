@@ -180,6 +180,7 @@ namespace ScottPlot.Plottable
                 // this fix extreme zoom in bug
                 if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
+                    // only extrapolate if points are different (otherwise extrapolated point may be infinity)
                     if (PointsToDraw[0].X != PointsToDraw[1].X)
                     {
                         float x0 = -1 + dims.DataOffsetX;
@@ -194,6 +195,8 @@ namespace ScottPlot.Plottable
                 {
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
+
+                    // only extrapolate if points are different (otherwise extrapolated point may be infinity)
                     if (afterPoint.X != lastPoint.X)
                     {
                         float x1 = dims.DataWidth + dims.DataOffsetX;

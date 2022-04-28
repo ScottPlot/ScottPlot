@@ -81,15 +81,14 @@ namespace ScottPlotTests.PlotTypes
         }
 
         /// <summary>
-        /// This test for debug purpose only, it always pass
-        /// reproduce #1803 bug
-        /// this test trew OverflowException, but ScottPlot handle it in Plot.Render.RenderPlottables()
-        /// But it possible to catch in debugger
+        /// This test is for debugging purposes only - it always passes, but is useful for debugging.
+        /// It was created to recreate the issue described in https://github.com/ScottPlot/ScottPlot/issues/1803
+        /// Before the fix it threw an OverflowException which was silently handled but resulted in no data drawn.
+        /// The core issue was that interpolation may result in an infinity point that GDI cannot render.
         /// </summary>
         [Test]
-        public void Test_SignalXY1803Bug_Throws()
+        public void Test_SignalXY_ExtrapolateIdenticalPoints()
         {
-            var plt = new ScottPlot.Plot(1200, 800);
             double[] ys = new double[10000];
             double[] xs = ys.Select(x => double.PositiveInfinity).ToArray();
             double r = 0.0;
@@ -99,11 +98,20 @@ namespace ScottPlotTests.PlotTypes
                 xs[i] = r;
                 ys[i] = Math.Sin(r);
             }
-            var signalXY = plt.AddSignalXY(xs, ys);
+
+            var plt = new ScottPlot.Plot(1200, 800);
+            plt.AddSignalXY(xs, ys);
             plt.AxisAutoY();
             plt.XAxis.Dims.SetAxis(min: r - 10.0, r);
             plt.Validate(deep: true);
-            plt.Render();
+
+            plt.GetSettings(false).IgnoreOverflowExceptionsDuringRender = false;
+
+            // before the fix this used to throw:
+            //Assert.Throws<OverflowException>(() => plt.Render());
+
+            // after ths fix there is no more exception:
+            Assert.DoesNotThrow(() => plt.Render());
         }
     }
 }
