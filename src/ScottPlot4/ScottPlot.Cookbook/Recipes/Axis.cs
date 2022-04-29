@@ -91,7 +91,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddFill(xs, sines);
             plt.AddFill(xs, cosines);
 
-            plt.DrawGridAbovePlottables = true;
+            plt.Grid(onTop: true);
         }
     }
 

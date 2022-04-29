@@ -57,7 +57,7 @@ namespace ScottPlot
         {
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
-            if (!DrawGridAbovePlottables)
+            if (!settings.DrawGridAbovePlottables)
             {
                 RenderAxes(bmp, lowQuality, dims);
             }
@@ -97,7 +97,7 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
         {
-            if (DrawGridAbovePlottables)
+            if (settings.DrawGridAbovePlottables)
             {
                 RenderAxes(bmp, lowQuality, dims);
             }

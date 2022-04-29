@@ -24,11 +24,6 @@ namespace ScottPlot
         public float Height { get => settings.Height; set => Resize(settings.Width, value); }
 
         /// <summary>
-        /// Determines whether the grid lines should be drawn above the plottables.
-        /// </summary>
-        public bool DrawGridAbovePlottables { get; set; } = false;
-
-        /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
         /// </summary>
         /// <param name="width">default width (pixels) to use when rendering</param>
