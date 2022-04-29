@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.42
+_not yet published on NuGet..._
+* SignalXY: Fixed bug causing plots to disappear when displaying partial data containing duplicated X values. (#1803, #1806) _Thanks @StendProg and @bernhardbreuss_
+
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
 * Plot: Added `Plot.GetImageHTML()` to make it easy to display ScottPlot images in .NET Interactive / Jupyter notebooks (#1772) _Thanks @StendProg and @Regenhardt_

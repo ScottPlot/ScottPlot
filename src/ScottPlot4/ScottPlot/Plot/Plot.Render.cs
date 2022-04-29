@@ -91,9 +91,17 @@ namespace ScottPlot
                 {
                     plottable.Render(dims, bmp, lowQuality);
                 }
-                catch (OverflowException)
+                catch (OverflowException ex)
                 {
-                    Debug.WriteLine($"OverflowException plotting: {plottable}");
+                    // This exception is commonly thrown by System.Drawing when drawing to extremely large pixel locations.
+                    if (settings.IgnoreOverflowExceptionsDuringRender)
+                    {
+                        Debug.WriteLine($"OverflowException plotting: {plottable}");
+                    }
+                    else
+                    {
+                        throw new OverflowException("overflow during render", ex);
+                    }
                 }
             }
         }
