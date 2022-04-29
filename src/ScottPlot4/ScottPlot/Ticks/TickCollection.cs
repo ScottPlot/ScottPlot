@@ -137,33 +137,28 @@ namespace ScottPlot.Ticks
             {
                 // If we have manual tick spacing, don't delete any ticks. Otherwise, remove the ticks closest to each
                 // manual spacing value.
-                if (Orientation == AxisOrientation.Vertical && manualSpacingY == 0 ||
-                    Orientation != AxisOrientation.Vertical && manualSpacingX == 0 &&
-                    manualTickPositions != null &&
-                    tickLabels != null)
+                if ((Orientation == AxisOrientation.Vertical && manualSpacingY == 0 ||
+                     Orientation != AxisOrientation.Vertical && manualSpacingX == 0) &&
+                    tickPositionsMajor != null &&
+                    tickLabels != null &&
+                    tickPositionsMajor.Length == tickLabels.Length)
                 {
                     // For each manual tick, delete the automatic tick closest to it
                     foreach (var pos in manualTickPositions)
                     {
-                        try
-                        {
-                            // Get value of the closest tick to the given position
-                            var position = tickPositionsMajor
-                                .Select((val, i) => (val, i))
-                                .Where(v => v.val != pos)
-                                .MinBy(v => Math.Abs(pos - v.val))
-                                .First();
+                        // Get value of the closest tick to the given position
+                        var potentialPosition = tickPositionsMajor
+                            .Select((val, i) => (val, i))
+                            .Where(v => v.val != pos)
+                            .ToList();
 
-                            var (removeVal, removeIdx) = position;
+                        if (potentialPosition.Count == 0) continue;
 
-                            // Remove the automatic tick at that index
-                            tickPositionsMajor = tickPositionsMajor.Where(val => val != removeVal).ToArray();
-                            tickLabels = tickLabels.Where((_, i) => i != removeIdx).ToArray();
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            break;
-                        }
+                        var (removeVal, removeIdx) = potentialPosition.MinBy(v => Math.Abs(pos - v.val)).First();
+
+                        // Remove the automatic tick at that index
+                        tickPositionsMajor = tickPositionsMajor.Where(val => val != removeVal).ToArray();
+                        tickLabels = tickLabels.Where((_, i) => i != removeIdx).ToArray();
                     }
                 }
 
