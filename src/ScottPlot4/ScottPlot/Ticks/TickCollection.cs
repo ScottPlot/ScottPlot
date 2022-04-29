@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using MoreLinq.Extensions;
 
 namespace ScottPlot.Ticks
 {
@@ -23,6 +24,11 @@ namespace ScottPlot.Ticks
         public string[] tickLabels;
         public double[] manualTickPositions;
         public string[] manualTickLabels;
+
+        /// <summary>
+        /// If true, manual ticks are added alongside calculated ticks, rather than replacing them entirely.
+        /// </summary>
+        public bool unionWithManualTicks = false;
 
         /// <summary>
         /// Label to show in the corner when using multiplier or offset notation
@@ -111,7 +117,7 @@ namespace ScottPlot.Ticks
 
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
-            if (manualTickPositions is null)
+            if (manualTickPositions is null || unionWithManualTicks)
             {
                 // first pass uses forced density with manual label sizes to consistently approximate labels
                 if (LabelFormat == TickLabelFormat.DateTime)
@@ -126,18 +132,57 @@ namespace ScottPlot.Ticks
                 else
                     RecalculatePositionsAutomaticNumeric(dims, LargestLabelWidth, LargestLabelHeight, null);
             }
-            else
+
+            if (manualTickPositions is not null)
             {
+                // If we have manual tick spacing, don't delete any ticks. Otherwise, remove the ticks closest to each
+                // manual spacing value.
+                if (Orientation == AxisOrientation.Vertical && manualSpacingY == 0 ||
+                    Orientation != AxisOrientation.Vertical && manualSpacingX == 0)
+                {
+                    // For each manual tick, delete the automatic tick closest to it
+                    foreach (var pos in manualTickPositions)
+                    {
+                        try
+                        {
+                            // Get value of the closest tick to the given position
+                            var position = tickPositionsMajor
+                                .Select((val, i) => (val, i))
+                                .Where(v => v.val != pos)
+                                .MinBy(v => Math.Abs(pos - v.val))
+                                .First();
+
+                            var (removeVal, removeIdx) = position;
+
+                            // Remove the automatic tick at that index
+                            tickPositionsMajor = tickPositionsMajor.Where(val => val != removeVal).ToArray();
+                            tickLabels = tickLabels.Where((_, i) => i != removeIdx).ToArray();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                var newMajorTickPositions = unionWithManualTicks
+                    ? tickPositionsMajor.Union(manualTickPositions).ToArray()
+                    : manualTickPositions;
+                var newMajorTickLabels = unionWithManualTicks
+                    ? tickLabels.Union(manualTickLabels).ToArray()
+                    : manualTickLabels;
+
                 double min = Orientation == AxisOrientation.Vertical ? dims.YMin : dims.XMin;
                 double max = Orientation == AxisOrientation.Vertical ? dims.YMax : dims.XMax;
 
-                var visibleIndexes = Enumerable.Range(0, manualTickPositions.Count())
-                    .Where(i => manualTickPositions[i] >= min)
-                    .Where(i => manualTickPositions[i] <= max);
+                var visibleIndexes = Enumerable.Range(0, newMajorTickPositions.Length)
+                    .Where(i => newMajorTickPositions[i] >= min)
+                    .Where(i => newMajorTickPositions[i] <= max);
 
-                tickPositionsMajor = visibleIndexes.Select(x => manualTickPositions[x]).ToArray();
+                tickPositionsMajor = visibleIndexes.Select(x => newMajorTickPositions[x]).ToArray();
+                tickLabels = visibleIndexes.Select(x => newMajorTickLabels[x]).ToArray();
+
                 tickPositionsMinor = null;
-                tickLabels = visibleIndexes.Select(x => manualTickLabels[x]).ToArray();
                 CornerLabel = null;
                 (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
             }

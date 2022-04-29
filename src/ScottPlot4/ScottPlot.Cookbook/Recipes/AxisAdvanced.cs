@@ -72,6 +72,33 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class TicksDefinedAndJoined : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "ticks_defined_and_joined";
+        public string Title => "Manual and Automatic Tick Labels";
+        public string Description =>
+            "Tick positions and labels can be defined manually, but also added alongside automatic tick labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(15), 2);
+            plt.AddSignal(DataGen.Cos(15), 2);
+
+            // manually define X axis tick positions and labels
+            double[] xPositions = { Math.PI, 2 * Math.PI };
+            string[] xLabels = { "π", "2π" };
+            plt.XAxis.ManualTickPositions(xPositions, xLabels, union: true);
+            plt.XAxis.TickDensity(0.5);
+
+            // manually define Y axis tick positions and labels
+            double[] yPositions = { -1, 0, .5, 1 };
+            string[] yLabels = { "bottom", "center", "half", "top" };
+            plt.YAxis.ManualTickPositions(yPositions, yLabels);
+        }
+    }
+
     class TicksNonLinearX : IRecipe
     {
         public string Category => "Advanced Axis Features";

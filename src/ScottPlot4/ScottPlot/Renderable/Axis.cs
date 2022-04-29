@@ -273,10 +273,19 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Manually define major tick (and grid) positions and labels
         /// </summary>
-        public void ManualTickPositions(double[] positions, string[] labels)
+        /// <param name="positions">Manual tick positions</param>
+        /// <param name="labels">Labels for manual ticks</param>
+        /// <param name="union">If false, manual ticks completely replace automatic ticks. If true, manual ticks are
+        /// added as additional ticks alongside calculated ones. Overlaps may be common, so manual spacing is
+        /// recommended.</param>
+        public void ManualTickPositions(double[] positions, string[] labels, bool union = false)
         {
+            if (positions.Length != labels.Length)
+                throw new IndexOutOfRangeException("Positions and labels must be the same length");
+
             AxisTicks.TickCollection.manualTickPositions = positions;
             AxisTicks.TickCollection.manualTickLabels = labels;
+            AxisTicks.TickCollection.unionWithManualTicks = union;
         }
 
         /// <summary>
