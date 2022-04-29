@@ -72,10 +72,10 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
-    class TicksDefinedAndJoined : IRecipe
+    class TicksDefinedAndUnioned : IRecipe
     {
         public string Category => "Advanced Axis Features";
-        public string ID => "ticks_defined_and_joined";
+        public string ID => "ticks_defined_and_unioned";
         public string Title => "Manual and Automatic Tick Labels";
         public string Description =>
             "Tick positions and labels can be defined manually, but also added alongside automatic tick labels.";
