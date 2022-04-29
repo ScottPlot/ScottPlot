@@ -136,6 +136,17 @@ namespace ScottPlot
         /// </summary>
         public double MarginsY = .1;
 
+        /// <summary>
+        /// Controls whether OferflowException is ignored in the Render() method.
+        /// This exception is commonly thrown by System.Drawing when drawing to extremely large pixel locations.
+        /// </summary>
+        public bool IgnoreOverflowExceptionsDuringRender = true;
+
+        /// <summary>
+        /// Determines whether the grid lines should be drawn above the plottables.
+        /// </summary>
+        public bool DrawGridAbovePlottables { get; set; } = false;
+
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
