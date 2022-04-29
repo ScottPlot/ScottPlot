@@ -142,6 +142,11 @@ namespace ScottPlot
         /// </summary>
         public bool IgnoreOverflowExceptionsDuringRender = true;
 
+        /// <summary>
+        /// Determines whether the grid lines should be drawn above the plottables.
+        /// </summary>
+        public bool DrawGridAbovePlottables { get; set; } = false;
+
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
