@@ -138,7 +138,9 @@ namespace ScottPlot.Ticks
                 // If we have manual tick spacing, don't delete any ticks. Otherwise, remove the ticks closest to each
                 // manual spacing value.
                 if (Orientation == AxisOrientation.Vertical && manualSpacingY == 0 ||
-                    Orientation != AxisOrientation.Vertical && manualSpacingX == 0)
+                    Orientation != AxisOrientation.Vertical && manualSpacingX == 0 &&
+                    manualTickPositions != null &&
+                    tickLabels != null)
                 {
                     // For each manual tick, delete the automatic tick closest to it
                     foreach (var pos in manualTickPositions)
