@@ -213,6 +213,7 @@ namespace ScottPlot.Renderable
         public void TickLabelFormat(Func<double, string> tickFormatter)
         {
             AxisTicks.TickCollection.ManualTickFormatter = tickFormatter;
+            TickLabelFormat(null, false);
         }
 
         /// <summary>
