@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.42
 _not yet published on NuGet..._
 * SignalXY: Fixed bug causing plots to disappear when displaying partial data containing duplicated X values. (#1803, #1806) _Thanks @StendProg and @bernhardbreuss_
+* SignalXY: X data is no longer required to be ascending when it is first assigned, improving support for plots utilizing min/max render indexing (#1771, #1777) _Thanks @bernhardbreuss_
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
