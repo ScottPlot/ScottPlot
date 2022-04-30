@@ -39,7 +39,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public void ValidateData(bool deep = false)
         {
