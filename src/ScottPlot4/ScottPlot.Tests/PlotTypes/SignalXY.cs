@@ -41,8 +41,8 @@ namespace ScottPlotTests.PlotTypes
             }
 
             var plt = new ScottPlot.Plot(500, 350);
-            var signalXY = plt.AddSignalXY(xs, ys);
-            Assert.Throws<InvalidOperationException>(() => { signalXY.ValidateData(deep: true); });
+            plt.AddSignalXY(xs, ys);
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace ScottPlotTests.PlotTypes
             var signalXY = plt.AddSignalXY(xs, ys);
             signalXY.MinRenderIndex = minRenderIndex;
             signalXY.MaxRenderIndex = maxRenderIndex;
-            Assert.DoesNotThrow(() => { signalXY.ValidateData(deep: true); });
+            Assert.DoesNotThrow(() => { plt.Render(); });
         }
 
         [Test]

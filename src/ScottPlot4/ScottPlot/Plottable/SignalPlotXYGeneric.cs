@@ -14,6 +14,12 @@ namespace ScottPlot.Plottable
     /// <typeparam name="TY"></typeparam>
     public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
+        /// <summary>
+        /// Indicates whether Xs have been validated to ensure all values are ascending.
+        /// Validation occurs before the first render (not at assignment) to allow the user time to set min/max render indexes.
+        /// </summary>
+        private bool XsHaveBeenValidated = false;
+
         private TX[] _Xs;
         public TX[] Xs
         {
@@ -26,6 +32,7 @@ namespace ScottPlot.Plottable
                     throw new ArgumentException("XS must have at least one element");
 
                 _Xs = value;
+                XsHaveBeenValidated = false;
             }
         }
 
@@ -99,6 +106,12 @@ namespace ScottPlot.Plottable
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (!XsHaveBeenValidated)
+            {
+                ValidateData(deep: true);
+                XsHaveBeenValidated = true;
+            }
+
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = new SolidBrush(Color))
             using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
