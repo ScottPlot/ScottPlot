@@ -6,6 +6,7 @@ _not yet published on NuGet..._
 * SignalXY: X data is no longer required to be ascending when it is first assigned, improving support for plots utilizing min/max render indexing (#1771, #1777) _Thanks @bernhardbreuss_
 * Grid: Calling `Plot.Grid(onTop: true)` will cause grid lines to be drawn on top of plottables (#1780, #1779, #1773) _Thanks @bclehmann and @KATAMANENI_
 * FormsPlot: Fixed a bug that caused the default right-click menu to throw an exception when certain types of plottables were present (#1791, #1794) _Thanks @ShenxuanLi, @MareMare, and @StendProg_
+* Avalonia: Improved middle-click-drag zoom-rectangle behavior (#1807) _Thanks @kivarsen_
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
