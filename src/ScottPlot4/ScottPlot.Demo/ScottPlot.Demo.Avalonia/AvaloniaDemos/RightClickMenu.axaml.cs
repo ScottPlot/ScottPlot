@@ -8,12 +8,6 @@ using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public struct ContextMenuItem
-    {
-        public string itemName;
-        public Action onClick;
-    }
-
     public class RightClickMenu : Window
     {
         private readonly AvaPlot avaPlot1;
@@ -30,27 +24,27 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Plot.AddSignal(DataGen.Cos(51));
             avaPlot1.Refresh();
 
-            List<ContextMenuItem> contextMenu = new List<ContextMenuItem>
+            ContextMenu contextMenu = new ContextMenu
             {
-                new ContextMenuItem()
-                {
-                    itemName = "Add Sine Wave",
-                    onClick = AddSine
-                },
-
-                new ContextMenuItem()
-                {
-                    itemName = "Clear Plot",
-                    onClick = ClearPlot
+                Items = new[] {
+                    MakeMenuItem("Add Sine Wave", AddSine),
+                    MakeMenuItem("Clear Plot", ClearPlot)
                 }
             };
 
-            //avaPlot1.SetContextMenu(contextMenu);
+            avaPlot1.ContextMenu = contextMenu;
         }
 
         public void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private MenuItem MakeMenuItem(string label, Action onClick)
+        {
+            MenuItem menuItem = new MenuItem() { Header = label };
+            menuItem.Click += (sender, e) => onClick();
+            return menuItem;
         }
 
         private void AddSine()

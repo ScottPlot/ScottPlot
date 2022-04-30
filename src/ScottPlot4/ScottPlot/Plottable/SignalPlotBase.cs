@@ -806,7 +806,7 @@ namespace ScottPlot.Plottable
                     throw new InvalidOperationException("Data must not contain NaN");
         }
 
-        public void ValidateData(bool deep = false)
+        public virtual void ValidateData(bool deep = false)
         {
             // check Y values
             if (Ys is null)

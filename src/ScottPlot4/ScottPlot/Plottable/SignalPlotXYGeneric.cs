@@ -14,6 +14,12 @@ namespace ScottPlot.Plottable
     /// <typeparam name="TY"></typeparam>
     public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
+        /// <summary>
+        /// Indicates whether Xs have been validated to ensure all values are ascending.
+        /// Validation occurs before the first render (not at assignment) to allow the user time to set min/max render indexes.
+        /// </summary>
+        private bool XsHaveBeenValidated = false;
+
         private TX[] _Xs;
         public TX[] Xs
         {
@@ -25,11 +31,8 @@ namespace ScottPlot.Plottable
                 if (value.Length == 0)
                     throw new ArgumentException("XS must have at least one element");
 
-                for (int i = 1; i < value.Length; i++)
-                    if (value[i].CompareTo(value[i - 1]) < 0)
-                        throw new ArgumentException("Xs must only contain ascending values");
-
                 _Xs = value;
+                XsHaveBeenValidated = false;
             }
         }
 
@@ -103,6 +106,12 @@ namespace ScottPlot.Plottable
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (!XsHaveBeenValidated)
+            {
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
+                XsHaveBeenValidated = true;
+            }
+
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = new SolidBrush(Color))
             using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
@@ -256,12 +265,14 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public new void ValidateData(bool deep = false)
+        public override void ValidateData(bool deep = false)
         {
             base.ValidateData(deep);
             Validate.AssertEqualLength("xs and ys", Xs, Ys);
             Validate.AssertHasElements("xs", Xs);
-            Validate.AssertAscending("xs", Xs);
+
+            if (deep)
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
         }
 
         public override string ToString()

@@ -225,7 +225,7 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems()
         {
             if (Labels is null)
-                return null;
+                return Array.Empty<LegendItem>();
 
             List<LegendItem> legendItems = new();
             for (int i = 0; i < Labels.Length; i++)
