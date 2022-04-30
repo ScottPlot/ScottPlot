@@ -177,7 +177,7 @@ namespace ScottPlot.Plottable
             SetTicks(fracs, labels);
         }
 
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
