@@ -1,5 +1,12 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.42
+_not yet published on NuGet..._
+* SignalXY: Fixed bug causing plots to disappear when displaying partial data containing duplicated X values. (#1803, #1806) _Thanks @StendProg and @bernhardbreuss_
+* SignalXY: X data is no longer required to be ascending when it is first assigned, improving support for plots utilizing min/max render indexing (#1771, #1777) _Thanks @bernhardbreuss_
+* Grid: Calling `Plot.Grid(onTop: true)` will cause grid lines to be drawn on top of plottables (#1780, #1779, #1773) _Thanks @bclehmann and @KATAMANENI_
+* FormsPlot: Fixed a bug that caused the default right-click menu to throw an exception when certain types of plottables were present (#1791, #1794) _Thanks @ShenxuanLi, @MareMare, and @StendProg_
+
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
 * Plot: Added `Plot.GetImageHTML()` to make it easy to display ScottPlot images in .NET Interactive / Jupyter notebooks (#1772) _Thanks @StendProg and @Regenhardt_

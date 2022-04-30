@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlotTests.PlotTypes
 {
@@ -44,7 +41,34 @@ namespace ScottPlotTests.PlotTypes
             }
 
             var plt = new ScottPlot.Plot(500, 350);
-            Assert.Throws<ArgumentException>(() => { plt.AddSignalXY(xs, ys); });
+            plt.AddSignalXY(xs, ys);
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+        }
+
+        [Test]
+        public void Test_OutsideOfRenderLimitsNotAllXsAscend_ValidateDataDoesNotThrowException()
+        {
+            int pointCount = 1000;
+            int minRenderIndex = 100;
+            int maxRenderIndex = 200;
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 0; i < minRenderIndex; i++)
+            {
+                ys[i] = double.MaxValue;
+                xs[i] = double.MaxValue;
+            }
+            for (int i = minRenderIndex; i <= maxRenderIndex; i++)
+            {
+                ys[i] = i;
+                xs[i] = i;
+            }
+
+            var plt = new ScottPlot.Plot(500, 350);
+            var signalXY = plt.AddSignalXY(xs, ys);
+            signalXY.MinRenderIndex = minRenderIndex;
+            signalXY.MaxRenderIndex = maxRenderIndex;
+            Assert.DoesNotThrow(() => { plt.Render(); });
         }
 
         [Test]
@@ -81,6 +105,40 @@ namespace ScottPlotTests.PlotTypes
                 plt.AxisZoom(.1, .1);
                 plt.Render();
             }
+        }
+
+        /// <summary>
+        /// This test is for debugging purposes only - it always passes, but is useful for debugging.
+        /// It was created to recreate the issue described in https://github.com/ScottPlot/ScottPlot/issues/1803
+        /// Before the fix it threw an OverflowException which was silently handled but resulted in no data drawn.
+        /// The core issue was that interpolation may result in an infinity point that GDI cannot render.
+        /// </summary>
+        [Test]
+        public void Test_SignalXY_ExtrapolateIdenticalPoints()
+        {
+            double[] ys = new double[10000];
+            double[] xs = ys.Select(x => double.PositiveInfinity).ToArray();
+            double r = 0.0;
+            for (int i = 0; i < ys.Length; i++)
+            {
+                r += 0.005;
+                xs[i] = r;
+                ys[i] = Math.Sin(r);
+            }
+
+            var plt = new ScottPlot.Plot(1200, 800);
+            plt.AddSignalXY(xs, ys);
+            plt.AxisAutoY();
+            plt.XAxis.Dims.SetAxis(min: r - 10.0, r);
+            plt.Validate(deep: true);
+
+            plt.GetSettings(false).IgnoreOverflowExceptionsDuringRender = false;
+
+            // before the fix this used to throw:
+            //Assert.Throws<OverflowException>(() => plt.Render());
+
+            // after ths fix there is no more exception:
+            Assert.DoesNotThrow(() => plt.Render());
         }
     }
 }

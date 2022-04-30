@@ -58,10 +58,7 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] GetLegendItems()
-        {
-            return new LegendItem[0];
-        }
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
