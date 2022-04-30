@@ -21,8 +21,14 @@ namespace ScottPlot.Ticks
         public double[] tickPositionsMajor;
         public double[] tickPositionsMinor;
         public string[] tickLabels;
+
+        // When populated, manual ticks are the ONLY ticks shown
         public double[] manualTickPositions;
         public string[] manualTickLabels;
+
+        // When populated, additionalTicks are shown in addition to automatic ticks
+        public double[] additionalTickPositions;
+        public string[] additionalTickLabels;
 
         /// <summary>
         /// Label to show in the corner when using multiplier or offset notation

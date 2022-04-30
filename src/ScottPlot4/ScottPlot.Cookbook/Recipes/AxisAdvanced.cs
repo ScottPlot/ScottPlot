@@ -82,23 +82,13 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot sample data
             plt.AddSignal(DataGen.Sin(15), 2);
             plt.AddSignal(DataGen.Cos(15), 2);
 
-            // TODO: THIS
-            /*
-            // manually define X axis tick positions and labels
-            double[] xPositions = { Math.PI, 2 * Math.PI };
-            string[] xLabels = { "π", "2π" };
-            plt.XAxis.ManualTickPositions(xPositions, xLabels, union: true);
+            double[] positions = { Math.PI, 2 * Math.PI };
+            string[] labels = { "π", "2π" };
+            plt.XAxis.AutomaticTickPositions(positions, labels);
             plt.XAxis.TickDensity(0.5);
-
-            // manually define Y axis tick positions and labels
-            double[] yPositions = { -1, 0, .5, 1 };
-            string[] yLabels = { "bottom", "center", "half", "top" };
-            plt.YAxis.ManualTickPositions(yPositions, yLabels);
-            */
         }
     }
 
