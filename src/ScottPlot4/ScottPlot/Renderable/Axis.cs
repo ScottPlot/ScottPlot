@@ -213,6 +213,11 @@ namespace ScottPlot.Renderable
         public void TickLabelFormat(Func<double, string> tickFormatter)
         {
             AxisTicks.TickCollection.ManualTickFormatter = tickFormatter;
+
+            // delete existing custom tick format strings
+            AxisTicks.TickCollection.numericFormatString = null;
+            AxisTicks.TickCollection.dateTimeFormatString = null;
+            AxisTicks.TickCollection.LabelFormat = ScottPlot.Ticks.TickLabelFormat.Numeric;
         }
 
         /// <summary>
@@ -220,6 +225,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void TickLabelFormat(string format, bool dateTimeFormat)
         {
+            // delete existing tick formatter function
+            AxisTicks.TickCollection.ManualTickFormatter = null;
+
             if (dateTimeFormat)
             {
                 AxisTicks.TickCollection.dateTimeFormatString = format;
