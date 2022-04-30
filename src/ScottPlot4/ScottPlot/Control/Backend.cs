@@ -214,7 +214,7 @@ namespace ScottPlot.Control
         /// <summary>
         /// True if the mouse was dragged (with a button down) long enough to quality as a drag instead of a click
         /// </summary>
-        private bool MouseDownDragged => MouseDownTravelDistance > Configuration.IgnoreMouseDragDistance;
+        public bool MouseDownDragged => MouseDownTravelDistance > Configuration.IgnoreMouseDragDistance;
 
 
         /// <summary>
