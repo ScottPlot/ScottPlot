@@ -9,6 +9,7 @@ _not yet published on NuGet..._
 * Avalonia: Improved middle-click-drag zoom-rectangle behavior (#1807) _Thanks @kivarsen_
 * Avalonia: Improved position of right-click menu (#1809) _Thanks @kivarsen_
 * Avalonia: Added double-click support which displays benchmark information by default (#1810) _Thanks @kivarsen_
+* Plot: `AutomaticTickPositions()` can now be used to undo action of `ManualTickPositions()` (#1814)
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_

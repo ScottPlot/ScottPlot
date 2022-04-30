@@ -280,6 +280,15 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Reset previously defined manual tick positions and revert to default automatic tick placement.
+        /// </summary>
+        public void AutomaticTickPositions()
+        {
+            AxisTicks.TickCollection.manualTickPositions = null;
+            AxisTicks.TickCollection.manualTickLabels = null;
+        }
+
+        /// <summary>
         /// Ruler mode draws long tick marks and offsets tick labels for a ruler appearance
         /// </summary>
         public void RulerMode(bool enable) => AxisTicks.RulerMode = enable;

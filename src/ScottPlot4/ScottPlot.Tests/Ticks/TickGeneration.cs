@@ -2,12 +2,20 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Ticks
 {
     class TickGeneration
     {
+        private static string GetXTickString(ScottPlot.Plot plt)
+        {
+            plt.Render();
+            string[] ticks = plt.XAxis.GetTicks().Select(x => x.Label).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            return string.Join(", ", ticks);
+        }
+
         [Test]
         public void Test_DefinedSpacing_NumericAxis()
         {
@@ -88,6 +96,26 @@ namespace ScottPlotTests.Ticks
             plt.XAxis.DateTimeFormat(true);
 
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_ManualTicks_CanBeEnabledAndDisabled()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+
+            // tick positions are automatic by default
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
+
+            // set manual positions
+            double[] manualXs = { -100, 15, 25, 35, 1234 };
+            string[] manyalLabels = { "x", "a", "b", "c", "y" };
+            plt.XAxis.ManualTickPositions(manualXs, manyalLabels);
+            Assert.AreEqual("a, b, c", GetXTickString(plt));
+
+            // reset to automatic ticks
+            plt.XAxis.AutomaticTickPositions();
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
         }
     }
 }
