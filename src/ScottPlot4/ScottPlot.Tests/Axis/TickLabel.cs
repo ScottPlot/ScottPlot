@@ -73,5 +73,34 @@ namespace ScottPlotTests.Axis
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Format_CanBeReversed()
+        {
+            // Demonstrates bug described in https://github.com/ScottPlot/ScottPlot/pull/1813
+
+            var plt = new ScottPlot.Plot(800, 600);
+            var sig = plt.AddSignal(ScottPlot.DataGen.Sin(1000));
+
+            // repeat this multiple times to ensure changes can be undone/redone
+            for (int i = 0; i < 3; i++)
+            {
+                // custom NUMERIC format string
+                plt.XAxis.TickLabelFormat("F4", dateTimeFormat: false);
+                plt.Render();
+                Assert.AreEqual("0.0000", plt.XAxis.GetTicks().First().Label);
+
+                // custom DATETIME format string
+                plt.XAxis.TickLabelFormat("HH:mm:ss", dateTimeFormat: true);
+                plt.Render();
+                Assert.AreEqual("00:00:00", plt.XAxis.GetTicks().First().Label);
+
+                // custom format FUNCTION
+                static string customFormatter(double x) => "custom";
+                plt.XAxis.TickLabelFormat(customFormatter);
+                plt.Render();
+                Assert.AreEqual("custom", plt.XAxis.GetTicks().First().Label);
+            }
+        }
     }
 }
