@@ -83,7 +83,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] GetLegendItems() => null; // does not appear in legend
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public AxisLimits GetAxisLimits()
         {

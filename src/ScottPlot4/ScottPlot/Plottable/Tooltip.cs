@@ -34,7 +34,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Y;
 
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 

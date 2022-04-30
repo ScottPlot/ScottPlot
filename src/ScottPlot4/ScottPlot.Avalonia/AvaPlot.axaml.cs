@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Ava = Avalonia;
 
@@ -33,7 +34,6 @@ namespace ScottPlot.Avalonia
 
         /// <summary>
         /// This event is invoked any time the plot is right-clicked.
-        /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
         /// </summary>
         public event EventHandler RightClicked;
 
@@ -90,7 +90,8 @@ namespace ScottPlot.Avalonia
             Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
-            RightClicked += DefaultRightClickEvent;
+            ContextMenuProperty.Changed.Subscribe(ContextMenuChanged);
+            ContextMenu = GetDefaultContextMenu();
 
             InitializeLayout();
             Backend.StartProcessingEvents();
@@ -170,7 +171,7 @@ namespace ScottPlot.Avalonia
 
             PointerPressed += OnMouseDown;
             PointerMoved += OnMouseMove;
-            PointerReleased += OnMouseUp;
+            // Note: PointerReleased is handled in OnPointerReleased override instead
             PointerWheelChanged += OnMouseWheel;
             PointerEnter += OnMouseEnter;
             PointerLeave += OnMouseLeave;
@@ -251,7 +252,47 @@ namespace ScottPlot.Avalonia
             return cm;
         }
 
-        public void DefaultRightClickEvent(object sender, EventArgs e) => GetDefaultContextMenu().Open(this);
+        private void ContextMenuChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            // Make sure that any context menus that get assigned do not 
+            // display when the right mouse button is released if the mouse
+            // was dragged while the button was down
+
+            if (e.OldValue is ContextMenu oldMenu)
+            {
+                oldMenu.ContextMenuOpening -= InhibitContextMenuIfMouseDragged;
+            }
+            if (e.NewValue is ContextMenu newMenu)
+            {
+                newMenu.ContextMenuOpening += InhibitContextMenuIfMouseDragged;
+            }
+        }
+
+        private void InhibitContextMenuIfMouseDragged(object sender, CancelEventArgs e)
+        {
+            e.Cancel = Backend.MouseDownDragged;
+        }
+
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        {
+            // First, make sure backend sees that we are no longer pressing mouse button.
+            // Otherwise, after selecting an item from the context menu, the control
+            // will still think we are right-click-dragging even though the button
+            // is no longer down.
+            OnMouseUp(this, e);
+
+            // Then allow Avalonia's own click handling to allow the context menu
+            // to be displayed if needed.
+            base.OnPointerReleased(e);
+        }
+
+        /// <summary>
+        /// This default handler is no longer used to display a context menu, but is kept 
+        /// around for backwards compatibility with existing code that expects to remove 
+        /// this handler before adding custom right-click handling.
+        /// </summary>
+        [Obsolete("use 'ContextMenu' property instead to assign custom context menus")]
+        public void DefaultRightClickEvent(object sender, EventArgs e) { }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => throw new NotImplementedException();
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new HelpWindow().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
