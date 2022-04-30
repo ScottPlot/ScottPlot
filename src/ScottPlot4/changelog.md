@@ -8,6 +8,7 @@ _not yet published on NuGet..._
 * FormsPlot: Fixed a bug that caused the default right-click menu to throw an exception when certain types of plottables were present (#1791, #1794) _Thanks @ShenxuanLi, @MareMare, and @StendProg_
 * Avalonia: Improved middle-click-drag zoom-rectangle behavior (#1807) _Thanks @kivarsen_
 * Avalonia: Improved position of right-click menu (#1809) _Thanks @kivarsen_
+* Avalonia: Added double-click support which displays benchmark information by default (#1810) _Thanks @kivarsen_
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
