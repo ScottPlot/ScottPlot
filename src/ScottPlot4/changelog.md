@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
 * Plot: Added `Plot.GetImageHTML()` to make it easy to display ScottPlot images in .NET Interactive / Jupyter notebooks (#1772) _Thanks @StendProg and @Regenhardt_
+* Avalonia: Added double-click support which displays benchmark information by default (#1810) _Thanks @kivarsen_
 
 ## ScottPlot 4.1.40
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-07_
