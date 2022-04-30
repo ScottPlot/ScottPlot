@@ -68,14 +68,14 @@ namespace ScottPlot
         /// <summary>
         /// Throw an exception if one elemnt is equal to or less than the previous element
         /// </summary>
-        public static void AssertAscending<T>(string label, T[] values)
+        public static void AssertAscending<T>(string label, T[] values, int minIndex, int maxIndex)
         {
             label = ValidLabel(label);
 
             if (values is null)
                 throw new InvalidOperationException($"{label} must not be null");
 
-            for (int i = 0; i < values.Length - 1; i++)
+            for (int i = minIndex; i < maxIndex; i++)
                 if (Convert.ToDouble(values[i]) >= Convert.ToDouble(values[i + 1]))
                     throw new InvalidOperationException($"{label} must be ascending values (index {i} >= {i + 1}");
         }
