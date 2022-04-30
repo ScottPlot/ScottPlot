@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
         {
             if (!XsHaveBeenValidated)
             {
-                ValidateData(deep: true);
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
                 XsHaveBeenValidated = true;
             }
 
