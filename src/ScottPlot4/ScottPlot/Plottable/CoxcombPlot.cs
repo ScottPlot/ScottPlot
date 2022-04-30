@@ -150,7 +150,7 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems()
         {
             if (SliceLabels is null)
-                return null;
+                return Array.Empty<LegendItem>();
 
             return Enumerable
                 .Range(0, Values.Length)

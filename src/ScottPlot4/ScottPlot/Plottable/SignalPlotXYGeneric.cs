@@ -1,11 +1,9 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
@@ -16,6 +14,12 @@ namespace ScottPlot.Plottable
     /// <typeparam name="TY"></typeparam>
     public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
+        /// <summary>
+        /// Indicates whether Xs have been validated to ensure all values are ascending.
+        /// Validation occurs before the first render (not at assignment) to allow the user time to set min/max render indexes.
+        /// </summary>
+        private bool XsHaveBeenValidated = false;
+
         private TX[] _Xs;
         public TX[] Xs
         {
@@ -27,11 +31,8 @@ namespace ScottPlot.Plottable
                 if (value.Length == 0)
                     throw new ArgumentException("XS must have at least one element");
 
-                for (int i = 1; i < value.Length; i++)
-                    if (value[i].CompareTo(value[i - 1]) < 0)
-                        throw new ArgumentException("Xs must only contain ascending values");
-
                 _Xs = value;
+                XsHaveBeenValidated = false;
             }
         }
 
@@ -105,6 +106,12 @@ namespace ScottPlot.Plottable
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (!XsHaveBeenValidated)
+            {
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
+                XsHaveBeenValidated = true;
+            }
+
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = new SolidBrush(Color))
             using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
@@ -182,9 +189,13 @@ namespace ScottPlot.Plottable
                 // this fix extreme zoom in bug
                 if (PointBefore.Length > 0 && PointsToDraw.Length >= 2 && !StepDisplay)
                 {
-                    float x0 = -1 + dims.DataOffsetX;
-                    float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
-                    PointsToDraw[0] = new PointF(x0, y0);
+                    // only extrapolate if points are different (otherwise extrapolated point may be infinity)
+                    if (PointsToDraw[0].X != PointsToDraw[1].X)
+                    {
+                        float x0 = -1 + dims.DataOffsetX;
+                        float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
+                        PointsToDraw[0] = new PointF(x0, y0);
+                    }
                 }
 
                 // Interpolate after displayed point to make it x = datasize.Width(close to visible area)
@@ -194,9 +205,13 @@ namespace ScottPlot.Plottable
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
 
-                    float x1 = dims.DataWidth + dims.DataOffsetX;
-                    float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
-                    PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
+                    // only extrapolate if points are different (otherwise extrapolated point may be infinity)
+                    if (afterPoint.X != lastPoint.X)
+                    {
+                        float x1 = dims.DataWidth + dims.DataOffsetX;
+                        float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
+                        PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
+                    }
                 }
 
                 // Simulate a step display by adding extra points at the corners.
@@ -250,12 +265,14 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public new void ValidateData(bool deep = false)
+        public override void ValidateData(bool deep = false)
         {
             base.ValidateData(deep);
             Validate.AssertEqualLength("xs and ys", Xs, Ys);
             Validate.AssertHasElements("xs", Xs);
-            Validate.AssertAscending("xs", Xs);
+
+            if (deep)
+                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
         }
 
         public override string ToString()

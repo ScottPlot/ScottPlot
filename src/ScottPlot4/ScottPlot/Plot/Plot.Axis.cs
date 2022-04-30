@@ -112,7 +112,8 @@ namespace ScottPlot
         /// <param name="enable">sets visibility of X and Y grid lines</param>
         /// <param name="color">sets color of of X and Y grid lines</param>
         /// <param name="lineStyle">defines the style for X and Y grid lines</param>
-        public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null)
+        /// <param name="onTop">defines whether the grid is drawn on top of plottables</param>
+        public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null, bool? onTop = null)
         {
             if (enable.HasValue)
             {
@@ -122,6 +123,9 @@ namespace ScottPlot
 
             XAxis.MajorGrid(color: color, lineStyle: lineStyle);
             YAxis.MajorGrid(color: color, lineStyle: lineStyle);
+
+            if (onTop.HasValue)
+                settings.DrawGridAbovePlottables = onTop.Value;
         }
 
         /// <summary>
