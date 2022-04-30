@@ -27,7 +27,7 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
-        public void Test_NotAllXsAscend_ValidateDataThrowsException()
+        public void Test_NotAllXsAscend_ThrowsException()
         {
             // generate random, NOT-ALL-ascending, unevenly-spaced data
             Random rand = new Random(0);
