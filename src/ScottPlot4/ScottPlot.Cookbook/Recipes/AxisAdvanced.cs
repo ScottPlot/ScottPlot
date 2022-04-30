@@ -86,6 +86,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Sin(15), 2);
             plt.AddSignal(DataGen.Cos(15), 2);
 
+            // TODO: THIS
+            /*
             // manually define X axis tick positions and labels
             double[] xPositions = { Math.PI, 2 * Math.PI };
             string[] xLabels = { "π", "2π" };
@@ -96,6 +98,7 @@ namespace ScottPlot.Cookbook.Recipes
             double[] yPositions = { -1, 0, .5, 1 };
             string[] yLabels = { "bottom", "center", "half", "top" };
             plt.YAxis.ManualTickPositions(yPositions, yLabels);
+            */
         }
     }
 
