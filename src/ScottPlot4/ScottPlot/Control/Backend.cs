@@ -139,11 +139,6 @@ namespace ScottPlot.Control
         private bool IsZoomingRectangle;
 
         /// <summary>
-        /// True if a zoom rectangle is being actively drawn using ALT + left click
-        /// </summary>
-        private bool IsZoomingWithAlt;
-
-        /// <summary>
         /// The plot underlying this control.
         /// </summary>
         public Plot Plot { get; private set; }
@@ -531,15 +526,14 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseMove(InputState input)
         {
-            bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
-            bool middleButtonLifted = IsZoomingRectangle && !input.MiddleWasJustPressed;
-            if (IsZoomingRectangle && (altWasLifted || middleButtonLifted))
-                Settings.ZoomRectangle.Clear();
+            bool isZoomingRectangleWithAltLeft = IsLeftDown && input.AltDown;
+            bool isZoomingRectangleWithMiddle = IsMiddleDown && Configuration.MiddleClickDragZoom;
 
-            IsZoomingWithAlt = IsLeftDown && input.AltDown;
-            bool isMiddleClickDragZooming = IsMiddleDown && !middleButtonLifted;
-            bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
-            IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom && MouseDownDragged;
+            bool wasZoomingRectangle = IsZoomingRectangle;
+            IsZoomingRectangle = isZoomingRectangleWithAltLeft || isZoomingRectangleWithMiddle;
+
+            if (wasZoomingRectangle && !IsZoomingRectangle)
+                Settings.ZoomRectangle.Clear();
 
             MouseDownTravelDistance += Math.Abs(input.X - MouseLocationX);
             MouseDownTravelDistance += Math.Abs(input.Y - MouseLocationY);
