@@ -9,13 +9,6 @@ namespace ScottPlotTests.Ticks
 {
     class TickGeneration
     {
-        private static string GetXTickString(ScottPlot.Plot plt)
-        {
-            plt.Render();
-            string[] ticks = plt.XAxis.GetTicks().Select(x => x.Label).Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            return string.Join(", ", ticks);
-        }
-
         [Test]
         public void Test_DefinedSpacing_NumericAxis()
         {
@@ -108,17 +101,17 @@ namespace ScottPlotTests.Ticks
             plt.XAxis.TickMeasurement(manual: true);
 
             // tick positions are automatic by default
-            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", TestTools.GetXTickString(plt));
 
             // set manual positions
             double[] manualXs = { -100, 15, 25, 35, 1234 };
             string[] manyalLabels = { "x", "a", "b", "c", "y" };
             plt.XAxis.ManualTickPositions(manualXs, manyalLabels);
-            Assert.AreEqual("a, b, c", GetXTickString(plt));
+            Assert.AreEqual("a, b, c", TestTools.GetXTickString(plt));
 
             // reset to automatic ticks
             plt.XAxis.AutomaticTickPositions();
-            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", TestTools.GetXTickString(plt));
         }
 
         [Test]
@@ -127,21 +120,18 @@ namespace ScottPlotTests.Ticks
             var plt = new ScottPlot.Plot(350, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
 
-            // enable manual tick measurement so tick density calculations are consistent across operating systems
-            plt.XAxis.TickMeasurement(manual: true);
-
             // tick positions are automatic by default
-            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", TestTools.GetXTickString(plt));
 
             // set additional positions
             double[] positions = { -100, 15, 25, 35, 1234 };
             string[] labels = { "x", "a", "b", "c", "y" };
             plt.XAxis.AutomaticTickPositions(positions, labels);
-            Assert.AreEqual("0, 10, a, 20, b, 30, c, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, a, 20, b, 30, c, 40, 50", TestTools.GetXTickString(plt));
 
             // reset to automatic ticks
             plt.XAxis.AutomaticTickPositions();
-            Assert.AreEqual("0, 10, 20, 30, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, 20, 30, 40, 50", TestTools.GetXTickString(plt));
         }
     }
 }
