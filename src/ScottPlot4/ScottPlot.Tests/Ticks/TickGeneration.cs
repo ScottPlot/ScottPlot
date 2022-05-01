@@ -126,6 +126,7 @@ namespace ScottPlotTests.Ticks
 
             // use manual padding to prevent string measurement from varying plot size by operating system
             plt.Layout(20, 20, 20, 20);
+            plt.Render();
 
             // enable manual tick measurement so tick density calculations are consistent across operating systems
             plt.XAxis.TickMeasurement(manual: true);
