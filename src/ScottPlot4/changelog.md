@@ -10,6 +10,8 @@ _not yet published on NuGet..._
 * Avalonia: Improved position of right-click menu (#1809) _Thanks @kivarsen_
 * Avalonia: Added double-click support which displays benchmark information by default (#1810) _Thanks @kivarsen_
 * Axis: Improved support for switching between custom tick label format strings and custom formatter functions (#1813) _Thanks @schifazl_
+* Plot: `AutomaticTickPositions()` can now be used to undo action of `ManualTickPositions()` (#1814)
+* Plot: `AutomaticTickPositions()` optionally accepts an array of ticks and labels that can be displayed in addition to the automatic ones (#1814) _Thanks @Xerxes004_
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_

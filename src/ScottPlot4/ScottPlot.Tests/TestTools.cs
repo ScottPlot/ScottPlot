@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ScottPlotTests
 {
@@ -177,6 +175,28 @@ namespace ScottPlotTests
                     duplicates.Add(name);
             }
             return duplicates.ToArray();
+        }
+
+        /// <summary>
+        /// Return a string containing comma-separated labels for all visible horizontal ticks
+        /// </summary>
+        public static string GetXTickString(ScottPlot.Plot plt)
+        {
+            // enable manual tick measurement so tick density calculations are consistent across operating systems
+            //plt.XAxis.TickMeasurement(manual: true);
+
+            // perform a render to reset the layout
+            plt.Layout(20, 20, 20, 20);
+            plt.Render();
+
+            // capture the ticks that were just rendered
+            var limits = plt.GetAxisLimits();
+            string[] labels = plt.XAxis.GetTicks(limits.XMin, limits.XMax)
+                .Select(x => x.Label)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .ToArray();
+
+            return string.Join(", ", labels);
         }
     }
 }

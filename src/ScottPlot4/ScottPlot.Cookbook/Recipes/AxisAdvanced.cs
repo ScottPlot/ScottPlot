@@ -72,6 +72,26 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class TicksDefinedAndUnioned : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "ticks_defined_and_unioned";
+        public string Title => "Manual and Automatic Tick Labels";
+        public string Description =>
+            "Tick positions and labels can be defined manually, but also added alongside automatic tick labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(15), 2);
+            plt.AddSignal(DataGen.Cos(15), 2);
+
+            double[] positions = { Math.PI, 2 * Math.PI };
+            string[] labels = { "π", "2π" };
+            plt.XAxis.AutomaticTickPositions(positions, labels);
+            plt.XAxis.TickDensity(0.5);
+        }
+    }
+
     class TicksNonLinearX : IRecipe
     {
         public string Category => "Advanced Axis Features";

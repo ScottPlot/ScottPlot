@@ -288,6 +288,38 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Reset previously defined manual tick positions and revert to default automatic tick placement.
+        /// </summary>
+        public void AutomaticTickPositions()
+        {
+            AxisTicks.TickCollection.manualTickPositions = null;
+            AxisTicks.TickCollection.manualTickLabels = null;
+            AxisTicks.TickCollection.additionalTickPositions = null;
+            AxisTicks.TickCollection.additionalTickLabels = null;
+        }
+
+        /// <summary>
+        /// Reset previously defined manual tick positions and revert to default automatic tick placement.
+        /// The provided tick positions and labels will be displayed in addition to the automatic ticks.
+        /// </summary>
+        public void AutomaticTickPositions(double[] additionalTickPositions, string[] additionalTickLabels)
+        {
+            if (additionalTickPositions is null)
+                throw new ArgumentNullException(nameof(additionalTickPositions));
+
+            if (additionalTickLabels is null)
+                throw new ArgumentNullException(nameof(additionalTickLabels));
+
+            if (additionalTickLabels.Length != additionalTickLabels.Length)
+                throw new ArgumentException("tick positions and labels must be equal length");
+
+            AxisTicks.TickCollection.manualTickPositions = null;
+            AxisTicks.TickCollection.manualTickLabels = null;
+            AxisTicks.TickCollection.additionalTickPositions = additionalTickPositions;
+            AxisTicks.TickCollection.additionalTickLabels = additionalTickLabels;
+        }
+
+        /// <summary>
         /// Ruler mode draws long tick marks and offsets tick labels for a ruler appearance
         /// </summary>
         public void RulerMode(bool enable) => AxisTicks.RulerMode = enable;
@@ -560,9 +592,18 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Return the ticks displayed in the previous render
         /// </summary>
-        public Tick[] GetTicks()
+        public Tick[] GetTicks(double min = double.NegativeInfinity, double max = double.PositiveInfinity)
         {
-            return AxisTicks.TickCollection.GetTicks();
+            return AxisTicks.TickCollection.GetTicks(min, max);
+        }
+
+        /// <summary>
+        /// Configure how tick label measurement is performed when calculating ideal tick density.
+        /// </summary>
+        /// <param name="manual"></param>
+        public void TickMeasurement(bool manual)
+        {
+            AxisTicks.TickCollection.MeasureStringManually = manual;
         }
     }
 }

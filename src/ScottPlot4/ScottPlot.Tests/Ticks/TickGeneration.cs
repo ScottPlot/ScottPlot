@@ -2,6 +2,7 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Ticks
@@ -88,6 +89,46 @@ namespace ScottPlotTests.Ticks
             plt.XAxis.DateTimeFormat(true);
 
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_ManualTicks_CanBeEnabledAndDisabled()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+
+            // tick positions are automatic by default
+            string originalTicks = TestTools.GetXTickString(plt);
+
+            // set manual positions
+            double[] manualXs = { -100, 15, 25, 35, 1234 };
+            string[] manyalLabels = { "x", "a", "b", "c", "y" };
+            plt.XAxis.ManualTickPositions(manualXs, manyalLabels);
+            Assert.AreNotEqual(originalTicks, TestTools.GetXTickString(plt));
+
+            // reset to automatic ticks
+            plt.XAxis.AutomaticTickPositions();
+            Assert.AreEqual(originalTicks, TestTools.GetXTickString(plt));
+        }
+
+        [Test]
+        public void Test_AutomaticTicks_AdditionalTicksAppear()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(ScottPlot.DataGen.Sin(51));
+
+            // tick positions are automatic by default
+            string originalTicks = TestTools.GetXTickString(plt);
+
+            // set additional positions
+            double[] positions = { -100, 15, 25, 35, 1234 };
+            string[] labels = { "x", "a", "b", "c", "y" };
+            plt.XAxis.AutomaticTickPositions(positions, labels);
+            Assert.AreNotEqual(originalTicks, TestTools.GetXTickString(plt));
+
+            // reset to automatic ticks
+            plt.XAxis.AutomaticTickPositions();
+            Assert.AreEqual(originalTicks, TestTools.GetXTickString(plt));
         }
     }
 }

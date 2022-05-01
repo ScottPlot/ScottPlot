@@ -21,8 +21,14 @@ namespace ScottPlot.Ticks
         public double[] tickPositionsMajor;
         public double[] tickPositionsMinor;
         public string[] tickLabels;
+
+        // When populated, manual ticks are the ONLY ticks shown
         public double[] manualTickPositions;
         public string[] manualTickLabels;
+
+        // When populated, additionalTicks are shown in addition to automatic ticks
+        public double[] additionalTickPositions;
+        public string[] additionalTickLabels;
 
         /// <summary>
         /// Label to show in the corner when using multiplier or offset notation
@@ -109,6 +115,12 @@ namespace ScottPlot.Ticks
         /// </summary>
         public int MinorTickCount = 5;
 
+        /// <summary>
+        /// Determine tick density using a fixed formula to estimate label size instead of MeasureString().
+        /// This is less accurate, but is consistent across operating systems, and is independent of font.
+        /// </summary>
+        public bool MeasureStringManually = false;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -184,8 +196,17 @@ namespace ScottPlot.Ticks
                 }
             }
 
-            var maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
-            return (maxLabelSize.Width, maxLabelSize.Height);
+            if (MeasureStringManually)
+            {
+                float width = largestString.Trim().Length * tickFont.Size * .75f;
+                float height = tickFont.Size;
+                return (width, height);
+            }
+            else
+            {
+                System.Drawing.SizeF maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
+                return (maxLabelSize.Width, maxLabelSize.Height);
+            }
         }
 
         private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
@@ -522,22 +543,39 @@ namespace ScottPlot.Ticks
             return labels;
         }
 
-        private Tick[] GetMajorTicks()
+        private Tick[] GetMajorTicks(double min, double max)
         {
             if (tickPositionsMajor is null || tickPositionsMajor.Length == 0)
                 return new Tick[] { };
 
-            Tick[] ticks = new Tick[tickPositionsMajor.Length];
-            for (int i = 0; i < ticks.Length; i++)
+            List<Tick> ticks = new();
+
+            for (int i = 0; i < tickPositionsMajor.Length; i++)
             {
-                ticks[i] = new Tick(
+                var tick = new Tick(
                     position: tickPositionsMajor[i],
                     label: tickLabels[i],
                     isMajor: true,
                     isDateTime: LabelFormat == TickLabelFormat.DateTime);
+
+                ticks.Add(tick);
             }
 
-            return ticks;
+            if (additionalTickPositions is not null)
+            {
+                for (int i = 0; i < additionalTickPositions.Length; i++)
+                {
+                    var tick = new Tick(
+                        position: additionalTickPositions[i],
+                        label: additionalTickLabels[i],
+                        isMajor: true,
+                        isDateTime: LabelFormat == TickLabelFormat.DateTime);
+
+                    ticks.Add(tick);
+                }
+            }
+
+            return ticks.Where(x => x.Position >= min && x.Position <= max).OrderBy(x => x.Position).ToArray();
         }
 
         private Tick[] GetMinorTicks()
@@ -558,14 +596,15 @@ namespace ScottPlot.Ticks
             return ticks;
         }
 
-        public Tick[] GetTicks()
+        public Tick[] GetTicks(double min, double max)
         {
-            return GetMajorTicks().Concat(GetMinorTicks()).ToArray();
+            return GetMajorTicks(min, max).Concat(GetMinorTicks()).ToArray();
         }
 
         public Tick[] GetVisibleMajorTicks(PlotDimensions dims)
         {
             double high, low;
+
             if (Orientation == AxisOrientation.Vertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -577,9 +616,7 @@ namespace ScottPlot.Ticks
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
             }
 
-            return GetMajorTicks()
-                .Where(t => t.Position >= low && t.Position <= high)
-                .ToArray();
+            return GetMajorTicks(low, high);
         }
 
         public Tick[] GetVisibleMinorTicks(PlotDimensions dims)
