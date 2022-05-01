@@ -350,7 +350,7 @@ namespace ScottPlot.Plottable
                 if (StepDisplay)
                     pointsArray = GetStepPoints(pointsArray);
 
-                if (penLD.Width > 0)
+                if (LineWidth > 0 && LineStyle != LineStyle.None)
                     gfx.DrawLines(penLD, pointsArray);
 
                 switch (_FillType)
