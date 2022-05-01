@@ -16,9 +16,9 @@
     <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive WPF</PackageTags>
     <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
-    <Version>4.1.41</Version>
-    <AssemblyVersion>4.1.41.0</AssemblyVersion>
-    <FileVersion>4.1.41.0</FileVersion>
+    <Version>4.1.42</Version>
+    <AssemblyVersion>4.1.42.0</AssemblyVersion>
+    <FileVersion>4.1.42.0</FileVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
