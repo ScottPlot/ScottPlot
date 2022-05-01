@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.42
+## ScottPlot 4.1.43
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.42
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-05-01_
 * SignalXY: Fixed bug causing plots to disappear when displaying partial data containing duplicated X values. (#1803, #1806) _Thanks @StendProg and @bernhardbreuss_
 * SignalXY: X data is no longer required to be ascending when it is first assigned, improving support for plots utilizing min/max render indexing (#1771, #1777) _Thanks @bernhardbreuss_
 * Grid: Calling `Plot.Grid(onTop: true)` will cause grid lines to be drawn on top of plottables (#1780, #1779, #1773) _Thanks @bclehmann and @KATAMANENI_
