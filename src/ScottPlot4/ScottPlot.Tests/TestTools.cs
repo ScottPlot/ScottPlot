@@ -186,6 +186,7 @@ namespace ScottPlotTests
             //plt.XAxis.TickMeasurement(manual: true);
 
             // perform a render to reset the layout
+            plt.Layout(20, 20, 20, 20);
             plt.Render();
 
             // capture the ticks that were just rendered
