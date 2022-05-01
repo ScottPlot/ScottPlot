@@ -592,9 +592,9 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Return the ticks displayed in the previous render
         /// </summary>
-        public Tick[] GetTicks()
+        public Tick[] GetTicks(double min = double.NegativeInfinity, double max = double.PositiveInfinity)
         {
-            return AxisTicks.TickCollection.GetTicks(Dims.Min, Dims.Max);
+            return AxisTicks.TickCollection.GetTicks(min, max);
         }
 
         /// <summary>
