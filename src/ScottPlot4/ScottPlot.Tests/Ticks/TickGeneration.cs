@@ -97,9 +97,6 @@ namespace ScottPlotTests.Ticks
             var plt = new ScottPlot.Plot(400, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
 
-            // enable manual tick measurement so tick density calculations are consistent across operating systems
-            plt.XAxis.TickMeasurement(manual: true);
-
             // tick positions are automatic by default
             Assert.AreEqual("0, 10, 20, 30, 40, 50", TestTools.GetXTickString(plt));
 
