@@ -121,13 +121,15 @@ namespace ScottPlotTests.Ticks
         [Test]
         public void Test_AutomaticTicks_AdditionalTicksAppear()
         {
+            /* Ticks are generated to target a density based on string measurement using system fonts.
+             * Because different operating systems may MeasureString() differently, it can result in different tick densities.
+             * Therefore, only run this test on Windows.
+             */
+            if (ScottPlot.Tools.GetOsName() != "Windows")
+                return;
+
             var plt = new ScottPlot.Plot(350, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
-
-            // use manual padding to prevent string measurement from varying plot size by operating system
-            plt.Render();
-            plt.Layout(20, 20, 20, 20);
-            plt.Render();
 
             // enable manual tick measurement so tick density calculations are consistent across operating systems
             plt.XAxis.TickMeasurement(manual: true);
