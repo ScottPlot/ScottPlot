@@ -123,7 +123,9 @@ namespace ScottPlotTests.Ticks
         {
             var plt = new ScottPlot.Plot(400, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
-            plt.Render();
+
+            // use manual padding to prevent string measurement from varying plot size by operating system
+            plt.Layout(20, 20, 20, 20);
 
             // enable manual tick measurement so tick density calculations are consistent across operating systems
             plt.XAxis.TickMeasurement(manual: true);
