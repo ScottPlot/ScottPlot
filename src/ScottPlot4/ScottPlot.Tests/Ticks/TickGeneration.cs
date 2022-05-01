@@ -121,10 +121,11 @@ namespace ScottPlotTests.Ticks
         [Test]
         public void Test_AutomaticTicks_AdditionalTicksAppear()
         {
-            var plt = new ScottPlot.Plot(400, 300);
+            var plt = new ScottPlot.Plot(350, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
 
             // use manual padding to prevent string measurement from varying plot size by operating system
+            plt.Render();
             plt.Layout(20, 20, 20, 20);
             plt.Render();
 
