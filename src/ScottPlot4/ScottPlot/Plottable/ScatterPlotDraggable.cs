@@ -70,8 +70,8 @@ namespace ScottPlot.Plottable
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;
-            if (coordinateX < DragYLimitMin) coordinateY = DragYLimitMin;
-            if (coordinateX > DragYLimitMax) coordinateY = DragYLimitMax;
+            if (coordinateY < DragYLimitMin) coordinateY = DragYLimitMin;
+            if (coordinateY > DragYLimitMax) coordinateY = DragYLimitMax;
 
             if (DragEnabledX) Xs[CurrentIndex] = coordinateX;
             if (DragEnabledY) Ys[CurrentIndex] = coordinateY;
