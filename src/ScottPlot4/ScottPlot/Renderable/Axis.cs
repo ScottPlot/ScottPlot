@@ -596,5 +596,14 @@ namespace ScottPlot.Renderable
         {
             return AxisTicks.TickCollection.GetTicks();
         }
+
+        /// <summary>
+        /// Configure how tick label measurement is performed when calculating ideal tick density.
+        /// </summary>
+        /// <param name="manual"></param>
+        public void TickMeasurement(bool manual)
+        {
+            AxisTicks.TickCollection.MeasureStringManually = manual;
+        }
     }
 }

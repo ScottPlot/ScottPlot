@@ -115,6 +115,12 @@ namespace ScottPlot.Ticks
         /// </summary>
         public int MinorTickCount = 5;
 
+        /// <summary>
+        /// Determine tick density using a fixed formula to estimate label size instead of MeasureString().
+        /// This is less accurate, but is consistent across operating systems, and is independent of font.
+        /// </summary>
+        public bool MeasureStringManually = false;
+
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
@@ -190,8 +196,17 @@ namespace ScottPlot.Ticks
                 }
             }
 
-            var maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
-            return (maxLabelSize.Width, maxLabelSize.Height);
+            if (MeasureStringManually)
+            {
+                float width = largestString.Trim().Length * tickFont.Size * .75f;
+                float height = tickFont.Size;
+                return (width, height);
+            }
+            else
+            {
+                System.Drawing.SizeF maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
+                return (maxLabelSize.Width, maxLabelSize.Height);
+            }
         }
 
         private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
