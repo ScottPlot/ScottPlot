@@ -189,7 +189,11 @@ namespace ScottPlotTests
             plt.Render();
 
             // capture the ticks that were just rendered
-            string[] labels = plt.XAxis.GetTicks().Select(x => x.Label).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            var limits = plt.GetAxisLimits();
+            string[] labels = plt.XAxis.GetTicks(limits.XMin, limits.XMax)
+                .Select(x => x.Label)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .ToArray();
 
             return string.Join(", ", labels);
         }
