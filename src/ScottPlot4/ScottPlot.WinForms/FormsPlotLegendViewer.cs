@@ -24,7 +24,6 @@ namespace ScottPlot
             this.FormClosed += OnClosed;
             RefreshLegendImage();
             ResizeWindowToFitLegendImage();
-            Show();
         }
 
         private void OnClosed(object sender, EventArgs e)
