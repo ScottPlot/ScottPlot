@@ -594,7 +594,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public Tick[] GetTicks()
         {
-            return AxisTicks.TickCollection.GetTicks();
+            return AxisTicks.TickCollection.GetTicks(Dims.Min, Dims.Max);
         }
 
         /// <summary>

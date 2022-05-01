@@ -123,6 +123,7 @@ namespace ScottPlotTests.Ticks
         {
             var plt = new ScottPlot.Plot(400, 300);
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            plt.Render();
 
             // enable manual tick measurement so tick density calculations are consistent across operating systems
             plt.XAxis.TickMeasurement(manual: true);
@@ -134,7 +135,7 @@ namespace ScottPlotTests.Ticks
             double[] positions = { -100, 15, 25, 35, 1234 };
             string[] labels = { "x", "a", "b", "c", "y" };
             plt.XAxis.AutomaticTickPositions(positions, labels);
-            //Assert.AreEqual("0, 10, a, 20, b, 30, c, 40, 50", GetXTickString(plt));
+            Assert.AreEqual("0, 10, a, 20, b, 30, c, 40, 50", GetXTickString(plt));
 
             // reset to automatic ticks
             plt.XAxis.AutomaticTickPositions();
