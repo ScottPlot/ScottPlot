@@ -222,7 +222,7 @@ namespace ScottPlot
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => new FormHelp().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) => new FormsPlotViewer(Plot).Show();
-        private void RightClickMenu_DetachLegend_Click(object sender, EventArgs e) => new FormsPlotLegendViewer(this);
+        private void RightClickMenu_DetachLegend_Click(object sender, EventArgs e) => new FormsPlotLegendViewer(this).Show();
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog

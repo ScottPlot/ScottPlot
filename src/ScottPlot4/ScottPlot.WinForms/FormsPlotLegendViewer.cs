@@ -10,10 +10,13 @@ namespace ScottPlot
         private readonly FormsPlot FormsPlot;
         private readonly Renderable.Legend Legend;
         private IPlottable ClickedPlottable;
+        private readonly bool LegendWasInitiallyVisible;
 
         public FormsPlotLegendViewer(FormsPlot formsPlot, string windowTitle = "Detached Legend")
         {
             FormsPlot = formsPlot;
+            LegendWasInitiallyVisible = formsPlot.Plot.GetSettings(false).CornerLegend.IsVisible;
+
             Legend = formsPlot.Plot.Legend(enable: true, location: null);
             Text = windowTitle;
 
@@ -24,14 +27,13 @@ namespace ScottPlot
             this.FormClosed += OnClosed;
             RefreshLegendImage();
             ResizeWindowToFitLegendImage();
-            Show();
         }
 
         private void OnClosed(object sender, EventArgs e)
         {
             RemoveHighlightFromAllPlottables();
             Legend.IsDetached = false;
-            FormsPlot.Plot.Legend(enable: true, location: null);
+            FormsPlot.Plot.Legend(enable: LegendWasInitiallyVisible, location: null);
             FormsPlot.Refresh();
         }
 

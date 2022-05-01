@@ -13,6 +13,7 @@ _not yet published on NuGet..._
 * Plot: `AutomaticTickPositions()` can now be used to undo action of `ManualTickPositions()` (#1814)
 * Plot: `AutomaticTickPositions()` optionally accepts an array of ticks and labels that can be displayed in addition to the automatic ones (#1814) _Thanks @Xerxes004_
 * Signal Plot: Improved low density display when `LineStyle` is `None` (#1797) _Thanks @nassaleh_
+* FormsPlot: Detached legend now restores initial legend visibility state on close (#1804) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.41
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
