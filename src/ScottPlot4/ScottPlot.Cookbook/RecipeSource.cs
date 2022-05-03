@@ -11,7 +11,7 @@
         public RecipeSource(IRecipe recipe, string source)
         {
             ID = recipe.ID;
-            Category = recipe.Category;
+            Category = recipe.Category.Folder;
             Title = recipe.Title;
             Description = recipe.Description;
             Code = source;

@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class ScaleBarQuickstart : IRecipe
     {
-        public string Category => "Plottable: Scale Bar";
+        public ICategory Category => new Categories.PlotTypes.ScaleBar();
         public string ID => "scalebar_quickstart";
         public string Title => "Scale Bar";
         public string Description =>
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScaleBarHorizontal : IRecipe
     {
-        public string Category => "Plottable: Scale Bar";
+        public ICategory Category => new Categories.PlotTypes.ScaleBar();
         public string ID => "scalebar_horizontal";
         public string Title => "Horizontal Scale Bar";
         public string Description =>
@@ -55,7 +55,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class StyledScaleBar : IRecipe
     {
-        public string Category => "Plottable: Scale Bar";
+        public ICategory Category => new Categories.PlotTypes.ScaleBar();
         public string ID => "scalebar_styled";
         public string Title => "Styled Scale Bar";
         public string Description =>

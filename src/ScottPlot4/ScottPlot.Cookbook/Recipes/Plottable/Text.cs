@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class TextQuickstart : IRecipe
     {
-        public string Category => "Plottable: Text";
+        public ICategory Category => new Categories.PlotTypes.Text();
         public string ID => "text_quickstart";
         public string Title => "Text";
         public string Description =>
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class TextAlignment : IRecipe
     {
-        public string Category => "Plottable: Text";
+        public ICategory Category => new Categories.PlotTypes.Text();
         public string ID => "text_alignment";
         public string Title => "Text Alignment and Rotation";
         public string Description =>
@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomFonts : IRecipe
     {
-        public string Category => "Plottable: Text";
+        public ICategory Category => new Categories.PlotTypes.Text();
         public string ID => "text_fonts";
         public string Title => "Custom Fonts";
         public string Description => "You can pass in a Font to further customize font options";

@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class PolygonQuickstart : IRecipe
     {
-        public string Category => "Plottable: Polygon";
+        public ICategory Category => new Categories.PlotTypes.Polygon();
         public string ID => "polygon_quickstart";
         public string Title => "Polygon Quickstart";
         public string Description =>
@@ -31,7 +31,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PolygonFilledLinePlot : IRecipe
     {
-        public string Category => "Plottable: Polygon";
+        public ICategory Category => new Categories.PlotTypes.Polygon();
         public string ID => "polygon_filledLinePlot";
         public string Title => "Filled Line Plot";
         public string Description =>
@@ -64,7 +64,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PolygonFillBetween : IRecipe
     {
-        public string Category => "Plottable: Polygon";
+        public ICategory Category => new Categories.PlotTypes.Polygon();
         public string ID => "polygon_fillBetween";
         public string Title => "Fill Between Curves";
         public string Description =>
@@ -94,7 +94,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PolygonStackedFilledLinePlot : IRecipe
     {
-        public string Category => "Plottable: Polygon";
+        public ICategory Category => new Categories.PlotTypes.Polygon();
         public string ID => "polygon_stackedFilledLinePlot";
         public string Title => "Stacked Filled Line Plot";
         public string Description =>
@@ -130,7 +130,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Polygons : IRecipe
     {
-        public string Category => "Plottable: Polygon";
+        public ICategory Category => new Categories.PlotTypes.Polygon();
         public string ID => "polygon_polygons";
         public string Title => "Many Polygons";
         public string Description =>

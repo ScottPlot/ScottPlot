@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class FinanceQuickstart : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_quickstart";
         public string Title => "Candlestick Chart";
         public string Description =>
@@ -27,7 +27,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceOHLC : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_ohlc";
         public string Title => "OHLC Chart";
         public string Description =>
@@ -43,7 +43,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceDate : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string Title => "Using a DateTime Axis";
         public string ID => "finance_dateTimeAxis";
         public string Description =>
@@ -66,7 +66,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceCustomLabels : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string Title => "Candlesticks with Custom Tick Labels";
         public string ID => "finance_tickLabels";
         public string Description =>
@@ -90,7 +90,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceSMA : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string Title => "Simple Moving Average (SMA)";
         public string ID => "finance_sma";
         public string Description =>
@@ -111,7 +111,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceBollinger : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string Title => "Bollinger Bands";
         public string ID => "finance_bollinger";
         public string Description =>
@@ -132,7 +132,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceRightScale : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_right";
         public string Title => "Price on Right";
         public string Description =>
@@ -157,7 +157,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceWickColor : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_wick";
         public string Title => "Custom Wick Color";
         public string Description =>
@@ -173,7 +173,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceColor : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_color";
         public string Title => "Custom Colors";
         public string Description =>
@@ -194,7 +194,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FinanceDark : IRecipe
     {
-        public string Category => "Plottable: Finance";
+        public ICategory Category => new Categories.PlotTypes.Finance();
         public string ID => "finance_dark";
         public string Title => "Dark Mode";
         public string Description =>

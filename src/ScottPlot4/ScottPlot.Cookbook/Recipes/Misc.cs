@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     class MiscInterpolation : IRecipe
     {
-        public string Category => "Misc";
+        public ICategory Category => new Categories.Misc();
         public string ID => "misc_interpolation";
         public string Title => "Spline Interpolation";
         public string Description =>
@@ -33,7 +33,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class MiscInterpolationTypes : IRecipe
     {
-        public string Category => "Misc";
+        public ICategory Category => new Categories.Misc();
         public string ID => "misc_interpolation_types";
         public string Title => "Spline Interpolation Types";
         public string Description =>
@@ -72,7 +72,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class ActionPotential : IRecipe
     {
-        public string Category => "Misc";
+        public ICategory Category => new Categories.Misc();
         public string ID => "misc_ap";
         public string Title => "Action Potential";
         public string Description =>
@@ -118,7 +118,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class DpiScale : IRecipe
     {
-        public string Category => "Misc";
+        public ICategory Category => new Categories.Misc();
         public string ID => "misc_dpiScale";
         public string Title => "Display Scaling";
         public string Description =>

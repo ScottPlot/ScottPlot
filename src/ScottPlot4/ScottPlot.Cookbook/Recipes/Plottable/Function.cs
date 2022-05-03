@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class FunctionQuickstart : IRecipe
     {
-        public string Category => "Plottable: Function";
+        public ICategory Category => new Categories.PlotTypes.Function();
         public string ID => "function_quickstart";
         public string Title => "Function";
         public string Description =>

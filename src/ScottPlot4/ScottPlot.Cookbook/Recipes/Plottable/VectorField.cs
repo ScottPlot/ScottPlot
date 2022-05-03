@@ -5,7 +5,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class VectorFieldQuickstart : IRecipe
     {
-        public string Category => "Plottable: Vector Field";
+        public ICategory Category => new Categories.PlotTypes.VectorField();
         public string ID => "vectorField_quickstart";
         public string Title => "Quickstart";
         public string Description => "A vector field can be useful to show data explained by differential equations";
@@ -28,7 +28,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class WithChangeingMagnitude : IRecipe
     {
-        public string Category => "Plottable: Vector Field";
+        public ICategory Category => new Categories.PlotTypes.VectorField();
         public string ID => "vectorField_angleMag";
         public string Title => "Angle and Magnitude";
         public string Description => "This example demonstrates how to define vectors according to a given angle and magnitude.";
@@ -57,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Pendulum : IRecipe
     {
-        public string Category => "Plottable: Vector Field";
+        public ICategory Category => new Categories.PlotTypes.VectorField();
         public string ID => "vectorField_colormap";
         public string Title => "Custom Colormap";
         public string Description => "A colormap can be supplied to color arrows according to their magnitude";
@@ -89,7 +89,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomScaleFactor : IRecipe
     {
-        public string Category => "Plottable: Vector Field";
+        public ICategory Category => new Categories.PlotTypes.VectorField();
         public string ID => "vectorField_scaleFactor";
         public string Title => "Custom Scale Factor";
         public string Description => "A custom scale factor can adjust the length of the arrows.";
@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FancyVectorField : IRecipe
     {
-        public string Category => "Plottable: Vector Field";
+        public ICategory Category => new Categories.PlotTypes.VectorField();
         public string ID => "vectorField_fancytips";
         public string Title => "Scaled Arrowheads";
         public string Description => "Use a slower drawing method that draws tips that are proportional to the length of the arrows.";

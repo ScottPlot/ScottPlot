@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class RadialGaugeQuickstart : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_quickstart";
         public string Title => "Radial Gauge";
         public string Description =>
@@ -22,7 +22,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeColormap : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_colors";
         public string Title => "Gauge Colors";
         public string Description =>
@@ -38,7 +38,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeNegative : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_negative";
         public string Title => "Negative Values";
         public string Description =>
@@ -54,7 +54,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeSequential : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_mode";
         public string Title => "Sequential Gauge Mode";
         public string Description =>
@@ -73,7 +73,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeReverse : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_reverse";
         public string Title => "Reverse Order";
         public string Description =>
@@ -92,7 +92,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeModeSingle : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_single";
         public string Title => "Single Gauge Mode";
         public string Description =>
@@ -113,7 +113,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeDirection : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_direction";
         public string Title => "Gauge Direction";
         public string Description =>
@@ -131,7 +131,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeSize : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_size";
         public string Title => "Gauge Size";
         public string Description =>
@@ -148,7 +148,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeCaps : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_caps";
         public string Title => "Gauge Caps";
         public string Description =>
@@ -168,7 +168,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeStart : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_start";
         public string Title => "Gauge Starting Angle";
         public string Description =>
@@ -187,7 +187,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeRange : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_range";
         public string Title => "Gauge Angular Range";
         public string Description =>
@@ -206,7 +206,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeLabels : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_levels";
         public string Title => "Show Levels";
         public string Description =>
@@ -225,7 +225,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeLabelPos : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_labelpos";
         public string Title => "Gauge Label Position";
         public string Description =>
@@ -244,7 +244,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeLabelFontPct : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_labelfontsize";
         public string Title => "Gauge Label Font Percentage";
         public string Description =>
@@ -262,7 +262,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeLabelColor : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_labelcolor";
         public string Title => "Gauge Label Color";
         public string Description =>
@@ -280,7 +280,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeLegend : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_legend";
         public string Title => "Gauge Labels in Legend";
         public string Description =>
@@ -299,7 +299,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeBackDim : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_backdim";
         public string Title => "Background Gauges Dim";
         public string Description =>
@@ -318,7 +318,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadialGaugeBackNorm : IRecipe
     {
-        public string Category => "Plottable: RadialGauge";
+        public ICategory Category => new Categories.PlotTypes.RadialGauge();
         public string ID => "radialgauge_backnorm";
         public string Title => "Background Gauges Normalization";
         public string Description =>

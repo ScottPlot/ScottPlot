@@ -60,7 +60,7 @@ namespace ScottPlot.Cookbook
             .ToArray();
 
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
-            .GroupBy(x => x.Category)
+            .GroupBy(x => x.Category.Folder)
             .ToDictionary(group => group.Key, group => group.ToArray());
 
         private static Dictionary<string, IRecipe> RecipesByID = GetRecipes()

@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 {
     class AxisLabel : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "Axis_label";
         public string Title => "Axis Customizations";
         public string Description => "Axes can be customized different ways. " +
@@ -35,7 +35,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class GridDisable : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "axis_gridDisableAll";
         public string Title => "Disable Grid";
         public string Description => "Visibility of primary X and Y grids can be set using a single method.";
@@ -53,7 +53,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class GridOne : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "axis_gridDisableOne";
         public string Title => "Disable Vertical Grid";
         public string Description =>
@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class GridAbove : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "axis_gridAbove";
         public string Title => "Draw Grid Above Plottables";
         public string Description =>
@@ -97,7 +97,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class GridConfigure : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "asis_gridConfigure";
         public string Title => "Grid Style";
         public string Description => "Common grid line configurations are available.";
@@ -116,7 +116,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class Frameless : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "asis_frameless";
         public string Title => "Frameless Plots";
         public string Description => "Frameless plots can display data that appraoches the edge of the figure.";
@@ -132,7 +132,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class OneAxisOnly : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "one_axisonly";
         public string Title => "One Axis Only";
         public string Description => "Axis ticks and lines can be disabled. " +
@@ -157,7 +157,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksRotated : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "ticks_rotated";
         public string Title => "Rotated X Ticks";
         public string Description => "Horizontal tick labels can be rotated as desired.";
@@ -177,7 +177,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksRotatedY : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "ticks_rotatedY";
         public string Title => "Rotated Y Ticks";
         public string Description => "Vertical tick labels can be rotated as desired.";
@@ -197,7 +197,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksDateTime : IRecipe
     {
-        public string Category => "Axis and Ticks";
+        public ICategory Category => new Categories.Axis();
         public string ID => "ticks_dateTime";
         public string Title => "Plotting DateTime Data";
         public string Description =>

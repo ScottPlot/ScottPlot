@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class PieQuickstart : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_quickstart";
         public string Title => "Pie Chart";
         public string Description =>
@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieExploded : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_exploded";
         public string Title => "Exploded Pie Chart";
         public string Description =>
@@ -39,7 +39,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieDonut : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_donut";
         public string Title => "Donut Chart";
         public string Description =>
@@ -56,7 +56,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieDonutText : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_donutText";
         public string Title => "Donut with Text";
         public string Description =>
@@ -81,7 +81,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieShowValues : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_showValues";
         public string Title => "Slice Values";
         public string Description =>
@@ -97,7 +97,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieShowPercentage : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_showPercentage";
         public string Title => "Slice Percentages";
         public string Description =>
@@ -113,7 +113,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieCustomColors : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_customColors";
         public string Title => "Customize Pie Colors";
         public string Description =>
@@ -154,7 +154,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieLegend : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_legend";
         public string Title => "Slices in Legend";
         public string Description =>
@@ -172,7 +172,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieShowEverything : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_showEverything";
         public string Title => "Label Everything";
         public string Description =>
@@ -193,7 +193,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PieCustom : IRecipe
     {
-        public string Category => "Plottable: Pie";
+        public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_customLabels";
         public string Title => "Custom Slice Labels";
         public string Description =>

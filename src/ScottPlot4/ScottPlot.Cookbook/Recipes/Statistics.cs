@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     public class HistogramCount : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_histogram";
         public string Title => "Histogram";
         public string Description =>
@@ -37,7 +37,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class HistogramProbability : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_histogramProbability";
         public string Title => "Histogram Probability";
         public string Description =>
@@ -79,7 +79,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class HistogramMultiAxis : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_histogramMultiAxis";
         public string Title => "Histogram Multi-Axis";
         public string Description =>
@@ -124,7 +124,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class HistogramStdev : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_histogramStdev";
         public string Title => "Histogram Stdev";
         public string Description =>
@@ -184,7 +184,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class TwoHistograms : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_histogram2";
         public string Title => "Multiple Histograms";
         public string Description => "This example demonstrates two histograms on the same plot. " +
@@ -246,7 +246,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StatsCPH : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_cph";
         public string Title => "CPH";
         public string Description =>
@@ -280,7 +280,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StatsLinearRegression : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_linearRegression";
         public string Title => "Linear Regression";
         public string Description =>
@@ -309,7 +309,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StatsOrderStatistics : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_orderStatistics";
         public string Title => "Nth Order Statistics";
         public string Description =>
@@ -334,7 +334,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StatsPercentiles : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_percentiles";
         public string Title => "Percentiles";
         public string Description =>
@@ -357,7 +357,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StatsQuantiles : IRecipe
     {
-        public string Category => "Statistics";
+        public ICategory Category => new Categories.Statistics();
         public string ID => "stats_quantiles";
         public string Title => "Quantiles";
         public string Description =>

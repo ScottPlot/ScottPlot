@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     class MultiAxisSecondaryY : IRecipe
     {
-        public string Category => "Multi-Axis";
+        public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_primary";
         public string Title => "Primary Axes";
         public string Description =>
@@ -42,7 +42,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class MultiAxisAdditional : IRecipe
     {
-        public string Category => "Multi-Axis";
+        public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_additional";
         public string Title => "Additional Y Axis";
         public string Description =>
@@ -68,7 +68,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class RightAxis : IRecipe
     {
-        public string Category => "Multi-Axis";
+        public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_right";
         public string Title => "Right Y Axis";
         public string Description =>
@@ -93,7 +93,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class TopAxis : IRecipe
     {
-        public string Category => "Multi-Axis";
+        public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_top";
         public string Title => "Top Y Axis";
         public string Description =>
@@ -118,7 +118,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class MultiAxisInvisible : IRecipe
     {
-        public string Category => "Multi-Axis";
+        public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_invisible";
         public string Title => "Axis Visibility";
         public string Description =>

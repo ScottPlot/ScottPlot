@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class FillQuickstart : IRecipe
     {
-        public string Category => "Plottable: Fill";
+        public ICategory Category => new Categories.PlotTypes.Fill();
         public string ID => "fill_curve";
         public string Title => "Fill Under Curve";
         public string Description =>
@@ -34,7 +34,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FillAboveBelow : IRecipe
     {
-        public string Category => "Plottable: Fill";
+        public ICategory Category => new Categories.PlotTypes.Fill();
         public string ID => "fill_aboveBelow";
         public string Title => "Fill Above and Below";
         public string Description =>
@@ -58,7 +58,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FillBetween : IRecipe
     {
-        public string Category => "Plottable: Fill";
+        public ICategory Category => new Categories.PlotTypes.Fill();
         public string ID => "fill_between";
         public string Title => "Fill Between Curves";
         public string Description =>
@@ -86,7 +86,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HatchedFill : IRecipe
     {
-        public string Category => "Plottable: Fill";
+        public ICategory Category => new Categories.PlotTypes.Fill();
         public string ID => "fill_hatched";
         public string Title => "Hatched Fill";
         public string Description => "Hatched Fills are useful for when there are overlapping fills, such as this diagram depicting the ranges of possible producer surpluses under a price floor.";

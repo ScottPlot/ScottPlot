@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class MarkerQuickstart : IRecipe
     {
-        public string Category => "Plottable: Marker";
+        public ICategory Category => new Categories.PlotTypes.Marker();
         public string ID => "marker_quickstart";
         public string Title => "Marker";
         public string Description =>
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MarkerDraggable : IRecipe
     {
-        public string Category => "Plottable: Marker";
+        public ICategory Category => new Categories.PlotTypes.Marker();
         public string ID => "marker_draggable";
         public string Title => "Draggable Marker";
         public string Description =>
@@ -58,7 +58,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MarkerDraggableInVector : IRecipe
     {
-        public string Category => "Plottable: Marker";
+        public ICategory Category => new Categories.PlotTypes.Marker();
         public string ID => "marker_draggableinvector";
         public string Title => "Draggable Marker Snap";
         public string Description =>
@@ -91,7 +91,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MarkerLabeled : IRecipe
     {
-        public string Category => "Plottable: Marker";
+        public ICategory Category => new Categories.PlotTypes.Marker();
         public string ID => "marker_labeled";
         public string Title => "Labeled Marker";
         public string Description =>
@@ -110,7 +110,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MarkerLineWidth : IRecipe
     {
-        public string Category => "Plottable: Marker";
+        public ICategory Category => new Categories.PlotTypes.Marker();
         public string ID => "marker_linewidth";
         public string Title => "Marker Line Width";
         public string Description =>

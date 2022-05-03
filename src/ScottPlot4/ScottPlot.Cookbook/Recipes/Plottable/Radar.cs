@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class RadarQuickstart : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_quickstart";
         public string Title => "Radar";
         public string Description =>
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarPolygon : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_straightLines";
         public string Title => "Straight Axis Lines";
         public string Description =>
@@ -50,7 +50,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarNoAxis : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_noLines";
         public string Title => "No Axis Lines";
         public string Description => "A radar chart can have no drawn axis as well.";
@@ -70,7 +70,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarUnlabeledAxes : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_labelCategory";
         public string Title => "Labeled Categories";
         public string Description => "Category labels can be displayed on the radar chart.";
@@ -101,7 +101,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarWithLabels : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_labelValue";
         public string Title => "Labeled Values";
         public string Description => "Labels can be displayed on the arms of the radar chart.";
@@ -131,7 +131,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarWithOutlineThickness : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_customizePolygonOutline";
         public string Title => "Customizable polygon outline";
         public string Description => "The thickness of each radar plot's outline can be customized.";
@@ -159,7 +159,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarWithIcons : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_iconValue";
         public string Title => "Categories with images";
         public string Description => "Images can be displayed on the arms of the radar chart. " +
@@ -198,7 +198,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarSeveralAxes : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_axisScaling";
         public string Title => "Independent Axis Scaling";
         public string Description =>
@@ -227,7 +227,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarSeveralAxesWithMax : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_axisLimits";
         public string Title => "Defined Axis Limits";
         public string Description =>
@@ -263,7 +263,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RadarCustomization : IRecipe
     {
-        public string Category => "Plottable: Radar";
+        public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_customization";
         public string Title => "Customization";
         public string Description =>

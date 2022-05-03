@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class Quickstart : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_quickstart";
         public string Title => "Scatter Plot Quickstart";
         public string Description =>
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomizeMarkers : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_markers";
         public string Title => "Custom markers";
         public string Description => "Markers can be customized using optional arguments and public fields.";
@@ -53,7 +53,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AllMarkers : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_markerShape";
         public string Title => "All marker shapes";
         public string Description => "Legend indicates names of all available marker shapes";
@@ -84,7 +84,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomizeLines : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_lineStyle";
         public string Title => "Custom lines";
         public string Description =>
@@ -110,7 +110,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RandomXY : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_random";
         public string Title => "Random X/Y Points";
         public string Description =>
@@ -134,7 +134,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ErrorBars : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_errorbar";
         public string Title => "Scatter Plot with Errorbars";
         public string Description =>
@@ -161,7 +161,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class LinePlot : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_lineplot";
         public string Title => "Lines Only";
         public string Description => "A shortcut method makes it easy " +
@@ -178,7 +178,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PointsPlot : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_pointsplot";
         public string Title => "Markers Only";
         public string Description => "A shortcut method makes it easy to create a scatter plot " +
@@ -195,7 +195,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class StepPlot : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_stepplot";
         public string Title => "Step Plot";
         public string Description => "A step plot is a special type of scatter plot where points " +
@@ -212,7 +212,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AddMarker : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_AddMarker";
         public string Title => "Add markers";
         public string Description => "Want to place a marker at a position in X/Y space? " +
@@ -236,7 +236,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterPlotDraggable : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_draggable_vertical";
         public string Title => "Draggable Scatter Plot";
         public string Description => "Want to modify the scatter points interactively? " +
@@ -261,7 +261,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterPlotDraggableVertical : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_draggable";
         public string Title => "Draggable Scatter Plot Vertical";
         public string Description => "You can restrict dragging to just X or Y directions.";
@@ -285,7 +285,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterPlotForestPlot : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatter_forest";
         public string Title => "Forest Plot";
         public string Description => "Scatter plots can be used to create forest plots, which are useful for showing the agreement between multiple estimates.";

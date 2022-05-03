@@ -9,7 +9,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class BarQuickstart : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_quickstart";
         public string Title => "Bar Graph";
         public string Description =>
@@ -31,7 +31,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarPositions : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_positions";
         public string Title => "Bar Graph with Defined Positions";
         public string Description =>
@@ -57,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarLabels : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_labels";
         public string Title => "Bar Labels";
         public string Description =>
@@ -76,7 +76,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarError : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_error";
         public string Title => "Bar Graph with Error Bars";
         public string Description =>
@@ -100,7 +100,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarStacked : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_stacked";
         public string Title => "Stacked Bar Graphs";
         public string Description => "Bars can be overlapped to give the appearance of stacking.";
@@ -127,7 +127,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarShowValue : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_values";
         public string Title => "Values Above Bars";
         public string Description => "The value of each bar can be displayed above it.";
@@ -148,7 +148,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarShowValueCustom : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_values_custom_formatter";
         public string Title => "Custom Value Formatter";
         public string Description => "A custom formatter can be used to generate labels " +
@@ -169,7 +169,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarPattern : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_pattern";
         public string Title => "Bar Fill Pattern";
         public string Description => "Bar graph fill pattern can be customized.";
@@ -204,7 +204,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarHorizontal : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_horizontal";
         public string Title => "Horizontal Bar Graph";
         public string Description =>
@@ -228,7 +228,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarGroup : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_group";
         public string Title => "Grouped Bar Graphs";
         public string Description =>
@@ -265,7 +265,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarYOffset : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_yoffset";
         public string Title => "Bars with Y Offsets";
         public string Description =>
@@ -288,7 +288,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarColorByDirection : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_yNegColor";
         public string Title => "Negative Bar Colors";
         public string Description => "Bars with negative values can be colored differently than positive ones.";
@@ -305,7 +305,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarWaterfall : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_waterfall";
         public string Title => "Waterfall Bar Graph";
         public string Description =>
@@ -327,7 +327,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarLollipop : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_lollipop";
         public string Title => "Lollipop Plot Quickstart";
         public string Description =>
@@ -342,7 +342,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BarLollipopCustom : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_lollipop_custom";
         public string Title => "Lollipop Plot Customizations";
         public string Description => "Lollipop plots can be extensively customized.";
@@ -361,7 +361,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ClevelandDot : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_cleveland_dot";
         public string Title => "Cleveland Dot Plot";
         public string Description =>
@@ -386,7 +386,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class DateTimeBarPlots : IRecipe
     {
-        public string Category => "Plottable: Bar Graph";
+        public ICategory Category => new Categories.PlotTypes.Bar();
         public string ID => "bar_dateTime";
         public string Title => "DateTime Bar Plot";
         public string Description =>

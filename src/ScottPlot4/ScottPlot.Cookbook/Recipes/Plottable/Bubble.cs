@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class BubbleQuickstart : IRecipe
     {
-        public string Category => "Plottable: Bubble";
+        public ICategory Category => new Categories.PlotTypes.Bubble();
         public string ID => "bubble_quickstart";
         public string Title => "Bubble Plot";
         public string Description =>
@@ -42,7 +42,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class BubbleWithText : IRecipe
     {
-        public string Category => "Plottable: Bubble";
+        public ICategory Category => new Categories.PlotTypes.Bubble();
         public string ID => "bubble_withText";
         public string Title => "Bubbles with Labels";
         public string Description =>

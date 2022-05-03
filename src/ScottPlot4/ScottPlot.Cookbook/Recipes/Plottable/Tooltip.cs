@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     class TooltipQuickstart : IRecipe
     {
-        public string Category => "Plottable: Tooltip";
+        public ICategory Category => new Categories.PlotTypes.Tooltip();
         public string ID => "tooltip_quickstart";
         public string Title => "Tooltip Quickstart";
         public string Description =>
@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     class TooltipFont : IRecipe
     {
-        public string Category => "Plottable: Tooltip";
+        public ICategory Category => new Categories.PlotTypes.Tooltip();
         public string ID => "tooltip_font";
         public string Title => "Tooltip Font";
         public string Description =>
@@ -46,7 +46,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     class TooltipColors : IRecipe
     {
-        public string Category => "Plottable: Tooltip";
+        public ICategory Category => new Categories.PlotTypes.Tooltip();
         public string ID => "tooltip_colors";
         public string Title => "Tooltip Colors";
         public string Description =>

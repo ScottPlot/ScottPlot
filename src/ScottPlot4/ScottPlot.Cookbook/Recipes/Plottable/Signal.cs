@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class SignalQuickstart : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_quickstart";
         public string Title => "Signal Plot Quickstart";
         public string Description => "Signal plots are ideal for evenly-spaced data with thousands or millions of points.";
@@ -29,7 +29,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalOffset : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_offset";
         public string Title => "Signal Offset";
         public string Description =>
@@ -47,7 +47,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalScatterComparison : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_advantage";
         public string Title => "Speed Test";
         public string Description => "Compare the speed to the same data plotted as a scatter plot.";
@@ -66,7 +66,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomLineAndMarkers : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_styled";
         public string Title => "Styled Signal Plot";
         public string Description =>
@@ -88,7 +88,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CustomLineStep : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_step";
         public string Title => "Step Display";
         public string Description =>
@@ -107,7 +107,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RandomWalk_5millionPoints_Signal : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_5millionPoints";
         public string Title => "5 Million Points";
         public string Description => "Signal plots with millions of points can be interacted with in real time.";
@@ -127,7 +127,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Density : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_density";
         public string Title => "Display data density";
         public string Description =>
@@ -166,7 +166,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FirstNPoints : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_firstNpoints";
         public string Title => "Display first N points";
         public string Description =>
@@ -187,7 +187,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_range";
         public string Title => "Plot a Range of Points";
         public string Description =>
@@ -207,7 +207,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotFillRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_fillBelow";
         public string Title => "Fill Below";
         public string Description =>
@@ -226,7 +226,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotGradientFillRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_fillBelowGradient";
         public string Title => "Gradient Fill Below";
         public string Description =>
@@ -245,7 +245,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotGradientFillAboveRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_fillAbove";
         public string Title => "Gradient Fill Above";
         public string Description =>
@@ -264,7 +264,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotFillAboveAndBelowRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_fillAboveAndBelow";
         public string Title => "Fill Above and Below";
         public string Description =>
@@ -285,7 +285,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PlotGradientFillAboveAndBelowRange : IRecipe
     {
-        public string Category => "Plottable: Signal Plot";
+        public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_gradientAboveAndBelowGradient";
         public string Title => "Gradient Fill Above and Below";
         public string Description =>

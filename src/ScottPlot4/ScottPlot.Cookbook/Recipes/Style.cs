@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     public class StyleDefault : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_Default";
         public string Title => "Default Style";
         public string Description => "Customize many plot features using style presets";
@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleMonospace : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_monospace";
         public string Title => "Monospace Style";
         public string Description => "Customize many plot features using style presets";
@@ -44,7 +44,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleBlue1 : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_blue1";
         public string Title => "Blue1 Style";
         public string Description => "Customize many plot features using style presets";
@@ -63,7 +63,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleBlue2 : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_blue2";
         public string Title => "Blue2 Style";
         public string Description => "Customize many plot features using style presets";
@@ -82,7 +82,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleLight1 : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_light1";
         public string Title => "Light1 Style";
         public string Description => "Customize many plot features using style presets";
@@ -101,7 +101,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleGray1 : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_Gray1";
         public string Title => "Gray1 Style";
         public string Description => "Customize many plot features using style presets";
@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleBlack : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_Black";
         public string Title => "Black Style";
         public string Description => "Customize many plot features using style presets";
@@ -139,7 +139,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class StyleSeaborn : IRecipe
     {
-        public string Category => "Style";
+        public ICategory Category => new Categories.Style();
         public string ID => "style_Seaborn";
         public string Title => "Seaborn Style";
         public string Description => "Customize many plot features using style presets";
