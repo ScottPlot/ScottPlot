@@ -563,10 +563,12 @@ namespace ScottPlot.Ticks
 
             if (additionalTickPositions is not null)
             {
+                double sign = LabelUsingInvertedSign ? -1 : 1;
+
                 for (int i = 0; i < additionalTickPositions.Length; i++)
                 {
                     var tick = new Tick(
-                        position: additionalTickPositions[i],
+                        position: additionalTickPositions[i] * sign,
                         label: additionalTickLabels[i],
                         isMajor: true,
                         isDateTime: LabelFormat == TickLabelFormat.DateTime);
