@@ -17,16 +17,16 @@ namespace ScottPlot.Tests.Cookbook
             {
                 Console.WriteLine(category);
 
-                Assert.IsNotNull(category.Name);
-                Assert.IsNotEmpty(category.Name);
-                Assert.AreEqual(category.Name.Trim(), category.Name);
+                Assert.IsNotNull(category.Name, category.ToString());
+                Assert.IsNotEmpty(category.Name, category.ToString());
+                Assert.AreEqual(category.Name.Trim(), category.Name, category.ToString());
 
-                Assert.IsNotNull(category.Description);
-                Assert.IsNotEmpty(category.Description);
-                Assert.AreEqual(category.Description.Trim(), category.Description);
+                Assert.IsNotNull(category.Description, category.ToString());
+                Assert.IsNotEmpty(category.Description, category.ToString());
+                Assert.AreEqual(category.Description.Trim(), category.Description, category.ToString());
 
                 // TODO: this should be opposite
-                Assert.That(!category.Description.EndsWith("."));
+                Assert.That(!category.Description.EndsWith("."), category.ToString());
             }
         }
     }
