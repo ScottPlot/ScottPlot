@@ -87,6 +87,12 @@ namespace ScottPlot.Control
         public event EventHandler RightClicked = delegate { };
 
         /// <summary>
+        /// This event is invoked when the user left-clicks the control with the mouse.
+        /// It is typically used to interact with custom plot types.
+        /// </summary>
+        public event EventHandler LeftClicked = delegate { };
+
+        /// <summary>
         /// This event is invoked after the mouse moves while dragging a draggable plottable.
         /// </summary>
         public event EventHandler PlottableDragged = delegate { };
@@ -633,6 +639,9 @@ namespace ScottPlot.Control
 
             if (IsRightDown && MouseDownDragged == false)
                 RightClicked(null, EventArgs.Empty);
+
+            if (IsLeftDown && MouseDownDragged == false)
+                LeftClicked(null, EventArgs.Empty);
 
             IsMiddleDown = false;
             IsRightDown = false;

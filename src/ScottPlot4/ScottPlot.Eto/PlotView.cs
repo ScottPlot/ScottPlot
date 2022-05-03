@@ -30,6 +30,12 @@ namespace ScottPlot.Eto
         public event EventHandler? RightClicked;
 
         /// <summary>
+        /// This event is invoked any time the plot is left-clicked.
+        /// It is typically used to interact with custom plot types.
+        /// </summary>
+        public event EventHandler LeftClicked;
+
+        /// <summary>
         /// This event is invoked after the mouse moves while dragging a draggable plottable.
         /// The object passed is the plottable being dragged.
         /// </summary>
@@ -51,6 +57,7 @@ namespace ScottPlot.Eto
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
+            Backend.LeftClicked += new EventHandler(OnLeftClicked);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
@@ -127,6 +134,7 @@ namespace ScottPlot.Eto
         private void OnBitmapUpdated(object? sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
         private void OnCursorChanged(object? sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object? sender, EventArgs e) => RightClicked?.Invoke(this, e);
+        private void OnLeftClicked(object sender, EventArgs e) => LeftClicked?.Invoke(this, e);
         private void OnPlottableDragged(object? sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object? sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object? sender, EventArgs e) => AxesChanged?.Invoke(this, e);

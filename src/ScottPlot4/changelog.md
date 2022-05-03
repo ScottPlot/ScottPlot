@@ -4,6 +4,8 @@
 _not yet published on NuGet..._
 * Draggable Scatter Plot: Fixed a bug where horizontal drag limits were applied to the vertical axis (#1795) _Thanks @m4se_
 * Plot: Improved support for user-defined ticks when inverted axis mode is enabled (#1826, #1814) _Thanks @Xerxes004_
+* Heatmap: Added `GetCellIndexes()` to return the heatmap data position for a given coordinate (#1822, #1787) _Thanks @tonpimenta_
+* Controls: Added `LeftClicked` event to customize left-click actions in GUI environments (#1822, #1787)
 
 ## ScottPlot 4.1.42
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-05-01_
