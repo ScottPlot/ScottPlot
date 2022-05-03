@@ -315,6 +315,24 @@ namespace ScottPlot.Plottable
                 yMax: OffsetY + DataHeight * CellHeight);
         }
 
+        /// <summary>
+        /// Return the position in the 2D array corresponding to the given coordinate.
+        /// Returns null if the coordinate is not over the heatmap.
+        /// </summary>
+        public (int? xIndex, int? yIndex) GetCellIndexes(double x, double y)
+        {
+            int? xIndex = (int)((x - OffsetX) / CellWidth);
+            int? yIndex = (int)((y - OffsetY) / CellHeight);
+
+            if (xIndex < 0 || xIndex >= DataWidth)
+                xIndex = null;
+
+            if (yIndex < 0 || yIndex >= DataHeight)
+                yIndex = null;
+
+            return (xIndex, yIndex);
+        }
+
         public void ValidateData(bool deepValidation = false)
         {
             if (BmpHeatmap is null)
