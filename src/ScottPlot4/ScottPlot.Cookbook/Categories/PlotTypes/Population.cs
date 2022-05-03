@@ -9,5 +9,5 @@ public class Population : ICategory
         "side-by-side. The population plot is different than using a box plot with an error bar " +
         "in that you pass your original data into the population plot and it determines the " +
         "standard deviation, standard error, quartiles, mean, median, outliers, etc., and you get " +
-        "to determine how to display these values";
+        "to determine how to display these values.";
 }

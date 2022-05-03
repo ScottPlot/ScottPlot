@@ -4,5 +4,5 @@ public class MultiAxis : ICategory
 {
     public string Name => "Multi-Axis";
 
-    public string Description => "Plot data using non-standard or additional axes";
+    public string Description => "Plot data using non-standard or additional axes.";
 }

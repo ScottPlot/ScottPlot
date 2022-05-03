@@ -4,5 +4,5 @@ public class Marker : ICategory
 {
     public string Name => "Marker";
 
-    public string Description => "A marker is a symbol placed at an X/Y point in coordinate space";
+    public string Description => "A marker is a symbol placed at an X/Y point in coordinate space.";
 }

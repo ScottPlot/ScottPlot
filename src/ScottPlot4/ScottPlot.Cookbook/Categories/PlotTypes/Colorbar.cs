@@ -5,5 +5,5 @@ public class Colorbar : ICategory
     public string Name => "Colorbar";
 
     public string Description => "A colorbar displays a colormap beside the data area. " +
-        "Colorbars are typically added to plots containing heatmaps";
+        "Colorbars are typically added to plots containing heatmaps.";
 }

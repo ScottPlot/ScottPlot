@@ -4,5 +4,5 @@ public class Statistics : ICategory
 {
     public string Name => "Statistics";
 
-    public string Description => "How to use statistics tools bundled with ScottPlot";
+    public string Description => "How to use statistics tools bundled with ScottPlot.";
 }

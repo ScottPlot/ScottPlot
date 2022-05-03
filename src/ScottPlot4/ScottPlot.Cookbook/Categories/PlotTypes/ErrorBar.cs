@@ -4,5 +4,5 @@ public class ErrorBar : ICategory
 {
     public string Name => "Error Bar";
 
-    public string Description => "Error bars represent a range of uncertainty using a line and a perpendicular cap";
+    public string Description => "Error bars represent a range of uncertainty using a line and a perpendicular cap.";
 }

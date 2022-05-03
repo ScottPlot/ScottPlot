@@ -4,5 +4,5 @@ public class AdvancedAxis : ICategory
 {
     public string Name => "Advanced Axis Features";
 
-    public string Description => "Examples demonstrating advanced configuration of axis labels, lines, and ticks";
+    public string Description => "Examples demonstrating advanced configuration of axis labels, lines, and ticks.";
 }
