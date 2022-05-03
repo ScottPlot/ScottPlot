@@ -1,14 +1,17 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.43
+## ScottPlot 4.1.44
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.43
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-02_
 * Draggable Scatter Plot: Fixed a bug where horizontal drag limits were applied to the vertical axis (#1795) _Thanks @m4se_
 * Plot: Improved support for user-defined ticks when inverted axis mode is enabled (#1826, #1814) _Thanks @Xerxes004_
 * Heatmap: Added `GetCellIndexes()` to return the heatmap data position for a given coordinate (#1822, #1787) _Thanks @tonpimenta_
 * Controls: Added `LeftClicked` event to customize left-click actions in GUI environments (#1822, #1787)
 
 ## ScottPlot 4.1.42
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-05-01_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-01_
 * SignalXY: Fixed bug causing plots to disappear when displaying partial data containing duplicated X values. (#1803, #1806) _Thanks @StendProg and @bernhardbreuss_
 * SignalXY: X data is no longer required to be ascending when it is first assigned, improving support for plots utilizing min/max render indexing (#1771, #1777) _Thanks @bernhardbreuss_
 * Grid: Calling `Plot.Grid(onTop: true)` will cause grid lines to be drawn on top of plottables (#1780, #1779, #1773) _Thanks @bclehmann and @KATAMANENI_
@@ -23,40 +26,40 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-05-01_
 * FormsPlot: Detached legend now restores initial legend visibility state on close (#1804) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.41
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-09_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-04-09_
 * Plot: Added `Plot.GetImageHTML()` to make it easy to display ScottPlot images in .NET Interactive / Jupyter notebooks (#1772) _Thanks @StendProg and @Regenhardt_
 
 ## ScottPlot 4.1.40
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-07_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-04-07_
 * SignalPlotXY: Improved support for custom markers (#1763, #1764) _Thanks @bclehmann and @ChrisCC6_
 * Legend: `Plot.Legend()` accepts a nullable `Location` so legends can be enabled/disabled without changing position (#1765) _Thanks @envine_
 * FormsPlot: The right-click menu now shows "detach legend" even if all plottable items with legends are set to invisible (#1765) _Thanks @envine_
 * AxisLine: Added a `PositionLabelAxis` field that can be used to define a specific axis to draw the position label on in multi-axis plots (#1766) _Thanks @fuxinsen_
 
 ## ScottPlot 4.1.39
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-04-01_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-04-01_
 * SignalPlotXY: Fixed bug where `GetPointNearestX()` did not check proximity to the final point (#1757) _Thanks @MareMare_
 
 ## ScottPlot 4.1.38
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-31_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-03-31_
 * Bar plot: Improved automatic axis limit detection for bars with negative offset (#1750) _Thanks @painstgithub_
 * Axis labels: Added a `rotation` argument to `Axis.LabelStyle()` to support flipping label orientation (#1754, #1194) _Thanks @zeticabrian_
 
 ## ScottPlot 4.1.37
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-25_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-03-25_
 * Controls: Improved multi-axis support for mouse tracking by giving `GetMouseCoordinates()` optional axis index arguments (#1743) _Thanks @kv-gits_
 
 ## ScottPlot 4.1.36
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-19_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-03-19_
 * Axis: Allow grid line and tick mark pixel snapping to be disabled (#1721, #1722) _Thanks @Xerxes004_
 * Axis: `ResetLayout()` sets padding to original values to reverse changes made by adding colorbars (#1732, #1736) _Thanks @ccopsey_
 
 ## ScottPlot 4.1.35
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-06_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-03-06_
 * Eto.Forms: Improved handling of events (#1719, #1718) _Thanks @rafntor and @VPKSoft_
 
 ## ScottPlot 4.1.34
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-03_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-03-03_
 * Bubble plot: Added methods to get the point nearest the cursor (#1657, #1652, #1705) _Thanks @BambOoxX, @Maoyao233, and @adgriff2_
 * Markers: Improved alignment of markers and lines on Linux and MacOS by half a pixel (#1660, #340)
 * Plottable: Added `IsHighlighted` properties to make some plot types bold (#1660) _Thanks @BambOoxX_
@@ -72,7 +75,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-03-03_
 * Legend Viewer: New functionality to customize line, marker, and highlight options have been added to the the right-click menu of the Windows Forms control (#1655, #1651) _Thanks @BambOoxX_
 
 ## ScottPlot 4.1.33
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-02-04_
 * Spline Interpolation: Added new methods for data smoothing including Bézier interpolation (#1593, #1606)
 * Detachable Legend: Added an option to detach the legend to the right-click menu in the Windows Forms control. Clicking items in the detached legend toggles their visibility on the plot (#1589, #1573, #1326) _Thanks @BambOoxX_
 * Marker: Added an optional `Text` (and `TextFont`) for displaying a message that moves with a marker (#1599)
@@ -85,7 +88,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-02-04_
 * Colorbar: Exposed `DataAreaPadding` to improve layout customization for multi-axis plots (#1637) _Thanks @ccopsey_
 
 ## ScottPlot 4.1.32
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-23_
 * Interpolation: New cubic interpolation module with improved stability and simplified API (#1433) _Thanks @allopatin_
 * Legend: `GetBitmap()` returns a transparent image instead of throwing an exception if there are no items in the legend (#1578) _Thanks @BambOoxX_
 * Legend: Added `Count`, `HasItems`, and `GetItems()` so users can inspect legend contents to if/how they want to display it (#1578) _Thanks @BambOoxX_
@@ -99,7 +102,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-23_
 * Axis: Users may now customize the number of minor ticks and grid lines when log scale is enabled (#1594, #1595, #1583) _Thanks @hibus_
 
 ## ScottPlot 4.1.31
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-17_
 * MultiAxis: Improved support for draggable items placed on non-primary axes (#1556, #1545) _Thanks @BambOoxX_
 * RepeatingAxisLine: New plot types `RepeatingVLine` and `RepeatingHLine` show a primary line and a user-defined number of harmonics. See cookbook for example and usage notes. (#1535, #1775) _Thanks @BambOoxX_
 * Scatter: The new `ScatterPlotDraggable` plot type is for creating scatter plots with mouse-draggable points (#1560, #1422) _Thanks @BambOoxX and @EFeru_
@@ -109,16 +112,16 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-17_
 * Plot: `Title()` now has additional arguments for customizing text above the plot (#1564) _Thanks Hendri_
 
 ## ScottPlot 4.1.30
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-15_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-15_
 * Plot: Improve values returned by `GetDataLimits()` when axis lines and spans are in use (#1415, #1505, #1532) _Thanks @EFeru_
 * Rendering: Revert default text hinting from ClearType back to AntiAliased to improve text appearance on transparent backgrounds. Users may call `ScottPlot.Drawing.GDI.ClearType(true)` to opt-in to ClearType rendering which is superior for most situations. (#1553, #1550, #1528) _Thanks @r84r, @wangyexiang, @Elgot, @EFeru, and @saklanmazozgur_
 
 ## ScottPlot 4.1.29
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-02_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-02_
 * WinForms Control: Improve ClearType text rendering by no longer defaulting to a transparent control background color (#1496)
 
 ## ScottPlot 4.1.28
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-01_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-01_
 * Eto Control: New ScottPlot control for the Eto GUI framework (#1425, #1438) _Thanks @rafntor_
 * Radar Plot: `OutlineWidth` now allows customization of the line around radar plots (#1426, #1277) _Thanks @Rayffer_
 * Ticks: Improved minor tick and minor grid line placement (#1420, #1421) _Thanks @bclehmann and @at2software_
@@ -146,7 +149,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2022-01-01_
 * Rendering: Improve appearance of text by defaulting to ClearType font rendering (#1496, #823) _Thanks @Elgot_
 
 ## ScottPlot 4.1.27
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-10-24_
 * Colorbar: Exposed fields for additional tick line and tick label customization (#1360) _Thanks @Maoyao233_
 * Plot: Improved `AxisAutoY()` margins (#1363) _Thanks @Maoyao233_
 * Radar Plot: `LineWidth` may now be customized (#1277, #1369) _Thanks @bclehmann_
@@ -170,7 +173,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-24_
 * Axis lines: Added `Min` and `Max` properties to terminate the line at a finite point (#1390, #1399) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.26
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2021-10-12_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-10-12_
 * SignalPlotYX: Improve support for step display (#1342) _Thanks @EFeru_
 * Heatmap: Improve automatic axis limit detection (#1278) _Thanks @bclehmann_
 * Plot: Added `Margins()` to set default margins to use when `AxisAuto()` is called without arguments (#1345)
@@ -716,34 +719,34 @@ In November, 2020 ScottPlot 4.0 branched into a permanent `stable` branch, and S
 * Arrows can be plotted using `plt.PlotArrow()` (#201) _Thanks Clay_
 
 ## ScottPlot 4.0.9
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-12-03_
 * Use local regional display settings when formatting the month tick of DateTime axes. (#108) _Thanks @FadyDev2_
 * Debug symbols are now packaged in the NuGet file
 
 ## ScottPlot 4.0.7
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-01_\
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-12-01_\
 * Added WinForms support for .NET Framework 4.7.2 and 4.8
 * Fixed bug in WinForms control that only affected .NET Core 3.0 applications (#189, #138) _Thanks @petarpetrovt_
 
 ## ScottPlot 4.0.6
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-29_\
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-29_\
 * fixed bug that affected the settings dialog window in the WinForms control. (#187) _Thanks @gobikulandaisamy_
 
 ## ScottPlot 4.0.5
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-27_
 * improved spacing for non-uniformly distributed OHLC and candlestick plots. (#184) _Thanks @Luvnet-890_
 * added `fixedLineWidth` to `Legend()` to allow the user to control whether legend lines are dynamically sized. (#185) _Thanks @ab-tools_
 * legend now hides lines or markers of they're hidden in the plottable
 * DateTime axes now use local display format (#108) _Thanks @FadyDev2_
 
 ## ScottPlot 4.0.4
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-24_
 * `PlotText()` now supports a background frame (#181) _Thanks @Luvnet-890_
 * OHLC objects can be created with a double or a DateTime (#182) _Thanks @Minu476_
 * Improved `AxisAuto()` fixes bug for mixed 2d and axis line plots
 
 ## ScottPlot 4.0.3
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-23_
 * Fixed bug when plotting single-point candlestick (#172) _Thanks @Minu476_
 * Improved style editing of plotted objects (#173) _Thanks @Minu476_
 * Fixed pan/zoom axis lock when holding CTRL or ALT (#90) _Thanks @FadyDev2_
@@ -755,7 +758,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
 * Added an inverted sign flag to allow display of an axis with descending units. (#177) _Thanks Bart_
 
 ## ScottPlot 4.0.2
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-09_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-09_
 * Multi-plot figures: Images with several plots can be created using `ScottPlot.MultiPlot()`
 * `ScottPlot.DataGen` functions which require a `Random` can accept null (they will create a `Random` if null is given)
 * `plt.MatchAxis()` and `plt.MatchLayout()` have been improved
@@ -764,7 +767,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-09_
 * All plottables now have a `visible` property which makes it easy to toggle visibility on/off after they've been plotted. _Thanks @Nasser_
 
 ## ScottPlot 4.0.1
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-11-03_
 * ScottPlot now targets .NET Standard 2.0 so in addition to .NET Framework projects it can now be used in .NET Core applications, ASP projects, Xamarin apps, etc.
 * The WinForms control has its own package which targets both .NET Framework 4.6.1 and .NET Core 3.0 _Thanks @petarpetrovt_
 * The WPF control has its own package targeting .NET Core 3.0 _Thanks @petarpetrovt_
@@ -775,7 +778,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 * Use NUnit (not MSTest) for tests
 
 ## ScottPlot 3.1.6
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-10-20_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-10-20_
 * Reduced designer mode checks to increase render speed _Thanks @StendProg_
 * Fixed cursor bug that occurred when draggable axis lines were used _Thanks @Kamran_
 * Fully deleted the outdated `ScottPlotUC`
@@ -787,14 +790,14 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-10-20_
 * Disabled drawing of arrows on user control in designer mode
 
 ## ScottPlot 3.1.5
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-10-06_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-10-06_
 * WPF user control improved support for display scaling _Thanks @morningkyle_
 * Fixed bug that crashed on extreme zoom-outs _Thanks @morningkyle_
 * WPF user control improvements (middle-click autoaxis, scrollwheel zoom)
 * ScottPlot user control has a new look in designer mode. Exceptions in user controls in designer mode can crash Visual Studio, so this risk is greatly reduced by not attempting to render a ScottPlot _inside_ Visual Studio.
 
 ## ScottPlot 3.1.4
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-09-22_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-09-22_
 * middle-click-drag zooms into a rectangle drawn with the mouse
 * Fixed bug that caused user control to crash Visual Studio on some systems that used DPI scaling. (#125, #111) _Thanks @ab-tools and @bukkideme_
 * Fixed poor rendering for extremely small plots
@@ -804,7 +807,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-09-22_
 * Greatly refactored the settings module (no change in functionality)
 
 ## ScottPlot 3.1.3
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-25_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-08-25_
 * FormsPlot: middle-click-drag zooms into a rectangle
 * FormsPlot: CTRL+scroll to lock vertical axis
 * FormsPlot: ALT+scroll to loch horizontal axis
@@ -813,7 +816,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-25_
 * Ticks: options to customize notation (`useExponentialNotation`, `useOffsetNotation`, and `useMultiplierNotation`)
 
 ## ScottPlot 3.1.0
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-19_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-08-19_
 * `ScottPlotUC` was renamed to `FormsPlot`
 * `ScottPlotWPF` was renamed to `WpfPlot`
 * The right-click menu has improved. It responds faster and has improved controls to adjust plot settings.
@@ -829,7 +832,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-19_
 * Axis lines with custom lineStyles display properly in the legend
 
 ## ScottPlot 3.0.9
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-12_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-08-12_
 * New Plot Type: `PlotSignalConst` for extremely large arrays of data which are not expected to change after being plotted. Plots generated with this method can be much faster than `PlotSignal`. (#70) _Thanks @StendProg_
 * Greatly improved axis tick labels. Axis tick labels are now less likely to overlap with axis labels, and it displays very large and very small numbers well using exponential notation. (#47, #68) _Thanks @Padanian_
 * Parallel processing support for `SignalPlot` (#72) _Thanks @StendProg_
@@ -842,7 +845,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-12_
 * User controls now render graphs with anti-alias mode off (faster) while the mouse is being dragged. Upon release a high quality render is performed.
 
 ## ScottPlot 3.0.8
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-04_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-08-04_
 * WPF User Control: A ScottPlotWPF user control was created to allow provide a simple mouse-interactive ScottPlot control to WPF applications. It is not as full-featured as the winforms control (it lacks a right-click menu and click-and-drag functions), but it is simple to review the code (<100 lines) and easy to use.
 * New plot type: `plt.AxisSpan()` shades a region of the graph (semi-transparency is supported)
 * Ticks: Vertical ticks no longer overlap with vertical axis label (#47) _Thanks @bukkideme_
@@ -856,7 +859,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-08-04_
 * Segoe UI is now the default font for all plot components
 
 ## ScottPlot 3.0.7
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-07-27_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-07-27_
 * New plot type: `plt.PlotStep()`
 * New plot type `plt.PlotCandlestick()`
 * New plot type `plt.PlotOHLC()`
@@ -866,7 +869,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-07-27_
 * Custom marker shapes can be specified using the `markerShape` argument.
 
 ## ScottPlot 3.0.6
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-06-30_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-06-30_
 * Bar plot: The plot module now has a `Bar()` method that lets users create various types of bar plots
 * Histogram: The new `ScottPlot.Histogram` class has tools to create and analyze histogram data (including cumulative probability)
 * Step plot: Scatter plots can now render as step plots. Use this feature by setting the `stepDisplay` argument with `PlotScatter()`
@@ -879,11 +882,11 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-06-30_
 * Throw exceptions if scatter, bar, or signal data inputs are null (rather than failing later)
 
 ## ScottPlot 3.0.5
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-06-23_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-06-23_
 * Improved pan and zoom performance
 
 ## ScottPlot 3.0.4
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-06-23_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-06-23_
 * Bar graphs: New `plotBar()` method allow creation of bar graphs. By customizing the `barWidth` and `xOffset` arguments you can push bars together to create grouped bar graphs. Error bars can also be added with the `yError` argument.
 * Scatter plots support X and Y error bars: `plotScatter()` now has arguments to allow X and Y error bars with adjustable error bar line width and cap size.
 * Draggable axis lines: `plotHLine()` and `plotVLine()` now have a `draggable` argument which lets those axis lines be dragged around with the mouse (#11) _Thanks @plumforest_
@@ -893,13 +896,13 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-06-23_
 * Fixed an that caused SplitContainer splitters to freeze (#23) _Thanks @bukkideme_
 
 ## ScottPlot 3.0.3
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-05-29_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-05-29_
 * Update NuGet package to depend on System.Drawing.Common
 
 ## ScottPlot 3.0.2
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-05-28_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-05-28_
 * Changed target from .NET Framework 4.5 to 4.7.2 (#15) _Thanks @plumforest_
 
 #### ScottPlot 3.0.1
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-05-28_
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2019-05-28_
 * First version of ScottPlot published on NuGet
