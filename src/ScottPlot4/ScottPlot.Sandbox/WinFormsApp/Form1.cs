@@ -42,25 +42,27 @@ namespace WinFormsApp
 
         private void FormsPlot1_LeftClicked(object sender, EventArgs e)
         {
+            // determine which heatmap square was clicked
             (double x, double y) = formsPlot1.GetMouseCoordinates();
             (int? xIndex, int? yIndex) = MyHeatmap.GetCellIndexes(x, y);
 
-            System.Diagnostics.Debug.WriteLine($"Clicked heatmap cell ");
-
+            // update the square outlining the clicked cell
             if (xIndex.HasValue)
                 SquareOutline.OffsetX = xIndex.Value * MyHeatmap.CellWidth + MyHeatmap.OffsetX;
 
             if (yIndex.HasValue)
-            {
                 SquareOutline.OffsetY = yIndex.Value * MyHeatmap.CellHeight + MyHeatmap.OffsetY;
+
+            if (xIndex.HasValue && yIndex.HasValue)
+            {
                 formsPlot1.Plot.Title($"Selected X={xIndex} Y={yIndex} Value={MyHeatmapData[yIndex.Value, xIndex.Value]}");
+                SquareOutline.IsVisible = true;
             }
             else
             {
                 formsPlot1.Plot.Title($"No Heatmap Cell Selected");
+                SquareOutline.IsVisible = false;
             }
-
-            SquareOutline.IsVisible = xIndex.HasValue && yIndex.HasValue;
 
             formsPlot1.Render();
         }
