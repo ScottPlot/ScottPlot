@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ScottPlotTests.Cookbook
 {
@@ -32,12 +33,28 @@ namespace ScottPlotTests.Cookbook
             Assert.AreEqual(recipes.Length, readRecipes.Count);
         }
 
+        [Ignore("replace with a standalone generator")]
         [Test]
         public void Test_Generate_Cookbook()
         {
             Generator gen = new(COOKBOOK_PROJECT_FOLDER, OUTPUT_FOLDER, regenerate: true);
             gen.MakeCategoryPages();
             gen.MakeIndexPage();
+        }
+
+        [Test]
+        public void Test_Recipes_RenderInMemory()
+        {
+            IRecipe[] recipes = Locate.GetRecipes();
+
+            Parallel.ForEach(recipes, recipe =>
+            {
+                var sw = Stopwatch.StartNew();
+                var plt = new ScottPlot.Plot(600, 400);
+                recipe.ExecuteRecipe(plt);
+                var bmp = plt.GetBitmap();
+                Console.WriteLine($"{recipe.ID}, {ScottPlot.Tools.BitmapHash(bmp)}, {sw.Elapsed.TotalMilliseconds}");
+            });
         }
     }
 }

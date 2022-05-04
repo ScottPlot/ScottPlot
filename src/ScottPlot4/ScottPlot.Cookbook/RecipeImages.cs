@@ -9,11 +9,7 @@ namespace ScottPlot.Cookbook
 {
     public static class RecipeImages
     {
-        /// <summary>
-        /// Use REFLECTION to locate all recipes, execute them and save the output images.
-        /// </summary>
-        /// <returns>array of recipes found using reflection</returns>
-        public static IRecipe[] Generate(string outputPath, int width = 600, int height = 400, int thumbJpegQuality = 95)
+        public static void Generate(string outputPath, int width = 600, int height = 400, int thumbJpegQuality = 95)
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
@@ -22,7 +18,7 @@ namespace ScottPlot.Cookbook
             IRecipe[] recipes = Locate.GetRecipes();
 
             EncoderParameters thumbJpegEncoderParameters = new(1);
-            thumbJpegEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, thumbJpegQuality);
+            thumbJpegEncoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, thumbJpegQuality);
             ImageCodecInfo thumbJpegEncoder = ImageCodecInfo.GetImageEncoders().Where(x => x.MimeType == "image/jpeg").First();
 
             Parallel.ForEach(recipes, recipe =>
@@ -36,9 +32,6 @@ namespace ScottPlot.Cookbook
                 string filePath = Path.Combine(outputPath, recipe.ID.ToLower() + ".png");
                 bmp.Save(filePath, ImageFormat.Png);
 
-                // calculate image hash
-                Console.WriteLine($"{recipe.ID},{Tools.BitmapHash(bmp)},{sw.Elapsed.TotalMilliseconds}");
-
                 // thumbnail
                 int thumbHeight = 180;
                 int thumbWidth = thumbHeight * bmp.Width / bmp.Height;
@@ -46,8 +39,6 @@ namespace ScottPlot.Cookbook
                 string thumbFilePath = Path.Combine(outputPath, recipe.ID.ToLower() + "_thumb.jpg");
                 thumb.Save(thumbFilePath, thumbJpegEncoder, thumbJpegEncoderParameters);
             });
-
-            return recipes;
         }
     }
 }
