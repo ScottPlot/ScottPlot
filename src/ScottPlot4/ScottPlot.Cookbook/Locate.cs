@@ -47,18 +47,6 @@ namespace ScottPlot.Cookbook
             return recipes.ToArray();
         }
 
-        /// <summary>
-        /// Locate recipes using LINQ (may crash if reflection fails on platforms like Eto)
-        /// </summary>
-        [Obsolete("use TryLocateRecipes() for improved safety during reflection")]
-        public static IRecipe[] LocateRecipes() => AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(x => x.IsAbstract == false)
-            .Where(x => x.IsInterface == false)
-            .Where(p => typeof(IRecipe).IsAssignableFrom(p))
-            .Select(x => (IRecipe)Activator.CreateInstance(x))
-            .ToArray();
-
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
             .GroupBy(x => x.Category.Folder)
             .ToDictionary(group => group.Key, group => group.ToArray());
