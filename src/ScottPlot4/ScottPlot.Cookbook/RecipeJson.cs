@@ -30,6 +30,7 @@ namespace ScottPlot.Cookbook
                 writer.WriteStartObject();
                 writer.WriteString("id", recipe.ID);
                 writer.WriteString("category", recipe.Category);
+                writer.WriteString("categoryFolder", recipe.CategoryFolder);
                 writer.WriteString("title", recipe.Title);
                 writer.WriteString("description", recipe.Description);
                 writer.WriteString("code", recipe.Code.Replace("\r", ""));
@@ -64,10 +65,11 @@ namespace ScottPlot.Cookbook
             {
                 string id = recipeElement.GetProperty("id").GetString();
                 string category = recipeElement.GetProperty("category").GetString();
+                string categoryFolder = recipeElement.GetProperty("categoryFolder").GetString();
                 string title = recipeElement.GetProperty("title").GetString();
                 string description = recipeElement.GetProperty("description").GetString();
                 string code = recipeElement.GetProperty("code").GetString();
-                recipes[id] = new RecipeSource(id, category, title, description, code);
+                recipes[id] = new RecipeSource(id, category, categoryFolder, title, description, code);
             }
 
             return recipes;
