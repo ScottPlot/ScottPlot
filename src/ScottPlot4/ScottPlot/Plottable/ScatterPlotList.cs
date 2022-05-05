@@ -16,15 +16,15 @@ namespace ScottPlot.Plottable
         protected readonly List<T> Ys = new();
         public int Count => Xs.Count;
 
-        public string Label;
+        public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color Color = Color.Black;
-        public float LineWidth = 1;
-        public LineStyle LineStyle = LineStyle.Solid;
-        public float MarkerSize = 3;
-        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+        public Color Color { get; set; } = Color.Black;
+        public float LineWidth { get; set; } = 1;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public float MarkerSize { get; set; } = 3;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
         public void ValidateData(bool deep = false)
         {

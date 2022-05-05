@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 
 namespace ScottPlot.Plottable
 {
-    [Obsolete("This plot type has been deprecated. Min/max and interpolation settings are exposed in the regular Heatmap.")]
+    [Obsolete("This plot type has been deprecated. Min/max and interpolation settings are exposed in the regular Heatmap.", true)]
     public class CoordinatedHeatmap : Heatmap
     {
         protected override void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)

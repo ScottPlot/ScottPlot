@@ -62,61 +62,27 @@ namespace ScottPlot.Plottable
             get => (float)HorizontalLine.LineWidth;
         }
 
-        /// <summary>
-        /// Sets font of the position labels for horizontal and vertical lines
-        /// </summary>
-        public Drawing.Font LabelFont
-        {
-            set
-            {
-                HorizontalLine.PositionLabelFont = value;
-                VerticalLine.PositionLabelFont = value;
-            }
-            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.PositionLabelFont and VerticalLine.PositionLabelFont instead.")]
-            get => HorizontalLine.PositionLabelFont;
-        }
+        [Obsolete("Get HorizontalLine.PositionLabelFont and VerticalLine.PositionLabelFont instead.", true)]
+        public Drawing.Font LabelFont { get; set; }
+
+        [Obsolete("Get HorizontalLine.PositionLabelBackground and VerticalLine.PositionLabelBackground instead.", true)]
+        public Color LabelBackgroundColor { get; set; }
+
+        [Obsolete("Get HorizontalLine.PositionLabel and VerticalLine.PositionLabel instead.", true)]
+        public bool PositionLabel { get; set; }
 
         /// <summary>
-        /// Sets background color of the position labels for horizontal and vertical lines
-        /// </summary>
-        public Color LabelBackgroundColor
-        {
-            set
-            {
-                HorizontalLine.PositionLabelBackground = value;
-                VerticalLine.PositionLabelBackground = value;
-            }
-            [Obsolete("The get method only remain for the compatibility. Get HorizontalLine.PositionLabelBackground and VerticalLine.PositionLabelBackground instead.")]
-            get => HorizontalLine.PositionLabelBackground;
-        }
-
-        /// <summary>
-        /// Sets visibility of the text labels for each line drawn over the axis
-        /// </summary>
-        public bool PositionLabel
-        {
-            set
-            {
-                HorizontalLine.PositionLabel = value;
-                VerticalLine.PositionLabel = value;
-            }
-        }
-
-        /// <summary>
-        /// Sets color for horizontal and vertical lines and their position label backgrounds
+        /// Set color for horizontal and vertical lines and their position label backgrounds
         /// </summary>
         public Color Color
         {
+            get => HorizontalLine.Color;
             set
             {
                 HorizontalLine.Color = value;
                 VerticalLine.Color = value;
                 HorizontalLine.PositionLabelBackground = value;
                 VerticalLine.PositionLabelBackground = value;
-            }
-            get
-            {
-                return HorizontalLine.Color;
             }
         }
 
@@ -127,7 +93,8 @@ namespace ScottPlot.Plottable
             LineStyle = LineStyle.Dash;
             LineWidth = 1;
             Color = Color.FromArgb(200, Color.Red);
-            PositionLabel = true;
+            HorizontalLine.PositionLabel = true;
+            VerticalLine.PositionLabel = true;
         }
 
         public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);

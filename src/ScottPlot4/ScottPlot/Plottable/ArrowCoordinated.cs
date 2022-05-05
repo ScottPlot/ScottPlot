@@ -45,32 +45,32 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Label to appear in the legend
         /// </summary>
-        public string Label;
+        public string Label { get; set; }
 
         /// <summary>
         /// Width of the arrowhead (pixels)
         /// </summary>
-        public double ArrowheadWidth = 3;
+        public double ArrowheadWidth { get; set; } = 3;
 
         /// <summary>
         /// Height of the arrowhead (pixels)
         /// </summary>
-        public double ArrowheadLength = 3;
+        public double ArrowheadLength { get; set; } = 3;
 
         /// <summary>
         /// The arrow will be lengthened to ensure it is at least this size on the screen
         /// </summary>
-        public float MinimumLengthPixels = 0;
+        public float MinimumLengthPixels { get; set; } = 0;
 
         /// <summary>
         /// Marker to be drawn at the base (if MarkerSize > 0)
         /// </summary>
-        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
         /// <summary>
         /// Size of marker (in pixels) to draw at the base
         /// </summary>
-        public float MarkerSize = 0;
+        public float MarkerSize { get; set; } = 0;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

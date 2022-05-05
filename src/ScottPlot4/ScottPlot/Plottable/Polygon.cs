@@ -12,21 +12,21 @@ namespace ScottPlot.Plottable
     public class Polygon : IPlottable, IHasColor
     {
         // data
-        public double[] Xs;
-        public double[] Ys;
+        public double[] Xs { get; set; }
+        public double[] Ys { get; set; }
 
         // configuration
-        public string Label;
-        public double LineWidth = 1;
-        public Color LineColor = Color.Black;
-        public bool Fill = true;
-        public Color FillColor = Color.Gray;
+        public string Label { get; set; }
+        public double LineWidth { get; set; } = 1;
+        public Color LineColor { get; set; } = Color.Black;
+        public bool Fill { get; set; } = true;
+        public Color FillColor { get; set; } = Color.Gray;
         public Color Color { get => FillColor; set { FillColor = value; } }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color HatchColor = Color.Transparent;
-        public HatchStyle HatchStyle = HatchStyle.None;
+        public Color HatchColor { get; set; } = Color.Transparent;
+        public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
 
         public Polygon(double[] xs, double[] ys)
         {

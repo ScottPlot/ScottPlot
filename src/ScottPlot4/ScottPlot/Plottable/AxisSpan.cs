@@ -10,14 +10,14 @@ namespace ScottPlot.Plottable
         // location and orientation
         protected double Position1;
         protected double Position2;
-        private double Min { get => Math.Min(Position1, Position2); }
-        private double Max { get => Math.Max(Position1, Position2); }
+        private double Min => Math.Min(Position1, Position2);
+        private double Max => Math.Max(Position1, Position2);
         readonly bool IsHorizontal;
 
         /// <summary>
         /// If true, AxisAuto() will ignore the position of this span when determining axis limits
         /// </summary>
-        public bool IgnoreAxisAuto = false;
+        public bool IgnoreAxisAuto { get; set; } = false;
 
         // configuration
         public int XAxisIndex { get; set; } = 0;
@@ -29,13 +29,13 @@ namespace ScottPlot.Plottable
         public LineStyle BorderLineStyle { get; set; } = LineStyle.None;
         public Color HatchColor { get; set; } = Color.Transparent;
         public HatchStyle HatchStyle { get; set; } = Drawing.HatchStyle.None;
-        public string Label;
+        public string Label { get; set; } = null;
 
         // mouse interaction
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
-        public double DragLimitMin = double.NegativeInfinity;
-        public double DragLimitMax = double.PositiveInfinity;
+        public double DragLimitMin { get; set; } = double.NegativeInfinity;
+        public double DragLimitMax { get; set; } = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
 
         /// <summary>

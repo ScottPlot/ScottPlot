@@ -17,19 +17,19 @@ namespace ScottPlot.Plottable
         public readonly List<List<(double x, double y)>> Polys;
 
         // customization
-        public string Label;
-        public double LineWidth;
-        public Color LineColor;
-        public bool Fill = true;
-        public Color FillColor;
+        public string Label { get; set; }
+        public double LineWidth { get; set; }
+        public Color LineColor { get; set; }
+        public bool Fill { get; set; } = true;
+        public Color FillColor { get; set; }
         public Color Color { get => FillColor; set { FillColor = value; } }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color HatchColor = Color.Transparent;
-        public HatchStyle HatchStyle = HatchStyle.None;
-        public bool SkipOffScreenPolygons = true;
-        public bool RenderSmallPolygonsAsSinglePixels = true;
+        public Color HatchColor { get; set; } = Color.Transparent;
+        public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
+        public bool SkipOffScreenPolygons { get; set; } = true;
+        public bool RenderSmallPolygonsAsSinglePixels { get; set; } = true;
 
         public Polygons(List<List<(double x, double y)>> polys)
         {

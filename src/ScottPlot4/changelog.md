@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.45
+## ScottPlot 4.1.46
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.45
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_
+* Plottables: Fields converted to properties and setters paired with getters to facilitate binding (#1831) _Thanks @bradmartin333_
 
 ## ScottPlot 4.1.44
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_

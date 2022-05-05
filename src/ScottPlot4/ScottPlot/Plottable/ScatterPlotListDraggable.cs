@@ -8,14 +8,14 @@ namespace ScottPlot.Plottable
 {
     public class ScatterPlotListDraggable : ScatterPlotList<double>, IDraggable
     {
-        private int IndexUnderMouse = -1;
+        private int IndexUnderMouse { get; set; } = -1;
         public bool DragEnabled { get; set; } = true;
 
         public Cursor DragCursor => Cursor.Hand;
 
         public event EventHandler Dragged = delegate { };
 
-        public Func<List<double>, List<double>, int, Coordinate, Coordinate> MovePointFunc = (xs, ys, index, moveTo) => moveTo;
+        public Func<List<double>, List<double>, int, Coordinate, Coordinate> MovePointFunc { get; set; } = (xs, ys, index, moveTo) => moveTo;
 
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {

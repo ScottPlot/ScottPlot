@@ -18,7 +18,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color for the line
         /// </summary>
-        public Color StemColor = Color.Gray;
+        public Color StemColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// Size of the markers at the ends of each line
@@ -60,32 +60,32 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Text to display in the legend associated with the series 1 data
         /// </summary>
-        private string Label1;
+        private string Label1 { get; set; }
 
         /// <summary>
         /// Color for one of the markers
         /// </summary>
-        private Color Color1 = Color.Green;
+        private Color Color1 { get; set; } = Color.Green;
 
         /// <summary>
         /// Marker to use for the series 1 data
         /// </summary>
-        private MarkerShape MarkerShape1 = MarkerShape.filledCircle;
+        private MarkerShape MarkerShape1 { get; set; } = MarkerShape.filledCircle;
 
         /// <summary>
         /// Text to display in the legend associated with the series 2 data
         /// </summary>
-        private string Label2;
+        private string Label2 { get; set; }
 
         /// <summary>
         /// Color for one of the markers
         /// </summary>
-        private Color Color2 = Color.Red;
+        private Color Color2 { get; set; } = Color.Red;
 
         /// <summary>
         /// Marker to use for the series 2 data
         /// </summary>
-        private MarkerShape MarkerShape2 = MarkerShape.filledCircle;
+        private MarkerShape MarkerShape2 { get; set; } = MarkerShape.filledCircle;
 
         /// <summary>
         /// Allows customizing the first point (set by ys1)

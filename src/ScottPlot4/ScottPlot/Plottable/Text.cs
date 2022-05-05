@@ -24,18 +24,18 @@ namespace ScottPlot.Plottable
         public Color BackgroundColor;
         public Drawing.Font Font = new Drawing.Font();
         public Color Color { get => Font.Color; set => Font.Color = value; }
-        public string FontName { set => Font.Name = value; }
-        public float FontSize { set => Font.Size = value; }
-        public bool FontBold { set => Font.Bold = value; }
-        public Alignment Alignment { set => Font.Alignment = value; }
-        public float Rotation { set => Font.Rotation = value; }
+        public string FontName { get => Font.Name; set => Font.Name = value; }
+        public float FontSize { get => Font.Size; set => Font.Size = value; }
+        public bool FontBold { get => Font.Bold; set => Font.Bold = value; }
+        public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }
+        public float Rotation { get => Font.Rotation; set => Font.Rotation = value; }
         public float BorderSize { get; set; } = 0;
         public Color BorderColor { get; set; } = Color.Black;
         public float PixelOffsetX { get; set; } = 0;
         public float PixelOffsetY { get; set; } = 0;
-        RectangleF LastRenderRectangleCoordinates;
-        private double DeltaCX = 0;
-        private double DeltaCY = 0;
+        RectangleF LastRenderRectangleCoordinates { get; set; }
+        private double DeltaCX { get; set; } = 0;
+        private double DeltaCY { get; set; } = 0;
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
