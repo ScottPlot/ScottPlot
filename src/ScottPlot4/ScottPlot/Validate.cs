@@ -75,7 +75,7 @@ namespace ScottPlot
 
             for (int i = minIndex; i < maxIndex; i++)
                 if (Convert.ToDouble(values[i]) > Convert.ToDouble(values[i + 1]))
-                    throw new InvalidOperationException($"descending value detected: " +
+                    throw new InvalidOperationException($"{label} must not descend: " +
                         $"{label}[{i}]={values[i]} but {label}[{i + 1}]={values[i + 1]}");
         }
 
