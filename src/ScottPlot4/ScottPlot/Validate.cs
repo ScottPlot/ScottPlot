@@ -51,33 +51,32 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Throw an exception if one elemnt is equal to or less than the previous element
+        /// Throw an exception if an element is less than the previous element
         /// </summary>
-        public static void AssertAscending(string label, double[] values)
-        {
-            label = ValidLabel(label);
-
-            if (values is null)
-                throw new InvalidOperationException($"{label} must not be null");
-
-            for (int i = 0; i < values.Length - 1; i++)
-                if (values[i] >= values[i + 1])
-                    throw new InvalidOperationException($"{label} must be ascending values (index {i} >= {i + 1}");
-        }
+        public static void AssertDoesNotDescend(double[] values) => AssertDoesNotDescend("values", values);
 
         /// <summary>
-        /// Throw an exception if one elemnt is equal to or less than the previous element
+        /// Throw an exception if an element is less than the previous element
         /// </summary>
-        public static void AssertAscending<T>(string label, T[] values, int minIndex, int maxIndex)
+        public static void AssertDoesNotDescend<T>(T[] values) => AssertDoesNotDescend("values", values);
+
+        /// <summary>
+        /// Throw an exception if an element is less than the previous element
+        /// </summary>
+        public static void AssertDoesNotDescend<T>(string label, T[] values, int minIndex = 0, int? maxIndex = null)
         {
+            if (maxIndex is null)
+                maxIndex = values.Length - 1;
+
             label = ValidLabel(label);
 
             if (values is null)
                 throw new InvalidOperationException($"{label} must not be null");
 
             for (int i = minIndex; i < maxIndex; i++)
-                if (Convert.ToDouble(values[i]) >= Convert.ToDouble(values[i + 1]))
-                    throw new InvalidOperationException($"{label} must be ascending values (index {i} >= {i + 1}");
+                if (Convert.ToDouble(values[i]) > Convert.ToDouble(values[i + 1]))
+                    throw new InvalidOperationException($"descending value detected: " +
+                        $"{label}[{i}]={values[i]} but {label}[{i + 1}]={values[i + 1]}");
         }
 
         /// <summary>
