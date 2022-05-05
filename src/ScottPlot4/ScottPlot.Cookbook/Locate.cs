@@ -47,20 +47,8 @@ namespace ScottPlot.Cookbook
             return recipes.ToArray();
         }
 
-        /// <summary>
-        /// Locate recipes using LINQ (may crash if reflection fails on platforms like Eto)
-        /// </summary>
-        [Obsolete("use TryLocateRecipes() for improved safety during reflection")]
-        public static IRecipe[] LocateRecipes() => AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(x => x.IsAbstract == false)
-            .Where(x => x.IsInterface == false)
-            .Where(p => typeof(IRecipe).IsAssignableFrom(p))
-            .Select(x => (IRecipe)Activator.CreateInstance(x))
-            .ToArray();
-
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
-            .GroupBy(x => x.Category)
+            .GroupBy(x => x.Category.Name)
             .ToDictionary(group => group.Key, group => group.ToArray());
 
         private static Dictionary<string, IRecipe> RecipesByID = GetRecipes()
@@ -74,6 +62,9 @@ namespace ScottPlot.Cookbook
 
         public static IRecipe[] GetRecipes(string category) => RecipesByCategory[category];
 
+        /// <summary>
+        /// Returns all recipies by category in proper order (e.g., quickstart is first)
+        /// </summary>
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes() => RecipesByCategoryInOrder;
 
         static Locate() // A static constructor runs exactly once and before the class or an instance of it is needed
@@ -87,13 +78,13 @@ namespace ScottPlot.Cookbook
             "Axis and Ticks",
             "Advanced Axis Features",
             "Multi-Axis",
+            "Style",
+            "Palette",
+            "Misc"
         };
 
         private static readonly string[] bottomCategories =
         {
-            "Style",
-            "Palette",
-            "Misc"
         };
 
         private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)

@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     // TODO: need an example showing how to update data
     public class SignalConstQuickstart : IRecipe
     {
-        public string Category => "Plottable: SignalConst";
+        public ICategory Category => new Categories.PlotTypes.SignalConst();
         public string ID => "signalconst_quickstart";
         public string Title => "SignalConst Quickstart";
         public string Description =>
@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalConstGeneric : IRecipe
     {
-        public string Category => "Plottable: SignalConst";
+        public ICategory Category => new Categories.PlotTypes.SignalConst();
         public string ID => "signalconst_generic";
         public string Title => "Generic Data Type";
         public string Description =>

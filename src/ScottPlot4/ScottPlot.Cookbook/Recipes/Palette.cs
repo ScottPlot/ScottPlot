@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     public class PaletteCategory10 : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Category10";
         public string Title => "Category10";
         public string Description => "This 10-color palette is the default colorset used by ScottPlot. " +
@@ -31,7 +31,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteCategory20 : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Category20";
         public string Title => "Category20";
         public string Description => "This 20-color palette is similar to the default, but optimized " +
@@ -57,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteAurora : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Aurora";
         public string Title => "Aurora";
         public string Description => "Aurora is a 5-color palette sourced from Nord.";
@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteFrost : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Frost";
         public string Title => "Frost";
         public string Description => "Frost is a 4-color palette sourced from Nord.";
@@ -103,7 +103,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteNord : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Nord";
         public string Title => "Nord";
         public string Description => "Nord is a 7-color palette derived from Aurora source from NordConEmu.";
@@ -126,7 +126,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PalettePolarNight : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_PolarNight";
         public string Title => "PolarNight";
         public string Description => "PolarNight is a 4-color palette sourced from Nord. " +
@@ -151,7 +151,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteSnowStorm : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_SnowStorm";
         public string Title => "SnowStorm";
         public string Description => "SnowStorm is a 3-color palette sourced from Nord.";
@@ -174,7 +174,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteOneHalf : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_OneHalf";
         public string Title => "OneHalf";
         public string Description => "OneHalf is a 7-color palette sourced from Sublime";
@@ -197,7 +197,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteOneHalfDark : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_OneHalfDark";
         public string Title => "OneHalfDark";
         public string Description => "OneHalfDark is a 7-color palette of colors complimentary to the OneHalf palette " +
@@ -224,7 +224,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteCustom : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Custom";
         public string Title => "Custom";
         public string Description => "A custom palette can be created from an array of HTML color values. " +
@@ -252,7 +252,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteMicrocharts : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_Microcharts";
         public string Title => "Microcharts";
         public string Description => "This is the default 12-color palette used by Microcharts.";
@@ -275,7 +275,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     public class PaletteColorblindFriendly : IRecipe
     {
-        public string Category => "Palette";
+        public ICategory Category => new Categories.Palette();
         public string ID => "palette_ColorblindFriendly";
         public string Title => "Colorblind Friendly";
         public string Description => "8-color palette that has good overall variability and " +

@@ -96,5 +96,52 @@ namespace ScottPlotTests.Cookbook
             string[] ids = recipes.Select(x => x.ID.ToLower()).ToArray();
             string[] duplicates = TestTools.GetDuplicates(ids);
         }
+
+        [Test]
+        public void Test_Categories_HaveValidText()
+        {
+            foreach (ScottPlot.Cookbook.ICategory category in ScottPlot.Cookbook.Category.GetCategories())
+            {
+                Console.WriteLine(category);
+
+                Assert.IsNotNull(category.Name, category.ToString());
+                Assert.IsNotEmpty(category.Name, category.ToString());
+                Assert.AreEqual(category.Name.Trim(), category.Name, category.ToString());
+
+                Assert.IsNotNull(category.Description, category.ToString());
+                Assert.IsNotEmpty(category.Description, category.ToString());
+                Assert.AreEqual(category.Description.Trim(), category.Description, category.ToString());
+
+                Assert.That(category.Description.EndsWith("."),
+                    $"{category} description must end with a period");
+
+                Console.WriteLine(category.Name);
+            }
+        }
+
+        [Test]
+        public void Test_CategoryFolderNames_AreLowercase()
+        {
+            foreach (var cat in ScottPlot.Cookbook.Category.GetCategories())
+                Assert.AreEqual(cat.Folder.ToLower(), cat.Folder);
+        }
+
+        [Test]
+        public void Test_CategoryFolderNames_AreUnique()
+        {
+            HashSet<string> names = new();
+
+            foreach (var cat in ScottPlot.Cookbook.Category.GetCategories())
+            {
+                if (names.Contains(cat.Folder))
+                {
+                    Assert.Fail($"{cat} has duplicate subfolder name: {cat.Folder}");
+                }
+                else
+                {
+                    names.Add(cat.Folder);
+                }
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYQuickstart : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_quickstart";
         public string Title => "SignalXY Quickstart";
         public string Description =>
@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYOffset : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_offset";
         public string Title => "SignalXY Offset";
         public string Description =>
@@ -43,7 +43,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HasXGaps : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_gaps";
         public string Title => "Signal Data with Gaps";
         public string Description => "Signal with defined Xs that contain gaps";
@@ -67,7 +67,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalWithDifferentDensity : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_density";
         public string Title => "Different Densities";
         public string Description => "Signal with mised low and high density data";
@@ -95,7 +95,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYStep : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_step";
         public string Title => "SignalXY Step Mode";
         public string Description =>
@@ -115,7 +115,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYFillBelow : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_fillBelow";
         public string Title => "SignalXY with Fill";
         public string Description =>
@@ -134,7 +134,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalCustomMarkers : IRecipe
     {
-        public string Category => "Plottable: SignalXY";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxy_markers";
         public string Title => "Customize Markers";
         public string Description => "SignalXY plots have markers which only appear when they are zoomed in.";

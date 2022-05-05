@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class AnnotationQuickstart : IRecipe
     {
-        public string Category => "Plottable: Annotation";
+        public ICategory Category => new Categories.PlotTypes.Annotation();
         public string ID => "annotation_quickstart";
         public string Title => "Figure Annotations";
         public string Description =>

@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class ErrorBarQuickstart : IRecipe
     {
-        public string Category => "Plottable: Error Bar";
+        public ICategory Category => new Categories.PlotTypes.ErrorBar();
         public string ID => "errorBar_quickstart";
         public string Title => "Error Bar Quickstart";
         public string Description => "Error Bars allow more fine-grained control over how your error bars are shown.";
@@ -32,7 +32,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ErrorBarSymmetric : IRecipe
     {
-        public string Category => "Plottable: Error Bar";
+        public ICategory Category => new Categories.PlotTypes.ErrorBar();
         public string ID => "errorBar_symmetric";
         public string Title => "Symmetric Error Bars";
         public string Description => "There's a shorthand method for error bars where the positive and negative error is the same.";
@@ -55,7 +55,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ErrorBarOneDimension : IRecipe
     {
-        public string Category => "Plottable: Error Bar";
+        public ICategory Category => new Categories.PlotTypes.ErrorBar();
         public string ID => "errorBar_oneDimension";
         public string Title => "Error Bars in One Dimension";
         public string Description => "If you only have error data for one dimension you can simply pass in null for the other dimension.";
@@ -77,7 +77,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ErrorBarCustomization : IRecipe
     {
-        public string Category => "Plottable: Error Bar";
+        public ICategory Category => new Categories.PlotTypes.ErrorBar();
         public string ID => "errorBar_customization";
         public string Title => "Customization";
         public string Description => "You can customize the colour, cap size, and line width of the error bars.";
@@ -103,7 +103,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ErrorBarMarker : IRecipe
     {
-        public string Category => "Plottable: Error Bar";
+        public ICategory Category => new Categories.PlotTypes.ErrorBar();
         public string ID => "errorBar_marker";
         public string Title => "Error Bar Marker";
         public string Description => "An optional marker can be drawn at the center X/Y position for each error bar.";

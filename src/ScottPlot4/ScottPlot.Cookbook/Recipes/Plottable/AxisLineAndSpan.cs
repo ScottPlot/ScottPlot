@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class AxisLineAndSpan : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_basics";
         public string Title => "Axis Line";
         public string Description =>
@@ -32,7 +32,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class FiniteAxisLine : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_finite";
         public string Title => "Finite Axis Line";
         public string Description =>
@@ -78,7 +78,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Draggable : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_draggable";
         public string Title => "Draggable Axis Lines";
         public string Description =>
@@ -109,7 +109,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AxisLineWithPositionLabels : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_positionLabels";
         public string Title => "Position Labels";
         public string Description =>
@@ -141,7 +141,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AxisSpan : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisSpan_quickstart";
         public string Title => "Axis Span";
         public string Description =>
@@ -162,7 +162,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AxisSpanDraggable : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisSpan_draggable";
         public string Title => "Draggable Axis Span";
         public string Description =>
@@ -199,7 +199,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AxisLineAndSpanIgnore : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisSpan_ignore";
         public string Title => "Ignore Axis Limits";
         public string Description =>
@@ -224,7 +224,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class RepeatingAxisLine : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "repeatingAxisLine_basics";
         public string Title => "Repeating Axis Line";
         public string Description =>
@@ -283,7 +283,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class AxisLineVector : IRecipe
     {
-        public string Category => "Plottable: Axis Line and Span";
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_Vector";
         public string Title => "Axis Line Vector";
         public string Description =>

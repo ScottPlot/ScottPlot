@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class CoxcombQuickstart : IRecipe
     {
-        public string Category => "Plottable: Coxcomb";
+        public ICategory Category => new Categories.PlotTypes.Coxcomb();
         public string ID => "coxcomb_quickstart";
         public string Title => "Coxcomb Chart";
         public string Description =>
@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     }
     public class CoxcombWithIcons : IRecipe
     {
-        public string Category => "Plottable: Coxcomb";
+        public ICategory Category => new Categories.PlotTypes.Coxcomb();
         public string ID => "coxcomb_iconValue";
         public string Title => "Coxcomb Chart with icons";
         public string Description =>

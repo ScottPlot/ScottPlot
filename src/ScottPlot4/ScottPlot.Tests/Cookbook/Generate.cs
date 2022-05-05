@@ -5,59 +5,45 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ScottPlotTests.Cookbook
 {
+    [TestFixture]
     class Generate
     {
         string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook");
-        string OUTPUT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook/CookbookOutput");
-        string JSON_FILE => Path.Join(OUTPUT_FOLDER, "recipes.json");
 
         [Test]
-        public void Test_Generate_Cookbook()
+        public void Test_Json_IsValid()
         {
-            Console.WriteLine($"Generating cookbook in:\n{OUTPUT_FOLDER}");
+            string jsonFilePath = Path.GetFullPath("cookbook-valid-test.json");
 
-            // DELETE OLD COOKBOOK
-            if (Directory.Exists(OUTPUT_FOLDER))
-                Directory.Delete(OUTPUT_FOLDER, recursive: true);
-            Directory.CreateDirectory(OUTPUT_FOLDER);
+            IRecipe[] recipes = Locate.GetRecipes();
 
-            // GENERATE IMAGES
-            Console.WriteLine($"Generating PNGs...");
-            Stopwatch sw = Stopwatch.StartNew();
-            IRecipe[] imageRecipes = RecipeImages.Generate(Path.Join(OUTPUT_FOLDER, "images"));
-            Console.WriteLine($"Generated {imageRecipes.Length} PNGs in {sw.Elapsed.TotalSeconds:F4} sec");
+            RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER, jsonFilePath);
 
-            // GENERATE JSON
-            Console.Write($"Generating JSON...");
-            sw.Restart();
-            RecipeSource[] sourceRecipes = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER, JSON_FILE);
-            Console.WriteLine($" {sw.Elapsed.TotalSeconds:F4} sec");
+            Dictionary<string, RecipeSource> readRecipes = RecipeJson.GetRecipes(new FileInfo(jsonFilePath));
+            Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
 
-            // READ JSON BACK
-            Console.Write($"Validating JSON...");
-            sw.Restart();
-            List<string> readIDs = new();
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(JSON_FILE));
-            string version = document.RootElement.GetProperty("version").GetString();
-            string generated = document.RootElement.GetProperty("generated").GetString();
-            foreach (JsonElement recipeElement in document.RootElement.GetProperty("recipes").EnumerateArray())
+            Assert.AreEqual(recipes.Length, readRecipes.Count);
+        }
+
+        [Test]
+        public void Test_Recipes_RenderInMemory()
+        {
+            IRecipe[] recipes = Locate.GetRecipes();
+
+            Parallel.ForEach(recipes, recipe =>
             {
-                string id = recipeElement.GetProperty("id").GetString();
-                string category = recipeElement.GetProperty("category").GetString();
-                string title = recipeElement.GetProperty("title").GetString();
-                string description = recipeElement.GetProperty("description").GetString();
-                string code = recipeElement.GetProperty("code").GetString();
-                readIDs.Add(id);
-            }
-            Console.WriteLine($" {sw.Elapsed.TotalSeconds:F4} sec");
-
-            // VALIDATE
-            Assert.AreEqual(imageRecipes.Length, sourceRecipes.Length);
-            Assert.AreEqual(sourceRecipes.Length, readIDs.Count);
+                var sw = Stopwatch.StartNew();
+                var plt = new ScottPlot.Plot(600, 400);
+                recipe.ExecuteRecipe(plt);
+                var bmp = plt.GetBitmap();
+                Console.WriteLine($"{recipe.ID}, {ScottPlot.Tools.BitmapHash(bmp)}, {sw.Elapsed.TotalMilliseconds}");
+            });
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ScottPlot.Cookbook.Recipes
 {
     class GridAdvanced : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_gridAdvanced";
         public string Title => "Advanced Grid Customization";
         public string Description => "Grid lines can be extensively customized using various configuration methods.";
@@ -29,7 +29,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksNumericFormatString : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_numericFormatString";
         public string Title => "Numeric Format String";
         public string Description => "Tick labels can be converted to text using a custom format string.";
@@ -48,7 +48,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksDefined : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_defined";
         public string Title => "Manual Tick Labels";
         public string Description =>
@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksDefinedAndUnioned : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_defined_and_unioned";
         public string Title => "Manual and Automatic Tick Labels";
         public string Description =>
@@ -94,7 +94,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksNonLinearX : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_nonLinearX";
         public string Title => "NonLinear Tick Spacing";
         public string Description =>
@@ -128,7 +128,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksDescending : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_descending";
         public string Title => "Descending Ticks";
         public string Description =>
@@ -151,7 +151,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksDefinedSpacing : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_definedSpacing";
         public string Title => "Defined Tick Spacing";
         public string Description =>
@@ -172,7 +172,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksCulture : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_culture";
         public string Title => "Tick Label Culture";
         public string Description =>
@@ -204,7 +204,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksCultureCustom : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_cultureCustom";
         public string Title => "Custom Tick Label Culture";
         public string Description =>
@@ -229,7 +229,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksMultiplier : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_multiplier";
         public string Title => "Multiplier Notation";
         public string Description =>
@@ -247,7 +247,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksOffset : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_offset";
         public string Title => "Offset Notation";
         public string Description =>
@@ -264,7 +264,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TicksDefinedDateTimeSpace : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_definedDateTimeSpace";
         public string Title => "Defined DateTime Spacing";
         public string Description => "This example shows how to use a fixed inter-tick distance for a DateTime axis";
@@ -298,7 +298,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class LogScale : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_log";
         public string Title => "Log Scale";
         public string Description =>
@@ -332,7 +332,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class LogScaleTickDensity : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_logTickDensity";
         public string Title => "Log Scale Tick Density";
         public string Description =>
@@ -362,7 +362,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class Ruler : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_ruler";
         public string Title => "Ruler mode";
         public string Description =>
@@ -381,7 +381,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class Polar : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_polar";
         public string Title => "Polar Coordinates";
         public string Description =>
@@ -417,7 +417,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class Image : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_image";
         public string Title => "Images as Axis Labels";
         public string Description => "Images can be used as axis labels to allow for things like LaTeX axis labels.";
@@ -441,7 +441,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class ImageTransparent : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_imageTransparent";
         public string Title => "Transparent Images Axis Labels";
         public string Description =>
@@ -463,7 +463,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TickDensity : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_tickDensity";
         public string Title => "Tick Density";
         public string Description => "Axis tick density can be adjusted by the user. " +
@@ -485,7 +485,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class MinimumTickSpacing : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_minimumTickSpacing";
         public string Title => "Minimum Tick Spacing";
         public string Description => "Minimum tick spacing can be defined such that zooming in " +
@@ -503,7 +503,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class CustomTickFormatter : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "asis_custom_tick_formatter";
         public string Title => "Custom Tick Formatter";
         public string Description => "For ultimate control over tick label format you can create " +
@@ -534,7 +534,7 @@ namespace ScottPlot.Cookbook.Recipes
 
     class TickMarksInvertDirection : IRecipe
     {
-        public string Category => "Advanced Axis Features";
+        public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_invert_tick_mark_direction";
         public string Title => "Invert tick mark direction";
         public string Description =>

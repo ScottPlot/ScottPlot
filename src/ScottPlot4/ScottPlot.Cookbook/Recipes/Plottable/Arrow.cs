@@ -2,7 +2,7 @@
 {
     public class Arrow : IRecipe
     {
-        public string Category => "Plottable: Arrow";
+        public ICategory Category => new Categories.PlotTypes.Arrow();
         public string ID => "plottable_arrow_quickstart";
         public string Title => "Arrows";
         public string Description =>

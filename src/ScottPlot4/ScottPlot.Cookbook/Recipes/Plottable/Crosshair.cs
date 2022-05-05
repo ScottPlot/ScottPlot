@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class CrosshairQuickstart : IRecipe
     {
-        public string Category => "Plottable: Crosshair";
+        public ICategory Category => new Categories.PlotTypes.Crosshair();
         public string ID => "crosshair_quickstart";
         public string Title => "Crosshair";
         public string Description =>
@@ -29,7 +29,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CrosshairCustomize : IRecipe
     {
-        public string Category => "Plottable: Crosshair";
+        public ICategory Category => new Categories.PlotTypes.Crosshair();
         public string ID => "crosshair_customize";
         public string Title => "Crosshair Customization";
         public string Description =>
@@ -60,7 +60,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CrosshairDateTime : IRecipe
     {
-        public string Category => "Plottable: Crosshair";
+        public ICategory Category => new Categories.PlotTypes.Crosshair();
         public string ID => "crosshair_formatting";
         public string Title => "DateTime Axis Label";
         public string Description =>
@@ -98,7 +98,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CrosshairCustomLabelFormatter : IRecipe
     {
-        public string Category => "Plottable: Crosshair";
+        public ICategory Category => new Categories.PlotTypes.Crosshair();
         public string ID => "crosshair_customlabelformatting";
         public string Title => "Custom Label Format";
         public string Description =>
@@ -137,7 +137,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class CrosshairMultipleForDifferentAxes : IRecipe
     {
-        public string Category => "Plottable: Crosshair";
+        public ICategory Category => new Categories.PlotTypes.Crosshair();
         public string ID => "crosshair_multiple_different_axes";
         public string Title => "Crosshairs on Multiple Axes";
         public string Description => "Crosshairs label coordinates on the primary axes by default, but " +

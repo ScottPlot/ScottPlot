@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYConstQuickstart : IRecipe
     {
-        public string Category => "Plottable: SignalXYConst";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxyconst_quickstart";
         public string Title => "SignalConst with X and Y data";
         public string Description =>
@@ -34,7 +34,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MixedDataTypes : IRecipe
     {
-        public string Category => "Plottable: SignalXYConst";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxyconst_types";
         public string Title => "Different data types for xs and ys";
         public string Description => "SignalXYConst with (int)Xs and (float)Ys arrays";
@@ -58,7 +58,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class SignalXYConstStep : IRecipe
     {
-        public string Category => "Plottable: SignalXYConst";
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
         public string ID => "signalxyconst_step";
         public string Title => "SignalConst Step Mode";
         public string Description =>

@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class Colorbar : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_quickstart";
         public string Title => "Colorbar";
         public string Description =>
@@ -28,7 +28,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarColormap : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_colormap";
         public string Title => "Colorbar for Colormap";
         public string Description =>
@@ -48,7 +48,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarTicks : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_ticks";
         public string Title => "Colorbar Ticks";
         public string Description =>
@@ -78,7 +78,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarRange : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_Range";
         public string Title => "Color Range";
         public string Description =>
@@ -103,7 +103,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarClip : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_clip";
         public string Title => "Clipped value range";
         public string Description =>
@@ -129,7 +129,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarScatter : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_scatter";
         public string Title => "Scatter Plot with Colorbar";
         public string Description =>
@@ -156,7 +156,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ColorbarLeft : IRecipe
     {
-        public string Category => "Plottable: Colorbar";
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_left";
         public string Title => "Colorbar on Left";
         public string Description =>

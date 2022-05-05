@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class ImageQuickstart : IRecipe
     {
-        public string Category => "Plottable: Image";
+        public ICategory Category => new Categories.PlotTypes.Image();
         public string ID => "image_quickstart";
         public string Title => "Image Quickstart";
         public string Description =>
@@ -33,7 +33,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ImageAlign : IRecipe
     {
-        public string Category => "Plottable: Image";
+        public ICategory Category => new Categories.PlotTypes.Image();
         public string ID => "image_alignment";
         public string Title => "Image Alignment";
         public string Description =>
@@ -64,7 +64,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ImageRotate : IRecipe
     {
-        public string Category => "Plottable: Image";
+        public ICategory Category => new Categories.PlotTypes.Image();
         public string ID => "image_rotation";
         public string Title => "Image Rotation";
         public string Description =>
@@ -86,7 +86,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ImageBorder : IRecipe
     {
-        public string Category => "Plottable: Image";
+        public ICategory Category => new Categories.PlotTypes.Image();
         public string ID => "image_border";
         public string Title => "Image Border";
         public string Description =>

@@ -5,7 +5,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class HeatmapQuickstart : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_quickstart";
         public string Title => "Heatmap Quickstart";
         public string Description =>
@@ -21,7 +21,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     }
     public class HeatmapMargins : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_margins";
         public string Title => "Heatmap with Tight Margins";
         public string Description =>
@@ -40,7 +40,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapColorbar : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_colorbar";
         public string Title => "Heatmap with Colorbar";
         public string Description =>
@@ -59,7 +59,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapSmooth : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_smooth";
         public string Title => "Smooth Heatmap";
         public string Description =>
@@ -79,7 +79,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapImage : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_image";
         public string Title => "Heatmap Image";
         public string Description =>
@@ -94,7 +94,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Heatmap2dWaveform : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_2dWaveform";
         public string Title => "2D Waveform";
         public string Description =>
@@ -118,7 +118,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapColormap : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_colormap";
         public string Title => "Colormap";
         public string Description =>
@@ -138,7 +138,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class StyledHeatmapColormap : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "styled_heatmap_colormap";
         public string Title => "Styled Colormap";
         public string Description =>
@@ -160,7 +160,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapLimitScale : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_limitScale";
         public string Title => "Scale Limits";
         public string Description =>
@@ -187,7 +187,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapClip : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_clip";
         public string Title => "Color Clipping";
         public string Description =>
@@ -211,7 +211,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapDensity : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_density";
         public string Title => "Interpolation by Density";
         public string Description =>
@@ -233,7 +233,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapGaussian : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_gaussian";
         public string Title => "Gaussian Interpolation";
         public string Description =>
@@ -256,7 +256,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapDimensions : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_dimensions";
         public string Title => "Custom Dimensions";
         public string Description =>
@@ -278,7 +278,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapTransparent : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_transparent";
         public string Title => "Heatmap with Empty Squares";
         public string Description =>
@@ -301,7 +301,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class HeatmapPlacement : IRecipe
     {
-        public string Category => "Plottable: Heatmap";
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_placement";
         public string Title => "Size and Placement";
         public string Description =>

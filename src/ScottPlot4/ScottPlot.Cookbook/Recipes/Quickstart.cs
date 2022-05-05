@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 {
     public class Scatter : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_scatter";
         public string Title => "Scatter Plot";
         public string Description => "Scatter plots have paired X/Y points.";
@@ -32,7 +32,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     public class Signal : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_signal";
         public string Title => "Signal Plot";
         public string Description => "Signal plots have evenly spaced Y points. " +
@@ -49,7 +49,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     public class Axis : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_axis";
         public string Title => "Axis Labels and Limits";
         public string Description => "Axis labels and limits can be customized";
@@ -72,7 +72,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     class Add : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_add";
         public string Title => "Manually add a Plottable";
         public string Description =>
@@ -99,7 +99,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     class Remove : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_remove";
         public string Title => "Remove a Plottable";
         public string Description =>
@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     class Clear : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_clear";
         public string Title => "Clear Plottables";
         public string Description =>
@@ -141,7 +141,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
 
     class Legend : IRecipe
     {
-        public string Category => "Quickstart";
+        public ICategory Category => new Categories.Quickstart();
         public string ID => "quickstart_legend";
         public string Title => "Legend";
         public string Description =>

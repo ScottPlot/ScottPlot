@@ -7,7 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class ScatterListQuickstart : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot List";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatterList_quickstart";
         public string Title => "Scatter List Quickstart";
         public string Description =>
@@ -26,7 +26,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterListGeneric : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot List";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatterList_generic";
         public string Title => "Scatter List Generic";
         public string Description =>
@@ -45,7 +45,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterListDraggable : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot List";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatterList_draggable";
         public string Title => "Scatter List Draggable";
         public string Description =>
@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class ScatterListDraggableLimits : IRecipe
     {
-        public string Category => "Plottable: Scatter Plot List";
+        public ICategory Category => new Categories.PlotTypes.Scatter();
         public string ID => "scatterList_draggableLimits";
         public string Title => "Scatter List Draggable Limits";
         public string Description =>

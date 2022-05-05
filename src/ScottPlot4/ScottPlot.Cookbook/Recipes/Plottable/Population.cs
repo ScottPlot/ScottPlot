@@ -6,7 +6,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class PopulationQuickstart : IRecipe
     {
-        public string Category => "Plottable: Population";
+        public ICategory Category => new Categories.PlotTypes.Population();
         public string ID => "population_quickstart";
         public string Title => "Population Plot";
         public string Description =>
@@ -38,7 +38,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MultiplePopulations : IRecipe
     {
-        public string Category => "Plottable: Population";
+        public ICategory Category => new Categories.PlotTypes.Population();
         public string ID => "population_multiple";
         public string Title => "Multiple Populations";
         public string Description =>
@@ -70,7 +70,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class PopulationDataOverBox : IRecipe
     {
-        public string Category => "Plottable: Population";
+        public ICategory Category => new Categories.PlotTypes.Population();
         public string ID => "population_data_over_bar";
         public string Title => "Data points over bar";
         public string Description =>
@@ -107,7 +107,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class MultipleSeries : IRecipe
     {
-        public string Category => "Plottable: Population";
+        public ICategory Category => new Categories.PlotTypes.Population();
         public string ID => "population_multiSeries";
         public string Title => "Multiple Series";
         public string Description =>
@@ -177,7 +177,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
     public class Advanced : IRecipe
     {
-        public string Category => "Plottable: Population";
+        public ICategory Category => new Categories.PlotTypes.Population();
         public string ID => "population_advanced";
         public string Title => "Advanced Population Styling";
         public string Description =>

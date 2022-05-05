@@ -10,7 +10,7 @@
         /// <summary>
         /// Every category gets its own page in the cookbook and appears as a top-level node in the demo application.
         /// </summary>
-        string Category { get; }
+        ICategory Category { get; }
 
         /// <summary>
         /// The heading for the recipe should be as short as possible.
