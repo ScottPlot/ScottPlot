@@ -12,29 +12,29 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
         /// </summary>
-        public double X;
+        public double X { get; set; }
 
         /// <summary>
         /// Vertical position (in pixel units) relative to the data area
         /// </summary>
-        public double Y;
+        public double Y { get; set; }
 
         /// <summary>
         /// Text displayed in the annotation
         /// </summary>
-        public string Label;
+        public string Label { get; set; }
 
-        public readonly Drawing.Font Font = new Drawing.Font();
+        public readonly Drawing.Font Font = new();
 
-        public bool Background = true;
-        public Color BackgroundColor = Color.Yellow;
+        public bool Background { get; set; } = true;
+        public Color BackgroundColor { get; set; } = Color.Yellow;
 
-        public bool Shadow = true;
-        public Color ShadowColor = Color.FromArgb(25, Color.Black);
+        public bool Shadow { get; set; } = true;
+        public Color ShadowColor { get; set; } = Color.FromArgb(25, Color.Black);
 
-        public bool Border = true;
-        public float BorderWidth = 1;
-        public Color BorderColor = Color.Black;
+        public bool Border { get; set; } = true;
+        public float BorderWidth { get; set; } = 1;
+        public Color BorderColor { get; set; } = Color.Black;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -52,8 +52,6 @@ namespace ScottPlot.Plottable
             if (double.IsNaN(Y) || double.IsInfinity(Y))
                 throw new InvalidOperationException("xPixel must be a valid number");
         }
-
-        // TODO: the negative coordiante thing is silly. Use alignment fields to control this behavior.
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

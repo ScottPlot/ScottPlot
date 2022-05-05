@@ -14,27 +14,27 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Location of the base of the gauge (degrees)
         /// </summary>
-        public double StartAngle;
+        public double StartAngle { get; set; }
 
         /// <summary>
         /// Current level of this gauge (degrees)
         /// </summary>
-        public double SweepAngle;
+        public double SweepAngle { get; set; }
 
         /// <summary>
         /// Maximum angular size of the gauge (swept degrees)
         /// </summary>
-        public double MaximumSizeAngle;
+        public double MaximumSizeAngle { get; set; }
 
         /// <summary>
         /// Angle where the background starts (degrees)
         /// </summary>
-        public double BackStartAngle;
+        public double BackStartAngle { get; set; }
 
         /// <summary>
         /// If true angles end clockwise relative to their base
         /// </summary>
-        public bool Clockwise;
+        public bool Clockwise { get; set; }
 
         /// <summary>
         /// Used internally to get the angle swept by the gauge background. It's equal to 360 degrees if CircularBackground is set to true. Also, returns a positive value is the gauge is drawn clockwise and a negative one otherwise
@@ -53,63 +53,63 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If true the background will always be drawn as a complete circle regardless of MaximumSizeAngle
         /// </summary>
-        public bool CircularBackground = true;
+        public bool CircularBackground { get; set; } = true;
 
         /// <summary>
         /// Font used to render values at the tip of the gauge
         /// </summary>
-        public Drawing.Font Font;
+        public Drawing.Font Font { get; set; }
 
         /// <summary>
         /// Size of the font relative to the line thickness
         /// </summary>
-        public double FontSizeFraction;
+        public double FontSizeFraction { get; set; }
 
         /// <summary>
         /// Text to display on top of the label
         /// </summary>
-        public string Label;
+        public string Label { get; set; }
 
         /// <summary>
         /// Location of the label text along the length of the gauge.
         /// Low values place the label near the base and high values place the label at its tip.
         /// </summary>
-        public double LabelPositionFraction;
+        public double LabelPositionFraction { get; set; }
 
         /// <summary>
         /// Size of the gauge (pixels)
         /// </summary>
-        public double Width;
+        public double Width { get; set; }
 
         /// <summary>
         /// Color of the gauge foreground
         /// </summary>
-        public Color Color;
+        public Color Color { get; set; }
 
         /// <summary>
         /// Color of the gauge background
         /// </summary>
-        public Color BackgroundColor;
+        public Color BackgroundColor { get; set; }
 
         /// <summary>
         /// Style of the base of the gauge
         /// </summary>
-        public System.Drawing.Drawing2D.LineCap StartCap = System.Drawing.Drawing2D.LineCap.Round;
+        public System.Drawing.Drawing2D.LineCap StartCap { get; set; } = System.Drawing.Drawing2D.LineCap.Round;
 
         /// <summary>
         /// Style of the tip of the gauge
         /// </summary>
-        public System.Drawing.Drawing2D.LineCap EndCap = System.Drawing.Drawing2D.LineCap.Round;
+        public System.Drawing.Drawing2D.LineCap EndCap { get; set; } = System.Drawing.Drawing2D.LineCap.Round;
 
         /// <summary>
         /// Defines the location of each gauge relative to the start angle and distance from the center
         /// </summary>
-        public RadialGaugeMode Mode;
+        public RadialGaugeMode Mode { get; set; }
 
         /// <summary>
         /// Indicates whether or not labels will be rendered as text
         /// </summary>
-        public bool ShowLabels;
+        public bool ShowLabels { get; set; }
 
         /// <summary>
         /// Render the gauge onto an existing Bitmap

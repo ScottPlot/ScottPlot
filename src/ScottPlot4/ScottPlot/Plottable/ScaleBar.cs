@@ -13,26 +13,26 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Width of the scalebar in cooridinate units
         /// </summary>
-        public double Width;
+        public double Width { get; set; }
 
         /// <summary>
         /// Height of the scalebar in cooridinate units
         /// </summary>
-        public double Height;
+        public double Height { get; set; }
 
         /// <summary>
         /// Distance in pixels from the edge of the data area
         /// </summary>
-        public float Padding = 10;
+        public float Padding { get; set; } = 10;
 
-        public string HorizontalLabel;
-        public string VerticalLabel;
-        public float LineWidth = 2;
-        public Color LineColor = Color.Black;
-        public readonly Drawing.Font Font = new Drawing.Font();
-        public float FontSize { set => Font.Size = value; }
-        public Color FontColor { set => Font.Color = value; }
-        public bool FontBold { set => Font.Bold = value; }
+        public string HorizontalLabel { get; set; }
+        public string VerticalLabel { get; set; }
+        public float LineWidth { get; set; } = 2;
+        public Color LineColor { get; set; } = Color.Black;
+        public readonly Drawing.Font Font = new();
+        public float FontSize { get => Font.Size; set => Font.Size = value; }
+        public Color FontColor { get => Font.Color; set => Font.Color = value; }
+        public bool FontBold { get => Font.Bold; set => Font.Bold = value; }
         public Color Color { get => LineColor; set { LineColor = value; FontColor = value; } }
 
         public bool IsVisible { get; set; } = true;

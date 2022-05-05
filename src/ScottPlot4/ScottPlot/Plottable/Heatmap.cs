@@ -42,22 +42,22 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Horizontal location of the lower-left cell
         /// </summary>
-        public double OffsetX = 0;
+        public double OffsetX { get; set; } = 0;
 
         /// <summary>
         /// Vertical location of the lower-left cell
         /// </summary>
-        public double OffsetY = 0;
+        public double OffsetY { get; set; } = 0;
 
         /// <summary>
         /// Width of each cell composing the heatmap
         /// </summary>
-        public double CellWidth = 1;
+        public double CellWidth { get; set; } = 1;
 
         /// <summary>
         /// Width of each cell composing the heatmap
         /// </summary>
-        public double CellHeight = 1;
+        public double CellHeight { get; set; } = 1;
 
         /// <summary>
         /// Position of the left edge of the heatmap

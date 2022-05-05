@@ -16,12 +16,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Position of the primary corner (based on Alginment)
         /// </summary>
-        public double X;
+        public double X { get; set; }
 
         /// <summary>
         /// Position of the primary corner (based on Alginment)
         /// </summary>
-        public double Y;
+        public double Y { get; set; }
 
         /// <summary>
         /// Multiply the size of the image (in pixel units) by this scale factor.
@@ -32,27 +32,27 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Rotate the image clockwise around its primary corner (defined by Alignment) by this number of degrees
         /// </summary>
-        public double Rotation;
+        public double Rotation { get; set; }
 
         /// <summary>
         /// Image to display
         /// </summary>
-        public System.Drawing.Image Bitmap;
+        public System.Drawing.Image Bitmap { get; set; }
 
         /// <summary>
         /// Indicates which corner of the Bitmap is described by X and Y.
         /// This corner will be the axis of Rotation, and the center of Scale.
         /// </summary>
-        public Alignment Alignment;
+        public Alignment Alignment { get; set; }
 
-        public Color BorderColor;
-        public float BorderSize;
-        public string Label;
+        public Color BorderColor { get; set; }
+        public float BorderSize { get; set; }
+        public string Label { get; set; }
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableImage Size(\"{Bitmap.Size}\") at ({X}, {Y})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
+        public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public void ValidateData(bool deep = false)

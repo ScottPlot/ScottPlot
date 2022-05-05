@@ -12,26 +12,26 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class PiePlot : IPlottable
     {
-        public double[] Values;
-        public string Label;
-        public string[] SliceLabels;
+        public double[] Values { get; set; }
+        public string Label { get; set; }
+        public string[] SliceLabels { get; set; }
 
-        public Color[] SliceFillColors;
-        public Color[] SliceLabelColors;
-        public Color BackgroundColor;
+        public Color[] SliceFillColors { get; set; }
+        public Color[] SliceLabelColors { get; set; }
+        public Color BackgroundColor { get; set; }
 
-        public bool Explode;
-        public bool ShowValues;
-        public bool ShowPercentages;
-        public bool ShowLabels;
+        public bool Explode { get; set; }
+        public bool ShowValues { get; set; }
+        public bool ShowPercentages { get; set; }
+        public bool ShowLabels { get; set; }
 
-        public double DonutSize;
-        public string DonutLabel;
-        public readonly Drawing.Font CenterFont = new Drawing.Font();
-        public readonly Drawing.Font SliceFont = new Drawing.Font();
+        public double DonutSize { get; set; }
+        public string DonutLabel { get; set; }
+        public readonly Drawing.Font CenterFont = new();
+        public readonly Drawing.Font SliceFont = new();
 
-        public float OutlineSize = 0;
-        public Color OutlineColor = Color.Black;
+        public float OutlineSize { get; set; } = 0;
+        public Color OutlineColor { get; set; } = Color.Black;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

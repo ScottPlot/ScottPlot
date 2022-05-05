@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class FinancePlot : IPlottable
     {
-        public readonly List<OHLC> OHLCs = new List<OHLC>();
+        public readonly List<OHLC> OHLCs = new();
 
         /// <summary>
         /// Returns the last element of OHLCs so users can modify FinancePlots in real time.
@@ -21,28 +21,28 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
         /// </summary>
-        public bool Candle;
+        public bool Candle { get; set; }
 
         /// <summary>
         /// If True, OHLC timestamps are ignored and candles are placed at consecutive integers and all given a width of 1
         /// </summary>
-        public bool Sequential;
+        public bool Sequential { get; set; }
 
         /// <summary>
         /// Color of the candle if it closes at or above its open value
         /// </summary>
-        public Color ColorUp = Color.LightGreen;
+        public Color ColorUp { get; set; } = Color.LightGreen;
 
         /// <summary>
         /// Color of the candle if it closes below its open value
         /// </summary>
-        public Color ColorDown = Color.LightCoral;
+        public Color ColorDown { get; set; } = Color.LightCoral;
 
         /// <summary>
         /// This field controls the color of the wick and rectangular candle border.
         /// If null, the wick is the same color as the candle and no border is applied.
         /// </summary>
-        public Color? WickColor = null;
+        public Color? WickColor { get; set; } = null;
 
         public bool IsVisible { get; set; } = true;
         public override string ToString() => $"FinancePlot with {OHLCs.Count} OHLC indicators";

@@ -22,14 +22,29 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnBox, ScatterOnly };
-        public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
-        public bool DistributionCurve = true;
-        public LineStyle DistributionCurveLineStyle = LineStyle.Solid;
-        public Color DistributionCurveColor = Color.Black;
-        public Color ScatterOutlineColor = Color.Black;
-        public DisplayItems DataFormat = DisplayItems.BoxAndScatter;
-        public BoxStyle DataBoxStyle = BoxStyle.BoxMedianQuartileOutlier;
+        public enum DisplayItems
+        {
+            BoxOnly,
+            BoxAndScatter,
+            ScatterAndBox,
+            ScatterOnBox,
+            ScatterOnly
+        };
+        public enum BoxStyle
+        {
+            BarMeanStDev,
+            BarMeanStdErr,
+            BoxMeanStdevStderr,
+            BoxMedianQuartileOutlier,
+            MeanAndStdev,
+            MeanAndStderr
+        };
+        public bool DistributionCurve { get; set; } = true;
+        public LineStyle DistributionCurveLineStyle { get; set; } = LineStyle.Solid;
+        public Color DistributionCurveColor { get; set; } = Color.Black;
+        public Color ScatterOutlineColor { get; set; } = Color.Black;
+        public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
+        public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
 
         public PopulationPlot(PopulationMultiSeries groupedSeries)
         {

@@ -13,13 +13,13 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class BarPlot : BarPlotBase, IPlottable, IHasColor
     {
-        public string Label;
+        public string Label { get; set; }
         public Color Color { get => FillColor; set { FillColor = value; } }
-        public Color FillColor = Color.Green;
-        public Color FillColorNegative = Color.Red;
-        public Color FillColorHatch = Color.Blue;
-        public HatchStyle HatchStyle = HatchStyle.None;
-        public float BorderLineWidth = 1;
+        public Color FillColor { get; set; } = Color.Green;
+        public Color FillColorNegative { get; set; } = Color.Red;
+        public Color FillColorHatch { get; set; } = Color.Blue;
+        public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
+        public float BorderLineWidth { get; set; } = 1;
 
         public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets) : base()
         {

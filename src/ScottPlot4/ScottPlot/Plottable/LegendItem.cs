@@ -9,16 +9,16 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class LegendItem
     {
-        public string label;
-        public Color color;
-        public Color hatchColor;
-        public Color borderColor;
-        public float borderWith;
-        public LineStyle borderLineStyle;
+        public string label { get; set; }
+        public Color color { get; set; }
+        public Color hatchColor { get; set; }
+        public Color borderColor { get; set; }
+        public float borderWith { get; set; }
+        public LineStyle borderLineStyle { get; set; }
 
-        public LineStyle lineStyle;
+        public LineStyle lineStyle { get; set; }
 
-        private double _lineWidth = 0;
+        private double _lineWidth { get; set; }
         public double lineWidth
         {
             get => (Parent is IHasLine parent) ? Math.Min(parent.LineWidth, 10) : _lineWidth;
@@ -26,7 +26,7 @@ namespace ScottPlot.Plottable
         }
         public Color LineColor => Parent is IHasLine p ? p.LineColor : color;
 
-        public MarkerShape markerShape;
+        public MarkerShape markerShape { get; set; }
         private float _markerSize = 0;
         public float markerSize
         {

@@ -35,22 +35,22 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If dragging is enabled the points cannot be dragged more negative than this position
         /// </summary>
-        public double DragXLimitMin = double.NegativeInfinity;
+        public double DragXLimitMin { get; set; } = double.NegativeInfinity;
 
         /// <summary>
         /// If dragging is enabled the points cannot be dragged more positive than this position
         /// </summary>
-        public double DragXLimitMax = double.PositiveInfinity;
+        public double DragXLimitMax { get; set; } = double.PositiveInfinity;
 
         /// <summary>
         /// If dragging is enabled the points cannot be dragged more negative than this position
         /// </summary>
-        public double DragYLimitMin = double.NegativeInfinity;
+        public double DragYLimitMin { get; set; } = double.NegativeInfinity;
 
         /// <summary>
         /// If dragging is enabled the points cannot be dragged more positive than this position
         /// </summary>
-        public double DragYLimitMax = double.PositiveInfinity;
+        public double DragYLimitMax { get; set; } = double.PositiveInfinity;
 
         /// <summary>
         /// This event is invoked after the plot is dragged

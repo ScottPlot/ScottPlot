@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class Colorbar : IPlottable, IStylable
     {
-        public Renderable.Edge Edge = Renderable.Edge.Right;
+        public Renderable.Edge Edge { get; set; } = Renderable.Edge.Right;
 
         private Colormap Colormap;
         private Bitmap BmpScale;
@@ -25,21 +25,21 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Width of the colorbar rectangle
         /// </summary>
-        public int Width = 20;
+        public int Width { get; set; } = 20;
 
         public readonly Drawing.Font TickLabelFont = new();
-        public Color TickMarkColor = Color.Black;
-        public float TickMarkLength = 3;
-        public float TickMarkWidth = 1;
+        public Color TickMarkColor { get; set; } = Color.Black;
+        public float TickMarkLength { get; set; } = 3;
+        public float TickMarkWidth { get; set; } = 1;
 
         private readonly List<Tick> ManualTicks = new();
-        private bool AutomaticTickEnable = true;
-        private int AutomaticTickMinimumSpacing = 40;
-        private Func<double, string> AutomaticTickFormatter = position => $"{position:F2}";
+        private bool AutomaticTickEnable { get; set; } = true;
+        private int AutomaticTickMinimumSpacing { get; set; } = 40;
+        private Func<double, string> AutomaticTickFormatter { get; set; } = position => $"{position:F2}";
 
-        public float DataAreaPadding = 10;
+        public float DataAreaPadding { get; set; } = 10;
 
-        private double _MinValue = 0;
+        private double _MinValue { get; set; } = 0;
         public double MinValue
         {
             get => (Plottable is IHasColormap p) ? p.ColormapMin : _MinValue;

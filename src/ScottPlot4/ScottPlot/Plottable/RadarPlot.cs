@@ -38,7 +38,7 @@ namespace ScottPlot.Plottable
         /// <remarks>
         /// If showing icons, labels will be ignored.
         /// </remarks>
-        public string[] CategoryLabels;
+        public string[] CategoryLabels { get; set; }
 
         /// <summary>
         /// Icons for each category.
@@ -47,40 +47,40 @@ namespace ScottPlot.Plottable
         /// <remarks>
         /// If showing icons, labels will be ignored.
         /// </remarks>
-        public System.Drawing.Image[] CategoryImages;
+        public System.Drawing.Image[] CategoryImages { get; set; }
 
         /// <summary>
         /// Labels for each group.
         /// Length must be equal to the number of rows (groups) in the original data.
         /// </summary>
-        public string[] GroupLabels;
+        public string[] GroupLabels { get; set; }
 
         /// <summary>
         /// Colors (typically semi-transparent) to shade the inner area of each group.
         /// Length must be equal to the number of rows (groups) in the original data.
         /// </summary>
-        public Color[] FillColors;
+        public Color[] FillColors { get; set; }
 
         /// <summary>
         /// Colors to outline the shape for each group.
         /// Length must be equal to the number of rows (groups) in the original data.
         /// </summary>
-        public Color[] LineColors;
+        public Color[] LineColors { get; set; }
 
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
-        public Color WebColor = Color.Gray;
+        public Color WebColor { get; set; } = Color.Gray;
 
         /// <summary>
         /// Controls if values along each category axis are scaled independently or uniformly across all axes.
         /// </summary>
-        public bool IndependentAxes;
+        public bool IndependentAxes { get; set; }
 
         /// <summary>
         /// Font used for labeling values on the plot
         /// </summary>
-        public Drawing.Font Font = new();
+        public readonly Drawing.Font Font = new();
 
         /// <summary>
         /// If true, each value will be written in text on the plot.

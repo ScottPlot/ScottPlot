@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
         /// Orientation of the bars.
         /// Default behavior is vertical so values are on the Y axis and positions are on the X axis.
         /// </summary>
-        public Orientation Orientation = Orientation.Vertical;
+        public Orientation Orientation { get; set; } = Orientation.Vertical;
 
         /// <summary>
         /// The position of each bar defines where the left edge of the bar should be.
@@ -62,28 +62,28 @@ namespace ScottPlot.Plottable
         /// Width of bars defined in axis units.
         /// If bars are evenly spaced, consider setting this to a fraction of the distance between the first two Positions.
         /// </summary>
-        public double BarWidth = .8;
+        public double BarWidth { get; set; } = .8;
 
         /// <summary>
         /// Width of the errorbar caps defined in axis units.
         /// </summary>
-        public double ErrorCapSize = .4;
+        public double ErrorCapSize { get; set; } = .4;
 
         /// <summary>
         /// Thickness of the errorbar lines (pixel units)
         /// </summary>
-        public float ErrorLineWidth = 1;
+        public float ErrorLineWidth { get; set; } = 1;
 
         /// <summary>
         /// Outline each bar with this color. 
         /// Set this to transparent to disable outlines.
         /// </summary>
-        public Color BorderColor = Color.Black;
+        public Color BorderColor { get; set; } = Color.Black;
 
         /// <summary>
         /// Color of errorbar lines.
         /// </summary>
-        public Color ErrorColor = Color.Black;
+        public Color ErrorColor { get; set; } = Color.Black;
 
         /// <summary>
         /// Font settings for labels drawn above the bars

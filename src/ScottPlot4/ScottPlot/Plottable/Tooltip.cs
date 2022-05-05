@@ -14,25 +14,25 @@ namespace ScottPlot.Plottable
         public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
         public Color BorderColor { get; set; } = Color.DarkGray;
-        public float BorderWidth = 2;
+        public float BorderWidth { get; set; } = 2;
         public Color FillColor { get; set; } = Color.White;
         public Color Color { get => FillColor; set => FillColor = value; }
         public int XAxisIndex { get; set; }
         public int YAxisIndex { get; set; }
 
-        public readonly Drawing.Font Font = new Drawing.Font();
-        public int ArrowSize = 5;
-        public int LabelPadding = 10;
+        public readonly Drawing.Font Font = new();
+        public int ArrowSize { get; set; } = 5;
+        public int LabelPadding { get; set; } = 10;
 
         /// <summary>
         /// Tooltip position in coordinate space
         /// </summary>
-        public double X;
+        public double X { get; set; }
 
         /// <summary>
         /// Tooltip position in coordinate space
         /// </summary>
-        public double Y;
+        public double Y { get; set; }
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 

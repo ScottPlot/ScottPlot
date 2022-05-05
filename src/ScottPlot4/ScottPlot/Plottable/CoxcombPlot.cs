@@ -51,7 +51,7 @@ namespace ScottPlot.Plottable
         /// Labels for each category.
         /// Length must be equal to the number of columns (categories) in the original data.
         /// </summary>
-        public string[] SliceLabels;
+        public string[] SliceLabels { get; set; }
 
         /// <summary>
         /// Icons for each category.
@@ -63,9 +63,9 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public string Label;
+        public string Label { get; set; }
 
-        private double[] Normalized;
+        private double[] Normalized { get; set; }
 
         public CoxcombPlot(double[] values, Color[] fillColors)
         {

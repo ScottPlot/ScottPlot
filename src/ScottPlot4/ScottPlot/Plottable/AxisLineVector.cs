@@ -16,36 +16,36 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add this value to each datapoint value before plotting (axis units)
         /// </summary>
-        protected int Offset = 0;
+        protected int Offset { get; set; } = 0;
 
         public int PointCount => Positions.Length;
 
         /// <summary>
         /// If True, the position will be labeled on the axis using the PositionFormatter
         /// </summary>
-        public bool PositionLabel = false;
+        public bool PositionLabel { get; set; } = false;
 
         /// <summary>
         /// Font to use for position labels (labels drawn over the axis)
         /// </summary>
         //public Drawing.Font PositionLabelFont = new(){ Color = Color.White, Bold = true };
-        public ScottPlot.Drawing.Font PositionLabelFont = new ScottPlot.Drawing.Font() { Color = Color.White, Bold = true };
+        public readonly ScottPlot.Drawing.Font PositionLabelFont = new() { Color = Color.White, Bold = true };
 
         /// <summary>
         /// Color to use behind the position labels
         /// </summary>
-        public Color PositionLabelBackground = Color.Black;
+        public Color PositionLabelBackground { get; set; } = Color.Black;
 
         /// <summary>
         /// If true the position label will be drawn on the right or top of the data area.
         /// </summary>
-        public bool PositionLabelOppositeAxis = false;
+        public bool PositionLabelOppositeAxis { get; set; } = false;
 
         /// <summary>
         /// This method generates the position label text for numeric (non-DateTime) axes.
         /// For DateTime axes assign your own format string that uses DateTime.FromOADate(position).
         /// </summary>
-        public Func<double, string> PositionFormatter = position => position.ToString("F2");
+        public Func<double, string> PositionFormatter { get; set; } = position => position.ToString("F2");
 
         // customization
         public bool IsVisible { get; set; } = true;
@@ -55,12 +55,12 @@ namespace ScottPlot.Plottable
         public Color Color { get; set; } = Color.Black;
         public Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
-        public MarkerShape MarkerShape = MarkerShape.filledCircle;
+        public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double LineWidth { get; set; } = 1;
-        public float ErrorLineWidth = 1;
-        public float ErrorCapSize = 3;
-        public float MarkerSize = 5;
-        public bool StepDisplay = false;
+        public float ErrorLineWidth { get; set; } = 1;
+        public float ErrorCapSize { get; set; } = 3;
+        public float MarkerSize { get; set; } = 5;
+        public bool StepDisplay { get; set; } = false;
 
         /// <summary>
         /// Indicates whether the line is horizontal (position in Y units) or vertical (position in X units)
@@ -70,12 +70,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If true, AxisAuto() will ignore the position of this line when determining axis limits
         /// </summary>
-        public bool IgnoreAxisAuto = false;
+        public bool IgnoreAxisAuto { get; set; } = false;
 
         /// <summary>
         /// Text that appears in the legend
         /// </summary>
-        public string Label = string.Empty;
+        public string Label { get; set; } = string.Empty;
 
         /// <summary>
         /// Indicates whether this line is draggable in user controls.
@@ -90,12 +90,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If dragging is enabled the line cannot be dragged more negative than this position
         /// </summary>
-        public double DragLimitMin = double.NegativeInfinity;
+        public double DragLimitMin { get; set; } = double.NegativeInfinity;
 
         /// <summary>
         /// If dragging is enabled the line cannot be dragged more positive than this position
         /// </summary>
-        public double DragLimitMax = double.PositiveInfinity;
+        public double DragLimitMax { get; set; } = double.PositiveInfinity;
 
         /// <summary>
         /// This event is invoked after the line is dragged
@@ -105,12 +105,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The lower bound of the axis line.
         /// </summary>
-        public double Min = double.NegativeInfinity;
+        public double Min { get; set; } = double.NegativeInfinity;
 
         /// <summary>
         /// The upper bound of the axis line.
         /// </summary>
-        public double Max = double.PositiveInfinity;
+        public double Max { get; set; } = double.PositiveInfinity;
 
         public AxisLineVector(bool isHorizontal)
         {
