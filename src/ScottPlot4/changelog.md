@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.44
+## ScottPlot 4.1.45
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.44
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_
+* SignalXY: Permit duplicate X values and improve exception messages when invalid X data is loaded (#1832) _Thanks @Niravk1997_
 
 ## ScottPlot 4.1.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-02_
