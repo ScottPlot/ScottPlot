@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
         {
             if (!XsHaveBeenValidated)
             {
-                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
+                Validate.AssertDoesNotDescend("xs", Xs, MinRenderIndex, MaxRenderIndex);
                 XsHaveBeenValidated = true;
             }
 
@@ -267,12 +267,18 @@ namespace ScottPlot.Plottable
 
         public override void ValidateData(bool deep = false)
         {
+            // base can only check Ys
             base.ValidateData(deep);
-            Validate.AssertEqualLength("xs and ys", Xs, Ys);
-            Validate.AssertHasElements("xs", Xs);
+
+            // X checking must be performed here
+            Validate.AssertEqualLength($"{nameof(Xs)} and {nameof(Ys)}", Xs, Ys);
+            Validate.AssertHasElements(nameof(Xs), Xs);
 
             if (deep)
-                Validate.AssertAscending("xs", Xs, MinRenderIndex, MaxRenderIndex);
+            {
+                Validate.AssertAllReal(nameof(Xs), Xs);
+                Validate.AssertDoesNotDescend(nameof(Xs), Xs, MinRenderIndex, MaxRenderIndex);
+            }
         }
 
         public override string ToString()

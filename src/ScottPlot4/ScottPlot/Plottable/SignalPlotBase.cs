@@ -810,9 +810,9 @@ namespace ScottPlot.Plottable
         {
             // check Y values
             if (Ys is null)
-                throw new InvalidOperationException("ys cannot be null");
+                throw new InvalidOperationException($"{nameof(Ys)} cannot be null");
             if (deep)
-                Validate.AssertAllReal("ys", Ys);
+                Validate.AssertAllReal(nameof(Ys), Ys);
 
             // check render indexes
             if (MinRenderIndex < 0 || MinRenderIndex > MaxRenderIndex)
