@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlotTests.Validation
 {
-    internal class ScatterXY
+    internal class SignalXY
     {
         private static ScottPlot.Plottable.SignalPlotXY CreateSignalPlot(double[] values) => new()
         {
@@ -47,11 +47,20 @@ namespace ScottPlotTests.Validation
         }
 
         [Test]
+        public void Test_SignalXY_Xs_MustNotBeEmpty()
+        {
+            double[] values = { };
+
+            Assert.Throws<ArgumentException>(() => CreateSignalPlot(values));
+        }
+
+        [Test]
         public void Test_SignalXY_Xs_MustNotDescend()
         {
             double[] values = { 1, 2, -42, 4, 5 };
 
             ScottPlot.Plottable.SignalPlotXY sig = CreateSignalPlot(values);
+
             Assert.Throws<InvalidOperationException>(() => sig.ValidateData(deep: true));
         }
 
