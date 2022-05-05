@@ -48,7 +48,7 @@ namespace ScottPlot.Cookbook
         }
 
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
-            .GroupBy(x => x.Category.Folder)
+            .GroupBy(x => x.Category.Name)
             .ToDictionary(group => group.Key, group => group.ToArray());
 
         private static Dictionary<string, IRecipe> RecipesByID = GetRecipes()
@@ -62,6 +62,9 @@ namespace ScottPlot.Cookbook
 
         public static IRecipe[] GetRecipes(string category) => RecipesByCategory[category];
 
+        /// <summary>
+        /// Returns all recipies by category in proper order (e.g., quickstart is first)
+        /// </summary>
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes() => RecipesByCategoryInOrder;
 
         static Locate() // A static constructor runs exactly once and before the class or an instance of it is needed
@@ -75,13 +78,13 @@ namespace ScottPlot.Cookbook
             "Axis and Ticks",
             "Advanced Axis Features",
             "Multi-Axis",
+            "Style",
+            "Palette",
+            "Misc"
         };
 
         private static readonly string[] bottomCategories =
         {
-            "Style",
-            "Palette",
-            "Misc"
         };
 
         private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)

@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook
 
             Parallel.ForEach(recipes, recipe =>
             {
-                var sw = System.Diagnostics.Stopwatch.StartNew();
+                Console.WriteLine($"Generating: {recipe.Category.Name} - {recipe.Title}");
                 var plt = new Plot(width, height);
                 recipe.ExecuteRecipe(plt);
 

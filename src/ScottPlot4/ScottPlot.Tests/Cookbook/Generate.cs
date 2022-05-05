@@ -15,8 +15,6 @@ namespace ScottPlotTests.Cookbook
     class Generate
     {
         string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook");
-        string OUTPUT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook/CookbookOutput");
-
 
         [Test]
         public void Test_Json_IsValid()
@@ -31,15 +29,6 @@ namespace ScottPlotTests.Cookbook
             Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
 
             Assert.AreEqual(recipes.Length, readRecipes.Count);
-        }
-
-        [Ignore("replace with a standalone generator")]
-        [Test]
-        public void Test_Generate_Cookbook()
-        {
-            Generator gen = new(COOKBOOK_PROJECT_FOLDER, OUTPUT_FOLDER, regenerate: true);
-            gen.MakeCategoryPages();
-            gen.MakeIndexPage();
         }
 
         [Test]
