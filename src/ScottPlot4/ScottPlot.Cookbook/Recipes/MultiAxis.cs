@@ -95,7 +95,7 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public ICategory Category => new Categories.MultiAxis();
         public string ID => "multiAxis_top";
-        public string Title => "Top Y Axis";
+        public string Title => "Top X Axis";
         public string Description =>
             "This example demonstrates how to display an X axis above the figure. " +
             "The horizontal axis above the figure is index 1, so plots must be updated " +
