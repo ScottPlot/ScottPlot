@@ -13,58 +13,16 @@ namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        readonly ScottPlot.Plottable.Heatmap MyHeatmap;
-        readonly ScottPlot.Plottable.ScatterPlot SquareOutline;
-        readonly double[,] MyHeatmapData = DataGen.SampleImageData();
-
         public Form1()
         {
             InitializeComponent();
 
-            MyHeatmap = formsPlot1.Plot.AddHeatmap(MyHeatmapData, lockScales: false);
-            MyHeatmap.CellWidth = 10;
-            MyHeatmap.CellHeight = .1;
-            MyHeatmap.OffsetX = 100;
-            MyHeatmap.OffsetY = 200;
-
-            formsPlot1.Plot.AddColorbar(MyHeatmap);
-
-            SquareOutline = formsPlot1.Plot.AddScatterLines(
-                xs: new double[] { 0, 0, MyHeatmap.CellWidth, MyHeatmap.CellWidth, 0 },
-                ys: new double[] { 0, MyHeatmap.CellHeight, MyHeatmap.CellHeight, 0, 0 },
-                lineWidth: 2,
-                color: Color.Magenta);
-            SquareOutline.IsVisible = false;
-
-            formsPlot1.LeftClicked += FormsPlot1_LeftClicked; ;
+            formsPlot1.Plot.AddScatter(DataGen.Consecutive(51), DataGen.Sin(51));
+            formsPlot1.Plot.AddSignal(DataGen.Cos(51));
+            formsPlot1.Plot.AddVerticalLine(25);
+            formsPlot1.Plot.AddText("test 123", 20, .5);
+            formsPlot1.Plot.AddMarker(15, -.5, MarkerShape.openCircle, 20);
             formsPlot1.Refresh();
-        }
-
-        private void FormsPlot1_LeftClicked(object sender, EventArgs e)
-        {
-            // determine which heatmap square was clicked
-            (double x, double y) = formsPlot1.GetMouseCoordinates();
-            (int? xIndex, int? yIndex) = MyHeatmap.GetCellIndexes(x, y);
-
-            // update the square outlining the clicked cell
-            if (xIndex.HasValue)
-                SquareOutline.OffsetX = xIndex.Value * MyHeatmap.CellWidth + MyHeatmap.OffsetX;
-
-            if (yIndex.HasValue)
-                SquareOutline.OffsetY = yIndex.Value * MyHeatmap.CellHeight + MyHeatmap.OffsetY;
-
-            if (xIndex.HasValue && yIndex.HasValue)
-            {
-                formsPlot1.Plot.Title($"Selected X={xIndex} Y={yIndex} Value={MyHeatmapData[yIndex.Value, xIndex.Value]}");
-                SquareOutline.IsVisible = true;
-            }
-            else
-            {
-                formsPlot1.Plot.Title($"No Heatmap Cell Selected");
-                SquareOutline.IsVisible = false;
-            }
-
-            formsPlot1.Render();
         }
     }
 }
