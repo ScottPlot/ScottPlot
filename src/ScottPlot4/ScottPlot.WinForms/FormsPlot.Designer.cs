@@ -42,6 +42,7 @@ namespace ScottPlot
             this.openInNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detachLegendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbErrorMessage = new System.Windows.Forms.RichTextBox();
+            this.plotObjectEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.DefaultRightClickMenu.SuspendLayout();
             this.SuspendLayout();
@@ -51,8 +52,9 @@ namespace ScottPlot
             this.pictureBox1.BackColor = System.Drawing.Color.Navy;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(400, 300);
+            this.pictureBox1.Size = new System.Drawing.Size(467, 346);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.DoubleClick += new System.EventHandler(this.PictureBox1_DoubleClick);
@@ -74,9 +76,10 @@ namespace ScottPlot
             this.helpMenuItem,
             this.toolStripSeparator3,
             this.openInNewWindowMenuItem,
-            this.detachLegendMenuItem});
+            this.detachLegendMenuItem,
+            this.plotObjectEditorToolStripMenuItem});
             this.DefaultRightClickMenu.Name = "contextMenuStrip1";
-            this.DefaultRightClickMenu.Size = new System.Drawing.Size(191, 132);
+            this.DefaultRightClickMenu.Size = new System.Drawing.Size(191, 198);
             // 
             // copyMenuItem
             // 
@@ -138,23 +141,32 @@ namespace ScottPlot
             // rtbErrorMessage
             // 
             this.rtbErrorMessage.BackColor = System.Drawing.Color.Maroon;
-            this.rtbErrorMessage.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbErrorMessage.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.rtbErrorMessage.ForeColor = System.Drawing.Color.White;
-            this.rtbErrorMessage.Location = new System.Drawing.Point(21, 24);
+            this.rtbErrorMessage.Location = new System.Drawing.Point(24, 28);
+            this.rtbErrorMessage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rtbErrorMessage.Name = "rtbErrorMessage";
-            this.rtbErrorMessage.Size = new System.Drawing.Size(186, 84);
+            this.rtbErrorMessage.Size = new System.Drawing.Size(216, 96);
             this.rtbErrorMessage.TabIndex = 1;
             this.rtbErrorMessage.Text = "error message";
             this.rtbErrorMessage.Visible = false;
             // 
+            // plotObjectEditorToolStripMenuItem
+            // 
+            this.plotObjectEditorToolStripMenuItem.Name = "plotObjectEditorToolStripMenuItem";
+            this.plotObjectEditorToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.plotObjectEditorToolStripMenuItem.Text = "Plot Object Editor";
+            this.plotObjectEditorToolStripMenuItem.Click += new System.EventHandler(this.RightClickMenu_PlotObjectEditor_Click);
+            // 
             // FormsPlot
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.rtbErrorMessage);
             this.Controls.Add(this.pictureBox1);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FormsPlot";
-            this.Size = new System.Drawing.Size(400, 300);
+            this.Size = new System.Drawing.Size(467, 346);
             this.Load += new System.EventHandler(this.FormsPlot_Load);
             this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -177,5 +189,6 @@ namespace ScottPlot
 		private System.Windows.Forms.ToolStripMenuItem openInNewWindowMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detachLegendMenuItem;
         private System.Windows.Forms.RichTextBox rtbErrorMessage;
+        private System.Windows.Forms.ToolStripMenuItem plotObjectEditorToolStripMenuItem;
     }
 }

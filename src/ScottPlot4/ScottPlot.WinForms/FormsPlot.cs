@@ -245,5 +245,7 @@ namespace ScottPlot
             if (sfd.ShowDialog() == DialogResult.OK)
                 Plot.SaveFig(sfd.FileName);
         }
+
+        private void RightClickMenu_PlotObjectEditor_Click(object sender, EventArgs e) => new PlotObjectEditor(this).ShowDialog();
     }
 }
