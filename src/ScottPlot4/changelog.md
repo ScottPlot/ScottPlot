@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.46
 _not yet published on NuGet..._
+* FormsPlot: Set `Configuration.EnablePlotObjectEditor` to `true` to allow users to launch a plot object property editor from the right-click menu (#1842, #1831) _Thanks @bradmartin333 and @BambOoxX_
 
 ## ScottPlot 4.1.45
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_
