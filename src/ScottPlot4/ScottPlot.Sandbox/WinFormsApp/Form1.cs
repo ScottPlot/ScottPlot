@@ -17,6 +17,8 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
+            formsPlot1.Configuration.EnablePlotObjectEditor = true;
+
             formsPlot1.Plot.AddScatter(DataGen.Consecutive(51), DataGen.Sin(51));
             formsPlot1.Plot.AddSignal(DataGen.Cos(51));
             formsPlot1.Plot.AddVerticalLine(25);

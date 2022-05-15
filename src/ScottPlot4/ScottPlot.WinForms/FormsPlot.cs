@@ -224,6 +224,7 @@ namespace ScottPlot
             var legend = Plot.Legend(enable: null, location: null);
             bool legendIsNotDetachedAlready = legend.IsDetached == false;
             detachLegendMenuItem.Visible = legendHasItems && legendIsNotDetachedAlready;
+            plotObjectEditorToolStripMenuItem.Visible = Configuration.EnablePlotObjectEditor;
             DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
