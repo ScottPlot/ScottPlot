@@ -15,6 +15,9 @@ namespace ScottPlot
             listBox1.Items.Clear();
             foreach (Plottable.IPlottable plottable in formsPlot.Plot.GetPlottables())
                 listBox1.Items.Add(plottable);
+
+            if (listBox1.Items.Count > 0)
+                listBox1.SelectedIndex = 0;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
