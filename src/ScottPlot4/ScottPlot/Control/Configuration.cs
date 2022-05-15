@@ -192,5 +192,11 @@ namespace ScottPlot.Control
         /// Call this if you suspect DPI scaling has changed.
         /// </summary>
         public void DpiMeasure() => DpiStretchRatio = Drawing.GDI.GetScaleRatio();
+
+
+        /// <summary>
+        /// If true, controls that support the plot object editor will display an option to launch it in the right-click menu
+        /// </summary>
+        public bool EnablePlotObjectEditor { get; set; } = false;
     }
 }

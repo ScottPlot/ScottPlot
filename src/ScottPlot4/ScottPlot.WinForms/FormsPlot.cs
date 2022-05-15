@@ -224,6 +224,7 @@ namespace ScottPlot
             var legend = Plot.Legend(enable: null, location: null);
             bool legendIsNotDetachedAlready = legend.IsDetached == false;
             detachLegendMenuItem.Visible = legendHasItems && legendIsNotDetachedAlready;
+            plotObjectEditorToolStripMenuItem.Visible = Configuration.EnablePlotObjectEditor;
             DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         }
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
@@ -245,5 +246,7 @@ namespace ScottPlot
             if (sfd.ShowDialog() == DialogResult.OK)
                 Plot.SaveFig(sfd.FileName);
         }
+
+        private void RightClickMenu_PlotObjectEditor_Click(object sender, EventArgs e) => new PlotObjectEditor(this).ShowDialog();
     }
 }
