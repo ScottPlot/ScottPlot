@@ -14,18 +14,28 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
 
         /// <summary>
-        /// Position of the primary corner (based on Alginment)
+        /// Position of the primary corner (based on Alignment)
         /// </summary>
         public double X { get; set; }
 
         /// <summary>
-        /// Position of the primary corner (based on Alginment)
+        /// Position of the primary corner (based on Alignment)
         /// </summary>
         public double Y { get; set; }
 
         /// <summary>
+        /// Width of the image, in axis units. If null, the image will use pixel units.
+        /// </summary>
+        public double? WidthInAxisUnits { get; set; } = null;
+
+        /// <summary>
+        /// Height of the image, in axis units. If null, the image will use pixel units.
+        /// </summary>
+        public double? HeightInAxisUnits { get; set; } = null;
+
+        /// <summary>
         /// Multiply the size of the image (in pixel units) by this scale factor.
-        /// The primary corner (based on Alginment) will remain anchored.
+        /// The primary corner (based on Alignment) will remain anchored.
         /// </summary>
         public float Scale = 1.0f;
 
@@ -51,9 +61,26 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public override string ToString() => $"PlottableImage Size(\"{Bitmap.Size}\") at ({X}, {Y})";
-        public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
+        public AxisLimits GetAxisLimits() => new(X, X + WidthInAxisUnits ?? 0, Y, Y + HeightInAxisUnits ?? 0);
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+
+        public override string ToString()
+        {
+            if (WidthInAxisUnits is double axisWidth)
+            {
+                if (HeightInAxisUnits is double axisHeight)
+                    return $"PlottableImage Axis Size({axisWidth}, {axisHeight}) at ({X}, {Y})";
+                else
+                    return $"PlottableImage Axis Width {axisWidth}, Pixel Height {Bitmap.Width} at ({X}, {Y})";
+            }
+            else
+            {
+                if (HeightInAxisUnits is double axisHeight)
+                    return $"PlottableImage Pixel Width {Bitmap.Width}, Axis Height {axisHeight} at ({X}, {Y})";
+                else
+                    return $"PlottableImage Size(\"{Bitmap.Size}\") at ({X}, {Y})";
+            }
+        }
 
         public void ValidateData(bool deep = false)
         {
@@ -63,6 +90,17 @@ namespace ScottPlot.Plottable
             if (double.IsNaN(Y) || double.IsInfinity(Y))
                 throw new InvalidOperationException("y must be a real value");
 
+            if (WidthInAxisUnits is double axisWidth)
+                if (double.IsNaN(axisWidth) || double.IsInfinity(axisWidth))
+                    throw new InvalidOperationException("width must be a real value");
+
+            if (HeightInAxisUnits is double axisHeight)
+                if (double.IsNaN(axisHeight) || double.IsInfinity(axisHeight))
+                    throw new InvalidOperationException("height must be a real value");
+
+            if (double.IsNaN(Scale) || double.IsInfinity(Scale))
+                throw new InvalidOperationException("scale must be a real value");
+
             if (double.IsNaN(Rotation) || double.IsInfinity(Rotation))
                 throw new InvalidOperationException("rotation must be a real value");
 
@@ -70,40 +108,52 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("image cannot be null");
         }
 
-        private PointF TextLocation(PointF input)
+        private PointF ImageLocationOffset(float width, float height)
         {
             return Alignment switch
             {
-                Alignment.LowerCenter => new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height),
-                Alignment.LowerLeft => new PointF(input.X, input.Y - Bitmap.Height),
-                Alignment.LowerRight => new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height),
-                Alignment.MiddleLeft => new PointF(input.X, input.Y - Bitmap.Height / 2),
-                Alignment.MiddleRight => new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height / 2),
-                Alignment.UpperCenter => new PointF(input.X - Bitmap.Width / 2, input.Y),
-                Alignment.UpperLeft => new PointF(input.X, input.Y),
-                Alignment.UpperRight => new PointF(input.X - Bitmap.Width, input.Y),
-                Alignment.MiddleCenter => new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height / 2),
+                Alignment.LowerCenter => new PointF(-width / 2, -height),
+                Alignment.LowerLeft => new PointF(0, -height),
+                Alignment.LowerRight => new PointF(-width, -height),
+                Alignment.MiddleLeft => new PointF(0, -height / 2),
+                Alignment.MiddleRight => new PointF(-width, -height / 2),
+                Alignment.UpperCenter => new PointF(-width / 2, 0),
+                Alignment.UpperLeft => new PointF(0, 0),
+                Alignment.UpperRight => new PointF(-width, 0),
+                Alignment.MiddleCenter => new PointF(-width / 2, -height / 2),
                 _ => throw new InvalidEnumArgumentException(),
             };
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            PointF defaultPoint = new PointF(dims.GetPixelX(X), dims.GetPixelY(Y));
-            PointF textLocationPoint = (Rotation == 0) ? TextLocation(defaultPoint) : defaultPoint;
+            PointF defaultPoint = new(dims.GetPixelX(X), dims.GetPixelY(Y));
+
+            float width, height;
+            if (WidthInAxisUnits is double axisWidth)
+                width = dims.GetPixelX(X + axisWidth) - defaultPoint.X;
+            else
+                width = Bitmap.Width;
+            if (HeightInAxisUnits is double axisHeight)
+                height = dims.GetPixelY(Y - axisHeight) - defaultPoint.Y;
+            else
+                height = Bitmap.Height;
+            width *= Scale;
+            height *= Scale;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var framePen = new Pen(BorderColor, BorderSize * 2))
             {
-                gfx.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
+                gfx.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+                gfx.TranslateTransform(defaultPoint.X, defaultPoint.Y);
                 gfx.RotateTransform((float)Rotation);
 
-                if (BorderSize > 0)
-                    gfx.DrawRectangle(framePen, new Rectangle(0, 0, Bitmap.Width - 1, Bitmap.Height - 1));
+                RectangleF rect = new(ImageLocationOffset(width, height), new SizeF(width, height));
 
-                RectangleF rect = new(0, 0, Bitmap.Width * Scale, Bitmap.Height * Scale);
+                if (BorderSize > 0)
+                    gfx.DrawRectangle(framePen, Math.Min(rect.X, rect.Right), Math.Min(rect.Y, rect.Bottom), Math.Abs(rect.Width) - 1, Math.Abs(rect.Height) - 1);
+
                 gfx.DrawImage(Bitmap, rect);
-                GDI.ResetTransformPreservingScale(gfx, dims);
             }
         }
     }

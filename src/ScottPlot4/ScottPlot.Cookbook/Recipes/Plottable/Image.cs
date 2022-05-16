@@ -110,4 +110,32 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             });
         }
     }
+
+    public class ImageSize : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Image();
+        public string ID => "image_size";
+        public string Title => "Image Size";
+        public string Description =>
+            "By default the image size is independent to the axis, but the size can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // display some sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // place an image on the plot
+            plt.Add(new ScottPlot.Plottable.Image()
+            {
+                Bitmap = DataGen.SampleImage(),
+                X = 10,
+                Y = .5,
+                WidthInAxisUnits = 10,
+                HeightInAxisUnits = 1,
+                BorderColor = Color.Magenta,
+                BorderSize = 5,
+            });
+        }
+    }
 }
