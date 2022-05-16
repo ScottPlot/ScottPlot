@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// A tooltip displays a text bubble pointing to a specific location in X/Y space.
     /// The position of the bubble moves according to the axis limits to best display the text in the data area.
     /// </summary>
-    public class Tooltip : IPlottable, IHasColor
+    public class Tooltip : IPlottable, IHasColor, IHittable
     {
         public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
@@ -34,9 +34,14 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Y { get; set; }
 
+        /// <summary>
+        /// Cursor to display when the tooltip is beneath the mouse
+        /// </summary>
+        public Cursor Cursor { get; set; } = Cursor.Hand;
+
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
         public void ValidateData(bool deep = false)
         {
@@ -49,6 +54,13 @@ namespace ScottPlot.Plottable
             if (double.IsNaN(Y) || double.IsInfinity(Y))
                 throw new InvalidOperationException("Y must be a real number");
         }
+
+        /// <summary>
+        /// Bounding box of the tooltip the last time is was rendered (in coordinate units)
+        /// </summary>
+        private CoordinateRect LastRenderRect = new(0, 0, 0, 0);
+
+        public bool HitTest(Coordinate coord) => LastRenderRect.Contains(coord);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -100,6 +112,10 @@ namespace ScottPlot.Plottable
                 float labelX = contentBoxInsideEdgeX + labelOffsetX + sign * LabelPadding / 2;
                 float labelY = upperArrowVertex.Y;
                 gfx.DrawString(Label, font, fontBrush, labelX, labelY);
+
+                // calculate where the tooltip is in coordinate units and save it for later hit detection
+                Coordinate[] corners = points.Select(pt => dims.GetCoordinate(pt.X, pt.Y)).ToArray();
+                LastRenderRect = CoordinateRect.BoundingBox(corners);
             }
         }
     }
