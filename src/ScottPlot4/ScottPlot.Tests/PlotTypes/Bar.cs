@@ -238,5 +238,24 @@ namespace ScottPlotTests.PlotTypes
             Assert.GreaterOrEqual(limits.YMax, 2);
             Assert.LessOrEqual(limits.YMin, -1);
         }
+
+        [Test]
+        public void Test_Bar_ZoomFarIn()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            double[] values = { 1e6, 2e6, 3e6 };
+            var bar = plt.AddBar(values);
+
+            plt.SetAxisLimits(-1, 3, 1000, 1000 + .001);
+            MeanPixel bmpVisible = new(plt);
+            //TestTools.SaveFig(plt, "visible");
+
+            bar.IsVisible = false;
+            MeanPixel bmpHidden = new(plt);
+            //TestTools.SaveFig(plt, "hidden");
+
+            Assert.That(bmpVisible.IsDifferentThan(bmpHidden));
+        }
     }
 }
