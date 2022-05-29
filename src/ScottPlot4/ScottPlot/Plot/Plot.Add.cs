@@ -60,6 +60,16 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Display a bracket highlighting a range in coordinate space.
+        /// </summary>
+        public Bracket AddBracket(double x1, double y1, double x2, double y2)
+        {
+            var plottable = new Bracket(x1, y1, x2, y2);
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a Cleveland Dot plot for the given values. Cleveland Dots will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2)
