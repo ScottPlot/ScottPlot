@@ -50,6 +50,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var invertedBracket = plt.AddBracket(x1, y1, x2, y2);
             invertedBracket.Label = "Inverted";
             invertedBracket.Invert = true;
+
+            plt.SetAxisLimits(-2, 2, -2, 2);
         }
     }
 }
