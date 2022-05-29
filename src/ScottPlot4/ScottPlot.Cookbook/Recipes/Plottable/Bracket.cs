@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class BracketInvert: IRecipe
+    public class BracketInvert : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Bracket();
         public string ID => "bracket_invert";

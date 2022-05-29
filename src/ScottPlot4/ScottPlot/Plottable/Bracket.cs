@@ -118,7 +118,7 @@ namespace ScottPlot.Plottable
                 var angle = (float)(-Math.Atan2(u.Y * dims.PxPerUnitY, u.X * dims.PxPerUnitX) * 180 / Math.PI);
                 if (angle < 0)
                     angle += 360;
-                
+
                 bool flippedText = false;
                 System.Diagnostics.Debug.WriteLine(angle);
                 if (angle > 90 && angle < 270)
