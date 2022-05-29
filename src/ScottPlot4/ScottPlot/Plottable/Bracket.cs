@@ -81,10 +81,10 @@ namespace ScottPlot.Plottable
             using var brush = GDI.Brush(Color);
             using var font = GDI.Font(Font);
 
-            var u = new Vector2((float)(X2 - X1), (float)(Y2 - Y1));
-            (Vector2 v, Vector2 w) = GetNormalVectors(u);
+            var v = new Vector2((float)(X2 - X1), (float)(Y2 - Y1));
+            var normalVectors = GetNormalVectors(v);
 
-            var normalVector = Invert ? w : v;
+            var normalVector = Invert ? normalVectors.Item1 : normalVectors.Item2;
 
             var globalTranslation = normalVector * 5;
             gfx.TranslateTransform(globalTranslation.X, globalTranslation.Y);
@@ -103,7 +103,7 @@ namespace ScottPlot.Plottable
             gfx.DrawLine(pen, pxEnd1.X, pxEnd1.Y, pxEnd2.X, pxEnd2.Y);
             gfx.DrawLine(pen, pxStart2.X, pxStart2.Y, pxEnd2.X, pxEnd2.Y);
 
-            var labelVector1 = new Vector2((float)X1, (float)Y1) + 0.5f * u; // The vector halfway between the two points
+            var labelVector1 = new Vector2((float)X1, (float)Y1) + 0.5f * v; // The vector halfway between the two points
 
             var labelPixel1 = dims.GetPixel(new(labelVector1.X, labelVector1.Y));
             labelPixel1.Translate(bracketHeadTranslation.X, bracketHeadTranslation.Y);
@@ -115,7 +115,7 @@ namespace ScottPlot.Plottable
             if (Label is not null)
             {
                 gfx.TranslateTransform(labelPixel2.X, labelPixel2.Y);
-                var angle = (float)(-Math.Atan2(u.Y * dims.PxPerUnitY, u.X * dims.PxPerUnitX) * 180 / Math.PI);
+                var angle = (float)(-Math.Atan2(v.Y * dims.PxPerUnitY, v.X * dims.PxPerUnitX) * 180 / Math.PI);
                 if (angle < 0)
                     angle += 360;
 
