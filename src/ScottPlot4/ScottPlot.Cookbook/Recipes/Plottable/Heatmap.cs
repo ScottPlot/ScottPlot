@@ -19,6 +19,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddHeatmap(data2D);
         }
     }
+
+    public class HeatmapFlip : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_flip";
+        public string Title => "Flipped Heatmap";
+        public string Description =>
+            "Sometimes it's more intuitive to draw heatmaps from the bottom-left corner.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
+
+            var hm = plt.AddHeatmap(data2D);
+            hm.FlipVertically = true;
+        }
+    }
+
     public class HeatmapMargins : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
