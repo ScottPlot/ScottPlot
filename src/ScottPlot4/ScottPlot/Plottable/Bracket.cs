@@ -32,6 +32,11 @@ namespace ScottPlot.Plottable
         public double Y2 { get; set; }
 
         /// <summary>
+        /// Size of the small lines (in pixels) placed the edges of the bracket and between the center of the bracket and the label
+        /// </summary>
+        public float EdgeLength = 5;
+
+        /// <summary>
         /// Text displayed in the annotation
         /// </summary>
         public string Label { get; set; }
@@ -41,7 +46,7 @@ namespace ScottPlot.Plottable
         public Color Color { get; set; } = Color.Black;
 
         /// <summary>
-        /// Inverts the bracket
+        /// Controls whether the bracket is placed above or below the line connecting the two points
         /// </summary>
         public bool Invert { get; set; }
 
@@ -65,13 +70,6 @@ namespace ScottPlot.Plottable
         {
         }
 
-        private (Vector2, Vector2) GetNormalVectors(Vector2 v)
-        {
-            Vector2 u = Vector2.Normalize(new(v.Y, v.X));
-
-            return (u, Vector2.Negate(u));
-        }
-
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
@@ -83,17 +81,19 @@ namespace ScottPlot.Plottable
             using var font = GDI.Font(Font);
 
             var v = new Vector2((float)(X2 - X1), (float)(Y2 - Y1));
-            var normalVectors = GetNormalVectors(v);
 
-            var normalVector = Invert ? normalVectors.Item1 : normalVectors.Item2;
+            Vector2 normal = Vector2.Normalize(new(v.Y, v.X));
+            Vector2 antiNormal = Vector2.Negate(normal);
 
-            var globalTranslation = normalVector * 5;
+            var edgeVector = Invert ? antiNormal : normal;
+
+            var globalTranslation = edgeVector * EdgeLength;
             gfx.TranslateTransform(globalTranslation.X, globalTranslation.Y);
 
             var pxStart1 = dims.GetPixel(new(X1, Y1));
             var pxEnd1 = dims.GetPixel(new(X2, Y2));
 
-            var bracketHeadTranslation = normalVector * 5;
+            var bracketHeadTranslation = edgeVector * EdgeLength;
 
             var pxStart2 = pxStart1;
             var pxEnd2 = pxEnd1;
