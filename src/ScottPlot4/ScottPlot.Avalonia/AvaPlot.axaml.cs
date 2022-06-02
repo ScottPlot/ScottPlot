@@ -44,6 +44,11 @@ namespace ScottPlot.Avalonia
         public event EventHandler LeftClicked;
 
         /// <summary>
+        /// This event is invoked when a <seealso cref="Plottable.IHittable"/> plottable is left-clicked.
+        /// </summary>
+        public event EventHandler LeftClickedPlottable;
+
+        /// <summary>
         /// This event is invoked after the mouse moves while dragging a draggable plottable.
         /// The object passed is the plottable being dragged.
         /// </summary>
@@ -91,6 +96,7 @@ namespace ScottPlot.Avalonia
             Backend.CursorChanged += new EventHandler(OnCursorChanged);
             Backend.RightClicked += new EventHandler(OnRightClicked);
             Backend.LeftClicked += new EventHandler(OnLeftClicked);
+            Backend.LeftClickedPlottable += new EventHandler(OnLeftClickedPlottable);
             Backend.AxesChanged += new EventHandler(OnAxesChanged);
             Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
             Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
@@ -142,6 +148,7 @@ namespace ScottPlot.Avalonia
         private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(() => BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnLeftClicked(object sender, EventArgs e) => LeftClicked?.Invoke(this, e);
+        private void OnLeftClickedPlottable(object sender, EventArgs e) => LeftClickedPlottable?.Invoke(sender, e);
         private void OnPlottableDragged(object sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
