@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.46
 _not yet published on NuGet..._
 * Bracket: New plot type to highlight a range of data between two points in coordinate space (#1863) _Thanks @bclehmann_
+* Axis: Improved placement of horizontal axis tick labels when multiple axes are in use (#1861, #1848) _Thanks @bclehmann and @Shengcancheng_
 * Crosshair: Now included in automatic axis limit detection. Use its `IgnoreAxisAuto` property to disable this functionality. (#1855, #1857) _Thanks @CarloToso and @bclehmann_
 * BarPlot: Improved automatic axis detection for bar plots containing negative values (#1855, #1857) _Thanks @CarloToso and @bclehmann_
 * IHittable: new interface to facilitate mouse click and hover hit detection (#1845) _Thanks @StendProg and @bclehmann_
