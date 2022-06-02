@@ -6,6 +6,7 @@ _not yet published on NuGet..._
 * Tooltip: Added logic to enable detection of mouse hover or click (#1843, #1844, #1845) _Thanks @kkaiser41, @bclehmann, and @StendProg_
 * Controls: All user controls now have a `LeftClickedPlottable` event that fires when a plottable implementing `IHittable` was left-clicked
 * FormsPlot: Set `Configuration.EnablePlotObjectEditor` to `true` to allow users to launch a plot object property editor from the right-click menu (#1842, #1831) _Thanks @bradmartin333 and @BambOoxX_
+* BarPlot: Fixed bug where zooming extremely far in would cause large fills to disappear (#1849, #1850) _Thanks @ChrisAtVault_
 
 ## ScottPlot 4.1.45
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_

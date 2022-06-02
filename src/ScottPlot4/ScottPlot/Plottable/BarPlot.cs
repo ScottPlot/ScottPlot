@@ -70,7 +70,7 @@ namespace ScottPlot.Plottable
             float errorPx2 = dims.GetPixelY(error2);
             float errorPx1 = dims.GetPixelY(error1);
 
-            RenderBarFromRect(rect, value < 0, gfx);
+            RenderBarFromRect(ClipRectToDataArea(rect, dims), value < 0, gfx);
 
             if (ErrorLineWidth > 0 && valueError > 0)
             {
@@ -101,7 +101,7 @@ namespace ScottPlot.Plottable
                 height: (float)(BarWidth * dims.PxPerUnitY),
                 width: (float)(valueSpan * dims.PxPerUnitX));
 
-            RenderBarFromRect(rect, value < 0, gfx);
+            RenderBarFromRect(ClipRectToDataArea(rect, dims), value < 0, gfx);
 
             // errorbar
             double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
@@ -164,6 +164,16 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             // TODO: refactor entire data validation system for all plot types (triaged March 2021)
+        }
+
+        private static RectangleF ClipRectToDataArea(RectangleF rect, PlotDimensions dims)
+        {
+            float left = Math.Max(rect.Left, dims.DataOffsetX - 1);
+            float right = Math.Min(rect.Right, dims.DataOffsetX + dims.DataWidth + 1);
+            float top = Math.Max(rect.Top, dims.DataOffsetY - 1);
+            float bottom = Math.Min(rect.Bottom, dims.DataOffsetY + dims.DataHeight + 1);
+
+            return new RectangleF(left, top, right - left, bottom - top);
         }
     }
 }
