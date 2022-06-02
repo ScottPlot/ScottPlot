@@ -168,6 +168,11 @@ namespace ScottPlot.Plottable
         public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
 
         /// <summary>
+        /// If true the Heatmap will be drawn from the bottom left corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
+        /// </summary>
+        public bool FlipVertically { get; set; } = false;
+
+        /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
         /// with a single pixel for every intensity value. The bitmap is stored
         /// and displayed (without anti-alias interpolation) when Render() is called.
@@ -363,10 +368,18 @@ namespace ScottPlot.Plottable
             int width = (int)Math.Round(dims.GetPixelX(OffsetX + DataWidth * CellWidth) - fromX);
             int height = (int)Math.Round(dims.GetPixelY(OffsetY) - fromY);
 
-            Rectangle destRect = new(fromX, fromY, width, height);
 
             ImageAttributes attr = new();
             attr.SetWrapMode(WrapMode.TileFlipXY);
+
+            gfx.TranslateTransform(fromX, fromY);
+
+            if (FlipVertically)
+            {
+                gfx.ScaleTransform(1, -1);
+            }
+
+            Rectangle destRect = FlipVertically ? new(0, -height, width, height) : new(0, 0, width, height);
 
             gfx.DrawImage(
                     image: BmpHeatmap,
