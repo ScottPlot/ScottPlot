@@ -58,7 +58,8 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-        public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
+
+        public AxisLimits GetAxisLimits() => new(Math.Min(X1, X2), Math.Max(X1, X2), Math.Min(Y1, Y2), Math.Max(Y1, Y2));
 
         public void ValidateData(bool deep = false)
         {
