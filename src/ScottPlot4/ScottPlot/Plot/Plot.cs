@@ -178,6 +178,28 @@ namespace ScottPlot
             return null;
         }
 
+        /// <summary>
+        /// Return the highest hittable plottable at the given point (or null if no hit)
+        /// </summary>
+        public IPlottable GetHittable(double xPixel, double yPixel)
+        {
+            foreach (var plottable in GetPlottables().Where(x => x is IHittable).Reverse())
+            {
+                int xAxisIndex = plottable.XAxisIndex;
+                int yAxisIndex = plottable.YAxisIndex;
+
+                double xCoords = GetCoordinateX((float)xPixel, xAxisIndex);
+                double yCoords = GetCoordinateY((float)yPixel, yAxisIndex);
+                Coordinate c = new(xCoords, yCoords);
+
+                IHittable hittable = (IHittable)plottable;
+                if (hittable.HitTest(c))
+                    return plottable;
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region plottable validation
