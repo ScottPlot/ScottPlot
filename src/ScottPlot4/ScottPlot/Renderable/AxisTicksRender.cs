@@ -92,7 +92,7 @@ namespace ScottPlot.Renderable
                     for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
                         float x = dims.GetPixelX(visibleMajorTicks[i].Position);
-                        float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength;
+                        float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength + PixelOffset;
 
                         gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
@@ -108,7 +108,7 @@ namespace ScottPlot.Renderable
                     for (int i = 0; i < visibleMajorTicks.Length; i++)
                     {
                         float x = dims.GetPixelX(visibleMajorTicks[i].Position);
-                        float y = dims.DataOffsetY - MajorTickLength;
+                        float y = dims.DataOffsetY - MajorTickLength - PixelOffset;
 
                         gfx.TranslateTransform(x, y);
                         gfx.RotateTransform(-rotation);
