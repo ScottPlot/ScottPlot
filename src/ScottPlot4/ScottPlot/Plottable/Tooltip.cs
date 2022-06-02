@@ -37,7 +37,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Cursor to display when the tooltip is beneath the mouse
         /// </summary>
-        public Cursor Cursor { get; set; } = Cursor.Hand;
+        public Cursor HitCursor { get; set; } = Cursor.Hand;
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 

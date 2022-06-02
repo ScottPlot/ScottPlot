@@ -630,7 +630,7 @@ namespace ScottPlot.Control
             var hittable = Plot.GetHittable(input.X, input.Y);
             if (hittable is not null)
             {
-                newCursor = ((IHittable)hittable).Cursor;
+                newCursor = ((IHittable)hittable).HitCursor;
             }
 
             if (Cursor != newCursor)

@@ -8,7 +8,7 @@ public interface IHittable
     /// <summary>
     /// Cursor to display when the Plottable is under the mouse
     /// </summary>
-    Cursor Cursor { get; set; }
+    Cursor HitCursor { get; set; }
 
     /// <summary>
     /// Returns true if the Plottable is at the given coordinate
