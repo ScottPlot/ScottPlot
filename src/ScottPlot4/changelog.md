@@ -2,6 +2,9 @@
 
 ## ScottPlot 4.1.46
 _not yet published on NuGet..._
+* IHittable: new interface to facilitate mouse click and hover hit detection (#1845) _Thanks @StendProg and @bclehmann_
+* Tooltip: Added logic to enable detection of mouse hover or click (#1843, #1844, #1845) _Thanks @kkaiser41, @bclehmann, and @StendProg_
+* Controls: All user controls now have a `LeftClickedPlottable` event that fires when a plottable implementing `IHittable` was left-clicked
 * FormsPlot: Set `Configuration.EnablePlotObjectEditor` to `true` to allow users to launch a plot object property editor from the right-click menu (#1842, #1831) _Thanks @bradmartin333 and @BambOoxX_
 
 ## ScottPlot 4.1.45
