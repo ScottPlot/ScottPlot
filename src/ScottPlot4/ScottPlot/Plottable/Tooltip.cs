@@ -39,6 +39,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Cursor HitCursor { get; set; } = Cursor.Hand;
 
+        public bool HitTestEnabled { get; set; } = true;
+
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
@@ -60,7 +62,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         private CoordinateRect LastRenderRect = new(0, 0, 0, 0);
 
-        public bool HitTest(Coordinate coord) => LastRenderRect.Contains(coord);
+        public bool HitTest(Coordinate coord) => HitTestEnabled ? LastRenderRect.Contains(coord) : false;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
