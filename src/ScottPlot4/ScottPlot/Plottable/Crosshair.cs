@@ -88,6 +88,11 @@ namespace ScottPlot.Plottable
 
         public Color LineColor { get => Color; set { Color = value; } }
 
+        /// <summary>
+        /// If true, AxisAuto() will ignore the position of this line when determining axis limits
+        /// </summary>
+        public bool IgnoreAxisAuto { get; set; } = false;
+
         public Crosshair()
         {
             LineStyle = LineStyle.Dash;
@@ -97,7 +102,9 @@ namespace ScottPlot.Plottable
             VerticalLine.PositionLabel = true;
         }
 
-        public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
+        public AxisLimits GetAxisLimits() => IgnoreAxisAuto
+                ? new(double.NaN, double.NaN, double.NaN, double.NaN)
+                : new(X, X, Y, Y);
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
