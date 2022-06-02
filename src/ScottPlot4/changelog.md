@@ -2,6 +2,8 @@
 
 ## ScottPlot 4.1.46
 _not yet published on NuGet..._
+* Crosshair: Now included in automatic axis limit detection. Use its `IgnoreAxisAuto` property to disable this functionality. (#1855, #1857) _Thanks @CarloToso and @bclehmann_
+* BarPlot: Improved automatic axis detection for bar plots containing negative values (#1855, #1857) _Thanks @CarloToso and @bclehmann_
 * IHittable: new interface to facilitate mouse click and hover hit detection (#1845) _Thanks @StendProg and @bclehmann_
 * Tooltip: Added logic to enable detection of mouse hover or click (#1843, #1844, #1845) _Thanks @kkaiser41, @bclehmann, and @StendProg_
 * Controls: All user controls now have a `LeftClickedPlottable` event that fires when a plottable implementing `IHittable` was left-clicked
