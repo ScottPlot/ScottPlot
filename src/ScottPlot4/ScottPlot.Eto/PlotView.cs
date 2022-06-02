@@ -33,12 +33,12 @@ namespace ScottPlot.Eto
         /// This event is invoked any time the plot is left-clicked.
         /// It is typically used to interact with custom plot types.
         /// </summary>
-        public event EventHandler LeftClicked;
+        public event EventHandler? LeftClicked;
 
         /// <summary>
         /// This event is invoked when a <seealso cref="Plottable.IHittable"/> plottable is left-clicked.
         /// </summary>
-        public event EventHandler LeftClickedPlottable;
+        public event EventHandler? LeftClickedPlottable;
 
         /// <summary>
         /// This event is invoked after the mouse moves while dragging a draggable plottable.
