@@ -52,7 +52,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-
     public class BracketStyle : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Bracket();
