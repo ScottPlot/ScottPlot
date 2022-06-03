@@ -48,5 +48,13 @@ namespace ScottPlot
             X += deltaX;
             Y += deltaY;
         }
+
+        /// <summary>
+        /// Return a new pixel translated by the given deltas
+        /// </summary>
+        public Pixel WithTranslation(float deltaX, float deltaY)
+        {
+            return new Pixel(X + deltaX, Y + deltaY);
+        }
     }
 }
