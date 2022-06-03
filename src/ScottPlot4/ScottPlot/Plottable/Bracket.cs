@@ -119,27 +119,28 @@ namespace ScottPlot.Plottable
 
             var bracketHeadTranslation = edgeVector * EdgeLength;
 
-            var pxStart2 = pxStart1;
-            var pxEnd2 = pxEnd1;
-            pxStart2.Translate(bracketHeadTranslation.X, bracketHeadTranslation.Y);
-            pxEnd2.Translate(bracketHeadTranslation.X, bracketHeadTranslation.Y);
+            var pxStart2 = pxStart1.WithTranslation(bracketHeadTranslation.X, bracketHeadTranslation.Y);
+            var pxEnd2 = pxEnd1.WithTranslation(bracketHeadTranslation.X, bracketHeadTranslation.Y);
 
             gfx.DrawLine(pen, pxStart1.X, pxStart1.Y, pxStart2.X, pxStart2.Y);
             gfx.DrawLine(pen, pxEnd1.X, pxEnd1.Y, pxEnd2.X, pxEnd2.Y);
             gfx.DrawLine(pen, pxStart2.X, pxStart2.Y, pxEnd2.X, pxEnd2.Y);
 
-            var labelVector1 = new Vector2((float)X1, (float)Y1) + 0.5f * v; // The vector halfway between the two points
-
-            var labelPixel1 = dims.GetPixel(new(labelVector1.X, labelVector1.Y));
-            labelPixel1.Translate(bracketHeadTranslation.X, bracketHeadTranslation.Y);
-            var labelPixel2 = labelPixel1;
-            labelPixel2.Translate(bracketHeadTranslation.X, bracketHeadTranslation.Y);
-
-            gfx.DrawLine(pen, labelPixel1.X, labelPixel1.Y, labelPixel2.X, labelPixel2.Y);
-
-            if (Label is not null)
+            if (!string.IsNullOrWhiteSpace(Label))
             {
-                gfx.TranslateTransform(labelPixel2.X, labelPixel2.Y);
+                // draw the "sub" line between center of bracket and center of base of label
+                var halfVector = new Vector2((float)X1, (float)Y1) + 0.5f * v;
+
+                Pixel stubPixel1 = dims.GetPixel(new(halfVector.X, halfVector.Y))
+                    .WithTranslation(bracketHeadTranslation.X, bracketHeadTranslation.Y);
+
+                Pixel stubPixel2 = stubPixel1
+                    .WithTranslation(bracketHeadTranslation.X, bracketHeadTranslation.Y);
+
+                gfx.DrawLine(pen, stubPixel1.X, stubPixel1.Y, stubPixel2.X, stubPixel2.Y);
+
+                // draw label text
+                gfx.TranslateTransform(stubPixel2.X, stubPixel2.Y);
                 var angle = (float)(-Math.Atan2(v.Y * dims.PxPerUnitY, v.X * dims.PxPerUnitX) * 180 / Math.PI);
                 if (angle < 0)
                     angle += 360;
