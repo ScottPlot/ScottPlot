@@ -60,6 +60,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a bracket to highlight a range between two points in coordinate space with an optional label.
+        /// </summary>
+        public Bracket AddBracket(double x1, double y1, double x2, double y2, string label = null)
+        {
+            Bracket plottable = new(x1, y1, x2, y2)
+            {
+                Label = label,
+            };
+
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a bracket to highlight a range between two points in coordinate space with an optional label.
+        /// </summary>
+        public Bracket AddBracket(Coordinate point1, Coordinate point2, string label = null)
+        {
+            return AddBracket(point1.X, point1.Y, point2.X, point2.Y, label);
+        }
+
+        /// <summary>
         /// Add a Cleveland Dot plot for the given values. Cleveland Dots will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public ClevelandDotPlot AddClevelandDot(double[] ys1, double[] ys2)
