@@ -37,7 +37,9 @@ namespace ScottPlotTests.Cookbook
                 string source = sources.Where(x => x.ID == recipe.ID).First().Code;
                 int openCount = source.Count(f => f == '{');
                 int closeCount = source.Count(f => f == '}');
-                Assert.AreEqual(openCount, closeCount, message: $"{recipe.Category} : {recipe.ID} format error - empty lines after a class?");
+                Assert.AreEqual(openCount, closeCount,
+                    message: $"Cookbook formatting error ({recipe.Category} / {recipe.ID}):\n" +
+                    $"Classes must be separated by exactly ONE line of whitespace.");
             }
         }
 
