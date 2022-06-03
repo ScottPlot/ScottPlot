@@ -39,17 +39,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
+            Random rand = new Random();
             double x1 = 0;
             double y1 = 0;
-            double x2 = 1;
-            double y2 = 1;
+            double x2 = rand.NextDouble() - 0.5;
+            double y2 = rand.NextDouble() - 0.5;
 
             var defaultBracket = plt.AddBracket(x1, y1, x2, y2);
             defaultBracket.Label = "Default";
 
             var invertedBracket = plt.AddBracket(x1, y1, x2, y2);
             invertedBracket.Label = "Inverted";
-            invertedBracket.Invert = true;
+            invertedBracket.LabelCounterClockwise = true;
 
             plt.SetAxisLimits(-2, 2, -2, 2);
         }

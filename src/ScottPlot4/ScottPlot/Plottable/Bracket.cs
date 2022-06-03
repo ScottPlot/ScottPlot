@@ -46,9 +46,9 @@ namespace ScottPlot.Plottable
         public Color Color { get; set; } = Color.Black;
 
         /// <summary>
-        /// Controls whether the bracket is placed above or below the line connecting the two points
+        /// Controls whether the tip of the bracket is counter-clockwise from the line formed by the bracket base.
         /// </summary>
-        public bool Invert { get; set; }
+        public bool LabelCounterClockwise { get; set; }
 
         public Bracket(double x1, double y1, double x2, double y2)
         {
@@ -70,6 +70,13 @@ namespace ScottPlot.Plottable
         {
         }
 
+        private double AngleBetweenVectors(Vector2 reference, Vector2 v)
+        {
+            reference = Vector2.Normalize(reference);
+            v = Vector2.Normalize(v);
+            return Math.Acos(Vector2.Dot(reference, v));
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
@@ -81,11 +88,20 @@ namespace ScottPlot.Plottable
             using var font = GDI.Font(Font);
 
             var v = new Vector2((float)(X2 - X1), (float)(Y2 - Y1));
+            var vDirectionVector = Vector2.Normalize(v);
+
+            if (v.X < 0 || (v.X == 0 && v.Y < 0)) // To prevent switching the order of the points from changing label position
+            {
+                vDirectionVector = Vector2.Negate(vDirectionVector);
+            }
 
             Vector2 normal = Vector2.Normalize(new(v.Y, v.X));
             Vector2 antiNormal = Vector2.Negate(normal);
 
-            var edgeVector = Invert ? antiNormal : normal;
+            var clockwiseNormalVector = AngleBetweenVectors(vDirectionVector, normal) > 0 ? normal : antiNormal;
+            var counterClockwiseNormalVector = normal == clockwiseNormalVector ? antiNormal : normal;
+
+            var edgeVector = LabelCounterClockwise ? counterClockwiseNormalVector : clockwiseNormalVector;
 
             var globalTranslation = edgeVector * EdgeLength;
             gfx.TranslateTransform(globalTranslation.X, globalTranslation.Y);
@@ -121,7 +137,6 @@ namespace ScottPlot.Plottable
                     angle += 360;
 
                 bool flippedText = false;
-                System.Diagnostics.Debug.WriteLine(angle);
                 if (angle > 90 && angle < 270)
                 {
                     flippedText = true;
@@ -130,8 +145,10 @@ namespace ScottPlot.Plottable
 
                 gfx.RotateTransform(angle);
 
+                bool IsInverted = edgeVector == antiNormal;
+
                 var labelHeight = gfx.MeasureString(Label, font).Height;
-                gfx.TranslateTransform(0, labelHeight * ((Invert && !flippedText || !Invert && flippedText) ? 0 : 1));
+                gfx.TranslateTransform(0, labelHeight * ((IsInverted && !flippedText || !IsInverted && flippedText) ? 0 : 1));
 
                 gfx.DrawString(Label, font, brush, 0, 0, new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far });
             }
