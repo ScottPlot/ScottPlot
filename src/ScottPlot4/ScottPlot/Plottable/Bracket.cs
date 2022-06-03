@@ -43,12 +43,20 @@ namespace ScottPlot.Plottable
 
         public readonly Drawing.Font Font = new();
 
+        /// <summary>
+        /// Color of the bracket lines and text
+        /// </summary>
         public Color Color { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Thickness (in pixels) of the lines
+        /// </summary>
+        public float LineWidth { get; set; } = 1;
 
         /// <summary>
         /// Controls whether the tip of the bracket is counter-clockwise from the line formed by the bracket base.
         /// </summary>
-        public bool LabelCounterClockwise { get; set; }
+        public bool LabelCounterClockwise { get; set; } = false;
 
         public Bracket(double x1, double y1, double x2, double y2)
         {
@@ -83,7 +91,7 @@ namespace ScottPlot.Plottable
                 return;
 
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using var pen = GDI.Pen(Color);
+            using var pen = GDI.Pen(Color, LineWidth);
             using var brush = GDI.Brush(Color);
             using var font = GDI.Font(Font);
 
