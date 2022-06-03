@@ -96,7 +96,7 @@ namespace ScottPlot.Plottable
             using var font = GDI.Font(Font);
 
             var v = new Vector2((float)(X2 - X1), (float)(Y2 - Y1));
-            var vPixel = new Vector2((float)(v.X * dims.PxPerUnitX),(float)(v.Y * dims.PxPerUnitY));
+            var vPixel = new Vector2((float)(v.X * dims.PxPerUnitX), (float)(v.Y * dims.PxPerUnitY));
             var vDirectionVector = Vector2.Normalize(vPixel);
 
             if (v.X < 0 || (v.X == 0 && v.Y < 0)) // To prevent switching the order of the points from changing label position
