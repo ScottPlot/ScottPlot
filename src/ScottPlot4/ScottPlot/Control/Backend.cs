@@ -93,6 +93,11 @@ namespace ScottPlot.Control
         public event EventHandler LeftClicked = delegate { };
 
         /// <summary>
+        /// This event is invoked when the user left-clicks a plottable control with the mouse.
+        /// </summary>
+        public event EventHandler LeftClickedPlottable = delegate { };
+
+        /// <summary>
         /// This event is invoked after the mouse moves while dragging a draggable plottable.
         /// </summary>
         public event EventHandler PlottableDragged = delegate { };
@@ -614,9 +619,25 @@ namespace ScottPlot.Control
         /// </summary>
         private void UpdateCursor(InputState input)
         {
+            var newCursor = Cursor.Arrow;
+
             var draggableUnderCursor = Plot.GetDraggable(input.X, input.Y);
-            Cursor = (draggableUnderCursor is null) ? Cursor.Arrow : draggableUnderCursor.DragCursor;
-            CursorChanged(null, EventArgs.Empty);
+            if (draggableUnderCursor is not null)
+            {
+                newCursor = draggableUnderCursor.DragCursor;
+            }
+
+            var hittable = Plot.GetHittable(input.X, input.Y);
+            if (hittable is not null)
+            {
+                newCursor = ((IHittable)hittable).HitCursor;
+            }
+
+            if (Cursor != newCursor)
+            {
+                Cursor = newCursor;
+                CursorChanged(null, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -641,7 +662,15 @@ namespace ScottPlot.Control
                 RightClicked(null, EventArgs.Empty);
 
             if (IsLeftDown && MouseDownDragged == false)
+            {
                 LeftClicked(null, EventArgs.Empty);
+
+                IPlottable plottableHit = Plot.GetHittable(input.X, input.Y);
+                if (plottableHit is not null)
+                {
+                    LeftClickedPlottable(plottableHit, EventArgs.Empty);
+                }
+            }
 
             IsMiddleDown = false;
             IsRightDown = false;

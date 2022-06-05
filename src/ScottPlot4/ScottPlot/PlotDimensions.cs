@@ -38,8 +38,8 @@ namespace ScottPlot
         public Pixel GetPixel(Coordinate coordinate) => new Pixel(GetPixelX(coordinate.X), GetPixelY(coordinate.Y));
         public float GetPixelX(double position) => (float)(DataOffsetX + ((position - XMin) * PxPerUnitX));
         public float GetPixelY(double position) => (float)(DataOffsetY + ((YMax - position) * PxPerUnitY));
-
-        public Coordinate GetCoordinate(Pixel pixel) => new Coordinate(GetCoordinateX(pixel.X), GetCoordinateY(pixel.Y));
+        public Coordinate GetCoordinate(Pixel pixel) => new(GetCoordinateX(pixel.X), GetCoordinateY(pixel.Y));
+        public Coordinate GetCoordinate(float xPixel, float yPixel) => new(GetCoordinateX(xPixel), GetCoordinateY(yPixel));
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
         public double GetCoordinateY(float pixel) => YMax - (pixel - DataOffsetY) / PxPerUnitY;
 

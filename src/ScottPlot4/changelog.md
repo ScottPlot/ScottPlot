@@ -2,7 +2,16 @@
 
 ## ScottPlot 4.1.46
 _not yet published on NuGet..._
+* Bracket: New plot type to highlight a range of data between two points in coordinate space (#1863) _Thanks @bclehmann_
+* Heatmap: Added `FlipVertically` property to invert orientation of original data (#1866, #1864) _Thanks @bclehmann and @vtozarks_
+* Axis: Improved placement of horizontal axis tick labels when multiple axes are in use (#1861, #1848) _Thanks @bclehmann and @Shengcancheng_
+* Crosshair: Now included in automatic axis limit detection. Use its `IgnoreAxisAuto` property to disable this functionality. (#1855, #1857) _Thanks @CarloToso and @bclehmann_
+* BarPlot: Improved automatic axis detection for bar plots containing negative values (#1855, #1857) _Thanks @CarloToso and @bclehmann_
+* IHittable: new interface to facilitate mouse click and hover hit detection (#1845) _Thanks @StendProg and @bclehmann_
+* Tooltip: Added logic to enable detection of mouse hover or click (#1843, #1844, #1845) _Thanks @kkaiser41, @bclehmann, and @StendProg_
+* Controls: All user controls now have a `LeftClickedPlottable` event that fires when a plottable implementing `IHittable` was left-clicked
 * FormsPlot: Set `Configuration.EnablePlotObjectEditor` to `true` to allow users to launch a plot object property editor from the right-click menu (#1842, #1831) _Thanks @bradmartin333 and @BambOoxX_
+* BarPlot: Fixed bug where zooming extremely far in would cause large fills to disappear (#1849, #1850) _Thanks @ChrisAtVault_
 
 ## ScottPlot 4.1.45
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-05-05_
