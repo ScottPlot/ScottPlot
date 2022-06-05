@@ -11,23 +11,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "image_quickstart";
         public string Title => "Image Quickstart";
         public string Description =>
-            "The Image plottable places a Bitmap at a location in X/Y space." +
-            "The image's position will move in space as the axes move, but the " +
-            "size of the bitmap will always be the same (matched to the display resolution). ";
+            "The Image plottable places a Bitmap at coordinte in axis space.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // display some sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // create the bitmap we want to display
             Bitmap monaLisa = DataGen.SampleImage();
 
-            // create the image plottable and add it to the plot
-            var imagePlot = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10, Y = .5 };
-
-            plt.Add(imagePlot);
+            plt.AddImage(monaLisa, 10, .5);
         }
     }
 
@@ -38,27 +31,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Title => "Image Alignment";
         public string Description =>
             "By default the X/Y coordinates define the upper left position of the image, " +
-            "but alignment can be customized.";
+            "but alignment can be customized by defining the anchor.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // display some sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // display an image with 3 different alignments
             Bitmap monaLisa = DataGen.SampleImage();
-            var ip1 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10 };
-            var ip2 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 25, Alignment = Alignment.MiddleCenter };
-            var ip3 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 40, Alignment = Alignment.LowerRight };
 
-            plt.Add(ip1);
-            plt.Add(ip2);
-            plt.Add(ip3);
+            plt.AddImage(monaLisa, 10, 0);
+            plt.AddPoint(10, 0, Color.Magenta, size: 20);
 
-            plt.AddPoint(ip1.X, ip1.Y, Color.Magenta, size: 20);
-            plt.AddPoint(ip2.X, ip2.Y, Color.Magenta, size: 20);
-            plt.AddPoint(ip3.X, ip3.Y, Color.Magenta, size: 20);
+            plt.AddImage(monaLisa, 25, 0, anchor: Alignment.MiddleCenter);
+            plt.AddPoint(25, 0, Color.Magenta, size: 20);
+
+            plt.AddImage(monaLisa, 40, 0, anchor: Alignment.LowerRight);
+            plt.AddPoint(40, 0, Color.Magenta, size: 20);
         }
     }
 
@@ -68,19 +57,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "image_rotation";
         public string Title => "Image Rotation";
         public string Description =>
-            "Images can be rotated, but rotation is always relative to the upper left corner.";
+            "Images can be rotated around the position defined by their anchor.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // display some sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // place a rotated image on the plot
             Bitmap monaLisa = DataGen.SampleImage();
-            var ip1 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10, Y = .5, Rotation = 30 };
-            plt.Add(ip1);
-            plt.AddPoint(ip1.X, ip1.Y, color: Color.Magenta, size: 20);
+
+            plt.AddImage(monaLisa, 10, .5, rotation: 30);
+            plt.AddPoint(10, .5, color: Color.Magenta, size: 20);
+
+            plt.AddImage(monaLisa, 25, 0, rotation: -30);
+            plt.AddPoint(25, 0, color: Color.Magenta, size: 20);
+
+            plt.AddImage(monaLisa, 45, 0, rotation: 30, anchor: Alignment.MiddleCenter);
+            plt.AddPoint(45, 0, color: Color.Magenta, size: 20);
         }
     }
 
@@ -94,20 +87,66 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            Bitmap monaLisa = DataGen.SampleImage();
+
+            var img = plt.AddImage(monaLisa, 10, .5, rotation: 30);
+            img.BorderColor = Color.Magenta;
+            img.BorderSize = 5;
+        }
+    }
+
+    public class ImageScaling : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Image();
+        public string ID => "image_scaling";
+        public string Title => "Image Scaling";
+        public string Description =>
+            "Size of the image (in relative pixel units) can be adjusted.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            Bitmap monaLisa = DataGen.SampleImage();
+
+            plt.AddImage(monaLisa, 5, .5);
+            plt.AddImage(monaLisa, 15, .5, scale: .5);
+            plt.AddImage(monaLisa, 30, .5, scale: 2);
+        }
+    }
+
+    public class ImageStretching : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Image();
+        public string ID => "image_stretching";
+        public string Title => "Image Stretching";
+        public string Description =>
+            "By default image dimensions are in pixel units so they are not stretched " +
+            "as axes are manipulated. However, users have the option to define " +
+            "image dimensions in axis units. In this case, corners of images will remain " +
+            "fixed on the coordinate system and will get stretched as axes are stretched.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
             // display some sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // place an image on the plot
-            plt.Add(new ScottPlot.Plottable.Image()
-            {
-                Bitmap = DataGen.SampleImage(),
-                X = 10,
-                Y = .5,
-                Rotation = 30,
-                BorderColor = Color.Magenta,
-                BorderSize = 5,
-            });
+            Bitmap monaLisa = DataGen.SampleImage();
+
+            var img = plt.AddImage(monaLisa, 10, .5);
+            img.HeightInAxisUnits = 1;
+            img.WidthInAxisUnits = 30;
+
+            // 4 corners of the image remain fixed in coordinate space
+            plt.AddPoint(10, .5, color: Color.Magenta, size: 20);
+            plt.AddPoint(40, .5, color: Color.Green, size: 20);
+            plt.AddPoint(10, -.5, color: Color.Green, size: 20);
+            plt.AddPoint(40, -.5, color: Color.Green, size: 20);
         }
     }
 }
