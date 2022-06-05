@@ -58,9 +58,16 @@ namespace ScottPlot.Plottable
         public Alignment Alignment { get; set; }
 
         public Color BorderColor { get; set; }
+
+        /// <summary>
+        /// Line width of the border (in pixels)
+        /// </summary>
         public float BorderSize { get; set; }
+
         public string Label { get; set; }
+
         public int XAxisIndex { get; set; } = 0;
+
         public int YAxisIndex { get; set; } = 0;
 
         public AxisLimits GetAxisLimits()
