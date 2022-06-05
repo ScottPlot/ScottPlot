@@ -630,17 +630,28 @@ namespace ScottPlot
             Add(plottable);
             return plottable;
         }
-
         /// <summary>
-        /// Display an image at a specific coordinate
+        /// Display an image at a specific coordinate.
+        /// The <paramref name="anchor"/> defines which part of the image is placed at that coordinate.
+        /// By default the image is shown at its original size (in pixel units), but this can be modified with <paramref name="scale"/>.
         /// </summary>
-        public Plottable.Image AddImage(Bitmap bitmap, double x, double y)
+        /// <param name="bitmap">Image to display</param>
+        /// <param name="x">horizontal position of the image anchor (axis units)</param>
+        /// <param name="y">vertical position of the image anchor (axis units)</param>
+        /// <param name="rotation">rotation in degrees</param>
+        /// <param name="scale">scale (1.0 = original scale, 2.0 = double size)</param>
+        /// <param name="anchor">definces which part of the image is placed at the given X and Y coordinates</param>
+        /// <returns></returns>
+        public Plottable.Image AddImage(Bitmap bitmap, double x, double y, double rotation = 0, double scale = 1, Alignment anchor = Alignment.UpperLeft)
         {
-            Plottable.Image plottable = new Plottable.Image()
+            Plottable.Image plottable = new()
             {
                 Bitmap = bitmap,
                 X = x,
                 Y = y,
+                Rotation = rotation,
+                Scale = scale,
+                Alignment = anchor,
             };
 
             settings.Plottables.Add(plottable);
