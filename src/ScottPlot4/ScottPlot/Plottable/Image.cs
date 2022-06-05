@@ -24,12 +24,14 @@ namespace ScottPlot.Plottable
         public double Y { get; set; }
 
         /// <summary>
-        /// Width of the image, in axis units. If null, the image will use pixel units.
+        /// If defined, the image will be stretched to be this wide in axis units.
+        /// If null, the image will use screen/pixel units.
         /// </summary>
         public double? WidthInAxisUnits { get; set; } = null;
 
         /// <summary>
-        /// Height of the image, in axis units. If null, the image will use pixel units.
+        /// If defined, the image will be stretched to be this height in axis units.
+        /// If null, the image will use screen/pixel units.
         /// </summary>
         public double? HeightInAxisUnits { get; set; } = null;
 
@@ -37,7 +39,7 @@ namespace ScottPlot.Plottable
         /// Multiply the size of the image (in pixel units) by this scale factor.
         /// The primary corner (based on Alignment) will remain anchored.
         /// </summary>
-        public float Scale = 1.0f;
+        public double Scale = 1.0;
 
         /// <summary>
         /// Rotate the image clockwise around its primary corner (defined by Alignment) by this number of degrees
@@ -61,7 +63,15 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public AxisLimits GetAxisLimits() => new(X, X + WidthInAxisUnits ?? 0, Y, Y + HeightInAxisUnits ?? 0);
+        public AxisLimits GetAxisLimits()
+        {
+            return new AxisLimits(
+                xMin: X,
+                xMax: X + WidthInAxisUnits ?? 0,
+                yMin: Y,
+                yMax: Y + HeightInAxisUnits ?? 0);
+        }
+
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public override string ToString()
@@ -130,16 +140,19 @@ namespace ScottPlot.Plottable
             PointF defaultPoint = new(dims.GetPixelX(X), dims.GetPixelY(Y));
 
             float width, height;
+
             if (WidthInAxisUnits is double axisWidth)
                 width = dims.GetPixelX(X + axisWidth) - defaultPoint.X;
             else
                 width = Bitmap.Width;
+
             if (HeightInAxisUnits is double axisHeight)
                 height = dims.GetPixelY(Y - axisHeight) - defaultPoint.Y;
             else
                 height = Bitmap.Height;
-            width *= Scale;
-            height *= Scale;
+
+            width = (float)(width * Scale);
+            height = (float)(height * Scale);
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var framePen = new Pen(BorderColor, BorderSize * 2))
