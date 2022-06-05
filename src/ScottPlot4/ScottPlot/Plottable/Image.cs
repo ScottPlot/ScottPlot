@@ -2,7 +2,6 @@
 using System.Drawing;
 using ScottPlot.Drawing;
 using System;
-using System.Data;
 
 namespace ScottPlot.Plottable
 {
