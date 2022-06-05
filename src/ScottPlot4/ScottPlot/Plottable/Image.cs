@@ -83,20 +83,9 @@ namespace ScottPlot.Plottable
 
         public override string ToString()
         {
-            if (WidthInAxisUnits is double axisWidth)
-            {
-                if (HeightInAxisUnits is double axisHeight)
-                    return $"PlottableImage Axis Size({axisWidth}, {axisHeight}) at ({X}, {Y})";
-                else
-                    return $"PlottableImage Axis Width {axisWidth}, Pixel Height {Bitmap.Width} at ({X}, {Y})";
-            }
-            else
-            {
-                if (HeightInAxisUnits is double axisHeight)
-                    return $"PlottableImage Pixel Width {Bitmap.Width}, Axis Height {axisHeight} at ({X}, {Y})";
-                else
-                    return $"PlottableImage Size(\"{Bitmap.Size}\") at ({X}, {Y})";
-            }
+            string w = (WidthInAxisUnits is null) ? $"{Bitmap.Width} pixels" : $"{WidthInAxisUnits} axis units";
+            string h = (HeightInAxisUnits is null) ? $"{Bitmap.Height} pixels" : $"{HeightInAxisUnits} axis units";
+            return $"Image at ({X}, {Y}), Width = {w}, Height = {h}";
         }
 
         public void ValidateData(bool deep = false)
