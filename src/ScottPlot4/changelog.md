@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.46
+## ScottPlot 4.1.47
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.46
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-05_
 * Image: `AddImage()` has optional arguments to define rotation, scale, and anchor alignment. The `Image` plot type has new public properties allowing images to be stretched so position and size can be defined using axis units (see Cookbook). `Rotation` now respects all anchor alignments. (#1847) _Thanks @wtywtykk and @bclehmann_
 * Bracket: New plot type to highlight a range of data between two points in coordinate space (#1863) _Thanks @bclehmann_
 * Heatmap: Added `FlipVertically` property to invert orientation of original data (#1866, #1864) _Thanks @bclehmann and @vtozarks_
