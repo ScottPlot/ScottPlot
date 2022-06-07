@@ -27,7 +27,8 @@ public static class Generator
             RecipeImages.Generate(imageFolderPath);
 
             Console.WriteLine($"Generating JSON ...");
-            RecipeJson.Generate(cookbookProjectFolder, jsonFilePath);
+            string json = RecipeJson.Generate(cookbookProjectFolder);
+            File.WriteAllText(jsonFilePath, json);
         }
 
         Console.WriteLine($"Reading JSON ...");
