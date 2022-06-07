@@ -104,7 +104,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "scatterList_smooth";
         public string Title => "Scatter Plot with Smooth Lines";
         public string Description =>
-            "Set the Smoothness property to a value greater than 1 to draw smooth " + 
+            "Set the Smoothness property to a value greater than 1 to draw smooth " +
             "lines connecting data points. This is similar to the default behavior in Excel.";
 
         public void ExecuteRecipe(Plot plt)
