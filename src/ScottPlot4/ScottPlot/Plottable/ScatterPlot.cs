@@ -71,7 +71,15 @@ namespace ScottPlot.Plottable
             set { _markerLineWidth = value; }
         }
 
-        public bool StepDisplay = false;
+        /// <summary>
+        /// If enabled, scatter plot points will be connected by square corners rather than straight diagnal lines
+        /// </summary>
+        public bool StepDisplay { get; set; } = false;
+
+        /// <summary>
+        /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
+        /// </summary>
+        public bool Smooth = false;
 
         public bool IsHighlighted { get; set; } = false;
         public float HighlightCoefficient { get; set; } = 2;
@@ -303,6 +311,10 @@ namespace ScottPlot.Plottable
                         }
                         pointsStep[pointsStep.Length - 1] = points[points.Length - 1];
                         gfx.DrawLines(penLine, pointsStep);
+                    }
+                    else if (Smooth)
+                    {
+                        gfx.DrawCurve(penLine, points);
                     }
                     else
                     {

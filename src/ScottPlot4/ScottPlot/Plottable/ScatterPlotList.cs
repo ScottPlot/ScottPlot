@@ -26,6 +26,8 @@ namespace ScottPlot.Plottable
         public float MarkerSize { get; set; } = 3;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
+        public bool Smooth { get; set; } = false;
+
         public void ValidateData(bool deep = false)
         {
             if (Xs.Count != Ys.Count)
@@ -92,12 +94,20 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             PointF[] points = GetPoints(dims);
+
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var linePen = GDI.Pen(Color, LineWidth, LineStyle, true);
 
             if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)
             {
-                gfx.DrawLines(linePen, points);
+                if (Smooth)
+                {
+                    gfx.DrawCurve(linePen, points);
+                }
+                else
+                {
+                    gfx.DrawLines(linePen, points);
+                }
             }
 
             if (MarkerShape != MarkerShape.none && MarkerSize > 0 && Count > 0)
