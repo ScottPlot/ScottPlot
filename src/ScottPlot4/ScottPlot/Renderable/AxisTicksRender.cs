@@ -168,29 +168,41 @@ namespace ScottPlot.Renderable
             {
                 switch (edge)
                 {
+                    case Edge.Left:
+                        sf.Alignment = StringAlignment.Far;
+                        sf.LineAlignment = StringAlignment.Far;
+                        gfx.DrawString(s: "\n" + tc.CornerLabel,
+                            x: dims.DataOffsetX - MajorTickLength - PixelOffset,
+                            y: dims.DataOffsetY,
+                            font: font, brush: brush, format: sf);
+                        break;
+
                     case Edge.Bottom:
                         sf.Alignment = StringAlignment.Far;
                         sf.LineAlignment = StringAlignment.Near;
                         gfx.DrawString(s: "\n" + tc.CornerLabel,
                             x: dims.DataOffsetX + dims.DataWidth,
-                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength,
+                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + PixelOffset,
                             font: font, brush: brush, format: sf);
                         break;
 
-                    case Edge.Left:
+                    case Edge.Right:
                         sf.Alignment = StringAlignment.Near;
                         sf.LineAlignment = StringAlignment.Far;
                         gfx.DrawString(s: "\n" + tc.CornerLabel,
-                            x: dims.DataOffsetX,
+                            x: dims.DataOffsetX + dims.DataWidth + MajorTickLength + PixelOffset,
                             y: dims.DataOffsetY,
                             font: font, brush: brush, format: sf);
                         break;
 
                     case Edge.Top:
-                        throw new NotImplementedException("multiplier and offset notation is not supported for right and top axes");
-
-                    case Edge.Right:
-                        throw new NotImplementedException("multiplier and offset notation is not supported for right and top axes");
+                        sf.Alignment = StringAlignment.Far;
+                        sf.LineAlignment = StringAlignment.Far;
+                        gfx.DrawString(s: tc.CornerLabel + "\n\n",
+                            x: dims.DataOffsetX + dims.DataWidth,
+                            y: dims.DataOffsetY - MajorTickLength - PixelOffset,
+                            font: font, brush: brush, format: sf);
+                        break;
 
                     default:
                         throw new NotImplementedException($"unsupported edge type {edge}");

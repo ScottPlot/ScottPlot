@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.47
 _not yet published on NuGet..._
+* Axis: Improved corner notation for multi-axis plots (#1875) _Thanks @nassaleh_
 
 ## ScottPlot 4.1.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-05_
