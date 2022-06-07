@@ -102,7 +102,7 @@ namespace ScottPlot.Cookbook.Recipes
             "The Frameless() method disables and collapses all axes " +
             "so the data area is all that appears. Although the figure " +
             "background is blue in this example, none of it will show, because " +
-            "the data area occupies 100% of the available space.";
+            "the data area occupies all of the available space.";
 
         public void ExecuteRecipe(Plot plt)
         {
