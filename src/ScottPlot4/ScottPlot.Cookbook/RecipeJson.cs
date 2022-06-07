@@ -12,11 +12,11 @@ namespace ScottPlot.Cookbook
         /// Use SOURCE CODE FILE PARSING to locate all recipes in the project and store their information in a JSON file
         /// </summary>
         /// <returns>array of recipes found using source code file parsing</returns>
-        public static RecipeSource[] Generate(string cookbookFolder, string saveFilePath, int width = 600, int height = 400)
+        public static string Generate(string cookbookFolder, int width = 600, int height = 400)
         {
             RecipeSource[] recipes = SourceParsing.GetRecipeSources(cookbookFolder, width, height);
 
-            using var stream = File.OpenWrite(saveFilePath);
+            using MemoryStream stream = new();
             var options = new JsonWriterOptions() { Indented = true };
             using var writer = new Utf8JsonWriter(stream, options);
 
@@ -39,7 +39,10 @@ namespace ScottPlot.Cookbook
             writer.WriteEndArray();
             writer.WriteEndObject();
 
-            return recipes;
+            writer.Flush();
+            string json = Encoding.UTF8.GetString(stream.ToArray());
+
+            return json;
         }
 
         /// <summary>
