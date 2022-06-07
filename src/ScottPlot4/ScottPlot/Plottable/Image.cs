@@ -8,7 +8,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a Bitmap at X/Y coordinates in unit space
     /// </summary>
-    public class Image : IPlottable
+    public class Image : IPlottable, IHasAxisLimits
     {
         public bool IsVisible { get; set; } = true;
 
@@ -71,6 +71,9 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
+            if (Bitmap is null)
+                return AxisLimits.NoLimits;
+
             return new AxisLimits(
                 xMin: X,
                 xMax: X + WidthInAxisUnits ?? 0,

@@ -42,7 +42,6 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)
         {

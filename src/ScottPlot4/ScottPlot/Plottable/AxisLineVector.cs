@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor
+    public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor, IHasAxisLimits
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)
@@ -120,12 +120,12 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             if (IgnoreAxisAuto)
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+                return AxisLimits.NoLimits;
 
             if (IsHorizontal)
-                return new AxisLimits(double.NaN, double.NaN, Positions.Min(), Positions.Max());
+                return AxisLimits.VerticalLimitsOnly(Positions.Min(), Positions.Max());
             else
-                return new AxisLimits(Positions.Min(), Positions.Max(), double.NaN, double.NaN);
+                return AxisLimits.HorizontalLimitsOnly(Positions.Min(), Positions.Max());
         }
 
         public void ValidateData(bool deep = false)

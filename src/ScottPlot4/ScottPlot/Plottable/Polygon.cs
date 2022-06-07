@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
     /// Polygons can be optionally filled with a color or a gradient.
     /// </summary>
-    public class Polygon : IPlottable, IHasColor
+    public class Polygon : IPlottable, IHasColor, IHasAxisLimits
     {
         // data
         public double[] Xs { get; set; }

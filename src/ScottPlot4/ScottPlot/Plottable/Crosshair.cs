@@ -16,7 +16,7 @@ namespace ScottPlot.Plottable
     /// MouseMove events to track the location of the mouse and/or with plot types that
     /// have GetPointNearest() methods.
     /// </summary>
-    public class Crosshair : IPlottable, IHasLine, IHasColor
+    public class Crosshair : IPlottable, IHasLine, IHasColor, IHasAxisLimits
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -102,9 +102,10 @@ namespace ScottPlot.Plottable
             VerticalLine.PositionLabel = true;
         }
 
-        public AxisLimits GetAxisLimits() => IgnoreAxisAuto
-                ? new(double.NaN, double.NaN, double.NaN, double.NaN)
-                : new(X, X, Y, Y);
+        public AxisLimits GetAxisLimits()
+        {
+            return IgnoreAxisAuto ? AxisLimits.NoLimits : new(X, X, Y, Y);
+        }
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 

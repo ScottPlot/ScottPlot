@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea
+    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea, IHasAxisLimits
     {
         // location and orientation
         protected double Position1;
@@ -75,12 +75,12 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             if (IgnoreAxisAuto)
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+                return AxisLimits.NoLimits;
 
             if (IsHorizontal)
-                return new AxisLimits(Min, Max, double.NaN, double.NaN);
+                return AxisLimits.HorizontalLimitsOnly(Min, Max);
             else
-                return new AxisLimits(double.NaN, double.NaN, Min, Max);
+                return AxisLimits.VerticalLimitsOnly(Min, Max);
         }
 
         private enum Edge { Edge1, Edge2, Neither };

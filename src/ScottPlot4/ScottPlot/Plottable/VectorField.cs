@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// The VectorField displays arrows representing a 2D array of 2D vectors
     /// </summary>
-    public class VectorField : IPlottable
+    public class VectorField : IPlottable, IHasAxisLimits
     {
         private readonly double[] Xs;
         private readonly double[] Ys;
@@ -104,7 +104,10 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(Xs.Min() - 1, Xs.Max() + 1, Ys.Min() - 1, Ys.Max() + 1);
+        public AxisLimits GetAxisLimits()
+        {
+            return new AxisLimits(Xs.Min() - 1, Xs.Max() + 1, Ys.Min() - 1, Ys.Max() + 1);
+        }
 
         public int PointCount { get => Vectors.Length; }
 

@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottable
 {
-    public class MarkerPlot : IPlottable, IHasMarker, IHasColor
+    public class MarkerPlot : IPlottable, IHasMarker, IHasColor, IHasAxisLimits
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -55,7 +55,10 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Drawing.Font TextFont = new();
 
-        public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
+        public AxisLimits GetAxisLimits()
+        {
+            return new AxisLimits(X, X, Y, Y);
+        }
 
         public LegendItem[] GetLegendItems()
         {

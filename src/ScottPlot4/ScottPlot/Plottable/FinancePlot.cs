@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Finance plots display open/high/low/close (OHLC) data
     /// </summary>
-    public class FinancePlot : IPlottable
+    public class FinancePlot : IPlottable, IHasAxisLimits
     {
         public readonly List<OHLC> OHLCs = new();
 
@@ -119,36 +119,28 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             if (OHLCs.Count() == 0)
-            {
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
-            }
+                return AxisLimits.NoLimits;
 
-            // TODO: dont use an array here
-            double[] limits = new double[4];
-            limits[0] = OHLCs[0].DateTime.ToOADate();
-            limits[1] = OHLCs[0].DateTime.ToOADate();
-            limits[2] = OHLCs[0].Low;
-            limits[3] = OHLCs[0].High;
+            double xMin = OHLCs[0].DateTime.ToOADate();
+            double xMax = OHLCs[0].DateTime.ToOADate();
+            double yMin = OHLCs[0].Low;
+            double yMax = OHLCs[0].High;
 
             for (int i = 1; i < OHLCs.Count; i++)
             {
-                if (OHLCs[i].DateTime.ToOADate() < limits[0])
-                    limits[0] = OHLCs[i].DateTime.ToOADate();
-                if (OHLCs[i].DateTime.ToOADate() > limits[1])
-                    limits[1] = OHLCs[i].DateTime.ToOADate();
-                if (OHLCs[i].Low < limits[2])
-                    limits[2] = OHLCs[i].Low;
-                if (OHLCs[i].High > limits[3])
-                    limits[3] = OHLCs[i].High;
+                if (OHLCs[i].DateTime.ToOADate() < xMin)
+                    xMin = OHLCs[i].DateTime.ToOADate();
+                if (OHLCs[i].DateTime.ToOADate() > xMax)
+                    xMax = OHLCs[i].DateTime.ToOADate();
+                if (OHLCs[i].Low < yMin)
+                    yMin = OHLCs[i].Low;
+                if (OHLCs[i].High > yMax)
+                    yMax = OHLCs[i].High;
             }
 
-            if (Sequential)
-            {
-                limits[0] = 0;
-                limits[1] = OHLCs.Count - 1;
-            }
-
-            return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
+            return Sequential
+                ? new AxisLimits(0, OHLCs.Count - 1, yMin, yMax)
+                : new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

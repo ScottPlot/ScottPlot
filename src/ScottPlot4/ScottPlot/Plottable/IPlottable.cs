@@ -15,13 +15,6 @@
         LegendItem[] GetLegendItems();
 
         /// <summary>
-        /// Return min and max of the horizontal and vertical data contained in this plottable.
-        /// Double.NaN is used for axes not containing data.
-        /// </summary>
-        /// <returns></returns>
-        AxisLimits GetAxisLimits();
-
-        /// <summary>
         /// Throw InvalidOperationException if ciritical variables are null or have incorrect sizes. 
         /// Deep validation is slower but also checks every value for NaN and Infinity.
         /// </summary>

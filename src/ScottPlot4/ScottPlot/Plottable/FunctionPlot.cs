@@ -31,25 +31,6 @@ namespace ScottPlot.Plottable
             Function = function;
         }
 
-        public AxisLimits GetAxisLimits()
-        {
-            double max = double.NegativeInfinity;
-            double min = double.PositiveInfinity;
-
-            foreach (double x in DataGen.Range(-10, 10, .1))
-            {
-                double? y = Function(x);
-                if (y != null)
-                {
-                    max = Math.Max(max, y.Value);
-                    min = Math.Min(min, y.Value);
-                }
-            }
-
-            // TODO: should X limits be null or NaN?
-            return new AxisLimits(-10, 10, min, max);
-        }
-
         public int PointCount { get; private set; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

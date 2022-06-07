@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
     /// A heatmap displays a 2D array of intensities as small rectangles on the plot
     /// colored according to their intensity value according to a colormap.
     /// </summary>
-    public class Heatmap : IPlottable, IHasColormap
+    public class Heatmap : IPlottable, IHasColormap, IHasAxisLimits
     {
         /// <summary>
         /// Minimum heatmap value
@@ -311,7 +311,7 @@ namespace ScottPlot.Plottable
         public virtual AxisLimits GetAxisLimits()
         {
             if (BmpHeatmap is null)
-                return new AxisLimits();
+                return AxisLimits.NoLimits;
 
             return new AxisLimits(
                 xMin: OffsetX,

@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// 
     /// Data is managed using 2D arrays where groups (colored shapes) are rows and categories (arms of the web) are columns.
     /// </summary>
-    public class RadarPlot : IPlottable
+    public class RadarPlot : IPlottable, IHasAxisLimits
     {
         /// <summary>
         /// Values for every group (rows) and category (columns) normalized from 0 to 1.
@@ -235,8 +235,12 @@ namespace ScottPlot.Plottable
             return legendItems.ToArray();
         }
 
-        public AxisLimits GetAxisLimits() =>
-            (GroupLabels != null) ? new AxisLimits(-3.5, 3.5, -3.5, 3.5) : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+        public AxisLimits GetAxisLimits()
+        {
+            return (GroupLabels != null)
+                ? new AxisLimits(-3.5, 3.5, -3.5, 3.5)
+                : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+        }
 
         public int PointCount { get => Norm.Length; }
 
