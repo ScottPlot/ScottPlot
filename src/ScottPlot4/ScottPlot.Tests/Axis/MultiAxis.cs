@@ -22,5 +22,139 @@ namespace ScottPlotTests.Axis
             plt.RemoveAxis(extraAxis);
             TestTools.SaveFig(plt, "b");
         }
+
+        [Test]
+        public void Test_MultiAxis_LeftCornerNotation()
+        {
+            ScottPlot.Plot plt = new(600, 400);
+
+            List<ScottPlot.Renderable.Axis> axes = new();
+            axes.Add(plt.YAxis);
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Left, 2));
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Left, 3));
+
+            for (int i = 0; i < axes.Count; i++)
+            {
+                // add sample data for this axis
+                double[] data = ScottPlot.DataGen.Sin(
+                    pointCount: 51,
+                    phase: .15 * i / axes.Count,
+                    mult: Math.Pow(10, i + 3));
+
+                var sig = plt.AddSignal(data);
+                sig.YAxisIndex = axes[i].AxisIndex;
+
+                // enable conner notation
+                axes[i].TickLabelNotation(multiplier: true);
+
+                // style this axis
+                axes[i].Color(plt.Palette.GetColor(i));
+                axes[i].Label($"Axis #{i + 1}");
+            }
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_MultiAxis_RightCornerNotation()
+        {
+            ScottPlot.Plot plt = new(600, 400);
+            plt.YAxis2.Ticks(true);
+
+            List<ScottPlot.Renderable.Axis> axes = new();
+            axes.Add(plt.YAxis2);
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Right, 2));
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Right, 3));
+
+            for (int i = 0; i < axes.Count; i++)
+            {
+                // add sample data for this axis
+                double[] data = ScottPlot.DataGen.Sin(
+                    pointCount: 51,
+                    phase: .15 * i / axes.Count,
+                    mult: Math.Pow(10, i + 3));
+
+                var sig = plt.AddSignal(data);
+                sig.YAxisIndex = axes[i].AxisIndex;
+
+                // enable conner notation
+                axes[i].TickLabelNotation(multiplier: true);
+
+                // style this axis
+                axes[i].Color(plt.Palette.GetColor(i));
+                axes[i].Label($"Axis #{i + 1}");
+            }
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_MultiAxis_BottomCornerNotation()
+        {
+            ScottPlot.Plot plt = new(600, 400);
+
+            List<ScottPlot.Renderable.Axis> axes = new();
+            axes.Add(plt.XAxis);
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Bottom, 2));
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Bottom, 3));
+
+            for (int i = 0; i < axes.Count; i++)
+            {
+                // add sample data for this axis
+                double[] xs = ScottPlot.DataGen.Sin(
+                    pointCount: 51,
+                    phase: .15 * i / axes.Count,
+                    mult: Math.Pow(10, i + 3));
+
+                double[] ys = ScottPlot.DataGen.Consecutive(xs.Length);
+
+                var scatter = plt.AddScatter(xs, ys);
+                scatter.XAxisIndex = axes[i].AxisIndex;
+
+                // enable conner notation
+                axes[i].TickLabelNotation(multiplier: true);
+
+                // style this axis
+                axes[i].Color(plt.Palette.GetColor(i));
+                axes[i].Label($"Axis #{i + 1}");
+            }
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_MultiAxis_TopCornerNotation()
+        {
+            ScottPlot.Plot plt = new(600, 400);
+            plt.XAxis2.Ticks(true);
+
+            List<ScottPlot.Renderable.Axis> axes = new();
+            axes.Add(plt.XAxis2);
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Top, 2));
+            axes.Add(plt.AddAxis(ScottPlot.Renderable.Edge.Top, 3));
+
+            for (int i = 0; i < axes.Count; i++)
+            {
+                // add sample data for this axis
+                double[] xs = ScottPlot.DataGen.Sin(
+                    pointCount: 51,
+                    phase: .15 * i / axes.Count,
+                    mult: Math.Pow(10, i + 3));
+
+                double[] ys = ScottPlot.DataGen.Consecutive(xs.Length);
+
+                var scatter = plt.AddScatter(xs, ys);
+                scatter.XAxisIndex = axes[i].AxisIndex;
+
+                // enable conner notation
+                axes[i].TickLabelNotation(multiplier: true);
+
+                // style this axis
+                axes[i].Color(plt.Palette.GetColor(i));
+                axes[i].Label($"Axis #{i + 1}");
+            }
+
+            TestTools.SaveFig(plt);
+        }
     }
 }
