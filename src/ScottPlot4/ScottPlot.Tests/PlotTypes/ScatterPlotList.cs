@@ -23,7 +23,7 @@ namespace ScottPlotTests.PlotTypes
             spl.Add(15, 1.52);
             spl.Add(15, 1.6);
 
-            spl.Smoothness = 20;
+            spl.Smooth = true;
 
             plt.SetAxisLimits(0, 30, 1.42, 1.62); // mimic excel
             TestTools.SaveFig(plt);

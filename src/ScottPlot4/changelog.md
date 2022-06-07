@@ -2,7 +2,7 @@
 
 ## ScottPlot 4.1.47
 _not yet published on NuGet..._
-* ScatterPlotList: New `Smoothness` property uses 2D interpolation to draw smooth lines between points (#1852, #1853) _Thanks @liuhongran626_
+* Scatter Plot: New `Smooth` property allows data points to be connected by smooth lines (#1852, #1853) _Thanks @liuhongran626_
 * Axis: Improved corner notation for multi-axis plots (#1875) _Thanks @nassaleh_
 
 ## ScottPlot 4.1.46
