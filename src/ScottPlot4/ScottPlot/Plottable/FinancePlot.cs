@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Finance plots display open/high/low/close (OHLC) data
     /// </summary>
-    public class FinancePlot : IPlottable, IHasAxisLimits
+    public class FinancePlot : IPlottable, IHasAxisLimits, IHasDataValidation
     {
         public readonly List<OHLC> OHLCs = new();
 
@@ -46,7 +46,6 @@ namespace ScottPlot.Plottable
 
         public bool IsVisible { get; set; } = true;
         public override string ToString() => $"FinancePlot with {OHLCs.Count} OHLC indicators";
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 

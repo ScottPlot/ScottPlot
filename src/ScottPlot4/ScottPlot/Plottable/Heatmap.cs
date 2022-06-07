@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
     /// A heatmap displays a 2D array of intensities as small rectangles on the plot
     /// colored according to their intensity value according to a colormap.
     /// </summary>
-    public class Heatmap : IPlottable, IHasColormap, IHasAxisLimits
+    public class Heatmap : IPlottable, IHasColormap, IHasAxisLimits, IHasDataValidation
     {
         /// <summary>
         /// Minimum heatmap value
@@ -294,18 +294,6 @@ namespace ScottPlot.Plottable
             }
 
             return normalized;
-        }
-
-        public LegendItem[] GetLegendItems()
-        {
-            var singleLegendItem = new LegendItem(this)
-            {
-                label = Label,
-                color = Color.Gray,
-                lineWidth = 10,
-                markerShape = MarkerShape.none
-            };
-            return new LegendItem[] { singleLegendItem };
         }
 
         public virtual AxisLimits GetAxisLimits()

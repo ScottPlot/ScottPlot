@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea, IHasAxisLimits
+    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea, IHasAxisLimits, IHasLegendItems, IHasDataValidation
     {
         // location and orientation
         protected double Position1;

@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class BarPlot : BarPlotBase, IPlottable, IHasColor
+    public class BarPlot : BarPlotBase, IPlottable, IHasColor, IHasLegendItems
     {
         public string Label { get; set; }
         public Color Color { get => FillColor; set { FillColor = value; } }
@@ -159,11 +159,6 @@ namespace ScottPlot.Plottable
                 borderWith = BorderLineWidth
             };
             return new LegendItem[] { singleItem };
-        }
-
-        public void ValidateData(bool deep = false)
-        {
-            // TODO: refactor entire data validation system for all plot types (triaged March 2021)
         }
 
         private static RectangleF ClipRectToDataArea(RectangleF rect, PlotDimensions dims)

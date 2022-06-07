@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// 
     /// Data is managed using 2D arrays where groups (colored shapes) are rows and categories (arms of the web) are columns.
     /// </summary>
-    public class RadarPlot : IPlottable, IHasAxisLimits
+    public class RadarPlot : IPlottable, IHasAxisLimits, IHasLegendItems, IHasDataValidation
     {
         /// <summary>
         /// Values for every group (rows) and category (columns) normalized from 0 to 1.

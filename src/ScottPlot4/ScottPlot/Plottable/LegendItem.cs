@@ -57,5 +57,15 @@ namespace ScottPlot.Plottable
         {
             Parent = parent;
         }
+
+        public static LegendItem[] SingleItem(IPlottable parent, string label)
+        {
+            LegendItem singleItem = new(parent)
+            {
+                label = label,
+            };
+
+            return new LegendItem[] { singleItem };
+        }
     }
 }

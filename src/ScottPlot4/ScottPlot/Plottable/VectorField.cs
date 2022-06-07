@@ -9,13 +9,13 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// The VectorField displays arrows representing a 2D array of 2D vectors
     /// </summary>
-    public class VectorField : IPlottable, IHasAxisLimits
+    public class VectorField : IPlottable, IHasAxisLimits, IHasLegendItems
     {
         private readonly double[] Xs;
         private readonly double[] Ys;
         private readonly Vector2[,] Vectors;
         private readonly Color[] VectorColors;
-        public string Label;
+        public string Label { get; set; } = null;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -89,8 +89,6 @@ namespace ScottPlot.Plottable
             this.Xs = xs;
             this.Ys = ys;
         }
-
-        public void ValidateData(bool deep = false) { /* validation occurs in constructor */ }
 
         public LegendItem[] GetLegendItems()
         {

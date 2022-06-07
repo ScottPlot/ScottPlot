@@ -70,15 +70,9 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-
         public AxisLimits GetAxisLimits()
         {
             return new(Math.Min(X1, X2), Math.Max(X1, X2), Math.Min(Y1, Y2), Math.Max(Y1, Y2));
-        }
-
-        public void ValidateData(bool deep = false)
-        {
         }
 
         private double AngleBetweenVectors(Vector2 reference, Vector2 v)

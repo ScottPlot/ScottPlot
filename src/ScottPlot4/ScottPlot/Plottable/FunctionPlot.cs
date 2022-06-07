@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// A function plot displays a curve using a function (Y as a function of X)
     /// </summary>
-    public class FunctionPlot : IPlottable, IHasLine, IHasColor
+    public class FunctionPlot : IPlottable, IHasLine, IHasColor, IHasLegendItems, IHasDataValidation
     {
         /// <summary>
         /// The function to translate an X to a Y (or null if undefined)
