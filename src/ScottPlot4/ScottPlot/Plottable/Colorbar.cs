@@ -177,12 +177,6 @@ namespace ScottPlot.Plottable
             SetTicks(fracs, labels);
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-
-        public AxisLimits GetAxisLimits() => new(double.NaN, double.NaN, double.NaN, double.NaN);
-
-        public void ValidateData(bool deep = false) { }
-
         /// <summary>
         /// Re-Render the colorbar using a new colormap
         /// </summary>

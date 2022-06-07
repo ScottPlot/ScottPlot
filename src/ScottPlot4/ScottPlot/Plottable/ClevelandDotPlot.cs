@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys1 and Ys2 (internally done with Ys and YOffsets).
     /// </summary>
-    public class ClevelandDotPlot : BarPlotBase, IPlottable
+    public class ClevelandDotPlot : BarPlotBase, IPlottable, IHasLegendItems
     {
         /// <summary>
         /// Color for the line
@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Text to display in the legend associated with the series 1 data
         /// </summary>
-        private string Label1 { get; set; }
+        private string Label { get; set; } = null;
 
         /// <summary>
         /// Color for one of the markers
@@ -95,7 +95,7 @@ namespace ScottPlot.Plottable
         /// <param name="label">The label of the dot in the legend, null for no change</param>
         public void SetPoint1Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
-            Label1 = label ?? Label1;
+            Label = label ?? Label;
             MarkerShape1 = markerShape ?? MarkerShape1;
             Color1 = color ?? Color1;
         }
@@ -157,7 +157,7 @@ namespace ScottPlot.Plottable
         {
             var firstDot = new LegendItem(this)
             {
-                label = Label1,
+                label = Label,
                 color = Color1,
                 lineStyle = LineStyle.None,
                 markerShape = MarkerShape1,
@@ -174,11 +174,6 @@ namespace ScottPlot.Plottable
 
             return new LegendItem[] { firstDot, secondDot };
         }
-
-        #region Render Implementation
-
-        // NOTE: These render methods contains a lot of code and complexity not required to render this plot type.
-        // TODO: Delete as much of this code as possible and simplify the render methods.
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -295,13 +290,6 @@ namespace ScottPlot.Plottable
                 using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
                     gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
-        }
-
-        #endregion
-
-        public void ValidateData(bool deep = false)
-        {
-            // TODO: refactor entire data validation system for all plot types (triaged March 2021)
         }
     }
 }

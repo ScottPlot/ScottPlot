@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// A pie plot displays a collection of values as a circle.
     /// Pie plots with a hollow center are donut plots.
     /// </summary>
-    public class PiePlot : IPlottable
+    public class PiePlot : IPlottable, IHasAxisLimits, IHasDataValidation, IHasLegendItems
     {
         public double[] Values { get; set; }
         public string Label { get; set; }
@@ -68,7 +68,10 @@ namespace ScottPlot.Plottable
                 .ToArray();
         }
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(-0.5, 0.5, -1, 1);
+        public AxisLimits GetAxisLimits()
+        {
+            return new AxisLimits(-0.5, 0.5, -1, 1);
+        }
 
         public int PointCount { get => Values.Length; }
 
@@ -77,7 +80,6 @@ namespace ScottPlot.Plottable
             Validate.AssertHasElements("values", Values);
             Validate.AssertHasElements("colors", SliceFillColors);
             Validate.AssertAllReal("values", Values);
-            // TODO: ensure the length of colors and group names matches expected length
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

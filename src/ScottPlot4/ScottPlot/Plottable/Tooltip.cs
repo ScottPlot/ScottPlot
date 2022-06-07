@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// A tooltip displays a text bubble pointing to a specific location in X/Y space.
     /// The position of the bubble moves according to the axis limits to best display the text in the data area.
     /// </summary>
-    public class Tooltip : IPlottable, IHasColor, IHittable
+    public class Tooltip : IPlottable, IHasColor, IHittable, IHasDataValidation
     {
         public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
@@ -40,10 +40,6 @@ namespace ScottPlot.Plottable
         public Cursor HitCursor { get; set; } = Cursor.Hand;
 
         public bool HitTestEnabled { get; set; } = true;
-
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-
-        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
         public void ValidateData(bool deep = false)
         {

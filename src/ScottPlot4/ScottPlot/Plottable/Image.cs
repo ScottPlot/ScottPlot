@@ -8,7 +8,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a Bitmap at X/Y coordinates in unit space
     /// </summary>
-    public class Image : IPlottable
+    public class Image : IPlottable, IHasAxisLimits, IHasDataValidation
     {
         public bool IsVisible { get; set; } = true;
 
@@ -71,14 +71,15 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
+            if (Bitmap is null)
+                return AxisLimits.NoLimits;
+
             return new AxisLimits(
                 xMin: X,
                 xMax: X + WidthInAxisUnits ?? 0,
                 yMin: Y,
                 yMax: Y + HeightInAxisUnits ?? 0);
         }
-
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public override string ToString()
         {

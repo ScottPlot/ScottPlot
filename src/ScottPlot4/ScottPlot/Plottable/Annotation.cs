@@ -7,7 +7,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Text placed at a location relative to the data area that does not move when the axis limits change
     /// </summary>
-    public class Annotation : IPlottable
+    public class Annotation : IPlottable, IHasDataValidation
     {
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
@@ -41,8 +41,6 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)
         {

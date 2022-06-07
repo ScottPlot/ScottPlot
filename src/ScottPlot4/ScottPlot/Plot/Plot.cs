@@ -210,7 +210,7 @@ namespace ScottPlot
         /// <param name="deep">Check every individual value for validity. This is more thorough, but slower.</param>
         public void Validate(bool deep = true)
         {
-            foreach (var plottable in settings.Plottables)
+            foreach (var plottable in settings.Plottables.OfType<IHasDataValidation>())
                 plottable.ValidateData(deep);
         }
 

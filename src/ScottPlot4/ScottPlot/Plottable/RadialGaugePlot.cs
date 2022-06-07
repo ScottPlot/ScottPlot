@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// A radial gauge chart is a graphical method of displaying scalar data in the form of 
     /// a chart made of circular gauges so that each scalar is represented by each gauge.
     /// </summary>
-    public class RadialGaugePlot : IPlottable
+    public class RadialGaugePlot : IPlottable, IHasAxisLimits, IHasLegendItems, IHasDataValidation
     {
         /// <summary>
         /// This array holds the original levels passed-in by the user. 

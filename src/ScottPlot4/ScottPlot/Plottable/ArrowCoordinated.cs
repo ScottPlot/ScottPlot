@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// An arrow with X/Y coordinates for the base and the tip
     /// </summary>
-    public class ArrowCoordinated : IPlottable, IHasPixelOffset, IHasLine, IHasColor
+    public class ArrowCoordinated : IPlottable, IHasPixelOffset, IHasLine, IHasColor, IHasAxisLimits, IHasLegendItems, IHasDataValidation
     {
         /// <summary>
         /// Location of the arrow base in coordinate space
@@ -105,11 +105,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var item = new LegendItem(this)
-            {
-                label = Label
-            };
-            return new LegendItem[] { item };
+            return LegendItem.SingleItem(this, Label);
         }
 
         public void ValidateData(bool deep = false)

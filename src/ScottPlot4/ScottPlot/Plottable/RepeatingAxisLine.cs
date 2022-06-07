@@ -5,7 +5,7 @@ using System.Drawing;
 namespace ScottPlot.Plottable
 {
 
-    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor
+    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor, IHasAxisLimits, IHasDataValidation, IHasLegendItems
     {
         /// <summary>
         /// Location of the reference line (Y position if horizontal line, X position if vertical line)
@@ -138,12 +138,12 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             if (IgnoreAxisAuto)
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+                return AxisLimits.NoLimits;
 
             if (IsHorizontal)
-                return new AxisLimits(double.NaN, double.NaN, Position, Position);
+                return AxisLimits.VerticalLimitsOnly(Position, Position);
             else
-                return new AxisLimits(Position, Position, double.NaN, double.NaN);
+                return AxisLimits.HorizontalLimitsOnly(Position, Position);
         }
 
         public void ValidateData(bool deep = false)

@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// A function plot displays a curve using a function (Y as a function of X)
     /// </summary>
-    public class FunctionPlot : IPlottable, IHasLine, IHasColor
+    public class FunctionPlot : IPlottable, IHasLine, IHasColor, IHasLegendItems, IHasDataValidation
     {
         /// <summary>
         /// The function to translate an X to a Y (or null if undefined)
@@ -29,25 +29,6 @@ namespace ScottPlot.Plottable
         public FunctionPlot(Func<double, double?> function)
         {
             Function = function;
-        }
-
-        public AxisLimits GetAxisLimits()
-        {
-            double max = double.NegativeInfinity;
-            double min = double.PositiveInfinity;
-
-            foreach (double x in DataGen.Range(-10, 10, .1))
-            {
-                double? y = Function(x);
-                if (y != null)
-                {
-                    max = Math.Max(max, y.Value);
-                    min = Math.Min(min, y.Value);
-                }
-            }
-
-            // TODO: should X limits be null or NaN?
-            return new AxisLimits(-10, 10, min, max);
         }
 
         public int PointCount { get; private set; }
