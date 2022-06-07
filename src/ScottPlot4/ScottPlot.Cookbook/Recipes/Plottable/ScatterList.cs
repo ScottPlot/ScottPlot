@@ -97,4 +97,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             scatter.MovePointFunc = MoveBetweenAdjacent;
         }
     }
+
+    public class ScatterListSmooth : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatterList_smooth";
+        public string Title => "Scatter Plot with Smooth Lines";
+        public string Description =>
+            "Set the Smoothness property to a value greater than 1 to draw smooth " + 
+            "lines connecting data points. This is similar to the default behavior in Excel.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(1234);
+            double[] xs = DataGen.RandomWalk(rand, 20);
+            double[] ys = DataGen.RandomWalk(rand, 20);
+
+            var sp = plt.AddScatterList();
+            sp.AddRange(xs, ys);
+            sp.Smoothness = 10;
+        }
+    }
 }

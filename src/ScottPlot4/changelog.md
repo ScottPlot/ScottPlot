@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.47
 _not yet published on NuGet..._
+* ScatterPlotList: New `Smoothness` property uses 2D interpolation to draw smooth lines between points (#1852, #1853) _Thanks @liuhongran626_
 
 ## ScottPlot 4.1.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-05_

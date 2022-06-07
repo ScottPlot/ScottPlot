@@ -26,6 +26,13 @@ namespace ScottPlot.Plottable
         public float MarkerSize { get; set; } = 3;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
+        /// <summary>
+        /// If greater than 1, use 2D spline interpolation to smooth the connecting line between data points.
+        /// Increasing this value greatly decreases performance for plots with many data points
+        /// because the number of lines drawn scales directly with this value.
+        /// </summary>
+        public int Smoothness = 1;
+
         public void ValidateData(bool deep = false)
         {
             if (Xs.Count != Ys.Count)
@@ -92,12 +99,26 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             PointF[] points = GetPoints(dims);
+
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var linePen = GDI.Pen(Color, LineWidth, LineStyle, true);
 
             if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)
             {
-                gfx.DrawLines(linePen, points);
+                if (Smoothness > 1)
+                {
+                    double[] xs = points.Select(x => (double)x.X).ToArray();
+                    double[] ys = points.Select(x => (double)x.Y).ToArray();
+                    (double[] xs2, double[] ys2) = Statistics.Interpolation.CatmullRom.InterpolateXY(xs, ys, Smoothness);
+                    PointF[] smooth = Enumerable.Range(0, xs2.Length)
+                        .Select(i => new PointF((float)xs2[i], (float)ys2[i]))
+                        .ToArray();
+                    gfx.DrawLines(linePen, smooth);
+                }
+                else
+                {
+                    gfx.DrawLines(linePen, points);
+                }
             }
 
             if (MarkerShape != MarkerShape.none && MarkerSize > 0 && Count > 0)
