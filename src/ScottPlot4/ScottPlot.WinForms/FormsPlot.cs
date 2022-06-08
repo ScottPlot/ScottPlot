@@ -224,6 +224,7 @@ namespace ScottPlot
         public void DefaultRightClickEvent(object sender, EventArgs e)
         {
             bool legendHasItems = Plot.GetPlottables()
+                .OfType<Plottable.IHasLegendItems>()
                 .Where(x => x.GetLegendItems() != null)
                 .SelectMany(x => x.GetLegendItems())
                 .Where(x => !string.IsNullOrEmpty(x.label))

@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display circles of user-defined sizes and colors at specific X/Y positions
     /// </summary>
-    public class BubblePlot : IPlottable
+    public class BubblePlot : IPlottable, IHasAxisLimits, IHasDataValidation
     {
         private struct Bubble
         {
@@ -83,12 +83,10 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-
         public AxisLimits GetAxisLimits()
         {
             if (Bubbles.Count == 0)
-                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+                return AxisLimits.NoLimits;
 
             var xs = Bubbles.Select(b => b.X);
             var ys = Bubbles.Select(b => b.Y);

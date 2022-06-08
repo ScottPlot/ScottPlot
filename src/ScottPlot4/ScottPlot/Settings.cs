@@ -389,12 +389,11 @@ namespace ScottPlot
             if (margin.HasValue)
                 MarginsX = margin.Value;
 
-            var plottableLimits = Plottables.Where(x => x is IPlottable)
-                                               .Select(x => (IPlottable)x)
-                                               .Where(x => x.IsVisible)
-                                               .Where(x => x.XAxisIndex == xAxisIndex)
-                                               .Select(x => x.GetAxisLimits())
-                                               .ToArray();
+            var plottableLimits = Plottables.Where(x => x.IsVisible)
+                                            .Where(x => x.XAxisIndex == xAxisIndex)
+                                            .OfType<IHasAxisLimits>()
+                                            .Select(x => x.GetAxisLimits())
+                                            .ToArray();
 
             double min = double.NaN;
             double max = double.NaN;
@@ -424,12 +423,11 @@ namespace ScottPlot
             if (margin.HasValue)
                 MarginsY = margin.Value;
 
-            var plottableLimits = Plottables.Where(x => x is IPlottable)
-                                               .Select(x => (IPlottable)x)
-                                               .Where(x => x.IsVisible)
-                                               .Where(x => x.YAxisIndex == yAxisIndex)
-                                               .Select(x => x.GetAxisLimits())
-                                               .ToArray();
+            var plottableLimits = Plottables.Where(x => x.IsVisible)
+                                            .Where(x => x.YAxisIndex == yAxisIndex)
+                                            .OfType<IHasAxisLimits>()
+                                            .Select(x => x.GetAxisLimits())
+                                            .ToArray();
 
             double min = double.NaN;
             double max = double.NaN;

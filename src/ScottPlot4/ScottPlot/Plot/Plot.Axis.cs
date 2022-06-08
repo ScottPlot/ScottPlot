@@ -380,22 +380,25 @@ namespace ScottPlot
                 if (!(xAxisMatch || yAxisMatch))
                     continue;
 
-                AxisLimits limits = plottable.GetAxisLimits();
-
-                if (xAxisMatch)
+                if (plottable is Plottable.IHasAxisLimits plottableWithLimits)
                 {
-                    if (!double.IsNaN(limits.XMin))
-                        xMin = Math.Min(xMin, limits.XMin);
-                    if (!double.IsNaN(limits.XMax))
-                        xMax = Math.Max(xMax, limits.XMax);
-                }
+                    AxisLimits limits = plottableWithLimits.GetAxisLimits();
 
-                if (yAxisMatch)
-                {
-                    if (!double.IsNaN(limits.YMin))
-                        yMin = Math.Min(yMin, limits.YMin);
-                    if (!double.IsNaN(limits.YMax))
-                        yMax = Math.Max(yMax, limits.YMax);
+                    if (xAxisMatch)
+                    {
+                        if (!double.IsNaN(limits.XMin))
+                            xMin = Math.Min(xMin, limits.XMin);
+                        if (!double.IsNaN(limits.XMax))
+                            xMax = Math.Max(xMax, limits.XMax);
+                    }
+
+                    if (yAxisMatch)
+                    {
+                        if (!double.IsNaN(limits.YMin))
+                            yMin = Math.Min(yMin, limits.YMin);
+                        if (!double.IsNaN(limits.YMax))
+                            yMax = Math.Max(yMax, limits.YMax);
+                    }
                 }
             }
 

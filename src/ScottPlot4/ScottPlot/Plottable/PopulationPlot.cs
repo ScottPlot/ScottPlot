@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// Public methods, fields, and properties allow extensive customization.
     /// This plottable supports higher-order grouping (groups of groups).
     /// </summary>
-    public class PopulationPlot : IPlottable
+    public class PopulationPlot : IPlottable, IHasAxisLimits, IHasLegendItems, IHasDataValidation
     {
         public readonly PopulationMultiSeries MultiSeries;
         public int GroupCount { get { return MultiSeries.groupCount; } }
@@ -115,7 +115,7 @@ namespace ScottPlot.Plottable
             double positionMin = 0;
             double positionMax = MultiSeries.groupCount - 1;
 
-            // padd slightly
+            // pad slightly
             positionMin -= .5;
             positionMax += .5;
 

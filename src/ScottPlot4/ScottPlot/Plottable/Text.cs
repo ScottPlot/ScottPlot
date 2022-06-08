@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a text label at an X/Y position in coordinate space
     /// </summary>
-    public class Text : IPlottable, IHasPixelOffset, IDraggable, IHasColor
+    public class Text : IPlottable, IHasPixelOffset, IDraggable, IHasColor, IHasAxisLimits, IHasDataValidation
     {
         // data
         public double X;
@@ -38,8 +38,10 @@ namespace ScottPlot.Plottable
         private double DeltaCY { get; set; } = 0;
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public AxisLimits GetAxisLimits()
+        {
+            return new AxisLimits(X, X, Y, Y);
+        }
 
         public void ValidateData(bool deep = false)
         {

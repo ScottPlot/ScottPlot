@@ -40,21 +40,11 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
         {
             LineColor = tickMarkColor ?? LineColor;
             FontColor = tickFontColor ?? Font.Color;
-        }
-
-        public void ValidateData(bool deep = false)
-        {
-            if (double.IsNaN(Width) || double.IsNaN(Height))
-                throw new InvalidOperationException("Width and Height cannot be NaN");
-            if (double.IsInfinity(Width) || double.IsInfinity(Height))
-                throw new InvalidOperationException("Width and Height cannot be Infinity");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

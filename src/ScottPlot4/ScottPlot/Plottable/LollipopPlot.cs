@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class LollipopPlot : BarPlotBase, IPlottable
+    public class LollipopPlot : BarPlotBase, IPlottable, IHasLegendItems
     {
         /// <summary>
         /// Name for this series of values that will appear in the legend
@@ -62,11 +62,6 @@ namespace ScottPlot.Plottable
             };
             return new LegendItem[] { singleItem };
         }
-
-        #region Render Implementation
-
-        // NOTE: These render methods contains a lot of code and complexity not required to render this plot type.
-        // TODO: Delete as much of this code as possible and simplify the render methods.
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -178,13 +173,6 @@ namespace ScottPlot.Plottable
                 using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
                     gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
-        }
-
-        #endregion
-
-        public void ValidateData(bool deep = false)
-        {
-            // TODO: refactor entire data validation system for all plot types (triaged March 2021)
         }
     }
 }
