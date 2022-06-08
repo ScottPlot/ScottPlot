@@ -1,9 +1,13 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.47
+## ScottPlot 4.1.48
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.47
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-07_
 * Scatter Plot: New `Smooth` property allows data points to be connected by smooth lines (#1852, #1853) _Thanks @liuhongran626_
 * Axis: Improved corner notation for multi-axis plots (#1875) _Thanks @nassaleh_
+* Plottable: Optional segregated interfaces `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` were broken-out of `IPlottable` (#1868, #1881)
 
 ## ScottPlot 4.1.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-05_
