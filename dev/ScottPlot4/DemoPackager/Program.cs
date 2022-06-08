@@ -25,9 +25,9 @@ namespace DemoPackager
 
             GenerateRecipes();
 
-            BuildAndZip(Path.Combine(RepoFolder, @"src\demo\ScottPlot.Demo.WinForms"), true, "ScottPlot-Demo-WinForms.zip");
-            BuildAndZip(Path.Combine(RepoFolder, @"src\demo\ScottPlot.Demo.WPF"), true, "ScottPlot-Demo-WPF.zip");
-            BuildAndZip(Path.Combine(RepoFolder, @"src\demo\ScottPlot.Demo.Avalonia"), true, "ScottPlot-Demo-Avalonia.zip");
+            BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.WinForms"), true, "ScottPlot-Demo-WinForms.zip");
+            BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.WPF"), true, "ScottPlot-Demo-WPF.zip");
+            BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.Avalonia"), true, "ScottPlot-Demo-Avalonia.zip");
 
             FtpUpload("/scottplot.net/public_html/demos");
         }
@@ -35,8 +35,9 @@ namespace DemoPackager
         static void GenerateRecipes()
         {
             Console.WriteLine("Generating cookbook recipes from source code...");
-            string cookbookFolder = Path.Combine(RepoFolder, "src/cookbook/ScottPlot.Cookbook");
-            ScottPlot.Cookbook.RecipeJson.Generate(cookbookFolder, "recipes.json");
+            string cookbookFolder = Path.Combine(RepoFolder, "src/ScottPlot4/ScottPlot.Cookbook");
+            string json = ScottPlot.Cookbook.RecipeJson.Generate(cookbookFolder);
+            File.WriteAllText("recipes.json", json);
         }
 
         static void ResetOutputFolder()
@@ -49,6 +50,9 @@ namespace DemoPackager
 
         static void BuildAndZip(string projectFolder, bool msbuild, string zipFileName)
         {
+            if (!Directory.Exists(projectFolder))
+                throw new DirectoryNotFoundException(projectFolder);
+
             Console.WriteLine();
             Console.WriteLine($"Building {Path.GetFileName(projectFolder)}...");
 
