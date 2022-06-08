@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    <ProjectReference Include="..\..\..\src\ScottPlot4\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
   </ItemGroup>
 
 </Project>
