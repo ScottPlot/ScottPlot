@@ -30,5 +30,24 @@
         /// <param name="bmp">The image on which this plottable will be drawn.</param>
         /// <param name="lowQuality">If true, disable anti-aliased lines and text to achieve faster rendering.</param>
         void Render(PlotDimensions dims, System.Drawing.Bitmap bmp, bool lowQuality = false);
+
+        /// <summary>
+        /// Returns the limits of the data contained in a plottable.
+        /// If an axis has no data its min and max may be Double.NaN.
+        /// </summary>
+        /// <returns></returns>
+        AxisLimits GetAxisLimits();
+
+        /// <summary>
+        /// Returns items to show in the legend. Most plottables return a single item. in this array will appear in the legend.
+        /// Plottables which never appear in the legend should return an empty array (not null).
+        /// </summary>
+        LegendItem[] GetLegendItems();
+
+        /// <summary>
+        /// Throw InvalidOperationException if ciritical variables are null or have incorrect sizes. 
+        /// Deep validation is slower but also checks every value for NaN and Infinity.
+        /// </summary>
+        void ValidateData(bool deep = false);
     }
 }

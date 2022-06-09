@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBar : IPlottable, IHasLine, IHasMarker, IHasColor, IHasAxisLimits, IHasDataValidation
+    public class ErrorBar : IPlottable, IHasLine, IHasMarker, IHasColor
     {
         public double[] Xs { get; set; }
         public double[] Ys { get; set; }
@@ -39,6 +39,8 @@ namespace ScottPlot.Plottable
             YErrorsPositive = yErrorsPositive;
             YErrorsNegative = yErrorsNegative;
         }
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public AxisLimits GetAxisLimits()
         {

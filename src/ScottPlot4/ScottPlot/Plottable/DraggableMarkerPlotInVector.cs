@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// This plot type displays a marker at a point that can be dragged with the mouse,
     /// but when dragged it "snaps" to specific X/Y coordinates defined by two arrays of values.
     /// </summary>
-    public class DraggableMarkerPlotInVector : IDraggable, IPlottable, IHasMarker, IHasDataValidation, IHasAxisLimits, IHasLegendItems
+    public class DraggableMarkerPlotInVector : IDraggable, IPlottable, IHasMarker
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

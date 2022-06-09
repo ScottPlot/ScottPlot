@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// A collection of X/Y coordinates that can be displayed as markers and/or connected lines.
     /// Unlike the regular ScatterPlot, this plot type has Add() methods to easily add data.
     /// </summary>
-    public class ScatterPlotList<T> : IPlottable, IHasAxisLimits, IHasDataValidation, IHasLegendItems
+    public class ScatterPlotList<T> : IPlottable
     {
         protected readonly List<T> Xs = new();
         protected readonly List<T> Ys = new();

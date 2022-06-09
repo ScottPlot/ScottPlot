@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// A function plot displays a curve using a function (Y as a function of X)
     /// </summary>
-    public class FunctionPlot : IPlottable, IHasLine, IHasColor, IHasLegendItems, IHasDataValidation
+    public class FunctionPlot : IPlottable, IHasLine, IHasColor
     {
         /// <summary>
         /// The function to translate an X to a Y (or null if undefined)
@@ -25,6 +25,7 @@ namespace ScottPlot.Plottable
         public string Label { get; set; }
         public Color Color { get; set; } = Color.Black;
         public Color LineColor { get; set; } = Color.Black;
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
         public FunctionPlot(Func<double, double?> function)
         {

@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// The VectorField displays arrows representing a 2D array of 2D vectors
     /// </summary>
-    public class VectorField : IPlottable, IHasAxisLimits, IHasLegendItems
+    public class VectorField : IPlottable
     {
         private readonly double[] Xs;
         private readonly double[] Ys;
@@ -51,6 +51,8 @@ namespace ScottPlot.Plottable
         /// Size of markers to be drawn at each coordinate
         /// </summary>
         public float MarkerSize { get => ArrowStyle.MarkerSize; set => ArrowStyle.MarkerSize = value; }
+
+        public void ValidateData(bool deep = false) { }
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {

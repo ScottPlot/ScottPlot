@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
-    public class Bracket : IPlottable, IHasAxisLimits
+    public class Bracket : IPlottable
     {
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
@@ -160,5 +160,9 @@ namespace ScottPlot.Plottable
                 gfx.DrawString(Label, font, brush, 0, 0, new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far });
             }
         }
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+
+        public void ValidateData(bool deep = false) { }
     }
 }

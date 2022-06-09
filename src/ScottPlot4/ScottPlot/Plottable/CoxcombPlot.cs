@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// A Pie chart where the angle of slices is constant but the radii are not.
     /// </summary>
-    public class CoxcombPlot : IPlottable, IHasAxisLimits, IHasLegendItems
+    public class CoxcombPlot : IPlottable
     {
         private double[] _values;
 
@@ -72,6 +72,8 @@ namespace ScottPlot.Plottable
             Values = values;
             FillColors = fillColors;
         }
+
+        public void ValidateData(bool deep = false) { }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

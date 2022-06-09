@@ -89,6 +89,12 @@ namespace ScottPlot.Plottable
             UpdateColormap(plottable.Colormap);
         }
 
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+
+        public void ValidateData(bool deep = false) { }
+
         public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
         {
             TickMarkColor = tickMarkColor ?? TickMarkColor;

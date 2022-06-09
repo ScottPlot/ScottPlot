@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys1 and Ys2 (internally done with Ys and YOffsets).
     /// </summary>
-    public class ClevelandDotPlot : BarPlotBase, IPlottable, IHasLegendItems
+    public class ClevelandDotPlot : BarPlotBase, IPlottable
     {
         /// <summary>
         /// Color for the line
@@ -174,6 +174,8 @@ namespace ScottPlot.Plottable
 
             return new LegendItem[] { firstDot, secondDot };
         }
+
+        public void ValidateData(bool deep = false) { }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
