@@ -1,13 +1,16 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.48
+## ScottPlot 4.1.49
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.48
+* Plottable: Collapsed `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` back into `IPlottable`, reverting a change introduced by the previous version. The intent of the original change was to promote interface segregation (e.g., colorbar has no axis limits). However, the purpose of this reversion is to maintain consistent behavior for users who implemented their own plottables implementing `IPlottable` and may not be aware of these new interfaces. (#1868, #1881)
 
 ## ScottPlot 4.1.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-07_
 * Scatter Plot: New `Smooth` property allows data points to be connected by smooth lines (#1852, #1853) _Thanks @liuhongran626_
 * Axis: Improved corner notation for multi-axis plots (#1875) _Thanks @nassaleh_
-* Plottable: Optional segregated interfaces `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` were broken-out of `IPlottable` (#1868, #1881)
+* Plottable: Optional segregated interfaces `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` were broken-out of `IPlottable`. Note that this change was reverted in the subsequent release. (#1868, #1881)
 
 ## ScottPlot 4.1.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-05_

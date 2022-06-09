@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// An arrow with X/Y coordinates for the base and the tip
     /// </summary>
-    public class ArrowCoordinated : IPlottable, IHasPixelOffset, IHasLine, IHasColor, IHasAxisLimits, IHasLegendItems, IHasDataValidation
+    public class ArrowCoordinated : IPlottable, IHasPixelOffset, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the arrow base in coordinate space

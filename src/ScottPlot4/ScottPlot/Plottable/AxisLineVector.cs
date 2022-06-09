@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor, IHasAxisLimits, IHasLegendItems, IHasDataValidation
+    public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)

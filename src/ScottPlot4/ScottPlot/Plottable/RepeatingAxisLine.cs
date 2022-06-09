@@ -5,7 +5,7 @@ using System.Drawing;
 namespace ScottPlot.Plottable
 {
 
-    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor, IHasAxisLimits, IHasDataValidation, IHasLegendItems
+    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor
     {
         /// <summary>
         /// Location of the reference line (Y position if horizontal line, X position if vertical line)

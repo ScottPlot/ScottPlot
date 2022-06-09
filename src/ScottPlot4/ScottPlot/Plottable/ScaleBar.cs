@@ -39,6 +39,12 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+
+        public void ValidateData(bool deep = false) { }
+
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
 
         public void SetStyle(Color? tickMarkColor, Color? tickFontColor)

@@ -16,7 +16,7 @@ namespace ScottPlot.Plottable
     /// MouseMove events to track the location of the mouse and/or with plot types that
     /// have GetPointNearest() methods.
     /// </summary>
-    public class Crosshair : IPlottable, IHasLine, IHasColor, IHasAxisLimits, IHasLegendItems
+    public class Crosshair : IPlottable, IHasLine, IHasColor
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -120,6 +120,8 @@ namespace ScottPlot.Plottable
             };
             return new LegendItem[] { singleItem };
         }
+
+        public void ValidateData(bool deep = false) { }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

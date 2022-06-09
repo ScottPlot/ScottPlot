@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Finance plots display open/high/low/close (OHLC) data
     /// </summary>
-    public class FinancePlot : IPlottable, IHasAxisLimits, IHasDataValidation
+    public class FinancePlot : IPlottable
     {
         public readonly List<OHLC> OHLCs = new();
 
@@ -60,6 +60,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="ohlcs"></param>
         public FinancePlot(OHLC[] ohlcs) => AddRange(ohlcs);
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         /// <summary>
         /// Add a single candle representing a defined time span

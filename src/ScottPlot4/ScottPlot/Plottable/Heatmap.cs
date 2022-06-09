@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
     /// A heatmap displays a 2D array of intensities as small rectangles on the plot
     /// colored according to their intensity value according to a colormap.
     /// </summary>
-    public class Heatmap : IPlottable, IHasColormap, IHasAxisLimits, IHasDataValidation
+    public class Heatmap : IPlottable, IHasColormap
     {
         /// <summary>
         /// Minimum heatmap value
@@ -171,6 +171,8 @@ namespace ScottPlot.Plottable
         /// If true the Heatmap will be drawn from the bottom left corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
         /// </summary>
         public bool FlipVertically { get; set; } = false;
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap

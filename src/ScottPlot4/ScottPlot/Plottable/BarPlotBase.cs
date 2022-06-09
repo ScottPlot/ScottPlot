@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class BarPlotBase : IHasAxisLimits
+    public abstract class BarPlotBase
     {
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

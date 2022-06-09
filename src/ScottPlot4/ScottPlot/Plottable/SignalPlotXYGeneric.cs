@@ -12,7 +12,9 @@ namespace ScottPlot.Plottable
     /// </summary>
     /// <typeparam name="TX"></typeparam>
     /// <typeparam name="TY"></typeparam>
-    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>, IHasPointsGenericX<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
+    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY>,
+        IHasPointsGenericX<TX, TY> where TX : struct,
+        IComparable where TY : struct, IComparable
     {
         /// <summary>
         /// Indicates whether Xs have been validated to ensure all values are ascending.

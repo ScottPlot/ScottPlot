@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// This plot type is faster alternative for rendering a large number of polygons
     /// compared to adding a bunch of individual Polygon objects to the plot.
     /// </summary>
-    public class Polygons : IPlottable, IHasColor, IHasAxisLimits, IHasLegendItems, IHasDataValidation
+    public class Polygons : IPlottable, IHasColor
     {
         // data
         public readonly List<List<(double x, double y)>> Polys;

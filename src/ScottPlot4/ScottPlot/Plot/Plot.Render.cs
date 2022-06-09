@@ -70,8 +70,7 @@ namespace ScottPlot
                 if (plottable.IsVisible == false)
                     continue;
 
-                if (plottable is Plottable.IHasDataValidation plottableWithValidation)
-                    plottableWithValidation.ValidateData(deep: false);
+                plottable.ValidateData(deep: false);
 
                 PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
                     settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) :

@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class BarPlot : BarPlotBase, IPlottable, IHasColor, IHasLegendItems
+    public class BarPlot : BarPlotBase, IPlottable, IHasColor
     {
         public string Label { get; set; }
         public Color Color { get => FillColor; set { FillColor = value; } }
@@ -170,5 +170,7 @@ namespace ScottPlot.Plottable
 
             return new RectangleF(left, top, right - left, bottom - top);
         }
+
+        public void ValidateData(bool deep = false) { }
     }
 }

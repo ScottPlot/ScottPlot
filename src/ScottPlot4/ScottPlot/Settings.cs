@@ -391,7 +391,6 @@ namespace ScottPlot
 
             var plottableLimits = Plottables.Where(x => x.IsVisible)
                                             .Where(x => x.XAxisIndex == xAxisIndex)
-                                            .OfType<IHasAxisLimits>()
                                             .Select(x => x.GetAxisLimits())
                                             .ToArray();
 
@@ -425,7 +424,6 @@ namespace ScottPlot
 
             var plottableLimits = Plottables.Where(x => x.IsVisible)
                                             .Where(x => x.YAxisIndex == yAxisIndex)
-                                            .OfType<IHasAxisLimits>()
                                             .Select(x => x.GetAxisLimits())
                                             .ToArray();
 

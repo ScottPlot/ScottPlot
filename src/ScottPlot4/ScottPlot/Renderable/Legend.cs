@@ -195,7 +195,6 @@ namespace ScottPlot.Renderable
         {
             LegendItems = plot.GetPlottables()
                 .Where(x => x.IsVisible || includeHidden)
-                .OfType<Plottable.IHasLegendItems>()
                 .Where(x => x.GetLegendItems() != null)
                 .SelectMany(x => x.GetLegendItems())
                 .Where(x => !string.IsNullOrWhiteSpace(x.label))

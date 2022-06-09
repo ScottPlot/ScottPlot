@@ -7,7 +7,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Text placed at a location relative to the data area that does not move when the axis limits change
     /// </summary>
-    public class Annotation : IPlottable, IHasDataValidation
+    public class Annotation : IPlottable
     {
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
@@ -80,5 +80,9 @@ namespace ScottPlot.Plottable
 
             gfx.DrawString(Label, font, fontBrush, location);
         }
+
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
     }
 }

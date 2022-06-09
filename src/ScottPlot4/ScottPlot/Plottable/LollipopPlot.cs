@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
-    public class LollipopPlot : BarPlotBase, IPlottable, IHasLegendItems
+    public class LollipopPlot : BarPlotBase, IPlottable
     {
         /// <summary>
         /// Name for this series of values that will appear in the legend
@@ -48,6 +48,8 @@ namespace ScottPlot.Plottable
             Values = values;
             Positions = positions ?? DataGen.Consecutive(values.Length);
         }
+
+        public void ValidateData(bool deep = false) { }
 
         public LegendItem[] GetLegendItems()
         {

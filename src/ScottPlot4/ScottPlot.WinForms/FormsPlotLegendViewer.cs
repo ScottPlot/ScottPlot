@@ -69,13 +69,10 @@ namespace ScottPlot
             {
                 // only allow toggling of plottables with a single legend item
                 // (blocking things like pie charts)
-                if (ClickedPlottable is IHasLegendItems clickedPlottableWithLegendItems)
+                if (ClickedPlottable.GetLegendItems().Length == 1)
                 {
-                    if (clickedPlottableWithLegendItems.GetLegendItems().Length == 1)
-                    {
-                        ClickedPlottable.IsVisible = !ClickedPlottable.IsVisible;
-                        RefreshLegendImage();
-                    }
+                    ClickedPlottable.IsVisible = !ClickedPlottable.IsVisible;
+                    RefreshLegendImage();
                 }
             }
             else if (ee.Button == MouseButtons.Right)

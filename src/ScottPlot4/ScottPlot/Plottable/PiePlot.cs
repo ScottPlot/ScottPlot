@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// A pie plot displays a collection of values as a circle.
     /// Pie plots with a hollow center are donut plots.
     /// </summary>
-    public class PiePlot : IPlottable, IHasAxisLimits, IHasDataValidation, IHasLegendItems
+    public class PiePlot : IPlottable
     {
         public double[] Values { get; set; }
         public string Label { get; set; }

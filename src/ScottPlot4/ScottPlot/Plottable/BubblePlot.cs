@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display circles of user-defined sizes and colors at specific X/Y positions
     /// </summary>
-    public class BubblePlot : IPlottable, IHasAxisLimits, IHasDataValidation
+    public class BubblePlot : IPlottable
     {
         private struct Bubble
         {
@@ -107,6 +107,8 @@ namespace ScottPlot.Plottable
                     throw new InvalidOperationException("Bubble sizes cannot be negative");
             }
         }
+
+        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
