@@ -11,6 +11,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
         Plot.Add(DebugPoint);
+        Plot.Add(new Plottables.DebugGrid());
         skglControl1.MouseMove += SkglControl1_MouseMove;
     }
 

@@ -5,25 +5,28 @@ internal class BasicImageTests
     [Test]
     public void Test_Render_Image()
     {
-        ScottPlot.Plottables.DebugPoint MarkOrigin = new();
-        MarkOrigin.Position = new(0, 0);
-        MarkOrigin.Color = SKColors.Magenta;
+        Plot plt = new();
+        
+        plt.Add(new Plottables.DebugGrid());
+        plt.Add(new Plottables.DebugPoint(2, 3, SKColors.Magenta));
+        plt.Add(new Plottables.DebugPoint(-7, -4, SKColors.LightGreen));
 
-        ScottPlot.Plottables.DebugPoint MarkPositive = new();
-        MarkPositive.Position = new(5, 5);
-        MarkPositive.Color = SKColors.Green;
+        TestTools.SaveImage(plt);
+    }
 
-        ScottPlot.Plottables.DebugPoint MarkRandom = new();
-        MarkRandom.Position = new(-7, -4);
-        MarkRandom.Color = SKColors.LightBlue;
+    [Test]
+    public void Test_Render_MousePan()
+    {
+        Plot plt = new();
 
-        ScottPlot.Plot plt = new();
-        plt.Add(MarkOrigin);
-        plt.Add(MarkPositive);
-        plt.Add(MarkRandom);
+        plt.Add(new Plottables.DebugGrid());
+        plt.Add(new Plottables.DebugPoint(2, 3, SKColors.Magenta));
+        plt.Add(new Plottables.DebugPoint(-7, -4, SKColors.LightGreen));
 
-        string imagePath = Path.GetFullPath("test.png");
-        plt.SaveImage(600, 400, imagePath);
-        Console.WriteLine(imagePath);
+        CoordinateRect limits = plt.GetAxisLimits();
+        TestTools.SaveImage(plt, subName: "1");
+
+        plt.SetAxisLimits(limits.WithPan(2, 3));
+        TestTools.SaveImage(plt, subName: "2");
     }
 }
