@@ -52,6 +52,20 @@ public class Plot
         YAxis.Max = rect.YMax;
     }
 
+    public void MousePan(CoordinateRect originalLimits, Pixel mouseDown, Pixel mouseNow)
+    {
+        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
+        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
+
+        float pixelDeltaX = mouseDown.X - mouseNow.X;
+        float pixelDeltaY = mouseDown.Y - mouseNow.Y;
+
+        double deltaX = pixelDeltaX / pxPerUnitx;
+        double deltaY = pixelDeltaY / pxPerUnity;
+
+        SetAxisLimits(originalLimits.WithPan(deltaX, -deltaY));
+    }
+
     public CoordinateRect GetAxisLimits()
     {
         return new CoordinateRect(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
