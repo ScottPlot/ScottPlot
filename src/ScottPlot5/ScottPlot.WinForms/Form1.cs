@@ -18,6 +18,21 @@ public partial class Form1 : Form
         skglControl1.MouseMove += SkglControl1_MouseMove;
         skglControl1.MouseDown += SkglControl1_MouseDown;
         skglControl1.MouseUp += SkglControl1_MouseUp;
+        skglControl1.DoubleClick += SkglControl1_DoubleClick;
+        skglControl1.MouseWheel += SkglControl1_MouseWheel;
+    }
+
+    private void SkglControl1_MouseWheel(object? sender, MouseEventArgs e)
+    {
+        double fracX = e.Delta > 0 ? 1.15 : .85;
+        double fracY = e.Delta > 0 ? 1.15 : .85;
+        Plot.MouseZoom(fracX, fracY, new Pixel(e.X, e.Y));
+        skglControl1.Invalidate();
+    }
+
+    private void SkglControl1_DoubleClick(object? sender, EventArgs e)
+    {
+        Plot.ShowDebugMessage = !Plot.ShowDebugMessage;
     }
 
     private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)

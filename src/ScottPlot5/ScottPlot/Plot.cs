@@ -10,6 +10,8 @@ public class Plot
     readonly VerticalAxis YAxis = new();
     readonly List<IPlottable> Plottables = new();
 
+    public bool ShowDebugMessage = false;
+
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
@@ -81,6 +83,12 @@ public class Plot
         SetAxisLimits(originalLimits.WithZoom(fracX, fracY));
     }
 
+    public void MouseZoom(double fracX, double fracY, Pixel mouseNow)
+    {
+        Coordinate mouseCoordinate = GetCoordinate(mouseNow);
+        SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
+    }
+
     public CoordinateRect GetAxisLimits()
     {
         return new CoordinateRect(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
@@ -127,7 +135,8 @@ public class Plot
         RenderPlottables(surface, renderInfo.DataRect);
         RenderAxes(surface, renderInfo.DataRect);
         renderInfo.ElapsedRender = SW.Elapsed;
-
+        if (ShowDebugMessage)
+            RenderDebugInfo(surface, renderInfo.DataRect, renderInfo.ElapsedMilliseconds);
         LastRenderInfo = renderInfo;
         return renderInfo;
     }
@@ -157,6 +166,12 @@ public class Plot
 
         paint.Color = SKColors.Yellow;
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
+    }
+
+    private void RenderDebugInfo(SKSurface surface, PixelRect dataRect, double elapsedMilliseconds)
+    {
+        Plottables.DebugBenchmark bench = new(elapsedMilliseconds);
+        bench.Render(surface, dataRect, XAxis, YAxis);
     }
 
     public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)
