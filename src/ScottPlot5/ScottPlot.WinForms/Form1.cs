@@ -6,8 +6,9 @@ public partial class Form1 : Form
 {
     readonly Plot Plot = new();
     readonly Plottables.DebugPoint DebugPoint = new();
-    CoordinateRect? MouseDownLimits = null;
+    CoordinateRect MouseDownLimits;
     Pixel MouseDownPixel;
+    bool IsMouseDown;
 
     public Form1()
     {
@@ -21,13 +22,14 @@ public partial class Form1 : Form
 
     private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)
     {
+        IsMouseDown = true;
         MouseDownLimits = Plot.GetAxisLimits();
         MouseDownPixel = new(e.X, e.Y);
     }
 
     private void SkglControl1_MouseUp(object? sender, MouseEventArgs e)
     {
-        MouseDownLimits = null;
+        IsMouseDown = false;
 
         if (e.Button == MouseButtons.Middle)
         {
@@ -38,9 +40,21 @@ public partial class Form1 : Form
 
     private void SkglControl1_MouseMove(object? sender, MouseEventArgs e)
     {
-        if (MouseDownLimits is not null)
+        if (IsMouseDown)
         {
-            Plot.MousePan(MouseDownLimits.Value, MouseDownPixel, new(e.X, e.Y));
+            if (e.Button == MouseButtons.Left)
+            {
+                Plot.MousePan(MouseDownLimits, MouseDownPixel, new(e.X, e.Y));
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Plot.MouseZoom(MouseDownLimits, MouseDownPixel, new(e.X, e.Y));
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+
+            }
+
             skglControl1.Invalidate();
             return;
         }
