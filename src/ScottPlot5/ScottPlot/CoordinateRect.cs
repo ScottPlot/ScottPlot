@@ -26,4 +26,9 @@ public struct CoordinateRect
     {
         return $"PixelRect: XMin={XMin} XMax={XMax} YMin={YMin} YMax={YMax}";
     }
+
+    public CoordinateRect WithPan(double deltaX, double deltaY)
+    {
+        return new CoordinateRect(XMin + deltaX, XMax + deltaX, YMin + deltaY, YMax + deltaY);
+    }
 }
