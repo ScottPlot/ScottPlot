@@ -48,9 +48,24 @@ public partial class Form1 : Form
 
         if (e.Button == MouseButtons.Middle)
         {
-            Plot.SetAxisLimits(-10, 10, -10, 10);
-            skglControl1.Invalidate();
+            float travX = e.X - MouseDownPixel.X;
+            float travY = e.Y - MouseDownPixel.Y;
+            double pxDragged = Math.Sqrt(travX * travX + travY + travY);
+
+            if (pxDragged > 5)
+            {
+                // zoom into the rectangle
+                Plot.MouseZoomRectangleClear(applyZoom: true);
+            }
+            else
+            {
+                // assume it was a middle-click and auto-axis
+                Plot.MouseZoomRectangleClear(applyZoom: false);
+                Plot.SetAxisLimits(-10, 10, -10, 10);
+            }
         }
+
+        skglControl1.Invalidate();
     }
 
     private void SkglControl1_MouseMove(object? sender, MouseEventArgs e)
@@ -67,7 +82,7 @@ public partial class Form1 : Form
             }
             else if (e.Button == MouseButtons.Middle)
             {
-
+                Plot.MouseZoomRectangle(MouseDownPixel, new(e.X, e.Y));
             }
 
             skglControl1.Invalidate();

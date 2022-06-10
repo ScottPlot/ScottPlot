@@ -4,7 +4,7 @@ namespace ScottPlot.Plottables;
 
 internal class DebugBenchmark : IPlottable
 {
-    public bool IsVisible { get; set; } = true;
+    public bool IsVisible { get; set; } = false;
 
     public double ElapsedMilliseconds;
 

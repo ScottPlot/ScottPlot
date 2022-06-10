@@ -18,6 +18,8 @@ public class Plot
     }
     readonly Plottables.DebugBenchmark DebugBenchmark = new();
 
+    readonly Plottables.ZoomRectangle ZoomRectangle = new();
+
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
@@ -95,6 +97,24 @@ public class Plot
         SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
     }
 
+    public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow)
+    {
+        Coordinate downCoordinate = GetCoordinate(mouseDown);
+        Coordinate nowCoordinate = GetCoordinate(mouseNow);
+        CoordinateRect rect = new(downCoordinate, nowCoordinate);
+        ZoomRectangle.SetSize(rect);
+    }
+
+    public void MouseZoomRectangleClear(bool applyZoom)
+    {
+        if (applyZoom)
+        {
+            SetAxisLimits(ZoomRectangle.Rect);
+        }
+
+        ZoomRectangle.Clear();
+    }
+
     public CoordinateRect GetAxisLimits()
     {
         return new CoordinateRect(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
@@ -141,6 +161,7 @@ public class Plot
         RenderPlottables(surface, renderInfo.DataRect);
         RenderAxes(surface, renderInfo.DataRect);
         renderInfo.ElapsedRender = SW.Elapsed;
+        RenderZoomRectangle(surface, renderInfo.DataRect);
         RenderDebugInfo(surface, renderInfo.DataRect, renderInfo.ElapsedMilliseconds);
         LastRenderInfo = renderInfo;
         return renderInfo;
@@ -171,6 +192,14 @@ public class Plot
 
         paint.Color = SKColors.Yellow;
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
+    }
+
+    private void RenderZoomRectangle(SKSurface surface, PixelRect dataRect)
+    {
+        if (ZoomRectangle.IsVisible)
+        {
+            ZoomRectangle.Render(surface, dataRect, XAxis, YAxis);
+        }
     }
 
     private void RenderDebugInfo(SKSurface surface, PixelRect dataRect, double elapsedMilliseconds)
