@@ -33,4 +33,24 @@ public struct CoordinateRect
     {
         return new CoordinateRect(XMin + deltaX, XMax + deltaX, YMin + deltaY, YMax + deltaY);
     }
+
+    public CoordinateRect WithZoom(double fracX, double fracY)
+    {
+        return WithZoom(fracX, fracY, XCenter, YCenter);
+    }
+
+    public CoordinateRect WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
+    {
+        double spanLeftX = zoomToX - XMin;
+        double spanRightX = XMax - zoomToX;
+        double newMinX = zoomToX - spanLeftX / fracX;
+        double newMaxX = zoomToX + spanRightX / fracX;
+
+        double spanLeftY = zoomToY - YMin;
+        double spanRightY = YMax - zoomToY;
+        double newMinY = zoomToY - spanLeftY / fracY;
+        double newMaxY = zoomToY + spanRightY / fracY;
+
+        return new CoordinateRect(newMinX, newMaxX, newMinY, newMaxY);
+    }
 }
