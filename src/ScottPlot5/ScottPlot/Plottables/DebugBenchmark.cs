@@ -8,11 +8,6 @@ internal class DebugBenchmark : IPlottable
 
     public double ElapsedMilliseconds;
 
-    public DebugBenchmark(double elapsedMilliseconds)
-    {
-        ElapsedMilliseconds = elapsedMilliseconds;
-    }
-
     public void Render(SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis)
     {
         string message = $"Rendered in {ElapsedMilliseconds:0.000} ms ({1e3 / ElapsedMilliseconds:N0} FPS)";

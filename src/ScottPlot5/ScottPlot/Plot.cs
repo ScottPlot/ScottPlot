@@ -10,7 +10,13 @@ public class Plot
     readonly VerticalAxis YAxis = new();
     readonly List<IPlottable> Plottables = new();
 
-    public bool ShowDebugMessage = false;
+    // TODO: expose this so the user can customize it
+    public bool ShowBenchmark
+    {
+        get => DebugBenchmark.IsVisible;
+        set => DebugBenchmark.IsVisible = value;
+    }
+    readonly Plottables.DebugBenchmark DebugBenchmark = new();
 
     /// <summary>
     /// Any state stored across renders can be stored here.
@@ -135,8 +141,7 @@ public class Plot
         RenderPlottables(surface, renderInfo.DataRect);
         RenderAxes(surface, renderInfo.DataRect);
         renderInfo.ElapsedRender = SW.Elapsed;
-        if (ShowDebugMessage)
-            RenderDebugInfo(surface, renderInfo.DataRect, renderInfo.ElapsedMilliseconds);
+        RenderDebugInfo(surface, renderInfo.DataRect, renderInfo.ElapsedMilliseconds);
         LastRenderInfo = renderInfo;
         return renderInfo;
     }
@@ -148,7 +153,7 @@ public class Plot
 
     private void RenderPlottables(SKSurface surface, PixelRect dataRect)
     {
-        foreach (var plottable in Plottables)
+        foreach (var plottable in Plottables.Where(x => x.IsVisible))
         {
             // TODO: dont store min/max state inside the axes themselves
             plottable.Render(surface, dataRect, XAxis, YAxis);
@@ -170,8 +175,11 @@ public class Plot
 
     private void RenderDebugInfo(SKSurface surface, PixelRect dataRect, double elapsedMilliseconds)
     {
-        Plottables.DebugBenchmark bench = new(elapsedMilliseconds);
-        bench.Render(surface, dataRect, XAxis, YAxis);
+        if (DebugBenchmark.IsVisible)
+        {
+            DebugBenchmark.ElapsedMilliseconds = elapsedMilliseconds;
+            DebugBenchmark.Render(surface, dataRect, XAxis, YAxis);
+        }
     }
 
     public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)

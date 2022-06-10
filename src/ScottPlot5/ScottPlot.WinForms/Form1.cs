@@ -32,7 +32,7 @@ public partial class Form1 : Form
 
     private void SkglControl1_DoubleClick(object? sender, EventArgs e)
     {
-        Plot.ShowDebugMessage = !Plot.ShowDebugMessage;
+        Plot.ShowBenchmark = !Plot.ShowBenchmark;
     }
 
     private void SkglControl1_MouseDown(object? sender, MouseEventArgs e)
