@@ -10,4 +10,5 @@ public struct RenderInformation
     public PixelRect FigureRect;
     public PixelRect DataRect;
     public bool RenderComplete => ElapsedRender.TotalMilliseconds > 0;
+    public double ElapsedMilliseconds => ElapsedLayout.TotalMilliseconds + ElapsedRender.TotalMilliseconds;
 }
