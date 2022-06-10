@@ -18,7 +18,7 @@ public class Plot
     }
     readonly Plottables.DebugBenchmark DebugBenchmark = new();
 
-    readonly Plottables.ZoomRectangle ZoomRectangle = new();
+    readonly Plottables.ZoomRectangle ZoomRectangle;
 
     /// <summary>
     /// Any state stored across renders can be stored here.
@@ -27,6 +27,7 @@ public class Plot
 
     public Plot()
     {
+        ZoomRectangle = new(XAxis, YAxis);
         CoordinateRect bounds = new(-10, 10, -10, 10);
         SetAxisLimits(bounds);
     }
@@ -176,8 +177,11 @@ public class Plot
     {
         foreach (var plottable in Plottables.Where(x => x.IsVisible))
         {
-            // TODO: dont store min/max state inside the axes themselves
-            plottable.Render(surface, dataRect, XAxis, YAxis);
+            if (plottable.XAxis is null)
+                plottable.XAxis = XAxis;
+            if (plottable.YAxis is null)
+                plottable.YAxis = YAxis;
+            plottable.Render(surface, dataRect);
         }
     }
 
@@ -198,7 +202,7 @@ public class Plot
     {
         if (ZoomRectangle.IsVisible)
         {
-            ZoomRectangle.Render(surface, dataRect, XAxis, YAxis);
+            ZoomRectangle.Render(surface, dataRect);
         }
     }
 
@@ -207,7 +211,7 @@ public class Plot
         if (DebugBenchmark.IsVisible)
         {
             DebugBenchmark.ElapsedMilliseconds = elapsedMilliseconds;
-            DebugBenchmark.Render(surface, dataRect, XAxis, YAxis);
+            DebugBenchmark.Render(surface, dataRect);
         }
     }
 

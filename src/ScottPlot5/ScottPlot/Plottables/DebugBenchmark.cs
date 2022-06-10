@@ -7,8 +7,10 @@ internal class DebugBenchmark : IPlottable
     public bool IsVisible { get; set; } = false;
 
     public double ElapsedMilliseconds;
+    public HorizontalAxis? XAxis { get; set; }
+    public VerticalAxis? YAxis { get; set; }
 
-    public void Render(SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis)
+    public void Render(SKSurface surface, PixelRect dataRect)
     {
         string message = $"Rendered in {ElapsedMilliseconds:0.000} ms ({1e3 / ElapsedMilliseconds:N0} FPS)";
 

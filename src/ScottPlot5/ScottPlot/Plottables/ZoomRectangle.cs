@@ -9,6 +9,14 @@ internal class ZoomRectangle : IPlottable
     public SKColor EdgeColor = SKColors.Red.WithAlpha(200);
     public float LineWidth = 2;
     public CoordinateRect Rect;
+    public HorizontalAxis? XAxis { get; set; }
+    public VerticalAxis? YAxis { get; set; }
+
+    public ZoomRectangle(HorizontalAxis xAxis, VerticalAxis yAxis)
+    {
+        XAxis = xAxis;
+        YAxis = yAxis;
+    }
 
     public void SetSize(CoordinateRect rect)
     {
@@ -21,17 +29,20 @@ internal class ZoomRectangle : IPlottable
         IsVisible = false;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis)
+    public void Render(SKSurface surface, PixelRect dataRect)
     {
+        if (XAxis is null || YAxis is null)
+            throw new InvalidOperationException("Both axes must be set before first render");
+
         using SKPaint paint = new()
         {
             IsAntialias = true
         };
 
-        float l = xAxis.GetPixel(Rect.XMin, dataRect.Left, dataRect.Right);
-        float r = xAxis.GetPixel(Rect.XMax, dataRect.Left, dataRect.Right);
-        float b = yAxis.GetPixel(Rect.YMin, dataRect.Bottom, dataRect.Top);
-        float t = yAxis.GetPixel(Rect.YMax, dataRect.Bottom, dataRect.Top);
+        float l = XAxis.GetPixel(Rect.XMin, dataRect.Left, dataRect.Right);
+        float r = XAxis.GetPixel(Rect.XMax, dataRect.Left, dataRect.Right);
+        float b = YAxis.GetPixel(Rect.YMin, dataRect.Bottom, dataRect.Top);
+        float t = YAxis.GetPixel(Rect.YMax, dataRect.Bottom, dataRect.Top);
         SKRect rect = new(l, t, r, b);
 
         paint.Color = FillColor;

@@ -11,10 +11,21 @@ public interface IPlottable
     /// </summary>
     public bool IsVisible { get; set; }
 
+    // * Typically the render method will contain a ClipRect() call
+    // * Clipping is reset automatically after every plottable is rendered
+
     /// <summary>
-    /// Draw the plotable on the given surface
+    /// Draw the plotable on the given surface.
     /// </summary>
     /// <param name="surface">Surface containing the Canvas to be drawn on</param>
     /// <param name="dataRect">Size (in pixels) of the data area</param>
-    public void Render(SkiaSharp.SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis);
+    public void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
+
+    // * If these are null on first render, set them with the default axes.
+    // * Plottables that use these must perform a null check once at the top of the render method.
+    // * Plottables that don't need axes can leave these null.
+
+    public HorizontalAxis? XAxis { get; set; }
+
+    public VerticalAxis? YAxis { get; set; }
 }
