@@ -18,4 +18,9 @@ public struct Coordinate
     {
         return $"Coordinate: X={X}, Y={Y}";
     }
+
+    public static Coordinate NaN()
+    {
+        return new(double.NaN, double.NaN);
+    }
 }

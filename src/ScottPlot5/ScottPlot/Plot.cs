@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using System.Diagnostics;
+using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -8,6 +9,11 @@ public class Plot
     readonly HorizontalAxis XAxis = new();
     readonly VerticalAxis YAxis = new();
     readonly List<IPlottable> Plottables = new();
+
+    /// <summary>
+    /// Any state stored across renders can be stored here.
+    /// </summary>
+    private RenderInformation LastRenderInfo;
 
     public Plot()
     {
@@ -50,42 +56,70 @@ public class Plot
         return new Pixel(x, y);
     }
 
-    public Coordinate GetCoordinate(Pixel pixel, PixelSize figureSize)
+    /// <summary>
+    /// Return the coordinate for a specific pixel on the most recent render.
+    /// </summary>
+    public Coordinate GetCoordinate(Pixel pixel)
     {
-        PixelRect figureRect = new(figureSize);
-        PixelRect dataRect = figureRect.ShrinkBy(50);
-
+        PixelRect dataRect = LastRenderInfo.DataRect;
         double x = XAxis.GetCoordinate(pixel.X, dataRect.Left, dataRect.Right);
         double y = YAxis.GetCoordinate(pixel.Y, dataRect.Bottom, dataRect.Top);
         return new Coordinate(x, y);
     }
 
-    public void Render(SKSurface surface)
+    private PixelRect GetDataAreaRect(PixelRect figureRect)
     {
-        SKCanvas canvas = surface.Canvas;
-        SKRect bounds = surface.Canvas.LocalClipBounds;
-        PixelRect figureRect = new(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top);
-        PixelRect dataRect = figureRect.ShrinkBy(50);
+        // NOTE: eventually this will measure strings to calculate the ideal layout
+        PixelPadding DataAreaPadding = new(40, 10, 30, 20);
+        return figureRect.Contract(DataAreaPadding);
+    }
 
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            StrokeWidth = 1,
-            Style = SKPaintStyle.Stroke
-        };
+    public RenderInformation Render(SKSurface surface)
+    {
+        Stopwatch SW = Stopwatch.StartNew();
+        RenderInformation renderInfo = new();
 
-        // clear the background
+        // analyze axes, determine ticks, measure strings, etc. to calculate layout
+        renderInfo.FigureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
+        renderInfo.DataRect = GetDataAreaRect(renderInfo.FigureRect);
+        renderInfo.ElapsedLayout = SW.Elapsed;
+        SW.Restart();
+
+        // perform all renders
+        RenderBackground(surface);
+        RenderPlottables(surface, renderInfo.DataRect);
+        RenderAxes(surface, renderInfo.DataRect);
+        renderInfo.ElapsedRender = SW.Elapsed;
+
+        LastRenderInfo = renderInfo;
+        return renderInfo;
+    }
+
+    private void RenderBackground(SKSurface surface)
+    {
         surface.Canvas.Clear(SKColors.Navy);
+    }
 
-        // draw a box around the data area
-        paint.Color = SKColors.Yellow;
-        canvas.DrawRect(dataRect.ToSKRect(), paint);
-
+    private void RenderPlottables(SKSurface surface, PixelRect dataRect)
+    {
         foreach (var plottable in Plottables)
         {
             // TODO: dont store min/max state inside the axes themselves
             plottable.Render(surface, dataRect, XAxis, YAxis);
         }
+    }
+
+    private void RenderAxes(SKSurface surface, PixelRect dataRect)
+    {
+        using SKPaint paint = new()
+        {
+            IsAntialias = true,
+            StrokeWidth = 1,
+            Style = SKPaintStyle.Stroke,
+        };
+
+        paint.Color = SKColors.Yellow;
+        surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
     }
 
     public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)

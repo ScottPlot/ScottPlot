@@ -18,11 +18,11 @@ public struct PixelRect
         return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
     }
 
-    public PixelRect(PixelSize size)
+    public PixelRect(float width, float height)
     {
         Left = 0;
-        Right = size.Width;
-        Bottom = size.Height;
+        Right = width;
+        Bottom = height;
         Top = 0;
     }
 
@@ -57,6 +57,15 @@ public struct PixelRect
         float right = Math.Max(Right - delta, HorizontalCenter);
         float bottom = Math.Max(Bottom - delta, VerticalCenter);
         float top = Math.Min(Top + delta, VerticalCenter);
+        return new PixelRect(left, right, bottom, top);
+    }
+
+    public PixelRect Contract(PixelPadding padding)
+    {
+        float left = Math.Min(Left + padding.Left, HorizontalCenter);
+        float right = Math.Max(Right - padding.Right, HorizontalCenter);
+        float bottom = Math.Max(Bottom - padding.Bottom, VerticalCenter);
+        float top = Math.Min(Top + padding.Top, VerticalCenter);
         return new PixelRect(left, right, bottom, top);
     }
 }

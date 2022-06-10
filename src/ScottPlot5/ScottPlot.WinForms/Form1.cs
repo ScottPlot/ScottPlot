@@ -17,8 +17,7 @@ public partial class Form1 : Form
     private void SkglControl1_MouseMove(object? sender, MouseEventArgs e)
     {
         Pixel pixel = new(e.X, e.Y);
-        PixelSize figureSize = new(skglControl1.Size.Width, skglControl1.Size.Height);
-        Coordinate coord = Plot.GetCoordinate(pixel, figureSize);
+        Coordinate coord = Plot.GetCoordinate(pixel);
         DebugPoint.Position = coord;
         skglControl1.Invalidate();
     }
