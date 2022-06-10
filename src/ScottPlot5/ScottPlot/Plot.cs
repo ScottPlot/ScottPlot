@@ -57,13 +57,28 @@ public class Plot
         double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
         double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
 
-        float pixelDeltaX = mouseDown.X - mouseNow.X;
-        float pixelDeltaY = mouseDown.Y - mouseNow.Y;
+        float pixelDeltaX = mouseNow.X - mouseDown.X;
+        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
 
         double deltaX = pixelDeltaX / pxPerUnitx;
         double deltaY = pixelDeltaY / pxPerUnity;
 
-        SetAxisLimits(originalLimits.WithPan(deltaX, -deltaY));
+        // pan in the direction opposite of the mouse movement
+        SetAxisLimits(originalLimits.WithPan(-deltaX, deltaY));
+    }
+
+    public void MouseZoom(CoordinateRect originalLimits, Pixel mouseDown, Pixel mouseNow)
+    {
+        float pixelDeltaX = mouseNow.X - mouseDown.X;
+        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
+
+        double deltaFracX = pixelDeltaX / (Math.Abs(pixelDeltaX) + LastRenderInfo.DataRect.Width);
+        double fracX = Math.Pow(10, deltaFracX);
+
+        double deltaFracY = -pixelDeltaY / (Math.Abs(pixelDeltaY) + LastRenderInfo.DataRect.Height);
+        double fracY = Math.Pow(10, deltaFracY);
+
+        SetAxisLimits(originalLimits.WithZoom(fracX, fracY));
     }
 
     public CoordinateRect GetAxisLimits()
