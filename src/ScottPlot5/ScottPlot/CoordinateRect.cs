@@ -16,6 +16,14 @@ public struct CoordinateRect
     public double Height => YMax - YMin;
     public bool HasArea => Width * Height != 0;
 
+    public CoordinateRect(Coordinate pt1, Coordinate pt2)
+    {
+        XMin = Math.Min(pt1.X, pt2.X);
+        XMax = Math.Max(pt1.X, pt2.X);
+        YMin = Math.Min(pt1.Y, pt2.Y);
+        YMax = Math.Max(pt1.Y, pt2.Y);
+    }
+
     public CoordinateRect(double xMin, double xMax, double yMin, double yMax)
     {
         XMin = xMin;
