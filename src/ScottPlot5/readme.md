@@ -61,6 +61,21 @@ Name known colors as `Colors.Blue` instead of `Color.Blue` to avoid conflicts wi
 
 I'm also creating my own `LineStyle` and `MarkerShape` classes, so it's not that surprising.
 
+### Why not support .NET Standard / .NET Framework?
+
+I'm not committed one way or the other yet.
+
+Pros:
+
+* The build system is much better. I don't want to deal with msbuild, especially in CI/CD pipeline.
+* Newer features like nullable, Span<T>, Memory<T>, generic math, etc. work out of the box.
+
+Cons:
+
+* .NET Framework 4.8 will be supported officially for many years to come, so intentionally not supporting it could limit a good number of potential users. 
+  * Are these the users ScottPlot wants a asking questions and posting feature requests? 👿
+  * ScottPlot 4 works fine for .NET Standard / .NET Framework
+
 ## Supported Features
 
 I'm noting these here so I can ensure they are supported before release
