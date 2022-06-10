@@ -27,10 +27,9 @@ public class DebugGrid : IPlottable
             surface.Canvas.DrawLine(xPixel, dataRect.Bottom, xPixel, dataRect.Top, paint);
         }
 
-
         int ticksFromOriginBottom = (int)(yAxis.Bottom / Spacing);
         int ticksFromOriginTop = (int)(yAxis.Top / Spacing);
-        for (int i = ticksFromOriginLeft; i <= ticksFromOriginRight; i++)
+        for (int i = ticksFromOriginBottom; i <= ticksFromOriginTop; i++)
         {
             double y = Spacing * i;
             float yPixel = yAxis.GetPixel(y, dataRect.Bottom, dataRect.Top);
