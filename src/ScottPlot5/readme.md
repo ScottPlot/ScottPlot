@@ -76,6 +76,16 @@ Cons:
   * Are these the users ScottPlot wants a asking questions and posting feature requests? 👿
   * ScottPlot 4 works fine for .NET Standard / .NET Framework
 
+### Why do Plottables inherit `PlottableBase` instead of implementing `IPlottable`?
+
+Custom plottables could do either. I haven't decided what to do here.
+
+`IPlottable` contains some cruft that many users do not need to worry about (e.g., returning legend items, storing axes, etc)
+
+Instead of using a lot of small interfaces and letting the user choose which to implement, this strategy encourages users to inherit a base class and selectively override the functionality they want to implement.
+
+... but making users manually implement every little thing forces them to understand what they're doing
+
 ## Supported Features
 
 I'm noting these here so I can ensure they are supported before release

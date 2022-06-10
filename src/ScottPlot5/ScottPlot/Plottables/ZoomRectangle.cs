@@ -1,18 +1,16 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axes;
+using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-internal class ZoomRectangle : IPlottable
+internal class ZoomRectangle : PlottableBase
 {
-    public bool IsVisible { get; set; } = false;
     public SKColor FillColor = SKColors.Red.WithAlpha(100);
     public SKColor EdgeColor = SKColors.Red.WithAlpha(200);
     public float LineWidth = 2;
     public CoordinateRect Rect;
-    public HorizontalAxis? XAxis { get; set; }
-    public VerticalAxis? YAxis { get; set; }
 
-    public ZoomRectangle(HorizontalAxis xAxis, VerticalAxis yAxis)
+    public ZoomRectangle(IXAxis xAxis, IYAxis yAxis)
     {
         XAxis = xAxis;
         YAxis = yAxis;
@@ -29,7 +27,7 @@ internal class ZoomRectangle : IPlottable
         IsVisible = false;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public override void Render(SKSurface surface, PixelRect dataRect)
     {
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
@@ -39,10 +37,10 @@ internal class ZoomRectangle : IPlottable
             IsAntialias = true
         };
 
-        float l = XAxis.GetPixel(Rect.XMin, dataRect.Left, dataRect.Right);
-        float r = XAxis.GetPixel(Rect.XMax, dataRect.Left, dataRect.Right);
-        float b = YAxis.GetPixel(Rect.YMin, dataRect.Bottom, dataRect.Top);
-        float t = YAxis.GetPixel(Rect.YMax, dataRect.Bottom, dataRect.Top);
+        float l = XAxis.GetPixel(Rect.XMin, dataRect);
+        float r = XAxis.GetPixel(Rect.XMax, dataRect);
+        float b = YAxis.GetPixel(Rect.YMin, dataRect);
+        float t = YAxis.GetPixel(Rect.YMax, dataRect);
         SKRect rect = new(l, t, r, b);
 
         paint.Color = FillColor;

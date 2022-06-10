@@ -1,15 +1,13 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axes;
+using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-public class DebugGrid : IPlottable
+public class DebugGrid : PlottableBase
 {
-    public bool IsVisible { get; set; } = true;
     public double Spacing { get; set; } = 1;
-    public HorizontalAxis? XAxis { get; set; }
-    public VerticalAxis? YAxis { get; set; }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public override void Render(SKSurface surface, PixelRect dataRect)
     {
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
@@ -26,7 +24,7 @@ public class DebugGrid : IPlottable
         for (int i = ticksFromOriginLeft; i <= ticksFromOriginRight; i++)
         {
             double x = Spacing * i;
-            float xPixel = XAxis.GetPixel(x, dataRect.Left, dataRect.Right);
+            float xPixel = XAxis.GetPixel(x, dataRect);
             xPixel = (float)Math.Round(xPixel); // snap to nearest whole number to avoid anti-aliasing artifacts
 
             paint.Color = i == 0 ? SKColors.Black : SKColors.Black.WithAlpha(100);
@@ -38,7 +36,7 @@ public class DebugGrid : IPlottable
         for (int i = ticksFromOriginBottom; i <= ticksFromOriginTop; i++)
         {
             double y = Spacing * i;
-            float yPixel = YAxis.GetPixel(y, dataRect.Bottom, dataRect.Top);
+            float yPixel = YAxis.GetPixel(y, dataRect);
             yPixel = (float)Math.Round(yPixel); // snap to nearest whole number to avoid anti-aliasing artifacts
 
             paint.Color = i == 0 ? SKColors.Black : SKColors.Black.WithAlpha(50);

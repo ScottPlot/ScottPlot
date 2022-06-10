@@ -14,7 +14,8 @@ public struct CoordinateRect
     public double YCenter => (YMax + YMin) / 2;
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
-    public bool HasArea => Width * Height != 0;
+    public double Area => Width * Height;
+    public bool HasArea => (Area != 0 && !double.IsNaN(Area) && !double.IsInfinity(Area));
 
     public CoordinateRect(Coordinate pt1, Coordinate pt2)
     {
@@ -35,30 +36,5 @@ public struct CoordinateRect
     public override string ToString()
     {
         return $"PixelRect: XMin={XMin} XMax={XMax} YMin={YMin} YMax={YMax}";
-    }
-
-    public CoordinateRect WithPan(double deltaX, double deltaY)
-    {
-        return new CoordinateRect(XMin + deltaX, XMax + deltaX, YMin + deltaY, YMax + deltaY);
-    }
-
-    public CoordinateRect WithZoom(double fracX, double fracY)
-    {
-        return WithZoom(fracX, fracY, XCenter, YCenter);
-    }
-
-    public CoordinateRect WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
-    {
-        double spanLeftX = zoomToX - XMin;
-        double spanRightX = XMax - zoomToX;
-        double newMinX = zoomToX - spanLeftX / fracX;
-        double newMaxX = zoomToX + spanRightX / fracX;
-
-        double spanLeftY = zoomToY - YMin;
-        double spanRightY = YMax - zoomToY;
-        double newMinY = zoomToY - spanLeftY / fracY;
-        double newMaxY = zoomToY + spanRightY / fracY;
-
-        return new CoordinateRect(newMinX, newMaxX, newMinY, newMaxY);
     }
 }

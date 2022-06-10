@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
+using ScottPlot.Axes;
 using SkiaSharp;
 
 namespace ScottPlot;
 
 public class Plot
 {
-    // TOOD: don't store min/max state in these
-    readonly HorizontalAxis XAxis = new();
-    readonly VerticalAxis YAxis = new();
+    readonly IXAxis XAxis = new LinearXAxis();
+    readonly IYAxis YAxis = new LinearYAxis();
     readonly List<IPlottable> Plottables = new();
 
-    // TODO: expose this so the user can customize it
+    // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public bool ShowBenchmark
     {
         get => DebugBenchmark.IsVisible;
@@ -18,6 +18,7 @@ public class Plot
     }
     readonly Plottables.DebugBenchmark DebugBenchmark = new();
 
+    // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     readonly Plottables.ZoomRectangle ZoomRectangle;
 
     /// <summary>
@@ -28,8 +29,6 @@ public class Plot
     public Plot()
     {
         ZoomRectangle = new(XAxis, YAxis);
-        CoordinateRect bounds = new(-10, 10, -10, 10);
-        SetAxisLimits(bounds);
     }
 
     public void Add(IPlottable plottable)
@@ -47,23 +46,61 @@ public class Plot
         return Plottables.ToArray();
     }
 
-    public void SetAxisLimits(double xMin, double xMax, double yMin, double yMax)
+    public void SetAxisLimits(double left, double right, double bottom, double top)
     {
-        XAxis.Min = xMin;
-        XAxis.Max = xMax;
-        YAxis.Min = yMin;
-        YAxis.Max = yMax;
+        XAxis.Left = left;
+        XAxis.Right = right;
+        XAxis.HasBeenSet = true;
+
+        YAxis.Bottom = bottom;
+        YAxis.Top = top;
+        YAxis.HasBeenSet = true;
     }
 
     public void SetAxisLimits(CoordinateRect rect)
     {
-        XAxis.Min = rect.XMin;
-        XAxis.Max = rect.XMax;
-        YAxis.Min = rect.YMin;
-        YAxis.Max = rect.YMax;
+        SetAxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
     }
 
-    public void MousePan(CoordinateRect originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void SetAxisLimits(AxisLimits rect)
+    {
+        SetAxisLimits(rect.Rect);
+    }
+
+    /// <summary>
+    /// Automatically scale the axis limits to fit the data.
+    /// Note: This used to be AxisAuto().
+    /// </summary>
+    /// <param name="xMargin">fractional margin to add on each side</param>
+    /// <param name="yMargin"></param>
+    public void AutoScale(double xMargin = .05, double yMargin = .1)
+    {
+        if (xMargin < 0 || xMargin > 1)
+            throw new ArgumentException($"{nameof(xMargin)} must be within the range [0, 1] ");
+
+        if (yMargin < 0 || yMargin > 1)
+            throw new ArgumentException($"{nameof(yMargin)} must be within the range [0, 1] ");
+
+        AxisLimits limits = AxisLimits.NoLimits;
+
+        foreach (var plottable in Plottables)
+        {
+            limits.Expand(plottable.GetAxisLimits());
+        }
+
+        if (double.IsNaN(limits.Rect.XMin))
+            limits.Rect.XMin = -10;
+        if (double.IsNaN(limits.Rect.XMax))
+            limits.Rect.XMax = +10;
+        if (double.IsNaN(limits.Rect.YMin))
+            limits.Rect.YMin = -10;
+        if (double.IsNaN(limits.Rect.YMax))
+            limits.Rect.YMax = +10;
+
+        SetAxisLimits(limits.WithZoom(1 - xMargin, 1 - yMargin));
+    }
+
+    public void MousePan(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
         double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
@@ -78,7 +115,7 @@ public class Plot
         SetAxisLimits(originalLimits.WithPan(-deltaX, deltaY));
     }
 
-    public void MouseZoom(CoordinateRect originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void MouseZoom(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
@@ -116,26 +153,30 @@ public class Plot
         ZoomRectangle.Clear();
     }
 
-    public CoordinateRect GetAxisLimits()
+    public AxisLimits GetAxisLimits()
     {
-        return new CoordinateRect(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
+        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
     }
 
-    public Pixel GetPixel(Coordinate coord, PixelRect rect)
+    /// <summary>
+    /// Return the pixel for a specific coordinate using measurements from the most recent render.
+    /// </summary>
+    public Pixel GetPixel(Coordinate coord)
     {
-        float x = XAxis.GetPixel(coord.X, rect.Left, rect.Right);
-        float y = YAxis.GetPixel(coord.Y, rect.Bottom, rect.Top);
+        PixelRect dataRect = LastRenderInfo.DataRect;
+        float x = XAxis.GetPixel(coord.X, dataRect);
+        float y = YAxis.GetPixel(coord.Y, dataRect);
         return new Pixel(x, y);
     }
 
     /// <summary>
-    /// Return the coordinate for a specific pixel on the most recent render.
+    /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
     public Coordinate GetCoordinate(Pixel pixel)
     {
         PixelRect dataRect = LastRenderInfo.DataRect;
-        double x = XAxis.GetCoordinate(pixel.X, dataRect.Left, dataRect.Right);
-        double y = YAxis.GetCoordinate(pixel.Y, dataRect.Bottom, dataRect.Top);
+        double x = XAxis.GetCoordinate(pixel.X, dataRect);
+        double y = YAxis.GetCoordinate(pixel.Y, dataRect);
         return new Coordinate(x, y);
     }
 
@@ -151,7 +192,21 @@ public class Plot
         Stopwatch SW = Stopwatch.StartNew();
         RenderInformation renderInfo = new();
 
-        // analyze axes, determine ticks, measure strings, etc. to calculate layout
+        // ensure all plottables are properly setup
+        foreach (var plottable in Plottables)
+        {
+            if (plottable.XAxis is null)
+                plottable.XAxis = XAxis;
+            if (plottable.YAxis is null)
+                plottable.YAxis = YAxis;
+        }
+
+        if (!XAxis.HasBeenSet || !YAxis.HasBeenSet)
+        {
+            AutoScale();
+        }
+
+        // recalculate layout
         renderInfo.FigureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
         renderInfo.DataRect = GetDataAreaRect(renderInfo.FigureRect);
         renderInfo.ElapsedLayout = SW.Elapsed;
@@ -170,17 +225,13 @@ public class Plot
 
     private void RenderBackground(SKSurface surface)
     {
-        surface.Canvas.Clear(SKColors.Navy);
+        surface.Canvas.Clear(SKColors.White);
     }
 
     private void RenderPlottables(SKSurface surface, PixelRect dataRect)
     {
         foreach (var plottable in Plottables.Where(x => x.IsVisible))
         {
-            if (plottable.XAxis is null)
-                plottable.XAxis = XAxis;
-            if (plottable.YAxis is null)
-                plottable.YAxis = YAxis;
             plottable.Render(surface, dataRect);
         }
     }
@@ -194,7 +245,7 @@ public class Plot
             Style = SKPaintStyle.Stroke,
         };
 
-        paint.Color = SKColors.Yellow;
+        paint.Color = SKColors.Black;
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
     }
 
@@ -244,4 +295,17 @@ public class Plot
         byte[] bytes = GetImageBytes(width, height, format, quality);
         File.WriteAllBytes(path, bytes);
     }
+
+    #region AddPlottable Helper Methods
+
+    public Plottables.Scatter AddScatter(double[] xs, double[] ys, SKColor color)
+    {
+        Plottables.Scatter scatter = new(xs, ys) { Color = color };
+
+        Add(scatter);
+
+        return scatter;
+    }
+
+    #endregion
 }

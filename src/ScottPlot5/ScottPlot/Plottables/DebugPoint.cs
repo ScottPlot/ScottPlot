@@ -2,13 +2,10 @@
 
 namespace ScottPlot.Plottables;
 
-public class DebugPoint : IPlottable
+public class DebugPoint : PlottableBase
 {
-    public bool IsVisible { get; set; } = true;
     public Coordinate Position { get; set; }
-    public SKColor Color { get; set; } = SKColors.White;
-    public HorizontalAxis? XAxis { get; set; }
-    public VerticalAxis? YAxis { get; set; }
+    public SKColor Color { get; set; } = SKColors.Magenta;
 
     public DebugPoint()
     {
@@ -21,7 +18,7 @@ public class DebugPoint : IPlottable
         Color = color;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public override void Render(SKSurface surface, PixelRect dataRect)
     {
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
@@ -37,8 +34,8 @@ public class DebugPoint : IPlottable
             PathEffect = SKPathEffect.CreateDash(new float[] { 4, 4, }, 0),
         };
 
-        float x = XAxis.GetPixel(Position.X, dataRect.Left, dataRect.Right);
-        float y = YAxis.GetPixel(Position.Y, dataRect.Bottom, dataRect.Top);
+        float x = XAxis.GetPixel(Position.X, dataRect);
+        float y = YAxis.GetPixel(Position.Y, dataRect);
 
         SKCanvas canvas = surface.Canvas;
         canvas.DrawLine(x, dataRect.Top, x, dataRect.Bottom, paint);

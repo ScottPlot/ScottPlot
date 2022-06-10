@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Axes;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Any object that renders shapes on the canvas using scale information from the axes must implement this interface.
@@ -25,7 +27,9 @@ public interface IPlottable
     // * Plottables that use these must perform a null check once at the top of the render method.
     // * Plottables that don't need axes can leave these null.
 
-    public HorizontalAxis? XAxis { get; set; }
+    public IXAxis? XAxis { get; set; }
 
-    public VerticalAxis? YAxis { get; set; }
+    public IYAxis? YAxis { get; set; }
+
+    public AxisLimits GetAxisLimits();
 }

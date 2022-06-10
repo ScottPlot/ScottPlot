@@ -1,16 +1,13 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axes;
+using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-internal class DebugBenchmark : IPlottable
+public class DebugBenchmark : PlottableBase
 {
-    public bool IsVisible { get; set; } = false;
-
     public double ElapsedMilliseconds;
-    public HorizontalAxis? XAxis { get; set; }
-    public VerticalAxis? YAxis { get; set; }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public override void Render(SKSurface surface, PixelRect dataRect)
     {
         string message = $"Rendered in {ElapsedMilliseconds:0.000} ms ({1e3 / ElapsedMilliseconds:N0} FPS)";
 

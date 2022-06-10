@@ -1,4 +1,5 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using SkiaSharp;
 
 namespace ScottPlot.WinForms;
 
@@ -6,7 +7,7 @@ public partial class Form1 : Form
 {
     readonly Plot Plot = new();
     readonly Plottables.DebugPoint DebugPoint = new();
-    CoordinateRect MouseDownLimits;
+    AxisLimits MouseDownLimits;
     Pixel MouseDownPixel;
     bool IsMouseDown;
 
@@ -15,6 +16,8 @@ public partial class Form1 : Form
         InitializeComponent();
         Plot.Add(DebugPoint);
         Plot.Add(new Plottables.DebugGrid());
+        Plot.AddScatter(Generate.Consecutive(51), Generate.Sin(51), SKColors.Blue);
+        Plot.AddScatter(Generate.Consecutive(51), Generate.Cos(51), SKColors.Red);
         skglControl1.MouseMove += SkglControl1_MouseMove;
         skglControl1.MouseDown += SkglControl1_MouseDown;
         skglControl1.MouseUp += SkglControl1_MouseUp;
@@ -61,7 +64,7 @@ public partial class Form1 : Form
             {
                 // assume it was a middle-click and auto-axis
                 Plot.MouseZoomRectangleClear(applyZoom: false);
-                Plot.SetAxisLimits(-10, 10, -10, 10);
+                Plot.AutoScale();
             }
         }
 
