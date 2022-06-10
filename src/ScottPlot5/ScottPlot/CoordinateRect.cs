@@ -10,6 +10,8 @@ public struct CoordinateRect
     public double XMax { get; set; }
     public double YMax { get; set; }
 
+    public double XCenter => (XMax + XMin) / 2;
+    public double YCenter => (YMax + YMin) / 2;
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
     public bool HasArea => Width * Height != 0;
