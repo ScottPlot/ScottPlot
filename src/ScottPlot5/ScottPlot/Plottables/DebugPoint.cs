@@ -8,6 +8,17 @@ public class DebugPoint : IPlottable
 
     public SKColor Color { get; set; } = SKColors.White;
 
+    public DebugPoint()
+    {
+
+    }
+
+    public DebugPoint(double x, double y, SKColor color)
+    {
+        Position = new(x, y);
+        Color = color;
+    }
+
     public void Render(SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis)
     {
         surface.Canvas.ClipRect(dataRect.ToSKRect());
