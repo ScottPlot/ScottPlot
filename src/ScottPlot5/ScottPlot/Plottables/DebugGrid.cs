@@ -4,6 +4,7 @@ namespace ScottPlot.Plottables;
 
 public class DebugGrid : IPlottable
 {
+    public bool IsVisible { get; set; } = true;
     public double Spacing { get; set; } = 1;
 
     public void Render(SKSurface surface, PixelRect dataRect, HorizontalAxis xAxis, VerticalAxis yAxis)

@@ -4,8 +4,8 @@ namespace ScottPlot.Plottables;
 
 public class DebugPoint : IPlottable
 {
+    public bool IsVisible { get; set; } = true;
     public Coordinate Position { get; set; }
-
     public SKColor Color { get; set; } = SKColors.White;
 
     public DebugPoint()
