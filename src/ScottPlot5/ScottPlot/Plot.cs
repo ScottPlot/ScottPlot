@@ -36,6 +36,14 @@ public class Plot
         return Plottables.ToArray();
     }
 
+    public void SetAxisLimits(double xMin, double xMax, double yMin, double yMax)
+    {
+        XAxis.Min = xMin;
+        XAxis.Max = xMax;
+        YAxis.Min = yMin;
+        YAxis.Max = yMax;
+    }
+
     public void SetAxisLimits(CoordinateRect rect)
     {
         XAxis.Min = rect.XMin;
