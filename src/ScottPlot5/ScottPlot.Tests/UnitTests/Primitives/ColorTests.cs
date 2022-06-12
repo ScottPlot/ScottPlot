@@ -110,6 +110,10 @@ namespace ScottPlot.Tests.UnitTests.Primitives
             Assert.That(Colors.Orange.ToStringRGB, Is.EqualTo("#FFA500"));
             Assert.That(Colors.Chocolate.ToStringRGB, Is.EqualTo("#D2691E"));
             Assert.That(Colors.GoldenRod.ToStringRGB, Is.EqualTo("#DAA520"));
+
+            Assert.That(Colors.Xkcd.Orange.ToStringRGB, Is.EqualTo("#F97306"));
+            Assert.That(Colors.Xkcd.Darkblue.ToStringRGB, Is.EqualTo("#030764"));
+            Assert.That(Colors.Xkcd.BabyPoopGreen.ToStringRGB, Is.EqualTo("#8F9805"));
         }
 
         [Test]

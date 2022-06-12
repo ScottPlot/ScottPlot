@@ -1,4 +1,8 @@
-﻿// Reference APIs: https://github.com/ScottPlot/ScottPlot/pull/1647#issuecomment-1152963629
+﻿/*
+ * Discussion and links to reference APIs:
+ * https://github.com/ScottPlot/ScottPlot/pull/1647#issuecomment-1152963629
+ * 
+ */
 
 namespace ScottPlot;
 
@@ -152,4 +156,15 @@ public struct Colors
     public static Color WhiteSmoke => new(245, 245, 245);
     public static Color Yellow => new(255, 255, 0);
     public static Color YellowGreen => new(154, 205, 50);
+
+    /// <summary>
+    /// Default Windows Colors
+    /// </summary>
+    public class Windows : NamedColors.WindowsStandardColors { }
+
+    /// <summary>
+    /// Colors from the xkcd color name survey
+    /// https://xkcd.com/color/rgb/
+    /// </summary>
+    public class Xkcd : NamedColors.XkcdColors { }
 }
