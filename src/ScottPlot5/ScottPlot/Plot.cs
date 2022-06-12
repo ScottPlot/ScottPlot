@@ -1,13 +1,18 @@
 ﻿using System.Diagnostics;
 using ScottPlot.Axes;
+using ScottPlot.AxisViews;
 using SkiaSharp;
 
 namespace ScottPlot;
 
 public class Plot
 {
-    readonly IXAxis XAxis = new LinearXAxis();
-    readonly IYAxis YAxis = new LinearYAxis();
+    // TODO: store these in lists to support multi-axis plots
+    readonly IXAxis XAxis;
+    readonly IYAxis YAxis;
+    readonly IAxisView LeftAxisView;
+    readonly IAxisView BottomAxisView;
+
     readonly List<IPlottable> Plottables = new();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
@@ -28,6 +33,12 @@ public class Plot
 
     public Plot()
     {
+        XAxis = new LinearXAxis();
+        YAxis = new LinearYAxis();
+
+        LeftAxisView = new LeftAxisView(YAxis);
+        BottomAxisView = new BottomAxisView(XAxis);
+
         ZoomRectangle = new(XAxis, YAxis);
     }
 
@@ -189,6 +200,8 @@ public class Plot
 
     public RenderInformation Render(SKSurface surface)
     {
+        SKRect figureRect = surface.Canvas.LocalClipBounds;
+
         Stopwatch SW = Stopwatch.StartNew();
         RenderInformation renderInfo = new();
 
@@ -207,12 +220,13 @@ public class Plot
         }
 
         // recalculate layout
-        renderInfo.FigureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
+        renderInfo.FigureRect = PixelRect.FromSKRect(figureRect);
         renderInfo.DataRect = GetDataAreaRect(renderInfo.FigureRect);
         renderInfo.ElapsedLayout = SW.Elapsed;
         SW.Restart();
 
         // perform all renders
+
         RenderBackground(surface);
         RenderPlottables(surface, renderInfo.DataRect);
         RenderAxes(surface, renderInfo.DataRect);
@@ -232,21 +246,27 @@ public class Plot
     {
         foreach (var plottable in Plottables.Where(x => x.IsVisible))
         {
+            surface.Canvas.Save();
             plottable.Render(surface, dataRect);
+            surface.Canvas.Restore();
         }
     }
 
     private void RenderAxes(SKSurface surface, PixelRect dataRect)
     {
+        // draw frame around data area
         using SKPaint paint = new()
         {
             IsAntialias = true,
             StrokeWidth = 1,
             Style = SKPaintStyle.Stroke,
         };
-
         paint.Color = SKColors.Black;
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
+
+        // draw each axis view
+        LeftAxisView.Render(surface, dataRect);
+        BottomAxisView.Render(surface, dataRect);
     }
 
     private void RenderZoomRectangle(SKSurface surface, PixelRect dataRect)
