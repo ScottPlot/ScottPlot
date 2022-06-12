@@ -12,6 +12,14 @@ public struct PixelRect
     public float Width => Right - Left;
     public float Height => Bottom - Top;
     public bool HasArea => Width * Height != 0;
+    public Pixel TopLeft => new(Left, Top);
+    public Pixel TopRight => new(Right, Top);
+    public Pixel BottomLeft => new(Left, Bottom);
+    public Pixel BottomRight => new(Right, Bottom);
+    public Pixel LeftCenter => new(Left, VerticalCenter);
+    public Pixel RightCenter => new(Right, VerticalCenter);
+    public Pixel BottomCenter => new(HorizontalCenter, Bottom);
+    public Pixel TopCenter => new(HorizontalCenter, Top);
 
     public override string ToString()
     {
