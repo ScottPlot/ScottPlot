@@ -7,6 +7,11 @@ public class LinearYAxis : IYAxis
     public double Height => Top - Bottom;
     public bool HasBeenSet { get; set; } = false;
 
+    public bool Contains(double position)
+    {
+        return position >= Bottom && position <= Top;
+    }
+
     public override string ToString()
     {
         return $"VerticalAxis: Bottom={Bottom}, Top={Top}";
