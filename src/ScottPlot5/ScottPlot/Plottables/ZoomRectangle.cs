@@ -14,6 +14,7 @@ internal class ZoomRectangle : PlottableBase
     {
         XAxis = xAxis;
         YAxis = yAxis;
+        IsVisible = false;
     }
 
     public void SetSize(CoordinateRect rect)
