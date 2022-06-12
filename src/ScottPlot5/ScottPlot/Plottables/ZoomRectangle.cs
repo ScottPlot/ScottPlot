@@ -5,8 +5,8 @@ namespace ScottPlot.Plottables;
 
 internal class ZoomRectangle : PlottableBase
 {
-    public SKColor FillColor = SKColors.Red.WithAlpha(100);
-    public SKColor EdgeColor = SKColors.Red.WithAlpha(200);
+    public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
+    public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
     public float LineWidth = 2;
     public CoordinateRect Rect;
 
@@ -43,11 +43,11 @@ internal class ZoomRectangle : PlottableBase
         float t = YAxis.GetPixel(Rect.YMax, dataRect);
         SKRect rect = new(l, t, r, b);
 
-        paint.Color = FillColor;
+        paint.Color = FillColor.ToSKColor();
         paint.IsStroke = false;
         surface.Canvas.DrawRect(rect, paint);
 
-        paint.Color = EdgeColor;
+        paint.Color = EdgeColor.ToSKColor();
         paint.StrokeWidth = LineWidth;
         paint.IsStroke = true;
         surface.Canvas.DrawRect(rect, paint);

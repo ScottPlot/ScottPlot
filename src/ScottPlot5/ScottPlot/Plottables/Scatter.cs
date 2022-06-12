@@ -14,7 +14,7 @@ public class Scatter : PlottableBase
     private readonly double[] Ys;
     private int Count => Xs.Length;
 
-    public SKColor Color = SKColors.Blue;
+    public Color Color = new(0, 0, 255);
     public float LineWidth = 1;
     public float MarkerSize = 5;
 
@@ -51,7 +51,7 @@ public class Scatter : PlottableBase
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Color,
+            Color = Color.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 

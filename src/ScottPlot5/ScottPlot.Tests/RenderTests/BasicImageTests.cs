@@ -8,8 +8,8 @@ internal class BasicImageTests
         Plot plt = new();
 
         plt.Add(new Plottables.DebugGrid());
-        plt.Add(new Plottables.DebugPoint(2, 3, SKColors.Magenta));
-        plt.Add(new Plottables.DebugPoint(-7, -4, SKColors.LightGreen));
+        plt.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
+        plt.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
         TestTools.SaveImage(plt);
     }
@@ -20,8 +20,8 @@ internal class BasicImageTests
         Plot plt = new();
 
         plt.Add(new Plottables.DebugGrid());
-        plt.Add(new Plottables.DebugPoint(2, 3, SKColors.Magenta));
-        plt.Add(new Plottables.DebugPoint(-7, -4, SKColors.LightGreen));
+        plt.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
+        plt.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
         AxisLimits limits = plt.GetAxisLimits();
         TestTools.SaveImage(plt, subName: "1");

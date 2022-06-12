@@ -5,14 +5,15 @@ namespace ScottPlot.Plottables;
 public class DebugPoint : PlottableBase
 {
     public Coordinate Position { get; set; }
-    public SKColor Color { get; set; } = SKColors.Magenta;
+
+    public Color Color { get; set; } = new(255, 00, 255);
 
     public DebugPoint()
     {
 
     }
 
-    public DebugPoint(double x, double y, SKColor color)
+    public DebugPoint(double x, double y, Color color)
     {
         Position = new(x, y);
         Color = color;
@@ -28,7 +29,7 @@ public class DebugPoint : PlottableBase
         using SKPaint paint = new()
         {
             IsAntialias = true,
-            Color = Color.WithAlpha(200),
+            Color = Color.WithAlpha(200).ToSKColor(),
             StrokeWidth = 1,
             IsStroke = true,
             PathEffect = SKPathEffect.CreateDash(new float[] { 4, 4, }, 0),
@@ -42,7 +43,7 @@ public class DebugPoint : PlottableBase
         canvas.DrawLine(dataRect.Left, y, dataRect.Right, y, paint);
         canvas.DrawCircle(x, y, 5, paint);
 
-        paint.Color = Color;
+        paint.Color = Color.ToSKColor();
         paint.IsStroke = false;
         SKTypeface tf = SKTypeface.FromFamilyName("consolas");
         SKFont font = new(tf, size: 12);
