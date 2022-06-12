@@ -24,6 +24,9 @@ public class DebugGrid : PlottableBase
         for (int i = ticksFromOriginLeft; i <= ticksFromOriginRight; i++)
         {
             double x = Spacing * i;
+            if (!XAxis.Contains(x))
+                continue;
+
             float xPixel = XAxis.GetPixel(x, dataRect);
             xPixel = (float)Math.Round(xPixel); // snap to nearest whole number to avoid anti-aliasing artifacts
 
@@ -36,6 +39,9 @@ public class DebugGrid : PlottableBase
         for (int i = ticksFromOriginBottom; i <= ticksFromOriginTop; i++)
         {
             double y = Spacing * i;
+            if (!YAxis.Contains(y))
+                continue;
+
             float yPixel = YAxis.GetPixel(y, dataRect);
             yPixel = (float)Math.Round(yPixel); // snap to nearest whole number to avoid anti-aliasing artifacts
 
