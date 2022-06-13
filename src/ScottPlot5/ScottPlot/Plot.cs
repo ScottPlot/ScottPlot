@@ -15,6 +15,8 @@ public class Plot
 
     readonly List<IPlottable> Plottables = new();
 
+    public IGrid Grid = new Grids.DefaultGrid();
+
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public bool ShowBenchmark
     {
@@ -238,7 +240,7 @@ public class Plot
 
         // perform all renders
 
-        RenderBackground(surface);
+        RenderBackground(surface, renderInfo.DataRect);
         RenderPlottables(surface, renderInfo.DataRect);
         RenderAxes(surface, renderInfo.DataRect);
         renderInfo.ElapsedRender = SW.Elapsed;
@@ -248,9 +250,11 @@ public class Plot
         return renderInfo;
     }
 
-    private void RenderBackground(SKSurface surface)
+    private void RenderBackground(SKSurface surface, PixelRect dataRect)
     {
         surface.Canvas.Clear(SKColors.White);
+        Grid.Render(surface, dataRect, BottomAxisView);
+        Grid.Render(surface, dataRect, LeftAxisView);
     }
 
     private void RenderPlottables(SKSurface surface, PixelRect dataRect)
