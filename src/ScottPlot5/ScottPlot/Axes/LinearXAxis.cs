@@ -6,6 +6,7 @@ public class LinearXAxis : IXAxis
     public double Right { get; set; } = 0;
     public double Width => Right - Left;
     public bool HasBeenSet { get; set; } = false;
+    public bool IsHorizontal => true;
 
     public bool Contains(double position)
     {

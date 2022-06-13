@@ -15,6 +15,11 @@ public interface IAxis
     public bool HasBeenSet { get; set; }
 
     /// <summary>
+    /// Indicates whether the axis spans horizontally (X axis) or vertically (Y axis)
+    /// </summary>
+    public bool IsHorizontal { get; }
+
+    /// <summary>
     /// Returns true if the position is within the visible axis limits (inclusive on both sides)
     /// </summary>
     public bool Contains(double position);

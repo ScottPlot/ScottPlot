@@ -6,6 +6,7 @@ public class LinearYAxis : IYAxis
     public double Top { get; set; } = 0;
     public double Height => Top - Bottom;
     public bool HasBeenSet { get; set; } = false;
+    public bool IsHorizontal => false;
 
     public bool Contains(double position)
     {
