@@ -15,7 +15,6 @@ public partial class Form1 : Form
     {
         InitializeComponent();
         Plot.Add(DebugPoint);
-        Plot.Add(new Plottables.DebugGrid());
         Plot.AddScatter(Generate.Consecutive(51), Generate.Sin(51), Colors.Blue);
         Plot.AddScatter(Generate.Consecutive(51), Generate.Cos(51), Colors.Red);
         skglControl1.MouseMove += SkglControl1_MouseMove;

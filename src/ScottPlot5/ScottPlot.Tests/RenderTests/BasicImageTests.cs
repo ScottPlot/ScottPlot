@@ -7,7 +7,6 @@ internal class BasicImageTests
     {
         Plot plt = new();
 
-        plt.Add(new Plottables.DebugGrid());
         plt.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
         plt.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
@@ -19,7 +18,6 @@ internal class BasicImageTests
     {
         Plot plt = new();
 
-        plt.Add(new Plottables.DebugGrid());
         plt.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
         plt.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
