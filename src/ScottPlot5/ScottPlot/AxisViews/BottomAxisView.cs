@@ -7,7 +7,7 @@ public class BottomAxisView : IAxisView
 {
     public IAxis Axis => XAxis;
     public IXAxis XAxis { get; private set; }
-    public Edge Edge { get; } = Edge.Left;
+    public Edge Edge => Edge.Bottom;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.FixedSpacingTickGenerator();
 
     public Label Label { get; private set; } = new() { Text = "Horizontal Axis", Bold = true, FontSize = 16 };
@@ -26,6 +26,11 @@ public class BottomAxisView : IAxisView
     public void RegenerateTicks(PixelRect dataRect)
     {
         Ticks = TickGenerator.GenerateTicks(XAxis.Left, XAxis.Right, dataRect.Width);
+    }
+
+    public Tick[] GetVisibleTicks()
+    {
+        return Ticks.Where(tick => XAxis.Contains(tick.Position)).Take(MaxTickCount).ToArray();
     }
 
     public float Measure()
@@ -73,9 +78,8 @@ public class BottomAxisView : IAxisView
             TextAlign = SKTextAlign.Center,
         };
 
-        var visibleTicks = Ticks.Where(tick => XAxis.Contains(tick.Position)).Take(MaxTickCount);
 
-        foreach (Tick tick in visibleTicks)
+        foreach (Tick tick in GetVisibleTicks())
         {
             float x = XAxis.GetPixel(tick.Position, dataRect);
 

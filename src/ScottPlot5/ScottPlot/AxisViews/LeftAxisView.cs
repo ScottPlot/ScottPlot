@@ -7,7 +7,7 @@ public class LeftAxisView : IAxisView
 {
     public IAxis Axis => YAxis;
     public IYAxis YAxis { get; private set; }
-    public Edge Edge { get; } = Edge.Left;
+    public Edge Edge => Edge.Left;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.FixedSpacingTickGenerator();
 
     public Label Label { get; private set; } = new() { Text = "Vertical Axis", Bold = true, FontSize = 16 };
@@ -28,16 +28,19 @@ public class LeftAxisView : IAxisView
         Ticks = TickGenerator.GenerateTicks(YAxis.Bottom, YAxis.Top, dataRect.Height);
     }
 
+    public Tick[] GetVisibleTicks()
+    {
+        return Ticks.Where(tick => YAxis.Contains(tick.Position)).Take(MaxTickCount).ToArray();
+    }
+
     public float Measure()
     {
         float labelWidth = Label.FontSize;
         float largestTickWidth = 0;
 
-        var visibleTicks = Ticks.Where(tick => YAxis.Contains(tick.Position)).Take(MaxTickCount);
-
         using SKPaint paint = Label.GetPaint();
 
-        foreach (Tick tick in visibleTicks)
+        foreach (Tick tick in GetVisibleTicks())
         {
             largestTickWidth = Math.Max(largestTickWidth, paint.MeasureText(tick.Label) + 10);
         }
