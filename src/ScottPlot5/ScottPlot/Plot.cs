@@ -193,8 +193,17 @@ public class Plot
 
     private PixelRect GetDataAreaRect(PixelRect figureRect)
     {
-        // NOTE: eventually this will measure strings to calculate the ideal layout
-        PixelPadding DataAreaPadding = new(40, 10, 30, 20);
+        LeftAxisView.RegenerateTicks(figureRect);
+        float padLeft = LeftAxisView.Measure();
+
+        BottomAxisView.RegenerateTicks(figureRect);
+        float padBottom = BottomAxisView.Measure();
+
+        float padRight = 20;
+
+        float padTop = 20;
+
+        PixelPadding DataAreaPadding = new(padLeft, padRight, padBottom, padTop);
         return figureRect.Contract(DataAreaPadding);
     }
 
@@ -223,6 +232,8 @@ public class Plot
         renderInfo.FigureRect = PixelRect.FromSKRect(figureRect);
         renderInfo.DataRect = GetDataAreaRect(renderInfo.FigureRect);
         renderInfo.ElapsedLayout = SW.Elapsed;
+        LeftAxisView.RegenerateTicks(renderInfo.DataRect);
+        BottomAxisView.RegenerateTicks(renderInfo.DataRect);
         SW.Restart();
 
         // perform all renders

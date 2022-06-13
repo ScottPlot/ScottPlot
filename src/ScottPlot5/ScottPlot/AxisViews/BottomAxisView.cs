@@ -7,12 +7,34 @@ public class BottomAxisView : IAxisView
 {
     public IAxis Axis => XAxis;
     public IXAxis XAxis { get; private set; }
+    public Edge Edge { get; } = Edge.Left;
+    public ITickGenerator TickGenerator { get; set; } = new TickGenerators.FixedSpacingTickGenerator();
 
-    public string Label = "Horizontal Axis";
+    public Label Label { get; private set; } = new() { Text = "Horizontal Axis", Bold = true, FontSize = 16 };
+    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+
+    /// <summary>
+    /// Only render a maximum of this number of ticks
+    /// </summary>
+    public int MaxTickCount { get; set; } = 1000;
 
     public BottomAxisView(IXAxis axis)
     {
         XAxis = axis;
+    }
+
+    public void RegenerateTicks(PixelRect dataRect)
+    {
+        Ticks = TickGenerator.GenerateTicks(XAxis.Left, XAxis.Right, dataRect.Width);
+    }
+
+    public float Measure()
+    {
+        float labelHeight = Label.FontSize;
+
+        float largestTickHeight = Label.FontSize;
+
+        return labelHeight + largestTickHeight + 18;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
@@ -24,7 +46,7 @@ public class BottomAxisView : IAxisView
         DrawTicks(surface, rect);
     }
 
-    private void DrawLabel(SKSurface surface, PixelRect rect)
+    private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
         SKPaint paint = new()
         {
@@ -37,31 +59,30 @@ public class BottomAxisView : IAxisView
         PixelRect figRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
 
         surface.Canvas.DrawText(
-            text: Label,
-            x: rect.HorizontalCenter,
+            text: Label.Text,
+            x: dataRect.HorizontalCenter,
             y: figRect.Bottom - (paint.FontSpacing - paint.TextSize),
             paint: paint);
     }
 
-    private void DrawTicks(SKSurface surface, PixelRect rect)
+    private void DrawTicks(SKSurface surface, PixelRect dataRect)
     {
         SKPaint paint = new()
         {
             IsAntialias = true,
+            TextAlign = SKTextAlign.Center,
         };
 
-        paint.TextAlign = SKTextAlign.Left;
-        surface.Canvas.DrawText(
-            text: Math.Round(XAxis.Left, 3).ToString(),
-            x: rect.Left,
-            y: rect.Bottom + paint.FontSpacing,
-            paint: paint);
+        var visibleTicks = Ticks.Where(tick => XAxis.Contains(tick.Position)).Take(MaxTickCount);
 
-        paint.TextAlign = SKTextAlign.Right;
-        surface.Canvas.DrawText(
-            text: Math.Round(XAxis.Right, 3).ToString(),
-            x: rect.Right,
-            y: rect.Bottom + paint.FontSpacing,
-            paint: paint);
+        foreach (Tick tick in visibleTicks)
+        {
+            float x = XAxis.GetPixel(tick.Position, dataRect);
+
+            surface.Canvas.DrawLine(x, dataRect.Bottom, x, dataRect.Bottom + 3, paint);
+
+            if (!string.IsNullOrWhiteSpace(tick.Label))
+                surface.Canvas.DrawText(tick.Label, x, dataRect.Bottom + 3 + paint.FontSpacing, paint);
+        }
     }
 }
