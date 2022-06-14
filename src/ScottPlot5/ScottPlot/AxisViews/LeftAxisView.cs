@@ -42,7 +42,8 @@ public class LeftAxisView : IAxisView
 
         foreach (Tick tick in GetVisibleTicks())
         {
-            largestTickWidth = Math.Max(largestTickWidth, paint.MeasureText(tick.Label) + 10);
+            PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
+            largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
         return labelWidth + largestTickWidth;

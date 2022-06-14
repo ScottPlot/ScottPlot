@@ -17,12 +17,12 @@ public class DebugBenchmark : PlottableBase
             Typeface = SKTypeface.FromFamilyName("consolas")
         };
 
-        float textWidth = paint.MeasureText(message);
+        PixelSize textSize = Drawing.MeasureString(message, paint);
         float margin = 5;
         SKRect textRect = new(
             left: dataRect.Left + margin,
             top: dataRect.Bottom - paint.TextSize * .9f - 5 - margin,
-            right: dataRect.Left + 5 * 2 + textWidth + margin,
+            right: dataRect.Left + 5 * 2 + textSize.Width + margin,
             bottom: dataRect.Bottom - margin);
 
         paint.Color = SKColors.Yellow;
