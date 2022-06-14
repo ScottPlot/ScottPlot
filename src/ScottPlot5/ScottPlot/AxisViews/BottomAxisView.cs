@@ -8,7 +8,7 @@ public class BottomAxisView : IAxisView
     public IAxis Axis => XAxis;
     public IXAxis XAxis { get; private set; }
     public Edge Edge => Edge.Bottom;
-    public ITickGenerator TickGenerator { get; set; } = new TickGenerators.FixedSpacingTickGenerator();
+    public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
 
     public Label Label { get; private set; } = new() { Text = "Horizontal Axis", Bold = true, FontSize = 16 };
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();

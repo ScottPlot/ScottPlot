@@ -8,7 +8,7 @@ public class LeftAxisView : IAxisView
     public IAxis Axis => YAxis;
     public IYAxis YAxis { get; private set; }
     public Edge Edge => Edge.Left;
-    public ITickGenerator TickGenerator { get; set; } = new TickGenerators.FixedSpacingTickGenerator();
+    public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
 
     public Label Label { get; private set; } = new() { Text = "Vertical Axis", Bold = true, FontSize = 16 };
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
