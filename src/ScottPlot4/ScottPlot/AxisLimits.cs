@@ -57,6 +57,17 @@ namespace ScottPlot
                 yMax: double.IsNaN(YMax) ? limits.YMax : Math.Max(YMax, limits.YMax));
         }
 
+        /// <summary>
+        /// Returns True if the coordinate is contained inside these axis limits
+        /// </summary>
+        public bool Contains(Coordinate coordinate)
+        {
+            return coordinate.X >= XMin
+                && coordinate.X <= XMax
+                && coordinate.Y >= YMin
+                && coordinate.Y <= YMax;
+        }
+
         public bool Equals(AxisLimits other) =>
             other.XMin == XMin &&
             other.XMax == XMax &&
