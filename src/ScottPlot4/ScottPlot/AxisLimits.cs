@@ -45,6 +45,18 @@ namespace ScottPlot
         /// </summary>
         public static AxisLimits HorizontalLimitsOnly(double xMin, double xMax) => new(xMin, xMax, double.NaN, double.NaN);
 
+        /// <summary>
+        /// Return the maximum boundary for both sets of axis limits
+        /// </summary>
+        public AxisLimits Expand(AxisLimits limits)
+        {
+            return new AxisLimits(
+                xMin: double.IsNaN(XMin) ? limits.XMin : Math.Min(XMin, limits.XMin),
+                xMax: double.IsNaN(XMax) ? limits.XMax : Math.Max(XMax, limits.XMax),
+                yMin: double.IsNaN(YMin) ? limits.YMin : Math.Min(YMin, limits.YMin),
+                yMax: double.IsNaN(YMax) ? limits.YMax : Math.Max(YMax, limits.YMax));
+        }
+
         public bool Equals(AxisLimits other) =>
             other.XMin == XMin &&
             other.XMax == XMax &&
