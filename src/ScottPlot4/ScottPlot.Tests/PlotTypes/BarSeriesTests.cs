@@ -22,7 +22,7 @@ namespace ScottPlotTests.PlotTypes
                     // Each bar can be extensively customized
                     Value = rand.Next(25, 100),
                     Position = i,
-                    Color = ScottPlot.Palette.Category10.GetColor(i),
+                    FillColor = ScottPlot.Palette.Category10.GetColor(i),
                 };
                 bars.Add(bar);
             };
