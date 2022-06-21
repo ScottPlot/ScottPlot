@@ -6,6 +6,10 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable;
 
+/// <summary>
+/// This plot type displays a collection of Bar objects, 
+/// allowing each Bar to be positioned and styled individually.
+/// </summary>
 public class BarSeries : IPlottable
 {
     public bool IsVisible { get; set; } = true;
@@ -49,12 +53,18 @@ public class BarSeries : IPlottable
         }
         else
         {
-            throw new NotImplementedException("horizontal bars not yet supported");
+            float left = dims.GetPixelX(bar.ValueBase);
+            float right = dims.GetPixelX(bar.Value);
+            float top = dims.GetPixelY(bar.Position + bar.Thickness / 2);
+            float bottom = dims.GetPixelY(bar.Position - bar.Thickness / 2);
+            float width = right - left;
+            float height = bottom - top;
+            return new RectangleF(left, top, width, height);
         }
     }
 
     /// <summary>
-    /// Return the bar intersected by the given coordinate (or null if no bar is there)
+    /// Return the bar located under the given coordinate (or null if no bar is there)
     /// </summary>
     public Bar GetBar(Coordinate coordinate)
     {
@@ -75,6 +85,8 @@ public class BarSeries : IPlottable
         using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
         using Brush brush = GDI.Brush(Color.Black);
         using Pen pen = GDI.Pen(Color.Black);
+        using StringFormat sfVert = GDI.StringFormat(Alignment.LowerCenter);
+        using StringFormat sfHoriz = GDI.StringFormat(Alignment.MiddleLeft);
 
         foreach (Bar bar in Bars)
         {
@@ -96,9 +108,16 @@ public class BarSeries : IPlottable
             if (!string.IsNullOrWhiteSpace(bar.Label))
             {
                 using var font = GDI.Font(bar.Font);
-                using var sf = GDI.StringFormat(Alignment.LowerCenter);
                 ((SolidBrush)brush).Color = bar.Font.Color;
-                gfx.DrawString(bar.Label, font, brush, rect.Left + rect.Width / 2, rect.Top, sf);
+
+                if (bar.IsVertical)
+                {
+                    gfx.DrawString(bar.Label, font, brush, rect.Left + rect.Width / 2, rect.Top, sfVert);
+                }
+                else
+                {
+                    gfx.DrawString(bar.Label, font, brush, rect.Right, rect.Top + rect.Height / 2, sfHoriz);
+                }
             }
         }
     }
