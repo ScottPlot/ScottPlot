@@ -7,7 +7,7 @@ namespace ScottPlotTests.PlotTypes
     class SignalXY
     {
         [Test]
-        public void Test_AscendingUnevenlySpacedXs_ShouldRenderWell()
+        public void Test_Ascending_UnevenlySpacedXs()
         {
             // generate random, ascending, unevenly-spaced data
             Random rand = new Random(0);
@@ -23,6 +23,27 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(500, 350);
             plt.AddSignalXY(xs, ys);
             plt.SetAxisLimits(20530, 20560, -61, -57);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Ascending_UnevenlySpacedXs_Step()
+        {
+            // generate random, ascending, unevenly-spaced data
+            Random rand = new Random(0);
+            int pointCount = 100_000;
+            double[] ys = new double[pointCount];
+            double[] xs = new double[pointCount];
+            for (int i = 1; i < ys.Length; i++)
+            {
+                ys[i] = ys[i - 1] + rand.NextDouble() - .5;
+                xs[i] = xs[i - 1] + rand.NextDouble();
+            }
+
+            var plt = new ScottPlot.Plot(500, 350);
+            var sig = plt.AddSignalXY(xs, ys);
+            sig.StepDisplay = true;
+            plt.SetAxisLimits(20550, 20560, -61, -57);
             TestTools.SaveFig(plt);
         }
 
