@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.49
 _not yet published on NuGet..._
+* BarSeries: A new type of bar plot which allows each bar to be individually customized and offers mouse collision detection (#1891, #1749) _Thanks @jhm-ciberman_
 
 ## ScottPlot 4.1.48
 * Plottable: Collapsed `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` back into `IPlottable`, reverting a change introduced by the previous version. The intent of the original change was to promote interface segregation (e.g., colorbar has no axis limits). However, the purpose of this reversion is to maintain consistent behavior for users who implemented their own plottables implementing `IPlottable` and may not be aware of these new interfaces. (#1868, #1881)
