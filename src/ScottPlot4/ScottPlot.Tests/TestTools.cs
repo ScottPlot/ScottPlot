@@ -21,20 +21,22 @@ namespace ScottPlotTests
         {
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+            string callingClass = stackTrace.GetFrame(1).GetMethod().DeclaringType.ToString();
+            string prefix = callingClass + "." + callingMethod;
 
             if (subName != "")
                 subName = "_" + subName;
 
-            string fileName = callingMethod + subName + ".png";
+            string fileName = prefix + subName + ".png";
             string filePath = System.IO.Path.GetFullPath(fileName);
             plt.SaveFig(filePath);
 
-            DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).BenchmarkMessage.MSec);
+            DisplayRenderInfo(prefix, subName, plt.GetSettings(false).BenchmarkMessage.MSec);
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
             if (artifact)
-                SaveArtifact(plt, callingMethod + subName);
+                SaveArtifact(plt, prefix + subName);
 
             return filePath;
         }
