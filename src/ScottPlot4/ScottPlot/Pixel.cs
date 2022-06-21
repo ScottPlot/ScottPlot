@@ -56,5 +56,15 @@ namespace ScottPlot
         {
             return new Pixel(X + deltaX, Y + deltaY);
         }
+
+        public static bool operator ==(Pixel a, Pixel b)
+        {
+            return (a.X == b.X) && (a.Y == b.Y);
+        }
+
+        public static bool operator !=(Pixel a, Pixel b)
+        {
+            return (a.X != b.X) || (a.Y != b.Y);
+        }
     }
 }

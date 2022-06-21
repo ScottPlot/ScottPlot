@@ -91,6 +91,8 @@ namespace ScottPlot.Plottable
                 {
                     Pixel left = dims.GetPixel(new Coordinate(Xs[i] - errorNegative[i], Ys[i]));
                     Pixel right = dims.GetPixel(new Coordinate(Xs[i] + errorPositive[i], Ys[i]));
+                    if (left == right)
+                        continue;
 
                     gfx.DrawLine(pen, left.X, left.Y, right.X, right.Y);
                     gfx.DrawLine(pen, left.X, left.Y - CapSize, left.X, left.Y + CapSize);
@@ -100,6 +102,8 @@ namespace ScottPlot.Plottable
                 {
                     Pixel top = dims.GetPixel(new Coordinate(Xs[i], Ys[i] - errorNegative[i]));
                     Pixel bottom = dims.GetPixel(new Coordinate(Xs[i], Ys[i] + errorPositive[i]));
+                    if (top == bottom)
+                        continue;
 
                     gfx.DrawLine(pen, top.X, top.Y, bottom.X, bottom.Y);
                     gfx.DrawLine(pen, top.X - CapSize, top.Y, top.X + CapSize, top.Y);
