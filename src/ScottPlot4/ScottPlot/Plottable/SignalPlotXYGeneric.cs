@@ -216,6 +216,8 @@ namespace ScottPlot.Plottable
                     }
                 }
 
+                PointF[] markersToDraw = PointsToDraw;
+
                 // Simulate a step display by adding extra points at the corners.
                 if (StepDisplay)
                     PointsToDraw = GetStepPoints(PointsToDraw);
@@ -246,19 +248,19 @@ namespace ScottPlot.Plottable
                 }
 
                 // draw markers
-                if (PointsToDraw.Length > 1)
+                if (markersToDraw.Length > 1)
                 {
-                    float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
-                    float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
+                    float dataSpanXPx = markersToDraw[markersToDraw.Length - 1].X - markersToDraw[0].X;
+                    float markerPxRadius = .3f * dataSpanXPx / markersToDraw.Length;
                     markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
                     float scaledMarkerSize = markerPxRadius * 2;
 
                     if (markerPxRadius > .3)
                     {
                         // skip not visible before and after points
-                        var PointsWithMarkers = PointsToDraw
+                        var PointsWithMarkers = markersToDraw
                                                 .Skip(PointBefore.Length)
-                                                .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length)
+                                                .Take(markersToDraw.Length - PointBefore.Length - PointAfter.Length)
                                                 .ToArray();
 
                         MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, scaledMarkerSize, MarkerColor, MarkerLineWidth);
