@@ -275,7 +275,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="firstIndex">first index to begin replacing</param>
         /// <param name="newData">new values</param>
-        public void Update(int firstIndex, T[] newData) => Update(firstIndex, newData.Length, newData);
+        public void Update(int firstIndex, T[] newData) => Update(firstIndex, firstIndex + newData.Length, newData);
 
         /// <summary>
         /// Replace all Y values with new ones

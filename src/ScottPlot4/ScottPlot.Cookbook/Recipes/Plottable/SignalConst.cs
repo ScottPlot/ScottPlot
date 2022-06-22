@@ -39,4 +39,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Title("SignalConst Displaying int[] Data");
         }
     }
+
+    public class SignalConstUpdate : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.SignalConst();
+        public string ID => "signalconst_update";
+        public string Title => "SignalConst Data Updates";
+        public string Description =>
+            "SignalConst is fast because it pre-processes data, but changing data requires " +
+            "additional processing before it can be rendered properly. " +
+            "Use the SignalPlot's Update() function to update data values instead of modifying " +
+            "contents of the original array that was used to create the signal plot.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.Sin(51);
+            var sig = plt.AddSignalConst(values);
+
+            // update a single point
+            sig.Update(20, 3);
+
+            // update a small range of values
+            double[] newYs = { 4, 3, 2, 1 };
+            sig.Update(30, newYs);
+        }
+    }
 }
