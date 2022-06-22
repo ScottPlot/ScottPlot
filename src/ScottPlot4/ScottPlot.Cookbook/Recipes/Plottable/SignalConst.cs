@@ -56,10 +56,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = DataGen.Sin(51);
             var sig = plt.AddSignalConst(values);
 
-            // update a single point near X=20
+            // update a single point
             sig.Update(20, 3);
 
-            // update a small range of values near X=30
+            // update a small range of values
             double[] newYs = { 4, 3, 2, 1 };
             sig.Update(30, newYs);
         }
