@@ -103,7 +103,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// When markers are visible on the line (low density mode) this is True
         /// </summary>
-        private bool ShowMarkersInLegend { get; set; } = false;
+        protected bool ShowMarkersInLegend { get; set; } = false;
 
         protected T[] _Ys;
         public virtual T[] Ys

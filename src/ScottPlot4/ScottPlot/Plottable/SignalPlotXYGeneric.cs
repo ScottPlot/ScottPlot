@@ -257,6 +257,8 @@ namespace ScottPlot.Plottable
 
                     if (markerPxRadius > .3)
                     {
+                        ShowMarkersInLegend = true;
+
                         // skip not visible before and after points
                         var PointsWithMarkers = markersToDraw
                                                 .Skip(PointBefore.Length)
@@ -264,6 +266,10 @@ namespace ScottPlot.Plottable
                                                 .ToArray();
 
                         MarkerTools.DrawMarkers(gfx, PointsWithMarkers, MarkerShape, scaledMarkerSize, MarkerColor, MarkerLineWidth);
+                    }
+                    else
+                    {
+                        ShowMarkersInLegend = false;
                     }
                 }
             }
