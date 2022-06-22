@@ -21,6 +21,12 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
 
+        /// <summary>
+        /// Describes orientation of steps if <see cref="StepDisplay"/> is enabled.
+        /// If true, lines will extend to the right before ascending or descending to the level of the following point.
+        /// </summary>
+        public bool StepDisplayRight { get; set; } = true;
+
         public float _markerSize = 5;
         public float MarkerSize
         {
@@ -97,7 +103,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// When markers are visible on the line (low density mode) this is True
         /// </summary>
-        private bool ShowMarkersInLegend { get; set; } = false;
+        protected bool ShowMarkersInLegend { get; set; } = false;
 
         protected T[] _Ys;
         public virtual T[] Ys
@@ -348,7 +354,7 @@ namespace ScottPlot.Plottable
                 ValidatePoints(pointsArray);
 
                 if (StepDisplay)
-                    pointsArray = GetStepPoints(pointsArray);
+                    pointsArray = ScatterPlot.GetStepDisplayPoints(pointsArray, StepDisplayRight);
 
                 if (LineWidth > 0 && LineStyle != LineStyle.None)
                     gfx.DrawLines(penLD, pointsArray);
@@ -392,25 +398,6 @@ namespace ScottPlot.Plottable
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
-        /// by inserting an extra point between each of the original data points.
-        /// </summary>
-        protected PointF[] GetStepPoints(PointF[] pointsArray)
-        {
-            PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
-
-            for (int i = 0; i < pointsArray.Length - 1; i++)
-            {
-                pointsStep[i * 2] = pointsArray[i];
-                pointsStep[i * 2 + 1] = new PointF(pointsArray[i + 1].X, pointsArray[i].Y);
-            }
-
-            pointsStep[pointsStep.Length - 1] = pointsArray[pointsArray.Length - 1];
-
-            return pointsStep;
         }
 
         private class IntervalMinMax
