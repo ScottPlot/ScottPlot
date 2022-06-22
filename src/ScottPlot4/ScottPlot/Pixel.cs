@@ -66,5 +66,24 @@ namespace ScottPlot
         {
             return (a.X != b.X) || (a.Y != b.Y);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Pixel px)
+            {
+                return (X == px.X) && (Y == px.Y);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int x = BitConverter.ToInt32(BitConverter.GetBytes(X), 0);
+            int y = BitConverter.ToInt32(BitConverter.GetBytes(Y), 0);
+            return x * 12345 + y;
+        }
     }
 }
