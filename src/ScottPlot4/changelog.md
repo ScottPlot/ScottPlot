@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.49
+## ScottPlot 4.1.50
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.49
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-21_
 * BarSeries: A new type of bar plot which allows each bar to be individually customized and offers mouse collision detection (#1891, #1749) _Thanks @jhm-ciberman_
 * SignalXY: When step mode is activated markers are now only drawn at original data points (#1896) _Thanks @grabul_
 * SignalConst: Fixed indexing error affecting the Update() overload that accepted generic arrays (#1895, #1893) _Thanks @strontiumpku_
@@ -9,6 +12,7 @@ _not yet published on NuGet..._
 * SignalXY: Markers now shown in legend when the plot is zoomed-in enough that they become visible on the plot itself
 
 ## ScottPlot 4.1.48
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-09_
 * Plottable: Collapsed `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` back into `IPlottable`, reverting a change introduced by the previous version. The intent of the original change was to promote interface segregation (e.g., colorbar has no axis limits). However, the purpose of this reversion is to maintain consistent behavior for users who implemented their own plottables implementing `IPlottable` and may not be aware of these new interfaces. (#1868, #1881)
 
 ## ScottPlot 4.1.47
