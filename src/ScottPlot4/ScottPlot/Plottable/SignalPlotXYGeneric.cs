@@ -220,7 +220,7 @@ namespace ScottPlot.Plottable
 
                 // Simulate a step display by adding extra points at the corners.
                 if (StepDisplay)
-                    PointsToDraw = GetStepPoints(PointsToDraw);
+                    PointsToDraw = ScatterPlot.GetStepDisplayPoints(PointsToDraw, StepDisplayRight);
 
                 // Fill below the line
                 switch (_FillType)

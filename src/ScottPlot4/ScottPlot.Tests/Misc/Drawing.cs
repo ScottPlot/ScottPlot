@@ -180,5 +180,44 @@ namespace ScottPlotTests.Misc
                 Assert.AreNotEqual(hash1, hash2);
             }
         }
+
+        [Test]
+        public void Test_Step_Modes()
+        {
+            ScottPlot.Plot plt = new();
+
+            var scatter = plt.AddScatter(
+                xs: DataGen.Consecutive(51),
+                ys: DataGen.Sin(51, offset: 0),
+                label: "Scatter");
+
+            var signal = plt.AddSignal(
+                ys: DataGen.Sin(51, offset: 0.2),
+                label: "Signal");
+
+            var signalConst = plt.AddSignalConst(
+                ys: DataGen.Sin(51, offset: 0.4),
+                label: "SignalConst");
+
+            var sigxy = plt.AddSignalXY(
+                xs: DataGen.Consecutive(51),
+                ys: DataGen.Sin(51, offset: 0.6),
+                label: "SignalXY");
+
+            plt.Legend(true, Alignment.LowerLeft);
+            TestTools.SaveFig(plt, "default");
+
+            scatter.StepDisplay = true;
+            signal.StepDisplay = true;
+            signalConst.StepDisplay = true;
+            sigxy.StepDisplay = true;
+            TestTools.SaveFig(plt, "step");
+
+            scatter.StepDisplayRight = false;
+            signal.StepDisplayRight = false;
+            signalConst.StepDisplayRight = false;
+            sigxy.StepDisplayRight = false;
+            TestTools.SaveFig(plt, "step2");
+        }
     }
 }
