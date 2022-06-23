@@ -19,6 +19,7 @@ public class BarSeries : IPlottable
     public readonly List<Bar> Bars = new();
 
     public BarSeries(IEnumerable<Bar> bars)
+    public int Count => Bars.Count;
     {
         Bars.AddRange(bars);
     }
