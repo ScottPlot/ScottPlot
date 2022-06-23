@@ -221,9 +221,19 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Create an empty BarSeries, add it to the plot, and return it. Use its Add() method to add bars.
+        /// </summary>
+        public BarSeries AddBarSeries()
+        {
+            BarSeries barSeries = new();
+            Add(barSeries);
+            return barSeries;
+        }
+
+        /// <summary>
         /// Create a BarSeries filled with the given bars, add it to the plot, and return it.
         /// </summary>
-        public BarSeries AddBarSeries(IEnumerable<Bar> bars)
+        public BarSeries AddBarSeries(List<Bar> bars)
         {
             BarSeries barSeries = new(bars);
             Add(barSeries);

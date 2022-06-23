@@ -16,11 +16,18 @@ public class BarSeries : IPlottable
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
 
-    public readonly List<Bar> Bars = new();
+    public readonly List<Bar> Bars;
 
-    public BarSeries(IEnumerable<Bar> bars)
+    public int Count => Bars.Count;
+
+    public BarSeries()
     {
-        Bars.AddRange(bars);
+        Bars = new List<Bar>();
+    }
+
+    public BarSeries(List<Bar> bars)
+    {
+        Bars = bars;
     }
 
     public AxisLimits GetAxisLimits()
