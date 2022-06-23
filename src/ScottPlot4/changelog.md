@@ -2,6 +2,8 @@
 
 ## ScottPlot 4.1.50
 _not yet published on NuGet..._
+* BarSeries: Lists passed into new BarSeries are preserved and can be modified after instantiation (#1902)
+* BarSeries: Added a `Count` property (#1902)
 
 ## ScottPlot 4.1.49
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-21_
