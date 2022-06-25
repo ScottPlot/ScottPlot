@@ -12,6 +12,37 @@ public static class Website
     {
         MakeIndexPage(OutputFolderPath, Recipes);
         MakeCategoryPages(OutputFolderPath, Recipes);
+        MakeColorPages(OutputFolderPath);
+    }
+
+    private static void MakeColorPages(string OutputFolderPath)
+    {
+        Console.WriteLine("Creating Color Page...");
+
+        StringBuilder sb = new();
+        foreach (var p in ScottPlot.Palette.GetPalettes())
+        {
+            sb.AppendLine();
+            sb.AppendLine($"### {p.Name}");
+            sb.AppendLine();
+
+            sb.AppendLine("<div class='d-flex flex-wrap'>");
+            for (int i = 0; i < p.Count(); i++)
+            {
+                System.Drawing.Color color = p.GetColor(i);
+                string hex = ScottPlot.Palette.ToHex(color);
+                sb.AppendLine($"<div class='px-3 py-2' style='background-color: {hex};'>{hex}</div>");
+            }
+            sb.AppendLine("</div>");
+            sb.AppendLine();
+        }
+
+        Template.CreateMarkdownPage(
+            mdFilePath: Path.Combine(OutputFolderPath, "colors.md"),
+            body: sb.ToString(),
+            title: "Colors - ScottPlot 4.1 Cookbook",
+            description: "List of Colors from all ScottPlot Palettes",
+            url: "/cookbook/4.1/colors/");
     }
 
     private static void MakeCategoryPages(string OutputFolderPath, RecipeSource[] Recipes)
@@ -169,6 +200,12 @@ public static class Website
                 sb.AppendLine($"<li><a href='#{GetAnchor(category)}'>{category.Name}</a> - {category.Description}</li>");
             }
         }
+        sb.AppendLine("</ul>");
+
+        sb.AppendLine("<h4>Colors</h4>");
+        sb.AppendLine("<ul>");
+        sb.AppendLine("<li><a href='colors/'>Color</a> - Lists of colors in each color palette for representing categorical data</li>");
+        //sb.AppendLine("<li><a href='colormaps/'>Colormaps</a> - Color gradients available to represent continuous data</li>");
         sb.AppendLine("</ul>");
 
         // SEPARATION
