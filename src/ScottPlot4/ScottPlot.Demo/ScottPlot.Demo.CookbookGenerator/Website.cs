@@ -21,6 +21,17 @@ public static class Website
         Console.WriteLine("Creating Colormaps Page...");
 
         StringBuilder sb = new();
+        sb.AppendLine("Colormaps define a smooth gradient of colors. ");
+        sb.AppendLine("Colormaps can be passed into plottable objects that use them (e.g., Colorbar), ");
+        sb.AppendLine("or they can be instantiated directly so users can access the colors they produce. ");
+        sb.AppendLine("Viridis and Turbo are typically recommended as the best colormaps to use for scientific data.");
+        sb.AppendLine();
+        sb.AppendLine("```cs");
+        sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.Viridis();");
+        sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
+        sb.AppendLine("```");
+        sb.AppendLine();
+
         foreach (var cmap in ScottPlot.Drawing.Colormap.GetColormaps())
         {
             ScottPlot.Plottable.Colorbar cbar = new(cmap);
@@ -34,11 +45,11 @@ public static class Website
             sb.AppendLine();
             sb.AppendLine($"### {cmap.Name}");
             sb.AppendLine();
-            sb.AppendLine("```cs");
-            sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.{cmap.Name}();");
-            sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
-            sb.AppendLine("```");
-            sb.AppendLine();
+            //sb.AppendLine("```cs");
+            //sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.{cmap.Name}();");
+            //sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
+            //sb.AppendLine("```");
+            //sb.AppendLine();
             sb.AppendLine($"<img class='w-100' height='100' src='../images/{imageFilename}'>");
             sb.AppendLine();
         }
@@ -56,11 +67,34 @@ public static class Website
         Console.WriteLine("Creating Colors Page...");
 
         StringBuilder sb = new();
+        sb.AppendLine("Palettes are collections of colors. ");
+        sb.AppendLine("The palette in `Plot.Palette` defines default colors for new objects added to plots. ");
+        sb.AppendLine("Users can access palettes directly to get color values for any use. ");
+        sb.AppendLine();
+        sb.AppendLine("```cs");
+        sb.AppendLine($"var pal = ScottPlot.Palette.Category10;");
+        sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
+        sb.AppendLine("{");
+        sb.AppendLine("    var color = pal.GetColor(i);");
+        sb.AppendLine("    Console.WriteLine(color);");
+        sb.AppendLine("}");
+        sb.AppendLine("```");
+        sb.AppendLine();
+
         foreach (var p in ScottPlot.Palette.GetPalettes())
         {
             sb.AppendLine();
             sb.AppendLine($"### {p.Name}");
             sb.AppendLine();
+            //sb.AppendLine("```cs");
+            //sb.AppendLine($"var pal = ScottPlot.Palette.{p.Name};");
+            //sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
+            //sb.AppendLine("{");
+            //sb.AppendLine("    var color = pal.GetColor(i);");
+            //sb.AppendLine("    Console.WriteLine(color);");
+            //sb.AppendLine("}");
+            //sb.AppendLine("```");
+            //sb.AppendLine();
 
             sb.AppendLine("<div class='d-flex flex-wrap'>");
             for (int i = 0; i < p.Count(); i++)
