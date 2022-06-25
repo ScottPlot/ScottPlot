@@ -12,12 +12,48 @@ public static class Website
     {
         MakeIndexPage(OutputFolderPath, Recipes);
         MakeCategoryPages(OutputFolderPath, Recipes);
-        MakeColorPages(OutputFolderPath);
+        MakeColorsPage(OutputFolderPath);
+        MakeColormapsPage(OutputFolderPath);
     }
 
-    private static void MakeColorPages(string OutputFolderPath)
+    private static void MakeColormapsPage(string OutputFolderPath)
     {
-        Console.WriteLine("Creating Color Page...");
+        Console.WriteLine("Creating Colormaps Page...");
+
+        StringBuilder sb = new();
+        foreach (var cmap in ScottPlot.Drawing.Colormap.GetColormaps())
+        {
+            ScottPlot.Plottable.Colorbar cbar = new(cmap);
+            System.Drawing.Bitmap bmp = cbar.GetBitmap(1000, 20, vertical: false);
+
+            string imageFilename = "colormap_" + cmap.Name.ToLower() + ".png";
+            string imageFolderPath = Path.Combine(OutputFolderPath, "images");
+            string imageFilePath = Path.Combine(imageFolderPath, imageFilename);
+            bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
+
+            sb.AppendLine();
+            sb.AppendLine($"### {cmap.Name}");
+            sb.AppendLine();
+            sb.AppendLine("```cs");
+            sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.{cmap.Name}();");
+            sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
+            sb.AppendLine("```");
+            sb.AppendLine();
+            sb.AppendLine($"<img class='w-100' height='100' src='../images/{imageFilename}'>");
+            sb.AppendLine();
+        }
+
+        Template.CreateMarkdownPage(
+            mdFilePath: Path.Combine(OutputFolderPath, "colormaps.md"),
+            body: sb.ToString(),
+            title: "Colormaps - ScottPlot 4.1 Cookbook",
+            description: "List of Colormaps used to represent continuous data",
+            url: "/cookbook/4.1/colormaps/");
+    }
+
+    private static void MakeColorsPage(string OutputFolderPath)
+    {
+        Console.WriteLine("Creating Colors Page...");
 
         StringBuilder sb = new();
         foreach (var p in ScottPlot.Palette.GetPalettes())
@@ -205,7 +241,7 @@ public static class Website
         sb.AppendLine("<h4>Colors</h4>");
         sb.AppendLine("<ul>");
         sb.AppendLine("<li><a href='colors/'>Color</a> - Lists of colors in each color palette for representing categorical data</li>");
-        //sb.AppendLine("<li><a href='colormaps/'>Colormaps</a> - Color gradients available to represent continuous data</li>");
+        sb.AppendLine("<li><a href='colormaps/'>Colormaps</a> - Color gradients available to represent continuous data</li>");
         sb.AppendLine("</ul>");
 
         // SEPARATION
