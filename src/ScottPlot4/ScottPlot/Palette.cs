@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -53,6 +54,16 @@ namespace ScottPlot
                 .Select(x => new ScottPlot.Drawing.Palette(x))
                 .Where(x => x.Count() > 0)
                 .ToArray();
+        }
+
+        public static string ToHex(Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
+        public static string ToRGB(Color c)
+        {
+            return "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
         }
     }
 }
