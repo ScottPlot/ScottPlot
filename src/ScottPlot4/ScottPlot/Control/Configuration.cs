@@ -198,5 +198,10 @@ namespace ScottPlot.Control
         /// If true, controls that support the plot object editor will display an option to launch it in the right-click menu
         /// </summary>
         public bool EnablePlotObjectEditor { get; set; } = false;
+
+        /// <summary>
+        /// Renders will not execute if the stack has more than this number of frames.
+        /// </summary>
+        public int MaxFrameCount { get; set; } = 1000;
     }
 }
