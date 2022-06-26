@@ -111,10 +111,7 @@ namespace ScottPlot.Plottable
             }
 
             if (MarkerShape != MarkerShape.none && MarkerSize > 0 && Count > 0)
-            {
-                foreach (PointF point in points)
-                    MarkerTools.DrawMarker(gfx, point, MarkerShape, MarkerSize, Color);
-            }
+                MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, Color);
         }
 
         public LegendItem[] GetLegendItems()

@@ -12,6 +12,15 @@ namespace ScottPlot
             if (size == 0 || shape == MarkerShape.none)
                 return;
 
+            IMarker marker = Marker.Create(shape);
+            DrawMarker(gfx, pixelLocation, marker, size, brush, pen);
+        }
+
+        public static void DrawMarker(Graphics gfx, PointF pixelLocation, IMarker marker, float size, Brush brush, Pen pen)
+        {
+            if (size == 0)
+                return;
+
             float diameter = size;
             float radius = diameter / 2;
 
@@ -22,7 +31,6 @@ namespace ScottPlot
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 pixelLocation = new PointF(pixelLocation.X + .5f, pixelLocation.Y);
 
-            IMarker marker = Marker.Create(shape);
             marker.Draw(gfx, pixelLocation, radius, brush, pen);
         }
 
@@ -37,11 +45,10 @@ namespace ScottPlot
         {
             using SolidBrush brush = new(color);
             using Pen pen = new(color, linewidth);
+            IMarker marker = Marker.Create(shape);
 
             foreach (PointF pt in pixelLocations)
-            {
-                DrawMarker(gfx, pt, shape, size, color, linewidth);
-            }
+                DrawMarker(gfx, pt, marker, size, brush, pen);
         }
 
         internal static PointF[] DiamondPoints(PointF center, float radius)
