@@ -145,4 +145,30 @@ namespace ScottPlot.Cookbook.Recipes
             plt.YAxis.IsVisible = false;
         }
     }
+
+    class MultiAxisSetLimits : IRecipe
+    {
+        public ICategory Category => new Categories.MultiAxis();
+        public string ID => "multiAxis_limits";
+        public string Title => "Setting Multi Axis Limits";
+        public string Description =>
+            "Axis limits can be set for each axis by indicating which axis index " +
+            "you are wish to modify when setting axis limits.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // signal one on the primary Y axis
+            var sig1 = plt.AddSignal(DataGen.Sin(51, mult: 1));
+            sig1.YAxisIndex = 0;
+
+            // signal two on the secondary Y axis
+            var sig2 = plt.AddSignal(DataGen.Cos(51, mult: 100));
+            sig2.YAxisIndex = 1;
+            plt.YAxis2.Ticks(true);
+
+            // set axis limits for each axis individually
+            plt.SetAxisLimits(yMin: -2, yMax: 2, yAxisIndex: 0);
+            plt.SetAxisLimits(yMin: -200, yMax: 200, yAxisIndex: 1);
+        }
+    }
 }
