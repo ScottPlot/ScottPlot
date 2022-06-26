@@ -18,6 +18,8 @@ namespace WinFormsApp
         public Form1()
         {
             InitializeComponent();
+            Width = 1200;
+            Height = 1000;
             formsPlot1.Refresh();
             formsPlot1.MouseMove += FormsPlot1_MouseMove;
         }
