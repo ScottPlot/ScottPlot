@@ -147,6 +147,12 @@ namespace ScottPlot
         /// </summary>
         public bool DrawGridAbovePlottables { get; set; } = false;
 
+        /// <summary>
+        /// If defined, the data area will use this rectangle and not be adjusted
+        /// depending on axis labels or ticks.
+        /// </summary>
+        public PixelPadding? ManualDataPadding { get; set; } = null;
+
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
@@ -164,6 +170,18 @@ namespace ScottPlot
             var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
+
+            // manual override if manual padding is enabled
+            if (ManualDataPadding is not null)
+            {
+                dataOffset = new PointF(
+                    x: ManualDataPadding.Value.Left,
+                    y: ManualDataPadding.Value.Top);
+
+                dataSize = new SizeF(
+                    width: figureSize.Width - ManualDataPadding.Value.Left - ManualDataPadding.Value.Right,
+                    height: figureSize.Height - ManualDataPadding.Value.Top - ManualDataPadding.Value.Bottom);
+            }
 
             // determine axis limits based on specific X and Y axes
             (double xMin, double xMax) = xAxis.Dims.RationalLimits();
