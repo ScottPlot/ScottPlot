@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.50
+## ScottPlot 4.1.51
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.50
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-26_
 * BarSeries: Lists passed into new BarSeries are preserved and can be modified after instantiation. Added a `Count` property. Added a `AddBarSeries()` overload that permits creating an empty BarSeries. (#1902)
 * Markers: Improved performance for plot types that render multiple markers (#1910) _Thanks @AbeniMatteo_
 * Plot: New `ManualDataArea()` function allows users to define pixel-perfect layouts (#1907, #1901) _Thanks @dhgigisoave_
