@@ -139,4 +139,32 @@ namespace ScottPlot.Cookbook.Recipes
             plt.Margins(x: .25, y: .4);
         }
     }
+
+    class LayoutManualDataArea : IRecipe
+    {
+        public ICategory Category => new Categories.Layout();
+        public string ID => "layout_manual";
+        public string Title => "Manual Data Area";
+        public string Description =>
+            "The layout system automatically measures axis labels and ticks to provide " +
+            "a plot with the largest data area possible. However, this can be problematic " +
+            "for animated plots (with changing tick label sizes) or when users wish to achieve " +
+            "pixel-perfect similarity between two different plots. In these cases the user can " +
+            "manually override the layout system and define exactly how large the data area is.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Style(Style.Blue1);
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            var padding = new ScottPlot.PixelPadding(
+                left: 150,
+                right: 30,
+                bottom: 100,
+                top: 10);
+
+            plt.ManualDataPadding(padding);
+        }
+    }
 }
