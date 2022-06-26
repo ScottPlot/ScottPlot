@@ -188,6 +188,16 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Define the shape of the data area as padding (in pixels) on all 4 sides.
+        /// Once defined, the layout will not be adjusted as axis labels or ticks change.
+        /// Pass null into this function to disable the manual data area.
+        /// </summary>
+        public void ManualDataArea(PixelPadding padding)
+        {
+            settings.ManualDataPadding = padding;
+        }
+
+        /// <summary>
         /// Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
         /// <param name="labels">new tick labels for the X axis</param>
