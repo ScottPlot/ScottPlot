@@ -164,7 +164,7 @@ namespace ScottPlot.Cookbook.Recipes
                 bottom: 100,
                 top: 10);
 
-            plt.ManualDataPadding(padding);
+            plt.ManualDataArea(padding);
         }
     }
 }
