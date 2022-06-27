@@ -37,7 +37,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             Crosshair.X = coordinateX;
             Crosshair.Y = coordinateY;
 
-            formsPlot1.Refresh(lowQuality: true, skipIfCurrentlyRendering: true);
+            formsPlot1.Refresh(lowQuality: true);
         }
 
         private void formsPlot1_MouseEnter(object sender, EventArgs e)
