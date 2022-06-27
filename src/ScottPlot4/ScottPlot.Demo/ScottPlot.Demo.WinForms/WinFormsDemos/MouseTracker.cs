@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public MouseTracker()
         {
             InitializeComponent();
-            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 10_000_000));
             Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
             formsPlot1_MouseLeave(null, null);
             lblMouse.Text = "Mouse has yet to enter the plot...";
