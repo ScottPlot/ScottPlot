@@ -11,13 +11,13 @@ namespace ScottPlot.Drawing
         public bool Bold = false;
         public float Rotation = 0;
 
-        private string _Name;
         public string Name
         {
-            get => _Name;
-            set => _Name = InstalledFont.ValidFontName(value); // ensure only valid font names can be assigned
+            get => Family.Name;
+            set => Family = InstalledFont.ValidFontFamily(value); // ensure only valid font names can be assigned
         }
+        public FontFamily Family { get; set; }
 
-        public Font() => Name = InstalledFont.Sans();
+        public Font() => Family = InstalledFont.SansFamily;
     }
 }

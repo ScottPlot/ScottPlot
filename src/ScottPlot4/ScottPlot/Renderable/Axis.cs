@@ -176,7 +176,8 @@ namespace ScottPlot.Renderable
             AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
             AxisLabel.Font.Size = size ?? AxisLabel.Font.Size;
             AxisLabel.Font.Bold = bold ?? AxisLabel.Font.Bold;
-            AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
+            if (fontName != null)
+                AxisLabel.Font.Name = fontName;
             return AxisLabel.Label;
         }
 
@@ -381,7 +382,8 @@ namespace ScottPlot.Renderable
             float? rotation = null)
         {
             AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
-            AxisTicks.TickLabelFont.Name = fontName ?? AxisTicks.TickLabelFont.Name;
+            if (fontName != null)
+                AxisTicks.TickLabelFont.Name = fontName;
             AxisTicks.TickLabelFont.Size = fontSize ?? AxisTicks.TickLabelFont.Size;
             AxisTicks.TickLabelFont.Bold = fontBold ?? AxisTicks.TickLabelFont.Bold;
             AxisTicks.TickLabelRotation = rotation ?? AxisTicks.TickLabelRotation;
@@ -397,7 +399,8 @@ namespace ScottPlot.Renderable
             float? rotation = null)
         {
             AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
-            AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
+            if (fontName != null)
+                AxisLabel.Font.Name = fontName;
             AxisLabel.Font.Size = fontSize ?? AxisLabel.Font.Size;
             AxisLabel.Font.Rotation = rotation ?? AxisLabel.Font.Rotation;
         }

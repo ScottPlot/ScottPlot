@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -8,26 +9,28 @@ namespace ScottPlot.Drawing
 {
     public static class InstalledFont
     {
-        public static string Default() => Sans();
+        private static Dictionary<string, FontFamily> _installedFonts;
 
-        public static string Serif() =>
-            ValidFontName(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
+        static InstalledFont()
+        {
+            BuildInstalledFontsCache();
+        }
 
-        public static string Sans() =>
-            ValidFontName(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
+        internal static FontFamily SerifFamily { get; private set; }
+        internal static FontFamily SansFamily { get; private set; }
+        internal static FontFamily MonospaceFamily { get; private set; }
 
-        public static string Monospace() =>
-            ValidFontName(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
+        public static string Default() => SansFamily.Name;
+        public static string Serif() => SerifFamily.Name;
+        public static string Sans() => SansFamily.Name;
+        public static string Monospace() => MonospaceFamily.Name;
 
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
         /// </summary>
         public static string ValidFontName(string fontName)
         {
-            foreach (FontFamily installedFont in FontFamily.Families)
-                if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
-                    return installedFont.Name;
-            return SystemFonts.DefaultFont.Name;
+            return ValidFontFamily(fontName).Name;
         }
 
         /// <summary>
@@ -35,11 +38,43 @@ namespace ScottPlot.Drawing
         /// </summary>
         public static string ValidFontName(string[] fontNames)
         {
+            return ValidFontFamily(fontNames).Name;
+        }
+
+        /// <summary>
+        /// Returns a font family guaranteed to be installed on the system
+        /// </summary>
+        internal static FontFamily ValidFontFamily(string fontName)
+        {
+            if (fontName != null && _installedFonts.TryGetValue(fontName, out FontFamily installedFont))
+                return installedFont;
+            return SystemFonts.DefaultFont.FontFamily;
+        }
+
+        /// <summary>
+        /// Returns a font family guaranteed to be installed on the system
+        /// </summary>
+        internal static FontFamily ValidFontFamily(string[] fontNames)
+        {
             foreach (string preferredFont in fontNames)
-                foreach (FontFamily font in FontFamily.Families)
-                    if (string.Equals(preferredFont, font.Name, System.StringComparison.OrdinalIgnoreCase))
-                        return font.Name;
-            return SystemFonts.DefaultFont.Name;
+                if (preferredFont != null && _installedFonts.TryGetValue(preferredFont, out var installedFont))
+                    return installedFont;
+            return SystemFonts.DefaultFont.FontFamily;
+        }
+
+        internal static void BuildInstalledFontsCache()
+        {
+            var newFonts = new Dictionary<string, FontFamily>(StringComparer.OrdinalIgnoreCase);
+            foreach (var family in FontFamily.Families)
+            {
+                if (!newFonts.ContainsKey(family.Name))
+                    newFonts[family.Name] = family;
+            }
+
+            _installedFonts = newFonts;
+            SerifFamily = ValidFontFamily(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
+            SansFamily = ValidFontFamily(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
+            MonospaceFamily = ValidFontFamily(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
         }
     }
 }

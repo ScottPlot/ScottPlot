@@ -36,14 +36,15 @@ namespace ScottPlot.Drawing
             using (Bitmap bmp = new Bitmap(1, 1))
             using (Graphics gfx = Graphics(bmp, lowQuality: true))
             {
-                return MeasureString(gfx, text, font.Name, font.Size, font.Bold);
+                return MeasureString(gfx, text, null, font.Size, font.Bold, font.Family);
             }
         }
 
-        public static SizeF MeasureString(Graphics gfx, string text, string fontName, double fontSize, bool bold = false)
+        public static SizeF MeasureString(Graphics gfx, string text, string fontName, double fontSize, bool bold = false, FontFamily fontFamily = null)
         {
+            fontFamily ??= InstalledFont.ValidFontFamily(fontName);
             var fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
-            using (var font = new System.Drawing.Font(fontName, (float)fontSize, fontStyle, GraphicsUnit.Pixel))
+            using (var font = new System.Drawing.Font(fontFamily, (float)fontSize, fontStyle, GraphicsUnit.Pixel))
             {
                 return MeasureString(gfx, text, font);
             }
@@ -255,13 +256,13 @@ namespace ScottPlot.Drawing
         }
 
         public static System.Drawing.Font Font(ScottPlot.Drawing.Font font) =>
-            Font(font.Name, font.Size, font.Bold);
+            Font(null, font.Size, font.Bold, font.Family);
 
-        public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false)
+        public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false, FontFamily fontFamily = null)
         {
-            string validFontName = InstalledFont.ValidFontName(fontName);
+            fontFamily ??= InstalledFont.ValidFontFamily(fontName);
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;
-            return new System.Drawing.Font(validFontName, fontSize, fontStyle, GraphicsUnit.Pixel);
+            return new System.Drawing.Font(fontFamily, fontSize, fontStyle, GraphicsUnit.Pixel);
         }
 
         public static StringFormat StringFormat(Alignment algnment)
