@@ -10,7 +10,7 @@ namespace ScottPlot.Drawing
     /// </summary>
     public static class InstalledFont
     {
-        private readonly static Dictionary<string, FontFamily> InstalledFonts = new(StringComparer.InvariantCultureIgnoreCase);
+        private readonly static Dictionary<string, FontFamily> InstalledFonts;
 
         static InstalledFont()
         {
