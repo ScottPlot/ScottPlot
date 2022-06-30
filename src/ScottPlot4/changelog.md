@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.51
+## ScottPlot 4.1.52
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.51
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-30_
 * WinForms Control: Fixed a bug that caused frequent mouse events to overflow the stack (#1906, #1913) _Thanks @AbeniMatteo_
 * Performance: Improve string measurement performance using cached fonts (#1915) _Thanks @AbeniMatteo_
 * Layout: Improve axis alignment when `ManualDataArea()` is used (#1901, #1907, #1911) _Thanks @dhgigisoave_
