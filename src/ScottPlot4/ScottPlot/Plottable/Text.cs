@@ -25,7 +25,6 @@ namespace ScottPlot.Plottable
         public Drawing.Font Font = new Drawing.Font();
         public Color Color { get => Font.Color; set => Font.Color = value; }
         public string FontName { get => Font.Name; set => Font.Name = value; }
-        public FontFamily FontFamily { get => Font.Family; set => Font.Family = value; }
         public float FontSize { get => Font.Size; set => Font.Size = value; }
         public bool FontBold { get => Font.Bold; set => Font.Bold = value; }
         public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }

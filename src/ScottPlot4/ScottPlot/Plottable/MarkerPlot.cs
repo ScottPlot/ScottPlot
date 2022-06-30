@@ -91,7 +91,7 @@ namespace ScottPlot.Plottable
 
             if (!string.IsNullOrEmpty(Text))
             {
-                SizeF stringSize = Drawing.GDI.MeasureString(gfx, Text, TextFont.Name, TextFont.Size, TextFont.Bold, TextFont.Family);
+                SizeF stringSize = Drawing.GDI.MeasureString(gfx, Text, TextFont.Name, TextFont.Size, TextFont.Bold);
                 gfx.TranslateTransform(point.X, point.Y);
                 gfx.RotateTransform(TextFont.Rotation);
 

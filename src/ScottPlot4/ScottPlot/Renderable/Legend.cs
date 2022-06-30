@@ -44,7 +44,6 @@ namespace ScottPlot.Renderable
 
         public Drawing.Font Font = new Drawing.Font();
         public string FontName { set { Font.Name = value; } }
-        public FontFamily FontFamily { set { Font.Family = value; } }
         public float FontSize { set { Font.Size = value; } }
         public Color FontColor { set { Font.Color = value; } }
         public bool FontBold { set { Font.Bold = value; } }

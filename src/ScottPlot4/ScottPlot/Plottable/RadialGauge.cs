@@ -181,7 +181,7 @@ namespace ScottPlot.Plottable
             //using System.Drawing.Font fontGauge = GDI.Font(Font);
 
             using Brush brush = GDI.Brush(Font.Color);
-            using System.Drawing.Font font = new(Font.Family, (float)Width * (float)FontSizeFraction, FontStyle.Bold);
+            using System.Drawing.Font font = new(Font.Name, (float)Width * (float)FontSizeFraction, FontStyle.Bold);
 
             using StringFormat sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
 
