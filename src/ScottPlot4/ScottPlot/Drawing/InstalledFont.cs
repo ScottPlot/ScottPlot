@@ -14,7 +14,11 @@ namespace ScottPlot.Drawing
 
         static InstalledFont()
         {
-            InstalledFonts = FontFamily.Families.ToDictionary(x => x.Name, x => x);
+            // non-Windows systems may have multiple fonts with the same names
+            InstalledFonts = FontFamily.Families
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, x => x.First());
+
             SerifFamily = ValidFontFamily(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
             SansFamily = ValidFontFamily(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
             MonospaceFamily = ValidFontFamily(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
