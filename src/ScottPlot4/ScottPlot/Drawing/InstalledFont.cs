@@ -16,7 +16,7 @@ namespace ScottPlot.Drawing
         {
             // non-Windows systems may have multiple fonts with the same names
             InstalledFonts = FontFamily.Families
-                .GroupBy(x => x.Name)
+                .GroupBy(x => x.Name.ToLower())
                 .ToDictionary(x => x.Key, x => x.First());
 
             SerifFamily = ValidFontFamily(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
@@ -32,7 +32,7 @@ namespace ScottPlot.Drawing
         public static string Serif() => SerifFamily.Name;
         public static string Sans() => SansFamily.Name;
         public static string Monospace() => MonospaceFamily.Name;
-        public static string[] Names() => InstalledFonts.Keys.ToArray();
+        public static string[] Names() => InstalledFonts.Values.Select(x => x.Name).ToArray();
 
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
@@ -55,8 +55,8 @@ namespace ScottPlot.Drawing
         /// </summary>
         public static FontFamily ValidFontFamily(string fontName)
         {
-            if (fontName is not null && InstalledFonts.ContainsKey(fontName))
-                return InstalledFonts[fontName];
+            if (fontName is not null && InstalledFonts.ContainsKey(fontName.ToLower()))
+                return InstalledFonts[fontName.ToLower()];
 
             return SystemFonts.DefaultFont.FontFamily;
         }
@@ -68,8 +68,8 @@ namespace ScottPlot.Drawing
         {
             foreach (string fontName in fontNames)
             {
-                if (fontName is not null && InstalledFonts.ContainsKey(fontName))
-                    return InstalledFonts[fontName];
+                if (fontName is not null && InstalledFonts.ContainsKey(fontName.ToLower()))
+                    return InstalledFonts[fontName.ToLower()];
             }
 
             return SystemFonts.DefaultFont.FontFamily;
