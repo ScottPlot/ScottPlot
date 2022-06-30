@@ -155,9 +155,6 @@ namespace ScottPlot
         /// <param name="skipIfCurrentlyRendering"></param>
         public void Refresh(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
-            if (new StackTrace().FrameCount > Configuration.MaxFrameCount)
-                return;
-
             Backend.WasManuallyRendered = true;
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
