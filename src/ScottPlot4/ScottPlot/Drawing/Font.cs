@@ -16,8 +16,12 @@ namespace ScottPlot.Drawing
             get => Family.Name;
             set => Family = InstalledFont.ValidFontFamily(value); // ensure only valid font names can be assigned
         }
+
         public FontFamily Family { get; set; }
 
-        public Font() => Family = InstalledFont.SansFamily;
+        public Font()
+        {
+            Family = InstalledFont.SansFamily;
+        }
     }
 }
