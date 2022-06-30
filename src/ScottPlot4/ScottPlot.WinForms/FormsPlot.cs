@@ -187,7 +187,7 @@ namespace ScottPlot
             RefreshRequest(renderType);
 
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
-        private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); pictureBox1.Invalidate(); }
+        private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
