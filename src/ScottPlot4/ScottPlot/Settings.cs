@@ -654,10 +654,22 @@ namespace ScottPlot
                 }
             }
 
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
+            float padLeft, padRight, padBottom, padTop;
+
+            if (ManualDataPadding is null)
+            {
+                padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
+                padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
+                padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
+                padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
+            }
+            else
+            {
+                padLeft = ManualDataPadding.Value.Left;
+                padRight = ManualDataPadding.Value.Right;
+                padBottom = ManualDataPadding.Value.Bottom;
+                padTop = ManualDataPadding.Value.Top;
+            }
 
             foreach (Axis axis in Axes)
             {

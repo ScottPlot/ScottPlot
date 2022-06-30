@@ -157,6 +157,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.Style(Style.Blue1);
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
 
             var padding = new ScottPlot.PixelPadding(
                 left: 150,
