@@ -92,13 +92,15 @@ namespace ScottPlot.Cookbook
                 "cookbook/source",
 
                 // potential paths relative to the test runner
+                "../../../../../ScottPlot.Cookbook/CookbookOutput",
                 "../../../../../tests/bin/Debug/net5.0/cookbook/source",
                 "../../../../../cookbook/output",
             };
 
             foreach (string path in possiblePaths)
             {
-                FileInfo fi = new(Path.Combine(path, "recipes.json"));
+                string jsonFilePath = Path.GetFullPath(Path.Combine(path, "recipes.json"));
+                FileInfo fi = new(Path.Combine(path, jsonFilePath));
                 if (fi.Exists)
                     return fi;
             }
