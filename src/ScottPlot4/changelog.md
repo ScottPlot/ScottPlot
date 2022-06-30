@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.51
 _not yet published on NuGet..._
 * WinForms Control: Fixed a bug that caused frequent mouse events to overflow the stack (#1906, #1913) _Thanks @AbeniMatteo_
+* Performance: Cache system font list to prevent duplicate lookups (#1915) _Thanks @AbeniMatteo_
 
 ## ScottPlot 4.1.50
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-26_
