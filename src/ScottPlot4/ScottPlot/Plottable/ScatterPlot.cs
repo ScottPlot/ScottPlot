@@ -58,7 +58,7 @@ namespace ScottPlot.Plottable
 
         public float ErrorCapSize = 3;
 
-        public float _markerSize = 5;
+        private float _markerSize = 5;
         public float MarkerSize
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;

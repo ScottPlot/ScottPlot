@@ -27,7 +27,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool StepDisplayRight { get; set; } = true;
 
-        public float _markerSize = 5;
+        private float _markerSize = 5;
         public float MarkerSize
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
@@ -87,14 +87,14 @@ namespace ScottPlot.Plottable
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? GradientFillColor1 { get => _GradientFillColor1; set => _GradientFillColor1 = value; }
-        public Color? _GradientFillColor1 = null;
+        private Color? _GradientFillColor1 = null;
 
         /// <summary>
         /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? GradientFillColor2 { get => _GradientFillColor2; set => _GradientFillColor2 = value; }
-        public Color? _GradientFillColor2 = null;
+        private Color? _GradientFillColor2 = null;
 
         protected FillType _FillType = FillType.NoFill;
         protected Color? _FillColor1 = null;
