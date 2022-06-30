@@ -49,7 +49,7 @@ namespace ScottPlot.Drawing
         /// <summary>
         /// Returns a font family guaranteed to be installed on the system
         /// </summary>
-        internal static FontFamily ValidFontFamily(string fontName)
+        public static FontFamily ValidFontFamily(string fontName)
         {
             if (fontName is not null && InstalledFonts.ContainsKey(fontName))
                 return InstalledFonts[fontName];
@@ -60,7 +60,7 @@ namespace ScottPlot.Drawing
         /// <summary>
         /// Returns a font family guaranteed to be installed on the system
         /// </summary>
-        internal static FontFamily ValidFontFamily(string[] fontNames)
+        public static FontFamily ValidFontFamily(string[] fontNames)
         {
             foreach (string fontName in fontNames)
             {
