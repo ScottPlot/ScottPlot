@@ -101,5 +101,23 @@ namespace ScottPlotTests
             System.Drawing.FontFamily validFontFamily = ScottPlot.Drawing.InstalledFont.ValidFontFamily(fontName);
             Assert.That(validFontFamily.Name, Is.EqualTo(fontName));
         }
+
+        [Test]
+        public void Test_FontCache_LookupCustom()
+        {
+            Console.WriteLine("Custom: " + ScottPlot.Drawing.InstalledFont.ValidFontName("Comic Sans MS"));
+            Console.WriteLine("Default: " + ScottPlot.Drawing.InstalledFont.Default());
+            Console.WriteLine("Sans: " + ScottPlot.Drawing.InstalledFont.Sans());
+            Console.WriteLine("Serif: " + ScottPlot.Drawing.InstalledFont.Serif());
+            Console.WriteLine("Monospace: " + ScottPlot.Drawing.InstalledFont.Monospace());
+        }
+
+        [Test]
+        public void Test_FontCache_LookupIsCaseInsensitive()
+        {
+            string fontName = ScottPlot.Drawing.InstalledFont.Monospace();
+            StringAssert.AreEqualIgnoringCase(fontName, ScottPlot.Drawing.InstalledFont.ValidFontName(fontName.ToUpper()));
+            StringAssert.AreEqualIgnoringCase(fontName, ScottPlot.Drawing.InstalledFont.ValidFontName(fontName.ToLower()));
+        }
     }
 }
