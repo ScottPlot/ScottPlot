@@ -75,7 +75,7 @@ namespace ScottPlot.Plottable
                 gfx.TranslateTransform(pixelX, pixelY);
                 gfx.RotateTransform(Font.Rotation);
 
-                (float dX, float dY) = GDI.TranslateString(Label, Font);
+                (float dX, float dY) = GDI.TranslateString(gfx, Label, Font);
                 gfx.TranslateTransform(-dX, -dY);
 
                 if (BackgroundFill)

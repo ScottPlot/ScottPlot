@@ -1,33 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot.Drawing
 {
+    /// <summary>
+    /// This class is used to retrieve OS-agnostic fonts using those known to be installed on the system.
+    /// </summary>
     public static class InstalledFont
     {
-        public static string Default() => Sans();
+        private readonly static Dictionary<string, FontFamily> InstalledFonts = new();
 
-        public static string Serif() =>
-            ValidFontName(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
+        static InstalledFont()
+        {
+            // non-Windows systems may have multiple fonts with the same names
+            InstalledFonts = FontFamily.Families
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, x => x.First());
 
-        public static string Sans() =>
-            ValidFontName(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
+            SerifFamily = ValidFontFamily(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
+            SansFamily = ValidFontFamily(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
+            MonospaceFamily = ValidFontFamily(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
+        }
 
-        public static string Monospace() =>
-            ValidFontName(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
+        internal static FontFamily SerifFamily { get; private set; }
+        internal static FontFamily SansFamily { get; private set; }
+        internal static FontFamily MonospaceFamily { get; private set; }
+
+        public static string Default() => SansFamily.Name;
+        public static string Serif() => SerifFamily.Name;
+        public static string Sans() => SansFamily.Name;
+        public static string Monospace() => MonospaceFamily.Name;
+        public static string[] Names() => InstalledFonts.Keys.ToArray();
 
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
         /// </summary>
         public static string ValidFontName(string fontName)
         {
-            foreach (FontFamily installedFont in FontFamily.Families)
-                if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
-                    return installedFont.Name;
-            return SystemFonts.DefaultFont.Name;
+            return ValidFontFamily(fontName).Name;
         }
 
         /// <summary>
@@ -35,112 +47,32 @@ namespace ScottPlot.Drawing
         /// </summary>
         public static string ValidFontName(string[] fontNames)
         {
-            foreach (string preferredFont in fontNames)
-                foreach (FontFamily font in FontFamily.Families)
-                    if (string.Equals(preferredFont, font.Name, System.StringComparison.OrdinalIgnoreCase))
-                        return font.Name;
-            return SystemFonts.DefaultFont.Name;
+            return ValidFontFamily(fontNames).Name;
+        }
+
+        /// <summary>
+        /// Returns a font family guaranteed to be installed on the system
+        /// </summary>
+        public static FontFamily ValidFontFamily(string fontName)
+        {
+            if (fontName is not null && InstalledFonts.ContainsKey(fontName))
+                return InstalledFonts[fontName];
+
+            return SystemFonts.DefaultFont.FontFamily;
+        }
+
+        /// <summary>
+        /// Returns a font family guaranteed to be installed on the system
+        /// </summary>
+        public static FontFamily ValidFontFamily(string[] fontNames)
+        {
+            foreach (string fontName in fontNames)
+            {
+                if (fontName is not null && InstalledFonts.ContainsKey(fontName))
+                    return InstalledFonts[fontName];
+            }
+
+            return SystemFonts.DefaultFont.FontFamily;
         }
     }
 }
-
-/*
- 
-These fonts are on Azure Pipelines on Linux:
-    Century Schoolbook L
-    DejaVu Sans
-    DejaVu Sans Mono
-    DejaVu Serif
-    Dingbats
-    Liberation Mono
-    Liberation Sans
-    Liberation Sans Narrow
-    Liberation Serif
-    Nimbus Mono L
-    Nimbus Roman No9 L
-    Nimbus Sans L
-    Standard Symbols L
-    URW Bookman L
-    URW Chancery L
-    URW Gothic L
-    URW Palladio L
-
-
-
-These fonts are on Azure Pipelines on MacOS:
-    Apple Braille
-    Apple Color Emoji
-    Apple SD Gothic Neo
-    Apple Symbols
-    Arial Hebrew
-    Arial Hebrew Scholar
-    Avenir
-    Avenir Next
-    Avenir Next Condensed
-    Courier
-    Geeza Pro
-    Geneva
-    Heiti SC
-    Heiti TC
-    Helvetica
-    Helvetica Neue
-    Hiragino Kaku Gothic Pro
-    Hiragino Kaku Gothic ProN
-    Hiragino Kaku Gothic Std
-    Hiragino Kaku Gothic StdN
-    Hiragino Maru Gothic Pro
-    Hiragino Maru Gothic ProN
-    Hiragino Mincho Pro
-    Hiragino Mincho ProN
-    Hiragino Sans
-    Hiragino Sans GB
-    Kohinoor Bangla
-    Kohinoor Devanagari
-    Kohinoor Telugu
-    Lucida Grande
-    Marker Felt
-    Menlo
-    Monaco
-    Noteworthy
-    Noto Nastaliq Urdu
-    Optima
-    Palatino
-    PingFang HK
-    PingFang SC
-    PingFang TC
-    Symbol
-    System Font
-    Thonburi
-    Times
-    Zapf Dingbats
-    System Font
-    .Apple Color Emoji UI
-    .Apple SD Gothic NeoI
-    .Aqua Kana
-    .Aqua Kana
-    .Arabic UI Display
-    .Arabic UI Text
-    .Arial Hebrew Desk Interface
-    .Geeza Pro Interface
-    .Geeza Pro PUA
-    .Helvetica LT MM
-    .Helvetica Neue DeskInterface
-    .Hiragino Kaku Gothic Interface
-    .Hiragino Sans GB Interface
-    .Keyboard
-    .LastResort
-    .Lucida Grande UI
-    .Noto Nastaliq Urdu UI
-    .PingFang HK
-    .PingFang SC
-    .PingFang TC
-    .SF Compact Display
-    .SF Compact Rounded
-    .SF Compact Text
-    .SF NS Display Condensed
-    .SF NS Rounded
-    .SF NS Symbols
-    .SF NS Text Condensed
-    .Times LT MM
-
-*/

@@ -68,5 +68,38 @@ namespace ScottPlotTests
             ScottPlot.Drawing.GDI.ClearType(false);
             TestTools.SaveFig(plt, "AntiAlias-OnGray");
         }
+
+        [Test]
+        public void Test_FontCache_IsPopulatedAutomatically()
+        {
+            string[] fontNames = ScottPlot.Drawing.InstalledFont.Names();
+
+            Assert.That(fontNames, Is.Not.Null);
+            Assert.That(fontNames, Is.Not.Empty);
+
+            Console.WriteLine(string.Join(Environment.NewLine, fontNames));
+        }
+
+        [Test]
+        public void Test_FontCache_ContainsDefaultFonts()
+        {
+            string[] fontNames = ScottPlot.Drawing.InstalledFont.Names();
+            Assert.That(fontNames, Contains.Item(ScottPlot.Drawing.InstalledFont.Default()));
+            Assert.That(fontNames, Contains.Item(ScottPlot.Drawing.InstalledFont.Serif()));
+            Assert.That(fontNames, Contains.Item(ScottPlot.Drawing.InstalledFont.Sans()));
+            Assert.That(fontNames, Contains.Item(ScottPlot.Drawing.InstalledFont.Monospace()));
+        }
+
+        [Test]
+        public void Test_FontCache_Lookup()
+        {
+            string fontName = ScottPlot.Drawing.InstalledFont.Monospace();
+
+            string validFontName = ScottPlot.Drawing.InstalledFont.ValidFontName(fontName);
+            Assert.That(validFontName, Is.EqualTo(fontName));
+
+            System.Drawing.FontFamily validFontFamily = ScottPlot.Drawing.InstalledFont.ValidFontFamily(fontName);
+            Assert.That(validFontFamily.Name, Is.EqualTo(fontName));
+        }
     }
 }

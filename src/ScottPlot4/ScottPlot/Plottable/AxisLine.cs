@@ -193,7 +193,7 @@ namespace ScottPlot.Plottable
 
                 float pixelY = dims.GetPixelY(Position);
                 string yLabel = PositionFormatter(Position);
-                SizeF yLabelSize = GDI.MeasureString(yLabel, PositionLabelFont);
+                SizeF yLabelSize = GDI.MeasureString(gfx, yLabel, PositionLabelFont);
                 float xPos = PositionLabelOppositeAxis
                     ? dims.DataOffsetX + dims.DataWidth + axisOffset
                     : dims.DataOffsetX - yLabelSize.Width - axisOffset;
@@ -210,7 +210,7 @@ namespace ScottPlot.Plottable
 
                 float pixelX = dims.GetPixelX(Position);
                 string xLabel = PositionFormatter(Position);
-                SizeF xLabelSize = GDI.MeasureString(xLabel, PositionLabelFont);
+                SizeF xLabelSize = GDI.MeasureString(gfx, xLabel, PositionLabelFont);
                 float xPos = pixelX - xLabelSize.Width / 2;
                 float yPos = PositionLabelOppositeAxis
                     ? dims.DataOffsetY - xLabelSize.Height - axisOffset
