@@ -108,8 +108,7 @@ namespace ScottPlot.Cookbook
 
         public static string NotFoundMessage =>
             "ERROR: Recipe source file (recipes.json) was not found!\n" +
-            "Developers can generate these files by running the tests:\n" +
-            "To run tests from Visual Studio, click 'Test' and select 'Run All Tests'.\n" +
-            "To run tests from the command line, run 'dotnet test' in the src folder.\n";
+            "Developers can generate this file by running the Cookbook Generator,\n" +
+            "a console application in the Demos folder of the ScottPlot Solution.\n";
     }
 }
