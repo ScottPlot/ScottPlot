@@ -204,7 +204,7 @@ namespace ScottPlot.Ticks
             }
             else
             {
-                System.Drawing.SizeF maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
+                System.Drawing.SizeF maxLabelSize = GDI.MeasureStringUsingTemporaryGraphics(largestString.Trim(), tickFont);
                 return (maxLabelSize.Width, maxLabelSize.Height);
             }
         }

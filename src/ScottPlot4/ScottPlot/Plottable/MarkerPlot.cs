@@ -95,7 +95,7 @@ namespace ScottPlot.Plottable
                 gfx.TranslateTransform(point.X, point.Y);
                 gfx.RotateTransform(TextFont.Rotation);
 
-                (float dX, float dY) = Drawing.GDI.TranslateString(Text, TextFont);
+                (float dX, float dY) = Drawing.GDI.TranslateString(gfx, Text, TextFont);
                 gfx.TranslateTransform(-dX, -dY);
 
                 using var font = Drawing.GDI.Font(TextFont);

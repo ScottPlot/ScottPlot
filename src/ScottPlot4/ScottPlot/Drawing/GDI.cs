@@ -31,7 +31,11 @@ namespace ScottPlot.Drawing
             return gfx.DpiX / DEFAULT_DPI;
         }
 
-        public static SizeF MeasureString(string text, Font font)
+        /// <summary>
+        /// Create a Bitmap and Graphics and use it to measure a string.
+        /// Only use this function if an existing Graphics does not exist.
+        /// </summary>
+        public static SizeF MeasureStringUsingTemporaryGraphics(string text, Font font)
         {
             using (Bitmap bmp = new Bitmap(1, 1))
             using (Graphics gfx = Graphics(bmp, lowQuality: true))
@@ -40,6 +44,18 @@ namespace ScottPlot.Drawing
             }
         }
 
+        /// <summary>
+        /// Return the size (in pixels) of the given string.
+        /// </summary>
+        public static SizeF MeasureString(Graphics gfx, string text, Font font)
+        {
+            return MeasureString(gfx, text, null, font.Size, font.Bold, font.Family);
+        }
+
+        /// <summary>
+        /// Return the size (in pixels) of the given string.
+        /// If <paramref name="fontFamily"/> is provided it will be used instead of <paramref name="fontName"/>.
+        /// </summary>
         public static SizeF MeasureString(Graphics gfx, string text, string fontName, double fontSize, bool bold = false, FontFamily fontFamily = null)
         {
             fontFamily ??= InstalledFont.ValidFontFamily(fontName);
@@ -50,6 +66,9 @@ namespace ScottPlot.Drawing
             }
         }
 
+        /// <summary>
+        /// Return the size (in pixels) of the given string.
+        /// </summary>
         public static SizeF MeasureString(Graphics gfx, string text, System.Drawing.Font font)
         {
             SizeF size = gfx.MeasureString(text, font);
@@ -92,9 +111,9 @@ namespace ScottPlot.Drawing
         /// <summary>
         /// Return the X and Y distance (pixels) necessary to translate the canvas for the given text/font/alignment
         /// </summary>
-        public static (float dX, float dY) TranslateString(string text, Font font)
+        public static (float dX, float dY) TranslateString(Graphics gfx, string text, Font font)
         {
-            SizeF stringSize = MeasureString(text, font);
+            SizeF stringSize = MeasureString(gfx, text, font.Name, font.Size, font.Bold, font.Family);
             (float xFrac, float yFrac) = AlignmentFraction(font.Alignment);
             return (stringSize.Width * xFrac, stringSize.Height * yFrac);
         }
@@ -258,6 +277,10 @@ namespace ScottPlot.Drawing
         public static System.Drawing.Font Font(ScottPlot.Drawing.Font font) =>
             Font(null, font.Size, font.Bold, font.Family);
 
+        /// <summary>
+        /// Return the size (in pixels) of the given string.
+        /// If <paramref name="fontFamily"/> is provided it will be used instead of <paramref name="fontName"/>.
+        /// </summary>
         public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false, FontFamily fontFamily = null)
         {
             fontFamily ??= InstalledFont.ValidFontFamily(fontName);
