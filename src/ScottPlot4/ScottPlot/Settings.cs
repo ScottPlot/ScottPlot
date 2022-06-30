@@ -147,6 +147,12 @@ namespace ScottPlot
         /// </summary>
         public bool DrawGridAbovePlottables { get; set; } = false;
 
+        /// <summary>
+        /// If defined, the data area will use this rectangle and not be adjusted
+        /// depending on axis labels or ticks.
+        /// </summary>
+        public PixelPadding? ManualDataPadding { get; set; } = null;
+
         public Settings()
         {
             Plottables.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => PlottablesIdentifier++;
@@ -164,6 +170,18 @@ namespace ScottPlot
             var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
+
+            // manual override if manual padding is enabled
+            if (ManualDataPadding is not null)
+            {
+                dataOffset = new PointF(
+                    x: ManualDataPadding.Value.Left,
+                    y: ManualDataPadding.Value.Top);
+
+                dataSize = new SizeF(
+                    width: figureSize.Width - ManualDataPadding.Value.Left - ManualDataPadding.Value.Right,
+                    height: figureSize.Height - ManualDataPadding.Value.Top - ManualDataPadding.Value.Bottom);
+            }
 
             // determine axis limits based on specific X and Y axes
             (double xMin, double xMax) = xAxis.Dims.RationalLimits();
@@ -636,10 +654,22 @@ namespace ScottPlot
                 }
             }
 
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
+            float padLeft, padRight, padBottom, padTop;
+
+            if (ManualDataPadding is null)
+            {
+                padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
+                padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
+                padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
+                padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
+            }
+            else
+            {
+                padLeft = ManualDataPadding.Value.Left;
+                padRight = ManualDataPadding.Value.Right;
+                padBottom = ManualDataPadding.Value.Bottom;
+                padTop = ManualDataPadding.Value.Top;
+            }
 
             foreach (Axis axis in Axes)
             {

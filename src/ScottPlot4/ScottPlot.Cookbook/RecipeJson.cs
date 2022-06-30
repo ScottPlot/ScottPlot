@@ -92,13 +92,15 @@ namespace ScottPlot.Cookbook
                 "cookbook/source",
 
                 // potential paths relative to the test runner
+                "../../../../../ScottPlot.Cookbook/CookbookOutput",
                 "../../../../../tests/bin/Debug/net5.0/cookbook/source",
                 "../../../../../cookbook/output",
             };
 
             foreach (string path in possiblePaths)
             {
-                FileInfo fi = new(Path.Combine(path, "recipes.json"));
+                string jsonFilePath = Path.GetFullPath(Path.Combine(path, "recipes.json"));
+                FileInfo fi = new(Path.Combine(path, jsonFilePath));
                 if (fi.Exists)
                     return fi;
             }
@@ -108,8 +110,7 @@ namespace ScottPlot.Cookbook
 
         public static string NotFoundMessage =>
             "ERROR: Recipe source file (recipes.json) was not found!\n" +
-            "Developers can generate these files by running the tests:\n" +
-            "To run tests from Visual Studio, click 'Test' and select 'Run All Tests'.\n" +
-            "To run tests from the command line, run 'dotnet test' in the src folder.\n";
+            "Developers can generate this file by running the Cookbook Generator,\n" +
+            "a console application in the Demos folder of the ScottPlot Solution.\n";
     }
 }

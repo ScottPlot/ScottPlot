@@ -386,11 +386,7 @@ namespace ScottPlot.Plottable
                     if (markerPxRadius > .25)
                     {
                         ShowMarkersInLegend = true;
-
-                        foreach (PointF point in linePoints)
-                        {
-                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
-                        }
+                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
                     }
                     else
                     {
