@@ -97,12 +97,19 @@ namespace ScottPlot.Plottable
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(startIndex) + Convert.ToDouble(OffsetY)));
+            var startValue = Strategy.SourceElement(startIndex);
+            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(startValue + Convert.ToDouble(OffsetY)));
             if (pointsCount > 1)
             {
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + Convert.ToDouble(OffsetY)));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + Convert.ToDouble(OffsetY)));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(endIndex - 1) + Convert.ToDouble(OffsetY)));
+                var endValue = Strategy.SourceElement(endIndex - 1);
+
+                if (min != startValue && min != endValue)
+                    yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + Convert.ToDouble(OffsetY)));
+
+                if (max != startValue && max != endValue)
+                    yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + Convert.ToDouble(OffsetY)));
+
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(endValue + Convert.ToDouble(OffsetY)));
             }
         }
 
