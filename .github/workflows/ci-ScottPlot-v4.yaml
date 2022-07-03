@@ -139,4 +139,4 @@ jobs:
         run: dotnet restore
       - name: 📏 Run Benchmarks
         working-directory: src/ScottPlot4/ScottPlot.Benchmarks
-        run: dotnet run --configuration Release --framework net6.0 run
+        run: dotnet run --configuration Release --framework net6.0 benchmark
