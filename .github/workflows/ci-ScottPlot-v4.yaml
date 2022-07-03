@@ -122,3 +122,21 @@ jobs:
       - name: 🐌 MSBuild
         working-directory: src/ScottPlot4
         run: msbuild -property:Configuration=Release -verbosity:minimal
+
+  benchmark:
+    runs-on: ubuntu-latest
+    name: ⏱ Benchmark
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Set up .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+      - name: 🚚 Restore
+        working-directory: src/ScottPlot4/ScottPlot.Benchmarks
+        run: dotnet restore
+      - name: 📏 Run Benchmarks
+        working-directory: src/ScottPlot4/ScottPlot.Benchmarks
+        run: dotnet run --configuration Release --framework net6.0 run
