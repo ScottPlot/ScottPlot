@@ -39,7 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{EC67
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{684FD96D-C698-4761-8E2C-6B4C08759B77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook Generator", "ScottPlot.Demo\ScottPlot.Demo.CookbookGenerator\Cookbook Generator.csproj", "{CA8A8150-98C7-42E8-9D15-40C5E407937E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook Generator", "ScottPlot.Demo\ScottPlot.Demo.CookbookGenerator\Cookbook Generator.csproj", "{CA8A8150-98C7-42E8-9D15-40C5E407937E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Benchmarks", "ScottPlot.Benchmarks\ScottPlot.Benchmarks.csproj", "{80381368-144D-4CAE-8FA7-56E8E5AF5B60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{CA8A8150-98C7-42E8-9D15-40C5E407937E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA8A8150-98C7-42E8-9D15-40C5E407937E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA8A8150-98C7-42E8-9D15-40C5E407937E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80381368-144D-4CAE-8FA7-56E8E5AF5B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80381368-144D-4CAE-8FA7-56E8E5AF5B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80381368-144D-4CAE-8FA7-56E8E5AF5B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80381368-144D-4CAE-8FA7-56E8E5AF5B60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
