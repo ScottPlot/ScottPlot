@@ -32,6 +32,6 @@ public static class Generator
         }
 
         Console.WriteLine($"Reading JSON ...");
-        return RecipeJson.GetRecipes(new FileInfo(jsonFilePath)).Values.Select(x => x).ToArray();
+        return RecipeJson.GetRecipes(jsonFilePath).Values.Select(x => x).ToArray();
     }
 }
