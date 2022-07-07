@@ -1,37 +1,36 @@
-﻿using ScottPlot.Cookbook;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 
 namespace ScottPlot.Cookbook;
 
 public static class Generator
 {
-    public static RecipeSource[] Generate(string cookbookProjectFolder, string outputFolder, bool regenerate = false)
+    public static void ExecuteAllRecipesAndGenerateWebsite(string cookbookProjectFolder)
     {
+        Console.WriteLine("Deleting old cookbook files...");
+        string outputFolder = Path.Combine(cookbookProjectFolder, "CookbookOutput");
+        if (Directory.Exists(outputFolder))
+            Directory.Delete(outputFolder, recursive: true);
+        Directory.CreateDirectory(outputFolder);
+
         string jsonFilePath = Path.Combine(outputFolder, "recipes.json");
         string imageFolderPath = Path.Combine(outputFolder, "images");
+        Directory.CreateDirectory(imageFolderPath);
 
-        if (regenerate)
-        {
+        Console.WriteLine($"Generating Images...");
+        RecipeImages.Generate(imageFolderPath);
 
-            if (Directory.Exists(imageFolderPath))
-                Directory.Delete(imageFolderPath, recursive: true);
-            Directory.CreateDirectory(imageFolderPath);
+        Console.WriteLine($"Generating JSON...");
+        string json = RecipeJson.Generate(cookbookProjectFolder);
+        File.WriteAllText(jsonFilePath, json);
 
-            Console.WriteLine($"Generating Images: {imageFolderPath}");
-            RecipeImages.Generate(imageFolderPath);
+        Console.WriteLine($"Reading JSON...");
+        RecipeSource[] recipes = RecipeJson.GetRecipes(jsonFilePath).Values.Select(x => x).ToArray();
 
-            Console.WriteLine($"Generating JSON ...");
-            string json = RecipeJson.Generate(cookbookProjectFolder);
-            File.WriteAllText(jsonFilePath, json);
-        }
+        Console.WriteLine($"Generating website...");
+        Website.Generate(outputFolder, recipes);
 
-        Console.WriteLine($"Reading JSON ...");
-        return RecipeJson.GetRecipes(new FileInfo(jsonFilePath)).Values.Select(x => x).ToArray();
+        Console.WriteLine($"SAVED IN: {outputFolder}");
     }
 }
