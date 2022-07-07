@@ -1,11 +1,11 @@
-﻿using ScottPlot.Cookbook;
+﻿using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Cookbook_Generator;
+namespace ScottPlot.Cookbook;
+
 public static class Website
 {
     public static void Generate(string OutputFolderPath, RecipeSource[] Recipes)

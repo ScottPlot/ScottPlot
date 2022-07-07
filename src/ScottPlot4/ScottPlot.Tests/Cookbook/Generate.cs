@@ -32,19 +32,14 @@ namespace ScottPlotTests.Cookbook
             Assert.AreEqual(recipes.Length, readRecipes.Count);
         }
 
+        /// <summary>
+        /// Executes every cookbook recipe
+        /// </summary>
         [Test]
-        public void Test_Recipes_RenderInMemory()
+        public void Test_Recipes_GenerateWebsite()
         {
-            IRecipe[] recipes = Locate.GetRecipes();
-
-            Parallel.ForEach(recipes, recipe =>
-            {
-                var sw = Stopwatch.StartNew();
-                var plt = new ScottPlot.Plot(600, 400);
-                recipe.ExecuteRecipe(plt);
-                var bmp = plt.GetBitmap();
-                Console.WriteLine($"{recipe.ID}, {ScottPlot.Tools.BitmapHash(bmp)}, {sw.Elapsed.TotalMilliseconds}");
-            });
+            Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
+            ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
         }
     }
 }

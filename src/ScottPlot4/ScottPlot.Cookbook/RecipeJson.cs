@@ -84,15 +84,10 @@ namespace ScottPlot.Cookbook
         {
             string[] possiblePaths =
             {
-                // check common paths relative to the working directory
                 "./",
                 "./cookbook",
                 "./cookbook/source",
-
-                // check common paths for applications in the default build directories
                 "../../../../../ScottPlot.Cookbook/CookbookOutput",
-                "../../../../../tests/bin/Debug/net5.0/cookbook/source",
-                "../../../../../cookbook/output",
             };
 
             foreach (string path in possiblePaths)
@@ -107,7 +102,6 @@ namespace ScottPlot.Cookbook
 
         public static string NotFoundMessage =>
             "ERROR: Recipe source file (recipes.json) was not found!\n" +
-            "Developers can generate this file by running the Cookbook Generator,\n" +
-            "a console application in the Demos folder of the ScottPlot Solution.\n";
+            "Run the tests to generate this file.";
     }
 }
