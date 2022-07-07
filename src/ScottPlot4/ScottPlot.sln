@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{EC67
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{684FD96D-C698-4761-8E2C-6B4C08759B77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Cookbook.Generator", "ScottPlot.Demo\ScottPlot.Demo.CookbookGenerator\ScottPlot.Cookbook.Generator.csproj", "{CA8A8150-98C7-42E8-9D15-40C5E407937E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Cookbook.Generator", "ScottPlot.Cookbook.Generator\ScottPlot.Cookbook.Generator.csproj", "{CA8A8150-98C7-42E8-9D15-40C5E407937E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Benchmarks", "ScottPlot.Benchmarks\ScottPlot.Benchmarks.csproj", "{80381368-144D-4CAE-8FA7-56E8E5AF5B60}"
 EndProject
