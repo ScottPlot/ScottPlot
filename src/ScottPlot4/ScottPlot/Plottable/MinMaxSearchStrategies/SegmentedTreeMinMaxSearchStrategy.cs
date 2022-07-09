@@ -31,7 +31,7 @@ namespace ScottPlot.MinMaxSearchStrategies
 
         public double SourceElement(int index)
         {
-            return Convert.ToDouble(SourceArray[index]);
+            return NumericConversion.GenericToDouble(ref SourceArray[index]);
         }
 
         public void updateElement(int index, T newValue)

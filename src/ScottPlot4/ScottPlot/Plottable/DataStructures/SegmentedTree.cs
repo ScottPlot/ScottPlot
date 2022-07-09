@@ -37,7 +37,8 @@ namespace ScottPlot.DataStructures
         {
             try // runtime check
             {
-                Convert.ToDouble(new T());
+                var v = new T();
+                NumericConversion.GenericToDouble(ref v);
             }
             catch
             {
@@ -267,8 +268,8 @@ namespace ScottPlot.DataStructures
                     if (GreaterThanExp(sourceArray[i], highestValueT))
                         highestValueT = sourceArray[i];
                 }
-                lowestValue = Convert.ToDouble(lowestValueT);
-                highestValue = Convert.ToDouble(highestValueT);
+                lowestValue = NumericConversion.GenericToDouble(ref lowestValueT);
+                highestValue = NumericConversion.GenericToDouble(ref highestValueT);
                 return;
             }
 
@@ -276,7 +277,7 @@ namespace ScottPlot.DataStructures
             highestValueT = MinValue();
             if (l == r)
             {
-                lowestValue = highestValue = Convert.ToDouble(sourceArray[l]);
+                lowestValue = highestValue = NumericConversion.GenericToDouble(ref sourceArray[l]);
                 return;
             }
             // first iteration on source array that virtualy bottom of tree
@@ -310,8 +311,8 @@ namespace ScottPlot.DataStructures
                 l = (l + 1) / 2;
                 r = (r - 1) / 2;
             }
-            lowestValue = Convert.ToDouble(lowestValueT);
-            highestValue = Convert.ToDouble(highestValueT);
+            lowestValue = NumericConversion.GenericToDouble(ref lowestValueT);
+            highestValue = NumericConversion.GenericToDouble(ref highestValueT);
         }
     }
 }

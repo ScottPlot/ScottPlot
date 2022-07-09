@@ -34,8 +34,8 @@ namespace ScottPlot.Plottable
         {
             for (int i = 0; i < Count; i++)
             {
-                double dX = Math.Abs(Convert.ToDouble(Xs[i]) - coordinateX);
-                double dY = Math.Abs(Convert.ToDouble(Ys[i]) - coordinateY);
+                double dX = Math.Abs(NumericConversion.GenericToDouble(Xs, i) - coordinateX);
+                double dY = Math.Abs(NumericConversion.GenericToDouble(Ys, i) - coordinateY);
 
                 if (dX <= snapX && dY <= snapY)
                 {

@@ -140,7 +140,7 @@ namespace ScottPlot
         {
             double[] dataOut = new double[dataIn.Length];
             for (int i = 0; i < dataIn.Length; i++)
-                dataOut[i] = Convert.ToDouble(dataIn[i]);
+                dataOut[i] = NumericConversion.GenericToDouble(ref dataIn[i]);
             return dataOut;
         }
 
