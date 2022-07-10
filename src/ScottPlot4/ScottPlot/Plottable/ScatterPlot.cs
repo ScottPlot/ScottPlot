@@ -448,5 +448,11 @@ namespace ScottPlot.Plottable
 
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
+
+        public (double yMin, double yMax) GetYDataRange(double xStart, double xEnd)
+        {
+            var includedYs = Ys.Where((y, i) => Xs[i] >= xStart && Xs[i] <= xEnd);
+            return (includedYs.Min(), includedYs.Max());
+        }
     }
 }

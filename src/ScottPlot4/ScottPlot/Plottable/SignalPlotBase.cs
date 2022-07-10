@@ -823,6 +823,20 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{_FillType}'");
         }
 
+        private int GetIndexForX(double x)
+        {
+            int index = (int)((x - OffsetX) / SampleRate);
+            index = Math.Max(index, MinRenderIndex);
+            index = Math.Min(index, MaxRenderIndex);
+
+            return index;
+        }
+
+        private double IndexToX(int index)
+        {
+            return index * SampleRate + OffsetX;
+        }
+
         /// <summary>
         /// Return the X/Y coordinates of the point nearest the X position
         /// </summary>
@@ -830,9 +844,7 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (double x, T y, int index) GetPointNearestX(double x)
         {
-            int index = (int)((x - OffsetX) / SamplePeriod);
-            index = Math.Max(index, MinRenderIndex);
-            index = Math.Min(index, MaxRenderIndex);
+            int index = GetIndexForX(x);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
 
@@ -912,6 +924,24 @@ namespace ScottPlot.Plottable
 
             _FillColor2 = GDI.Semitransparent(below2, alpha);
             _GradientFillColor2 = GDI.Semitransparent(below1, alpha);
+        }
+
+        public (T yMin, T yMax) GetYDataRange(double xStart, double xEnd)
+        {
+            int startIndex = GetIndexForX(xStart);
+            int endIndex = GetIndexForX(xEnd);
+
+            if (IndexToX(endIndex) < xEnd)
+            {
+                endIndex = Math.Min(endIndex + 1, MaxRenderIndex);
+            }
+
+            Strategy.MinMaxRangeQuery(startIndex, endIndex, out double yMin, out double yMax);
+
+            NumericConversion.DoubleToGeneric<T>(yMin, out T genericYMin);
+            NumericConversion.DoubleToGeneric<T>(yMax, out T genericYMax);
+
+            return (genericYMin, genericYMax);
         }
     }
 }

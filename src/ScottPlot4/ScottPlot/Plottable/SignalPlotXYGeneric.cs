@@ -340,5 +340,10 @@ namespace ScottPlot.Plottable
             else // x closer to XS[index]
                 return GetPointByIndex(index);
         }
+
+        public (TY yMin, TY yMax) GetYDataRange(TX xStart, TX xEnd)
+        {
+            return base.GetYDataRange(NumericConversion.GenericToDouble(ref xStart), NumericConversion.GenericToDouble(ref xEnd));
+        }
     }
 }
