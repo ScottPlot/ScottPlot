@@ -231,7 +231,9 @@ public static class Website
 
         StringBuilder sb = new();
 
-        // TODO: figure out a better way to sort this
+        sb.AppendLine();
+        sb.AppendLine($"This cookbook was generated using ScottPlot {ScottPlot.Plot.Version} on {DateTime.Now.ToShortDateString()}");
+        sb.AppendLine();
 
         // CATEGORY LIST
         sb.AppendLine("<h4>Customization</h4>");
