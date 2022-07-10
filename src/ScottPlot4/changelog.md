@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.53
+## ScottPlot 4.1.54
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.53
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-10_
+* Signal Plot: Added support for plotting `byte` arrays (#1945)
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_

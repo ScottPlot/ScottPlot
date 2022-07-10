@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ScottPlot.Plottable
 {
@@ -247,7 +248,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This expression adds two parameters of the generic type used by this signal plot.
         /// </summary>
-        private readonly Func<T, T, T> AddYsGenericExpression;
+        private readonly Func<T, T, T> AddYsGenericExpression = NumericConversion.CreateAddFunction<T>();
 
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
@@ -265,10 +266,6 @@ namespace ScottPlot.Plottable
 
         public SignalPlotBase()
         {
-            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
-            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
-            BinaryExpression bodyAdd = Expression.Add(paramA, paramB);
-            AddYsGenericExpression = Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
         }
 
         /// <summary>
