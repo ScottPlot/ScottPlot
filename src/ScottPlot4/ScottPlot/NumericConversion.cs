@@ -37,6 +37,7 @@ namespace ScottPlot
                 short vInt16 => Convert.ToDouble(vInt16),
                 ushort vUint16 => Convert.ToDouble(vUint16),
                 decimal vDecimal => Convert.ToDouble(vDecimal),
+                byte vByte => Convert.ToDouble(vByte),
 #endif
                 _ => Convert.ToDouble(value),
             };
