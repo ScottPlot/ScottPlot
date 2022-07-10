@@ -110,13 +110,13 @@ namespace ScottPlot
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
 
-            BinaryExpression bodyAdd = Type.GetTypeCode(typeof(T)) switch
+            BinaryExpression body = Type.GetTypeCode(typeof(T)) switch
             {
                 TypeCode.Byte => Expression.Add(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.AddBytes))),
                 _ => Expression.Add(paramA, paramB),
             };
 
-            return Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
+            return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
         }
 
         public static Func<T, T, T> CreateSubtractFunction<T>()
@@ -124,13 +124,13 @@ namespace ScottPlot
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
 
-            BinaryExpression bodyAdd = Type.GetTypeCode(typeof(T)) switch
+            BinaryExpression body = Type.GetTypeCode(typeof(T)) switch
             {
-                TypeCode.Byte => Expression.Add(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.SubtractBytes))),
+                TypeCode.Byte => Expression.Subtract(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.SubtractBytes))),
                 _ => Expression.Subtract(paramA, paramB),
             };
 
-            return Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
+            return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
         }
 
         public static Func<T, T, bool> CreateLessThanOrEqualFunction<T>()
@@ -138,13 +138,13 @@ namespace ScottPlot
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
 
-            BinaryExpression bodyAdd = Type.GetTypeCode(typeof(T)) switch
+            BinaryExpression body = Type.GetTypeCode(typeof(T)) switch
             {
-                TypeCode.Byte => Expression.Add(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.LessThanOrEqualBytes))),
+                TypeCode.Byte => Expression.LessThanOrEqual(paramA, paramB, false, typeof(NumericConversion).GetMethod(nameof(NumericConversion.LessThanOrEqualBytes))),
                 _ => Expression.LessThanOrEqual(paramA, paramB),
             };
 
-            return Expression.Lambda<Func<T, T, bool>>(bodyAdd, paramA, paramB).Compile();
+            return Expression.Lambda<Func<T, T, bool>>(body, paramA, paramB).Compile();
         }
     }
 }

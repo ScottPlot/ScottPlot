@@ -53,9 +53,13 @@ namespace ScottPlotTests
             double[] doubles = ScottPlot.DataGen.Sin(51, offset: 100, mult: 100);
             byte[] bytes = doubles.Select(x => (byte)(x + 5)).ToArray();
 
+            byte[] bytesX = ScottPlot.DataGen.Consecutive(51).Select(x => (byte)x).ToArray();
+            byte[] bytesY = doubles.Select(x => (byte)(x + 10)).ToArray();
+
             ScottPlot.Plot plt = new();
             plt.AddSignalConst(doubles, label: "doubles");
             plt.AddSignalConst(bytes, label: "bytes");
+            plt.AddSignalXYConst(bytesX, bytesY, label: "bytes XY");
             plt.Legend();
             TestTools.SaveFig(plt);
         }
