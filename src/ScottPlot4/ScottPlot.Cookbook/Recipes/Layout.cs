@@ -9,7 +9,10 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "layout_default";
         public string Title => "Default Layout";
         public string Description =>
-            "asdf";
+            "ScottPlot has many ways to customize the layout. " +
+            "This example demonstrates the default layout, where padding around the data area " +
+            "is automatically determined by measuring the text in the axis labels and tick labels " +
+            "to ensure there is appropriate padding on all sides.";
 
         public void ExecuteRecipe(Plot plt)
         {
