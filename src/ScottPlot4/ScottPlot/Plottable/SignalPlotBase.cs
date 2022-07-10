@@ -37,6 +37,14 @@ namespace ScottPlot.Plottable
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
+        public double OffsetYAsDouble
+        {
+            get
+            {
+                var v = OffsetY;
+                return NumericConversion.GenericToDouble(ref v);
+            }
+        }
 
         private double _lineWidth = 1;
         public double LineWidth
@@ -244,7 +252,11 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
-        private double AddYs(T y1, T y2) => Convert.ToDouble(AddYsGenericExpression(y1, y2));
+        private double AddYs(T y1, T y2)
+        {
+            var v = AddYsGenericExpression(y1, y2);
+            return NumericConversion.GenericToDouble(ref v);
+        }
 
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a the same type
@@ -300,7 +312,7 @@ namespace ScottPlot.Plottable
             if (double.IsInfinity(yMin) || double.IsInfinity(yMax))
                 throw new InvalidOperationException("Signal data must not contain Infinity");
 
-            double offsetY = Convert.ToDouble(OffsetY);
+            double offsetY = OffsetYAsDouble;
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,
@@ -315,7 +327,7 @@ namespace ScottPlot.Plottable
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
-            double offsetY = Convert.ToDouble(OffsetY);
+            double offsetY = OffsetYAsDouble;
             PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
             PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
             gfx.DrawLine(penHD, point1, point2);
@@ -431,8 +443,8 @@ namespace ScottPlot.Plottable
 
             // get the min and max value for this column                
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + Convert.ToDouble(OffsetY));
-            float yPxLow = dims.GetPixelY(highestValue + Convert.ToDouble(OffsetY));
+            float yPxHigh = dims.GetPixelY(lowestValue + OffsetYAsDouble);
+            float yPxLow = dims.GetPixelY(highestValue + OffsetYAsDouble);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 

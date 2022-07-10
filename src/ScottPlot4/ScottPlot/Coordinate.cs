@@ -42,7 +42,7 @@ namespace ScottPlot
 
         public static Coordinate FromGeneric<T>(T x, T y)
         {
-            return new(Convert.ToDouble(x), Convert.ToDouble(y));
+            return new(NumericConversion.GenericToDouble(ref x), NumericConversion.GenericToDouble(ref y));
         }
 
         public Pixel ToPixel(PlotDimensions dims)

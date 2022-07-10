@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace ScottPlot.Plottable
 {
@@ -58,8 +59,8 @@ namespace ScottPlot.Plottable
         public override AxisLimits GetAxisLimits()
         {
             var baseLimits = base.GetAxisLimits();
-            var newXMin = Convert.ToDouble(Xs[MinRenderIndex]) + OffsetX;
-            var newXMax = Convert.ToDouble(Xs[MaxRenderIndex]) + OffsetX;
+            var newXMin = NumericConversion.GenericToDouble(Xs, MinRenderIndex) + OffsetX;
+            var newXMax = NumericConversion.GenericToDouble(Xs, MaxRenderIndex) + OffsetX;
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 
@@ -73,8 +74,8 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions dims)
         {
-            TX start = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * x - OffsetX, typeof(TX));
-            TX end = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * (x + 1) - OffsetX, typeof(TX));
+            NumericConversion.DoubleToGeneric(dims.XMin + dims.XSpan / dims.DataWidth * x - OffsetX, out TX start);
+            NumericConversion.DoubleToGeneric(dims.XMin + dims.XSpan / dims.DataWidth * (x + 1) - OffsetX, out TX end);
 
             int startIndex = Array.BinarySearch(Xs, from, length, start);
             if (startIndex < 0)
@@ -97,12 +98,12 @@ namespace ScottPlot.Plottable
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(startIndex) + Convert.ToDouble(OffsetY)));
+            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(startIndex) + OffsetYAsDouble));
             if (pointsCount > 1)
             {
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + Convert.ToDouble(OffsetY)));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + Convert.ToDouble(OffsetY)));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(endIndex - 1) + Convert.ToDouble(OffsetY)));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + OffsetYAsDouble));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + OffsetYAsDouble));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(endIndex - 1) + OffsetYAsDouble));
             }
         }
 
@@ -125,7 +126,8 @@ namespace ScottPlot.Plottable
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMin - OffsetX, typeof(TX)));
+                NumericConversion.DoubleToGeneric(dims.XMin - OffsetX, out TX x);
+                int pointBeforeIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, x);
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
@@ -135,8 +137,8 @@ namespace ScottPlot.Plottable
                 {
                     PointBefore = new PointF[]
                     {
-                        new PointF(dims.GetPixelX(Convert.ToDouble(Xs[pointBeforeIndex - 1]) + OffsetX),
-                                   dims.GetPixelY(Strategy.SourceElement(pointBeforeIndex - 1) + Convert.ToDouble(OffsetY)))
+                        new PointF(dims.GetPixelX(NumericConversion.GenericToDouble(Xs, pointBeforeIndex - 1) + OffsetX),
+                                   dims.GetPixelY(Strategy.SourceElement(pointBeforeIndex - 1) + OffsetYAsDouble))
                     };
                     searchFrom = pointBeforeIndex;
                 }
@@ -147,7 +149,8 @@ namespace ScottPlot.Plottable
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMax - OffsetX, typeof(TX)));
+                NumericConversion.DoubleToGeneric(dims.XMax - OffsetX, out x);
+                int pointAfterIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, x);
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
@@ -157,8 +160,8 @@ namespace ScottPlot.Plottable
                 {
                     PointAfter = new PointF[]
                     {
-                        new PointF(dims.GetPixelX(Convert.ToDouble(Xs[pointAfterIndex]) + OffsetX),
-                                   dims.GetPixelY(Strategy.SourceElement(pointAfterIndex) + Convert.ToDouble(OffsetY)))
+                        new PointF(dims.GetPixelX(NumericConversion.GenericToDouble(Xs, pointAfterIndex) + OffsetX),
+                                   dims.GetPixelY(Strategy.SourceElement(pointAfterIndex) + OffsetYAsDouble))
                     };
                     searchTo = pointAfterIndex;
                 }

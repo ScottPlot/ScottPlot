@@ -73,8 +73,8 @@ namespace ScottPlot.Plottable
             if (Count == 0)
                 return AxisLimits.NoLimits;
 
-            var xs = Xs.Select(x => Convert.ToDouble(x));
-            var ys = Ys.Select(y => Convert.ToDouble(y));
+            var xs = Xs.Select(x => NumericConversion.GenericToDouble(ref x));
+            var ys = Ys.Select(y => NumericConversion.GenericToDouble(ref y));
 
             return new AxisLimits(xs.Min(), xs.Max(), ys.Min(), ys.Max());
         }
