@@ -91,6 +91,8 @@ namespace ScottPlot
                 v = (T)(object)Convert.ToUInt16(value);
             else if (typeof(T) == typeof(decimal))
                 v = (T)(object)Convert.ToDecimal(value);
+            else if (typeof(T) == typeof(byte))
+                v = (T)(object)Convert.ToByte(value);
             else
 #endif
             {
