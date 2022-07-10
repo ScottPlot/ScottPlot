@@ -241,6 +241,9 @@ namespace ScottPlot
             return bmp;
         }
 
+        [Obsolete("use RenderLegend()", true)]
+        public Bitmap GetLegendBitmap(bool lowQuality = false) => RenderLegend();
+
         /// <summary>
         /// Save the plot as an image
         /// </summary>
