@@ -4,6 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace ScottPlot
 {
+    /* See discussion in https://github.com/ScottPlot/ScottPlot/pull/1927 */
+
+    /// <summary>
+    /// This class contains type-specific methods to convert between generic values and doubles
+    /// optimized for performance using platform-specific features.
+    /// </summary>
     public static class NumericConversion
     {
         private const MethodImplOptions ImplOptions =
@@ -12,6 +18,10 @@ namespace ScottPlot
 #endif
             MethodImplOptions.AggressiveInlining;
 
+        /// <summary>
+        /// Returns the double value of a <typeparamref name="T"/> 
+        /// using a conversion technique optimized for the platform.
+        /// </summary>
         [MethodImpl(ImplOptions)]
         public static double GenericToDouble<T>(ref T value)
         {
@@ -32,6 +42,10 @@ namespace ScottPlot
             };
         }
 
+        /// <summary>
+        /// Returns the double value of the <typeparamref name="T"/> at position <paramref name="i"/> in <paramref name="list"/>
+        /// using a conversion technique optimized for the platform.
+        /// </summary>
         [MethodImpl(ImplOptions)]
         public static double GenericToDouble<T>(List<T> list, int i)
         {
@@ -39,6 +53,10 @@ namespace ScottPlot
             return GenericToDouble(ref v);
         }
 
+        /// <summary>
+        /// Returns the double value of the <typeparamref name="T"/> at position <paramref name="i"/> in <paramref name="array"/>
+        /// using a conversion technique optimized for the platform.
+        /// </summary>
         [MethodImpl(ImplOptions)]
         public static double GenericToDouble<T>(T[] array, int i)
         {
@@ -46,6 +64,10 @@ namespace ScottPlot
             return GenericToDouble(ref v);
         }
 
+        /// <summary>
+        /// Returns a <typeparamref name="T"/> for a given double <paramref name="value"/>
+        /// using a conversion technique optimized for the platform.
+        /// </summary>
         [MethodImpl(ImplOptions)]
         public static void DoubleToGeneric<T>(double value, out T v)
         {
