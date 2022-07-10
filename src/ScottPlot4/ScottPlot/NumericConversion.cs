@@ -66,7 +66,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Returns a <typeparamref name="T"/> for a given double <paramref name="value"/>
+        /// Creates a <typeparamref name="T"/> for a given double <paramref name="value"/>
         /// using a conversion technique optimized for the platform.
         /// </summary>
         [MethodImpl(ImplOptions)]
