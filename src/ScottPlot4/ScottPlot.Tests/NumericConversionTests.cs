@@ -56,12 +56,54 @@ namespace ScottPlotTests
             byte[] bytesX = ScottPlot.DataGen.Consecutive(51).Select(x => (byte)x).ToArray();
             byte[] bytesY = doubles.Select(x => (byte)(x + 10)).ToArray();
 
+            double[] doublesX = ScottPlot.DataGen.Consecutive(51);
+            double[] doublesY = doubles.Select(x => x + 15).ToArray();
+
             ScottPlot.Plot plt = new();
             plt.AddSignalConst(doubles, label: "doubles");
             plt.AddSignalConst(bytes, label: "bytes");
             plt.AddSignalXYConst(bytesX, bytesY, label: "bytes XY");
+            plt.AddSignalXYConst(doublesX, doublesY, label: "doubles XY");
             plt.Legend();
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_TypeSpecificFunction_Add()
+        {
+            Assert.That(ScottPlot.NumericConversion.CreateAddFunction<double>().Invoke(42, 69), Is.EqualTo(111));
+            Assert.That(ScottPlot.NumericConversion.CreateAddFunction<float>().Invoke(42, 69), Is.EqualTo(111));
+            Assert.That(ScottPlot.NumericConversion.CreateAddFunction<int>().Invoke(42, 69), Is.EqualTo(111));
+            Assert.That(ScottPlot.NumericConversion.CreateAddFunction<byte>().Invoke(42, 69), Is.EqualTo(111));
+        }
+
+        [Test]
+        public void Test_TypeSpecificFunction_Subtract()
+        {
+            Assert.That(ScottPlot.NumericConversion.CreateSubtractFunction<double>().Invoke(111, 69), Is.EqualTo(42));
+            Assert.That(ScottPlot.NumericConversion.CreateSubtractFunction<float>().Invoke(111, 69), Is.EqualTo(42));
+            Assert.That(ScottPlot.NumericConversion.CreateSubtractFunction<int>().Invoke(111, 69), Is.EqualTo(42));
+            Assert.That(ScottPlot.NumericConversion.CreateSubtractFunction<byte>().Invoke(111, 69), Is.EqualTo(42));
+        }
+
+        [Test]
+        public void Test_TypeSpecificFunction_LessThanOrEqual()
+        {
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<double>().Invoke(111, 69), Is.False);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<double>().Invoke(69, 69), Is.True);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<double>().Invoke(42, 69), Is.True);
+
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<float>().Invoke(111, 69), Is.False);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<float>().Invoke(69, 69), Is.True);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<float>().Invoke(42, 69), Is.True);
+
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<int>().Invoke(111, 69), Is.False);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<int>().Invoke(69, 69), Is.True);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<int>().Invoke(42, 69), Is.True);
+
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<byte>().Invoke(111, 69), Is.False);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<byte>().Invoke(69, 69), Is.True);
+            Assert.That(ScottPlot.NumericConversion.CreateLessThanOrEqualFunction<byte>().Invoke(42, 69), Is.True);
         }
     }
 }
