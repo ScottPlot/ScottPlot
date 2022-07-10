@@ -7,7 +7,7 @@ _not yet published on NuGet..._
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
 * WinForms control: Fixed a bug introduced by the previous version which resulted in flickering while using the mouse to pan or zoom (#1938, #1913) _Thanks @AbeniMatteo_
 * Plot: Added obsolete `GetLegendBitmap()` with message indicating `RenderLegend()` is to be used instead (#1937, #1936) _Thanks @johnfoll_
-* Signal Plot: Improved performance using type-specific fast paths which minimize allocations (#1927) _Thanks @AbeniMatteo, @StendProg, and @bclehmann_
+* Signal Plot: Improved performance using platform-specific fast paths for common data types to minimize allocations (#1927) _Thanks @AbeniMatteo, @StendProg, and @bclehmann_
 
 ## ScottPlot 4.1.51
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-30_
