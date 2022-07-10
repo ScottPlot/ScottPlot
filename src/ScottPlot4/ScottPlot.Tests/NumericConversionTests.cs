@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace ScottPlotTests
 {
@@ -38,12 +39,25 @@ namespace ScottPlotTests
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<double>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<float>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<int>());
-            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotConst<byte>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<byte>());
 
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, double>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<float, float>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<int, int>());
-            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
+        }
+
+        [Test]
+        public void Test_GenericSignal_ByteArray()
+        {
+            double[] doubles = ScottPlot.DataGen.Sin(51, offset: 100, mult: 100);
+            byte[] bytes = doubles.Select(x => (byte)(x + 5)).ToArray();
+
+            ScottPlot.Plot plt = new();
+            plt.AddSignalConst(doubles, label: "doubles");
+            plt.AddSignalConst(bytes, label: "bytes");
+            plt.Legend();
+            TestTools.SaveFig(plt);
         }
     }
 }

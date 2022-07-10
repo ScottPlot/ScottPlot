@@ -51,9 +51,12 @@ namespace ScottPlot.Plottable
             }
         }
 
+        private static Func<TX, TX, TX> SubstractExp = NumericConversion.CreateSubtractFunction<TX>();
+
+        private static Func<TX, TX, bool> LessThanOrEqualExp = NumericConversion.CreateLessThanOrEqualFunction<TX>();
+
         public SignalPlotXYGeneric() : base()
         {
-            InitExp();
         }
 
         public override AxisLimits GetAxisLimits()
@@ -332,19 +335,6 @@ namespace ScottPlot.Plottable
                 return GetPointByIndex(index - 1);
             else // x closer to XS[index]
                 return GetPointByIndex(index);
-        }
-
-        private static Func<TX, TX, TX> SubstractExp;
-        private static Func<TX, TX, bool> LessThanOrEqualExp;
-
-        private void InitExp()
-        {
-            ParameterExpression paramA = Expression.Parameter(typeof(TX), "a");
-            ParameterExpression paramB = Expression.Parameter(typeof(TX), "b");
-            BinaryExpression bodySubstract = Expression.Subtract(paramA, paramB);
-            BinaryExpression bodyLessOrEqual = Expression.LessThanOrEqual(paramA, paramB);
-            SubstractExp = Expression.Lambda<Func<TX, TX, TX>>(bodySubstract, paramA, paramB).Compile();
-            LessThanOrEqualExp = Expression.Lambda<Func<TX, TX, bool>>(bodyLessOrEqual, paramA, paramB).Compile();
         }
     }
 }
