@@ -44,7 +44,8 @@ namespace ScottPlotTests
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, double>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<float, float>());
             Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<int, int>());
-            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, byte>());
+            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace ScottPlotTests
             ScottPlot.Plot plt = new();
             plt.AddSignalConst(doubles, label: "doubles");
             plt.AddSignalConst(bytes, label: "bytes");
-            plt.AddSignalXYConst(bytesX, bytesY, label: "bytes XY");
+            plt.AddSignalXYConst(doublesX, bytesY, label: "bytes XY");
             plt.AddSignalXYConst(doublesX, doublesY, label: "doubles XY");
             plt.Legend();
             TestTools.SaveFig(plt);

@@ -57,6 +57,10 @@ namespace ScottPlot.Plottable
 
         public SignalPlotXYGeneric() : base()
         {
+            if (Type.GetTypeCode(typeof(TX)) == TypeCode.Byte)
+            {
+                throw new InvalidOperationException("SignalXY plots cannot use a byte array for their horizontal axis positions");
+            }
         }
 
         public override AxisLimits GetAxisLimits()
