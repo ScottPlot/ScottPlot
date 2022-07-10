@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.52
+## ScottPlot 4.1.53
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.52
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
+* WinForms control: Fixed a bug introduced by the previous version which resulted in flickering while using the mouse to pan or zoom (#1938, #1913) _Thanks @AbeniMatteo_
 
 ## ScottPlot 4.1.51
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-30_
