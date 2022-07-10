@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace ScottPlot.Tests
+namespace ScottPlotTests
 {
     internal class NumericConversionTests
     {
         private static void AssertConversionPreservesOriginalValue<T>(double originalValue, double within = 0)
         {
-            NumericConversion.DoubleToGeneric(originalValue, out T genericValue);
-            double finalValue = NumericConversion.GenericToDouble(ref genericValue);
+            ScottPlot.NumericConversion.DoubleToGeneric(originalValue, out T genericValue);
+            double finalValue = ScottPlot.NumericConversion.GenericToDouble(ref genericValue);
             Assert.That(finalValue, Is.EqualTo(originalValue).Within(within), $"Type: {typeof(T)}");
         }
 
@@ -28,6 +28,22 @@ namespace ScottPlot.Tests
             AssertConversionPreservesOriginalValue<UInt16>(42);
             AssertConversionPreservesOriginalValue<UInt32>(42);
             AssertConversionPreservesOriginalValue<UInt64>(42);
+        }
+
+        [Test]
+        public void Test_Signal_Types()
+        {
+            // see discussion in https://github.com/ScottPlot/ScottPlot/pull/1927
+
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<double>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<float>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<int>());
+            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotConst<byte>());
+
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, double>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<float, float>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<int, int>());
+            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
         }
     }
 }
