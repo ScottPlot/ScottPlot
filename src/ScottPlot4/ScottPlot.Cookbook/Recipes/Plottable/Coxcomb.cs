@@ -44,6 +44,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
             coxcomb.OutlineWidth = 1;
 
+            coxcomb.SliceLabels = new string[] { "bikes", "blimps", "subs", "saucers", "rockets" };
             plt.Legend();
         }
     }

@@ -175,6 +175,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 new () { HatchStyle = HatchStyle.LargeGrid, HatchColor = Color.FromArgb(100, Color.Gray) },
             };
             pie.OutlineSize = 1;
+
+            pie.SliceLabels = labels;
+            plt.Legend();
         }
     }
 

@@ -232,7 +232,9 @@ namespace ScottPlot.Plottable
                     label = GroupLabels[i],
                     color = FillColors[i],
                     lineWidth = 10,
-                    markerShape = MarkerShape.none
+                    markerShape = MarkerShape.none,
+                    hatchStyle = HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None,
+                    hatchColor = HatchOptions?[i].HatchColor ?? Color.Black
                 };
                 legendItems.Add(item);
             }
