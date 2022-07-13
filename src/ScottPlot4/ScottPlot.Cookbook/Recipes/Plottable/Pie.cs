@@ -168,11 +168,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var pie = plt.AddPie(values);
             pie.HatchOptions = new HatchOptions[] {
-                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
-                new () { HatchStyle = HatchStyle.StripedDownwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
-                new () { HatchStyle = HatchStyle.LargeCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
-                new () { HatchStyle = HatchStyle.SmallCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
-                new () { HatchStyle = HatchStyle.LargeGrid, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.FromArgb(100, Color.Gray) },
+                new () { HatchStyle = HatchStyle.StripedDownwardDiagonal, HatchColor = Color.FromArgb(100, Color.Gray) },
+                new () { HatchStyle = HatchStyle.LargeCheckerBoard, HatchColor = Color.FromArgb(100, Color.Gray) },
+                new () { HatchStyle = HatchStyle.SmallCheckerBoard, HatchColor = Color.FromArgb(100, Color.Gray) },
+                new () { HatchStyle = HatchStyle.LargeGrid, HatchColor = Color.FromArgb(100, Color.Gray) },
             };
             pie.OutlineSize = 1;
         }
