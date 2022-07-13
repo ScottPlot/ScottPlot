@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -21,6 +23,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
+    public class CoxcombHatch: IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Coxcomb();
+        public string ID => "coxcomb_hatch";
+        public string Title => "Custom Hatching (patterns)";
+        public string Description =>
+            "Coxcomb charts allow custom hatching of their slices.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 11, 16, 7, 3, 14 };
+            var coxcomb = plt.AddCoxcomb(values);
+            coxcomb.HatchOptions = new HatchOptions[] {
+                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.White },
+                new () { HatchStyle = HatchStyle.StripedDownwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.LargeCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.SmallCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.LargeGrid, HatchColor = Color.FromArgb(100, Color.White) },
+            };
+            coxcomb.OutlineWidth = 1;
+
+            plt.Legend();
+        }
+    }
+
     public class CoxcombWithIcons : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Coxcomb();

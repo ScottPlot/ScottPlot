@@ -33,6 +33,22 @@ namespace ScottPlot.Plottable
         public Color[] FillColors { get; set; }
 
         /// <summary>
+        /// Contains options for hatched (patterned) fills for each slice
+        /// </summary>
+        public HatchOptions[] HatchOptions { get; set; }
+
+        /// <summary>
+        /// The color of the slice outline.
+        /// </summary>
+        public Color Outline { get; set; } = Color.Black;
+
+        /// <summary>
+        /// The width of the slice outline.
+        /// </summary>
+        public float OutlineWidth { get; set; } = 0;
+
+
+        /// <summary>
         /// The color to draw the axis in
         /// </summary>
         public Color WebColor { get; set; } = Color.Gray;
@@ -85,24 +101,39 @@ namespace ScottPlot.Plottable
 
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using SolidBrush sliceFillBrush = (SolidBrush)GDI.Brush(Color.Black);
+            using Pen outlinePen = GDI.Pen(Outline, OutlineWidth);
 
             RenderAxis(gfx, dims, bmp, lowQuality);
 
             double start = -90;
             for (int i = 0; i < numCategories; i++)
             {
+                using var sliceFillBrush = GDI.Brush(FillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
+
                 double angle = (Math.PI / 180) * ((sweepAngle + 2 * start) / 2);
                 float diameter = (float)(maxDiameterPixels * Normalized[i]);
-                sliceFillBrush.Color = FillColors[i];
+
+                var pieX = (int)origin.X - diameter / 2;
+                var pieY = (int)origin.Y - diameter / 2;
 
                 gfx.FillPie(brush: sliceFillBrush,
-                    x: (int)origin.X - diameter / 2,
-                    y: (int)origin.Y - diameter / 2,
+                    x: pieX,
+                    y: pieY,
                     width: diameter,
                     height: diameter,
                     startAngle: (float)start,
                     sweepAngle: (float)sweepAngle);
+
+                if (OutlineWidth != 0)
+                {
+                    gfx.DrawPie(outlinePen,
+                        x: pieX,
+                        y: pieY,
+                        width: diameter,
+                        height: diameter,
+                        startAngle: (float)start,
+                        sweepAngle: (float)sweepAngle);
+                }
 
                 start += sweepAngle;
             }
