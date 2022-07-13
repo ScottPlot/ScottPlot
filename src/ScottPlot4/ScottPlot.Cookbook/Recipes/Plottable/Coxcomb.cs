@@ -36,7 +36,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 11, 16, 7, 3, 14 };
             var coxcomb = plt.AddCoxcomb(values);
             coxcomb.HatchOptions = new HatchOptions[] {
-                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.White },
+                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
                 new () { HatchStyle = HatchStyle.StripedDownwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
                 new () { HatchStyle = HatchStyle.LargeCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
                 new () { HatchStyle = HatchStyle.SmallCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },

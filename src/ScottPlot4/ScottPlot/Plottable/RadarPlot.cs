@@ -73,6 +73,11 @@ namespace ScottPlot.Plottable
         public Color WebColor { get; set; } = Color.Gray;
 
         /// <summary>
+        /// Contains options for hatched (patterned) fills for each slice
+        /// </summary>
+        public HatchOptions[] HatchOptions { get; set; }
+
+        /// <summary>
         /// Controls if values along each category axis are scaled independently or uniformly across all axes.
         /// </summary>
         public bool IndependentAxes { get; set; }
@@ -254,7 +259,6 @@ namespace ScottPlot.Plottable
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(WebColor, OutlineWidth))
-            using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             using (StringFormat sf2 = new StringFormat())
             using (System.Drawing.Font font = GDI.Font(Font))
@@ -270,7 +274,7 @@ namespace ScottPlot.Plottable
                             (float)(Norm[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
                             (float)(Norm[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
 
-                    ((SolidBrush)brush).Color = FillColors[i];
+                    using var brush = GDI.Brush(FillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
                     pen.Color = LineColors[i];
                     gfx.FillPolygon(brush, points);
                     gfx.DrawPolygon(pen, points);
