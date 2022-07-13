@@ -23,7 +23,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
-    public class CoxcombHatch: IRecipe
+    public class CoxcombHatch : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Coxcomb();
         public string ID => "coxcomb_hatch";

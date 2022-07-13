@@ -153,7 +153,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class PieCustomHatch: IRecipe
+    public class PieCustomHatch : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Pie();
         public string ID => "pie_customHatch";

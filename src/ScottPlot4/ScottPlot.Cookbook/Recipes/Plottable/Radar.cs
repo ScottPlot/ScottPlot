@@ -159,7 +159,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class RadarHatch: IRecipe
+    public class RadarHatch : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Radar();
         public string ID => "radar_hatch";
