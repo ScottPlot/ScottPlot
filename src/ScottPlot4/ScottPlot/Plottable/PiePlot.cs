@@ -19,6 +19,7 @@ namespace ScottPlot.Plottable
         public Color[] SliceFillColors { get; set; }
         public Color[] SliceLabelColors { get; set; }
         public Color BackgroundColor { get; set; }
+        public HatchOptions[] HatchOptions { get; set; }
 
         public bool Explode { get; set; }
         public bool ShowValues { get; set; }
@@ -87,7 +88,6 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen backgroundPen = GDI.Pen(BackgroundColor))
             using (Pen outlinePen = GDI.Pen(OutlineColor, OutlineSize))
-            using (Brush sliceFillBrush = GDI.Brush(Color.Black))
             using (var sliceFont = GDI.Font(SliceFont))
             using (SolidBrush sliceFontBrush = (SolidBrush)GDI.Brush(SliceFont.Color))
             using (var centerFont = GDI.Font(CenterFont))
@@ -144,7 +144,7 @@ namespace ScottPlot.Plottable
                     string sliceLabelName = (ShowLabels && SliceLabels != null) ? SliceLabels[i] : "";
                     labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
-                    ((SolidBrush)sliceFillBrush).Color = SliceFillColors[i];
+                    using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
                     gfx.FillPie(brush: sliceFillBrush,
                         x: (int)(boundingRectangle.X + xOffset),
                         y: (int)(boundingRectangle.Y + yOffset),

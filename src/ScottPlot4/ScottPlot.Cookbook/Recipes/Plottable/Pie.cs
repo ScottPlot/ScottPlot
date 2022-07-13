@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -149,6 +150,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             pie.ShowLabels = true;
             pie.SliceFillColors = sliceColors;
             pie.SliceLabelColors = labelColors;
+        }
+    }
+
+    public class PieCustomHatch: IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Pie();
+        public string ID => "pie_customHatch";
+        public string Title => "Customize Pie Hatching";
+        public string Description =>
+            "Hatching (patterns) for pie slices and labels can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 778, 43, 283, 76, 184 };
+            string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
+
+            var pie = plt.AddPie(values);
+            pie.HatchOptions = new HatchOptions[] {
+                new () { HatchStyle = HatchStyle.StripedUpwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.StripedDownwardDiagonal, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.LargeCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.SmallCheckerBoard, HatchColor = Color.FromArgb(100, Color.White) },
+                new () { HatchStyle = HatchStyle.LargeGrid, HatchColor = Color.FromArgb(100, Color.White) },
+            };
+            pie.OutlineSize = 1;
         }
     }
 
