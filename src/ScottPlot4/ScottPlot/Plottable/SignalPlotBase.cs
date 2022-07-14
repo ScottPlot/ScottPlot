@@ -384,23 +384,23 @@ namespace ScottPlot.Plottable
                     default:
                         throw new InvalidOperationException("unsupported fill type");
                 }
+            }
 
-                if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
+            if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
+            {
+                // make markers transition away smoothly by making them smaller as the user zooms out
+                float pixelsBetweenPoints = (float)((Ys.Length > 1 ? _SamplePeriod : 1) * dims.DataWidth / dims.XSpan);
+                float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
+                float markerPxDiameter = MarkerSize * zoomTransitionScale;
+                float markerPxRadius = markerPxDiameter / 2;
+                if (markerPxRadius > .25)
                 {
-                    // make markers transition away smoothly by making them smaller as the user zooms out
-                    float pixelsBetweenPoints = (float)(_SamplePeriod * dims.DataWidth / dims.XSpan);
-                    float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
-                    float markerPxDiameter = MarkerSize * zoomTransitionScale;
-                    float markerPxRadius = markerPxDiameter / 2;
-                    if (markerPxRadius > .25)
-                    {
-                        ShowMarkersInLegend = true;
-                        MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
-                    }
-                    else
-                    {
-                        ShowMarkersInLegend = false;
-                    }
+                    ShowMarkersInLegend = true;
+                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
+                }
+                else
+                {
+                    ShowMarkersInLegend = false;
                 }
             }
         }
@@ -774,11 +774,11 @@ namespace ScottPlot.Plottable
             double dataWidthPx = lastPointX - firstPointX;
             double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
-            if (columnsWithData < 1)
+            if (columnsWithData < 1 && Ys.Length > 1)
             {
                 RenderSingleLine(dims, gfx, penHD);
             }
-            else if (pointsPerPixelColumn > 1)
+            else if (pointsPerPixelColumn > 1 && Ys.Length > 1)
             {
                 if (densityLevelsAvailable)
                     RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
