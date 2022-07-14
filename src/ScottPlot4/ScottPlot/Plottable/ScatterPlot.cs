@@ -448,5 +448,14 @@ namespace ScottPlot.Plottable
 
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
+
+        /// <summary>
+        /// Return the vertical limits of the data between horizontal positions (inclusive)
+        /// </summary>
+        public (double yMin, double yMax) GetYDataRange(double xMin, double xMax)
+        {
+            var includedYs = Ys.Where((y, i) => Xs[i] >= xMin && Xs[i] <= xMax);
+            return (includedYs.Min(), includedYs.Max());
+        }
     }
 }

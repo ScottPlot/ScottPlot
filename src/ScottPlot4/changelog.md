@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.54
 _not yet published on NuGet..._
+* Scatter and Signal Plot: `GetYDataRange()` now returns the range of Y values between a range of X positions, useful for setting automatic axis limits when plots are zoomed-in (#1946, #1942, #1929) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-10_
