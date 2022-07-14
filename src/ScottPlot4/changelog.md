@@ -3,6 +3,8 @@
 ## ScottPlot 4.1.54
 _not yet published on NuGet..._
 * Scatter and Signal Plot: `GetYDataRange()` now returns the range of Y values between a range of X positions, useful for setting automatic axis limits when plots are zoomed-in (#1946, #1942, #1929) _Thanks @bclehmann_
+* WPF Control: Right-click copy now renders high quality image to the clipboard (#1952) _Thanks @bclehmann_
+* Radar, Coxcomb, and Pie Chart: New options to customize hatch pattern and color. See cookbook for examples. (#1948, #1943) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-10_

@@ -24,6 +24,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddFunction(func1, lineWidth: 2);
             plt.AddFunction(func2, lineWidth: 2, lineStyle: LineStyle.Dot);
             plt.AddFunction(func3, lineWidth: 2, lineStyle: LineStyle.Dash);
+
+            // Manually set axis limits because functions do not have discrete data points
+            plt.SetAxisLimits(-10, 10, -1.5, 1.5);
         }
     }
 }

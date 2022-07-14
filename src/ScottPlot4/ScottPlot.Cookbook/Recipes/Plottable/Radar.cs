@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -145,6 +147,39 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var radar = plt.AddRadar(values);
             radar.OutlineWidth = 3;
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            plt.Title("2010 Formula One World Championship");
+            plt.Legend();
+
+            /* Data represents the 2010 Formula One World Championship
+             * https://en.wikipedia.org/wiki/2010_Formula_One_World_Championship
+             * Note: Alonso did not finish (DNF) in the Malaysian GP, but was included 
+             * here because he completed >90% of the race distance.
+             */
+        }
+    }
+
+    public class RadarHatch : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Radar();
+        public string ID => "radar_hatch";
+        public string Title => "Customizable hatching (pattern)";
+        public string Description => "The hatch of each radar plot can be customized";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] values = {
+                { 5, 3, 10, 15, 3, 2 },
+                { 5, 2, 10, 10, 1, 4 },
+            };
+
+            var radar = plt.AddRadar(values);
+            radar.HatchOptions = new HatchOptions[]
+            {
+                new() { Pattern = HatchStyle.StripedUpwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
+                new() { Pattern = HatchStyle.StripedDownwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
+            };
+
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
             plt.Title("2010 Formula One World Championship");
             plt.Legend();
