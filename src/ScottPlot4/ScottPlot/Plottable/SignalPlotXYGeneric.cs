@@ -258,11 +258,11 @@ namespace ScottPlot.Plottable
                 }
 
                 // draw markers
-                if (markersToDraw.Length > 1)
+                if (markersToDraw.Length >= 1)
                 {
                     float dataSpanXPx = markersToDraw[markersToDraw.Length - 1].X - markersToDraw[0].X;
                     float markerPxRadius = .3f * dataSpanXPx / markersToDraw.Length;
-                    markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
+                    markerPxRadius = markersToDraw.Length > 1 ? Math.Min(markerPxRadius, MarkerSize / 2) : MarkerSize / 2;
                     float scaledMarkerSize = markerPxRadius * 2;
 
                     if (markerPxRadius > .3)
