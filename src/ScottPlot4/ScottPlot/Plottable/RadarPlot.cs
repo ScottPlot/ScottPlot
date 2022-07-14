@@ -70,7 +70,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray;
+        public Color WebColor { get; set; } = Color.Gray; // TODO: avoid this name in the future (see #1948)
 
         /// <summary>
         /// Contains options for hatched (patterned) fills for each slice

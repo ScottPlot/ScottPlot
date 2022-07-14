@@ -51,7 +51,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The color to draw the axis in
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray;
+        public Color WebColor { get; set; } = Color.Gray; // TODO: avoid this name in the future (see #1948)
 
         /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
