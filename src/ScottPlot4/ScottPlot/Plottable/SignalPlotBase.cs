@@ -824,15 +824,32 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
+        /// Return the index for the data point corresponding to the given X coordinate
+        /// </summary>
+        private int GetIndexForX(double x)
+        {
+            int index = (int)((x - OffsetX) / SampleRate);
+            index = Math.Max(index, MinRenderIndex);
+            index = Math.Min(index, MaxRenderIndex);
+            return index;
+        }
+
+        /// <summary>
+        /// Return the X coordinate of the data point at the given index
+        /// </summary>
+        private double IndexToX(int index)
+        {
+            return index * SampleRate + OffsetX;
+        }
+
+        /// <summary>
         /// Return the X/Y coordinates of the point nearest the X position
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
         public (double x, T y, int index) GetPointNearestX(double x)
         {
-            int index = (int)((x - OffsetX) / SamplePeriod);
-            index = Math.Max(index, MinRenderIndex);
-            index = Math.Min(index, MaxRenderIndex);
+            int index = GetIndexForX(x);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
 
@@ -912,6 +929,27 @@ namespace ScottPlot.Plottable
 
             _FillColor2 = GDI.Semitransparent(below2, alpha);
             _GradientFillColor2 = GDI.Semitransparent(below1, alpha);
+        }
+
+        /// <summary>
+        /// Return the vertical limits of the data between horizontal positions (inclusive)
+        /// </summary>
+        public (T yMin, T yMax) GetYDataRange(double xMin, double xMax)
+        {
+            int startIndex = GetIndexForX(xMin);
+            int endIndex = GetIndexForX(xMax);
+
+            if (IndexToX(endIndex) < xMax)
+            {
+                endIndex = Math.Min(endIndex + 1, MaxRenderIndex);
+            }
+
+            Strategy.MinMaxRangeQuery(startIndex, endIndex, out double yMin, out double yMax);
+
+            NumericConversion.DoubleToGeneric<T>(yMin, out T genericYMin);
+            NumericConversion.DoubleToGeneric<T>(yMax, out T genericYMax);
+
+            return (genericYMin, genericYMax);
         }
     }
 }
