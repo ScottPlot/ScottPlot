@@ -823,15 +823,20 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{_FillType}'");
         }
 
+        /// <summary>
+        /// Return the index for the data point corresponding to the given X coordinate
+        /// </summary>
         private int GetIndexForX(double x)
         {
             int index = (int)((x - OffsetX) / SampleRate);
             index = Math.Max(index, MinRenderIndex);
             index = Math.Min(index, MaxRenderIndex);
-
             return index;
         }
 
+        /// <summary>
+        /// Return the X coordinate of the data point at the given index
+        /// </summary>
         private double IndexToX(int index)
         {
             return index * SampleRate + OffsetX;
@@ -926,12 +931,15 @@ namespace ScottPlot.Plottable
             _GradientFillColor2 = GDI.Semitransparent(below1, alpha);
         }
 
-        public (T yMin, T yMax) GetYDataRange(double xStart, double xEnd)
+        /// <summary>
+        /// Return the vertical limits of the data between horizontal positions (inclusive)
+        /// </summary>
+        public (T yMin, T yMax) GetYDataRange(double xMin, double xMax)
         {
-            int startIndex = GetIndexForX(xStart);
-            int endIndex = GetIndexForX(xEnd);
+            int startIndex = GetIndexForX(xMin);
+            int endIndex = GetIndexForX(xMax);
 
-            if (IndexToX(endIndex) < xEnd)
+            if (IndexToX(endIndex) < xMax)
             {
                 endIndex = Math.Min(endIndex + 1, MaxRenderIndex);
             }

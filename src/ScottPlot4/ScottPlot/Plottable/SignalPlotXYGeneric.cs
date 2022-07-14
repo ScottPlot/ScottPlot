@@ -341,9 +341,14 @@ namespace ScottPlot.Plottable
                 return GetPointByIndex(index);
         }
 
-        public (TY yMin, TY yMax) GetYDataRange(TX xStart, TX xEnd)
+        /// <summary>
+        /// Return the vertical range of values between the given horizontal positions
+        /// </summary>
+        public (TY yMin, TY yMax) GetYDataRange(TX xMin, TX xMax)
         {
-            return base.GetYDataRange(NumericConversion.GenericToDouble(ref xStart), NumericConversion.GenericToDouble(ref xEnd));
+            return base.GetYDataRange(
+                xMin: NumericConversion.GenericToDouble(ref xMin),
+                xMax: NumericConversion.GenericToDouble(ref xMax));
         }
     }
 }

@@ -15,7 +15,7 @@
     public interface IHasPointsGenericX<TX, TY>
     {
         (TX x, TY y, int index) GetPointNearestX(TX x);
-        (TY yMin, TY yMax) GetYDataRange(TX xStart, TX xEnd);
+        (TY yMin, TY yMax) GetYDataRange(TX xMin, TX xMax);
     }
 
     /// <summary>
