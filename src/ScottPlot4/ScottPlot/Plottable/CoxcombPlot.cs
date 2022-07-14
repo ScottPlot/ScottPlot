@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
             double start = -90;
             for (int i = 0; i < numCategories; i++)
             {
-                using var sliceFillBrush = GDI.Brush(FillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
+                using var sliceFillBrush = GDI.Brush(FillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
 
                 double angle = (Math.PI / 180) * ((sweepAngle + 2 * start) / 2);
                 float diameter = (float)(maxDiameterPixels * Normalized[i]);
@@ -192,8 +192,8 @@ namespace ScottPlot.Plottable
                     label = SliceLabels[i],
                     color = FillColors[i],
                     lineWidth = 10,
-                    hatchStyle = HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None,
-                    hatchColor = HatchOptions?[i].HatchColor ?? Color.Black
+                    hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
+                    hatchColor = HatchOptions?[i].Color ?? Color.Black
                 })
                 .ToArray();
         }

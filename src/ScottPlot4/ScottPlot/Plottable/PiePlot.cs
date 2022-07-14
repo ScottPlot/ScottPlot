@@ -70,8 +70,8 @@ namespace ScottPlot.Plottable
                     label = SliceLabels[i],
                     color = SliceFillColors[i],
                     lineWidth = 10,
-                    hatchStyle = HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None,
-                    hatchColor = HatchOptions?[i].HatchColor ?? Color.Black
+                    hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
+                    hatchColor = HatchOptions?[i].Color ?? Color.Black
 
                 })
                 .ToArray();
@@ -152,7 +152,7 @@ namespace ScottPlot.Plottable
                     string sliceLabelName = (ShowLabels && SliceLabels != null) ? SliceLabels[i] : "";
                     labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
-                    using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
+                    using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
                     gfx.FillPie(brush: sliceFillBrush,
                         x: (int)(boundingRectangle.X + xOffset),
                         y: (int)(boundingRectangle.Y + yOffset),

@@ -10,7 +10,7 @@ namespace ScottPlot
 {
     public struct HatchOptions
     {
-        public HatchStyle HatchStyle { get; set; }
-        public Color HatchColor { get; set; }
+        public HatchStyle Pattern { get; set; }
+        public Color Color { get; set; }
     }
 }

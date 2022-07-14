@@ -233,8 +233,8 @@ namespace ScottPlot.Plottable
                     color = FillColors[i],
                     lineWidth = 10,
                     markerShape = MarkerShape.none,
-                    hatchStyle = HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None,
-                    hatchColor = HatchOptions?[i].HatchColor ?? Color.Black
+                    hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
+                    hatchColor = HatchOptions?[i].Color ?? Color.Black
                 };
                 legendItems.Add(item);
             }
@@ -276,7 +276,7 @@ namespace ScottPlot.Plottable
                             (float)(Norm[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
                             (float)(Norm[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
 
-                    using var brush = GDI.Brush(FillColors[i], HatchOptions?[i].HatchColor, HatchOptions?[i].HatchStyle ?? Drawing.HatchStyle.None);
+                    using var brush = GDI.Brush(FillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
                     pen.Color = LineColors[i];
                     gfx.FillPolygon(brush, points);
                     gfx.DrawPolygon(pen, points);
