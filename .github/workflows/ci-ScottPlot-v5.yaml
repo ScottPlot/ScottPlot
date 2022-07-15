@@ -31,11 +31,11 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        run: dotnet restore ./src/ScottPlot5/ScottPlot5.Tests
+        run: dotnet restore ./src/ScottPlot5/ScottPlot.Tests
       - name: 🛠️ Build
-        run: dotnet build ./src/ScottPlot5/ScottPlot5.Tests --configuration Release --no-restore
+        run: dotnet build ./src/ScottPlot5/ScottPlot.Tests --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ./src/ScottPlot5/ScottPlot5.Tests --configuration Release --no-restore --verbosity normal
+        run: dotnet test ./src/ScottPlot5/ScottPlot.Tests --configuration Release --no-restore --verbosity normal
   solution:
     runs-on: windows-latest
     name: 🛠️ Build Solution
