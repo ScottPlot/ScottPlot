@@ -106,10 +106,10 @@ internal static class Render
 
     private static void RenderDebugInfo(SKSurface surface, PixelRect dataRect, double elapsedMilliseconds, Plot plot)
     {
-        if (plot.DebugBenchmark.IsVisible)
+        if (plot.Benchmark.IsVisible)
         {
-            plot.DebugBenchmark.ElapsedMilliseconds = elapsedMilliseconds;
-            plot.DebugBenchmark.Render(surface, dataRect);
+            plot.Benchmark.ElapsedMilliseconds = elapsedMilliseconds;
+            plot.Benchmark.Render(surface, dataRect);
         }
     }
 }

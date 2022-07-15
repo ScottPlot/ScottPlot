@@ -18,12 +18,7 @@ public class Plot
     public IGrid Grid = new Grids.DefaultGrid();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public bool ShowBenchmark
-    {
-        get => DebugBenchmark.IsVisible;
-        set => DebugBenchmark.IsVisible = value;
-    }
-    public readonly Plottables.DebugBenchmark DebugBenchmark = new();
+    public readonly Plottables.DebugBenchmark Benchmark = new();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.ZoomRectangle ZoomRectangle;
@@ -84,8 +79,8 @@ public class Plot
     /// Automatically scale the axis limits to fit the data.
     /// Note: This used to be AxisAuto().
     /// </summary>
-    /// <param name="xMargin">fractional margin to add on each side</param>
-    /// <param name="yMargin"></param>
+    /// <param name="xMargin">pad each side of the data area with this fraction of empty space</param>
+    /// <param name="yMargin">pad each side of the data area with this fraction of empty space</param>
     public void AutoScale(double xMargin = .05, double yMargin = .1)
     {
         if (xMargin < 0 || xMargin > 1)
@@ -113,6 +108,9 @@ public class Plot
         SetAxisLimits(limits.WithZoom(1 - xMargin, 1 - yMargin));
     }
 
+    /// <summary>
+    /// Apply a click-drag pan operation to the plot
+    /// </summary>
     public void MousePan(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
@@ -128,6 +126,9 @@ public class Plot
         SetAxisLimits(originalLimits.WithPan(-deltaX, deltaY));
     }
 
+    /// <summary>
+    /// Apply a click-drag zoom operation to the plot
+    /// </summary>
     public void MouseZoom(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         float pixelDeltaX = mouseNow.X - mouseDown.X;
@@ -142,9 +143,14 @@ public class Plot
         SetAxisLimits(originalLimits.WithZoom(fracX, fracY));
     }
 
-    public void MouseZoom(double fracX, double fracY, Pixel mouseNow)
+    /// <summary>
+    /// Zoom into the coordinate corresponding to the given pixel.
+    /// Fractional values >1 zoom in and <1 zoom out.
+    /// </summary>
+    public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
-        Coordinate mouseCoordinate = GetCoordinate(mouseNow);
+        System.Diagnostics.Debug.WriteLine(fracX);
+        Coordinate mouseCoordinate = GetCoordinate(pixel);
         SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
     }
 
@@ -156,6 +162,10 @@ public class Plot
         ZoomRectangle.SetSize(rect);
     }
 
+    /// <summary>
+    /// Indicate the click-drag zoom rectangle was dropped.
+    /// Applying the zoom will set axis limits to where the rectangle was before it was dropped.
+    /// </summary>
     public void MouseZoomRectangleClear(bool applyZoom)
     {
         if (applyZoom)
