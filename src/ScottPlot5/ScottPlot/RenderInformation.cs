@@ -12,7 +12,13 @@ public class RenderInformation
     public PixelRect DataRect;
     public bool IsFinished;
 
-    public readonly Stopwatch Stopwatch = Stopwatch.StartNew();
+    public readonly Stopwatch Stopwatch = new();
+
+    public RenderInformation(bool start = true)
+    {
+        if (start)
+            Stopwatch.Start();
+    }
 
     public void Finished()
     {

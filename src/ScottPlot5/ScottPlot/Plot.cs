@@ -26,7 +26,7 @@ public class Plot
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
-    internal RenderInformation LastRenderInfo;
+    internal RenderInformation LastRenderInfo = new(false);
 
     public Plot()
     {
