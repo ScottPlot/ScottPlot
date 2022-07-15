@@ -4,14 +4,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "dev/ScottPlot5/**"
+      - "src/ScottPlot5/**"
   pull_request:
     paths:
-      - "dev/ScottPlot5/**"
-
-env:
-  TEST_PROJECT_FOLDER: "dev/ScottPlot5/ScottPlotTests"
-  SOLUTION_FOLDER: "dev/ScottPlot5/ScottPlotTests"
+      - "src/ScottPlot5/**"
 
 jobs:
   test:
@@ -35,11 +31,11 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet restore ./src/ScottPlot5/ScottPlot5.Tests
       - name: 🛠️ Build
-        run: dotnet build ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore
+        run: dotnet build ./src/ScottPlot5/ScottPlot5.Tests --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ env.TEST_PROJECT_FOLDER }} --configuration Release --no-restore --verbosity normal
+        run: dotnet test ./src/ScottPlot5/ScottPlot5.Tests --configuration Release --no-restore --verbosity normal
   solution:
     runs-on: windows-latest
     name: 🛠️ Build Solution
@@ -51,6 +47,6 @@ jobs:
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.SOLUTION_FOLDER }}
+        run: dotnet restore ./src/ScottPlot5/
       - name: 🛠️ Build
-        run: dotnet build ${{ env.SOLUTION_FOLDER }} --configuration Release --no-restore
+        run: dotnet build ./src/ScottPlot5/ --configuration Release --no-restore
