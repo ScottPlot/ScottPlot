@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\Scot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{EDFFDCF1-DFE7-4A29-84EA-AF668E9EB672}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Common", "..\Common\ScottPlot.Common\ScottPlot.Common.csproj", "{4CFCD064-BA01-4851-A825-1C45429DF2D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Common.Tests", "..\Common\ScottPlot.Common.Tests\ScottPlot.Common.Tests.csproj", "{D23AC219-9353-4721-9D56-B6CF4D796569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{EDFFDCF1-DFE7-4A29-84EA-AF668E9EB672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDFFDCF1-DFE7-4A29-84EA-AF668E9EB672}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDFFDCF1-DFE7-4A29-84EA-AF668E9EB672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CFCD064-BA01-4851-A825-1C45429DF2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CFCD064-BA01-4851-A825-1C45429DF2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CFCD064-BA01-4851-A825-1C45429DF2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CFCD064-BA01-4851-A825-1C45429DF2D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D23AC219-9353-4721-9D56-B6CF4D796569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D23AC219-9353-4721-9D56-B6CF4D796569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D23AC219-9353-4721-9D56-B6CF4D796569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D23AC219-9353-4721-9D56-B6CF4D796569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

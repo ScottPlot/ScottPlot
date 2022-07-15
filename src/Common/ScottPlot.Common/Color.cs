@@ -1,6 +1,4 @@
-﻿// Reference APIs: https://github.com/ScottPlot/ScottPlot/pull/1647#issuecomment-1152963629
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public struct Color
 {
@@ -32,8 +30,6 @@ public struct Color
         byte blue = (byte)(argb >> 0);
         return new Color(red, green, blue, alpha);
     }
-
-    public SkiaSharp.SKColor ToSKColor() => new SkiaSharp.SKColor(ARGB);
 
     public string ToStringRGB()
     {
