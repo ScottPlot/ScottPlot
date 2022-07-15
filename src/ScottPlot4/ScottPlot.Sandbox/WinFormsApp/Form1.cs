@@ -16,29 +16,9 @@ namespace WinFormsApp
         public Form1()
         {
             InitializeComponent();
-
-            formsPlot1.LeftClickedPlottable += FormsPlot1_LeftClickedPlottable;
-
-            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
-            formsPlot1.Plot.AddSignal(DataGen.Cos(51));
-
-            var vl = formsPlot1.Plot.AddVerticalLine(25);
-            vl.DragEnabled = true;
-
-            formsPlot1.Plot.AddTooltip("clickable", 30, .6);
-
+            byte[] ys = DataGen.Sin(100_000, 5_000, 100, 100).Select(x => (byte)x).ToArray();
+            formsPlot1.Plot.AddSignalConst(ys);
             formsPlot1.Refresh();
-        }
-
-        private void FormsPlot1_LeftClickedPlottable(object sender, EventArgs e)
-        {
-            if (sender is ScottPlot.Plottable.Tooltip tt)
-            {
-                Random rand = new();
-                Color randomColor = Color.FromArgb(255, rand.Next(256), rand.Next(256), rand.Next(256));
-                tt.Color = randomColor;
-                formsPlot1.Refresh();
-            }
         }
     }
 }

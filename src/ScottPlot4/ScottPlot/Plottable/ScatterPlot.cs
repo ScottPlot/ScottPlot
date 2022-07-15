@@ -58,7 +58,7 @@ namespace ScottPlot.Plottable
 
         public float ErrorCapSize = 3;
 
-        public float _markerSize = 5;
+        private float _markerSize = 5;
         public float MarkerSize
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
@@ -75,6 +75,12 @@ namespace ScottPlot.Plottable
         /// If enabled, scatter plot points will be connected by square corners rather than straight diagnal lines
         /// </summary>
         public bool StepDisplay { get; set; } = false;
+
+        /// <summary>
+        /// Describes orientation of steps if <see cref="StepDisplay"/> is enabled.
+        /// If true, lines will extend to the right before ascending or descending to the level of the following point.
+        /// </summary>
+        public bool StepDisplayRight { get; set; } = true;
 
         /// <summary>
         /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
@@ -303,13 +309,7 @@ namespace ScottPlot.Plottable
                 {
                     if (StepDisplay)
                     {
-                        PointF[] pointsStep = new PointF[points.Length * 2 - 1];
-                        for (int i = 0; i < points.Length - 1; i++)
-                        {
-                            pointsStep[i * 2] = points[i];
-                            pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
-                        }
-                        pointsStep[pointsStep.Length - 1] = points[points.Length - 1];
+                        PointF[] pointsStep = GetStepDisplayPoints(points, StepDisplayRight);
                         gfx.DrawLines(penLine, pointsStep);
                     }
                     else if (Smooth)
@@ -328,6 +328,31 @@ namespace ScottPlot.Plottable
                     MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
+        /// by inserting an extra point between each of the original data points to result in L-shaped steps.
+        /// </summary>
+        /// <param name="points">Array of corner positions</param>
+        /// <param name="right">Indicates that a line will extend to the right before rising or falling.</param>
+        public static PointF[] GetStepDisplayPoints(PointF[] points, bool right)
+        {
+            PointF[] pointsStep = new PointF[points.Length * 2 - 1];
+
+            int offsetX = right ? 1 : 0;
+            int offsetY = right ? 0 : 1;
+
+            for (int i = 0; i < points.Length - 1; i++)
+            {
+                pointsStep[i * 2] = points[i];
+                pointsStep[i * 2 + 1] = new PointF(points[i + offsetX].X, points[i + offsetY].Y);
+            }
+
+            pointsStep[pointsStep.Length - 1] = points[points.Length - 1];
+
+            return pointsStep;
         }
 
         public LegendItem[] GetLegendItems()
@@ -422,6 +447,15 @@ namespace ScottPlot.Plottable
             }
 
             return (Xs[minIndex], Ys[minIndex], minIndex);
+        }
+
+        /// <summary>
+        /// Return the vertical limits of the data between horizontal positions (inclusive)
+        /// </summary>
+        public (double yMin, double yMax) GetYDataRange(double xMin, double xMax)
+        {
+            var includedYs = Ys.Where((y, i) => Xs[i] >= xMin && Xs[i] <= xMax);
+            return (includedYs.Min(), includedYs.Max());
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ScottPlot.MinMaxSearchStrategies
         {
             if (sourceArrayDouble != null)
                 return sourceArrayDouble[index];
-            return Convert.ToDouble(SourceArray[index]);
+            return NumericConversion.GenericToDouble(ref SourceArray[index]);
         }
     }
 }

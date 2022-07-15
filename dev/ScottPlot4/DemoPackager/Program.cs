@@ -21,14 +21,30 @@ namespace DemoPackager
             string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             RepoFolder = Path.GetFullPath(Path.Combine(assemblyFolder, "../../../../../../"));
 
+            if (!Directory.Exists(RepoFolder))
+                throw new InvalidOperationException($"Repository folder does not exist: {RepoFolder}");
+
+            if (!File.Exists(Path.Combine(RepoFolder, "LICENSE")))
+                throw new InvalidOperationException($"Folder is not top level of this repository: {RepoFolder}");
+
+            Directory.SetCurrentDirectory(assemblyFolder);
+            if (!File.Exists("Images/bicycle.png"))
+                throw new InvalidOperationException($"Working directory does not contain images: {Path.GetFullPath("./")}");
+
+            Console.WriteLine("This application will build and ZIP the ScottPlot demo applications.");
+            Console.WriteLine("It is only intended to be run the ScottPlot website administrators.");
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to continue...");
+            Console.ReadLine();
             ResetOutputFolder();
-
             GenerateRecipes();
-
             BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.WinForms"), true, "ScottPlot-Demo-WinForms.zip");
             BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.WPF"), true, "ScottPlot-Demo-WPF.zip");
             BuildAndZip(Path.Combine(RepoFolder, @"src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo.Avalonia"), true, "ScottPlot-Demo-Avalonia.zip");
 
+            Console.WriteLine();
+            Console.WriteLine("ZIP files created. Press ENTER to upload them to the ScottPlot website...");
+            Console.ReadLine();
             FtpUpload("/scottplot.net/public_html/demos");
         }
 

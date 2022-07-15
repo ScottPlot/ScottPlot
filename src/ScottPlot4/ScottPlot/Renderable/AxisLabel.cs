@@ -76,7 +76,7 @@ namespace ScottPlot.Renderable
             }
             else
             {
-                return GDI.MeasureString(Label, Font);
+                return GDI.MeasureStringUsingTemporaryGraphics(Label, Font);
             }
         }
 

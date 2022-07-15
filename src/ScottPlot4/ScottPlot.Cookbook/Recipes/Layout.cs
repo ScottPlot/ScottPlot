@@ -9,7 +9,10 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "layout_default";
         public string Title => "Default Layout";
         public string Description =>
-            "asdf";
+            "ScottPlot has many ways to customize the layout. " +
+            "This example demonstrates the default layout, where padding around the data area " +
+            "is automatically determined by measuring the text in the axis labels and tick labels " +
+            "to ensure there is appropriate padding on all sides.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -137,6 +140,36 @@ namespace ScottPlot.Cookbook.Recipes
             // 25% horizontal padding means data occupies 75% of horizontal space
             // 40% vertical padding means data occupies 60% of vertical space
             plt.Margins(x: .25, y: .4);
+        }
+    }
+
+    class LayoutManualDataArea : IRecipe
+    {
+        public ICategory Category => new Categories.Layout();
+        public string ID => "layout_manual";
+        public string Title => "Manual Data Area";
+        public string Description =>
+            "The layout system automatically measures axis labels and ticks to provide " +
+            "a plot with the largest data area possible. However, this can be problematic " +
+            "for animated plots (with changing tick label sizes) or when users wish to achieve " +
+            "pixel-perfect similarity between two different plots. In these cases the user can " +
+            "manually override the layout system and define exactly how large the data area is.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Style(Style.Blue1);
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+
+            var padding = new ScottPlot.PixelPadding(
+                left: 150,
+                right: 30,
+                bottom: 100,
+                top: 10);
+
+            plt.ManualDataArea(padding);
         }
     }
 }

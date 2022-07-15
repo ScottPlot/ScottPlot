@@ -74,7 +74,7 @@ namespace ScottPlot
                 throw new InvalidOperationException($"{label} must not be null");
 
             for (int i = minIndex; i < maxIndex; i++)
-                if (Convert.ToDouble(values[i]) > Convert.ToDouble(values[i + 1]))
+                if (NumericConversion.GenericToDouble(ref values[i]) > NumericConversion.GenericToDouble(ref values[i + 1]))
                     throw new InvalidOperationException($"{label} must not descend: " +
                         $"{label}[{i}]={values[i]} but {label}[{i + 1}]={values[i + 1]}");
         }

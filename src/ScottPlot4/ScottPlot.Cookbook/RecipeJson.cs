@@ -46,19 +46,18 @@ namespace ScottPlot.Cookbook
         }
 
         /// <summary>
-        /// Return information about all recipes stored in a JSON file
+        /// Locate and read the recipes JSON file and return a dictionary with source code information for each recipe.
+        /// Returns null if the JSON file could not be located.
         /// </summary>
-        /// <param name="jsonFile">Path to the JSON file. If not provided it will attempt to be found.</param>
-        /// <returns>The dictionary if the JSON file exists or was found (otherwise null)</returns>
-        public static Dictionary<string, RecipeSource> GetRecipes(FileInfo jsonFile = null)
+        public static Dictionary<string, RecipeSource> GetRecipes(string jsonFilePath = null)
         {
-            if (jsonFile is null)
-                jsonFile = Locate();
+            if (string.IsNullOrEmpty(jsonFilePath))
+                jsonFilePath = LocateRecipesSourceFile();
 
-            if (jsonFile is null)
+            if (jsonFilePath is null)
                 return null;
 
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(jsonFile.FullName));
+            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(jsonFilePath));
 
             string version = document.RootElement.GetProperty("version").GetString();
             string generated = document.RootElement.GetProperty("generated").GetString();
@@ -79,28 +78,23 @@ namespace ScottPlot.Cookbook
         }
 
         /// <summary>
-        /// Search typical folders to find recipes.json
+        /// Returns the full path to the recipes json file (or null if not found)
         /// </summary>
-        /// <returns>full path to recipes.json or null if not found</returns>
-        public static FileInfo Locate()
+        public static string LocateRecipesSourceFile()
         {
             string[] possiblePaths =
             {
-                // potential paths relative to this EXE
-                "",
-                "cookbook",
-                "cookbook/source",
-
-                // potential paths relative to the test runner
-                "../../../../../tests/bin/Debug/net5.0/cookbook/source",
-                "../../../../../cookbook/output",
+                "./",
+                "./cookbook",
+                "./cookbook/source",
+                "../../../../../ScottPlot.Cookbook/CookbookOutput",
             };
 
             foreach (string path in possiblePaths)
             {
-                FileInfo fi = new(Path.Combine(path, "recipes.json"));
-                if (fi.Exists)
-                    return fi;
+                string jsonFilePath = Path.GetFullPath(Path.Combine(path, "recipes.json"));
+                if (File.Exists(jsonFilePath))
+                    return jsonFilePath;
             }
 
             return null;
@@ -108,8 +102,6 @@ namespace ScottPlot.Cookbook
 
         public static string NotFoundMessage =>
             "ERROR: Recipe source file (recipes.json) was not found!\n" +
-            "Developers can generate these files by running the tests:\n" +
-            "To run tests from Visual Studio, click 'Test' and select 'Run All Tests'.\n" +
-            "To run tests from the command line, run 'dotnet test' in the src folder.\n";
+            "Run the tests to generate this file.";
     }
 }

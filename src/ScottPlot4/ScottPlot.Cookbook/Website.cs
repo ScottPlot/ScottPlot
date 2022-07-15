@@ -1,17 +1,118 @@
-﻿using ScottPlot.Cookbook;
+﻿using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Cookbook_Generator;
+namespace ScottPlot.Cookbook;
+
 public static class Website
 {
     public static void Generate(string OutputFolderPath, RecipeSource[] Recipes)
     {
         MakeIndexPage(OutputFolderPath, Recipes);
         MakeCategoryPages(OutputFolderPath, Recipes);
+        MakeColorsPage(OutputFolderPath);
+        MakeColormapsPage(OutputFolderPath);
+    }
+
+    private static void MakeColormapsPage(string OutputFolderPath)
+    {
+        Console.WriteLine("Creating Colormaps Page...");
+
+        StringBuilder sb = new();
+        sb.AppendLine("Colormaps define a smooth gradient of colors. ");
+        sb.AppendLine("Colormaps can be passed into plottable objects that use them (e.g., Colorbar), ");
+        sb.AppendLine("or they can be instantiated directly so users can access the colors they produce. ");
+        sb.AppendLine("Viridis and Turbo are typically recommended as the best colormaps to use for scientific data.");
+        sb.AppendLine();
+        sb.AppendLine("```cs");
+        sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.Viridis();");
+        sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
+        sb.AppendLine("```");
+        sb.AppendLine();
+
+        foreach (var cmap in ScottPlot.Drawing.Colormap.GetColormaps())
+        {
+            ScottPlot.Plottable.Colorbar cbar = new(cmap);
+            System.Drawing.Bitmap bmp = cbar.GetBitmap(1000, 20, vertical: false);
+
+            string imageFilename = "colormap_" + cmap.Name.ToLower() + ".png";
+            string imageFolderPath = Path.Combine(OutputFolderPath, "images");
+            string imageFilePath = Path.Combine(imageFolderPath, imageFilename);
+            bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
+
+            sb.AppendLine();
+            sb.AppendLine($"### {cmap.Name}");
+            sb.AppendLine();
+            //sb.AppendLine("```cs");
+            //sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.{cmap.Name}();");
+            //sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
+            //sb.AppendLine("```");
+            //sb.AppendLine();
+            sb.AppendLine($"<img class='w-100' height='100' src='../images/{imageFilename}'>");
+            sb.AppendLine();
+        }
+
+        Template.CreateMarkdownPage(
+            mdFilePath: Path.Combine(OutputFolderPath, "colormaps.md"),
+            body: sb.ToString(),
+            title: "Colormaps - ScottPlot 4.1 Cookbook",
+            description: "List of Colormaps used to represent continuous data",
+            url: "/cookbook/4.1/colormaps/");
+    }
+
+    private static void MakeColorsPage(string OutputFolderPath)
+    {
+        Console.WriteLine("Creating Colors Page...");
+
+        StringBuilder sb = new();
+        sb.AppendLine("Palettes are collections of colors. ");
+        sb.AppendLine("The palette in `Plot.Palette` defines default colors for new objects added to plots. ");
+        sb.AppendLine("Users can access palettes directly to get color values for any use. ");
+        sb.AppendLine();
+        sb.AppendLine("```cs");
+        sb.AppendLine($"var pal = ScottPlot.Palette.Category10;");
+        sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
+        sb.AppendLine("{");
+        sb.AppendLine("    var color = pal.GetColor(i);");
+        sb.AppendLine("    Console.WriteLine(color);");
+        sb.AppendLine("}");
+        sb.AppendLine("```");
+        sb.AppendLine();
+
+        foreach (var p in ScottPlot.Palette.GetPalettes())
+        {
+            sb.AppendLine();
+            sb.AppendLine($"### {p.Name}");
+            sb.AppendLine();
+            //sb.AppendLine("```cs");
+            //sb.AppendLine($"var pal = ScottPlot.Palette.{p.Name};");
+            //sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
+            //sb.AppendLine("{");
+            //sb.AppendLine("    var color = pal.GetColor(i);");
+            //sb.AppendLine("    Console.WriteLine(color);");
+            //sb.AppendLine("}");
+            //sb.AppendLine("```");
+            //sb.AppendLine();
+
+            sb.AppendLine("<div class='d-flex flex-wrap'>");
+            for (int i = 0; i < p.Count(); i++)
+            {
+                System.Drawing.Color color = p.GetColor(i);
+                string hex = ScottPlot.Palette.ToHex(color);
+                sb.AppendLine($"<div class='px-3 py-2' style='background-color: {hex};'>{hex}</div>");
+            }
+            sb.AppendLine("</div>");
+            sb.AppendLine();
+        }
+
+        Template.CreateMarkdownPage(
+            mdFilePath: Path.Combine(OutputFolderPath, "colors.md"),
+            body: sb.ToString(),
+            title: "Colors - ScottPlot 4.1 Cookbook",
+            description: "List of Colors from all ScottPlot Palettes",
+            url: "/cookbook/4.1/colors/");
     }
 
     private static void MakeCategoryPages(string OutputFolderPath, RecipeSource[] Recipes)
@@ -129,8 +230,7 @@ public static class Website
             "</div>";
 
         StringBuilder sb = new();
-
-        // TODO: figure out a better way to sort this
+        sb.AppendLine($"Generated by ScottPlot {ScottPlot.Plot.Version} on {DateTime.Now.ToShortDateString()} <br />");
 
         // CATEGORY LIST
         sb.AppendLine("<h4>Customization</h4>");
@@ -169,6 +269,12 @@ public static class Website
                 sb.AppendLine($"<li><a href='#{GetAnchor(category)}'>{category.Name}</a> - {category.Description}</li>");
             }
         }
+        sb.AppendLine("</ul>");
+
+        sb.AppendLine("<h4>Colors</h4>");
+        sb.AppendLine("<ul>");
+        sb.AppendLine("<li><a href='colors/'>Color</a> - Lists of colors in each color palette for representing categorical data</li>");
+        sb.AppendLine("<li><a href='colormaps/'>Colormaps</a> - Color gradients available to represent continuous data</li>");
         sb.AppendLine("</ul>");
 
         // SEPARATION

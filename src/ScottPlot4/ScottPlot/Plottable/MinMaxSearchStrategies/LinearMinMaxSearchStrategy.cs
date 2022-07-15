@@ -43,13 +43,13 @@ namespace ScottPlot.MinMaxSearchStrategies
                 if (GreaterThanExp(sourceArray[i], highestValueT))
                     highestValueT = sourceArray[i];
             }
-            lowestValue = Convert.ToDouble(lowestValueT);
-            highestValue = Convert.ToDouble(highestValueT);
+            lowestValue = NumericConversion.GenericToDouble(ref lowestValueT);
+            highestValue = NumericConversion.GenericToDouble(ref highestValueT);
         }
 
         public virtual double SourceElement(int index)
         {
-            return Convert.ToDouble(sourceArray[index]);
+            return NumericConversion.GenericToDouble(ref sourceArray[index]);
         }
 
         public void updateElement(int index, T newValue)

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ScottPlot.Plottable
 {
@@ -21,7 +22,13 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
 
-        public float _markerSize = 5;
+        /// <summary>
+        /// Describes orientation of steps if <see cref="StepDisplay"/> is enabled.
+        /// If true, lines will extend to the right before ascending or descending to the level of the following point.
+        /// </summary>
+        public bool StepDisplayRight { get; set; } = true;
+
+        private float _markerSize = 5;
         public float MarkerSize
         {
             get => IsHighlighted ? _markerSize * HighlightCoefficient : _markerSize;
@@ -31,6 +38,14 @@ namespace ScottPlot.Plottable
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
         public T OffsetY { get; set; } = default;
+        public double OffsetYAsDouble
+        {
+            get
+            {
+                var v = OffsetY;
+                return NumericConversion.GenericToDouble(ref v);
+            }
+        }
 
         private double _lineWidth = 1;
         public double LineWidth
@@ -81,14 +96,14 @@ namespace ScottPlot.Plottable
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? GradientFillColor1 { get => _GradientFillColor1; set => _GradientFillColor1 = value; }
-        public Color? _GradientFillColor1 = null;
+        private Color? _GradientFillColor1 = null;
 
         /// <summary>
         /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
         public Color? GradientFillColor2 { get => _GradientFillColor2; set => _GradientFillColor2 = value; }
-        public Color? _GradientFillColor2 = null;
+        private Color? _GradientFillColor2 = null;
 
         protected FillType _FillType = FillType.NoFill;
         protected Color? _FillColor1 = null;
@@ -97,7 +112,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// When markers are visible on the line (low density mode) this is True
         /// </summary>
-        private bool ShowMarkersInLegend { get; set; } = false;
+        protected bool ShowMarkersInLegend { get; set; } = false;
 
         protected T[] _Ys;
         public virtual T[] Ys
@@ -233,12 +248,16 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This expression adds two parameters of the generic type used by this signal plot.
         /// </summary>
-        private readonly Func<T, T, T> AddYsGenericExpression;
+        private readonly Func<T, T, T> AddYsGenericExpression = NumericConversion.CreateAddFunction<T>();
 
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
-        private double AddYs(T y1, T y2) => Convert.ToDouble(AddYsGenericExpression(y1, y2));
+        private double AddYs(T y1, T y2)
+        {
+            var v = AddYsGenericExpression(y1, y2);
+            return NumericConversion.GenericToDouble(ref v);
+        }
 
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a the same type
@@ -247,10 +266,6 @@ namespace ScottPlot.Plottable
 
         public SignalPlotBase()
         {
-            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
-            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
-            BinaryExpression bodyAdd = Expression.Add(paramA, paramB);
-            AddYsGenericExpression = Expression.Lambda<Func<T, T, T>>(bodyAdd, paramA, paramB).Compile();
         }
 
         /// <summary>
@@ -275,7 +290,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="firstIndex">first index to begin replacing</param>
         /// <param name="newData">new values</param>
-        public void Update(int firstIndex, T[] newData) => Update(firstIndex, newData.Length, newData);
+        public void Update(int firstIndex, T[] newData) => Update(firstIndex, firstIndex + newData.Length, newData);
 
         /// <summary>
         /// Replace all Y values with new ones
@@ -294,7 +309,7 @@ namespace ScottPlot.Plottable
             if (double.IsInfinity(yMin) || double.IsInfinity(yMax))
                 throw new InvalidOperationException("Signal data must not contain Infinity");
 
-            double offsetY = Convert.ToDouble(OffsetY);
+            double offsetY = OffsetYAsDouble;
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,
@@ -309,7 +324,7 @@ namespace ScottPlot.Plottable
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
-            double offsetY = Convert.ToDouble(OffsetY);
+            double offsetY = OffsetYAsDouble;
             PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
             PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
             gfx.DrawLine(penHD, point1, point2);
@@ -348,7 +363,7 @@ namespace ScottPlot.Plottable
                 ValidatePoints(pointsArray);
 
                 if (StepDisplay)
-                    pointsArray = GetStepPoints(pointsArray);
+                    pointsArray = ScatterPlot.GetStepDisplayPoints(pointsArray, StepDisplayRight);
 
                 if (LineWidth > 0 && LineStyle != LineStyle.None)
                     gfx.DrawLines(penLD, pointsArray);
@@ -369,48 +384,25 @@ namespace ScottPlot.Plottable
                     default:
                         throw new InvalidOperationException("unsupported fill type");
                 }
+            }
 
-                if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
+            if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
+            {
+                // make markers transition away smoothly by making them smaller as the user zooms out
+                float pixelsBetweenPoints = (float)((Ys.Length > 1 ? _SamplePeriod : 1) * dims.DataWidth / dims.XSpan);
+                float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
+                float markerPxDiameter = MarkerSize * zoomTransitionScale;
+                float markerPxRadius = markerPxDiameter / 2;
+                if (markerPxRadius > .25)
                 {
-                    // make markers transition away smoothly by making them smaller as the user zooms out
-                    float pixelsBetweenPoints = (float)(_SamplePeriod * dims.DataWidth / dims.XSpan);
-                    float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
-                    float markerPxDiameter = MarkerSize * zoomTransitionScale;
-                    float markerPxRadius = markerPxDiameter / 2;
-                    if (markerPxRadius > .25)
-                    {
-                        ShowMarkersInLegend = true;
-
-                        foreach (PointF point in linePoints)
-                        {
-                            MarkerTools.DrawMarker(gfx, point, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
-                        }
-                    }
-                    else
-                    {
-                        ShowMarkersInLegend = false;
-                    }
+                    ShowMarkersInLegend = true;
+                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
+                }
+                else
+                {
+                    ShowMarkersInLegend = false;
                 }
             }
-        }
-
-        /// <summary>
-        /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
-        /// by inserting an extra point between each of the original data points.
-        /// </summary>
-        protected PointF[] GetStepPoints(PointF[] pointsArray)
-        {
-            PointF[] pointsStep = new PointF[pointsArray.Length * 2 - 1];
-
-            for (int i = 0; i < pointsArray.Length - 1; i++)
-            {
-                pointsStep[i * 2] = pointsArray[i];
-                pointsStep[i * 2 + 1] = new PointF(pointsArray[i + 1].X, pointsArray[i].Y);
-            }
-
-            pointsStep[pointsStep.Length - 1] = pointsArray[pointsArray.Length - 1];
-
-            return pointsStep;
         }
 
         private class IntervalMinMax
@@ -448,8 +440,8 @@ namespace ScottPlot.Plottable
 
             // get the min and max value for this column                
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + Convert.ToDouble(OffsetY));
-            float yPxLow = dims.GetPixelY(highestValue + Convert.ToDouble(OffsetY));
+            float yPxHigh = dims.GetPixelY(lowestValue + OffsetYAsDouble);
+            float yPxLow = dims.GetPixelY(highestValue + OffsetYAsDouble);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
@@ -782,11 +774,11 @@ namespace ScottPlot.Plottable
             double dataWidthPx = lastPointX - firstPointX;
             double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
-            if (columnsWithData < 1)
+            if (columnsWithData < 1 && Ys.Length > 1)
             {
                 RenderSingleLine(dims, gfx, penHD);
             }
-            else if (pointsPerPixelColumn > 1)
+            else if (pointsPerPixelColumn > 1 && Ys.Length > 1)
             {
                 if (densityLevelsAvailable)
                     RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
@@ -832,15 +824,32 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
+        /// Return the index for the data point corresponding to the given X coordinate
+        /// </summary>
+        private int GetIndexForX(double x)
+        {
+            int index = (int)((x - OffsetX) / SampleRate);
+            index = Math.Max(index, MinRenderIndex);
+            index = Math.Min(index, MaxRenderIndex);
+            return index;
+        }
+
+        /// <summary>
+        /// Return the X coordinate of the data point at the given index
+        /// </summary>
+        private double IndexToX(int index)
+        {
+            return index * SampleRate + OffsetX;
+        }
+
+        /// <summary>
         /// Return the X/Y coordinates of the point nearest the X position
         /// </summary>
         /// <param name="x">X position in plot space</param>
         /// <returns></returns>
         public (double x, T y, int index) GetPointNearestX(double x)
         {
-            int index = (int)((x - OffsetX) / SamplePeriod);
-            index = Math.Max(index, MinRenderIndex);
-            index = Math.Min(index, MaxRenderIndex);
+            int index = GetIndexForX(x);
             return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
         }
 
@@ -920,6 +929,27 @@ namespace ScottPlot.Plottable
 
             _FillColor2 = GDI.Semitransparent(below2, alpha);
             _GradientFillColor2 = GDI.Semitransparent(below1, alpha);
+        }
+
+        /// <summary>
+        /// Return the vertical limits of the data between horizontal positions (inclusive)
+        /// </summary>
+        public (T yMin, T yMax) GetYDataRange(double xMin, double xMax)
+        {
+            int startIndex = GetIndexForX(xMin);
+            int endIndex = GetIndexForX(xMax);
+
+            if (IndexToX(endIndex) < xMax)
+            {
+                endIndex = Math.Min(endIndex + 1, MaxRenderIndex);
+            }
+
+            Strategy.MinMaxRangeQuery(startIndex, endIndex, out double yMin, out double yMax);
+
+            NumericConversion.DoubleToGeneric<T>(yMin, out T genericYMin);
+            NumericConversion.DoubleToGeneric<T>(yMax, out T genericYMax);
+
+            return (genericYMin, genericYMax);
         }
     }
 }

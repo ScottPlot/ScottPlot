@@ -1,9 +1,45 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.49
+## ScottPlot 4.1.54
 _not yet published on NuGet..._
+* Scatter and Signal Plot: `GetYDataRange()` now returns the range of Y values between a range of X positions, useful for setting automatic axis limits when plots are zoomed-in (#1946, #1942, #1929) _Thanks @bclehmann_
+* WPF Control: Right-click copy now renders high quality image to the clipboard (#1952) _Thanks @bclehmann_
+* Radar, Coxcomb, and Pie Chart: New options to customize hatch pattern and color. See cookbook for examples. (#1948, #1943) _Thanks @bclehmann_
+* Signal Plot: Improve support for plots with a single point (#1951, #1949) _Thanks @bclehmann and @Fruchtzwerg94_
+
+## ScottPlot 4.1.53
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-10_
+* Signal Plot: Added support for plotting `byte` arrays (#1945)
+
+## ScottPlot 4.1.52
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
+* WinForms control: Fixed a bug introduced by the previous version which resulted in flickering while using the mouse to pan or zoom (#1938, #1913) _Thanks @AbeniMatteo_
+* Plot: Added obsolete `GetLegendBitmap()` with message indicating `RenderLegend()` is to be used instead (#1937, #1936) _Thanks @johnfoll_
+* Signal Plot: Improved performance using platform-specific fast paths for common data types to minimize allocations (#1927) _Thanks @AbeniMatteo, @StendProg, and @bclehmann_
+
+## ScottPlot 4.1.51
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-30_
+* WinForms Control: Fixed a bug that caused frequent mouse events to overflow the stack (#1906, #1913) _Thanks @AbeniMatteo_
+* Performance: Improve string measurement performance using cached fonts (#1915) _Thanks @AbeniMatteo_
+* Layout: Improve axis alignment when `ManualDataArea()` is used (#1901, #1907, #1911) _Thanks @dhgigisoave_
+* Cookbook: Improve error message if recipes.json is not found (#1917) _Thanks @AbeniMatteo_
+
+## ScottPlot 4.1.50
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-26_
+* BarSeries: Lists passed into new BarSeries are preserved and can be modified after instantiation. Added a `Count` property. Added a `AddBarSeries()` overload that permits creating an empty BarSeries. (#1902)
+* Markers: Improved performance for plot types that render multiple markers (#1910) _Thanks @AbeniMatteo_
+* Plot: New `ManualDataArea()` function allows users to define pixel-perfect layouts (#1907, #1901) _Thanks @dhgigisoave_
+
+## ScottPlot 4.1.49
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-21_
+* BarSeries: A new type of bar plot which allows each bar to be individually customized and offers mouse collision detection (#1891, #1749) _Thanks @jhm-ciberman_
+* SignalXY: When step mode is activated markers are now only drawn at original data points (#1896) _Thanks @grabul_
+* SignalConst: Fixed indexing error affecting the Update() overload that accepted generic arrays (#1895, #1893) _Thanks @strontiumpku_
+* Scatter and Signal: When `StepDisplay` is enabled, the new `StepDisplayRight` property can toggle step orientation (#1894, #1811) _Thanks @dhgigisoave_
+* SignalXY: Markers now shown in legend when the plot is zoomed-in enough that they become visible on the plot itself
 
 ## ScottPlot 4.1.48
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-06-09_
 * Plottable: Collapsed `IHasAxisLimits`, `IHasDataValidation`, and `IHasLegendItems` back into `IPlottable`, reverting a change introduced by the previous version. The intent of the original change was to promote interface segregation (e.g., colorbar has no axis limits). However, the purpose of this reversion is to maintain consistent behavior for users who implemented their own plottables implementing `IPlottable` and may not be aware of these new interfaces. (#1868, #1881)
 
 ## ScottPlot 4.1.47
