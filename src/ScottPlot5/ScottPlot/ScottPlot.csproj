@@ -12,4 +12,8 @@
 		<PackageReference Include="SkiaSharp" Version="2.88.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
+	</ItemGroup>
+
 </Project>
