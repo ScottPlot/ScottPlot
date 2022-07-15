@@ -1,14 +1,22 @@
-﻿namespace ScottPlot;
+﻿using System.Diagnostics;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Stores information about a render for debugging or later retrieval.
 /// </summary>
-public struct RenderInformation
+public class RenderInformation
 {
-    public TimeSpan ElapsedLayout;
-    public TimeSpan ElapsedRender;
+    public TimeSpan Elapsed => Stopwatch.Elapsed;
     public PixelRect FigureRect;
     public PixelRect DataRect;
-    public bool RenderComplete => ElapsedRender.TotalMilliseconds > 0;
-    public double ElapsedMilliseconds => ElapsedLayout.TotalMilliseconds + ElapsedRender.TotalMilliseconds;
+    public bool IsFinished;
+
+    public readonly Stopwatch Stopwatch = Stopwatch.StartNew();
+
+    public void Finished()
+    {
+        Stopwatch.Stop();
+        IsFinished = true;
+    }
 }

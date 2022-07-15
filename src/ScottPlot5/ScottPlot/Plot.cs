@@ -8,10 +8,10 @@ namespace ScottPlot;
 public class Plot
 {
     // TODO: store these in lists to support multi-axis plots
-    readonly IXAxis XAxis;
-    readonly IYAxis YAxis;
-    readonly IAxisView LeftAxisView;
-    readonly IAxisView BottomAxisView;
+    internal readonly IXAxis XAxis;
+    internal readonly IYAxis YAxis;
+    internal readonly IAxisView LeftAxisView;
+    internal readonly IAxisView BottomAxisView;
 
     readonly List<IPlottable> Plottables = new();
 
@@ -23,15 +23,15 @@ public class Plot
         get => DebugBenchmark.IsVisible;
         set => DebugBenchmark.IsVisible = value;
     }
-    readonly Plottables.DebugBenchmark DebugBenchmark = new();
+    public readonly Plottables.DebugBenchmark DebugBenchmark = new();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    readonly Plottables.ZoomRectangle ZoomRectangle;
+    public readonly Plottables.ZoomRectangle ZoomRectangle;
 
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
-    private RenderInformation LastRenderInfo;
+    internal RenderInformation LastRenderInfo;
 
     public Plot()
     {
@@ -193,7 +193,7 @@ public class Plot
         return new Coordinate(x, y);
     }
 
-    private PixelRect GetDataAreaRect(PixelRect figureRect)
+    public PixelRect GetDataAreaRect(PixelRect figureRect)
     {
         LeftAxisView.RegenerateTicks(figureRect);
         float padLeft = LeftAxisView.Measure();
@@ -209,103 +209,15 @@ public class Plot
         return figureRect.Contract(DataAreaPadding);
     }
 
-    public RenderInformation Render(SKSurface surface)
+    public void Render(SKSurface surface)
     {
-        SKRect figureRect = surface.Canvas.LocalClipBounds;
-
-        Stopwatch SW = Stopwatch.StartNew();
-        RenderInformation renderInfo = new();
-
-        // ensure all plottables are properly setup
-        foreach (var plottable in Plottables)
-        {
-            if (plottable.XAxis is null)
-                plottable.XAxis = XAxis;
-            if (plottable.YAxis is null)
-                plottable.YAxis = YAxis;
-        }
-
-        if (!XAxis.HasBeenSet || !YAxis.HasBeenSet)
-        {
-            AutoScale();
-        }
-
-        // recalculate layout
-        renderInfo.FigureRect = PixelRect.FromSKRect(figureRect);
-        renderInfo.DataRect = GetDataAreaRect(renderInfo.FigureRect);
-        renderInfo.ElapsedLayout = SW.Elapsed;
-        LeftAxisView.RegenerateTicks(renderInfo.DataRect);
-        BottomAxisView.RegenerateTicks(renderInfo.DataRect);
-        SW.Restart();
-
-        // perform all renders
-
-        RenderBackground(surface, renderInfo.DataRect);
-        RenderPlottables(surface, renderInfo.DataRect);
-        RenderAxes(surface, renderInfo.DataRect);
-        renderInfo.ElapsedRender = SW.Elapsed;
-        RenderZoomRectangle(surface, renderInfo.DataRect);
-        RenderDebugInfo(surface, renderInfo.DataRect, renderInfo.ElapsedMilliseconds);
-        LastRenderInfo = renderInfo;
-        return renderInfo;
-    }
-
-    private void RenderBackground(SKSurface surface, PixelRect dataRect)
-    {
-        surface.Canvas.Clear(SKColors.White);
-        Grid.Render(surface, dataRect, BottomAxisView);
-        Grid.Render(surface, dataRect, LeftAxisView);
-    }
-
-    private void RenderPlottables(SKSurface surface, PixelRect dataRect)
-    {
-        foreach (var plottable in Plottables.Where(x => x.IsVisible))
-        {
-            surface.Canvas.Save();
-            plottable.Render(surface, dataRect);
-            surface.Canvas.Restore();
-        }
-    }
-
-    private void RenderAxes(SKSurface surface, PixelRect dataRect)
-    {
-        // draw frame around data area
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            StrokeWidth = 1,
-            Style = SKPaintStyle.Stroke,
-        };
-        paint.Color = SKColors.Black;
-        surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
-
-        // draw each axis view
-        LeftAxisView.Render(surface, dataRect);
-        BottomAxisView.Render(surface, dataRect);
-    }
-
-    private void RenderZoomRectangle(SKSurface surface, PixelRect dataRect)
-    {
-        if (ZoomRectangle.IsVisible)
-        {
-            ZoomRectangle.Render(surface, dataRect);
-        }
-    }
-
-    private void RenderDebugInfo(SKSurface surface, PixelRect dataRect, double elapsedMilliseconds)
-    {
-        if (DebugBenchmark.IsVisible)
-        {
-            DebugBenchmark.ElapsedMilliseconds = elapsedMilliseconds;
-            DebugBenchmark.Render(surface, dataRect);
-        }
+        LastRenderInfo = ScottPlot.Render.OnSurface(surface, this);
     }
 
     public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)
     {
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
         SKSurface surface = SKSurface.Create(info);
-        Render(surface);
         SKImage snap = surface.Snapshot();
         SKData data = snap.Encode(format, quality);
         byte[] bytes = data.ToArray();

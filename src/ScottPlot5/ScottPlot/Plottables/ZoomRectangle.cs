@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-internal class ZoomRectangle : PlottableBase
+public class ZoomRectangle : PlottableBase
 {
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
     public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
