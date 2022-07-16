@@ -68,6 +68,13 @@ formsPlot1.Refresh();
 
 **Try it out!** Give us a star and come back in an hour and your name will appear [here](https://stargraph.z20.web.core.windows.net/scottplot-stars.png)
 
+## Major Versions
+
+**✔️ ScottPlot 4** is stable and recommended for all users
+
+**⚠️ ScottPlot 5** is experimental and not recommended for use
+
+See the [roadmap](dev/roadmap.md) and [changelog](https://scottplot.net/changelog) for more information
 
 ## ScottPlot Discord Channel
 
