@@ -68,6 +68,11 @@ formsPlot1.Refresh();
 
 **Try it out!** Give us a star and come back in an hour and your name will appear [here](https://stargraph.z20.web.core.windows.net/scottplot-stars.png)
 
+
+## ScottPlot Discord Channel
+
+* In July, 2022 maintainers started using the [ScottPlot Discord Channel](https://discord.gg/Dru6fnY2UX) to discuss progress developing the next major version of ScottPlot. Contributors and users are welcome to check it out!
+
 ## About ScottPlot
 
 * The [ScottPlot Changelog](https://scottplot.net/changelog/) details the most recent features and bug fixes.
