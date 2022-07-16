@@ -2,5 +2,5 @@
 
 internal interface INamedColors
 {
-    Color[] GetAllColors();
+    SPColor[] GetAllColors();
 }

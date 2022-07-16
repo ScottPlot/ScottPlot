@@ -255,7 +255,7 @@ public class Plot
 
     #region AddPlottable Helper Methods
 
-    public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color color)
+    public Plottables.Scatter AddScatter(double[] xs, double[] ys, SPColor color)
     {
         Plottables.Scatter scatter = new(xs, ys) { Color = color };
 

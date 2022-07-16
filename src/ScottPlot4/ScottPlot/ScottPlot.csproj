@@ -61,5 +61,8 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\ScottPlot.Common\ScottPlot.Common.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ namespace ScottPlot.Grids;
 public class DefaultGrid : IGrid
 {
     public float LineWidth = 1;
-    public Color LineColor = Colors.Black.WithAlpha(20);
+    public SPColor LineColor = Colors.Black.WithAlpha(20);
 
     private SKPaint MakeMajorGridLinePaint()
     {

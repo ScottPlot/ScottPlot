@@ -6,14 +6,14 @@ public class DebugPoint : PlottableBase
 {
     public Coordinate Position { get; set; }
 
-    public Color Color { get; set; } = new(255, 00, 255);
+    public SPColor Color { get; set; } = new(255, 00, 255);
 
     public DebugPoint()
     {
 
     }
 
-    public DebugPoint(double x, double y, Color color)
+    public DebugPoint(double x, double y, SPColor color)
     {
         Position = new(x, y);
         Color = color;

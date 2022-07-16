@@ -11,7 +11,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_Constructor()
         {
-            Color color = new(13, 17, 23);
+            SPColor color = new(13, 17, 23);
             Assert.That(color.Red, Is.EqualTo(13));
             Assert.That(color.Green, Is.EqualTo(17));
             Assert.That(color.Blue, Is.EqualTo(23));
@@ -21,7 +21,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_ConstructorWithAlpha()
         {
-            Color color = new(13, 17, 23, 27);
+            SPColor color = new(13, 17, 23, 27);
             Assert.That(color.Red, Is.EqualTo(13));
             Assert.That(color.Green, Is.EqualTo(17));
             Assert.That(color.Blue, Is.EqualTo(23));
@@ -32,7 +32,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         public void Test_Color_ToARGB()
         {
             // MediumVioletRed 0xFFC71585 is RGB (199, 21, 133)
-            Color color = new(199, 21, 133);
+            SPColor color = new(199, 21, 133);
             Assert.That(color.ARGB, Is.EqualTo(0xFFC71585));
         }
 
@@ -40,7 +40,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         public void Test_Color_FromARGB()
         {
             // MediumVioletRed 0xFFC71585 is RGB (199, 21, 133)
-            Color color = Color.FromARGB(0xFFC71585);
+            SPColor color = SPColor.FromARGB(0xFFC71585);
             Assert.That(color.Red, Is.EqualTo(199));
             Assert.That(color.Green, Is.EqualTo(21));
             Assert.That(color.Blue, Is.EqualTo(133));
@@ -50,7 +50,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_WithRed()
         {
-            Color color = new Color(12, 34, 56, 78).WithRed(99);
+            SPColor color = new SPColor(12, 34, 56, 78).WithRed(99);
             Assert.That(color.Red, Is.EqualTo(99));
             Assert.That(color.Green, Is.EqualTo(34));
             Assert.That(color.Blue, Is.EqualTo(56));
@@ -60,7 +60,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_WithGreen()
         {
-            Color color = new Color(12, 34, 56, 78).WithGreen(99);
+            SPColor color = new SPColor(12, 34, 56, 78).WithGreen(99);
             Assert.That(color.Red, Is.EqualTo(12));
             Assert.That(color.Green, Is.EqualTo(99));
             Assert.That(color.Blue, Is.EqualTo(56));
@@ -70,7 +70,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_WithBlue()
         {
-            Color color = new Color(12, 34, 56, 78).WithBlue(99);
+            SPColor color = new SPColor(12, 34, 56, 78).WithBlue(99);
             Assert.That(color.Red, Is.EqualTo(12));
             Assert.That(color.Green, Is.EqualTo(34));
             Assert.That(color.Blue, Is.EqualTo(99));
@@ -80,7 +80,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_WithAlpha()
         {
-            Color color = new Color(12, 34, 56, 78).WithAlpha(99);
+            SPColor color = new SPColor(12, 34, 56, 78).WithAlpha(99);
             Assert.That(color.Red, Is.EqualTo(12));
             Assert.That(color.Green, Is.EqualTo(34));
             Assert.That(color.Blue, Is.EqualTo(56));
@@ -90,7 +90,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_ToSKColor()
         {
-            SKColor color = new Color(12, 34, 56, 78).ToSKColor();
+            SKColor color = new SPColor(12, 34, 56, 78).ToSKColor();
             Assert.That(color.Red, Is.EqualTo(12));
             Assert.That(color.Green, Is.EqualTo(34));
             Assert.That(color.Blue, Is.EqualTo(56));
@@ -100,7 +100,7 @@ namespace ScottPlot.Tests.UnitTests.Primitives
         [Test]
         public void Test_Color_ToHex()
         {
-            Color color = new(12, 34, 56);
+            SPColor color = new(12, 34, 56);
             Assert.That(color.ToStringRGB(), Is.EqualTo("#0C2238"));
         }
 

@@ -2,13 +2,13 @@
 
 public abstract class NamedColorsBase : INamedColors
 {
-    public Color[] GetAllColors()
+    public SPColor[] GetAllColors()
     {
         return GetType()
             .GetMethods()
-            .Where(x => x.ReturnType == typeof(Color))
+            .Where(x => x.ReturnType == typeof(SPColor))
             .Select(x => x.Invoke(null, null))
-            .Cast<Color>()
+            .Cast<SPColor>()
             .ToArray();
     }
 }
