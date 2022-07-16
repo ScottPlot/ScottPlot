@@ -4,17 +4,11 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public enum MouseButton
-    {
-        Mouse1,
-        Mouse2,
-        Mouse3,
-    }
-
-    public struct MouseInteraction
+    public struct MouseDownInteraction
     {
         public Pixel Position { get; set; }
         public MouseButton Button { get; set; }
         public AxisLimits AxisLimits { get; set; }
+        public Action? OnDragRelease { get; set; }
     }
 }
