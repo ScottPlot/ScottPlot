@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -38,24 +37,24 @@ namespace ScottPlot
             double yPixel = 10,
             double fontSize = 12,
             string fontName = "Segoe UI",
-            Color? fontColor = null,
+            System.Drawing.Color? fontColor = null,
             double fontAlpha = 1,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double fillAlpha = .2,
             double lineWidth = 1,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             double lineAlpha = 1,
             bool shadow = false
             )
         {
-            fontColor ??= Color.Black;
-            fillColor ??= Color.Yellow;
-            lineColor ??= Color.Black;
+            fontColor ??= System.Drawing.Color.Black;
+            fillColor ??= System.Drawing.Color.Yellow;
+            lineColor ??= System.Drawing.Color.Black;
 
-            fontColor = Color.FromArgb((int)(255 * fontAlpha), fontColor.Value.R, fontColor.Value.G, fontColor.Value.B);
-            fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
-            lineColor = Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
+            fontColor = System.Drawing.Color.FromArgb((int)(255 * fontAlpha), fontColor.Value.R, fontColor.Value.G, fontColor.Value.B);
+            fillColor = System.Drawing.Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
+            lineColor = System.Drawing.Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
 
             var plottable = new Annotation()
             {
@@ -86,7 +85,7 @@ namespace ScottPlot
             double lineWidth = 5,
             float arrowheadWidth = 3,
             float arrowheadLength = 3,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             string label = null
             )
         {
@@ -113,21 +112,21 @@ namespace ScottPlot
             double barWidth = .8,
             double xOffset = 0,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double outlineWidth = 1,
-            Color? outlineColor = null,
+            System.Drawing.Color? outlineColor = null,
             double errorLineWidth = 1,
             double errorCapSize = .38,
-            Color? errorColor = null,
+            System.Drawing.Color? errorColor = null,
             bool horizontal = false,
             bool showValues = false,
-            Color? valueColor = null,
+            System.Drawing.Color? valueColor = null,
             bool autoAxis = true,
             double[] yOffsets = null,
-            Color? negativeColor = null
+            System.Drawing.Color? negativeColor = null
             )
         {
-            Color nextColor = settings.GetNextColor();
+            System.Drawing.Color nextColor = settings.GetNextColor();
             BarPlot barPlot = new BarPlot(xs, ys, errorY, yOffsets)
             {
                 BarWidth = barWidth,
@@ -136,14 +135,14 @@ namespace ScottPlot
                 Label = label,
                 ErrorLineWidth = (float)errorLineWidth,
                 ErrorCapSize = errorCapSize,
-                ErrorColor = errorColor ?? Color.Black,
+                ErrorColor = errorColor ?? System.Drawing.Color.Black,
                 BorderLineWidth = (float)outlineWidth,
-                BorderColor = outlineColor ?? Color.Black,
+                BorderColor = outlineColor ?? System.Drawing.Color.Black,
                 VerticalOrientation = !horizontal,
                 ShowValuesAboveBars = showValues,
                 FillColorNegative = negativeColor ?? nextColor
             };
-            barPlot.Font.Color = valueColor ?? Color.Black;
+            barPlot.Font.Color = valueColor ?? System.Drawing.Color.Black;
             Add(barPlot);
 
             if (autoAxis)
@@ -225,13 +224,13 @@ namespace ScottPlot
 
         [Obsolete("Use AddImage() and customize the object it returns.")]
         public Plottable.Image PlotBitmap(
-           Bitmap bitmap,
+           System.Drawing.Bitmap bitmap,
            double x,
            double y,
            string label = null,
            Alignment alignment = Alignment.MiddleLeft,
            double rotation = 0,
-           Color? frameColor = null,
+           System.Drawing.Color? frameColor = null,
            int frameSize = 0
            )
         {
@@ -243,7 +242,7 @@ namespace ScottPlot
                 Label = label,
                 Alignment = alignment,
                 Rotation = rotation,
-                BorderColor = frameColor ?? Color.White,
+                BorderColor = frameColor ?? System.Drawing.Color.White,
                 BorderSize = frameSize
             };
 
@@ -254,8 +253,8 @@ namespace ScottPlot
         [Obsolete("use AddCandlesticks() and customize the object it returns")]
         public FinancePlot PlotCandlestick(
             OHLC[] ohlcs,
-            Color? colorUp = null,
-            Color? colorDown = null,
+            System.Drawing.Color? colorUp = null,
+            System.Drawing.Color? colorDown = null,
             bool autoWidth = true,
             bool sequential = false
             )
@@ -264,8 +263,8 @@ namespace ScottPlot
             {
                 Candle = true,
                 Sequential = sequential,
-                ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
+                ColorUp = colorUp ?? System.Drawing.ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = colorDown ?? System.Drawing.ColorTranslator.FromHtml("#ef5350")
             };
             Add(plottable);
             return plottable;
@@ -279,7 +278,7 @@ namespace ScottPlot
             double[] xNegativeError = null,
             double[] yPositiveError = null,
             double[] yNegativeError = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double capWidth = 3,
             string label = null
@@ -291,9 +290,9 @@ namespace ScottPlot
             double[] ys,
             string label = null,
             double lineWidth = 0,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double fillAlpha = 1,
             double baseline = 0
             )
@@ -315,9 +314,9 @@ namespace ScottPlot
             double[] ys2,
             string label = null,
             double lineWidth = 0,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double fillAlpha = 1,
             double baseline = 0
             )
@@ -350,10 +349,10 @@ namespace ScottPlot
             string labelAbove = null,
             string labelBelow = null,
             double lineWidth = 1,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             bool fill = true,
-            Color? fillColorAbove = null,
-            Color? fillColorBelow = null,
+            System.Drawing.Color? fillColorAbove = null,
+            System.Drawing.Color? fillColorBelow = null,
             double fillAlpha = 1,
             double baseline = 0
             )
@@ -381,11 +380,11 @@ namespace ScottPlot
             }
 
             if (fillColorAbove is null)
-                fillColorAbove = Color.Green;
+                fillColorAbove = System.Drawing.Color.Green;
             if (fillColorBelow is null)
-                fillColorBelow = Color.Red;
+                fillColorBelow = System.Drawing.Color.Red;
             if (lineColor is null)
-                lineColor = Color.Black;
+                lineColor = System.Drawing.Color.Black;
 
             var polyAbove = PlotPolygon(xs2, ys2above, labelAbove, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
             var polyBelow = PlotPolygon(xs2, ys2below, labelBelow, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
@@ -400,10 +399,10 @@ namespace ScottPlot
            string labelRight = null,
            string labelLeft = null,
            double lineWidth = 1,
-           Color? lineColor = null,
+           System.Drawing.Color? lineColor = null,
            bool fill = true,
-           Color? fillColorRight = null,
-           Color? fillColorLeft = null,
+           System.Drawing.Color? fillColorRight = null,
+           System.Drawing.Color? fillColorLeft = null,
            double fillAlpha = 1,
            double baseline = 0
            )
@@ -432,11 +431,11 @@ namespace ScottPlot
             }
 
             if (fillColorRight is null)
-                fillColorRight = Color.Green;
+                fillColorRight = System.Drawing.Color.Green;
             if (fillColorLeft is null)
-                fillColorLeft = Color.Red;
+                fillColorLeft = System.Drawing.Color.Red;
             if (lineColor is null)
-                lineColor = Color.Black;
+                lineColor = System.Drawing.Color.Black;
 
             var polyRight = PlotPolygon(xs2above, ys2, labelRight, lineWidth, lineColor, fill, fillColorRight, fillAlpha);
             var polyLeft = PlotPolygon(xs2below, ys2, labelLeft, lineWidth, lineColor, fill, fillColorLeft, fillAlpha);
@@ -447,7 +446,7 @@ namespace ScottPlot
         [Obsolete("Use AddFunction() and customize the object it returns")]
         public FunctionPlot PlotFunction(
             Func<double, double?> function,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 0,
             string label = "f(x)",
@@ -480,7 +479,7 @@ namespace ScottPlot
             double? scaleMin = null,
             double? scaleMax = null,
             double? transparencyThreshold = null,
-            Bitmap backgroundImage = null,
+            System.Drawing.Bitmap backgroundImage = null,
             bool displayImageAbove = false,
             bool drawAxisLabels = true
             )
@@ -507,7 +506,7 @@ namespace ScottPlot
             double? scaleMin = null,
             double? scaleMax = null,
             double? transparencyThreshold = null,
-            Bitmap backgroundImage = null,
+            System.Drawing.Bitmap backgroundImage = null,
             bool displayImageAbove = false,
             bool drawAxisLabels = true
             )
@@ -531,7 +530,7 @@ namespace ScottPlot
         [Obsolete("Use AddHorizontalLine() and customize the object it returns")]
         public HLine PlotHLine(
             double y,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             string label = null,
             bool draggable = false,
@@ -559,7 +558,7 @@ namespace ScottPlot
         public HSpan PlotHSpan(
             double x1,
             double x2,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double alpha = .5,
             string label = null,
             bool draggable = false,
@@ -589,7 +588,7 @@ namespace ScottPlot
             double y1,
             double x2,
             double y2,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             string label = null,
             LineStyle lineStyle = LineStyle.Solid
@@ -611,7 +610,7 @@ namespace ScottPlot
             double slope,
             double offset,
             (double x1, double x2) xLimits,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             string label = null,
             LineStyle lineStyle = LineStyle.Solid
@@ -633,8 +632,8 @@ namespace ScottPlot
         [Obsolete("use AddOHLC() and customize the object it returns")]
         public FinancePlot PlotOHLC(
             OHLC[] ohlcs,
-            Color? colorUp = null,
-            Color? colorDown = null,
+            System.Drawing.Color? colorUp = null,
+            System.Drawing.Color? colorDown = null,
             bool autoWidth = true,
             bool sequential = false
             )
@@ -643,8 +642,8 @@ namespace ScottPlot
             {
                 Candle = false,
                 Sequential = sequential,
-                ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
+                ColorUp = colorUp ?? System.Drawing.ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = colorDown ?? System.Drawing.ColorTranslator.FromHtml("#ef5350")
             };
             Add(plottable);
             return plottable;
@@ -654,7 +653,7 @@ namespace ScottPlot
         public PiePlot PlotPie(
             double[] values,
             string[] sliceLabels = null,
-            Color[] colors = null,
+            System.Drawing.Color[] colors = null,
             bool explodedChart = false,
             bool showValues = false,
             bool showPercentages = false,
@@ -678,7 +677,7 @@ namespace ScottPlot
         }
 
         [Obsolete("Use AddPoint() and customize the object it returns")]
-        public ScatterPlot PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null,
+        public ScatterPlot PlotPoint(double x, double y, System.Drawing.Color? color = null, double markerSize = 5, string label = null,
             double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
             => throw new NotImplementedException();
@@ -687,7 +686,7 @@ namespace ScottPlot
         public ScatterPlot PlotScatter(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
@@ -719,7 +718,7 @@ namespace ScottPlot
         public ScatterPlotHighlight PlotScatterHighlight(
            double[] xs,
            double[] ys,
-           Color? color = null,
+           System.Drawing.Color? color = null,
            double lineWidth = 1,
            double markerSize = 5,
            string label = null,
@@ -730,7 +729,7 @@ namespace ScottPlot
            MarkerShape markerShape = MarkerShape.filledCircle,
            LineStyle lineStyle = LineStyle.Solid,
            MarkerShape highlightedShape = MarkerShape.openCircle,
-           Color? highlightedColor = null,
+           System.Drawing.Color? highlightedColor = null,
            double? highlightedMarkerSize = null
            )
         {
@@ -738,14 +737,14 @@ namespace ScottPlot
                 color = settings.GetNextColor();
 
             if (highlightedColor is null)
-                highlightedColor = Color.Red;
+                highlightedColor = System.Drawing.Color.Red;
 
             if (highlightedMarkerSize is null)
                 highlightedMarkerSize = 2 * markerSize;
 
             var scatterPlot = new ScatterPlotHighlight(xs, ys, errorX, errorY)
             {
-                Color = (Color)color,
+                Color = (System.Drawing.Color)color,
                 LineWidth = lineWidth,
                 MarkerSize = (float)markerSize,
                 Label = label,
@@ -769,11 +768,11 @@ namespace ScottPlot
             double sampleRate = 1,
             double xOffset = 0,
             double yOffset = 0,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
-            Color[] colorByDensity = null,
+            System.Drawing.Color[] colorByDensity = null,
             int? minRenderIndex = null,
             int? maxRenderIndex = null,
             LineStyle lineStyle = LineStyle.Solid,
@@ -807,11 +806,11 @@ namespace ScottPlot
             double sampleRate = 1,
             double xOffset = 0,
             T yOffset = default(T),
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
-            Color[] colorByDensity = null,
+            System.Drawing.Color[] colorByDensity = null,
             int? minRenderIndex = null,
             int? maxRenderIndex = null,
             LineStyle lineStyle = LineStyle.Solid,
@@ -843,7 +842,7 @@ namespace ScottPlot
         public SignalPlotXY PlotSignalXY(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
@@ -875,7 +874,7 @@ namespace ScottPlot
         public SignalPlotXYConst<TX, TY> PlotSignalXYConst<TX, TY>(
             TX[] xs,
             TY[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
@@ -908,7 +907,7 @@ namespace ScottPlot
         public ScatterPlot PlotStep(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             string label = null
             )
@@ -918,7 +917,7 @@ namespace ScottPlot
 
             ScatterPlot stepPlot = new ScatterPlot(xs, ys)
             {
-                Color = (Color)color,
+                Color = (System.Drawing.Color)color,
                 LineWidth = lineWidth,
                 MarkerSize = 0,
                 Label = label,
@@ -939,9 +938,9 @@ namespace ScottPlot
             double[] ys,
             string label = null,
             double lineWidth = 0,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double fillAlpha = 1
             )
         {
@@ -949,7 +948,7 @@ namespace ScottPlot
             {
                 Label = label,
                 LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
+                LineColor = lineColor ?? System.Drawing.Color.Black,
                 Fill = fill,
                 FillColor = fillColor ?? GetNextColor(fillAlpha),
             };
@@ -963,9 +962,9 @@ namespace ScottPlot
             List<List<(double x, double y)>> polys,
             string label = null,
             double lineWidth = 0,
-            Color? lineColor = null,
+            System.Drawing.Color? lineColor = null,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double fillAlpha = 1
             )
         {
@@ -973,9 +972,9 @@ namespace ScottPlot
             {
                 Label = label,
                 LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
+                LineColor = lineColor ?? System.Drawing.Color.Black,
                 Fill = fill,
-                FillColor = Color.FromArgb((byte)(255 * fillAlpha), fillColor ?? GetNextColor()),
+                FillColor = System.Drawing.Color.FromArgb((byte)(255 * fillAlpha), fillColor ?? GetNextColor()),
             };
 
             Add(plottable);
@@ -1025,21 +1024,21 @@ namespace ScottPlot
             double[,] values,
             string[] categoryNames = null,
             string[] groupNames = null,
-            Color[] fillColors = null,
+            System.Drawing.Color[] fillColors = null,
             double fillAlpha = .4,
-            Color? webColor = null,
+            System.Drawing.Color? webColor = null,
             bool independentAxes = false,
             double[] maxValues = null
             )
         {
-            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
-            Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
+            System.Drawing.Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
+            System.Drawing.Color[] colorsAlpha = colors.Select(x => System.Drawing.Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
             var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha, independentAxes, maxValues)
             {
                 CategoryLabels = categoryNames,
                 GroupLabels = groupNames,
-                WebColor = webColor ?? Color.Gray
+                WebColor = webColor ?? System.Drawing.Color.Gray
             };
             Add(plottable);
 
@@ -1054,7 +1053,7 @@ namespace ScottPlot
             string labelY = null,
             double thickness = 2,
             double fontSize = 12,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double padPx = 10
             )
         {
@@ -1066,8 +1065,8 @@ namespace ScottPlot
                 VerticalLabel = labelY,
                 LineWidth = (float)thickness,
                 FontSize = (float)fontSize,
-                FontColor = color ?? Color.Black,
-                LineColor = color ?? Color.Black,
+                FontColor = color ?? System.Drawing.Color.Black,
+                LineColor = color ?? System.Drawing.Color.Black,
                 Padding = (float)padPx
             };
             Add(scalebar);
@@ -1079,7 +1078,7 @@ namespace ScottPlot
             string text,
             double x,
             double y,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             string fontName = null,
             double fontSize = 12,
             bool bold = false,
@@ -1087,7 +1086,7 @@ namespace ScottPlot
             Alignment alignment = Alignment.MiddleLeft,
             double rotation = 0,
             bool frame = false,
-            Color? frameColor = null
+            System.Drawing.Color? frameColor = null
             )
         {
             if (!string.IsNullOrWhiteSpace(label))
@@ -1105,7 +1104,7 @@ namespace ScottPlot
                 Alignment = alignment,
                 Rotation = (float)rotation,
                 BackgroundFill = frame,
-                BackgroundColor = frameColor ?? Color.White
+                BackgroundColor = frameColor ?? System.Drawing.Color.White
             };
             Add(plottableText);
             return plottableText;
@@ -1117,7 +1116,7 @@ namespace ScottPlot
             double[] xs,
             double[] ys,
             string label = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             Drawing.Colormap colormap = null,
             double scaleFactor = 1
             )
@@ -1133,7 +1132,7 @@ namespace ScottPlot
         [Obsolete("Use AddVerticalLine() and customize the object it returns")]
         public VLine PlotVLine(
             double x,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double lineWidth = 1,
             string label = null,
             bool draggable = false,
@@ -1161,7 +1160,7 @@ namespace ScottPlot
         public VSpan PlotVSpan(
             double y1,
             double y2,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             double alpha = .5,
             string label = null,
             bool draggable = false,
@@ -1194,17 +1193,17 @@ namespace ScottPlot
             double barWidth = .8,
             double xOffset = 0,
             bool fill = true,
-            Color? fillColor = null,
+            System.Drawing.Color? fillColor = null,
             double outlineWidth = 1,
-            Color? outlineColor = null,
+            System.Drawing.Color? outlineColor = null,
             double errorLineWidth = 1,
             double errorCapSize = .38,
-            Color? errorColor = null,
+            System.Drawing.Color? errorColor = null,
             bool horizontal = false,
             bool showValues = false,
-            Color? valueColor = null,
+            System.Drawing.Color? valueColor = null,
             bool autoAxis = true,
-            Color? negativeColor = null
+            System.Drawing.Color? negativeColor = null
             )
         {
             double[] yOffsets = Enumerable.Range(0, ys.Length).Select(count => ys.Take(count).Sum()).ToArray();

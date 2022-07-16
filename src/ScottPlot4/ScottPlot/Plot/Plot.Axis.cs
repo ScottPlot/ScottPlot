@@ -11,7 +11,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -59,7 +58,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2)
         /// </summary>
-        public void Title(string label, bool? bold = true, Color? color = null, float? size = null, string fontName = null) =>
+        public void Title(string label, bool? bold = true, System.Drawing.Color? color = null, float? size = null, string fontName = null) =>
             XAxis2.Label(label, color, size, bold, fontName);
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace ScottPlot
         /// <param name="bottom">visibility of the bottom axis (XAxis) line</param>
         /// <param name="top">visibility of the top axis (XAxis2) line</param>
         [Obsolete("This method has been deprecated. Visibility and customization can be controlled with methods like YAxis.Hide(), YAxis.Line(), etc.", true)]
-        public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
+        public void Frame(bool? visible = null, System.Drawing.Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
 
@@ -113,7 +112,7 @@ namespace ScottPlot
         /// <param name="color">sets color of of X and Y grid lines</param>
         /// <param name="lineStyle">defines the style for X and Y grid lines</param>
         /// <param name="onTop">defines whether the grid is drawn on top of plottables</param>
-        public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null, bool? onTop = null)
+        public void Grid(bool? enable = null, System.Drawing.Color? color = null, LineStyle? lineStyle = null, bool? onTop = null)
         {
             if (enable.HasValue)
             {
@@ -265,7 +264,7 @@ namespace ScottPlot
         /// <param name="title">defualt label to use for the axis</param>
         /// <param name="color">defualt color to use for the axis</param>
         /// <returns>The axis that was just created and added to the plot. You can further customize it by interacting with it.</returns>
-        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, Color? color = null)
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, System.Drawing.Color? color = null)
         {
             if (axisIndex <= 1)
                 throw new ArgumentException("The default axes already occupy indexes 0 and 1. Additional axes require higher indexes.");
@@ -761,7 +760,7 @@ namespace ScottPlot
             bool? displayTicksYminor = null,
             bool? displayTickLabelsX = null,
             bool? displayTickLabelsY = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             bool? useMultiplierNotation = null,
             bool? useOffsetNotation = null,
             bool? useExponentialNotation = null,

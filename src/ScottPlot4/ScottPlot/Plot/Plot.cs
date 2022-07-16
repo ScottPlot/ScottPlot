@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Plottable;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -246,7 +245,10 @@ namespace ScottPlot
         /// </summary>
         /// <param name="alpha">value from 0 (transparent) to 1 (opaque)</param>
         /// <returns>new color</returns>
-        public Color GetNextColor(double alpha = 1) => Color.FromArgb((byte)(alpha * 255), settings.GetNextColor());
+        public System.Drawing.Color GetNextColor(double alpha = 1)
+        {
+            return System.Drawing.Color.FromArgb((byte)(alpha * 255), settings.GetNextColor());
+        }
 
         /// <summary>
         /// The palette defines default colors to use for new plottables.
@@ -294,12 +296,12 @@ namespace ScottPlot
         /// <param name="axisLabel">Color for axis labels and tick labels</param>
         /// <param name="titleLabel">Color for the top axis label (XAxis2's title)</param>
         public void Style(
-            Color? figureBackground = null,
-            Color? dataBackground = null,
-            Color? grid = null,
-            Color? tick = null,
-            Color? axisLabel = null,
-            Color? titleLabel = null)
+            System.Drawing.Color? figureBackground = null,
+            System.Drawing.Color? dataBackground = null,
+            System.Drawing.Color? grid = null,
+            System.Drawing.Color? tick = null,
+            System.Drawing.Color? axisLabel = null,
+            System.Drawing.Color? titleLabel = null)
         {
             settings.FigureBackground.Color = figureBackground ?? settings.FigureBackground.Color;
             settings.DataBackground.Color = dataBackground ?? settings.DataBackground.Color;

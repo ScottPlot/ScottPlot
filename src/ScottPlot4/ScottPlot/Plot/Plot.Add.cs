@@ -16,7 +16,6 @@ using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -36,7 +35,7 @@ namespace ScottPlot
         /// <summary>
         /// Display an arrow pointing to a spot in coordinate space
         /// </summary>
-        public ArrowCoordinated AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
+        public ArrowCoordinated AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, System.Drawing.Color? color = null)
         {
             /*
             double[] xs = { xBase, xTip };
@@ -105,7 +104,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a Lollipop plot for the given values. Lollipops will be placed at X positions 0, 1, 2, etc.
         /// </summary>
-        public LollipopPlot AddLollipop(double[] values, Color? color = null)
+        public LollipopPlot AddLollipop(double[] values, System.Drawing.Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
             var plottable = new LollipopPlot(xs, values)
@@ -119,7 +118,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a lollipop plot for the given values using defined lollipop positions
         /// </summary>
-        public LollipopPlot AddLollipop(double[] values, double[] positions, Color? color = null)
+        public LollipopPlot AddLollipop(double[] values, double[] positions, System.Drawing.Color? color = null)
         {
             var plottable = new LollipopPlot(positions, values)
             {
@@ -132,7 +131,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
         /// </summary>
-        public BarPlot AddBar(double[] values, Color? color = null)
+        public BarPlot AddBar(double[] values, System.Drawing.Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
             var plottable = new BarPlot(xs, values, null, null)
@@ -146,7 +145,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a bar plot for the given values using defined bar positions
         /// </summary>
-        public BarPlot AddBar(double[] values, double[] positions, Color? color = null)
+        public BarPlot AddBar(double[] values, double[] positions, System.Drawing.Color? color = null)
         {
             var plottable = new BarPlot(positions, values, null, null)
             {
@@ -159,7 +158,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a bar plot (values +/- errors) using defined positions
         /// </summary>
-        public BarPlot AddBar(double[] values, double[] errors, double[] positions, Color? color = null)
+        public BarPlot AddBar(double[] values, double[] errors, double[] positions, System.Drawing.Color? color = null)
         {
             var plottable = new BarPlot(positions, values, errors, null)
             {
@@ -254,10 +253,10 @@ namespace ScottPlot
         /// Add a bubble plot with multiple bubbles at the given positions all styled the same.
         /// Call the Add() method to add bubbles manually, allowing further customization of size and style.
         /// </summary>
-        public BubblePlot AddBubblePlot(double[] xs, double[] ys, double radius = 10, Color? fillColor = null, double edgeWidth = 1, Color? edgeColor = null)
+        public BubblePlot AddBubblePlot(double[] xs, double[] ys, double radius = 10, System.Drawing.Color? fillColor = null, double edgeWidth = 1, System.Drawing.Color? edgeColor = null)
         {
             BubblePlot bubblePlot = new();
-            bubblePlot.Add(xs, ys, radius, fillColor ?? GetNextColor(), edgeWidth, edgeColor ?? Color.Black);
+            bubblePlot.Add(xs, ys, radius, fillColor ?? GetNextColor(), edgeWidth, edgeColor ?? System.Drawing.Color.Black);
             Add(bubblePlot);
             return bubblePlot;
         }
@@ -270,8 +269,8 @@ namespace ScottPlot
             FinancePlot plottable = new FinancePlot(ohlcs)
             {
                 Candle = true,
-                ColorUp = ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = ColorTranslator.FromHtml("#ef5350"),
+                ColorUp = System.Drawing.ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = System.Drawing.ColorTranslator.FromHtml("#ef5350"),
             };
             Add(plottable);
             return plottable;
@@ -333,7 +332,7 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
-        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
+        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, System.Drawing.Color? color = null)
         {
             var plottable = new Polygon(
                 xs: Tools.Pad(xs, cloneEdges: true),
@@ -349,7 +348,7 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between two Y curves that share the same X positions.
         /// </summary>
-        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null)
+        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, System.Drawing.Color? color = null)
         {
             double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
             double[] polyYs = ys1.Concat(ys2.Reverse()).ToArray();
@@ -368,7 +367,7 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between Y values of two curves.
         /// </summary>
-        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)
+        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, System.Drawing.Color? color = null)
         {
             // combine xs and ys to make one big curve
             int pointCount = xs1.Length + xs2.Length;
@@ -399,12 +398,12 @@ namespace ScottPlot
         /// Create a polygon to fill the area between Y values and a baseline
         /// that uses two different colors for area above and area below the baseline.
         /// </summary>
-        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
+        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, System.Drawing.Color? colorAbove = null, System.Drawing.Color? colorBelow = null)
         {
             var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
 
-            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
-            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
+            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? System.Drawing.Color.Green };
+            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? System.Drawing.Color.Red };
             Add(polyAbove);
             Add(polyBelow);
 
@@ -414,7 +413,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a line plot that uses a function (rather than X/Y points) to place the curve
         /// </summary>
-        public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
+        public FunctionPlot AddFunction(Func<double, double?> function, System.Drawing.Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
         {
             FunctionPlot plottable = new FunctionPlot(function)
             {
@@ -621,7 +620,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
-        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+        public HLine AddHorizontalLine(double y, System.Drawing.Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {
             HLine plottable = new HLine()
             {
@@ -638,7 +637,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string label = null)
+        public HSpan AddHorizontalSpan(double xMin, double xMax, System.Drawing.Color? color = null, string label = null)
         {
             var plottable = new HSpan()
             {
@@ -662,7 +661,7 @@ namespace ScottPlot
         /// <param name="scale">scale (1.0 = original scale, 2.0 = double size)</param>
         /// <param name="anchor">definces which part of the image is placed at the given X and Y coordinates</param>
         /// <returns></returns>
-        public Plottable.Image AddImage(Bitmap bitmap, double x, double y, double rotation = 0, double scale = 1, Alignment anchor = Alignment.UpperLeft)
+        public Plottable.Image AddImage(System.Drawing.Bitmap bitmap, double x, double y, double rotation = 0, double scale = 1, Alignment anchor = Alignment.UpperLeft)
         {
             Plottable.Image plottable = new()
             {
@@ -681,7 +680,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a line (a scatter plot with two points) to the plot
         /// </summary>
-        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
+        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, System.Drawing.Color? color = null, float lineWidth = 1)
         {
             return AddScatter(new double[] { x1, x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
         }
@@ -689,7 +688,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a line (a scatter plot with two points) to the plot
         /// </summary>
-        public ScatterPlot AddLine(double slope, double offset, (double x1, double x2) xLimits, Color? color = null, float lineWidth = 1)
+        public ScatterPlot AddLine(double slope, double offset, (double x1, double x2) xLimits, System.Drawing.Color? color = null, float lineWidth = 1)
         {
             double y1 = xLimits.x1 * slope + offset;
             double y2 = xLimits.x2 * slope + offset;
@@ -699,7 +698,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a marker at a specific X/Y position.
         /// </summary>
-        public MarkerPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        public MarkerPlot AddMarker(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, System.Drawing.Color? color = null, string label = null)
         {
             var plottable = new MarkerPlot()
             {
@@ -722,8 +721,8 @@ namespace ScottPlot
             FinancePlot plottable = new FinancePlot(ohlcs)
             {
                 Candle = false,
-                ColorUp = ColorTranslator.FromHtml("#26a69a"),
-                ColorDown = ColorTranslator.FromHtml("#ef5350"),
+                ColorUp = System.Drawing.ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = System.Drawing.ColorTranslator.FromHtml("#ef5350"),
             };
             Add(plottable);
             return plottable;
@@ -734,7 +733,7 @@ namespace ScottPlot
         /// </summary>
         public PiePlot AddPie(double[] values, bool hideGridAndFrame = true)
         {
-            Color[] colors = Enumerable.Range(0, values.Length)
+            System.Drawing.Color[] colors = Enumerable.Range(0, values.Length)
                                        .Select(i => settings.PlottablePalette.GetColor(i))
                                        .ToArray();
 
@@ -763,7 +762,7 @@ namespace ScottPlot
         /// The scatter plot that was created and added to the plot. 
         /// Interact with its public fields and methods to customize style and update data.
         /// </returns>
-        public MarkerPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
+        public MarkerPlot AddPoint(double x, double y, System.Drawing.Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
         {
             var plottable = new MarkerPlot()
             {
@@ -781,12 +780,12 @@ namespace ScottPlot
         /// <summary>
         /// Add a polygon to the plot
         /// </summary>
-        public Polygon AddPolygon(double[] xs, double[] ys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+        public Polygon AddPolygon(double[] xs, double[] ys, System.Drawing.Color? fillColor = null, double lineWidth = 0, System.Drawing.Color? lineColor = null)
         {
             var plottable = new Polygon(xs, ys)
             {
                 LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
+                LineColor = lineColor ?? System.Drawing.Color.Black,
                 FillColor = fillColor ?? settings.GetNextColor(),
             };
             Add(plottable);
@@ -796,12 +795,12 @@ namespace ScottPlot
         /// <summary>
         /// Add many polygons using an optimized rendering method
         /// </summary>
-        public Polygons AddPolygons(List<List<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+        public Polygons AddPolygons(List<List<(double x, double y)>> polys, System.Drawing.Color? fillColor = null, double lineWidth = 0, System.Drawing.Color? lineColor = null)
         {
             var plottable = new Polygons(polys)
             {
                 LineWidth = lineWidth,
-                LineColor = lineColor ?? Color.Black,
+                LineColor = lineColor ?? System.Drawing.Color.Black,
                 FillColor = fillColor ?? settings.GetNextColor(),
             };
             Add(plottable);
@@ -852,11 +851,11 @@ namespace ScottPlot
         public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
         {
 
-            Color[] colors = Enumerable.Range(0, values.Length)
+            System.Drawing.Color[] colors = Enumerable.Range(0, values.Length)
                                        .Select(i => settings.PlottablePalette.GetColor(i))
                                        .ToArray();
 
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+            System.Drawing.Color[] fills = colors.Select(x => System.Drawing.Color.FromArgb(50, x)).ToArray();
 
             RadarPlot plottable = new(values, colors, fills, independentAxes, maxValues);
             Add(plottable);
@@ -878,7 +877,7 @@ namespace ScottPlot
         /// <returns>The radial gaugle plot that was just created and added to the plot</returns>
         public ScottPlot.Plottable.RadialGaugePlot AddRadialGauge(double[] values, bool disableFrameAndGrid = true)
         {
-            Color[] colors = Palette.GetColors(values.Length);
+            System.Drawing.Color[] colors = Palette.GetColors(values.Length);
             ScottPlot.Plottable.RadialGaugePlot plottable = new(values, colors);
             Add(plottable);
 
@@ -898,7 +897,7 @@ namespace ScottPlot
         /// <param name="hideGridAndFrame">Whether to make the plot frameless and disable the grid</param>
         public CoxcombPlot AddCoxcomb(double[] values, bool hideGridAndFrame = true)
         {
-            Color[] colors = Enumerable.Range(0, values.Length)
+            System.Drawing.Color[] colors = Enumerable.Range(0, values.Length)
                            .Select(i => settings.PlottablePalette.GetColor(i))
                            .ToArray();
 
@@ -926,7 +925,7 @@ namespace ScottPlot
         /// <param name="yErrorsNegative">Magnitude of negative horizontal error</param>
         /// <param name="color">Color (null for next color in palette)</param>
         /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
-        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative, Color? color = null, float markerSize = 0)
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative, System.Drawing.Color? color = null, float markerSize = 0)
         {
             ErrorBar errorBar = new(xs, ys, xErrorsPositive, xErrorsNegative, yErrorsPositive, yErrorsNegative)
             {
@@ -947,7 +946,7 @@ namespace ScottPlot
         /// <param name="yErrors">Magnitude of horizontal error</param>
         /// <param name="color">Color (null for next color in palette)</param>
         /// <param name="markerSize">Size (in pixels) to draw a marker at the center of each errorbar</param>
-        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors, Color? color = null, float markerSize = 0) =>
+        public ErrorBar AddErrorBars(double[] xs, double[] ys, double[] xErrors, double[] yErrors, System.Drawing.Color? color = null, float markerSize = 0) =>
             AddErrorBars(xs, ys, xErrors, xErrors, yErrors, yErrors, color, markerSize);
 
         /// <summary>
@@ -974,7 +973,7 @@ namespace ScottPlot
         public ScatterPlot AddScatter(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
             MarkerShape markerShape = MarkerShape.filledCircle,
@@ -1001,7 +1000,7 @@ namespace ScottPlot
         public ScatterPlot AddScatterLines(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float lineWidth = 1,
             LineStyle lineStyle = LineStyle.Solid,
             string label = null)
@@ -1025,7 +1024,7 @@ namespace ScottPlot
         public ScatterPlot AddScatterPoints(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float markerSize = 5,
             MarkerShape markerShape = MarkerShape.filledCircle,
             string label = null)
@@ -1048,7 +1047,7 @@ namespace ScottPlot
         public ScatterPlot AddScatterStep(
             double[] xs,
             double[] ys,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float lineWidth = 1,
             string label = null)
         {
@@ -1068,7 +1067,7 @@ namespace ScottPlot
         /// Scatter plot with Add() and Clear() methods for updating data
         /// </summary>
         public ScatterPlotList<double> AddScatterList(
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
             string label = null,
@@ -1093,7 +1092,7 @@ namespace ScottPlot
         /// Generic ScatterPlotList using generic types (as long as they can be converted to double)
         /// </summary>
         public ScatterPlotList<T> AddScatterList<T>(
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
             string label = null,
@@ -1117,7 +1116,7 @@ namespace ScottPlot
         /// <summary>
         /// Signal plots have evenly-spaced X points and render very fast.
         /// </summary>
-        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
+        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, System.Drawing.Color? color = null, string label = null)
         {
             SignalPlot signal = new SignalPlot()
             {
@@ -1139,7 +1138,7 @@ namespace ScottPlot
         /// but data in source arrays cannot be changed after it is loaded.
         /// Methods can be used to update all or portions of the data.
         /// </summary>
-        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
+        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, System.Drawing.Color? color = null, string label = null) where T : struct, IComparable
         {
             SignalPlotConst<T> plottable = new SignalPlotConst<T>()
             {
@@ -1157,7 +1156,7 @@ namespace ScottPlot
         /// <summary>
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
         /// </summary>
-        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string label = null)
+        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, System.Drawing.Color? color = null, string label = null)
         {
             SignalPlotXY plottable = new SignalPlotXY()
             {
@@ -1177,7 +1176,7 @@ namespace ScottPlot
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
         /// Faster than SignalXY but values cannot be modified after loading.
         /// </summary>
-        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string label = null)
+        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, System.Drawing.Color? color = null, string label = null)
             where TX : struct, IComparable where TY : struct, IComparable
         {
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
@@ -1196,7 +1195,7 @@ namespace ScottPlot
         /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
-        public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
+        public Text AddText(string label, double x, double y, float size = 12, System.Drawing.Color? color = null) =>
             AddText(label, x, y, new Drawing.Font() { Size = size, Color = color ?? GetNextColor() });
 
         /// <summary>
@@ -1233,7 +1232,7 @@ namespace ScottPlot
             double[] xs,
             double[] ys,
             string label = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             Drawing.Colormap colormap = null,
             double scaleFactor = 1
             )
@@ -1250,7 +1249,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a vertical axis line at a specific Y position
         /// </summary>
-        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+        public VLine AddVerticalLine(double x, System.Drawing.Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {
             VLine plottable = new VLine()
             {
@@ -1267,7 +1266,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
+        public VSpan AddVerticalSpan(double yMin, double yMax, System.Drawing.Color? color = null, string label = null)
         {
             var plottable = new VSpan()
             {
