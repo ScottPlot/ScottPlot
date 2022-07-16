@@ -5,8 +5,8 @@ namespace ScottPlot.Plottables;
 
 public class ZoomRectangle : PlottableBase
 {
-    public SPColor FillColor = new SPColor(255, 0, 0).WithAlpha(100);
-    public SPColor EdgeColor = new SPColor(255, 0, 0).WithAlpha(200);
+    public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
+    public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
     public float LineWidth = 2;
     public CoordinateRect Rect;
 

@@ -14,7 +14,7 @@ public class Scatter : PlottableBase
     private readonly double[] Ys;
     private int Count => Xs.Length;
 
-    public SPColor Color = new(0, 0, 255);
+    public Color Color = new(0, 0, 255);
     public float LineWidth = 1;
     public float MarkerSize = 5;
 

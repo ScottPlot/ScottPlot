@@ -193,7 +193,7 @@ namespace ScottPlot.Plottable
                     color = FillColors[i],
                     lineWidth = 10,
                     hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
-                    hatchColor = HatchOptions?[i].Color ?? Color.Black
+                    hatchColor = HatchOptions?[i].Color ?? System.Drawing.Color.Black
                 })
                 .ToArray();
         }

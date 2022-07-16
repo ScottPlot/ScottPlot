@@ -5,7 +5,7 @@ public struct Label
     public string Text { get; set; } = string.Empty;
     public float FontSize { get; set; } = 12;
     public string Font { get; set; } = "Consolas";
-    public SPColor Color { get; set; } = Colors.Black;
+    public Color Color { get; set; } = Colors.Black;
     public bool Bold { get; set; } = false;
     public bool Italic { get; set; } = false;
     public bool AntiAlias { get; set; } = true;
