@@ -65,7 +65,8 @@ jobs:
       - name: 🐢 Set up MSBuild
         if: startsWith(matrix.os, 'windows')
         uses: microsoft/setup-msbuild@v1.1
-      - name: 🚚 Restore
+      - name: 🚚 Restore Solution
+        if: startsWith(matrix.os, 'windows')
         run: dotnet restore src
       - name: 🐌 Build Solution
         if: startsWith(matrix.os, 'windows')
