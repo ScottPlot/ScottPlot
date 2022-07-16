@@ -2,10 +2,12 @@ name: CI
 
 on:
   workflow_dispatch:
-  push:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
     paths:
       - "src/**"
-  pull_request:
+  pull_request: # runs on commits to bull request branches
     paths:
       - "src/**"
 
