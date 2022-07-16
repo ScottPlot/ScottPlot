@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot.Drawing
@@ -96,25 +95,25 @@ namespace ScottPlot.Drawing
             return alpha << 24 | r << 16 | g << 8 | b;
         }
 
-        public Color GetColor(byte value, double alpha = 1.0)
+        public System.Drawing.Color GetColor(byte value, double alpha = 1.0)
         {
             byte alphaByte = (byte)(255 * alpha);
-            return Color.FromArgb(GetInt32(value, alphaByte));
+            return System.Drawing.Color.FromArgb(GetInt32(value, alphaByte));
         }
 
-        public Color GetColor(double fraction, double alpha = 1.0)
+        public System.Drawing.Color GetColor(double fraction, double alpha = 1.0)
         {
             byte alphaByte = (byte)(255 * alpha);
-            return Color.FromArgb(GetInt32(fraction, alphaByte));
+            return System.Drawing.Color.FromArgb(GetInt32(fraction, alphaByte));
         }
 
-        public Color RandomColor(Random rand, double alpha = 1.0)
+        public System.Drawing.Color RandomColor(Random rand, double alpha = 1.0)
         {
             byte alphaByte = (byte)(255 * alpha);
-            return Color.FromArgb(GetInt32(rand.NextDouble(), alphaByte));
+            return System.Drawing.Color.FromArgb(GetInt32(rand.NextDouble(), alphaByte));
         }
 
-        public void Apply(Bitmap bmp)
+        public void Apply(System.Drawing.Bitmap bmp)
         {
             System.Drawing.Imaging.ColorPalette pal = bmp.Palette;
             for (int i = 0; i < 256; i++)
@@ -173,14 +172,14 @@ namespace ScottPlot.Drawing
             return rgbas;
         }
 
-        public static Color[] GetColors(double[] intensities, Colormap colorMap)
+        public static System.Drawing.Color[] GetColors(double[] intensities, Colormap colorMap)
         {
-            Color[] colors = new Color[intensities.Length];
+            System.Drawing.Color[] colors = new System.Drawing.Color[intensities.Length];
             for (int i = 0; i < intensities.Length; i++)
             {
                 byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
                 var (r, g, b) = colorMap.GetRGB(pixelIntensity);
-                colors[i] = Color.FromArgb(255, r, g, b);
+                colors[i] = System.Drawing.Color.FromArgb(255, r, g, b);
             }
             return colors;
         }
@@ -189,7 +188,7 @@ namespace ScottPlot.Drawing
         /// Return a bitmap showing the gradient of colors in a colormap.
         /// Defining min/max will create an image containing only part of the colormap.
         /// </summary>
-        public static Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false, double min = 0, double max = 1)
+        public static System.Drawing.Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false, double min = 0, double max = 1)
         {
             if (width < 1 || height < 1)
                 return null;
@@ -201,9 +200,9 @@ namespace ScottPlot.Drawing
             if (min >= max)
                 throw new ArgumentException($"{nameof(min)} must < {nameof(max)}");
 
-            Bitmap bmp = new(width, height);
-            using Graphics gfx = Graphics.FromImage(bmp);
-            using Pen pen = new(Color.Magenta);
+            System.Drawing.Bitmap bmp = new(width, height);
+            using System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
+            using System.Drawing.Pen pen = new(System.Drawing.Color.Magenta);
 
             if (vertical)
             {
