@@ -161,5 +161,44 @@ namespace ScottPlotTests.PlotTypes
                 plt.Render();
             }
         }
+
+        [Test]
+        public void Test_Signal_Types()
+        {
+            // see discussion in https://github.com/ScottPlot/ScottPlot/pull/1927
+
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<double>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<float>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<int>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotConst<byte>());
+
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, double>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<float, float>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<int, int>());
+            Assert.DoesNotThrow(() => new ScottPlot.Plottable.SignalPlotXYGeneric<double, byte>());
+            Assert.Throws<InvalidOperationException>(() => new ScottPlot.Plottable.SignalPlotXYGeneric<byte, byte>());
+        }
+
+        [Test]
+        public void Test_GenericSignal_ByteArray()
+        {
+            double[] doubles = ScottPlot.DataGen.Sin(51, offset: 100, mult: 100);
+            byte[] bytes = doubles.Select(x => (byte)(x + 5)).ToArray();
+
+            byte[] bytesX = ScottPlot.DataGen.Consecutive(51).Select(x => (byte)x).ToArray();
+            byte[] bytesY = doubles.Select(x => (byte)(x + 10)).ToArray();
+
+            double[] doublesX = ScottPlot.DataGen.Consecutive(51);
+            double[] doublesY = doubles.Select(x => x + 15).ToArray();
+
+            ScottPlot.Plot plt = new();
+            plt.AddSignalConst(doubles, label: "doubles");
+            plt.AddSignalConst(bytes, label: "bytes");
+            plt.AddSignalXYConst(doublesX, bytesY, label: "bytes XY");
+            plt.AddSignalXYConst(doublesX, doublesY, label: "doubles XY");
+            plt.Legend();
+            TestTools.SaveFig(plt);
+        }
+
     }
 }
