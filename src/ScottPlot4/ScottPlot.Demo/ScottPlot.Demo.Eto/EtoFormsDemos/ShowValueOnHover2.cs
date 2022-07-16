@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
 
             // Add a red circle we can move around later as a highlighted point indicator
             HighlightedPoint = formsPlot1.Plot.AddPoint(0, 0);
-            HighlightedPoint.Color = Color.Red;
+            HighlightedPoint.Color = System.Drawing.Color.Red;
             HighlightedPoint.MarkerSize = 10;
             HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
             HighlightedPoint.IsVisible = false;

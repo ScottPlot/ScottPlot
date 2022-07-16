@@ -83,7 +83,7 @@ namespace ScottPlot.Demo.Eto
             // 
             // cookbookButton
             //
-            this.cookbookButton.BackgroundColor = Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(161)))));
+            this.cookbookButton.BackgroundColor = global::Eto.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(161)))));
             this.cookbookButton.Size = new Size(75, 59);
             this.cookbookButton.Text = "Launch ScottPlot Cookbook";
             // 

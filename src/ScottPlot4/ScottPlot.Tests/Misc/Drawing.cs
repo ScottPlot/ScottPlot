@@ -17,12 +17,12 @@ namespace ScottPlotTests.Misc
         {
             var bmp = new System.Drawing.Bitmap(320, 240);
 
-            using (var pen = new Pen(Color.Blue, 2))
-            using (var brush = new SolidBrush(Color.LightGreen))
+            using (var pen = new Pen(System.Drawing.Color.Blue, 2))
+            using (var brush = new SolidBrush(System.Drawing.Color.LightGreen))
             using (var gfx = Graphics.FromImage(bmp))
             {
                 gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                gfx.Clear(Color.White);
+                gfx.Clear(System.Drawing.Color.White);
 
                 Point[] points = {
                     new Point(75, 100),
@@ -45,8 +45,8 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.AddLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
+            plt.AddPolygon(xs, ys, fillColor: System.Drawing.Color.LightGreen);
+            plt.AddLine(xs[0], ys[0], xs[1], ys[1], System.Drawing.Color.Blue);
             plt.Grid(false);
             plt.Frameless(false);
             plt.XAxis.Ticks(false);
@@ -63,11 +63,11 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            plt.AddPolygon(xs, ys, fillColor: System.Drawing.Color.LightGreen);
             var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                color: Color.Blue);
+                color: System.Drawing.Color.Blue);
             sig.MarkerSize = 0;
             sig.OffsetX = xs[0];
 
@@ -87,11 +87,11 @@ namespace ScottPlotTests.Misc
             double[] ys = { 1e6 - 100, 1e6 - 75, 1e6 - 200, 1e6 - 220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            plt.AddPolygon(xs, ys, fillColor: System.Drawing.Color.LightGreen);
             var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                color: Color.Blue);
+                color: System.Drawing.Color.Blue);
             sig.MarkerSize = 0;
             sig.OffsetX = xs[0];
             plt.Grid(false);
@@ -168,7 +168,7 @@ namespace ScottPlotTests.Misc
 
             foreach (string fontName in fontNames)
             {
-                gfx.Clear(Color.Navy);
+                gfx.Clear(System.Drawing.Color.Navy);
                 System.Drawing.Font fnt = new(fontName, 18);
 
                 gfx.DrawString("tttt", fnt, Brushes.Yellow, 10, 10);

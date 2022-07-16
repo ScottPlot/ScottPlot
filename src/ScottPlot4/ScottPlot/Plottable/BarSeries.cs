@@ -90,8 +90,8 @@ public class BarSeries : IPlottable
             return;
 
         using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-        using Brush brush = GDI.Brush(Color.Black);
-        using Pen pen = GDI.Pen(Color.Black);
+        using Brush brush = GDI.Brush(System.Drawing.Color.Black);
+        using Pen pen = GDI.Pen(System.Drawing.Color.Black);
         using StringFormat sfVert = GDI.StringFormat(Alignment.LowerCenter);
         using StringFormat sfHoriz = GDI.StringFormat(Alignment.MiddleLeft);
 

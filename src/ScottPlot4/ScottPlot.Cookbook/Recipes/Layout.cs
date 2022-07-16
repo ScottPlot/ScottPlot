@@ -41,7 +41,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
             plt.Title("Plot Title");
-            plt.Style(figureBackground: Color.SkyBlue);
+            plt.Style(figureBackground: System.Drawing.Color.SkyBlue);
 
             plt.Layout(left: 100, right: 100, bottom: 100, top: 50);
         }
@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
             plt.Title("Plot Title");
-            plt.Style(figureBackground: Color.SkyBlue);
+            plt.Style(figureBackground: System.Drawing.Color.SkyBlue);
 
             plt.XAxis.Layout(minimumSize: 100, maximumSize: 150);
         }
@@ -90,7 +90,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
             plt.Title("Plot Title");
-            plt.Style(figureBackground: Color.SkyBlue);
+            plt.Style(figureBackground: System.Drawing.Color.SkyBlue);
 
             plt.XAxis.Layout(padding: 50);
         }
@@ -111,7 +111,7 @@ namespace ScottPlot.Cookbook.Recipes
         {
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
-            plt.Style(figureBackground: Color.SkyBlue);
+            plt.Style(figureBackground: System.Drawing.Color.SkyBlue);
 
             plt.Frameless();
         }
@@ -135,7 +135,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
             plt.Title("Plot Title");
-            plt.Style(figureBackground: Color.SkyBlue);
+            plt.Style(figureBackground: System.Drawing.Color.SkyBlue);
 
             // 25% horizontal padding means data occupies 75% of horizontal space
             // 40% vertical padding means data occupies 60% of vertical space

@@ -67,7 +67,7 @@ namespace ScottPlot.Plottable
         public Drawing.Font LabelFont { get; set; }
 
         [Obsolete("Get HorizontalLine.PositionLabelBackground and VerticalLine.PositionLabelBackground instead.", true)]
-        public Color LabelBackgroundColor { get; set; }
+        public System.Drawing.Color LabelBackgroundColor { get; set; }
 
         [Obsolete("Get HorizontalLine.PositionLabel and VerticalLine.PositionLabel instead.", true)]
         public bool PositionLabel { get; set; }
@@ -75,7 +75,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Set color for horizontal and vertical lines and their position label backgrounds
         /// </summary>
-        public Color Color
+        public System.Drawing.Color Color
         {
             get => HorizontalLine.Color;
             set
@@ -87,7 +87,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public Color LineColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color LineColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// If true, AxisAuto() will ignore the position of this line when determining axis limits
@@ -98,7 +98,7 @@ namespace ScottPlot.Plottable
         {
             LineStyle = LineStyle.Dash;
             LineWidth = 1;
-            Color = Color.FromArgb(200, Color.Red);
+            Color = System.Drawing.Color.FromArgb(200, System.Drawing.Color.Red);
             HorizontalLine.PositionLabel = true;
             VerticalLine.PositionLabel = true;
         }

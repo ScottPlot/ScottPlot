@@ -23,11 +23,11 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
-        public Color Color { get; set; } = Color.FromArgb(128, Color.Magenta);
-        public Color BorderColor { get; set; } = Color.Transparent;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.FromArgb(128, System.Drawing.Color.Magenta);
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.Transparent;
         public float BorderLineWidth { get; set; } = 0;
         public LineStyle BorderLineStyle { get; set; } = LineStyle.None;
-        public Color HatchColor { get; set; } = Color.Transparent;
+        public System.Drawing.Color HatchColor { get; set; } = System.Drawing.Color.Transparent;
         public HatchStyle HatchStyle { get; set; } = Drawing.HatchStyle.None;
         public string Label { get; set; } = null;
 
@@ -200,7 +200,7 @@ namespace ScottPlot.Plottable
             {
                 RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
-                if (BorderLineWidth > 0 && BorderColor != Color.Transparent && BorderLineStyle != LineStyle.None)
+                if (BorderLineWidth > 0 && BorderColor != System.Drawing.Color.Transparent && BorderLineStyle != LineStyle.None)
                     gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
             }
         }

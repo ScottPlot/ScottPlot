@@ -9,6 +9,6 @@ namespace ScottPlot.Plottable
 {
     public interface IHasColor
     {
-        Color Color { get; set; }
+        System.Drawing.Color Color { get; set; }
     }
 }

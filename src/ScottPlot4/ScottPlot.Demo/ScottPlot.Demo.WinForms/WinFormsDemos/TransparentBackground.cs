@@ -24,29 +24,29 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Plot.AddScatter(x, sin);
             formsPlot1.Plot.AddScatter(x, cos);
 
-            formsPlot1.Plot.Style(figureBackground: Color.Transparent, dataBackground: Color.Transparent);
-            formsPlot1.BackColor = Color.Transparent;
+            formsPlot1.Plot.Style(figureBackground: System.Drawing.Color.Transparent, dataBackground: System.Drawing.Color.Transparent);
+            formsPlot1.BackColor = System.Drawing.Color.Transparent;
             button6_Click(null, null);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SetBackground(Color.Red);
+            SetBackground(System.Drawing.Color.Red);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SetBackground(Color.Green);
+            SetBackground(System.Drawing.Color.Green);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SetBackground(Color.Blue);
+            SetBackground(System.Drawing.Color.Blue);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            SetBackground(Color.White);
+            SetBackground(System.Drawing.Color.White);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -75,7 +75,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Refresh();
         }
 
-        private void SetBackground(Color bgcolor)
+        private void SetBackground(System.Drawing.Color bgcolor)
         {
             BackgroundImage = null;
             BackColor = bgcolor;

@@ -20,12 +20,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Font to use for position labels (labels drawn over the axis)
         /// </summary>
-        public readonly Drawing.Font PositionLabelFont = new() { Color = Color.White, Bold = true };
+        public readonly Drawing.Font PositionLabelFont = new() { Color = System.Drawing.Color.White, Bold = true };
 
         /// <summary>
         /// Color to use behind the position labels
         /// </summary>
-        public Color PositionLabelBackground { get; set; } = Color.Black;
+        public System.Drawing.Color PositionLabelBackground { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// If true the position label will be drawn on the right or top of the data area.
@@ -67,8 +67,8 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public double LineWidth { get; set; } = 1;
-        public Color Color { get; set; } = Color.Black;
-        public Color LineColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
+        public System.Drawing.Color LineColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Text that appears in the legend

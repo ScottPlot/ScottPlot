@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             formsPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // plot a red vertical line and save it so we can move it later
-            vline = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 2);
+            vline = formsPlot1.Plot.AddVerticalLine(0, System.Drawing.Color.Red, 2);
 
             // customize styling
             formsPlot1.Plot.Title("Electrocardiogram Strip Chart");

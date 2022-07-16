@@ -60,7 +60,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var labelFont = new Drawing.Font
             {
                 Bold = true,
-                Color = Color.Black,
+                Color = System.Drawing.Color.Black,
                 Alignment = Alignment.MiddleCenter
             };
 
@@ -70,14 +70,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 // give each bubble a random size and make smaller ones bluer
                 double randomValue = rand.NextDouble();
                 double bubbleSize = randomValue * 30 + 10;
-                Color bubbleColor = Drawing.Colormap.Jet.GetColor(randomValue, .5);
+                System.Drawing.Color bubbleColor = Drawing.Colormap.Jet.GetColor(randomValue, .5);
 
                 myBubblePlot.Add(
                     x: xs[i],
                     y: ys[i],
                     radius: bubbleSize,
                     fillColor: bubbleColor,
-                    edgeColor: Color.Transparent,
+                    edgeColor: System.Drawing.Color.Transparent,
                     edgeWidth: 1
                 );
 

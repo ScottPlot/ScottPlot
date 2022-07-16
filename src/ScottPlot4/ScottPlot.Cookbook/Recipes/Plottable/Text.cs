@@ -24,7 +24,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddScatter(x, sin);
             plt.AddScatter(x, cos);
 
-            plt.AddText("sample text", 10, .5, size: 16, color: Color.Blue);
+            plt.AddText("sample text", 10, .5, size: 16, color: System.Drawing.Color.Blue);
         }
     }
 
@@ -48,15 +48,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
                 var txt = plt.AddText(alignments[i].ToString(), x, y);
                 txt.Alignment = alignments[i];
-                txt.Font.Color = Color.Black; ;
-                txt.BackgroundColor = Color.LightSteelBlue;
+                txt.Font.Color = System.Drawing.Color.Black; ;
+                txt.BackgroundColor = System.Drawing.Color.LightSteelBlue;
                 txt.BackgroundFill = true;
                 txt.Rotation = 5;
                 txt.BorderSize = 2;
-                txt.BorderColor = Color.Navy;
+                txt.BorderColor = System.Drawing.Color.Navy;
                 txt.DragEnabled = true;
 
-                plt.AddPoint(x, y, Color.Red, 10);
+                plt.AddPoint(x, y, System.Drawing.Color.Red, 10);
             }
 
             plt.Margins(.5, .2);
@@ -77,27 +77,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddSignal(DataGen.Cos(51), label: "cos");
 
             // add text with custom fonts
-            plt.AddText("very graph", 25, .8, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Blue, Bold = true });
-            plt.AddText("so data", 0, 0, new Drawing.Font() { Name = "comic sans ms", Size = 42, Color = Color.Magenta, Bold = true });
-            plt.AddText("many documentation", 3, -.6, new Drawing.Font() { Name = "comic sans ms", Size = 18, Color = Color.DarkBlue, Bold = true });
-            plt.AddText("wow.", 10, .6, new Drawing.Font() { Name = "comic sans ms", Size = 36, Color = Color.Green, Bold = true });
-            plt.AddText("NuGet", 32, 0, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Gold, Bold = true });
+            plt.AddText("very graph", 25, .8, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = System.Drawing.Color.Blue, Bold = true });
+            plt.AddText("so data", 0, 0, new Drawing.Font() { Name = "comic sans ms", Size = 42, Color = System.Drawing.Color.Magenta, Bold = true });
+            plt.AddText("many documentation", 3, -.6, new Drawing.Font() { Name = "comic sans ms", Size = 18, Color = System.Drawing.Color.DarkBlue, Bold = true });
+            plt.AddText("wow.", 10, .6, new Drawing.Font() { Name = "comic sans ms", Size = 36, Color = System.Drawing.Color.Green, Bold = true });
+            plt.AddText("NuGet", 32, 0, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = System.Drawing.Color.Gold, Bold = true });
 
             // configure axis labels
-            plt.YAxis.Label(label: "vertical units", fontName: "impact", size: 24, color: Color.Red, bold: true);
-            plt.XAxis.Label(label: "horizontal units", fontName: "georgia", size: 24, color: Color.Blue, bold: true);
-            plt.XAxis2.Label(label: "Impressive Graph", size: 24, color: Color.Purple, bold: true);
+            plt.YAxis.Label(label: "vertical units", fontName: "impact", size: 24, color: System.Drawing.Color.Red, bold: true);
+            plt.XAxis.Label(label: "horizontal units", fontName: "georgia", size: 24, color: System.Drawing.Color.Blue, bold: true);
+            plt.XAxis2.Label(label: "Impressive Graph", size: 24, color: System.Drawing.Color.Purple, bold: true);
 
             // configure tick labels
-            plt.XAxis.TickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
-            plt.YAxis.TickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
+            plt.XAxis.TickLabelStyle(color: System.Drawing.Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
+            plt.YAxis.TickLabelStyle(color: System.Drawing.Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
 
             // add a legend to the corner
             var legend = plt.Legend();
             legend.FontName = "comic sans ms";
             legend.FontSize = 18;
             legend.FontBold = true;
-            legend.FontColor = Color.DarkBlue;
+            legend.FontColor = System.Drawing.Color.DarkBlue;
         }
     }
 }

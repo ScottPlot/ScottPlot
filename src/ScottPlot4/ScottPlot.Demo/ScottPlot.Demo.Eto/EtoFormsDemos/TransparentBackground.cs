@@ -72,7 +72,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             Graphics gfx = new Graphics(bmp);
             gfx.AntiAlias = true;
             gfx.Clear(SystemColors.Control);
-            Pen pen = new Pen(Color.FromGrayscale(40));
+            Pen pen = new Pen(global::Eto.Drawing.Color.FromGrayscale(40));
             Size circleSize = new Size(20, 20);
             for (int i = 0; i < 100; i++)
             {
@@ -85,7 +85,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             Content.Invalidate();
         }
 
-        private void SetBackground(Color bgcolor)
+        private void SetBackground(global::Eto.Drawing.Color bgcolor)
         {
             (Content as BackgroundImageControl).BackgroundImage = null;
             BackgroundColor = bgcolor;

@@ -9,7 +9,7 @@ namespace ScottPlot.Renderable
     public class AxisLine : IRenderable
     {
         public bool IsVisible { get; set; } = true;
-        public Color Color = Color.Black;
+        public System.Drawing.Color Color = System.Drawing.Color.Black;
         public float Width = 1;
         public Edge Edge;
         public float PixelOffset;

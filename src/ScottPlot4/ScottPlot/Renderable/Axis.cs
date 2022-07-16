@@ -168,7 +168,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the label of this axis
         /// </summary>
-        public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
+        public string Label(string label = null, System.Drawing.Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
             AxisLabel.IsVisible = true;
             AxisLabel.ImageLabel = null;
@@ -198,7 +198,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set color of every component of this axis (label, line, tick marks, and tick labels)
         /// </summary>
-        public void Color(Color color)
+        public void Color(System.Drawing.Color color)
         {
             Label(color: color);
             TickLabelStyle(color: color);
@@ -333,7 +333,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Apply the same color to major and minor tick marks
         /// </summary>
-        public void TickMarkColor(Color color)
+        public void TickMarkColor(System.Drawing.Color color)
         {
             AxisTicks.MajorTickColor = color;
             AxisTicks.MinorTickColor = color;
@@ -342,7 +342,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set colors for major and minor tick marks
         /// </summary>
-        public void TickMarkColor(Color majorColor, Color minorColor)
+        public void TickMarkColor(System.Drawing.Color majorColor, System.Drawing.Color minorColor)
         {
             AxisTicks.MajorTickColor = majorColor;
             AxisTicks.MinorTickColor = minorColor;
@@ -374,7 +374,7 @@ namespace ScottPlot.Renderable
         /// Customize styling of the tick labels
         /// </summary>
         public void TickLabelStyle(
-            Color? color = null,
+            System.Drawing.Color? color = null,
             string fontName = null,
             float? fontSize = null,
             bool? fontBold = null,
@@ -391,7 +391,7 @@ namespace ScottPlot.Renderable
         /// Customize styling of the label (without changing its content)
         /// </summary>
         public void LabelStyle(
-            Color? color = null,
+            System.Drawing.Color? color = null,
             string fontName = null,
             float? fontSize = null,
             float? rotation = null)
@@ -465,7 +465,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the line drawn along the edge of the axis
         /// </summary>
-        public void Line(bool? visible = null, Color? color = null, float? width = null)
+        public void Line(bool? visible = null, System.Drawing.Color? color = null, float? width = null)
         {
             AxisLine.IsVisible = visible ?? AxisLine.IsVisible;
             AxisLine.Color = color ?? AxisLine.Color;
@@ -487,7 +487,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void MajorGrid(
             bool? enable = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float? lineWidth = null,
             LineStyle? lineStyle = null)
         {
@@ -502,7 +502,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void MinorGrid(
             bool? enable = null,
-            Color? color = null,
+            System.Drawing.Color? color = null,
             float? lineWidth = null,
             LineStyle? lineStyle = null,
             bool? logScale = null)

@@ -22,13 +22,13 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public double LineWidth { get; set; } = 1;
-        public Color Color { get; set; } = Color.Gray;
-        public Color LineColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Gray;
+        public System.Drawing.Color LineColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public float MarkerLineWidth { get; set; } = 1;
         public float MarkerSize { get; set; } = 0;
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color MarkerColor { get => Color; set { Color = value; } }
 
         public ErrorBar(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
         {

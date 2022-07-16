@@ -23,8 +23,8 @@ namespace ScottPlot.Plottable
         public double LineWidth { get; set; } = 1;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public string Label { get; set; }
-        public Color Color { get; set; } = Color.Black;
-        public Color LineColor { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
+        public System.Drawing.Color LineColor { get; set; } = System.Drawing.Color.Black;
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
         public FunctionPlot(Func<double, double?> function)

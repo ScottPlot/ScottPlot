@@ -27,19 +27,19 @@ namespace ScottPlot.Renderable
         // major tick/grid styling
         public bool MajorTickVisible = true;
         public float MajorTickLength = 5;
-        public Color MajorTickColor = Color.Black;
+        public System.Drawing.Color MajorTickColor = System.Drawing.Color.Black;
         public bool MajorGridVisible = false;
         public LineStyle MajorGridStyle = LineStyle.Solid;
-        public Color MajorGridColor = ColorTranslator.FromHtml("#efefef");
+        public System.Drawing.Color MajorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MajorGridWidth = 1;
 
         // minor tick/grid styling
         public bool MinorTickVisible = true;
         public float MinorTickLength = 2;
-        public Color MinorTickColor = Color.Black;
+        public System.Drawing.Color MinorTickColor = System.Drawing.Color.Black;
         public bool MinorGridVisible = false;
         public LineStyle MinorGridStyle = LineStyle.Solid;
-        public Color MinorGridColor = ColorTranslator.FromHtml("#efefef");
+        public System.Drawing.Color MinorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MinorGridWidth = 1;
 
         // misc configuration

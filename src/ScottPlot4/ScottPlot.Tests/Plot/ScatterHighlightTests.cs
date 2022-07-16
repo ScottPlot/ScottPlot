@@ -17,7 +17,7 @@ namespace ScottPlotTests.Plot
             double[] xs = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] ys = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] error = new double[] { 0.1, 0.1, 0.1, 0.1 };
-            return new ScatterPlot(xs, ys, error, error) { Color = Color.Green };
+            return new ScatterPlot(xs, ys, error, error) { Color = System.Drawing.Color.Green };
         }
 
         [TestCase(0, 3)]

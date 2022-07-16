@@ -14,7 +14,7 @@ namespace ScottPlot.Plottable
         private readonly double[] Xs;
         private readonly double[] Ys;
         private readonly Vector2[,] Vectors;
-        private readonly Color[] VectorColors;
+        private readonly System.Drawing.Color[] VectorColors;
         public string Label { get; set; } = null;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -54,7 +54,7 @@ namespace ScottPlot.Plottable
 
         public void ValidateData(bool deep = false) { }
 
-        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
+        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, System.Drawing.Color defaultColor)
         {
             double minMagnitudeSquared = vectors[0, 0].LengthSquared();
             double maxMagnitudeSquared = vectors[0, 0].LengthSquared();

@@ -26,7 +26,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddVerticalLine(23);
 
             // customize axis lines with optional arguments
-            plt.AddVerticalLine(x: 33, color: Color.Magenta, width: 3, style: LineStyle.Dot);
+            plt.AddVerticalLine(x: 33, color: System.Drawing.Color.Magenta, width: 3, style: LineStyle.Dot);
         }
     }
 
@@ -180,10 +180,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             vSpan.DragEnabled = true;
             vSpan.DragLimitMin = -1;
             vSpan.DragLimitMax = 1;
-            vSpan.BorderColor = Color.Red;
+            vSpan.BorderColor = System.Drawing.Color.Red;
             vSpan.BorderLineStyle = LineStyle.Dot;
             vSpan.BorderLineWidth = 2;
-            vSpan.HatchColor = Color.FromArgb(100, Color.Blue);
+            vSpan.HatchColor = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Blue);
             vSpan.HatchStyle = Drawing.HatchStyle.SmallCheckerBoard;
             vSpan.Label = "Customized vSpan";
 
@@ -296,17 +296,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] xs = DataGen.Random(rand, 50);
             double[] ys = DataGen.Random(rand, 50);
 
-            var scatter = plt.AddScatterPoints(xs, ys, Color.Blue, 10);
+            var scatter = plt.AddScatterPoints(xs, ys, System.Drawing.Color.Blue, 10);
 
             var vlines = new ScottPlot.Plottable.VLineVector();
             vlines.Xs = new double[] { xs[1], xs[12], xs[35] };
-            vlines.Color = Color.Red;
+            vlines.Color = System.Drawing.Color.Red;
             vlines.PositionLabel = true;
             vlines.PositionLabelBackground = vlines.Color;
 
             var hlines = new ScottPlot.Plottable.HLineVector();
             hlines.Ys = new double[] { ys[1], ys[12], ys[35] };
-            hlines.Color = Color.DarkCyan;
+            hlines.Color = System.Drawing.Color.DarkCyan;
             hlines.PositionLabel = true;
             hlines.PositionLabelBackground = hlines.Color;
             hlines.DragEnabled = true;

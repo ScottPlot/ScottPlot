@@ -45,12 +45,12 @@ public class Bar
     /// <summary>
     /// Color filling the rectangular area of the bar
     /// </summary>
-    public Color FillColor { get; set; } = Color.Gray;
+    public System.Drawing.Color FillColor { get; set; } = System.Drawing.Color.Gray;
 
     /// <summary>
     /// Color of the line outlining the rectangular area of the bar
     /// </summary>
-    public Color LineColor { get; set; } = Color.Black;
+    public System.Drawing.Color LineColor { get; set; } = System.Drawing.Color.Black;
 
     /// <summary>
     /// Width of the line outlining the rectangular area of the bar

@@ -176,8 +176,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var radar = plt.AddRadar(values);
             radar.HatchOptions = new HatchOptions[]
             {
-                new() { Pattern = HatchStyle.StripedUpwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
-                new() { Pattern = HatchStyle.StripedDownwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
+                new() { Pattern = HatchStyle.StripedUpwardDiagonal, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
+                new() { Pattern = HatchStyle.StripedDownwardDiagonal, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
             };
 
             radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };

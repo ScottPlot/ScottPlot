@@ -25,8 +25,8 @@ namespace ScottPlot.Cookbook.Recipes
             (double[] smoothXs, double[] smoothYs) = ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY(xs, ys, 200);
 
             // plot the original vs interpolated lines
-            plt.AddScatter(xs, ys, Color.Green, markerSize: 10, lineWidth: 1, label: "Original");
-            plt.AddScatter(smoothXs, smoothYs, Color.Magenta, label: "Interpolated");
+            plt.AddScatter(xs, ys, System.Drawing.Color.Green, markerSize: 10, lineWidth: 1, label: "Original");
+            plt.AddScatter(smoothXs, smoothYs, System.Drawing.Color.Magenta, label: "Interpolated");
             plt.Legend();
         }
     }
@@ -92,9 +92,9 @@ namespace ScottPlot.Cookbook.Recipes
             var sig1 = plt.AddSignal(ap, sampleRate);
             sig1.YAxisIndex = 0;
             sig1.LineWidth = 3;
-            sig1.Color = Color.Blue;
+            sig1.Color = System.Drawing.Color.Blue;
             plt.YAxis.Label("Membrane Potential (mV)");
-            plt.YAxis.Color(Color.Blue);
+            plt.YAxis.Color(System.Drawing.Color.Blue);
 
             // calculate the first derivative
             double[] deriv = new double[ap.Length];
@@ -106,9 +106,9 @@ namespace ScottPlot.Cookbook.Recipes
             var sig2 = plt.AddSignal(deriv, sampleRate);
             sig2.YAxisIndex = 1;
             sig2.LineWidth = 3;
-            sig2.Color = Color.FromArgb(120, Color.Red);
+            sig2.Color = System.Drawing.Color.FromArgb(120, System.Drawing.Color.Red);
             plt.YAxis2.Label("Rate of Change (mV/ms)");
-            plt.YAxis2.Color(Color.Red);
+            plt.YAxis2.Color(System.Drawing.Color.Red);
             plt.YAxis2.Ticks(true);
 
             // zoom in on the interesting area

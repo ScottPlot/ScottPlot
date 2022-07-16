@@ -40,7 +40,7 @@ namespace ScottPlot
 
         private void Render()
         {
-            gfx.Clear(Color.White);
+            gfx.Clear(System.Drawing.Color.White);
             int subplotIndex = 0;
             for (int row = 0; row < rows; row++)
             {

@@ -36,16 +36,16 @@ namespace ScottPlot.Renderable
         public bool IsVisible { get; set; } = false;
         public bool IsDetached { get; set; } = false;
 
-        public Color FillColor = Color.White;
-        public Color OutlineColor = Color.Black;
-        public Color ShadowColor = Color.FromArgb(50, Color.Black);
+        public System.Drawing.Color FillColor = System.Drawing.Color.White;
+        public System.Drawing.Color OutlineColor = System.Drawing.Color.Black;
+        public System.Drawing.Color ShadowColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Black);
         public float ShadowOffsetX = 2;
         public float ShadowOffsetY = 2;
 
         public Drawing.Font Font = new Drawing.Font();
         public string FontName { set { Font.Name = value; } }
         public float FontSize { set { Font.Size = value; } }
-        public Color FontColor { set { Font.Color = value; } }
+        public System.Drawing.Color FontColor { set { Font.Color = value; } }
         public bool FontBold { set { Font.Bold = value; } }
 
         public float Padding = 5;

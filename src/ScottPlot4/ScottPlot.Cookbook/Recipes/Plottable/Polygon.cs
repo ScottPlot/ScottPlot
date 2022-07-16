@@ -81,7 +81,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] lower = ScottPlot.DataGen.Sin(pointCount, 5, offset: 3);
             double[] upper = ScottPlot.DataGen.Cos(pointCount, 5, offset: -3);
             var poly = plt.AddFill(xs, lower, upper);
-            poly.FillColor = Color.FromArgb(50, Color.Green);
+            poly.FillColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Green);
 
             // plot a line within that region
             double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
@@ -160,7 +160,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             // plot the list of polygons with one step
-            plt.AddPolygons(polys, fillColor: Color.Green);
+            plt.AddPolygons(polys, fillColor: System.Drawing.Color.Green);
 
             // ensure X and Y pixel scales are the same (so circles aren't ovals)
             plt.AxisScaleLock(true);

@@ -41,13 +41,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Bitmap monaLisa = DataGen.SampleImage();
 
             plt.AddImage(monaLisa, 10, 0);
-            plt.AddPoint(10, 0, Color.Magenta, size: 20);
+            plt.AddPoint(10, 0, System.Drawing.Color.Magenta, size: 20);
 
             plt.AddImage(monaLisa, 25, 0, anchor: Alignment.MiddleCenter);
-            plt.AddPoint(25, 0, Color.Magenta, size: 20);
+            plt.AddPoint(25, 0, System.Drawing.Color.Magenta, size: 20);
 
             plt.AddImage(monaLisa, 40, 0, anchor: Alignment.LowerRight);
-            plt.AddPoint(40, 0, Color.Magenta, size: 20);
+            plt.AddPoint(40, 0, System.Drawing.Color.Magenta, size: 20);
         }
     }
 
@@ -67,13 +67,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Bitmap monaLisa = DataGen.SampleImage();
 
             plt.AddImage(monaLisa, 10, .5, rotation: 30);
-            plt.AddPoint(10, .5, color: Color.Magenta, size: 20);
+            plt.AddPoint(10, .5, color: System.Drawing.Color.Magenta, size: 20);
 
             plt.AddImage(monaLisa, 25, 0, rotation: -30);
-            plt.AddPoint(25, 0, color: Color.Magenta, size: 20);
+            plt.AddPoint(25, 0, color: System.Drawing.Color.Magenta, size: 20);
 
             plt.AddImage(monaLisa, 45, 0, rotation: 30, anchor: Alignment.MiddleCenter);
-            plt.AddPoint(45, 0, color: Color.Magenta, size: 20);
+            plt.AddPoint(45, 0, color: System.Drawing.Color.Magenta, size: 20);
         }
     }
 
@@ -93,7 +93,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Bitmap monaLisa = DataGen.SampleImage();
 
             var img = plt.AddImage(monaLisa, 10, .5, rotation: 30);
-            img.BorderColor = Color.Magenta;
+            img.BorderColor = System.Drawing.Color.Magenta;
             img.BorderSize = 5;
         }
     }
@@ -143,10 +143,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             img.WidthInAxisUnits = 30;
 
             // 4 corners of the image remain fixed in coordinate space
-            plt.AddPoint(10, .5, color: Color.Magenta, size: 20);
-            plt.AddPoint(40, .5, color: Color.Green, size: 20);
-            plt.AddPoint(10, -.5, color: Color.Green, size: 20);
-            plt.AddPoint(40, -.5, color: Color.Green, size: 20);
+            plt.AddPoint(10, .5, color: System.Drawing.Color.Magenta, size: 20);
+            plt.AddPoint(40, .5, color: System.Drawing.Color.Green, size: 20);
+            plt.AddPoint(10, -.5, color: System.Drawing.Color.Green, size: 20);
+            plt.AddPoint(40, -.5, color: System.Drawing.Color.Green, size: 20);
         }
     }
 }

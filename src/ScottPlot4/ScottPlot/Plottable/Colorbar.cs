@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
         public int Width { get; set; } = 20;
 
         public readonly Drawing.Font TickLabelFont = new();
-        public Color TickMarkColor { get; set; } = Color.Black;
+        public System.Drawing.Color TickMarkColor { get; set; } = System.Drawing.Color.Black;
         public float TickMarkLength { get; set; } = 3;
         public float TickMarkWidth { get; set; } = 1;
 
@@ -95,7 +95,7 @@ namespace ScottPlot.Plottable
 
         public void ValidateData(bool deep = false) { }
 
-        public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
+        public void SetStyle(System.Drawing.Color? tickMarkColor, System.Drawing.Color? tickFontColor)
         {
             TickMarkColor = tickMarkColor ?? TickMarkColor;
             TickLabelFont.Color = tickFontColor ?? TickLabelFont.Color;

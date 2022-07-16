@@ -70,7 +70,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 double[] ys = DataGen.Sin(pointCount, 2, -i);
                 var sp = plt.AddScatter(xs, ys);
                 sp.LineWidth = 2;
-                sp.LineColor = Color.FromArgb(50, sp.LineColor);
+                sp.LineColor = System.Drawing.Color.FromArgb(50, sp.LineColor);
                 sp.MarkerSize = 7;
                 sp.MarkerShape = ms;
                 sp.Label = ms.ToString();
@@ -99,9 +99,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] cos = DataGen.Cos(pointCount);
             double[] cos2 = DataGen.Cos(pointCount, mult: -1);
 
-            plt.AddScatter(x, sin, color: Color.Magenta, lineWidth: 0, markerSize: 10);
-            plt.AddScatter(x, cos, color: Color.Green, lineWidth: 5, markerSize: 0);
-            plt.AddScatter(x, cos2, color: Color.Blue, lineWidth: 3, markerSize: 0, lineStyle: LineStyle.DashDot);
+            plt.AddScatter(x, sin, color: System.Drawing.Color.Magenta, lineWidth: 0, markerSize: 10);
+            plt.AddScatter(x, cos, color: System.Drawing.Color.Green, lineWidth: 5, markerSize: 0);
+            plt.AddScatter(x, cos2, color: System.Drawing.Color.Blue, lineWidth: 3, markerSize: 0, lineStyle: LineStyle.DashDot);
 
             var legend = plt.Legend();
             legend.FixedLineWidth = false;
@@ -172,7 +172,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] xs = DataGen.Consecutive(51);
             double[] ys = DataGen.Sin(51);
 
-            plt.AddScatterLines(xs, ys, Color.Red, 3);
+            plt.AddScatterLines(xs, ys, System.Drawing.Color.Red, 3);
         }
     }
 
@@ -189,7 +189,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] xs = DataGen.Consecutive(51);
             double[] ys = DataGen.Sin(51);
 
-            plt.AddScatterPoints(xs, ys, Color.Navy, 10, MarkerShape.filledDiamond);
+            plt.AddScatterPoints(xs, ys, System.Drawing.Color.Navy, 10, MarkerShape.filledDiamond);
         }
     }
 

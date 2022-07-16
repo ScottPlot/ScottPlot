@@ -8,7 +8,7 @@ namespace ScottPlot.Plottable
     {
         public MarkerShape highlightedShape { get; set; } = MarkerShape.openCircle;
         public float highlightedMarkerSize { get; set; } = 10;
-        public Color highlightedColor { get; set; } = Color.Red;
+        public System.Drawing.Color highlightedColor { get; set; } = System.Drawing.Color.Red;
         protected bool[] isHighlighted { get; set; }
 
         public ScatterPlotHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :

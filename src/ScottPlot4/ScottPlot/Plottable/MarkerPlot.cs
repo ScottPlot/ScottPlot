@@ -36,8 +36,8 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
-        public Color Color { get; set; }
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color Color { get; set; }
+        public System.Drawing.Color MarkerColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Text to appear in the legend (if populated)

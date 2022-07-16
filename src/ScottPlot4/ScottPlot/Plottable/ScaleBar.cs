@@ -28,12 +28,12 @@ namespace ScottPlot.Plottable
         public string HorizontalLabel { get; set; }
         public string VerticalLabel { get; set; }
         public float LineWidth { get; set; } = 2;
-        public Color LineColor { get; set; } = Color.Black;
+        public System.Drawing.Color LineColor { get; set; } = System.Drawing.Color.Black;
         public readonly Drawing.Font Font = new();
         public float FontSize { get => Font.Size; set => Font.Size = value; }
-        public Color FontColor { get => Font.Color; set => Font.Color = value; }
+        public System.Drawing.Color FontColor { get => Font.Color; set => Font.Color = value; }
         public bool FontBold { get => Font.Bold; set => Font.Bold = value; }
-        public Color Color { get => LineColor; set { LineColor = value; FontColor = value; } }
+        public System.Drawing.Color Color { get => LineColor; set { LineColor = value; FontColor = value; } }
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -47,7 +47,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
 
-        public void SetStyle(Color? tickMarkColor, Color? tickFontColor)
+        public void SetStyle(System.Drawing.Color? tickMarkColor, System.Drawing.Color? tickFontColor)
         {
             LineColor = tickMarkColor ?? LineColor;
             FontColor = tickFontColor ?? Font.Color;

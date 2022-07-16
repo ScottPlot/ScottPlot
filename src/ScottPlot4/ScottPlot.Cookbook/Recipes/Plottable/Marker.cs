@@ -44,7 +44,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             {
                 X = 25,
                 Y = .57,
-                Color = Color.Magenta,
+                Color = System.Drawing.Color.Magenta,
                 MarkerShape = MarkerShape.filledDiamond,
                 MarkerSize = 15,
                 Text = "drag the point!",
@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 IsVisible = true,
                 MarkerSize = 15,
                 MarkerShape = MarkerShape.filledDiamond,
-                MarkerColor = Color.Magenta,
+                MarkerColor = System.Drawing.Color.Magenta,
                 Label = "marker",
             };
             plt.Add(dmpv);
@@ -102,7 +102,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var marker = plt.AddMarker(35, 0.6);
             marker.Text = "Interesting Point";
-            marker.TextFont.Color = Color.Magenta;
+            marker.TextFont.Color = System.Drawing.Color.Magenta;
             marker.TextFont.Alignment = Alignment.UpperCenter;
             marker.TextFont.Size = 28;
         }

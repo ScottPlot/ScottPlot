@@ -10,7 +10,7 @@ namespace ScottPlotTests
 {
     class ColorsetTests
     {
-        private Color darkColor = ColorTranslator.FromHtml("#2e3440");
+        private System.Drawing.Color darkColor = ColorTranslator.FromHtml("#2e3440");
         private ScottPlot.Plot TestColormap(ScottPlot.Drawing.Palette cset, int lineWidth, bool dark = false)
         {
             var plt = new ScottPlot.Plot(600, 400);

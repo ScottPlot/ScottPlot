@@ -10,8 +10,8 @@ namespace ScottPlot.Renderable
         private float Width;
         private float Height;
 
-        public Color FillColor { get; set; } = Color.FromArgb(50, Color.Red);
-        public Color BorderColor { get; set; } = Color.FromArgb(100, Color.Red);
+        public System.Drawing.Color FillColor { get; set; } = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Red);
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Red);
         public bool IsVisible { get; set; } = true;
 
         public void Clear() => IsVisible = false;

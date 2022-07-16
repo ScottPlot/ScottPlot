@@ -178,20 +178,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             var bar1 = plt.AddBar(new double[] { 10, 13, 15 }, new double[] { 1, 5, 9 });
             bar1.HatchStyle = Drawing.HatchStyle.StripedUpwardDiagonal;
-            bar1.FillColor = Color.Gray;
-            bar1.FillColorHatch = Color.Black;
+            bar1.FillColor = System.Drawing.Color.Gray;
+            bar1.FillColorHatch = System.Drawing.Color.Black;
             bar1.Label = "Series 1";
 
             var bar2 = plt.AddBar(new double[] { 14, 15, 9 }, new double[] { 2, 6, 10 });
             bar2.HatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
-            bar2.FillColor = Color.DodgerBlue;
-            bar2.FillColorHatch = Color.DeepSkyBlue;
+            bar2.FillColor = System.Drawing.Color.DodgerBlue;
+            bar2.FillColorHatch = System.Drawing.Color.DeepSkyBlue;
             bar2.Label = "Series 2";
 
             var bar3 = plt.AddBar(new double[] { 13, 6, 14 }, new double[] { 3, 7, 11 });
             bar3.HatchStyle = Drawing.HatchStyle.LargeCheckerBoard;
-            bar3.FillColor = Color.SeaGreen;
-            bar3.FillColorHatch = Color.DarkSeaGreen;
+            bar3.FillColor = System.Drawing.Color.SeaGreen;
+            bar3.FillColorHatch = System.Drawing.Color.DarkSeaGreen;
             bar3.Label = "Series 3";
 
             // add a legend to display each labeled bar plot
@@ -298,8 +298,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 23, -17, 19, -24, 22 };
 
             var bar = plt.AddBar(values);
-            bar.FillColor = Color.Green;
-            bar.FillColorNegative = Color.Red;
+            bar.FillColor = System.Drawing.Color.Green;
+            bar.FillColorNegative = System.Drawing.Color.Red;
         }
     }
 
@@ -320,8 +320,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var bar = plt.AddBar(values);
             bar.ValueOffsets = offsets;
-            bar.FillColorNegative = Color.Red;
-            bar.FillColor = Color.Green;
+            bar.FillColorNegative = System.Drawing.Color.Red;
+            bar.FillColor = System.Drawing.Color.Green;
         }
     }
 
@@ -353,8 +353,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var lollipop = plt.AddLollipop(values);
             lollipop.Orientation = Orientation.Horizontal;
             lollipop.LollipopRadius = 3;
-            lollipop.BorderColor = Color.Green;
-            lollipop.LollipopColor = Color.Blue;
+            lollipop.BorderColor = System.Drawing.Color.Green;
+            lollipop.LollipopColor = System.Drawing.Color.Blue;
             lollipop.LollipopRadius = 10;
         }
     }

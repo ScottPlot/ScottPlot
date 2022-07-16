@@ -56,7 +56,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Alignment Alignment { get; set; }
 
-        public Color BorderColor { get; set; }
+        public System.Drawing.Color BorderColor { get; set; }
 
         /// <summary>
         /// Line width of the border (in pixels)

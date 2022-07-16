@@ -20,7 +20,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color Color { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
         public float LineWidth { get; set; } = 1;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public float MarkerSize { get; set; } = 3;

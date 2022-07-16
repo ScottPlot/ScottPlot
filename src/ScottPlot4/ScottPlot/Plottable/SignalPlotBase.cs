@@ -62,9 +62,9 @@ namespace ScottPlot.Plottable
         }
 
         public string Label { get; set; } = null;
-        public Color Color { get; set; } = Color.Green;
-        public Color LineColor { get => Color; set { Color = value; } }
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Green;
+        public System.Drawing.Color LineColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color MarkerColor { get => Color; set { Color = value; } }
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         public bool IsHighlighted { get; set; } = false;
@@ -84,7 +84,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If fill is enabled, a baseline will be drawn using this color.
         /// </summary>
-        public Color BaselineColor { get; set; } = Color.Black;
+        public System.Drawing.Color BaselineColor { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// If fill is enabled, a baseline will be drawn using this width.
@@ -95,19 +95,19 @@ namespace ScottPlot.Plottable
         /// If fill is enabled, this color will be used to fill the area below the curve above BaselineY.
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
-        public Color? GradientFillColor1 { get => _GradientFillColor1; set => _GradientFillColor1 = value; }
-        private Color? _GradientFillColor1 = null;
+        public System.Drawing.Color? GradientFillColor1 { get => _GradientFillColor1; set => _GradientFillColor1 = value; }
+        private System.Drawing.Color? _GradientFillColor1 = null;
 
         /// <summary>
         /// If fill is enabled, this color will be used to fill the area above the curve below BaselineY.
         /// </summary>
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
-        public Color? GradientFillColor2 { get => _GradientFillColor2; set => _GradientFillColor2 = value; }
-        private Color? _GradientFillColor2 = null;
+        public System.Drawing.Color? GradientFillColor2 { get => _GradientFillColor2; set => _GradientFillColor2 = value; }
+        private System.Drawing.Color? _GradientFillColor2 = null;
 
         protected FillType _FillType = FillType.NoFill;
-        protected Color? _FillColor1 = null;
-        protected Color? _FillColor2 = null;
+        protected System.Drawing.Color? _FillColor1 = null;
+        protected System.Drawing.Color? _FillColor2 = null;
 
         /// <summary>
         /// When markers are visible on the line (low density mode) this is True
@@ -188,8 +188,8 @@ namespace ScottPlot.Plottable
         }
 
         private int DensityLevelCount = 0;
-        private Color[] PenColorsByDensity;
-        public Color[] DensityColors
+        private System.Drawing.Color[] PenColorsByDensity;
+        public System.Drawing.Color[] DensityColors
         {
             set
             {
@@ -197,7 +197,7 @@ namespace ScottPlot.Plottable
                 {
                     // turn the ramp into a pen triangle
                     DensityLevelCount = value.Length * 2 - 1;
-                    PenColorsByDensity = new Color[DensityLevelCount];
+                    PenColorsByDensity = new System.Drawing.Color[DensityLevelCount];
                     for (int i = 0; i < value.Length; i++)
                     {
                         PenColorsByDensity[i] = value[i];
@@ -222,7 +222,7 @@ namespace ScottPlot.Plottable
         }
 
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
-        public Color? FillColor1
+        public System.Drawing.Color? FillColor1
         {
             get => _FillColor1;
             set
@@ -234,7 +234,7 @@ namespace ScottPlot.Plottable
         }
 
         [Obsolete("Use the Fill() methods of this object to configure this setting")]
-        public Color? FillColor2
+        public System.Drawing.Color? FillColor2
         {
             get => _FillColor2;
             set

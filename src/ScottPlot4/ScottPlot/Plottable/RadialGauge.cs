@@ -84,12 +84,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the gauge foreground
         /// </summary>
-        public Color Color { get; set; }
+        public System.Drawing.Color Color { get; set; }
 
         /// <summary>
         /// Color of the gauge background
         /// </summary>
-        public Color BackgroundColor { get; set; }
+        public System.Drawing.Color BackgroundColor { get; set; }
 
         /// <summary>
         /// Style of the base of the gauge

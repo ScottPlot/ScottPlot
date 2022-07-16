@@ -12,11 +12,11 @@ namespace ScottPlot
 {
     public static class Tools
     {
-        public static Color GetRandomColor(Random rand = null)
+        public static System.Drawing.Color GetRandomColor(Random rand = null)
         {
             if (rand is null)
                 rand = new Random();
-            Color randomColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+            System.Drawing.Color randomColor = System.Drawing.Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
             return randomColor;
         }
 
@@ -25,14 +25,14 @@ namespace ScottPlot
             return new SolidBrush(GetRandomColor());
         }
 
-        public static Color Blend(this Color colorA, Color colorB, double fractionA)
+        public static System.Drawing.Color Blend(this System.Drawing.Color colorA, System.Drawing.Color colorB, double fractionA)
         {
             fractionA = Math.Max(fractionA, 0);
             fractionA = Math.Min(fractionA, 1);
             byte r = (byte)((colorA.R * fractionA) + colorB.R * (1 - fractionA));
             byte g = (byte)((colorA.G * fractionA) + colorB.G * (1 - fractionA));
             byte b = (byte)((colorA.B * fractionA) + colorB.B * (1 - fractionA));
-            return Color.FromArgb(r, g, b);
+            return System.Drawing.Color.FromArgb(r, g, b);
         }
 
         [Obsolete("use ScottPlot.Plot.Version", true)]

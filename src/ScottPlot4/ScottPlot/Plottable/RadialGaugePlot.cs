@@ -48,7 +48,7 @@ namespace ScottPlot.Plottable
         /// Colors for each gauge.
         /// Number of colors must equal number of gauges.
         /// </summary>
-        public Color[] Colors { get; set; }
+        public System.Drawing.Color[] Colors { get; set; }
 
         /// <summary>
         /// Describes how transparent the unfilled background of each gauge is (0 to 1).
@@ -98,7 +98,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Describes labels drawn on each gauge.
         /// </summary>
-        public readonly Drawing.Font Font = new() { Bold = true, Color = Color.White };
+        public readonly Drawing.Font Font = new() { Bold = true, Color = System.Drawing.Color.White };
 
         /// <summary>
         /// Controls if value labels are shown inside the gauges.
@@ -124,7 +124,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public RadialGaugePlot(double[] levels, Color[] colors)
+        public RadialGaugePlot(double[] levels, System.Drawing.Color[] colors)
         {
             Update(levels, colors);
         }
@@ -134,7 +134,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Replace gauge levels with new ones.
         /// </summary>
-        public void Update(double[] levels, Color[] colors = null)
+        public void Update(double[] levels, System.Drawing.Color[] colors = null)
         {
             if (levels is null || levels.Length == 0)
                 throw new ArgumentException("values must not be null or empty");
@@ -145,7 +145,7 @@ namespace ScottPlot.Plottable
                 if (colors is null || colors.Length != levels.Length)
                     throw new ArgumentException("when changing the number of values a new colors array must be provided");
 
-                Colors = new Color[colors.Length];
+                Colors = new System.Drawing.Color[colors.Length];
                 Array.Copy(colors, 0, Colors, 0, colors.Length);
             }
 
@@ -292,7 +292,7 @@ namespace ScottPlot.Plottable
                     StartAngle = startAngles[index],
                     SweepAngle = sweepAngles[index],
                     Color = Colors[index],
-                    BackgroundColor = Color.FromArgb(backgroundAlpha, Colors[index]),
+                    BackgroundColor = System.Drawing.Color.FromArgb(backgroundAlpha, Colors[index]),
                     Width = gaugeWidthPx,
                     CircularBackground = CircularBackground,
                     Clockwise = Clockwise,

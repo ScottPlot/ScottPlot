@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of all lollipop components (the stick and the circle)
         /// </summary>
-        public Color LollipopColor { get; set; }
+        public System.Drawing.Color LollipopColor { get; set; }
 
         /// <summary>
         /// Size of the circle at the end of each lollipop

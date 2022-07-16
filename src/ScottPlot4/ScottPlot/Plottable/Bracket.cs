@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the bracket lines and text
         /// </summary>
-        public Color Color { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Thickness (in pixels) of the lines

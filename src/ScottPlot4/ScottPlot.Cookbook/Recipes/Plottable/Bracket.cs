@@ -67,7 +67,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             bracketA.Font.Size = 24;
 
             var bracketB = plt.AddBracket(1, 0, 2, 1, "Custom Color");
-            bracketB.Color = Color.Magenta;
+            bracketB.Color = System.Drawing.Color.Magenta;
 
             var bracketC = plt.AddBracket(2, 0, 3, 1, "Longer Stem & Edges");
             bracketC.EdgeLength = 20;

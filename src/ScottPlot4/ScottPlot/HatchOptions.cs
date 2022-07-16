@@ -11,6 +11,6 @@ namespace ScottPlot
     public struct HatchOptions
     {
         public HatchStyle Pattern { get; set; }
-        public Color Color { get; set; }
+        public System.Drawing.Color Color { get; set; }
     }
 }

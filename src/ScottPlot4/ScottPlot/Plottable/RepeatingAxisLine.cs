@@ -51,7 +51,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color to use behind the position labels
         /// </summary>
-        public Color PositionLabelBackground { get; set; } = Color.Black;
+        public System.Drawing.Color PositionLabelBackground { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// If true the position label will be drawn on the right or top of the data area.
@@ -88,7 +88,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public float LineWidth { get; set; } = 1;
-        public Color Color { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Text that appears in the legend

@@ -68,15 +68,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] values = { 779, 586 };
             string centerText = $"{values[0] / values.Sum() * 100:00.0}%";
-            Color color1 = Color.FromArgb(255, 0, 150, 200);
-            Color color2 = Color.FromArgb(100, 0, 150, 200);
+            System.Drawing.Color color1 = System.Drawing.Color.FromArgb(255, 0, 150, 200);
+            System.Drawing.Color color2 = System.Drawing.Color.FromArgb(100, 0, 150, 200);
 
             var pie = plt.AddPie(values);
             pie.DonutSize = .6;
             pie.DonutLabel = centerText;
             pie.CenterFont.Color = color1;
             pie.OutlineSize = 2;
-            pie.SliceFillColors = new Color[] { color1, color2 };
+            pie.SliceFillColors = new System.Drawing.Color[] { color1, color2 };
         }
     }
 
@@ -126,7 +126,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
 
             // Language colors from https://github.com/ozh/github-colors
-            Color[] sliceColors =
+            System.Drawing.Color[] sliceColors =
             {
                 ColorTranslator.FromHtml("#178600"),
                 ColorTranslator.FromHtml("#B07219"),
@@ -136,13 +136,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
 
             // Show labels using different transparencies
-            Color[] labelColors =
-                new Color[] {
-                Color.FromArgb(255, Color.White),
-                Color.FromArgb(100, Color.White),
-                Color.FromArgb(250, Color.White),
-                Color.FromArgb(150, Color.White),
-                Color.FromArgb(200, Color.White),
+            System.Drawing.Color[] labelColors =
+                new System.Drawing.Color[] {
+                System.Drawing.Color.FromArgb(255, System.Drawing.Color.White),
+                System.Drawing.Color.FromArgb(100, System.Drawing.Color.White),
+                System.Drawing.Color.FromArgb(250, System.Drawing.Color.White),
+                System.Drawing.Color.FromArgb(150, System.Drawing.Color.White),
+                System.Drawing.Color.FromArgb(200, System.Drawing.Color.White),
             };
 
             var pie = plt.AddPie(values);
@@ -168,11 +168,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var pie = plt.AddPie(values);
             pie.HatchOptions = new HatchOptions[] {
-                new () { Pattern = HatchStyle.StripedUpwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
-                new () { Pattern = HatchStyle.StripedDownwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
-                new () { Pattern = HatchStyle.LargeCheckerBoard, Color = Color.FromArgb(100, Color.Gray) },
-                new () { Pattern = HatchStyle.SmallCheckerBoard, Color = Color.FromArgb(100, Color.Gray) },
-                new () { Pattern = HatchStyle.LargeGrid, Color = Color.FromArgb(100, Color.Gray) },
+                new () { Pattern = HatchStyle.StripedUpwardDiagonal, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
+                new () { Pattern = HatchStyle.StripedDownwardDiagonal, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
+                new () { Pattern = HatchStyle.LargeCheckerBoard, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
+                new () { Pattern = HatchStyle.SmallCheckerBoard, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
+                new () { Pattern = HatchStyle.LargeGrid, Color = System.Drawing.Color.FromArgb(100, System.Drawing.Color.Gray) },
             };
             pie.OutlineSize = 1;
 

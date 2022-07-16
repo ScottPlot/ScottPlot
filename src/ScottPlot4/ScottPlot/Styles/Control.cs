@@ -4,6 +4,6 @@ namespace ScottPlot.Styles
 {
     internal class Control : Default
     {
-        public override Color FigureBackgroundColor => SystemColors.Control;
+        public override System.Drawing.Color FigureBackgroundColor => SystemColors.Control;
     }
 }

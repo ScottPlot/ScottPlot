@@ -31,18 +31,18 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the candle if it closes at or above its open value
         /// </summary>
-        public Color ColorUp { get; set; } = Color.LightGreen;
+        public System.Drawing.Color ColorUp { get; set; } = System.Drawing.Color.LightGreen;
 
         /// <summary>
         /// Color of the candle if it closes below its open value
         /// </summary>
-        public Color ColorDown { get; set; } = Color.LightCoral;
+        public System.Drawing.Color ColorDown { get; set; } = System.Drawing.Color.LightCoral;
 
         /// <summary>
         /// This field controls the color of the wick and rectangular candle border.
         /// If null, the wick is the same color as the candle and no border is applied.
         /// </summary>
-        public Color? WickColor { get; set; } = null;
+        public System.Drawing.Color? WickColor { get; set; } = null;
 
         public bool IsVisible { get; set; } = true;
         public override string ToString() => $"FinancePlot with {OHLCs.Count} OHLC indicators";
@@ -171,8 +171,8 @@ namespace ScottPlot.Plottable
             double fractionalTickWidth = .7;
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using Pen pen = new Pen(Color.Magenta);
-            using SolidBrush brush = new SolidBrush(Color.Magenta);
+            using Pen pen = new Pen(System.Drawing.Color.Magenta);
+            using SolidBrush brush = new SolidBrush(System.Drawing.Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
             {
                 var ohlc = OHLCs[i];
@@ -186,7 +186,7 @@ namespace ScottPlot.Plottable
 
                 float boxWidth = (float)(ohlcSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
 
-                Color priceChangeColor = closedHigher ? ColorUp : ColorDown;
+                System.Drawing.Color priceChangeColor = closedHigher ? ColorUp : ColorDown;
                 pen.Color = WickColor ?? priceChangeColor;
                 pen.Width = (boxWidth >= 2) ? 2 : 1;
 
@@ -235,7 +235,7 @@ namespace ScottPlot.Plottable
             double fractionalTickWidth = .7;
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using Pen pen = new Pen(Color.Magenta);
+            using Pen pen = new Pen(System.Drawing.Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
             {
                 var ohlc = OHLCs[i];

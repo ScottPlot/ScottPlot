@@ -56,12 +56,12 @@ namespace ScottPlot
                 .ToArray();
         }
 
-        public static string ToHex(Color c)
+        public static string ToHex(System.Drawing.Color c)
         {
             return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
         }
 
-        public static string ToRGB(Color c)
+        public static string ToRGB(System.Drawing.Color c)
         {
             return "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
         }

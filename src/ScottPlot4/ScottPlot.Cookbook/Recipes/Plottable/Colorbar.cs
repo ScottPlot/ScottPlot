@@ -19,9 +19,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddColorbar();
 
             // direct attention to the colorbar
-            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            var text = plt.AddText("Colorbar", 5, 0, 24, System.Drawing.Color.Red);
             text.Alignment = Alignment.MiddleRight;
-            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.AddArrow(7, 0, 5, 0, color: System.Drawing.Color.Red);
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
@@ -39,9 +39,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddColorbar(Drawing.Colormap.Turbo);
 
             // direct attention to the colorbar
-            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            var text = plt.AddText("Colorbar", 5, 0, 24, System.Drawing.Color.Red);
             text.Alignment = Alignment.MiddleRight;
-            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.AddArrow(7, 0, 5, 0, color: System.Drawing.Color.Red);
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
@@ -69,9 +69,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // To re-enable automatic ticks call cb.AutomaticTicks(true)
 
             // direct attention to the colorbar
-            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            var text = plt.AddText("Colorbar", 5, 0, 24, System.Drawing.Color.Red);
             text.Alignment = Alignment.MiddleRight;
-            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.AddArrow(7, 0, 5, 0, color: System.Drawing.Color.Red);
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
@@ -94,9 +94,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             cb.MaxColor = .75;
 
             // direct attention to the colorbar
-            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            var text = plt.AddText("Colorbar", 5, 0, 24, System.Drawing.Color.Red);
             text.Alignment = Alignment.MiddleRight;
-            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.AddArrow(7, 0, 5, 0, color: System.Drawing.Color.Red);
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
@@ -120,9 +120,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             cb.MaxIsClipped = true;
 
             // direct attention to the colorbar
-            var text = plt.AddText("Colorbar", 5, 0, 24, Color.Red);
+            var text = plt.AddText("Colorbar", 5, 0, 24, System.Drawing.Color.Red);
             text.Alignment = Alignment.MiddleRight;
-            plt.AddArrow(7, 0, 5, 0, color: Color.Red);
+            plt.AddArrow(7, 0, 5, 0, color: System.Drawing.Color.Red);
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }

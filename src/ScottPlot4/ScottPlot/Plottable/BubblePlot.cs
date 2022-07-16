@@ -18,9 +18,9 @@ namespace ScottPlot.Plottable
             public double X;
             public double Y;
             public float Radius;
-            public Color FillColor;
+            public System.Drawing.Color FillColor;
             public float EdgeWidth;
-            public Color EdgeColor;
+            public System.Drawing.Color EdgeColor;
         }
 
         private readonly List<Bubble> Bubbles = new();
@@ -44,7 +44,7 @@ namespace ScottPlot.Plottable
         /// <param name="fillColor"></param>
         /// <param name="edgeWidth">size of the outline (in pixels)</param>
         /// <param name="edgeColor"></param>
-        public void Add(double x, double y, double radius, Color fillColor, double edgeWidth, Color edgeColor)
+        public void Add(double x, double y, double radius, System.Drawing.Color fillColor, double edgeWidth, System.Drawing.Color edgeColor)
         {
             // TODO: inconsistent argumen tnames in overloads (radius vs size)
             Bubbles.Add(new Bubble()
@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Add many bubbles with the same size and style
         /// </summary>
-        public void Add(double[] xs, double[] ys, double size, Color fillColor, double edgeWidth, Color edgeColor)
+        public void Add(double[] xs, double[] ys, double size, System.Drawing.Color fillColor, double edgeWidth, System.Drawing.Color edgeColor)
         {
             if (xs is null || ys is null)
                 throw new ArgumentException("xs and ys cannot be null");
@@ -116,8 +116,8 @@ namespace ScottPlot.Plottable
                 return;
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using Brush brush = GDI.Brush(Color.Magenta);
-            using Pen pen = GDI.Pen(Color.Black);
+            using Brush brush = GDI.Brush(System.Drawing.Color.Magenta);
+            using Pen pen = GDI.Pen(System.Drawing.Color.Black);
 
             foreach (Bubble bubble in Bubbles)
             {

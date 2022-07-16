@@ -16,9 +16,9 @@ namespace ScottPlot.Plottable
         public string Label { get; set; }
         public string[] SliceLabels { get; set; }
 
-        public Color[] SliceFillColors { get; set; }
-        public Color[] SliceLabelColors { get; set; }
-        public Color BackgroundColor { get; set; }
+        public System.Drawing.Color[] SliceFillColors { get; set; }
+        public System.Drawing.Color[] SliceLabelColors { get; set; }
+        public System.Drawing.Color BackgroundColor { get; set; }
         public HatchOptions[] HatchOptions { get; set; }
 
         public bool Explode { get; set; }
@@ -32,13 +32,13 @@ namespace ScottPlot.Plottable
         public readonly Drawing.Font SliceFont = new();
 
         public float OutlineSize { get; set; } = 0;
-        public Color OutlineColor { get; set; } = Color.Black;
+        public System.Drawing.Color OutlineColor { get; set; } = System.Drawing.Color.Black;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public PiePlot(double[] values, string[] groupNames, Color[] colors)
+        public PiePlot(double[] values, string[] groupNames, System.Drawing.Color[] colors)
         {
             Values = values;
             SliceLabels = groupNames;
@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
 
             SliceFont.Size = 18;
             SliceFont.Bold = true;
-            SliceFont.Color = Color.White;
+            SliceFont.Color = System.Drawing.Color.White;
 
             CenterFont.Size = 48;
             CenterFont.Bold = true;

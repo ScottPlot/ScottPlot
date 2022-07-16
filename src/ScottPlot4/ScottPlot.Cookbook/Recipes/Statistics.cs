@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddScatterLines(
                 xs: binEdges,
                 ys: densities,
-                color: Color.Black,
+                color: System.Drawing.Color.Black,
                 lineWidth: 2,
                 lineStyle: LineStyle.Dash);
 
@@ -159,16 +159,16 @@ namespace ScottPlot.Cookbook.Recipes
             // display vertical lines at points of interest
             var stats = new ScottPlot.Statistics.BasicStats(values);
 
-            plt.AddVerticalLine(stats.Mean, Color.Black, 2, LineStyle.Solid, "mean");
+            plt.AddVerticalLine(stats.Mean, System.Drawing.Color.Black, 2, LineStyle.Solid, "mean");
 
-            plt.AddVerticalLine(stats.Mean - stats.StDev, Color.Black, 2, LineStyle.Dash, "1 SD");
-            plt.AddVerticalLine(stats.Mean + stats.StDev, Color.Black, 2, LineStyle.Dash);
+            plt.AddVerticalLine(stats.Mean - stats.StDev, System.Drawing.Color.Black, 2, LineStyle.Dash, "1 SD");
+            plt.AddVerticalLine(stats.Mean + stats.StDev, System.Drawing.Color.Black, 2, LineStyle.Dash);
 
-            plt.AddVerticalLine(stats.Mean - stats.StDev * 2, Color.Black, 2, LineStyle.Dot, "2 SD");
-            plt.AddVerticalLine(stats.Mean + stats.StDev * 2, Color.Black, 2, LineStyle.Dot);
+            plt.AddVerticalLine(stats.Mean - stats.StDev * 2, System.Drawing.Color.Black, 2, LineStyle.Dot, "2 SD");
+            plt.AddVerticalLine(stats.Mean + stats.StDev * 2, System.Drawing.Color.Black, 2, LineStyle.Dot);
 
-            plt.AddVerticalLine(stats.Min, Color.Gray, 1, LineStyle.Dash, "min/max");
-            plt.AddVerticalLine(stats.Max, Color.Gray, 1, LineStyle.Dash);
+            plt.AddVerticalLine(stats.Min, System.Drawing.Color.Gray, 1, LineStyle.Dash, "min/max");
+            plt.AddVerticalLine(stats.Max, System.Drawing.Color.Gray, 1, LineStyle.Dash);
 
             plt.Legend(location: Alignment.UpperRight);
 
@@ -210,12 +210,12 @@ namespace ScottPlot.Cookbook.Recipes
             // plot histograms
             var barMale = plt.AddBar(values: probMale, positions: leftEdges);
             barMale.BarWidth = 1;
-            barMale.FillColor = Color.FromArgb(50, Color.Blue);
+            barMale.FillColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Blue);
             barMale.BorderLineWidth = 0;
 
             var barFemale = plt.AddBar(values: probFemale, positions: leftEdges);
             barFemale.BarWidth = 1;
-            barFemale.FillColor = Color.FromArgb(50, Color.Red);
+            barFemale.FillColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Red);
             barFemale.BorderLineWidth = 0;
 
             // plot probability function curves
@@ -223,7 +223,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddScatterLines(
                 xs: binEdges,
                 ys: pdfMale,
-                color: Color.FromArgb(150, Color.Blue),
+                color: System.Drawing.Color.FromArgb(150, System.Drawing.Color.Blue),
                 lineWidth: 3,
                 label: $"Male (n={heightsMale.Length:N0})");
 
@@ -231,7 +231,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddScatterLines(
                 xs: binEdges,
                 ys: pdfFemale,
-                color: Color.FromArgb(150, Color.Red),
+                color: System.Drawing.Color.FromArgb(150, System.Drawing.Color.Red),
                 lineWidth: 3,
                 label: $"Female (n={heightsFemale.Length:N0})");
 

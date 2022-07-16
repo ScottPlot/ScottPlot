@@ -30,7 +30,7 @@ namespace ScottPlot
         /// <summary>
         /// Return the next color from PlottablePalette based on the current number of plottables
         /// </summary>
-        public Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
+        public System.Drawing.Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
 
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();

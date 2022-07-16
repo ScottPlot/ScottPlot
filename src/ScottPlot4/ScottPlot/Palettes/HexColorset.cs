@@ -18,7 +18,7 @@ namespace ScottPlot.Drawing.Colorsets
             if (hexColor.Length != 7)
                 throw new InvalidOperationException("invalid hex color string");
 
-            Color color = ColorTranslator.FromHtml(hexColor);
+            System.Drawing.Color color = ColorTranslator.FromHtml(hexColor);
 
             return (color.R, color.G, color.B);
         }

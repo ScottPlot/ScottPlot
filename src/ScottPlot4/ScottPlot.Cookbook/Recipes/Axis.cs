@@ -26,10 +26,10 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.Title("Axis Customization");
 
             // Axes labels can be further customized for any axis
-            plt.YAxis.Label("Vertical Axis", Color.Magenta, size: 24, fontName: "Comic Sans MS");
+            plt.YAxis.Label("Vertical Axis", System.Drawing.Color.Magenta, size: 24, fontName: "Comic Sans MS");
 
             // This method will set the color of axis labels, lines, ticks, and tick labels
-            plt.XAxis.Color(Color.Green);
+            plt.XAxis.Color(System.Drawing.Color.Green);
         }
     }
 
@@ -109,7 +109,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Cos(51));
 
             // these helper methods set grid 
-            plt.Grid(color: Color.FromArgb(50, Color.Green));
+            plt.Grid(color: System.Drawing.Color.FromArgb(50, System.Drawing.Color.Green));
             plt.Grid(lineStyle: LineStyle.Dot);
         }
     }

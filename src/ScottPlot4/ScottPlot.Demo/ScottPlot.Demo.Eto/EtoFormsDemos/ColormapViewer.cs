@@ -72,10 +72,10 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
                 ms[i] = (rs[i] + gs[i] + bs[i]) / 3.0;
 
             plt.Clear();
-            plt.PlotScatter(xs, rs, Color.Red, markerSize: 0);
-            plt.PlotScatter(xs, gs, Color.Green, markerSize: 0);
-            plt.PlotScatter(xs, bs, Color.Blue, markerSize: 0);
-            plt.PlotScatter(xs, ms, Color.Black, markerSize: 0, lineStyle: LineStyle.Dash);
+            plt.PlotScatter(xs, rs, System.Drawing.Color.Red, markerSize: 0);
+            plt.PlotScatter(xs, gs, System.Drawing.Color.Green, markerSize: 0);
+            plt.PlotScatter(xs, bs, System.Drawing.Color.Blue, markerSize: 0);
+            plt.PlotScatter(xs, ms, System.Drawing.Color.Black, markerSize: 0, lineStyle: LineStyle.Dash);
             plt.AxisAuto();
             plt.YLabel("Pixel Intensity");
             plt.XLabel("Fractional Data Value");
@@ -111,7 +111,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
             {
                 double fraction = (double)i / lineCount;
                 double[] ys = DataGen.Sin(100, 2, mult: 1 + fraction * 2);
-                Color c = cmap.GetColor(fraction);
+                System.Drawing.Color c = cmap.GetColor(fraction);
                 plt.PlotSignal(ys, color: c);
             }
             plt.AxisAuto();

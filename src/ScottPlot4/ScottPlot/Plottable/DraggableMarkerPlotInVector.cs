@@ -45,12 +45,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
-        public Color Color { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Color of the marker to display at this point
         /// </summary>
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color MarkerColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Width of the marker lines in pixel units

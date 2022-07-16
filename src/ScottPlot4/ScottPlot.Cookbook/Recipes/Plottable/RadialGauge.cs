@@ -274,7 +274,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
-            gauges.Font.Color = Color.Black;
+            gauges.Font.Color = System.Drawing.Color.Black;
         }
     }
 

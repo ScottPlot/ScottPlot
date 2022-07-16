@@ -88,7 +88,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             var splt = new ScottPlot.Plottable.ScatterPlot(xs, sin);
 
             // customize its style or change its data as desired
-            splt.Color = Color.Navy;
+            splt.Color = System.Drawing.Color.Navy;
             splt.MarkerSize = 10;
             splt.MarkerShape = MarkerShape.filledDiamond;
 
@@ -111,8 +111,8 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             double[] sin = DataGen.Sin(51);
             double[] cos = DataGen.Cos(51);
 
-            var sinPlot = plt.AddScatter(xs, sin, color: Color.Red);
-            var cosPlot = plt.AddScatter(xs, cos, color: Color.Blue);
+            var sinPlot = plt.AddScatter(xs, sin, color: System.Drawing.Color.Red);
+            var cosPlot = plt.AddScatter(xs, cos, color: System.Drawing.Color.Blue);
 
             plt.Remove(sinPlot);
         }
@@ -133,9 +133,9 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             double[] sin = DataGen.Sin(51);
             double[] cos = DataGen.Cos(51);
 
-            plt.AddScatter(xs, sin, color: Color.Red);
+            plt.AddScatter(xs, sin, color: System.Drawing.Color.Red);
             plt.Clear();
-            plt.AddScatter(xs, cos, color: Color.Blue);
+            plt.AddScatter(xs, cos, color: System.Drawing.Color.Blue);
         }
     }
 

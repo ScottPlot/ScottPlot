@@ -27,14 +27,14 @@ namespace ScottPlot.Plottable
         public readonly Drawing.Font Font = new();
 
         public bool Background { get; set; } = true;
-        public Color BackgroundColor { get; set; } = Color.Yellow;
+        public System.Drawing.Color BackgroundColor { get; set; } = System.Drawing.Color.Yellow;
 
         public bool Shadow { get; set; } = true;
-        public Color ShadowColor { get; set; } = Color.FromArgb(25, Color.Black);
+        public System.Drawing.Color ShadowColor { get; set; } = System.Drawing.Color.FromArgb(25, System.Drawing.Color.Black);
 
         public bool Border { get; set; } = true;
         public float BorderWidth { get; set; } = 1;
-        public Color BorderColor { get; set; } = Color.Black;
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.Black;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;

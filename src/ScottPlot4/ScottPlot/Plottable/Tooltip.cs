@@ -13,10 +13,10 @@ namespace ScottPlot.Plottable
     {
         public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
-        public Color BorderColor { get; set; } = Color.DarkGray;
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.DarkGray;
         public float BorderWidth { get; set; } = 2;
-        public Color FillColor { get; set; } = Color.White;
-        public Color Color { get => FillColor; set => FillColor = value; }
+        public System.Drawing.Color FillColor { get; set; } = System.Drawing.Color.White;
+        public System.Drawing.Color Color { get => FillColor; set => FillColor = value; }
         public int XAxisIndex { get; set; }
         public int YAxisIndex { get; set; }
 

@@ -6,7 +6,7 @@ namespace ScottPlot.Drawing
     public class Font
     {
         public float Size = 12;
-        public Color Color = Color.Black;
+        public System.Drawing.Color Color = System.Drawing.Color.Black;
         public Alignment Alignment = Alignment.UpperLeft;
         public bool Bold = false;
         public float Rotation = 0;

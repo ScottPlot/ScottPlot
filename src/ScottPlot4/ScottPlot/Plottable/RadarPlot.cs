@@ -59,18 +59,18 @@ namespace ScottPlot.Plottable
         /// Colors (typically semi-transparent) to shade the inner area of each group.
         /// Length must be equal to the number of rows (groups) in the original data.
         /// </summary>
-        public Color[] FillColors { get; set; }
+        public System.Drawing.Color[] FillColors { get; set; }
 
         /// <summary>
         /// Colors to outline the shape for each group.
         /// Length must be equal to the number of rows (groups) in the original data.
         /// </summary>
-        public Color[] LineColors { get; set; }
+        public System.Drawing.Color[] LineColors { get; set; }
 
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray; // TODO: avoid this name in the future (see #1948)
+        public System.Drawing.Color WebColor { get; set; } = System.Drawing.Color.Gray; // TODO: avoid this name in the future (see #1948)
 
         /// <summary>
         /// Contains options for hatched (patterned) fills for each slice
@@ -116,7 +116,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
+        public RadarPlot(double[,] values, System.Drawing.Color[] lineColors, System.Drawing.Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
             LineColors = lineColors;
             FillColors = fillColors;
@@ -234,7 +234,7 @@ namespace ScottPlot.Plottable
                     lineWidth = 10,
                     markerShape = MarkerShape.none,
                     hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
-                    hatchColor = HatchOptions?[i].Color ?? Color.Black
+                    hatchColor = HatchOptions?[i].Color ?? System.Drawing.Color.Black
                 };
                 legendItems.Add(item);
             }

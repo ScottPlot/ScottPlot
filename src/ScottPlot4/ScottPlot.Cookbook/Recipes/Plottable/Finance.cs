@@ -102,10 +102,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var candlePlot = plt.AddCandlesticks(ohlcs);
 
             var sma8 = candlePlot.GetSMA(8);
-            plt.AddScatterLines(sma8.xs, sma8.ys, Color.Blue, 2);
+            plt.AddScatterLines(sma8.xs, sma8.ys, System.Drawing.Color.Blue, 2);
 
             var sma20 = candlePlot.GetSMA(20);
-            plt.AddScatterLines(sma20.xs, sma20.ys, Color.Navy, 2);
+            plt.AddScatterLines(sma20.xs, sma20.ys, System.Drawing.Color.Navy, 2);
         }
     }
 
@@ -124,9 +124,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var candlePlot = plt.AddCandlesticks(ohlcs);
 
             var bol = candlePlot.GetBollingerBands(20);
-            plt.AddScatterLines(bol.xs, bol.sma, Color.Blue);
-            plt.AddScatterLines(bol.xs, bol.lower, Color.Blue, lineStyle: LineStyle.Dash);
-            plt.AddScatterLines(bol.xs, bol.upper, Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatterLines(bol.xs, bol.sma, System.Drawing.Color.Blue);
+            plt.AddScatterLines(bol.xs, bol.lower, System.Drawing.Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatterLines(bol.xs, bol.upper, System.Drawing.Color.Blue, lineStyle: LineStyle.Dash);
         }
     }
 
@@ -167,7 +167,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             OHLC[] prices = DataGen.RandomStockPrices(null, 30, TimeSpan.FromMinutes(5));
             var fp = plt.AddCandlesticks(prices);
-            fp.WickColor = Color.Black;
+            fp.WickColor = System.Drawing.Color.Black;
         }
     }
 
@@ -186,9 +186,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             OHLC[] prices = DataGen.RandomStockPrices(null, 30, TimeSpan.FromMinutes(5));
             var fp = plt.AddCandlesticks(prices);
-            fp.ColorDown = Color.Black;
-            fp.ColorUp = Color.White;
-            fp.WickColor = Color.Black;
+            fp.ColorDown = System.Drawing.Color.Black;
+            fp.ColorUp = System.Drawing.Color.White;
+            fp.WickColor = System.Drawing.Color.Black;
         }
     }
 
@@ -214,8 +214,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // add SMA indicators for 8 and 20 days
             var sma8 = candlePlot.GetSMA(8);
             var sma20 = candlePlot.GetSMA(20);
-            var sma8plot = plt.AddScatterLines(sma8.xs, sma8.ys, Color.Cyan, 2, label: "8 day SMA");
-            var sma20plot = plt.AddScatterLines(sma20.xs, sma20.ys, Color.Yellow, 2, label: "20 day SMA");
+            var sma8plot = plt.AddScatterLines(sma8.xs, sma8.ys, System.Drawing.Color.Cyan, 2, label: "8 day SMA");
+            var sma20plot = plt.AddScatterLines(sma20.xs, sma20.ys, System.Drawing.Color.Yellow, 2, label: "20 day SMA");
             sma8plot.YAxisIndex = 1;
             sma20plot.YAxisIndex = 1;
 
@@ -225,9 +225,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize figure styling
             plt.Layout(padding: 12);
-            plt.Style(figureBackground: Color.Black, dataBackground: Color.Black);
+            plt.Style(figureBackground: System.Drawing.Color.Black, dataBackground: System.Drawing.Color.Black);
             plt.Frameless();
-            plt.XAxis.TickLabelStyle(color: Color.White);
+            plt.XAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plt.XAxis.TickMarkColor(ColorTranslator.FromHtml("#333333"));
             plt.XAxis.MajorGrid(color: ColorTranslator.FromHtml("#333333"));
 
@@ -242,9 +242,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize the legend style
             var legend = plt.Legend();
-            legend.FillColor = Color.Transparent;
-            legend.OutlineColor = Color.Transparent;
-            legend.Font.Color = Color.White;
+            legend.FillColor = System.Drawing.Color.Transparent;
+            legend.OutlineColor = System.Drawing.Color.Transparent;
+            legend.Font.Color = System.Drawing.Color.White;
             legend.Font.Bold = true;
         }
     }

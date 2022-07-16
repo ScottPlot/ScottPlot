@@ -107,7 +107,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.Color = Color.Gray;
+            funcPlot.Color = System.Drawing.Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

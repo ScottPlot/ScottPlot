@@ -57,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] xs = DataGen.Consecutive(100_000, 1.0 / 20_000);
             double[] values = DataGen.RandomWalk(null, 100_000);
 
-            plt.AddScatter(xs, values, Color.Red, markerSize: 0);
+            plt.AddScatter(xs, values, System.Drawing.Color.Red, markerSize: 0);
 
             plt.Benchmark(enable: true);
             plt.Title($"Scatter Plot: One Million Points");
@@ -78,7 +78,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] ys = DataGen.RandomWalk(null, 500);
             int sampleRate = 10;
 
-            var sp2 = plt.AddSignal(ys, sampleRate, Color.Magenta);
+            var sp2 = plt.AddSignal(ys, sampleRate, System.Drawing.Color.Magenta);
             sp2.OffsetY = 1000;
             sp2.OffsetX = 300;
             sp2.LineStyle = LineStyle.Dash;
@@ -149,11 +149,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // plot the noisy signal using the traditional method
             var sp1 = plt.AddSignal(data);
             sp1.OffsetY = -40;
-            sp1.Color = Color.Red;
+            sp1.Color = System.Drawing.Color.Red;
 
             // use a custom colors to display data of different densities
             string[] colorCodes = { "#440154", "#39568C", "#1F968B", "#73D055" };
-            Color[] colors = colorCodes.Select(x => ColorTranslator.FromHtml(x)).ToArray();
+            System.Drawing.Color[] colors = colorCodes.Select(x => ColorTranslator.FromHtml(x)).ToArray();
 
             var sp2 = plt.AddSignal(data);
             sp2.DensityColors = colors;
@@ -237,7 +237,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.FillBelow(Color.Blue, Color.Transparent);
+            sig.FillBelow(System.Drawing.Color.Blue, System.Drawing.Color.Transparent);
 
             plt.Margins(x: 0);
         }
@@ -256,7 +256,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.FillAbove(Color.Blue, Color.Transparent);
+            sig.FillAbove(System.Drawing.Color.Blue, System.Drawing.Color.Transparent);
 
             plt.Margins(x: 0);
         }
@@ -275,8 +275,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.FillAboveAndBelow(Color.Green, Color.Red);
-            sig.Color = Color.Black;
+            sig.FillAboveAndBelow(System.Drawing.Color.Green, System.Drawing.Color.Red);
+            sig.Color = System.Drawing.Color.Black;
             sig.BaselineY = 7;
 
             plt.Margins(x: 0);
@@ -299,8 +299,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var sig = plt.AddSignal(data);
             sig.MarkerSize = 0;
-            sig.Color = Color.Black;
-            sig.FillAboveAndBelow(Color.Green, Color.Transparent, Color.Transparent, Color.Red, 1);
+            sig.Color = System.Drawing.Color.Black;
+            sig.FillAboveAndBelow(System.Drawing.Color.Green, System.Drawing.Color.Transparent, System.Drawing.Color.Transparent, System.Drawing.Color.Red, 1);
             sig.BaselineY = 5;
 
             plt.Margins(x: 0);

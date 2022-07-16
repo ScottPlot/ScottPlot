@@ -18,7 +18,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color for the line
         /// </summary>
-        public Color StemColor { get; set; } = Color.Gray;
+        public System.Drawing.Color StemColor { get; set; } = System.Drawing.Color.Gray;
 
         /// <summary>
         /// Size of the markers at the ends of each line
@@ -65,7 +65,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color for one of the markers
         /// </summary>
-        private Color Color1 { get; set; } = Color.Green;
+        private System.Drawing.Color Color1 { get; set; } = System.Drawing.Color.Green;
 
         /// <summary>
         /// Marker to use for the series 1 data
@@ -80,7 +80,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color for one of the markers
         /// </summary>
-        private Color Color2 { get; set; } = Color.Red;
+        private System.Drawing.Color Color2 { get; set; } = System.Drawing.Color.Red;
 
         /// <summary>
         /// Marker to use for the series 2 data
@@ -93,7 +93,7 @@ namespace ScottPlot.Plottable
         /// <param name="color">The color of the dot, null for no change.</param>
         /// <param name="markerShape">The shape of the dot, null for no change.</param>
         /// <param name="label">The label of the dot in the legend, null for no change</param>
-        public void SetPoint1Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
+        public void SetPoint1Style(System.Drawing.Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label = label ?? Label;
             MarkerShape1 = markerShape ?? MarkerShape1;
@@ -106,7 +106,7 @@ namespace ScottPlot.Plottable
         /// <param name="color">The color of the dot, null for no change.</param>
         /// <param name="markerShape">The shape of the dot, null for no change.</param>
         /// <param name="label">The label of the dot in the legend, null for no change</param>
-        public void SetPoint2Style(Color? color = null, MarkerShape? markerShape = null, string label = null)
+        public void SetPoint2Style(System.Drawing.Color? color = null, MarkerShape? markerShape = null, string label = null)
         {
             Label2 = label ?? Label2;
             MarkerShape2 = markerShape ?? MarkerShape2;

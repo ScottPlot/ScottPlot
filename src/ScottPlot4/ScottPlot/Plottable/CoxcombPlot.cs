@@ -30,7 +30,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The colors of each slice
         /// </summary>
-        public Color[] FillColors { get; set; }
+        public System.Drawing.Color[] FillColors { get; set; }
 
         /// <summary>
         /// Contains options for hatched (patterned) fills for each slice
@@ -40,7 +40,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The color of the slice outline.
         /// </summary>
-        public Color Outline { get; set; } = Color.Black;
+        public System.Drawing.Color Outline { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// The width of the slice outline.
@@ -51,7 +51,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The color to draw the axis in
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray; // TODO: avoid this name in the future (see #1948)
+        public System.Drawing.Color WebColor { get; set; } = System.Drawing.Color.Gray; // TODO: avoid this name in the future (see #1948)
 
         /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
@@ -83,7 +83,7 @@ namespace ScottPlot.Plottable
 
         private double[] Normalized { get; set; }
 
-        public CoxcombPlot(double[] values, Color[] fillColors)
+        public CoxcombPlot(double[] values, System.Drawing.Color[] fillColors)
         {
             Values = values;
             FillColors = fillColors;

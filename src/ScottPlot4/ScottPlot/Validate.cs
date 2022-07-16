@@ -110,7 +110,7 @@ namespace ScottPlot
         /// <summary>
         /// Throw an exception if the array does not contain at least one element
         /// </summary>
-        public static void AssertHasElements(string label, Color[] values)
+        public static void AssertHasElements(string label, System.Drawing.Color[] values)
         {
             label = ValidLabel(label);
 

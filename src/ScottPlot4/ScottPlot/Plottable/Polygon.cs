@@ -18,14 +18,14 @@ namespace ScottPlot.Plottable
         // configuration
         public string Label { get; set; }
         public double LineWidth { get; set; } = 1;
-        public Color LineColor { get; set; } = Color.Black;
+        public System.Drawing.Color LineColor { get; set; } = System.Drawing.Color.Black;
         public bool Fill { get; set; } = true;
-        public Color FillColor { get; set; } = Color.Gray;
-        public Color Color { get => FillColor; set { FillColor = value; } }
+        public System.Drawing.Color FillColor { get; set; } = System.Drawing.Color.Gray;
+        public System.Drawing.Color Color { get => FillColor; set { FillColor = value; } }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public Color HatchColor { get; set; } = Color.Transparent;
+        public System.Drawing.Color HatchColor { get; set; } = System.Drawing.Color.Transparent;
         public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
 
         public Polygon(double[] xs, double[] ys)

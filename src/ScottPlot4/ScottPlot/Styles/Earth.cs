@@ -10,15 +10,15 @@ namespace ScottPlot.Styles
     internal class Earth : Default
     {
 
-        public override Color FigureBackgroundColor => Color.SandyBrown;
-        public override Color DataBackgroundColor => Color.SaddleBrown;
-        public override Color GridLineColor => Color.Sienna;
-        public override Color FrameColor => Color.Brown;
-        public override Color TitleFontColor => Color.Brown;
-        public override Color AxisLabelColor => Color.Brown;
-        public override Color TickLabelColor => Color.Brown;
-        public override Color TickMajorColor => Color.Brown;
-        public override Color TickMinorColor => Color.Brown;
+        public override System.Drawing.Color FigureBackgroundColor => System.Drawing.Color.SandyBrown;
+        public override System.Drawing.Color DataBackgroundColor => System.Drawing.Color.SaddleBrown;
+        public override System.Drawing.Color GridLineColor => System.Drawing.Color.Sienna;
+        public override System.Drawing.Color FrameColor => System.Drawing.Color.Brown;
+        public override System.Drawing.Color TitleFontColor => System.Drawing.Color.Brown;
+        public override System.Drawing.Color AxisLabelColor => System.Drawing.Color.Brown;
+        public override System.Drawing.Color TickLabelColor => System.Drawing.Color.Brown;
+        public override System.Drawing.Color TickMajorColor => System.Drawing.Color.Brown;
+        public override System.Drawing.Color TickMinorColor => System.Drawing.Color.Brown;
 
 
     }

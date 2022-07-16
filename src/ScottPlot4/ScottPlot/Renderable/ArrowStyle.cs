@@ -59,11 +59,11 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Render an evenly-spaced 2D vector field.
         /// </summary>
-        public void Render(PlotDimensions dims, Graphics gfx, double[] xs, double[] ys, Statistics.Vector2[,] vectors, Color[] colors)
+        public void Render(PlotDimensions dims, Graphics gfx, double[] xs, double[] ys, Statistics.Vector2[,] vectors, System.Drawing.Color[] colors)
         {
             (float tipScale, float headAngle) = GetTipDimensions(); // precalculate angles for fancy arrows
 
-            using Pen pen = Drawing.GDI.Pen(Color.Black);
+            using Pen pen = Drawing.GDI.Pen(System.Drawing.Color.Black);
             if (!ScaledArrowheads)
                 pen.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(NonScaledArrowheadWidth, NonScaledArrowheadLength);
 

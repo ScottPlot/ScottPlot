@@ -7,15 +7,15 @@ namespace ScottPlot.Styles
     /// </summary>
     public interface IStyle
     {
-        Color FigureBackgroundColor { get; }
-        Color DataBackgroundColor { get; }
-        Color FrameColor { get; }
-        Color GridLineColor { get; }
-        Color AxisLabelColor { get; }
-        Color TitleFontColor { get; }
-        Color TickLabelColor { get; }
-        Color TickMajorColor { get; }
-        Color TickMinorColor { get; }
+        System.Drawing.Color FigureBackgroundColor { get; }
+        System.Drawing.Color DataBackgroundColor { get; }
+        System.Drawing.Color FrameColor { get; }
+        System.Drawing.Color GridLineColor { get; }
+        System.Drawing.Color AxisLabelColor { get; }
+        System.Drawing.Color TitleFontColor { get; }
+        System.Drawing.Color TickLabelColor { get; }
+        System.Drawing.Color TickMajorColor { get; }
+        System.Drawing.Color TickMinorColor { get; }
 
         string AxisLabelFontName { get; }
         string TitleFontName { get; }

@@ -106,7 +106,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var err = plt.AddErrorBars(xs, ys, xErrs, yErrs);
             err.LineWidth = 2;
             err.CapSize = 5;
-            err.LineColor = Color.Black;
+            err.LineColor = System.Drawing.Color.Black;
 
             plt.SetAxisLimitsY(0, 120);
         }

@@ -25,12 +25,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Color of the arrow and arrowhead
         /// </summary>
-        public Color Color { get; set; } = Color.Black;
+        public System.Drawing.Color Color { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Color of the arrow and arrowhead
         /// </summary>
-        public Color LineColor { get => Color; set { Color = value; } }
+        public System.Drawing.Color LineColor { get => Color; set { Color = value; } }
 
         /// <summary>
         /// Thickness of the arrow line

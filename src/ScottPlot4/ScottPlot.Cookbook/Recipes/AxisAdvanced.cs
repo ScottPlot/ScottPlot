@@ -21,9 +21,9 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Cos(51));
 
             // advanced grid customizations are available by accessing Axes directly
-            plt.XAxis.MajorGrid(color: Color.FromArgb(100, Color.Black));
-            plt.XAxis.MinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));
-            plt.YAxis.MajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: Color.Magenta);
+            plt.XAxis.MajorGrid(color: System.Drawing.Color.FromArgb(100, System.Drawing.Color.Black));
+            plt.XAxis.MinorGrid(enable: true, color: System.Drawing.Color.FromArgb(20, System.Drawing.Color.Black));
+            plt.YAxis.MajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: System.Drawing.Color.Magenta);
         }
     }
 
@@ -321,9 +321,9 @@ namespace ScottPlot.Cookbook.Recipes
 
             // Use log-spaced minor tick marks and grid lines to make it more convincing
             plt.YAxis.MinorLogScale(true);
-            plt.YAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
-            plt.YAxis.MinorGrid(true, Color.FromArgb(20, Color.Black));
-            plt.XAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
+            plt.YAxis.MajorGrid(true, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Black));
+            plt.YAxis.MinorGrid(true, System.Drawing.Color.FromArgb(20, System.Drawing.Color.Black));
+            plt.XAxis.MajorGrid(true, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Black));
 
             // Set the axis limits manually to ensure edges terminate at desirable locations
             plt.SetAxisLimits(0, 6, 0, Math.Log10(10_000_000));
@@ -354,9 +354,9 @@ namespace ScottPlot.Cookbook.Recipes
 
             // darken grid line colors
             plt.YAxis.MinorGrid(true);
-            plt.YAxis.MinorGrid(true, Color.FromArgb(20, Color.Black));
-            plt.YAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
-            plt.XAxis.MajorGrid(true, Color.FromArgb(80, Color.Black));
+            plt.YAxis.MinorGrid(true, System.Drawing.Color.FromArgb(20, System.Drawing.Color.Black));
+            plt.YAxis.MajorGrid(true, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Black));
+            plt.XAxis.MajorGrid(true, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Black));
         }
     }
 

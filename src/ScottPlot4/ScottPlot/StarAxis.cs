@@ -60,7 +60,7 @@ namespace ScottPlot
         /// <summary>
         /// Color of the axis lines and concentric circles representing ticks
         /// </summary>
-        public Color WebColor { get; set; } = Color.Gray;
+        public System.Drawing.Color WebColor { get; set; } = System.Drawing.Color.Gray;
 
         /// <summary>
         /// If true, each value will be written in text on the plot.

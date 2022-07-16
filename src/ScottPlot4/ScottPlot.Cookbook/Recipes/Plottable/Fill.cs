@@ -76,8 +76,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddFill(xs, ys1, xs, ys2);
 
             // add two scatter plots the traditional way
-            plt.AddScatter(xs, ys1, color: Color.Black);
-            plt.AddScatter(xs, ys2, color: Color.Black);
+            plt.AddScatter(xs, ys1, color: System.Drawing.Color.Black);
+            plt.AddScatter(xs, ys2, color: System.Drawing.Color.Black);
 
             // tighten the axis limits so we don't see lines on the edges
             plt.SetAxisLimits(xMin: 0, xMax: 10);
@@ -108,16 +108,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] maxProducerSurplusBounds = new double[] { 0, 1.5 };
             var maxProducerSurplus = plt.AddFill(maxProducerSurplusBounds, maxProducerSurplusBounds.Select(SupplyFunction).ToArray(), maxProducerSurplusBounds, Enumerable.Repeat(priceFloor, 2).ToArray());
             maxProducerSurplus.LineWidth = 0;
-            maxProducerSurplus.FillColor = Color.LawnGreen;
-            maxProducerSurplus.HatchColor = Color.Transparent;
+            maxProducerSurplus.FillColor = System.Drawing.Color.LawnGreen;
+            maxProducerSurplus.HatchColor = System.Drawing.Color.Transparent;
             maxProducerSurplus.HatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
             maxProducerSurplus.Label = "Maximum Possible Producer Surplus";
 
             double[] minProducerSurplusBounds = new double[] { 1.2, 2.3 };
             var minProducerSurplus = plt.AddFill(minProducerSurplusBounds, minProducerSurplusBounds.Select(SupplyFunction).ToArray(), minProducerSurplusBounds, Enumerable.Repeat(priceFloor, 2).ToArray());
             minProducerSurplus.LineWidth = 0;
-            minProducerSurplus.FillColor = Color.Transparent;
-            minProducerSurplus.HatchColor = Color.Red;
+            minProducerSurplus.FillColor = System.Drawing.Color.Transparent;
+            minProducerSurplus.HatchColor = System.Drawing.Color.Red;
             minProducerSurplus.HatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
             minProducerSurplus.Label = "Minimum Possible Producer Surplus";
 

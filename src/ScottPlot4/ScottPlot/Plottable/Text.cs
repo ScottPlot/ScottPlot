@@ -21,16 +21,16 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool BackgroundFill = false;
-        public Color BackgroundColor;
+        public System.Drawing.Color BackgroundColor;
         public Drawing.Font Font = new Drawing.Font();
-        public Color Color { get => Font.Color; set => Font.Color = value; }
+        public System.Drawing.Color Color { get => Font.Color; set => Font.Color = value; }
         public string FontName { get => Font.Name; set => Font.Name = value; }
         public float FontSize { get => Font.Size; set => Font.Size = value; }
         public bool FontBold { get => Font.Bold; set => Font.Bold = value; }
         public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }
         public float Rotation { get => Font.Rotation; set => Font.Rotation = value; }
         public float BorderSize { get; set; } = 0;
-        public Color BorderColor { get; set; } = Color.Black;
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.Black;
         public float PixelOffsetX { get; set; } = 0;
         public float PixelOffsetY { get; set; } = 0;
         RectangleF LastRenderRectangleCoordinates { get; set; }
@@ -66,7 +66,7 @@ namespace ScottPlot.Plottable
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var frameBrush = new SolidBrush(BackgroundColor))
             using (var outlinePen = new Pen(BorderColor, BorderSize))
-            using (var redPen = new Pen(Color.Red, BorderSize))
+            using (var redPen = new Pen(System.Drawing.Color.Red, BorderSize))
             {
                 float pixelX = dims.GetPixelX(X) + PixelOffsetX;
                 float pixelY = dims.GetPixelY(Y) - PixelOffsetY;

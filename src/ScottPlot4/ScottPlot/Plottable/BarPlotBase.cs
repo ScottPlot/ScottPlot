@@ -78,12 +78,12 @@ namespace ScottPlot.Plottable
         /// Outline each bar with this color. 
         /// Set this to transparent to disable outlines.
         /// </summary>
-        public Color BorderColor { get; set; } = Color.Black;
+        public System.Drawing.Color BorderColor { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Color of errorbar lines.
         /// </summary>
-        public Color ErrorColor { get; set; } = Color.Black;
+        public System.Drawing.Color ErrorColor { get; set; } = System.Drawing.Color.Black;
 
         /// <summary>
         /// Font settings for labels drawn above the bars

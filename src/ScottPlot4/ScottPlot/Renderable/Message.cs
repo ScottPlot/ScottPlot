@@ -38,9 +38,9 @@ namespace ScottPlot.Renderable
         {
             HAlign = HorizontalAlignment.Left;
             VAlign = VerticalAlignment.Lower;
-            FontColor = Color.Black;
-            FillColor = Color.FromArgb(200, Color.Yellow);
-            BorderColor = Color.Black;
+            FontColor = System.Drawing.Color.Black;
+            FillColor = System.Drawing.Color.FromArgb(200, System.Drawing.Color.Yellow);
+            BorderColor = System.Drawing.Color.Black;
         }
     }
 
@@ -50,9 +50,9 @@ namespace ScottPlot.Renderable
         {
             HAlign = HorizontalAlignment.Left;
             VAlign = VerticalAlignment.Upper;
-            FontColor = Color.Black;
-            FillColor = Color.FromArgb(50, Color.Red);
-            BorderColor = Color.Black;
+            FontColor = System.Drawing.Color.Black;
+            FillColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Red);
+            BorderColor = System.Drawing.Color.Black;
         }
     }
 
@@ -63,13 +63,13 @@ namespace ScottPlot.Renderable
         public HorizontalAlignment HAlign;
         public VerticalAlignment VAlign;
 
-        public Color FontColor = Color.Black;
+        public System.Drawing.Color FontColor = System.Drawing.Color.Black;
         public string FontName = InstalledFont.Monospace();
         public float FontSize = 12;
         public bool FontBold = false;
 
-        public Color FillColor = Color.LightGray;
-        public Color BorderColor = Color.Black;
+        public System.Drawing.Color FillColor = System.Drawing.Color.LightGray;
+        public System.Drawing.Color BorderColor = System.Drawing.Color.Black;
         public float BorderWidth = 1;
 
         public float Padding = 3;
