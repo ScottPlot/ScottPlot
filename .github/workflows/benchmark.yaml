@@ -1,0 +1,30 @@
+name: Benchmark
+
+on:
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+          - os: macos-latest
+            osName: MacOS
+    runs-on: ${{ matrix.os }}
+    name: 🧪 Test on ${{ matrix.osName }}
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore src/ScottPlot4/ScottPlot.Benchmarks
+      - name: 📏 Run Benchmarks
+        run: dotnet run src/ScottPlot4/ScottPlot.Benchmarks --configuration Release --framework net6.0 benchmark
