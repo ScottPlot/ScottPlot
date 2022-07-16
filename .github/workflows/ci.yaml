@@ -52,15 +52,19 @@ jobs:
       - name: 🛠️ ScottPlot4 Build
         run: dotnet build src/ScottPlot4/ScottPlot.Tests --configuration Release --no-restore
       - name: 🧪 ScottPlot4 Test
-        run: dotnet test src/ScottPlot4/ScottPlot.Tests --no-restore --verbosity normal
+        run: dotnet test src/ScottPlot4/ScottPlot.Tests --no-restore --verbosity minimal
 
       - name: 🚚 ScottPlot5 Restore
         run: dotnet restore src/ScottPlot5/ScottPlot.Tests
       - name: 🛠️ ScottPlot5 Build
         run: dotnet build src/ScottPlot5/ScottPlot.Tests --configuration Release --no-restore
       - name: 🧪 ScottPlot5 Test
-        run: dotnet test src/ScottPlot5/ScottPlot.Tests --no-restore --verbosity normal
+        run: dotnet test src/ScottPlot5/ScottPlot.Tests --no-restore --verbosity minimal
 
-      - name: 🐌 Build Solution # msbuild is required for .NET Framework projects
+      # msbuild is required to build a solution containing .NET Framework projects
+      - name: 🐢 Set up MSBuild
+        if: startsWith(matrix.os, 'windows')
+        uses: microsoft/setup-msbuild@v1.1
+      - name: 🐌 Build Solution
         if: startsWith(matrix.os, 'windows')
         run: msbuild src -property:Configuration=Release -verbosity:minimal
