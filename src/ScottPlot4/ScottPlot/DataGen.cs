@@ -1,13 +1,8 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot
 {
@@ -283,14 +278,14 @@ namespace ScottPlot
         /// <param name="min">The min of each component. Default 0.</param>
         /// <param name="max">The max of each component. Default 255.</param>
         /// <returns>A random color.</returns>
-        public static Color RandomColor(Random rand, int min = 0, int max = 255)
+        public static System.Drawing.Color RandomColor(Random rand, int min = 0, int max = 255)
         {
             if (rand is null)
                 rand = new Random();
             int r = rand.Next(min, max);
             int g = rand.Next(min, max);
             int b = rand.Next(min, max);
-            return Color.FromArgb(r, g, b);
+            return System.Drawing.Color.FromArgb(r, g, b);
         }
 
         /// <summary>
@@ -538,13 +533,13 @@ namespace ScottPlot
         /// <param name="data">The data to use.</param>
         /// <param name="cmap">The colormap to use.</param>
         /// <returns>A Bitmap</returns>
-        public static Bitmap BitmapFrom2dArray(double[,] data, Colormap cmap)
+        public static System.Drawing.Bitmap BitmapFrom2dArray(double[,] data, Colormap cmap)
         {
             int width = data.GetLength(1);
             int height = data.GetLength(0);
 
-            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
-            Rectangle rect = new Rectangle(0, 0, width, height);
+            System.Drawing.Bitmap bmp = new(width, height, PixelFormat.Format8bppIndexed);
+            System.Drawing.Rectangle rect = new(0, 0, width, height);
             BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
 
             byte[] bytes = new byte[bmpData.Stride * height];
@@ -556,9 +551,9 @@ namespace ScottPlot
             bmp.UnlockBits(bmpData);
 
             cmap.Apply(bmp);
-            Bitmap bmp2 = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+            System.Drawing.Bitmap bmp2 = new(width, height, PixelFormat.Format32bppPArgb);
 
-            using (Graphics gfx = Graphics.FromImage(bmp2))
+            using (System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp2))
             {
                 gfx.DrawImage(bmp, 0, 0);
             }
@@ -569,7 +564,7 @@ namespace ScottPlot
         /// Generates a sample Bitmap.
         /// </summary>
         /// <returns>A sample Bitmap</returns>
-        public static Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
+        public static System.Drawing.Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
 
         /// <summary>
         /// Returns a sample 2D array of grayscale values.
