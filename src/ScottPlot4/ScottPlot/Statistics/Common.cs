@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
+#pragma warning disable SYSLIB0023
+
 namespace ScottPlot.Statistics
 {
     public static class Common
