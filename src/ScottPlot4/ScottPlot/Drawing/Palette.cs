@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 
 namespace ScottPlot.Drawing
 {
@@ -47,17 +46,17 @@ namespace ScottPlot.Drawing
             return 255 << 24 | r << 16 | g << 8 | b;
         }
 
-        public Color GetColor(int index)
+        public System.Drawing.Color GetColor(int index)
         {
-            return Color.FromArgb(GetInt32(index));
+            return System.Drawing.Color.FromArgb(GetInt32(index));
         }
 
-        public Color GetColor(int index, double alpha = 1)
+        public System.Drawing.Color GetColor(int index, double alpha = 1)
         {
-            return Color.FromArgb(alpha: (int)(alpha * 255), baseColor: GetColor(index));
+            return System.Drawing.Color.FromArgb(alpha: (int)(alpha * 255), baseColor: GetColor(index));
         }
 
-        public Color[] GetColors(int count, int offset = 0, double alpha = 1)
+        public System.Drawing.Color[] GetColors(int count, int offset = 0, double alpha = 1)
         {
             return Enumerable.Range(offset, count)
                 .Select(x => GetColor(x, alpha))
