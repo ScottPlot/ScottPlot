@@ -1,4 +1,4 @@
-﻿using ScottPlot.Common;
+﻿using System;
 
 namespace ScottPlot;
 
