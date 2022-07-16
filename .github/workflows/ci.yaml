@@ -1,4 +1,4 @@
-name: Build and Test
+name: CI
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ on:
 jobs:
   format:
     runs-on: windows-latest
-    name: ✒️ Check Formatting
+    name: Check Formatting
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
           - os: macos-latest
             osName: MacOS
     runs-on: ${{ matrix.os }}
-    name: 🧪 Test on ${{ matrix.osName }}
+    name: Test on ${{ matrix.osName }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
