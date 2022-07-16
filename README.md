@@ -1,6 +1,6 @@
 # ScottPlot
 
-[![Test ScottPlot v4](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci-ScottPlot-v4.yaml/badge.svg)](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci-ScottPlot-v4.yaml)
+[![Build and Test](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci.yaml/badge.svg)](https://github.com/ScottPlot/ScottPlot/actions/workflows/ci.yaml)
 [![](https://img.shields.io/nuget/dt/scottplot?color=004880&label=downloads&logo=NuGet)](https://www.nuget.org/packages/ScottPlot/)
 [![](https://img.shields.io/nuget/vpre/scottplot?color=%23004880&label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![GitHub](https://img.shields.io/github/license/scottplot/scottplot?color=%231281c0)](LICENSE)
@@ -67,6 +67,18 @@ formsPlot1.Refresh();
 </p>
 
 **Try it out!** Give us a star and come back in an hour and your name will appear [here](https://stargraph.z20.web.core.windows.net/scottplot-stars.png)
+
+## Major Versions
+
+**✔️ ScottPlot 4** is stable and recommended for all users
+
+**⚠️ ScottPlot 5** is experimental and not recommended for use
+
+See the [roadmap](dev/roadmap.md) and [changelog](https://scottplot.net/changelog) for more information
+
+## ScottPlot Discord Channel
+
+* In July, 2022 maintainers started using the [ScottPlot Discord Channel](https://discord.gg/Dru6fnY2UX) to discuss progress developing the next major version of ScottPlot. Contributors and users are welcome to check it out!
 
 ## About ScottPlot
 

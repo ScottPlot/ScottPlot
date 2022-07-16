@@ -1,24 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<Version>5.0.0-alpha</Version>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <Version>5.0.0-alpha</Version>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="SkiaSharp" Version="2.88.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    </ItemGroup>
 
-	<ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
-		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
-	</ItemGroup>
+    <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
+    </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Common\ScottPlot.Common\ScottPlot.Common.csproj" />
-	  <ProjectReference Include="..\..\ScottPlot.Common\ScottPlot.Common.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\ScottPlot.Common\ScottPlot.Common.csproj" />
+    </ItemGroup>
 
 </Project>
