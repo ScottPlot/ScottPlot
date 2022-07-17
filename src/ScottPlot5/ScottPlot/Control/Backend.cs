@@ -17,7 +17,7 @@ namespace ScottPlot.Control
         private readonly Action requestRender;
 
         public delegate void MouseDownHandler(object sender, MouseDownInteraction e);
-        public delegate void MouseMoveHandler(object sender, MouseDownInteraction e);
+        public delegate void MouseMoveHandler(object sender, MouseMoveInteraction e);
         public delegate void MouseUpHandler(object sender, MouseUpInteraction e);
         public delegate void MouseDragHandler(object sender, MouseDragInteraction e);
         public delegate void MouseDragEndHandler(object sender, MouseDragInteraction e);
@@ -40,7 +40,7 @@ namespace ScottPlot.Control
 
             MouseDown += (object sender, MouseDownInteraction e) => DefaultEventHandlers.MouseDown(plot, e, requestRender);
             MouseUp += (object sender, MouseUpInteraction e) => DefaultEventHandlers.MouseUp(plot, e, requestRender);
-            MouseMove += (object sender, MouseDownInteraction e) => DefaultEventHandlers.MouseMove(plot, e, requestRender);
+            MouseMove += (object sender, MouseMoveInteraction e) => DefaultEventHandlers.MouseMove(plot, e, requestRender);
             MouseDrag += (object sender, MouseDragInteraction e) => DefaultEventHandlers.MouseDrag(plot, e, requestRender);
             MouseDragEnd += (object sender, MouseDragInteraction e) => DefaultEventHandlers.MouseDragEnd(plot, e, requestRender);
             DoubleClick += (object sender, MouseDownInteraction e) => DefaultEventHandlers.DoubleClick(plot, e, requestRender);
@@ -49,11 +49,11 @@ namespace ScottPlot.Control
 
         public IEnumerable<MouseButton> GetPressedButtons()
         {
-            if (CurrentMouse1Down.HasValue)
+            if (CurrentMouse1Down is not null)
                 yield return MouseButton.Mouse1;
-            if (CurrentMouse2Down.HasValue)
+            if (CurrentMouse2Down is not null)
                 yield return MouseButton.Mouse2;
-            if (CurrentMouse3Down.HasValue)
+            if (CurrentMouse3Down is not null)
                 yield return MouseButton.Mouse3;
         }
 
@@ -94,19 +94,14 @@ namespace ScottPlot.Control
 
         public void TriggerMouseDown(Pixel position, MouseButton button)
         {
-            SetMouseInteractionForButton(button, new()
-            {
-                Position = position,
-                Button = button,
-                AxisLimits = plot.GetAxisLimits()
-            });
-
-            MouseDown?.Invoke(EventSender, new() { Position = position, Button = button });
+            var interaction = new MouseDownInteraction(position, button, plot.GetAxisLimits());
+            SetMouseInteractionForButton(button, interaction);
+            MouseDown?.Invoke(EventSender, interaction);
         }
 
         public void TriggerDoubleClick(Pixel position, MouseButton button)
         {
-            DoubleClick?.Invoke(EventSender, new() { Position = position, Button = button });
+            DoubleClick?.Invoke(EventSender, new(position, button, plot.GetAxisLimits()));
         }
 
 
@@ -114,27 +109,27 @@ namespace ScottPlot.Control
         {
             bool cancelledDrag = false;
             var interaction = GetMouseInteractionForButton(button);
-            if (interaction.HasValue && IsDrag(interaction.Value.Position, position))
+            if (interaction is not null && IsDrag(interaction.Position, position))
             {
-                TriggerMouseDragEnd(interaction.Value, position, button);
+                TriggerMouseDragEnd(interaction, position, button);
                 cancelledDrag = true;
             }
 
             SetMouseInteractionForButton(button, null);
-            MouseUp?.Invoke(EventSender, new() { Position = position, Button = button, CancelledDrag = cancelledDrag });
+            MouseUp?.Invoke(EventSender, new(position, button, plot.GetAxisLimits(), cancelledDrag));
         }
 
         public void TriggerMouseMove(Pixel position)
         {
             LastMousePosition = position;
-            MouseMove?.Invoke(EventSender, new() { Position = position });
+            MouseMove?.Invoke(EventSender, new(position));
 
             for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
             {
                 var interaction = GetMouseInteractionForButton(button);
-                if (interaction.HasValue)
+                if (interaction is not null)
                 {
-                    var lastMouseDown = interaction.Value;
+                    var lastMouseDown = interaction;
                     if (IsDrag(lastMouseDown.Position, position))
                     {
                         TriggerMouseDrag(lastMouseDown, position, button);
@@ -145,17 +140,17 @@ namespace ScottPlot.Control
 
         public void TriggerMouseWheel(Pixel position, float deltaX, float deltaY)
         {
-            MouseWheel?.Invoke(EventSender, new() { Position = position, DeltaX = deltaX, DeltaY = deltaY });
+            MouseWheel?.Invoke(EventSender, new(position, deltaX, deltaY));
         }
 
         private void TriggerMouseDrag(MouseDownInteraction MouseDown, Pixel to, MouseButton button)
         {
-            MouseDrag?.Invoke(EventSender, new() { MouseDown = MouseDown, To = to, Button = button });
+            MouseDrag?.Invoke(EventSender, new(MouseDown, to, button));
         }
 
         private void TriggerMouseDragEnd(MouseDownInteraction MouseDown, Pixel to, MouseButton button)
         {
-            MouseDragEnd?.Invoke(EventSender, new() { MouseDown = MouseDown, To = to, Button = button });
+            MouseDragEnd?.Invoke(EventSender, new(MouseDown, to, button));
         }
 
         public static bool IsDrag(Pixel from, Pixel to)

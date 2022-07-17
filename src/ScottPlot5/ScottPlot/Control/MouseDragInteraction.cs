@@ -4,11 +4,18 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public struct MouseDragInteraction
+    public class MouseDragInteraction : BaseEventArgs
     {
-        public MouseDownInteraction MouseDown { get; set; }
+        public MouseDownInteraction MouseDown { get; }
         public Pixel From => MouseDown.Position;
-        public Pixel To { get; set; }
-        public MouseButton Button { get; set; }
+        public Pixel To { get; }
+        public MouseButton Button { get; }
+        
+        public MouseDragInteraction(MouseDownInteraction mouseDown, Pixel to, MouseButton button)
+        {
+            MouseDown = mouseDown;
+            To = to;
+            Button = button;
+        }
     }
 }

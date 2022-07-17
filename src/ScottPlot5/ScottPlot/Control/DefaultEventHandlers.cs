@@ -13,6 +13,9 @@ namespace ScottPlot.Control
 
         public static void MouseUp(Plot plot, MouseUpInteraction e, Action requestRender)
         {
+            if (e.Handled)
+                return;
+
             switch (e.Button)
             {
                 case MouseButton.Mouse3:
@@ -29,13 +32,16 @@ namespace ScottPlot.Control
             requestRender();
         }
 
-        public static void MouseMove(Plot plot, MouseDownInteraction e, Action requestRender)
+        public static void MouseMove(Plot plot, MouseMoveInteraction e, Action requestRender)
         {
-
+        
         }
 
         public static void MouseDrag(Plot plot, MouseDragInteraction e, Action requestRender)
         {
+            if (e.Handled)
+                return;
+
             switch (e.Button)
             {
                 case MouseButton.Mouse1:
@@ -56,6 +62,9 @@ namespace ScottPlot.Control
 
         public static void DoubleClick(Plot plot, MouseDownInteraction e, Action requestRender)
         {
+            if (e.Handled)
+                return;
+
             plot.Benchmark.IsVisible = !plot.Benchmark.IsVisible;
 
             requestRender();
@@ -63,6 +72,9 @@ namespace ScottPlot.Control
 
         public static void MouseWheel(Plot plot, MouseWheelInteraction e, Action requestRender)
         {
+            if (e.Handled)
+                return;
+
             double fracX = e.DeltaY > 0 ? 1.15 : .85;
             double fracY = e.DeltaY > 0 ? 1.15 : .85;
             plot.MouseZoom(fracX, fracY, e.Position);
@@ -72,6 +84,9 @@ namespace ScottPlot.Control
 
         public static void MouseDragEnd(Plot plot, MouseDragInteraction e, Action requestRender)
         {
+            if (e.Handled)
+                return;
+
             switch (e.Button)
             {
                 case MouseButton.Mouse3:

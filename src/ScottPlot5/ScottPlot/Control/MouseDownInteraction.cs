@@ -4,10 +4,17 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public struct MouseDownInteraction
+    public class MouseDownInteraction : BaseEventArgs
     {
-        public Pixel Position { get; set; }
-        public MouseButton Button { get; set; }
-        public AxisLimits AxisLimits { get; set; }
+        public Pixel Position { get; }
+        public MouseButton Button { get; }
+        public AxisLimits AxisLimits { get; }
+
+        public MouseDownInteraction(Pixel position, MouseButton button, AxisLimits axisLimits)
+        {
+            Position = position;
+            Button = button;
+            AxisLimits = axisLimits;
+        }
     }
 }

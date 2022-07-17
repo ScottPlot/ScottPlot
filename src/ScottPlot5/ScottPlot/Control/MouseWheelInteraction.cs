@@ -4,10 +4,17 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public struct MouseWheelInteraction
+    public class MouseWheelInteraction : BaseEventArgs
     {
-        public Pixel Position { get; set; }
-        public float DeltaY { get; set; }
-        public float DeltaX { get; set; }
+        public Pixel Position { get; }
+        public float DeltaX { get; }
+        public float DeltaY { get; }
+        
+        public MouseWheelInteraction(Pixel position, float deltaX, float deltaY)
+        {
+            Position = position;
+            DeltaX = deltaX;
+            DeltaY = deltaY;
+        }
     }
 }
