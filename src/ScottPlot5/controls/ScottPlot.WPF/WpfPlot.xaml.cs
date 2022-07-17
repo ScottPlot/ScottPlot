@@ -96,6 +96,11 @@ namespace ScottPlot.WPF
             base.OnMouseMove(e);
         }
 
+        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            backend.TriggerMouseWheel(GetInputState(e).position, 0, e.Delta);
+        }
+
         private void SendDoubleClick(Pixel position, List<MouseButton> buttons)
         {
             foreach (var button in buttons)

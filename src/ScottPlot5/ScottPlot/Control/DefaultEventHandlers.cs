@@ -61,5 +61,14 @@ namespace ScottPlot.Control
 
             requestRender();
         }
+
+        public static void MouseWheel(Plot plot, MouseWheelInteraction e, Action requestRender)
+        {
+            double fracX = e.DeltaY > 0 ? 1.15 : .85;
+            double fracY = e.DeltaY > 0 ? 1.15 : .85;
+            plot.MouseZoom(fracX, fracY, e.Position);
+
+            requestRender();
+        }
     }
 }

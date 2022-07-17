@@ -21,12 +21,14 @@ namespace ScottPlot.Control
         public delegate void MouseUpHandler(object sender, MouseUpInteraction e);
         public delegate void MouseDragHandler(object sender, MouseDragInteraction e);
         public delegate void DoubleClickHandler(object sender, MouseDownInteraction e);
+        public delegate void MouseWheelHandler(object sender, MouseWheelInteraction e);
 
         public event MouseDownHandler MouseDown = delegate { };
         public event MouseMoveHandler MouseMove = delegate { };
         public event MouseUpHandler MouseUp = delegate { };
         public event MouseDragHandler MouseDrag = delegate { };
         public event DoubleClickHandler DoubleClick = delegate { };
+        public event MouseWheelHandler MouseWheel = delegate { };
         public Backend(object sender, Plot plot, Action requestRender)
         {
             EventSender = sender;
@@ -37,7 +39,8 @@ namespace ScottPlot.Control
             MouseUp += (object sender, MouseUpInteraction e) => DefaultEventHandlers.MouseUp(plot, e, requestRender);
             MouseMove += (object sender, MouseDownInteraction e) => DefaultEventHandlers.MouseMove(plot, e, requestRender);
             MouseDrag += (object sender, MouseDragInteraction e) => DefaultEventHandlers.MouseDrag(plot, e, requestRender, (onRelease) => SetOnDragReleaseForButton(e.Button, onRelease));
-            DoubleClick += (object snder, MouseDownInteraction e) => DefaultEventHandlers.DoubleClick(plot, e, requestRender);
+            DoubleClick += (object sender, MouseDownInteraction e) => DefaultEventHandlers.DoubleClick(plot, e, requestRender);
+            MouseWheel += (object sender, MouseWheelInteraction e) => DefaultEventHandlers.MouseWheel(plot, e, requestRender);
         }
 
         public IEnumerable<MouseButton> GetPressedButtons()
@@ -146,6 +149,11 @@ namespace ScottPlot.Control
                     }
                 }
             }
+        } 
+        
+        public void TriggerMouseWheel(Pixel position, float deltaX, float deltaY)
+        {
+            MouseWheel?.Invoke(EventSender, new() { Position = position, DeltaX = deltaX, DeltaY = deltaY });
         }
 
         private void TriggerMouseDrag(MouseDownInteraction MouseDown, Pixel to, MouseButton button)
