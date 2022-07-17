@@ -9,6 +9,5 @@ namespace ScottPlot.Control
         public Pixel Position { get; set; }
         public MouseButton Button { get; set; }
         public AxisLimits AxisLimits { get; set; }
-        public Action? OnDragRelease { get; set; }
     }
 }

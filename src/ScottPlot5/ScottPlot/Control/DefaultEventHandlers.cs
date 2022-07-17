@@ -34,7 +34,7 @@ namespace ScottPlot.Control
 
         }
 
-        public static void MouseDrag(Plot plot, MouseDragInteraction e, Action requestRender, Action<Action> setOnDragRelease)
+        public static void MouseDrag(Plot plot, MouseDragInteraction e, Action requestRender)
         {
             switch (e.Button)
             {
@@ -46,7 +46,6 @@ namespace ScottPlot.Control
                     break;
                 case MouseButton.Mouse3:
                     plot.MouseZoomRectangle(e.From, e.To);
-                    setOnDragRelease(() => plot.MouseZoomRectangleClear(applyZoom: true));
                     break;
                 default:
                     return;
@@ -67,6 +66,20 @@ namespace ScottPlot.Control
             double fracX = e.DeltaY > 0 ? 1.15 : .85;
             double fracY = e.DeltaY > 0 ? 1.15 : .85;
             plot.MouseZoom(fracX, fracY, e.Position);
+
+            requestRender();
+        }
+
+        public static void MouseDragEnd(Plot plot, MouseDragInteraction e, Action requestRender)
+        {
+            switch (e.Button)
+            {
+                case MouseButton.Mouse3:
+                    plot.MouseZoomRectangleClear(applyZoom: true);
+                    break;
+                default:
+                    return;
+            }
 
             requestRender();
         }
