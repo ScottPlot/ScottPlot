@@ -31,7 +31,7 @@ namespace ScottPlot.Control
         public event DoubleClickHandler DoubleClick = delegate { };
         public event MouseWheelHandler MouseWheel = delegate { };
         public event MouseDragEndHandler MouseDragEnd = delegate { };
-        
+
         public Backend(object sender, Plot plot, Action requestRender)
         {
             EventSender = sender;
@@ -119,7 +119,7 @@ namespace ScottPlot.Control
                 TriggerMouseDragEnd(interaction.Value, position, button);
                 cancelledDrag = true;
             }
-            
+
             SetMouseInteractionForButton(button, null);
             MouseUp?.Invoke(EventSender, new() { Position = position, Button = button, CancelledDrag = cancelledDrag });
         }
