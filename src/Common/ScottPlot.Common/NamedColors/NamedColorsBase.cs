@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.NamedColors;
+﻿using System.Linq;
+
+namespace ScottPlot.NamedColors;
 
 public abstract class NamedColorsBase : INamedColors
 {
