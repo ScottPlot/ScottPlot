@@ -67,11 +67,4 @@
         <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
         <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
     </ItemGroup>
-
-  <!-- Tactically import just the ScottPlot 5 files we want in ScottPlot 4 -->
-  <ItemGroup>
-      <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
-      <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
-  </ItemGroup>
-
 </Project>
