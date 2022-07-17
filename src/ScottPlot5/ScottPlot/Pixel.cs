@@ -21,12 +21,12 @@ public struct Pixel
         return $"Pixel: X={X}, Y={Y}";
     }
 
-    public static Pixel operator+(Pixel a, Pixel b)
+    public static Pixel operator +(Pixel a, Pixel b)
     {
         return new Pixel(a.X + b.X, a.Y + b.Y);
     }
 
-    public static Pixel operator-(Pixel a, Pixel b)
+    public static Pixel operator -(Pixel a, Pixel b)
     {
         return new Pixel(a.X - b.X, a.Y - b.Y);
     }

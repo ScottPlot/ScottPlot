@@ -110,8 +110,8 @@ namespace ScottPlot.Control
             });
 
             MouseDown?.Invoke(EventSender, new() { Position = position, Button = button });
-        } 
-        
+        }
+
         public void TriggerDoubleClick(Pixel position, MouseButton button)
         {
             DoubleClick?.Invoke(EventSender, new() { Position = position, Button = button });
@@ -122,7 +122,7 @@ namespace ScottPlot.Control
         {
             bool cancelledDrag = false;
             var interaction = GetMouseInteractionForButton(button);
-            if(interaction.HasValue && IsDrag(interaction.Value.Position, position))
+            if (interaction.HasValue && IsDrag(interaction.Value.Position, position))
             {
                 interaction?.OnDragRelease?.Invoke();
                 cancelledDrag = true;
@@ -136,8 +136,8 @@ namespace ScottPlot.Control
         {
             LastMousePosition = position;
             MouseMove?.Invoke(EventSender, new() { Position = position });
-            
-            for(MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
+
+            for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
             {
                 var interaction = GetMouseInteractionForButton(button);
                 if (interaction.HasValue)
@@ -149,8 +149,8 @@ namespace ScottPlot.Control
                     }
                 }
             }
-        } 
-        
+        }
+
         public void TriggerMouseWheel(Pixel position, float deltaX, float deltaY)
         {
             MouseWheel?.Invoke(EventSender, new() { Position = position, DeltaX = deltaX, DeltaY = deltaY });

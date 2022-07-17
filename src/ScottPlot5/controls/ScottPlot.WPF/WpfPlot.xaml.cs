@@ -19,7 +19,7 @@ namespace ScottPlot.WPF
     {
         public ScottPlot.Plot Plot { get; }
         private readonly Backend backend;
-        
+
         public WpfPlot()
         {
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace ScottPlot.WPF
 
             Pixel position = new((float)(e.GetPosition(this).X * dpiScale.DpiScaleX), (float)(e.GetPosition(this).Y * dpiScale.DpiScaleY));
             List<MouseButton> buttons = new();
-            
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 buttons.Add(Control.MouseButton.Mouse1);
@@ -63,10 +63,11 @@ namespace ScottPlot.WPF
 
             return (position, buttons);
         }
-        private void OnMouseDown(object sender, MouseButtonEventArgs e) { 
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
             (var position, var buttons) = GetInputState(e);
 
-            foreach(var button in buttons)
+            foreach (var button in buttons)
             {
                 backend.TriggerMouseDown(position, button);
             }
@@ -78,8 +79,9 @@ namespace ScottPlot.WPF
                 SendDoubleClick(position, buttons);
             }
         }
-        
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) { 
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
             (var position, var buttons) = GetInputState(e);
 
             var pressedButtons = backend.GetPressedButtons();
@@ -91,7 +93,8 @@ namespace ScottPlot.WPF
             (sender as UIElement)?.ReleaseMouseCapture();
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e) {
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
             backend.TriggerMouseMove(GetInputState(e).position);
             base.OnMouseMove(e);
         }

@@ -31,9 +31,9 @@ namespace ScottPlot.Control
 
         public static void MouseMove(Plot plot, MouseDownInteraction e, Action requestRender)
         {
-            
+
         }
-        
+
         public static void MouseDrag(Plot plot, MouseDragInteraction e, Action requestRender, Action<Action> setOnDragRelease)
         {
             switch (e.Button)
@@ -48,10 +48,10 @@ namespace ScottPlot.Control
                     plot.MouseZoomRectangle(e.From, e.To);
                     setOnDragRelease(() => plot.MouseZoomRectangleClear(applyZoom: true));
                     break;
-                default: 
+                default:
                     return;
             }
-            
+
             requestRender();
         }
 
