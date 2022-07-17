@@ -1,71 +1,71 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms, WPF, or Avalonia applications are available as separate NuGet packages.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
-    <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
-    <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
-    <Version>4.1.53</Version>
-    <AssemblyVersion>4.1.53.0</AssemblyVersion>
-    <FileVersion>4.1.53.0</FileVersion>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-    <Authors>Scott Harden</Authors>
-    <Company>Harden Technologies, LLC</Company>
-    <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
-    <DocumentationFile>ScottPlot.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <DebugType>portable</DebugType>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms, WPF, or Avalonia applications are available as separate NuGet packages.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+        <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+        <Version>4.1.53</Version>
+        <AssemblyVersion>4.1.53.0</AssemblyVersion>
+        <FileVersion>4.1.53.0</FileVersion>
+        <LangVersion>latest</LangVersion>
+        <SignAssembly>true</SignAssembly>
+        <DelaySign>false</DelaySign>
+        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
+        <DocumentationFile>ScottPlot.xml</DocumentationFile>
+        <NoWarn>1591</NoWarn>
+        <DebugType>portable</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
 
-  <ItemGroup>
+    <ItemGroup>
 
-    <!-- 
+        <!-- 
       Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
       Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
       is associated with assembly issues that break .NET Framework projects on Windows.
       https://github.com/ScottPlot/ScottPlot/issues/1004
     -->
-    <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="icon.ico" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+        <PackageReference Include="System.Drawing.Common" Version="4.6.1" />
+        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="icon.ico" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
-  <!-- MacOS requires a special DLL to use System.Drawing -->
-  <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
-    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
-  </ItemGroup>
+    <!-- MacOS requires a special DLL to use System.Drawing -->
+    <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
+        <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
+    </ItemGroup>
 
-  <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-  </ItemGroup>
+    <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    </ItemGroup>
 
-  <!-- Tactically import just the ScottPlot 5 files we want in ScottPlot 4 -->
-  <ItemGroup>
-      <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
-      <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
-  </ItemGroup>
+    <!-- Import select source files from the common project (but do not reference the project itself) -->
+    <ItemGroup>
+        <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
+        <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
+    </ItemGroup>
 
 </Project>
