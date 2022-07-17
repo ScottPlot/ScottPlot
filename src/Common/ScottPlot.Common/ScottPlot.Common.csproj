@@ -1,10 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
 
-	<PropertyGroup>
-		<TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
-		<LangVersion>latest</LangVersion>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>disable</ImplicitUsings>
-	</PropertyGroup>
+        <!-- 
+            ScottPlot4 and ScottPlot5 projects import and compile source files (not this project file).
+            This project exists to facilitate testing and code navigation in modern IDEs.
+        -->
 
+        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <!-- No implicit or global usings because source files are imported directly so they must be self-contained. -->
+        <ImplicitUsings>disable</ImplicitUsings>
+
+        <!-- Not generating assemblies in this project is important to avoid naming conflicts. -->
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
 </Project>
