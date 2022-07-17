@@ -67,7 +67,8 @@ namespace ScottPlot.WPF
         {
             (var position, var buttons) = GetInputState(e);
 
-            foreach (var button in buttons)
+            var pressedButtons = backend.GetPressedButtons();
+            foreach (var button in buttons.Where(b => !pressedButtons.Contains(b)))
             {
                 backend.TriggerMouseDown(position, button);
             }
