@@ -34,7 +34,7 @@ namespace ScottPlot.Control
 
         public static void MouseMove(Plot plot, MouseMoveInteraction e, Action requestRender)
         {
-        
+
         }
 
         public static void MouseDrag(Plot plot, MouseDragInteraction e, Action requestRender)

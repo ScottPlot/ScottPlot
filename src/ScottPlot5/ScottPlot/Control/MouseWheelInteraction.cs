@@ -9,7 +9,7 @@ namespace ScottPlot.Control
         public Pixel Position { get; }
         public float DeltaX { get; }
         public float DeltaY { get; }
-        
+
         public MouseWheelInteraction(Pixel position, float deltaX, float deltaY)
         {
             Position = position;

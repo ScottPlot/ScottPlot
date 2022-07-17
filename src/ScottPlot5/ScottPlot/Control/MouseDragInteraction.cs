@@ -10,7 +10,7 @@ namespace ScottPlot.Control
         public Pixel From => MouseDown.Position;
         public Pixel To { get; }
         public MouseButton Button { get; }
-        
+
         public MouseDragInteraction(MouseDownInteraction mouseDown, Pixel to, MouseButton button)
         {
             MouseDown = mouseDown;
