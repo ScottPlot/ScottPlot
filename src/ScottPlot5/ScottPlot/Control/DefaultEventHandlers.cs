@@ -54,5 +54,12 @@ namespace ScottPlot.Control
             
             requestRender();
         }
+
+        public static void DoubleClick(Plot plot, MouseDownInteraction e, Action requestRender)
+        {
+            plot.Benchmark.IsVisible = !plot.Benchmark.IsVisible;
+
+            requestRender();
+        }
     }
 }

@@ -72,6 +72,11 @@ namespace ScottPlot.WPF
             }
 
             (sender as UIElement)?.CaptureMouse();
+
+            if (e.ClickCount == 2)
+            {
+                SendDoubleClick(position, buttons);
+            }
         }
         
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { 
@@ -89,6 +94,14 @@ namespace ScottPlot.WPF
         private void OnMouseMove(object sender, MouseEventArgs e) {
             backend.TriggerMouseMove(GetInputState(e).position);
             base.OnMouseMove(e);
+        }
+
+        private void SendDoubleClick(Pixel position, List<MouseButton> buttons)
+        {
+            foreach (var button in buttons)
+            {
+                backend.TriggerDoubleClick(position, button);
+            }
         }
     }
 }
