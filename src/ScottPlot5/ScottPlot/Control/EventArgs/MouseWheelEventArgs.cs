@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Control
+namespace ScottPlot.Control.EventArgs
 {
-    public class MouseWheelInteraction : BaseEventArgs
+    public class MouseWheelEventArgs : BaseEventArgs
     {
         public Pixel Position { get; }
         public float DeltaX { get; }
         public float DeltaY { get; }
 
-        public MouseWheelInteraction(Pixel position, float deltaX, float deltaY)
+        public MouseWheelEventArgs(Pixel position, float deltaX, float deltaY)
         {
             Position = position;
             DeltaX = deltaX;

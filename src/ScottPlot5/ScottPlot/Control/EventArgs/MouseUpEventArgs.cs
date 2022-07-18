@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Control
+namespace ScottPlot.Control.EventArgs
 {
-    public class MouseUpInteraction : BaseEventArgs
+    public class MouseUpEventArgs : BaseEventArgs
     {
         public Pixel Position { get; }
         public MouseButton Button { get; }
         public AxisLimits AxisLimits { get; }
         public bool CancelledDrag { get; }
 
-        public MouseUpInteraction(Pixel position, MouseButton button, AxisLimits axisLimits, bool cancelledDrag)
+        public MouseUpEventArgs(Pixel position, MouseButton button, AxisLimits axisLimits, bool cancelledDrag)
         {
             Position = position;
             Button = button;

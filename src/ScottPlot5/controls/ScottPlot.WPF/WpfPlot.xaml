@@ -6,6 +6,18 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
              xmlns:local="clr-namespace:ScottPlot.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <skia:SKElement Name="SKElement" PaintSurface="OnPaintSurface" MouseDown="OnMouseDown" MouseUp="OnMouseUp" MouseMove="OnMouseMove" MouseWheel="OnMouseWheel" />
+             d:DesignHeight="450" d:DesignWidth="800"
+             Focusable="True"
+             KeyDown="OnKeyDown"
+             KeyUp="OnKeyUp"
+             >
+    <skia:SKElement 
+        Name="SKElement" 
+        PaintSurface="OnPaintSurface" 
+        MouseDown="OnMouseDown" 
+        MouseUp="OnMouseUp" 
+        MouseMove="OnMouseMove" 
+        MouseWheel="OnMouseWheel"
+    />
 </UserControl>
+ 

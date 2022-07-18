@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Control
+namespace ScottPlot.Control.EventArgs
 {
-    public class BaseEventArgs : EventArgs
+    public class BaseEventArgs : System.EventArgs
     {
         public bool Handled { get; set; }
     }

@@ -10,5 +10,4 @@ namespace ScottPlot.Control
         Mouse2,
         Mouse3,
     }
-
 }

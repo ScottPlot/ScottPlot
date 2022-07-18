@@ -8,6 +8,7 @@ using System.Windows.Media;
 using ScottPlot.Control;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using Key = ScottPlot.Control.Key;
 using MouseButton = ScottPlot.Control.MouseButton;
 
 namespace ScottPlot.WPF
@@ -63,8 +64,30 @@ namespace ScottPlot.WPF
 
             return (position, buttons);
         }
+
+        private Key? GetScottPlotKey(KeyEventArgs e)
+        {
+            var key = (e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key); // WPF likes to snatch Alt, so we have to look to see if it's a system key
+
+            if (key == System.Windows.Input.Key.LeftCtrl || key == System.Windows.Input.Key.RightCtrl)
+            {
+                return Key.Ctrl;
+            }
+            else if (key == System.Windows.Input.Key.LeftAlt || key == System.Windows.Input.Key.RightAlt)
+            {
+                return Key.Alt;
+            }
+            else if (key == System.Windows.Input.Key.LeftShift || key == System.Windows.Input.Key.RightShift)
+            {
+                return Key.Shift;
+            }
+
+            return null;
+        }
+
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            Keyboard.Focus(this);
             (var position, var buttons) = GetInputState(e);
 
             var pressedButtons = backend.GetPressedButtons();
@@ -102,7 +125,28 @@ namespace ScottPlot.WPF
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            backend.TriggerDoubleClick(GetInputState(e).position, Control.MouseButton.Mouse1);
             backend.TriggerMouseWheel(GetInputState(e).position, 0, e.Delta);
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            Key? key = GetScottPlotKey(e);
+
+            if (key.HasValue)
+            {
+                backend.TriggerKeyDown(key.Value);
+            }
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            Key? key = GetScottPlotKey(e);
+
+            if (key.HasValue)
+            {
+                backend.TriggerKeyUp(key.Value);
+            }
         }
 
         private void SendDoubleClick(Pixel position, List<MouseButton> buttons)
