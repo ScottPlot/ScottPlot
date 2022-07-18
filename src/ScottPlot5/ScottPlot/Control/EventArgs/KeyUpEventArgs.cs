@@ -7,7 +7,7 @@ namespace ScottPlot.Control.EventArgs
     public class KeyUpEventArgs : BaseEventArgs
     {
         public Key Key { get; }
-        
+
         public KeyUpEventArgs(Key key)
         {
             Key = key;

@@ -9,7 +9,7 @@ namespace ScottPlot.Control.EventArgs
         public Pixel Position { get; }
         public MouseButton Button { get; }
         public AxisLimits AxisLimits { get; }
-        public IReadOnlyCollection<Key> PressedKeys {get; }
+        public IReadOnlyCollection<Key> PressedKeys { get; }
 
         public MouseDownEventArgs(Pixel position, MouseButton button, AxisLimits axisLimits, IReadOnlyCollection<Key> pressedKeys)
         {

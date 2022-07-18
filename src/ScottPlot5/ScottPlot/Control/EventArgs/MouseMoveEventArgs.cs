@@ -7,7 +7,7 @@ namespace ScottPlot.Control.EventArgs
     public class MouseMoveEventArgs : BaseEventArgs
     {
         public Pixel Position { get; }
-        public IReadOnlyCollection<Key> PressedKeys {get; }
+        public IReadOnlyCollection<Key> PressedKeys { get; }
 
         public MouseMoveEventArgs(Pixel position, IReadOnlyCollection<Key> pressedKeys)
         {

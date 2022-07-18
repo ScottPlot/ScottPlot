@@ -50,7 +50,9 @@ namespace ScottPlot.Control
                     if (e.PressedKeys.Contains(Key.Alt))
                     {
                         plot.MouseZoomRectangle(e.From, e.To);
-                    } else {
+                    }
+                    else
+                    {
                         Pixel panTo = e.To;
                         panTo.X = e.PressedKeys.Contains(Key.Shift) ? e.From.X : panTo.X;
                         panTo.Y = e.PressedKeys.Contains(Key.Ctrl) ? e.From.Y : panTo.Y;
@@ -97,10 +99,11 @@ namespace ScottPlot.Control
         {
             if (e.Handled)
                 return;
-            
-            if (e.Button == MouseButton.Mouse3 || (e.Button == MouseButton.Mouse1 && e.PressedKeys.Contains(Key.Alt))) {
-                    plot.MouseZoomRectangleClear(applyZoom: true);
-                    requestRender();
+
+            if (e.Button == MouseButton.Mouse3 || (e.Button == MouseButton.Mouse1 && e.PressedKeys.Contains(Key.Alt)))
+            {
+                plot.MouseZoomRectangleClear(applyZoom: true);
+                requestRender();
             }
         }
 
