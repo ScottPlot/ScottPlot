@@ -42,6 +42,8 @@ namespace ScottPlot.Control
         public event KeyDownHandler KeyDown = delegate { };
         public event KeyUpHandler KeyUp = delegate { };
 
+        public float MinimumDragDistance = 5;
+
         public Backend(object sender, Plot plot, Action requestRender)
         {
             EventSender = sender;
@@ -59,19 +61,17 @@ namespace ScottPlot.Control
             KeyUp += (object sender, KeyUpEventArgs e) => DefaultEventHandlers.KeyUp(plot, e, requestRender);
         }
 
-        public IReadOnlyCollection<Key> PressedKeys =>
-            CurrentlyPressedKeys.ToArray();
+        public IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
 
-        public IEnumerable<MouseButton> PressedMouseButtons =>
-            MouseInteractions.Keys.Where(button => MouseInteractions[button] is not null);
+        public IEnumerable<MouseButton> PressedMouseButtons => MouseInteractions.Keys.Where(button => MouseInteractions[button] is not null);
 
-        private MouseDownEventArgs? GetMouseInteraction(MouseButton button) =>
-            MouseInteractions.ContainsKey(button) ? MouseInteractions[button] : null;
+        private MouseDownEventArgs? GetMouseInteraction(MouseButton button) => MouseInteractions.ContainsKey(button) ? MouseInteractions[button] : null;
 
-        private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) =>
-            MouseInteractions[button] = value;
+        private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) => MouseInteractions[button] = value;
 
         public Coordinate? MouseCoordinates => LastMousePosition.HasValue ? Plot.GetCoordinate(LastMousePosition.Value) : null;
+
+        public bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
 
         public void TriggerMouseDown(Pixel position, MouseButton button)
         {
@@ -114,6 +114,10 @@ namespace ScottPlot.Control
                     {
                         TriggerMouseDrag(lastMouseDown, position, button);
                     }
+                    else if (Plot.ZoomRectangle.IsVisible)
+                    {
+                        Plot.MouseZoomRectangleClear(applyZoom: false);
+                    }
                 }
             }
         }
@@ -143,14 +147,6 @@ namespace ScottPlot.Control
         private void TriggerMouseDragEnd(MouseDownEventArgs MouseDown, Pixel to, MouseButton button)
         {
             MouseDragEnd?.Invoke(EventSender, new(MouseDown, to, button));
-        }
-
-        public static bool IsDrag(Pixel from, Pixel to)
-        {
-            const int minDragDistance = 5;
-            Pixel difference = from - to;
-
-            return difference.X * difference.X + difference.Y * difference.Y > minDragDistance * minDragDistance;
         }
     }
 }
