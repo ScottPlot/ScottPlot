@@ -32,27 +32,52 @@ namespace ScottPlot.Control
         public delegate void KeyDownHandler<U, V>(U sender, V eventArgs);
         public delegate void KeyUpHandler<U, V>(U sender, V eventArgs);
 
-        public event MouseDownHandler<T, MouseDownEventArgs> MouseDown;
-        public event MouseUpHandler<T, MouseUpEventArgs> MouseUp;
-        public event MouseMoveHandler<T, MouseMoveEventArgs> MouseMove;
-        public event MouseDragHandler<T, MouseDragEventArgs> MouseDrag;
-        public event MouseDragEndHandler<T, MouseDragEventArgs> MouseDragEnd;
-        public event DoubleClickHandler<T, MouseDownEventArgs> DoubleClick;
-        public event MouseWheelHandler<T, MouseWheelEventArgs> MouseWheel;
-        public event KeyDownHandler<T, KeyDownEventArgs> KeyDown;
-        public event KeyUpHandler<T, KeyUpEventArgs> KeyUp;
+        public event MouseDownHandler<T, MouseDownEventArgs> MouseDown = delegate { };
+        public event MouseUpHandler<T, MouseUpEventArgs> MouseUp = delegate { };
+        public event MouseMoveHandler<T, MouseMoveEventArgs> MouseMove = delegate { };
+        public event MouseDragHandler<T, MouseDragEventArgs> MouseDrag = delegate { };
+        public event MouseDragEndHandler<T, MouseDragEventArgs> MouseDragEnd = delegate { };
+        public event DoubleClickHandler<T, MouseDownEventArgs> DoubleClick = delegate { };
+        public event MouseWheelHandler<T, MouseWheelEventArgs> MouseWheel = delegate { };
+        public event KeyDownHandler<T, KeyDownEventArgs> KeyDown = delegate { };
+        public event KeyUpHandler<T, KeyUpEventArgs> KeyUp = delegate { };
 
         public float MinimumDragDistance = 5;
 
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
         /// </summary>
-        /// <param name="sender">The control whose plot is being controlled by this backend</param>
-        /// <param name="interactions">A non-standard set of interactions can be used if provided</param>
-        public Backend(T sender, IPlotInteractions? customInteractions = null)
+        /// <param name="sender">The type of the control whose plot is being controlled by this backend</param>
+        public Backend(T sender)
         {
             Control = sender;
-            IPlotInteractions interactions = customInteractions ?? new Default();
+
+            IPlotInteractions interactions = new Default();
+            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
+            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
+            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(sender, e);
+            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(sender, e);
+            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(sender, e);
+            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(sender, e);
+            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(sender, e);
+            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(sender, e);
+            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(sender, e);
+        }
+
+        /// <summary>
+        /// Clear all existing interaction event handlers and replace them with a custom set
+        /// </summary>
+        public void ReplaceInteractions(IPlotInteractions interactions)
+        {
+            MouseDown = delegate { };
+            MouseUp = delegate { };
+            MouseMove = delegate { };
+            MouseDrag = delegate { };
+            MouseDragEnd = delegate { };
+            DoubleClick = delegate { };
+            MouseWheel = delegate { };
+            KeyDown = delegate { };
+            KeyUp = delegate { };
 
             MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
             MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
