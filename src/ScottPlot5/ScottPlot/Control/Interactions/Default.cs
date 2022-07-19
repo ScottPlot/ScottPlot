@@ -4,11 +4,11 @@ namespace ScottPlot.Control.Interactions;
 
 public class Default : IPlotInteractions
 {
-    public void MouseDown(IPlotControl sender, MouseDownEventArgs e)
+    public virtual void MouseDown(IPlotControl sender, MouseDownEventArgs e)
     {
     }
 
-    public void MouseUp(IPlotControl sender, MouseUpEventArgs e)
+    public virtual void MouseUp(IPlotControl sender, MouseUpEventArgs e)
     {
         if (e.Handled)
             return;
@@ -30,12 +30,12 @@ public class Default : IPlotInteractions
         sender.Refresh();
     }
 
-    public void MouseMove(IPlotControl sender, MouseMoveEventArgs e)
+    public virtual void MouseMove(IPlotControl sender, MouseMoveEventArgs e)
     {
 
     }
 
-    public void MouseDrag(IPlotControl sender, MouseDragEventArgs e)
+    public virtual void MouseDrag(IPlotControl sender, MouseDragEventArgs e)
     {
         if (e.Handled)
             return;
@@ -69,7 +69,7 @@ public class Default : IPlotInteractions
         sender.Refresh();
     }
 
-    public void DoubleClick(IPlotControl sender, MouseDownEventArgs e)
+    public virtual void DoubleClick(IPlotControl sender, MouseDownEventArgs e)
     {
         if (e.Handled)
             return;
@@ -79,7 +79,7 @@ public class Default : IPlotInteractions
         sender.Refresh();
     }
 
-    public void MouseWheel(IPlotControl sender, MouseWheelEventArgs e)
+    public virtual void MouseWheel(IPlotControl sender, MouseWheelEventArgs e)
     {
         if (e.Handled)
             return;
@@ -91,7 +91,7 @@ public class Default : IPlotInteractions
         sender.Refresh();
     }
 
-    public void MouseDragEnd(IPlotControl sender, MouseDragEventArgs e)
+    public virtual void MouseDragEnd(IPlotControl sender, MouseDragEventArgs e)
     {
         if (e.Handled)
             return;
@@ -103,11 +103,11 @@ public class Default : IPlotInteractions
         }
     }
 
-    public void KeyDown(IPlotControl sender, KeyDownEventArgs e)
+    public virtual void KeyDown(IPlotControl sender, KeyDownEventArgs e)
     {
     }
 
-    public void KeyUp(IPlotControl sender, KeyUpEventArgs e)
+    public virtual void KeyUp(IPlotControl sender, KeyUpEventArgs e)
     {
     }
 }
