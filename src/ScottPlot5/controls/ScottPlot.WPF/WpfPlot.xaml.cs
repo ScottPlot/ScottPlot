@@ -40,119 +40,88 @@ namespace ScottPlot.WPF
             Plot.Render(e.Surface);
         }
 
-        private (Pixel position, List<MouseButton> buttons) GetInputState(MouseEventArgs e)
+        // TODO: should keyboard keypress state live in here?
+        private InputState GetInputState(MouseEventArgs e)
         {
             var dpiScale = VisualTreeHelper.GetDpi(this);
 
-            Pixel position = new((float)(e.GetPosition(this).X * dpiScale.DpiScaleX), (float)(e.GetPosition(this).Y * dpiScale.DpiScaleY));
-            List<MouseButton> buttons = new();
+            Pixel mousePosition = new(
+                    x: (float)(e.GetPosition(this).X * dpiScale.DpiScaleX),
+                    y: (float)(e.GetPosition(this).Y * dpiScale.DpiScaleY));
 
-            if (e.LeftButton == MouseButtonState.Pressed)
+            List<MouseButton?> pressedButtons = new()
             {
-                buttons.Add(Control.MouseButton.Mouse1);
-            }
+                e.LeftButton == MouseButtonState.Pressed ? MouseButton.Mouse1 : null,
+                e.RightButton == MouseButtonState.Pressed ? MouseButton.Mouse2 : null,
+                e.MiddleButton == MouseButtonState.Pressed ? MouseButton.Mouse3 : null,
+            };
 
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                buttons.Add(Control.MouseButton.Mouse2);
-            }
-
-            if (e.MiddleButton == MouseButtonState.Pressed)
-            {
-                buttons.Add(Control.MouseButton.Mouse3);
-            }
-
-            return (position, buttons);
+            return new InputState(mousePosition, pressedButtons);
         }
 
-        private Key? GetScottPlotKey(KeyEventArgs e)
+        private Key GetScottPlotKey(KeyEventArgs e)
         {
-            var key = (e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key); // WPF likes to snatch Alt, so we have to look to see if it's a system key
+            // WPF likes to snatch Alt, in which case we have to grab the system key value
+            var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
 
-            if (key == System.Windows.Input.Key.LeftCtrl || key == System.Windows.Input.Key.RightCtrl)
+            return key switch
             {
-                return Key.Ctrl;
-            }
-            else if (key == System.Windows.Input.Key.LeftAlt || key == System.Windows.Input.Key.RightAlt)
-            {
-                return Key.Alt;
-            }
-            else if (key == System.Windows.Input.Key.LeftShift || key == System.Windows.Input.Key.RightShift)
-            {
-                return Key.Shift;
-            }
-
-            return null;
+                System.Windows.Input.Key.LeftCtrl => Key.Ctrl,
+                System.Windows.Input.Key.RightCtrl => Key.Ctrl,
+                System.Windows.Input.Key.LeftAlt => Key.Alt,
+                System.Windows.Input.Key.RightAlt => Key.Alt,
+                System.Windows.Input.Key.LeftShift => Key.Shift,
+                System.Windows.Input.Key.RightShift => Key.Shift,
+                _ => Key.UNKNOWN,
+            };
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             Keyboard.Focus(this);
-            (var position, var buttons) = GetInputState(e);
 
-            foreach (var button in buttons.Where(b => !Backend.PressedMouseButtons.Contains(b)))
-            {
-                Backend.TriggerMouseDown(position, button);
-            }
+            InputState state = GetInputState(e);
+
+            Backend.TriggerMouseDown(state);
 
             (sender as UIElement)?.CaptureMouse();
 
             if (e.ClickCount == 2)
             {
-                SendDoubleClick(position, buttons);
+                SendDoubleClick(state);
             }
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            (var position, var buttons) = GetInputState(e);
-
-            foreach (var button in Backend.PressedMouseButtons.Where(b => !buttons.Contains(b)))
-            {
-                Backend.TriggerMouseUp(position, button);
-            }
-
+            Backend.TriggerMouseUp(GetInputState(e));
             (sender as UIElement)?.ReleaseMouseCapture();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.TriggerMouseMove(GetInputState(e).position);
+            Backend.TriggerMouseMove(GetInputState(e));
             base.OnMouseMove(e);
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.TriggerDoubleClick(GetInputState(e).position, Control.MouseButton.Mouse1);
-            Backend.TriggerMouseWheel(GetInputState(e).position, 0, e.Delta);
+            Backend.TriggerMouseWheel(GetInputState(e), 0, e.Delta);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Key? key = GetScottPlotKey(e);
-
-            if (key.HasValue)
-            {
-                Backend.TriggerKeyDown(key.Value);
-            }
+            Backend.TriggerKeyDown(GetScottPlotKey(e));
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Key? key = GetScottPlotKey(e);
-
-            if (key.HasValue)
-            {
-                Backend.TriggerKeyUp(key.Value);
-            }
+            Backend.TriggerKeyUp(GetScottPlotKey(e));
         }
 
-        private void SendDoubleClick(Pixel position, List<MouseButton> buttons)
+        private void SendDoubleClick(InputState state)
         {
-            foreach (var button in buttons)
-            {
-                Backend.TriggerDoubleClick(position, button);
-            }
+            Backend.TriggerDoubleClick(state);
         }
     }
 }

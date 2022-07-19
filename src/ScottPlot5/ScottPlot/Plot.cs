@@ -149,7 +149,6 @@ public class Plot
     /// </summary>
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
-        System.Diagnostics.Debug.WriteLine(fracX);
         Coordinate mouseCoordinate = GetCoordinate(pixel);
         SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
     }
