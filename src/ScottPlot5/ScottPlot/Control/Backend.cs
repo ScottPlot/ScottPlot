@@ -108,7 +108,7 @@ namespace ScottPlot.Control
 
         private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) => MouseInteractions[button] = value;
 
-        public Coordinate MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
+        public Coordinates MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
 
         private bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
 
