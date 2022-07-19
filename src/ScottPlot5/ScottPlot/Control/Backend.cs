@@ -22,26 +22,29 @@ namespace ScottPlot.Control
 
         private readonly Dictionary<MouseButton, MouseDownEventArgs?> MouseInteractions = new();
 
-        public delegate void MouseDownHandler<U, V>(U sender, V eventArgs);
-        public delegate void MouseUpHandler<U, V>(U sender, V eventArgs);
-        public delegate void MouseMoveHandler<U, V>(U sender, V eventArgs);
-        public delegate void MouseDragHandler<U, V>(U sender, V eventArgs);
-        public delegate void MouseDragEndHandler<U, V>(U sender, V eventArgs);
-        public delegate void DoubleClickHandler<U, V>(U sender, V eventArgs);
-        public delegate void MouseWheelHandler<U, V>(U sender, V eventArgs);
-        public delegate void KeyDownHandler<U, V>(U sender, V eventArgs);
-        public delegate void KeyUpHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseDownHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseUpHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseMoveHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseDragHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseDragEndHandler<U, V>(U sender, V eventArgs);
+        private delegate void DoubleClickHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseWheelHandler<U, V>(U sender, V eventArgs);
+        private delegate void KeyDownHandler<U, V>(U sender, V eventArgs);
+        private delegate void KeyUpHandler<U, V>(U sender, V eventArgs);
 
-        public event MouseDownHandler<T, MouseDownEventArgs> MouseDown = delegate { };
-        public event MouseUpHandler<T, MouseUpEventArgs> MouseUp = delegate { };
-        public event MouseMoveHandler<T, MouseMoveEventArgs> MouseMove = delegate { };
-        public event MouseDragHandler<T, MouseDragEventArgs> MouseDrag = delegate { };
-        public event MouseDragEndHandler<T, MouseDragEventArgs> MouseDragEnd = delegate { };
-        public event DoubleClickHandler<T, MouseDownEventArgs> DoubleClick = delegate { };
-        public event MouseWheelHandler<T, MouseWheelEventArgs> MouseWheel = delegate { };
-        public event KeyDownHandler<T, KeyDownEventArgs> KeyDown = delegate { };
-        public event KeyUpHandler<T, KeyUpEventArgs> KeyUp = delegate { };
+        private event MouseDownHandler<T, MouseDownEventArgs> MouseDown = delegate { };
+        private event MouseUpHandler<T, MouseUpEventArgs> MouseUp = delegate { };
+        private event MouseMoveHandler<T, MouseMoveEventArgs> MouseMove = delegate { };
+        private event MouseDragHandler<T, MouseDragEventArgs> MouseDrag = delegate { };
+        private event MouseDragEndHandler<T, MouseDragEventArgs> MouseDragEnd = delegate { };
+        private event DoubleClickHandler<T, MouseDownEventArgs> DoubleClick = delegate { };
+        private event MouseWheelHandler<T, MouseWheelEventArgs> MouseWheel = delegate { };
+        private event KeyDownHandler<T, KeyDownEventArgs> KeyDown = delegate { };
+        private event KeyUpHandler<T, KeyUpEventArgs> KeyUp = delegate { };
 
+        /// <summary>
+        /// A click-drag must exceed this number of pixels before it is considered a drag.
+        /// </summary>
         public float MinimumDragDistance = 5;
 
         /// <summary>
