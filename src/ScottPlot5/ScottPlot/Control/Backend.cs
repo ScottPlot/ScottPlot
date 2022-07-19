@@ -13,10 +13,10 @@ namespace ScottPlot.Control
     public class Backend
     {
         private readonly HashSet<Key> CurrentlyPressedKeys = new();
+
         private Pixel? LastMousePosition = null;
 
-        private readonly MouseButtonPanel ButtonPanel = new();
-        // TODO: make an equivalent KeyPanel for pressed keys
+        private readonly Dictionary<MouseButton, MouseDownEventArgs?> MouseInteractions = new();
 
         private readonly Plot Plot;
         private readonly object EventSender;
@@ -59,15 +59,24 @@ namespace ScottPlot.Control
             KeyUp += (object sender, KeyUpEventArgs e) => DefaultEventHandlers.KeyUp(plot, e, requestRender);
         }
 
-        public IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
-        public IEnumerable<MouseButton> PressedButtons => ButtonPanel.GetPressedButtons();
+        public IReadOnlyCollection<Key> PressedKeys =>
+            CurrentlyPressedKeys.ToArray();
+
+        public IEnumerable<MouseButton> PressedMouseButtons =>
+            MouseInteractions.Keys.Where(button => MouseInteractions[button] is not null);
+
+        private MouseDownEventArgs? GetMouseInteraction(MouseButton button) =>
+            MouseInteractions.ContainsKey(button) ? MouseInteractions[button] : null;
+
+        private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) =>
+            MouseInteractions[button] = value;
 
         public Coordinate? MouseCoordinates => LastMousePosition.HasValue ? Plot.GetCoordinate(LastMousePosition.Value) : null;
 
         public void TriggerMouseDown(Pixel position, MouseButton button)
         {
             var interaction = new MouseDownEventArgs(position, button, Plot.GetAxisLimits(), PressedKeys);
-            ButtonPanel.SetMouseInteractionForButton(button, interaction);
+            SetMouseInteraction(button, interaction);
             MouseDown?.Invoke(EventSender, interaction);
         }
 
@@ -79,14 +88,14 @@ namespace ScottPlot.Control
         public void TriggerMouseUp(Pixel position, MouseButton button)
         {
             bool cancelledDrag = false;
-            var interaction = ButtonPanel.GetMouseInteractionForButton(button);
+            var interaction = GetMouseInteraction(button);
             if (interaction is not null && IsDrag(interaction.Position, position))
             {
                 TriggerMouseDragEnd(interaction, position, button);
                 cancelledDrag = true;
             }
 
-            ButtonPanel.SetMouseInteractionForButton(button, null);
+            SetMouseInteraction(button, null);
             MouseUp?.Invoke(EventSender, new(position, button, Plot.GetAxisLimits(), cancelledDrag));
         }
 
@@ -97,7 +106,7 @@ namespace ScottPlot.Control
 
             for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
             {
-                var interaction = ButtonPanel.GetMouseInteractionForButton(button);
+                var interaction = GetMouseInteraction(button);
                 if (interaction is not null)
                 {
                     var lastMouseDown = interaction;
