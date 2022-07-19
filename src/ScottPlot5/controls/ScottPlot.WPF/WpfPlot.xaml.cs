@@ -90,8 +90,7 @@ namespace ScottPlot.WPF
             Keyboard.Focus(this);
             (var position, var buttons) = GetInputState(e);
 
-            var pressedButtons = backend.GetPressedButtons();
-            foreach (var button in buttons.Where(b => !pressedButtons.Contains(b)))
+            foreach (var button in buttons.Where(b => !backend.PressedButtons.Contains(b)))
             {
                 backend.TriggerMouseDown(position, button);
             }
@@ -108,8 +107,7 @@ namespace ScottPlot.WPF
         {
             (var position, var buttons) = GetInputState(e);
 
-            var pressedButtons = backend.GetPressedButtons();
-            foreach (var button in pressedButtons.Where(b => !buttons.Contains(b)))
+            foreach (var button in backend.PressedButtons.Where(b => !buttons.Contains(b)))
             {
                 backend.TriggerMouseUp(position, button);
             }

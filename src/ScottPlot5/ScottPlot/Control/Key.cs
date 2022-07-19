@@ -4,7 +4,8 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public enum Key // Handling all possible keys is non-trivial and probably unnecessary
+    // TODO: create an abstraction so users can define their own keys
+    public enum Key
     {
         Ctrl,
         Alt,
