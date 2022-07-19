@@ -67,5 +67,4 @@
         <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
         <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
     </ItemGroup>
-
 </Project>

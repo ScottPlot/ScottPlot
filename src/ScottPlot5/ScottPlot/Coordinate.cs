@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot;
 
+// TODO: Coordinate should be Coordinates (the object describes a pair of coordinates: X and Y)
+
 /// <summary>
 /// Represents a point in coordinate space using axis units
 /// </summary>
