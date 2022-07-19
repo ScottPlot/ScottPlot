@@ -11,6 +11,7 @@ namespace ScottPlot.Control.EventArgs
         public IReadOnlyCollection<Key> PressedKeys => MouseDown.PressedKeys;
         public Pixel To { get; }
         public MouseButton Button { get; }
+        public float DragDistance => (MouseDown.Position - To).Hypotenuse;
 
         public MouseDragEventArgs(MouseDownEventArgs mouseDown, Pixel to, MouseButton button)
         {
