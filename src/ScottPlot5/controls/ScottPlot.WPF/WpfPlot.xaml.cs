@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using ScottPlot.Control;
-using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using Key = ScottPlot.Control.Key;
 using MouseButton = ScottPlot.Control.MouseButton;
@@ -16,16 +15,17 @@ namespace ScottPlot.WPF
     /// <summary>
     /// Interaction logic for WpfPlot.xaml
     /// </summary>
-    public partial class WpfPlot : UserControl
+    public partial class WpfPlot : UserControl, IPlotControl
     {
-        public ScottPlot.Plot Plot { get; }
-        private readonly Backend backend;
+        public Plot Plot { get; }
+
+        private readonly Backend<WpfPlot> Backend;
 
         public WpfPlot()
         {
             InitializeComponent();
             Plot = new();
-            backend = new(this, Plot, Refresh);
+            Backend = new(this);
         }
 
         public void Refresh()
@@ -33,7 +33,7 @@ namespace ScottPlot.WPF
             SKElement.InvalidateVisual();
         }
 
-        public Coordinate? MouseCoordinates => backend.MouseCoordinates;
+        public Coordinate? MouseCoordinates => Backend.MouseCoordinates;
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
@@ -90,9 +90,9 @@ namespace ScottPlot.WPF
             Keyboard.Focus(this);
             (var position, var buttons) = GetInputState(e);
 
-            foreach (var button in buttons.Where(b => !backend.PressedMouseButtons.Contains(b)))
+            foreach (var button in buttons.Where(b => !Backend.PressedMouseButtons.Contains(b)))
             {
-                backend.TriggerMouseDown(position, button);
+                Backend.TriggerMouseDown(position, button);
             }
 
             (sender as UIElement)?.CaptureMouse();
@@ -107,9 +107,9 @@ namespace ScottPlot.WPF
         {
             (var position, var buttons) = GetInputState(e);
 
-            foreach (var button in backend.PressedMouseButtons.Where(b => !buttons.Contains(b)))
+            foreach (var button in Backend.PressedMouseButtons.Where(b => !buttons.Contains(b)))
             {
-                backend.TriggerMouseUp(position, button);
+                Backend.TriggerMouseUp(position, button);
             }
 
             (sender as UIElement)?.ReleaseMouseCapture();
@@ -117,14 +117,14 @@ namespace ScottPlot.WPF
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            backend.TriggerMouseMove(GetInputState(e).position);
+            Backend.TriggerMouseMove(GetInputState(e).position);
             base.OnMouseMove(e);
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            backend.TriggerDoubleClick(GetInputState(e).position, Control.MouseButton.Mouse1);
-            backend.TriggerMouseWheel(GetInputState(e).position, 0, e.Delta);
+            Backend.TriggerDoubleClick(GetInputState(e).position, Control.MouseButton.Mouse1);
+            Backend.TriggerMouseWheel(GetInputState(e).position, 0, e.Delta);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -133,7 +133,7 @@ namespace ScottPlot.WPF
 
             if (key.HasValue)
             {
-                backend.TriggerKeyDown(key.Value);
+                Backend.TriggerKeyDown(key.Value);
             }
         }
 
@@ -143,7 +143,7 @@ namespace ScottPlot.WPF
 
             if (key.HasValue)
             {
-                backend.TriggerKeyUp(key.Value);
+                Backend.TriggerKeyUp(key.Value);
             }
         }
 
@@ -151,7 +151,7 @@ namespace ScottPlot.WPF
         {
             foreach (var button in buttons)
             {
-                backend.TriggerDoubleClick(position, button);
+                Backend.TriggerDoubleClick(position, button);
             }
         }
     }
