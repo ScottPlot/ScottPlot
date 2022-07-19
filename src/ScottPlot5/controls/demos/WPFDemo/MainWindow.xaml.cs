@@ -21,18 +21,15 @@ namespace WPFDemo
             WpfPlot.Plot.Add(DebugPoint);
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-            WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Cyan);
+            WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }
 
         private void WpfPlot_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (WpfPlot.MouseCoordinates.HasValue)
-            {
-                DebugPoint.Position = WpfPlot.MouseCoordinates.Value;
-                WpfPlot.Refresh();
-            }
+            DebugPoint.Position = WpfPlot.MouseCoordinates;
+            WpfPlot.Refresh();
         }
     }
 }

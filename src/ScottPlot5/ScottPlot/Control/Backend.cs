@@ -18,7 +18,7 @@ namespace ScottPlot.Control
 
         private readonly HashSet<Key> CurrentlyPressedKeys = new();
 
-        private Pixel? LastMousePosition = null;
+        public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
 
         private readonly Dictionary<MouseButton, MouseDownEventArgs?> MouseInteractions = new();
 
@@ -101,7 +101,7 @@ namespace ScottPlot.Control
 
         private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) => MouseInteractions[button] = value;
 
-        public Coordinate? MouseCoordinates => LastMousePosition.HasValue ? Control.Plot.GetCoordinate(LastMousePosition.Value) : null;
+        public Coordinate MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
 
         public bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
 
@@ -133,7 +133,7 @@ namespace ScottPlot.Control
 
         public void TriggerMouseMove(Pixel position)
         {
-            LastMousePosition = position;
+            MousePosition = position;
             MouseMove?.Invoke(Control, new(position, PressedKeys));
 
             for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)

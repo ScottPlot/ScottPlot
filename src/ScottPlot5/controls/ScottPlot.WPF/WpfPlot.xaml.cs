@@ -21,6 +21,8 @@ namespace ScottPlot.WPF
 
         public Backend<IPlotControl> Backend { get; private set; }
 
+        public Coordinate MouseCoordinates => Backend.MouseCoordinates;
+
         public WpfPlot()
         {
             InitializeComponent();
@@ -32,8 +34,6 @@ namespace ScottPlot.WPF
         {
             SKElement.InvalidateVisual();
         }
-
-        public Coordinate? MouseCoordinates => Backend.MouseCoordinates;
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
