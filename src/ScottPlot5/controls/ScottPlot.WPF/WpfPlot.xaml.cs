@@ -21,7 +21,7 @@ namespace ScottPlot.WPF
 
         public Backend<IPlotControl> Backend { get; private set; }
 
-        public Coordinate MouseCoordinates => Backend.MouseCoordinates;
+        public Coordinates MouseCoordinates => Backend.MouseCoordinates;
 
         public WpfPlot()
         {
@@ -40,8 +40,7 @@ namespace ScottPlot.WPF
             Plot.Render(e.Surface);
         }
 
-        // TODO: should keyboard keypress state live in here?
-        private InputState GetInputState(MouseEventArgs e)
+        private MouseInputState GetMouseState(MouseEventArgs e)
         {
             var dpiScale = VisualTreeHelper.GetDpi(this);
 
@@ -56,10 +55,10 @@ namespace ScottPlot.WPF
                 e.MiddleButton == MouseButtonState.Pressed ? MouseButton.Mouse3 : null,
             };
 
-            return new InputState(mousePosition, pressedButtons);
+            return new MouseInputState(mousePosition, pressedButtons);
         }
 
-        private Key GetScottPlotKey(KeyEventArgs e)
+        private Key GetKey(KeyEventArgs e)
         {
             // WPF likes to snatch Alt, in which case we have to grab the system key value
             var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
@@ -80,7 +79,7 @@ namespace ScottPlot.WPF
         {
             Keyboard.Focus(this);
 
-            InputState state = GetInputState(e);
+            MouseInputState state = GetMouseState(e);
 
             Backend.TriggerMouseDown(state);
 
@@ -88,40 +87,34 @@ namespace ScottPlot.WPF
 
             if (e.ClickCount == 2)
             {
-                SendDoubleClick(state);
+                Backend.TriggerDoubleClick(state);
             }
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            Backend.TriggerMouseUp(GetInputState(e));
+            Backend.TriggerMouseUp(GetMouseState(e));
             (sender as UIElement)?.ReleaseMouseCapture();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.TriggerMouseMove(GetInputState(e));
-            base.OnMouseMove(e);
+            Backend.TriggerMouseMove(GetMouseState(e));
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.TriggerMouseWheel(GetInputState(e), 0, e.Delta);
+            Backend.TriggerMouseWheel(GetMouseState(e), 0, e.Delta);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Backend.TriggerKeyDown(GetScottPlotKey(e));
+            Backend.TriggerKeyDown(GetKey(e));
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.TriggerKeyUp(GetScottPlotKey(e));
-        }
-
-        private void SendDoubleClick(InputState state)
-        {
-            Backend.TriggerDoubleClick(state);
+            Backend.TriggerKeyUp(GetKey(e));
         }
     }
 }

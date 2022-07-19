@@ -119,11 +119,11 @@ namespace ScottPlot.Control
             MouseDown?.Invoke(Control, interaction);
         }
 
-        public void TriggerMouseDown(InputState state)
+        public void TriggerMouseDown(MouseInputState state)
         {
-            foreach (MouseButton mouseButton in NewlyPressedButtons(state.MouseButtonsPressed))
+            foreach (MouseButton mouseButton in NewlyPressedButtons(state.ButtonsPressed))
             {
-                TriggerMouseDown(state.MousePosition, mouseButton);
+                TriggerMouseDown(state.Position, mouseButton);
             }
         }
 
@@ -132,19 +132,19 @@ namespace ScottPlot.Control
             DoubleClick?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), PressedKeys));
         }
 
-        public void TriggerDoubleClick(InputState state)
+        public void TriggerDoubleClick(MouseInputState state)
         {
-            foreach (MouseButton button in state.MouseButtonsPressed)
+            foreach (MouseButton button in state.ButtonsPressed)
             {
-                TriggerDoubleClick(state.MousePosition, button);
+                TriggerDoubleClick(state.Position, button);
             }
         }
 
-        public void TriggerMouseUp(InputState state)
+        public void TriggerMouseUp(MouseInputState state)
         {
-            foreach (MouseButton button in NewlyReleasedButtons(state.MouseButtonsPressed))
+            foreach (MouseButton button in NewlyReleasedButtons(state.ButtonsPressed))
             {
-                TriggerMouseUp(state.MousePosition, button);
+                TriggerMouseUp(state.Position, button);
             }
         }
 
@@ -170,10 +170,10 @@ namespace ScottPlot.Control
             }
         }
 
-        public void TriggerMouseMove(InputState state)
+        public void TriggerMouseMove(MouseInputState state)
         {
-            MousePosition = state.MousePosition;
-            MouseMove?.Invoke(Control, new(state.MousePosition, PressedKeys));
+            MousePosition = state.Position;
+            MouseMove?.Invoke(Control, new(state.Position, PressedKeys));
 
             for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
             {
@@ -181,9 +181,9 @@ namespace ScottPlot.Control
                 if (interaction is not null)
                 {
                     var lastMouseDown = interaction;
-                    if (IsDrag(lastMouseDown.Position, state.MousePosition))
+                    if (IsDrag(lastMouseDown.Position, state.Position))
                     {
-                        TriggerMouseDrag(lastMouseDown, state.MousePosition, button);
+                        TriggerMouseDrag(lastMouseDown, state.Position, button);
                     }
                     else if (Control.Plot.ZoomRectangle.IsVisible)
                     {
@@ -193,9 +193,9 @@ namespace ScottPlot.Control
             }
         }
 
-        public void TriggerMouseWheel(InputState state, float deltaX, float deltaY)
+        public void TriggerMouseWheel(MouseInputState state, float deltaX, float deltaY)
         {
-            MouseWheel?.Invoke(Control, new(state.MousePosition, deltaX, deltaY));
+            MouseWheel?.Invoke(Control, new(state.Position, deltaX, deltaY));
         }
 
         public void TriggerKeyDown(Key key)
