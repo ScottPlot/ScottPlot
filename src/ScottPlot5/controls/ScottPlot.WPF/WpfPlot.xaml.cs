@@ -19,7 +19,7 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; }
 
-        private readonly Backend<WpfPlot> Backend;
+        public Backend<IPlotControl> Backend { get; private set; }
 
         public WpfPlot()
         {
