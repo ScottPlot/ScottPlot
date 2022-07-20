@@ -46,11 +46,11 @@ public class FormsPlot : UserControl, IPlotControl
         Pixel mousePosition = new(e.X, e.Y);
 
         List<MouseButton?> pressedButtons = new()
-            {
-                MouseButtonsPressed[MouseButton.Mouse1] ? MouseButton.Mouse1 : null,
-                MouseButtonsPressed[MouseButton.Mouse2] ? MouseButton.Mouse2 : null,
-                MouseButtonsPressed[MouseButton.Mouse3] ? MouseButton.Mouse3 : null,
-            };
+        {
+            MouseButtonsPressed[MouseButton.Mouse1] ? MouseButton.Mouse1 : null,
+            MouseButtonsPressed[MouseButton.Mouse2] ? MouseButton.Mouse2 : null,
+            MouseButtonsPressed[MouseButton.Mouse3] ? MouseButton.Mouse3 : null,
+        };
 
         return new MouseInputState(mousePosition, pressedButtons);
     }
