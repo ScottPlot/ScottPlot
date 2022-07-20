@@ -17,7 +17,7 @@ public struct CoordinateRect
     public double Area => Width * Height;
     public bool HasArea => (Area != 0 && !double.IsNaN(Area) && !double.IsInfinity(Area));
 
-    public CoordinateRect(Coordinate pt1, Coordinate pt2)
+    public CoordinateRect(Coordinates pt1, Coordinates pt2)
     {
         XMin = Math.Min(pt1.X, pt2.X);
         XMax = Math.Max(pt1.X, pt2.X);

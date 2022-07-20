@@ -149,14 +149,14 @@ public class Plot
     /// </summary>
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
-        Coordinate mouseCoordinate = GetCoordinate(pixel);
+        Coordinates mouseCoordinate = GetCoordinate(pixel);
         SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
     }
 
     public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow)
     {
-        Coordinate downCoordinate = GetCoordinate(mouseDown);
-        Coordinate nowCoordinate = GetCoordinate(mouseNow);
+        Coordinates downCoordinate = GetCoordinate(mouseDown);
+        Coordinates nowCoordinate = GetCoordinate(mouseNow);
         CoordinateRect rect = new(downCoordinate, nowCoordinate);
         ZoomRectangle.SetSize(rect);
     }
@@ -183,7 +183,7 @@ public class Plot
     /// <summary>
     /// Return the pixel for a specific coordinate using measurements from the most recent render.
     /// </summary>
-    public Pixel GetPixel(Coordinate coord)
+    public Pixel GetPixel(Coordinates coord)
     {
         PixelRect dataRect = LastRenderInfo.DataRect;
         float x = XAxis.GetPixel(coord.X, dataRect);
@@ -194,12 +194,12 @@ public class Plot
     /// <summary>
     /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
-    public Coordinate GetCoordinate(Pixel pixel)
+    public Coordinates GetCoordinate(Pixel pixel)
     {
         PixelRect dataRect = LastRenderInfo.DataRect;
         double x = XAxis.GetCoordinate(pixel.X, dataRect);
         double y = YAxis.GetCoordinate(pixel.Y, dataRect);
-        return new Coordinate(x, y);
+        return new Coordinates(x, y);
     }
 
     public PixelRect GetDataAreaRect(PixelRect figureRect)

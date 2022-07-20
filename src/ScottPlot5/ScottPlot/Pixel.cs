@@ -11,6 +11,8 @@ public struct Pixel
         Y = y;
     }
 
+    public static Pixel NaN => new(float.NaN, float.NaN);
+
     public SkiaSharp.SKPoint ToSKPoint()
     {
         return new SkiaSharp.SKPoint(X, Y);

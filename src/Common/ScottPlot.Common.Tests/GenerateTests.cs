@@ -1,4 +1,4 @@
-namespace ScottPlot.Common.Tests;
+﻿namespace ScottPlot.Common.Tests;
 
 public class Tests
 {
