@@ -17,7 +17,7 @@ namespace ScottPlot.WPF
     /// </summary>
     public partial class WpfPlot : UserControl, IPlotControl
     {
-        public Plot Plot { get; }
+        public Plot Plot { get; } = new();
 
         public Backend Backend { get; private set; }
 
@@ -26,7 +26,6 @@ namespace ScottPlot.WPF
         public WpfPlot()
         {
             InitializeComponent();
-            Plot = new();
             Backend = new(this);
         }
 
@@ -75,6 +74,7 @@ namespace ScottPlot.WPF
             };
         }
 
+        // TODO: should every On event call its base event???
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             Keyboard.Focus(this);
@@ -87,7 +87,7 @@ namespace ScottPlot.WPF
 
             if (e.ClickCount == 2)
             {
-                Backend.TriggerDoubleClick(state);
+                Backend.TriggerDoubleClick(MouseInputState.Empty);
             }
         }
 

@@ -13,4 +13,6 @@ public class MouseInputState
         Position = position;
         ButtonsPressed = buttons.Where(x => x.HasValue).OfType<MouseButton>();
     }
+
+    public static MouseInputState Empty => new(Pixel.NaN, Array.Empty<MouseButton?>());
 }

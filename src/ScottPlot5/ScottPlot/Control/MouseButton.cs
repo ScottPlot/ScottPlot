@@ -7,6 +7,7 @@ namespace ScottPlot.Control
     // TODO: create an abstraction so users can define their own buttons
     public enum MouseButton
     {
+        UNKNOWN,
         Mouse1,
         Mouse2,
         Mouse3,

@@ -33,13 +33,11 @@ partial class Form1
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.BackColor = System.Drawing.Color.Purple;
-            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
+            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot1.Location = new System.Drawing.Point(0, 0);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(662, 366);
+            this.formsPlot1.Size = new System.Drawing.Size(686, 390);
             this.formsPlot1.TabIndex = 0;
             // 
             // Form1

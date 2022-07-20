@@ -119,6 +119,7 @@ namespace ScottPlot.Control
             }
         }
 
+        // TODO: is position and button required for double click action?
         private void TriggerDoubleClick(Pixel position, MouseButton button)
         {
             DoubleClick?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), PressedKeys));
@@ -126,15 +127,23 @@ namespace ScottPlot.Control
 
         public void TriggerDoubleClick(MouseInputState state)
         {
-            foreach (MouseButton button in state.ButtonsPressed)
+            if (!state.ButtonsPressed.Any())
             {
-                TriggerDoubleClick(state.Position, button);
+                TriggerDoubleClick(state.Position, MouseButton.UNKNOWN);
+            }
+            else
+            {
+                foreach (MouseButton button in state.ButtonsPressed)
+                {
+                    TriggerDoubleClick(state.Position, button);
+                }
             }
         }
 
         public void TriggerMouseUp(MouseInputState state)
         {
-            foreach (MouseButton button in NewlyReleasedButtons(state.ButtonsPressed))
+            // TODO: This needs to be more thread safe
+            foreach (MouseButton button in NewlyReleasedButtons(state.ButtonsPressed).ToArray())
             {
                 TriggerMouseUp(state.Position, button);
             }
