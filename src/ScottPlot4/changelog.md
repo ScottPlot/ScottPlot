@@ -6,6 +6,7 @@ _not yet published on NuGet..._
 * WPF Control: Right-click copy now renders high quality image to the clipboard (#1952) _Thanks @bclehmann_
 * Radar, Coxcomb, and Pie Chart: New options to customize hatch pattern and color. See cookbook for examples. (#1948, #1943) _Thanks @bclehmann_
 * Signal Plot: Improve support for plots with a single point (#1951, #1949) _Thanks @bclehmann and @Fruchtzwerg94_
+* Draggable Marker Plots: Improved drag behavior when drag limits are in use (#1970) _Thanks @xmln17_
 
 ## ScottPlot 4.1.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-10_
