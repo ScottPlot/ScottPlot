@@ -2,13 +2,25 @@
 
 namespace ScottPlot.Control.Interactions;
 
-public class Default : IPlotInteractions
+public class Default : IInteractions
 {
-    public virtual void MouseDown(IPlotControl sender, MouseDownEventArgs e)
+    public IPlotControl Control { get; private set; }
+    public Plot Plot => Control.Plot;
+
+    /// <summary>
+    /// asdfasdf
+    /// </summary>
+    /// <param name="control"></param>
+    public Default(IPlotControl control)
+    {
+        Control = control;
+    }
+
+    public virtual void MouseDown(MouseDownEventArgs e)
     {
     }
 
-    public virtual void MouseUp(IPlotControl sender, MouseUpEventArgs e)
+    public virtual void MouseUp(MouseUpEventArgs e)
     {
         if (e.Handled)
             return;
@@ -19,23 +31,23 @@ public class Default : IPlotInteractions
             case MouseButton.Mouse3:
                 if (!e.CancelledDrag)
                 {
-                    sender.Plot.MouseZoomRectangleClear(applyZoom: false);
-                    sender.Plot.AutoScale();
+                    Plot.MouseZoomRectangleClear(applyZoom: false);
+                    Plot.AutoScale();
                 }
                 break;
             default:
                 return;
         }
 
-        sender.Refresh();
+        Control.Refresh();
     }
 
-    public virtual void MouseMove(IPlotControl sender, MouseMoveEventArgs e)
+    public virtual void MouseMove(MouseMoveEventArgs e)
     {
 
     }
 
-    public virtual void MouseDrag(IPlotControl sender, MouseDragEventArgs e)
+    public virtual void MouseDrag(MouseDragEventArgs e)
     {
         if (e.Handled)
             return;
@@ -45,7 +57,7 @@ public class Default : IPlotInteractions
             case MouseButton.Mouse1:
                 if (e.PressedKeys.Contains(Key.Alt))
                 {
-                    sender.Plot.MouseZoomRectangle(e.From, e.To);
+                    Plot.MouseZoomRectangle(e.From, e.To);
                 }
                 else
                 {
@@ -53,61 +65,61 @@ public class Default : IPlotInteractions
                     panTo.X = e.PressedKeys.Contains(Key.Shift) ? e.From.X : panTo.X;
                     panTo.Y = e.PressedKeys.Contains(Key.Ctrl) ? e.From.Y : panTo.Y;
 
-                    sender.Plot.MousePan(e.MouseDown.AxisLimits, e.From, panTo);
+                    Plot.MousePan(e.MouseDown.AxisLimits, e.From, panTo);
                 }
                 break;
             case MouseButton.Mouse2:
-                sender.Plot.MouseZoom(e.MouseDown.AxisLimits, e.From, e.To);
+                Plot.MouseZoom(e.MouseDown.AxisLimits, e.From, e.To);
                 break;
             case MouseButton.Mouse3:
-                sender.Plot.MouseZoomRectangle(e.From, e.To);
+                Plot.MouseZoomRectangle(e.From, e.To);
                 break;
             default:
                 return;
         }
 
-        sender.Refresh();
+        Control.Refresh();
     }
 
-    public virtual void DoubleClick(IPlotControl sender, MouseDownEventArgs e)
+    public virtual void DoubleClick(MouseDownEventArgs e)
     {
         if (e.Handled)
             return;
 
-        sender.Plot.Benchmark.IsVisible = !sender.Plot.Benchmark.IsVisible;
+        Plot.Benchmark.IsVisible = !Plot.Benchmark.IsVisible;
 
-        sender.Refresh();
+        Control.Refresh();
     }
 
-    public virtual void MouseWheel(IPlotControl sender, MouseWheelEventArgs e)
+    public virtual void MouseWheel(MouseWheelEventArgs e)
     {
         if (e.Handled)
             return;
 
         double fracX = e.DeltaY > 0 ? 1.15 : .85;
         double fracY = e.DeltaY > 0 ? 1.15 : .85;
-        sender.Plot.MouseZoom(fracX, fracY, e.Position);
+        Plot.MouseZoom(fracX, fracY, e.Position);
 
-        sender.Refresh();
+        Control.Refresh();
     }
 
-    public virtual void MouseDragEnd(IPlotControl sender, MouseDragEventArgs e)
+    public virtual void MouseDragEnd(MouseDragEventArgs e)
     {
         if (e.Handled)
             return;
 
         if (e.Button == MouseButton.Mouse3 || (e.Button == MouseButton.Mouse1 && e.PressedKeys.Contains(Key.Alt)))
         {
-            sender.Plot.MouseZoomRectangleClear(applyZoom: true);
-            sender.Refresh();
+            Plot.MouseZoomRectangleClear(applyZoom: true);
+            Control.Refresh();
         }
     }
 
-    public virtual void KeyDown(IPlotControl sender, KeyDownEventArgs e)
+    public virtual void KeyDown(KeyDownEventArgs e)
     {
     }
 
-    public virtual void KeyUp(IPlotControl sender, KeyUpEventArgs e)
+    public virtual void KeyUp(KeyUpEventArgs e)
     {
     }
 }

@@ -53,28 +53,20 @@ namespace ScottPlot.Control
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
         /// </summary>
-        /// <param name="sender">The type of the control whose plot is being controlled by this backend</param>
-        public Backend(T sender)
+        /// <param name="plotControl">The type of the control whose plot is being controlled by this backend</param>
+        public Backend(T plotControl)
         {
-            Control = sender;
-
-            IPlotInteractions interactions = new Default();
-            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
-            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
-            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(sender, e);
-            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(sender, e);
-            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(sender, e);
-            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(sender, e);
-            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(sender, e);
-            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(sender, e);
-            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(sender, e);
+            Control = plotControl;
+            SetInteractions(new Default(plotControl));
         }
 
         /// <summary>
         /// Clear all existing interaction event handlers and replace them with a custom set
         /// </summary>
-        public void ReplaceInteractions(IPlotInteractions interactions)
+        public void SetInteractions(IInteractions interactions)
         {
+            // TODO: see if there's a more elegant way to do this
+
             MouseDown = delegate { };
             MouseUp = delegate { };
             MouseMove = delegate { };
@@ -85,15 +77,15 @@ namespace ScottPlot.Control
             KeyDown = delegate { };
             KeyUp = delegate { };
 
-            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
-            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
-            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(sender, e);
-            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(sender, e);
-            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(sender, e);
-            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(sender, e);
-            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(sender, e);
-            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(sender, e);
-            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(sender, e);
+            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(e);
+            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(e);
+            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(e);
+            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(e);
+            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(e);
+            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(e);
+            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(e);
+            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(e);
+            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(e);
         }
 
         private IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
