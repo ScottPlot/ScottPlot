@@ -3,7 +3,7 @@
 namespace ScottPlot.Control.Interactions;
 
 /// <summary>
-/// Anyone who wants to create a custom set of interactions must implement this interface
+/// Implementers define how user interactions act on the given <see cref="IPlotControl"/>
 /// </summary>
 public interface IInteractions
 {

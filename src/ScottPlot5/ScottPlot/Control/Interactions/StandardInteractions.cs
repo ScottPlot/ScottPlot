@@ -2,16 +2,18 @@
 
 namespace ScottPlot.Control.Interactions;
 
-public class Default : IInteractions
+public class StandardInteractions : IInteractions
 {
     public IPlotControl Control { get; private set; }
+
     public Plot Plot => Control.Plot;
 
     /// <summary>
-    /// asdfasdf
+    /// The standard set of interactions used by ScottPlot.
+    /// E.g., left-click-drag pan, right-click-drag zoom, middle-click auto-axis
     /// </summary>
-    /// <param name="control"></param>
-    public Default(IPlotControl control)
+    /// <param name="control">The plot control these actions act on (axis manipulation, redrawing, etc.)</param>
+    public StandardInteractions(IPlotControl control)
     {
         Control = control;
     }

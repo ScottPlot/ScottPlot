@@ -19,7 +19,7 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; }
 
-        public Backend<IPlotControl> Backend { get; private set; }
+        public Backend Backend { get; private set; }
 
         public Coordinates MouseCoordinates => Backend.MouseCoordinates;
 
