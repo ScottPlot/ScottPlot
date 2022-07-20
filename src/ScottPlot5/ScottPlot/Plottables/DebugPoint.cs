@@ -4,7 +4,7 @@ namespace ScottPlot.Plottables;
 
 public class DebugPoint : PlottableBase
 {
-    public Coordinate Position { get; set; }
+    public Coordinates Position { get; set; }
 
     public Color Color { get; set; } = new(255, 00, 255);
 

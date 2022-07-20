@@ -11,10 +11,9 @@ namespace ScottPlot.Control
     /// This class is intended to be instantiated in user controls
     /// and provides a convenient way to manage events and map events to actions.
     /// </summary>
-    /// <typeparam name="T">The specific type of user control using this backend</typeparam>
-    public class Backend<T> where T : IPlotControl
+    public class Backend
     {
-        private readonly T Control;
+        private readonly IPlotControl Control;
 
         private readonly HashSet<Key> CurrentlyPressedKeys = new();
 
@@ -22,25 +21,25 @@ namespace ScottPlot.Control
 
         private readonly Dictionary<MouseButton, MouseDownEventArgs?> MouseInteractions = new();
 
-        private delegate void MouseDownHandler<U, V>(U sender, V eventArgs);
-        private delegate void MouseUpHandler<U, V>(U sender, V eventArgs);
-        private delegate void MouseMoveHandler<U, V>(U sender, V eventArgs);
-        private delegate void MouseDragHandler<U, V>(U sender, V eventArgs);
-        private delegate void MouseDragEndHandler<U, V>(U sender, V eventArgs);
-        private delegate void DoubleClickHandler<U, V>(U sender, V eventArgs);
-        private delegate void MouseWheelHandler<U, V>(U sender, V eventArgs);
-        private delegate void KeyDownHandler<U, V>(U sender, V eventArgs);
-        private delegate void KeyUpHandler<U, V>(U sender, V eventArgs);
+        private delegate void MouseDownHandler(IPlotControl sender, MouseDownEventArgs eventArgs);
+        private delegate void MouseUpHandler(IPlotControl sender, MouseUpEventArgs eventArgs);
+        private delegate void MouseMoveHandler(IPlotControl sender, MouseMoveEventArgs eventArgs);
+        private delegate void MouseDragHandler(IPlotControl sender, MouseDragEventArgs eventArgs);
+        private delegate void MouseDragEndHandler(IPlotControl sender, MouseDragEventArgs eventArgs);
+        private delegate void DoubleClickHandler(IPlotControl sender, MouseDownEventArgs eventArgs);
+        private delegate void MouseWheelHandler(IPlotControl sender, MouseWheelEventArgs eventArgs);
+        private delegate void KeyDownHandler(IPlotControl sender, KeyDownEventArgs eventArgs);
+        private delegate void KeyUpHandler(IPlotControl sender, KeyUpEventArgs eventArgs);
 
-        private event MouseDownHandler<T, MouseDownEventArgs> MouseDown = delegate { };
-        private event MouseUpHandler<T, MouseUpEventArgs> MouseUp = delegate { };
-        private event MouseMoveHandler<T, MouseMoveEventArgs> MouseMove = delegate { };
-        private event MouseDragHandler<T, MouseDragEventArgs> MouseDrag = delegate { };
-        private event MouseDragEndHandler<T, MouseDragEventArgs> MouseDragEnd = delegate { };
-        private event DoubleClickHandler<T, MouseDownEventArgs> DoubleClick = delegate { };
-        private event MouseWheelHandler<T, MouseWheelEventArgs> MouseWheel = delegate { };
-        private event KeyDownHandler<T, KeyDownEventArgs> KeyDown = delegate { };
-        private event KeyUpHandler<T, KeyUpEventArgs> KeyUp = delegate { };
+        private event MouseDownHandler MouseDown = delegate { };
+        private event MouseUpHandler MouseUp = delegate { };
+        private event MouseMoveHandler MouseMove = delegate { };
+        private event MouseDragHandler MouseDrag = delegate { };
+        private event MouseDragEndHandler MouseDragEnd = delegate { };
+        private event DoubleClickHandler DoubleClick = delegate { };
+        private event MouseWheelHandler MouseWheel = delegate { };
+        private event KeyDownHandler KeyDown = delegate { };
+        private event KeyUpHandler KeyUp = delegate { };
 
         // TODO: add a flag so once the distance is exceeded it is ignored when you return to it, 
         // otherwise it feels laggy when you drag the cursor in small circles.
@@ -53,28 +52,21 @@ namespace ScottPlot.Control
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
         /// </summary>
-        /// <param name="sender">The type of the control whose plot is being controlled by this backend</param>
-        public Backend(T sender)
+        /// <param name="plotControl">The control whose plot is being controlled by this backend</param>
+        public Backend(IPlotControl plotControl)
         {
-            Control = sender;
-
-            IPlotInteractions interactions = new Default();
-            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
-            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
-            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(sender, e);
-            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(sender, e);
-            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(sender, e);
-            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(sender, e);
-            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(sender, e);
-            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(sender, e);
-            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(sender, e);
+            Control = plotControl;
+            IInteractions defaultInteractions = new StandardInteractions(plotControl);
+            SetInteractions(defaultInteractions);
         }
 
         /// <summary>
         /// Clear all existing interaction event handlers and replace them with a custom set
         /// </summary>
-        public void ReplaceInteractions(IPlotInteractions interactions)
+        public void SetInteractions(IInteractions interactions)
         {
+            // TODO: see if there's a more elegant way to do this
+
             MouseDown = delegate { };
             MouseUp = delegate { };
             MouseMove = delegate { };
@@ -85,15 +77,15 @@ namespace ScottPlot.Control
             KeyDown = delegate { };
             KeyUp = delegate { };
 
-            MouseDown += (T sender, MouseDownEventArgs e) => interactions.MouseDown(sender, e);
-            MouseUp += (T sender, MouseUpEventArgs e) => interactions.MouseUp(sender, e);
-            MouseMove += (T sender, MouseMoveEventArgs e) => interactions.MouseMove(sender, e);
-            MouseDrag += (T sender, MouseDragEventArgs e) => interactions.MouseDrag(sender, e);
-            MouseDragEnd += (T sender, MouseDragEventArgs e) => interactions.MouseDragEnd(sender, e);
-            DoubleClick += (T sender, MouseDownEventArgs e) => interactions.DoubleClick(sender, e);
-            MouseWheel += (T sender, MouseWheelEventArgs e) => interactions.MouseWheel(sender, e);
-            KeyDown += (T sender, KeyDownEventArgs e) => interactions.KeyDown(sender, e);
-            KeyUp += (T sender, KeyUpEventArgs e) => interactions.KeyUp(sender, e);
+            MouseDown += (IPlotControl sender, MouseDownEventArgs e) => interactions.MouseDown(e);
+            MouseUp += (IPlotControl sender, MouseUpEventArgs e) => interactions.MouseUp(e);
+            MouseMove += (IPlotControl sender, MouseMoveEventArgs e) => interactions.MouseMove(e);
+            MouseDrag += (IPlotControl sender, MouseDragEventArgs e) => interactions.MouseDrag(e);
+            MouseDragEnd += (IPlotControl sender, MouseDragEventArgs e) => interactions.MouseDragEnd(e);
+            DoubleClick += (IPlotControl sender, MouseDownEventArgs e) => interactions.DoubleClick(e);
+            MouseWheel += (IPlotControl sender, MouseWheelEventArgs e) => interactions.MouseWheel(e);
+            KeyDown += (IPlotControl sender, KeyDownEventArgs e) => interactions.KeyDown(e);
+            KeyUp += (IPlotControl sender, KeyUpEventArgs e) => interactions.KeyUp(e);
         }
 
         private IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
@@ -108,7 +100,7 @@ namespace ScottPlot.Control
 
         private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) => MouseInteractions[button] = value;
 
-        public Coordinate MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
+        public Coordinates MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
 
         private bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
 
@@ -119,32 +111,41 @@ namespace ScottPlot.Control
             MouseDown?.Invoke(Control, interaction);
         }
 
-        public void TriggerMouseDown(InputState state)
+        public void TriggerMouseDown(MouseInputState state)
         {
-            foreach (MouseButton mouseButton in NewlyPressedButtons(state.MouseButtonsPressed))
+            foreach (MouseButton mouseButton in NewlyPressedButtons(state.ButtonsPressed))
             {
-                TriggerMouseDown(state.MousePosition, mouseButton);
+                TriggerMouseDown(state.Position, mouseButton);
             }
         }
 
+        // TODO: is position and button required for double click action?
         private void TriggerDoubleClick(Pixel position, MouseButton button)
         {
             DoubleClick?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), PressedKeys));
         }
 
-        public void TriggerDoubleClick(InputState state)
+        public void TriggerDoubleClick(MouseInputState state)
         {
-            foreach (MouseButton button in state.MouseButtonsPressed)
+            if (!state.ButtonsPressed.Any())
             {
-                TriggerDoubleClick(state.MousePosition, button);
+                TriggerDoubleClick(state.Position, MouseButton.UNKNOWN);
+            }
+            else
+            {
+                foreach (MouseButton button in state.ButtonsPressed)
+                {
+                    TriggerDoubleClick(state.Position, button);
+                }
             }
         }
 
-        public void TriggerMouseUp(InputState state)
+        public void TriggerMouseUp(MouseInputState state)
         {
-            foreach (MouseButton button in NewlyReleasedButtons(state.MouseButtonsPressed))
+            // TODO: This needs to be more thread safe
+            foreach (MouseButton button in NewlyReleasedButtons(state.ButtonsPressed).ToArray())
             {
-                TriggerMouseUp(state.MousePosition, button);
+                TriggerMouseUp(state.Position, button);
             }
         }
 
@@ -162,18 +163,10 @@ namespace ScottPlot.Control
             MouseUp?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), cancelledDrag));
         }
 
-        private void TriggerMouseUp(Pixel position, List<MouseButton> buttons)
+        public void TriggerMouseMove(MouseInputState state)
         {
-            foreach (MouseButton button in NewlyReleasedButtons(buttons))
-            {
-                TriggerMouseUp(position, button);
-            }
-        }
-
-        public void TriggerMouseMove(InputState state)
-        {
-            MousePosition = state.MousePosition;
-            MouseMove?.Invoke(Control, new(state.MousePosition, PressedKeys));
+            MousePosition = state.Position;
+            MouseMove?.Invoke(Control, new(state.Position, PressedKeys));
 
             for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
             {
@@ -181,9 +174,9 @@ namespace ScottPlot.Control
                 if (interaction is not null)
                 {
                     var lastMouseDown = interaction;
-                    if (IsDrag(lastMouseDown.Position, state.MousePosition))
+                    if (IsDrag(lastMouseDown.Position, state.Position))
                     {
-                        TriggerMouseDrag(lastMouseDown, state.MousePosition, button);
+                        TriggerMouseDrag(lastMouseDown, state.Position, button);
                     }
                     else if (Control.Plot.ZoomRectangle.IsVisible)
                     {
@@ -193,9 +186,9 @@ namespace ScottPlot.Control
             }
         }
 
-        public void TriggerMouseWheel(InputState state, float deltaX, float deltaY)
+        public void TriggerMouseWheel(MouseInputState state, float deltaX, float deltaY)
         {
-            MouseWheel?.Invoke(Control, new(state.MousePosition, deltaX, deltaY));
+            MouseWheel?.Invoke(Control, new(state.Position, deltaX, deltaY));
         }
 
         public void TriggerKeyDown(Key key)

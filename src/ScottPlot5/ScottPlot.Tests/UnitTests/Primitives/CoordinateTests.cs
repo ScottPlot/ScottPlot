@@ -5,7 +5,7 @@ internal class CoordinateTests
     [Test]
     public void Test_Coordinate_DefaultValues()
     {
-        Coordinate coord = new();
+        Coordinates coord = new();
         Assert.That(coord.X, Is.Zero);
     }
 
@@ -17,7 +17,7 @@ internal class CoordinateTests
     [TestCase(0, double.PositiveInfinity)] // permitted
     public void Test_Coordinate_Construct(double x, double y)
     {
-        Coordinate coord = new(x, y);
+        Coordinates coord = new(x, y);
         Assert.That(coord.X, Is.EqualTo(x));
         Assert.That(coord.Y, Is.EqualTo(y));
     }
@@ -25,6 +25,6 @@ internal class CoordinateTests
     [Test]
     public void Test_Coordinate_CustomToString()
     {
-        StringAssert.Contains("X=", new Coordinate().ToString());
+        StringAssert.Contains("X=", new Coordinates().ToString());
     }
 }
