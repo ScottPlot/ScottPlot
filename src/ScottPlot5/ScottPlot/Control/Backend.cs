@@ -19,8 +19,6 @@ namespace ScottPlot.Control
 
         public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
 
-        private readonly Dictionary<MouseButton, MouseDownEventArgs?> MouseInteractions = new();
-
         private delegate void MouseDownHandler(IPlotControl sender, MouseDownEventArgs eventArgs);
         private delegate void MouseUpHandler(IPlotControl sender, MouseUpEventArgs eventArgs);
         private delegate void MouseMoveHandler(IPlotControl sender, MouseMoveEventArgs eventArgs);
@@ -88,107 +86,107 @@ namespace ScottPlot.Control
             KeyUp += (IPlotControl sender, KeyUpEventArgs e) => interactions.KeyUp(e);
         }
 
+        private Dictionary<MouseButton, bool> NEW_MouseButtonsPressed = new()
+        {
+            { MouseButton.Mouse1, false },
+            { MouseButton.Mouse2, false },
+            { MouseButton.Mouse3, false },
+            { MouseButton.UNKNOWN, false },
+        };
+
+        public void NEW_SetButtonDown(MouseButton button) => NEW_MouseButtonsPressed[button] = true;
+
+        public void NEW_SetButtonUp(MouseButton button) => NEW_MouseButtonsPressed[button] = false;
+
+        public bool NEW_IsButtonPressed(MouseButton button) => NEW_MouseButtonsPressed[button];
+
         private IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
-
-        private IEnumerable<MouseButton> PressedMouseButtons => MouseInteractions.Keys.Where(button => MouseInteractions[button] is not null);
-
-        private IEnumerable<MouseButton> NewlyPressedButtons(IEnumerable<MouseButton> buttonsNow) => buttonsNow.Where(button => !PressedMouseButtons.Contains(button));
-
-        private IEnumerable<MouseButton> NewlyReleasedButtons(IEnumerable<MouseButton> buttonsNow) => PressedMouseButtons.Where(b => !buttonsNow.Contains(b));
-
-        private MouseDownEventArgs? GetMouseInteraction(MouseButton button) => MouseInteractions.ContainsKey(button) ? MouseInteractions[button] : null;
-
-        private void SetMouseInteraction(MouseButton button, MouseDownEventArgs? value) => MouseInteractions[button] = value;
 
         public Coordinates MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
 
         private bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
 
-        private void TriggerMouseDown(Pixel position, MouseButton button)
+        public void TriggerMouseDown(Pixel position, MouseButton button)
         {
-            var interaction = new MouseDownEventArgs(position, button, Control.Plot.GetAxisLimits(), PressedKeys);
-            SetMouseInteraction(button, interaction);
+            MouseDownPosition = position;
+            MouseDownAxisLimits = Control.Plot.GetAxisLimits();
+            NEW_SetButtonDown(button);
+
+            MouseDownEventArgs interaction = new(position, button, MouseDownAxisLimits, PressedKeys);
             MouseDown?.Invoke(Control, interaction);
         }
 
-        public void TriggerMouseDown(MouseInputState state)
+        public void TriggerDoubleClick()
         {
-            foreach (MouseButton mouseButton in NewlyPressedButtons(state.ButtonsPressed))
-            {
-                TriggerMouseDown(state.Position, mouseButton);
-            }
+            // TODO: dont need all this
+            MouseDownEventArgs args = new(Pixel.NaN, MouseButton.UNKNOWN, AxisLimits.NoLimits, Array.Empty<Key>());
+            DoubleClick?.Invoke(Control, args);
         }
 
-        // TODO: is position and button required for double click action?
-        private void TriggerDoubleClick(Pixel position, MouseButton button)
-        {
-            DoubleClick?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), PressedKeys));
-        }
+        private Pixel MouseDownPosition;
+        private AxisLimits MouseDownAxisLimits;
 
-        public void TriggerDoubleClick(MouseInputState state)
-        {
-            if (!state.ButtonsPressed.Any())
-            {
-                TriggerDoubleClick(state.Position, MouseButton.UNKNOWN);
-            }
-            else
-            {
-                foreach (MouseButton button in state.ButtonsPressed)
-                {
-                    TriggerDoubleClick(state.Position, button);
-                }
-            }
-        }
-
-        public void TriggerMouseUp(MouseInputState state)
-        {
-            // TODO: This needs to be more thread safe
-            foreach (MouseButton button in NewlyReleasedButtons(state.ButtonsPressed).ToArray())
-            {
-                TriggerMouseUp(state.Position, button);
-            }
-        }
-
-        private void TriggerMouseUp(Pixel position, MouseButton button)
+        public void TriggerMouseUp(Pixel position, MouseButton button)
         {
             bool cancelledDrag = false;
-            var interaction = GetMouseInteraction(button);
-            if (interaction is not null && IsDrag(interaction.Position, position))
+
+            if (!float.IsNaN(MouseDownPosition.X) && IsDrag(MouseDownPosition, position))
             {
-                TriggerMouseDragEnd(interaction, position, button);
+                MouseDownEventArgs down = new(MouseDownPosition, button, MouseDownAxisLimits, PressedKeys);
+                TriggerMouseDragEnd(down, position, button);
                 cancelledDrag = true;
+                MouseDownPosition = Pixel.NaN;
             }
 
-            SetMouseInteraction(button, null);
-            MouseUp?.Invoke(Control, new(position, button, Control.Plot.GetAxisLimits(), cancelledDrag));
+            NEW_SetButtonUp(button);
+            ClearPressedButtons();
+            AxisLimits axisLimitsNow = Control.Plot.GetAxisLimits();
+            MouseUp?.Invoke(Control, new(position, button, axisLimitsNow, cancelledDrag));
         }
 
-        public void TriggerMouseMove(MouseInputState state)
+        private MouseButton? GetPressedButton()
         {
-            MousePosition = state.Position;
-            MouseMove?.Invoke(Control, new(state.Position, PressedKeys));
-
-            for (MouseButton button = MouseButton.Mouse1; button <= MouseButton.Mouse3; button++)
+            foreach (MouseButton button in NEW_MouseButtonsPressed.Keys)
             {
-                var interaction = GetMouseInteraction(button);
-                if (interaction is not null)
+                if (NEW_MouseButtonsPressed[button])
                 {
-                    var lastMouseDown = interaction;
-                    if (IsDrag(lastMouseDown.Position, state.Position))
-                    {
-                        TriggerMouseDrag(lastMouseDown, state.Position, button);
-                    }
-                    else if (Control.Plot.ZoomRectangle.IsVisible)
-                    {
-                        Control.Plot.MouseZoomRectangleClear(applyZoom: false);
-                    }
+                    return button;
                 }
             }
+            return null;
         }
 
-        public void TriggerMouseWheel(MouseInputState state, float deltaX, float deltaY)
+        private void ClearPressedButtons()
         {
-            MouseWheel?.Invoke(Control, new(state.Position, deltaX, deltaY));
+            foreach (MouseButton button in NEW_MouseButtonsPressed.Keys)
+            {
+                NEW_MouseButtonsPressed[button] = false;
+            }
+        }
+
+        public void TriggerMouseMove(Pixel newPosition)
+        {
+            MousePosition = newPosition;
+            MouseMove?.Invoke(Control, new(newPosition, PressedKeys));
+
+            MouseButton? button = GetPressedButton();
+            if (button is null)
+                return;
+
+            if (IsDrag(MouseDownPosition, newPosition))
+            {
+                MouseDownEventArgs mouseDown = new(MouseDownPosition, button.Value, MouseDownAxisLimits, PressedKeys);
+                TriggerMouseDrag(mouseDown, newPosition, button.Value);
+            }
+            else if (Control.Plot.ZoomRectangle.IsVisible)
+            {
+                Control.Plot.MouseZoomRectangleClear(applyZoom: false);
+            }
+        }
+
+        public void TriggerMouseWheel(Pixel position, float deltaX, float deltaY)
+        {
+            MouseWheel?.Invoke(Control, new(position, deltaX, deltaY));
         }
 
         public void TriggerKeyDown(Key key)

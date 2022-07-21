@@ -112,8 +112,11 @@ public class StandardInteractions : IInteractions
 
         if (e.Button == MouseButton.Mouse3 || (e.Button == MouseButton.Mouse1 && e.PressedKeys.Contains(Key.Alt)))
         {
-            Plot.MouseZoomRectangleClear(applyZoom: true);
-            Control.Refresh();
+            if (Plot.ZoomRectangle.IsVisible)
+            {
+                Plot.MouseZoomRectangleClear(applyZoom: true);
+                Control.Refresh();
+            }
         }
     }
 

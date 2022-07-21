@@ -41,30 +41,9 @@ public class FormsPlot : UserControl, IPlotControl
         Plot.Render(e.Surface);
     }
 
-    private MouseInputState GetMouseState(MouseEventArgs e)
-    {
-        Pixel mousePosition = new(e.X, e.Y);
+    private Pixel GetMousePosition(MouseEventArgs e) => new(e.X, e.Y);
 
-        List<MouseButton?> pressedButtons = new()
-        {
-            MouseButtonsPressed[MouseButton.Mouse1] ? MouseButton.Mouse1 : null,
-            MouseButtonsPressed[MouseButton.Mouse2] ? MouseButton.Mouse2 : null,
-            MouseButtonsPressed[MouseButton.Mouse3] ? MouseButton.Mouse3 : null,
-        };
-
-        return new MouseInputState(mousePosition, pressedButtons);
-    }
-
-    // TODO: store this in backend
-    Dictionary<MouseButton, bool> MouseButtonsPressed = new()
-    {
-        { MouseButton.Mouse1, false },
-        { MouseButton.Mouse2, false },
-        { MouseButton.Mouse3, false },
-        { MouseButton.UNKNOWN, false },
-    };
-
-    MouseButton Convert(MouseButtons button) => button switch
+    MouseButton GetMouseButton(MouseEventArgs e) => e.Button switch
     {
         MouseButtons.Left => MouseButton.Mouse1,
         MouseButtons.Right => MouseButton.Mouse2,
@@ -72,7 +51,7 @@ public class FormsPlot : UserControl, IPlotControl
         _ => MouseButton.UNKNOWN,
     };
 
-    private Key Convert(KeyEventArgs e) => e.KeyCode switch
+    private Key GetKey(KeyEventArgs e) => e.KeyCode switch
     {
         Keys.ControlKey => Key.Ctrl,
         Keys.Menu => Key.Alt,
@@ -82,41 +61,43 @@ public class FormsPlot : UserControl, IPlotControl
 
     private void SKElement_MouseDown(object sender, MouseEventArgs e)
     {
-        MouseButtonsPressed[Convert(e.Button)] = true;
-        Backend.TriggerMouseDown(GetMouseState(e));
+        Backend.TriggerMouseDown(GetMousePosition(e), GetMouseButton(e));
+        base.OnMouseDown(e);
     }
 
     private void SKElement_MouseUp(object sender, MouseEventArgs e)
     {
-        MouseButtonsPressed[Convert(e.Button)] = false;
-        Backend.TriggerMouseUp(GetMouseState(e));
+        Backend.TriggerMouseUp(GetMousePosition(e), GetMouseButton(e));
+        base.OnMouseUp(e);
     }
 
-    // TODO: all actions call their base action
     private void SKElement_MouseMove(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseMove(GetMouseState(e));
+        Backend.TriggerMouseMove(GetMousePosition(e));
         base.OnMouseMove(e);
     }
 
     private void SKElement_DoubleClick(object sender, EventArgs e)
     {
-        Backend.TriggerDoubleClick(MouseInputState.Empty);
+        Backend.TriggerDoubleClick();
+        base.OnDoubleClick(e);
     }
 
     private void SKElement_MouseWheel(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseWheel(GetMouseState(e), 0, e.Delta);
+        Backend.TriggerMouseWheel(GetMousePosition(e), 0, e.Delta);
+        base.OnMouseWheel(e);
     }
 
     private void SKElement_KeyDown(object sender, KeyEventArgs e)
     {
-        System.Diagnostics.Debug.WriteLine(e.KeyCode);
-        Backend.TriggerKeyDown(Convert(e));
+        Backend.TriggerKeyDown(GetKey(e));
+        base.OnKeyDown(e);
     }
 
     private void SKElement_KeyUp(object sender, KeyEventArgs e)
     {
-        Backend.TriggerKeyUp(Convert(e));
+        Backend.TriggerKeyUp(GetKey(e));
+        base.OnKeyUp(e);
     }
 }

@@ -39,22 +39,36 @@ namespace ScottPlot.WPF
             Plot.Render(e.Surface);
         }
 
-        private MouseInputState GetMouseState(MouseEventArgs e)
+        private Pixel GetMousePosition(MouseEventArgs e)
         {
-            var dpiScale = VisualTreeHelper.GetDpi(this);
-
-            Pixel mousePosition = new(
+            DpiScale dpiScale = VisualTreeHelper.GetDpi(this);
+            return new Pixel(
                     x: (float)(e.GetPosition(this).X * dpiScale.DpiScaleX),
                     y: (float)(e.GetPosition(this).Y * dpiScale.DpiScaleY));
+        }
 
-            List<MouseButton?> pressedButtons = new()
-            {
-                e.LeftButton == MouseButtonState.Pressed ? MouseButton.Mouse1 : null,
-                e.RightButton == MouseButtonState.Pressed ? MouseButton.Mouse2 : null,
-                e.MiddleButton == MouseButtonState.Pressed ? MouseButton.Mouse3 : null,
-            };
+        private MouseButton GetMouseButtonPressed(MouseEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+                return MouseButton.Mouse3;
+            else if (e.LeftButton == MouseButtonState.Pressed)
+                return MouseButton.Mouse1;
+            else if (e.RightButton == MouseButtonState.Pressed)
+                return MouseButton.Mouse2;
+            else
+                return MouseButton.UNKNOWN;
+        }
 
-            return new MouseInputState(mousePosition, pressedButtons);
+        private MouseButton GetMouseButtonReleased(MouseEventArgs e)
+        {
+            if (e.MiddleButton != MouseButtonState.Pressed)
+                return MouseButton.Mouse3;
+            else if (e.LeftButton != MouseButtonState.Pressed)
+                return MouseButton.Mouse1;
+            else if (e.RightButton != MouseButtonState.Pressed)
+                return MouseButton.Mouse2;
+            else
+                return MouseButton.UNKNOWN;
         }
 
         private Key GetKey(KeyEventArgs e)
@@ -79,32 +93,30 @@ namespace ScottPlot.WPF
         {
             Keyboard.Focus(this);
 
-            MouseInputState state = GetMouseState(e);
-
-            Backend.TriggerMouseDown(state);
+            Backend.TriggerMouseDown(GetMousePosition(e), GetMouseButtonPressed(e));
 
             (sender as UIElement)?.CaptureMouse();
 
             if (e.ClickCount == 2)
             {
-                Backend.TriggerDoubleClick(MouseInputState.Empty);
+                Backend.TriggerDoubleClick();
             }
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            Backend.TriggerMouseUp(GetMouseState(e));
+            Backend.TriggerMouseUp(GetMousePosition(e), GetMouseButtonReleased(e));
             (sender as UIElement)?.ReleaseMouseCapture();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.TriggerMouseMove(GetMouseState(e));
+            Backend.TriggerMouseMove(GetMousePosition(e));
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.TriggerMouseWheel(GetMouseState(e), 0, e.Delta);
+            Backend.TriggerMouseWheel(GetMousePosition(e), 0, e.Delta);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
