@@ -116,7 +116,7 @@ namespace ScottPlot.WPF
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.TriggerMouseWheel(GetMousePosition(e), 0, e.Delta);
+            Backend.TriggerMouseWheel(GetMousePosition(e), e.Delta);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)

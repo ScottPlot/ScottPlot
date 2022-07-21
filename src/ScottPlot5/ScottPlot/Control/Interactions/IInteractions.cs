@@ -8,13 +8,13 @@ namespace ScottPlot.Control.Interactions;
 public interface IInteractions
 {
     IPlotControl Control { get; }
-    public void MouseDown(MouseDownEventArgs e);
-    public void MouseUp(MouseUpEventArgs e);
-    public void MouseMove(MouseMoveEventArgs e);
-    public void MouseDrag(MouseDragEventArgs e);
-    public void DoubleClick(MouseDownEventArgs e);
-    public void MouseWheel(MouseWheelEventArgs e);
-    public void MouseDragEnd(MouseDragEventArgs e);
-    public void KeyDown(KeyDownEventArgs e);
-    public void KeyUp(KeyUpEventArgs e);
+    public void MouseDown(Pixel pixel, MouseButton button);
+    public void MouseUp(Pixel pixel, MouseButton button, bool endDrag);
+    public void MouseMove(Pixel pixel);
+    public void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start);
+    public void DoubleClick();
+    public void MouseWheel(Pixel pixel, float delta);
+    public void MouseDragEnd(MouseButton button, IEnumerable<Key> keys);
+    public void KeyDown(Key key);
+    public void KeyUp(Key key);
 }

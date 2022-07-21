@@ -85,7 +85,7 @@ public class FormsPlot : UserControl, IPlotControl
 
     private void SKElement_MouseWheel(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseWheel(GetMousePosition(e), 0, e.Delta);
+        Backend.TriggerMouseWheel(GetMousePosition(e), e.Delta);
         base.OnMouseWheel(e);
     }
 
