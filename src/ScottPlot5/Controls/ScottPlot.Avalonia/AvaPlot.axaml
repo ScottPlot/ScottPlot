@@ -6,10 +6,21 @@
              xmlns:local="clr-namespace:ScottPlot.Avalonia"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Focusable="True"
-             >
+			 Focusable="true"
+			 PropertyChanged="OnPropertyChanged"
+             PointerPressed="OnMouseDown"
+			 PointerReleased="OnMouseUp"
+			 PointerMoved="OnMouseMove"
+			 PointerWheelChanged="OnMouseWheel"
+			 KeyDown="OnKeyDown"
+			 KeyUp="OnKeyUp"
+		>
 	<Grid RowDefinitions="*" ColumnDefinitions="*">
-        <Image Name="image" Grid.Row="0" Grid.Column="0" />
+        <Image 
+			Name="image" 
+			Grid.Row="0"
+			Grid.Column="0"
+		/>
 	</Grid>
 </UserControl>
  

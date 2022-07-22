@@ -14,6 +14,7 @@ using ScottPlot.Control;
 using SkiaSharp;
 using Key = ScottPlot.Control.Key;
 using MouseButton = ScottPlot.Control.MouseButton;
+using Ava = global::Avalonia;
 
 namespace ScottPlot.Avalonia
 {
@@ -39,9 +40,6 @@ namespace ScottPlot.Avalonia
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            this.Focusable = true;
-
-            PropertyChanged += OnPropertyChanged;
         }
 
         public void Refresh()
@@ -85,27 +83,38 @@ namespace ScottPlot.Avalonia
 
         private Key GetKey(KeyEventArgs e)
         {
+            if (e.Key == Ava.Input.Key.LeftAlt || e.Key == Ava.Input.Key.RightAlt)
+            { 
+                return Key.Alt;
+            } 
+            else if (e.Key == Ava.Input.Key.LeftShift || e.Key == Ava.Input.Key.RightShift)
+            {
+                return Key.Shift;
+            }
+            else if (e.Key == Ava.Input.Key.LeftCtrl || e.Key == Ava.Input.Key.RightCtrl)
+            {
+                return Key.Ctrl;
+            }
+
             return Key.UNKNOWN;
         }
 
         // TODO: should every On event call its base event???
-        private void OnMouseDown(object sender, PointerEventArgs e)
+        private void OnMouseDown(object sender, PointerPressedEventArgs e)
         {
-            //Keyboard.Focus(this);
-
             MouseInputState state = GetMouseState(e);
 
             Backend.TriggerMouseDown(state);
 
             e.Pointer.Capture(this);
 
-            //if (e.ClickCount == 2)
-            //{
-            //    Backend.TriggerDoubleClick(MouseInputState.Empty);
-            //}
+            if (e.ClickCount == 2)
+            {
+                Backend.TriggerDoubleClick(MouseInputState.Empty);
+            }
         }
 
-        private void OnMouseUp(object sender, PointerEventArgs e)
+        private void OnMouseUp(object sender, PointerReleasedEventArgs e)
         {
             Backend.TriggerMouseUp(GetMouseState(e));
             e.Pointer.Capture(null);
