@@ -9,6 +9,6 @@
 
     <ItemGroup>
         <PackageReference Include="SkiaSharp.Views.WPF" Version="2.80.1" />
-        <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+        <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
     </ItemGroup>
 </Project>

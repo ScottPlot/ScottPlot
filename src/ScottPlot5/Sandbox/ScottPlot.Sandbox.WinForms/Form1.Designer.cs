@@ -47,6 +47,7 @@ partial class Form1
             this.ClientSize = new System.Drawing.Size(686, 390);
             this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScottPlot 5 WinForms Sandbox";
             this.ResumeLayout(false);
 
