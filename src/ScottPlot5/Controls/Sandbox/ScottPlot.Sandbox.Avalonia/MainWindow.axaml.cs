@@ -26,9 +26,7 @@ namespace Sandbox.Avalonia
             avaPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
             avaPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
-            // avaPlot.MouseMove += AvaPlot_MouseMove;
-
-            avaPlot.Refresh(); // TODO: Remove once you've got it working
+            avaPlot.PointerMoved += AvaPlot_MouseMove;
         }
         private void InitializeComponent()
         {
@@ -37,7 +35,7 @@ namespace Sandbox.Avalonia
 
         private void AvaPlot_MouseMove(object sender, PointerEventArgs e)
         {
-            DebugPoint.Position = AvaPlot.MouseCoordinates;
+            DebugPoint.Position = avaPlot.MouseCoordinates;
             avaPlot.Refresh();
         }
 
