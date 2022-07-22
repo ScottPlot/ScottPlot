@@ -6,8 +6,5 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Sandbox.Avalonia.MainWindow"
         Title="Avalonia">
-	<StackPanel>
-	<ScottPlot:AvaPlot Name="AvaPlot"/>
-		<Button Name="button">Refresh</Button>
-		</StackPanel>
+	    <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="0" Grid.Column="0" />
 </Window>

@@ -7,11 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Focusable="True"
-             KeyDown="OnKeyDown"
-             KeyUp="OnKeyUp"
              >
 	<Grid RowDefinitions="*" ColumnDefinitions="*">
-	    <Image Name="image" Grid.Row="0" Grid.Column="0" />
+        <Image Name="image" Grid.Row="0" Grid.Column="0" />
 	</Grid>
 </UserControl>
  

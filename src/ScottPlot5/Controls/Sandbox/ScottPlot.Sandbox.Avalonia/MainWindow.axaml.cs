@@ -29,7 +29,6 @@ namespace Sandbox.Avalonia
             // avaPlot.MouseMove += AvaPlot_MouseMove;
 
             avaPlot.Refresh(); // TODO: Remove once you've got it working
-            this.Find<Button>("button").Click += (object sender, RoutedEventArgs e) => avaPlot.Refresh();
         }
         private void InitializeComponent()
         {

@@ -17,9 +17,6 @@ using MouseButton = ScottPlot.Control.MouseButton;
 
 namespace ScottPlot.Avalonia
 {
-    /// <summary>
-    /// Interaction logic for AvaPlot.xaml
-    /// </summary>
     public partial class AvaPlot : UserControl, IPlotControl
     {
         public Plot Plot { get; } = new();
@@ -43,12 +40,13 @@ namespace ScottPlot.Avalonia
         {
             AvaloniaXamlLoader.Load(this);
             this.Focusable = true;
+
+            PropertyChanged += OnPropertyChanged;
         }
 
         public void Refresh()
         {
-            image.Width = Bounds.Width;
-            image.Height = Bounds.Height;
+            UpdateBounds();
             using var surface = SKSurface.Create(new SKImageInfo((int)image.Width, (int)image.Height));
             if (surface is not null)
             {
@@ -133,12 +131,18 @@ namespace ScottPlot.Avalonia
             Backend.TriggerKeyUp(GetKey(e));
         }
 
-        private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property.Name == "Bounds")
             {
                 Refresh();
             }
+        }
+
+        private void UpdateBounds()
+        {
+            image.Width = Bounds.Width;
+            image.Height = Bounds.Height;
         }
     }
 }
