@@ -20,13 +20,14 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDown(Pixel pixel, MouseButton button)
     {
+
     }
 
     public virtual void MouseUp(Pixel pixel, MouseButton button, bool endDrag)
     {
         switch (button)
         {
-            case MouseButton.Mouse3:
+            case MouseButton.Middle:
                 if (!endDrag)
                 {
                     Plot.MouseZoomRectangleClear(applyZoom: false);
@@ -47,28 +48,31 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
     {
+        Pixel to2 = to;
+        to2.X = keys.Contains(Key.Shift) ? from.X : to2.X;
+        to2.Y = keys.Contains(Key.Ctrl) ? from.Y : to2.Y;
+
         switch (button)
         {
-            case MouseButton.Mouse1:
+            case MouseButton.Left:
                 if (keys.Contains(Key.Alt))
                 {
                     Plot.MouseZoomRectangle(from, to);
                 }
                 else
                 {
-                    Pixel panTo = to;
-                    panTo.X = keys.Contains(Key.Shift) ? from.X : panTo.X;
-                    panTo.Y = keys.Contains(Key.Ctrl) ? from.Y : panTo.Y;
-
-                    Plot.MousePan(start, from, to);
+                    Plot.MousePan(start, from, to2);
                 }
                 break;
-            case MouseButton.Mouse2:
-                Plot.MouseZoom(start, from, to);
+
+            case MouseButton.Right:
+                Plot.MouseZoom(start, from, to2);
                 break;
-            case MouseButton.Mouse3:
-                Plot.MouseZoomRectangle(from, to);
+
+            case MouseButton.Middle:
+                Plot.MouseZoomRectangle(from, to2);
                 break;
+
             default:
                 return;
         }
@@ -93,7 +97,7 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDragEnd(MouseButton button, IEnumerable<Key> keys)
     {
-        if (button == MouseButton.Mouse3 || (button == MouseButton.Mouse1 && keys.Contains(Key.Alt)))
+        if (button == MouseButton.Middle || (button == MouseButton.Left && keys.Contains(Key.Alt)))
         {
             if (Plot.ZoomRectangle.IsVisible)
             {
@@ -105,9 +109,11 @@ public class StandardInteractions : IInteractions
 
     public virtual void KeyDown(Key key)
     {
+        Control.Refresh();
     }
 
     public virtual void KeyUp(Key key)
     {
+        Control.Refresh();
     }
 }

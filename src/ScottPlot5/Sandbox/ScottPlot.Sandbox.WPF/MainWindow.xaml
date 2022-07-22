@@ -6,6 +6,7 @@
         xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="ScottPlot 5 - WPF Sandbox" Height="450" Width="800">
     <ScottPlot:WpfPlot Name="WpfPlot" />
 </Window>

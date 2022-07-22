@@ -8,20 +8,34 @@ namespace ScottPlot.Control
     /// </summary>
     public class Backend
     {
-        private readonly IPlotControl Control;
-
-        public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
-        public Coordinates MouseCoordinates => Control.Plot.GetCoordinate(MousePosition);
-
-        private IInteractions Interactions;
-
-        // TODO: add a flag so once the distance is exceeded it is ignored when you return to it, 
-        // otherwise it feels laggy when you drag the cursor in small circles.
+        /// <summary>
+        /// The <see cref="Plot"/> this backend is supporting
+        /// </summary>
+        private readonly Plot Plot;
 
         /// <summary>
-        /// A click-drag must exceed this number of pixels before it is considered a drag.
+        /// This object is used to pair mouse interactions with plot actions.
+        /// The default behavior is left-click-drag pan and right-click drag-zoom,
+        /// but advanced users can use their own interaction system instead.
         /// </summary>
-        public float MinimumDragDistance = 5;
+        public IInteractions Interactions;
+
+        private readonly KeyStates KeyStates = new();
+
+        private readonly MouseButtonStates MouseButtonStates = new();
+
+        /// <summary>
+        /// Latest position of the mouse (in pixel units)
+        /// </summary>
+        public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
+
+        /// <summary>
+        /// Latest position of the mouse (in coordinate units)
+        /// </summary>
+        public Coordinates GetMouseCoordinates()
+        {
+            return Plot.GetCoordinate(MousePosition);
+        }
 
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
@@ -29,122 +43,66 @@ namespace ScottPlot.Control
         /// <param name="plotControl">The control whose plot is being controlled by this backend</param>
         public Backend(IPlotControl plotControl)
         {
-            Control = plotControl;
+            Plot = plotControl.Plot;
             Interactions = new StandardInteractions(plotControl);
         }
 
-        private Dictionary<MouseButton, bool> NEW_MouseButtonsPressed = new()
+        public void MouseDown(Pixel position, MouseButton button)
         {
-            { MouseButton.Mouse1, false },
-            { MouseButton.Mouse2, false },
-            { MouseButton.Mouse3, false },
-            { MouseButton.UNKNOWN, false },
-        };
-
-        // TODO: object to track button press state (including mouse down position)
-        public void SetMouseButtonDown(MouseButton button) => NEW_MouseButtonsPressed[button] = true;
-        public void SetMouseButtonUp(MouseButton button) => NEW_MouseButtonsPressed[button] = false;
-        public bool IsMouseButtonPressed(MouseButton button) => NEW_MouseButtonsPressed[button];
-        private bool IsDrag(Pixel from, Pixel to) => (from - to).Hypotenuse > MinimumDragDistance;
-
-        private Pixel MouseDownPosition;
-
-        private AxisLimits MouseDownAxisLimits;
-
-        // TODO: object to track key press state
-
-        private readonly HashSet<Key> CurrentlyPressedKeys = new();
-        private IReadOnlyCollection<Key> PressedKeys => CurrentlyPressedKeys.ToArray();
-
-
-        public void TriggerMouseDown(Pixel position, MouseButton button)
-        {
-            MouseDownPosition = position;
-            MouseDownAxisLimits = Control.Plot.GetAxisLimits();
-            SetMouseButtonDown(button);
-
+            MouseButtonStates.Down(position, button, Plot.GetAxisLimits());
             Interactions.MouseDown(position, button);
         }
 
-        public void TriggerDoubleClick()
+        public void MouseUp(Pixel position, MouseButton button)
         {
-            Interactions.DoubleClick();
+            bool drag = MouseButtonStates.IsDragging(position);
+
+            if (drag)
+                Interactions.MouseDragEnd(button, KeyStates.PressedKeys);
+
+            MouseButtonStates.Clear();
+            Interactions.MouseUp(position, button, drag);
         }
 
-        public void TriggerMouseUp(Pixel position, MouseButton button)
-        {
-            bool endDrag = false;
-
-            if (!float.IsNaN(MouseDownPosition.X) && IsDrag(MouseDownPosition, position))
-            {
-                Interactions.MouseDragEnd(button, PressedKeys);
-                endDrag = true;
-                MouseDownPosition = Pixel.NaN;
-            }
-
-            SetMouseButtonUp(button);
-            ClearPressedButtons();
-            Interactions.MouseUp(position, button, endDrag);
-        }
-
-        private MouseButton? GetPressedButton()
-        {
-            foreach (MouseButton button in NEW_MouseButtonsPressed.Keys.ToArray())
-            {
-                if (NEW_MouseButtonsPressed[button])
-                {
-                    return button;
-                }
-            }
-            return null;
-        }
-
-        private void ClearPressedButtons()
-        {
-            foreach (MouseButton button in NEW_MouseButtonsPressed.Keys.ToArray())
-            {
-                NEW_MouseButtonsPressed[button] = false;
-            }
-        }
-
-        public void TriggerMouseMove(Pixel newPosition)
+        public void MouseMove(Pixel newPosition)
         {
             MousePosition = newPosition;
 
             Interactions.MouseMove(newPosition);
 
-            MouseButton? button = GetPressedButton();
+            MouseButton? button = MouseButtonStates.GetPressedButton();
             if (button is null)
                 return;
 
-            if (IsDrag(MouseDownPosition, newPosition))
+            if (MouseButtonStates.IsDragging(newPosition))
             {
-                Interactions.MouseDrag(MouseDownPosition, newPosition, button.Value, PressedKeys, MouseDownAxisLimits);
+                Interactions.MouseDrag(MouseButtonStates.MouseDownPosition, newPosition, button.Value, KeyStates.PressedKeys, MouseButtonStates.MouseDownAxisLimits);
             }
-            else if (Control.Plot.ZoomRectangle.IsVisible)
+            else if (Plot.ZoomRectangle.IsVisible)
             {
-                Control.Plot.MouseZoomRectangleClear(applyZoom: false);
+                Plot.MouseZoomRectangleClear(applyZoom: false);
             }
         }
 
-        public void TriggerMouseWheel(Pixel position, float delta)
+        public void DoubleClick()
+        {
+            Interactions.DoubleClick();
+        }
+
+        public void MouseWheel(Pixel position, float delta)
         {
             Interactions.MouseWheel(position, delta);
         }
 
-        public void TriggerKeyDown(Key key)
+        public void KeyDown(Key key)
         {
-            if (key == Key.UNKNOWN)
-                return;
-            CurrentlyPressedKeys.Add(key);
+            KeyStates.Down(key);
             Interactions.KeyDown(key);
         }
 
-        public void TriggerKeyUp(Key key)
+        public void KeyUp(Key key)
         {
-            if (key == Key.UNKNOWN)
-                return;
-            CurrentlyPressedKeys.Remove(key);
+            KeyStates.Up(key);
             Interactions.KeyUp(key);
         }
     }

@@ -1,24 +1,23 @@
-﻿using System.Windows.Forms;
+﻿using ScottPlot.Control;
 using SkiaSharp.Views.Desktop;
-using ScottPlot.Control;
-using System.Collections.Generic;
 using System;
+using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
 public class FormsPlot : UserControl, IPlotControl
 {
-    readonly SKGLControl SKElement = new() { Dock = DockStyle.Fill, VSync = true };
+    readonly SKGLControl SKElement;
 
     public Plot Plot { get; } = new();
 
     public Backend Backend { get; private set; }
 
-    public Coordinates MouseCoordinates => Backend.MouseCoordinates;
-
     public FormsPlot()
     {
         Backend = new(this);
+
+        SKElement = new() { Dock = DockStyle.Fill, VSync = true };
         SKElement.PaintSurface += SKControl_PaintSurface;
         SKElement.MouseDown += SKElement_MouseDown;
         SKElement.MouseUp += SKElement_MouseUp;
@@ -27,6 +26,7 @@ public class FormsPlot : UserControl, IPlotControl
         SKElement.MouseWheel += SKElement_MouseWheel;
         SKElement.KeyDown += SKElement_KeyDown;
         SKElement.KeyUp += SKElement_KeyUp;
+
         Controls.Add(SKElement);
     }
 
@@ -41,63 +41,45 @@ public class FormsPlot : UserControl, IPlotControl
         Plot.Render(e.Surface);
     }
 
-    private Pixel GetMousePosition(MouseEventArgs e) => new(e.X, e.Y);
-
-    MouseButton GetMouseButton(MouseEventArgs e) => e.Button switch
-    {
-        MouseButtons.Left => MouseButton.Mouse1,
-        MouseButtons.Right => MouseButton.Mouse2,
-        MouseButtons.Middle => MouseButton.Mouse3,
-        _ => MouseButton.UNKNOWN,
-    };
-
-    private Key GetKey(KeyEventArgs e) => e.KeyCode switch
-    {
-        Keys.ControlKey => Key.Ctrl,
-        Keys.Menu => Key.Alt,
-        Keys.ShiftKey => Key.Shift,
-        _ => Key.UNKNOWN,
-    };
-
     private void SKElement_MouseDown(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseDown(GetMousePosition(e), GetMouseButton(e));
+        Backend.MouseDown(e.Pixel(), e.Button());
         base.OnMouseDown(e);
     }
 
     private void SKElement_MouseUp(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseUp(GetMousePosition(e), GetMouseButton(e));
+        Backend.MouseUp(e.Pixel(), e.Button());
         base.OnMouseUp(e);
     }
 
     private void SKElement_MouseMove(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseMove(GetMousePosition(e));
+        Backend.MouseMove(e.Pixel());
         base.OnMouseMove(e);
     }
 
     private void SKElement_DoubleClick(object sender, EventArgs e)
     {
-        Backend.TriggerDoubleClick();
+        Backend.DoubleClick();
         base.OnDoubleClick(e);
     }
 
     private void SKElement_MouseWheel(object sender, MouseEventArgs e)
     {
-        Backend.TriggerMouseWheel(GetMousePosition(e), e.Delta);
+        Backend.MouseWheel(e.Pixel(), e.Delta);
         base.OnMouseWheel(e);
     }
 
     private void SKElement_KeyDown(object sender, KeyEventArgs e)
     {
-        Backend.TriggerKeyDown(GetKey(e));
+        Backend.KeyDown(e.Key());
         base.OnKeyDown(e);
     }
 
     private void SKElement_KeyUp(object sender, KeyEventArgs e)
     {
-        Backend.TriggerKeyUp(GetKey(e));
+        Backend.KeyUp(e.Key());
         base.OnKeyUp(e);
     }
 }

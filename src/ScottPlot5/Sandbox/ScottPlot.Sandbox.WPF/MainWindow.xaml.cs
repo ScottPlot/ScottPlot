@@ -3,6 +3,8 @@ using ScottPlot;
 using ScottPlot.Plottables;
 using Colors = ScottPlot.Colors;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace WPFDemo
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace WPFDemo
 
         private void WpfPlot_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            DebugPoint.Position = WpfPlot.MouseCoordinates;
+            DebugPoint.Position = WpfPlot.Backend.GetMouseCoordinates();
             WpfPlot.Refresh();
         }
     }
