@@ -24,8 +24,6 @@ namespace ScottPlot.Avalonia
 
         public Backend Backend { get; private set; }
 
-        public Coordinates MouseCoordinates => Backend.MouseCoordinates;
-
         private readonly Image image;
 
         public AvaPlot()
@@ -65,20 +63,11 @@ namespace ScottPlot.Avalonia
             }
         }
 
-        private MouseInputState GetMouseState(PointerEventArgs e)
+        private Pixel GetPointerPosition(PointerEventArgs e)
         {
-            Pixel mousePosition = new(
+            return new(
                     x: (float)(e.GetPosition(this).X),
                     y: (float)(e.GetPosition(this).Y));
-
-            List<MouseButton?> pressedButtons = new()
-            {
-                e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed ? MouseButton.Mouse1 : null,
-                e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed ? MouseButton.Mouse2 : null,
-                e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed ? MouseButton.Mouse3 : null,
-            };
-
-            return new MouseInputState(mousePosition, pressedButtons);
         }
 
         private Key GetKey(KeyEventArgs e)
@@ -102,42 +91,74 @@ namespace ScottPlot.Avalonia
         // TODO: should every On event call its base event???
         private void OnMouseDown(object sender, PointerPressedEventArgs e)
         {
-            MouseInputState state = GetMouseState(e);
+            var position = GetPointerPosition(e);
 
-            Backend.TriggerMouseDown(state);
+            switch(e.GetCurrentPoint(this).Properties.PointerUpdateKind)
+            {
+                case PointerUpdateKind.LeftButtonPressed:
+                    Backend.MouseDown(position, MouseButton.Left);
+                    break;
+                case PointerUpdateKind.RightButtonPressed:
+                    Backend.MouseDown(position, MouseButton.Right);
+                    break;
+                case PointerUpdateKind.MiddleButtonPressed:
+                    Backend.MouseDown(position, MouseButton.Middle);
+                    break;
+                default:
+                    Backend.MouseDown(position, MouseButton.Unknown);
+                    break;
+            }
 
             e.Pointer.Capture(this);
 
             if (e.ClickCount == 2)
             {
-                Backend.TriggerDoubleClick(MouseInputState.Empty);
+                Backend.DoubleClick();
             }
         }
 
         private void OnMouseUp(object sender, PointerReleasedEventArgs e)
         {
-            Backend.TriggerMouseUp(GetMouseState(e));
+            var position = GetPointerPosition(e);
+
+            switch (e.GetCurrentPoint(this).Properties.PointerUpdateKind)
+            {
+                case PointerUpdateKind.LeftButtonReleased:
+                    Backend.MouseUp(position, MouseButton.Left);
+                    break;
+                case PointerUpdateKind.RightButtonReleased:
+                    Backend.MouseUp(position, MouseButton.Right);
+                    break;
+                case PointerUpdateKind.MiddleButtonReleased:
+                    Backend.MouseUp(position, MouseButton.Middle);
+                    break;
+                default:
+                    Backend.MouseUp(position, MouseButton.Unknown);
+                    break;
+            }
+            
             e.Pointer.Capture(null);
         }
 
         private void OnMouseMove(object sender, PointerEventArgs e)
         {
-            Backend.TriggerMouseMove(GetMouseState(e));
+            Backend.MouseMove(GetPointerPosition(e));
         }
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.TriggerMouseWheel(GetMouseState(e), 0, (float)e.Delta.Y);
+            Backend.MouseWheel(GetPointerPosition(e), (float)e.Delta.Y);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Backend.TriggerKeyDown(GetKey(e));
+            // This will fire many times when the key is held, causing performance issues. Avalonia doesn't seem to offer a solution?
+            Backend.KeyDown(GetKey(e));
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.TriggerKeyUp(GetKey(e));
+            Backend.KeyUp(GetKey(e));
         }
 
         private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
