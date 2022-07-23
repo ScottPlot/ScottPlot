@@ -28,12 +28,16 @@ namespace Sandbox.Avalonia
 
             avaPlot.PointerMoved += AvaPlot_MouseMove;
         }
+
         private void InitializeComponent()
         {
+            Width = 800;
+            Height = 450;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void AvaPlot_MouseMove(object sender, PointerEventArgs e)
+        private void AvaPlot_MouseMove(object? sender, PointerEventArgs e)
         {
             DebugPoint.Position = avaPlot.Backend.GetMouseCoordinates();
             avaPlot.Refresh();
