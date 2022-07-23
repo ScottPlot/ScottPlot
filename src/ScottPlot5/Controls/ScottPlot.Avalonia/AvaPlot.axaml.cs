@@ -12,9 +12,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ScottPlot.Control;
 using SkiaSharp;
-using Key = ScottPlot.Control.Key;
-using MouseButton = ScottPlot.Control.MouseButton;
-using Ava = global::Avalonia;
 
 namespace ScottPlot.Avalonia
 {
@@ -43,71 +40,43 @@ namespace ScottPlot.Avalonia
         public void Refresh()
         {
             UpdateBounds();
-            using var surface = SKSurface.Create(new SKImageInfo((int)image.Width, (int)image.Height));
-            if (surface is not null)
-            {
-                Plot.Render(surface);
 
-                var img = surface.Snapshot();
-                var pixels = img.ToRasterImage().PeekPixels();
+            SKImageInfo imageInfo = new((int)image.Width, (int)image.Height);
+            using var surface = SKSurface.Create(imageInfo);
+            if (surface is null)
+                return;
 
-                var bmp = new WriteableBitmap(new global::Avalonia.PixelSize((int)image.Width, (int)image.Height), new(1, 1), PixelFormat.Bgra8888, AlphaFormat.Unpremul);
-                var buf = bmp.Lock();
+            Plot.Render(surface);
 
-                Marshal.Copy(pixels.GetPixelSpan().ToArray(), 0, buf.Address, pixels.BytesSize); // Not happy with the .ToArray()
+            // TODO: can this sequence be improved to reduce copying?
+            SKImage img = surface.Snapshot();
+            SKPixmap pixels = img.ToRasterImage().PeekPixels();
+            byte[] bytes = pixels.GetPixelSpan().ToArray();
 
-                using var stream = new MemoryStream();
-                bmp.Save(stream);
-                stream.Position = 0;
-                image.Source = new Bitmap(stream); // You can't set image.Source to a WritableBitmap, even though it implements IImage
-            }
-        }
+            using WriteableBitmap bmp = new(
+                size: new global::Avalonia.PixelSize((int)image.Width, (int)image.Height),
+                dpi: new Vector(1, 1),
+                format: PixelFormat.Bgra8888,
+                alphaFormat: AlphaFormat.Unpremul);
 
-        private Pixel GetPointerPosition(PointerEventArgs e)
-        {
-            return new(
-                    x: (float)(e.GetPosition(this).X),
-                    y: (float)(e.GetPosition(this).Y));
-        }
+            ILockedFramebuffer buf = bmp.Lock();
+            Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
 
-        private Key GetKey(KeyEventArgs e)
-        {
-            if (e.Key == Ava.Input.Key.LeftAlt || e.Key == Ava.Input.Key.RightAlt)
-            {
-                return Key.Alt;
-            }
-            else if (e.Key == Ava.Input.Key.LeftShift || e.Key == Ava.Input.Key.RightShift)
-            {
-                return Key.Shift;
-            }
-            else if (e.Key == Ava.Input.Key.LeftCtrl || e.Key == Ava.Input.Key.RightCtrl)
-            {
-                return Key.Ctrl;
-            }
+            // You can't set image.Source to a WritableBitmap
+            using MemoryStream stream = new();
+            bmp.Save(stream);
+            stream.Position = 0;
+            Bitmap bmpShow = new(stream);
 
-            return Key.UNKNOWN;
+            image.Source = bmpShow;
         }
 
         // TODO: should every On event call its base event???
         private void OnMouseDown(object sender, PointerPressedEventArgs e)
         {
-            var position = GetPointerPosition(e);
-
-            switch (e.GetCurrentPoint(this).Properties.PointerUpdateKind)
-            {
-                case PointerUpdateKind.LeftButtonPressed:
-                    Backend.MouseDown(position, MouseButton.Left);
-                    break;
-                case PointerUpdateKind.RightButtonPressed:
-                    Backend.MouseDown(position, MouseButton.Right);
-                    break;
-                case PointerUpdateKind.MiddleButtonPressed:
-                    Backend.MouseDown(position, MouseButton.Middle);
-                    break;
-                default:
-                    Backend.MouseDown(position, MouseButton.Unknown);
-                    break;
-            }
+            Backend.MouseDown(
+                position: e.ToPixel(this),
+                button: e.GetCurrentPoint(this).Properties.PointerUpdateKind.ToButton());
 
             e.Pointer.Capture(this);
 
@@ -119,46 +88,34 @@ namespace ScottPlot.Avalonia
 
         private void OnMouseUp(object sender, PointerReleasedEventArgs e)
         {
-            var position = GetPointerPosition(e);
-
-            switch (e.GetCurrentPoint(this).Properties.PointerUpdateKind)
-            {
-                case PointerUpdateKind.LeftButtonReleased:
-                    Backend.MouseUp(position, MouseButton.Left);
-                    break;
-                case PointerUpdateKind.RightButtonReleased:
-                    Backend.MouseUp(position, MouseButton.Right);
-                    break;
-                case PointerUpdateKind.MiddleButtonReleased:
-                    Backend.MouseUp(position, MouseButton.Middle);
-                    break;
-                default:
-                    Backend.MouseUp(position, MouseButton.Unknown);
-                    break;
-            }
+            Backend.MouseUp(
+                position: e.ToPixel(this),
+                button: e.GetCurrentPoint(this).Properties.PointerUpdateKind.ToButton());
 
             e.Pointer.Capture(null);
         }
 
         private void OnMouseMove(object sender, PointerEventArgs e)
         {
-            Backend.MouseMove(GetPointerPosition(e));
+            Backend.MouseMove(e.ToPixel(this));
         }
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.MouseWheel(GetPointerPosition(e), (float)e.Delta.Y);
+            Backend.MouseWheel(e.ToPixel(this), (float)e.Delta.Y);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            // This will fire many times when the key is held, causing performance issues. Avalonia doesn't seem to offer a solution?
-            Backend.KeyDown(GetKey(e));
+            // This will fire many times while the key is held, causing performance issues.
+            // Avalonia doesn't seem to offer a solution?
+            // TODO: maybe we can detect and gate renders on key changes
+            Backend.KeyDown(e.ToKey());
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.KeyUp(GetKey(e));
+            Backend.KeyUp(e.ToKey());
         }
 
         private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
