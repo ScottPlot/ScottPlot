@@ -8,7 +8,11 @@ public class ZoomRectangle : PlottableBase
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
     public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
     public float LineWidth = 2;
+
     public CoordinateRect Rect;
+
+    public bool HorizontalSpan = false;
+    public bool VerticalSpan = false;
 
     public ZoomRectangle(IXAxis xAxis, IYAxis yAxis)
     {
@@ -17,9 +21,9 @@ public class ZoomRectangle : PlottableBase
         IsVisible = false;
     }
 
-    public void SetSize(CoordinateRect rect)
+    public void SetSize(Coordinates c1, Coordinates c2)
     {
-        Rect = rect;
+        Rect = new(c1, c2);
         IsVisible = true;
     }
 
@@ -38,10 +42,11 @@ public class ZoomRectangle : PlottableBase
             IsAntialias = true
         };
 
-        float l = XAxis.GetPixel(Rect.XMin, dataRect);
-        float r = XAxis.GetPixel(Rect.XMax, dataRect);
-        float b = YAxis.GetPixel(Rect.YMin, dataRect);
-        float t = YAxis.GetPixel(Rect.YMax, dataRect);
+        float l = HorizontalSpan ? dataRect.Left : XAxis.GetPixel(Rect.XMin, dataRect);
+        float r = HorizontalSpan ? dataRect.Right : XAxis.GetPixel(Rect.XMax, dataRect);
+        float b = VerticalSpan ? dataRect.Bottom : YAxis.GetPixel(Rect.YMin, dataRect);
+        float t = VerticalSpan ? dataRect.Top : YAxis.GetPixel(Rect.YMax, dataRect);
+
         SKRect rect = new(l, t, r, b);
 
         paint.Color = FillColor.ToSKColor();
