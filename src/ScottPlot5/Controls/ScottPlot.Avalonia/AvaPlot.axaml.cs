@@ -51,7 +51,7 @@ namespace ScottPlot.Avalonia
                 var img = surface.Snapshot();
                 var pixels = img.ToRasterImage().PeekPixels();
 
-                var bmp = new WriteableBitmap(new global::Avalonia.PixelSize((int)image.Width, (int)image.Height), new(1, 1), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
+                var bmp = new WriteableBitmap(new global::Avalonia.PixelSize((int)image.Width, (int)image.Height), new(1, 1), PixelFormat.Bgra8888, AlphaFormat.Unpremul);
                 var buf = bmp.Lock();
 
                 Marshal.Copy(pixels.GetPixelSpan().ToArray(), 0, buf.Address, pixels.BytesSize); // Not happy with the .ToArray()
