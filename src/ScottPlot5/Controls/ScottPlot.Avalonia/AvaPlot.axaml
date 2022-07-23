@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="ScottPlot.Avalonia.AvaPlot"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:ScottPlot.Avalonia"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+			 Focusable="true"
+			 PropertyChanged="OnPropertyChanged"
+             PointerPressed="OnMouseDown"
+			 PointerReleased="OnMouseUp"
+			 PointerMoved="OnMouseMove"
+			 PointerWheelChanged="OnMouseWheel"
+			 KeyDown="OnKeyDown"
+			 KeyUp="OnKeyUp"
+		>
+	<Grid RowDefinitions="*" ColumnDefinitions="*">
+        <Image 
+			Name="image" 
+			Grid.Row="0"
+			Grid.Column="0"
+		/>
+	</Grid>
+</UserControl>
+ 

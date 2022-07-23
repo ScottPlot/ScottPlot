@@ -65,6 +65,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinForms", "ScottPlot5\Sand
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot5\ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{EF12AC4A-2682-43F5-9ABB-30B150759711}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Avalonia", "ScottPlot5\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj", "{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5\controls\Sandbox\ScottPlot.Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{6A354C19-0C9D-45D3-8062-6D5DBA99714F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +171,14 @@ Global
 		{EF12AC4A-2682-43F5-9ABB-30B150759711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF12AC4A-2682-43F5-9ABB-30B150759711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF12AC4A-2682-43F5-9ABB-30B150759711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A354C19-0C9D-45D3-8062-6D5DBA99714F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A354C19-0C9D-45D3-8062-6D5DBA99714F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A354C19-0C9D-45D3-8062-6D5DBA99714F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A354C19-0C9D-45D3-8062-6D5DBA99714F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +212,8 @@ Global
 		{2B2A2724-8D1E-44BC-B973-D98BE1DD5D6F} = {A73CF3D7-2485-4819-98C3-D7609AEB10D8}
 		{F124316C-2494-4AAF-A187-A97861EB867D} = {A73CF3D7-2485-4819-98C3-D7609AEB10D8}
 		{EF12AC4A-2682-43F5-9ABB-30B150759711} = {5B9888C0-1422-447C-9246-D74B85BBB081}
+		{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533} = {5B9888C0-1422-447C-9246-D74B85BBB081}
+		{6A354C19-0C9D-45D3-8062-6D5DBA99714F} = {A73CF3D7-2485-4819-98C3-D7609AEB10D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
