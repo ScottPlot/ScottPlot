@@ -57,7 +57,7 @@ public class StandardInteractions : IInteractions
             case MouseButton.Left:
                 if (keys.Contains(Key.Alt))
                 {
-                    Plot.MouseZoomRectangle(from, to);
+                    Plot.MouseZoomRectangle(from, to, vSpan: keys.Contains(Key.Ctrl), hSpan: keys.Contains(Key.Shift));
                 }
                 else
                 {
@@ -70,7 +70,7 @@ public class StandardInteractions : IInteractions
                 break;
 
             case MouseButton.Middle:
-                Plot.MouseZoomRectangle(from, to2);
+                Plot.MouseZoomRectangle(from, to, vSpan: keys.Contains(Key.Ctrl), hSpan: keys.Contains(Key.Shift));
                 break;
 
             default:

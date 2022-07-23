@@ -153,12 +153,20 @@ public class Plot
         SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
     }
 
-    public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow)
+    /// <summary>
+    /// Update the shape of the zoom rectangle
+    /// </summary>
+    /// <param name="mouseDown">Location of the mouse at the start of the drag</param>
+    /// <param name="mouseNow">Location of the mouse now (after dragging)</param>
+    /// <param name="vSpan">If true, shade the full region between two X positions</param>
+    /// <param name="hSpan">If true, shade the full region between two Y positions</param>
+    public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
     {
-        Coordinates downCoordinate = GetCoordinate(mouseDown);
-        Coordinates nowCoordinate = GetCoordinate(mouseNow);
-        CoordinateRect rect = new(downCoordinate, nowCoordinate);
-        ZoomRectangle.SetSize(rect);
+        Coordinates c1 = GetCoordinate(mouseDown);
+        Coordinates c2 = GetCoordinate(mouseNow);
+        ZoomRectangle.SetSize(c1, c2);
+        ZoomRectangle.VerticalSpan = vSpan;
+        ZoomRectangle.HorizontalSpan = hSpan;
     }
 
     /// <summary>
@@ -169,7 +177,18 @@ public class Plot
     {
         if (applyZoom)
         {
-            SetAxisLimits(ZoomRectangle.Rect);
+            if (ZoomRectangle.HorizontalSpan || ZoomRectangle.VerticalSpan)
+            {
+                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.Left;
+                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.Right;
+                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.Bottom;
+                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.Top;
+                SetAxisLimits(left, right, bottom, top);
+            }
+            else
+            {
+                SetAxisLimits(ZoomRectangle.Rect);
+            }
         }
 
         ZoomRectangle.Clear();
