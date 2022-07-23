@@ -51,7 +51,7 @@ namespace ScottPlot.Avalonia
                 var img = surface.Snapshot();
                 var pixels = img.ToRasterImage().PeekPixels();
 
-                var bmp = new WriteableBitmap(new global::Avalonia.PixelSize((int)image.Width, (int)image.Height), new (1, 1), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
+                var bmp = new WriteableBitmap(new global::Avalonia.PixelSize((int)image.Width, (int)image.Height), new(1, 1), PixelFormat.Rgba8888, AlphaFormat.Unpremul);
                 var buf = bmp.Lock();
 
                 Marshal.Copy(pixels.GetPixelSpan().ToArray(), 0, buf.Address, pixels.BytesSize); // Not happy with the .ToArray()
@@ -73,9 +73,9 @@ namespace ScottPlot.Avalonia
         private Key GetKey(KeyEventArgs e)
         {
             if (e.Key == Ava.Input.Key.LeftAlt || e.Key == Ava.Input.Key.RightAlt)
-            { 
+            {
                 return Key.Alt;
-            } 
+            }
             else if (e.Key == Ava.Input.Key.LeftShift || e.Key == Ava.Input.Key.RightShift)
             {
                 return Key.Shift;
@@ -93,7 +93,7 @@ namespace ScottPlot.Avalonia
         {
             var position = GetPointerPosition(e);
 
-            switch(e.GetCurrentPoint(this).Properties.PointerUpdateKind)
+            switch (e.GetCurrentPoint(this).Properties.PointerUpdateKind)
             {
                 case PointerUpdateKind.LeftButtonPressed:
                     Backend.MouseDown(position, MouseButton.Left);
@@ -136,7 +136,7 @@ namespace ScottPlot.Avalonia
                     Backend.MouseUp(position, MouseButton.Unknown);
                     break;
             }
-            
+
             e.Pointer.Capture(null);
         }
 
