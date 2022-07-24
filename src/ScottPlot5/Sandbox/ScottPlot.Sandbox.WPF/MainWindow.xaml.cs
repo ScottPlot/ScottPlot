@@ -26,8 +26,8 @@ namespace WPFDemo
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
             // swap left and right buttons
-            WpfPlot.ButtonMap.ClickDragPan = ScottPlot.Control.MouseButton.Right;
-            WpfPlot.ButtonMap.ClickDragZoom = ScottPlot.Control.MouseButton.Left;
+            WpfPlot.InputMap.ClickDragPan = ScottPlot.Control.MouseButton.Right;
+            WpfPlot.InputMap.ClickDragZoom = ScottPlot.Control.MouseButton.Left;
 
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }

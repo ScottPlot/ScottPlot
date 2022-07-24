@@ -20,7 +20,7 @@ namespace ScottPlot.WPF
         // TODO: make internal?
         public Backend Backend { get; private set; }
 
-        public InputMap ButtonMap
+        public InputMap InputMap
         {
             get => Backend.Interactions.InputMap;
             set => Backend.Interactions.InputMap = value;
