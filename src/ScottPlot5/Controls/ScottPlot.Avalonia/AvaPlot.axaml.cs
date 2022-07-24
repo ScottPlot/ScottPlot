@@ -21,6 +21,12 @@ namespace ScottPlot.Avalonia
 
         public Backend Backend { get; private set; }
 
+        public InputMap InputMap
+        {
+            get => Backend.Interactions.InputMap;
+            set => Backend.Interactions.InputMap = value;
+        }
+
         private readonly Image image;
 
         public AvaPlot()

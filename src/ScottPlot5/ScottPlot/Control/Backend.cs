@@ -50,7 +50,7 @@ namespace ScottPlot.Control
         public void MouseDown(Pixel position, MouseButton button)
         {
             MouseButtonStates.Down(position, button, Plot.GetAxisLimits());
-            Interactions.MouseDown(position, button);
+            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
         }
 
         public void MouseUp(Pixel position, MouseButton button)
@@ -76,7 +76,12 @@ namespace ScottPlot.Control
 
             if (MouseButtonStates.IsDragging(newPosition))
             {
-                Interactions.MouseDrag(MouseButtonStates.MouseDownPosition, newPosition, button.Value, KeyStates.PressedKeys, MouseButtonStates.MouseDownAxisLimits);
+                Interactions.MouseDrag(
+                    from: MouseButtonStates.MouseDownPosition,
+                    to: newPosition,
+                    button: button.Value,
+                    keys: KeyStates.PressedKeys,
+                    start: MouseButtonStates.MouseDownAxisLimits);
             }
             else if (Plot.ZoomRectangle.IsVisible)
             {
@@ -91,7 +96,8 @@ namespace ScottPlot.Control
 
         public void MouseWheel(Pixel position, float delta)
         {
-            Interactions.MouseWheel(position, delta);
+            MouseButton button = delta > 0 ? MouseButton.WheelUp : MouseButton.WheelDown;
+            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
         }
 
         public void KeyDown(Key key)

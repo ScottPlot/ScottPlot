@@ -13,6 +13,12 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Backend Backend { get; private set; }
 
+    public InputMap InputMap
+    {
+        get => Backend.Interactions.InputMap;
+        set => Backend.Interactions.InputMap = value;
+    }
+
     public FormsPlot()
     {
         Backend = new(this);

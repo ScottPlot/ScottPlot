@@ -17,7 +17,14 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; } = new();
 
+        // TODO: make internal?
         public Backend Backend { get; private set; }
+
+        public InputMap InputMap
+        {
+            get => Backend.Interactions.InputMap;
+            set => Backend.Interactions.InputMap = value;
+        }
 
         public WpfPlot()
         {
@@ -39,7 +46,7 @@ namespace ScottPlot.WPF
         {
             Keyboard.Focus(this);
 
-            Backend.MouseDown(e.Pixel(this), e.ButtonPressed());
+            Backend.MouseDown(e.Pixel(this), e.ToButton());
 
             (sender as UIElement)?.CaptureMouse();
 
@@ -53,7 +60,7 @@ namespace ScottPlot.WPF
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            Backend.MouseUp(e.Pixel(this), e.ButtonReleased());
+            Backend.MouseUp(e.Pixel(this), e.ToButton());
             (sender as UIElement)?.ReleaseMouseCapture();
             base.OnMouseUp(e);
         }
