@@ -14,25 +14,13 @@ internal static class WpfPlotExtensions
         return new Pixel((float)x, (float)y);
     }
 
-    internal static Control.MouseButton ButtonPressed(this MouseEventArgs e)
+    internal static Control.MouseButton ToButton(this MouseButtonEventArgs e)
     {
-        if (e.MiddleButton == MouseButtonState.Pressed)
+        if (e.ChangedButton == MouseButton.Middle)
             return Control.MouseButton.Middle;
-        else if (e.LeftButton == MouseButtonState.Pressed)
+        else if (e.ChangedButton == MouseButton.Left)
             return Control.MouseButton.Left;
-        else if (e.RightButton == MouseButtonState.Pressed)
-            return Control.MouseButton.Right;
-        else
-            return Control.MouseButton.Unknown;
-    }
-
-    internal static Control.MouseButton ButtonReleased(this MouseEventArgs e)
-    {
-        if (e.MiddleButton != MouseButtonState.Pressed)
-            return Control.MouseButton.Middle;
-        else if (e.LeftButton != MouseButtonState.Pressed)
-            return Control.MouseButton.Left;
-        else if (e.RightButton != MouseButtonState.Pressed)
+        else if (e.ChangedButton == MouseButton.Right)
             return Control.MouseButton.Right;
         else
             return Control.MouseButton.Unknown;

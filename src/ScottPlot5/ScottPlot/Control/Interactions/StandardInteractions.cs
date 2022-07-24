@@ -1,12 +1,19 @@
-﻿using ScottPlot.Control.EventArgs;
+﻿namespace ScottPlot.Control.Interactions;
 
-namespace ScottPlot.Control.Interactions;
-
+/// <summary>
+/// This class contains implementation for actions initialted by GUI interaction
+/// </summary>
 public class StandardInteractions : IInteractions
 {
     public IPlotControl Control { get; private set; }
 
+    public InputMap InputMap { get; set; } = InputMap.Standard();
+
     public Plot Plot => Control.Plot;
+
+    public double ZoomInFraction { get; set; } = 1.15;
+
+    public double ZoomOutFraction { get; set; } = 0.85;
 
     /// <summary>
     /// The standard set of interactions used by ScottPlot.
@@ -18,27 +25,51 @@ public class StandardInteractions : IInteractions
         Control = control;
     }
 
-    public virtual void MouseDown(Pixel pixel, MouseButton button)
+    public virtual void MouseDown(Pixel pixel, MouseButton button, IEnumerable<Key> keys)
     {
+        if (button == InputMap.ZoomIn)
+        {
+            ZoomIn(pixel, keys);
+        }
+        else if (button == InputMap.ZoomOut)
+        {
+            ZoomOut(pixel, keys);
+        }
+        else
+        {
+            return;
+        }
+    }
 
+    private void ZoomIn(Pixel pixel, IEnumerable<Key> keys)
+    {
+        double xFrac = InputMap.IsLockedX(keys) ? 1 : ZoomInFraction;
+        double yFrac = InputMap.IsLockedY(keys) ? 1 : ZoomInFraction;
+
+        Plot.MouseZoom(xFrac, yFrac, pixel);
+        Control.Refresh();
+    }
+
+    private void ZoomOut(Pixel pixel, IEnumerable<Key> keys)
+    {
+        double xFrac = InputMap.IsLockedX(keys) ? 1 : ZoomOutFraction;
+        double yFrac = InputMap.IsLockedY(keys) ? 1 : ZoomOutFraction;
+
+        Plot.MouseZoom(xFrac, yFrac, pixel);
+        Control.Refresh();
     }
 
     public virtual void MouseUp(Pixel pixel, MouseButton button, bool endDrag)
     {
-        switch (button)
+        if (button == InputMap.ClickDragZoomRectangle)
         {
-            case MouseButton.Middle:
-                if (!endDrag)
-                {
-                    Plot.MouseZoomRectangleClear(applyZoom: false);
-                    Plot.AutoScale();
-                }
-                break;
-            default:
-                return;
+            if (!endDrag)
+            {
+                Plot.MouseZoomRectangleClear(applyZoom: false);
+                Plot.AutoScale();
+            }
+            Control.Refresh();
         }
-
-        Control.Refresh();
     }
 
     public virtual void MouseMove(Pixel pixel)
@@ -48,33 +79,24 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
     {
-        Pixel to2 = to;
-        to2.X = keys.Contains(Key.Shift) ? from.X : to2.X;
-        to2.Y = keys.Contains(Key.Ctrl) ? from.Y : to2.Y;
+        bool lockedY = InputMap.IsLockedY(keys);
+        bool lockedX = InputMap.IsLockedX(keys);
 
-        switch (button)
+        Pixel to2 = new(
+            x: lockedX ? from.X : to.X,
+            y: lockedY ? from.Y : to.Y);
+
+        if (InputMap.IsZoomingRectangle(button, keys))
         {
-            case MouseButton.Left:
-                if (keys.Contains(Key.Alt))
-                {
-                    Plot.MouseZoomRectangle(from, to, vSpan: keys.Contains(Key.Ctrl), hSpan: keys.Contains(Key.Shift));
-                }
-                else
-                {
-                    Plot.MousePan(start, from, to2);
-                }
-                break;
-
-            case MouseButton.Right:
-                Plot.MouseZoom(start, from, to2);
-                break;
-
-            case MouseButton.Middle:
-                Plot.MouseZoomRectangle(from, to, vSpan: keys.Contains(Key.Ctrl), hSpan: keys.Contains(Key.Shift));
-                break;
-
-            default:
-                return;
+            Plot.MouseZoomRectangle(from, to, vSpan: lockedY, hSpan: lockedX);
+        }
+        else if (button == InputMap.ClickDragPan)
+        {
+            Plot.MousePan(start, from, to2);
+        }
+        else if (button == InputMap.ClickDragZoom)
+        {
+            Plot.MouseZoom(start, from, to2);
         }
 
         Control.Refresh();
@@ -86,24 +108,12 @@ public class StandardInteractions : IInteractions
         Control.Refresh();
     }
 
-    public virtual void MouseWheel(Pixel pixel, float delta)
-    {
-        double fracX = delta > 0 ? 1.15 : .85;
-        double fracY = delta > 0 ? 1.15 : .85;
-        Plot.MouseZoom(fracX, fracY, pixel);
-
-        Control.Refresh();
-    }
-
     public virtual void MouseDragEnd(MouseButton button, IEnumerable<Key> keys)
     {
-        if (button == MouseButton.Middle || (button == MouseButton.Left && keys.Contains(Key.Alt)))
+        if (InputMap.IsZoomingRectangle(button, keys) && Plot.ZoomRectangle.IsVisible)
         {
-            if (Plot.ZoomRectangle.IsVisible)
-            {
-                Plot.MouseZoomRectangleClear(applyZoom: true);
-                Control.Refresh();
-            }
+            Plot.MouseZoomRectangleClear(applyZoom: true);
+            Control.Refresh();
         }
     }
 

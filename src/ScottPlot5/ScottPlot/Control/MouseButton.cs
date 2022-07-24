@@ -11,5 +11,9 @@ namespace ScottPlot.Control
         Left,
         Right,
         Middle,
+        WheelUp,
+        WheelDown,
+        WheelLeft,
+        WheelRight,
     }
 }
