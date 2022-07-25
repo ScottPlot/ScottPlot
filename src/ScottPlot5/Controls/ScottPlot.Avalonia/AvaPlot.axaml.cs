@@ -108,7 +108,7 @@ namespace ScottPlot.Avalonia
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.MouseWheel(e.ToPixel(this), (float)e.Delta.Y);
+            Backend.MouseWheelVertical(e.ToPixel(this), (float)e.Delta.Y);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)

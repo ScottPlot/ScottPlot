@@ -3,6 +3,10 @@
 /// <summary>
 /// This class contains implementation for actions initialted by GUI interaction
 /// </summary>
+/// <remarks>
+/// Users who which to implement custom mouse interactions can inherit and override this class 
+/// (or implement from scratch) to achieve total control of mouse/plot interactivity.
+/// </remarks>
 public class StandardInteractions : IInteractions
 {
     public IPlotControl Control { get; private set; }
@@ -15,6 +19,8 @@ public class StandardInteractions : IInteractions
 
     public double ZoomOutFraction { get; set; } = 0.85;
 
+    public double PanFraction { get; set; } = 0.1;
+
     /// <summary>
     /// The standard set of interactions used by ScottPlot.
     /// E.g., left-click-drag pan, right-click-drag zoom, middle-click auto-axis
@@ -25,38 +31,9 @@ public class StandardInteractions : IInteractions
         Control = control;
     }
 
-    public virtual void MouseDown(Pixel pixel, MouseButton button, IEnumerable<Key> keys)
+    public void MouseDown(Pixel pixel, MouseButton button)
     {
-        if (button == InputMap.ZoomIn)
-        {
-            ZoomIn(pixel, keys);
-        }
-        else if (button == InputMap.ZoomOut)
-        {
-            ZoomOut(pixel, keys);
-        }
-        else
-        {
-            return;
-        }
-    }
 
-    private void ZoomIn(Pixel pixel, IEnumerable<Key> keys)
-    {
-        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomInFraction;
-        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomInFraction;
-
-        Plot.MouseZoom(xFrac, yFrac, pixel);
-        Control.Refresh();
-    }
-
-    private void ZoomOut(Pixel pixel, IEnumerable<Key> keys)
-    {
-        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomOutFraction;
-        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomOutFraction;
-
-        Plot.MouseZoom(xFrac, yFrac, pixel);
-        Control.Refresh();
     }
 
     public virtual void MouseUp(Pixel pixel, MouseButton button, bool endDrag)
@@ -124,6 +101,72 @@ public class StandardInteractions : IInteractions
 
     public virtual void KeyUp(Key key)
     {
+        Control.Refresh();
+    }
+
+    public void MouseWheel(Pixel pixel, MouseWheelDirection direction, IEnumerable<Key> keys)
+    {
+        if (InputMap.ZoomIn.HasValue && InputMap.ZoomIn == direction)
+        {
+            ZoomIn(pixel, keys);
+        }
+        else if (InputMap.ZoomOut.HasValue && InputMap.ZoomOut == direction)
+        {
+            ZoomOut(pixel, keys);
+        }
+        else if (InputMap.PanUp.HasValue && InputMap.PanUp == direction)
+        {
+            PanVertically(true);
+        }
+        else if (InputMap.PanDown.HasValue && InputMap.PanDown == direction)
+        {
+            PanVertically(false);
+        }
+        else if (InputMap.PanRight.HasValue && InputMap.PanRight == direction)
+        {
+            PanHorizontally(true);
+        }
+        else if (InputMap.PanLeft.HasValue && InputMap.PanLeft == direction)
+        {
+            PanHorizontally(false);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    private void ZoomIn(Pixel pixel, IEnumerable<Key> keys)
+    {
+        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomInFraction;
+        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomInFraction;
+
+        Plot.MouseZoom(xFrac, yFrac, pixel);
+        Control.Refresh();
+    }
+
+    private void ZoomOut(Pixel pixel, IEnumerable<Key> keys)
+    {
+        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomOutFraction;
+        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomOutFraction;
+
+        Plot.MouseZoom(xFrac, yFrac, pixel);
+        Control.Refresh();
+    }
+
+    private void PanVertically(bool up)
+    {
+        AxisLimits limits = Plot.GetAxisLimits();
+        double deltaY = limits.Rect.Height * PanFraction;
+        Plot.SetAxisLimits(limits.WithPan(0, up ? deltaY : -deltaY));
+        Control.Refresh();
+    }
+
+    private void PanHorizontally(bool right)
+    {
+        AxisLimits limits = Plot.GetAxisLimits();
+        double deltaX = limits.Rect.Width * PanFraction;
+        Plot.SetAxisLimits(limits.WithPan(right ? deltaX : -deltaX, 0));
         Control.Refresh();
     }
 }

@@ -7,8 +7,9 @@ public interface IInteractions
 {
     IPlotControl Control { get; }
     public InputMap InputMap { get; set; }
-    public void MouseDown(Pixel pixel, MouseButton button, IEnumerable<Key> keys);
+    public void MouseDown(Pixel pixel, MouseButton button);
     public void MouseUp(Pixel pixel, MouseButton button, bool drag);
+    public void MouseWheel(Pixel pixel, MouseWheelDirection direction, IEnumerable<Key> keys);
     public void MouseMove(Pixel pixel);
     public void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start);
     public void DoubleClick();

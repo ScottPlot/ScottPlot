@@ -9,8 +9,13 @@ public class InputMap
     public MouseButton? ClickDragZoom = null;
     public MouseButton? ClickDragZoomRectangle = null;
     public MouseButton? DoubleClick = null;
-    public MouseButton? ZoomIn = null;
-    public MouseButton? ZoomOut = null;
+
+    public MouseWheelDirection? ZoomIn = null;
+    public MouseWheelDirection? ZoomOut = null;
+    public MouseWheelDirection? PanUp = null;
+    public MouseWheelDirection? PanDown = null;
+    public MouseWheelDirection? PanLeft = null;
+    public MouseWheelDirection? PanRight = null;
 
     public Key? LockHorizontalAxis = null;
     public Key? LockVerticalAxis = null;
@@ -59,27 +64,12 @@ public class InputMap
         ClickDragZoomRectangle = MouseButton.Middle,
         ClickDragZoom = MouseButton.Right,
         DoubleClick = MouseButton.Left,
-        ZoomIn = MouseButton.WheelUp,
-        ZoomOut = MouseButton.WheelDown,
+        ZoomIn = MouseWheelDirection.Up,
+        ZoomOut = MouseWheelDirection.Down,
         LockHorizontalAxis = Key.Shift,
         LockVerticalAxis = Key.Ctrl,
         PanZoomRectangle = Key.Alt,
     };
 
     public static InputMap NonInteractive() => new() { };
-
-    public static InputMap Alternate() => new()
-    {
-        ClickDragPan = MouseButton.Middle,
-        ClickDragZoomRectangle = MouseButton.Left,
-        ZoomIn = MouseButton.WheelUp,
-        ZoomOut = MouseButton.WheelDown,
-    };
-
-    public static InputMap WheelOnly() => new()
-    {
-        ClickDragPan = MouseButton.Middle,
-        ZoomIn = MouseButton.WheelUp,
-        ZoomOut = MouseButton.WheelDown,
-    };
 }

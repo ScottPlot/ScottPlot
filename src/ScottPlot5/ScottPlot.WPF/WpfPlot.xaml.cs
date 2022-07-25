@@ -73,7 +73,7 @@ namespace ScottPlot.WPF
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.MouseWheel(e.Pixel(this), e.Delta);
+            Backend.MouseWheelVertical(e.Pixel(this), e.Delta);
             base.OnMouseWheel(e);
         }
 

@@ -50,7 +50,7 @@ namespace ScottPlot.Control
         public void MouseDown(Pixel position, MouseButton button)
         {
             MouseButtonStates.Down(position, button, Plot.GetAxisLimits());
-            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
+            Interactions.MouseDown(position, button);
         }
 
         public void MouseUp(Pixel position, MouseButton button)
@@ -94,10 +94,10 @@ namespace ScottPlot.Control
             Interactions.DoubleClick();
         }
 
-        public void MouseWheel(Pixel position, float delta)
+        public void MouseWheelVertical(Pixel position, float delta)
         {
-            MouseButton button = delta > 0 ? MouseButton.WheelUp : MouseButton.WheelDown;
-            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
+            MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
+            Interactions.MouseWheel(position, direction, KeyStates.PressedKeys);
         }
 
         public void KeyDown(Key key)
