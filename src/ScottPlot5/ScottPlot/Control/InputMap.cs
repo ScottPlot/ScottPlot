@@ -16,17 +16,26 @@ public class InputMap
     public Key? LockVerticalAxis = null;
     public Key? PanZoomRectangle = null;
 
-    public bool IsLockedX(IEnumerable<Key> keys)
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="keys"/> contains the key which locks the X axis
+    /// </summary>
+    public bool ShouldLockX(IEnumerable<Key> keys)
     {
         return LockHorizontalAxis.HasValue ? keys.Contains(LockHorizontalAxis.Value) : false;
     }
 
-    public bool IsLockedY(IEnumerable<Key> keys)
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="keys"/> contains the key which locks the Y axis
+    /// </summary>
+    public bool ShouldLockY(IEnumerable<Key> keys)
     {
         return LockVerticalAxis.HasValue ? keys.Contains(LockVerticalAxis.Value) : false;
     }
 
-    public bool IsZoomingRectangle(MouseButton button, IEnumerable<Key> keys)
+    /// <summary>
+    /// Returns <see langword="true"/> if the combination of pressed buttons and keys results in a click-drag zoom rectangle
+    /// </summary>
+    public bool ShouldZoomRectangle(MouseButton button, IEnumerable<Key> keys)
     {
         if (button == ClickDragZoomRectangle)
         {

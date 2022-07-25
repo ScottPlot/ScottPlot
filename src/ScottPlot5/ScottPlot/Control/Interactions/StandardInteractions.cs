@@ -43,8 +43,8 @@ public class StandardInteractions : IInteractions
 
     private void ZoomIn(Pixel pixel, IEnumerable<Key> keys)
     {
-        double xFrac = InputMap.IsLockedX(keys) ? 1 : ZoomInFraction;
-        double yFrac = InputMap.IsLockedY(keys) ? 1 : ZoomInFraction;
+        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomInFraction;
+        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomInFraction;
 
         Plot.MouseZoom(xFrac, yFrac, pixel);
         Control.Refresh();
@@ -52,8 +52,8 @@ public class StandardInteractions : IInteractions
 
     private void ZoomOut(Pixel pixel, IEnumerable<Key> keys)
     {
-        double xFrac = InputMap.IsLockedX(keys) ? 1 : ZoomOutFraction;
-        double yFrac = InputMap.IsLockedY(keys) ? 1 : ZoomOutFraction;
+        double xFrac = InputMap.ShouldLockX(keys) ? 1 : ZoomOutFraction;
+        double yFrac = InputMap.ShouldLockY(keys) ? 1 : ZoomOutFraction;
 
         Plot.MouseZoom(xFrac, yFrac, pixel);
         Control.Refresh();
@@ -79,14 +79,14 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
     {
-        bool lockedY = InputMap.IsLockedY(keys);
-        bool lockedX = InputMap.IsLockedX(keys);
+        bool lockedY = InputMap.ShouldLockY(keys);
+        bool lockedX = InputMap.ShouldLockX(keys);
 
         Pixel to2 = new(
             x: lockedX ? from.X : to.X,
             y: lockedY ? from.Y : to.Y);
 
-        if (InputMap.IsZoomingRectangle(button, keys))
+        if (InputMap.ShouldZoomRectangle(button, keys))
         {
             Plot.MouseZoomRectangle(from, to, vSpan: lockedY, hSpan: lockedX);
         }
@@ -110,7 +110,7 @@ public class StandardInteractions : IInteractions
 
     public virtual void MouseDragEnd(MouseButton button, IEnumerable<Key> keys)
     {
-        if (InputMap.IsZoomingRectangle(button, keys) && Plot.ZoomRectangle.IsVisible)
+        if (InputMap.ShouldZoomRectangle(button, keys) && Plot.ZoomRectangle.IsVisible)
         {
             Plot.MouseZoomRectangleClear(applyZoom: true);
             Control.Refresh();
