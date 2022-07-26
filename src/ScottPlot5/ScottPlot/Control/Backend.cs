@@ -20,9 +20,15 @@ namespace ScottPlot.Control
         /// </summary>
         public IInteractions Interactions;
 
-        private readonly KeyStates KeyStates = new();
+        /// <summary>
+        /// Stores which keys are pressed
+        /// </summary>
+        private readonly KeyboardState Keyboard = new();
 
-        private readonly MouseButtonStates MouseButtonStates = new();
+        /// <summary>
+        /// Stores which mouse buttons are pressed
+        /// </summary>
+        private readonly MouseState Mouse = new();
 
         /// <summary>
         /// Latest position of the mouse (in pixel units)
@@ -49,18 +55,19 @@ namespace ScottPlot.Control
 
         public void MouseDown(Pixel position, MouseButton button)
         {
-            MouseButtonStates.Down(position, button, Plot.GetAxisLimits());
+            Mouse.Down(position, button, Plot.GetAxisLimits());
             Interactions.MouseDown(position, button);
         }
 
         public void MouseUp(Pixel position, MouseButton button)
         {
-            bool drag = MouseButtonStates.IsDragging(position);
+            bool drag = Mouse.IsDragging(position);
 
+            // TODO: only end if the drag button was released
             if (drag)
-                Interactions.MouseDragEnd(button, KeyStates.PressedKeys);
+                Interactions.MouseDragEnd(button, Keyboard.PressedKeys);
 
-            MouseButtonStates.Clear();
+            Mouse.Up(button);
             Interactions.MouseUp(position, button, drag);
         }
 
@@ -70,22 +77,19 @@ namespace ScottPlot.Control
 
             Interactions.MouseMove(newPosition);
 
-            MouseButton? button = MouseButtonStates.GetPressedButton();
-            if (button is null)
-                return;
-
-            if (MouseButtonStates.IsDragging(newPosition))
-            {
-                Interactions.MouseDrag(
-                    from: MouseButtonStates.MouseDownPosition,
-                    to: newPosition,
-                    button: button.Value,
-                    keys: KeyStates.PressedKeys,
-                    start: MouseButtonStates.MouseDownAxisLimits);
-            }
-            else if (Plot.ZoomRectangle.IsVisible)
+            if (Plot.ZoomRectangle.IsVisible)
             {
                 Plot.MouseZoomRectangleClear(applyZoom: false);
+            }
+
+            if (Mouse.PressedButtons.Any() && Mouse.IsDragging(newPosition))
+            {
+                Interactions.MouseDrag(
+                    from: Mouse.MouseDownPosition,
+                    to: newPosition,
+                    button: Mouse.PressedButtons.First(),
+                    keys: Keyboard.PressedKeys,
+                    start: Mouse.MouseDownAxisLimits);
             }
         }
 
@@ -97,18 +101,18 @@ namespace ScottPlot.Control
         public void MouseWheelVertical(Pixel position, float delta)
         {
             MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
-            Interactions.MouseWheel(position, direction, KeyStates.PressedKeys);
+            Interactions.MouseWheel(position, direction, Keyboard.PressedKeys);
         }
 
         public void KeyDown(Key key)
         {
-            KeyStates.Down(key);
+            Keyboard.Down(key);
             Interactions.KeyDown(key);
         }
 
         public void KeyUp(Key key)
         {
-            KeyStates.Up(key);
+            Keyboard.Up(key);
             Interactions.KeyUp(key);
         }
     }
