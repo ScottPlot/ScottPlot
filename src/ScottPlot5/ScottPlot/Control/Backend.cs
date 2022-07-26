@@ -106,14 +106,20 @@ namespace ScottPlot.Control
 
         public void KeyDown(Key key)
         {
-            Keyboard.Down(key);
-            Interactions.KeyDown(key);
+            if (!Keyboard.IsPressed(key))
+            {
+                Keyboard.Down(key);
+                Interactions.KeyDown(key);
+            }
         }
 
         public void KeyUp(Key key)
         {
-            Keyboard.Up(key);
-            Interactions.KeyUp(key);
+            if (Keyboard.IsPressed(key))
+            {
+                Keyboard.Up(key);
+                Interactions.KeyUp(key);
+            }
         }
     }
 }

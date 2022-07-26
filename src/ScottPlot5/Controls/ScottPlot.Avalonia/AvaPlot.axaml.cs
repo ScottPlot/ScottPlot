@@ -43,6 +43,20 @@ namespace ScottPlot.Avalonia
             AvaloniaXamlLoader.Load(this);
         }
 
+        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property.Name == "Bounds")
+            {
+                Refresh();
+            }
+        }
+
+        private void UpdateBounds()
+        {
+            image.Width = Bounds.Width;
+            image.Height = Bounds.Height;
+        }
+
         public void Refresh()
         {
             UpdateBounds();
@@ -113,29 +127,12 @@ namespace ScottPlot.Avalonia
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            // This will fire many times while the key is held, causing performance issues.
-            // Avalonia doesn't seem to offer a solution?
-            // TODO: maybe we can detect and gate renders on key changes
             Backend.KeyDown(e.ToKey());
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             Backend.KeyUp(e.ToKey());
-        }
-
-        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (e.Property.Name == "Bounds")
-            {
-                Refresh();
-            }
-        }
-
-        private void UpdateBounds()
-        {
-            image.Width = Bounds.Width;
-            image.Height = Bounds.Height;
         }
     }
 }
