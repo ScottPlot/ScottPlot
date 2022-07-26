@@ -1,6 +1,4 @@
-﻿using ScottPlot.Control.Interactions;
-
-namespace ScottPlot.Control
+﻿namespace ScottPlot.Control
 {
     /// <summary>
     /// This class is intended to be instantiated in user controls
@@ -8,74 +6,77 @@ namespace ScottPlot.Control
     /// </summary>
     public class Backend
     {
-        /// <summary>
-        /// The <see cref="Plot"/> this backend is supporting
-        /// </summary>
-        private readonly Plot Plot;
+        private Plot Plot => Control.Plot;
 
-        /// <summary>
-        /// This object is used to pair mouse interactions with plot actions.
-        /// The default behavior is left-click-drag pan and right-click drag-zoom,
-        /// but advanced users can use their own interaction system instead.
-        /// </summary>
-        public IInteractions Interactions;
+        private readonly IPlotControl Control;
 
-        /// <summary>
-        /// Stores which keys are pressed
-        /// </summary>
+        public InputBindings InputBindings { get; set; } = InputBindings.Standard();
+
         private readonly KeyboardState Keyboard = new();
 
-        /// <summary>
-        /// Stores which mouse buttons are pressed
-        /// </summary>
         private readonly MouseState Mouse = new();
 
-        /// <summary>
-        /// Latest position of the mouse (in pixel units)
-        /// </summary>
         public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
 
-        /// <summary>
-        /// Latest position of the mouse (in coordinate units)
-        /// </summary>
-        public Coordinates GetMouseCoordinates()
-        {
-            return Plot.GetCoordinate(MousePosition);
-        }
+        public double ZoomInFraction { get; set; } = 1.15;
+
+        public double ZoomOutFraction { get; set; } = 0.85;
+
+        public double PanFraction { get; set; } = 0.1;
 
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
         /// </summary>
         /// <param name="plotControl">The control whose plot is being controlled by this backend</param>
-        public Backend(IPlotControl plotControl)
+        public Backend(IPlotControl control)
         {
-            Plot = plotControl.Plot;
-            Interactions = new StandardInteractions(plotControl);
+            Control = control;
         }
 
-        public void MouseDown(Pixel position, MouseButton button)
+        /// <summary>
+        /// Latest position of the mouse (in coordinate units)
+        /// </summary>
+        public virtual Coordinates GetMouseCoordinates()
+        {
+            return Plot.GetCoordinate(MousePosition);
+        }
+
+        public virtual void MouseDown(Pixel position, MouseButton button)
         {
             Mouse.Down(position, button, Plot.GetAxisLimits());
-            Interactions.MouseDown(position, button);
         }
 
-        public void MouseUp(Pixel position, MouseButton button)
+        public virtual void MouseUp(Pixel position, MouseButton button)
         {
             bool drag = Mouse.IsDragging(position);
 
-            // TODO: only end if the drag button was released
+            // TODO: when should the rectangle be cleared?
+
             if (drag)
-                Interactions.MouseDragEnd(button, Keyboard.PressedKeys);
+            {
+                if (InputBindings.ShouldZoomRectangle(button, Keyboard.PressedKeys) && Plot.ZoomRectangle.IsVisible)
+                {
+                    Plot.MouseZoomRectangleClear(applyZoom: true);
+                    Control.Refresh();
+                }
+            }
 
             Mouse.Up(button);
-            Interactions.MouseUp(position, button, drag);
+
+            if (button == InputBindings.DragZoomRectangleButton)
+            {
+                if (!drag)
+                {
+                    Plot.MouseZoomRectangleClear(applyZoom: false);
+                    Plot.AutoScale();
+                }
+                Control.Refresh();
+            }
         }
 
-        public void MouseMove(Pixel newPosition)
+        public virtual void MouseMove(Pixel newPosition)
         {
             MousePosition = newPosition;
-
-            Interactions.MouseMove(newPosition);
 
             if (Plot.ZoomRectangle.IsVisible)
             {
@@ -84,7 +85,7 @@ namespace ScottPlot.Control
 
             if (Mouse.PressedButtons.Any() && Mouse.IsDragging(newPosition))
             {
-                Interactions.MouseDrag(
+                MouseDrag(
                     from: Mouse.MouseDownPosition,
                     to: newPosition,
                     button: Mouse.PressedButtons.First(),
@@ -93,33 +94,121 @@ namespace ScottPlot.Control
             }
         }
 
-        public void DoubleClick()
+        public virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
         {
-            Interactions.DoubleClick();
+            bool lockedY = InputBindings.ShouldLockY(keys);
+            bool lockedX = InputBindings.ShouldLockX(keys);
+
+            Pixel to2 = new(
+                x: lockedX ? from.X : to.X,
+                y: lockedY ? from.Y : to.Y);
+
+            if (InputBindings.ShouldZoomRectangle(button, keys))
+            {
+                Plot.MouseZoomRectangle(from, to, vSpan: lockedY, hSpan: lockedX);
+            }
+            else if (button == InputBindings.DragPanButton)
+            {
+                Plot.MousePan(start, from, to2);
+            }
+            else if (button == InputBindings.DragZoomButton)
+            {
+                Plot.MouseZoom(start, from, to2);
+            }
+
+            Control.Refresh();
         }
 
-        public void MouseWheelVertical(Pixel position, float delta)
+        public virtual void DoubleClick()
+        {
+            Plot.Benchmark.IsVisible = !Plot.Benchmark.IsVisible;
+            Control.Refresh();
+        }
+
+        public virtual void MouseWheelVertical(Pixel pixel, float delta)
         {
             MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
-            Interactions.MouseWheel(position, direction, Keyboard.PressedKeys);
+
+            if (InputBindings.ZoomInWheelDirection.HasValue && InputBindings.ZoomInWheelDirection == direction)
+            {
+                ZoomIn(pixel, Keyboard.PressedKeys);
+            }
+            else if (InputBindings.ZoomOutWheelDirection.HasValue && InputBindings.ZoomOutWheelDirection == direction)
+            {
+                ZoomOut(pixel, Keyboard.PressedKeys);
+            }
+            else if (InputBindings.PanUpWheelDirection.HasValue && InputBindings.PanUpWheelDirection == direction)
+            {
+                PanVertically(true);
+            }
+            else if (InputBindings.PanDownWheelDirection.HasValue && InputBindings.PanDownWheelDirection == direction)
+            {
+                PanVertically(false);
+            }
+            else if (InputBindings.PanRightWheelDirection.HasValue && InputBindings.PanRightWheelDirection == direction)
+            {
+                PanHorizontally(true);
+            }
+            else if (InputBindings.PanLeftWheelDirection.HasValue && InputBindings.PanLeftWheelDirection == direction)
+            {
+                PanHorizontally(false);
+            }
+            else
+            {
+                return;
+            }
         }
 
-        public void KeyDown(Key key)
+        public virtual void KeyDown(Key key)
         {
             if (!Keyboard.IsPressed(key))
             {
                 Keyboard.Down(key);
-                Interactions.KeyDown(key);
+                Control.Refresh();
             }
         }
 
-        public void KeyUp(Key key)
+        public virtual void KeyUp(Key key)
         {
             if (Keyboard.IsPressed(key))
             {
                 Keyboard.Up(key);
-                Interactions.KeyUp(key);
+                Control.Refresh();
             }
+        }
+
+        private void ZoomIn(Pixel pixel, IEnumerable<Key> keys)
+        {
+            double xFrac = InputBindings.ShouldLockX(keys) ? 1 : ZoomInFraction;
+            double yFrac = InputBindings.ShouldLockY(keys) ? 1 : ZoomInFraction;
+
+            Plot.MouseZoom(xFrac, yFrac, pixel);
+            Control.Refresh();
+        }
+
+        private void ZoomOut(Pixel pixel, IEnumerable<Key> keys)
+        {
+            double xFrac = InputBindings.ShouldLockX(keys) ? 1 : ZoomOutFraction;
+            double yFrac = InputBindings.ShouldLockY(keys) ? 1 : ZoomOutFraction;
+
+            Plot.MouseZoom(xFrac, yFrac, pixel);
+            Control.Refresh();
+        }
+
+        private void PanVertically(bool up)
+        {
+            AxisLimits limits = Plot.GetAxisLimits();
+            double deltaY = limits.Rect.Height * PanFraction;
+            Plot.SetAxisLimits(limits.WithPan(0, up ? deltaY : -deltaY));
+            Control.Refresh();
+        }
+
+        private void PanHorizontally(bool right)
+        {
+            AxisLimits limits = Plot.GetAxisLimits();
+            double deltaX = limits.Rect.Width * PanFraction;
+            Plot.SetAxisLimits(limits.WithPan(right ? deltaX : -deltaX, 0));
+            Control.Refresh();
         }
     }
 }

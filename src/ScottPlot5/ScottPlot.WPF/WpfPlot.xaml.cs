@@ -17,14 +17,7 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; } = new();
 
-        // TODO: make internal?
-        public Backend Backend { get; private set; }
-
-        public InputMap InputMap
-        {
-            get => Backend.Interactions.InputMap;
-            set => Backend.Interactions.InputMap = value;
-        }
+        public Backend Backend { get; set; }
 
         public WpfPlot()
         {

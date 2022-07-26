@@ -25,15 +25,9 @@ namespace WPFDemo
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
-            // swap left and right buttons
-            //WpfPlot.InputMap.ClickDragPan = ScottPlot.Control.MouseButton.Right;
-            //WpfPlot.InputMap.ClickDragZoom = ScottPlot.Control.MouseButton.Left;
-
-            // make scroll wheel pan instead of zoom
-            //WpfPlot.InputMap.ZoomIn = null;
-            //WpfPlot.InputMap.ZoomOut = null;
-            //WpfPlot.InputMap.PanUp = ScottPlot.Control.MouseWheelDirection.Up;
-            //WpfPlot.InputMap.PanDown = ScottPlot.Control.MouseWheelDirection.Down;
+            ScottPlot.Control.Backend myBackend = new(WpfPlot);
+            myBackend.InputBindings.DragPanButton = null;
+            WpfPlot.Backend = myBackend;
 
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }

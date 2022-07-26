@@ -4,6 +4,5 @@ public interface IPlotControl
 {
     Plot Plot { get; }
     void Refresh();
-    public Backend Backend { get; }
-    public InputMap InputMap { get; set; }
+    public Backend Backend { get; set; }
 }

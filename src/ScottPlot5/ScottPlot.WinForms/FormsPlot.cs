@@ -11,13 +11,7 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Plot Plot { get; } = new();
 
-    public Backend Backend { get; private set; }
-
-    public InputMap InputMap
-    {
-        get => Backend.Interactions.InputMap;
-        set => Backend.Interactions.InputMap = value;
-    }
+    public Backend Backend { get; set; }
 
     public FormsPlot()
     {
