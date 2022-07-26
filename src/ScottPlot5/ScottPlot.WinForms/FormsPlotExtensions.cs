@@ -28,7 +28,7 @@ internal static class FormsPlotExtensions
             Keys.ControlKey => Control.Key.Ctrl,
             Keys.Menu => Control.Key.Alt,
             Keys.ShiftKey => Control.Key.Shift,
-            _ => Control.Key.UNKNOWN,
+            _ => Control.Key.Unknown,
         };
     }
 }

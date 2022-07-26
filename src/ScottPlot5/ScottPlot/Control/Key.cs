@@ -7,7 +7,7 @@ namespace ScottPlot.Control
     // TODO: create an abstraction so users can define their own keys
     public enum Key
     {
-        UNKNOWN,
+        Unknown,
         Ctrl,
         Alt,
         Shift,

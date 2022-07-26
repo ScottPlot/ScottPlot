@@ -10,14 +10,14 @@ internal class KeyboardState
 
     public void Down(Key key)
     {
-        if (key == Key.UNKNOWN)
+        if (key == Key.Unknown)
             return;
         Pressed.Add(key);
     }
 
     public void Up(Key key)
     {
-        if (key == Key.UNKNOWN)
+        if (key == Key.Unknown)
             return;
         Pressed.Remove(key);
     }

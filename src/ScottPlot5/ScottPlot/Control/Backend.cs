@@ -6,23 +6,26 @@
     /// </summary>
     public class Backend
     {
+        /// <summary>
+        /// This configuration object defines which buttons and keys perform specific actions
+        /// </summary>
+        public InputBindings InputBindings { get; set; } = InputBindings.Standard();
+
         private Plot Plot => Control.Plot;
 
         private readonly IPlotControl Control;
-
-        public InputBindings InputBindings { get; set; } = InputBindings.Standard();
 
         private readonly KeyboardState Keyboard = new();
 
         private readonly MouseState Mouse = new();
 
-        public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
+        private Pixel MousePosition = new(float.NaN, float.NaN);
 
-        public double ZoomInFraction { get; set; } = 1.15;
+        private double ZoomInFraction { get; set; } = 1.15;
 
-        public double ZoomOutFraction { get; set; } = 0.85;
+        private double ZoomOutFraction { get; set; } = 0.85;
 
-        public double PanFraction { get; set; } = 0.1;
+        private double PanFraction { get; set; } = 0.1;
 
         /// <summary>
         /// Create a backend for a user control to manage interaction and event handling.
