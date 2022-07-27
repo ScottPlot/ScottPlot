@@ -1,11 +1,9 @@
 ﻿namespace ScottPlot.Control;
 
-// TODO: give this an interface so users can inject their own
-
 /// <summary>
 /// This class contains methods which apply UI interactions to a Plot in a Control.
 /// </summary>
-public class PlotActions
+public class PlotActions : IPlotActions
 {
     private double ZoomInFraction { get; set; } = 1.15;
 

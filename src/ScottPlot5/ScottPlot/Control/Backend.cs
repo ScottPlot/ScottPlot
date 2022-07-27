@@ -4,8 +4,7 @@ public class Backend
 {
     public InputBindings InputBindings { get; set; } = InputBindings.Standard();
 
-    // TODO: make this an IPlotActions
-    public PlotActions PlotActions { get; private set; }
+    public IPlotActions PlotActions { get; private set; }
 
     private readonly Plot Plot;
 
