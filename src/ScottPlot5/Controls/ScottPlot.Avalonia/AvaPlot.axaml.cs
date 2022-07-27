@@ -8,8 +8,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Skia;
+using Avalonia.Visuals.Media.Imaging;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -27,12 +30,9 @@ namespace ScottPlot.Avalonia
             set => Backend.Interactions.InputMap = value;
         }
 
-        private readonly Image image;
-
         public AvaPlot()
         {
             InitializeComponent();
-            image = this.Find<Image>("image");
             Backend = new(this);
 
             Refresh();
@@ -42,12 +42,10 @@ namespace ScottPlot.Avalonia
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        public void Refresh()
+        
+        public override void Render(DrawingContext context)
         {
-            UpdateBounds();
-
-            SKImageInfo imageInfo = new((int)image.Width, (int)image.Height);
+            SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
             using var surface = SKSurface.Create(imageInfo);
             if (surface is null)
                 return;
@@ -60,21 +58,24 @@ namespace ScottPlot.Avalonia
             byte[] bytes = pixels.GetPixelSpan().ToArray();
 
             using WriteableBitmap bmp = new(
-                size: new global::Avalonia.PixelSize((int)image.Width, (int)image.Height),
+                size: new global::Avalonia.PixelSize((int)Bounds.Width, (int)Bounds.Height),
                 dpi: new Vector(1, 1),
                 format: PixelFormat.Bgra8888,
                 alphaFormat: AlphaFormat.Unpremul);
 
-            ILockedFramebuffer buf = bmp.Lock();
-            Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
+            using ILockedFramebuffer buf = bmp.Lock();
+            {
+                Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
+            }
 
-            // You can't set image.Source to a WritableBitmap
-            using MemoryStream stream = new();
-            bmp.Save(stream);
-            stream.Position = 0;
-            Bitmap bmpShow = new(stream);
+            Rect rect = new(0, 0, Bounds.Width, Bounds.Height);
 
-            image.Source = bmpShow;
+            context.DrawImage(bmp, rect, rect, BitmapInterpolationMode.HighQuality);
+        }
+
+        public void Refresh()
+        {
+            InvalidateVisual();
         }
 
         // TODO: should every On event call its base event???
@@ -122,20 +123,6 @@ namespace ScottPlot.Avalonia
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             Backend.KeyUp(e.ToKey());
-        }
-
-        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (e.Property.Name == "Bounds")
-            {
-                Refresh();
-            }
-        }
-
-        private void UpdateBounds()
-        {
-            image.Width = Bounds.Width;
-            image.Height = Bounds.Height;
         }
     }
 }
