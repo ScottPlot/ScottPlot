@@ -42,7 +42,7 @@ namespace ScottPlot.Avalonia
         {
             AvaloniaXamlLoader.Load(this);
         }
-        
+
         public override void Render(DrawingContext context)
         {
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
