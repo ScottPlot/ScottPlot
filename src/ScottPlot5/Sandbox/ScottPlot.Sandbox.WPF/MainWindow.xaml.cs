@@ -25,10 +25,6 @@ namespace WPFDemo
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
             WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
-            ScottPlot.Control.Backend myBackend = new(WpfPlot);
-            myBackend.InputBindings.DragPanButton = null;
-            WpfPlot.Backend = myBackend;
-
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }
 

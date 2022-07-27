@@ -213,8 +213,9 @@ public class Plot
     /// <summary>
     /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
-    public Coordinates GetCoordinate(Pixel pixel)
+    public Coordinates GetCoordinate(Pixel pixel, Axes.IAxis? xAxis = null, Axes.IAxis? yAxis = null)
     {
+        // TODO: multi-axis support
         PixelRect dataRect = LastRenderInfo.DataRect;
         double x = XAxis.GetCoordinate(pixel.X, dataRect);
         double y = YAxis.GetCoordinate(pixel.Y, dataRect);

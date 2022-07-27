@@ -12,6 +12,8 @@ internal class MouseState
 
     private readonly HashSet<MouseButton> Pressed = new();
 
+    public Pixel LastPosition = new(float.NaN, float.NaN);
+
     public void Down(MouseButton button) => Pressed.Add(button);
 
     public bool IsDown(MouseButton button) => Pressed.Contains(button);
