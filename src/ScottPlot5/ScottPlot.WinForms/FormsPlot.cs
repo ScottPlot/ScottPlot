@@ -11,13 +11,7 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Plot Plot { get; } = new();
 
-    public Backend Backend { get; private set; }
-
-    public InputMap InputMap
-    {
-        get => Backend.Interactions.InputMap;
-        set => Backend.Interactions.InputMap = value;
-    }
+    public Backend Backend { get; set; }
 
     public FormsPlot()
     {
@@ -73,7 +67,7 @@ public class FormsPlot : UserControl, IPlotControl
 
     private void SKElement_MouseWheel(object sender, MouseEventArgs e)
     {
-        Backend.MouseWheel(e.Pixel(), e.Delta);
+        Backend.MouseWheelVertical(e.Pixel(), e.Delta);
         base.OnMouseWheel(e);
     }
 

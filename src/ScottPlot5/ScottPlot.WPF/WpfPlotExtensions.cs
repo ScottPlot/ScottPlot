@@ -39,7 +39,7 @@ internal static class WpfPlotExtensions
             System.Windows.Input.Key.RightAlt => Control.Key.Alt,
             System.Windows.Input.Key.LeftShift => Control.Key.Shift,
             System.Windows.Input.Key.RightShift => Control.Key.Shift,
-            _ => Control.Key.UNKNOWN,
+            _ => Control.Key.Unknown,
         };
     }
 }

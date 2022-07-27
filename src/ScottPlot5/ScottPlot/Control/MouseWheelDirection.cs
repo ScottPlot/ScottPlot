@@ -1,9 +1,10 @@
 ﻿namespace ScottPlot.Control;
 
-public enum MouseButton
+public enum MouseWheelDirection
 {
     Unknown,
+    Up,
+    Down,
     Left,
     Right,
-    Middle,
 }

@@ -32,7 +32,7 @@ internal static class AvaPlotExtensions
             AvaKey.RightShift => Key.Shift,
             AvaKey.LeftCtrl => Key.Ctrl,
             AvaKey.RightCtrl => Key.Ctrl,
-            _ => Key.UNKNOWN,
+            _ => Key.Unknown,
         };
     }
 

@@ -10,14 +10,14 @@ internal static class FormsPlotExtensions
         return new Pixel(e.X, e.Y);
     }
 
-    internal static MouseButton Button(this MouseEventArgs e)
+    internal static Control.MouseButton Button(this MouseEventArgs e)
     {
         return e.Button switch
         {
-            MouseButtons.Left => MouseButton.Left,
-            MouseButtons.Right => MouseButton.Right,
-            MouseButtons.Middle => MouseButton.Middle,
-            _ => MouseButton.Unknown,
+            System.Windows.Forms.MouseButtons.Left => Control.MouseButton.Left,
+            System.Windows.Forms.MouseButtons.Right => Control.MouseButton.Right,
+            System.Windows.Forms.MouseButtons.Middle => Control.MouseButton.Middle,
+            _ => Control.MouseButton.Unknown,
         };
     }
 
@@ -28,7 +28,7 @@ internal static class FormsPlotExtensions
             Keys.ControlKey => Control.Key.Ctrl,
             Keys.Menu => Control.Key.Alt,
             Keys.ShiftKey => Control.Key.Shift,
-            _ => Control.Key.UNKNOWN,
+            _ => Control.Key.Unknown,
         };
     }
 }

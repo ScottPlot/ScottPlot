@@ -11,7 +11,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Skia;
 using Avalonia.Visuals.Media.Imaging;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -22,13 +21,7 @@ namespace ScottPlot.Avalonia
     {
         public Plot Plot { get; } = new();
 
-        public Backend Backend { get; private set; }
-
-        public InputMap InputMap
-        {
-            get => Backend.Interactions.InputMap;
-            set => Backend.Interactions.InputMap = value;
-        }
+        public Backend Backend { get; set; }
 
         public AvaPlot()
         {
@@ -46,6 +39,7 @@ namespace ScottPlot.Avalonia
         public override void Render(DrawingContext context)
         {
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
+
             using var surface = SKSurface.Create(imageInfo);
             if (surface is null)
                 return;
@@ -109,14 +103,11 @@ namespace ScottPlot.Avalonia
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.MouseWheel(e.ToPixel(this), (float)e.Delta.Y);
+            Backend.MouseWheelVertical(e.ToPixel(this), (float)e.Delta.Y);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            // This will fire many times while the key is held, causing performance issues.
-            // Avalonia doesn't seem to offer a solution?
-            // TODO: maybe we can detect and gate renders on key changes
             Backend.KeyDown(e.ToKey());
         }
 

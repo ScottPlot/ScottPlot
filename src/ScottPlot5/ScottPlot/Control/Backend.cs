@@ -1,115 +1,70 @@
-﻿using ScottPlot.Control.Interactions;
+﻿namespace ScottPlot.Control;
 
-namespace ScottPlot.Control
+public class Backend
 {
-    /// <summary>
-    /// This class is intended to be instantiated in user controls
-    /// and provides a convenient way to manage events and map events to actions.
-    /// </summary>
-    public class Backend
+    public InputBindings Bindings { get; set; } = InputBindings.Standard();
+
+    public IPlotActions Actions { get; private set; }
+
+    public PlotActionCommander ActionCommander { get; private set; }
+
+
+    private readonly Plot Plot;
+
+    private readonly KeyboardState Keyboard = new();
+
+    private readonly MouseState Mouse = new();
+
+
+    public Backend(IPlotControl control)
     {
-        /// <summary>
-        /// The <see cref="Plot"/> this backend is supporting
-        /// </summary>
-        private readonly Plot Plot;
+        Plot = control.Plot;
+        Actions = new PlotActions(control);
+        ActionCommander = new PlotActionCommander(Actions, Bindings, Mouse, Keyboard);
+    }
 
-        /// <summary>
-        /// This object is used to pair mouse interactions with plot actions.
-        /// The default behavior is left-click-drag pan and right-click drag-zoom,
-        /// but advanced users can use their own interaction system instead.
-        /// </summary>
-        public IInteractions Interactions;
+    public Coordinates GetMouseCoordinates(Axes.IAxis? xAxis = null, Axes.IAxis? yAxis = null)
+    {
+        return Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
+    }
 
-        private readonly KeyStates KeyStates = new();
+    public void MouseDown(Pixel position, MouseButton button)
+    {
+        // TODO: invoke actions chooser?
+        Mouse.Down(position, button, Plot.GetAxisLimits());
+    }
 
-        private readonly MouseButtonStates MouseButtonStates = new();
+    public void KeyDown(Key key)
+    {
+        // TODO: invoke actions chooser?
+        Keyboard.Down(key);
+    }
 
-        /// <summary>
-        /// Latest position of the mouse (in pixel units)
-        /// </summary>
-        public Pixel MousePosition { get; private set; } = new(float.NaN, float.NaN);
+    public void KeyUp(Key key)
+    {
+        // TODO: invoke actions chooser?
+        Keyboard.Up(key);
+    }
 
-        /// <summary>
-        /// Latest position of the mouse (in coordinate units)
-        /// </summary>
-        public Coordinates GetMouseCoordinates()
-        {
-            return Plot.GetCoordinate(MousePosition);
-        }
+    public void MouseUp(Pixel position, MouseButton button)
+    {
+        ActionCommander.MouseUp(position, button);
+        Mouse.Up(button);
+    }
 
-        /// <summary>
-        /// Create a backend for a user control to manage interaction and event handling.
-        /// </summary>
-        /// <param name="plotControl">The control whose plot is being controlled by this backend</param>
-        public Backend(IPlotControl plotControl)
-        {
-            Plot = plotControl.Plot;
-            Interactions = new StandardInteractions(plotControl);
-        }
+    public void MouseMove(Pixel newPosition)
+    {
+        Mouse.LastPosition = newPosition;
+        ActionCommander.MouseMove(newPosition);
+    }
 
-        public void MouseDown(Pixel position, MouseButton button)
-        {
-            MouseButtonStates.Down(position, button, Plot.GetAxisLimits());
-            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
-        }
+    public void DoubleClick()
+    {
+        ActionCommander.DoubleClick();
+    }
 
-        public void MouseUp(Pixel position, MouseButton button)
-        {
-            bool drag = MouseButtonStates.IsDragging(position);
-
-            if (drag)
-                Interactions.MouseDragEnd(button, KeyStates.PressedKeys);
-
-            MouseButtonStates.Clear();
-            Interactions.MouseUp(position, button, drag);
-        }
-
-        public void MouseMove(Pixel newPosition)
-        {
-            MousePosition = newPosition;
-
-            Interactions.MouseMove(newPosition);
-
-            MouseButton? button = MouseButtonStates.GetPressedButton();
-            if (button is null)
-                return;
-
-            if (MouseButtonStates.IsDragging(newPosition))
-            {
-                Interactions.MouseDrag(
-                    from: MouseButtonStates.MouseDownPosition,
-                    to: newPosition,
-                    button: button.Value,
-                    keys: KeyStates.PressedKeys,
-                    start: MouseButtonStates.MouseDownAxisLimits);
-            }
-            else if (Plot.ZoomRectangle.IsVisible)
-            {
-                Plot.MouseZoomRectangleClear(applyZoom: false);
-            }
-        }
-
-        public void DoubleClick()
-        {
-            Interactions.DoubleClick();
-        }
-
-        public void MouseWheel(Pixel position, float delta)
-        {
-            MouseButton button = delta > 0 ? MouseButton.WheelUp : MouseButton.WheelDown;
-            Interactions.MouseDown(position, button, KeyStates.PressedKeys);
-        }
-
-        public void KeyDown(Key key)
-        {
-            KeyStates.Down(key);
-            Interactions.KeyDown(key);
-        }
-
-        public void KeyUp(Key key)
-        {
-            KeyStates.Up(key);
-            Interactions.KeyUp(key);
-        }
+    public void MouseWheelVertical(Pixel pixel, float delta)
+    {
+        ActionCommander.MouseWheelVertical(pixel, delta);
     }
 }
