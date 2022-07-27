@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Control;
 
-internal class MouseState
+public class MouseState
 {
     // TODO: add a flag so once the distance is exceeded it is ignored when you return to it, 
     // otherwise it feels laggy when you drag the cursor in small circles.

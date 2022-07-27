@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Control;
 
-internal class KeyboardState
+public class KeyboardState
 {
     private readonly HashSet<Key> Pressed = new();
 
