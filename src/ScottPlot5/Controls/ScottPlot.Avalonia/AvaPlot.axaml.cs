@@ -8,8 +8,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Skia;
+using Avalonia.Visuals.Media.Imaging;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -52,6 +55,12 @@ namespace ScottPlot.Avalonia
         }
 
         public void Refresh()
+        {
+            // TODO: is this the best way to do this?
+            image.InvalidateVisual();
+        }
+
+        public override void Render(DrawingContext context)
         {
             UpdateBounds();
 
