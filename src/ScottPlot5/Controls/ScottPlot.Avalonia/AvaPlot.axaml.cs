@@ -11,7 +11,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Skia;
 using Avalonia.Visuals.Media.Imaging;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -37,25 +36,8 @@ namespace ScottPlot.Avalonia
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            // TODO: is this still required?
-            if (e.Property.Name == "Bounds")
-            {
-                Refresh();
-            }
-        }
-
-        private void UpdateBounds()
-        {
-            // TODO: is this still required?
-            image.Width = Bounds.Width;
-            image.Height = Bounds.Height;
-        }
-
         public override void Render(DrawingContext context)
         {
-            UpdateBounds();
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
 
             using var surface = SKSurface.Create(imageInfo);
