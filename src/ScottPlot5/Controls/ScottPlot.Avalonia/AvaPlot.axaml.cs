@@ -24,12 +24,9 @@ namespace ScottPlot.Avalonia
 
         public Backend Backend { get; set; }
 
-        private readonly Image image;
-
         public AvaPlot()
         {
             InitializeComponent();
-            image = this.Find<Image>("image");
             Backend = new(this);
 
             Refresh();
@@ -42,6 +39,7 @@ namespace ScottPlot.Avalonia
 
         private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
+            // TODO: is this still required?
             if (e.Property.Name == "Bounds")
             {
                 Refresh();
@@ -50,6 +48,7 @@ namespace ScottPlot.Avalonia
 
         private void UpdateBounds()
         {
+            // TODO: is this still required?
             image.Width = Bounds.Width;
             image.Height = Bounds.Height;
         }
@@ -63,8 +62,8 @@ namespace ScottPlot.Avalonia
         public override void Render(DrawingContext context)
         {
             UpdateBounds();
+            SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
 
-            SKImageInfo imageInfo = new((int)image.Width, (int)image.Height);
             using var surface = SKSurface.Create(imageInfo);
             if (surface is null)
                 return;
@@ -77,21 +76,24 @@ namespace ScottPlot.Avalonia
             byte[] bytes = pixels.GetPixelSpan().ToArray();
 
             using WriteableBitmap bmp = new(
-                size: new global::Avalonia.PixelSize((int)image.Width, (int)image.Height),
+                size: new global::Avalonia.PixelSize((int)Bounds.Width, (int)Bounds.Height),
                 dpi: new Vector(1, 1),
                 format: PixelFormat.Bgra8888,
                 alphaFormat: AlphaFormat.Unpremul);
 
-            ILockedFramebuffer buf = bmp.Lock();
-            Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
+            using ILockedFramebuffer buf = bmp.Lock();
+            {
+                Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
+            }
 
-            // You can't set image.Source to a WritableBitmap
-            using MemoryStream stream = new();
-            bmp.Save(stream);
-            stream.Position = 0;
-            Bitmap bmpShow = new(stream);
+            Rect rect = new(0, 0, Bounds.Width, Bounds.Height);
 
-            image.Source = bmpShow;
+            context.DrawImage(bmp, rect, rect, BitmapInterpolationMode.HighQuality);
+        }
+
+        public void Refresh()
+        {
+            InvalidateVisual();
         }
 
         // TODO: should every On event call its base event???
