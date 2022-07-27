@@ -53,12 +53,6 @@ namespace ScottPlot.Avalonia
             image.Height = Bounds.Height;
         }
 
-        public void Refresh()
-        {
-            // TODO: is this the best way to do this?
-            image.InvalidateVisual();
-        }
-
         public override void Render(DrawingContext context)
         {
             UpdateBounds();
