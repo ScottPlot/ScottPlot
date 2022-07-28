@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Eto.Forms" Version="2.7.0" />
+	  <ProjectReference Include="..\..\..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+	</ItemGroup>
+
+</Project>
