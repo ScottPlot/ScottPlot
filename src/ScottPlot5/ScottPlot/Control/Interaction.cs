@@ -12,8 +12,8 @@ public class Interaction
 {
     private readonly IPlotControl Control;
 
-    private InputBindings Inputs = InputBindings.Standard();
-    private PlotActions Actions = PlotActions.Standard();
+    public InputBindings Inputs = InputBindings.Standard();
+    public PlotActions Actions = PlotActions.Standard();
 
     private readonly KeyboardState Keyboard = new();
     private readonly MouseState Mouse = new();
