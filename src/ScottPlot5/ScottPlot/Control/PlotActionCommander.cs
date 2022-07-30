@@ -91,6 +91,11 @@ public class PlotActionCommander
 
     public void MouseWheelVertical(Pixel pixel, float delta)
     {
+        if (delta == 0)
+        {
+            return;
+        }
+
         MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
 
         if (Bindings.ZoomInWheelDirection.HasValue && Bindings.ZoomInWheelDirection == direction)
