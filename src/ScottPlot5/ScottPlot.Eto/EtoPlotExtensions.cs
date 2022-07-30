@@ -10,11 +10,6 @@ namespace ScottPlot.Eto;
 
 internal static class EtoPlotExtensions
 {
-    internal static bool Contains(this RectangleF rect, PointF point)
-    {
-        return rect.Left <= point.X && rect.Right >= point.X && rect.Top <= point.Y && rect.Bottom >= point.Y;
-    }
-
     internal static Pixel Pixel(this MouseEventArgs e)
     {
         double x = e.Location.X;
