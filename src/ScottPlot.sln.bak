@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Eto", "ScottPlot5\ScottPlot.Eto\ScottPlot.Eto.csproj", "{0644334C-7683-4B90-A757-2218D4D72E26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5\controls\Sandbox\ScottPlot.Sandbox.Eto\Sandbox.Eto.csproj", "{945D7240-71CD-4034-AA3D-58DF8EF819EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eto", "ScottPlot5\controls\Sandbox\ScottPlot.Sandbox.Eto\Eto.csproj", "{945D7240-71CD-4034-AA3D-58DF8EF819EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

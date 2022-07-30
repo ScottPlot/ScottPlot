@@ -8,7 +8,7 @@ namespace ScottPlot.Sandbox.Eto
         [STAThread]
         static void Main(string[] args)
         {
-            new Application(global::Eto.Platforms.WinForms).Run(new MainWindow());
+            new Application(global::Eto.Platform.Detect).Run(new MainWindow());
         }
     }
 }

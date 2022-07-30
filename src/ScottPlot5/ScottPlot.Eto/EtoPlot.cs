@@ -5,6 +5,7 @@ using System.Text;
 using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot.Eto
 {
@@ -34,7 +35,14 @@ namespace ScottPlot.Eto
             SKPixmap pixels = img.ToRasterImage().PeekPixels();
             byte[] bytes = pixels.GetPixelSpan().ToArray();
 
-            this.Image = new Bitmap(bytes);
+            var bmp = new Bitmap((int)Bounds.Width, (int)Bounds.Height, PixelFormat.Format32bppRgba);
+
+            using (var data = bmp.Lock())
+            {
+                Marshal.Copy(bytes, 0, data.Data, bytes.Length);
+            }
+
+            this.Image = bmp;
         }
 
 #if false
