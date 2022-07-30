@@ -21,7 +21,13 @@ namespace ScottPlot.Sandbox.Eto
             etoPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
             etoPlot.Refresh();
 
-            //etoPlot.PointerMoved += AvaPlot_MouseMove;
+            etoPlot.MouseMove += EtoPlot_MouseMove;
+        }
+
+        private void EtoPlot_MouseMove(object? sender, MouseEventArgs e)
+        {
+            DebugPoint.Position = etoPlot.Backend.GetMouseCoordinates();
+            etoPlot.Refresh();
         }
     }
 }
