@@ -13,7 +13,7 @@ public interface IPlotControl
     void Refresh();
 
     /// <summary>
-    /// Configuration object used to configure how mouse and keyboard events affect the plot
+    /// Advanced options for configuring how user inputs manipulate the plot
     /// </summary>
-    Backend Backend { get; set; }
+    Interaction Interaction { get; }
 }

@@ -39,7 +39,7 @@ namespace Sandbox.Avalonia
 
         private void AvaPlot_MouseMove(object? sender, PointerEventArgs e)
         {
-            DebugPoint.Position = avaPlot.Backend.GetMouseCoordinates();
+            DebugPoint.Position = avaPlot.Interaction.GetMouseCoordinates();
             avaPlot.Refresh();
         }
 

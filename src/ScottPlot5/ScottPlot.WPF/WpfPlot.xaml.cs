@@ -17,7 +17,9 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; } = new();
 
-        public Backend Backend { get; set; }
+        private readonly Backend Backend;
+
+        public Interaction Interaction => Backend.Interaction;
 
         public WpfPlot()
         {
