@@ -18,6 +18,15 @@ namespace ScottPlot.Eto
         public EtoPlot()
         {
             Backend = new(this);
+
+            this.MouseDown += OnMouseDown;
+            this.MouseUp += OnMouseUp;
+            this.MouseMove += OnMouseMove;
+            this.MouseWheel += OnMouseWheel;
+            this.KeyDown += OnKeyDown;
+            this.KeyUp += OnKeyUp;
+            this.MouseDoubleClick += OnDoubleClick;
+            this.SizeChanged += OnSizeChanged;
         }
 
         public void Refresh()
@@ -45,53 +54,46 @@ namespace ScottPlot.Eto
             this.Image = bmp;
         }
 
-#if false
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
-            Keyboard.Focus(this);
+            Focus();
 
-            Backend.MouseDown(e.Pixel(this), e.ToButton());
-
-            (sender as UIElement)?.CaptureMouse();
-
-            if (e.ClickCount == 2)
-            {
-                Backend.DoubleClick();
-            }
-
-            base.OnMouseDown(e);
+            Backend.MouseDown(e.Pixel(), e.ToButton());
         }
 
         private void OnMouseUp(object sender, MouseEventArgs e)
         {
-            Backend.MouseUp(e.Pixel(this), e.ToButton());
-            (sender as UIElement)?.ReleaseMouseCapture();
-            base.OnMouseUp(e);
+            Backend.MouseUp(e.Pixel(), e.ToButton());
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.MouseMove(e.Pixel(this));
-            base.OnMouseMove(e);
+            Backend.MouseMove(e.Pixel());
         }
 
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
-            Backend.MouseWheelVertical(e.Pixel(this), e.Delta);
-            base.OnMouseWheel(e);
+            Backend.MouseWheelVertical(e.Pixel(), e.Delta.Height);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             Backend.KeyDown(e.Key());
-            base.OnKeyDown(e);
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             Backend.KeyUp(e.Key());
-            base.OnKeyUp(e);
         }
-#endif
+
+        private void OnDoubleClick(object sender, MouseEventArgs e)
+        {
+            Backend.DoubleClick();
+        }
+
+        private void OnSizeChanged(object sender, EventArgs e)
+        {
+            Refresh();
+        }
     }
 }

@@ -20,9 +20,6 @@ namespace ScottPlot.Sandbox.Eto
 
             this.Width = 800;
             this.Height = 600;
-
-            etoPlot.Width = 800;
-            etoPlot.Height = 600;
         }
     }
 }
