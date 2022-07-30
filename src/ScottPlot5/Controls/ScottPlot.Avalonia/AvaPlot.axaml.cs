@@ -103,7 +103,13 @@ namespace ScottPlot.Avalonia
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.MouseWheelVertical(e.ToPixel(this), (float)e.Delta.Y);
+            // Avalonia flips the delta vector when shift is held. This is seemingly intentional: https://github.com/AvaloniaUI/Avalonia/pull/7520
+            float delta = (float)(e.KeyModifiers.HasFlag(KeyModifiers.Shift) ? e.Delta.X : e.Delta.Y);
+
+            if (delta != 0)
+            {
+                Backend.MouseWheelVertical(e.ToPixel(this), delta);
+            }
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
