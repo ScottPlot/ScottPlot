@@ -11,11 +11,11 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Plot Plot { get; } = new();
 
-    public Backend Backend { get; set; }
+    public Interaction Interaction { get; private set; }
 
     public FormsPlot()
     {
-        Backend = new(this);
+        Interaction = new(this);
 
         SKElement = new() { Dock = DockStyle.Fill, VSync = true };
         SKElement.PaintSurface += SKControl_PaintSurface;
@@ -28,6 +28,11 @@ public class FormsPlot : UserControl, IPlotControl
         SKElement.KeyUp += SKElement_KeyUp;
 
         Controls.Add(SKElement);
+    }
+
+    public void Replace(Interaction interaction)
+    {
+        Interaction = interaction;
     }
 
     public override void Refresh()
@@ -43,43 +48,43 @@ public class FormsPlot : UserControl, IPlotControl
 
     private void SKElement_MouseDown(object sender, MouseEventArgs e)
     {
-        Backend.MouseDown(e.Pixel(), e.Button());
+        Interaction.MouseDown(e.Pixel(), e.Button());
         base.OnMouseDown(e);
     }
 
     private void SKElement_MouseUp(object sender, MouseEventArgs e)
     {
-        Backend.MouseUp(e.Pixel(), e.Button());
+        Interaction.MouseUp(e.Pixel(), e.Button());
         base.OnMouseUp(e);
     }
 
     private void SKElement_MouseMove(object sender, MouseEventArgs e)
     {
-        Backend.MouseMove(e.Pixel());
+        Interaction.OnMouseMove(e.Pixel());
         base.OnMouseMove(e);
     }
 
     private void SKElement_DoubleClick(object sender, EventArgs e)
     {
-        Backend.DoubleClick();
+        Interaction.DoubleClick();
         base.OnDoubleClick(e);
     }
 
     private void SKElement_MouseWheel(object sender, MouseEventArgs e)
     {
-        Backend.MouseWheelVertical(e.Pixel(), e.Delta);
+        Interaction.MouseWheelVertical(e.Pixel(), e.Delta);
         base.OnMouseWheel(e);
     }
 
     private void SKElement_KeyDown(object sender, KeyEventArgs e)
     {
-        Backend.KeyDown(e.Key());
+        Interaction.KeyDown(e.Key());
         base.OnKeyDown(e);
     }
 
     private void SKElement_KeyUp(object sender, KeyEventArgs e)
     {
-        Backend.KeyUp(e.Key());
+        Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);
     }
 }
