@@ -112,7 +112,7 @@ namespace ScottPlot.Avalonia
 
             if (delta != 0)
             {
-                Backend.MouseWheelVertical(e.ToPixel(this), delta);
+                Interaction.MouseWheelVertical(e.ToPixel(this), delta);
             }
         }
 
