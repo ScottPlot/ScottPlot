@@ -16,4 +16,9 @@ public interface IPlotControl
     /// Advanced options for configuring how user inputs manipulate the plot
     /// </summary>
     Interaction Interaction { get; }
+
+    /// <summary>
+    /// Replace the interaction back-end with a custom one
+    /// </summary>
+    void Replace(Interaction interaction);
 }

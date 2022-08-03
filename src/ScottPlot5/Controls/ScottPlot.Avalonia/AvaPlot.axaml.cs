@@ -21,16 +21,19 @@ namespace ScottPlot.Avalonia
     {
         public Plot Plot { get; } = new();
 
-        private readonly Backend Backend;
-
-        public Interaction Interaction => Backend.Interaction;
+        public Interaction Interaction { get; private set; }
 
         public AvaPlot()
         {
             InitializeComponent();
-            Backend = new(this);
+            Interaction = new(this);
 
             Refresh();
+        }
+
+        public void Replace(Interaction interaction)
+        {
+            Interaction = interaction;
         }
 
         private void InitializeComponent()
@@ -74,10 +77,9 @@ namespace ScottPlot.Avalonia
             InvalidateVisual();
         }
 
-        // TODO: should every On event call its base event???
         private void OnMouseDown(object sender, PointerPressedEventArgs e)
         {
-            Backend.MouseDown(
+            Interaction.MouseDown(
                 position: e.ToPixel(this),
                 button: e.GetCurrentPoint(this).Properties.PointerUpdateKind.ToButton());
 
@@ -85,13 +87,13 @@ namespace ScottPlot.Avalonia
 
             if (e.ClickCount == 2)
             {
-                Backend.DoubleClick();
+                Interaction.DoubleClick();
             }
         }
 
         private void OnMouseUp(object sender, PointerReleasedEventArgs e)
         {
-            Backend.MouseUp(
+            Interaction.MouseUp(
                 position: e.ToPixel(this),
                 button: e.GetCurrentPoint(this).Properties.PointerUpdateKind.ToButton());
 
@@ -100,22 +102,22 @@ namespace ScottPlot.Avalonia
 
         private void OnMouseMove(object sender, PointerEventArgs e)
         {
-            Backend.MouseMove(e.ToPixel(this));
+            Interaction.OnMouseMove(e.ToPixel(this));
         }
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e)
         {
-            Backend.MouseWheelVertical(e.ToPixel(this), (float)e.Delta.Y);
+            Interaction.MouseWheelVertical(e.ToPixel(this), (float)e.Delta.Y);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Backend.KeyDown(e.ToKey());
+            Interaction.KeyDown(e.ToKey());
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.KeyUp(e.ToKey());
+            Interaction.KeyUp(e.ToKey());
         }
     }
 }

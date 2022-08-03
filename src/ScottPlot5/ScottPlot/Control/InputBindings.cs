@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot.Control;
 
 /// <summary>
-/// This class maps common plot actions with specific mouse and keyboard inputs
+/// This class defines which buttons and keys perform which actions to manipulate the plot.
 /// </summary>
 public class InputBindings
 {

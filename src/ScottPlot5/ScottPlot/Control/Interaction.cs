@@ -1,18 +1,25 @@
 ﻿namespace ScottPlot.Control;
 
 /// <summary>
-/// This class contains actions that manipulate a Plot and also the logic
-/// which chooses which action to invoke in response to various user inputs.
-/// 
-/// Plot manipulations can be customized by assigning custom delegates to the various Action fields.
-/// 
+/// This class contains logic to perform plot manipulations in response to UI actions.
 /// To customize how user inputs are interpreted, inherit and override functions in this class.
+/// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
+/// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
 public class Interaction
 {
     private readonly IPlotControl Control;
 
+    /// <summary>
+    /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
+    /// (e.g., make left-click-drag zoom instead of pan)
+    /// </summary>
     public InputBindings Inputs = InputBindings.Standard();
+
+    /// <summary>
+    /// Delegates in this object can be overwritten with custom functions that manipulate the plot.
+    /// (e.g., changing the sensitivity of click-drag-zooming)
+    /// </summary>
     public PlotActions Actions = PlotActions.Standard();
 
     private readonly KeyboardState Keyboard = new();
@@ -26,12 +33,15 @@ public class Interaction
         Control = control;
     }
 
+    /// <summary>
+    /// Return the last observed location of the mouse in coordinate units
+    /// </summary>
     public Coordinates GetMouseCoordinates(Axes.IAxis? xAxis = null, Axes.IAxis? yAxis = null)
     {
         return Control.Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
     }
 
-    public virtual void MouseMove(Pixel newPosition)
+    public virtual void OnMouseMove(Pixel newPosition)
     {
         Mouse.LastPosition = newPosition;
 
@@ -46,7 +56,7 @@ public class Interaction
         }
     }
 
-    public virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
+    protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, AxisLimits start)
     {
         bool lockY = Inputs.ShouldLockY(keys);
         bool lockX = Inputs.ShouldLockX(keys);

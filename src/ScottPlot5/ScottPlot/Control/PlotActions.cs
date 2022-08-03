@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot.Control;
 
+/// <summary>
+/// This object holds actions which manipulate the plot.
+/// To customize plot manipulation behavior, replace these delegates with custom ones.
+/// </summary>
 public class PlotActions
 {
     public Action<IPlotControl, Pixel, LockedAxes> ZoomIn = delegate { };
