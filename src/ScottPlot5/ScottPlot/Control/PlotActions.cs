@@ -1,120 +1,62 @@
 ﻿namespace ScottPlot.Control;
 
 /// <summary>
-/// This class contains methods which apply UI interactions to a Plot in a Control.
+/// This object holds actions which manipulate the plot.
+/// To customize plot manipulation behavior, replace these delegates with custom ones.
 /// </summary>
-public class PlotActions : IPlotActions
+public class PlotActions
 {
-    private double ZoomInFraction { get; set; } = 1.15;
+    public Action<IPlotControl, Pixel, LockedAxes> ZoomIn = delegate { };
+    public Action<IPlotControl, Pixel, LockedAxes> ZoomOut = delegate { };
+    public Action<IPlotControl> PanUp = delegate { };
+    public Action<IPlotControl> PanDown = delegate { };
+    public Action<IPlotControl> PanLeft = delegate { };
+    public Action<IPlotControl> PanRight = delegate { };
+    public Action<IPlotControl, MouseDrag, LockedAxes> DragPan = delegate { };
+    public Action<IPlotControl, MouseDrag, LockedAxes> DragZoom = delegate { };
+    public Action<IPlotControl, MouseDrag, LockedAxes> DragZoomRectangle = delegate { };
+    public Action<IPlotControl> ZoomRectangleClear = delegate { };
+    public Action<IPlotControl> ZoomRectangleApply = delegate { };
+    public Action<IPlotControl> ToggleBenchmark = delegate { };
+    public Action<IPlotControl> AutoScale = delegate { };
 
-    private double ZoomOutFraction { get; set; } = 0.85;
-
-    private double PanFraction { get; set; } = 0.1;
-
-    private readonly IPlotControl Control;
-
-    public PlotActions(IPlotControl control)
+    public static PlotActions Standard()
     {
-        Control = control;
+        return new PlotActions()
+        {
+            ZoomIn = StandardActions.ZoomIn,
+            ZoomOut = StandardActions.ZoomOut,
+            PanUp = StandardActions.PanUp,
+            PanDown = StandardActions.PanDown,
+            PanLeft = StandardActions.PanLeft,
+            PanRight = StandardActions.PanRight,
+            DragPan = StandardActions.DragPan,
+            DragZoom = StandardActions.DragZoom,
+            DragZoomRectangle = StandardActions.DragZoomRectangle,
+            ZoomRectangleClear = StandardActions.ZoomRectangleClear,
+            ZoomRectangleApply = StandardActions.ZoomRectangleApply,
+            ToggleBenchmark = StandardActions.ToggleBenchmark,
+            AutoScale = StandardActions.AutoScale,
+        };
     }
 
-    public void ZoomIn(Pixel pixel, bool lockX, bool lockY)
+    public static PlotActions NonInteractive()
     {
-        double xFrac = lockX ? 1 : ZoomInFraction;
-        double yFrac = lockY ? 1 : ZoomInFraction;
-
-        Control.Plot.MouseZoom(xFrac, yFrac, pixel);
-        Control.Refresh();
-    }
-
-    public void ZoomOut(Pixel pixel, bool lockX, bool lockY)
-    {
-        double xFrac = lockX ? 1 : ZoomOutFraction;
-        double yFrac = lockY ? 1 : ZoomOutFraction;
-
-        Control.Plot.MouseZoom(xFrac, yFrac, pixel);
-        Control.Refresh();
-    }
-
-    public void PanUp()
-    {
-        AxisLimits limits = Control.Plot.GetAxisLimits();
-        double deltaY = limits.Rect.Height * PanFraction;
-        Control.Plot.SetAxisLimits(limits.WithPan(0, deltaY));
-        Control.Refresh();
-    }
-
-    public void PanDown()
-    {
-        AxisLimits limits = Control.Plot.GetAxisLimits();
-        double deltaY = limits.Rect.Height * PanFraction;
-        Control.Plot.SetAxisLimits(limits.WithPan(0, -deltaY));
-        Control.Refresh();
-    }
-
-    public void PanLeft()
-    {
-        AxisLimits limits = Control.Plot.GetAxisLimits();
-        double deltaX = limits.Rect.Width * PanFraction;
-        Control.Plot.SetAxisLimits(limits.WithPan(-deltaX, 0));
-        Control.Refresh();
-    }
-
-    public void PanRight()
-    {
-        AxisLimits limits = Control.Plot.GetAxisLimits();
-        double deltaX = limits.Rect.Width * PanFraction;
-        Control.Plot.SetAxisLimits(limits.WithPan(deltaX, 0));
-        Control.Refresh();
-    }
-
-    public void DragPan(AxisLimits start, Pixel from, Pixel to, bool lockX, bool lockY)
-    {
-        Pixel to2 = new(
-            x: lockX ? from.X : to.X,
-            y: lockY ? from.Y : to.Y);
-
-        Control.Plot.MousePan(start, from, to2);
-        Control.Refresh();
-    }
-
-    public void DragZoom(AxisLimits start, Pixel from, Pixel to, bool lockX, bool lockY)
-    {
-        Pixel to2 = new(
-            x: lockX ? from.X : to.X,
-            y: lockY ? from.Y : to.Y);
-
-        Control.Plot.MouseZoom(start, from, to2);
-        Control.Refresh();
-    }
-
-    public void ZoomRectangleClear()
-    {
-        Control.Plot.MouseZoomRectangleClear(applyZoom: false);
-        Control.Refresh();
-    }
-
-    public void ZoomRectangleApply()
-    {
-        Control.Plot.MouseZoomRectangleClear(applyZoom: true);
-        Control.Refresh();
-    }
-
-    public void ZoomRectangle(Pixel from, Pixel to, bool lockX, bool lockY)
-    {
-        Control.Plot.MouseZoomRectangle(from, to, vSpan: lockY, hSpan: lockX);
-        Control.Refresh();
-    }
-
-    public void ToggleBenchmark()
-    {
-        Control.Plot.Benchmark.IsVisible = !Control.Plot.Benchmark.IsVisible;
-        Control.Refresh();
-    }
-
-    public void AutoScale()
-    {
-        Control.Plot.AutoScale();
-        Control.Refresh();
+        return new PlotActions()
+        {
+            ZoomIn = delegate { },
+            ZoomOut = delegate { },
+            PanUp = delegate { },
+            PanDown = delegate { },
+            PanLeft = delegate { },
+            PanRight = delegate { },
+            DragPan = delegate { },
+            DragZoom = delegate { },
+            DragZoomRectangle = delegate { },
+            ZoomRectangleClear = delegate { },
+            ZoomRectangleApply = delegate { },
+            ToggleBenchmark = delegate { },
+            AutoScale = delegate { },
+        };
     }
 }

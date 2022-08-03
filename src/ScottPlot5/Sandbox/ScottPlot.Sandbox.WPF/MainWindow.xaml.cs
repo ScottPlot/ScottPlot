@@ -30,7 +30,7 @@ namespace WPFDemo
 
         private void WpfPlot_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            DebugPoint.Position = WpfPlot.Backend.GetMouseCoordinates();
+            DebugPoint.Position = WpfPlot.Interaction.GetMouseCoordinates();
             WpfPlot.Refresh();
         }
     }

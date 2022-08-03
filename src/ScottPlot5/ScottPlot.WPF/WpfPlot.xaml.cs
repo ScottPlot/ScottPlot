@@ -17,12 +17,17 @@ namespace ScottPlot.WPF
     {
         public Plot Plot { get; } = new();
 
-        public Backend Backend { get; set; }
+        public Interaction Interaction { get; private set; }
 
         public WpfPlot()
         {
             InitializeComponent();
-            Backend = new(this);
+            Interaction = new(this);
+        }
+
+        public void Replace(Interaction interaction)
+        {
+            Interaction = interaction;
         }
 
         public void Refresh()
@@ -39,13 +44,13 @@ namespace ScottPlot.WPF
         {
             Keyboard.Focus(this);
 
-            Backend.MouseDown(e.Pixel(this), e.ToButton());
+            Interaction.MouseDown(e.Pixel(this), e.ToButton());
 
             (sender as UIElement)?.CaptureMouse();
 
             if (e.ClickCount == 2)
             {
-                Backend.DoubleClick();
+                Interaction.DoubleClick();
             }
 
             base.OnMouseDown(e);
@@ -53,32 +58,32 @@ namespace ScottPlot.WPF
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            Backend.MouseUp(e.Pixel(this), e.ToButton());
+            Interaction.MouseUp(e.Pixel(this), e.ToButton());
             (sender as UIElement)?.ReleaseMouseCapture();
             base.OnMouseUp(e);
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.MouseMove(e.Pixel(this));
+            Interaction.OnMouseMove(e.Pixel(this));
             base.OnMouseMove(e);
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Backend.MouseWheelVertical(e.Pixel(this), e.Delta);
+            Interaction.MouseWheelVertical(e.Pixel(this), e.Delta);
             base.OnMouseWheel(e);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Backend.KeyDown(e.Key());
+            Interaction.KeyDown(e.Key());
             base.OnKeyDown(e);
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.KeyUp(e.Key());
+            Interaction.KeyUp(e.Key());
             base.OnKeyUp(e);
         }
     }

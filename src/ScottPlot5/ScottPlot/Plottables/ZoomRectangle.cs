@@ -37,6 +37,8 @@ public class ZoomRectangle : PlottableBase
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
 
+        surface.Canvas.ClipRect(dataRect.ToSKRect());
+
         using SKPaint paint = new()
         {
             IsAntialias = true
