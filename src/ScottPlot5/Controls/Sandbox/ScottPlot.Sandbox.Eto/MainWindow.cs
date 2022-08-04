@@ -26,7 +26,7 @@ namespace ScottPlot.Sandbox.Eto
 
         private void EtoPlot_MouseMove(object? sender, MouseEventArgs e)
         {
-            DebugPoint.Position = etoPlot.Backend.GetMouseCoordinates();
+            DebugPoint.Position = etoPlot.Interaction.GetMouseCoordinates();
             etoPlot.Refresh();
         }
     }

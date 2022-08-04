@@ -13,11 +13,11 @@ namespace ScottPlot.Eto
     {
         public Plot Plot { get; } = new();
 
-        public Backend Backend { get; set; }
+        public Interaction Interaction { get; private set; }
 
         public EtoPlot()
         {
-            Backend = new(this);
+            Interaction = new(this);
 
             this.MouseDown += OnMouseDown;
             this.MouseUp += OnMouseUp;
@@ -27,6 +27,11 @@ namespace ScottPlot.Eto
             this.KeyUp += OnKeyUp;
             this.MouseDoubleClick += OnDoubleClick;
             this.SizeChanged += OnSizeChanged;
+        }
+
+        public void Replace(Interaction interaction)
+        {
+            Interaction = interaction;
         }
 
         public void Refresh()
@@ -39,7 +44,6 @@ namespace ScottPlot.Eto
 
             Plot.Render(surface);
 
-            // TODO: can this sequence be improved to reduce copying?
             SKImage img = surface.Snapshot();
             SKPixmap pixels = img.ToRasterImage().PeekPixels();
             byte[] bytes = pixels.GetPixelSpan().ToArray();
@@ -58,37 +62,37 @@ namespace ScottPlot.Eto
         {
             Focus();
 
-            Backend.MouseDown(e.Pixel(), e.ToButton());
+            Interaction.MouseDown(e.Pixel(), e.ToButton());
         }
 
         private void OnMouseUp(object sender, MouseEventArgs e)
         {
-            Backend.MouseUp(e.Pixel(), e.ToButton());
+            Interaction.MouseUp(e.Pixel(), e.ToButton());
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Backend.MouseMove(e.Pixel());
+            Interaction.OnMouseMove(e.Pixel());
         }
 
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
-            Backend.MouseWheelVertical(e.Pixel(), e.Delta.Height);
+            Interaction.MouseWheelVertical(e.Pixel(), e.Delta.Height);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Backend.KeyDown(e.Key());
+            Interaction.KeyDown(e.Key());
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            Backend.KeyUp(e.Key());
+            Interaction.KeyUp(e.Key());
         }
 
         private void OnDoubleClick(object sender, MouseEventArgs e)
         {
-            Backend.DoubleClick();
+            Interaction.DoubleClick();
         }
 
         private void OnSizeChanged(object sender, EventArgs e)
