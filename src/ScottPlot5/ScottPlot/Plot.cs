@@ -283,5 +283,12 @@ public class Plot
         return scatter;
     }
 
+    public Plottables.Pie AddPie(IList<Plottables.PieSlice> slices)
+    {
+        Plottables.Pie pie = new(slices);
+        Add(pie);
+        return pie;
+    }
+
     #endregion
 }
