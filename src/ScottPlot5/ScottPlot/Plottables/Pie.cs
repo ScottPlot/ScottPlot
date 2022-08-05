@@ -41,7 +41,7 @@ namespace ScottPlot.Plottables
 
             double total = Slices.Sum(s => s.Value);
             var origin = new Pixel(XAxis.GetPixel(0, dataRect), YAxis.GetPixel(0, dataRect));
-            
+
             // TODO: Bring back PxPerUnit?
             double radius = Math.Min(Math.Abs(XAxis.GetPixel(1, dataRect) - origin.X), Math.Abs(YAxis.GetPixel(1, dataRect) - origin.Y));
             SKRect rect = new((float)(origin.X - radius), (float)(origin.Y - radius), (float)(origin.X + radius), (float)(origin.Y + radius));
