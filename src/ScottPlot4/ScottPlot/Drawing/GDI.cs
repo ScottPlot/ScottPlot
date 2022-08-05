@@ -361,5 +361,42 @@ namespace ScottPlot.Drawing
             System.Drawing.Color color = ColorTranslator.FromHtml(htmlColor);
             return (alpha == 1) ? color : System.Drawing.Color.FromArgb((int)(color.A * alpha), color);
         }
+
+        /// <summary>
+        /// Draw a string at a point on the graphics.
+        /// Alignment describes where the point is relative to the text.
+        /// </summary>
+        public static void DrawLabel(Graphics gfx, string text, float x, float y,
+            string fontName, float fontSize, bool bold, HorizontalAlignment h, VerticalAlignment v,
+            Color fontColor, Color fillColor)
+        {
+            SizeF size = MeasureString(gfx, text, fontName, fontSize, bold);
+
+            float xOffset = h switch
+            {
+                HorizontalAlignment.Left => size.Width / 2,
+                HorizontalAlignment.Center => 0,
+                HorizontalAlignment.Right => -size.Width / 2,
+                _ => throw new NotImplementedException(h.ToString()),
+            };
+
+            float yOffset = v switch
+            {
+                VerticalAlignment.Upper => size.Height / 2,
+                VerticalAlignment.Middle => 0,
+                VerticalAlignment.Lower => -size.Height / 2,
+                _ => throw new NotImplementedException(h.ToString()),
+            };
+
+            using var font = GDI.Font(fontName, fontSize, bold);
+            using var fillBrush = GDI.Brush(fillColor);
+            using var fontBrush = GDI.Brush(fontColor);
+            using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
+
+            gfx.TranslateTransform(x + xOffset, y + yOffset);
+            gfx.FillRectangle(fillBrush, -size.Width / 2, -size.Height / 2, size.Width, size.Height);
+            gfx.DrawString(text, font, fontBrush, 0, 0, sf);
+            gfx.ResetTransform();
+        }
     }
 }

@@ -219,5 +219,24 @@ namespace ScottPlotTests.Misc
             sigxy.StepDisplayRight = false;
             TestTools.SaveFig(plt, "step2");
         }
+
+        [Test]
+        public void Test_DrawString_Aligned()
+        {
+            using System.Drawing.Bitmap bmp = new(400, 300);
+            using Graphics gfx = Graphics.FromImage(bmp);
+            gfx.Clear(Color.Navy);
+
+            gfx.DrawLine(Pens.Gray, 150, 0, 150, 300);
+            gfx.DrawLine(Pens.Gray, 0, 150, 400, 150);
+            gfx.DrawEllipse(Pens.White, 145, 145, 10, 10);
+
+            GDI.DrawLabel(
+                gfx, "testing", 150, 150, InstalledFont.Sans(), 16, true,
+                HorizontalAlignment.Left, VerticalAlignment.Upper,
+                Color.Yellow, Color.Magenta);
+
+            TestTools.SaveBitmap(bmp);
+        }
     }
 }
