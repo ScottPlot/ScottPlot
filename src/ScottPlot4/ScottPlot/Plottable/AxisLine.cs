@@ -27,6 +27,10 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Color PositionLabelBackground { get; set; } = Color.Black;
 
+        public HorizontalAlignment PositionLabelAlignmentX { get; set; } = HorizontalAlignment.Center;
+
+        public VerticalAlignment PositionLabelAlignmentY { get; set; } = VerticalAlignment.Middle;
+
         /// <summary>
         /// If true the position label will be drawn on the right or top of the data area.
         /// </summary>
@@ -191,34 +195,53 @@ namespace ScottPlot.Plottable
                 if (Position > dims.YMax || Position < dims.YMin)
                     return;
 
-                float pixelY = dims.GetPixelY(Position);
-                string yLabel = PositionFormatter(Position);
-                SizeF yLabelSize = GDI.MeasureString(gfx, yLabel, PositionLabelFont);
-                float xPos = PositionLabelOppositeAxis
-                    ? dims.DataOffsetX + dims.DataWidth + axisOffset
-                    : dims.DataOffsetX - yLabelSize.Width - axisOffset;
-                float yPos = pixelY - yLabelSize.Height / 2;
-                RectangleF xLabelRect = new(xPos, yPos, yLabelSize.Width, yLabelSize.Height);
-                gfx.FillRectangle(fillBrush, xLabelRect);
-                var sf = GDI.StringFormat(HorizontalAlignment.Left, VerticalAlignment.Middle);
-                gfx.DrawString(yLabel, fnt, fontBrush, xPos, pixelY, sf);
+                if (PositionLabelOppositeAxis)
+                {
+                    GDI.DrawLabel(gfx,
+                        text: PositionFormatter(Position),
+                        x: dims.DataOffsetX + dims.DataWidth + axisOffset,
+                        y: dims.GetPixelY(Position),
+                        PositionLabelFont.Name, PositionLabelFont.Size, PositionLabelFont.Bold,
+                        HorizontalAlignment.Left, PositionLabelAlignmentY,
+                        PositionLabelFont.Color, PositionLabelBackground);
+                }
+                else
+                {
+                    GDI.DrawLabel(gfx,
+                        text: PositionFormatter(Position),
+                        x: dims.DataOffsetX - axisOffset,
+                        y: dims.GetPixelY(Position),
+                        PositionLabelFont.Name, PositionLabelFont.Size, PositionLabelFont.Bold,
+                        HorizontalAlignment.Right, PositionLabelAlignmentY,
+                        PositionLabelFont.Color, PositionLabelBackground);
+                }
+
             }
             else
             {
                 if (Position > dims.XMax || Position < dims.XMin)
                     return;
 
-                float pixelX = dims.GetPixelX(Position);
-                string xLabel = PositionFormatter(Position);
-                SizeF xLabelSize = GDI.MeasureString(gfx, xLabel, PositionLabelFont);
-                float xPos = pixelX - xLabelSize.Width / 2;
-                float yPos = PositionLabelOppositeAxis
-                    ? dims.DataOffsetY - xLabelSize.Height - axisOffset
-                    : dims.DataOffsetY + dims.DataHeight + axisOffset;
-                RectangleF xLabelRect = new(xPos, yPos, xLabelSize.Width, xLabelSize.Height);
-                gfx.FillRectangle(fillBrush, xLabelRect);
-                var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Upper);
-                gfx.DrawString(xLabel, fnt, fontBrush, pixelX, yPos, sf);
+                if (PositionLabelOppositeAxis)
+                {
+                    GDI.DrawLabel(gfx,
+                        text: PositionFormatter(Position),
+                        x: dims.GetPixelX(Position),
+                        y: dims.DataOffsetY - axisOffset,
+                        PositionLabelFont.Name, PositionLabelFont.Size, PositionLabelFont.Bold,
+                        PositionLabelAlignmentX, VerticalAlignment.Lower,
+                        PositionLabelFont.Color, PositionLabelBackground);
+                }
+                else
+                {
+                    GDI.DrawLabel(gfx,
+                        text: PositionFormatter(Position),
+                        x: dims.GetPixelX(Position),
+                        y: dims.DataOffsetY + dims.DataHeight + axisOffset,
+                        PositionLabelFont.Name, PositionLabelFont.Size, PositionLabelFont.Bold,
+                        PositionLabelAlignmentX, VerticalAlignment.Upper,
+                        PositionLabelFont.Color, PositionLabelBackground);
+                }
             }
         }
 
