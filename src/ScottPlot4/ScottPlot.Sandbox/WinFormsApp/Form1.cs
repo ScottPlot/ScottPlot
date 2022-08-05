@@ -1,72 +1,86 @@
 ﻿using ScottPlot;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        Random Rand = new(0);
-        double[] Xs;
-        double[] Ys;
-        ScottPlot.Plottable.MarkerPlot Marker;
-        double SnapDistancePx = 50;
+        ScottPlot.Plottable.VLine VLine1;
+        ScottPlot.Plottable.VLine VLine2;
+        ScottPlot.Plottable.HLine HLine1;
+        ScottPlot.Plottable.HLine HLine2;
 
         public Form1()
         {
             InitializeComponent();
-            (Xs, Ys) = DataGen.RandomWalk2D(Rand, 50);
-            formsPlot1.Plot.AddScatter(Xs, Ys);
-            Marker = formsPlot1.Plot.AddMarker(0, 0, MarkerShape.openCircle, 20, Color.Red);
-            formsPlot1.LeftClicked += FormsPlot1_LeftClicked;
-            formsPlot1.Plot.Title("Waiting for click...");
+
+            formsPlot1.Plot.AddSignal(DataGen.Sin(51), 1, Color.Black);
+            formsPlot1.Plot.AddSignal(DataGen.Cos(51), 1, Color.Gray);
+
+            VLine1 = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
+            VLine1.LineWidth = 2;
+            VLine1.PositionLabel = true;
+            VLine1.DragEnabled = true;
+            VLine1.PositionLabelBackground = VLine1.Color;
+            VLine1.PositionLabelFont.Size = 16;
+
+            VLine2 = formsPlot1.Plot.AddVerticalLine(24, Color.Red);
+            VLine2.LineWidth = 2;
+            VLine2.PositionLabel = true;
+            VLine2.DragEnabled = true;
+            VLine2.PositionLabelBackground = VLine2.Color;
+            VLine2.PositionLabelFont.Size = 16;
+
+            HLine1 = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
+            HLine1.DragEnabled = true;
+            HLine1.PositionLabel = true;
+            HLine1.PositionLabelBackground = HLine1.Color;
+
+            HLine2 = formsPlot1.Plot.AddHorizontalLine(.4, Color.Orange);
+            HLine2.DragEnabled = true;
+            HLine2.PositionLabel = true;
+            HLine2.PositionLabelBackground = HLine2.Color;
+
+            formsPlot1.PlottableDragged += FormsPlot1_PlottableDragged;
+
+            formsPlot1.Plot.Layout(right: 40);
+            FormsPlot1_PlottableDragged(null, null);
             formsPlot1.Refresh();
         }
 
-        private void FormsPlot1_LeftClicked(object sender, EventArgs e)
+        private void FormsPlot1_PlottableDragged(object sender, EventArgs e)
         {
-            (double mousePixelX, double mousePixelY) = formsPlot1.GetMousePixel();
-            (double mouseX, double mouseY) = formsPlot1.GetMouseCoordinates();
-
-            // determine the point in the scatter plot closest to the mouse
-            double closestDistance = double.PositiveInfinity;
-            int closestIndex = 0;
-            for (int i = 0; i < Xs.Length; i++)
+            if (VLine1.X > VLine2.X)
             {
-                (double x, double y) = formsPlot1.Plot.GetPixel(Xs[i], Ys[i]);
-                double dX = mousePixelX - x;
-                double dY = mousePixelY - y;
-                double distance = Math.Sqrt(dX * dX + dY * dY);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestIndex = i;
-                }
-            }
-
-            // take action based on whether the click engaged a point
-            if (closestDistance < SnapDistancePx)
-            {
-                double x = Xs[closestIndex];
-                double y = Ys[closestIndex];
-                formsPlot1.Plot.Title($"Clicked point [{closestIndex}] (X={x:0.00}, Y={y:0.00})");
-                Marker.IsVisible = true;
-                Marker.X = x;
-                Marker.Y = y;
+                VLine1.PositionLabelAlignmentX = ScottPlot.HorizontalAlignment.Left;
+                VLine2.PositionLabelAlignmentX = ScottPlot.HorizontalAlignment.Right;
             }
             else
             {
-                formsPlot1.Plot.Title($"Clicked empty space (X={mouseX:0.00}, Y={mouseY:0.00})");
-                Marker.IsVisible = false;
+                VLine1.PositionLabelAlignmentX = ScottPlot.HorizontalAlignment.Right;
+                VLine2.PositionLabelAlignmentX = ScottPlot.HorizontalAlignment.Left;
             }
 
+            if (HLine1.Y > HLine2.Y)
+            {
+                HLine1.PositionLabelAlignmentY = ScottPlot.VerticalAlignment.Lower;
+                HLine2.PositionLabelAlignmentY = ScottPlot.VerticalAlignment.Upper;
+            }
+            else
+            {
+                HLine1.PositionLabelAlignmentY = ScottPlot.VerticalAlignment.Upper;
+                HLine2.PositionLabelAlignmentY = ScottPlot.VerticalAlignment.Lower;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            VLine1.PositionLabelOppositeAxis = checkBox1.Checked;
+            VLine2.PositionLabelOppositeAxis = checkBox1.Checked;
+            HLine1.PositionLabelOppositeAxis = checkBox1.Checked;
+            HLine2.PositionLabelOppositeAxis = checkBox1.Checked;
             formsPlot1.Refresh();
         }
     }
