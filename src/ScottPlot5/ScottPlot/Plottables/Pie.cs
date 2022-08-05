@@ -10,7 +10,7 @@ namespace ScottPlot.Plottables
 {
     public class PieSlice
     {
-        public string? Label { get; set; }
+        // TODO: Label?
         public double Value { get; set; }
         public Fill Fill { get; set; }
     }
