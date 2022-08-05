@@ -43,6 +43,8 @@ namespace ScottPlot.Avalonia
 
         public override void Render(DrawingContext context)
         {
+            base.Render(context);
+
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
 
             using var surface = SKSurface.Create(imageInfo);

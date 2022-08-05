@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Eto
 {
-    public class EtoPlot : ImageView, IPlotControl
+    public class EtoPlot : Drawable, IPlotControl
     {
         public Plot Plot { get; } = new();
 
@@ -36,6 +36,13 @@ namespace ScottPlot.Eto
 
         public void Refresh()
         {
+            Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs args)
+        {
+            base.OnPaint(args);
+
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
 
             using var surface = SKSurface.Create(imageInfo);
@@ -55,7 +62,7 @@ namespace ScottPlot.Eto
                 Marshal.Copy(bytes, 0, data.Data, bytes.Length);
             }
 
-            this.Image = bmp;
+            args.Graphics.DrawImage(bmp, 0, 0);
         }
 
         private void OnMouseDown(object sender, MouseEventArgs e)
