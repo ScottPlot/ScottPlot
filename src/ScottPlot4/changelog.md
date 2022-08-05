@@ -8,6 +8,7 @@ _not yet published on NuGet..._
 * Signal Plot: Improve support for plots with a single point (#1951, #1949) _Thanks @bclehmann and @Fruchtzwerg94_
 * Draggable Marker Plots: Improved drag behavior when drag limits are in use (#1970) _Thanks @xmln17_
 * Signal Plot: Added support for plotting `byte` arrays (#1945)
+* Axis Line: Added properties to customize alignment of position labels (#1972) _Thanks @hamhub7_
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
