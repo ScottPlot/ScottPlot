@@ -41,6 +41,8 @@ namespace ScottPlot.Eto
 
         protected override void OnPaint(PaintEventArgs args)
         {
+            base.OnPaint(args);
+
             SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
 
             using var surface = SKSurface.Create(imageInfo);
