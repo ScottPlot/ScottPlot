@@ -30,6 +30,27 @@ public struct Color
         byte blue = (byte)(argb >> 0);
         return new Color(red, green, blue, alpha);
     }
+    
+    public static Color FromHex(string hex)
+    {
+        if (hex[0] == '#')
+        {
+            return FromHex(hex.Substring(1));
+        }
+
+        if (hex.Length == 6)
+        {
+            hex += "FF";
+        }
+
+        if (!uint.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out uint rgba))
+        {
+            return new Color(0, 0, 0);
+        }
+
+        uint argb = ((rgba & 0xFF) << 24) | (rgba >> 8);
+        return FromARGB(argb);
+    }
 
     public string ToStringRGB()
     {
