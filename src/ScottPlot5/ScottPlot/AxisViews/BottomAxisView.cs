@@ -53,7 +53,7 @@ public class BottomAxisView : IAxisView
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
-        SKPaint paint = new()
+        using SKPaint paint = new()
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,
@@ -72,7 +72,7 @@ public class BottomAxisView : IAxisView
 
     private void DrawTicks(SKSurface surface, PixelRect dataRect)
     {
-        SKPaint paint = new()
+        using SKPaint paint = new()
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,

@@ -71,7 +71,7 @@ public class LeftAxisView : IAxisView
 
     private void DrawTicks(SKSurface surface, PixelRect dataRect)
     {
-        SKPaint paint = new()
+        using SKPaint paint = new()
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Right,
