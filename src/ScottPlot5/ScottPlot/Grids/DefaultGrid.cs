@@ -41,7 +41,7 @@ public class DefaultGrid : IGrid
             path.MoveTo(dataRect.Left, y);
             path.LineTo(dataRect.Right, y);
         }
-        
+
         surface.Canvas.DrawPath(path, paint);
     }
 
