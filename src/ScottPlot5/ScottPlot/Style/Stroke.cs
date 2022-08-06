@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.Style;
 
-namespace ScottPlot.Style
+public struct Stroke
 {
-    public struct Stroke
-    {
-        public Color Color { get; set; } = NamedColors.WebColors.Black;
-        public double Width { get; set; } = 1;
+    public Color Color { get; set; } = Colors.Black;
 
-        public Stroke() { }
+    public float Width { get; set; } = 1;
+
+    public Stroke()
+    {
+    }
+
+    public Stroke(Color color, float width)
+    {
+        Color = color;
+        Width = width;
     }
 }
