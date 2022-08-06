@@ -635,6 +635,26 @@ namespace ScottPlot
             return plottable;
         }
 
+        public HLineWithSnap AddHorizontalLineWithSnap(double y, double[] ys, Color? color = null, float width = 1,
+            LineStyle style = LineStyle.Solid, string label = null)
+        {
+            var position = y;
+            if (ys.Length != 0)
+                position = GetAxisLineWithSnapSnappedPosition(position, ys);
+
+            HLineWithSnap plottable = new HLineWithSnap()
+            {
+                Y = position,
+                Ys = ys,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = width,
+                LineStyle = style,
+                Label = label,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
@@ -1265,6 +1285,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a vertical axis line with snap at a specific Y position
+        /// </summary>
+        public VLineWithSnap AddVerticalLineWithSnap(double x, double[] xs, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+        {
+            var position = x;
+            if (xs.Length != 0)
+                position = GetAxisLineWithSnapSnappedPosition(position, xs);
+
+            VLineWithSnap plottable = new VLineWithSnap()
+            {
+                X = position,
+                Xs = xs,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = width,
+                LineStyle = style,
+                Label = label
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
         public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
@@ -1279,5 +1321,25 @@ namespace ScottPlot
             Add(plottable);
             return plottable;
         }
+
+        #region Private Methods
+
+        private double GetAxisLineWithSnapSnappedPosition(double positionToSnapTo, double[] snapPositions)
+        {
+            var pointCount = snapPositions.Length;
+            var distancessq = new double[pointCount];
+            var currentIndex = 0;
+
+            for (var i = 0; i < pointCount; i++)
+                distancessq[i] = Math.Abs(snapPositions[i] - positionToSnapTo);
+
+            for (var i = 0; i < pointCount; i++)
+                if (distancessq[i] < distancessq[currentIndex])
+                    currentIndex = i;
+
+            return snapPositions[currentIndex];
+        }
+
+        #endregion
     }
 }

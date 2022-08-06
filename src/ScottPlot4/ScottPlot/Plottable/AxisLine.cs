@@ -59,7 +59,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Indicates whether the line is horizontal (position in Y units) or vertical (position in X units)
         /// </summary>
-        private readonly bool IsHorizontal;
+        protected readonly bool IsHorizontal;
 
         /// <summary>
         /// If true, AxisAuto() will ignore the position of this line when determining axis limits
@@ -103,6 +103,13 @@ namespace ScottPlot.Plottable
         /// This event is invoked after the line is dragged
         /// </summary>
         public event EventHandler Dragged = delegate { };
+
+        //The event-invoking method that derived classes can override.
+        protected void OnDragged()
+        {
+            // Safely raise the event for all subscribers
+            Dragged(this, EventArgs.Empty);
+        }
 
         /// <summary>
         /// The lower bound of the axis line.
@@ -251,7 +258,7 @@ namespace ScottPlot.Plottable
         /// <param name="coordinateX">new X position</param>
         /// <param name="coordinateY">new Y position</param>
         /// <param name="fixedSize">This argument is ignored</param>
-        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
+        public virtual void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
                 return;
