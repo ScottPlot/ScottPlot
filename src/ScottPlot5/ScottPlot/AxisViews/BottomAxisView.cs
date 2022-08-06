@@ -46,28 +46,15 @@ public class BottomAxisView : IAxisView
     {
         SKRect figureRect = surface.Canvas.LocalClipBounds;
         PixelRect rect = new(dataRect.Left, dataRect.Right, dataRect.Bottom, figureRect.Bottom);
-        //Draw.DebugRect(surface, rect);
         DrawLabel(surface, rect);
         DrawTicks(surface, rect);
     }
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            TextAlign = SKTextAlign.Center,
-            TextSize = 16,
-            FakeBoldText = true,
-        };
-
-        PixelRect figRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
-
-        surface.Canvas.DrawText(
-            text: Label.Text,
-            x: dataRect.HorizontalCenter,
-            y: figRect.Bottom - (paint.FontSpacing - paint.TextSize),
-            paint: paint);
+        using SKPaint paint = Label.MakePaint();
+        Pixel pt = new(dataRect.HorizontalCenter, dataRect.Bottom + paint.FontSpacing);
+        Label.Draw(surface, pt, paint);
     }
 
     private void DrawTicks(SKSurface surface, PixelRect dataRect)

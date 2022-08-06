@@ -10,7 +10,14 @@ public class LeftAxisView : IAxisView
     public Edge Edge => Edge.Left;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
 
-    public Label Label { get; private set; } = new() { Text = "Vertical Axis", Bold = true, FontSize = 16 };
+    public Label Label { get; private set; } = new()
+    {
+        Text = "Vertical Axis",
+        Bold = true,
+        FontSize = 16,
+        Rotation = -90
+    };
+
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
 
     /// <summary>
@@ -38,7 +45,7 @@ public class LeftAxisView : IAxisView
         float labelWidth = Label.FontSize;
         float largestTickWidth = 0;
 
-        using SKPaint paint = Label.GetPaint();
+        using SKPaint paint = Label.MakePaint();
 
         foreach (Tick tick in GetVisibleTicks())
         {
@@ -51,22 +58,15 @@ public class LeftAxisView : IAxisView
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
-        SKRect figureRect = surface.Canvas.LocalClipBounds;
         PixelRect rect = new(0, dataRect.Left, dataRect.Bottom, dataRect.Top);
-        //Draw.DebugRect(surface, rect);
         DrawLabel(surface, rect);
         DrawTicks(surface, rect);
     }
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
-        using SKPaint paint = Label.GetPaint();
-
-        surface.Canvas.Save();
-        surface.Canvas.Translate(dataRect.LeftCenter.ToSKPoint());
-        surface.Canvas.RotateDegrees(-90);
-        surface.Canvas.DrawText(Label.Text, 0, Label.FontSize, paint);
-        surface.Canvas.Restore();
+        using var paint = Label.MakePaint();
+        Label.Draw(surface, dataRect.LeftCenter, paint);
     }
 
     private void DrawTicks(SKSurface surface, PixelRect dataRect)
