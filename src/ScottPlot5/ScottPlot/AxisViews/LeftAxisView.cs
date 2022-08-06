@@ -32,7 +32,7 @@ public class LeftAxisView : IAxisView
 
     public void RegenerateTicks(PixelRect dataRect)
     {
-        Ticks = TickGenerator.GenerateTicks(YAxis.Bottom, YAxis.Top, dataRect.Height);
+        Ticks = TickGenerator.GenerateTicks(YAxis.Range, dataRect.Height);
     }
 
     public Tick[] GetVisibleTicks()

@@ -33,4 +33,9 @@ public interface IAxis
     /// Get the coordinate of a pixel position given the location and size of the data area
     /// </summary>
     double GetCoordinate(float pixel, PixelRect dataArea);
+
+    /// <summary>
+    /// Visible range
+    /// </summary>
+    CoordinateRange Range { get; }
 }

@@ -25,7 +25,7 @@ public class BottomAxisView : IAxisView
 
     public void RegenerateTicks(PixelRect dataRect)
     {
-        Ticks = TickGenerator.GenerateTicks(XAxis.Left, XAxis.Right, dataRect.Width);
+        Ticks = TickGenerator.GenerateTicks(XAxis.Range, dataRect.Width);
     }
 
     public Tick[] GetVisibleTicks()
