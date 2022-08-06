@@ -114,6 +114,11 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Max { get; set; } = double.PositiveInfinity;
 
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<Coordinate, Coordinate> DragSnap = DragSnapDisabled;
+
         public AxisLine(bool isHorizontal)
         {
             IsHorizontal = isHorizontal;
@@ -245,6 +250,16 @@ namespace ScottPlot.Plottable
             }
         }
 
+        public static Coordinate DragSnapToNearestInteger(Coordinate position)
+        {
+            return new Coordinate((int)position.X, (int)position.Y);
+        }
+
+        public static Coordinate DragSnapDisabled(Coordinate position)
+        {
+            return new Coordinate((int)position.X, (int)position.Y);
+        }
+
         /// <summary>
         /// Move the line to a new coordinate in plot space.
         /// </summary>
@@ -255,6 +270,10 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            Coordinate snapped = DragSnap.Invoke(new Coordinate(coordinateX, coordinateY));
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (IsHorizontal)
             {
