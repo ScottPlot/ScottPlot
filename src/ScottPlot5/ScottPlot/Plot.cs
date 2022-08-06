@@ -247,6 +247,7 @@ public class Plot
     {
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
         SKSurface surface = SKSurface.Create(info);
+        Render(surface);
         SKImage snap = surface.Snapshot();
         SKData data = snap.Encode(format, quality);
         byte[] bytes = data.ToArray();
