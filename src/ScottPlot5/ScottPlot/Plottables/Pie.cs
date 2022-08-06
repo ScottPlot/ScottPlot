@@ -13,6 +13,14 @@ namespace ScottPlot.Plottables
         // TODO: Label?
         public double Value { get; set; }
         public Fill Fill { get; set; }
+
+        public PieSlice() { }
+
+        public PieSlice(double value, Color color)
+        {
+            Value = value;
+            Fill = new Fill(color);
+        }
     }
 
     public class Pie : PlottableBase
