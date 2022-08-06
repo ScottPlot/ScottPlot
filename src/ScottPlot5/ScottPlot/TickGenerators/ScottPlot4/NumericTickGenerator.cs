@@ -13,16 +13,16 @@ internal class NumericTickGenerator : ITickGenerator
 
     public Tick[] GenerateTicks(double min, double max, float edgeSize)
     {
-        return GenerateTicks(min, max, edgeSize, 12, 12);
+        PixelSize largestLabel = new(12, 12);
+        return GenerateTicks(min, max, edgeSize, largestLabel);
     }
 
-
-    public Tick[] GenerateTicks(double min, double max, float edgeSize, float labelWidthEstimate, float labelHeightEstimate, int depth = 0)
+    private Tick[] GenerateTicks(double min, double max, float edgeSize, PixelSize predictedLabelSize, int depth = 0)
     {
         double span = max - min;
         double unitsPerPx = span / edgeSize;
 
-        float labelSize = IsVertical ? labelHeightEstimate : labelWidthEstimate;
+        float labelSize = IsVertical ? predictedLabelSize.Height : predictedLabelSize.Width;
         float tickDensity = 1.0f;
         int targetTickCount = (int)(edgeSize / labelSize * tickDensity);
         double tickSpacing = GetIdealTickSpacing(min, max, targetTickCount);
@@ -47,31 +47,38 @@ internal class NumericTickGenerator : ITickGenerator
 
         string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
 
-        (float Width, float Height) maxTickBounds = new();
-        using var paint = new SkiaSharp.SKPaint();
-        for (int i = 0; i < majorTickLabels.Length; i++)
-        {
-            PixelSize tickSize = Drawing.MeasureString(majorTickLabels[i], paint);
-            maxTickBounds.Width = Math.Max(maxTickBounds.Width, tickSize.Width);
-            maxTickBounds.Height = Math.Max(maxTickBounds.Height, tickSize.Height);
-        }
+        using SkiaSharp.SKPaint paint = new();
+        PixelRect largestTickLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
+        bool biggestLabelIsLargerThanPredicted = largestTickLabel.Width > predictedLabelSize.Width || largestTickLabel.Height > predictedLabelSize.Height;
 
-        if (maxTickBounds.Width > labelWidthEstimate || maxTickBounds.Height > labelHeightEstimate)
+        if (biggestLabelIsLargerThanPredicted)
         {
-            return GenerateTicks(min, max, edgeSize, Math.Max(labelWidthEstimate, maxTickBounds.Width), Math.Max(labelHeightEstimate, maxTickBounds.Height), depth + 1);
-        }
+            int newDepth = depth + 1;
+            if (newDepth > 3)
+                System.Diagnostics.Debug.WriteLine($"Warning: Tick recusion depth = {newDepth}");
 
-        Tick[] majorTicks = majorTickPositions
-            .Select((position, i) => Tick.Major(position, majorTickLabels[i]))
+            PixelSize newPredictedLabelSize = new(
+                width: Math.Max(predictedLabelSize.Width, largestTickLabel.Width),
+                height: Math.Max(predictedLabelSize.Height, largestTickLabel.Height));
+
+            return GenerateTicks(min, max, edgeSize, newPredictedLabelSize, newDepth);
+        }
+        else
+        {
+            return GenerateFinalTicks(majorTickPositions, majorTickLabels, min, max);
+        }
+    }
+
+    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, double min, double max, int minorTicksPerMajorTick = 5)
+    {
+        Tick[] majorTicks = positions
+            .Select((position, i) => Tick.Major(position, labels[i]))
             .ToArray();
 
-        int minorTicksPerMajorTick = 5;
-        double[] minorTickPositions = MinorFromMajor(majorTickPositions, minorTicksPerMajorTick, min, max);
-        Tick[] minorTicks = minorTickPositions
+        Tick[] minorTicks = MinorFromMajor(positions, minorTicksPerMajorTick, min, max)
             .Select(position => Tick.Minor(position))
             .ToArray();
 
-        System.Diagnostics.Debug.WriteLine("Depth {0}", depth);
         return majorTicks.Concat(minorTicks).ToArray();
     }
 
