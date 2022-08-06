@@ -51,12 +51,9 @@ internal class NumericTickGenerator : ITickGenerator
         using var paint = new SkiaSharp.SKPaint();
         for (int i = 0; i < majorTickLabels.Length; i++)
         {
-            SkiaSharp.SKRect tickBounds = new();
-            paint.MeasureText(majorTickLabels[i], ref tickBounds);
-
-
-            maxTickBounds.Width = Math.Max(maxTickBounds.Width, tickBounds.Width);
-            maxTickBounds.Height = Math.Max(maxTickBounds.Height, tickBounds.Height);
+            PixelSize tickSize = Drawing.MeasureString(majorTickLabels[i], paint);
+            maxTickBounds.Width = Math.Max(maxTickBounds.Width, tickSize.Width);
+            maxTickBounds.Height = Math.Max(maxTickBounds.Height, tickSize.Height);
         }
 
         if (maxTickBounds.Width > labelWidthEstimate || maxTickBounds.Height > labelHeightEstimate)
