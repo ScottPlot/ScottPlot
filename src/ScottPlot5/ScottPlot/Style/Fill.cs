@@ -12,6 +12,13 @@ namespace ScottPlot.Style
         public Color HatchColor { get; set; } = Colors.Transparent;
         public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
 
-        public Fill() { }
+        public Fill()
+        {
+        }
+
+        public Fill(Color color)
+        {
+            Color = color;
+        }
     }
 }
