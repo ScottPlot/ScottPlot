@@ -8,6 +8,8 @@ public class LinearXAxis : IXAxis
     public bool HasBeenSet { get; set; } = false;
     public bool IsHorizontal => true;
 
+    public CoordinateRange Range => new(Left, Right);
+
     public bool Contains(double position)
     {
         return position >= Left && position <= Right;

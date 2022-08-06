@@ -8,6 +8,8 @@ public class LinearYAxis : IYAxis
     public bool HasBeenSet { get; set; } = false;
     public bool IsHorizontal => false;
 
+    public CoordinateRange Range => new(Bottom, Top);
+
     public bool Contains(double position)
     {
         return position >= Bottom && position <= Top;
