@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>
-public class CoordinateRange
+public struct CoordinateRange
 {
     public readonly double Min;
     public readonly double Max;
