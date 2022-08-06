@@ -44,4 +44,31 @@ public static class Drawing
         float height = paint.TextSize;
         return new PixelSize(width, height);
     }
+
+    /// <summary>
+    /// Draw lines between start and end pixel positions
+    /// </summary>
+    public static void DrawLines(SKSurface surface, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true)
+    {
+        if (starts.Length != ends.Length)
+            throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have same length");
+
+        using SKPaint paint = new()
+        {
+            Color = color.ToSKColor(),
+            IsStroke = true,
+            IsAntialias = antiAlias,
+            StrokeWidth = width,
+        };
+
+        using SKPath path = new();
+
+        for (int i = 0; i < starts.Length; i++)
+        {
+            path.MoveTo(starts[i].X, starts[i].Y);
+            path.LineTo(ends[i].X, ends[i].Y);
+        }
+
+        surface.Canvas.DrawPath(path, paint);
+    }
 }
