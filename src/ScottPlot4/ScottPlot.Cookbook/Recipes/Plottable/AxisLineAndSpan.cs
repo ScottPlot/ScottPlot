@@ -107,6 +107,40 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class DraggableAxisLineWithSnap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLineWithSnap";
+        public string Title => "Draggable Axis Lines With Snap";
+        public string Description =>
+            "In GUI environments, axis lines with snap can be draggable and moved with the mouse. " +
+            "Snap positions define the points on the axis the line will snap to. " +
+            "Drag limits define the boundaries the lines can be dragged.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // add axis lines and configure their drag settings
+            var yPositions = DataGen.Consecutive(11, 0.2D, -1D);
+            var hLine = plt.AddHorizontalLineWithSnap(0.8D, yPositions);
+            hLine.DragEnabled = true;
+            hLine.DragLimitMin = -1;
+            hLine.DragLimitMax = 1;
+
+            var xPositions = DataGen.Consecutive(11, 5D);
+            var vLine = plt.AddVerticalLineWithSnap(25, xPositions);
+            vLine.DragEnabled = true;
+            vLine.DragLimitMin = 0;
+            vLine.DragLimitMax = 50;
+
+            // you can access the position of an axis line at any time
+            string message = $"Vertical line is at X={vLine.X}";
+        }
+    }
+
     public class AxisLineWithPositionLabels : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
