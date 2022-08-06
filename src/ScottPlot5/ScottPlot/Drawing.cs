@@ -18,7 +18,7 @@ public static class Drawing
         return new PixelSize(width, height);
     }
 
-    public static PixelRect MeasureLargestString(string[] strings, SkiaSharp.SKPaint paint)
+    public static PixelSize MeasureLargestString(string[] strings, SKPaint paint)
     {
         float maxWidth = 0;
         float maxHeight = 0;
@@ -30,7 +30,7 @@ public static class Drawing
             maxHeight = Math.Max(maxHeight, tickSize.Height);
         }
 
-        return new PixelRect(maxWidth, maxHeight);
+        return new PixelSize(maxWidth, maxHeight);
     }
 
     public static void DrawLines(SKSurface surface, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true)

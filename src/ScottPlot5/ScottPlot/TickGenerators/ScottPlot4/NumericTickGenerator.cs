@@ -17,14 +17,37 @@ internal class NumericTickGenerator : ITickGenerator
         return GenerateTicks(min, max, edgeSize, largestLabel);
     }
 
-    private Tick[] GenerateTicks(double min, double max, float edgeSize, PixelSize predictedLabelSize, int depth = 0)
+    private Tick[] GenerateTicks(double min, double max, float edgeSize, PixelSize predictedLabel, int depth = 0)
+    {
+        if (depth > 3)
+            System.Diagnostics.Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
+
+        // generate ticks and labels based on predicted maximum label size
+        float maxPredictedSize = IsVertical ? predictedLabel.Height : predictedLabel.Width;
+        double[] majorTickPositions = GenerateTickPositions(min, max, edgeSize, maxPredictedSize);
+        string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
+
+        // determine if the actual tick labels are larger than predicted (suggesting density is too high and overlapping may occur)
+        using SkiaSharp.SKPaint paint = new();
+        PixelSize measuredLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
+        PixelSize largestLabel = new(
+            width: Math.Max(predictedLabel.Width, measuredLabel.Width),
+            height: Math.Max(predictedLabel.Height, measuredLabel.Height));
+        bool tickExceedsPredictedSize = largestLabel.Area > predictedLabel.Area;
+
+        // recursively recalculate tick density if necessary
+        return tickExceedsPredictedSize
+            ? GenerateTicks(min, max, edgeSize, largestLabel, depth + 1)
+            : GenerateFinalTicks(majorTickPositions, majorTickLabels, min, max);
+    }
+
+    private static double[] GenerateTickPositions(double min, double max, float edgeSize, float maxPredictedSize)
     {
         double span = max - min;
         double unitsPerPx = span / edgeSize;
 
-        float labelSize = IsVertical ? predictedLabelSize.Height : predictedLabelSize.Width;
         float tickDensity = 1.0f;
-        int targetTickCount = (int)(edgeSize / labelSize * tickDensity);
+        int targetTickCount = (int)(edgeSize / maxPredictedSize * tickDensity);
         double tickSpacing = GetIdealTickSpacing(min, max, targetTickCount);
 
         double firstTickOffset = min % tickSpacing;
@@ -45,28 +68,7 @@ internal class NumericTickGenerator : ITickGenerator
             majorTickPositions = new double[] { firstTick, nextTick };
         }
 
-        string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
-
-        using SkiaSharp.SKPaint paint = new();
-        PixelRect largestTickLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
-        bool biggestLabelIsLargerThanPredicted = largestTickLabel.Width > predictedLabelSize.Width || largestTickLabel.Height > predictedLabelSize.Height;
-
-        if (biggestLabelIsLargerThanPredicted)
-        {
-            int newDepth = depth + 1;
-            if (newDepth > 3)
-                System.Diagnostics.Debug.WriteLine($"Warning: Tick recusion depth = {newDepth}");
-
-            PixelSize newPredictedLabelSize = new(
-                width: Math.Max(predictedLabelSize.Width, largestTickLabel.Width),
-                height: Math.Max(predictedLabelSize.Height, largestTickLabel.Height));
-
-            return GenerateTicks(min, max, edgeSize, newPredictedLabelSize, newDepth);
-        }
-        else
-        {
-            return GenerateFinalTicks(majorTickPositions, majorTickLabels, min, max);
-        }
+        return majorTickPositions;
     }
 
     private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, double min, double max, int minorTicksPerMajorTick = 5)
