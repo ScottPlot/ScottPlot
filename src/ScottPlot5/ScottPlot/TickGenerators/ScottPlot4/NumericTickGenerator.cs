@@ -11,58 +11,57 @@ internal class NumericTickGenerator : ITickGenerator
         IsVertical = isVertical;
     }
 
-    public Tick[] GenerateTicks(double min, double max, float edgeSize)
+    public Tick[] GenerateTicks(CoordinateRange range, PixelLength size)
     {
         PixelSize largestLabel = new(12, 12);
-        return GenerateTicks(min, max, edgeSize, largestLabel);
+        return GenerateTicks(range, size, largestLabel);
     }
 
-    private Tick[] GenerateTicks(double min, double max, float edgeSize, PixelSize predictedLabel, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, PixelLength size, PixelSize predictedTickSize, int depth = 0)
     {
         if (depth > 3)
             System.Diagnostics.Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
 
         // generate ticks and labels based on predicted maximum label size
-        float maxPredictedSize = IsVertical ? predictedLabel.Height : predictedLabel.Width;
-        double[] majorTickPositions = GenerateTickPositions(min, max, edgeSize, maxPredictedSize);
+        float maxPredictedSize = IsVertical ? predictedTickSize.Height : predictedTickSize.Width;
+        double[] majorTickPositions = GenerateTickPositions(range, size, maxPredictedSize);
         string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
 
         // determine if the actual tick labels are larger than predicted (suggesting density is too high and overlapping may occur)
         using SkiaSharp.SKPaint paint = new();
         PixelSize measuredLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
         PixelSize largestLabel = new(
-            width: Math.Max(predictedLabel.Width, measuredLabel.Width),
-            height: Math.Max(predictedLabel.Height, measuredLabel.Height));
-        bool tickExceedsPredictedSize = largestLabel.Area > predictedLabel.Area;
+            width: Math.Max(predictedTickSize.Width, measuredLabel.Width),
+            height: Math.Max(predictedTickSize.Height, measuredLabel.Height));
+        bool tickExceedsPredictedSize = largestLabel.Area > predictedTickSize.Area;
 
         // recursively recalculate tick density if necessary
         return tickExceedsPredictedSize
-            ? GenerateTicks(min, max, edgeSize, largestLabel, depth + 1)
-            : GenerateFinalTicks(majorTickPositions, majorTickLabels, min, max);
+            ? GenerateTicks(range, size, largestLabel, depth + 1)
+            : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
     }
 
-    private static double[] GenerateTickPositions(double min, double max, float edgeSize, float maxPredictedSize)
+    private static double[] GenerateTickPositions(CoordinateRange range, PixelLength size, float predictedTickSize)
     {
-        double span = max - min;
-        double unitsPerPx = span / edgeSize;
+        double unitsPerPx = range.Span / size.Length;
 
         float tickDensity = 1.0f;
-        int targetTickCount = (int)(edgeSize / maxPredictedSize * tickDensity);
-        double tickSpacing = GetIdealTickSpacing(min, max, targetTickCount);
+        int targetTickCount = (int)(size.Length / predictedTickSize * tickDensity);
+        double tickSpacing = GetIdealTickSpacing(range, targetTickCount);
 
-        double firstTickOffset = min % tickSpacing;
-        int tickCount = (int)(span / tickSpacing) + 2;
+        double firstTickOffset = range.Min % tickSpacing;
+        int tickCount = (int)(range.Span / tickSpacing) + 2;
         tickCount = Math.Min(1000, tickCount);
         tickCount = Math.Max(1, tickCount);
 
         double[] majorTickPositions = Enumerable.Range(0, tickCount)
-            .Select(x => min - firstTickOffset + tickSpacing * x)
-            .Where(x => min <= x && x <= max)
+            .Select(x => range.Min - firstTickOffset + tickSpacing * x)
+            .Where(x => range.Contains(x))
             .ToArray();
 
         if (majorTickPositions.Length < 2)
         {
-            double tickBelow = min - firstTickOffset;
+            double tickBelow = range.Min - firstTickOffset;
             double firstTick = majorTickPositions.Length > 0 ? majorTickPositions[0] : tickBelow;
             double nextTick = tickBelow + tickSpacing;
             majorTickPositions = new double[] { firstTick, nextTick };
@@ -71,24 +70,23 @@ internal class NumericTickGenerator : ITickGenerator
         return majorTickPositions;
     }
 
-    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, double min, double max, int minorTicksPerMajorTick = 5)
+    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange range, int minorTicksPerMajorTick = 5)
     {
         Tick[] majorTicks = positions
             .Select((position, i) => Tick.Major(position, labels[i]))
             .ToArray();
 
-        Tick[] minorTicks = MinorFromMajor(positions, minorTicksPerMajorTick, min, max)
+        Tick[] minorTicks = MinorFromMajor(positions, minorTicksPerMajorTick, range)
             .Select(position => Tick.Minor(position))
             .ToArray();
 
         return majorTicks.Concat(minorTicks).ToArray();
     }
 
-    private static double GetIdealTickSpacing(double low, double high, int maxTickCount)
+    private static double GetIdealTickSpacing(CoordinateRange range, int maxTickCount)
     {
         int radix = 10;
-        double range = high - low;
-        int exponent = (int)Math.Log(range, radix);
+        int exponent = (int)Math.Log(range.Span, radix);
         double initialSpace = Math.Pow(radix, exponent);
         List<double> tickSpacings = new() { initialSpace, initialSpace, initialSpace };
 
@@ -105,13 +103,13 @@ internal class NumericTickGenerator : ITickGenerator
         while (tickCount < maxTickCount && tickSpacings.Count < 1000)
         {
             tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
-            tickCount = (int)(range / tickSpacings.Last());
+            tickCount = (int)(range.Span / tickSpacings.Last());
         }
 
         return tickSpacings[tickSpacings.Count - 3];
     }
 
-    private static double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)
+    private static double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, CoordinateRange range)
     {
         if (majorTicks == null || majorTicks.Length < 2)
             return new double[] { };
@@ -131,7 +129,7 @@ internal class NumericTickGenerator : ITickGenerator
             for (int i = 1; i < minorTicksPerMajorTick; i++)
             {
                 double minorTickPosition = majorTickPosition + minorTickSpacing * i;
-                if (minorTickPosition > lowerLimit && minorTickPosition < upperLimit)
+                if (range.Contains(minorTickPosition))
                     minorTicks.Add(minorTickPosition);
             }
         }
