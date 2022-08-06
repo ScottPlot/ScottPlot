@@ -13,13 +13,16 @@ internal class NumericTickGenerator : ITickGenerator
 
     public Tick[] GenerateTicks(double min, double max, float edgeSize)
     {
-        float labelWidth = 30;// TODO: real string measurement
-        float labelHeight = 12;// TODO: real string measurement
+        return GenerateTicks(min, max, edgeSize, 12, 12);
+    }
 
+
+    public Tick[] GenerateTicks(double min, double max, float edgeSize, float labelWidthEstimate, float labelHeightEstimate, int depth = 0)
+    {
         double span = max - min;
         double unitsPerPx = span / edgeSize;
 
-        float labelSize = IsVertical ? labelHeight : labelWidth;
+        float labelSize = IsVertical ? labelHeightEstimate : labelWidthEstimate;
         float tickDensity = 1.0f;
         int targetTickCount = (int)(edgeSize / labelSize * tickDensity);
         double tickSpacing = GetIdealTickSpacing(min, max, targetTickCount);
@@ -42,8 +45,27 @@ internal class NumericTickGenerator : ITickGenerator
             majorTickPositions = new double[] { firstTick, nextTick };
         }
 
+        string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
+
+        (float Width, float Height) maxTickBounds = new();
+        using var paint = new SkiaSharp.SKPaint();
+        for (int i = 0; i < majorTickLabels.Length; i++)
+        {
+            SkiaSharp.SKRect tickBounds = new();
+            paint.MeasureText(majorTickLabels[i], ref tickBounds);
+
+
+            maxTickBounds.Width = Math.Max(maxTickBounds.Width, tickBounds.Width);
+            maxTickBounds.Height = Math.Max(maxTickBounds.Height, tickBounds.Height);
+        }
+
+        if (maxTickBounds.Width > labelWidthEstimate || maxTickBounds.Height > labelHeightEstimate)
+        {
+            return GenerateTicks(min, max, edgeSize, Math.Max(labelWidthEstimate, maxTickBounds.Width), Math.Max(labelHeightEstimate, maxTickBounds.Height), depth + 1);
+        }
+
         Tick[] majorTicks = majorTickPositions
-            .Select(position => Tick.Major(position, GetPrettyTickLabel(position)))
+            .Select((position, i) => Tick.Major(position, majorTickLabels[i]))
             .ToArray();
 
         int minorTicksPerMajorTick = 5;
@@ -52,6 +74,7 @@ internal class NumericTickGenerator : ITickGenerator
             .Select(position => Tick.Minor(position))
             .ToArray();
 
+        System.Diagnostics.Debug.WriteLine("Depth {0}", depth);
         return majorTicks.Concat(minorTicks).ToArray();
     }
 
