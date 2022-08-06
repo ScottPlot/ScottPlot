@@ -7,48 +7,19 @@ public class DefaultGrid : IGrid
     public float LineWidth = 1;
     public Color LineColor = Colors.Black.WithAlpha(20);
 
-    private SKPaint MakeMajorGridLinePaint()
-    {
-        return new SKPaint()
-        {
-            Color = LineColor.ToSKColor(),
-            IsStroke = true,
-            IsAntialias = true,
-            StrokeWidth = LineWidth,
-        };
-    }
-
     public void Render(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView)
     {
-        if (axisView.Axis.IsHorizontal)
-        {
-            RenderVerticalGridLines(surface, dataRect, axisView);
-        }
-        else
-        {
-            RenderHorizontalGridLines(surface, dataRect, axisView);
-        }
-    }
+        Tick[] ticks = axisView.GetVisibleTicks();
+        Pixel[] starts = new Pixel[ticks.Length];
+        Pixel[] ends = new Pixel[ticks.Length];
 
-    private void RenderHorizontalGridLines(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView)
-    {
-        using SKPaint paint = MakeMajorGridLinePaint();
-
-        foreach (Tick tick in axisView.GetVisibleTicks())
+        for (int i = 0; i < ticks.Length; i++)
         {
-            float y = axisView.Axis.GetPixel(tick.Position, dataRect);
-            surface.Canvas.DrawLine(dataRect.Left, y, dataRect.Right, y, paint);
+            float px = axisView.Axis.GetPixel(ticks[i].Position, dataRect);
+            starts[i] = axisView.Axis.IsHorizontal ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
+            ends[i] = axisView.Axis.IsHorizontal ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
         }
-    }
 
-    private void RenderVerticalGridLines(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView)
-    {
-        using SKPaint paint = MakeMajorGridLinePaint();
-
-        foreach (Tick tick in axisView.GetVisibleTicks())
-        {
-            float x = axisView.Axis.GetPixel(tick.Position, dataRect);
-            surface.Canvas.DrawLine(x, dataRect.Bottom, x, dataRect.Top, paint);
-        }
+        Drawing.DrawLines(surface, starts, ends, LineColor, LineWidth);
     }
 }
