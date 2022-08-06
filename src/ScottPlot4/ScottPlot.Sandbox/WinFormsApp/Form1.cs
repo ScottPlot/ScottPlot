@@ -22,25 +22,23 @@ namespace WinFormsApp
 
             VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
             VLine.DragEnabled = true;
-            VLine.DragSnap = SnapToX;
+            VLine.DragSnapX = SnapToX;
 
             HLine = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
             HLine.DragEnabled = true;
-            HLine.DragSnap = SnapToY;
+            HLine.DragSnapY = SnapToY;
 
             formsPlot1.Refresh();
         }
 
-        private Coordinate SnapToX(Coordinate mousePosition)
+        private double SnapToX(double mousePosition)
         {
-            double x = GetClosestPosition(mousePosition.X, XSnapPositions);
-            return new Coordinate(x, mousePosition.Y);
+            return GetClosestPosition(mousePosition, XSnapPositions);
         }
 
-        private Coordinate SnapToY(Coordinate mousePosition)
+        private double SnapToY(double mousePosition)
         {
-            double y = GetClosestPosition(mousePosition.Y, YSnapPositions);
-            return new Coordinate(mousePosition.X, y);
+            return GetClosestPosition(mousePosition, YSnapPositions);
         }
 
         private double GetClosestPosition(double mouse, double[] snaps)

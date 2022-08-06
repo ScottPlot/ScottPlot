@@ -9,7 +9,7 @@ _not yet published on NuGet..._
 * Draggable Marker Plots: Improved drag behavior when drag limits are in use (#1970) _Thanks @xmln17_
 * Signal Plot: Added support for plotting `byte` arrays (#1945)
 * Axis Line: Added properties to customize alignment of position labels (#1972) _Thanks @hamhub7_
-* Axis Line: Added `DragSnap` function to let users customize snapping (#2006, #2007) _Thanks @Agorath_
+* Draggables: Added `DragSnapX` and `DragSnapY` functions to let users customize snapping (#2006, #2007) _Thanks @Agorath_
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_

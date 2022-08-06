@@ -37,6 +37,8 @@ namespace ScottPlot.Plottable
         private double DeltaCX { get; set; } = 0;
         private double DeltaCY { get; set; } = 0;
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+        public Func<double, double> DragSnapX { get; set; } = (x) => x;
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits()
@@ -152,6 +154,9 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            coordinateX = DragSnapX(coordinateX);
+            coordinateY = DragSnapY(coordinateY);
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;

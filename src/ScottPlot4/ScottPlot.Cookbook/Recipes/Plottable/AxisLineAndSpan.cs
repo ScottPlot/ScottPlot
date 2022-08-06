@@ -117,11 +117,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            static Coordinate customSnapFunction(Coordinate mousePosition)
+            // a local function contains custom logic for snapping
+            static double snapToNearestInteger(double coordinate)
             {
-                double snapX = Math.Round(mousePosition.X);
-                double snapY = Math.Round(mousePosition.Y);
-                return new Coordinate(snapX, snapY);
+                return Math.Round(coordinate);
             }
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
@@ -129,11 +128,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var hLine = plt.AddHorizontalLine(2);
             hLine.DragEnabled = true;
-            hLine.DragSnap = customSnapFunction;
+            hLine.DragSnapY = snapToNearestInteger;
 
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnap = customSnapFunction;
+            vLine.DragSnapX = snapToNearestInteger;
         }
     }
 
