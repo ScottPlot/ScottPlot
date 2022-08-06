@@ -125,19 +125,19 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add axis lines and configure their drag settings
             var yPositions = DataGen.Consecutive(11, 0.2D, -1D);
-            var hLine = plt.AddHorizontalLineWithSnap(0.8D, yPositions);
-            hLine.DragEnabled = true;
-            hLine.DragLimitMin = -1;
-            hLine.DragLimitMax = 1;
+            var hLineWithSnap = plt.AddHorizontalLineWithSnap(0.8D, yPositions);
+            hLineWithSnap.DragEnabled = true;
+            hLineWithSnap.DragLimitMin = -1;
+            hLineWithSnap.DragLimitMax = 1;
 
             var xPositions = DataGen.Consecutive(11, 5D);
-            var vLine = plt.AddVerticalLineWithSnap(25, xPositions);
-            vLine.DragEnabled = true;
-            vLine.DragLimitMin = 0;
-            vLine.DragLimitMax = 50;
+            var vLineWithSnap = plt.AddVerticalLineWithSnap(25, xPositions);
+            vLineWithSnap.DragEnabled = true;
+            vLineWithSnap.DragLimitMin = 0;
+            vLineWithSnap.DragLimitMax = 50;
 
             // you can access the position of an axis line at any time
-            string message = $"Vertical line is at X={vLine.X}";
+            string message = $"Vertical line is at X={vLineWithSnap.X}";
         }
     }
 
