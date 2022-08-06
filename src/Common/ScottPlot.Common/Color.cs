@@ -30,7 +30,7 @@ public struct Color
         byte blue = (byte)(argb >> 0);
         return new Color(red, green, blue, alpha);
     }
-    
+
     public static Color FromHex(string hex)
     {
         if (hex[0] == '#')

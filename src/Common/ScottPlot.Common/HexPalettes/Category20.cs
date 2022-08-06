@@ -51,7 +51,7 @@ namespace ScottPlot.Common.HexPalettes
 {
     public static class Category20
     {
-        public readonly static string[] Colors = new string[]        
+        public readonly static string[] Colors = new string[]
         {
             "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",
             "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
