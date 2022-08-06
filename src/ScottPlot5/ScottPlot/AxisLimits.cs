@@ -26,7 +26,7 @@ public struct AxisLimits
         {
             Rect.XMin = newLimits.Rect.XMin;
         }
-        else
+        else if (!double.IsNaN(newLimits.Rect.XMin))
         {
             Rect.XMin = Math.Min(Rect.XMin, newLimits.Rect.XMin);
         }
@@ -35,7 +35,7 @@ public struct AxisLimits
         {
             Rect.XMax = newLimits.Rect.XMax;
         }
-        else
+        else if (!double.IsNaN(newLimits.Rect.XMax))
         {
             Rect.XMax = Math.Min(Rect.XMax, newLimits.Rect.XMax);
         }
@@ -44,7 +44,7 @@ public struct AxisLimits
         {
             Rect.YMin = newLimits.Rect.YMin;
         }
-        else
+        else if (!double.IsNaN(newLimits.Rect.YMin))
         {
             Rect.YMin = Math.Min(Rect.YMin, newLimits.Rect.YMin);
         }
@@ -53,7 +53,7 @@ public struct AxisLimits
         {
             Rect.YMax = newLimits.Rect.YMax;
         }
-        else
+        else if (!double.IsNaN(newLimits.Rect.YMax))
         {
             Rect.YMax = Math.Min(Rect.YMax, newLimits.Rect.YMax);
         }
