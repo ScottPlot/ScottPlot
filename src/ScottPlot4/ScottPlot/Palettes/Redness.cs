@@ -7,9 +7,6 @@ namespace ScottPlot.Drawing.Colorsets
 {
     public class Redness : HexColorset, IPalette
     {
-        public override string[] hexColors => new string[]
-        {
-            "#FF0000", "#FF4F00", "#FFA900", "#900303", "#FF8181"
-        };
+        public override string[] hexColors => Common.HexPalettes.Redness.Colors;
     }
 }

@@ -5,9 +5,6 @@ namespace ScottPlot.Drawing.Colorsets
 {
     public class Amber : HexColorset, IPalette
     {
-        public override string[] hexColors => new string[]
-        {
-            "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
-        };
+        public override string[] hexColors => Common.HexPalettes.Amber.Colors;
     }
 }
