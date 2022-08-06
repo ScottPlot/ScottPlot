@@ -58,6 +58,16 @@ namespace ScottPlot.Plottable
         public event EventHandler Dragged = delegate { };
 
         /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+
+        /// <summary>
         /// Move a scatter point to a new coordinate in plot space.
         /// </summary>
         /// <param name="coordinateX">new X position</param>
@@ -67,6 +77,9 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            coordinateX = DragSnapX(coordinateX);
+            coordinateY = DragSnapY(coordinateY);
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;

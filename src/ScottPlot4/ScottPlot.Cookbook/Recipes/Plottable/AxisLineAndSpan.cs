@@ -107,6 +107,35 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class DraggableSnap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLine_draggable_with_snap";
+        public string Title => "Drag with Snapping";
+        public string Description =>
+            "Custom logic can be added to draggables to customize how they snap.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // a local function contains custom logic for snapping
+            static double snapToNearestInteger(double coordinate)
+            {
+                return Math.Round(coordinate);
+            }
+
+            plt.AddSignal(DataGen.Sin(51, mult: 5));
+            plt.AddSignal(DataGen.Cos(51, mult: 5));
+
+            var hLine = plt.AddHorizontalLine(2);
+            hLine.DragEnabled = true;
+            hLine.DragSnapY = snapToNearestInteger;
+
+            var vLine = plt.AddVerticalLine(30);
+            vLine.DragEnabled = true;
+            vLine.DragSnapX = snapToNearestInteger;
+        }
+    }
+
     public class AxisLineWithPositionLabels : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
