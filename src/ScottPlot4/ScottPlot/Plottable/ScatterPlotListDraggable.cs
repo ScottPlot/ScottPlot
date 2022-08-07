@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
@@ -15,10 +13,12 @@ namespace ScottPlot.Plottable
 
         public event EventHandler Dragged = delegate { };
 
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
-
+        /// <summary>
+        /// Assign custom the logic here to control where individual points can be moved.
+        /// This logic occurs after snapping.
+        /// </summary>
         public Func<List<double>, List<double>, int, Coordinate, Coordinate> MovePointFunc { get; set; } = (xs, ys, index, moveTo) => moveTo;
 
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
@@ -26,11 +26,9 @@ namespace ScottPlot.Plottable
             if (!DragEnabled || IndexUnderMouse < 0)
                 return;
 
-            coordinateX = DragSnapX(coordinateX);
-            coordinateY = DragSnapY(coordinateY);
-
             Coordinate requested = new(coordinateX, coordinateY);
-            Coordinate actual = MovePointFunc(Xs, Ys, IndexUnderMouse, requested);
+            Coordinate snapped = DragSnap.Snap(requested);
+            Coordinate actual = MovePointFunc(Xs, Ys, IndexUnderMouse, snapped);
             Xs[IndexUnderMouse] = actual.X;
             Ys[IndexUnderMouse] = actual.Y;
 

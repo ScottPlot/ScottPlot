@@ -1,5 +1,4 @@
 ﻿using ScottPlot;
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -20,43 +19,19 @@ namespace WinFormsApp
             formsPlot1.Plot.AddSignal(DataGen.Sin(51), 1, Color.Black);
             formsPlot1.Plot.AddSignal(DataGen.Cos(51), 1, Color.Gray);
 
+            var snapSmooth = new ScottPlot.SnapLogic.NoSnap1D();
+            var snapX = new ScottPlot.SnapLogic.Nearest1D(XSnapPositions);
+            var snapY = new ScottPlot.SnapLogic.Nearest1D(YSnapPositions);
+
             VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
             VLine.DragEnabled = true;
-            VLine.DragSnapX = SnapToX;
+            VLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapX, snapSmooth);
 
             HLine = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
             HLine.DragEnabled = true;
-            HLine.DragSnapY = SnapToY;
+            HLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapSmooth, snapY);
 
             formsPlot1.Refresh();
-        }
-
-        private double SnapToX(double mousePosition)
-        {
-            return GetClosestPosition(mousePosition, XSnapPositions);
-        }
-
-        private double SnapToY(double mousePosition)
-        {
-            return GetClosestPosition(mousePosition, YSnapPositions);
-        }
-
-        private double GetClosestPosition(double mouse, double[] snaps)
-        {
-            double closestDistance = double.MaxValue;
-            double closestPosition = double.MaxValue;
-
-            for (int i = 0; i < snaps.Length; i++)
-            {
-                double distance = Math.Abs(mouse - snaps[i]);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestPosition = snaps[i];
-                }
-            }
-
-            return closestPosition;
         }
     }
 }

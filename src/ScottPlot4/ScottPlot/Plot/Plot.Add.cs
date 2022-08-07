@@ -715,6 +715,24 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a draggable marker at a specific X/Y position.
+        /// </summary>
+        public DraggableMarkerPlot AddMarkerDraggable(double x, double y, MarkerShape shape = MarkerShape.filledCircle, double size = 10, Color? color = null, string label = null)
+        {
+            var plottable = new DraggableMarkerPlot()
+            {
+                X = x,
+                Y = y,
+                MarkerShape = shape,
+                MarkerSize = (float)size,
+                Color = color ?? GetNextColor(),
+                Label = label,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)

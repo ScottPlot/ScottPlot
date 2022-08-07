@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -62,8 +60,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "marker_draggableinvector";
         public string Title => "Draggable Marker Snap";
         public string Description =>
-            "This is a type of marker which can be dragged with the mouse, " +
-            "but is restricted to to X/Y positions defined by two arrays.";
+            "This example shows how to add a draggable marker which is constrained " +
+            "to positions defined by an array of X/Y pairs.";
+
         public void ExecuteRecipe(Plot plt)
         {
             // create random data and display it with a scatter plot
@@ -71,19 +70,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] ys = DataGen.Random(new Random(0), 50);
             plt.AddScatter(xs, ys, label: "data");
 
-            // add a draggable marker that "snaps" to data values in that scatter plot
-            var dmpv = new ScottPlot.Plottable.DraggableMarkerPlotInVector()
-            {
-                Xs = xs,
-                Ys = ys,
-                DragEnabled = true,
-                IsVisible = true,
-                MarkerSize = 15,
-                MarkerShape = MarkerShape.filledDiamond,
-                MarkerColor = Color.Magenta,
-                Label = "marker",
-            };
-            plt.Add(dmpv);
+            // place the marker at the first data point
+            var marker = plt.AddMarkerDraggable(xs[0], ys[0], MarkerShape.filledDiamond, 15, Color.Magenta);
+
+            // constrain snapping to the array of data points
+            marker.DragSnap = new ScottPlot.SnapLogic.Nearest2D(xs, ys);
 
             plt.Legend();
         }

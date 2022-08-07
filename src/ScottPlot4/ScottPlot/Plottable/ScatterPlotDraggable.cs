@@ -1,4 +1,5 @@
 ﻿using System;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
@@ -60,12 +61,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
-
-        /// <summary>
-        /// This function applies snapping logic while dragging
-        /// </summary>
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         /// <summary>
         /// Move a scatter point to a new coordinate in plot space.
@@ -78,8 +74,10 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX(coordinateX);
-            coordinateY = DragSnapY(coordinateY);
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnap.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;

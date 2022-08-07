@@ -2,9 +2,14 @@
 using System;
 using System.Linq;
 using System.Drawing;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// This plot type is essentially the same as an Axis line, but it contains an array of positions.
+    /// All lines are styled the same, but they can be positioned (and dragged) independently.
+    /// </summary>
     public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor
     {
         /// <summary>
@@ -115,12 +120,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
-
-        /// <summary>
-        /// This function applies snapping logic while dragging
-        /// </summary>
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         public AxisLineVector(bool isHorizontal)
         {
@@ -260,6 +260,11 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnap.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (IsHorizontal)
             {

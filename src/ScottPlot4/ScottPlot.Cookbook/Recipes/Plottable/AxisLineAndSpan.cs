@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -111,28 +108,60 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_draggable_with_snap";
-        public string Title => "Drag with Snapping";
+        public string Title => "Draggable With Snapping";
+        public string Description =>
+            "Draggables can be configured to snap to the nearest integer or " +
+            "to a user-defined list of Positions out of the box.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51, mult: 5));
+            plt.AddSignal(DataGen.Cos(51, mult: 5));
+            double[] snapPositions = DataGen.Consecutive(11, 5);
+
+            // different snap sytems can be created and customized 
+            var SnapDisabled = new ScottPlot.SnapLogic.NoSnap1D();
+            var SnapNearestInt = new ScottPlot.SnapLogic.Integer1D();
+            var SnapNearestInList = new ScottPlot.SnapLogic.Nearest1D(snapPositions);
+
+            var hLine = plt.AddHorizontalLine(2);
+            hLine.DragEnabled = true;
+            hLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(x: SnapDisabled, y: SnapNearestInt);
+
+            var vLine = plt.AddVerticalLine(30);
+            vLine.DragEnabled = true;
+            vLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(x: SnapNearestInList, y: SnapDisabled);
+        }
+    }
+
+    public class DraggableSnapCustom : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLine_draggable_with_snap_custom_snap";
+        public string Title => "Draggable Custom Snap Function";
         public string Description =>
             "Custom logic can be added to draggables to customize how they snap.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // a local function contains custom logic for snapping
-            static double snapToNearestInteger(double coordinate)
+            double CustomSnapFunction(double value)
             {
-                return Math.Round(coordinate);
+                // multiple of 3 between 0 and 50
+                if (value < 0) return 0;
+                else if (value > 50) return 50;
+                else return (int)Math.Round(value / 3) * 3;
             }
+
+            // different snap sytems can be created and customized 
+            var SnapDisabled = new ScottPlot.SnapLogic.NoSnap1D();
+            var SnapCustom = new SnapLogic.Custom1D(CustomSnapFunction);
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
 
-            var hLine = plt.AddHorizontalLine(2);
-            hLine.DragEnabled = true;
-            hLine.DragSnapY = snapToNearestInteger;
-
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnapX = snapToNearestInteger;
+            vLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(SnapCustom, SnapDisabled);
         }
     }
 

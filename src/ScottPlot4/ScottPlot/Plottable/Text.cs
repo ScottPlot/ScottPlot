@@ -1,8 +1,7 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
@@ -37,8 +36,7 @@ namespace ScottPlot.Plottable
         private double DeltaCX { get; set; } = 0;
         private double DeltaCY { get; set; } = 0;
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits()
@@ -155,8 +153,10 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX(coordinateX);
-            coordinateY = DragSnapY(coordinateY);
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnap.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;
