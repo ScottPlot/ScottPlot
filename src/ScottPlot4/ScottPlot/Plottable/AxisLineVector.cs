@@ -6,6 +6,10 @@ using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// This plot type is essentially the same as an Axis line, but it contains an array of positions.
+    /// All lines are styled the same, but they can be positioned (and dragged) independently.
+    /// </summary>
     public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor
     {
         /// <summary>
