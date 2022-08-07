@@ -66,7 +66,7 @@ namespace ScottPlot.Plottables
                 surface.Canvas.Translate(explosionRadius, 0);
 
                 path.MoveTo(0, 0);
-                path.ArcTo(rect, - sweeps[i] / 2, sweeps[i], false);
+                path.ArcTo(rect, -sweeps[i] / 2, sweeps[i], false);
                 path.Close();
 
                 paint.SetFill(Slices[i].Fill);
