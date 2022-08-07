@@ -6,6 +6,7 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+        <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
     </ItemGroup>
 
 </Project>
