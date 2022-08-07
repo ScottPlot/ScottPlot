@@ -828,7 +828,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         private int GetIndexForX(double x)
         {
-            int index = (int)((x - OffsetX) / SampleRate);
+            int index = (int)((x - OffsetX + SamplePeriod / 2) / SampleRate);
             index = Math.Max(index, MinRenderIndex);
             index = Math.Min(index, MaxRenderIndex);
             return index;
@@ -850,7 +850,9 @@ namespace ScottPlot.Plottable
         public (double x, T y, int index) GetPointNearestX(double x)
         {
             int index = GetIndexForX(x);
-            return (OffsetX + index * SamplePeriod, AddYsGeneric(Ys[index], OffsetY), index);
+            double pointX = OffsetX + index * SamplePeriod;
+            T pointY = AddYsGeneric(Ys[index], OffsetY);
+            return (pointX, pointY, index);
         }
 
         /// <summary>
