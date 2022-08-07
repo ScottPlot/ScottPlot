@@ -6,7 +6,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// This plot type displays a marker at a point that can be dragged with the mouse.
     /// </summary>
-    public class DraggableMarkerPlot : MarkerPlot, IDraggable, IDraggableSnap2D, IHasMarker, IHasColor
+    public class DraggableMarkerPlot : MarkerPlot, IDraggable, IHasMarker, IHasColor
     {
         /// <summary>
         /// Indicates whether this marker is draggable in user controls.
@@ -41,7 +41,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public ISnap2D DragSnapXY { get; set; } = new Smooth2D();
+        public ISnap2D DragSnap { get; set; } = new Smooth2D();
 
         /// <summary>
         /// This event is invoked after the marker is dragged
@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
                 return;
 
             Coordinate original = new(coordinateX, coordinateY);
-            Coordinate snapped = DragSnapXY.Snap(original);
+            Coordinate snapped = DragSnap.Snap(original);
             coordinateX = snapped.X;
             coordinateY = snapped.Y;
 

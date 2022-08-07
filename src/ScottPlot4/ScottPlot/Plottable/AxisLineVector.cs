@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     /// This plot type is essentially the same as an Axis line, but it contains an array of positions.
     /// All lines are styled the same, but they can be positioned (and dragged) independently.
     /// </summary>
-    public abstract class AxisLineVector : IPlottable, IDraggable, IDraggableSnap1D, IHasLine, IHasColor
+    public abstract class AxisLineVector : IPlottable, IDraggable, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)
@@ -120,12 +120,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public ISnap DragSnapX { get; set; } = new Smooth();
-
-        /// <summary>
-        /// This function applies snapping logic while dragging
-        /// </summary>
-        public ISnap DragSnapY { get; set; } = new Smooth();
+        public ISnap2D DragSnap { get; set; } = new Smooth2D();
 
         public AxisLineVector(bool isHorizontal)
         {
@@ -266,8 +261,10 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX.Snap(coordinateX);
-            coordinateY = DragSnapY.Snap(coordinateY);
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnap.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (IsHorizontal)
             {

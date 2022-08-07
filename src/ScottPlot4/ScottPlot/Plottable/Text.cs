@@ -8,7 +8,7 @@ namespace ScottPlot.Plottable
     /// <summary>
     /// Display a text label at an X/Y position in coordinate space
     /// </summary>
-    public class Text : IPlottable, IHasPixelOffset, IDraggable, IDraggableSnap2D, IHasColor
+    public class Text : IPlottable, IHasPixelOffset, IDraggable, IHasColor
     {
         // data
         public double X;
@@ -36,7 +36,7 @@ namespace ScottPlot.Plottable
         private double DeltaCX { get; set; } = 0;
         private double DeltaCY { get; set; } = 0;
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
-        public ISnap2D DragSnapXY { get; set; } = new Smooth2D();
+        public ISnap2D DragSnap { get; set; } = new Smooth2D();
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits()
@@ -154,7 +154,7 @@ namespace ScottPlot.Plottable
                 return;
 
             Coordinate original = new(coordinateX, coordinateY);
-            Coordinate snapped = DragSnapXY.Snap(original);
+            Coordinate snapped = DragSnap.Snap(original);
             coordinateX = snapped.X;
             coordinateY = snapped.Y;
 

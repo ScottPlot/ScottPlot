@@ -6,7 +6,7 @@ using ScottPlot.SnapLogic;
 namespace ScottPlot.Plottable
 {
 
-    public abstract class RepeatingAxisLine : IDraggable, IDraggableSnap1D, IPlottable, IHasColor
+    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor
     {
         /// <summary>
         /// Location of the reference line (Y position if horizontal line, X position if vertical line)
@@ -134,12 +134,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public ISnap DragSnapX { get; set; } = new Smooth();
-
-        /// <summary>
-        /// This function applies snapping logic while dragging
-        /// </summary>
-        public ISnap DragSnapY { get; set; } = new Smooth();
+        public ISnap2D DragSnap { get; set; } = new Smooth2D();
 
         public RepeatingAxisLine(bool isHorizontal)
         {
@@ -288,8 +283,10 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX.Snap(coordinateX);
-            coordinateY = DragSnapY.Snap(coordinateY);
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnap.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (IsHorizontal)
             {
