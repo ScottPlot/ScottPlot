@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using ScottPlot.Axes;
 using ScottPlot.AxisViews;
-using ScottPlot.Palettes;
 using SkiaSharp;
 
 namespace ScottPlot;
@@ -17,8 +16,13 @@ public class Plot
     readonly List<IPlottable> Plottables = new();
 
     public IGrid Grid = new Grids.DefaultGrid();
-    public IPalette Palette { get; set; } = new Category10();
-    private Color NextPaletteColor => Palette[Plottables.Count];
+
+    /// <summary>
+    /// Palette to use for default colors of new plottables
+    /// </summary>
+    public IPalette Palette { get; set; } = new Palettes.Category10();
+
+    public Color NextPaletteColor => Palette[Plottables.Count % Palette.Count];
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
