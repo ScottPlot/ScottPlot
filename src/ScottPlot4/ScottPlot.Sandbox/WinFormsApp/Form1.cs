@@ -1,7 +1,6 @@
 ﻿using ScottPlot;
 using System.Drawing;
 using System.Windows.Forms;
-using ScottPlot.SnapLogic;
 
 namespace WinFormsApp
 {
@@ -20,13 +19,17 @@ namespace WinFormsApp
             formsPlot1.Plot.AddSignal(DataGen.Sin(51), 1, Color.Black);
             formsPlot1.Plot.AddSignal(DataGen.Cos(51), 1, Color.Gray);
 
+            var snapSmooth = new ScottPlot.SnapLogic.Smooth();
+            var snapX = new ScottPlot.SnapLogic.NearestPosition(XSnapPositions);
+            var snapY = new ScottPlot.SnapLogic.NearestPosition(YSnapPositions);
+
             VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
             VLine.DragEnabled = true;
-            VLine.DragSnapX = new NearestPosition(XSnapPositions);
+            VLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapX, snapSmooth);
 
             HLine = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
             HLine.DragEnabled = true;
-            HLine.DragSnapY = new NearestPosition(YSnapPositions);
+            HLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapSmooth, snapY);
 
             formsPlot1.Refresh();
         }
