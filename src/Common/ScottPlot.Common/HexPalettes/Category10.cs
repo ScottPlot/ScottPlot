@@ -47,10 +47,14 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace ScottPlot.Drawing.Colorsets
+namespace ScottPlot.Common.HexPalettes
 {
-    public class Category20 : HexColorset, IPalette
+    public static class Category10
     {
-        public override string[] hexColors => Common.HexPalettes.Category20.Colors;
+        public static readonly string[] Colors = new string[]
+        {
+            "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+            "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
+        };
     }
 }

@@ -17,6 +17,13 @@ public class Plot
 
     public IGrid Grid = new Grids.DefaultGrid();
 
+    /// <summary>
+    /// Palette to use for default colors of new plottables
+    /// </summary>
+    public IPalette Palette { get; set; } = new Palettes.Category10();
+
+    public Color NextPaletteColor => Palette[Plottables.Count % Palette.Count];
+
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
 
@@ -275,9 +282,10 @@ public class Plot
 
     #region AddPlottable Helper Methods
 
-    public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color color)
+    public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        Plottables.Scatter scatter = new(xs, ys) { Color = color };
+        color ??= NextPaletteColor;
+        Plottables.Scatter scatter = new(xs, ys) { Color = color.Value };
 
         Add(scatter);
 

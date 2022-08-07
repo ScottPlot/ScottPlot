@@ -6,9 +6,6 @@ namespace ScottPlot.Drawing.Colorsets
 {
     public class PolarNight : HexColorset, IPalette
     {
-        public override string[] hexColors => new string[]
-        {
-            "#2E3440", "#3B4252", "#434C5E", "#4C566A",
-        };
+        public override string[] hexColors => Common.HexPalettes.PolarNight.Colors;
     }
 }

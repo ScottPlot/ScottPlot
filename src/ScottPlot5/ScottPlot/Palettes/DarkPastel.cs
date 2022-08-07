@@ -2,10 +2,10 @@
  * © Cynthia Brewer, Mark Harrower and The Pennsylvania State University
  * This palette is the lighter-color version of the 'Dark' palette.
  */
-namespace ScottPlot.Drawing.Colorsets
+namespace ScottPlot.Palettes
 {
-    public class DarkPastel : HexColorset, IPalette
+    public class DarkPastel : PaletteBase
     {
-        public override string[] hexColors => Common.HexPalettes.DarkPastel.Colors;
+        protected override Color[] colors => Common.HexPalettes.DarkPastel.Colors.Select(c => Color.FromHex(c)).ToArray();
     }
 }

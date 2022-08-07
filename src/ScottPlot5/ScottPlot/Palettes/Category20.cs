@@ -47,10 +47,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace ScottPlot.Drawing.Colorsets
+namespace ScottPlot.Palettes
 {
-    public class Category20 : HexColorset, IPalette
+    public class Category20 : PaletteBase
     {
-        public override string[] hexColors => Common.HexPalettes.Category20.Colors;
+        protected override Color[] colors => Common.HexPalettes.Category20.Colors.Select(c => Color.FromHex(c)).ToArray();
     }
 }
