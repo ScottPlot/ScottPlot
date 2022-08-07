@@ -9,6 +9,6 @@
     <ItemGroup>
 		<PackageReference Include="Avalonia" Version="0.10.*" />
 		<PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
-	    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+	    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
     </ItemGroup>
 </Project>
