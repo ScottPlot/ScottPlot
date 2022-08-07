@@ -5,16 +5,16 @@ namespace ScottPlot.SnapLogic;
 /// <summary>
 /// Snaps to the nearest position in a user-provided array
 /// </summary>
-public class NearestPosition2D : ISnap2D
+public class Nearest2D : ISnap2D
 {
     private readonly Coordinate[] Coordinates;
 
-    public NearestPosition2D(Coordinate[] coordinates)
+    public Nearest2D(Coordinate[] coordinates)
     {
         Coordinates = coordinates;
     }
 
-    public NearestPosition2D(double[] xs, double[] ys)
+    public Nearest2D(double[] xs, double[] ys)
     {
         if (xs.Length != ys.Length)
             throw new ArgumentException($"{nameof(xs)} must have the same length as {nameof(ys)}");

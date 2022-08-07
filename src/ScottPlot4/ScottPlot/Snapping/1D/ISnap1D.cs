@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.SnapLogic;
 
-public interface ISnap
+public interface ISnap1D
 {
     double Snap(double value);
 }

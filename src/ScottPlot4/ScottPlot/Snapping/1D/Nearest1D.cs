@@ -5,11 +5,11 @@ namespace ScottPlot.SnapLogic;
 /// <summary>
 /// Snaps to the nearest position in a user-provided array
 /// </summary>
-public class NearestPosition : ISnap
+public class Nearest1D : ISnap1D
 {
     private readonly double[] SnapPositions;
 
-    public NearestPosition(double[] positions)
+    public Nearest1D(double[] positions)
     {
         SnapPositions = positions;
     }

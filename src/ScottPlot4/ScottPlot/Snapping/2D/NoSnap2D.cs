@@ -3,7 +3,7 @@
 /// <summary>
 /// Always returns the original value (snapping disabled)
 /// </summary>
-public class Smooth2D : ISnap2D
+public class NoSnap2D : ISnap2D
 {
     public Coordinate Snap(Coordinate value)
     {

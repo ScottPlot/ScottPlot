@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var marker = plt.AddMarkerDraggable(xs[0], ys[0], MarkerShape.filledDiamond, 15, Color.Magenta);
 
             // constrain snapping to the array of data points
-            marker.DragSnap = new ScottPlot.SnapLogic.NearestPosition2D(xs, ys);
+            marker.DragSnap = new ScottPlot.SnapLogic.Nearest2D(xs, ys);
 
             plt.Legend();
         }

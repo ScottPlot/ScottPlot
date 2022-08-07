@@ -19,9 +19,9 @@ namespace WinFormsApp
             formsPlot1.Plot.AddSignal(DataGen.Sin(51), 1, Color.Black);
             formsPlot1.Plot.AddSignal(DataGen.Cos(51), 1, Color.Gray);
 
-            var snapSmooth = new ScottPlot.SnapLogic.Smooth();
-            var snapX = new ScottPlot.SnapLogic.NearestPosition(XSnapPositions);
-            var snapY = new ScottPlot.SnapLogic.NearestPosition(YSnapPositions);
+            var snapSmooth = new ScottPlot.SnapLogic.NoSnap1D();
+            var snapX = new ScottPlot.SnapLogic.Nearest1D(XSnapPositions);
+            var snapY = new ScottPlot.SnapLogic.Nearest1D(YSnapPositions);
 
             VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
             VLine.DragEnabled = true;

@@ -5,15 +5,15 @@
 /// </summary>
 public class Independent2D : ISnap2D
 {
-    public ISnap SnapX { get; set; } = new Smooth();
-    public ISnap SnapY { get; set; } = new Smooth();
+    public ISnap1D SnapX { get; set; } = new NoSnap1D();
+    public ISnap1D SnapY { get; set; } = new NoSnap1D();
 
     public Independent2D()
     {
 
     }
 
-    public Independent2D(ISnap x, ISnap y)
+    public Independent2D(ISnap1D x, ISnap1D y)
     {
         SnapX = x;
         SnapY = y;

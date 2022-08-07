@@ -3,7 +3,7 @@
 /// <summary>
 /// Returns the given position snapped to the nearest integer positions
 /// </summary>
-public class NearestInteger2D : ISnap2D
+public class Integer2D : ISnap2D
 {
     public Coordinate Snap(Coordinate value)
     {

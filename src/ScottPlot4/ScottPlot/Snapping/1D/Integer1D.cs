@@ -5,7 +5,7 @@ namespace ScottPlot.SnapLogic;
 /// <summary>
 /// Snaps to the nearest integer position
 /// </summary>
-public class NearestInteger : ISnap
+public class Integer1D : ISnap1D
 {
     public double Snap(double value)
     {

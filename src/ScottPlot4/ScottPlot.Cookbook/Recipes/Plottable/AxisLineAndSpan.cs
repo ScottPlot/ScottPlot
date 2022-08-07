@@ -120,9 +120,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] snapPositions = DataGen.Consecutive(11, 5);
 
             // different snap sytems can be created and customized 
-            var SnapDisabled = new ScottPlot.SnapLogic.Smooth();
-            var SnapNearestInt = new ScottPlot.SnapLogic.NearestInteger();
-            var SnapNearestInList = new ScottPlot.SnapLogic.NearestPosition(snapPositions);
+            var SnapDisabled = new ScottPlot.SnapLogic.NoSnap1D();
+            var SnapNearestInt = new ScottPlot.SnapLogic.Integer1D();
+            var SnapNearestInList = new ScottPlot.SnapLogic.Nearest1D(snapPositions);
 
             var hLine = plt.AddHorizontalLine(2);
             hLine.DragEnabled = true;
@@ -153,8 +153,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             // different snap sytems can be created and customized 
-            var SnapDisabled = new ScottPlot.SnapLogic.Smooth();
-            var SnapCustom = new SnapLogic.Custom(CustomSnapFunction);
+            var SnapDisabled = new ScottPlot.SnapLogic.NoSnap1D();
+            var SnapCustom = new SnapLogic.Custom1D(CustomSnapFunction);
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));

@@ -5,11 +5,11 @@ namespace ScottPlot.SnapLogic;
 /// <summary>
 /// Create a snap object from a custom function
 /// </summary>
-public class Custom : ISnap
+public class Custom1D : ISnap1D
 {
     private readonly Func<double, double> SnapFunction;
 
-    public Custom(Func<double, double> snapFunction)
+    public Custom1D(Func<double, double> snapFunction)
     {
         SnapFunction = snapFunction;
     }

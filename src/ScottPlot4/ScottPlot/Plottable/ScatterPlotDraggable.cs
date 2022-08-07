@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public ISnap2D DragSnap { get; set; } = new Smooth2D();
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         /// <summary>
         /// Move a scatter point to a new coordinate in plot space.

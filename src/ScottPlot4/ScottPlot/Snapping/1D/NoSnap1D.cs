@@ -3,7 +3,7 @@
 /// <summary>
 /// Always returns the original value (snapping disabled)
 /// </summary>
-public class Smooth : ISnap
+public class NoSnap1D : ISnap1D
 {
     public double Snap(double value)
     {

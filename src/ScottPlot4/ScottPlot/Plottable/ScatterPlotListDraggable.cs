@@ -13,7 +13,7 @@ namespace ScottPlot.Plottable
 
         public event EventHandler Dragged = delegate { };
 
-        public ISnap2D DragSnap { get; set; } = new Smooth2D();
+        public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         /// <summary>
         /// Assign custom the logic here to control where individual points can be moved.
