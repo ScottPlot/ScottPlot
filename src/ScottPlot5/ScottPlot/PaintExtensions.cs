@@ -17,9 +17,9 @@ namespace ScottPlot
             paint.Style = SKPaintStyle.Stroke;
         }
 
-        public static void SetFill(this SKPaint paint, Fill fill)
+        public static void SetFill(this SKPaint paint, Fill fill, byte alpha = 255)
         {
-            paint.Color = fill.Color.ToSKColor();
+            paint.Color = fill.Color.WithAlpha(alpha).ToSKColor();
             paint.PathEffect = null; // TODO: Make this respect HatchStyle
             paint.Style = SKPaintStyle.Fill;
         }
