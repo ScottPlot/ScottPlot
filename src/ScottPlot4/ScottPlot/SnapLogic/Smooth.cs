@@ -1,12 +1,12 @@
-﻿using ScottPlot.Plottable;
+﻿namespace ScottPlot.SnapLogic;
 
-namespace ScottPlot.SnapLogic
+/// <summary>
+/// Always returns the original value (snapping disabled)
+/// </summary>
+public class Smooth : ISnap
 {
-    public class Smooth : ISnap
+    public double Snap(double value)
     {
-        public double Snap(double value)
-        {
-            return value;
-        }
+        return value;
     }
 }

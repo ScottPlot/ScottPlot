@@ -1,13 +1,14 @@
 ﻿using System;
-using ScottPlot.Plottable;
 
-namespace ScottPlot.SnapLogic
+namespace ScottPlot.SnapLogic;
+
+/// <summary>
+/// Snaps to the nearest integer position
+/// </summary>
+public class NearestInteger : ISnap
 {
-    public class NearestInteger : ISnap
+    public double Snap(double value)
     {
-        public double Snap(double value)
-        {
-            return Math.Round(value);
-        }
+        return Math.Round(value);
     }
 }

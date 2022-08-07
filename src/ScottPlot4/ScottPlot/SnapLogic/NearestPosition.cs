@@ -1,33 +1,34 @@
 ﻿using System;
-using ScottPlot.Plottable;
 
-namespace ScottPlot.SnapLogic
+namespace ScottPlot.SnapLogic;
+
+/// <summary>
+/// Snaps to the nearest position in a user-provided array
+/// </summary>
+public class NearestPosition : ISnap
 {
-    public class NearestPosition : ISnap
+    private readonly double[] SnapPositions;
+
+    public NearestPosition(double[] positions)
     {
-        private readonly double[] _snapPositions;
+        SnapPositions = positions;
+    }
 
-        public NearestPosition(double[] snapPositions)
+    public double Snap(double value)
+    {
+        var closestDistance = double.MaxValue;
+        var closestPosition = double.MaxValue;
+
+        foreach (var position in SnapPositions)
         {
-            _snapPositions = snapPositions;
-        }
-
-        public double Snap(double value)
-        {
-            var closestDistance = double.MaxValue;
-            var closestPosition = double.MaxValue;
-
-            foreach (var snapPosition in _snapPositions)
+            var distance = Math.Abs(value - position);
+            if (distance < closestDistance)
             {
-                var distance = Math.Abs(value - snapPosition);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestPosition = snapPosition;
-                }
+                closestDistance = distance;
+                closestPosition = position;
             }
-
-            return closestPosition;
         }
+
+        return closestPosition;
     }
 }
