@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <LangVersion>latest</LangVersion>>
+        <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
