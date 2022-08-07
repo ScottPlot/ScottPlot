@@ -149,6 +149,7 @@ public struct Colors
     public static Color Teal => new(0, 128, 128);
     public static Color Thistle => new(216, 191, 216);
     public static Color Tomato => new(255, 99, 71);
+    public static Color Transparent => Black.WithAlpha(0);
     public static Color Turquoise => new(64, 224, 208);
     public static Color Violet => new(238, 130, 238);
     public static Color Wheat => new(245, 222, 179);
