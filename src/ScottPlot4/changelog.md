@@ -12,6 +12,7 @@ _not yet published on NuGet..._
 * Draggables: Added `DragSnapX` and `DragSnapY` functions to let users customize snapping (#2006, #2007) _Thanks @Agorath_
 * Plot: MatchAxis no longer modifies limits of unintended axes (#1980) _Thanks @PlayCreatively_
 * Plot: Improved error reporting for invalid axis limits (#1994) _Thanks @Xerxes004_
+* Signal Plot: Improved `GetPointNearestX()` accuracy for plots with high zoom (#1987, #2019, #2020) _Thanks @dhgigisoave_
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
