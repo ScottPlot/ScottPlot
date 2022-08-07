@@ -22,7 +22,7 @@ public class Plot
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color NextPaletteColor => Palette[Plottables.Count % Palette.Count];
+    public Color GetNextColor() => Palette.GetColor(Plottables.Count);
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
@@ -284,7 +284,7 @@ public class Plot
 
     public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        color ??= NextPaletteColor;
+        color ??= GetNextColor();
         Plottables.Scatter scatter = new(xs, ys) { Color = color.Value };
 
         Add(scatter);

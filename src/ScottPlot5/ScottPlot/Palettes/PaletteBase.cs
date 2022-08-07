@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.Palettes;
 
-namespace ScottPlot.Palettes
+public abstract class PaletteBase : IPalette, IReadOnlyList<Color>
 {
-    public abstract class PaletteBase : IPalette
-    {
-        protected abstract Color[] colors { get; }
-        public Color this[int index] => colors[index % Count];
+    protected abstract Color[] colors { get; }
 
-        public int Count => colors.Length;
+    public Color this[int index] => colors[index];
 
-        public IEnumerator<Color> GetEnumerator() => ((IEnumerable<Color>)colors).GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => colors.GetEnumerator();
-    }
+    public Color GetColor(int index) => colors[index % colors.Length];
+
+    public int Count => colors.Length;
+
+    public IEnumerator<Color> GetEnumerator() => ((IEnumerable<Color>)colors).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => colors.GetEnumerator();
 }
