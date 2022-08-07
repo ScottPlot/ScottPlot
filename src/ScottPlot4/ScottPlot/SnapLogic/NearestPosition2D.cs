@@ -7,26 +7,33 @@ namespace ScottPlot.SnapLogic;
 /// </summary>
 public class NearestPosition2D : ISnap2D
 {
-    private readonly double[] Xs;
-    private readonly double[] Ys;
+    private readonly Coordinate[] Coordinates;
+
+    public NearestPosition2D(Coordinate[] coordinates)
+    {
+        Coordinates = coordinates;
+    }
 
     public NearestPosition2D(double[] xs, double[] ys)
     {
         if (xs.Length != ys.Length)
-            throw new ArgumentException($"{nameof(Xs)} must have the same length as {nameof(Ys)}");
+            throw new ArgumentException($"{nameof(xs)} must have the same length as {nameof(ys)}");
 
-        Xs = xs;
-        Ys = ys;
+        Coordinates = new Coordinate[xs.Length];
+        for (int i = 0; i < xs.Length; i++)
+        {
+            Coordinates[i] = new Coordinate(xs[i], ys[i]);
+        }
     }
 
     public Coordinate Snap(Coordinate value)
     {
         double closestDistance = double.MaxValue;
         int closestIndex = 0;
-        for (int i = 0; i < Xs.Length; i++)
+        for (int i = 0; i < Coordinates.Length; i++)
         {
-            double dX = Math.Abs(Xs[i] - value.X);
-            double dY = Math.Abs(Ys[i] - value.Y);
+            double dX = Math.Abs(Coordinates[i].X - value.X);
+            double dY = Math.Abs(Coordinates[i].Y - value.Y);
             double distance = dX * dX + dY * dY;
             if (distance < closestDistance)
             {
@@ -34,6 +41,6 @@ public class NearestPosition2D : ISnap2D
                 closestIndex = i;
             }
         }
-        return new Coordinate(Xs[closestIndex], Ys[closestIndex]);
+        return Coordinates[closestIndex];
     }
 }
