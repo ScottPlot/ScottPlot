@@ -284,7 +284,7 @@ public class Plot
 
     public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        color ??= NextPaletteColor;
+        color ??= GetNextColor();
         Plottables.Scatter scatter = new(xs, ys) { Color = color.Value };
 
         Add(scatter);
