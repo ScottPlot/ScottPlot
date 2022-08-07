@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Drawing;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
@@ -115,12 +116,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+        public ISnap DragSnapX { get; set; } = new Smooth();
 
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+        public ISnap DragSnapY { get; set; } = new Smooth();
 
         public AxisLineVector(bool isHorizontal)
         {

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Text;
+using ScottPlot.Plottable;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -111,28 +110,78 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
         public string ID => "axisLine_draggable_with_snap";
-        public string Title => "Drag with Snapping";
+        public string Title => "Draggable With Snapping";
         public string Description =>
-            "Custom logic can be added to draggables to customize how they snap.";
+            "Draggables can be configured to snap to the nearest integer or to user-defined list of Positions out of the box.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // a local function contains custom logic for snapping
-            static double snapToNearestInteger(double coordinate)
+            plt.AddSignal(DataGen.Sin(51, mult: 5));
+            plt.AddSignal(DataGen.Cos(51, mult: 5));
+
+            var hLine = plt.AddHorizontalLine(2);
+            hLine.DragEnabled = true;
+            hLine.DragSnapY = new ScottPlot.SnapLogic.NearestInteger();
+
+            var vLine = plt.AddVerticalLine(30);
+            vLine.DragEnabled = true;
+            var snapPositions = DataGen.Consecutive(11, 5D);
+            vLine.DragSnapX = new ScottPlot.SnapLogic.NearestPosition(snapPositions);
+        }
+    }
+
+    public class DraggableSnapCustom : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLine_draggable_with_snap_custom_snap";
+        public string Title => "Draggable Custom Snap Function";
+        public string Description =>
+            "Custom logic can be added to draggables to customize how they snap.";
+
+        class CustomSnap : ISnap
+        {
+            // Snap to nearest integer divisible by 3
+            public double Snap(double value)
             {
-                return Math.Round(coordinate);
+                var rounded = (int)Math.Round(value);
+                var distanceToDivisibleBy3 = rounded % 3;
+                return distanceToDivisibleBy3 switch
+                {
+                    0 => rounded,
+                    1 => rounded - 1,
+                    _ => rounded + 1
+                };
             }
+        }
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // class CustomSnap : ISnap
+            // {
+            //     // Snap to nearest integer divisible by 3
+            //     public double Snap(double value)
+            //     {
+            //         var rounded = (int)Math.Round(value);
+            //         var distanceToDivisibleBy3 = rounded % 3;
+            //         return distanceToDivisibleBy3 switch
+            //         {
+            //             0 => rounded,
+            //             1 => rounded - 1,
+            //             _ => rounded + 1
+            //         };
+            //     }
+            // }
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
 
             var hLine = plt.AddHorizontalLine(2);
             hLine.DragEnabled = true;
-            hLine.DragSnapY = snapToNearestInteger;
+            hLine.DragSnapY = new NearestInteger();
 
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnapX = snapToNearestInteger;
+            vLine.DragSnapX = new CustomSnap();
         }
     }
 

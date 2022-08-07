@@ -1,7 +1,7 @@
 ﻿using ScottPlot;
-using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ScottPlot.SnapLogic;
 
 namespace WinFormsApp
 {
@@ -22,41 +22,13 @@ namespace WinFormsApp
 
             VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
             VLine.DragEnabled = true;
-            VLine.DragSnapX = SnapToX;
+            VLine.DragSnapX = new NearestPosition(XSnapPositions);
 
             HLine = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
             HLine.DragEnabled = true;
-            HLine.DragSnapY = SnapToY;
+            HLine.DragSnapY = new NearestPosition(YSnapPositions);
 
             formsPlot1.Refresh();
-        }
-
-        private double SnapToX(double mousePosition)
-        {
-            return GetClosestPosition(mousePosition, XSnapPositions);
-        }
-
-        private double SnapToY(double mousePosition)
-        {
-            return GetClosestPosition(mousePosition, YSnapPositions);
-        }
-
-        private double GetClosestPosition(double mouse, double[] snaps)
-        {
-            double closestDistance = double.MaxValue;
-            double closestPosition = double.MaxValue;
-
-            for (int i = 0; i < snaps.Length; i++)
-            {
-                double distance = Math.Abs(mouse - snaps[i]);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestPosition = snaps[i];
-                }
-            }
-
-            return closestPosition;
         }
     }
 }

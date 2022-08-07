@@ -1,10 +1,8 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
@@ -100,12 +98,20 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+        public ISnap DragSnapX
+        {
+            get => new Smooth();
+            set => throw new NotImplementedException("This plot type does not support custom snap functions at the moment.");
+        }
 
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+        public ISnap DragSnapY
+        {
+            get => new Smooth();
+            set => throw new NotImplementedException("This plot type does not support custom snap functions at the moment.");
+        }
 
         public AxisLimits GetAxisLimits()
         {
@@ -147,8 +153,8 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX(coordinateX);
-            coordinateY = DragSnapY(coordinateY);
+            coordinateX = DragSnapX.Snap(coordinateX);
+            coordinateY = DragSnapY.Snap(coordinateY);
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;
