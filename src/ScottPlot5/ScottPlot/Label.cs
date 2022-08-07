@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp;
+
+namespace ScottPlot;
 
 public struct Label
 {
@@ -9,35 +11,37 @@ public struct Label
     public bool Bold { get; set; } = false;
     public bool Italic { get; set; } = false;
     public bool AntiAlias { get; set; } = true;
+    public float Rotation { get; set; } = 0;
 
-    public SkiaSharp.SKPaint GetPaint()
+    public SKPaint MakePaint()
     {
-        return new SkiaSharp.SKPaint()
+        return new SKPaint()
         {
             TextSize = FontSize,
             FakeBoldText = Bold,
             Color = Color.ToSKColor(),
             IsAntialias = AntiAlias,
+            TextAlign = SKTextAlign.Center,
         };
     }
 
-    public SkiaSharp.SKFont GetFont()
+    public SKFont MakeFont()
     {
-        return new SkiaSharp.SKFont(SkiaSharp.SKTypeface.FromFamilyName(Font), FontSize);
+        return new SKFont(SKTypeface.FromFamilyName(Font), FontSize);
     }
 
     public Label()
     {
     }
 
-    public Label(string text)
+    public void Draw(SKSurface surface, Pixel point, SKPaint paint)
     {
-        Text = text;
-    }
-
-    public Label(string text, float fontSize)
-    {
-        Text = text;
-        FontSize = fontSize;
+        using SKFont font = MakeFont();
+        font.Embolden = Bold;
+        surface.Canvas.Save();
+        surface.Canvas.Translate(point.X, point.Y);
+        surface.Canvas.RotateDegrees(Rotation);
+        surface.Canvas.DrawText(Text, 0, FontSize, font, paint);
+        surface.Canvas.Restore();
     }
 }

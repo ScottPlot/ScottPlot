@@ -97,6 +97,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+
         public AxisLimits GetAxisLimits()
         {
             return new AxisLimits(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
@@ -136,6 +146,9 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            coordinateX = DragSnapX(coordinateX);
+            coordinateY = DragSnapY(coordinateY);
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;

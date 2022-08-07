@@ -112,6 +112,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Max { get; set; } = double.PositiveInfinity;
 
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+
         public AxisLineVector(bool isHorizontal)
         {
             IsHorizontal = isHorizontal;

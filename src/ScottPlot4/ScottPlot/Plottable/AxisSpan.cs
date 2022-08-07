@@ -43,6 +43,16 @@ namespace ScottPlot.Plottable
         /// </summary>
         public event EventHandler Dragged = delegate { };
 
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapX { get; set; } = (x) => x;
+
+        /// <summary>
+        /// This function applies snapping logic while dragging
+        /// </summary>
+        public Func<double, double> DragSnapY { get; set; } = (y) => y;
+
         public AxisSpan(bool isHorizontal)
         {
             IsHorizontal = isHorizontal;
@@ -128,6 +138,9 @@ namespace ScottPlot.Plottable
         {
             if (!DragEnabled)
                 return;
+
+            coordinateX = DragSnapX(coordinateX);
+            coordinateY = DragSnapY(coordinateY);
 
             if (IsHorizontal)
             {
