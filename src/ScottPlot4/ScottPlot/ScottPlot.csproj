@@ -67,8 +67,6 @@
     <ItemGroup>
         <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
         <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
-		<Compile Include="..\..\Common\ScottPlot.Common\HexPalettes\*.cs" >
-			<Link>HexPalettes\%(Filename)%(Extension)</Link>
-		</Compile>
+        <Compile Include="..\..\Common\ScottPlot.Common\HexPalettes\*.cs" />
     </ItemGroup>
 </Project>
