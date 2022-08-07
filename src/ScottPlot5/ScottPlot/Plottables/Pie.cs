@@ -1,16 +1,11 @@
 ﻿using ScottPlot.Style;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Plottables
 {
     public class PieSlice
     {
-        // TODO: Label?
+        public Label? Label { get; set; } = null; // TODO: render label
         public double Value { get; set; }
         public Fill Fill { get; set; }
 
@@ -46,35 +41,44 @@ namespace ScottPlot.Plottables
 
             surface.Canvas.ClipRect(dataRect.ToSKRect()); // TODO: This too?
 
-
             double total = Slices.Sum(s => s.Value);
-            var origin = new Pixel(XAxis.GetPixel(0, dataRect), YAxis.GetPixel(0, dataRect));
+            float[] sweeps = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
 
-            // TODO: Bring back PxPerUnit?
-            double radius = Math.Min(Math.Abs(XAxis.GetPixel(1, dataRect) - origin.X), Math.Abs(YAxis.GetPixel(1, dataRect) - origin.Y));
-            SKRect rect = new((float)(origin.X - radius), (float)(origin.Y - radius), (float)(origin.X + radius), (float)(origin.Y + radius));
+            Pixel origin = new(
+                x: XAxis.GetPixel(0, dataRect),
+                y: YAxis.GetPixel(0, dataRect));
+
+            float minX = Math.Abs(XAxis.GetPixel(1, dataRect) - origin.X);
+            float minY = Math.Abs(YAxis.GetPixel(1, dataRect) - origin.Y);
+            float radius = Math.Min(minX, minY);
+            float explosionRadius = 0;
+            SKRect rect = new(-radius, -radius, radius, radius);
 
             using SKPath path = new();
             using SKPaint paint = new() { IsAntialias = true };
 
-            double start = 0;
-            foreach (var slice in Slices)
+            float sweepStart = 0;
+            for (int i = 0; i < Slices.Count(); i++)
             {
-                double sweep = slice.Value / total * 360;
+                int savePoint = surface.Canvas.Save();
+                surface.Canvas.Translate(origin.X, origin.Y);
+                surface.Canvas.RotateDegrees(sweepStart - (sweeps[0] / 2));
+                surface.Canvas.Translate(explosionRadius, explosionRadius);
 
-                path.MoveTo(origin.X, origin.Y);
-                path.ArcTo(rect, (float)start, (float)sweep, false);
+                path.MoveTo(0, 0);
+                path.ArcTo(rect, 0, sweeps[i], false);
                 path.Close();
 
-                paint.SetFill(slice.Fill);
+                paint.SetFill(Slices[i].Fill);
                 surface.Canvas.DrawPath(path, paint);
 
                 paint.SetStroke(Stroke);
                 surface.Canvas.DrawPath(path, paint);
 
                 path.Reset();
+                surface.Canvas.RestoreToCount(savePoint);
 
-                start += sweep;
+                sweepStart += sweeps[i];
             }
         }
     }
