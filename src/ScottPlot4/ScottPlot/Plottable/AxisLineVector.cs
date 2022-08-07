@@ -266,6 +266,9 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
+            coordinateX = DragSnapX.Snap(coordinateX);
+            coordinateY = DragSnapY.Snap(coordinateY);
+
             if (IsHorizontal)
             {
                 if (coordinateY < DragLimitMin) coordinateY = DragLimitMin;
