@@ -117,15 +117,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
+            double[] snapPositions = DataGen.Consecutive(11, 5);
+
+            // different snap sytems can be created and customized 
+            var SnapDisabled = new ScottPlot.SnapLogic.Smooth();
+            var SnapNearestInt = new ScottPlot.SnapLogic.NearestInteger();
+            var SnapNearestInList = new ScottPlot.SnapLogic.NearestPosition(snapPositions);
 
             var hLine = plt.AddHorizontalLine(2);
             hLine.DragEnabled = true;
-            hLine.DragSnapY = new ScottPlot.SnapLogic.NearestInteger();
+            hLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(x: SnapDisabled, y: SnapNearestInt);
 
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            var snapPositions = DataGen.Consecutive(11, 5D);
-            vLine.DragSnapX = new ScottPlot.SnapLogic.NearestPosition(snapPositions);
+            vLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(x: SnapNearestInList, y: SnapDisabled);
         }
     }
 
@@ -147,12 +152,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 else return (int)Math.Round(value / 3) * 3;
             }
 
+            // different snap sytems can be created and customized 
+            var SnapDisabled = new ScottPlot.SnapLogic.Smooth();
+            var SnapCustom = new SnapLogic.Custom(CustomSnapFunction);
+
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
 
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnapX = new SnapLogic.Custom(CustomSnapFunction);
+            vLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(SnapCustom, SnapDisabled);
         }
     }
 
