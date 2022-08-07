@@ -110,7 +110,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "axisLine_draggable_with_snap";
         public string Title => "Draggable With Snapping";
         public string Description =>
-            "Draggables can be configured to snap to the nearest integer or to user-defined list of Positions out of the box.";
+            "Draggables can be configured to snap to the nearest integer or " +
+            "to a user-defined list of Positions out of the box.";
 
         public void ExecuteRecipe(Plot plt)
         {
