@@ -1,7 +1,6 @@
-﻿using System;
+﻿using ScottPlot.SnapLogic;
+using System;
 using System.Drawing;
-using ScottPlot.Plottable;
-using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -138,39 +137,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Description =>
             "Custom logic can be added to draggables to customize how they snap.";
 
-        class CustomSnap : ISnap
+        public void ExecuteRecipe(Plot plt)
         {
-            // Snap to nearest integer divisible by 3
-            public double Snap(double value)
+            double NearestMultipleOfThree(double value)
             {
                 var rounded = (int)Math.Round(value);
-                var distanceToDivisibleBy3 = rounded % 3;
-                return distanceToDivisibleBy3 switch
+                return rounded % 3 switch
                 {
                     0 => rounded,
                     1 => rounded - 1,
                     _ => rounded + 1
                 };
             }
-        }
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // class CustomSnap : ISnap
-            // {
-            //     // Snap to nearest integer divisible by 3
-            //     public double Snap(double value)
-            //     {
-            //         var rounded = (int)Math.Round(value);
-            //         var distanceToDivisibleBy3 = rounded % 3;
-            //         return distanceToDivisibleBy3 switch
-            //         {
-            //             0 => rounded,
-            //             1 => rounded - 1,
-            //             _ => rounded + 1
-            //         };
-            //     }
-            // }
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
@@ -181,7 +159,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnapX = new CustomSnap();
+            vLine.DragSnapX = new SnapLogic.Custom(NearestMultipleOfThree);
         }
     }
 
