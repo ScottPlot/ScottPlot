@@ -174,8 +174,6 @@ namespace ScottPlot
         {
             var sourceLimits = sourcePlot.GetAxisLimits();
 
-            AxisAuto();
-
             if (horizontal)
             {
                 SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax);
