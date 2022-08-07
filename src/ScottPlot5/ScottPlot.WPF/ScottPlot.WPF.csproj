@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <LangVersion>latest</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

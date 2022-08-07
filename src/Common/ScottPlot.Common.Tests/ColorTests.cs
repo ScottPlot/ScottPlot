@@ -17,10 +17,10 @@ namespace ScottPlot.Common.Tests
         public void TestFromHex(string hex, byte expectedR, byte expectedG, byte expectedB, byte expectedA)
         {
             Color actual = Color.FromHex(hex);
-            Assert.AreEqual(expectedR, actual.Red);
-            Assert.AreEqual(expectedG, actual.Green);
-            Assert.AreEqual(expectedB, actual.Blue);
-            Assert.AreEqual(expectedA, actual.Alpha);
+            Assert.That(actual.Red, Is.EqualTo(expectedR));
+            Assert.That(actual.Green, Is.EqualTo(expectedG));
+            Assert.That(actual.Blue, Is.EqualTo(expectedB));
+            Assert.That(actual.Alpha, Is.EqualTo(expectedA));
         }
     }
 }

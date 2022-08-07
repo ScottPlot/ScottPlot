@@ -65,13 +65,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinForms", "ScottPlot5\Sand
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot5\ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{EF12AC4A-2682-43F5-9ABB-30B150759711}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Avalonia", "ScottPlot5\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj", "{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Avalonia", "ScottPlot5\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj", "{2FD4FDCD-228B-4CC3-BD7D-4DBA53929533}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5\controls\Sandbox\ScottPlot.Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{6A354C19-0C9D-45D3-8062-6D5DBA99714F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5\Sandbox\ScottPlot.Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{6A354C19-0C9D-45D3-8062-6D5DBA99714F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Eto", "ScottPlot5\ScottPlot.Eto\ScottPlot.Eto.csproj", "{0644334C-7683-4B90-A757-2218D4D72E26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5\controls\Sandbox\ScottPlot.Sandbox.Eto\Sandbox.Eto.csproj", "{945D7240-71CD-4034-AA3D-58DF8EF819EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5\Sandbox\ScottPlot.Sandbox.Eto\Sandbox.Eto.csproj", "{945D7240-71CD-4034-AA3D-58DF8EF819EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

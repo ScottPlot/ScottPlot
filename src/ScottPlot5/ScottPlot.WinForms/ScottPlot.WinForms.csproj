@@ -6,6 +6,8 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>NU1701</NoWarn> <!-- OpenTK.GLControl restored using .NET Framework 4.6.1 -->
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+        <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
     </ItemGroup>
 
 </Project>

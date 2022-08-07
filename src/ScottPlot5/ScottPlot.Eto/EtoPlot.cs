@@ -65,44 +65,44 @@ namespace ScottPlot.Eto
             args.Graphics.DrawImage(bmp, 0, 0);
         }
 
-        private void OnMouseDown(object sender, MouseEventArgs e)
+        private void OnMouseDown(object? sender, MouseEventArgs e)
         {
             Focus();
 
             Interaction.MouseDown(e.Pixel(), e.ToButton());
         }
 
-        private void OnMouseUp(object sender, MouseEventArgs e)
+        private void OnMouseUp(object? sender, MouseEventArgs e)
         {
             Interaction.MouseUp(e.Pixel(), e.ToButton());
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+        private void OnMouseMove(object? sender, MouseEventArgs e)
         {
             Interaction.OnMouseMove(e.Pixel());
         }
 
-        private void OnMouseWheel(object sender, MouseEventArgs e)
+        private void OnMouseWheel(object? sender, MouseEventArgs e)
         {
             Interaction.MouseWheelVertical(e.Pixel(), e.Delta.Height);
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private void OnKeyDown(object? sender, KeyEventArgs e)
         {
             Interaction.KeyDown(e.Key());
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs e)
+        private void OnKeyUp(object? sender, KeyEventArgs e)
         {
             Interaction.KeyUp(e.Key());
         }
 
-        private void OnDoubleClick(object sender, MouseEventArgs e)
+        private void OnDoubleClick(object? sender, MouseEventArgs e)
         {
             Interaction.DoubleClick();
         }
 
-        private void OnSizeChanged(object sender, EventArgs e)
+        private void OnSizeChanged(object? sender, EventArgs e)
         {
             Refresh();
         }

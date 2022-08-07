@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

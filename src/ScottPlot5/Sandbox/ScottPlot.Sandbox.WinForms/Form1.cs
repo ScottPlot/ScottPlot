@@ -21,7 +21,7 @@ public partial class Form1 : Form
         formsPlot1.MouseMove += FormsPlot1_MouseMove;
     }
 
-    private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
+    private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
         Text = e.X.ToString();
         DebugPoint.Position = formsPlot1.Interaction.GetMouseCoordinates();
