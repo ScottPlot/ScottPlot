@@ -41,48 +41,48 @@ public class FormsPlot : UserControl, IPlotControl
         base.Refresh();
     }
 
-    private void SKControl_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
+    private void SKControl_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
     {
         Plot.Render(e.Surface);
     }
 
-    private void SKElement_MouseDown(object sender, MouseEventArgs e)
+    private void SKElement_MouseDown(object? sender, MouseEventArgs e)
     {
         Interaction.MouseDown(e.Pixel(), e.Button());
         base.OnMouseDown(e);
     }
 
-    private void SKElement_MouseUp(object sender, MouseEventArgs e)
+    private void SKElement_MouseUp(object? sender, MouseEventArgs e)
     {
         Interaction.MouseUp(e.Pixel(), e.Button());
         base.OnMouseUp(e);
     }
 
-    private void SKElement_MouseMove(object sender, MouseEventArgs e)
+    private void SKElement_MouseMove(object? sender, MouseEventArgs e)
     {
         Interaction.OnMouseMove(e.Pixel());
         base.OnMouseMove(e);
     }
 
-    private void SKElement_DoubleClick(object sender, EventArgs e)
+    private void SKElement_DoubleClick(object? sender, EventArgs e)
     {
         Interaction.DoubleClick();
         base.OnDoubleClick(e);
     }
 
-    private void SKElement_MouseWheel(object sender, MouseEventArgs e)
+    private void SKElement_MouseWheel(object? sender, MouseEventArgs e)
     {
         Interaction.MouseWheelVertical(e.Pixel(), e.Delta);
         base.OnMouseWheel(e);
     }
 
-    private void SKElement_KeyDown(object sender, KeyEventArgs e)
+    private void SKElement_KeyDown(object? sender, KeyEventArgs e)
     {
         Interaction.KeyDown(e.Key());
         base.OnKeyDown(e);
     }
 
-    private void SKElement_KeyUp(object sender, KeyEventArgs e)
+    private void SKElement_KeyUp(object? sender, KeyEventArgs e)
     {
         Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+    <ProjectReference Include="..\..\ScottPlot.Eto\ScottPlot.Eto.csproj" />
   </ItemGroup>
 
   <ItemGroup>

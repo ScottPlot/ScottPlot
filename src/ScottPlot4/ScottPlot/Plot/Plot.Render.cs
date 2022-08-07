@@ -76,6 +76,9 @@ namespace ScottPlot
                     settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) :
                     settings.GetPlotDimensions(0, 0, scaleFactor);
 
+                if (double.IsInfinity(dims.XSpan) || double.IsInfinity(dims.YSpan))
+                    throw new InvalidOperationException($"Axis limits cannot be infinite: {dims}");
+
                 try
                 {
                     plottable.Render(dims, bmp, lowQuality);

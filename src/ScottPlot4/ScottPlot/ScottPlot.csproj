@@ -30,6 +30,7 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -66,5 +67,6 @@
     <ItemGroup>
         <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
         <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
+        <Compile Include="..\..\Common\ScottPlot.Common\HexPalettes\*.cs" />
     </ItemGroup>
 </Project>
