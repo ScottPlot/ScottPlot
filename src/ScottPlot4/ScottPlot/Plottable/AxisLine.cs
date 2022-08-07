@@ -6,7 +6,7 @@ using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisLine : IDraggable, IPlottable, IHasLine, IHasColor
+    public abstract class AxisLine : IDraggable, IDraggableSnap1D, IPlottable, IHasLine, IHasColor
     {
         /// <summary>
         /// Location of the line (Y position if horizontal line, X position if vertical line)

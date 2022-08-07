@@ -6,7 +6,7 @@ using ScottPlot.SnapLogic;
 namespace ScottPlot.Plottable
 {
 
-    public abstract class RepeatingAxisLine : IDraggable, IPlottable, IHasColor
+    public abstract class RepeatingAxisLine : IDraggable, IDraggableSnap1D, IPlottable, IHasColor
     {
         /// <summary>
         /// Location of the reference line (Y position if horizontal line, X position if vertical line)

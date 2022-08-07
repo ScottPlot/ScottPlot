@@ -6,7 +6,7 @@ using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea
+    public abstract class AxisSpan : IPlottable, IDraggable, IDraggableSnap1D, IHasColor, IHasArea
     {
         // location and orientation
         protected double Position1;

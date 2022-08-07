@@ -4,7 +4,7 @@ using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlotListDraggable : ScatterPlotList<double>, IDraggable
+    public class ScatterPlotListDraggable : ScatterPlotList<double>, IDraggable, IDraggableSnap2D
     {
         private int IndexUnderMouse { get; set; } = -1;
         public bool DragEnabled { get; set; } = true;
@@ -13,10 +13,12 @@ namespace ScottPlot.Plottable
 
         public event EventHandler Dragged = delegate { };
 
-        public ISnap DragSnapX { get; set; } = new Smooth();
+        public ISnap2D DragSnapXY { get; set; } = new Smooth2D();
 
-        public ISnap DragSnapY { get; set; } = new Smooth();
-
+        /// <summary>
+        /// Assign custom the logic here to control where individual points can be moved.
+        /// This logic occurs after snapping.
+        /// </summary>
         public Func<List<double>, List<double>, int, Coordinate, Coordinate> MovePointFunc { get; set; } = (xs, ys, index, moveTo) => moveTo;
 
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
@@ -24,11 +26,9 @@ namespace ScottPlot.Plottable
             if (!DragEnabled || IndexUnderMouse < 0)
                 return;
 
-            coordinateX = DragSnapX.Snap(coordinateX);
-            coordinateY = DragSnapY.Snap(coordinateY);
-
             Coordinate requested = new(coordinateX, coordinateY);
-            Coordinate actual = MovePointFunc(Xs, Ys, IndexUnderMouse, requested);
+            Coordinate snapped = DragSnapXY.Snap(requested);
+            Coordinate actual = MovePointFunc(Xs, Ys, IndexUnderMouse, snapped);
             Xs[IndexUnderMouse] = actual.X;
             Ys[IndexUnderMouse] = actual.Y;
 

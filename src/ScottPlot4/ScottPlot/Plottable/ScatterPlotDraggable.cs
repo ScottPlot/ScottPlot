@@ -7,7 +7,7 @@ namespace ScottPlot.Plottable
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
     /// </summary>
-    public class ScatterPlotDraggable : ScatterPlot, IDraggable
+    public class ScatterPlotDraggable : ScatterPlot, IDraggable, IDraggableSnap2D
     {
         public new double[] Xs { get; private set; }
         public new double[] Ys { get; private set; }
@@ -61,12 +61,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// This function applies snapping logic while dragging
         /// </summary>
-        public ISnap DragSnapX { get; set; } = new Smooth();
-
-        /// <summary>
-        /// This function applies snapping logic while dragging
-        /// </summary>
-        public ISnap DragSnapY { get; set; } = new Smooth();
+        public ISnap2D DragSnapXY { get; set; } = new Smooth2D();
 
         /// <summary>
         /// Move a scatter point to a new coordinate in plot space.
@@ -79,8 +74,10 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            coordinateX = DragSnapX.Snap(coordinateX);
-            coordinateY = DragSnapY.Snap(coordinateY);
+            Coordinate original = new(coordinateX, coordinateY);
+            Coordinate snapped = DragSnapXY.Snap(original);
+            coordinateX = snapped.X;
+            coordinateY = snapped.Y;
 
             if (coordinateX < DragXLimitMin) coordinateX = DragXLimitMin;
             if (coordinateX > DragXLimitMax) coordinateX = DragXLimitMax;
