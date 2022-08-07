@@ -1,5 +1,4 @@
-﻿using ScottPlot.SnapLogic;
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -139,27 +138,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double NearestMultipleOfThree(double value)
+            double CustomSnapFunction(double value)
             {
-                var rounded = (int)Math.Round(value);
-                return rounded % 3 switch
-                {
-                    0 => rounded,
-                    1 => rounded - 1,
-                    _ => rounded + 1
-                };
+                // multiple of 3 between 0 and 50
+                if (value < 0) return 0;
+                else if (value > 50) return 50;
+                else return (int)Math.Round(value / 3) * 3;
             }
 
             plt.AddSignal(DataGen.Sin(51, mult: 5));
             plt.AddSignal(DataGen.Cos(51, mult: 5));
 
-            var hLine = plt.AddHorizontalLine(2);
-            hLine.DragEnabled = true;
-            hLine.DragSnapY = new NearestInteger();
-
             var vLine = plt.AddVerticalLine(30);
             vLine.DragEnabled = true;
-            vLine.DragSnapX = new SnapLogic.Custom(NearestMultipleOfThree);
+            vLine.DragSnapX = new SnapLogic.Custom(CustomSnapFunction);
         }
     }
 
