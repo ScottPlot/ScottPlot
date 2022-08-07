@@ -51,7 +51,7 @@ namespace ScottPlot.Plottables
             float minX = Math.Abs(XAxis.GetPixel(1, dataRect) - origin.X);
             float minY = Math.Abs(YAxis.GetPixel(1, dataRect) - origin.Y);
             float radius = Math.Min(minX, minY);
-            float explosionRadius = 0;
+            float explosionRadius = 0.03f * radius;
             SKRect rect = new(-radius, -radius, radius, radius);
 
             using SKPath path = new();
@@ -62,11 +62,11 @@ namespace ScottPlot.Plottables
             {
                 int savePoint = surface.Canvas.Save();
                 surface.Canvas.Translate(origin.X, origin.Y);
-                surface.Canvas.RotateDegrees(sweepStart - (sweeps[0] / 2));
-                surface.Canvas.Translate(explosionRadius, explosionRadius);
+                surface.Canvas.RotateDegrees(sweepStart + sweeps[i] / 2);
+                surface.Canvas.Translate(explosionRadius, 0);
 
                 path.MoveTo(0, 0);
-                path.ArcTo(rect, 0, sweeps[i], false);
+                path.ArcTo(rect, -sweeps[i] / 2, sweeps[i], false);
                 path.Close();
 
                 paint.SetFill(Slices[i].Fill);
