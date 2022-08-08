@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void UpdatePlot()
         {
             var style = (ScottPlot.Styles.IStyle)lbStyles.SelectedItem;
-            var palette = (ScottPlot.Drawing.Palette)lbPalettes.SelectedItem;
+            var palette = (ScottPlot.IPalette)lbPalettes.SelectedItem;
 
             if (style is null || palette is null)
                 return;

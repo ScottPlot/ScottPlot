@@ -4,66 +4,51 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-/* 
- * Palettes are collections of colors that control the default colors for new plottables added to the plot.
- * This file contains code that bridges the gap between ScottPlot 4 Colorsets and ScottPlot 5 Palettes.
- */
+namespace ScottPlot;
 
-namespace ScottPlot
+/// <summary>
+/// Fields and methods for accessing color palettes
+/// </summary>
+public static class Palette
 {
-    /* This module will be expanded in ScottPlot 5 */
-    public static class Palette
+    public static IPalette Amber => new Palettes.Amber();
+    public static IPalette Aurora => new Palettes.Aurora();
+    public static IPalette Category10 => new Palettes.Category10();
+    public static IPalette Category20 => new Palettes.Category20();
+    public static IPalette ColorblindFriendly => new Palettes.ColorblindFriendly();
+    public static IPalette Dark => new Palettes.Dark();
+    public static IPalette DarkPastel => new Palettes.DarkPastel();
+    public static IPalette Frost => new Palettes.Frost();
+    public static IPalette Microcharts => new Palettes.Microcharts();
+    public static IPalette Nero => new Palettes.Nero();
+    public static IPalette Nord => new Palettes.Nord();
+    public static IPalette OneHalf => new Palettes.OneHalf();
+    public static IPalette OneHalfDark => new Palettes.OneHalfDark();
+    public static IPalette PolarNight => new Palettes.PolarNight();
+    public static IPalette Redness => new Palettes.Redness();
+    public static IPalette SnowStorm => new Palettes.Snowstorm();
+    public static IPalette Tsitsulin => new Palettes.Tsitsulin();
+
+
+    /// <summary>
+    /// Create a new color palette from an array of HTML colors
+    /// </summary>
+    public static IPalette FromHtmlColors(string[] htmlColors)
     {
-        public static ScottPlot.Drawing.Palette Amber => new(new ScottPlot.Drawing.Colorsets.Amber());
-        public static ScottPlot.Drawing.Palette Aurora => new(new ScottPlot.Drawing.Colorsets.Aurora());
-        public static ScottPlot.Drawing.Palette Category10 => new(new ScottPlot.Drawing.Colorsets.Category10());
-        public static ScottPlot.Drawing.Palette Category20 => new(new ScottPlot.Drawing.Colorsets.Category20());
-        public static ScottPlot.Drawing.Palette ColorblindFriendly => new(new ScottPlot.Drawing.Colorsets.ColorblindFriendly());
-        public static ScottPlot.Drawing.Palette Dark => new(new ScottPlot.Drawing.Colorsets.Dark());
-        public static ScottPlot.Drawing.Palette DarkPastel => new(new ScottPlot.Drawing.Colorsets.DarkPastel());
-        public static ScottPlot.Drawing.Palette Frost => new(new ScottPlot.Drawing.Colorsets.Frost());
-        public static ScottPlot.Drawing.Palette Microcharts => new(new ScottPlot.Drawing.Colorsets.Microcharts());
-        public static ScottPlot.Drawing.Palette Nero => new(new ScottPlot.Drawing.Colorsets.Nero());
-        public static ScottPlot.Drawing.Palette Nord => new(new ScottPlot.Drawing.Colorsets.Nord());
-        public static ScottPlot.Drawing.Palette OneHalf => new(new ScottPlot.Drawing.Colorsets.OneHalf());
-        public static ScottPlot.Drawing.Palette OneHalfDark => new(new ScottPlot.Drawing.Colorsets.OneHalfDark());
-        public static ScottPlot.Drawing.Palette PolarNight => new(new ScottPlot.Drawing.Colorsets.PolarNight());
-        public static ScottPlot.Drawing.Palette Redness => new(new ScottPlot.Drawing.Colorsets.Redness());
-        public static ScottPlot.Drawing.Palette SnowStorm => new(new ScottPlot.Drawing.Colorsets.Snowstorm());
-        public static ScottPlot.Drawing.Palette Tsitsulin => new(new ScottPlot.Drawing.Colorsets.Tsitsulin());
+        return new Palettes.HexPalette(htmlColors);
+    }
 
-        /// <summary>
-        /// Create a new color palette from an array of HTML colors
-        /// </summary>
-        public static ScottPlot.Drawing.Palette FromHtmlColors(string[] htmlColors)
-        {
-            return new ScottPlot.Drawing.Palette(htmlColors);
-        }
-
-        /// <summary>
-        /// Return an array containing every available style
-        /// </summary>
-        public static ScottPlot.Drawing.Palette[] GetPalettes()
-        {
-            return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(x => x.IsClass)
-                .Where(x => !x.IsAbstract)
-                .Where(x => x.GetInterfaces().Contains(typeof(ScottPlot.Drawing.IPalette)))
-                .Select(x => (ScottPlot.Drawing.IPalette)FormatterServices.GetUninitializedObject(x))
-                .Select(x => new ScottPlot.Drawing.Palette(x))
-                .Where(x => x.Count() > 0)
-                .ToArray();
-        }
-
-        public static string ToHex(Color c)
-        {
-            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-        }
-
-        public static string ToRGB(Color c)
-        {
-            return "RGB(" + c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ")";
-        }
+    /// <summary>
+    /// Return an array containing every available style
+    /// </summary>
+    public static IPalette[] GetPalettes()
+    {
+        return Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(x => x.IsClass)
+            .Where(x => !x.IsAbstract)
+            .Where(x => x.IsSubclassOf(typeof(Palettes.HexPaletteBase)))
+            .Select(x => (IPalette)x.GetConstructor(Type.EmptyTypes))
+            .ToArray();
     }
 }

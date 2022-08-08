@@ -2,10 +2,13 @@
  * https://github.com/arcticicestudio/nord
  * https://www.nordtheme.com/docs/colors-and-palettes
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class PolarNight : HexPaletteBase, IPalette
 {
-    public class PolarNight : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.PolarNight.Colors;
-    }
+        "#2E3440", "#3B4252", "#434C5E", "#4C566A",
+    };
 }

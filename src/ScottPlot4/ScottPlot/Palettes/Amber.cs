@@ -1,10 +1,13 @@
 ﻿/* Sourced from Material Design
  * https://material.io/design/color/the-color-system.html
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class Amber : HexPaletteBase, IPalette
 {
-    public class Amber : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Amber.Colors;
-    }
+        "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
+    };
 }

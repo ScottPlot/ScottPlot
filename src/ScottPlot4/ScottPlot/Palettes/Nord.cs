@@ -1,12 +1,15 @@
 ﻿/* Sourced from NordConEmu:
  * https://github.com/arcticicestudio/nord-conemu
  * Seems to be an extended version of Aurora
+ * suggested background: #2e3440
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class Nord : HexPaletteBase, IPalette
 {
-    public class Nord : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        // suggested background: #2e3440
-        public override string[] hexColors => Common.HexPalettes.Nord.Colors;
-    }
+        "#bf616a", "#a3be8c", "#ebcb8b", "#81a1c1", "#b48ead", "#88c0d0", "#e5e9f0"
+    };
 }

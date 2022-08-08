@@ -3,10 +3,15 @@
  * At the time the license file was accessed (2021-09-02) the original work was
  * released under a MIT License, Copyright (c) 2017 Aloïs Deniel.
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class Microcharts : HexPaletteBase, IPalette
 {
-    public class Microcharts : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Microcharts.Colors;
-    }
+        "#266489", "#68B9C0", "#90D585", "#F3C151", "#F37F64",
+        "#424856", "#8F97A4", "#DAC096", "#76846E", "#DABFAF",
+        "#A65B69", "#97A69D",
+    };
 }

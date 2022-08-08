@@ -100,7 +100,7 @@ public static class Website
             for (int i = 0; i < p.Count(); i++)
             {
                 System.Drawing.Color color = p.GetColor(i);
-                string hex = ScottPlot.Palette.ToHex(color);
+                string hex = "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
                 sb.AppendLine($"<div class='px-3 py-2' style='background-color: {hex};'>{hex}</div>");
             }
             sb.AppendLine("</div>");

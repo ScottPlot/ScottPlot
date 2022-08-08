@@ -3,10 +3,13 @@
  * https://www.color-hex.com/color-palette/616
  */
 
-namespace ScottPlot.Drawing.Colorsets
+namespace ScottPlot.Palettes;
+
+public class Redness : HexPaletteBase, IPalette
 {
-    public class Redness : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Redness.Colors;
-    }
+        "#FF0000", "#FF4F00", "#FFA900", "#900303", "#FF8181"
+    };
 }
+

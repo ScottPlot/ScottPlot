@@ -2,10 +2,14 @@
  * © Cynthia Brewer, Mark Harrower and The Pennsylvania State University
  * It is is both LCD and print friendly but not blind nor photocopy friendly
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class Dark : HexPaletteBase, IPalette
 {
-    public class Dark : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Dark.Colors;
-    }
+        "#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e",
+        "#e6ab02","#a6761d","#666666",
+    };
 }
