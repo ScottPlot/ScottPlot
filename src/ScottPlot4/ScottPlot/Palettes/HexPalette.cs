@@ -3,12 +3,10 @@
 /// <summary>
 /// Create a palette from HTML colors (e.g., #003366)
 /// </summary>
-public class HexPalette : HexPaletteBase
+public class HexPalette : PaletteBase
 {
-    internal override string[] HexColors { get; }
-
     public HexPalette(string[] hexColors)
     {
-        HexColors = HexColors;
+        Colors = FromHexColors(hexColors);
     }
 }

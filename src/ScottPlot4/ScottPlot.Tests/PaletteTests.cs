@@ -14,5 +14,13 @@ namespace ScottPlotTests
             foreach (var palette in palettes)
                 Console.WriteLine(palette);
         }
+
+        [Test]
+        public void Test_Custom_Palette()
+        {
+            string[] customColors = { "#019d9f", "#7d3091", "#57e075", "#e5b5fa", "#009118" };
+            var pal = ScottPlot.Palette.FromHtmlColors(customColors);
+            Assert.That(pal.Colors.Length, Is.EqualTo(customColors.Length));
+        }
     }
 }
