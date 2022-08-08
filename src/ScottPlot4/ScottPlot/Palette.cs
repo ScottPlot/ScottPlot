@@ -39,7 +39,7 @@ public static class Palette
     }
 
     /// <summary>
-    /// Return an array containing every available style
+    /// Return an array containing every available palette
     /// </summary>
     public static IPalette[] GetPalettes()
     {
@@ -47,8 +47,9 @@ public static class Palette
             .GetTypes()
             .Where(x => x.IsClass)
             .Where(x => !x.IsAbstract)
-            .Where(x => x.IsSubclassOf(typeof(Palettes.HexPaletteBase)))
-            .Select(x => (IPalette)x.GetConstructor(Type.EmptyTypes))
+            .Where(x => x.GetInterfaces().Contains(typeof(ScottPlot.IPalette)))
+            .Where(x => x.GetConstructors().Where(x => x.GetParameters().Count() == 0).Any())
+            .Select(x => (IPalette)Activator.CreateInstance(x))
             .ToArray();
     }
 }
