@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.Eto.EtoFormsDemos
         private void UpdatePlot()
         {
             var style = (ScottPlot.Styles.IStyle)lbStyles.SelectedValue;
-            var palette = (ScottPlot.Drawing.Palette)lbPalettes.SelectedValue;
+            var palette = (ScottPlot.IPalette)lbPalettes.SelectedValue;
 
             if (style is null || palette is null)
                 return;

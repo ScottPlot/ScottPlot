@@ -3,10 +3,14 @@
  * This 8-color palette has good overall variability and can be 
  * differentiated by individuals with red-green color blindness.
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class ColorblindFriendly : HexPaletteBase, IPalette
 {
-    public class ColorblindFriendly : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.ColorblindFriendly.Colors;
-    }
+        "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+        "#0072B2", "#D55E00", "#CC79A7",
+    };
 }

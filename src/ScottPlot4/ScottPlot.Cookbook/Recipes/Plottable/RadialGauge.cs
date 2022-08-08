@@ -31,7 +31,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             double[] values = { 100, 80, 65, 45, 20 };
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             plt.AddRadialGauge(values);
         }
     }
@@ -46,7 +46,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, -65, 45, -20 };
             plt.AddRadialGauge(values);
         }
@@ -63,7 +63,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 50 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -81,7 +81,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 50 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -101,7 +101,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -121,7 +121,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -139,7 +139,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
             var gauges = plt.AddRadialGauge(values);
             gauges.SpaceFraction = .05;
@@ -156,7 +156,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -177,7 +177,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -196,7 +196,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -215,7 +215,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -234,7 +234,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -252,7 +252,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -270,7 +270,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -288,7 +288,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -308,7 +308,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);
@@ -327,7 +327,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.Palette = ScottPlot.Drawing.Palette.Nord;
+            plt.Palette = ScottPlot.Palette.Nord;
             double[] values = { 100, 80, 65, 45, 20 };
 
             var gauges = plt.AddRadialGauge(values);

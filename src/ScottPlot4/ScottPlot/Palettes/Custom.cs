@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ScottPlot.Drawing.Colorsets
+namespace ScottPlot.Palettes;
+
+public class Custom : HexPaletteBase, IPalette
 {
-    public class Custom : HexColorset, IPalette
+    internal override string[] HexColors { get; }
+
+    public Custom(string[] hexColors)
     {
-        public override string[] hexColors { get; } = new string[] { };
+        if (hexColors is null)
+            throw new ArgumentNullException("must provide at least one color");
 
-        public Custom(string[] htmlColors)
-        {
-            if (htmlColors is null)
-                throw new ArgumentNullException("must provide at least one color");
+        if (hexColors.Length == 0)
+            throw new ArgumentException("must provide at least one color");
 
-            if (htmlColors.Length == 0)
-                throw new ArgumentException("must provide at least one color");
-
-            hexColors = htmlColors;
-        }
+        HexColors = hexColors;
     }
 }

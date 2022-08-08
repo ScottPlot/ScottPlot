@@ -20,7 +20,7 @@ namespace ScottPlotTests.Plot
         public void Test_Pallette_ThrowsIfSetToNull()
         {
             var plt = new ScottPlot.Plot();
-            Assert.DoesNotThrow(() => { plt.Palette = ScottPlot.Drawing.Palette.Category10; });
+            Assert.DoesNotThrow(() => { plt.Palette = ScottPlot.Palette.Category10; });
             Assert.Throws<ArgumentNullException>(() => { plt.Palette = null; });
         }
 
@@ -31,7 +31,7 @@ namespace ScottPlotTests.Plot
             plt1.AddSignal(ScottPlot.DataGen.Sin(51));
             plt1.AddSignal(ScottPlot.DataGen.Cos(51));
 
-            ScottPlot.Plot plt2 = new(400, 200) { Palette = ScottPlot.Drawing.Palette.Aurora };
+            ScottPlot.Plot plt2 = new(400, 200) { Palette = ScottPlot.Palette.Aurora };
             plt2.AddSignal(ScottPlot.DataGen.Sin(51));
             plt2.AddSignal(ScottPlot.DataGen.Cos(51));
 

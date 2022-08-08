@@ -2,10 +2,13 @@
  * https://github.com/arcticicestudio/nord
  * https://www.nordtheme.com/docs/colors-and-palettes
  */
-namespace ScottPlot.Drawing.Colorsets
+
+namespace ScottPlot.Palettes;
+
+public class Frost : HexPaletteBase, IPalette
 {
-    public class Frost : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Frost.Colors;
-    }
+        "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
+    };
 }

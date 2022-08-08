@@ -13,6 +13,7 @@ _not yet published on NuGet..._
 * Plot: Improved error reporting for invalid axis limits (#1994) _Thanks @Xerxes004_
 * Signal Plot: Improved `GetPointNearestX()` accuracy for plots with high zoom (#1987, #2019, #2020) _Thanks @dhgigisoave_
 * Draggable: Added custom functions to permit 1D and 2D snapping (#2006, #2007, #2022) _Thanks @Agorath_
+* Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_

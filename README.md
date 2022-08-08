@@ -78,7 +78,7 @@ See the [roadmap](dev/roadmap.md) and [changelog](https://scottplot.net/changelo
 
 ## ScottPlot Discord Channel
 
-* In July, 2022 maintainers started using the [ScottPlot Discord Channel](https://discord.gg/Dru6fnY2UX) to discuss progress developing the next major version of ScottPlot. Contributors and users are welcome to check it out!
+* In July, 2022 maintainers started using the [ScottPlot Discord Channel](https://scottplot.net/discord) to discuss progress developing the next major version of ScottPlot. Contributors and users are welcome to check it out!
 
 ## About ScottPlot
 

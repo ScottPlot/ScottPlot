@@ -1,7 +1,9 @@
-﻿namespace ScottPlot.Drawing.Colorsets
+﻿namespace ScottPlot.Palettes;
+
+public class Nero : HexPaletteBase, IPalette
 {
-    public class Nero : HexColorset, IPalette
+    internal override string[] HexColors => new string[]
     {
-        public override string[] hexColors => Common.HexPalettes.Nero.Colors;
-    }
+        "#013A20","#478C5C","#94C973","#BACC81","#CDD193"
+    };
 }
