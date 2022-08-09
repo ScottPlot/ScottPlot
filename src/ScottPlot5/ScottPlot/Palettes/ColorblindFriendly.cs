@@ -3,10 +3,18 @@
  * This 8-color palette has good overall variability and can be 
  * differentiated by individuals with red-green color blindness.
  */
-namespace ScottPlot.Palettes
+
+namespace ScottPlot.Palettes;
+
+public class ColorblindFriendly : HexPaletteBase, IPalette
 {
-    public class ColorblindFriendly : PaletteBase
+    public override string Name => "Colorblind Friendly";
+
+    public override string Description => "8 colorblind-friendly colors as described by Bang Wong (doi: 10.1038/nmeth.1618)";
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.ColorblindFriendly.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+        "#0072B2", "#D55E00", "#CC79A7",
+    };
 }

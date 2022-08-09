@@ -1,10 +1,17 @@
 ﻿/* Sourced from Son A. Pham's Sublime color scheme by the same name
  * https://github.com/sonph/onehalf
  */
-namespace ScottPlot.Palettes
+
+namespace ScottPlot.Palettes;
+
+public class OneHalfDark : HexPaletteBase, IPalette
 {
-    public class OneHalfDark : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.OneHalfDark.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#e06c75", "#98c379", "#e5c07b", "#61aff0", "#c678dd", "#56b6c2", "#dcdfe4"
+    };
 }

@@ -1,7 +1,19 @@
-﻿namespace ScottPlot.Palettes
+﻿/* This palette can be found in several places:
+ * https://www.canva.com/colors/color-palettes/summer-splash/
+ * https://color.adobe.com/My-Color-Theme-color-theme-17257636/
+ * "The Indian Ocean" on https://evening-ridge-43372.herokuapp.com/
+ */
+
+namespace ScottPlot.Palettes;
+
+public class SummerSplash : HexPaletteBase, IPalette
 {
-    public class SummerSplash : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.SummerSplash.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#05445E", "#189AB4", "#75E6DA" , "#D4F1F4"
+    };
 }

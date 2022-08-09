@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Linq;
+
+namespace ScottPlot;
 
 public struct Color
 {
@@ -50,6 +52,11 @@ public struct Color
 
         uint argb = ((rgba & 0xFF) << 24) | (rgba >> 8);
         return FromARGB(argb);
+    }
+
+    public static Color[] FromHex(string[] hex)
+    {
+        return hex.Select(x => FromHex(x)).ToArray();
     }
 
     public string ToStringRGB()

@@ -2,10 +2,17 @@
  * https://github.com/arcticicestudio/nord
  * https://www.nordtheme.com/docs/colors-and-palettes
  */
-namespace ScottPlot.Palettes
+
+namespace ScottPlot.Palettes;
+
+public class Aurora : HexPaletteBase, IPalette
 {
-    public class Aurora : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.Aurora.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD",
+    };
 }
