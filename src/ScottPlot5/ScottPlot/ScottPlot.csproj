@@ -22,4 +22,9 @@
         <Compile Include="..\..\Common\ScottPlot.Common\**\*.cs" />
     </ItemGroup>
 
+    <!-- Tactically import specific files from ScottPlot4 to prevent duplication of debugging and future development -->
+    <ItemGroup>
+        <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
+    </ItemGroup>
+
 </Project>

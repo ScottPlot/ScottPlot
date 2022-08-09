@@ -63,9 +63,4 @@
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 
-    <!-- Import select source files from the common project (but do not reference the project itself) -->
-    <ItemGroup>
-        <Compile Include="..\..\Common\ScottPlot.Common\Generate.cs" />
-        <Compile Include="..\..\Common\ScottPlot.Common\NumericConversion.cs" />
-    </ItemGroup>
 </Project>
