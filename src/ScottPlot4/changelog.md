@@ -12,7 +12,7 @@ _not yet published on NuGet..._
 * Plot: MatchAxis no longer modifies limits of unintended axes (#1980) _Thanks @PlayCreatively_
 * Plot: Improved error reporting for invalid axis limits (#1994) _Thanks @Xerxes004_
 * Signal Plot: Improved `GetPointNearestX()` accuracy for plots with high zoom (#1987, #2019, #2020) _Thanks @dhgigisoave_
-* Draggable: Added custom functions to permit 1D and 2D snapping (#2006, #2007, #2022) _Thanks @Agorath_
+* Draggable: `IDraggable` now has functions to facilitate snapping (#2006, #2007, #2022) _Thanks @Agorath_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 
 ## ScottPlot 4.1.52
