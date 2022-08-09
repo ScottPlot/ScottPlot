@@ -1,11 +1,19 @@
 ﻿/* Sourced from NordConEmu:
  * https://github.com/arcticicestudio/nord-conemu
  * Seems to be an extended version of Aurora
+ * suggested background: #2e3440
  */
-namespace ScottPlot.Palettes
+
+namespace ScottPlot.Palettes;
+
+public class Nord : HexPaletteBase, IPalette
 {
-    public class Nord : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.Nord.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#bf616a", "#a3be8c", "#ebcb8b", "#81a1c1", "#b48ead", "#88c0d0", "#e5e9f0"
+    };
 }

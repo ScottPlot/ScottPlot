@@ -14,9 +14,9 @@ public partial class Form1 : Form
         const int N = 51;
 
         formsPlot1.Plot.Add(DebugPoint);
-        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
-        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
+        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N));
+        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N));
+        formsPlot1.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5));
 
         formsPlot1.MouseMove += FormsPlot1_MouseMove;
     }

@@ -2,10 +2,17 @@
  * https://github.com/arcticicestudio/nord
  * https://www.nordtheme.com/docs/colors-and-palettes
  */
-namespace ScottPlot.Palettes
+
+namespace ScottPlot.Palettes;
+
+public class Snowstorm : HexPaletteBase, IPalette
 {
-    public class Snowstorm : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.Snowstorm.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#D8DEE9", "#E5E9F0", "#ECEFF4"
+    };
 }

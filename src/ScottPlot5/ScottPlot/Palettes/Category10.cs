@@ -47,10 +47,17 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace ScottPlot.Palettes
+namespace ScottPlot.Palettes;
+
+public class Category10 : HexPaletteBase, IPalette
 {
-    public class Category10 : PaletteBase
+    public override string Name => "Category 10";
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.Category10.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+        "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
+    };
 }

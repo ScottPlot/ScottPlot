@@ -1,7 +1,13 @@
-﻿namespace ScottPlot.Palettes
+﻿namespace ScottPlot.Palettes;
+
+public class Nero : HexPaletteBase, IPalette
 {
-    public class Nero : PaletteBase
+    public override string Name => this.GetType().Name;
+
+    public override string Description => string.Empty;
+
+    internal override string[] HexColors => new string[]
     {
-        protected override Color[] colors => Common.HexPalettes.Nero.Colors.Select(c => Color.FromHex(c)).ToArray();
-    }
+        "#013A20","#478C5C","#94C973","#BACC81","#CDD193"
+    };
 }

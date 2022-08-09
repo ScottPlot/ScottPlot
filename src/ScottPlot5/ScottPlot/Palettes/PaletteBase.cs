@@ -1,16 +1,21 @@
 ﻿namespace ScottPlot.Palettes;
 
-public abstract class PaletteBase : IPalette, IReadOnlyList<Color>
+public abstract class PaletteBase : IPalette
 {
-    protected abstract Color[] colors { get; }
+    public abstract Color[] Colors { get; }
 
-    public Color this[int index] => colors[index];
+    public abstract string Name { get; }
 
-    public Color GetColor(int index) => colors[index % colors.Length];
+    public abstract string Description { get; }
 
-    public int Count => colors.Length;
+    public int Length => Colors.Length;
 
-    public IEnumerator<Color> GetEnumerator() => ((IEnumerable<Color>)colors).GetEnumerator();
+    public IEnumerator<Color> GetEnumerator() => ((IEnumerable<Color>)Colors).GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => colors.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => Colors.GetEnumerator();
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

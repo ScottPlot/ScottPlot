@@ -22,7 +22,7 @@ public class Plot
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color GetNextColor() => Palette.GetColor(Plottables.Count);
+    public Color GetNextColor() => Palette.GetColor(Plottables.Count - 1); // TODO: ignore system plottables?
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
