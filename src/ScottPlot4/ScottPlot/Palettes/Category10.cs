@@ -53,7 +53,7 @@ public class Category10 : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "A set of 10 unque colors used in many data visualization libraries such as Matplotlib, Vega, and Tableau";
 
     internal override string[] HexColors => new string[]
     {

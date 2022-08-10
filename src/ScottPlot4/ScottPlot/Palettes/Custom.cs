@@ -6,7 +6,11 @@ public class Custom : HexPaletteBase, IPalette
 {
     internal override string[] HexColors { get; }
 
-    public Custom(string[] hexColors)
+    public override string Name { get; }
+
+    public override string Description { get; }
+
+    public Custom(string[] hexColors, string name = "", string description = "")
     {
         if (hexColors is null)
             throw new ArgumentNullException("must provide at least one color");
@@ -15,5 +19,7 @@ public class Custom : HexPaletteBase, IPalette
             throw new ArgumentException("must provide at least one color");
 
         HexColors = hexColors;
+        Name = name;
+        Description = description;
     }
 }

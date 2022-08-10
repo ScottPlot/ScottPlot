@@ -8,9 +8,9 @@ namespace ScottPlot.Palettes;
 
 public class ColorblindFriendly : HexPaletteBase, IPalette
 {
-    public override string Name => GetType().Name;
+    public override string Name => "Colorblind Friendly";
 
-    public override string Description => string.Empty;
+    public override string Description => "A set of 8 colorblind-friendly colors from Bang Wong's Nature Methods paper https://www.nature.com/articles/nmeth.1618.pdf";
 
     internal override string[] HexColors => new string[]
     {

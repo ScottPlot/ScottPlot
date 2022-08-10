@@ -11,6 +11,11 @@ public interface IPalette
     string Name { get; }
 
     /// <summary>
+    /// Name of this palette
+    /// </summary>
+    string Description { get; }
+
+    /// <summary>
     /// Colors in this palette
     /// </summary>
     System.Drawing.Color[] Colors { get; }

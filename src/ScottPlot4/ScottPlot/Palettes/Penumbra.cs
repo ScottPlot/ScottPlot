@@ -9,7 +9,7 @@ public class Penumbra : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "A perceptually uniform color palette by Neal McKee: https://github.com/nealmckee/penumbra";
 
     internal override string[] HexColors => new string[]
     {

@@ -10,7 +10,7 @@ public class Nord : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "From the Nord ConEmu color scheme: https://github.com/arcticicestudio/nord-conemu";
 
     internal override string[] HexColors => new string[]
     {

@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Palettes;
+﻿/* no info on where this palette originated */
+
+namespace ScottPlot.Palettes;
 
 public class Nero : HexPaletteBase, IPalette
 {

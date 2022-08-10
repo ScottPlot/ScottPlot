@@ -10,7 +10,7 @@ public class Microcharts : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "Soft color palette sourced from the Microcharts project: https://github.com/microcharts-dotnet/Microcharts";
 
     internal override string[] HexColors => new string[]
     {

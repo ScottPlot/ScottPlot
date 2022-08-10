@@ -9,7 +9,7 @@ public class Snowstorm : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "From the Nord collection of palettes: https://github.com/arcticicestudio/nord";
 
     internal override string[] HexColors => new string[]
     {

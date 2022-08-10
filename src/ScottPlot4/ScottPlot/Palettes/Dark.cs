@@ -9,7 +9,7 @@ public class Dark : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "A qualitative 8-color palette generated using colorbrewer2.org";
 
     internal override string[] HexColors => new string[]
     {

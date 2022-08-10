@@ -8,7 +8,7 @@ public class OneHalfDark : HexPaletteBase, IPalette
 {
     public override string Name => GetType().Name;
 
-    public override string Description => string.Empty;
+    public override string Description => "A Sublime color scheme by Son A. Pham: https://github.com/sonph/onehalf";
 
     internal override string[] HexColors => new string[]
     {
