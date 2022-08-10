@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Drawing;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace ScottPlot.Palettes;
 
@@ -54,4 +56,10 @@ public abstract class PaletteBase : IPalette
 
         return ColorTranslator.FromHtml(hexColor);
     }
+
+    public int Length => Colors.Length;
+
+    public IEnumerator<Color> GetEnumerator() => ((IEnumerable<Color>)Colors).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => Colors.GetEnumerator();
 }

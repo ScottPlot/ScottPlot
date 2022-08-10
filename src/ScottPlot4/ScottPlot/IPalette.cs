@@ -1,9 +1,11 @@
-﻿namespace ScottPlot;
+﻿using System.Collections.Generic;
+
+namespace ScottPlot;
 
 /// <summary>
 /// A palette is a collection of colors
 /// </summary>
-public interface IPalette
+public interface IPalette : IEnumerable<System.Drawing.Color>
 {
     /// <summary>
     /// Name of this palette
