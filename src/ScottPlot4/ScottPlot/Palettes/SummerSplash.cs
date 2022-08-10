@@ -8,6 +8,10 @@ namespace ScottPlot.Palettes;
 
 public class SummerSplash : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#05445E", "#189AB4", "#75E6DA" , "#D4F1F4"

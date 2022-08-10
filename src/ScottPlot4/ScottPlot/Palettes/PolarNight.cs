@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class PolarNight : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => "From the Nord collection of palettes: https://github.com/arcticicestudio/nord";
+
     internal override string[] HexColors => new string[]
     {
         "#2E3440", "#3B4252", "#434C5E", "#4C566A",

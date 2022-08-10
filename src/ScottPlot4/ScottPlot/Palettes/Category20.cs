@@ -51,6 +51,10 @@ namespace ScottPlot.Palettes;
 
 public class Category20 : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => "A set of 10 unque colors used in many data visualization libraries such as Matplotlib, Vega, and Tableau";
+
     internal override string[] HexColors => new string[]
     {
         "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",

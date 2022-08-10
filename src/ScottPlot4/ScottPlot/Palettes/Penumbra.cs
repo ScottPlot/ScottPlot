@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class Penumbra : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => "A perceptually uniform color palette by Neal McKee: https://github.com/nealmckee/penumbra";
+
     internal override string[] HexColors => new string[]
     {
         "#CB7459", "#A38F2D", "#46A473", "#00A0BE", "#7E87D6", "#BD72A8"

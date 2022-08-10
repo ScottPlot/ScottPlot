@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class DarkPastel : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => "A qualitative 8-color palette generated using colorbrewer2.org";
+
     internal override string[] HexColors => new string[]
     {
         "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854",

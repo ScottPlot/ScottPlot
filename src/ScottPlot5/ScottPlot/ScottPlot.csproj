@@ -17,9 +17,22 @@
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
     </ItemGroup>
 
-    <!-- Import all source files from the common project (but do not reference the project itself) -->
+    <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
     <ItemGroup>
-        <Compile Include="..\..\Common\ScottPlot.Common\**\*.cs" />
+
+        <!-- Use ScottPlot4's numeric conversion class to provide platform-specific optimizations for generic math operations -->
+        <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
+
+        <!-- Bring all ScottPlot4 palettes into ScottPlot5 -->
+        <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
+            <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
+        </Compile>
+
+        <!-- Exclude palette classes that contain ScottPlot4-specific code -->
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
+
     </ItemGroup>
 
 </Project>
