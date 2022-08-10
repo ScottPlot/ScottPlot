@@ -17,25 +17,21 @@
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
     </ItemGroup>
 
-    <!-- Import all source files from the common project (but do not reference the project itself) -->
+    <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
     <ItemGroup>
-        <Compile Include="..\..\Common\ScottPlot.Common\**\*.cs" />
-    </ItemGroup>
 
-    <!-- Tactically import specific files from ScottPlot4 to prevent duplication of debugging and future development -->
-    <ItemGroup>
+        <!-- Use ScottPlot4's numeric conversion class to provide platform-specific optimizations for generic math operations -->
         <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
+
+        <!-- Bring all ScottPlot4 palettes into ScottPlot5 -->
         <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
             <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
         </Compile>
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Palette.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPalette.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
 
-        <None Remove="autoformat.bat" />
-        <None Remove="autoformat.sh" />
+        <!-- Exclude abstract palette classes (they contain ScottPlot4-specific code) -->
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
+
     </ItemGroup>
 
 </Project>

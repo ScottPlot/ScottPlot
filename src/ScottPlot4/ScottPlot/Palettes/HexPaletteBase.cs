@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ScottPlot.Palettes;
+﻿namespace ScottPlot.Palettes;
 
 // ScottPlot4
 public abstract class HexPaletteBase : PaletteBase
@@ -9,6 +7,6 @@ public abstract class HexPaletteBase : PaletteBase
 
     public HexPaletteBase()
     {
-        Colors = HexColors.Select(x => System.Drawing.ColorTranslator.FromHtml(x)).ToArray();
+        Colors = FromHexColors(HexColors);
     }
 }

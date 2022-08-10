@@ -35,7 +35,7 @@ public static class Palette
     /// </summary>
     public static IPalette FromHtmlColors(string[] htmlColors)
     {
-        return new Palettes.HexPalette(htmlColors);
+        return new Palettes.Custom(htmlColors);
     }
 
     /// <summary>

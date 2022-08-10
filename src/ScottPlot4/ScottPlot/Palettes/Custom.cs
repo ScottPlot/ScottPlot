@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Custom : HexPaletteBase, IPalette
+public class Custom : HexPaletteBase
 {
     internal override string[] HexColors { get; }
 
