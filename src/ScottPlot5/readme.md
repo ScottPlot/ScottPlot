@@ -1,8 +1,6 @@
 # ScottPlot 5
 
-⚠️ ScottPlot 5 is extremely early in development.
-
-⚠️ Contributions are not invited at this time.
+⚠️ ScottPlot 5 is extremely early in development. Production use is unadvised.
 
 ## Resources
 
