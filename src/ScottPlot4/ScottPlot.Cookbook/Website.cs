@@ -81,25 +81,24 @@ public static class Website
         sb.AppendLine("```");
         sb.AppendLine();
 
-        foreach (var p in ScottPlot.Palette.GetPalettes())
+        foreach (IPalette palette in ScottPlot.Palette.GetPalettes())
         {
             sb.AppendLine();
-            sb.AppendLine($"### {p.Name}");
+            sb.AppendLine($"### {palette.Name}");
             sb.AppendLine();
-            //sb.AppendLine("```cs");
-            //sb.AppendLine($"var pal = ScottPlot.Palette.{p.Name};");
-            //sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
-            //sb.AppendLine("{");
-            //sb.AppendLine("    var color = pal.GetColor(i);");
-            //sb.AppendLine("    Console.WriteLine(color);");
-            //sb.AppendLine("}");
-            //sb.AppendLine("```");
-            //sb.AppendLine();
+            sb.AppendLine(palette.Description);
+            sb.AppendLine();
+            sb.AppendLine("```cs");
+            sb.AppendLine($"var myPalette = new {palette}();");
+            sb.AppendLine($"foreach (var color in myPalette)");
+            sb.AppendLine($"    Console.WriteLine(color);");
+            sb.AppendLine("```");
+            sb.AppendLine();
 
             sb.AppendLine("<div class='d-flex flex-wrap'>");
-            for (int i = 0; i < p.Count(); i++)
+            for (int i = 0; i < palette.Count(); i++)
             {
-                System.Drawing.Color color = p.GetColor(i);
+                System.Drawing.Color color = palette.GetColor(i);
                 string hex = "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
                 sb.AppendLine($"<div class='px-3 py-2' style='background-color: {hex};'>{hex}</div>");
             }
