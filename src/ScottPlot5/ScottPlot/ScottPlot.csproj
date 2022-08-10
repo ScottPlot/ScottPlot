@@ -28,7 +28,8 @@
             <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
         </Compile>
 
-        <!-- Exclude abstract palette classes (they contain ScottPlot4-specific code) -->
+        <!-- Exclude palette classes that contain ScottPlot4-specific code -->
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
 

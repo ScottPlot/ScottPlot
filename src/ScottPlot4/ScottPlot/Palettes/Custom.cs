@@ -1,24 +1,19 @@
-﻿using System;
+﻿namespace ScottPlot.Palettes;
 
-namespace ScottPlot.Palettes;
-
-public class Custom : HexPaletteBase
+/// <summary>
+/// Create a custom ScottPlot4 Palette from a collection of colors
+/// </summary>
+public class Custom : PaletteBase
 {
-    internal override string[] HexColors { get; }
-
-    public override string Name { get; }
-
-    public override string Description { get; }
-
     public Custom(string[] hexColors, string name = "", string description = "")
     {
         if (hexColors is null)
-            throw new ArgumentNullException("must provide at least one color");
+            throw new System.ArgumentNullException("must provide at least one color");
 
         if (hexColors.Length == 0)
-            throw new ArgumentException("must provide at least one color");
+            throw new System.ArgumentException("must provide at least one color");
 
-        HexColors = hexColors;
+        Colors = FromHexColors(hexColors);
         Name = name;
         Description = description;
     }

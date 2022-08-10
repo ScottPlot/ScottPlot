@@ -8,9 +8,9 @@ public abstract class PaletteBase : IPalette
 {
     public Color[] Colors { get; internal set; }
 
-    public virtual string Name => GetType().Name;
+    public virtual string Name { get; internal set; }
 
-    public virtual string Description => string.Empty;
+    public virtual string Description { get; internal set; }
 
     internal static Color[] FromHexColors(string[] hexColors)
     {
