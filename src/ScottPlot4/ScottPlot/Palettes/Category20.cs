@@ -51,6 +51,10 @@ namespace ScottPlot.Palettes;
 
 public class Category20 : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",

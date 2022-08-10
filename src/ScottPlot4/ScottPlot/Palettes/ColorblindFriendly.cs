@@ -8,6 +8,10 @@ namespace ScottPlot.Palettes;
 
 public class ColorblindFriendly : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",

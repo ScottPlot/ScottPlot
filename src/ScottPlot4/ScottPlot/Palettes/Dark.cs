@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class Dark : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e",

@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class Tsitsulin : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#ebac23", "#b80058", "#008cf9", "#006e00", "#00bbad",

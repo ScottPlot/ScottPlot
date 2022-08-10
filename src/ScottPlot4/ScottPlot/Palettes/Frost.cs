@@ -7,6 +7,10 @@ namespace ScottPlot.Palettes;
 
 public class Frost : HexPaletteBase, IPalette
 {
+    public override string Name => GetType().Name;
+
+    public override string Description => string.Empty;
+
     internal override string[] HexColors => new string[]
     {
         "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",

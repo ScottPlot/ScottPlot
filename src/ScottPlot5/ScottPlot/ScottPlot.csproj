@@ -25,6 +25,17 @@
     <!-- Tactically import specific files from ScottPlot4 to prevent duplication of debugging and future development -->
     <ItemGroup>
         <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
+        <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
+            <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
+        </Compile>
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Palette.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPalette.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
+        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
+
+        <None Remove="autoformat.bat" />
+        <None Remove="autoformat.sh" />
     </ItemGroup>
 
 </Project>

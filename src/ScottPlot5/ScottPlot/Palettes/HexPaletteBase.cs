@@ -1,10 +1,9 @@
 ﻿namespace ScottPlot.Palettes;
 
-public abstract class HexPaletteBase : PaletteBase, IPalette
+// ScottPlot5
+public abstract class HexPaletteBase : Palette
 {
     internal abstract string[] HexColors { get; }
-
-    public override Color[] Colors { get; }
 
     public HexPaletteBase()
     {
