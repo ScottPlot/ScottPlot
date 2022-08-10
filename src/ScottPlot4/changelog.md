@@ -14,6 +14,7 @@ _not yet published on NuGet..._
 * Signal Plot: Improved `GetPointNearestX()` accuracy for plots with high zoom (#1987, #2019, #2020) _Thanks @dhgigisoave_
 * Draggable: `IDraggable` now has functions to facilitate snapping (#2006, #2007, #2022) _Thanks @Agorath_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
+* Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
