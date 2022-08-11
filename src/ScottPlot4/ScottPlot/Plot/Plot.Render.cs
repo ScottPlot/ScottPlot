@@ -72,7 +72,9 @@ namespace ScottPlot
 
                 plottable.ValidateData(deep: false);
 
-                PlotDimensions dims = (plottable is Plottable.IPlottable p) ? settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) : settings.GetPlotDimensions(0, 0, scaleFactor);
+                PlotDimensions dims = (plottable is Plottable.IPlottable p)
+                    ? settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor)
+                    : settings.GetPlotDimensions(0, 0, scaleFactor);
 
                 if (double.IsInfinity(dims.XSpan) || double.IsInfinity(dims.YSpan))
                     throw new InvalidOperationException($"Axis limits cannot be infinite: {dims}");
@@ -121,7 +123,9 @@ namespace ScottPlot
         {
             foreach (var axis in settings.Axes)
             {
-                PlotDimensions dims2 = axis.IsHorizontal ? settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) : settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
+                PlotDimensions dims2 = axis.IsHorizontal
+                    ? settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor)
+                    : settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
 
                 try
                 {
@@ -170,8 +174,10 @@ namespace ScottPlot
         /// </summary>
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(bool lowQuality = false) =>
-            Render(settings.Width, settings.Height, lowQuality);
+        public Bitmap Render(bool lowQuality = false)
+        {
+            return Render(settings.Width, settings.Height, lowQuality);
+        }
 
         /// <summary>
         /// Render the plot onto a new Bitmap of the given dimensions
