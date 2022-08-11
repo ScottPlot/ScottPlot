@@ -1,11 +1,9 @@
 # ScottPlot 5
 
-⚠️ ScottPlot 5 is extremely early in development.
+* ⚠️ ScottPlot 5 early in development and **not recommended for production use**
 
-⚠️ Contributions are not invited at this time.
+* ⚠️ ScottPlot 5 contributions are **not** invited at this time
 
-## Resources
+* ✔️ ScottPlot 4 remains fully supported (and contributions are welcome)
 
-* [Issue #1036](https://github.com/ScottPlot/ScottPlot/issues/1036) - initial plan to refactor/rewrite to cut System.Drawing dependency
-
-* [PR #1647](https://github.com/ScottPlot/ScottPlot/pull/1647#issuecomment-1058725910) - what I learned after a rough draft rewrite with Maui.Graphics
+* Development progress is discussed in the [**ScottPlot Discord**](https://ScottPlot.NET/discord)
