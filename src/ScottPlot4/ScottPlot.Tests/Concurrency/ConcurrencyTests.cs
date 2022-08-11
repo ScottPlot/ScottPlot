@@ -27,11 +27,9 @@ namespace ScottPlotTests.Concurrency
                 plt.AddSignal(new double[] { 1, 2, 3 });
                 plt.RenderUnlock();
             }
-            Debug.WriteLine("Modification thread shutting down...");
-            Thread.Sleep(100);
         }
 
-        // This test takes 5 seconds to complete so it is not run routinely
+        // This test takes a long time to run so they are not performed routinely
         //[Test]
         public void Test_Concurrent_ModifyPlottablesWhileRendering()
         {
@@ -44,7 +42,8 @@ namespace ScottPlotTests.Concurrency
 
             // render repeatedly while the plottalbles are being modified
             var sw = Stopwatch.StartNew();
-            while (sw.ElapsedMilliseconds < 5000)
+            int runTimeSeconds = 30;
+            while (sw.ElapsedMilliseconds < runTimeSeconds * 1000)
             {
                 plt.Render(bmp);
             }
