@@ -21,7 +21,7 @@ namespace ScottPlot
         /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
         public Bitmap Render(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
-            lock (_renderLocker)
+            lock (RenderLocker)
             {
                 settings.BenchmarkMessage.Restart();
                 settings.Resize((int)(bmp.Width / scale), (int)(bmp.Height / scale));
@@ -138,7 +138,11 @@ namespace ScottPlot
 
         #region render lock
 
-        private readonly object _renderLocker = new();
+        /// <summary>
+        /// This object is locked by the render loop.
+        /// Locking this externally will prevent renders until it is released.
+        /// </summary>
+        private readonly object RenderLocker = new();
 
         /// <summary>
         /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
@@ -146,7 +150,7 @@ namespace ScottPlot
         /// </summary>
         public void RenderLock()
         {
-            Monitor.Enter(_renderLocker);
+            Monitor.Enter(RenderLocker);
         }
 
         /// <summary>
@@ -154,7 +158,7 @@ namespace ScottPlot
         /// </summary>
         public void RenderUnlock()
         {
-            Monitor.Exit(_renderLocker);
+            Monitor.Exit(RenderLocker);
         }
 
         #endregion
