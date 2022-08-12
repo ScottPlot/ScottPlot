@@ -22,7 +22,7 @@ public class Plot
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color GetNextColor() => Palette.GetColor(Plottables.Count - 1); // TODO: ignore system plottables?
+    public Color GetNextColor() => Palette.GetColor(Plottables.Count); // TODO: ignore system plottables?
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
@@ -114,14 +114,17 @@ public class Plot
             limits.Expand(plottable.GetAxisLimits());
         }
 
-        if (double.IsNaN(limits.Rect.XMin))
+        if (!limits.XHasBeenSet)
+        {
             limits.Rect.XMin = -10;
-        if (double.IsNaN(limits.Rect.XMax))
             limits.Rect.XMax = +10;
-        if (double.IsNaN(limits.Rect.YMin))
+        }
+
+        if (!limits.YHasBeenSet)
+        {
             limits.Rect.YMin = -10;
-        if (double.IsNaN(limits.Rect.YMax))
             limits.Rect.YMax = +10;
+        }
 
         SetAxisLimits(limits.WithZoom(1 - xMargin, 1 - yMargin));
     }

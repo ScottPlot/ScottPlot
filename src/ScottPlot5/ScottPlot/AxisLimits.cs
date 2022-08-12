@@ -7,6 +7,8 @@
 public struct AxisLimits
 {
     public CoordinateRect Rect;
+    public bool XHasBeenSet => !double.IsNaN(Rect.Width);
+    public bool YHasBeenSet => !double.IsNaN(Rect.Height);
 
     public AxisLimits(CoordinateRect rect)
     {
@@ -22,40 +24,28 @@ public struct AxisLimits
 
     public void Expand(AxisLimits newLimits)
     {
-        if (double.IsNaN(Rect.XMin))
+        if (!XHasBeenSet)
         {
             Rect.XMin = newLimits.Rect.XMin;
-        }
-        else if (!double.IsNaN(newLimits.Rect.XMin))
-        {
-            Rect.XMin = Math.Min(Rect.XMin, newLimits.Rect.XMin);
+            Rect.XMax = newLimits.Rect.YMax;
         }
 
-        if (double.IsNaN(Rect.XMax))
-        {
-            Rect.XMax = newLimits.Rect.XMax;
-        }
-        else if (!double.IsNaN(newLimits.Rect.XMax))
-        {
-            Rect.XMax = Math.Min(Rect.XMax, newLimits.Rect.XMax);
-        }
-
-        if (double.IsNaN(Rect.YMin))
+        if (!YHasBeenSet)
         {
             Rect.YMin = newLimits.Rect.YMin;
-        }
-        else if (!double.IsNaN(newLimits.Rect.YMin))
-        {
-            Rect.YMin = Math.Min(Rect.YMin, newLimits.Rect.YMin);
-        }
-
-        if (double.IsNaN(Rect.YMax))
-        {
             Rect.YMax = newLimits.Rect.YMax;
         }
-        else if (!double.IsNaN(newLimits.Rect.YMax))
+
+        if (XHasBeenSet && newLimits.XHasBeenSet)
         {
-            Rect.YMax = Math.Min(Rect.YMax, newLimits.Rect.YMax);
+            Rect.XMin = Math.Min(Rect.XMin, newLimits.Rect.XMin);
+            Rect.XMax = Math.Max(Rect.XMax, newLimits.Rect.XMax);
+        }
+
+        if (YHasBeenSet & newLimits.YHasBeenSet)
+        {
+            Rect.YMin = Math.Min(Rect.YMin, newLimits.Rect.YMin);
+            Rect.YMax = Math.Max(Rect.YMax, newLimits.Rect.YMax);
         }
     }
 
