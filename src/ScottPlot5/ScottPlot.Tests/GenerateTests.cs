@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Common.Tests;
+﻿using FluentAssertions;
+
+namespace ScottPlot.Common.Tests;
 
 public class Tests
 {
