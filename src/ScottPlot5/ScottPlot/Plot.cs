@@ -46,6 +46,8 @@ public class Plot
         ZoomRectangle = new(XAxis, YAxis);
     }
 
+    #region Plottable Management
+
     public void Add(IPlottable plottable)
     {
         Plottables.Add(plottable);
@@ -60,6 +62,10 @@ public class Plot
     {
         return Plottables.ToArray();
     }
+
+    #endregion
+
+    #region Axis Management
 
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
@@ -80,6 +86,11 @@ public class Plot
     public void SetAxisLimits(AxisLimits rect)
     {
         SetAxisLimits(rect.Rect);
+    }
+
+    public AxisLimits GetAxisLimits()
+    {
+        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
     }
 
     /// <summary>
@@ -114,6 +125,10 @@ public class Plot
 
         SetAxisLimits(limits.WithZoom(1 - xMargin, 1 - yMargin));
     }
+
+    #endregion
+
+    #region Mouse Interaction
 
     /// <summary>
     /// Apply a click-drag pan operation to the plot
@@ -201,10 +216,9 @@ public class Plot
         ZoomRectangle.Clear();
     }
 
-    public AxisLimits GetAxisLimits()
-    {
-        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
-    }
+    #endregion
+
+    #region Pixel/Coordinate Conversion Logic
 
     /// <summary>
     /// Return the pixel for a specific coordinate using measurements from the most recent render.
@@ -229,6 +243,10 @@ public class Plot
         return new Coordinates(x, y);
     }
 
+    #endregion
+
+    #region Layout Calculation
+
     public PixelRect GetDataAreaRect(PixelRect figureRect)
     {
         LeftAxisView.RegenerateTicks(figureRect);
@@ -244,6 +262,10 @@ public class Plot
         PixelPadding DataAreaPadding = new(padLeft, padRight, padBottom, padTop);
         return figureRect.Contract(DataAreaPadding);
     }
+
+    #endregion
+
+    #region Rendering and Image Creation
 
     public void Render(SKSurface surface)
     {
@@ -280,7 +302,9 @@ public class Plot
         File.WriteAllBytes(path, bytes);
     }
 
-    #region AddPlottable Helper Methods
+    #endregion
+
+    #region Helper methods for adding new plottables
 
     public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
