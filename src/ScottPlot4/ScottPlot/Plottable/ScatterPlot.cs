@@ -84,8 +84,14 @@ namespace ScottPlot.Plottable
 
         /// <summary>
         /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
+        /// <see cref="SmoothTension"/> adjusts the smoothnes of the lines.
         /// </summary>
         public bool Smooth = false;
+
+        /// <summary>
+        /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
+        /// </summary>
+        public double SmoothTension = 0.5;
 
         public bool IsHighlighted { get; set; } = false;
         public float HighlightCoefficient { get; set; } = 2;
@@ -314,7 +320,7 @@ namespace ScottPlot.Plottable
                     }
                     else if (Smooth)
                     {
-                        gfx.DrawCurve(penLine, points);
+                        gfx.DrawCurve(penLine, points, (float)SmoothTension);
                     }
                     else
                     {
