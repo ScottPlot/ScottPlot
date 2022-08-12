@@ -13,9 +13,10 @@ public class Plot
     internal readonly IAxisView LeftAxisView;
     internal readonly IAxisView BottomAxisView;
 
-    readonly List<IPlottable> Plottables = new();
+    public readonly List<IGrid> Grids = new();
+    public readonly List<IPlottable> Plottables = new();
 
-    public IGrid Grid = new Grids.DefaultGrid();
+    public Rendering.IRenderer Renderer = new Rendering.StandardRenderer();
 
     /// <summary>
     /// Palette to use for default colors of new plottables
@@ -33,7 +34,7 @@ public class Plot
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
-    internal RenderInformation LastRenderInfo = new(false);
+    internal Rendering.RenderDetails LastRenderInfo = new();
 
     public Plot()
     {
@@ -44,6 +45,8 @@ public class Plot
         BottomAxisView = new BottomAxisView(XAxis);
 
         ZoomRectangle = new(XAxis, YAxis);
+
+        Grids.Add(new Grids.DefaultGrid());
     }
 
     #region Plottable Management
@@ -272,7 +275,7 @@ public class Plot
 
     public void Render(SKSurface surface)
     {
-        LastRenderInfo = ScottPlot.Render.OnSurface(surface, this);
+        LastRenderInfo = Renderer.Render(surface, this);
     }
 
     public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)

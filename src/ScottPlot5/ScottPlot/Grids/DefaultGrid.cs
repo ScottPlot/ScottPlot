@@ -7,6 +7,8 @@ public class DefaultGrid : IGrid
     public float LineWidth = 1;
     public Color LineColor = Colors.Black.WithAlpha(20);
 
+    public bool IsBeneathPlottables { get; set; } = true;
+
     public void Render(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView)
     {
         Tick[] ticks = axisView.GetVisibleTicks();
