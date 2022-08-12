@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace ScottPlot
 {
@@ -20,32 +21,31 @@ namespace ScottPlot
         /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
         public Bitmap Render(Bitmap bmp, bool lowQuality = false, double scale = 1.0)
         {
-            while (IsRenderLocked) { }
-            IsRendering = true;
-
-            settings.BenchmarkMessage.Restart();
-            settings.Resize((int)(bmp.Width / scale), (int)(bmp.Height / scale));
-            settings.CopyPrimaryLayoutToAllAxes();
-            settings.AxisAutoUnsetAxes();
-            settings.EnforceEqualAxisScales();
-            settings.LayoutAuto();
-            if (settings.EqualScaleMode != EqualScaleMode.Disabled)
+            lock (RenderLocker)
             {
+                settings.BenchmarkMessage.Restart();
+                settings.Resize((int)(bmp.Width / scale), (int)(bmp.Height / scale));
+                settings.CopyPrimaryLayoutToAllAxes();
+                settings.AxisAutoUnsetAxes();
                 settings.EnforceEqualAxisScales();
                 settings.LayoutAuto();
-            }
+                if (settings.EqualScaleMode != EqualScaleMode.Disabled)
+                {
+                    settings.EnforceEqualAxisScales();
+                    settings.LayoutAuto();
+                }
 
-            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
-            RenderClear(bmp, lowQuality, primaryDims);
-            if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
-            {
-                RenderBeforePlottables(bmp, lowQuality, primaryDims);
-                RenderPlottables(bmp, lowQuality, scale);
-                RenderAfterPlottables(bmp, lowQuality, primaryDims);
-            }
+                PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0, scale);
+                RenderClear(bmp, lowQuality, primaryDims);
+                if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
+                {
+                    RenderBeforePlottables(bmp, lowQuality, primaryDims);
+                    RenderPlottables(bmp, lowQuality, scale);
+                    RenderAfterPlottables(bmp, lowQuality, primaryDims);
+                }
 
-            IsRendering = false;
-            return bmp;
+                return bmp;
+            }
         }
 
         private void RenderClear(Bitmap bmp, bool lowQuality, PlotDimensions primaryDims)
@@ -72,9 +72,9 @@ namespace ScottPlot
 
                 plottable.ValidateData(deep: false);
 
-                PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
-                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor) :
-                    settings.GetPlotDimensions(0, 0, scaleFactor);
+                PlotDimensions dims = (plottable is Plottable.IPlottable p)
+                    ? settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex, scaleFactor)
+                    : settings.GetPlotDimensions(0, 0, scaleFactor);
 
                 if (double.IsInfinity(dims.XSpan) || double.IsInfinity(dims.YSpan))
                     throw new InvalidOperationException($"Axis limits cannot be infinite: {dims}");
@@ -123,9 +123,9 @@ namespace ScottPlot
         {
             foreach (var axis in settings.Axes)
             {
-                PlotDimensions dims2 = axis.IsHorizontal ?
-                    settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor) :
-                    settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
+                PlotDimensions dims2 = axis.IsHorizontal
+                    ? settings.GetPlotDimensions(axis.AxisIndex, 0, dims.ScaleFactor)
+                    : settings.GetPlotDimensions(0, axis.AxisIndex, dims.ScaleFactor);
 
                 try
                 {
@@ -142,8 +142,11 @@ namespace ScottPlot
 
         #region render lock
 
-        private bool IsRendering = false; // Becomes true only while the render loop is running and not locked
-        private bool IsRenderLocked = false; // RenderBitmap() will hang infinitely while this is true
+        /// <summary>
+        /// This object is locked by the render loop.
+        /// Locking this externally will prevent renders until it is released.
+        /// </summary>
+        private readonly object RenderLocker = new();
 
         /// <summary>
         /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
@@ -151,8 +154,7 @@ namespace ScottPlot
         /// </summary>
         public void RenderLock()
         {
-            IsRenderLocked = true; // prevent new renders from starting
-            while (IsRendering) { } // wait for the current render to finish
+            Monitor.Enter(RenderLocker);
         }
 
         /// <summary>
@@ -160,7 +162,7 @@ namespace ScottPlot
         /// </summary>
         public void RenderUnlock()
         {
-            IsRenderLocked = false; // allow new renders to occur
+            Monitor.Exit(RenderLocker);
         }
 
         #endregion
@@ -172,8 +174,10 @@ namespace ScottPlot
         /// </summary>
         /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
         /// <returns>the Bitmap that was created</returns>
-        public Bitmap Render(bool lowQuality = false) =>
-             Render(settings.Width, settings.Height, lowQuality);
+        public Bitmap Render(bool lowQuality = false)
+        {
+            return Render(settings.Width, settings.Height, lowQuality);
+        }
 
         /// <summary>
         /// Render the plot onto a new Bitmap of the given dimensions
