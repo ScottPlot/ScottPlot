@@ -26,7 +26,16 @@ namespace ScottPlot.Plottable
         public float MarkerSize { get; set; } = 3;
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
 
-        public bool Smooth { get; set; } = false;
+        /// <summary>
+        /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
+        /// <see cref="SmoothTension"/> adjusts the smoothnes of the lines.
+        /// </summary>
+        public bool Smooth = false;
+
+        /// <summary>
+        /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
+        /// </summary>
+        public double SmoothTension = 0.5;
 
         public void ValidateData(bool deep = false)
         {
@@ -102,7 +111,7 @@ namespace ScottPlot.Plottable
             {
                 if (Smooth)
                 {
-                    gfx.DrawCurve(linePen, points);
+                    gfx.DrawCurve(linePen, points, (float)SmoothTension);
                 }
                 else
                 {

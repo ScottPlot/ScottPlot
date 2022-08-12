@@ -313,4 +313,35 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
+
+    public class ScatterSmooth : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_smooth";
+        public string Title => "Scatter Plot with Smooth Lines";
+        public string Description =>
+            "Lines drawn between scatter plot points are typically connected with straight lines, " +
+            "but the Smooth property can be enabled to connect points with curves instead.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(1234);
+            double[] xs = DataGen.RandomWalk(rand, 20);
+            double[] ys = DataGen.RandomWalk(rand, 20);
+            plt.Palette = new ScottPlot.Palettes.ColorblindFriendly();
+
+            var sp1 = plt.AddScatter(xs, ys, label: "default");
+            sp1.Smooth = true;
+
+            var sp2 = plt.AddScatter(xs, ys, label: "high tension");
+            sp2.Smooth = true;
+            sp2.SmoothTension = 1.0f;
+
+            var sp3 = plt.AddScatter(xs, ys, label: "low tension");
+            sp3.Smooth = true;
+            sp3.SmoothTension = 0.2f;
+
+            plt.Legend();
+        }
+    }
 }

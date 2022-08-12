@@ -19,6 +19,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 * Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 * Render: Improved thread safety of the render lock system (#2030) _Thanks @anprevost_
+* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878) _Thanks Michael99_
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
