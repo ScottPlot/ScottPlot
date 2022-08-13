@@ -78,7 +78,6 @@ namespace ScottPlotTests.PlotTypes
 
             Random rand = new(0);
             double[] ys2 = ScottPlot.DataGen.InsertNanRanges(ys, rand, 5);
-            Console.WriteLine(string.Join(", ", ys2.Select(x => x.ToString())));
 
             ScottPlot.Plot plt = new(600, 400);
             var sp1 = plt.AddScatter(xs, ys, color: Color.FromArgb(50, Color.Black), label: "original data");
@@ -104,7 +103,6 @@ namespace ScottPlotTests.PlotTypes
 
             Random rand = new(0);
             double[] ys2 = ScottPlot.DataGen.InsertNanRanges(ys, rand, 5);
-            Console.WriteLine(string.Join(", ", ys2.Select(x => x.ToString())));
 
             ScottPlot.Plot plt = new(600, 400);
             var sp1 = plt.AddScatter(xs, ys, color: Color.FromArgb(50, Color.Black), label: "original data");

@@ -111,6 +111,9 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double SmoothTension = 0.5;
 
+        /// <summary>
+        /// Defines behavior when <see cref="Xs"/> or <see cref="Ys"/> contains <see cref="double.NaN"/>
+        /// </summary>
         public NanBehavior OnNaN = NanBehavior.Throw;
 
         public bool IsHighlighted { get; set; } = false;
