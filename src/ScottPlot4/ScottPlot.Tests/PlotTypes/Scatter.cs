@@ -121,5 +121,67 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
+
+
+        [Test]
+        public void Test_Scatter_AllNan()
+        {
+            double[] xs = ScottPlot.DataGen.Full(51, double.NaN);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+        }
+
+
+        [Test]
+        public void Test_Scatter_AllYsNan()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+        }
+
+
+        [Test]
+        public void Test_Scatter_AllNanButOne()
+        {
+            double[] xs = ScottPlot.DataGen.Full(51, double.NaN);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+            xs[42] = 420;
+            ys[42] = 69;
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+        }
     }
 }

@@ -238,32 +238,44 @@ namespace ScottPlot.Plottable
             int to = MaxRenderIndex ?? (Xs.Length - 1);
 
             // TODO: don't use an array for this
-            double[] limits = new double[4];
+            double[] limits = { double.NaN, double.NaN, double.NaN, double.NaN };
 
             if (XError == null)
             {
                 var XsRange = Xs.Skip(from).Take(to - from + 1).Where(x => !double.IsNaN(x));
-                limits[0] = XsRange.Min();
-                limits[1] = XsRange.Max();
+                if (XsRange.Any())
+                {
+                    limits[0] = XsRange.Min();
+                    limits[1] = XsRange.Max();
+                }
             }
             else
             {
                 var XsAndError = Xs.Zip(XError, (x, e) => (x, e)).Skip(from).Take(to - from + 1).Where(p => !double.IsNaN(p.x + p.e));
-                limits[0] = XsAndError.Min(p => p.x - p.e);
-                limits[1] = XsAndError.Max(p => p.x + p.e);
+                if (XsAndError.Any())
+                {
+                    limits[0] = XsAndError.Min(p => p.x - p.e);
+                    limits[1] = XsAndError.Max(p => p.x + p.e);
+                }
             }
 
             if (YError == null)
             {
                 var YsRange = Ys.Skip(from).Take(to - from + 1).Where(x => !double.IsNaN(x));
-                limits[2] = YsRange.Min();
-                limits[3] = YsRange.Max();
+                if (YsRange.Any())
+                {
+                    limits[2] = YsRange.Min();
+                    limits[3] = YsRange.Max();
+                }
             }
             else
             {
                 var YsAndError = Ys.Zip(YError, (y, e) => (y, e)).Skip(from).Take(to - from + 1).Where(p => !double.IsNaN(p.y + p.e));
-                limits[2] = YsAndError.Min(p => p.y - p.e);
-                limits[3] = YsAndError.Max(p => p.y + p.e);
+                if (YsAndError.Any())
+                {
+                    limits[2] = YsAndError.Min(p => p.y - p.e);
+                    limits[3] = YsAndError.Max(p => p.y + p.e);
+                }
             }
 
             if (double.IsInfinity(limits[0]) || double.IsInfinity(limits[1]))
