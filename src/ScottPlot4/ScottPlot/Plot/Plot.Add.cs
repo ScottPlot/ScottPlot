@@ -396,6 +396,29 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Create a polygon to fill the area above and below a Y curve
+        /// </summary>
+        public Polygon AddFillError(double[] xs, double[] ys, double[] yError, Color? color = null)
+        {
+            double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
+
+            double[] ysAbove = Enumerable.Range(0, ys.Length).Select(i => ys[i] + yError[i]).ToArray();
+            double[] ysBelow = Enumerable.Range(0, ys.Length).Select(i => ys[i] - yError[i]).ToArray();
+
+            double[] polyYs = ysBelow.Concat(ysAbove.Reverse()).ToArray();
+
+            var plottable = new Polygon(polyXs, polyYs)
+            {
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
+                LineWidth = 0,
+            };
+
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline
         /// that uses two different colors for area above and area below the baseline.
         /// </summary>
