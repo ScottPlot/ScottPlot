@@ -1025,5 +1025,28 @@ namespace ScottPlot
 
             return values2;
         }
+
+        /// <summary>
+        /// Return a new array of given length, filled with <paramref name="fillValue"/>.
+        /// </summary>
+        public static double[] Full(int length, double fillValue)
+        {
+            return FullGeneric(length, fillValue);
+        }
+
+        /// <summary>
+        /// Return a new array of given length, filled with <paramref name="fillValue"/>.
+        /// </summary>
+        public static T[] FullGeneric<T>(int length, T fillValue)
+        {
+            T[] data = new T[length];
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = fillValue;
+            }
+
+            return data;
+        }
     }
 }
