@@ -344,4 +344,78 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
+
+    public class ScatterNaNIgnore : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_nan_ignore";
+        public string Title => "NaN Values Ignored";
+        public string Description =>
+            "When the OnNaN field is set to Ignore, points containing NaN X or Y values are skipped, " +
+            "and the scatter plot is drawn as one continuous line.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data that does NOT contain NaN
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            // plot it the traditional way
+            plt.AddScatter(xs, ys, Color.FromArgb(50, Color.Black));
+
+            // create new data that contains NaN
+            double[] ysWithNan = ScottPlot.DataGen.Sin(51);
+            static void FillWithNan(double[] values, int start, int count)
+            {
+                for (int i = 0; i < count; i++)
+                    values[start + i] = double.NaN;
+            }
+            FillWithNan(ysWithNan, 5, 15);
+            FillWithNan(ysWithNan, 25, 1);
+            FillWithNan(ysWithNan, 30, 15);
+            ysWithNan[10] = ys[10];
+
+            // add a scatter plot and customize NaN behavior
+            var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
+        }
+    }
+
+    public class ScatterNaNGap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_nan_gap";
+        public string Title => "NaN Values Break the Line";
+        public string Description =>
+            "When the OnNaN field is set to Gap, points containing NaN X or Y values break the line. " +
+            "This results in a scatter plot appearing as multiple lines, with gaps representing missing data.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data that does NOT contain NaN
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            // plot it the traditional way
+            plt.AddScatter(xs, ys, Color.FromArgb(50, Color.Black));
+
+            // create new data that contains NaN
+            double[] ysWithNan = ScottPlot.DataGen.Sin(51);
+            static void FillWithNan(double[] values, int start, int count)
+            {
+                for (int i = 0; i < count; i++)
+                    values[start + i] = double.NaN;
+            }
+            FillWithNan(ysWithNan, 5, 15);
+            FillWithNan(ysWithNan, 25, 1);
+            FillWithNan(ysWithNan, 30, 15);
+            ysWithNan[10] = ys[10];
+
+            // add a scatter plot and customize NaN behavior
+            var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
+        }
+    }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScottPlot;
+using System.Drawing;
 
 namespace ScottPlotTests.PlotTypes
 {
@@ -67,6 +68,118 @@ namespace ScottPlotTests.PlotTypes
             plt.Legend();
             plt.SetAxisLimits(0, 30, 1.42, 1.62);
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Scatter_IgnoreNaN()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            Random rand = new(0);
+            double[] ys2 = ScottPlot.DataGen.InsertNanRanges(ys, rand, 5);
+
+            ScottPlot.Plot plt = new(600, 400);
+            var sp1 = plt.AddScatter(xs, ys, color: Color.FromArgb(50, Color.Black), label: "original data");
+            var sp2 = plt.AddScatter(xs, ys2, color: Color.Black, label: "data with gaps");
+            plt.Legend(location: Alignment.LowerLeft);
+
+            // default behavior throws with a NaN error
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            // ignoring NaN points prevents the error
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
+            Assert.DoesNotThrow(() => plt.Render());
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Scatter_GapNaN()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            Random rand = new(0);
+            double[] ys2 = ScottPlot.DataGen.InsertNanRanges(ys, rand, 5);
+
+            ScottPlot.Plot plt = new(600, 400);
+            var sp1 = plt.AddScatter(xs, ys, color: Color.FromArgb(50, Color.Black), label: "original data");
+            var sp2 = plt.AddScatter(xs, ys2, color: Color.Black, label: "data with gaps");
+            plt.Legend(location: Alignment.LowerLeft);
+
+            // default behavior throws with a NaN error
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            // gapping NaN points prevents the error
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
+            Assert.DoesNotThrow(() => plt.Render());
+
+            TestTools.SaveFig(plt);
+        }
+
+
+        [Test]
+        public void Test_Scatter_AllNan()
+        {
+            double[] xs = ScottPlot.DataGen.Full(51, double.NaN);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+        }
+
+
+        [Test]
+        public void Test_Scatter_AllYsNan()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+        }
+
+
+        [Test]
+        public void Test_Scatter_AllNanButOne()
+        {
+            double[] xs = ScottPlot.DataGen.Full(51, double.NaN);
+            double[] ys = ScottPlot.DataGen.Full(51, double.NaN);
+            xs[42] = 420;
+            ys[42] = 69;
+
+            ScottPlot.Plot plt = new();
+            var sp = plt.AddScatter(xs, ys);
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
+            Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            Assert.DoesNotThrow(() => { plt.Render(); });
         }
     }
 }
