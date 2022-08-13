@@ -6,13 +6,6 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public enum ResponseToNaN
-    {
-        Throw,
-        Ignore,
-        Gap
-    }
-
     /// <summary>
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
@@ -24,6 +17,25 @@ namespace ScottPlot.Plottable
         public double[] Ys { get; private set; }
         public double[] XError { get; set; }
         public double[] YError { get; set; }
+
+        public enum NanBehavior
+        {
+            /// <summary>
+            /// Throw a <see cref="NotImplementedException"/> if <see cref="Xs"/> or <see cref="Ys"/> contains <see cref="double.NaN"/>
+            /// </summary>
+            Throw,
+
+            /// <summary>
+            /// Ignore points where X or Y is <see cref="double.NaN"/>, drawing a line between adjacent non-NaN points.
+            /// </summary>
+            Ignore,
+
+            /// <summary>
+            /// Treat points where X or Y is <see cref="double.NaN"/> as missing data and render the scatter plot as a 
+            /// broken line with gaps indicating NaN points.
+            /// </summary>
+            Gap
+        }
 
         /// <summary>
         /// Add this value to each X value before plotting (axis units)
@@ -99,7 +111,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double SmoothTension = 0.5;
 
-        public ResponseToNaN OnNaN = ResponseToNaN.Throw;
+        public NanBehavior OnNaN = NanBehavior.Throw;
 
         public bool IsHighlighted { get; set; } = false;
         public float HighlightCoefficient { get; set; } = 2;
@@ -224,9 +236,9 @@ namespace ScottPlot.Plottable
         {
             return OnNaN switch
             {
-                ResponseToNaN.Throw => GetAxisLimitsThrowOnNaN(),
-                ResponseToNaN.Ignore => GetAxisLimitsIgnoreNaN(),
-                ResponseToNaN.Gap => GetAxisLimitsIgnoreNaN(),
+                NanBehavior.Throw => GetAxisLimitsThrowOnNaN(),
+                NanBehavior.Ignore => GetAxisLimitsIgnoreNaN(),
+                NanBehavior.Gap => GetAxisLimitsIgnoreNaN(),
                 _ => throw new NotImplementedException($"{nameof(OnNaN)} behavior not yet supported: {OnNaN}"),
             };
         }
@@ -388,7 +400,7 @@ namespace ScottPlot.Plottable
                     }
                 }
 
-                if (OnNaN == ResponseToNaN.Throw)
+                if (OnNaN == NanBehavior.Throw)
                 {
                     foreach (PointF point in points)
                     {
@@ -398,11 +410,11 @@ namespace ScottPlot.Plottable
 
                     DrawLines(points, gfx, penLine);
                 }
-                else if (OnNaN == ResponseToNaN.Ignore)
+                else if (OnNaN == NanBehavior.Ignore)
                 {
                     DrawLinesIngoringNaN(points, gfx, penLine);
                 }
-                else if (OnNaN == ResponseToNaN.Gap)
+                else if (OnNaN == NanBehavior.Gap)
                 {
                     DrawLinesWithGaps(points, gfx, penLine);
                 }

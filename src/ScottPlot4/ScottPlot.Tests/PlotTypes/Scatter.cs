@@ -89,7 +89,7 @@ namespace ScottPlotTests.PlotTypes
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
 
             // ignoring NaN points prevents the error
-            sp2.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
             plt.Title($"OnNaN = {sp2.OnNaN}");
             Assert.DoesNotThrow(() => plt.Render());
 
@@ -115,7 +115,7 @@ namespace ScottPlotTests.PlotTypes
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
 
             // gapping NaN points prevents the error
-            sp2.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             plt.Title($"OnNaN = {sp2.OnNaN}");
             Assert.DoesNotThrow(() => plt.Render());
 
@@ -132,13 +132,13 @@ namespace ScottPlotTests.PlotTypes
             ScottPlot.Plot plt = new();
             var sp = plt.AddScatter(xs, ys);
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
             Assert.DoesNotThrow(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             Assert.DoesNotThrow(() => { plt.Render(); });
         }
 
@@ -152,13 +152,13 @@ namespace ScottPlotTests.PlotTypes
             ScottPlot.Plot plt = new();
             var sp = plt.AddScatter(xs, ys);
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
             Assert.DoesNotThrow(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             Assert.DoesNotThrow(() => { plt.Render(); });
         }
 
@@ -174,13 +174,13 @@ namespace ScottPlotTests.PlotTypes
             ScottPlot.Plot plt = new();
             var sp = plt.AddScatter(xs, ys);
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Throw;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Throw;
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
             Assert.DoesNotThrow(() => { plt.Render(); });
 
-            sp.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             Assert.DoesNotThrow(() => { plt.Render(); });
         }
     }

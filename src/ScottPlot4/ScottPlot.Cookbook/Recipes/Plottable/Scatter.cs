@@ -377,7 +377,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add a scatter plot and customize NaN behavior
             var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
-            sp2.OnNaN = ScottPlot.Plottable.ResponseToNaN.Ignore;
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
             plt.Title($"OnNaN = {sp2.OnNaN}");
         }
     }
@@ -414,7 +414,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add a scatter plot and customize NaN behavior
             var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
-            sp2.OnNaN = ScottPlot.Plottable.ResponseToNaN.Gap;
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             plt.Title($"OnNaN = {sp2.OnNaN}");
         }
     }
