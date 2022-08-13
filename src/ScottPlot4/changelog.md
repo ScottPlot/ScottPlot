@@ -2,7 +2,7 @@
 
 ## ScottPlot 4.1.54
 _not yet published on NuGet..._
-* Scatter: Data may now contain NaN if the `OnNaN` field is customized. `Ignore` skips over NaN values. `Gap` draws a scatter plot as multiple lines with breaks where NaNs are. (#203, #396, #546, #618, #976, #1161)
+* Scatter: Data may now contain NaN if the `OnNaN` field is customized. `Throw` throws an exception of NaN is detected (default behavior), `Ignore` skips over NaN values (connecting adjacent points with a line), and `Gap` breaks the line so NaN values appear as gaps. (#2040, #2041)
 
 ## ScottPlot 4.1.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
