@@ -159,6 +159,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class ShadedError : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_shaded_error";
+        public string Title => "Scatter Plot with Shaded Error";
+        public string Description =>
+            "A semitransparent polygon can be created and placed behind the scatter plot " +
+            "to represent standard deviation or standard error.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            int pointCount = 20;
+            Random rand = new Random(0);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomWalk(rand, pointCount, 2.0);
+            double[] yErr = DataGen.Random(rand, pointCount, 1.0, 1.0);
+
+            plt.AddScatter(xs, ys, Color.Blue);
+            plt.AddFillError(xs, ys, yErr, Color.FromArgb(50, Color.Blue));
+        }
+    }
+
     public class LinePlot : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Scatter();
