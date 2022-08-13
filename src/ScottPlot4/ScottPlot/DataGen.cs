@@ -1004,5 +1004,26 @@ namespace ScottPlot
 
             return ys;
         }
+
+
+        /// <summary>
+        /// Return a copy of the input array with large spans of NaN.
+        /// The higher the stability, the larger the spans are.
+        /// </summary>
+        public static double[] InsertNanRanges(double[] values, Random rand, int stability = 10)
+        {
+            double[] values2 = new double[values.Length];
+
+            bool isNan = rand.NextDouble() > .5;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                values2[i] = isNan ? double.NaN : values[i];
+                if (rand.Next(stability) == 0)
+                    isNan = !isNan;
+            }
+
+            return values2;
+        }
     }
 }

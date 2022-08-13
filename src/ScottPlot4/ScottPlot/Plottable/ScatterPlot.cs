@@ -2,11 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 
 namespace ScottPlot.Plottable
 {
+    public enum ResponseToNaN
+    {
+        Throw,
+        Ignore,
+        Gap
+    }
+
     /// <summary>
     /// The scatter plot renders X/Y pairs as points and/or connected lines.
     /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
@@ -92,6 +98,8 @@ namespace ScottPlot.Plottable
         /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
         /// </summary>
         public double SmoothTension = 0.5;
+
+        public ResponseToNaN OnNaN = ResponseToNaN.Throw;
 
         public bool IsHighlighted { get; set; } = false;
         public float HighlightCoefficient { get; set; } = 2;
@@ -211,7 +219,66 @@ namespace ScottPlot.Plottable
             return $"PlottableScatter{label} with {PointCount} points";
         }
 
+
         public AxisLimits GetAxisLimits()
+        {
+            return OnNaN switch
+            {
+                ResponseToNaN.Throw => GetAxisLimitsThrowOnNaN(),
+                ResponseToNaN.Ignore => GetAxisLimitsIgnoreNaN(),
+                ResponseToNaN.Gap => GetAxisLimitsIgnoreNaN(),
+                _ => throw new NotImplementedException($"{nameof(OnNaN)} behavior not yet supported: {OnNaN}"),
+            };
+        }
+
+        private AxisLimits GetAxisLimitsIgnoreNaN()
+        {
+            ValidateData(deep: false);
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Xs.Length - 1);
+
+            // TODO: don't use an array for this
+            double[] limits = new double[4];
+
+            if (XError == null)
+            {
+                var XsRange = Xs.Skip(from).Take(to - from + 1).Where(x => !double.IsNaN(x));
+                limits[0] = XsRange.Min();
+                limits[1] = XsRange.Max();
+            }
+            else
+            {
+                var XsAndError = Xs.Zip(XError, (x, e) => (x, e)).Skip(from).Take(to - from + 1).Where(p => !double.IsNaN(p.x + p.e));
+                limits[0] = XsAndError.Min(p => p.x - p.e);
+                limits[1] = XsAndError.Max(p => p.x + p.e);
+            }
+
+            if (YError == null)
+            {
+                var YsRange = Ys.Skip(from).Take(to - from + 1).Where(x => !double.IsNaN(x));
+                limits[2] = YsRange.Min();
+                limits[3] = YsRange.Max();
+            }
+            else
+            {
+                var YsAndError = Ys.Zip(YError, (y, e) => (y, e)).Skip(from).Take(to - from + 1).Where(p => !double.IsNaN(p.y + p.e));
+                limits[2] = YsAndError.Min(p => p.y - p.e);
+                limits[3] = YsAndError.Max(p => p.y + p.e);
+            }
+
+            if (double.IsInfinity(limits[0]) || double.IsInfinity(limits[1]))
+                throw new InvalidOperationException("X data must not contain Infinity");
+            if (double.IsInfinity(limits[2]) || double.IsInfinity(limits[3]))
+                throw new InvalidOperationException("Y data must not contain Infinity");
+
+            return new AxisLimits(
+                xMin: limits[0] + OffsetX,
+                xMax: limits[1] + OffsetX,
+                yMin: limits[2] + OffsetY,
+                yMax: limits[3] + OffsetY);
+        }
+
+        private AxisLimits GetAxisLimitsThrowOnNaN()
         {
             ValidateData(deep: false);
             int from = MinRenderIndex ?? 0;
@@ -275,12 +342,11 @@ namespace ScottPlot.Plottable
                 int from = MinRenderIndex ?? 0;
                 int to = MaxRenderIndex ?? (Xs.Length - 1);
                 PointF[] points = new PointF[to - from + 1];
+
                 for (int i = from; i <= to; i++)
                 {
                     float x = dims.GetPixelX(Xs[i] + OffsetX);
                     float y = dims.GetPixelY(Ys[i] + OffsetY);
-                    if (float.IsNaN(x) || float.IsNaN(y))
-                        throw new NotImplementedException("Data must not contain NaN");
                     points[i - from] = new PointF(x, y);
                 }
 
@@ -310,22 +376,23 @@ namespace ScottPlot.Plottable
                     }
                 }
 
-                // draw the lines connecting points
-                if (LineWidth > 0 && points.Length > 1 && LineStyle != LineStyle.None)
+                if (OnNaN == ResponseToNaN.Throw)
                 {
-                    if (StepDisplay)
+                    foreach (PointF point in points)
                     {
-                        PointF[] pointsStep = GetStepDisplayPoints(points, StepDisplayRight);
-                        gfx.DrawLines(penLine, pointsStep);
+                        if (float.IsNaN(point.X) || float.IsNaN(point.Y))
+                            throw new NotImplementedException($"Data must not contain NaN if {nameof(OnNaN)} is {OnNaN}");
                     }
-                    else if (Smooth)
-                    {
-                        gfx.DrawCurve(penLine, points, (float)SmoothTension);
-                    }
-                    else
-                    {
-                        gfx.DrawLines(penLine, points);
-                    }
+
+                    DrawLines(points, gfx, penLine);
+                }
+                else if (OnNaN == ResponseToNaN.Ignore)
+                {
+                    DrawLinesIngoringNaN(points, gfx, penLine);
+                }
+                else if (OnNaN == ResponseToNaN.Gap)
+                {
+                    DrawLinesWithGaps(points, gfx, penLine);
                 }
 
                 // draw a marker at each point
@@ -336,6 +403,57 @@ namespace ScottPlot.Plottable
             }
         }
 
+        private void DrawLines(PointF[] points, Graphics gfx, Pen penLine)
+        {
+            bool isLineVisible = LineWidth > 0 && points.Length > 1 && LineStyle != LineStyle.None;
+            if (!isLineVisible)
+                return;
+
+            if (StepDisplay)
+            {
+                PointF[] pointsStep = GetStepDisplayPoints(points, StepDisplayRight);
+                gfx.DrawLines(penLine, pointsStep);
+            }
+            else if (Smooth)
+            {
+                gfx.DrawCurve(penLine, points, (float)SmoothTension);
+            }
+            else
+            {
+                gfx.DrawLines(penLine, points);
+            }
+        }
+
+        private void DrawLinesIngoringNaN(PointF[] points, Graphics gfx, Pen penLine)
+        {
+            PointF[] pointsWithoutNaNs = points.Where(pt => !double.IsNaN(pt.X) && !double.IsNaN(pt.Y)).ToArray();
+            DrawLines(pointsWithoutNaNs, gfx, penLine);
+        }
+
+        private void DrawLinesWithGaps(PointF[] points, Graphics gfx, Pen penLine)
+        {
+            List<PointF> segment = new();
+            for (int i = 0; i < points.Length; i++)
+            {
+                if (double.IsNaN(points[i].X) || double.IsNaN(points[i].Y))
+                {
+                    if (segment.Any())
+                    {
+                        DrawLines(segment.ToArray(), gfx, penLine);
+                        segment.Clear();
+                    }
+                }
+                else
+                {
+                    segment.Add(points[i]);
+                }
+            }
+
+            if (segment.Any())
+            {
+                DrawLines(segment.ToArray(), gfx, penLine);
+            }
+        }
 
         /// <summary>
         /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
