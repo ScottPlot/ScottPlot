@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using ScottPlot.Axis.AxisTranslation;
 using ScottPlot.Axis;
+using ScottPlot.Rendering;
+using ScottPlot.LayoutSystem;
 using SkiaSharp;
 
 namespace ScottPlot;
@@ -9,11 +11,12 @@ public class Plot
 {
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
-
     public readonly List<IGrid> Grids = new();
     public readonly List<IPlottable> Plottables = new();
 
-    public Rendering.IRenderer Renderer = new Rendering.StandardRenderer();
+    public IRenderer Renderer = new StandardRenderer();
+
+    public ILayoutSystem Layout = new StandardLayoutSystem();
 
     /// <summary>
     /// Palette to use for default colors of new plottables
@@ -31,7 +34,7 @@ public class Plot
     /// <summary>
     /// Any state stored across renders can be stored here.
     /// </summary>
-    internal Rendering.RenderDetails LastRenderInfo = new();
+    internal RenderDetails LastRenderInfo = new();
 
     /// <summary>
     /// The primary horizontal axis (the first one in the list of <see cref="XAxes"/>)
@@ -229,10 +232,6 @@ public class Plot
         ZoomRectangle.Clear();
     }
 
-    #endregion
-
-    #region Pixel/Coordinate Conversion Logic
-
     /// <summary>
     /// Return the pixel for a specific coordinate using measurements from the most recent render.
     /// </summary>
@@ -254,26 +253,6 @@ public class Plot
         double x = XAxis.XTranslator.GetCoordinate(pixel.X, dataRect);
         double y = YAxis.YTranslator.GetCoordinate(pixel.Y, dataRect);
         return new Coordinates(x, y);
-    }
-
-    #endregion
-
-    #region Layout Calculation
-
-    public PixelRect GetDataAreaRect(PixelRect figureRect)
-    {
-        YAxis.RegenerateTicks(figureRect);
-        float padLeft = YAxis.Measure();
-
-        XAxis.RegenerateTicks(figureRect);
-        float padBottom = XAxis.Measure();
-
-        float padRight = 20;
-
-        float padTop = 20;
-
-        PixelPadding DataAreaPadding = new(padLeft, padRight, padBottom, padTop);
-        return figureRect.Contract(DataAreaPadding);
     }
 
     #endregion

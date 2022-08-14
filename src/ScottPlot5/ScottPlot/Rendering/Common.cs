@@ -33,7 +33,7 @@ public static class Common
 
     public static PixelRect CalculateLayout(PixelRect figureRect, Plot plot)
     {
-        return plot.GetDataAreaRect(figureRect);
+        return plot.Layout.GetDataAreaRect(figureRect, plot.XAxes, plot.YAxes);
     }
 
     public static void RenderBackground(SKSurface surface, PixelRect dataRect, Plot plot)
