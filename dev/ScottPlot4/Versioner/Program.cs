@@ -16,9 +16,6 @@ namespace Versioner
                 throw new ArgumentException("argument required: path to src folder");
 
             string srcPath = Path.GetFullPath(args[0]);
-            string slnPath = Path.Combine(srcPath, "ScottPlot.sln");
-            if (!File.Exists(slnPath))
-                throw new ArgumentException($"bad path: {slnPath}");
 
             (Version version, string suffix) = GetCurrentVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"));
             IncrementVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"), version, suffix);

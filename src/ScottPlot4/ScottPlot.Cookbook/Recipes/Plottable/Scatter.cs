@@ -159,6 +159,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class ShadedError : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_shaded_error";
+        public string Title => "Scatter Plot with Shaded Error";
+        public string Description =>
+            "A semitransparent polygon can be created and placed behind the scatter plot " +
+            "to represent standard deviation or standard error.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            int pointCount = 20;
+            Random rand = new Random(0);
+            double[] xs = DataGen.Consecutive(pointCount);
+            double[] ys = DataGen.RandomWalk(rand, pointCount, 2.0);
+            double[] yErr = DataGen.Random(rand, pointCount, 1.0, 1.0);
+
+            plt.AddScatter(xs, ys, Color.Blue);
+            plt.AddFillError(xs, ys, yErr, Color.FromArgb(50, Color.Blue));
+        }
+    }
+
     public class LinePlot : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Scatter();
@@ -311,6 +333,111 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             plt.SetAxisLimits(0, 5, 0, 6);
             plt.Legend();
+        }
+    }
+
+    public class ScatterSmooth : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_smooth";
+        public string Title => "Scatter Plot with Smooth Lines";
+        public string Description =>
+            "Lines drawn between scatter plot points are typically connected with straight lines, " +
+            "but the Smooth property can be enabled to connect points with curves instead.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(1234);
+            double[] xs = DataGen.RandomWalk(rand, 20);
+            double[] ys = DataGen.RandomWalk(rand, 20);
+            plt.Palette = new ScottPlot.Palettes.ColorblindFriendly();
+
+            var sp1 = plt.AddScatter(xs, ys, label: "default");
+            sp1.Smooth = true;
+
+            var sp2 = plt.AddScatter(xs, ys, label: "high tension");
+            sp2.Smooth = true;
+            sp2.SmoothTension = 1.0f;
+
+            var sp3 = plt.AddScatter(xs, ys, label: "low tension");
+            sp3.Smooth = true;
+            sp3.SmoothTension = 0.2f;
+
+            plt.Legend();
+        }
+    }
+
+    public class ScatterNaNIgnore : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_nan_ignore";
+        public string Title => "NaN Values Ignored";
+        public string Description =>
+            "When the OnNaN field is set to Ignore, points containing NaN X or Y values are skipped, " +
+            "and the scatter plot is drawn as one continuous line.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data that does NOT contain NaN
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            // plot it the traditional way
+            plt.AddScatter(xs, ys, Color.FromArgb(50, Color.Black));
+
+            // create new data that contains NaN
+            double[] ysWithNan = ScottPlot.DataGen.Sin(51);
+            static void FillWithNan(double[] values, int start, int count)
+            {
+                for (int i = 0; i < count; i++)
+                    values[start + i] = double.NaN;
+            }
+            FillWithNan(ysWithNan, 5, 15);
+            FillWithNan(ysWithNan, 25, 1);
+            FillWithNan(ysWithNan, 30, 15);
+            ysWithNan[10] = ys[10];
+
+            // add a scatter plot and customize NaN behavior
+            var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
+        }
+    }
+
+    public class ScatterNaNGap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_nan_gap";
+        public string Title => "NaN Values Break the Line";
+        public string Description =>
+            "When the OnNaN field is set to Gap, points containing NaN X or Y values break the line. " +
+            "This results in a scatter plot appearing as multiple lines, with gaps representing missing data.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data that does NOT contain NaN
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+
+            // plot it the traditional way
+            plt.AddScatter(xs, ys, Color.FromArgb(50, Color.Black));
+
+            // create new data that contains NaN
+            double[] ysWithNan = ScottPlot.DataGen.Sin(51);
+            static void FillWithNan(double[] values, int start, int count)
+            {
+                for (int i = 0; i < count; i++)
+                    values[start + i] = double.NaN;
+            }
+            FillWithNan(ysWithNan, 5, 15);
+            FillWithNan(ysWithNan, 25, 1);
+            FillWithNan(ysWithNan, 30, 15);
+            ysWithNan[10] = ys[10];
+
+            // add a scatter plot and customize NaN behavior
+            var sp2 = plt.AddScatter(xs, ysWithNan, Color.Black);
+            sp2.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
+            plt.Title($"OnNaN = {sp2.OnNaN}");
         }
     }
 }
