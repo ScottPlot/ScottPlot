@@ -1,8 +1,8 @@
-﻿namespace ScottPlot.AxisViews;
+﻿namespace ScottPlot.Axis;
 
-public interface IAxisView
+public interface IAxis
 {
-    public Axes.IAxis Axis { get; }
+    public AxisTranslation.IAxisTranslator Translator { get; }
     public Edge Edge { get; }
     public void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
     public ITickGenerator TickGenerator { get; set; }

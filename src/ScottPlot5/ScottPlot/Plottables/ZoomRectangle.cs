@@ -1,4 +1,4 @@
-﻿using ScottPlot.Axes;
+﻿using ScottPlot.Axis.AxisTranslation;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables;
@@ -14,7 +14,7 @@ public class ZoomRectangle : PlottableBase
     public bool HorizontalSpan = false;
     public bool VerticalSpan = false;
 
-    public ZoomRectangle(IXAxis xAxis, IYAxis yAxis)
+    public ZoomRectangle(IXAxisTranslator xAxis, IYAxisTranslator yAxis)
     {
         XAxis = xAxis;
         YAxis = yAxis;

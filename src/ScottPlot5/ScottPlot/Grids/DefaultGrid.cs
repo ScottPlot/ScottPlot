@@ -9,7 +9,7 @@ public class DefaultGrid : IGrid
 
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public void Render(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView)
+    public void Render(SKSurface surface, PixelRect dataRect, Axis.IAxis axisView)
     {
         Tick[] ticks = axisView.GetVisibleTicks();
         Pixel[] starts = new Pixel[ticks.Length];
@@ -17,9 +17,9 @@ public class DefaultGrid : IGrid
 
         for (int i = 0; i < ticks.Length; i++)
         {
-            float px = axisView.Axis.GetPixel(ticks[i].Position, dataRect);
-            starts[i] = axisView.Axis.IsHorizontal ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
-            ends[i] = axisView.Axis.IsHorizontal ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
+            float px = axisView.Translator.GetPixel(ticks[i].Position, dataRect);
+            starts[i] = axisView.Translator.IsHorizontal ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
+            ends[i] = axisView.Translator.IsHorizontal ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
         }
 
         Drawing.DrawLines(surface, starts, ends, LineColor, LineWidth);

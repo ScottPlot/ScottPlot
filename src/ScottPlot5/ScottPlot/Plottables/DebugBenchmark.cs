@@ -1,5 +1,4 @@
-﻿using ScottPlot.Axes;
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 

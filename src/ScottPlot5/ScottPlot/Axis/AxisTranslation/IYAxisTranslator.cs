@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Axes;
+﻿namespace ScottPlot.Axis.AxisTranslation;
 
-public interface IYAxis : IAxis
+public interface IYAxisTranslator : IAxisTranslator
 {
     public double Bottom { get; set; }
     public double Top { get; set; }

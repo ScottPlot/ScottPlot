@@ -1,4 +1,4 @@
-﻿using ScottPlot.Axes;
+﻿using ScottPlot.Axis.AxisTranslation;
 
 namespace ScottPlot;
 
@@ -27,9 +27,9 @@ public interface IPlottable
     // * Plottables that use these must perform a null check once at the top of the render method.
     // * Plottables that don't need axes can leave these null.
 
-    public IXAxis? XAxis { get; set; }
+    public IXAxisTranslator? XAxis { get; set; }
 
-    public IYAxis? YAxis { get; set; }
+    public IYAxisTranslator? YAxis { get; set; }
 
     public AxisLimits GetAxisLimits();
 }

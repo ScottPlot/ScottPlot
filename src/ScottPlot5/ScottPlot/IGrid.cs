@@ -8,5 +8,5 @@ namespace ScottPlot;
 public interface IGrid
 {
     public bool IsBeneathPlottables { get; set; }
-    public void Render(SKSurface surface, PixelRect dataRect, AxisViews.IAxisView axisView);
+    public void Render(SKSurface surface, PixelRect dataRect, Axis.IAxis axisView);
 }

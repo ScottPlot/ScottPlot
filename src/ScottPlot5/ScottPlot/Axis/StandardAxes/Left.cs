@@ -1,12 +1,11 @@
 ﻿using SkiaSharp;
-using ScottPlot.Axes;
 
-namespace ScottPlot.AxisViews;
+namespace ScottPlot.Axis.StandardAxes;
 
-public class LeftAxisView : IAxisView
+public class Left : IYAxis
 {
-    public IAxis Axis => YAxis;
-    public IYAxis YAxis { get; private set; }
+    public AxisTranslation.IAxisTranslator Translator => YTranslator;
+    public AxisTranslation.IYAxisTranslator YTranslator { get; private set; }
     public Edge Edge => Edge.Left;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
 
@@ -25,19 +24,19 @@ public class LeftAxisView : IAxisView
     /// </summary>
     public int MaxTickCount { get; set; } = 1000;
 
-    public LeftAxisView(IYAxis axis)
+    public Left()
     {
-        YAxis = axis;
+        YTranslator = new AxisTranslation.LinearYAxisTranslator();
     }
 
     public void RegenerateTicks(PixelRect dataRect)
     {
-        Ticks = TickGenerator.GenerateTicks(YAxis.Range, dataRect.Height);
+        Ticks = TickGenerator.GenerateTicks(Translator.Range, dataRect.Height);
     }
 
     public Tick[] GetVisibleTicks()
     {
-        return Ticks.Where(tick => YAxis.Contains(tick.Position)).Take(MaxTickCount).ToArray();
+        return Ticks.Where(tick => Translator.Contains(tick.Position)).Take(MaxTickCount).ToArray();
     }
 
     public float Measure()
@@ -77,11 +76,11 @@ public class LeftAxisView : IAxisView
             TextAlign = SKTextAlign.Right,
         };
 
-        var visibleTicks = Ticks.Where(tick => YAxis.Contains(tick.Position)).Take(MaxTickCount);
+        var visibleTicks = Ticks.Where(tick => Translator.Contains(tick.Position)).Take(MaxTickCount);
 
         foreach (Tick tick in visibleTicks)
         {
-            float y = YAxis.GetPixel(tick.Position, dataRect);
+            float y = Translator.GetPixel(tick.Position, dataRect);
 
             surface.Canvas.DrawLine(dataRect.Right, y, dataRect.Right - 5, y, paint);
 

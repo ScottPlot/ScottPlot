@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Axes;
+﻿namespace ScottPlot.Axis.AxisTranslation;
 
-public interface IXAxis : IAxis
+public interface IXAxisTranslator : IAxisTranslator
 {
     public double Left { get; set; }
     public double Right { get; set; }

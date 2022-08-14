@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Axes;
+﻿namespace ScottPlot.Axis.AxisTranslation;
 
-public class LinearXAxis : IXAxis
+public class LinearXAxisTranslator : IXAxisTranslator
 {
     public double Left { get; set; } = 0;
     public double Right { get; set; } = 0;

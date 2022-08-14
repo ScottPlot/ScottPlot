@@ -17,15 +17,15 @@ public static class Common
         foreach (var plottable in plot.GetPlottables())
         {
             if (plottable.XAxis is null)
-                plottable.XAxis = plot.XAxis;
+                plottable.XAxis = plot.XAxis.XTranslator;
             if (plottable.YAxis is null)
-                plottable.YAxis = plot.YAxis;
+                plottable.YAxis = plot.YAxis.YTranslator;
         }
     }
 
     public static void AutoAxisAnyUnsetAxes(Plot plot)
     {
-        if (!plot.XAxis.HasBeenSet || !plot.YAxis.HasBeenSet)
+        if (!plot.XAxis.XTranslator.HasBeenSet || !plot.YAxis.YTranslator.HasBeenSet)
         {
             plot.AutoScale();
         }
@@ -45,8 +45,8 @@ public static class Common
     {
         foreach (IGrid grid in plot.Grids.Where(x => x.IsBeneathPlottables == beneathPlottables))
         {
-            grid.Render(surface, dataRect, plot.BottomAxisView);
-            grid.Render(surface, dataRect, plot.LeftAxisView);
+            grid.Render(surface, dataRect, plot.XAxis);
+            grid.Render(surface, dataRect, plot.YAxis);
         }
     }
 
@@ -73,8 +73,8 @@ public static class Common
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
 
         // draw each axis view
-        plot.LeftAxisView.Render(surface, dataRect);
-        plot.BottomAxisView.Render(surface, dataRect);
+        plot.XAxis.Render(surface, dataRect);
+        plot.YAxis.Render(surface, dataRect);
     }
 
     public static void RenderZoomRectangle(SKSurface surface, PixelRect dataRect, Plot plot)

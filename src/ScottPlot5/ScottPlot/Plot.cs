@@ -1,17 +1,14 @@
 ﻿using System.Diagnostics;
-using ScottPlot.Axes;
-using ScottPlot.AxisViews;
+using ScottPlot.Axis.AxisTranslation;
+using ScottPlot.Axis;
 using SkiaSharp;
 
 namespace ScottPlot;
 
 public class Plot
 {
-    // TODO: store these in lists to support multi-axis plots
-    internal readonly IXAxis XAxis;
-    internal readonly IYAxis YAxis;
-    internal readonly IAxisView LeftAxisView;
-    internal readonly IAxisView BottomAxisView;
+    public readonly List<IXAxis> XAxes = new();
+    public readonly List<IYAxis> YAxes = new();
 
     public readonly List<IGrid> Grids = new();
     public readonly List<IPlottable> Plottables = new();
@@ -36,15 +33,24 @@ public class Plot
     /// </summary>
     internal Rendering.RenderDetails LastRenderInfo = new();
 
+    /// <summary>
+    /// The primary horizontal axis (the first one in the list of <see cref="XAxes"/>)
+    /// </summary>
+    public IXAxis XAxis => XAxes.First();
+
+    /// <summary>
+    /// The primary vertical axis (the first one in the list of <see cref="YAxes"/>)
+    /// </summary>
+    public IYAxis YAxis => YAxes.First();
+
     public Plot()
     {
-        XAxis = new LinearXAxis();
-        YAxis = new LinearYAxis();
+        var xAxis = new Axis.StandardAxes.Bottom();
+        var yAxis = new Axis.StandardAxes.Left();
+        XAxes.Add(xAxis);
+        YAxes.Add(yAxis);
 
-        LeftAxisView = new LeftAxisView(YAxis);
-        BottomAxisView = new BottomAxisView(XAxis);
-
-        ZoomRectangle = new(XAxis, YAxis);
+        ZoomRectangle = new(xAxis.XTranslator, yAxis.YTranslator);
 
         Grids.Add(new Grids.DefaultGrid());
     }
@@ -72,13 +78,14 @@ public class Plot
 
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
-        XAxis.Left = left;
-        XAxis.Right = right;
-        XAxis.HasBeenSet = true;
+        // TODO: move set limits inside XAxis and YAxis
+        XAxis.XTranslator.Left = left;
+        XAxis.XTranslator.Right = right;
+        XAxis.XTranslator.HasBeenSet = true;
 
-        YAxis.Bottom = bottom;
-        YAxis.Top = top;
-        YAxis.HasBeenSet = true;
+        YAxis.YTranslator.Bottom = bottom;
+        YAxis.YTranslator.Top = top;
+        YAxis.YTranslator.HasBeenSet = true;
     }
 
     public void SetAxisLimits(CoordinateRect rect)
@@ -93,7 +100,7 @@ public class Plot
 
     public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
+        return new AxisLimits(XAxis.XTranslator.Left, XAxis.XTranslator.Right, YAxis.YTranslator.Bottom, YAxis.YTranslator.Top);
     }
 
     /// <summary>
@@ -141,8 +148,8 @@ public class Plot
     /// </summary>
     public void MousePan(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
-        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
-        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
+        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.XTranslator.Width;
+        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.YTranslator.Height;
 
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
@@ -207,10 +214,10 @@ public class Plot
         {
             if (ZoomRectangle.HorizontalSpan || ZoomRectangle.VerticalSpan)
             {
-                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.Left;
-                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.Right;
-                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.Bottom;
-                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.Top;
+                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.XTranslator.Left;
+                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.XTranslator.Right;
+                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.YTranslator.Bottom;
+                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.YTranslator.Top;
                 SetAxisLimits(left, right, bottom, top);
             }
             else
@@ -232,20 +239,20 @@ public class Plot
     public Pixel GetPixel(Coordinates coord)
     {
         PixelRect dataRect = LastRenderInfo.DataRect;
-        float x = XAxis.GetPixel(coord.X, dataRect);
-        float y = YAxis.GetPixel(coord.Y, dataRect);
+        float x = XAxis.XTranslator.GetPixel(coord.X, dataRect);
+        float y = YAxis.YTranslator.GetPixel(coord.Y, dataRect);
         return new Pixel(x, y);
     }
 
     /// <summary>
     /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
-    public Coordinates GetCoordinate(Pixel pixel, Axes.IAxis? xAxis = null, Axes.IAxis? yAxis = null)
+    public Coordinates GetCoordinate(Pixel pixel, IAxisTranslator? xAxis = null, IAxisTranslator? yAxis = null)
     {
         // TODO: multi-axis support
         PixelRect dataRect = LastRenderInfo.DataRect;
-        double x = XAxis.GetCoordinate(pixel.X, dataRect);
-        double y = YAxis.GetCoordinate(pixel.Y, dataRect);
+        double x = XAxis.XTranslator.GetCoordinate(pixel.X, dataRect);
+        double y = YAxis.YTranslator.GetCoordinate(pixel.Y, dataRect);
         return new Coordinates(x, y);
     }
 
@@ -255,11 +262,11 @@ public class Plot
 
     public PixelRect GetDataAreaRect(PixelRect figureRect)
     {
-        LeftAxisView.RegenerateTicks(figureRect);
-        float padLeft = LeftAxisView.Measure();
+        YAxis.RegenerateTicks(figureRect);
+        float padLeft = YAxis.Measure();
 
-        BottomAxisView.RegenerateTicks(figureRect);
-        float padBottom = BottomAxisView.Measure();
+        XAxis.RegenerateTicks(figureRect);
+        float padBottom = XAxis.Measure();
 
         float padRight = 20;
 

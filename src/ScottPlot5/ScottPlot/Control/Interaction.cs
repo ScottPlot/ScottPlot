@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Axis.AxisTranslation;
+
+namespace ScottPlot.Control;
 
 /// <summary>
 /// This class contains logic to perform plot manipulations in response to UI actions.
@@ -36,7 +38,7 @@ public class Interaction
     /// <summary>
     /// Return the last observed location of the mouse in coordinate units
     /// </summary>
-    public Coordinates GetMouseCoordinates(Axes.IAxis? xAxis = null, Axes.IAxis? yAxis = null)
+    public Coordinates GetMouseCoordinates(IAxisTranslator? xAxis = null, IAxisTranslator? yAxis = null)
     {
         return Control.Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
     }
