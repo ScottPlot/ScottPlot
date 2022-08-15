@@ -28,7 +28,7 @@ public static class Generate
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
     /// </summary>
-    public static double[] Sin(int count, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
+    public static double[] Sin(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
         double sinScale = 2 * Math.PI * oscillations / (count - 1);
         double[] ys = new double[count];
@@ -37,18 +37,17 @@ public static class Generate
         return ys;
     }
 
-    public static T[] Sin<T>(int count, double delta = 1, double first = 0)
+    public static T[] Sin<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
-        return Sin(count, delta, first).ToGenericArray<T>();
+        return Sin(count, mult, offset, oscillations, phase).ToGenericArray<T>();
     }
-
 
     /// <summary>
     /// Return an array of cosine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
     /// </summary>
-    public static double[] Cos(int count, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
+    public static double[] Cos(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
         double sinScale = 2 * Math.PI * oscillations / (count - 1);
         double[] ys = new double[count];
@@ -57,8 +56,8 @@ public static class Generate
         return ys;
     }
 
-    public static T[] Cos<T>(int count, double delta = 1, double first = 0)
+    public static T[] Cos<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
-        return Cos(count, delta, first).ToGenericArray<T>();
+        return Cos(count, mult, offset, oscillations, phase).ToGenericArray<T>();
     }
 }

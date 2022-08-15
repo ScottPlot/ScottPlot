@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Axes;
+﻿namespace ScottPlot.Axis.AxisTranslation;
 
-public interface IAxis
+public interface IAxisTranslator
 {
     /* WHAT ABOUT MIN AND MAX PROPERTIES?
      * I intentionally do not have Min and Max because it's easy to get confused
