@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.56
 _not yet published on NuGet..._
+* Signal: Improved accuracy of `GetIndexForX()` (#2044) _Thanks @CharlesMauldin_
 
 ## ScottPlot 4.1.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-14_

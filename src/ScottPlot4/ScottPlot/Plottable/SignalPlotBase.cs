@@ -828,7 +828,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         private int GetIndexForX(double x)
         {
-            int index = (int)((x - OffsetX + SamplePeriod / 2) / SampleRate);
+            int index = (int)((x - OffsetX + SamplePeriod / 2) * SampleRate);
             index = Math.Max(index, MinRenderIndex);
             index = Math.Min(index, MaxRenderIndex);
             return index;

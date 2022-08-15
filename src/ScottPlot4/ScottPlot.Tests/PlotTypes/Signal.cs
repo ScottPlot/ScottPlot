@@ -200,5 +200,33 @@ namespace ScottPlotTests.PlotTypes
             TestTools.SaveFig(plt);
         }
 
+        [TestCase(1, 9.8, 10, 0)]
+        [TestCase(1, 10.2, 10, 0)]
+        [TestCase(.5, 19.5, 20, 0)]
+        [TestCase(.5, 20.5, 20, 0)]
+        [TestCase(2, 4.9, 5, 0)]
+        [TestCase(2, 5.1, 5, 0)]
+        [TestCase(1, 109.8, 110, 100)]
+        [TestCase(1, 110.2, 110, 100)]
+        [TestCase(.5, 119.5, 120, 100)]
+        [TestCase(.5, 120.5, 120, 100)]
+        [TestCase(2, 104.9, 105, 100)]
+        [TestCase(2, 105.1, 105, 100)]
+        public void Test_Signal_GetPointNearestX(double sampleRate, double mouseX, double expectedNearestX, double offsetX)
+        {
+            ScottPlot.Plot plt = new(600, 400);
+            plt.Title($"Sample Rate: {sampleRate}");
+            plt.AddVerticalLine(mouseX, System.Drawing.Color.Magenta);
+
+            double[] ys = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+            var sig = plt.AddSignal(ys, sampleRate);
+            sig.OffsetX = offsetX;
+
+            (double nearestX, double nearestY, int nearestIndex) = sig.GetPointNearestX(mouseX);
+            plt.AddVerticalLine(nearestX, System.Drawing.Color.Red, 1, ScottPlot.LineStyle.Dash);
+            plt.AddHorizontalLine(nearestY, System.Drawing.Color.Red, 1, ScottPlot.LineStyle.Dash);
+
+            Assert.That(nearestX, Is.EqualTo(expectedNearestX));
+        }
     }
 }
