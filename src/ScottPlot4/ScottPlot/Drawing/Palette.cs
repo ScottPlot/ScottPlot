@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Drawing;
 
-[Obsolete("Use ScottPlot.Palette instead of ScottPlot.Drawing.Palette", true)]
+[Obsolete("This class is obsolete. Standard palettes are now in: ScottPlot.Palette", true)]
 public class Palette
 {
     public static IPalette Amber => new Palettes.Amber();
@@ -22,4 +22,11 @@ public class Palette
     public static IPalette Redness => new Palettes.Redness();
     public static IPalette SnowStorm => new Palettes.Snowstorm();
     public static IPalette Tsitsulin => new Palettes.Tsitsulin();
+
+
+    [Obsolete($"This class is obsolete. Create custom palettes by calling: ScottPlot.Palette.FromHtmlColors()", true)]
+    public Palette()
+    {
+
+    }
 }
