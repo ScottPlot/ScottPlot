@@ -55,24 +55,32 @@ namespace Versioner
         {
             // prepare new version strings
             Version newVersion = new Version(oldVersion.Major, oldVersion.Minor, oldVersion.Build + 1);
-            string newVersionNumber = newVersion.ToString() + ".0";
-            string newVersionName = newVersion.ToString();
-            if (suffix != null)
-                newVersionName += "-" + suffix;
             Console.WriteLine($"{oldVersion} -> {newVersion} {System.IO.Path.GetFileName(csprojPath)}");
 
             // modify only those lines in the csproj file
             string[] lines = System.IO.File.ReadAllLines(csprojPath);
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].StartsWith("    <Version>"))
-                    lines[i] = $"    <Version>{newVersionName}</Version>";
-                if (lines[i].StartsWith("    <AssemblyVersion>"))
-                    lines[i] = $"    <AssemblyVersion>{newVersionNumber}</AssemblyVersion>";
-                if (lines[i].StartsWith("    <FileVersion>"))
-                    lines[i] = $"    <FileVersion>{newVersionNumber}</FileVersion>";
+                ReplaceElement(lines, "Version", newVersion.ToString());
+                ReplaceElement(lines, "AssemblyVersion", newVersion.ToString() + ".0");
+                ReplaceElement(lines, "FileVersion", newVersion.ToString() + ".0");
             }
             File.WriteAllLines(csprojPath, lines);
+        }
+
+        private static void ReplaceElement(string[] lines, string element, string value)
+        {
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Contains($"<{element}>"))
+                {
+                    string spaces = new string(' ', lines[i].IndexOf("<"));
+                    lines[i] = $"{spaces}<{element}>{value}</{element}>";
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException($"Element not found: {element}");
         }
     }
 }

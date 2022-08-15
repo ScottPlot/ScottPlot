@@ -19,11 +19,9 @@ public class Plot
     public ILayoutSystem Layout = new StandardLayoutSystem();
 
     /// <summary>
-    /// Palette to use for default colors of new plottables
+    /// This class contains helper methods for creating and adding new <see cref="IPlottable"/> objects to this <see cref="Plot"/>
     /// </summary>
-    public IPalette Palette { get; set; } = new Palettes.Category10();
-
-    public Color GetNextColor() => Palette.GetColor(Plottables.Count); // TODO: ignore system plottables?
+    public readonly PlotAdd Add;
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
@@ -48,6 +46,8 @@ public class Plot
 
     public Plot()
     {
+        Add = new(this);
+
         var xAxis = new Axis.StandardAxes.Bottom();
         var yAxis = new Axis.StandardAxes.Left();
         XAxes.Add(xAxis);
@@ -58,25 +58,6 @@ public class Plot
         var grid = new Grids.DefaultGrid(xAxis, yAxis);
         Grids.Add(grid);
     }
-
-    #region Plottable Management
-
-    public void Add(IPlottable plottable)
-    {
-        Plottables.Add(plottable);
-    }
-
-    public void Clear()
-    {
-        Plottables.Clear();
-    }
-
-    public IPlottable[] GetPlottables()
-    {
-        return Plottables.ToArray();
-    }
-
-    #endregion
 
     #region Axis Management
 
@@ -293,27 +274,6 @@ public class Plot
 
         byte[] bytes = GetImageBytes(width, height, format, quality);
         File.WriteAllBytes(path, bytes);
-    }
-
-    #endregion
-
-    #region Helper methods for adding new plottables
-
-    public Plottables.Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
-    {
-        color ??= GetNextColor();
-        Plottables.Scatter scatter = new(xs, ys) { Color = color.Value };
-
-        Add(scatter);
-
-        return scatter;
-    }
-
-    public Plottables.Pie AddPie(IList<Plottables.PieSlice> slices)
-    {
-        Plottables.Pie pie = new(slices);
-        Add(pie);
-        return pie;
     }
 
     #endregion

@@ -14,7 +14,7 @@ public static class Common
 {
     public static void ReplaceNullAxesWithDefaults(Plot plot)
     {
-        foreach (var plottable in plot.GetPlottables())
+        foreach (var plottable in plot.Plottables)
         {
             if (plottable.XAxis is null)
                 plottable.XAxis = plot.XAxis.XTranslator;
@@ -51,7 +51,7 @@ public static class Common
 
     public static void RenderPlottables(SKSurface surface, PixelRect dataRect, Plot plot)
     {
-        foreach (var plottable in plot.GetPlottables().Where(x => x.IsVisible))
+        foreach (var plottable in plot.Plottables.Where(x => x.IsVisible))
         {
             surface.Canvas.Save();
             plottable.Render(surface, dataRect);

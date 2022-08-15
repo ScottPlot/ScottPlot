@@ -20,10 +20,10 @@ namespace WPFDemo
 
             const int N = 51;
 
-            WpfPlot.Plot.Add(DebugPoint);
-            WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
-            WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-            WpfPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
+            WpfPlot.Plot.Plottables.Add(DebugPoint);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }

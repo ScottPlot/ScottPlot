@@ -21,7 +21,7 @@ namespace ScottPlot.Tests.RenderTests.Plottable
                 new(1, Colors.DarkCyan),
             };
 
-            plt.AddPie(slices);
+            plt.Add.Pie(slices);
 
             TestTools.SaveImage(plt);
         }

@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.54
+## ScottPlot 4.1.56
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.55
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-14_
 * Scatter: Data may now contain NaN if the `OnNaN` field is customized. `Throw` throws an exception of NaN is detected (default behavior), `Ignore` skips over NaN values (connecting adjacent points with a line), and `Gap` breaks the line so NaN values appear as gaps. (#2040, #2041)
 * Plot: Added a `AddFillError()` helper method to create a shaded error polygon for displaying beneath a scatter plot (#2037)
 

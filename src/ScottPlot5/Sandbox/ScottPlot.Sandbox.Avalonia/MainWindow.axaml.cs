@@ -21,10 +21,10 @@ namespace Sandbox.Avalonia
 
             const int N = 51;
 
-            avaPlot.Plot.Add(DebugPoint);
-            avaPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
-            avaPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-            avaPlot.Plot.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
+            avaPlot.Plot.Plottables.Add(DebugPoint);
+            avaPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
+            avaPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
+            avaPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
             avaPlot.PointerMoved += AvaPlot_MouseMove;
         }
