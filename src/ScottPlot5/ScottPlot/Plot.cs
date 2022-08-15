@@ -55,7 +55,8 @@ public class Plot
 
         ZoomRectangle = new(xAxis.XTranslator, yAxis.YTranslator);
 
-        Grids.Add(new Grids.DefaultGrid());
+        var grid = new Grids.DefaultGrid(xAxis, yAxis);
+        Grids.Add(grid);
     }
 
     #region Plottable Management

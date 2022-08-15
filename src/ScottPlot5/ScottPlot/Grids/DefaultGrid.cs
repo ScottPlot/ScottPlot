@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axis;
+using SkiaSharp;
 
 namespace ScottPlot.Grids;
 
@@ -6,10 +7,24 @@ public class DefaultGrid : IGrid
 {
     public float LineWidth = 1;
     public Color LineColor = Colors.Black.WithAlpha(20);
-
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public void Render(SKSurface surface, PixelRect dataRect, Axis.IAxis axisView)
+    public readonly IXAxis XAxis;
+    public readonly IYAxis YAxis;
+
+    public DefaultGrid(IXAxis xAxis, IYAxis yAxis)
+    {
+        XAxis = xAxis;
+        YAxis = yAxis;
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect)
+    {
+        RenderGridLines(surface, dataRect, XAxis);
+        RenderGridLines(surface, dataRect, YAxis);
+    }
+
+    private void RenderGridLines(SKSurface surface, PixelRect dataRect, IAxis axisView)
     {
         Tick[] ticks = axisView.GetVisibleTicks();
         Pixel[] starts = new Pixel[ticks.Length];

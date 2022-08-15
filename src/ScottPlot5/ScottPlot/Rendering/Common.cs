@@ -45,8 +45,7 @@ public static class Common
     {
         foreach (IGrid grid in plot.Grids.Where(x => x.IsBeneathPlottables == beneathPlottables))
         {
-            grid.Render(surface, dataRect, plot.XAxis);
-            grid.Render(surface, dataRect, plot.YAxis);
+            grid.Render(surface, dataRect);
         }
     }
 
