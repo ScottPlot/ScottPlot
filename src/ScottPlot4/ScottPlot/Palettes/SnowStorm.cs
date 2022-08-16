@@ -7,7 +7,7 @@ namespace ScottPlot.Palettes;
 
 public class SnowStorm : HexPaletteBase, IPalette
 {
-    public override string Name => "Snow Storm";
+    public override string Name => GetType().Name;
 
     public override string Description => "From the Nord collection of palettes: https://github.com/arcticicestudio/nord";
 
