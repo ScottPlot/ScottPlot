@@ -8,7 +8,7 @@ namespace ScottPlot.Palettes;
 
 public class SummerSplash : HexPaletteBase, IPalette
 {
-    public override string Name => GetType().Name;
+    public override string Name => "Summer Splash";
 
     public override string Description => string.Empty;
 
