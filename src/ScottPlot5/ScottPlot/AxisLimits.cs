@@ -49,6 +49,42 @@ public struct AxisLimits
         }
     }
 
+    public void ExpandX(double x)
+    {
+        if (!XHasBeenSet)
+        {
+            Rect.XMin = x;
+            Rect.XMax = x;
+        }
+
+        if (XHasBeenSet && !double.IsNaN(x))
+        {
+            Rect.XMin = Math.Min(Rect.XMin, x);
+            Rect.XMax = Math.Max(Rect.XMax, x);
+        }
+    }
+
+    public void ExpandY(double y)
+    {
+        if (!YHasBeenSet)
+        {
+            Rect.YMin = y;
+            Rect.YMax = y;
+        }
+
+        if (YHasBeenSet && !double.IsNaN(y))
+        {
+            Rect.YMin = Math.Min(Rect.YMin, y);
+            Rect.YMax = Math.Max(Rect.YMax, y);
+        }
+    }
+
+    public void Expand(Coordinates point)
+    {
+        ExpandX(point.X);
+        ExpandY(point.Y);
+    }
+
     public CoordinateRect WithPan(double deltaX, double deltaY)
     {
         return new CoordinateRect(Rect.XMin + deltaX, Rect.XMax + deltaX, Rect.YMin + deltaY, Rect.YMax + deltaY);
