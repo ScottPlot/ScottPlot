@@ -4,21 +4,23 @@
 /// This data source has Xs and Ys defined in fixed-length arrays.
 /// Changes made to the contents of the arrays will appear when the plot is rendered.
 /// </summary>
-public class CoordinatesArray : ICoordinateSource
+public class ScatterXYLists : IScatterSource
 {
-    private readonly Coordinates[] Coordinates;
+    private readonly List<double> Xs;
+    private readonly List<double> Ys;
 
-    public int Count => Coordinates.Length;
+    public int Count => Xs.Count;
 
-    public CoordinatesArray(Coordinates[] coordinates)
+    public ScatterXYLists(List<double> xs, List<double> ys)
     {
-        Coordinates = coordinates;
+        Xs = xs;
+        Ys = ys;
     }
 
     public Coordinates this[int index]
     {
-        get => Coordinates[index];
-        set => Coordinates[index] = value;
+        get => new(Xs[index], Ys[index]);
+        set { Xs[index] = value.X; Ys[index] = value.Y; }
     }
 
     public AxisLimits GetLimits()
@@ -27,7 +29,8 @@ public class CoordinatesArray : ICoordinateSource
 
         for (int i = 0; i < Count; i++)
         {
-            rect.Expand(Coordinates[i]);
+            rect.ExpandX(Xs[i]);
+            rect.ExpandY(Ys[i]);
         }
 
         return rect;
@@ -50,8 +53,8 @@ public class CoordinatesArray : ICoordinateSource
         int i = 0;
         while (i < Count)
         {
+            yield return new Coordinates(Xs[i], Ys[i]);
             i++;
-            yield return Coordinates[i];
         }
     }
 

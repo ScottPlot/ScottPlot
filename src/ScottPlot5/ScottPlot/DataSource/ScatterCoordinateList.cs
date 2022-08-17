@@ -3,7 +3,7 @@
 /// <summary>
 /// This data source is a list of coordinates that users can modify
 /// </summary>
-public class CoordinatesList : List<Coordinates>, ICoordinateSource
+public class ScatterCoordinateList : List<Coordinates>, IScatterSource
 {
     public AxisLimits GetLimits()
     {

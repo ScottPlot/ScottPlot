@@ -13,7 +13,19 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        Scatter scatter = new(xs, ys)
+        DataSource.ScatterXYArrays data = new(xs, ys);
+        Scatter scatter = new(data)
+        {
+            Color = color ?? GetNextColor()
+        };
+        Add(scatter);
+        return scatter;
+    }
+
+    public Scatter AddScatter(List<double> xs, List<double> ys, Color? color = null)
+    {
+        DataSource.ScatterXYLists data = new(xs, ys);
+        Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
         };

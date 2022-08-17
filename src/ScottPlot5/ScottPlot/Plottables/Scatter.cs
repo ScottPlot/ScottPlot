@@ -10,26 +10,24 @@ namespace ScottPlot.Plottables;
 
 public class Scatter : PlottableBase
 {
-    private readonly double[] Xs;
-    private readonly double[] Ys;
-    private int Count => Xs.Length;
+    public readonly DataSource.IScatterSource Data;
 
     public Color Color = new(0, 0, 255);
     public float LineWidth = 1;
     public float MarkerSize = 5;
 
-    public override AxisLimits GetAxisLimits()
+    public override AxisLimits GetAxisLimits() => Data.GetLimits();
+
+    public Scatter(DataSource.IScatterSource data)
     {
-        return new AxisLimits(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
+        Data = data;
     }
 
-    public Scatter(double[] xs, double[] ys)
+    private Pixel GetPixel(Coordinates coordinates, PixelRect dataRect)
     {
-        if (xs.Length != ys.Length)
-            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have same length");
-
-        Xs = xs;
-        Ys = ys;
+        float xPx = XAxis!.GetPixel(coordinates.X, dataRect);
+        float yPx = YAxis!.GetPixel(coordinates.Y, dataRect);
+        return new Pixel(xPx, yPx);
     }
 
     public override void Render(SKSurface surface, PixelRect dataRect)
@@ -37,13 +35,7 @@ public class Scatter : PlottableBase
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
 
-        float[] xPx = new float[Count];
-        float[] yPx = new float[Count];
-        for (int i = 0; i < Count; i++)
-        {
-            xPx[i] = XAxis.GetPixel(Xs[i], dataRect);
-            yPx[i] = YAxis.GetPixel(Ys[i], dataRect);
-        }
+        IEnumerable<Pixel> pixels = Data.Select(x => GetPixel(x, dataRect));
 
         surface.Canvas.ClipRect(dataRect.ToSKRect());
 
@@ -57,18 +49,18 @@ public class Scatter : PlottableBase
 
         // draw lines
         SKPath path = new();
-        path.MoveTo(xPx[0], yPx[0]);
-        for (int i = 1; i < Count; i++)
+        path.MoveTo(pixels.First().X, pixels.First().Y);
+        foreach (Pixel pixel in pixels)
         {
-            path.LineTo(xPx[i], yPx[i]);
+            path.LineTo(pixel.X, pixel.Y);
         }
         surface.Canvas.DrawPath(path, paint);
 
         // draw markers
         paint.IsStroke = false;
-        for (int i = 0; i < Count; i++)
+        foreach (Pixel pixel in pixels)
         {
-            surface.Canvas.DrawCircle(xPx[i], yPx[i], MarkerSize / 2, paint);
+            surface.Canvas.DrawCircle(pixel.X, pixel.Y, MarkerSize / 2, paint);
         }
     }
 }

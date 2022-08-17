@@ -4,14 +4,14 @@
 /// This data source has Xs and Ys defined in fixed-length arrays.
 /// Changes made to the contents of the arrays will appear when the plot is rendered.
 /// </summary>
-public class XYLists : ICoordinateSource
+public class ScatterXYArrays : IScatterSource
 {
-    private readonly List<double> Xs;
-    private readonly List<double> Ys;
+    private readonly double[] Xs;
+    private readonly double[] Ys;
 
-    public int Count => Xs.Count;
+    public int Count => Xs.Length;
 
-    public XYLists(List<double> xs, List<double> ys)
+    public ScatterXYArrays(double[] xs, double[] ys)
     {
         Xs = xs;
         Ys = ys;
@@ -53,8 +53,8 @@ public class XYLists : ICoordinateSource
         int i = 0;
         while (i < Count)
         {
-            i++;
             yield return new Coordinates(Xs[i], Ys[i]);
+            i++;
         }
     }
 

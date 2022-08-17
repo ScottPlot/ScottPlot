@@ -89,8 +89,8 @@ public class SignalArray : ISignalSource
         int i = 0;
         while (i < Count)
         {
-            i++;
             yield return Ys[i];
+            i++;
         }
     }
 

@@ -3,6 +3,6 @@
 /// <summary>
 /// This interface describes a data source which contains points in XY space
 /// </summary>
-public interface ICoordinateSource : IReadOnlyList<Coordinates>, IHasAxisLimits
+public interface IScatterSource : IReadOnlyList<Coordinates>, IHasAxisLimits
 {
 }

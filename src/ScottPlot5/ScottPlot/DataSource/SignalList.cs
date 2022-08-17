@@ -91,8 +91,8 @@ public class SignalList : ISignalSource
         int i = 0;
         while (i < Count)
         {
-            i++;
             yield return Ys[i];
+            i++;
         }
     }
 
