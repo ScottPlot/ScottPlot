@@ -400,5 +400,19 @@ namespace ScottPlot.Drawing
             gfx.DrawString(text, font, fontBrush, 0, 0, sf);
             gfx.ResetTransform();
         }
+
+        /// <summary>
+        /// Add extra clipping beyond the data area based on an array of user-defined coordinates
+        /// </summary>
+        public static void ClipIntersection(Graphics gfx, PlotDimensions dims, Coordinate[] coordinates)
+        {
+            if (coordinates is null || coordinates.Length < 2)
+                return;
+
+            PointF[] points = coordinates.Select(x => dims.GetPixel(x).ToPointF()).ToArray();
+            GraphicsPath path = new();
+            path.AddPolygon(points);
+            gfx.SetClip(path, CombineMode.Intersect);
+        }
     }
 }

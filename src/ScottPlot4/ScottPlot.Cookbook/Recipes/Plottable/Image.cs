@@ -149,4 +149,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddPoint(40, -.5, color: Color.Green, size: 20);
         }
     }
+
+    public class ImageClipping : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Image();
+        public string ID => "image_clipping";
+        public string Title => "Image Clipping";
+        public string Description =>
+            "Images can be clipped to an arbitrary polygon";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Bitmap bmp = DataGen.SampleImage();
+            var img = plt.AddImage(bmp, 0, bmp.Height);
+            img.HeightInAxisUnits = bmp.Height;
+            img.WidthInAxisUnits = bmp.Width;
+            img.ClippingPoints = new Coordinate[]
+            {
+                new Coordinate(30, 15),
+                new Coordinate(55, 40),
+                new Coordinate(60, 45),
+                new Coordinate(80, 60),
+                new Coordinate(40, 95),
+                new Coordinate(15, 90),
+                new Coordinate(5, 50),
+            };
+        }
+    }
 }

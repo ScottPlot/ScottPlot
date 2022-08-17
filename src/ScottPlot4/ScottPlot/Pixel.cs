@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ScottPlot
 {
@@ -84,6 +85,27 @@ namespace ScottPlot
             int x = BitConverter.ToInt32(BitConverter.GetBytes(X), 0);
             int y = BitConverter.ToInt32(BitConverter.GetBytes(Y), 0);
             return x * 12345 + y;
+        }
+
+        public PointF ToPointF()
+        {
+            return new PointF(X, Y);
+        }
+
+        public static float Clamp(float value, float min, float max)
+        {
+            if (min > max)
+                throw new ArgumentException($"{nameof(min)} must be <= {nameof(max)}");
+            if (value < min) return min;
+            else if (value > max) return max;
+            else return value;
+        }
+
+        public Pixel Clamp(PixelRect rect)
+        {
+            float x = Clamp(X, rect.X, rect.X + rect.Width);
+            float y = Clamp(Y, rect.Y, rect.Y + rect.Height);
+            return new Pixel(x, y);
         }
     }
 }

@@ -337,4 +337,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hm.YMax = 10;
         }
     }
+
+    public class HeatmapClipping : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_clipping";
+        public string Title => "Heatmap Clipping";
+        public string Description =>
+            "Heatmaps can be clipped to an arbitrary polygon";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var hm = plt.AddHeatmap(imageData, lockScales: false);
+            hm.ClippingPoints = new Coordinate[]
+            {
+                new Coordinate(30, 15),
+                new Coordinate(55, 40),
+                new Coordinate(60, 45),
+                new Coordinate(80, 60),
+                new Coordinate(40, 95),
+                new Coordinate(15, 90),
+                new Coordinate(5, 50),
+            };
+        }
+    }
 }
