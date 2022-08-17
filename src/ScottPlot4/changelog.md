@@ -3,6 +3,7 @@
 ## ScottPlot 4.1.57
 _not yet published on NuGet..._
 * Scatter: Improved `GetPointNearest()` when `OnNaN` is `Gap` or `Ignore` (#2048) _Thanks @thopri_
+* Heatmap and Image: Added `Coordinate[] ClippingPoints` to give users the ability to clip to an arbitrary polygon (#2049) _Thanks @xichaoqiang_
 
 ## ScottPlot 4.1.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-16_
