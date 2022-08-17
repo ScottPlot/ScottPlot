@@ -585,10 +585,13 @@ namespace ScottPlot.Plottable
             double pointDistanceSquared(double x1, double y1) =>
                 (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
 
-            double minDistance = pointDistanceSquared(points[0].x, points[0].y);
+            double minDistance = double.PositiveInfinity;
             int minIndex = 0;
             for (int i = 1; i < points.Count; i++)
             {
+                if (double.IsNaN(points[i].x) || double.IsNaN(points[i].y))
+                    continue;
+
                 double currDistance = pointDistanceSquared(points[i].x, points[i].y);
                 if (currDistance < minDistance)
                 {

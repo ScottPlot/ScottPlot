@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.56
+## ScottPlot 4.1.57
 _not yet published on NuGet..._
+* Scatter: Improved `GetPointNearest()` when `OnNaN` is `Gap` or `Ignore` (#2048) _Thanks @thopri_
+
+## ScottPlot 4.1.56
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-16_
 * Signal: Improved accuracy of `GetIndexForX()` (#2044) _Thanks @CharlesMauldin_
 * Palette: Added help messages for users attempting to create custom palettes (#1966) _Thanks @EFeru_
 
