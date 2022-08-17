@@ -69,6 +69,8 @@ namespace ScottPlot.Plottable
 
         public int YAxisIndex { get; set; } = 0;
 
+        public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
+
         public AxisLimits GetAxisLimits()
         {
             if (Bitmap is null)
@@ -77,8 +79,8 @@ namespace ScottPlot.Plottable
             return new AxisLimits(
                 xMin: X,
                 xMax: X + WidthInAxisUnits ?? 0,
-                yMin: Y,
-                yMax: Y + HeightInAxisUnits ?? 0);
+                yMin: Y - HeightInAxisUnits ?? 0,
+                yMax: Y);
         }
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
@@ -155,6 +157,8 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var framePen = new Pen(BorderColor, BorderSize * 2))
             {
+                GDI.ClipIntersection(gfx, dims, ClippingPoints);
+
                 gfx.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
                 gfx.TranslateTransform(defaultPoint.X, defaultPoint.Y);
                 gfx.RotateTransform((float)Rotation);

@@ -172,6 +172,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool FlipVertically { get; set; } = false;
 
+        public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
+
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
 
         /// <summary>
@@ -349,6 +351,7 @@ namespace ScottPlot.Plottable
         protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            GDI.ClipIntersection(gfx, dims, ClippingPoints);
 
             gfx.InterpolationMode = Interpolation;
             gfx.PixelOffsetMode = PixelOffsetMode.Half;
@@ -357,7 +360,6 @@ namespace ScottPlot.Plottable
             int fromY = (int)Math.Round(dims.GetPixelY(OffsetY + DataHeight * CellHeight));
             int width = (int)Math.Round(dims.GetPixelX(OffsetX + DataWidth * CellWidth) - fromX);
             int height = (int)Math.Round(dims.GetPixelY(OffsetY) - fromY);
-
 
             ImageAttributes attr = new();
             attr.SetWrapMode(WrapMode.TileFlipXY);
