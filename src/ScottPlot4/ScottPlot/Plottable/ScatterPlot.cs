@@ -529,7 +529,7 @@ namespace ScottPlot.Plottable
         {
             int from = MinRenderIndex ?? 0;
             int to = MaxRenderIndex ?? (Xs.Length - 1);
-            double minDistance = Math.Abs(Xs[from] - x);
+            double minDistance = double.PositiveInfinity;
             int minIndex = 0;
             for (int i = from; i <= to; i++)
             {
@@ -553,7 +553,7 @@ namespace ScottPlot.Plottable
         {
             int from = MinRenderIndex ?? 0;
             int to = MaxRenderIndex ?? (Ys.Length - 1);
-            double minDistance = Math.Abs(Ys[from] - y);
+            double minDistance = double.PositiveInfinity;
             int minIndex = 0;
             for (int i = from; i <= to; i++)
             {
@@ -585,10 +585,13 @@ namespace ScottPlot.Plottable
             double pointDistanceSquared(double x1, double y1) =>
                 (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
 
-            double minDistance = pointDistanceSquared(points[0].x, points[0].y);
+            double minDistance = double.PositiveInfinity;
             int minIndex = 0;
-            for (int i = 1; i < points.Count; i++)
+            for (int i = 0; i < points.Count; i++)
             {
+                if (double.IsNaN(points[i].x) || double.IsNaN(points[i].y))
+                    continue;
+
                 double currDistance = pointDistanceSquared(points[i].x, points[i].y);
                 if (currDistance < minDistance)
                 {

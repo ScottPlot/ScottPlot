@@ -1,4 +1,5 @@
-﻿using ScottPlot;
+﻿using System;
+using ScottPlot;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,31 +7,36 @@ namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        ScottPlot.Plottable.VLine VLine;
-        ScottPlot.Plottable.HLine HLine;
-
-        double[] YSnapPositions = DataGen.Consecutive(11, 0.2, -1);
-        double[] XSnapPositions = DataGen.Consecutive(11, 5D);
+        ScottPlot.Plottable.MarkerPlot Marker;
+        ScottPlot.Plottable.ScatterPlot Scatter;
 
         public Form1()
         {
             InitializeComponent();
 
-            formsPlot1.Plot.AddSignal(DataGen.Sin(51), 1, Color.Black);
-            formsPlot1.Plot.AddSignal(DataGen.Cos(51), 1, Color.Gray);
+            double[] xs = DataGen.Consecutive(51);
+            double[] ys = DataGen.Sin(51);
+            ys = DataGen.InsertNanRanges(ys, new Random(0));
 
-            var snapSmooth = new ScottPlot.SnapLogic.NoSnap1D();
-            var snapX = new ScottPlot.SnapLogic.Nearest1D(XSnapPositions);
-            var snapY = new ScottPlot.SnapLogic.Nearest1D(YSnapPositions);
+            Scatter = formsPlot1.Plot.AddScatter(xs, ys);
+            Scatter.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
 
-            VLine = formsPlot1.Plot.AddVerticalLine(23, Color.Blue);
-            VLine.DragEnabled = true;
-            VLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapX, snapSmooth);
+            Marker = formsPlot1.Plot.AddMarker(0, 0, MarkerShape.openCircle, 20, Color.Red);
+            formsPlot1.MouseMove += FormsPlot1_MouseMove;
+            formsPlot1.Refresh();
+        }
 
-            HLine = formsPlot1.Plot.AddHorizontalLine(.2, Color.Green);
-            HLine.DragEnabled = true;
-            HLine.DragSnap = new ScottPlot.SnapLogic.Independent2D(snapSmooth, snapY);
+        private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
+        {
+            (double x, double y) = formsPlot1.GetMouseCoordinates();
+            double xyRatio = formsPlot1.Plot.XAxis.Dims.UnitsPerPx / formsPlot1.Plot.YAxis.Dims.UnitsPerPx;
+            (double ptX, double ptY, int ptIndex) = Scatter.GetPointNearest(x, y, xyRatio);
 
+            if (double.IsNaN(ptX) || double.IsNaN(ptY))
+                return;
+
+            Marker.X = ptX;
+            Marker.Y = ptY;
             formsPlot1.Refresh();
         }
     }
