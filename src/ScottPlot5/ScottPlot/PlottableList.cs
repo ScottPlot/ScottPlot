@@ -33,6 +33,28 @@ public class PlottableList : List<IPlottable>
         return scatter;
     }
 
+    public Scatter AddScatter(Coordinates[] coordinates, Color? color = null)
+    {
+        DataSource.ScatterCoordinateArray data = new(coordinates);
+        Scatter scatter = new(data)
+        {
+            Color = color ?? GetNextColor()
+        };
+        Add(scatter);
+        return scatter;
+    }
+
+    public Scatter AddScatter(List<Coordinates> coordinates, Color? color = null)
+    {
+        DataSource.ScatterCoordinateList data = new(coordinates);
+        Scatter scatter = new(data)
+        {
+            Color = color ?? GetNextColor()
+        };
+        Add(scatter);
+        return scatter;
+    }
+
     public Pie AddPie(IList<PieSlice> slices)
     {
         Pie pie = new(slices);
