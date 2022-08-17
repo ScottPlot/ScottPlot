@@ -33,6 +33,8 @@ public struct CoordinateRect
         YMax = yMax;
     }
 
+    public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
+
     public override string ToString()
     {
         return $"PixelRect: XMin={XMin} XMax={XMax} YMin={YMin} YMax={YMax}";

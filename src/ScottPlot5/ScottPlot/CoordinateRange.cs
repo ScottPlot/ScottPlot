@@ -5,15 +5,22 @@
 /// </summary>
 public struct CoordinateRange
 {
-    public readonly double Min;
-    public readonly double Max;
-    public readonly double Span;
+    public double Min { get; private set; }
+    public double Max { get; private set; }
+    public double Span => Max - Min;
 
     public CoordinateRange(double min, double max)
     {
         Min = min;
         Max = max;
-        Span = max - min;
+    }
+
+    public void Expand(double value)
+    {
+        if (value < Min)
+            Min = value;
+        if (value > Max)
+            Max = value;
     }
 
     public override string ToString()

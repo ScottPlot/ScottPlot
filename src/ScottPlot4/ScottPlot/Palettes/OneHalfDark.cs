@@ -6,7 +6,7 @@ namespace ScottPlot.Palettes;
 
 public class OneHalfDark : HexPaletteBase, IPalette
 {
-    public override string Name => GetType().Name;
+    public override string Name => "One Half (Dark)";
 
     public override string Description => "A Sublime color scheme by Son A. Pham: https://github.com/sonph/onehalf";
 

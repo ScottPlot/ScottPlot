@@ -7,7 +7,7 @@ namespace ScottPlot.Palettes;
 
 public class DarkPastel : HexPaletteBase, IPalette
 {
-    public override string Name => GetType().Name;
+    public override string Name => "Dark Pastel";
 
     public override string Description => "A qualitative 8-color palette generated using colorbrewer2.org";
 

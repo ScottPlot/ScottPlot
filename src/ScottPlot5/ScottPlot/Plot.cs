@@ -12,16 +12,12 @@ public class Plot
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
     public readonly List<IGrid> Grids = new();
-    public readonly List<IPlottable> Plottables = new();
+    public readonly PlottableList Plottables = new();
 
     public IRenderer Renderer = new StandardRenderer();
 
     public ILayoutSystem Layout = new StandardLayoutSystem();
 
-    /// <summary>
-    /// This class contains helper methods for creating and adding new <see cref="IPlottable"/> objects to this <see cref="Plot"/>
-    /// </summary>
-    public readonly PlotAdd Add;
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
@@ -46,8 +42,6 @@ public class Plot
 
     public Plot()
     {
-        Add = new(this);
-
         var xAxis = new Axis.StandardAxes.Bottom();
         var yAxis = new Axis.StandardAxes.Left();
         XAxes.Add(xAxis);

@@ -20,7 +20,7 @@ public class Palette
     public static IPalette OneHalfDark => new Palettes.OneHalfDark();
     public static IPalette PolarNight => new Palettes.PolarNight();
     public static IPalette Redness => new Palettes.Redness();
-    public static IPalette SnowStorm => new Palettes.Snowstorm();
+    public static IPalette SnowStorm => new Palettes.SnowStorm();
     public static IPalette Tsitsulin => new Palettes.Tsitsulin();
 
 
