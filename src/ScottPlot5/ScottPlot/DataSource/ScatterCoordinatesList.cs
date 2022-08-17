@@ -1,10 +1,10 @@
 ﻿namespace ScottPlot.DataSource;
 
-public class ScatterCoordinateList : IScatterSource
+public class ScatterCoordinatesList : IScatterSource
 {
     public readonly List<Coordinates> Coordinates;
 
-    public ScatterCoordinateList(List<Coordinates> coordinates)
+    public ScatterCoordinatesList(List<Coordinates> coordinates)
     {
         Coordinates = coordinates;
     }

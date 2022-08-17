@@ -35,7 +35,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(Coordinates[] coordinates, Color? color = null)
     {
-        DataSource.ScatterCoordinateArray data = new(coordinates);
+        DataSource.ScatterCoordinatesArray data = new(coordinates);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
@@ -46,7 +46,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(List<Coordinates> coordinates, Color? color = null)
     {
-        DataSource.ScatterCoordinateList data = new(coordinates);
+        DataSource.ScatterCoordinatesList data = new(coordinates);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
