@@ -1,15 +1,9 @@
 ﻿namespace ScottPlot.DataSource;
 
-/// <summary>
-/// This data source has Xs and Ys defined in fixed-length arrays.
-/// Changes made to the contents of the arrays will appear when the plot is rendered.
-/// </summary>
 public class ScatterXYLists : IScatterSource
 {
     private readonly List<double> Xs;
     private readonly List<double> Ys;
-
-    public int Count => Xs.Count;
 
     public ScatterXYLists(List<double> xs, List<double> ys)
     {
@@ -17,17 +11,21 @@ public class ScatterXYLists : IScatterSource
         Ys = ys;
     }
 
-    public Coordinates this[int index]
+    private Coordinates GetCoordinates(int index)
     {
-        get => new(Xs[index], Ys[index]);
-        set { Xs[index] = value.X; Ys[index] = value.Y; }
+        return new Coordinates(Xs[index], Ys[index]);
+    }
+
+    public IReadOnlyList<Coordinates> GetScatterPoints()
+    {
+        return Enumerable.Range(0, Xs.Count).Select(i => GetCoordinates(i)).ToArray();
     }
 
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
 
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < Xs.Count; i++)
         {
             rect.ExpandX(Xs[i]);
             rect.ExpandY(Ys[i]);
@@ -47,16 +45,4 @@ public class ScatterXYLists : IScatterSource
         CoordinateRect rect = GetLimits().Rect;
         return new CoordinateRange(rect.YMin, rect.YMin);
     }
-
-    public IEnumerator<Coordinates> GetEnumerator()
-    {
-        int i = 0;
-        while (i < Count)
-        {
-            yield return new Coordinates(Xs[i], Ys[i]);
-            i++;
-        }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

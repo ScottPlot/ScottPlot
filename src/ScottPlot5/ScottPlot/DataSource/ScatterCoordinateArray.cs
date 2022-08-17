@@ -1,31 +1,24 @@
 ﻿namespace ScottPlot.DataSource;
 
-/// <summary>
-/// This data source has Xs and Ys defined in fixed-length arrays.
-/// Changes made to the contents of the arrays will appear when the plot is rendered.
-/// </summary>
 public class ScatterCoordinateArray : IScatterSource
 {
-    private readonly Coordinates[] Coordinates;
-
-    public int Count => Coordinates.Length;
+    public readonly Coordinates[] Coordinates;
 
     public ScatterCoordinateArray(Coordinates[] coordinates)
     {
         Coordinates = coordinates;
     }
 
-    public Coordinates this[int index]
+    public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        get => Coordinates[index];
-        set => Coordinates[index] = value;
+        return Coordinates;
     }
 
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
 
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < Coordinates.Length; i++)
         {
             rect.Expand(Coordinates[i]);
         }
@@ -44,16 +37,4 @@ public class ScatterCoordinateArray : IScatterSource
         CoordinateRect rect = GetLimits().Rect;
         return new CoordinateRange(rect.YMin, rect.YMin);
     }
-
-    public IEnumerator<Coordinates> GetEnumerator()
-    {
-        int i = 0;
-        while (i < Count)
-        {
-            yield return Coordinates[i];
-            i++;
-        }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

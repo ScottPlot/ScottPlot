@@ -1,16 +1,25 @@
 ﻿namespace ScottPlot.DataSource;
 
-/// <summary>
-/// This data source is a list of coordinates that users can modify
-/// </summary>
-public class ScatterCoordinateList : List<Coordinates>, IScatterSource
+public class ScatterCoordinateList : IScatterSource
 {
+    public readonly List<Coordinates> Coordinates;
+
+    public ScatterCoordinateList(List<Coordinates> coordinates)
+    {
+        Coordinates = coordinates;
+    }
+
+    public IReadOnlyList<Coordinates> GetScatterPoints()
+    {
+        return Coordinates;
+    }
+
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
 
-        foreach (Coordinates point in this)
-            rect.Expand(point);
+        foreach (Coordinates coordinate in Coordinates)
+            rect.Expand(coordinate);
 
         return rect;
     }

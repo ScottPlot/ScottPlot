@@ -1,9 +1,5 @@
 ﻿namespace ScottPlot.DataSource;
 
-/// <summary>
-/// This data source has evenly-spaced Xs and Ys stored in a fixed-length array.
-/// Changes made to the contents of the array will appear when the plot is rendered.
-/// </summary>
 public class SignalArray : ISignalSource
 {
     public double Period { get; set; }

@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot.DataSource;
 
 /// <summary>
-/// A signal source is a type of data source with user-defined Ys but evenly-spaced Xs
+/// A signal source is a type of data source with user-defined Ys but evenly-spaced Xs.
 /// </summary>
 public interface ISignalSource : IReadOnlyList<double>, IHasAxisLimits
 {
@@ -32,7 +32,7 @@ public interface ISignalSource : IReadOnlyList<double>, IHasAxisLimits
     double GetX(int index);
 
     /// <summary>
-    /// Return an object for working with all Y values
+    /// Return an object for working with all Y values.
     /// </summary>
     IReadOnlyList<double> GetYs();
 }

@@ -35,7 +35,7 @@ public class Scatter : PlottableBase
         if (XAxis is null || YAxis is null)
             throw new InvalidOperationException("Both axes must be set before first render");
 
-        IEnumerable<Pixel> pixels = Data.Select(x => GetPixel(x, dataRect));
+        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => GetPixel(x, dataRect));
 
         surface.Canvas.ClipRect(dataRect.ToSKRect());
 
