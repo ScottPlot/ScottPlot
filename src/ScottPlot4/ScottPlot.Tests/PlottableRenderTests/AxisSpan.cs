@@ -113,9 +113,15 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.Style(figureBackground: System.Drawing.Color.Green);
             plt.AddHorizontalSpan(10, 20, System.Drawing.Color.Magenta);
 
-            TestTools.SaveFig(plt, "default");
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
+
+            plt.XAxis.Line(false);
             plt.XAxis2.Line(false);
+            plt.YAxis.Line(false);
+            plt.YAxis2.Line(false);
             TestTools.SaveFig(plt, "noline");
+
             plt.Frameless();
             TestTools.SaveFig(plt, "frameless");
         }
