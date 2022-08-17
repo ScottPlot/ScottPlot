@@ -220,7 +220,7 @@ namespace ScottPlot.Plottable
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color, HatchColor, HatchStyle);
             using var pen = GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle);
-            RectangleF rect = GetClippedRectangle(dims);           
+            RectangleF rect = GetClippedRectangle(dims);
             gfx.FillRectangle(brush, rect);
             if (BorderLineWidth > 0 && BorderColor != Color.Transparent && BorderLineStyle != LineStyle.None)
                 gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
