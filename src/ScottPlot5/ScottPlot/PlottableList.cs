@@ -13,7 +13,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
-        DataSource.ScatterXYArrays data = new(xs, ys);
+        DataSource.ScatterSourceXsYs data = new(xs, ys);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
@@ -24,7 +24,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(List<double> xs, List<double> ys, Color? color = null)
     {
-        DataSource.ScatterXYLists data = new(xs, ys);
+        DataSource.ScatterSourceXsYs data = new(xs, ys);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
@@ -35,7 +35,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(Coordinates[] coordinates, Color? color = null)
     {
-        DataSource.ScatterCoordinatesArray data = new(coordinates);
+        DataSource.ScatterSourceCoordinates data = new(coordinates);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()
@@ -46,7 +46,7 @@ public class PlottableList : List<IPlottable>
 
     public Scatter AddScatter(List<Coordinates> coordinates, Color? color = null)
     {
-        DataSource.ScatterCoordinatesList data = new(coordinates);
+        DataSource.ScatterSourceCoordinates data = new(coordinates);
         Scatter scatter = new(data)
         {
             Color = color ?? GetNextColor()

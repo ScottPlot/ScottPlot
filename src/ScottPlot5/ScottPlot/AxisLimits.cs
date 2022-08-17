@@ -85,6 +85,12 @@ public struct AxisLimits
         ExpandY(point.Y);
     }
 
+    public void Expand(double x, double y)
+    {
+        ExpandX(x);
+        ExpandY(y);
+    }
+
     public CoordinateRect WithPan(double deltaX, double deltaY)
     {
         return new CoordinateRect(Rect.XMin + deltaX, Rect.XMax + deltaX, Rect.YMin + deltaY, Rect.YMax + deltaY);

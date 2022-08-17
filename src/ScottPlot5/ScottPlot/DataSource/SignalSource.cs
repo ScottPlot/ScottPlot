@@ -1,16 +1,14 @@
 ﻿namespace ScottPlot.DataSource;
 
-public class SignalList : ISignalSource
+public class SignalSource : ISignalSource
 {
+    private readonly IReadOnlyList<double> Ys;
+
     public double Period { get; set; }
+
     public double XOffset { get; set; }
-    public List<double> Ys { get; }
 
-    public int Count => Ys.Count;
-
-    double IReadOnlyList<double>.this[int index] => Ys[index];
-
-    public SignalList(List<double> ys, double period)
+    public SignalSource(IReadOnlyList<double> ys, double period)
     {
         Ys = ys;
         Period = period;
@@ -37,7 +35,7 @@ public class SignalList : ISignalSource
         if (clamp)
         {
             i = Math.Max(i, 0);
-            i = Math.Min(i, Count - 1);
+            i = Math.Min(i, Ys.Count - 1);
         }
         return i;
     }
@@ -52,21 +50,11 @@ public class SignalList : ISignalSource
         return Ys;
     }
 
-    public Coordinates this[int index]
-    {
-        get => new(GetX(index), Ys[index]);
-        set { Ys[index] = value.Y; }
-    }
-
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
-
-        for (int i = 0; i < Count; i++)
-        {
+        for (int i = 0; i < Ys.Count; i++)
             rect.ExpandY(Ys[i]);
-        }
-
         return rect;
     }
 
@@ -81,16 +69,4 @@ public class SignalList : ISignalSource
         CoordinateRect rect = GetLimits().Rect;
         return new CoordinateRange(rect.YMin, rect.YMin);
     }
-
-    public IEnumerator<double> GetEnumerator()
-    {
-        int i = 0;
-        while (i < Count)
-        {
-            yield return Ys[i];
-            i++;
-        }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

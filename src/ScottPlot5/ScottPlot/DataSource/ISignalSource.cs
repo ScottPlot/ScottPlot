@@ -1,9 +1,10 @@
 ﻿namespace ScottPlot.DataSource;
 
 /// <summary>
-/// A signal source is a type of data source with user-defined Ys but evenly-spaced Xs.
+/// This interface is used by plottables to access data while rendering.
+/// This interface describes Y data sampled along an X axis at a fixed period.
 /// </summary>
-public interface ISignalSource : IReadOnlyList<double>, IHasAxisLimits
+public interface ISignalSource : IHasAxisLimits
 {
     /// <summary>
     /// X distance between Y points

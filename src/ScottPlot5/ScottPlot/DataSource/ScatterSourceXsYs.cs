@@ -1,36 +1,31 @@
 ﻿namespace ScottPlot.DataSource;
 
-public class ScatterXYLists : IScatterSource
+public class ScatterSourceXsYs : IScatterSource
 {
-    private readonly List<double> Xs;
-    private readonly List<double> Ys;
+    private readonly IReadOnlyList<double> Xs;
+    private readonly IReadOnlyList<double> Ys;
 
-    public ScatterXYLists(List<double> xs, List<double> ys)
+    public ScatterSourceXsYs(IReadOnlyList<double> xs, IReadOnlyList<double> ys)
     {
         Xs = xs;
         Ys = ys;
     }
 
-    private Coordinates GetCoordinates(int index)
+    private Coordinates GetCoordinatesAt(int index)
     {
         return new Coordinates(Xs[index], Ys[index]);
     }
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        return Enumerable.Range(0, Xs.Count).Select(i => GetCoordinates(i)).ToArray();
+        return Enumerable.Range(0, Xs.Count).Select(i => GetCoordinatesAt(i)).ToArray();
     }
 
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
-
         for (int i = 0; i < Xs.Count; i++)
-        {
-            rect.ExpandX(Xs[i]);
-            rect.ExpandY(Ys[i]);
-        }
-
+            rect.Expand(Xs[i], Ys[i]);
         return rect;
     }
 

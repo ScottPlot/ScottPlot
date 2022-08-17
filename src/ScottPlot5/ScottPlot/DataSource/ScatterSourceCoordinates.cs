@@ -1,10 +1,10 @@
 ﻿namespace ScottPlot.DataSource;
 
-public class ScatterCoordinatesArray : IScatterSource
+public class ScatterSourceCoordinates : IScatterSource
 {
-    public readonly Coordinates[] Coordinates;
+    private readonly IReadOnlyList<Coordinates> Coordinates;
 
-    public ScatterCoordinatesArray(Coordinates[] coordinates)
+    public ScatterSourceCoordinates(IReadOnlyList<Coordinates> coordinates)
     {
         Coordinates = coordinates;
     }
@@ -17,12 +17,8 @@ public class ScatterCoordinatesArray : IScatterSource
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
-
-        for (int i = 0; i < Coordinates.Length; i++)
-        {
+        for (int i = 0; i < Coordinates.Count; i++)
             rect.Expand(Coordinates[i]);
-        }
-
         return rect;
     }
 
