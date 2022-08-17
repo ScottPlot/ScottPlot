@@ -79,8 +79,8 @@ namespace ScottPlot.Plottable
             return new AxisLimits(
                 xMin: X,
                 xMax: X + WidthInAxisUnits ?? 0,
-                yMin: Y,
-                yMax: Y + HeightInAxisUnits ?? 0);
+                yMin: Y - HeightInAxisUnits ?? 0,
+                yMax: Y);
         }
 
         public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
