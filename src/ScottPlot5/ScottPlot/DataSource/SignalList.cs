@@ -4,15 +4,17 @@
 /// This data source has evenly-spaced Xs and Ys stored in a fixed-length array.
 /// Changes made to the contents of the array will appear when the plot is rendered.
 /// </summary>
-public class SignalArray : ISignalSource
+public class SignalList : ISignalSource
 {
     public double Period { get; set; }
     public double XOffset { get; set; }
-    public double[] Ys { get; }
+    public List<double> Ys { get; }
 
-    public int Count => Ys.Length;
+    public int Count => Ys.Count;
 
-    public SignalArray(double[] ys, double period)
+    double IReadOnlyList<double>.this[int index] => Ys[index];
+
+    public SignalList(List<double> ys, double period)
     {
         Ys = ys;
         Period = period;
@@ -54,10 +56,10 @@ public class SignalArray : ISignalSource
         return Ys;
     }
 
-    public double this[int index]
+    public Coordinates this[int index]
     {
-        get => Ys[index];
-        set => Ys[index] = value;
+        get => new(GetX(index), Ys[index]);
+        set { Ys[index] = value.Y; }
     }
 
     public AxisLimits GetLimits()

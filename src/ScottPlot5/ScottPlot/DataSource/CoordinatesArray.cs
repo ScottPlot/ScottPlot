@@ -4,23 +4,21 @@
 /// This data source has Xs and Ys defined in fixed-length arrays.
 /// Changes made to the contents of the arrays will appear when the plot is rendered.
 /// </summary>
-public class XYArrays : ICoordinateSource
+public class CoordinatesArray : ICoordinateSource
 {
-    private readonly double[] Xs;
-    private readonly double[] Ys;
+    private readonly Coordinates[] Coordinates;
 
-    public int Count => Xs.Length;
+    public int Count => Coordinates.Length;
 
-    public XYArrays(double[] xs, double[] ys)
+    public CoordinatesArray(Coordinates[] coordinates)
     {
-        Xs = xs;
-        Ys = ys;
+        Coordinates = coordinates;
     }
 
     public Coordinates this[int index]
     {
-        get => new(Xs[index], Ys[index]);
-        set { Xs[index] = value.X; Ys[index] = value.Y; }
+        get => Coordinates[index];
+        set => Coordinates[index] = value;
     }
 
     public AxisLimits GetLimits()
@@ -29,8 +27,7 @@ public class XYArrays : ICoordinateSource
 
         for (int i = 0; i < Count; i++)
         {
-            rect.ExpandX(Xs[i]);
-            rect.ExpandY(Ys[i]);
+            rect.Expand(Coordinates[i]);
         }
 
         return rect;
@@ -54,7 +51,7 @@ public class XYArrays : ICoordinateSource
         while (i < Count)
         {
             i++;
-            yield return new Coordinates(Xs[i], Ys[i]);
+            yield return Coordinates[i];
         }
     }
 

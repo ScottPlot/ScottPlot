@@ -4,14 +4,14 @@
 /// This data source has Xs and Ys defined in fixed-length arrays.
 /// Changes made to the contents of the arrays will appear when the plot is rendered.
 /// </summary>
-public class XYArrays : ICoordinateSource
+public class XYLists : ICoordinateSource
 {
-    private readonly double[] Xs;
-    private readonly double[] Ys;
+    private readonly List<double> Xs;
+    private readonly List<double> Ys;
 
-    public int Count => Xs.Length;
+    public int Count => Xs.Count;
 
-    public XYArrays(double[] xs, double[] ys)
+    public XYLists(List<double> xs, List<double> ys)
     {
         Xs = xs;
         Ys = ys;

@@ -1,9 +1,7 @@
 ﻿namespace ScottPlot.DataSource;
 
-public interface IDataSource
+public interface IHasAxisLimits
 {
-    int Count { get; }
-    Coordinates this[int index] { get; set; }
     CoordinateRange GetLimitsX();
     CoordinateRange GetLimitsY();
     AxisLimits GetLimits();
