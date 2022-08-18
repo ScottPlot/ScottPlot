@@ -52,14 +52,9 @@ public class SignalSource : ISignalSource
 
     public AxisLimits GetLimits()
     {
-        // TODO: move logic inside CoordinateRange
-        CoordinateRange yLimits = new(double.PositiveInfinity, double.NegativeInfinity);
-        for (int i = 0; i < Ys.Count; i++)
-            yLimits.Expand(Ys[i]);
-
-        CoordinateRange xLimits = new(0, Ys.Count * Period);
-
-        return new AxisLimits(xLimits, yLimits);
+        CoordinateRange xRange = new(0, Ys.Count * Period);
+        CoordinateRange yRange = GetYRange(xRange);
+        return new AxisLimits(xRange, yRange);
     }
 
     public CoordinateRange GetLimitsX()

@@ -39,7 +39,7 @@ public class Scatter : PlottableBase
 
         surface.Canvas.ClipRect(dataRect.ToSKRect());
 
-        SKPaint paint = new()
+        using SKPaint paint = new()
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
@@ -48,7 +48,7 @@ public class Scatter : PlottableBase
         };
 
         // draw lines
-        SKPath path = new();
+        using SKPath path = new();
         path.MoveTo(pixels.First().X, pixels.First().Y);
         foreach (Pixel pixel in pixels)
         {
