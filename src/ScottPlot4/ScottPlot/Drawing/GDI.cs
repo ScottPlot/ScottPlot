@@ -159,9 +159,9 @@ namespace ScottPlot.Drawing
         {
             Graphics gfx = Graphics(bmp, lowQuality, dims.ScaleFactor);
 
-            bool dataIsSmallerThanFigure = dims.DataWidth < dims.Width && dims.DataHeight < dims.Height;
+            bool isFrameless = (dims.DataWidth == dims.Width) && (dims.DataHeight == dims.Height);
 
-            if (dataIsSmallerThanFigure && clipToDataArea)
+            if (clipToDataArea && !isFrameless)
             {
                 /* These dimensions are withdrawn by 1 pixel to leave room for a 1px wide data frame.
                  * Rounding is intended to exactly match rounding used when frame placement is determined.
