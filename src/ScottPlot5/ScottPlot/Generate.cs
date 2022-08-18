@@ -60,4 +60,14 @@ public static class Generate
     {
         return Cos(count, mult, offset, oscillations, phase).ToGenericArray<T>();
     }
+
+    public static double[] NoisySin(Random rand, int count, double noiseLevel = 1)
+    {
+        double[] data = Sin(count);
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] += rand.NextDouble() * noiseLevel;
+        }
+        return data;
+    }
 }

@@ -20,6 +20,11 @@ public struct AxisLimits
         Rect = new(xMin, xMax, yMin, yMax);
     }
 
+    public AxisLimits(CoordinateRange xRange, CoordinateRange yRange)
+    {
+        Rect = new(xRange.Min, xRange.Max, yRange.Min, yRange.Max);
+    }
+
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
     public void Expand(AxisLimits newLimits)

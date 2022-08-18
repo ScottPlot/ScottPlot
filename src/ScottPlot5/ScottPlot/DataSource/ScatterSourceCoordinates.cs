@@ -1,5 +1,8 @@
 ﻿namespace ScottPlot.DataSource;
 
+/// <summary>
+/// This data source manages X/Y points as a collection of coordinates
+/// </summary>
 public class ScatterSourceCoordinates : IScatterSource
 {
     private readonly IReadOnlyList<Coordinates> Coordinates;
@@ -17,20 +20,18 @@ public class ScatterSourceCoordinates : IScatterSource
     public AxisLimits GetLimits()
     {
         AxisLimits rect = AxisLimits.NoLimits;
-        for (int i = 0; i < Coordinates.Count; i++)
-            rect.Expand(Coordinates[i]);
+        foreach (Coordinates coordinate in Coordinates)
+            rect.Expand(coordinate);
         return rect;
     }
 
     public CoordinateRange GetLimitsX()
     {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.XMin, rect.XMin);
+        return GetLimits().Rect.XRange;
     }
 
     public CoordinateRange GetLimitsY()
     {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.YMin, rect.YMin);
+        return GetLimits().Rect.YRange;
     }
 }
