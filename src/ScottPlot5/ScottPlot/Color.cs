@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public struct Color
 {
@@ -67,5 +65,10 @@ public struct Color
     public string ToStringRGBA()
     {
         return "#" + Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2") + Alpha.ToString("X2");
+    }
+
+    public SkiaSharp.SKColor ToSKColor()
+    {
+        return new SkiaSharp.SKColor(ARGB);
     }
 }

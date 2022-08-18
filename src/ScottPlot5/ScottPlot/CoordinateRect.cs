@@ -35,6 +35,10 @@ public struct CoordinateRect
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
+    public CoordinateRange XRange => new(XMin, XMax);
+
+    public CoordinateRange YRange => new(YMin, YMax);
+
     public override string ToString()
     {
         return $"PixelRect: XMin={XMin} XMax={XMax} YMin={YMin} YMax={YMax}";

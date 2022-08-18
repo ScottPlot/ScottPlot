@@ -52,10 +52,9 @@ public class SignalSource : ISignalSource
 
     public AxisLimits GetLimits()
     {
-        AxisLimits rect = AxisLimits.NoLimits;
-        for (int i = 0; i < Ys.Count; i++)
-            rect.ExpandY(Ys[i]);
-        return rect;
+        CoordinateRange xRange = new(0, Ys.Count * Period);
+        CoordinateRange yRange = GetYRange(xRange);
+        return new AxisLimits(xRange, yRange);
     }
 
     public CoordinateRange GetLimitsX()

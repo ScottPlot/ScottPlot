@@ -11,6 +11,15 @@ public class PlottableList : List<IPlottable>
 
     private Color GetNextColor() => Palette.GetColor(Count);
 
+    #region Helper methods for creating and adding new plottables
+
+    public Pie AddPie(IList<PieSlice> slices)
+    {
+        Pie pie = new(slices);
+        Add(pie);
+        return pie;
+    }
+
     public Scatter AddScatter(double[] xs, double[] ys, Color? color = null)
     {
         DataSource.ScatterSourceXsYs data = new(xs, ys);
@@ -55,10 +64,16 @@ public class PlottableList : List<IPlottable>
         return scatter;
     }
 
-    public Pie AddPie(IList<PieSlice> slices)
+    public Signal AddSignal(double[] ys, double period = 1, Color? color = null)
     {
-        Pie pie = new(slices);
-        Add(pie);
-        return pie;
+        DataSource.SignalSource data = new(ys, period);
+        Signal scatter = new(data)
+        {
+            Color = color ?? GetNextColor()
+        };
+        Add(scatter);
+        return scatter;
     }
+
+    #endregion
 }

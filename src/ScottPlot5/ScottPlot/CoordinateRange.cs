@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot;
 
+// TODO: break this into CoordinateRangeX and CoordinateRangeY?
+
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>
