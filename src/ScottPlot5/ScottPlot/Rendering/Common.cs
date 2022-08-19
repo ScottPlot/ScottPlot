@@ -16,16 +16,16 @@ public static class Common
     {
         foreach (var plottable in plot.Plottables)
         {
-            if (plottable.XAxis is null)
-                plottable.XAxis = plot.XAxis.XTranslator;
-            if (plottable.YAxis is null)
-                plottable.YAxis = plot.YAxis.YTranslator;
+            if (plottable.Axes.XAxis is null)
+                plottable.Axes.XAxis = plot.XAxis;
+            if (plottable.Axes.YAxis is null)
+                plottable.Axes.YAxis = plot.YAxis;
         }
     }
 
     public static void AutoAxisAnyUnsetAxes(Plot plot)
     {
-        if (!plot.XAxis.XTranslator.HasBeenSet || !plot.YAxis.YTranslator.HasBeenSet)
+        if (!plot.XAxis.HasBeenSet || !plot.YAxis.HasBeenSet)
         {
             plot.AutoScale();
         }
@@ -53,8 +53,10 @@ public static class Common
     {
         foreach (var plottable in plot.Plottables.Where(x => x.IsVisible))
         {
+            plottable.Axes.SetDataRect(dataRect);
             surface.Canvas.Save();
-            plottable.Render(surface, dataRect);
+            surface.Canvas.ClipRect(dataRect.ToSKRect());
+            plottable.Render(surface);
             surface.Canvas.Restore();
         }
     }
@@ -80,7 +82,8 @@ public static class Common
     {
         if (plot.ZoomRectangle.IsVisible)
         {
-            plot.ZoomRectangle.Render(surface, dataRect);
+            plot.ZoomRectangle.Axes.SetDataRect(dataRect);
+            plot.ZoomRectangle.Render(surface);
         }
     }
 
@@ -89,7 +92,7 @@ public static class Common
         if (plot.Benchmark.IsVisible)
         {
             plot.Benchmark.ElapsedMilliseconds = elapsed.TotalMilliseconds;
-            plot.Benchmark.Render(surface, dataRect);
+            plot.Benchmark.Render(surface);
         }
     }
 }

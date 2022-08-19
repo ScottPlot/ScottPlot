@@ -1,12 +1,17 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axis;
+using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-public class DebugBenchmark : PlottableBase
+public class DebugBenchmark : IPlottable
 {
-    public double ElapsedMilliseconds;
+    // TODO: replace this with a string so any text can be displayed
+    public double ElapsedMilliseconds { get; set; }
+    public bool IsVisible { get; set; } = true;
+    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public override void Render(SKSurface surface, PixelRect dataRect)
+    public void Render(SKSurface surface)
     {
         string message = $"Rendered in {ElapsedMilliseconds:0.000} ms ({1e3 / ElapsedMilliseconds:N0} FPS)";
 
@@ -19,10 +24,10 @@ public class DebugBenchmark : PlottableBase
         PixelSize textSize = Drawing.MeasureString(message, paint);
         float margin = 5;
         SKRect textRect = new(
-            left: dataRect.Left + margin,
-            top: dataRect.Bottom - paint.TextSize * .9f - 5 - margin,
-            right: dataRect.Left + 5 * 2 + textSize.Width + margin,
-            bottom: dataRect.Bottom - margin);
+            left: Axes.DataRect.Left + margin,
+            top: Axes.DataRect.Bottom - paint.TextSize * .9f - 5 - margin,
+            right: Axes.DataRect.Left + 5 * 2 + textSize.Width + margin,
+            bottom: Axes.DataRect.Bottom - margin);
 
         paint.Color = SKColors.Yellow;
         paint.IsStroke = false;
@@ -34,6 +39,10 @@ public class DebugBenchmark : PlottableBase
 
         paint.Color = SKColors.Black;
         paint.IsStroke = false;
-        surface.Canvas.DrawText(message, dataRect.Left + 4 + margin, dataRect.Bottom - 4 - margin, paint);
+        surface.Canvas.DrawText(
+            text: message,
+            x: Axes.DataRect.Left + 4 + margin,
+            y: Axes.DataRect.Bottom - 4 - margin,
+            paint: paint);
     }
 }

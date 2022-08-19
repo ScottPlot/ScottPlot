@@ -1,4 +1,5 @@
-﻿using ScottPlot.Axis.AxisTranslation;
+﻿using ScottPlot.Axis;
+using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -8,28 +9,26 @@ namespace ScottPlot;
 public interface IPlottable
 {
     /// <summary>
-    /// Indicates whether or not this plottable will be drawn on the plot.
+    /// Toggles whether this plottable is shown and contributes to the automatic axis limit detection.
     /// The calling method will check this variable (it does not need to be checked inside the Render method).
     /// </summary>
-    public bool IsVisible { get; set; }
-
-    // * Typically the render method will contain a ClipRect() call
-    // * Clipping is reset automatically after every plottable is rendered
+    bool IsVisible { get; set; }
 
     /// <summary>
-    /// Draw the plotable on the given surface.
+    /// This object performs coordinate/pixel translation at render time based on the latest data area.
+    /// It stores the axes to use for this plottable and also the data area (in pixels) updated just before each render.
+    /// If this object is null it will be constructed using the default X and Y axes at render time.
     /// </summary>
-    /// <param name="surface">Surface containing the Canvas to be drawn on</param>
-    /// <param name="dataRect">Size (in pixels) of the data area</param>
-    public void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
+    IAxes2D Axes { get; set; }
 
-    // * If these are null on first render, set them with the default axes.
-    // * Plottables that use these must perform a null check once at the top of the render method.
-    // * Plottables that don't need axes can leave these null.
+    /// <summary>
+    /// Return the 2D area (in coordinate space) occupied by the data contained in this plottable
+    /// </summary>
+    AxisLimits GetAxisLimits();
 
-    public IXAxisTranslator? XAxis { get; set; }
-
-    public IYAxisTranslator? YAxis { get; set; }
-
-    public AxisLimits GetAxisLimits();
+    /// <summary>
+    /// Draw the data from this plottable into the data area defined in the <see cref="Axes"/>.
+    /// By default the surface is already clipped to the data area, but this can be cleared inside the plottable.
+    /// </summary>
+    void Render(SKSurface surface);
 }

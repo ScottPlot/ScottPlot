@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Axis.AxisTranslation;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
-public class LinearYAxisTranslator : IYAxisTranslator
+public abstract class YAxis
 {
     public double Bottom { get; set; } = 0;
     public double Top { get; set; } = 0;

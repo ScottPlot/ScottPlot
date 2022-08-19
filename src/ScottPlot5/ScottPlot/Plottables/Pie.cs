@@ -1,4 +1,5 @@
-﻿using ScottPlot.Style;
+﻿using ScottPlot.Axis;
+using ScottPlot.Style;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables
@@ -18,38 +19,33 @@ namespace ScottPlot.Plottables
         }
     }
 
-    public class Pie : PlottableBase
+    public class Pie : IPlottable
     {
         public IList<PieSlice> Slices { get; set; }
         public Stroke Stroke { get; set; } = new() { Width = 0 };
+        public bool IsVisible { get; set; }
+
+        public IAxes2D Axes { get; set; } = Axes2D.Default;
 
         public Pie(IList<PieSlice> slices)
         {
             Slices = slices;
         }
 
-        public override AxisLimits GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             return new AxisLimits(-1, 1, -1, 1);
         }
 
-        public override void Render(SKSurface surface, PixelRect dataRect)
+        public void Render(SKSurface surface)
         {
-            // TODO: Maybe this can be done in a call to base.Render()?
-            if (XAxis is null || YAxis is null)
-                throw new InvalidOperationException("Both axes must be set before first render");
-
-            surface.Canvas.ClipRect(dataRect.ToSKRect()); // TODO: This too?
-
             double total = Slices.Sum(s => s.Value);
             float[] sweeps = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
 
-            Pixel origin = new(
-                x: XAxis.GetPixel(0, dataRect),
-                y: YAxis.GetPixel(0, dataRect));
+            Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
-            float minX = Math.Abs(XAxis.GetPixel(1, dataRect) - origin.X);
-            float minY = Math.Abs(YAxis.GetPixel(1, dataRect) - origin.Y);
+            float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
+            float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
             float radius = Math.Min(minX, minY);
             float explosionRadius = 0.03f * radius;
             SKRect rect = new(-radius, -radius, radius, radius);

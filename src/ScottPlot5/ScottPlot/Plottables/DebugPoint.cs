@@ -1,11 +1,15 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axis;
+using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-public class DebugPoint : PlottableBase
+public class DebugPoint : IPlottable
 {
-    public Coordinates Position { get; set; }
+    public bool IsVisible { get; set; } = true;
+    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
+    public Coordinates Position { get; set; }
     public Color Color { get; set; } = new(255, 00, 255);
 
     public DebugPoint()
@@ -19,12 +23,9 @@ public class DebugPoint : PlottableBase
         Color = color;
     }
 
-    public override void Render(SKSurface surface, PixelRect dataRect)
+    public void Render(SKSurface surface)
     {
-        if (XAxis is null || YAxis is null)
-            throw new InvalidOperationException("Both axes must be set before first render");
-
-        surface.Canvas.ClipRect(dataRect.ToSKRect());
+        surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
 
         using SKPaint paint = new()
         {
@@ -35,12 +36,12 @@ public class DebugPoint : PlottableBase
             PathEffect = SKPathEffect.CreateDash(new float[] { 4, 4, }, 0),
         };
 
-        float x = XAxis.GetPixel(Position.X, dataRect);
-        float y = YAxis.GetPixel(Position.Y, dataRect);
+        float x = Axes.GetPixelX(Position.X);
+        float y = Axes.GetPixelY(Position.Y);
 
         SKCanvas canvas = surface.Canvas;
-        canvas.DrawLine(x, dataRect.Top, x, dataRect.Bottom, paint);
-        canvas.DrawLine(dataRect.Left, y, dataRect.Right, y, paint);
+        canvas.DrawLine(x, Axes.DataRect.Top, x, Axes.DataRect.Bottom, paint);
+        canvas.DrawLine(Axes.DataRect.Left, y, Axes.DataRect.Right, y, paint);
         canvas.DrawCircle(x, y, 5, paint);
 
         paint.Color = Color.ToSKColor();

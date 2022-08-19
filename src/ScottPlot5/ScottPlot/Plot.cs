@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using ScottPlot.Axis.AxisTranslation;
 using ScottPlot.Axis;
 using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
@@ -42,12 +41,12 @@ public class Plot
 
     public Plot()
     {
-        var xAxis = new Axis.StandardAxes.Bottom();
-        var yAxis = new Axis.StandardAxes.Left();
+        var xAxis = new Axis.StandardAxes.BottomAxis();
+        var yAxis = new Axis.StandardAxes.LeftAxis();
         XAxes.Add(xAxis);
         YAxes.Add(yAxis);
 
-        ZoomRectangle = new(xAxis.XTranslator, yAxis.YTranslator);
+        ZoomRectangle = new(xAxis, yAxis);
 
         var grid = new Grids.DefaultGrid(xAxis, yAxis);
         Grids.Add(grid);
@@ -58,13 +57,13 @@ public class Plot
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
         // TODO: move set limits inside XAxis and YAxis
-        XAxis.XTranslator.Left = left;
-        XAxis.XTranslator.Right = right;
-        XAxis.XTranslator.HasBeenSet = true;
+        XAxis.Left = left;
+        XAxis.Right = right;
+        XAxis.HasBeenSet = true;
 
-        YAxis.YTranslator.Bottom = bottom;
-        YAxis.YTranslator.Top = top;
-        YAxis.YTranslator.HasBeenSet = true;
+        YAxis.Bottom = bottom;
+        YAxis.Top = top;
+        YAxis.HasBeenSet = true;
     }
 
     public void SetAxisLimits(CoordinateRect rect)
@@ -79,7 +78,7 @@ public class Plot
 
     public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(XAxis.XTranslator.Left, XAxis.XTranslator.Right, YAxis.YTranslator.Bottom, YAxis.YTranslator.Top);
+        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
     }
 
     /// <summary>
@@ -127,8 +126,8 @@ public class Plot
     /// </summary>
     public void MousePan(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
-        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.XTranslator.Width;
-        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.YTranslator.Height;
+        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
+        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
 
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
@@ -187,16 +186,16 @@ public class Plot
     /// Indicate the click-drag zoom rectangle was dropped.
     /// Applying the zoom will set axis limits to where the rectangle was before it was dropped.
     /// </summary>
-    public void MouseZoomRectangleClear(bool applyZoom)
+    public void MouseZoomRectangleClear(bool applyZoom) // TODO: instead of a bool, pass-in the rectangle itself
     {
         if (applyZoom)
         {
             if (ZoomRectangle.HorizontalSpan || ZoomRectangle.VerticalSpan)
             {
-                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.XTranslator.Left;
-                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.XTranslator.Right;
-                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.YTranslator.Bottom;
-                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.YTranslator.Top;
+                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.Left;
+                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.Right;
+                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.Bottom;
+                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.Top;
                 SetAxisLimits(left, right, bottom, top);
             }
             else
@@ -214,20 +213,20 @@ public class Plot
     public Pixel GetPixel(Coordinates coord)
     {
         PixelRect dataRect = LastRenderInfo.DataRect;
-        float x = XAxis.XTranslator.GetPixel(coord.X, dataRect);
-        float y = YAxis.YTranslator.GetPixel(coord.Y, dataRect);
+        float x = XAxis.GetPixel(coord.X, dataRect);
+        float y = YAxis.GetPixel(coord.Y, dataRect);
         return new Pixel(x, y);
     }
 
     /// <summary>
     /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
-    public Coordinates GetCoordinate(Pixel pixel, IAxisTranslator? xAxis = null, IAxisTranslator? yAxis = null)
+    public Coordinates GetCoordinate(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         // TODO: multi-axis support
         PixelRect dataRect = LastRenderInfo.DataRect;
-        double x = XAxis.XTranslator.GetCoordinate(pixel.X, dataRect);
-        double y = YAxis.YTranslator.GetCoordinate(pixel.Y, dataRect);
+        double x = XAxis.GetCoordinate(pixel.X, dataRect);
+        double y = YAxis.GetCoordinate(pixel.Y, dataRect);
         return new Coordinates(x, y);
     }
 

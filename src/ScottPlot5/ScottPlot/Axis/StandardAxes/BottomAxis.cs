@@ -2,10 +2,8 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public class Bottom : IXAxis
+public class BottomAxis : XAxis, IXAxis
 {
-    public AxisTranslation.IAxisTranslator Translator => XTranslator;
-    public AxisTranslation.IXAxisTranslator XTranslator { get; private set; }
     public Edge Edge => Edge.Bottom;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
 
@@ -17,19 +15,14 @@ public class Bottom : IXAxis
     /// </summary>
     public int MaxTickCount { get; set; } = 1000;
 
-    public Bottom()
-    {
-        XTranslator = new AxisTranslation.LinearXAxisTranslator();
-    }
-
     public void RegenerateTicks(PixelRect dataRect)
     {
-        Ticks = TickGenerator.GenerateTicks(Translator.Range, dataRect.Width);
+        Ticks = TickGenerator.GenerateTicks(Range, dataRect.Width);
     }
 
     public Tick[] GetVisibleTicks()
     {
-        return Ticks.Where(tick => Translator.Contains(tick.Position)).Take(MaxTickCount).ToArray();
+        return Ticks.Where(tick => Contains(tick.Position)).Take(MaxTickCount).ToArray();
     }
 
     public float Measure()
@@ -67,7 +60,7 @@ public class Bottom : IXAxis
 
         foreach (Tick tick in GetVisibleTicks())
         {
-            float x = Translator.GetPixel(tick.Position, dataRect);
+            float x = GetPixel(tick.Position, dataRect);
 
             surface.Canvas.DrawLine(x, dataRect.Bottom, x, dataRect.Bottom + 3, paint);
 

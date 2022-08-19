@@ -21,8 +21,7 @@ public struct Coordinates
         return $"Coordinate: X={X}, Y={Y}";
     }
 
-    public static Coordinates NaN()
-    {
-        return new(double.NaN, double.NaN);
-    }
+    public static Coordinates NaN => new(double.NaN, double.NaN);
+
+    public static Coordinates Origin => new(0, 0);
 }
