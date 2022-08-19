@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables;
 public class DebugPoint : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
     public Coordinates Position { get; set; }

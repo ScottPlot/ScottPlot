@@ -53,7 +53,7 @@ public static class Common
     {
         foreach (var plottable in plot.Plottables.Where(x => x.IsVisible))
         {
-            plottable.Axes.SetDataRect(dataRect);
+            plottable.Axes.DataRect = dataRect;
             surface.Canvas.Save();
             surface.Canvas.ClipRect(dataRect.ToSKRect());
             plottable.Render(surface);
@@ -82,7 +82,7 @@ public static class Common
     {
         if (plot.ZoomRectangle.IsVisible)
         {
-            plot.ZoomRectangle.Axes.SetDataRect(dataRect);
+            plot.ZoomRectangle.Axes.DataRect = dataRect;
             plot.ZoomRectangle.Render(surface);
         }
     }

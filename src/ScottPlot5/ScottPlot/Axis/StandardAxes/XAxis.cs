@@ -6,7 +6,6 @@ public abstract class XAxis
     public double Right { get; set; } = 0;
     public double Width => Right - Left;
     public bool HasBeenSet { get; set; } = false;
-    public bool IsHorizontal => true;
 
     public CoordinateRange Range => new(Left, Right);
 

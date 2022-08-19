@@ -19,7 +19,7 @@ public interface IPlottable
     /// It stores the axes to use for this plottable and also the data area (in pixels) updated just before each render.
     /// If this object is null it will be constructed using the default X and Y axes at render time.
     /// </summary>
-    IAxes2D Axes { get; set; }
+    IAxes Axes { get; set; }
 
     /// <summary>
     /// Return the 2D area (in coordinate space) occupied by the data contained in this plottable

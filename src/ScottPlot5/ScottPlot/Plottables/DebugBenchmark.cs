@@ -8,7 +8,7 @@ public class DebugBenchmark : IPlottable
     // TODO: replace this with a string so any text can be displayed
     public double ElapsedMilliseconds { get; set; }
     public bool IsVisible { get; set; } = true;
-    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
     public void Render(SKSurface surface)

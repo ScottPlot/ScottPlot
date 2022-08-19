@@ -1,23 +1,17 @@
-﻿using System.Data;
-using System.Security.Cryptography;
-
-namespace ScottPlot.Axis;
+﻿namespace ScottPlot.Axis;
 
 /// <summary>
-/// This interface is for an object that plottables can store
-/// and use to perform coordinate/pixel conversions
+/// This interface describes a pair of 1D axes.
+/// It is intended to be stored inside <see cref="IPlottable"/> objects,
+/// defining which axes they use and providing logic for coordinate/pixel conversions.
 /// </summary>
-public interface IAxes2D
+public interface IAxes
 {
     /// <summary>
-    /// Area in the center of the figure where plottable data will be displayed
+    /// Describes the region in the center of the figure where plottable data will be displayed.
+    /// This region is set by the renderer immediately before a Plottable's Render() method is called.
     /// </summary>
-    PixelRect DataRect { get; }
-
-    /// <summary>
-    /// This function is called immediately before rendering
-    /// </summary>
-    void SetDataRect(PixelRect dataRect);
+    PixelRect DataRect { get; set; }
 
     // Note: Axes (not just the translation logic) are here so ticks are accessible to plottables.
     // Note: At render time any null axes will be set to the default axes for the plot

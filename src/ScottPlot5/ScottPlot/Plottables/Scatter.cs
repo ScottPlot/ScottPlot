@@ -12,7 +12,7 @@ namespace ScottPlot.Plottables;
 public class Scatter : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 

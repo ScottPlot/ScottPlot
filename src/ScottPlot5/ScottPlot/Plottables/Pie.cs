@@ -25,7 +25,7 @@ namespace ScottPlot.Plottables
         public Stroke Stroke { get; set; } = new() { Width = 0 };
         public bool IsVisible { get; set; }
 
-        public IAxes2D Axes { get; set; } = Axes2D.Default;
+        public IAxes Axes { get; set; } = Axis.Axes.Default;
 
         public Pie(IList<PieSlice> slices)
         {

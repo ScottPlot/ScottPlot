@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables;
 public class ZoomRectangle : IPlottable
 {
     public bool IsVisible { get; set; } = false;
-    public IAxes2D Axes { get; set; } = Axes2D.Default;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);

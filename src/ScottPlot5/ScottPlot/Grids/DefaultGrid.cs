@@ -33,8 +33,8 @@ public class DefaultGrid : IGrid
         for (int i = 0; i < ticks.Length; i++)
         {
             float px = axisView.GetPixel(ticks[i].Position, dataRect);
-            starts[i] = axisView.IsHorizontal ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
-            ends[i] = axisView.IsHorizontal ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
+            starts[i] = axisView.Edge.IsHorizontal() ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
+            ends[i] = axisView.Edge.IsHorizontal() ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
         }
 
         Drawing.DrawLines(surface, starts, ends, LineColor, LineWidth);
