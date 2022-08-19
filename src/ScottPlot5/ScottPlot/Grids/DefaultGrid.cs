@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Axis;
 using SkiaSharp;
+using System.Linq;
 
 namespace ScottPlot.Grids;
 
@@ -24,17 +25,18 @@ public class DefaultGrid : IGrid
         RenderGridLines(surface, dataRect, YAxis);
     }
 
-    private void RenderGridLines(SKSurface surface, PixelRect dataRect, IAxis axisView)
+    private void RenderGridLines(SKSurface surface, PixelRect dataRect, IAxis axis)
     {
-        Tick[] ticks = axisView.GetVisibleTicks();
+        // TODO: restrict to visible ticks and max 1000?
+        Tick[] ticks = axis.TickGenerator.Ticks;
         Pixel[] starts = new Pixel[ticks.Length];
         Pixel[] ends = new Pixel[ticks.Length];
 
         for (int i = 0; i < ticks.Length; i++)
         {
-            float px = axisView.Translator.GetPixel(ticks[i].Position, dataRect);
-            starts[i] = axisView.Translator.IsHorizontal ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
-            ends[i] = axisView.Translator.IsHorizontal ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
+            float px = axis.GetPixel(ticks[i].Position, dataRect);
+            starts[i] = axis.Edge.IsHorizontal() ? new Pixel(px, dataRect.Bottom) : new Pixel(dataRect.Left, px);
+            ends[i] = axis.Edge.IsHorizontal() ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
         }
 
         Drawing.DrawLines(surface, starts, ends, LineColor, LineWidth);

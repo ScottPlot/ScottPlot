@@ -1,30 +1,52 @@
 ﻿namespace ScottPlot.Axis;
 
+/// <summary>
+/// This interface describes a 1D axis (horizontal or vertical).
+/// Responsibilities include: min/max management, unit/pixel conversion, 
+/// tick generation (and rendering), axis label rendering, 
+/// and self-measurement for layout purposes.
+/// </summary>
 public interface IAxis
 {
-    public AxisTranslation.IAxisTranslator Translator { get; }
-    public Edge Edge { get; }
-    public void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
-    public ITickGenerator TickGenerator { get; set; }
+    /// <summary>
+    /// Describes which edge this 1D axis represents
+    /// </summary>
+    Edge Edge { get; }
 
     /// <summary>
-    /// Generate ticks suitable for the given data area
+    /// Min/Max range currently displayed by this axis
     /// </summary>
-    public void RegenerateTicks(PixelRect dataRect);
+    CoordinateRange Range { get; }
 
     /// <summary>
-    /// Returns only the ticks visible within the current axis limits
+    /// Indicates whether or not the axis has been set intentionally.
+    /// Setting is achieved by manually setting axis limits or by auto-scaling limits to fit the data.
     /// </summary>
-    /// <returns></returns>
-    public Tick[] GetVisibleTicks();
+    bool HasBeenSet { get; set; }
+
+    /// <summary>
+    /// Get the pixel position of a coordinate given the location and size of the data area
+    /// </summary>
+    float GetPixel(double position, PixelRect dataArea);
+
+    /// <summary>
+    /// Get the coordinate of a pixel position given the location and size of the data area
+    /// </summary>
+    double GetCoordinate(float pixel, PixelRect dataArea);
+
+    /// <summary>
+    /// Logic for determining tick positions and formatting tick labels
+    /// </summary>
+    ITickGenerator TickGenerator { get; set; }
 
     /// <summary>
     /// Return the size (pixels) required to draw this axis view given the most recently generated ticks.
     /// </summary>
-    public float Measure();
+    float Measure();
 
+    // TODO: move the label and ticks into their own interfaces each with a Render()
     /// <summary>
-    /// Ticks to display the next time the axis is rendered
+    /// Draw axis label and tick marks
     /// </summary>
-    public Tick[] Ticks { get; set; }
+    void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
 }

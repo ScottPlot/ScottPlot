@@ -8,7 +8,7 @@ public class StandardLayoutSystem : ILayoutSystem
 
         foreach (Axis.IXAxis xAxis in xAxes)
         {
-            xAxis.RegenerateTicks(figureRect);
+            xAxis.TickGenerator.Regenerate(xAxis.Range, figureRect.Width);
             float yPx = xAxis.Measure();
 
             if (xAxis.Edge == Edge.Bottom)
@@ -27,7 +27,7 @@ public class StandardLayoutSystem : ILayoutSystem
 
         foreach (Axis.IYAxis yAxis in yAxes)
         {
-            yAxis.RegenerateTicks(figureRect);
+            yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height);
             float xPx = yAxis.Measure();
 
             if (yAxis.Edge == Edge.Left)

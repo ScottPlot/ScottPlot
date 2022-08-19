@@ -1,24 +1,25 @@
-﻿using ScottPlot.Axis.AxisTranslation;
+﻿using ScottPlot.Axis;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-public class ZoomRectangle : PlottableBase
+public class ZoomRectangle : IPlottable
 {
+    public bool IsVisible { get; set; } = false;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
     public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
     public float LineWidth = 2;
-
     public CoordinateRect Rect;
-
     public bool HorizontalSpan = false;
     public bool VerticalSpan = false;
 
-    public ZoomRectangle(IXAxisTranslator xAxis, IYAxisTranslator yAxis)
+    public ZoomRectangle(IXAxis xAxis, IYAxis yAxis)
     {
-        XAxis = xAxis;
-        YAxis = yAxis;
-        IsVisible = false;
+        Axes.XAxis = xAxis;
+        Axes.YAxis = yAxis;
     }
 
     public void SetSize(Coordinates c1, Coordinates c2)
@@ -32,24 +33,26 @@ public class ZoomRectangle : PlottableBase
         IsVisible = false;
     }
 
-    public override void Render(SKSurface surface, PixelRect dataRect)
+    public void Render(SKSurface surface)
     {
-        if (XAxis is null || YAxis is null)
-            throw new InvalidOperationException("Both axes must be set before first render");
+        SKRect rect = Axes.GetPixelRect(Rect).ToSKRect();
 
-        surface.Canvas.ClipRect(dataRect.ToSKRect());
+        if (HorizontalSpan)
+        {
+            rect.Left = Axes.DataRect.Left;
+            rect.Right = Axes.DataRect.Right;
+        }
+
+        if (VerticalSpan)
+        {
+            rect.Bottom = Axes.DataRect.Bottom;
+            rect.Top = Axes.DataRect.Top;
+        }
 
         using SKPaint paint = new()
         {
             IsAntialias = true
         };
-
-        float l = HorizontalSpan ? dataRect.Left : XAxis.GetPixel(Rect.XMin, dataRect);
-        float r = HorizontalSpan ? dataRect.Right : XAxis.GetPixel(Rect.XMax, dataRect);
-        float b = VerticalSpan ? dataRect.Bottom : YAxis.GetPixel(Rect.YMin, dataRect);
-        float t = VerticalSpan ? dataRect.Top : YAxis.GetPixel(Rect.YMax, dataRect);
-
-        SKRect rect = new(l, t, r, b);
 
         paint.Color = FillColor.ToSKColor();
         paint.IsStroke = false;

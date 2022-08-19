@@ -1,4 +1,4 @@
-﻿using ScottPlot.Axis.AxisTranslation;
+﻿using ScottPlot.Axis;
 
 namespace ScottPlot.Control;
 
@@ -38,7 +38,7 @@ public class Interaction
     /// <summary>
     /// Return the last observed location of the mouse in coordinate units
     /// </summary>
-    public Coordinates GetMouseCoordinates(IAxisTranslator? xAxis = null, IAxisTranslator? yAxis = null)
+    public Coordinates GetMouseCoordinates(IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         return Control.Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
     }

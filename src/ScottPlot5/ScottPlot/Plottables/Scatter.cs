@@ -4,38 +4,31 @@
  * 
  */
 
+using ScottPlot.Axis;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
-public class Scatter : PlottableBase
+public class Scatter : IPlottable
 {
-    public readonly DataSource.IScatterSource Data;
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
 
+    public AxisLimits GetAxisLimits() => Data.GetLimits();
+
+    public readonly DataSource.IScatterSource Data;
     public Color Color = new(0, 0, 255);
     public float LineWidth = 1;
     public float MarkerSize = 5;
-
-    public override AxisLimits GetAxisLimits() => Data.GetLimits();
 
     public Scatter(DataSource.IScatterSource data)
     {
         Data = data;
     }
 
-    private Pixel GetPixel(Coordinates coordinates, PixelRect dataRect)
+    public void Render(SKSurface surface, PixelRect dataRect)
     {
-        float xPx = XAxis!.GetPixel(coordinates.X, dataRect);
-        float yPx = YAxis!.GetPixel(coordinates.Y, dataRect);
-        return new Pixel(xPx, yPx);
-    }
-
-    public override void Render(SKSurface surface, PixelRect dataRect)
-    {
-        if (XAxis is null || YAxis is null)
-            throw new InvalidOperationException("Both axes must be set before first render");
-
-        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => GetPixel(x, dataRect));
+        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
 
         surface.Canvas.ClipRect(dataRect.ToSKRect());
 
@@ -62,5 +55,10 @@ public class Scatter : PlottableBase
         {
             surface.Canvas.DrawCircle(pixel.X, pixel.Y, MarkerSize / 2, paint);
         }
+    }
+
+    public void Render(SKSurface surface)
+    {
+        throw new NotImplementedException();
     }
 }

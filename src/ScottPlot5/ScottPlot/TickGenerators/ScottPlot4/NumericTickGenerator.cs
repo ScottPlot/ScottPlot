@@ -6,15 +6,24 @@ internal class NumericTickGenerator : ITickGenerator
 {
     private readonly bool IsVertical;
 
+    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+
+    public int MaxTickCount { get; set; } = 10_000;
+
+    public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
+    {
+        return Ticks.Where(x => range.Contains(x.Position));
+    }
+
     public NumericTickGenerator(bool isVertical)
     {
         IsVertical = isVertical;
     }
 
-    public Tick[] GenerateTicks(CoordinateRange range, PixelLength size)
+    public void Regenerate(CoordinateRange range, PixelLength size)
     {
         PixelSize largestLabel = new(12, 12);
-        return GenerateTicks(range, size, largestLabel);
+        Ticks = GenerateTicks(range, size, largestLabel);
     }
 
     private Tick[] GenerateTicks(CoordinateRange range, PixelLength size, PixelSize predictedTickSize, int depth = 0)

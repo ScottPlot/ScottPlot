@@ -1,6 +1,11 @@
 ﻿namespace ScottPlot.Axis;
 
+/// <summary>
+/// Vertical axis
+/// </summary>
 public interface IYAxis : IAxis
 {
-    public AxisTranslation.IYAxisTranslator YTranslator { get; }
+    public double Height { get; }
+    public double Bottom { get; set; }
+    public double Top { get; set; }
 }

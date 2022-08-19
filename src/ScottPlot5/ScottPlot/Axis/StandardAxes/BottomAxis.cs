@@ -2,35 +2,22 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public class Bottom : IXAxis
+public class BottomAxis : XAxisBase, IXAxis
 {
-    public AxisTranslation.IAxisTranslator Translator => XTranslator;
-    public AxisTranslation.IXAxisTranslator XTranslator { get; private set; }
     public Edge Edge => Edge.Bottom;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
 
-    public Label Label { get; private set; } = new() { Text = "Horizontal Axis", Bold = true, FontSize = 16 };
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Label Label { get; private set; } = new()
+    {
+        Text = "Horizontal Axis",
+        Bold = true,
+        FontSize = 16
+    };
 
     /// <summary>
     /// Only render a maximum of this number of ticks
     /// </summary>
     public int MaxTickCount { get; set; } = 1000;
-
-    public Bottom()
-    {
-        XTranslator = new AxisTranslation.LinearXAxisTranslator();
-    }
-
-    public void RegenerateTicks(PixelRect dataRect)
-    {
-        Ticks = TickGenerator.GenerateTicks(Translator.Range, dataRect.Width);
-    }
-
-    public Tick[] GetVisibleTicks()
-    {
-        return Ticks.Where(tick => Translator.Contains(tick.Position)).Take(MaxTickCount).ToArray();
-    }
 
     public float Measure()
     {
@@ -64,10 +51,9 @@ public class Bottom : IXAxis
             TextAlign = SKTextAlign.Center,
         };
 
-
-        foreach (Tick tick in GetVisibleTicks())
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
-            float x = Translator.GetPixel(tick.Position, dataRect);
+            float x = GetPixel(tick.Position, dataRect);
 
             surface.Canvas.DrawLine(x, dataRect.Bottom, x, dataRect.Bottom + 3, paint);
 
