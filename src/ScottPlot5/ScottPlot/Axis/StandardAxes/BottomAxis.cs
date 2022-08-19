@@ -2,28 +2,22 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public class BottomAxis : XAxis, IXAxis
+public class BottomAxis : XAxisBase, IXAxis
 {
     public Edge Edge => Edge.Bottom;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
 
-    public Label Label { get; private set; } = new() { Text = "Horizontal Axis", Bold = true, FontSize = 16 };
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Label Label { get; private set; } = new()
+    {
+        Text = "Horizontal Axis",
+        Bold = true,
+        FontSize = 16
+    };
 
     /// <summary>
     /// Only render a maximum of this number of ticks
     /// </summary>
     public int MaxTickCount { get; set; } = 1000;
-
-    public void RegenerateTicks(PixelRect dataRect)
-    {
-        Ticks = TickGenerator.GenerateTicks(Range, dataRect.Width);
-    }
-
-    public Tick[] GetVisibleTicks()
-    {
-        return Ticks.Where(tick => Contains(tick.Position)).Take(MaxTickCount).ToArray();
-    }
 
     public float Measure()
     {
@@ -57,8 +51,7 @@ public class BottomAxis : XAxis, IXAxis
             TextAlign = SKTextAlign.Center,
         };
 
-
-        foreach (Tick tick in GetVisibleTicks())
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
             float x = GetPixel(tick.Position, dataRect);
 

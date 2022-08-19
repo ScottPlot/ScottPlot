@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public class LeftAxis : YAxis, IYAxis
+public class LeftAxis : YAxisBase, IYAxis
 {
     public Edge Edge => Edge.Left;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
@@ -15,23 +15,6 @@ public class LeftAxis : YAxis, IYAxis
         Rotation = -90
     };
 
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
-
-    /// <summary>
-    /// Only render a maximum of this number of ticks
-    /// </summary>
-    public int MaxTickCount { get; set; } = 1000;
-
-    public void RegenerateTicks(PixelRect dataRect)
-    {
-        Ticks = TickGenerator.GenerateTicks(Range, dataRect.Height);
-    }
-
-    public Tick[] GetVisibleTicks()
-    {
-        return Ticks.Where(tick => Contains(tick.Position)).Take(MaxTickCount).ToArray();
-    }
-
     public float Measure()
     {
         float labelWidth = Label.FontSize;
@@ -39,7 +22,7 @@ public class LeftAxis : YAxis, IYAxis
 
         using SKPaint paint = Label.MakePaint();
 
-        foreach (Tick tick in GetVisibleTicks())
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
             PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
@@ -69,9 +52,7 @@ public class LeftAxis : YAxis, IYAxis
             TextAlign = SKTextAlign.Right,
         };
 
-        var visibleTicks = Ticks.Where(tick => Contains(tick.Position)).Take(MaxTickCount);
-
-        foreach (Tick tick in visibleTicks)
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
             float y = GetPixel(tick.Position, dataRect);
 

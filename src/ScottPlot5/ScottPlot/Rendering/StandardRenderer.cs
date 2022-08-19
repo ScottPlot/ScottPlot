@@ -18,8 +18,8 @@ public class StandardRenderer : IRenderer
 
         PixelRect figureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
         PixelRect dataRect = Common.CalculateLayout(figureRect, plot);
-        plot.YAxis.RegenerateTicks(dataRect);
-        plot.XAxis.RegenerateTicks(dataRect);
+        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);
+        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
 
         Common.RenderBackground(surface, dataRect, plot);
         Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);

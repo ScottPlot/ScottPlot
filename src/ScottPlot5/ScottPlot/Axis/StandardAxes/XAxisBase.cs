@@ -1,23 +1,12 @@
 ﻿namespace ScottPlot.Axis.StandardAxes;
 
-public abstract class XAxis
+public abstract class XAxisBase
 {
     public double Left { get; set; } = 0;
     public double Right { get; set; } = 0;
     public double Width => Right - Left;
     public bool HasBeenSet { get; set; } = false;
-
     public CoordinateRange Range => new(Left, Right);
-
-    public bool Contains(double position)
-    {
-        return position >= Left && position <= Right;
-    }
-
-    public override string ToString()
-    {
-        return $"HorizontalAxis: Left={Left}, Right={Right}";
-    }
 
     public float GetPixel(double position, PixelRect dataArea)
     {
