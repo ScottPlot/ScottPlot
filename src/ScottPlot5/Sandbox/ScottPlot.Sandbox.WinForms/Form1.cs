@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
 using WinForms.Examples;
 
@@ -20,7 +21,7 @@ public partial class Form1 : Form
             .Where(x => !x.IsAbstract)
             .Where(x => x.IsSubclassOf(typeof(Form)))
             .Where(x => x.GetInterfaces().Contains(typeof(IExampleForm)))
-            .Select(x => (IExampleForm)Activator.CreateInstance(x))
+            .Select(x => (IExampleForm)FormatterServices.GetUninitializedObject(x))
             .ToDictionary(keySelector: x => x.SandboxTitle, elementSelector: x => x.GetType());
 
         listBox1.Items.AddRange(Examples.Select(x => x.Key).ToArray());
@@ -35,7 +36,7 @@ public partial class Form1 : Form
         if (Examples.ContainsKey(title))
         {
             Type formType = Examples[title];
-            IExampleForm form = (IExampleForm)Activator.CreateInstance(formType);
+            IExampleForm form = (IExampleForm)FormatterServices.GetUninitializedObject(formType);
             richTextBox1.Text = form.SandboxDescription;
             button1.Enabled = true;
         }
