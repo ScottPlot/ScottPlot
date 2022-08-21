@@ -26,11 +26,9 @@ public class Scatter : IPlottable
         Data = data;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public void Render(SKSurface surface)
     {
         IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
-
-        surface.Canvas.ClipRect(dataRect.ToSKRect());
 
         using SKPaint paint = new()
         {
@@ -55,10 +53,5 @@ public class Scatter : IPlottable
         {
             surface.Canvas.DrawCircle(pixel.X, pixel.Y, MarkerSize / 2, paint);
         }
-    }
-
-    public void Render(SKSurface surface)
-    {
-        throw new NotImplementedException();
     }
 }
