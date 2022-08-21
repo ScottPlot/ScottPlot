@@ -1,27 +1,59 @@
-﻿using ScottPlot.Plottables;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using WinForms.Examples;
 
 namespace ScottPlot.Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
+    private readonly Dictionary<string, Type> Examples;
+
     public Form1()
     {
         InitializeComponent();
 
+        Examples = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(x => !x.IsAbstract)
+            .Where(x => x.IsSubclassOf(typeof(Form)))
+            .Where(x => x.GetInterfaces().Contains(typeof(IExampleForm)))
+            .Select(x => (IExampleForm)Activator.CreateInstance(x))
+            .ToDictionary(keySelector: x => x.SandboxTitle, elementSelector: x => x.GetType());
+
+        listBox1.Items.AddRange(Examples.Select(x => x.Key).ToArray());
+
+        if (listBox1.Items.Count > 0)
+            listBox1.SelectedIndex = 0;
     }
 
-    private void button2_Click(object sender, EventArgs e) => Add(10_000);
-    private void button1_Click(object sender, EventArgs e) => Add(1_000_000);
-    private void button3_Click(object sender, EventArgs e) => Add(10_000_000);
-
-    private void Add(int count)
+    private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        formsPlot1.Plot.Plottables.Clear();
-        double[] ys = Generate.NoisySin(new Random(0), count);
-        formsPlot1.Plot.Plottables.AddSignal(ys);
-        formsPlot1.Plot.AutoScale();
-        formsPlot1.Refresh();
+        string title = listBox1.SelectedItem.ToString();
+        if (Examples.ContainsKey(title))
+        {
+            Type formType = Examples[title];
+            IExampleForm form = (IExampleForm)Activator.CreateInstance(formType);
+            richTextBox1.Text = form.SandboxDescription;
+            button1.Enabled = true;
+        }
+        else
+        {
+            richTextBox1.Text = string.Empty;
+            button1.Enabled = false;
+        }
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        string title = listBox1.SelectedItem.ToString();
+        if (!Examples.ContainsKey(title))
+            return;
+        Type formType = Examples[title];
+        Form form = (Form)Activator.CreateInstance(formType);
+        form.StartPosition = FormStartPosition.CenterScreen;
+        form.ShowDialog();
     }
 }
