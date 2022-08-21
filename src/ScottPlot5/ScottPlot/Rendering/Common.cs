@@ -25,9 +25,16 @@ public static class Common
 
     public static void AutoAxisAnyUnsetAxes(Plot plot)
     {
-        if (!plot.XAxis.HasBeenSet || !plot.YAxis.HasBeenSet)
+        foreach (IPlottable plottable in plot.Plottables)
         {
-            plot.AutoScale();
+            if (!plottable.Axes.XAxis.HasBeenSet || !plottable.Axes.YAxis.HasBeenSet)
+            {
+                AxisLimits limits = plottable.GetAxisLimits();
+                plottable.Axes.XAxis.Left = limits.Rect.XMin;
+                plottable.Axes.XAxis.Right = limits.Rect.XMax;
+                plottable.Axes.YAxis.Bottom = limits.Rect.YMin;
+                plottable.Axes.YAxis.Top = limits.Rect.YMax;
+            }
         }
     }
 
