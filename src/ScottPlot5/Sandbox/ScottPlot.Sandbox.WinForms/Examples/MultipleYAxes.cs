@@ -22,7 +22,11 @@ namespace WinForms.Examples
             InitializeComponent();
             button1.Click += (s, e) => AddYAxis();
             button2.Click += (s, e) => AddYAxis();
-            formsPlot1.Plot.Plottables.AddSignal(GetRandomData());
+
+            var sig = formsPlot1.Plot.Plottables.AddSignal(GetRandomData());
+            formsPlot1.Plot.YAxis.Label.Text = $"Y Axis 1";
+            formsPlot1.Plot.YAxis.Label.Color = sig.Color;
+
             formsPlot1.Refresh();
         }
 
@@ -31,10 +35,12 @@ namespace WinForms.Examples
             // create a new axis and add it to the plot
             var yAxis = new ScottPlot.Axis.StandardAxes.LeftAxis();
             formsPlot1.Plot.YAxes.Add(yAxis);
+            yAxis.Label.Text = $"Y Axis {formsPlot1.Plot.YAxes.Count() + 1}";
 
             // add a new plottable and tell it to use our custom Y axis
             var sig = formsPlot1.Plot.Plottables.AddSignal(GetRandomData());
             sig.Axes.YAxis = yAxis;
+            yAxis.Label.Color = sig.Color;
 
             formsPlot1.Refresh();
         }

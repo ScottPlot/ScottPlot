@@ -40,9 +40,24 @@ public interface IAxis
     ITickGenerator TickGenerator { get; set; }
 
     /// <summary>
-    /// Return the size (pixels) required to draw this axis view given the most recently generated ticks.
+    /// Update the value of <see cref="PixelSize"/> 
     /// </summary>
-    float Measure();
+    void Measure();
+
+    /// <summary>
+    /// Size required to draw this axis given the most recently generated ticks.
+    /// </summary>
+    float PixelSize { get; }
+
+    /// <summary>
+    /// The label is the text displayed distal to the ticks
+    /// </summary>
+    Label Label { get; }
+
+    /// <summary>
+    /// Distance from the data are to offset this axis (to make room for multiple axes)
+    /// </summary>
+    float Offset { get; set; }
 
     // TODO: move the label and ticks into their own interfaces each with a Render()
     /// <summary>

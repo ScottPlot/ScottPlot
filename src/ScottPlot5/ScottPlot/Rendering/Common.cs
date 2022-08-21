@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,9 +39,9 @@ public static class Common
         }
     }
 
-    public static PixelRect CalculateLayout(PixelRect figureRect, Plot plot)
+    public static PixelRect AutoSizeDataArea(PixelRect figureRect, Plot plot)
     {
-        return plot.Layout.GetDataAreaRect(figureRect, plot.XAxes, plot.YAxes);
+        return plot.Layout.AutoSizeDataArea(figureRect, plot.XAxes, plot.YAxes);
     }
 
     public static void RenderBackground(SKSurface surface, PixelRect dataRect, Plot plot)
@@ -68,9 +69,10 @@ public static class Common
         }
     }
 
-    public static void RenderAxes(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderFrameOnEdgesWithoutAxes(SKSurface surface, PixelRect dataRect, Plot plot)
     {
-        // draw frame around data area
+        // TODO: only render frame around edges lacking axes
+
         using SKPaint paint = new()
         {
             IsAntialias = true,
@@ -79,10 +81,21 @@ public static class Common
         };
         paint.Color = SKColors.Black;
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
+    }
 
-        // draw each axis view
-        plot.XAxis.Render(surface, dataRect);
-        plot.YAxis.Render(surface, dataRect);
+    public static void RenderAxes(SKSurface surface, PixelRect dataRect, Plot plot)
+    {
+        // TODO: axes should render their own frame edges
+
+        foreach (var xAxis in plot.XAxes)
+        {
+            xAxis.Render(surface, dataRect);
+        }
+
+        foreach (var yAxis in plot.YAxes)
+        {
+            yAxis.Render(surface, dataRect);
+        }
     }
 
     public static void RenderZoomRectangle(SKSurface surface, PixelRect dataRect, Plot plot)

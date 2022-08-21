@@ -6,6 +6,9 @@ public class BottomAxis : XAxisBase, IXAxis
 {
     public Edge Edge => Edge.Bottom;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
+    public float Offset { get; set; } = 0;
+    public float PixelSize { get; private set; } = 50;
+    public float PixelHeight => PixelSize;
 
     public Label Label { get; private set; } = new()
     {
@@ -19,13 +22,13 @@ public class BottomAxis : XAxisBase, IXAxis
     /// </summary>
     public int MaxTickCount { get; set; } = 1000;
 
-    public float Measure()
+    public void Measure()
     {
         float labelHeight = Label.FontSize;
 
         float largestTickHeight = Label.FontSize;
 
-        return labelHeight + largestTickHeight + 18;
+        PixelSize = labelHeight + largestTickHeight + 18;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)

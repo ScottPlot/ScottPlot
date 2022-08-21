@@ -12,7 +12,7 @@ public class StandardRenderer : IRenderer
         Common.AutoAxisAnyUnsetAxes(plot);
 
         PixelRect figureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
-        PixelRect dataRect = Common.CalculateLayout(figureRect, plot);
+        PixelRect dataRect = Common.AutoSizeDataArea(figureRect, plot);
         plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);
         plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
 
@@ -20,6 +20,7 @@ public class StandardRenderer : IRenderer
         Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);
         Common.RenderPlottables(surface, dataRect, plot);
         Common.RenderGrids(surface, dataRect, plot, beneathPlottables: false);
+        Common.RenderFrameOnEdgesWithoutAxes(surface, dataRect, plot);
         Common.RenderAxes(surface, dataRect, plot);
         Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();
