@@ -87,10 +87,11 @@ public static class Common
         }
     }
 
-    public static void RenderDebugInfo(SKSurface surface, PixelRect dataRect, TimeSpan elapsed, Plot plot)
+    public static void RenderBenchmark(SKSurface surface, PixelRect dataRect, TimeSpan elapsed, Plot plot)
     {
         if (plot.Benchmark.IsVisible)
         {
+            plot.Benchmark.Axes.DataRect = dataRect;
             plot.Benchmark.ElapsedMilliseconds = elapsed.TotalMilliseconds;
             plot.Benchmark.Render(surface);
         }

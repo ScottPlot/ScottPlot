@@ -1,9 +1,4 @@
 ﻿using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Rendering;
 
@@ -29,7 +24,7 @@ public class StandardRenderer : IRenderer
         Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();
 
-        Common.RenderDebugInfo(surface, dataRect, sw.Elapsed, plot);
+        Common.RenderBenchmark(surface, dataRect, sw.Elapsed, plot);
 
         return new RenderDetails(figureRect, dataRect, sw.Elapsed);
     }
