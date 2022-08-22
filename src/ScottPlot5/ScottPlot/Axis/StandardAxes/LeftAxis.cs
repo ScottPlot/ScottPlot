@@ -38,6 +38,7 @@ public class LeftAxis : YAxisBase, IYAxis
     {
         DrawLabel(surface, dataRect);
         DrawTicks(surface, dataRect);
+        DrawFrame(surface, dataRect);
     }
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
@@ -70,5 +71,18 @@ public class LeftAxis : YAxisBase, IYAxis
             if (!string.IsNullOrWhiteSpace(tick.Label))
                 surface.Canvas.DrawText(tick.Label, x - majorTickLabelPadding, y + paint.TextSize * .4f, paint);
         }
+    }
+
+    private void DrawFrame(SKSurface surface, PixelRect dataRect)
+    {
+        float x = dataRect.Left - Offset;
+
+        using SKPaint paint = new()
+        {
+            IsAntialias = true,
+            Color = Label.Color.ToSKColor(),
+        };
+
+        surface.Canvas.DrawLine(x, dataRect.Top, x, dataRect.Bottom, paint);
     }
 }
