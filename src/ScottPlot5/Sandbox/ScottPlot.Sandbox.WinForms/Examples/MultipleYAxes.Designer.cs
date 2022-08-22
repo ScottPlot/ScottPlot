@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnAddAxis = new System.Windows.Forms.Button();
+            this.btnRemoveAxis = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -45,29 +45,29 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnAddAxis.Location = new System.Drawing.Point(12, 12);
+            this.btnAddAxis.Name = "button1";
+            this.btnAddAxis.Size = new System.Drawing.Size(75, 23);
+            this.btnAddAxis.TabIndex = 1;
+            this.btnAddAxis.Text = "Add";
+            this.btnAddAxis.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(93, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Remove";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnRemoveAxis.Location = new System.Drawing.Point(93, 12);
+            this.btnRemoveAxis.Name = "button2";
+            this.btnRemoveAxis.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveAxis.TabIndex = 2;
+            this.btnRemoveAxis.Text = "Remove";
+            this.btnRemoveAxis.UseVisualStyleBackColor = true;
             // 
             // MultipleYAxes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnRemoveAxis);
+            this.Controls.Add(this.btnAddAxis);
             this.Controls.Add(this.formsPlot1);
             this.Name = "MultipleYAxes";
             this.Text = "MultiAxis";
@@ -78,7 +78,7 @@
         #endregion
 
         private ScottPlot.WinForms.FormsPlot formsPlot1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnAddAxis;
+        private System.Windows.Forms.Button btnRemoveAxis;
     }
 }

@@ -20,14 +20,21 @@ namespace WinForms.Examples
         public MultipleYAxes()
         {
             InitializeComponent();
-            button1.Click += (s, e) => AddYAxis();
-            button2.Click += (s, e) => AddYAxis();
+            btnAddAxis.Click += (s, e) => AddYAxis();
+            btnRemoveAxis.Click += (s, e) => RemoveYAxis();
 
-            var sig = formsPlot1.Plot.Plottables.AddSignal(GetRandomData());
+            var sig = formsPlot1.Plot.Plottables.AddSignal(ScaledSine());
             formsPlot1.Plot.YAxis.Label.Text = $"Y Axis 1";
             formsPlot1.Plot.YAxis.Label.Color = sig.Color;
 
             formsPlot1.Refresh();
+            SetButtonEnabledStates();
+        }
+
+        private void SetButtonEnabledStates()
+        {
+            btnAddAxis.Enabled = formsPlot1.Plot.YAxes.Count <= 3;
+            btnRemoveAxis.Enabled = formsPlot1.Plot.YAxes.Count > 1;
         }
 
         private void AddYAxis()
@@ -35,21 +42,33 @@ namespace WinForms.Examples
             // create a new axis and add it to the plot
             var yAxis = new ScottPlot.Axis.StandardAxes.LeftAxis();
             formsPlot1.Plot.YAxes.Add(yAxis);
-            yAxis.Label.Text = $"Y Axis {formsPlot1.Plot.YAxes.Count() + 1}";
+            yAxis.Label.Text = $"Y Axis {formsPlot1.Plot.YAxes.Count()}";
 
             // add a new plottable and tell it to use our custom Y axis
-            var sig = formsPlot1.Plot.Plottables.AddSignal(GetRandomData());
+            var sig = formsPlot1.Plot.Plottables.AddSignal(ScaledSine());
             sig.Axes.YAxis = yAxis;
             yAxis.Label.Color = sig.Color;
 
             formsPlot1.Refresh();
+            SetButtonEnabledStates();
         }
 
-        private double[] GetRandomData()
+        private void RemoveYAxis()
         {
+            IPlottable plottableToRemove = formsPlot1.Plot.Plottables.Last();
+            formsPlot1.Plot.Plottables.Remove(plottableToRemove);
+            formsPlot1.Plot.YAxes.Remove(plottableToRemove.Axes.YAxis);
+
+            formsPlot1.Refresh();
+            SetButtonEnabledStates();
+        }
+
+        private double[] ScaledSine()
+        {
+            int count = formsPlot1.Plot.YAxes.Count();
             return Generate.Sin(51,
-                mult: Math.Pow(10, Rand.NextDouble() * 6),
-                phase: Rand.NextDouble() * Math.PI * 2);
+                mult: Math.Pow(10, count),
+                phase: -count / 20.0);
         }
     }
 }
