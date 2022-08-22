@@ -17,6 +17,8 @@ public class Plot
 
     public ILayoutSystem Layout = new StandardLayoutSystem();
 
+    public readonly AutoScaleMargins Margins = new();
+
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly Plottables.DebugBenchmark Benchmark = new();
@@ -84,17 +86,10 @@ public class Plot
     /// <summary>
     /// Automatically scale the axis limits to fit the data.
     /// Note: This used to be AxisAuto().
+    /// Note: Margin size can be customized by editing properties of <see cref="Margins"/>
     /// </summary>
-    /// <param name="xMargin">pad each side of the data area with this fraction of empty space</param>
-    /// <param name="yMargin">pad each side of the data area with this fraction of empty space</param>
-    public void AutoScale(double xMargin = .05, double yMargin = .1)
+    public void AutoScale(bool tight = false)
     {
-        if (xMargin < 0 || xMargin > 1)
-            throw new ArgumentException($"{nameof(xMargin)} must be within the range [0, 1] ");
-
-        if (yMargin < 0 || yMargin > 1)
-            throw new ArgumentException($"{nameof(yMargin)} must be within the range [0, 1] ");
-
         AxisLimits limits = AxisLimits.NoLimits;
 
         foreach (var plottable in Plottables)
@@ -114,7 +109,11 @@ public class Plot
             limits.Rect.YMax = +10;
         }
 
-        SetAxisLimits(limits.WithZoom(1 - xMargin, 1 - yMargin));
+        CoordinateRect rect = tight
+            ? limits.Rect
+            : limits.WithZoom(Margins.ZoomFracX, Margins.ZoomFracY);
+
+        SetAxisLimits(rect);
     }
 
     #endregion
