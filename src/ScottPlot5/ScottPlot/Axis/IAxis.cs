@@ -19,12 +19,6 @@ public interface IAxis
     CoordinateRange Range { get; }
 
     /// <summary>
-    /// Indicates whether or not the axis has been set intentionally.
-    /// Setting is achieved by manually setting axis limits or by auto-scaling limits to fit the data.
-    /// </summary>
-    bool HasBeenSet { get; set; }
-
-    /// <summary>
     /// Get the pixel position of a coordinate given the location and size of the data area
     /// </summary>
     float GetPixel(double position, PixelRect dataArea);

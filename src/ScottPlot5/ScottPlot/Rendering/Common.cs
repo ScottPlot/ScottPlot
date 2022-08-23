@@ -28,7 +28,7 @@ public static class Common
     {
         foreach (IPlottable plottable in plot.Plottables)
         {
-            if (!plottable.Axes.XAxis.HasBeenSet || !plottable.Axes.YAxis.HasBeenSet)
+            if (!plottable.Axes.XAxis.Range.HasBeenSet || !plottable.Axes.YAxis.Range.HasBeenSet)
             {
                 AxisLimits limits = plottable.GetAxisLimits();
                 plottable.Axes.XAxis.Left = limits.Rect.XMin;

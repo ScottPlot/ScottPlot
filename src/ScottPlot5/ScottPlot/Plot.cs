@@ -61,11 +61,9 @@ public class Plot
         // TODO: move set limits inside XAxis and YAxis
         XAxis.Left = left;
         XAxis.Right = right;
-        XAxis.HasBeenSet = true;
 
         YAxis.Bottom = bottom;
         YAxis.Top = top;
-        YAxis.HasBeenSet = true;
     }
 
     public void SetAxisLimits(CoordinateRect rect)
@@ -90,30 +88,24 @@ public class Plot
     /// </summary>
     public void AutoScale(bool tight = false)
     {
-        AxisLimits limits = AxisLimits.NoLimits;
+        // reset limits for all axes
+        XAxes.ForEach(xAxis => xAxis.Range.Reset());
+        YAxes.ForEach(yAxis => yAxis.Range.Reset());
 
-        foreach (var plottable in Plottables)
+        // expand all axes by the limits of each plot
+        foreach (IPlottable plottable in Plottables)
         {
-            limits.Expand(plottable.GetAxisLimits());
+            AxisLimits limits = plottable.GetAxisLimits();
+            plottable.Axes.YAxis.Range.Expand(limits.Rect.YRange);
+            plottable.Axes.XAxis.Range.Expand(limits.Rect.XRange);
         }
 
-        if (!limits.XHasBeenSet)
+        // apply margins
+        if (!tight)
         {
-            limits.Rect.XMin = -10;
-            limits.Rect.XMax = +10;
+            XAxes.ForEach(xAxis => xAxis.Range.Zoom(Margins.ZoomFracX));
+            YAxes.ForEach(yAxis => yAxis.Range.Zoom(Margins.ZoomFracY));
         }
-
-        if (!limits.YHasBeenSet)
-        {
-            limits.Rect.YMin = -10;
-            limits.Rect.YMax = +10;
-        }
-
-        CoordinateRect rect = tight
-            ? limits.Rect
-            : limits.WithZoom(Margins.ZoomFracX, Margins.ZoomFracY);
-
-        SetAxisLimits(rect);
     }
 
     #endregion
@@ -152,7 +144,8 @@ public class Plot
         double deltaFracY = -pixelDeltaY / (Math.Abs(pixelDeltaY) + LastRenderInfo.DataRect.Height);
         double fracY = Math.Pow(10, deltaFracY);
 
-        SetAxisLimits(originalLimits.WithZoom(fracX, fracY));
+        CoordinateRect newLimits = originalLimits.WithZoom(fracX, fracY);
+        SetAxisLimits(newLimits);
     }
 
     /// <summary>
