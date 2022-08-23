@@ -1,6 +1,7 @@
 ﻿namespace ScottPlot;
 
 // TODO: break this into CoordinateRangeX and CoordinateRangeY?
+// TODO: a struct is useful and a class is useful for limits only within the axis base or something
 
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
@@ -66,18 +67,44 @@ public class CoordinateRange
             throw new InvalidOperationException();
     }
 
+    public void Set(double min, double max)
+    {
+        Min = min;
+        Max = max;
+    }
+
+    public void Set(CoordinateRange range)
+    {
+        Min = range.Min;
+        Max = range.Max;
+    }
+
     public void Pan(double delta)
     {
         Min += delta;
         Max += delta;
     }
 
-    public void Zoom(double frac)
+    public void PanMouse(float mouseDeltaPx, float dataSizePx)
     {
-        Zoom(frac, Center);
+        double pxPerUnitx = dataSizePx / Span;
+        double delta = mouseDeltaPx / pxPerUnitx;
+        Pan(delta);
     }
 
-    public void Zoom(double frac, double zoomTo)
+    public void ZoomFrac(double frac)
+    {
+        ZoomFrac(frac, Center);
+    }
+
+    public void ZoomMouseDelta(float deltaPx, float dataSizePx)
+    {
+        double deltaFracX = deltaPx / (Math.Abs(deltaPx) + dataSizePx);
+        double fracX = Math.Pow(10, deltaFracX);
+        ZoomFrac(fracX);
+    }
+
+    public void ZoomFrac(double frac, double zoomTo)
     {
         double spanLeftX = zoomTo - Min;
         double spanRightX = Max - zoomTo;

@@ -1,12 +1,14 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Axis;
+
+namespace ScottPlot.Control;
 
 public struct MouseDrag
 {
-    public readonly AxisLimits InitialLimits;
+    public readonly MultiAxisLimits InitialLimits;
     public readonly Pixel From;
     public readonly Pixel To;
 
-    public MouseDrag(AxisLimits limits, Pixel from, Pixel to)
+    public MouseDrag(MultiAxisLimits limits, Pixel from, Pixel to)
     {
         InitialLimits = limits;
         From = from;

@@ -109,10 +109,10 @@ public struct AxisLimits
     public CoordinateRect WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
         CoordinateRange xRange = new(Rect.XMin, Rect.XMax);
-        xRange.Zoom(fracX, zoomToX);
+        xRange.ZoomFrac(fracX, zoomToX);
 
         CoordinateRange yRange = new(Rect.YMin, Rect.YMax);
-        yRange.Zoom(fracY, zoomToY);
+        yRange.ZoomFrac(fracY, zoomToY);
 
         return new(xRange, yRange);
     }

@@ -56,6 +56,7 @@ public class Plot
 
     #region Axis Management
 
+    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
         // TODO: move set limits inside XAxis and YAxis
@@ -66,11 +67,13 @@ public class Plot
         YAxis.Top = top;
     }
 
+    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(CoordinateRect rect)
     {
         SetAxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
     }
 
+    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(AxisLimits rect)
     {
         SetAxisLimits(rect.Rect);
@@ -79,6 +82,14 @@ public class Plot
     public AxisLimits GetAxisLimits()
     {
         return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
+    }
+
+    public MultiAxisLimits GetMultiAxisLimits()
+    {
+        MultiAxisLimits limits = new();
+        XAxes.ForEach(xAxis => limits.RememberLimits(xAxis, xAxis.Left, xAxis.Right));
+        YAxes.ForEach(yAxis => limits.RememberLimits(yAxis, yAxis.Bottom, yAxis.Top));
+        return limits;
     }
 
     /// <summary>
@@ -103,8 +114,8 @@ public class Plot
         // apply margins
         if (!tight)
         {
-            XAxes.ForEach(xAxis => xAxis.Range.Zoom(Margins.ZoomFracX));
-            YAxes.ForEach(yAxis => yAxis.Range.Zoom(Margins.ZoomFracY));
+            XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(Margins.ZoomFracX));
+            YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(Margins.ZoomFracY));
         }
     }
 
@@ -115,37 +126,35 @@ public class Plot
     /// <summary>
     /// Apply a click-drag pan operation to the plot
     /// </summary>
-    public void MousePan(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void MousePan(MultiAxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
-        double pxPerUnitx = LastRenderInfo.DataRect.Width / XAxis.Width;
-        double pxPerUnity = LastRenderInfo.DataRect.Height / YAxis.Height;
-
-        float pixelDeltaX = mouseNow.X - mouseDown.X;
+        float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
 
-        double deltaX = pixelDeltaX / pxPerUnitx;
-        double deltaY = pixelDeltaY / pxPerUnity;
+        // restore mousedown limits
+        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
+        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
         // pan in the direction opposite of the mouse movement
-        SetAxisLimits(originalLimits.WithPan(-deltaX, deltaY));
+        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(pixelDeltaX, LastRenderInfo.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(pixelDeltaY, LastRenderInfo.DataRect.Height));
     }
 
     /// <summary>
     /// Apply a click-drag zoom operation to the plot
     /// </summary>
-    public void MouseZoom(AxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void MouseZoom(MultiAxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         float pixelDeltaX = mouseNow.X - mouseDown.X;
-        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
+        float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
 
-        double deltaFracX = pixelDeltaX / (Math.Abs(pixelDeltaX) + LastRenderInfo.DataRect.Width);
-        double fracX = Math.Pow(10, deltaFracX);
+        // restore mousedown limits
+        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
+        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
-        double deltaFracY = -pixelDeltaY / (Math.Abs(pixelDeltaY) + LastRenderInfo.DataRect.Height);
-        double fracY = Math.Pow(10, deltaFracY);
-
-        CoordinateRect newLimits = originalLimits.WithZoom(fracX, fracY);
-        SetAxisLimits(newLimits);
+        // apply zoom for each axis
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, LastRenderInfo.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, LastRenderInfo.DataRect.Height));
     }
 
     /// <summary>
@@ -155,7 +164,15 @@ public class Plot
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
         Coordinates mouseCoordinate = GetCoordinate(pixel);
-        SetAxisLimits(GetAxisLimits().WithZoom(fracX, fracY, mouseCoordinate.X, mouseCoordinate.Y));
+        MultiAxisLimits originalLimits = GetMultiAxisLimits();
+
+        // restore mousedown limits
+        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
+        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
+
+        // apply zoom for each axis
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, LastRenderInfo.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, LastRenderInfo.DataRect)));
     }
 
     /// <summary>
@@ -167,36 +184,9 @@ public class Plot
     /// <param name="hSpan">If true, shade the full region between two Y positions</param>
     public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
     {
-        Coordinates c1 = GetCoordinate(mouseDown);
-        Coordinates c2 = GetCoordinate(mouseNow);
-        ZoomRectangle.SetSize(c1, c2);
+        ZoomRectangle.Update(mouseDown, mouseNow);
         ZoomRectangle.VerticalSpan = vSpan;
         ZoomRectangle.HorizontalSpan = hSpan;
-    }
-
-    /// <summary>
-    /// Indicate the click-drag zoom rectangle was dropped.
-    /// Applying the zoom will set axis limits to where the rectangle was before it was dropped.
-    /// </summary>
-    public void MouseZoomRectangleClear(bool applyZoom) // TODO: instead of a bool, pass-in the rectangle itself
-    {
-        if (applyZoom)
-        {
-            if (ZoomRectangle.HorizontalSpan || ZoomRectangle.VerticalSpan)
-            {
-                double left = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMin : XAxis.Left;
-                double right = ZoomRectangle.VerticalSpan ? ZoomRectangle.Rect.XMax : XAxis.Right;
-                double bottom = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMin : YAxis.Bottom;
-                double top = ZoomRectangle.HorizontalSpan ? ZoomRectangle.Rect.YMax : YAxis.Top;
-                SetAxisLimits(left, right, bottom, top);
-            }
-            else
-            {
-                SetAxisLimits(ZoomRectangle.Rect);
-            }
-        }
-
-        ZoomRectangle.Clear();
     }
 
     /// <summary>

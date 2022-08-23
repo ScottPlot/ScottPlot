@@ -34,6 +34,14 @@ public struct PixelRect
         Top = 0;
     }
 
+    public PixelRect(Pixel px1, Pixel px2)
+    {
+        Left = Math.Min(px1.X, px2.X);
+        Right = Math.Max(px1.X, px2.X);
+        Bottom = Math.Max(px1.Y, px2.Y);
+        Top = Math.Min(px1.Y, px2.Y);
+    }
+
     /// <summary>
     /// Because Y pixel positions ascend from top to bottom, 
     /// <paramref name="bottom"/> should almost always be be a greater than <paramref name="top"/>.
