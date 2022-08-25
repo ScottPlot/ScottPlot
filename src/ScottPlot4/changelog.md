@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.58
 _not yet published on NuGet..._
+* Radar: New `Smooth` field allows radar areas to be drawn with smooth lines (#2067, #2065) _Thanks @theelderwand_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
