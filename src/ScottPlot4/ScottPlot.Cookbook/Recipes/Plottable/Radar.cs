@@ -70,6 +70,26 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class RadarSmooth : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Radar();
+        public string ID => "radar_smooth";
+        public string Title => "Smooth Radar";
+        public string Description =>
+            "The Smooth field controls whether radar areas are drawn with smooth or straight lines.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] values = {
+                    { 78, 83, 84, 76, 43 },
+                    { 100, 50, 70, 60, 90 }
+                };
+
+            var radarPlot = plt.AddRadar(values);
+            radarPlot.Smooth = true;
+        }
+    }
+
     public class RadarUnlabeledAxes : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Radar();
