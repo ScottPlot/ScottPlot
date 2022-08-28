@@ -140,6 +140,9 @@ namespace ScottPlot.Ticks
             }
             else
             {
+                if (manualTickPositions.Length != manualTickLabels.Length)
+                    throw new InvalidOperationException($"{nameof(manualTickPositions)} must have the same length as {nameof(manualTickLabels)}");
+
                 double min = Orientation == AxisOrientation.Vertical ? dims.YMin : dims.XMin;
                 double max = Orientation == AxisOrientation.Vertical ? dims.YMax : dims.XMax;
 
