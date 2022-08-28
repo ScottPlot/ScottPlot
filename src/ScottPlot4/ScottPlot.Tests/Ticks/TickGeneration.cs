@@ -130,5 +130,23 @@ namespace ScottPlotTests.Ticks
             plt.XAxis.AutomaticTickPositions();
             Assert.AreEqual(originalTicks, TestTools.GetXTickString(plt));
         }
+
+        [Test]
+        public void Test_ManualTicks_DifferentLengths()
+        {
+            ScottPlot.Plot plt = new();
+
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            double[] positions = { 10, 20, 30 };
+            string[] badLabels = { "ten", "twenty" };
+            string[] goodLabels = { "ten", "twenty", "thirty" };
+
+            Assert.Throws<ArgumentException>(() => plt.XAxis.ManualTickPositions(positions, badLabels));
+
+            Assert.DoesNotThrow(() => plt.XAxis.ManualTickPositions(positions, goodLabels));
+
+        }
     }
 }
