@@ -71,6 +71,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.SetAxisLimitsX(0, 120);
         }
     }
+
     public class BarSeriesWithError : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.BarSeries();
@@ -109,6 +110,58 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             err.LineColor = Color.Black;
 
             plt.SetAxisLimitsY(0, 120);
+        }
+    }
+
+    public class BarSeriesStacked : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.BarSeries();
+        public string ID => "barseries_stacked";
+        public string Title => "Stacked Bar Plot";
+        public string Description =>
+            "By customizing each Bar of a BarSeries we can achieve a stacked bar plot. " +
+            "Text objects can be added to the plot to serve as labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // This is the source data
+            double[] values = { 10, 23, 13, 7, 9 };
+            string[] labels = { "North", "East", "South", "West", "Endogenous" };
+
+            // Add a BarSeries to the plot
+            BarSeries barSeries = plt.AddBarSeries();
+
+            // Manually add each Bar to the BarSeries
+            double lastBarTop = 0;
+            IPalette palette = new ScottPlot.Palettes.ColorblindFriendly();
+            for (int i = 0; i < values.Length; i++)
+            {
+                // Determine how high the bar should be
+                double barTop = lastBarTop + values[i];
+                double barBottom = lastBarTop;
+                lastBarTop += values[i];
+
+                // Add a bar to the existing BarSeries
+                Bar bar = new()
+                {
+                    Value = barTop,
+                    ValueBase = barBottom,
+                    FillColor = palette.GetColor(i + 1),
+                    LineColor = Color.Black,
+                    LineWidth = 1,
+                };
+                barSeries.Bars.Add(bar);
+
+                // Add a text object to the plot to label this bar
+                double barMiddle = (barBottom + barTop) / 2;
+                var txt = plt.AddText(labels[i], .6, barMiddle);
+                txt.Font.Alignment = Alignment.MiddleLeft;
+                txt.Font.Size = 16;
+                txt.Font.Bold = true;
+            }
+
+            // Set the axis limits for a pretty figure
+            plt.SetAxisLimits(-5, 5, -5, 70);
         }
     }
 }
