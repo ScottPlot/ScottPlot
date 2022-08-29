@@ -133,7 +133,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // Manually add each Bar to the BarSeries
             double lastBarTop = 0;
-            IPalette palette = new ScottPlot.Palettes.ColorblindFriendly();
+            IPalette palette = new ScottPlot.Palettes.Tsitsulin();
             for (int i = 0; i < values.Length; i++)
             {
                 // Determine how high the bar should be
@@ -146,7 +146,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 {
                     Value = barTop,
                     ValueBase = barBottom,
-                    FillColor = palette.GetColor(i + 1),
+                    FillColor = palette.GetColor(i),
                     LineColor = Color.Black,
                     LineWidth = 1,
                 };
@@ -158,6 +158,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 txt.Font.Alignment = Alignment.MiddleLeft;
                 txt.Font.Size = 16;
                 txt.Font.Bold = true;
+                txt.Color = bar.FillColor; // match text and bar
             }
 
             // Set the axis limits for a pretty figure
