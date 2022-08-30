@@ -75,5 +75,12 @@ public class PlottableList : List<IPlottable>
         return scatter;
     }
 
+    public Heatmap AddHeatmap(double[,] intensities)
+    {
+        Heatmap heatmap = new(intensities);
+        Add(heatmap);
+        return heatmap;
+    }
+
     #endregion
 }
