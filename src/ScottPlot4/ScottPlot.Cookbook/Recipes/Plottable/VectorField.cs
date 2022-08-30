@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Statistics;
 using System;
+using System.Collections.Generic;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -141,6 +142,39 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             vf.ScaledArrowheads = true;
             vf.Anchor = ArrowAnchor.Base;
             vf.MarkerSize = 3;
+        }
+    }
+
+    public class VectorFieldArbitrary : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.VectorField();
+        public string ID => "vectorField_arbitrary";
+        public string Title => "Arbitrary Vectors";
+        public string Description => "Vectors can be placed arbitrarily in coordiante space " +
+            "(they are not required to be in a grid)";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(0);
+
+            // Create a vector field list and add it to the plot
+            var field = plt.AddVectorFieldList();
+
+            // Generate random vectors
+            for (int i = 0; i < 50; i++)
+            {
+                Coordinate coordinate = new(
+                    x: 20 * rand.NextDouble() - 10,
+                    y: 20 * rand.NextDouble() - 10);
+
+                CoordinateVector vector = new(
+                    x: 4 * rand.NextDouble() - 2,
+                    y: 4 * rand.NextDouble() - 2);
+
+                // Create a tuple that pairs a location and vector and add it to the list
+                var rootedVector = (coordinate, vector);
+                field.RootedVectors.Add(rootedVector);
+            }
         }
     }
 }
