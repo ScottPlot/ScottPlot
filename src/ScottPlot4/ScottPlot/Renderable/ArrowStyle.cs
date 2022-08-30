@@ -30,6 +30,16 @@ namespace ScottPlot.Renderable
         public double ScaledArrowheadLength = 0.5;
 
         /// <summary>
+        /// Length of the scaled arrowhead
+        /// </summary>
+        private double ScaledTipLength => Math.Sqrt(ScaledArrowheadLength * ScaledArrowheadLength + ScaledArrowheadWidth * ScaledArrowheadWidth);
+
+        /// <summary>
+        /// Width of the scaled arrowhead
+        /// </summary>
+        private double ScaledHeadAngle => Math.Atan2(ScaledArrowheadWidth, ScaledArrowheadLength);
+
+        /// <summary>
         /// Size of the arrowhead if custom/scaled arrowheads are not in use
         /// </summary>
         public float NonScaledArrowheadWidth = 2;
@@ -52,14 +62,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Thickness of the arrow lines
         /// </summary>
-        public float LineWidth = 1; 
-
-        public (float tipScale, float headAngle) GetTipDimensions()
-        {
-            float tipScale = (float)Math.Sqrt(ScaledArrowheadLength * ScaledArrowheadLength + ScaledArrowheadWidth * ScaledArrowheadWidth);
-            float headAngle = (float)Math.Atan2(ScaledArrowheadWidth, ScaledArrowheadLength);
-            return (tipScale, headAngle);
-        }
+        public float LineWidth = 1;
 
         /// <summary>
         /// Render an evenly-spaced 2D vector field.
@@ -145,17 +148,15 @@ namespace ScottPlot.Renderable
 
         private void DrawFancyArrow(Graphics gfx, Pen pen, float x1, float y1, float x2, float y2)
         {
-            (float tipScale, float headAngle) = GetTipDimensions();
-
             var dx = x2 - x1;
             var dy = y2 - y1;
             var arrowAngle = (float)Math.Atan2(dy, dx);
-            var sinA1 = (float)Math.Sin(headAngle - arrowAngle);
-            var cosA1 = (float)Math.Cos(headAngle - arrowAngle);
-            var sinA2 = (float)Math.Sin(headAngle + arrowAngle);
-            var cosA2 = (float)Math.Cos(headAngle + arrowAngle);
+            var sinA1 = (float)Math.Sin(ScaledHeadAngle - arrowAngle);
+            var cosA1 = (float)Math.Cos(ScaledHeadAngle - arrowAngle);
+            var sinA2 = (float)Math.Sin(ScaledHeadAngle + arrowAngle);
+            var cosA2 = (float)Math.Cos(ScaledHeadAngle + arrowAngle);
             var len = (float)Math.Sqrt(dx * dx + dy * dy);
-            var hypLen = len * tipScale;
+            var hypLen = len * ScaledTipLength;
 
             var corner1X = x2 - hypLen * cosA1;
             var corner1Y = y2 + hypLen * sinA1;
@@ -166,10 +167,11 @@ namespace ScottPlot.Renderable
             {
                 new PointF(x1, y1),
                 new PointF(x2, y2),
-                new PointF(corner1X, corner1Y),
+                new PointF((float)corner1X, (float)corner1Y),
                 new PointF(x2, y2),
-                new PointF(corner2X, corner2Y),
+                new PointF((float)corner2X, (float)corner2Y),
             };
+
             gfx.DrawLines(pen, arrowPoints);
         }
     }
