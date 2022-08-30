@@ -61,60 +61,87 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void Render(PlotDimensions dims, Graphics gfx, double[] xs, double[] ys, Statistics.Vector2[,] vectors, Color[] colors)
         {
-            (float tipScale, float headAngle) = GetTipDimensions(); // precalculate angles for fancy arrows
-
-            using Pen pen = Drawing.GDI.Pen(Color.Black);
-            if (!ScaledArrowheads)
-                pen.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(NonScaledArrowheadWidth, NonScaledArrowheadLength);
 
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)
                 {
-                    Statistics.Vector2 v = vectors[i, j];
-                    float tailX, tailY, endX, endY;
-
-                    switch (Anchor)
-                    {
-                        case ArrowAnchor.Base:
-                            tailX = dims.GetPixelX(xs[i]);
-                            tailY = dims.GetPixelY(ys[j]);
-                            endX = dims.GetPixelX(xs[i] + v.X);
-                            endY = dims.GetPixelY(ys[j] + v.Y);
-                            break;
-                        case ArrowAnchor.Center:
-                            tailX = dims.GetPixelX(xs[i] - v.X / 2);
-                            tailY = dims.GetPixelY(ys[j] - v.Y / 2);
-                            endX = dims.GetPixelX(xs[i] + v.X / 2);
-                            endY = dims.GetPixelY(ys[j] + v.Y / 2);
-                            break;
-                        case ArrowAnchor.Tip:
-                            tailX = dims.GetPixelX(xs[i] - v.X);
-                            tailY = dims.GetPixelY(ys[j] - v.Y);
-                            endX = dims.GetPixelX(xs[i]);
-                            endY = dims.GetPixelY(ys[j]);
-                            break;
-                        default:
-                            throw new NotImplementedException("unsupported anchor type");
-                    }
-
-                    pen.Color = colors[i * ys.Length + j];
-                    if (ScaledArrowheads)
-                        DrawFancyArrow(gfx, pen, tailX, tailY, endX, endY, headAngle, tipScale);
-                    else
-                        gfx.DrawLine(pen, tailX, tailY, endX, endY);
-
-                    if (MarkerShape != MarkerShape.none && MarkerSize > 0)
-                    {
-                        PointF markerPoint = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[j]));
-                        MarkerTools.DrawMarker(gfx, markerPoint, MarkerShape, MarkerSize, pen.Color);
-                    }
+                    Coordinate coordinate = new(xs[i], ys[j]);
+                    CoordinateVector vector = new(vectors[i, j].X, vectors[i, j].Y);
+                    Color color = colors[i * ys.Length + j];
+                    RenderArrow(dims, gfx, coordinate, vector, color);
                 }
             }
         }
 
-        private void DrawFancyArrow(Graphics gfx, Pen pen, float x1, float y1, float x2, float y2, float headAngle, float tipScale)
+        /// <summary>
+        /// Render a single arrow placed anywhere in coordinace space
+        /// </summary>
+        public void RenderArrow(PlotDimensions dims, Graphics gfx, Coordinate pt, CoordinateVector vec, Color color)
         {
+            double x = pt.X;
+            double y = pt.Y;
+            double xVector = vec.X;
+            double yVector = vec.Y;
+
+            float tailX, tailY, endX, endY;
+            switch (Anchor)
+            {
+                case ArrowAnchor.Base:
+                    tailX = dims.GetPixelX(x);
+                    tailY = dims.GetPixelY(y);
+                    endX = dims.GetPixelX(x + xVector);
+                    endY = dims.GetPixelY(y + yVector);
+                    break;
+                case ArrowAnchor.Center:
+                    tailX = dims.GetPixelX(x - xVector / 2);
+                    tailY = dims.GetPixelY(y - yVector / 2);
+                    endX = dims.GetPixelX(x + xVector / 2);
+                    endY = dims.GetPixelY(y + yVector / 2);
+                    break;
+                case ArrowAnchor.Tip:
+                    tailX = dims.GetPixelX(x - xVector);
+                    tailY = dims.GetPixelY(y - yVector);
+                    endX = dims.GetPixelX(x);
+                    endY = dims.GetPixelY(y);
+                    break;
+                default:
+                    throw new NotImplementedException("unsupported anchor type");
+            }
+
+            using Pen pen = Drawing.GDI.Pen(color);
+
+            if (ScaledArrowheads)
+            {
+                DrawFancyArrow(gfx, pen, tailX, tailY, endX, endY);
+            }
+            else
+            {
+                DrawStandardArrow(gfx, pen, tailX, tailY, endX, endY);
+            }
+
+            DrawMarker(dims, gfx, pen, x, y);
+        }
+
+        private void DrawMarker(PlotDimensions dims, Graphics gfx, Pen pen, double x, double y)
+        {
+            if (MarkerShape != MarkerShape.none && MarkerSize > 0)
+            {
+                PointF markerPoint = new(dims.GetPixelX(x), dims.GetPixelY(y));
+                MarkerTools.DrawMarker(gfx, markerPoint, MarkerShape, MarkerSize, pen.Color);
+            }
+        }
+
+        private void DrawStandardArrow(Graphics gfx, Pen pen, float x1, float y1, float x2, float y2)
+        {
+            pen.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(NonScaledArrowheadWidth, NonScaledArrowheadLength);
+            gfx.DrawLine(pen, x1, y1, x2, y2);
+        }
+
+        private void DrawFancyArrow(Graphics gfx, Pen pen, float x1, float y1, float x2, float y2)
+        {
+            (float tipScale, float headAngle) = GetTipDimensions();
+
             var dx = x2 - x1;
             var dy = y2 - y1;
             var arrowAngle = (float)Math.Atan2(dy, dx);
