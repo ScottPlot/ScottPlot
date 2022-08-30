@@ -77,14 +77,14 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            return new(0, bitmap?.Width ?? 1, 0, bitmap?.Height ?? 1);
+            return new(-0.5, (bitmap?.Width ?? 1) - 0.5, -0.5, (bitmap?.Height ?? 1) -  0.5);
         }
 
         public void Render(SKSurface surface)
         {
             if (bitmap is not null)
             {
-                SKRect rect = new(Axes.GetPixelX(0), Axes.GetPixelY(bitmap.Height), Axes.GetPixelX(bitmap.Width), Axes.GetPixelY(0));
+                SKRect rect = new(Axes.GetPixelX(-0.5), Axes.GetPixelY(bitmap.Height - 0.5), Axes.GetPixelX(bitmap.Width - 0.5), Axes.GetPixelY(-0.5));
                 surface.Canvas.DrawBitmap(bitmap, rect);
             }
         }
