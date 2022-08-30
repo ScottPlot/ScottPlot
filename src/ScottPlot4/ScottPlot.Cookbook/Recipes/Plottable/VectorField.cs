@@ -1,4 +1,5 @@
-﻿using ScottPlot.Statistics;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 
@@ -155,23 +156,33 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            Random rand = new(0);
-
             // Create a vector field list and add it to the plot
             var field = plt.AddVectorFieldList();
 
+            // Optionally color arrows using a colormap and custom scaling function
+            field.Colormap = Colormap.Turbo;
+            field.ColormapScaler = (magnitude) => magnitude * 5;
+
+            // Additional arrow styling options are here
+            field.ArrowStyle.ScaledArrowheads = true;
+            field.ArrowStyle.Anchor = ArrowAnchor.Base;
+            field.ArrowStyle.LineWidth = 3;
+            field.ArrowStyle.MarkerSize = 10;
+            field.ArrowStyle.MarkerShape = MarkerShape.filledDiamond;
+
             // Generate random vectors
-            for (int i = 0; i < 50; i++)
+            Random rand = new(0);
+            int pointCount = 20;
+            for (int i = 0; i < pointCount + 1; i++)
             {
-                Coordinate coordinate = new(
-                    x: 20 * rand.NextDouble() - 10,
-                    y: 20 * rand.NextDouble() - 10);
+                double x = i / (double)pointCount;
+                double y = Math.Sin(i * 2 * Math.PI / pointCount);
+                Coordinate coordinate = new(x, y);
 
-                CoordinateVector vector = new(
-                    x: 4 * rand.NextDouble() - 2,
-                    y: 4 * rand.NextDouble() - 2);
+                double dX = i / (double)pointCount * .15;
+                double dY = i / (double)pointCount * .15;
+                CoordinateVector vector = new(dX, dY);
 
-                // Create a tuple that pairs a location and vector and add it to the list
                 var rootedVector = (coordinate, vector);
                 field.RootedVectors.Add(rootedVector);
             }

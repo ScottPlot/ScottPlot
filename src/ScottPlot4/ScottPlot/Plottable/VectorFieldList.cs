@@ -20,6 +20,23 @@ namespace ScottPlot.Plottable
 
         public readonly Renderable.ArrowStyle ArrowStyle = new();
 
+        /// <summary>
+        /// Color to draw the arrows (if <see cref="Colormap"/> is null)
+        /// </summary>
+        public Color Color { get; set; } = Color.Blue;
+
+        /// <summary>
+        /// If defined, this colormap is used to color each arrow based on its magnitude
+        /// </summary>
+        public Colormap Colormap { get; set; } = null;
+
+        /// <summary>
+        /// If <see cref="Colormap"/> is defined, each arrow's magnitude 
+        /// is run through this function to get the fraction (from 0 to 1) 
+        /// along the colormap to sample from.
+        /// </summary>
+        public Func<double, double> ColormapScaler = (magnitude) => magnitude;
+
         public VectorFieldList()
         {
 
@@ -50,10 +67,13 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-            foreach (var arrow in RootedVectors)
+            foreach ((Coordinate coordinate, CoordinateVector vector) in RootedVectors)
             {
-                Color color = Color.Blue;
-                ArrowStyle.RenderArrow(dims, gfx, arrow.coordinate, arrow.vector, color);
+                Color color = Colormap is null
+                    ? Color
+                    : Colormap.GetColor(ColormapScaler.Invoke(vector.Magnitude));
+
+                ArrowStyle.RenderArrow(dims, gfx, coordinate, vector, color);
             }
         }
     }

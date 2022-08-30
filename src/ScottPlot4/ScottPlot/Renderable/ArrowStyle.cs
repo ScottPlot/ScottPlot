@@ -49,6 +49,11 @@ namespace ScottPlot.Renderable
         /// </summary>
         public float MarkerSize = 0;
 
+        /// <summary>
+        /// Thickness of the arrow lines
+        /// </summary>
+        public float LineWidth = 1; 
+
         public (float tipScale, float headAngle) GetTipDimensions()
         {
             float tipScale = (float)Math.Sqrt(ScaledArrowheadLength * ScaledArrowheadLength + ScaledArrowheadWidth * ScaledArrowheadWidth);
@@ -109,7 +114,7 @@ namespace ScottPlot.Renderable
                     throw new NotImplementedException("unsupported anchor type");
             }
 
-            using Pen pen = Drawing.GDI.Pen(color);
+            using Pen pen = Drawing.GDI.Pen(color, LineWidth, rounded: true);
 
             if (ScaledArrowheads)
             {
