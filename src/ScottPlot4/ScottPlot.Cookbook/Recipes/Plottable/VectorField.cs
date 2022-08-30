@@ -1,5 +1,7 @@
-﻿using ScottPlot.Statistics;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
+using System.Collections.Generic;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -141,6 +143,49 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             vf.ScaledArrowheads = true;
             vf.Anchor = ArrowAnchor.Base;
             vf.MarkerSize = 3;
+        }
+    }
+
+    public class VectorFieldArbitrary : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.VectorField();
+        public string ID => "vectorField_arbitrary";
+        public string Title => "Arbitrary Vectors";
+        public string Description => "Vectors can be placed arbitrarily in coordiante space " +
+            "(they are not required to be in a grid)";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // Create a vector field list and add it to the plot
+            var field = plt.AddVectorFieldList();
+
+            // Optionally color arrows using a colormap and custom scaling function
+            field.Colormap = Colormap.Turbo;
+            field.ColormapScaler = (magnitude) => magnitude * 5;
+
+            // Additional arrow styling options are here
+            field.ArrowStyle.ScaledArrowheads = true;
+            field.ArrowStyle.Anchor = ArrowAnchor.Base;
+            field.ArrowStyle.LineWidth = 3;
+            field.ArrowStyle.MarkerSize = 10;
+            field.ArrowStyle.MarkerShape = MarkerShape.filledDiamond;
+
+            // Generate random vectors
+            Random rand = new(0);
+            int pointCount = 20;
+            for (int i = 0; i < pointCount + 1; i++)
+            {
+                double x = i / (double)pointCount;
+                double y = Math.Sin(i * 2 * Math.PI / pointCount);
+                Coordinate coordinate = new(x, y);
+
+                double dX = i / (double)pointCount * .15;
+                double dY = i / (double)pointCount * .15;
+                CoordinateVector vector = new(dX, dY);
+
+                var rootedVector = (coordinate, vector);
+                field.RootedVectors.Add(rootedVector);
+            }
         }
     }
 }

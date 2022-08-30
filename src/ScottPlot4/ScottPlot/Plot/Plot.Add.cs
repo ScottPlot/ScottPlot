@@ -1289,6 +1289,16 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a 2D vector field to the plot
+        /// </summary>
+        public VectorFieldList AddVectorFieldList()
+        {
+            var vectorFieldList = new VectorFieldList();
+            Add(vectorFieldList);
+            return vectorFieldList;
+        }
+
+        /// <summary>
         /// Add a vertical axis line at a specific Y position
         /// </summary>
         public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
