@@ -16,8 +16,15 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        /// <summary>
+        /// Tuples define location and direction of vectors to display as arrows.
+        /// Users may manipulate this List to add/remove their own vectors.
+        /// </summary>
         public readonly List<(Coordinate coordinate, CoordinateVector vector)> RootedVectors = new();
 
+        /// <summary>
+        /// Advanced configuration options that control how vectors are drawn as arrows
+        /// </summary>
         public readonly Renderable.ArrowStyle ArrowStyle = new();
 
         /// <summary>
