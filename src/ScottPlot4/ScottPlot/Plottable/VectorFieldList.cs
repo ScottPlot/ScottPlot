@@ -49,6 +49,11 @@ namespace ScottPlot.Plottable
 
         }
 
+        public VectorFieldList(List<(Coordinate coordinate, CoordinateVector vector)> rootedVectors)
+        {
+            RootedVectors = rootedVectors;
+        }
+
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(Label) ? "" : $" ({Label})";
