@@ -10,11 +10,32 @@ using ScottPlot.Colormaps;
 
 namespace ScottPlot.Plottables
 {
+    public enum CellAlignment
+    {
+        Start,
+        Center,
+        End
+    }
+
     public class Heatmap : IPlottable
     {
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = Axis.Axes.Default;
         public IColormap Colormap { get; set; } = new Viridis();
+        public CellAlignment CellAlignment { get; set; } = CellAlignment.Center;
+        public CoordinateRect? Extent { get; set; }
+        private CoordinateRect ExtentOrDefault => Extent ?? new CoordinateRect(0, Intensities.GetLength(0), 0, Intensities.GetLength(1));
+        private CoordinateRect AlignedExtent => ExtentOrDefault.WithTranslation(new(CellAlignmentFraction * CellWidth, CellAlignmentFraction * CellHeight));
+        private double CellAlignmentFraction => CellAlignment switch
+        {
+            CellAlignment.Start => 0,
+            CellAlignment.Center => -0.5,
+            CellAlignment.End => -1,
+            _ => throw new NotImplementedException(),
+        };
+        private double CellWidth => ExtentOrDefault.Width / Intensities.GetLength(0);
+        private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(1);
+
 
         private double[,] _intensities;
         public double[,] Intensities
@@ -71,14 +92,14 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            return new(-0.5, (bitmap?.Width ?? 1) - 0.5, -0.5, (bitmap?.Height ?? 1) - 0.5);
+            return new(AlignedExtent);
         }
 
         public void Render(SKSurface surface)
         {
             if (bitmap is not null)
             {
-                SKRect rect = new(Axes.GetPixelX(-0.5), Axes.GetPixelY(bitmap.Height - 0.5), Axes.GetPixelX(bitmap.Width - 0.5), Axes.GetPixelY(-0.5));
+                SKRect rect = new(Axes.GetPixelX(AlignedExtent.XMin), Axes.GetPixelY(AlignedExtent.YMax), Axes.GetPixelX(AlignedExtent.XMax), Axes.GetPixelY(AlignedExtent.YMin));
                 surface.Canvas.DrawBitmap(bitmap, rect);
             }
         }

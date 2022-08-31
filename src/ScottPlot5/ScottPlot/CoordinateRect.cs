@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Describes a rectangle in 2D coordinate space.
@@ -38,6 +40,8 @@ public struct CoordinateRect
     public CoordinateRange XRange => new(XMin, XMax);
 
     public CoordinateRange YRange => new(YMin, YMax);
+
+    public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
 
     public override string ToString()
     {
