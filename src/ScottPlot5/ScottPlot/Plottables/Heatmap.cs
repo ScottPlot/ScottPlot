@@ -76,12 +76,12 @@ namespace ScottPlot.Plottables
             GCHandle handle = GCHandle.Alloc(rgba, GCHandleType.Pinned);
             bitmap.InstallPixels(imageInfo, handle.AddrOfPinnedObject(), imageInfo.RowBytes, (IntPtr _, object _) => handle.Free());
         }
-        
+
         private Range RangeExcludingNaN(IEnumerable<double> input)
         {
             double min = double.PositiveInfinity;
             double max = double.NegativeInfinity;
-            foreach(var curr in input)
+            foreach (var curr in input)
             {
                 if (double.IsNaN(curr))
                     continue;
