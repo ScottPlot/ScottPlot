@@ -25,6 +25,7 @@ namespace ScottPlot.Plottables
         public CellAlignment CellAlignment { get; set; } = CellAlignment.Center;
         public CoordinateRect? Extent { get; set; }
         public bool FlipVertically { get; set; } = false;
+        public bool Smooth { get; set; } = false;
 
         private CoordinateRect ExtentOrDefault => Extent ?? new CoordinateRect(0, Intensities.GetLength(0), 0, Intensities.GetLength(1));
         private CoordinateRect AlignedExtent => ExtentOrDefault.WithTranslation(new(CellAlignmentFraction * CellWidth, CellAlignmentFraction * CellHeight));
@@ -101,6 +102,11 @@ namespace ScottPlot.Plottables
         {
             if (bitmap is not null)
             {
+                using SKPaint paint = new SKPaint()
+                {
+                    FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
+                };
+
                 CoordinateRect bounds = new(Axes.GetPixelX(AlignedExtent.XMin), Axes.GetPixelX(AlignedExtent.XMax), Axes.GetPixelY(AlignedExtent.YMax), Axes.GetPixelY(AlignedExtent.YMin));
 
                 surface.Canvas.Translate((float)bounds.XMin, (float)bounds.YMin);
@@ -110,7 +116,7 @@ namespace ScottPlot.Plottables
                 }
 
                 SKRect rect = FlipVertically ? new(0, (float)-bounds.Height, (float)bounds.Width, 0) : new(0, 0, (float)bounds.Width, (float)bounds.Height);
-                surface.Canvas.DrawBitmap(bitmap, rect);
+                surface.Canvas.DrawBitmap(bitmap, rect, paint);
             }
         }
     }
