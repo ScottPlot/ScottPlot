@@ -39,33 +39,34 @@ namespace ScottPlot.Plottables
             bitmap?.Dispose();
         }
 
-        private void Update()
+        public void Update()
         {
             bitmap?.Dispose();
             SKImageInfo imageInfo = new(Intensities.GetLength(0), Intensities.GetLength(1));
 
             bitmap = new(imageInfo);
             var intensitiesFlat = Intensities.Cast<double>();
-            uint[] rgba = intensitiesFlat.Select(i => Colormap.GetColor(i, new(intensitiesFlat.Min(), intensitiesFlat.Max())).ARGB).ToArray();
+            var range = RangeExcludingNaN(intensitiesFlat);
+            uint[] rgba = intensitiesFlat.Select(i => Colormap.GetColor(i, range).ARGB).ToArray();
 
             GCHandle handle = GCHandle.Alloc(rgba, GCHandleType.Pinned);
             bitmap.InstallPixels(imageInfo, handle.AddrOfPinnedObject(), imageInfo.RowBytes, (IntPtr _, object _) => handle.Free());
         }
-
-        double Normalize(double intensity, Range range)
+        
+        private Range RangeExcludingNaN(IEnumerable<double> input)
         {
-            return (intensity - range.Min) / (range.Max - range.Min);
-        }
+            double min = double.PositiveInfinity;
+            double max = double.NegativeInfinity;
+            foreach(var curr in input)
+            {
+                if (double.IsNaN(curr))
+                    continue;
 
-        private IEnumerable<double> Normalize(IEnumerable<double> input, Range? domain, Range? range) // Codomain might be a less repetitive but more obscure alternative?
-        {
-            domain ??= new(input.Min(), input.Max());
-            range ??= new(domain.Value.Min, domain.Value.Max);
+                min = Math.Min(min, curr);
+                max = Math.Max(max, curr);
+            }
 
-            domain = new(Math.Min(domain.Value.Min, range.Value.Min), Math.Max(domain.Value.Max, range.Value.Max));
-
-            Range normalizedRange = new(Normalize(range.Value.Min, domain.Value), Normalize(range.Value.Max, domain.Value));
-            return input.AsParallel().AsOrdered().Select(i => normalizedRange.Clamp(Normalize(i, domain.Value)));
+            return new(min, max);
         }
 
         public AxisLimits GetAxisLimits()
