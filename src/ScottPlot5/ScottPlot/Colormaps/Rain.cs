@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Rain : ByteColormapBase 
+    public class Rain : ByteColormapBase
     {
         public override string Name => "Rain";
 

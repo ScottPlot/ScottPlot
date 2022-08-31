@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Oxy : ByteColormapBase 
+    public class Oxy : ByteColormapBase
     {
         public override string Name => "Oxy";
 

@@ -15,7 +15,7 @@ namespace ScottPlot
         public Range(double min, double max)
         {
             Min = min;
-            Max = max; 
+            Max = max;
         }
 
         public double Normalize(double value)

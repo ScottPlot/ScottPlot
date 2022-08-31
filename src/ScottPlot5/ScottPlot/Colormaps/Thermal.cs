@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Thermal : ByteColormapBase 
+    public class Thermal : ByteColormapBase
     {
         public override string Name => "Thermal";
 

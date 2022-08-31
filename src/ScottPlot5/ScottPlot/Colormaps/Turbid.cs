@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Turbid : ByteColormapBase 
+    public class Turbid : ByteColormapBase
     {
         public override string Name => "Turbid";
 

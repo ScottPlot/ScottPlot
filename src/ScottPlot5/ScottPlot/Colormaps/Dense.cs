@@ -5,12 +5,12 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Dense : ByteColormapBase 
+    public class Dense : ByteColormapBase
     {
         public override string Name => "Dense";
 
         public override (byte r, byte g, byte b)[] Rgbs => _rgbs;
-        
+
         private static readonly (byte, byte, byte)[] _rgbs = {
             ( 230, 241, 241 ),
             ( 228, 240, 240 ),

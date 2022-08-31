@@ -13,7 +13,7 @@ namespace ScottPlot.Colormaps
         public override string Name => "Algae";
         public override (byte, byte, byte)[] Rgbs => _rgbs;
 
-        private static readonly (byte r, byte g, byte b)[] _rgbs = new(byte, byte, byte)[] {
+        private static readonly (byte r, byte g, byte b)[] _rgbs = new (byte, byte, byte)[] {
             ( 215, 249, 208 ),
             ( 214, 248, 206 ),
             ( 212, 247, 205 ),

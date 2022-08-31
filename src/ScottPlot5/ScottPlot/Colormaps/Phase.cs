@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Phase : ByteColormapBase 
+    public class Phase : ByteColormapBase
     {
         public override string Name => "Phase";
 

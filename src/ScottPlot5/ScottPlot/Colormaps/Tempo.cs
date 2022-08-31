@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Tempo : ByteColormapBase 
+    public class Tempo : ByteColormapBase
     {
         public override string Name => "Tempo";
 

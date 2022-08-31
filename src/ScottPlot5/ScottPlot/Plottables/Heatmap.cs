@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
         }
 
         private SKBitmap? bitmap = null;
-        
+
         public Heatmap(double[,] intensities)
         {
             Intensities = intensities;

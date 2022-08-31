@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Ice : ByteColormapBase 
+    public class Ice : ByteColormapBase
     {
         public override string Name => "Ice";
 

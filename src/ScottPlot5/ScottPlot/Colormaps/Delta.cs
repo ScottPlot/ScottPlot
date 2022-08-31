@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Delta : ByteColormapBase 
+    public class Delta : ByteColormapBase
     {
         public override string Name => "Delta";
 

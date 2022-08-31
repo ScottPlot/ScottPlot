@@ -20,7 +20,7 @@ namespace ScottPlot.Colormaps
             domain ??= Range.UnitRange;
 
             double normalized = domain.Value.NormalizeAndClampToUnitRange(intensity);
-            
+
             var rgb = Rgbs?[(int)(normalized * (Rgbs.Length - 1))] ?? (0, 0, 0);
             return new(rgb.r, rgb.g, rgb.b);
         }

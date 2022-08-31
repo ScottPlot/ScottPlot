@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Matter : ByteColormapBase 
+    public class Matter : ByteColormapBase
     {
         public override string Name => "Matter";
 

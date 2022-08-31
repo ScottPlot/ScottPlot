@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Haline : ByteColormapBase 
+    public class Haline : ByteColormapBase
     {
         public override string Name => "Haline";
 

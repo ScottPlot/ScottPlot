@@ -8,7 +8,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Plasma : ArgbColormapBase 
+    public class Plasma : ArgbColormapBase
     {
         public override string Name => "Plasma";
 
@@ -49,7 +49,7 @@ namespace ScottPlot.Colormaps
             16310052, 16244772, 16245285, 16180261, 16180517, 16115494, 16116006, 16050726,
             15985702, 15986214, 15921190, 15921446, 15856422, 15791397, 15791651, 15726625,
         };
-        
+
         private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | rgb)).ToArray();
     }
 }

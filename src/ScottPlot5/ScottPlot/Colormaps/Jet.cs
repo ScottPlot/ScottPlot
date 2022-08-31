@@ -7,12 +7,12 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Jet : ArgbColormapBase 
+    public class Jet : ArgbColormapBase
     {
         public override string Name => "Jet";
 
         public override uint[] Argbs => _argbs;
-        
+
         private static readonly int[] rgbs =
         {
             00000127, 00000132, 00000136, 00000141, 00000145, 00000150, 00000154, 00000159,

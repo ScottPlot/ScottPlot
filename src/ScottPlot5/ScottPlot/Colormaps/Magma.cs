@@ -8,7 +8,7 @@
 
 namespace ScottPlot.Colormaps
 {
-    public class Magma : ArgbColormapBase 
+    public class Magma : ArgbColormapBase
     {
         public override string Name => "Magma";
 

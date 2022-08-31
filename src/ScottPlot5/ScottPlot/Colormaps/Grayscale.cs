@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Colormaps
 {
-    public class Grayscale: IColormap
+    public class Grayscale : IColormap
     {
         public string Name => "Grayscale";
 
