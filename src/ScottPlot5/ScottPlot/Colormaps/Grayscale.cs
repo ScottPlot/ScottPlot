@@ -1,6 +1,4 @@
-﻿// This colormap was created by Scott Harden on 2020-06-16 and is released under a MIT license.
-
-namespace ScottPlot.Colormaps
+﻿namespace ScottPlot.Colormaps
 {
     public class Grayscale: IColormap
     {
