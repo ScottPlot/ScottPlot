@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ScottPlot.Colormaps;
 
 namespace ScottPlot.Plottables
 {
@@ -13,6 +14,7 @@ namespace ScottPlot.Plottables
     {
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = Axis.Axes.Default;
+        public IColormap Colormap { get; set; } = new Viridis();
 
         private double[,] _intensities;
         public double[,] Intensities
@@ -43,17 +45,8 @@ namespace ScottPlot.Plottables
             SKImageInfo imageInfo = new(Intensities.GetLength(0), Intensities.GetLength(1));
 
             bitmap = new(imageInfo);
-            var intensities = Normalize(Intensities.Cast<double>(), null, null);
-            double[] foo = intensities.ToArray();
-
-
-            uint[] rgba = intensities.Select(i => {
-                byte alpha = 0xff;
-                byte red = (byte)(i * 255);
-                byte green = red;
-                byte blue = red;
-                return (uint)red + (uint)(green << 8) + (uint)(blue << 16) + (uint)(alpha << 24);
-            }).ToArray();
+            var intensitiesFlat = Intensities.Cast<double>();
+            uint[] rgba = intensitiesFlat.Select(i => Colormap.GetColor(i, new(intensitiesFlat.Min(), intensitiesFlat.Max())).ARGB).ToArray();
 
             GCHandle handle = GCHandle.Alloc(rgba, GCHandleType.Pinned);
             bitmap.InstallPixels(imageInfo, handle.AddrOfPinnedObject(), imageInfo.RowBytes, (IntPtr _, object _) => handle.Free());
@@ -77,7 +70,7 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            return new(-0.5, (bitmap?.Width ?? 1) - 0.5, -0.5, (bitmap?.Height ?? 1) -  0.5);
+            return new(-0.5, (bitmap?.Width ?? 1) - 0.5, -0.5, (bitmap?.Height ?? 1) - 0.5);
         }
 
         public void Render(SKSurface surface)
