@@ -24,6 +24,8 @@ namespace ScottPlot.Plottables
         public IColormap Colormap { get; set; } = new Viridis();
         public CellAlignment CellAlignment { get; set; } = CellAlignment.Center;
         public CoordinateRect? Extent { get; set; }
+        public bool FlipVertically { get; set; } = false;
+
         private CoordinateRect ExtentOrDefault => Extent ?? new CoordinateRect(0, Intensities.GetLength(0), 0, Intensities.GetLength(1));
         private CoordinateRect AlignedExtent => ExtentOrDefault.WithTranslation(new(CellAlignmentFraction * CellWidth, CellAlignmentFraction * CellHeight));
         private double CellAlignmentFraction => CellAlignment switch
@@ -99,7 +101,15 @@ namespace ScottPlot.Plottables
         {
             if (bitmap is not null)
             {
-                SKRect rect = new(Axes.GetPixelX(AlignedExtent.XMin), Axes.GetPixelY(AlignedExtent.YMax), Axes.GetPixelX(AlignedExtent.XMax), Axes.GetPixelY(AlignedExtent.YMin));
+                CoordinateRect bounds = new(Axes.GetPixelX(AlignedExtent.XMin), Axes.GetPixelX(AlignedExtent.XMax), Axes.GetPixelY(AlignedExtent.YMax), Axes.GetPixelY(AlignedExtent.YMin));
+
+                surface.Canvas.Translate((float)bounds.XMin, (float)bounds.YMin);
+                if (FlipVertically)
+                {
+                    surface.Canvas.Scale(1, -1);
+                }
+
+                SKRect rect = FlipVertically ? new(0, (float)-bounds.Height, (float)bounds.Width, 0) : new(0, 0, (float)bounds.Width, (float)bounds.Height);
                 surface.Canvas.DrawBitmap(bitmap, rect);
             }
         }
