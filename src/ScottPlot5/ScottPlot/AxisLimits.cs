@@ -32,7 +32,7 @@ public struct AxisLimits
         if (!XHasBeenSet)
         {
             Rect.XMin = newLimits.Rect.XMin;
-            Rect.XMax = newLimits.Rect.YMax;
+            Rect.XMax = newLimits.Rect.XMax;
         }
 
         if (!YHasBeenSet)
