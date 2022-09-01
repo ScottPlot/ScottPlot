@@ -1,21 +1,12 @@
 ﻿namespace ScottPlot.Colormaps
 {
-    public class Grayscale : IColormap
+    public class Grayscale : ColormapBase
     {
-        public string Name => "Grayscale";
+        public override string Name => "Grayscale";
 
-        public Color GetColor(double intensity, Range? domain)
+        public override Color GetColor(double normalizedIntensity)
         {
-            if (double.IsNaN(intensity))
-            {
-                return Colors.Transparent;
-            }
-
-            domain ??= Range.UnitRange;
-
-            double normalized = domain.Value.NormalizeAndClampToUnitRange(intensity);
-
-            byte value = (byte)(255 * normalized);
+            byte value = (byte)(255 * normalizedIntensity);
             return Color.Gray(value);
         }
     }

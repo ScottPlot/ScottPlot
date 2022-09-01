@@ -18,9 +18,11 @@ namespace ScottPlot
             Max = max;
         }
 
-        public double Normalize(double value)
+        public double Normalize(double value, bool clamp = false)
         {
-            return (value - Min) / (Max - Min);
+            double normalized = (value - Min) / (Max - Min);
+
+            return clamp ? UnitRange.Clamp(normalized) : normalized;
         }
 
         public double Clamp(double value)
@@ -35,11 +37,6 @@ namespace ScottPlot
             }
 
             return value;
-        }
-
-        public double NormalizeAndClampToUnitRange(double value)
-        {
-            return UnitRange.Clamp(Normalize(value));
         }
     }
 }

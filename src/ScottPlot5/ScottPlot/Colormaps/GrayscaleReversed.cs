@@ -1,21 +1,12 @@
 ﻿namespace ScottPlot.Colormaps
 {
-    public class GrayscaleReversed : IColormap
+    public class GrayscaleReversed : ColormapBase 
     {
-        public string Name => "Grayscale Reversed";
+        public override string Name => "Grayscale Reversed";
 
-        public Color GetColor(double intensity, Range? domain)
+        public override Color GetColor(double normalizedIntensity)
         {
-            if (double.IsNaN(intensity))
-            {
-                return Colors.Transparent;
-            }
-
-            domain ??= Range.UnitRange;
-
-            double normalized = domain.Value.NormalizeAndClampToUnitRange(intensity);
-
-            byte value = (byte)(255 - (byte)(255 * normalized));
+            byte value = (byte)(255 - (byte)(255 * normalizedIntensity));
             return Color.Gray(value);
         }
     }

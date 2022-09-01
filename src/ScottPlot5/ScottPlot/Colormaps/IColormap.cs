@@ -9,6 +9,6 @@ namespace ScottPlot.Colormaps
     public interface IColormap
     {
         string Name { get; }
-        Color GetColor(double intensity, Range? domain);
+        Color GetColor(double intensity, Range? intensityRange);
     }
 }

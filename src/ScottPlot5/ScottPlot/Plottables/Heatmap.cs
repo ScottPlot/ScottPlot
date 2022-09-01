@@ -40,16 +40,7 @@ namespace ScottPlot.Plottables
         private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(1);
 
 
-        private double[,] _intensities;
-        public double[,] Intensities
-        {
-            get => _intensities;
-            set
-            {
-                _intensities = value;
-                Update();
-            }
-        }
+        public double[,] Intensities { get; set; }
 
         private SKBitmap? bitmap = null;
 
