@@ -4,7 +4,7 @@
     {
         public override string Name => "Grayscale Reversed";
 
-        public override Color GetColor(double normalizedIntensity)
+        protected override Color GetColor(double normalizedIntensity)
         {
             byte value = (byte)(255 - (byte)(255 * normalizedIntensity));
             return Color.Gray(value);

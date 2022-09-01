@@ -24,6 +24,6 @@ namespace ScottPlot.Colormaps
             return GetColor(normalized);
         }
 
-        public abstract Color GetColor(double normalizedIntensity);
+        protected abstract Color GetColor(double normalizedIntensity);
     }
 }
