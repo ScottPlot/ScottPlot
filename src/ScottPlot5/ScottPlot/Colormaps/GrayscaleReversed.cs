@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Colormaps
 {
-    public class GrayscaleReversed : ColormapBase 
+    public class GrayscaleReversed : ColormapBase
     {
         public override string Name => "Grayscale Reversed";
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Colormaps
 {
-    public abstract class ByteColormapBase : ColormapBase 
+    public abstract class ByteColormapBase : ColormapBase
     {
         public abstract (byte r, byte g, byte b)[] Rgbs { get; }
         protected override Color GetColor(double normalizedIntensity)
