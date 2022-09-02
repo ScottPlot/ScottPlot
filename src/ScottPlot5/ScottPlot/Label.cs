@@ -2,7 +2,7 @@
 
 namespace ScottPlot;
 
-public struct Label
+public class Label
 {
     public string Text { get; set; } = string.Empty;
     public float FontSize { get; set; } = 12;

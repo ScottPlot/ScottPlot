@@ -18,6 +18,16 @@ public struct CoordinateRect
     public double Height => YMax - YMin;
     public double Area => Width * Height;
     public bool HasArea => (Area != 0 && !double.IsNaN(Area) && !double.IsInfinity(Area));
+    public CoordinateRange XRange => new(XMin, XMax);
+    public CoordinateRange YRange => new(YMin, YMax);
+
+    public CoordinateRect(CoordinateRange xRange, CoordinateRange yRange)
+    {
+        XMin = xRange.Min;
+        XMax = xRange.Max;
+        YMin = yRange.Min;
+        YMax = yRange.Max;
+    }
 
     public CoordinateRect(Coordinates pt1, Coordinates pt2)
     {
@@ -36,10 +46,6 @@ public struct CoordinateRect
     }
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
-
-    public CoordinateRange XRange => new(XMin, XMax);
-
-    public CoordinateRange YRange => new(YMin, YMax);
 
     public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
 

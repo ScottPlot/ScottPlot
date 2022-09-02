@@ -12,7 +12,8 @@ public class ZoomRectangle : IPlottable
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
     public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
     public float LineWidth = 2;
-    public CoordinateRect Rect;
+    public Pixel MouseDown { get; private set; }
+    public Pixel MouseUp { get; private set; }
     public bool HorizontalSpan = false;
     public bool VerticalSpan = false;
 
@@ -22,9 +23,10 @@ public class ZoomRectangle : IPlottable
         Axes.YAxis = yAxis;
     }
 
-    public void SetSize(Coordinates c1, Coordinates c2)
+    public void Update(Pixel mouseDown, Pixel mouseUp)
     {
-        Rect = new(c1, c2);
+        MouseDown = mouseDown;
+        MouseUp = mouseUp;
         IsVisible = true;
     }
 
@@ -35,7 +37,11 @@ public class ZoomRectangle : IPlottable
 
     public void Render(SKSurface surface)
     {
-        SKRect rect = Axes.GetPixelRect(Rect).ToSKRect();
+        Coordinates coordDown = Axes.GetCoordinates(MouseDown);
+        Coordinates coordUp = Axes.GetCoordinates(MouseUp);
+        CoordinateRect coordRect = new(coordDown, coordUp);
+        PixelRect pxRect = Axes.GetPixelRect(coordRect);
+        SKRect rect = pxRect.ToSKRect();
 
         if (HorizontalSpan)
         {

@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Axis;
+
+namespace ScottPlot.Control;
 
 public static class StandardActions
 {
@@ -82,13 +84,34 @@ public static class StandardActions
 
     public static void ZoomRectangleClear(IPlotControl control)
     {
-        control.Plot.MouseZoomRectangleClear(applyZoom: false);
+        control.Plot.ZoomRectangle.IsVisible = false;
         control.Refresh();
     }
 
     public static void ZoomRectangleApply(IPlotControl control)
     {
-        control.Plot.MouseZoomRectangleClear(applyZoom: true);
+        Pixel px1 = control.Plot.ZoomRectangle.MouseDown;
+        Pixel px2 = control.Plot.ZoomRectangle.MouseUp;
+        PixelRect dataRect = control.Plot.LastRenderInfo.DataRect;
+
+        foreach (IXAxis xAxis in control.Plot.XAxes)
+        {
+            double x1 = xAxis.GetCoordinate(px1.X, dataRect);
+            double x2 = xAxis.GetCoordinate(px2.X, dataRect);
+            double xMin = Math.Min(x1, x2);
+            double xMax = Math.Max(x1, x2);
+            xAxis.Range.Set(xMin, xMax);
+        }
+
+        foreach (IYAxis yAxis in control.Plot.YAxes)
+        {
+            double y1 = yAxis.GetCoordinate(px1.Y, dataRect);
+            double y2 = yAxis.GetCoordinate(px2.Y, dataRect);
+            double xMin = Math.Min(y1, y2);
+            double xMax = Math.Max(y1, y2);
+            yAxis.Range.Set(xMin, xMax);
+        }
+
         control.Refresh();
     }
 

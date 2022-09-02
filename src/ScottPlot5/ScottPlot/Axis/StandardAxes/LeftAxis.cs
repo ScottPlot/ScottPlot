@@ -6,6 +6,9 @@ public class LeftAxis : YAxisBase, IYAxis
 {
     public Edge Edge => Edge.Left;
     public ITickGenerator TickGenerator { get; set; } = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
+    public float Offset { get; set; } = 0;
+    public float PixelSize { get; private set; } = 50;
+    public float PixelWidth => PixelSize;
 
     public Label Label { get; private set; } = new()
     {
@@ -15,7 +18,7 @@ public class LeftAxis : YAxisBase, IYAxis
         Rotation = -90
     };
 
-    public float Measure()
+    public void Measure()
     {
         float labelWidth = Label.FontSize;
         float largestTickWidth = 0;
@@ -28,20 +31,23 @@ public class LeftAxis : YAxisBase, IYAxis
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
-        return labelWidth + largestTickWidth;
+        PixelSize = labelWidth + largestTickWidth;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
-        PixelRect rect = new(0, dataRect.Left, dataRect.Bottom, dataRect.Top);
-        DrawLabel(surface, rect);
-        DrawTicks(surface, rect);
+        DrawLabel(surface, dataRect);
+        DrawTicks(surface, dataRect);
+        DrawFrame(surface, dataRect);
     }
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
         using var paint = Label.MakePaint();
-        Label.Draw(surface, dataRect.LeftCenter, paint);
+        float xFarLeft = dataRect.Left - Offset - PixelSize;
+        float yCenter = dataRect.VerticalCenter;
+        Pixel px = new(xFarLeft, yCenter);
+        Label.Draw(surface, px, paint);
     }
 
     private void DrawTicks(SKSurface surface, PixelRect dataRect)
@@ -50,16 +56,33 @@ public class LeftAxis : YAxisBase, IYAxis
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Right,
+            Color = Label.Color.ToSKColor(),
         };
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
+            float x = dataRect.Left - Offset;
             float y = GetPixel(tick.Position, dataRect);
 
-            surface.Canvas.DrawLine(dataRect.Right, y, dataRect.Right - 5, y, paint);
+            float majorTickLength = 5;
+            surface.Canvas.DrawLine(x, y, x - majorTickLength, y, paint);
 
+            float majorTickLabelPadding = 7;
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, dataRect.Right - 7, y + paint.TextSize * .4f, paint);
+                surface.Canvas.DrawText(tick.Label, x - majorTickLabelPadding, y + paint.TextSize * .4f, paint);
         }
+    }
+
+    private void DrawFrame(SKSurface surface, PixelRect dataRect)
+    {
+        float x = dataRect.Left - Offset;
+
+        using SKPaint paint = new()
+        {
+            IsAntialias = true,
+            Color = Label.Color.ToSKColor(),
+        };
+
+        surface.Canvas.DrawLine(x, dataRect.Top, x, dataRect.Bottom, paint);
     }
 }

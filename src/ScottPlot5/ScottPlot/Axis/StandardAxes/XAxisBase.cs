@@ -2,11 +2,21 @@
 
 public abstract class XAxisBase
 {
-    public double Left { get; set; } = 0;
-    public double Right { get; set; } = 0;
-    public double Width => Right - Left;
-    public bool HasBeenSet { get; set; } = false;
-    public CoordinateRange Range => new(Left, Right);
+    public double Left
+    {
+        get => Range.Min;
+        set => Range.Min = value;
+    }
+
+    public double Right
+    {
+        get => Range.Max;
+        set => Range.Max = value;
+    }
+
+    public double Width => Range.Span;
+
+    public CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
     public float GetPixel(double position, PixelRect dataArea)
     {

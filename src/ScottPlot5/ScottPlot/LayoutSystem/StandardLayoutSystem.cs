@@ -1,52 +1,82 @@
-﻿namespace ScottPlot.LayoutSystem;
+﻿using ScottPlot.Axis;
+using System.Security.Cryptography;
+
+namespace ScottPlot.LayoutSystem;
 
 public class StandardLayoutSystem : ILayoutSystem
 {
-    public PixelRect GetDataAreaRect(PixelRect figureRect, IEnumerable<Axis.IXAxis> xAxes, IEnumerable<Axis.IYAxis> yAxes)
+    public PixelRect AutoSizeDataArea(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
     {
-        PixelPadding padding = new();
+        RegenerateTicksForAllAxes(figureRect, xAxes, yAxes);
+        RemeasureAllAxes(figureRect, xAxes, yAxes);
+        PixelRect dataArea = GetTotalAxisPadding(figureRect, xAxes, yAxes);
+        return dataArea;
+    }
 
-        foreach (Axis.IXAxis xAxis in xAxes)
+    private void RegenerateTicksForAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    {
+        foreach (IXAxis xAxis in xAxes)
         {
             xAxis.TickGenerator.Regenerate(xAxis.Range, figureRect.Width);
-            float yPx = xAxis.Measure();
-
-            if (xAxis.Edge == Edge.Bottom)
-            {
-                padding.Bottom += yPx;
-            }
-            else if (xAxis.Edge == Edge.Top)
-            {
-                padding.Top += yPx;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unsupported edge: {xAxis.Edge}");
-            }
         }
-
-        foreach (Axis.IYAxis yAxis in yAxes)
+        foreach (IYAxis yAxis in yAxes)
         {
-            yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height);
-            float xPx = yAxis.Measure();
+            yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Width);
+        }
+    }
 
-            if (yAxis.Edge == Edge.Left)
-            {
-                padding.Left += xPx;
-            }
-            else if (yAxis.Edge == Edge.Right)
-            {
-                padding.Right += xPx;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unsupported edge: {yAxis.Edge}");
-            }
+    private void RemeasureAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    {
+        foreach (IXAxis xAxis in xAxes)
+        {
+            xAxis.Measure();
+        }
+        foreach (IYAxis yAxis in yAxes)
+        {
+            yAxis.Measure();
+        }
+    }
+
+    private PixelRect GetTotalAxisPadding(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    {
+        PixelPadding axisSizeByEdge = new();
+
+        float bottomOffset = 0;
+        foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Bottom))
+        {
+            axisSizeByEdge.Bottom += xAxis.PixelHeight;
+            xAxis.Offset = bottomOffset;
+            bottomOffset += xAxis.PixelHeight;
         }
 
-        padding.Right += 20;
-        padding.Top += 20;
+        float topOffset = 0;
+        foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Top))
+        {
+            axisSizeByEdge.Top += xAxis.PixelHeight;
+            xAxis.Offset = topOffset;
+            topOffset += xAxis.PixelHeight;
+        }
 
-        return figureRect.Contract(padding);
+        float leftOffset = 0;
+        foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Left))
+        {
+            axisSizeByEdge.Left += yAxis.PixelWidth;
+            yAxis.Offset = leftOffset;
+            leftOffset += yAxis.PixelWidth;
+        }
+
+        float rightOffset = 0;
+        foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Right))
+        {
+            axisSizeByEdge.Right += yAxis.PixelWidth;
+            yAxis.Offset = rightOffset;
+            rightOffset += yAxis.PixelWidth;
+        }
+
+        // TODO: manual reduction remove this
+        axisSizeByEdge.Right += 20;
+        axisSizeByEdge.Top += 20;
+
+        return figureRect.Contract(axisSizeByEdge);
     }
 }

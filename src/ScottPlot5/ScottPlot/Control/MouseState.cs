@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Axis;
+
+namespace ScottPlot.Control;
 
 public class MouseState
 {
@@ -22,7 +24,7 @@ public class MouseState
 
     public Pixel MouseDownPosition { get; private set; }
 
-    public AxisLimits MouseDownAxisLimits { get; private set; }
+    public readonly MultiAxisLimits MouseDownAxisLimits = new();
 
     public void Up(MouseButton button)
     {
@@ -30,22 +32,23 @@ public class MouseState
         Pressed.Remove(button);
     }
 
-    public void Down(Pixel position, MouseButton button, AxisLimits limits)
+    public void Down(Pixel position, MouseButton button, MultiAxisLimits limits)
     {
         RememberMouseDown(position, limits);
         Down(button);
     }
 
-    private void RememberMouseDown(Pixel position, AxisLimits limits)
+    private void RememberMouseDown(Pixel position, MultiAxisLimits limits)
     {
         MouseDownPosition = position;
-        MouseDownAxisLimits = limits;
+        MouseDownAxisLimits.ForgetAllLimits();
+        MouseDownAxisLimits.RememberLimits(limits);
     }
 
     private void ForgetMouseDown()
     {
         MouseDownPosition = Pixel.NaN;
-        MouseDownAxisLimits = AxisLimits.NoLimits;
+        MouseDownAxisLimits.ForgetAllLimits();
     }
 
     public bool IsDragging(Pixel position)

@@ -110,7 +110,7 @@ public class Signal : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Colors.Red.ToSKColor(),
+            Color = Color.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 

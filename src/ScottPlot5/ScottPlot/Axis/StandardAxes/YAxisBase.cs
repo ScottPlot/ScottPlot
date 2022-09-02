@@ -2,11 +2,21 @@
 
 public abstract class YAxisBase
 {
-    public double Bottom { get; set; } = 0;
-    public double Top { get; set; } = 0;
-    public double Height => Top - Bottom;
-    public bool HasBeenSet { get; set; } = false;
-    public CoordinateRange Range => new(Bottom, Top);
+    public double Bottom
+    {
+        get => Range.Min;
+        set => Range.Min = value;
+    }
+
+    public double Top
+    {
+        get => Range.Max;
+        set => Range.Max = value;
+    }
+
+    public double Height => Range.Span;
+
+    public CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
     public float GetPixel(double position, PixelRect dataArea)
     {
