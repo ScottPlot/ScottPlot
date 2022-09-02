@@ -30,6 +30,11 @@ namespace ScottPlot
                 throw new ArgumentException($"Argument ${nameof(max)} must be finite and non-NaN");
             }
 
+            if (double.IsNaN(min) || double.IsNaN(max))
+            {
+                throw new ArgumentException("ranges may not contain NaN");
+            }
+
             if (min > max)
             {
                 throw new ArgumentException($"Argument ${nameof(min)} must be less than or equal to ${nameof(max)}.");
@@ -47,9 +52,9 @@ namespace ScottPlot
         /// <returns>The normalized value</returns>
         public double Normalize(double value, bool clamp = false)
         {
-            if (Max == Min) // When Min == Max we would divide by zero without this check.
+            if (Max == Min)
             {
-                return Min;
+                throw new ArgumentException("Cannot normalize the value to a range of zero");
             }
 
             double normalized = (value - Min) / (Max - Min);
