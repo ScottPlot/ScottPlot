@@ -10,6 +10,10 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
+        double[,] data2d = ScottPlot.Generate.Sin2D(37, 77);
+        //double[,] data2d = { { 1, 2, 3 }, { 4, 5, 6 } };
+        formsPlot1.Plot.Plottables.AddHeatmap(data2d);
+        formsPlot1.Refresh();
     }
 
     private void button2_Click(object sender, EventArgs e) => Add(10_000);
