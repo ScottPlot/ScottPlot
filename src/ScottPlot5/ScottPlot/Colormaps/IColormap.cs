@@ -10,11 +10,11 @@ namespace ScottPlot.Colormaps
     {
         string Name { get; }
         /// <summary>
-        /// Returns a color for the given intensity and intensityRange. Returns Colors.Transparent for an intensity of NaN.
+        /// Returns a color for the given <paramref name="intensity"/> and <paramref name="intensityRange"/>. 
+        /// Returns <see cref="Colors.Transparent"/> for an intensity of <see cref="double.NaN"/>.
         /// </summary>
-        /// <param name="intensity">The intensity</param>
-        /// <param name="intensityRange">The range of the scale from which the intensity is drawn, or Range.UnitRange if null.</param>
-        /// <returns>Color</returns>
+        /// <param name="intensity">Intensity fraction from 0 to 1 (unless <paramref name="intensityRange"/> is specified)</param>
+        /// <param name="intensityRange">If defined, <paramref name="intensity"/> is evaluated as a fraction along this range.</param>
         Color GetColor(double intensity, Range? intensityRange);
     }
 }
