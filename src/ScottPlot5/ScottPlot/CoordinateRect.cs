@@ -47,10 +47,6 @@ public struct CoordinateRect
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
-    public CoordinateRange XRange => new(XMin, XMax);
-
-    public CoordinateRange YRange => new(YMin, YMax);
-
     public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
 
     public override string ToString()
