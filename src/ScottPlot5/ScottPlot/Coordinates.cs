@@ -24,4 +24,6 @@ public struct Coordinates
     public static Coordinates NaN => new(double.NaN, double.NaN);
 
     public static Coordinates Origin => new(0, 0);
+
+    // TODO: create CoordinateVector and related operational overloads
 }

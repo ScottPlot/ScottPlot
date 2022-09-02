@@ -283,6 +283,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void ManualTickPositions(double[] positions, string[] labels)
         {
+            if (positions.Length != labels.Length)
+                throw new ArgumentException($"{nameof(positions)} must have the same length as {nameof(labels)}");
+
             AxisTicks.TickCollection.manualTickPositions = positions;
             AxisTicks.TickCollection.manualTickLabels = labels;
         }

@@ -116,6 +116,11 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        /// <summary>
+        /// If enabled, the plot will fill using a curve instead of polygon.
+        /// </summary>
+        public bool Smooth = false;
+
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
             LineColors = lineColors;
@@ -278,8 +283,17 @@ namespace ScottPlot.Plottable
 
                     using var brush = GDI.Brush(FillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
                     pen.Color = LineColors[i];
-                    gfx.FillPolygon(brush, points);
-                    gfx.DrawPolygon(pen, points);
+
+                    if (Smooth)
+                    {
+                        gfx.FillClosedCurve(brush, points);
+                        gfx.DrawClosedCurve(pen, points);
+                    }
+                    else
+                    {
+                        gfx.FillPolygon(brush, points);
+                        gfx.DrawPolygon(pen, points);
+                    }
                 }
             }
         }

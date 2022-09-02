@@ -70,4 +70,44 @@ public static class Generate
         }
         return data;
     }
+
+    public static double[,] Sin2D(int width, int height, double xPeriod = .2, double yPeriod = .2, double multiple = 100)
+    {
+        double[,] intensities = new double[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            double sinx = Math.Sin(x * xPeriod) * multiple;
+            for (int y = 0; y < height; y++)
+            {
+                double siny = Math.Cos(y * yPeriod) * multiple;
+                intensities[x, y] = sinx + siny;
+            }
+        }
+
+        return intensities;
+    }
+
+    public static double[,] Ramp2D(int width, int height, double min = 0, double max = 1)
+    {
+        double[,] intensities = new double[height, width];
+
+        double span = max - min;
+
+        for (int y = 0; y < height; y++)
+        {
+            double fracY = (double)y / height;
+            double valY = fracY * span + min;
+
+            for (int x = 0; x < width; x++)
+            {
+                double fracX = (double)x / width;
+                double valX = fracX * span + min;
+
+                intensities[y, x] = (valX + valY) / 2;
+            }
+        }
+
+        return intensities;
+    }
 }
