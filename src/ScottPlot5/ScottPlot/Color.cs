@@ -22,6 +22,8 @@ public struct Color
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
     public readonly Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
 
+    public static Color Gray(byte value) => new(value, value, value);
+
     public static Color FromARGB(uint argb)
     {
         byte alpha = (byte)(argb >> 24);
