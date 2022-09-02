@@ -73,5 +73,36 @@ namespace ScottPlot
 
             return value;
         }
+
+        public static Range GetRange(double[,] input)
+        {
+            double min = double.PositiveInfinity;
+            double max = double.NegativeInfinity;
+            for (int y = 0; y < input.GetLength(0); y++)
+            {
+                for (int x = 0; x < input.GetLength(1); x++)
+                {
+                    min = Math.Min(min, input[y, x]);
+                    max = Math.Max(max, input[y, x]);
+                }
+            }
+            return new Range(min, max);
+        }
+
+        public static Range GetRange(IEnumerable<double> input)
+        {
+            double min = double.PositiveInfinity;
+            double max = double.NegativeInfinity;
+            foreach (var curr in input)
+            {
+                if (double.IsNaN(curr))
+                    continue;
+
+                min = Math.Min(min, curr);
+                max = Math.Max(max, curr);
+            }
+
+            return new(min, max);
+        }
     }
 }
