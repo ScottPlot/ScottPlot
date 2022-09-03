@@ -150,7 +150,8 @@ namespace ScottPlot.Plottable
             if (!IsVisible)
                 return;
 
-            RenderLine(dims, bmp, lowQuality);
+            if (LineWidth > 0)
+                RenderLine(dims, bmp, lowQuality);
 
             if (PositionLabel)
                 RenderPositionLabel(dims, bmp, lowQuality);
