@@ -18,10 +18,10 @@ AvaPlot avaPlot1 = this.Find<AvaPlot>("AvaPlot1");
 avaPlot1.Plot.AddScatter(dataX, dataY);
 ```
 
-Additional quickstart information can be found at https://swharden.com/scottplot/quickstart
+Additional quickstart information can be found at https://scottplot.net/quickstart/avalonia/
 
 ## ScottPlot Cookbook
 
-The [**ScottPlot Cookbook**](https://swharden.com/scottplot/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/4.1/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
-[![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://swharden.com/scottplot/cookbook)
+[![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://scottplot.net/cookbook/4.1/)
