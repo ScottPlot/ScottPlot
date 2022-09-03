@@ -10,20 +10,18 @@ namespace ScottPlot.Colormaps
     {
         public abstract string Name { get; }
 
-        public Color GetColor(double intensity, Range? intensityRange)
+        public abstract Color GetColor(double position);
+
+        public Color GetColor(double position, Range range)
         {
-            if (double.IsNaN(intensity))
+            if (double.IsNaN(position))
             {
                 return Colors.Transparent;
             }
 
-            intensityRange ??= Range.UnitRange;
-
-            double normalized = intensityRange.Value.Normalize(intensity, true);
+            double normalized = range.Normalize(position, true);
 
             return GetColor(normalized);
         }
-
-        protected abstract Color GetColor(double normalizedIntensity);
     }
 }
