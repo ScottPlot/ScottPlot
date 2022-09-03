@@ -46,6 +46,23 @@ The [**ScottPlot Cookbook**](https://swharden.com/scottplot/cookbook) demonstrat
 
 [![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://swharden.com/scottplot/cookbook)
 
+## Supported Platforms
+
+### .NET Versions
+* .NET Standard 2.0
+* .NET Framework 4.6.2 and newer
+* .NET (Core) 6 and newer ([compatibility notes](https://scottplot.net/faq/dependencies/))
+
+### Operating Systems
+
+ScottPlot 4 is supported anywhere `System.Drawing.Common` is.
+
+* Windows
+* Linux ([extra setup may be required](https://scottplot.net/faq/dependencies/))
+* MacOS ([extra setup may be required](https://scottplot.net/faq/dependencies/))
+
+ScottPlot 5 ([in development](https://github.com/scottplot/scottplot)) uses SkiaSharp for improved cross-platform support for .NET 7 and later.
+
 # Interactive ScottPlot Controls
 
 ScottPlot WinForms control: https://www.nuget.org/packages/ScottPlot.WinForms
