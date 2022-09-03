@@ -31,7 +31,7 @@ namespace ScottPlot.Plottables
 
         /// <summary>
         /// If defined, the this rectangle sets the boundaries of colormap data.
-        /// Note that the actual colormap area is 1 cell larger than this rectangle.
+        /// Note that the actual heatmap area is 1 cell larger than this rectangle.
         /// </summary>
         public CoordinateRect? Extent { get; set; }
 
@@ -104,7 +104,7 @@ namespace ScottPlot.Plottables
         /// After editing contents users must call <see cref="Update"/> before changes
         /// appear on the heatmap.
         /// </summary>
-        public readonly double[,] Intensities;
+        public readonly double[,] Intensities; // TODO: consider data class
 
         /// <summary>
         /// Height of the heatmap data (rows)
