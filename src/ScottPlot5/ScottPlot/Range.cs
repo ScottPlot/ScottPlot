@@ -20,20 +20,11 @@ namespace ScottPlot
 
         public Range(double min, double max)
         {
-            if (double.IsInfinity(min) || double.IsNaN(min))
-            {
-                throw new ArgumentException($"Argument ${nameof(min)} must be finite and non-NaN");
-            }
+            if (min.IsInfiniteOrNaN())
+                throw new ArgumentException($"{nameof(min)} must be a real number");
 
-            if (double.IsInfinity(max) || double.IsNaN(max))
-            {
-                throw new ArgumentException($"Argument ${nameof(max)} must be finite and non-NaN");
-            }
-
-            if (double.IsNaN(min) || double.IsNaN(max))
-            {
-                throw new ArgumentException("ranges may not contain NaN");
-            }
+            if (max.IsInfiniteOrNaN())
+                throw new ArgumentException($"{nameof(max)} must be a real number");
 
             if (min > max)
             {
