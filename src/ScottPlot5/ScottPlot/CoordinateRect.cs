@@ -45,6 +45,15 @@ public struct CoordinateRect
         YMax = yMax;
     }
 
+    public CoordinateRect(Coordinates point, CoordinateSize size)
+    {
+        Coordinates pt2 = new(point.X + size.Width, point.Y + size.Height);
+        XMin = Math.Min(point.X, pt2.X);
+        XMax = Math.Max(point.X, pt2.X);
+        YMin = Math.Min(point.Y, pt2.Y);
+        YMax = Math.Max(point.Y, pt2.Y);
+    }
+
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
     public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
