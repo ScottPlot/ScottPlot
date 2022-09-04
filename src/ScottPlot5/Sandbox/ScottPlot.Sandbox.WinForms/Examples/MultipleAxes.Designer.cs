@@ -1,6 +1,6 @@
 ﻿namespace WinForms.Examples
 {
-    partial class MultipleYAxes
+    partial class MultipleAxes
     {
         /// <summary>
         /// Required designer variable.
@@ -40,37 +40,37 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.Location = new System.Drawing.Point(12, 41);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(776, 397);
+            this.formsPlot1.Size = new System.Drawing.Size(1003, 632);
             this.formsPlot1.TabIndex = 0;
             // 
-            // button1
+            // btnAddAxis
             // 
             this.btnAddAxis.Location = new System.Drawing.Point(12, 12);
-            this.btnAddAxis.Name = "button1";
+            this.btnAddAxis.Name = "btnAddAxis";
             this.btnAddAxis.Size = new System.Drawing.Size(75, 23);
             this.btnAddAxis.TabIndex = 1;
             this.btnAddAxis.Text = "Add";
             this.btnAddAxis.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnRemoveAxis
             // 
             this.btnRemoveAxis.Location = new System.Drawing.Point(93, 12);
-            this.btnRemoveAxis.Name = "button2";
+            this.btnRemoveAxis.Name = "btnRemoveAxis";
             this.btnRemoveAxis.Size = new System.Drawing.Size(75, 23);
             this.btnRemoveAxis.TabIndex = 2;
             this.btnRemoveAxis.Text = "Remove";
             this.btnRemoveAxis.UseVisualStyleBackColor = true;
             // 
-            // MultipleYAxes
+            // MultipleAxes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1027, 685);
             this.Controls.Add(this.btnRemoveAxis);
             this.Controls.Add(this.btnAddAxis);
             this.Controls.Add(this.formsPlot1);
-            this.Name = "MultipleYAxes";
-            this.Text = "MultiAxis";
+            this.Name = "MultipleAxes";
+            this.Text = "ScottPlot 5: Multiple Axes";
             this.ResumeLayout(false);
 
         }
