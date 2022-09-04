@@ -45,7 +45,7 @@ namespace ScottPlot
         {
             if (Max == Min)
             {
-                throw new ArgumentException("Cannot normalize the value to a range of zero");
+                throw new ArgumentException($"Cannot normalize to the range if {nameof(Min)} == {nameof(Max)}");
             }
 
             double normalized = (value - Min) / (Max - Min);
