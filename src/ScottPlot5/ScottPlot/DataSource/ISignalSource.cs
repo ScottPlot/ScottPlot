@@ -9,7 +9,7 @@ public interface ISignalSource : IHasAxisLimits
     /// <summary>
     /// X distance between Y points
     /// </summary>
-    double Period { get; }
+    double Period { get; set; }
 
     /// <summary>
     /// X position of the first data point
