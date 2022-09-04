@@ -69,20 +69,6 @@ public static class Common
         }
     }
 
-    public static void RenderFrameOnEdgesWithoutAxes(SKSurface surface, PixelRect dataRect, Plot plot)
-    {
-        // TODO: only render frame around edges lacking axes
-
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            StrokeWidth = 1,
-            Style = SKPaintStyle.Stroke,
-        };
-        paint.Color = SKColors.Black;
-        surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
-    }
-
     public static void RenderAxes(SKSurface surface, PixelRect dataRect, Plot plot)
     {
         // TODO: axes should render their own frame edges

@@ -25,24 +25,25 @@ public class BottomAxis : XAxisBase, IXAxis
     public void Measure()
     {
         float labelHeight = Label.FontSize;
-
         float largestTickHeight = Label.FontSize;
-
         PixelSize = labelHeight + largestTickHeight + 18;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
-        SKRect figureRect = surface.Canvas.LocalClipBounds;
-        PixelRect rect = new(dataRect.Left, dataRect.Right, dataRect.Bottom, figureRect.Bottom);
-        DrawLabel(surface, rect);
-        DrawTicks(surface, rect);
+        DrawLabel(surface, dataRect);
+        DrawTicks(surface, dataRect);
+        DrawFrame(surface, dataRect);
     }
 
     private void DrawLabel(SKSurface surface, PixelRect dataRect)
     {
         using SKPaint paint = Label.MakePaint();
-        Pixel pt = new(dataRect.HorizontalCenter, dataRect.Bottom + paint.FontSpacing);
+
+        Pixel pt = new(
+            x: dataRect.HorizontalCenter,
+            y: dataRect.Bottom + paint.FontSpacing + Offset);
+
         Label.Draw(surface, pt, paint);
     }
 
@@ -52,16 +53,35 @@ public class BottomAxis : XAxisBase, IXAxis
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,
+            Color = Label.Color.ToSKColor(),
         };
+
+        float yEdge = dataRect.Bottom + Offset;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
             float x = GetPixel(tick.Position, dataRect);
 
-            surface.Canvas.DrawLine(x, dataRect.Bottom, x, dataRect.Bottom + 3, paint);
+            surface.Canvas.DrawLine(x, yEdge, x, yEdge + 3, paint);
 
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, x, dataRect.Bottom + 3 + paint.FontSpacing, paint);
+                surface.Canvas.DrawText(tick.Label, x, yEdge + 3 + paint.FontSpacing, paint);
         }
+    }
+
+    private void DrawFrame(SKSurface surface, PixelRect dataRect)
+    {
+        using SKPaint linePaint = new()
+        {
+            IsAntialias = true,
+            Color = Label.Color.ToSKColor(),
+        };
+
+        surface.Canvas.DrawLine(
+            x0: dataRect.Left,
+            y0: dataRect.Bottom + Offset,
+            x1: dataRect.Right,
+            y1: dataRect.Bottom + Offset,
+            paint: linePaint);
     }
 }
