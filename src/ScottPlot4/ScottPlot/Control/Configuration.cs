@@ -198,5 +198,10 @@ namespace ScottPlot.Control
         /// If true, controls that support the plot object editor will display an option to launch it in the right-click menu
         /// </summary>
         public bool EnablePlotObjectEditor { get; set; } = false;
+
+        /// <summary>
+        /// Default cursor to use (when not hovering or dragging an interactive plottable)
+        /// </summary>
+        public Cursor DefaultCursor { get; set; } = Cursor.Arrow;
     }
 }

@@ -193,7 +193,7 @@ namespace ScottPlot.Control
         /// <summary>
         /// The style of cursor the control should display
         /// </summary>
-        public Cursor Cursor { get; private set; } = Cursor.Arrow;
+        public Cursor Cursor { get; private set; }
 
         /// <summary>
         /// The events processor invokes renders in response to custom events
@@ -247,6 +247,7 @@ namespace ScottPlot.Control
         /// <param name="name">variable name of the user control using this backend</param>
         public ControlBackEnd(float width, float height, string name = "UnamedControl")
         {
+            Cursor = Configuration.DefaultCursor;
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             EventsProcessor = new EventsProcessor(
                     renderAction: (lowQuality) => Render(lowQuality),
@@ -619,7 +620,7 @@ namespace ScottPlot.Control
         /// </summary>
         private void UpdateCursor(InputState input)
         {
-            var newCursor = Cursor.Arrow;
+            var newCursor = Configuration.DefaultCursor;
 
             var draggableUnderCursor = Plot.GetDraggable(input.X, input.Y);
             if (draggableUnderCursor is not null)
