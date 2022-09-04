@@ -10,13 +10,6 @@ using ScottPlot.Colormaps;
 
 namespace ScottPlot.Plottables
 {
-    public enum CellAlignment // TODO: replace this with Alignment
-    {
-        Start,
-        Center,
-        End
-    }
-
     public class Heatmap : IPlottable
     {
         public bool IsVisible { get; set; } = true;
@@ -27,7 +20,7 @@ namespace ScottPlot.Plottables
         /// Indicates position of the data point relative to the rectangle used to represent it.
         /// An alignment of upper right means the rectangle will appear to the lower left of the point itself.
         /// </summary>
-        public CellAlignment CellAlignment { get; set; } = CellAlignment.Center;
+        public Alignment CellAlignment { get; set; } = Alignment.Center;
 
         /// <summary>
         /// If defined, the this rectangle sets the boundaries of colormap data.
@@ -54,9 +47,8 @@ namespace ScottPlot.Plottables
         {
             get
             {
-                double cellOffsetX = CellAlignmentFraction * CellWidth;
-                double cellOffsetY = CellAlignmentFraction * CellHeight;
-                Coordinates cellOffset = new(cellOffsetX, cellOffsetY);
+                (double x, double y) = CellAlignment.GetOffset(CellWidth, CellHeight);
+                Coordinates cellOffset = new(-x, -y);
                 return ExtentOrDefault.WithTranslation(cellOffset);
             }
         }
@@ -75,29 +67,21 @@ namespace ScottPlot.Plottables
 
                 return new CoordinateRect(
                     xMin: 0,
-                    xMax: Intensities.GetLength(0),
+                    xMax: Intensities.GetLength(1),
                     yMin: 0,
-                    yMax: Intensities.GetLength(1));
+                    yMax: Intensities.GetLength(0));
             }
         }
-
-        private double CellAlignmentFraction => CellAlignment switch
-        {
-            CellAlignment.Start => 0,
-            CellAlignment.Center => -0.5,
-            CellAlignment.End => -1,
-            _ => throw new NotImplementedException(),
-        };
 
         /// <summary>
         /// Width of a single cell from the heatmap (in coordinate units)
         /// </summary>
-        private double CellWidth => ExtentOrDefault.Width / Intensities.GetLength(0);
+        private double CellWidth => ExtentOrDefault.Width / Intensities.GetLength(1);
 
         /// <summary>
         /// Height of a single cell from the heatmap (in coordinate units)
         /// </summary>
-        private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(1);
+        private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(0);
 
         /// <summary>
         /// This object holds data values for the heatmap.
