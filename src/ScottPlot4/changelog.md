@@ -6,6 +6,7 @@ _not yet published on NuGet..._
 * Ticks: Setting manual ticks will now throw an immediate `ArgumentException` if positions and labels have different lengths (#2063) _Thanks @sergaent_
 * VectorFieldList: New plot type for plotting arbitrary coordinate/vector pairs which are not confined to a grid (#2064, #2079) _Thanks @sjdemoor and @bclehmann_
 * HLine and VLine: Line (but not position label) is hidden if `LineWidth` is `0` (#2085) _Thanks @A1145681_
+* Controls: The cursor now reverts to `Configuration.DefaultCursor` after moving off draggable objects (#2091) _Thanks @kurupt44_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
