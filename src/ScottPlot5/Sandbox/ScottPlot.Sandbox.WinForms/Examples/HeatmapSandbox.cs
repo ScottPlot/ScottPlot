@@ -21,10 +21,8 @@ namespace WinForms.Examples
         {
             InitializeComponent();
 
-            double[,] data = Generate.Sin2D(1000, 1000);
+            double[,] data = Generate.Sin2D(3, 2);
             var hm = formsPlot1.Plot.Plottables.AddHeatmap(data);
-            formsPlot1.Plot.Plottables.AddSignal(Generate.Sin(51));
-            formsPlot1.Plot.Grids.Clear();
 
             formsPlot1.Refresh();
         }
