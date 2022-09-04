@@ -18,6 +18,28 @@ public abstract class XAxisBase
 
     public CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
+    public ITickGenerator TickGenerator { get; set; } = null!;
+
+    public float Offset { get; set; } = 0;
+
+    public float PixelSize { get; private set; } = 50;
+
+    public float PixelHeight => PixelSize;
+
+    public Label Label { get; private set; } = new()
+    {
+        Text = "Horizontal Axis",
+        Bold = true,
+        FontSize = 16
+    };
+
+    public void Measure()
+    {
+        float labelHeight = Label.FontSize;
+        float largestTickHeight = Label.FontSize;
+        PixelSize = labelHeight + largestTickHeight + 18;
+    }
+
     public float GetPixel(double position, PixelRect dataArea)
     {
         double pxPerUnit = dataArea.Width / Width;
