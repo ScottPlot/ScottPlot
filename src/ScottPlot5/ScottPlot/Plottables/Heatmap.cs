@@ -23,19 +23,20 @@ namespace ScottPlot.Plottables
         public Alignment CellAlignment { get; set; } = Alignment.Center;
 
         /// <summary>
-        /// If defined, the this rectangle sets the boundaries of colormap data.
+        /// If defined, the this rectangle sets the axis boundaries of heatmap data.
         /// Note that the actual heatmap area is 1 cell larger than this rectangle.
         /// </summary>
         public CoordinateRect? Extent { get; set; }
 
         /// <summary>
-        /// By default heatmaps are drawn in the same vertical orientation as vectors: row 0 is at the top.
-        /// If this is true, the vertical orientation will be flipped so row 0 is on the bottom.
+        /// This variable controls whether row 0 of the 2D source array is the top or bottom of the heatmap.
+        /// When set to false (default), row 0 is the top of the heatmap.
+        /// When set to true, row 0 of the source data will be displayed at the bottom.
         /// </summary>
         public bool FlipVertically { get; set; } = false;
 
         /// <summary>
-        /// If true, the heatmap will be blurred.
+        /// If true, pixels in the final image will be interpolated to give the heatmap a smooth appearance.
         /// If false, the heatmap will appear as individual rectangles with sharp edges.
         /// </summary>
         public bool Smooth { get; set; } = false;
