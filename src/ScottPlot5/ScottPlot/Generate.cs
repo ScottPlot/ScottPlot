@@ -73,15 +73,15 @@ public static class Generate
 
     public static double[,] Sin2D(int width, int height, double xPeriod = .2, double yPeriod = .2, double multiple = 100)
     {
-        double[,] intensities = new double[width, height];
+        double[,] intensities = new double[height, width];
 
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
-            double sinx = Math.Sin(x * xPeriod) * multiple;
-            for (int y = 0; y < height; y++)
+            double siny = Math.Cos(y * yPeriod) * multiple;
+            for (int x = 0; x < width; x++)
             {
-                double siny = Math.Cos(y * yPeriod) * multiple;
-                intensities[x, y] = sinx + siny;
+                double sinx = Math.Sin(x * xPeriod) * multiple;
+                intensities[y, x] = sinx + siny;
             }
         }
 
