@@ -19,9 +19,14 @@ namespace ScottPlot.Colormaps
                 return Colors.Transparent;
             }
 
-            double normalized = range.Normalize(position, true);
+            if (range.Min == range.Max)
+            {
+                return GetColor(0);
+            }
 
-            return GetColor(normalized);
+            double normalizedPosition = range.Normalize(position, true);
+
+            return GetColor(normalizedPosition);
         }
     }
 }
