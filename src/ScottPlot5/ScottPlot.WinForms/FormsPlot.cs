@@ -28,6 +28,8 @@ public class FormsPlot : UserControl, IPlotControl
         SKElement.KeyUp += SKElement_KeyUp;
 
         Controls.Add(SKElement);
+
+        HandleDestroyed += (s, e) => SKElement.Dispose();
     }
 
     public void Replace(Interaction interaction)
