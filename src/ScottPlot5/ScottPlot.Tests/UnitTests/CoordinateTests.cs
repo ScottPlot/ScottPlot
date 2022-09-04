@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Tests.UnitTests.Primitives;
+﻿namespace ScottPlot.TestsV5.UnitTests;
 
 internal class CoordinateTests
 {
@@ -6,7 +6,8 @@ internal class CoordinateTests
     public void Test_Coordinate_DefaultValues()
     {
         Coordinates coord = new();
-        Assert.That(coord.X, Is.Zero);
+        coord.X.Should().Be(0);
+        coord.Y.Should().Be(0);
     }
 
     [TestCase(0, 0)]
@@ -18,13 +19,13 @@ internal class CoordinateTests
     public void Test_Coordinate_Construct(double x, double y)
     {
         Coordinates coord = new(x, y);
-        Assert.That(coord.X, Is.EqualTo(x));
-        Assert.That(coord.Y, Is.EqualTo(y));
+        coord.X.Should().Be(x);
+        coord.Y.Should().Be(y);
     }
 
     [Test]
     public void Test_Coordinate_CustomToString()
     {
-        StringAssert.Contains("X=", new Coordinates().ToString());
+        new Coordinates().ToString().Should().Contain("X=");
     }
 }

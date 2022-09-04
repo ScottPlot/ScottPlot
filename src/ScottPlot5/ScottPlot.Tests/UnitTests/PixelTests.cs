@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Tests.UnitTests.Primitives;
+﻿namespace ScottPlot.TestsV5.UnitTests;
 
 internal class PixelTests
 {
@@ -6,7 +6,7 @@ internal class PixelTests
     public void Test_Pixel_DefaultValues()
     {
         Pixel pixel = new();
-        Assert.That(pixel.X, Is.Zero);
+        pixel.X.Should().Be(0);
     }
 
     [TestCase(0, 0)]
@@ -18,13 +18,13 @@ internal class PixelTests
     public void Test_Pixel_Construct(float x, float y)
     {
         Pixel pixel = new(x, y);
-        Assert.That(pixel.X, Is.EqualTo(x));
-        Assert.That(pixel.Y, Is.EqualTo(y));
+        pixel.X.Should().Be(x);
+        pixel.Y.Should().Be(y);
     }
 
     [Test]
     public void Test_Pixel_CustomToString()
     {
-        StringAssert.Contains("X=", new Pixel().ToString());
+        new Pixel().ToString().Should().Contain("X=");
     }
 }

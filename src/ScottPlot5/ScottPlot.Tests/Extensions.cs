@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-namespace ScottPlot.Tests;
+namespace ScottPlot.TestsV5;
 
-internal static class TestTools
+internal static class Extensions
 {
-    public static void SaveImage(Plot plt, int width = 600, int height = 400, string subName = "", bool artifact = false)
+    internal static void SaveTestImage(this Plot plt, string subName = "", int width = 600, int height = 400)
     {
         var stackTrace = new System.Diagnostics.StackTrace();
         StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("bad caller");

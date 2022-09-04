@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-namespace ScottPlot.Common.Tests;
+namespace ScottPlot.TestsV5;
 
 public class Tests
 {

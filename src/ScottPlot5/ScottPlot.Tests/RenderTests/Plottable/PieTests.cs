@@ -1,29 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.TestsV5.RenderTests.Plottable;
 
-namespace ScottPlot.Tests.RenderTests.Plottable
+internal class PieTests
 {
-    internal class PieTests
+    [Test]
+    public void Test_Pie_Render()
     {
-        [Test]
-        public void Test_Pie_Render()
+        Plot plt = new();
+
+        Plottables.PieSlice[] slices =
         {
-            Plot plt = new();
+            new(6, Colors.Red),
+            new(4, Colors.Blue),
+            new(3, Colors.Green),
+            new(1, Colors.DarkCyan),
+        };
 
-            Plottables.PieSlice[] slices =
-            {
-                new(6, Colors.Red),
-                new(4, Colors.Blue),
-                new(3, Colors.Green),
-                new(1, Colors.DarkCyan),
-            };
+        plt.Plottables.AddPie(slices);
 
-            plt.Plottables.AddPie(slices);
-
-            TestTools.SaveImage(plt);
-        }
+        plt.SaveTestImage();
     }
 }

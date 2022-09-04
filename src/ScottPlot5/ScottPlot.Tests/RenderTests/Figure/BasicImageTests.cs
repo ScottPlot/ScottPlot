@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Tests.RenderTests;
+﻿namespace ScottPlot.TestsV5.RenderTests.Figure;
 
 internal class BasicImageTests
 {
@@ -10,7 +10,7 @@ internal class BasicImageTests
         plt.Plottables.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
         plt.Plottables.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
-        TestTools.SaveImage(plt);
+        plt.SaveTestImage();
     }
 
     [Test]
@@ -22,9 +22,9 @@ internal class BasicImageTests
         plt.Plottables.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
         AxisLimits limits = plt.GetAxisLimits();
-        TestTools.SaveImage(plt, subName: "1");
+        plt.SaveTestImage("1");
 
         plt.SetAxisLimits(limits.WithPan(2, 3));
-        TestTools.SaveImage(plt, subName: "2");
+        plt.SaveTestImage("2");
     }
 }

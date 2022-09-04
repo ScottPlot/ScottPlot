@@ -1,19 +1,140 @@
-﻿namespace ScottPlot.Tests.UnitTests;
+﻿namespace ScottPlot.TestsV5.UnitTests;
 
 internal class ColorTests
 {
-    [TestCase("#abcdef", 0xAB, 0xCD, 0xEF, 0xFF)]
-    [TestCase("#ABCDEF", 0xAB, 0xCD, 0xEF, 0xFF)]
-    [TestCase("#123456", 0x12, 0x34, 0x56, 0xFF)]
-    [TestCase("#abcdefaa", 0xAB, 0xCD, 0xEF, 0xAA)]
-    [TestCase("#ABCDEFaa", 0xAB, 0xCD, 0xEF, 0xAA)]
-    [TestCase("#123456aa", 0x12, 0x34, 0x56, 0xAA)]
-    public void TestFromHex(string hex, byte expectedR, byte expectedG, byte expectedB, byte expectedA)
+    [Test]
+    public void Test_Color_Constructor()
     {
-        Color actual = Color.FromHex(hex);
-        Assert.That(actual.Red, Is.EqualTo(expectedR));
-        Assert.That(actual.Green, Is.EqualTo(expectedG));
-        Assert.That(actual.Blue, Is.EqualTo(expectedB));
-        Assert.That(actual.Alpha, Is.EqualTo(expectedA));
+        Color color = new(13, 17, 23);
+        color.Red.Should().Be(13);
+        color.Green.Should().Be(17);
+        color.Blue.Should().Be(23);
+        color.Alpha.Should().Be(255);
+    }
+
+    [Test]
+    public void Test_Color_ConstructorWithAlpha()
+    {
+        Color color = new(13, 17, 23, 27);
+        color.Red.Should().Be(13);
+        color.Green.Should().Be(17);
+        color.Blue.Should().Be(23);
+        color.Alpha.Should().Be(27);
+    }
+
+    [Test]
+    public void Test_Color_ToARGB()
+    {
+        // MediumVioletRed 0xFFC71585 is RGB (199, 21, 133)
+        Color color = new(199, 21, 133);
+        color.ARGB.Should().Be(0xFFC71585);
+    }
+
+    [Test]
+    public void Test_Color_FromARGB()
+    {
+        // MediumVioletRed 0xFFC71585 is RGB (199, 21, 133)
+        Color color = Color.FromARGB(0xFFC71585);
+        color.Red.Should().Be(199);
+        color.Green.Should().Be(21);
+        color.Blue.Should().Be(133);
+        color.Alpha.Should().Be(255);
+    }
+
+    [Test]
+    public void Test_Color_WithRed()
+    {
+        Color color = new Color(12, 34, 56, 78).WithRed(99);
+        color.Red.Should().Be(99);
+        color.Green.Should().Be(34);
+        color.Blue.Should().Be(56);
+        color.Alpha.Should().Be(78);
+    }
+
+    [Test]
+    public void Test_Color_WithGreen()
+    {
+        Color color = new Color(12, 34, 56, 78).WithGreen(99);
+        color.Red.Should().Be(12);
+        color.Green.Should().Be(99);
+        color.Blue.Should().Be(56);
+        color.Alpha.Should().Be(78);
+    }
+
+    [Test]
+    public void Test_Color_WithBlue()
+    {
+        Color color = new Color(12, 34, 56, 78).WithBlue(99);
+        color.Red.Should().Be(12);
+        color.Green.Should().Be(34);
+        color.Blue.Should().Be(99);
+        color.Alpha.Should().Be(78);
+    }
+
+    [Test]
+    public void Test_Color_WithAlpha()
+    {
+        Color color = new Color(12, 34, 56, 78).WithAlpha(99);
+        color.Red.Should().Be(12);
+        color.Green.Should().Be(34);
+        color.Blue.Should().Be(56);
+        color.Alpha.Should().Be(99);
+    }
+
+    [Test]
+    public void Test_Color_ToSKColor()
+    {
+        SKColor color = new Color(12, 34, 56, 78).ToSKColor();
+        color.Red.Should().Be(12);
+        color.Green.Should().Be(34);
+        color.Blue.Should().Be(56);
+        color.Alpha.Should().Be(78);
+    }
+
+    [Test]
+    public void Test_Color_ToHex()
+    {
+        Color color = new(12, 34, 56);
+        color.ToStringRGB().Should().Be("#0C2238");
+    }
+
+    [Test]
+    public void Test_Colors_ColorValues()
+    {
+        Colors.Orange.ToStringRGB().Should().Be("#FFA500");
+        Colors.Chocolate.ToStringRGB().Should().Be("#D2691E");
+        Colors.GoldenRod.ToStringRGB().Should().Be("#DAA520");
+
+        NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
+        NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
+        NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
+    }
+
+    [Test]
+    public void Test_Colors_WebColors_HasColors()
+    {
+        new NamedColors.WebColors().GetAllColors().Should().NotBeEmpty();
+    }
+
+    [Test]
+    public void Test_Colors_WebColors_ColorValues()
+    {
+        NamedColors.WebColors.Orange.ToStringRGB().Should().Be("#FFA500");
+        NamedColors.WebColors.Chocolate.ToStringRGB().Should().Be("#D2691E");
+        NamedColors.WebColors.GoldenRod.ToStringRGB().Should().Be("#DAA520");
+    }
+
+    [Test]
+    public void Test_Colors_XKCD_HasColors()
+    {
+        new NamedColors.XkcdColors().GetAllColors().Should().NotBeEmpty();
+    }
+
+    [Test]
+    public void Test_Colors_XKCD_ColorValues()
+    {
+        NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
+        NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
+        NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
     }
 }
