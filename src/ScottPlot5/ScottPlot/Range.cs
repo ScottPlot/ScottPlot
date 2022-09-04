@@ -20,20 +20,11 @@ namespace ScottPlot
 
         public Range(double min, double max)
         {
-            if (double.IsInfinity(min) || double.IsNaN(min))
-            {
-                throw new ArgumentException($"Argument ${nameof(min)} must be finite and non-NaN");
-            }
+            if (min.IsInfiniteOrNaN())
+                throw new ArgumentException($"{nameof(min)} must be a real number");
 
-            if (double.IsInfinity(max) || double.IsNaN(max))
-            {
-                throw new ArgumentException($"Argument ${nameof(max)} must be finite and non-NaN");
-            }
-
-            if (double.IsNaN(min) || double.IsNaN(max))
-            {
-                throw new ArgumentException("ranges may not contain NaN");
-            }
+            if (max.IsInfiniteOrNaN())
+                throw new ArgumentException($"{nameof(max)} must be a real number");
 
             if (min > max)
             {
@@ -54,7 +45,7 @@ namespace ScottPlot
         {
             if (Max == Min)
             {
-                throw new ArgumentException("Cannot normalize the value to a range of zero");
+                throw new ArgumentException($"Cannot normalize to the range if {nameof(Min)} == {nameof(Max)}");
             }
 
             double normalized = (value - Min) / (Max - Min);
@@ -81,17 +72,7 @@ namespace ScottPlot
 
         public static Range GetRange(double[,] input)
         {
-            double min = double.PositiveInfinity;
-            double max = double.NegativeInfinity;
-            for (int y = 0; y < input.GetLength(0); y++)
-            {
-                for (int x = 0; x < input.GetLength(1); x++)
-                {
-                    min = Math.Min(min, input[y, x]);
-                    max = Math.Max(max, input[y, x]);
-                }
-            }
-            return new Range(min, max);
+            return GetRange(input.Cast<double>());
         }
 
         public static Range GetRange(IEnumerable<double> input)

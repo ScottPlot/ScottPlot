@@ -8,10 +8,19 @@ public interface IColormap
     string Name { get; }
 
     /// <summary>
-    /// Returns a color for the given <paramref name="intensity"/> and <paramref name="intensityRange"/>. 
-    /// Returns <see cref="Colors.Transparent"/> for an intensity of <see cref="double.NaN"/>.
+    /// Returns the color of a position on this colormap (from 0 to 1).
+    /// Returns transparent if NaN.
+    /// Positions outside the range will be clamped.
     /// </summary>
-    /// <param name="intensity">Intensity fraction from 0 to 1 (unless <paramref name="intensityRange"/> is specified)</param>
-    /// <param name="intensityRange">If defined, <paramref name="intensity"/> is evaluated as a fraction along this range.</param>
-    Color GetColor(double intensity, Range? intensityRange);
+    /// <param name="position">position from 0 (first color) to 1 (last color)</param>
+    Color GetColor(double position);
+
+    /// <summary>
+    /// Returns the color of a position on this colormap (according to the given range).
+    /// Returns transparent if NaN.
+    /// Positions outside the range will be clamped.
+    /// </summary>
+    /// <param name="position">position relative to the given range</param>
+    /// <param name="range">range of values spanned by this colormap</param>
+    Color GetColor(double position, Range range);
 }
