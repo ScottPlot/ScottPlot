@@ -42,11 +42,17 @@ namespace WinForms.Examples
         private void AddYAxis()
         {
             // create a new axis and add it to the plot
-            var yAxis = new ScottPlot.Axis.StandardAxes.RightAxis();
+            ScottPlot.Axis.IYAxis yAxis = checkBox1.Checked
+                ? new ScottPlot.Axis.StandardAxes.RightAxis()
+                : new ScottPlot.Axis.StandardAxes.LeftAxis();
+
             formsPlot1.Plot.YAxes.Add(yAxis);
             yAxis.Label.Text = $"Y Axis {formsPlot1.Plot.YAxes.Count()}";
 
-            var xAxis = new ScottPlot.Axis.StandardAxes.TopAxis();
+            ScottPlot.Axis.IXAxis xAxis = checkBox1.Checked
+                ? new ScottPlot.Axis.StandardAxes.TopAxis()
+                : new ScottPlot.Axis.StandardAxes.BottomAxis();
+
             formsPlot1.Plot.XAxes.Add(xAxis);
             xAxis.Label.Text = $"X Axis {formsPlot1.Plot.XAxes.Count()}";
 

@@ -15,8 +15,8 @@ public class TopAxis : XAxisBase, IXAxis
     {
         var ticks = TickGenerator.GetVisibleTicks(Range);
 
-        StandardRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
-        StandardRendering.DrawTicksTop(surface, dataRect, Label.Color, Offset, ticks, this);
-        StandardRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicksTop(surface, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }

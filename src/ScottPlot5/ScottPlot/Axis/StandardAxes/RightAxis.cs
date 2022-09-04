@@ -14,8 +14,8 @@ public class RightAxis : YAxisBase, IYAxis
     public void Render(SKSurface surface, PixelRect dataRect)
     {
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        StandardRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
-        StandardRendering.DrawTicksRight(surface, dataRect, Label.Color, Offset, ticks, this);
-        StandardRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicksRight(surface, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }

@@ -1,14 +1,16 @@
 ﻿using SkiaSharp;
 using System.ComponentModel;
-using System.Data;
 
-namespace ScottPlot.Axis.StandardAxes;
+namespace ScottPlot.Axis;
 
 /// <summary>
-/// Helper methods for rendering axis components
+/// Helper methods for rendering common components
 /// </summary>
-public static class StandardRendering
+public static class AxisRendering
 {
+    /// <summary>
+    /// Draw a line along the edge of an axis on the side of the data area
+    /// </summary>
     public static void DrawFrame(SKSurface surface, PixelRect dataRect, Edge edge, Color color, float offset)
     {
         float x1 = edge switch
