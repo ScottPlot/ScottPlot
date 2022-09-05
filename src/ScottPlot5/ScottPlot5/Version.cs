@@ -9,8 +9,8 @@ namespace ScottPlot;
 
 public static class Version
 {
-    public readonly static string InformalVersion = Assembly.GetEntryAssembly()
-        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+    public readonly static string InformalVersion = Assembly.GetEntryAssembly()!
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
         .InformationalVersion;
 
     public static string VersionString => $"ScottPlot {InformalVersion}";

@@ -1,6 +1,6 @@
-﻿namespace WinForms.Examples
+﻿namespace ScottPlot5_WinForms_Demo.Sandbox
 {
-    partial class HeatmapSandbox
+    partial class DeveloperTesting
     {
         /// <summary>
         /// Required designer variable.
@@ -39,14 +39,14 @@
             this.formsPlot1.Size = new System.Drawing.Size(800, 450);
             this.formsPlot1.TabIndex = 0;
             // 
-            // HeatmapSandbox
+            // DeveloperTestingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.formsPlot1);
-            this.Name = "HeatmapSandbox";
-            this.Text = "HeatmapSandbox";
+            this.Name = "DeveloperTestingForm";
+            this.Text = "DeveloperTestingForm";
             this.ResumeLayout(false);
 
         }
