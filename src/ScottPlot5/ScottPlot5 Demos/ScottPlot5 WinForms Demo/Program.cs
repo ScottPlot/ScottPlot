@@ -1,4 +1,4 @@
-namespace ScottPlot5_WinForms_Demo;
+﻿namespace ScottPlot5_WinForms_Demo;
 
 static class Program
 {
@@ -12,5 +12,5 @@ static class Program
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
         Application.Run(new Form1());
-    }    
+    }
 }

@@ -1,13 +1,11 @@
-﻿using FluentAssertions;
-
-namespace ScottPlot.TestsV5;
+﻿namespace ScottPlot_Tests.RenderTests.Figure;
 
 public class Tests
 {
     [Test]
     public void Test_Generate_Consecutive()
     {
-        double[] values = Generate.Consecutive(10);
+        double[] values = ScottPlot.Generate.Consecutive(10);
         values.Should().NotBeNullOrEmpty();
         values.Should().HaveCount(10);
     }
@@ -15,8 +13,8 @@ public class Tests
     [Test]
     public void Test_Generate_ConsecutiveGeneric()
     {
-        double[] values1 = Generate.Consecutive(10);
-        float[] values2 = Generate.Consecutive<float>(10);
+        double[] values1 = ScottPlot.Generate.Consecutive(10);
+        float[] values2 = ScottPlot.Generate.Consecutive<float>(10);
 
         for (int i = 0; i < values1.Length; i++)
         {
@@ -27,11 +25,11 @@ public class Tests
     [Test]
     public void Test_Generate_SinGeneric()
     {
-        double[] values1 = Generate.Sin(10);
+        double[] values1 = ScottPlot.Generate.Sin(10);
         values1.Should().NotBeNullOrEmpty();
         values1.Should().HaveCount(10);
 
-        float[] values2 = Generate.Sin<float>(10);
+        float[] values2 = ScottPlot.Generate.Sin<float>(10);
 
         for (int i = 0; i < values1.Length; i++)
         {

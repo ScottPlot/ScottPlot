@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TestsV5.RenderTests.Plottable;
+﻿namespace ScottPlot_Tests.RenderTests.Plottable;
 
 internal class PieTests
 {
@@ -7,7 +7,7 @@ internal class PieTests
     {
         Plot plt = new();
 
-        Plottables.PieSlice[] slices =
+        ScottPlot.Plottables.PieSlice[] slices =
         {
             new(6, Colors.Red),
             new(4, Colors.Blue),

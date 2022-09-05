@@ -1,4 +1,4 @@
-namespace ScottPlot5_WinForms_Demo;
+﻿namespace ScottPlot5_WinForms_Demo;
 
 public partial class Form1 : Form
 {

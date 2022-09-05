@@ -1,0 +1,68 @@
+name: ScottPlot 5 CI
+
+on:
+  workflow_dispatch:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
+    paths:
+      - "src/ScottPlot5/**"
+  pull_request: # runs on commits to bull request branches
+    paths:
+      - "src/ScottPlot5/**"
+
+jobs:
+  format:
+    runs-on: windows-latest
+    name: Check Formatting
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Set up .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: ✒️ Set up dotnet-format
+        run: dotnet tool install -g dotnet-format
+      - name: 🧐 Check Code Format
+        working-directory: src/ScottPlot5
+        run: dotnet-format --check
+
+  test4:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+          - os: macos-latest
+            osName: MacOS
+    runs-on: ${{ matrix.os }}
+    name: Test on ${{ matrix.osName }}
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: 🚚 ScottPlot5 Restore
+        run: dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
+      - name: 🛠️ ScottPlot5 Build
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
+      - name: 🧪 ScottPlot5 Test
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
+
+      # msbuild is required to build a solution containing .NET Framework projects
+      - name: 🐢 Set up MSBuild
+        if: startsWith(matrix.os, 'windows')
+        uses: microsoft/setup-msbuild@v1.1
+      - name: 🚚 Restore Solution
+        if: startsWith(matrix.os, 'windows')
+        run: dotnet restore src/ScottPlot5
+      - name: 🐌 Build Solution
+        if: startsWith(matrix.os, 'windows')
+        run: msbuild src/ScottPlot5 -property:Configuration=Release -verbosity:minimal

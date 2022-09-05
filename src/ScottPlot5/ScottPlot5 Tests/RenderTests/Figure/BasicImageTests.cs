@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TestsV5.RenderTests.Figure;
+﻿namespace ScottPlot_Tests.RenderTests.Figure;
 
 internal class BasicImageTests
 {
@@ -7,8 +7,8 @@ internal class BasicImageTests
     {
         Plot plt = new();
 
-        plt.Plottables.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
-        plt.Plottables.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
+        plt.Plottables.Add(new ScottPlot.Plottables.DebugPoint(2, 3, Colors.Magenta));
+        plt.Plottables.Add(new ScottPlot.Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
         plt.SaveTestImage();
     }
@@ -18,8 +18,8 @@ internal class BasicImageTests
     {
         Plot plt = new();
 
-        plt.Plottables.Add(new Plottables.DebugPoint(2, 3, Colors.Magenta));
-        plt.Plottables.Add(new Plottables.DebugPoint(-7, -4, Colors.LightGreen));
+        plt.Plottables.Add(new ScottPlot.Plottables.DebugPoint(2, 3, Colors.Magenta));
+        plt.Plottables.Add(new ScottPlot.Plottables.DebugPoint(-7, -4, Colors.LightGreen));
 
         AxisLimits limits = plt.GetAxisLimits();
         plt.SaveTestImage("1");

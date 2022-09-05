@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TestsV5.UnitTests;
+﻿namespace ScottPlot_Tests.UnitTests;
 
 internal class CoordinateRectTests
 {

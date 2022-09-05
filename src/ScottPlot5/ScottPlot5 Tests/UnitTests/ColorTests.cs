@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TestsV5.UnitTests;
+﻿namespace ScottPlot_Tests.UnitTests;
 
 internal class ColorTests
 {
@@ -105,36 +105,36 @@ internal class ColorTests
         Colors.Chocolate.ToStringRGB().Should().Be("#D2691E");
         Colors.GoldenRod.ToStringRGB().Should().Be("#DAA520");
 
-        NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
-        NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
-        NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
+        ScottPlot.NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
+        ScottPlot.NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
+        ScottPlot.NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
     }
 
     [Test]
     public void Test_Colors_WebColors_HasColors()
     {
-        new NamedColors.WebColors().GetAllColors().Should().NotBeEmpty();
+        new ScottPlot.NamedColors.WebColors().GetAllColors().Should().NotBeEmpty();
     }
 
     [Test]
     public void Test_Colors_WebColors_ColorValues()
     {
-        NamedColors.WebColors.Orange.ToStringRGB().Should().Be("#FFA500");
-        NamedColors.WebColors.Chocolate.ToStringRGB().Should().Be("#D2691E");
-        NamedColors.WebColors.GoldenRod.ToStringRGB().Should().Be("#DAA520");
+        ScottPlot.NamedColors.WebColors.Orange.ToStringRGB().Should().Be("#FFA500");
+        ScottPlot.NamedColors.WebColors.Chocolate.ToStringRGB().Should().Be("#D2691E");
+        ScottPlot.NamedColors.WebColors.GoldenRod.ToStringRGB().Should().Be("#DAA520");
     }
 
     [Test]
     public void Test_Colors_XKCD_HasColors()
     {
-        new NamedColors.XkcdColors().GetAllColors().Should().NotBeEmpty();
+        new ScottPlot.NamedColors.XkcdColors().GetAllColors().Should().NotBeEmpty();
     }
 
     [Test]
     public void Test_Colors_XKCD_ColorValues()
     {
-        NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
-        NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
-        NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
+        ScottPlot.NamedColors.XkcdColors.Orange.ToStringRGB().Should().Be("#F97306");
+        ScottPlot.NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
+        ScottPlot.NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
     }
 }
