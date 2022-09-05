@@ -23,7 +23,7 @@ namespace ScottPlot.Plottables
     {
         public IList<PieSlice> Slices { get; set; }
         public Stroke Stroke { get; set; } = new() { Width = 0 };
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
 
         public IAxes Axes { get; set; } = Axis.Axes.Default;
 
