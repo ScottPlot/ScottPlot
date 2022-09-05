@@ -14,21 +14,33 @@ public class Nearest1D : ISnap1D
         SnapPositions = positions;
     }
 
+    /// <summary>
+    /// Returns the position of the item in the array closest to the given position
+    /// </summary>
     public double Snap(double value)
     {
-        var closestDistance = double.MaxValue;
-        var closestPosition = double.MaxValue;
+        int index = SnapIndex(value);
+        return SnapPositions[index];
+    }
 
-        foreach (var position in SnapPositions)
+    /// <summary>
+    /// Returns the index of the item in the array closest to the given position
+    /// </summary>
+    public int SnapIndex(double value)
+    {
+        var closestDistance = double.MaxValue;
+        int closestIndex = 0;
+
+        for (int i = 0; i < SnapPositions.Length; i++)
         {
-            var distance = Math.Abs(value - position);
+            double distance = Math.Abs(value - SnapPositions[i]);
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestPosition = position;
+                closestIndex = i;
             }
         }
 
-        return closestPosition;
+        return closestIndex;
     }
 }
