@@ -3,7 +3,7 @@
 ### ✔️ ScottPlot 4 is the current stable version
   * ScottPlot 4 is available on NuGet
   * ScottPlot 4 Is is fully supported on .NET Framework and .NET 6
-  * Contributions are welcome ([see CONTRIBUTING.md](/contributing.md))
+  * Contributions are welcome ([see CONTRIBUTING.md](/CONTRIBUTING.md))
 
 ### ⚠️ ScottPlot 5 early in development
   * ScottPlot 5 is **not recommended for production use**
