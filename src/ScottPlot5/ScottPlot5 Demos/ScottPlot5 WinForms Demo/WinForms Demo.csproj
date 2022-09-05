@@ -7,10 +7,14 @@
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
+
+        <!-- package restored using non-identical framework -->
+        <NoWarn>NU1701</NoWarn>
+
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="windows7apicodepack-shell" Version="1.1.0" />
+        <PackageReference Include="windows7apicodepack-shell" Version="1.1.0" />
     </ItemGroup>
 
     <ItemGroup>
