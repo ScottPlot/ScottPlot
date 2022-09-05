@@ -1,22 +1,52 @@
-﻿namespace ScottPlot5_WinForms_Demo;
+﻿using System.Reflection;
+using System.Runtime.Serialization;
+using System.Windows.Forms;
+
+namespace ScottPlot5_WinForms_Demo;
 
 public partial class Form1 : Form
 {
+    private readonly Dictionary<string, Type> Examples;
+
     public Form1()
     {
         InitializeComponent();
+        Text = ScottPlot.Version.VersionString + " Demo";
 
-        Text = ScottPlot.Version.VersionString;
+        Examples = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(x => !x.IsAbstract)
+            .Where(x => x.IsSubclassOf(typeof(Form)))
+            .Where(x => x.GetInterfaces().Contains(typeof(IDemoForm)))
+            .Select(x => (IDemoForm)FormatterServices.GetUninitializedObject(x))
+            .ToDictionary(keySelector: x => x.Title, elementSelector: x => x.GetType());
 
-        ScottPlot.WinForms.FormsPlot formsPlot1 = new()
-        {
-            Dock = DockStyle.Fill
-        };
+        listView1.Items.Clear();
+        Examples.Select(x => x.Key).ToList().ForEach(x => listView1.Items.Add(x));
 
-        Controls.Add(formsPlot1);
+        listView1.SelectedIndexChanged += ListView1_SelectedIndexChanged;
+        btnLaunch.Click += BtnLaunch_Click;
 
-        formsPlot1.Plot.Plottables.AddSignal(ScottPlot.Generate.Sin(51));
-        formsPlot1.Plot.Plottables.AddSignal(ScottPlot.Generate.Cos(51));
-        formsPlot1.Refresh();
+        listView1.Items[0].Selected = true;
+    }
+
+    private void ListView1_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (listView1.SelectedItems.Count == 0)
+            return;
+        Type formType = Examples[listView1.SelectedItems[0].Text];
+        IDemoForm form = (IDemoForm)FormatterServices.GetUninitializedObject(formType);
+        lblTitle.Text = form.Title;
+        rtbDescription.Text = form.Description;
+    }
+
+    private void BtnLaunch_Click(object? sender, EventArgs e)
+    {
+        if (listView1.SelectedItems.Count == 0)
+            return;
+        Type formType = Examples[listView1.SelectedItems[0].Text];
+        Form form = (Form)Activator.CreateInstance(formType)!;
+        form.StartPosition = FormStartPosition.CenterScreen;
+        form.ShowDialog();
     }
 }
