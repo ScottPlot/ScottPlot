@@ -20,8 +20,8 @@ namespace ScottPlot5_WinForms_Demo.Sandbox
         public DeveloperTesting()
         {
             InitializeComponent();
-            formsPlot1.Plot.Plottables.AddSignal(Generate.Sin(51));
-            formsPlot1.Plot.Plottables.AddSignal(Generate.Cos(51));
+            formsPlot1.Plot.Add.Signal(Generate.Sin(51));
+            formsPlot1.Plot.Add.Signal(Generate.Cos(51));
         }
     }
 }

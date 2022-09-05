@@ -16,9 +16,9 @@ namespace ScottPlot.Sandbox.Eto
             const int N = 51;
 
             etoPlot.Plot.Plottables.Add(DebugPoint);
-            etoPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
-            etoPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-            etoPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
+            etoPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
+            etoPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
+            etoPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
             etoPlot.Refresh();
 
             etoPlot.MouseMove += EtoPlot_MouseMove;

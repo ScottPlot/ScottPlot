@@ -11,7 +11,10 @@ public class Plot
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
     public readonly List<IGrid> Grids = new();
-    public readonly PlottableList Plottables = new();
+    public readonly List<IPlottable> Plottables = new();
+
+    public readonly PlottableFactory Add;
+    public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
 
     public IRenderer Renderer = new StandardRenderer();
 
@@ -52,6 +55,8 @@ public class Plot
 
         var grid = new Grids.DefaultGrid(xAxis, yAxis);
         Grids.Add(grid);
+
+        Add = new(this);
     }
 
     #region Axis Management
