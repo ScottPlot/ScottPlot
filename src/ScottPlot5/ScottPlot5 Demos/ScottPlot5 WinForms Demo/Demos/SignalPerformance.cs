@@ -19,7 +19,7 @@ internal class SignalPerformance : Form, IDemoForm
         Controls.Add(formsPlot1);
 
         double[] data = ScottPlot.Generate.NoisySin(new Random(0), 1_000_000);
-        formsPlot1.Plot.Plottables.AddSignal(data);
+        formsPlot1.Plot.Add.Signal(data);
         formsPlot1.Refresh();
     }
 }

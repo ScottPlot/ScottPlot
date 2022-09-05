@@ -21,9 +21,9 @@ namespace WPFDemo
             const int N = 51;
 
             WpfPlot.Plot.Plottables.Add(DebugPoint);
-            WpfPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
-            WpfPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
-            WpfPlot.Plot.Plottables.AddScatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N), Colors.Blue);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Cos(N), Colors.Red);
+            WpfPlot.Plot.Add.Scatter(Generate.Consecutive(N), Generate.Sin(N, 0.5), Colors.Green);
 
             WpfPlot.MouseMove += WpfPlot_MouseMove;
         }
