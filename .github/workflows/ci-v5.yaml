@@ -52,7 +52,7 @@ jobs:
       - name: 🚚 ScottPlot5 Restore
         run: dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
       - name: 🛠️ ScottPlot5 Build
-        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore -warnaserror -nowarn CS2002
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore -warnaserror -nowarn:CS2002
       - name: 🧪 ScottPlot5 Test
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
 
