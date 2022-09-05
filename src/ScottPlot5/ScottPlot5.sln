@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5 Sandbox\ScottPlot.Sandbox.Eto\Sandbox.Eto.csproj", "{BAB54E6C-7114-481D-8F5E-0EC668F1644A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinForms", "ScottPlot5 Sandbox\ScottPlot.Sandbox.WinForms\WinForms.csproj", "{03C56C37-6845-4C0E-B00B-B394143BA156}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "ScottPlot5 Sandbox\ScottPlot.Sandbox.WPF\WPF.csproj", "{E4A9D4D9-2E09-4666-B742-8AF36C23E776}"
 EndProject
 Global
