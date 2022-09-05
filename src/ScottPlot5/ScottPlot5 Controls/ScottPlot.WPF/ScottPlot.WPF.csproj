@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net5.0;net6.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
         <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Eto.Forms" Version="2.7.*" />
-        <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+        <PackageReference Include="SkiaSharp.Views.WPF" Version="2.80.1" />
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 
 </Project>

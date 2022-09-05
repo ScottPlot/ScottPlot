@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
+        <!-- targets must be in this order for the control to appear in the toolbox -->
+        <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
@@ -15,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+      <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 
 </Project>

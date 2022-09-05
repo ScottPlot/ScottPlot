@@ -57,11 +57,11 @@ jobs:
         run: dotnet test src/ScottPlot4/ScottPlot.Tests --no-restore --verbosity minimal
 
       - name: 🚚 ScottPlot5 Restore
-        run: dotnet restore src/ScottPlot5/ScottPlot.Tests
+        run: dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
       - name: 🛠️ ScottPlot5 Build
-        run: dotnet build src/ScottPlot5/ScottPlot.Tests --configuration Release --no-restore
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
       - name: 🧪 ScottPlot5 Test
-        run: dotnet test src/ScottPlot5/ScottPlot.Tests --no-restore --verbosity minimal
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
 
       # msbuild is required to build a solution containing .NET Framework projects
       - name: 🐢 Set up MSBuild
