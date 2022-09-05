@@ -15,7 +15,10 @@ internal class PieTests
             new(1, Colors.DarkCyan),
         };
 
-        plt.Plottables.AddPie(slices);
+        var pie = plt.Plottables.AddPie(slices);
+        pie.ExplodeFraction = .1;
+
+        pie.Slices.Should().HaveCount(4);
 
         plt.SaveTestImage();
     }
