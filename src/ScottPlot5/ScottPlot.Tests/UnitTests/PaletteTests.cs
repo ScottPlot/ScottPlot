@@ -1,16 +1,13 @@
-﻿namespace ScottPlot.Tests.UnitTests;
+﻿namespace ScottPlot.TestsV5.UnitTests;
 
 internal class PaletteTests
 {
-
     [Test]
     public void Test_GetPalette_ReturnsPalettes()
     {
         IPalette[] palettes = ScottPlot.Palette.GetAllPalettes();
-        Assert.IsNotNull(palettes);
-        Assert.IsNotEmpty(palettes);
-        foreach (var palette in palettes)
-            Console.WriteLine(palette);
+        palettes.Should().NotBeNullOrEmpty();
+        Console.WriteLine("Palettes: " + string.Join(", ", palettes.Select(x => x.ToString())));
     }
 
     [Test]
@@ -18,6 +15,6 @@ internal class PaletteTests
     {
         string[] customColors = { "#019d9f", "#7d3091", "#57e075", "#e5b5fa", "#009118" };
         var pal = ScottPlot.Palette.FromColors(customColors);
-        Assert.That(pal.Colors.Length, Is.EqualTo(customColors.Length));
+        pal.Colors.Length.Should().Be(customColors.Length);
     }
 }

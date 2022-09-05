@@ -2,6 +2,11 @@
 
 namespace ScottPlot.Axis;
 
+/// <summary>
+/// This object stores the axis limits for multiple axes.
+/// It is used for mouse interaction to translate pixel distances 
+/// to coordinate distances based on previous renders.
+/// </summary>
 public class MultiAxisLimits
 {
     private struct ImmutableRange

@@ -23,7 +23,8 @@ namespace ScottPlot.Plottables
     {
         public IList<PieSlice> Slices { get; set; }
         public Stroke Stroke { get; set; } = new() { Width = 0 };
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
+        public double ExplodeFraction { get; set; } = 0;
 
         public IAxes Axes { get; set; } = Axis.Axes.Default;
 
@@ -34,7 +35,12 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            return new AxisLimits(-1, 1, -1, 1);
+            double padding = .03;
+            return new AxisLimits(
+                xMin: -1 - ExplodeFraction - padding,
+                xMax: 1 + ExplodeFraction + padding,
+                yMin: -1 - ExplodeFraction - padding,
+                yMax: 1 + ExplodeFraction + padding);
         }
 
         public void Render(SKSurface surface)
@@ -47,7 +53,7 @@ namespace ScottPlot.Plottables
             float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
             float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
             float radius = Math.Min(minX, minY);
-            float explosionRadius = 0.03f * radius;
+            float explosionRadius = (float)ExplodeFraction * radius;
             SKRect rect = new(-radius, -radius, radius, radius);
 
             using SKPath path = new();

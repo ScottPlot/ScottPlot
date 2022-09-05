@@ -20,7 +20,6 @@ public class StandardRenderer : IRenderer
         Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);
         Common.RenderPlottables(surface, dataRect, plot);
         Common.RenderGrids(surface, dataRect, plot, beneathPlottables: false);
-        Common.RenderFrameOnEdgesWithoutAxes(surface, dataRect, plot);
         Common.RenderAxes(surface, dataRect, plot);
         Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();

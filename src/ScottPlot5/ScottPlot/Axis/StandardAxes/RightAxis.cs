@@ -2,21 +2,20 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public class BottomAxis : XAxisBase, IXAxis
+public class RightAxis : YAxisBase, IYAxis
 {
-    public Edge Edge => Edge.Bottom;
+    public Edge Edge { get; } = Edge.Right;
 
-    public BottomAxis()
+    public RightAxis()
     {
-        TickGenerator = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
+        TickGenerator = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
         var ticks = TickGenerator.GetVisibleTicks(Range);
-
         AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
-        AxisRendering.DrawTicksBottom(surface, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawTicksRight(surface, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }

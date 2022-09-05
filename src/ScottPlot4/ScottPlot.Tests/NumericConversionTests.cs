@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace ScottPlot.Common.Tests
+namespace ScottPlot.Common.TestsV5
 {
     internal class NumericConversionTests
     {
