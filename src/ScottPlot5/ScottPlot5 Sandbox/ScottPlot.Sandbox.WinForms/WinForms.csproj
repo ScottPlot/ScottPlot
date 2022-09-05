@@ -2,8 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <!-- must be in this order or control does not appear in VS toolbox -->
-        <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
@@ -11,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
     </ItemGroup>
 
 </Project>
