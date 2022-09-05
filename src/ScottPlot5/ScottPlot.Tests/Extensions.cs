@@ -15,9 +15,14 @@ internal static class Extensions
         if (!string.IsNullOrWhiteSpace(subName))
             subName = "_" + subName;
 
+        string saveFolder = Path.Combine(TestContext.CurrentContext.TestDirectory, "test-images");
+        if (!Directory.Exists(saveFolder))
+            Directory.CreateDirectory(saveFolder);
+
         string fileName = callingMethod + subName + ".png";
-        string filePath = Path.GetFullPath(fileName);
+        string filePath = Path.Combine(saveFolder, fileName);
+
         plt.SaveImage(width, height, filePath);
-        Console.WriteLine($"Saved: {filePath}");
+        Console.WriteLine(filePath);
     }
 }
