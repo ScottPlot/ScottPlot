@@ -52,7 +52,7 @@ jobs:
       - name: 🚚 ScottPlot4 Restore
         run: dotnet restore src/ScottPlot4/ScottPlot.Tests
       - name: 🛠️ ScottPlot4 Build
-        run: dotnet build src/ScottPlot4/ScottPlot.Tests --configuration Release --no-restore
+        run: dotnet build src/ScottPlot4/ScottPlot.Tests --configuration Release --no-restore -warnaserror -nowarn:CS2002
       - name: 🧪 ScottPlot4 Test
         run: dotnet test src/ScottPlot4/ScottPlot.Tests --no-restore --verbosity minimal
 

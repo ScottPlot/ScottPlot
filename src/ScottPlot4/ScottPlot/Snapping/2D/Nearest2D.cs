@@ -26,10 +26,23 @@ public class Nearest2D : ISnap2D
         }
     }
 
+    /// <summary>
+    /// Returns the position of the item in the array closest to the given position
+    /// </summary>
     public Coordinate Snap(Coordinate value)
+    {
+        int closestIndex = SnapIndex(value);
+        return Coordinates[closestIndex];
+    }
+
+    /// <summary>
+    /// Returns the index of the item in the array closest to the given position
+    /// </summary>
+    public int SnapIndex(Coordinate value)
     {
         double closestDistance = double.MaxValue;
         int closestIndex = 0;
+
         for (int i = 0; i < Coordinates.Length; i++)
         {
             double dX = Math.Abs(Coordinates[i].X - value.X);
@@ -41,6 +54,7 @@ public class Nearest2D : ISnap2D
                 closestIndex = i;
             }
         }
-        return Coordinates[closestIndex];
+
+        return closestIndex;
     }
 }
