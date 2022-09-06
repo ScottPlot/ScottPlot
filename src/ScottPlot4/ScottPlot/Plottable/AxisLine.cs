@@ -292,10 +292,16 @@ namespace ScottPlot.Plottable
         /// <param name="snapX">snap distance (pixels)</param>
         /// <param name="snapY">snap distance (pixels)</param>
         /// <returns></returns>
-        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
-            IsHorizontal ?
-            Math.Abs(Position - coordinateY) <= snapY :
-            Math.Abs(Position - coordinateX) <= snapX;
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            if (!IsVisible)
+                return false;
+
+            return IsHorizontal
+                ? Math.Abs(Position - coordinateY) <= snapY
+                : Math.Abs(Position - coordinateX) <= snapX;
+        }
+
 
         public LegendItem[] GetLegendItems()
         {

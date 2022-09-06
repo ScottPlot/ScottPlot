@@ -9,6 +9,7 @@ _not yet published on NuGet..._
 * Controls: The cursor now reverts to `Configuration.DefaultCursor` after moving off draggable objects (#2091) _Thanks @kurupt44_
 * Snapping: SnapNearest classes now expose `SnapIndex()` (#2099) _Thanks @BambOoxX_
 * Background: Added optional arguments to `Style()` lets users place a custom background image behind their plot (#2016) _Thanks @apaaris_
+* Axis Line: Remove the ability to drag invisible lines (#2110) _Thanks @A1145681_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
