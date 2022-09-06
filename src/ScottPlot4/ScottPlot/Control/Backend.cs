@@ -514,7 +514,7 @@ namespace ScottPlot.Control
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
-            PlottableBeingDragged = Plot.GetDraggable(input.X, input.Y);
+            PlottableBeingDragged = IsLeftDown ? Plot.GetDraggable(input.X, input.Y) : null;
             Settings.MouseDown(input.X, input.Y);
             MouseDownTravelDistance = 0;
         }
@@ -562,6 +562,13 @@ namespace ScottPlot.Control
                 mouseMoveEvent = EventFactory.CreateMouseZoom(input);
             else if (IsZoomingRectangle)
                 mouseMoveEvent = EventFactory.CreateMouseMovedToZoomRectangle(input.X, input.Y);
+
+            if ((IsRightDown || IsMiddleDown) && (Cursor != Configuration.DefaultCursor))
+            {
+                // cursor was originally over a draggable but is now zooming
+                Cursor = Configuration.DefaultCursor;
+                CursorChanged?.Invoke(this, EventArgs.Empty);
+            }
 
             if (mouseMoveEvent != null)
                 ProcessEvent(mouseMoveEvent);

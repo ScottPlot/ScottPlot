@@ -10,6 +10,7 @@ _not yet published on NuGet..._
 * Snapping: SnapNearest classes now expose `SnapIndex()` (#2099) _Thanks @BambOoxX_
 * Background: Added optional arguments to `Style()` lets users place a custom background image behind their plot (#2016) _Thanks @apaaris_
 * Axis Line: Remove the ability to drag invisible lines (#2110) _Thanks @A1145681_
+* Controls: Draggable objects can now only be dragged with the left mouse button (#2111) _Thanks @A1145681_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
