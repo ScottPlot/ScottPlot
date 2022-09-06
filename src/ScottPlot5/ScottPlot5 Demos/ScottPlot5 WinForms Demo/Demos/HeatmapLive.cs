@@ -1,8 +1,7 @@
 ﻿namespace ScottPlot5_WinForms_Demo.Demos;
 
-internal class HeatmapLive : Form, IDemoForm
+public partial class HeatmapLive : Form, IDemoForm
 {
-    readonly ScottPlot.WinForms.FormsPlot formsPlot1;
     readonly ScottPlot.Plottables.Heatmap HMap;
     readonly System.Windows.Forms.Timer Timer;
     readonly double[,] HeatmapData;
@@ -12,14 +11,10 @@ internal class HeatmapLive : Form, IDemoForm
 
     public string Description => "Demonstrates how to display a heatmap with data that changes over time";
 
+
     public HeatmapLive()
     {
-        Width = 800;
-        Height = 600;
-        Text = Title;
-
-        formsPlot1 = new() { Dock = DockStyle.Fill };
-        Controls.Add(formsPlot1);
+        InitializeComponent();
 
         HeatmapData = ScottPlot.Generate.Sin2D(23, 13, multiple: 3);
         HMap = new ScottPlot.Plottables.Heatmap(HeatmapData);

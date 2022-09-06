@@ -11,7 +11,7 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
-        Text = ScottPlot.Version.VersionString + " Demo";
+        Text = ScottPlot.Version.VersionString + " WinForms Demo";
 
         Examples = Assembly.GetExecutingAssembly()
             .GetTypes()
@@ -44,9 +44,13 @@ public partial class Form1 : Form
     {
         if (listView1.SelectedItems.Count == 0)
             return;
+
         Type formType = Examples[listView1.SelectedItems[0].Text];
         Form form = (Form)Activator.CreateInstance(formType)!;
         form.StartPosition = FormStartPosition.CenterScreen;
+        form.Text = listView1.SelectedItems[0].Text;
+        form.Width = 800;
+        form.Height = 500;
         form.ShowDialog();
     }
 }
