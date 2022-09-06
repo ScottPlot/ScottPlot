@@ -1,27 +1,15 @@
-﻿using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿namespace ScottPlot5_WinForms_Demo.Sandbox;
 
-namespace ScottPlot5_WinForms_Demo.Sandbox
+public partial class DeveloperTesting : Form, IDemoForm
 {
-    public partial class DeveloperTesting : Form, IDemoForm
+    public string Title => "Basic Sandbox";
+
+    public string Description => "This demo demonstrates how to create a simple demo";
+
+    public DeveloperTesting()
     {
-        public string Title => "Basic Sandbox";
-
-        public string Description => "This demo demonstrates how to create a simple demo";
-
-        public DeveloperTesting()
-        {
-            InitializeComponent();
-            formsPlot1.Plot.Add.Signal(Generate.Sin(51));
-            formsPlot1.Plot.Add.Signal(Generate.Cos(51));
-        }
+        InitializeComponent();
+        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin(51));
+        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos(51));
     }
 }
