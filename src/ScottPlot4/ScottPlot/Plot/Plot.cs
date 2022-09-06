@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 
 namespace ScottPlot
 {
@@ -293,16 +294,23 @@ namespace ScottPlot
         /// <param name="tick">Color for axis tick marks and frame lines</param>
         /// <param name="axisLabel">Color for axis labels and tick labels</param>
         /// <param name="titleLabel">Color for the top axis label (XAxis2's title)</param>
+        /// <param name="dataBackgroundImage">Bitmap to display behind the data area</param>
+        /// <param name="figureBackgroundImage">Bitmap to display behind the entire figure</param>
         public void Style(
             Color? figureBackground = null,
             Color? dataBackground = null,
             Color? grid = null,
             Color? tick = null,
             Color? axisLabel = null,
-            Color? titleLabel = null)
+            Color? titleLabel = null,
+            Bitmap dataBackgroundImage = null,
+            Bitmap figureBackgroundImage = null)
         {
             settings.FigureBackground.Color = figureBackground ?? settings.FigureBackground.Color;
             settings.DataBackground.Color = dataBackground ?? settings.DataBackground.Color;
+
+            settings.FigureBackground.Bitmap ??= figureBackgroundImage;
+            settings.DataBackground.Bitmap ??= dataBackgroundImage;
 
             foreach (var axis in settings.Axes)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes
@@ -153,6 +154,52 @@ namespace ScottPlot.Cookbook.Recipes
             plt.Title("Style.Seaborn");
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
+        }
+    }
+
+    class DataBackgroundImage : IRecipe
+    {
+        public ICategory Category => new Categories.Style();
+        public string ID => "misc_background_image_data";
+        public string Title => "Data Background Image";
+        public string Description =>
+            "A backgorund image can be drawn behind the data area. " +
+            "Users to do this may want to make grid lines semitransparent.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51), 1, Color.Yellow);
+            plt.AddSignal(DataGen.Cos(51), 1, Color.Magenta);
+
+            Bitmap monaLisaBmp = ScottPlot.DataGen.SampleImage();
+
+            plt.Style(
+                grid: Color.FromArgb(50, Color.White),
+                dataBackgroundImage: monaLisaBmp);
+        }
+    }
+
+    class FigureBackgroundImage : IRecipe
+    {
+        public ICategory Category => new Categories.Style();
+        public string ID => "misc_background_image_figure";
+        public string Title => "Figure Background Image";
+        public string Description =>
+            "A backgorund image can be drawn behind the entire figure. " +
+            "If you do this you likely want to make your data background transparent.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51), 1, Color.Yellow);
+            plt.AddSignal(DataGen.Cos(51), 1, Color.Magenta);
+
+            Bitmap monaLisaBmp = ScottPlot.DataGen.SampleImage();
+
+            plt.Style(
+                grid: Color.FromArgb(50, Color.White),
+                tick: Color.White,
+                dataBackground: Color.FromArgb(50, Color.White),
+                figureBackgroundImage: monaLisaBmp);
         }
     }
 }
