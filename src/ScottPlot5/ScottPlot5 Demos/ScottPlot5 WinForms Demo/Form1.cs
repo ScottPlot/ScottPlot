@@ -11,7 +11,7 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
-        Text = ScottPlot.Version.VersionString + " Demo";
+        Text = ScottPlot.Version.VersionString + " WinForms Demo";
 
         Examples = Assembly.GetExecutingAssembly()
             .GetTypes()
