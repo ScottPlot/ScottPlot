@@ -28,6 +28,7 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("test123");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.listView1 = new System.Windows.Forms.ListView();
@@ -42,6 +43,7 @@ partial class Form1
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -82,7 +84,7 @@ partial class Form1
             this.lblTitle.Location = new System.Drawing.Point(5, 10);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(5, 10, 5, 5);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(49, 25);
+            this.lblTitle.Size = new System.Drawing.Size(70, 37);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "Title";
             // 
@@ -92,17 +94,17 @@ partial class Form1
             this.rtbDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDescription.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rtbDescription.Location = new System.Drawing.Point(10, 50);
+            this.rtbDescription.Location = new System.Drawing.Point(10, 62);
             this.rtbDescription.Margin = new System.Windows.Forms.Padding(10);
             this.rtbDescription.Name = "rtbDescription";
-            this.rtbDescription.Size = new System.Drawing.Size(577, 154);
+            this.rtbDescription.Size = new System.Drawing.Size(577, 148);
             this.rtbDescription.TabIndex = 2;
             this.rtbDescription.Text = "description...";
             // 
             // btnLaunch
             // 
             this.btnLaunch.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnLaunch.Location = new System.Drawing.Point(10, 224);
+            this.btnLaunch.Location = new System.Drawing.Point(10, 230);
             this.btnLaunch.Margin = new System.Windows.Forms.Padding(10);
             this.btnLaunch.Name = "btnLaunch";
             this.btnLaunch.Size = new System.Drawing.Size(96, 44);
@@ -208,6 +210,11 @@ partial class Form1
             this.label1.TabIndex = 0;
             this.label1.Text = "ScottPlot 5.0.0";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -243,4 +250,5 @@ partial class Form1
     private Label label2;
     private Label label1;
     private PictureBox pictureBox1;
+    private ContextMenuStrip contextMenuStrip1;
 }
