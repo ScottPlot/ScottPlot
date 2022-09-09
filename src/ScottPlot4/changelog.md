@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.58
+## ScottPlot 4.1.59
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.58
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
 * Radar: New `Smooth` field allows radar areas to be drawn with smooth lines (#2067, #2065) _Thanks @theelderwand_
 * Ticks: Setting manual ticks will now throw an immediate `ArgumentException` if positions and labels have different lengths (#2063) _Thanks @sergaent_
 * VectorFieldList: New plot type for plotting arbitrary coordinate/vector pairs which are not confined to a grid (#2064, #2079) _Thanks @sjdemoor and @bclehmann_
@@ -11,6 +14,7 @@ _not yet published on NuGet..._
 * Background: Added optional arguments to `Style()` lets users place a custom background image behind their plot (#2016) _Thanks @apaaris_
 * Axis Line: Remove the ability to drag invisible lines (#2110) _Thanks @A1145681_
 * Controls: Draggable objects can now only be dragged with the left mouse button (#2111, #2120) _Thanks @A1145681_
+* Heatmap: Prevent rendering artifacts by throwing an exception if the 2D array is larger than 2^15 in either dimension (#2119, #2116) _Thanks @dhgigisoave_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
