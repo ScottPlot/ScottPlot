@@ -11,6 +11,7 @@ _not yet published on NuGet..._
 * Background: Added optional arguments to `Style()` lets users place a custom background image behind their plot (#2016) _Thanks @apaaris_
 * Axis Line: Remove the ability to drag invisible lines (#2110) _Thanks @A1145681_
 * Controls: Draggable objects can now only be dragged with the left mouse button (#2111, #2120) _Thanks @A1145681_
+* Heatmap: Prevent rendering artifacts by throwing an exception if a 2D array edge length is greater than 2&15 (#2119, #2116) _Thanks @dhgigisoave_
 
 ## ScottPlot 4.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-18_
