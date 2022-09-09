@@ -294,9 +294,6 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
-            if (!IsVisible)
-                return false;
-
             return IsHorizontal
                 ? Math.Abs(Position - coordinateY) <= snapY
                 : Math.Abs(Position - coordinateX) <= snapX;

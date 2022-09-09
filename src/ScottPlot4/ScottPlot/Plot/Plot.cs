@@ -159,6 +159,7 @@ namespace ScottPlot
                            .Where(x => x is IDraggable)
                            .Select(x => (IDraggable)x)
                            .Where(x => x.DragEnabled)
+                           .Where(x => x is IPlottable p && p.IsVisible)
                            .ToArray();
 
             foreach (IDraggable draggable in enabledDraggables)
