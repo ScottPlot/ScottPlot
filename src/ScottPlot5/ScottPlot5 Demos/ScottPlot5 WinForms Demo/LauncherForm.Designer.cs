@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot5_WinForms_Demo
 {
-    partial class DemoLauncher
+    partial class LauncherForm
     {
         /// <summary>
         /// Required designer variable.

@@ -21,6 +21,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+        <ProjectReference Include="..\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj" />
     </ItemGroup>
 
     <ItemGroup>

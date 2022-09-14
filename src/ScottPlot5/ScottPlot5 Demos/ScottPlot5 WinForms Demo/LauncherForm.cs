@@ -14,11 +14,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ScottPlot5_WinForms_Demo
 {
-    public partial class DemoLauncher : Form
+    public partial class LauncherForm : Form
     {
         private readonly Dictionary<string, Type> Demos = DemoWindows.GetDemoTypesByTitle();
 
-        public DemoLauncher()
+        public LauncherForm()
         {
             InitializeComponent();
             Text = "ScottPlot Demo";
@@ -30,7 +30,7 @@ namespace ScottPlot5_WinForms_Demo
 
         private async void Form3_Load(object? sender, EventArgs e)
         {
-            HtmlMenu menu = new();
+            DemoLauncher.HtmlMenu menu = new(ScottPlot.Version.VersionString);
             foreach (var demoType in Demos.Values)
             {
                 IDemoForm demo = (IDemoForm)FormatterServices.GetUninitializedObject(demoType);
@@ -38,7 +38,7 @@ namespace ScottPlot5_WinForms_Demo
             }
 
             await webView21.EnsureCoreWebView2Async();
-            webView21.NavigateToString(menu.GetEverything());
+            webView21.NavigateToString(menu.ToString());
         }
 
         private void WebView21_WebMessageReceived(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs e)
