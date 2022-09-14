@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -187,8 +188,27 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
+            // limit edge size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/2119
+            int maxEdgeLength = 1 << 15;
+            if (intensities.GetLength(1) > maxEdgeLength || intensities.GetLength(0) > maxEdgeLength)
+            {
+                throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
+                    $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
+            }
+
+            // limit total size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/772
+            int maxTotalValues = 10_000_000;
+            if (intensities.GetLength(1) * intensities.GetLength(0) > maxTotalValues)
+            {
+                throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
+                    $"with more than {maxTotalValues:N0} values");
+            }
+
             DataWidth = intensities.GetLength(1);
             DataHeight = intensities.GetLength(0);
+
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
@@ -334,14 +354,6 @@ namespace ScottPlot.Plottable
         {
             if (BmpHeatmap is null)
                 throw new InvalidOperationException("Update() was not called prior to rendering");
-
-            if (deepValidation)
-            {
-                if (DataWidth > 1e6 || DataHeight > 1e6)
-                    throw new ArgumentException("Heatmaps may be unreliable for arrays with edges larger than 1 million values");
-                if (DataWidth * DataHeight > 1e7)
-                    throw new ArgumentException("Heatmaps may be unreliable for arrays with more than 10 million values");
-            }
         }
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
