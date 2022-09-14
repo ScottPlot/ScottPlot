@@ -14,12 +14,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1343.22" />
         <PackageReference Include="windows7apicodepack-shell" Version="1.1.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+        <ProjectReference Include="..\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj" />
     </ItemGroup>
 
     <ItemGroup>
