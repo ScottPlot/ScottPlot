@@ -19,6 +19,7 @@ public class Signal : IPlottable
 
     public Color Color = new(0, 0, 255);
     public float LineWidth = 1;
+    public string? Label { get; set; }
 
     public Signal(DataSource.ISignalSource data)
     {
@@ -26,6 +27,14 @@ public class Signal : IPlottable
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
+    public IList<LegendItem> GetLegendItems() => new LegendItem[] {
+        new LegendItem
+        {
+            Label = Label,
+            Marker = new(Style.MarkerShape.Circle, Color),
+            Line = new(Color, LineWidth)
+        }
+    };
 
     /// <summary>
     /// Return Y data limits for each pixel column in the data area

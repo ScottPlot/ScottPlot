@@ -10,6 +10,7 @@ public class DebugBenchmark : IPlottable
     public bool IsVisible { get; set; } = false;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+    public IList<LegendItem> GetLegendItems() => Array.Empty<LegendItem>();
 
     public void Render(SKSurface surface)
     {

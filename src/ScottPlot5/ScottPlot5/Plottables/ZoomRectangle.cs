@@ -8,6 +8,7 @@ public class ZoomRectangle : IPlottable
     public bool IsVisible { get; set; } = false;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+    public IList<LegendItem> GetLegendItems() => Array.Empty<LegendItem>();
 
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
     public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);

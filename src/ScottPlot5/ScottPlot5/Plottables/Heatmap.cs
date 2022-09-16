@@ -156,6 +156,7 @@ namespace ScottPlot.Plottables
         {
             return new(AlignedExtent);
         }
+        public IList<LegendItem> GetLegendItems() => Array.Empty<LegendItem>();
 
         public void Render(SKSurface surface)
         {
