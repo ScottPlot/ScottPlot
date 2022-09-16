@@ -17,15 +17,16 @@ namespace ScottPlot.Plottables
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = Axis.Axes.Default;
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+        public IList<LegendItem> GetLegendItems() => Array.Empty<LegendItem>();
 
         public Corner Position { get; set; } = Corner.BottomRight; // TODO: Should we support positions that aren't corners?
-        public IList<LegendItem> LegendItems { get; set; }
+        public IEnumerable<LegendItem> LegendItems { get; set; }
         public SKFont Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
         public Stroke Border { get; set; } = new(Colors.DarkGray, 1);
         public Fill Background { get; set; } = new Fill(Colors.White);
 
 
-        public Legend(IList<LegendItem> legendItems)
+        public Legend(IEnumerable<LegendItem> legendItems)
         {
             LegendItems = legendItems;
         }
@@ -60,6 +61,11 @@ namespace ScottPlot.Plottables
 
         private void RenderLegendItem(SKSurface surface, LegendItem item, float y)
         {
+            if (ShouldHide(item))
+            {
+                return;
+            }
+
             using ScopedTransform transform = new(surface.Canvas);
             using SKPaint paint = new(Font);
             paint.SetFill(new(Colors.Black));
@@ -69,7 +75,10 @@ namespace ScottPlot.Plottables
             float top = y;
 
             RenderLegendSymbol(surface, item, new(0, top, SymbolWidth, top + paint.TextSize));
-            surface.Canvas.DrawText(item.Label, new(HorizontalPadding + SymbolWidth, top + paint.TextSize), paint);
+
+            float x = HasSymbol(item) ? HorizontalPadding + SymbolWidth : 0;
+
+            surface.Canvas.DrawText(item.Label ?? "", new(x, top + paint.TextSize), paint);
 
             y += Measure(item, false).Height;
             foreach (var curr in item.Children)
@@ -82,6 +91,7 @@ namespace ScottPlot.Plottables
         private void RenderLegendSymbol(SKSurface surface, LegendItem item, SKRect rect)
         {
             using SKPaint paint = new();
+
             if (item.Line.HasValue)
             {
                 paint.SetStroke(item.Line.Value);
@@ -114,24 +124,30 @@ namespace ScottPlot.Plottables
 
         public PixelSize Measure(LegendItem item, bool includeChildren = true)
         {
+            if (ShouldHide(item))
+            {
+                return PixelSize.Zero;
+            }
+            
             using SKPaint paint = new(Font);
 
             PixelSize labelRect = Drawing.MeasureString(item.Label ?? "", paint);
 
             float width = HorizontalPadding + SymbolWidth + HorizontalPadding + labelRect.Width + HorizontalPadding;
-            float height = 2 * VerticalPadding + labelRect.Height;
+            float height = string.IsNullOrEmpty(item.Label) ? VerticalPadding / 2 : 2 * VerticalPadding + labelRect.Height;
+            var childrenArray = item.Children.ToArray(); // Avoids enumerating the children enumerable multiple times
 
-            if (item.Children.Count > 0)
+            if (childrenArray.Length > 0)
             {
                 width += HorizontalPadding;
             }
 
             if (includeChildren)
             {
-                for (int i = 0; i < item.Children.Count; i++)
+                for (int i = 0; i < childrenArray.Length; i++)
                 {
-                    var childSize = Measure(item.Children[i]);
-                    width = Math.Max(width, childSize.Width);
+                    var childSize = Measure(childrenArray[i]);
+                    width = Math.Max(width, HorizontalPadding + childSize.Width);
                     height += childSize.Height;
                 }
             }
@@ -164,5 +180,9 @@ namespace ScottPlot.Plottables
                 _ => throw new NotImplementedException(),
             };
         }
+
+        private bool ShouldHide(LegendItem item) => string.IsNullOrEmpty(item.Label) && !(item.Children?.Any(c => !ShouldHide(c)) ?? false);
+
+        private bool HasSymbol(LegendItem item) => item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
     }
 }
