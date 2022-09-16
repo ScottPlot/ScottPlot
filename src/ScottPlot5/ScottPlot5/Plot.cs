@@ -44,7 +44,7 @@ public class Plot
     /// The primary vertical axis (the first one in the list of <see cref="YAxes"/>)
     /// </summary>
     public IYAxis YAxis => YAxes.First();
-    
+
     public Plot()
     {
         var xAxis = new Axis.StandardAxes.BottomAxis();
@@ -262,10 +262,10 @@ public class Plot
     #region Legend
     public IEnumerable<LegendItem> LegendItems()
     {
-        foreach(var curr in Plottables)
+        foreach (var curr in Plottables)
             foreach (var item in curr.GetLegendItems())
                 yield return item;
     }
-    
+
     #endregion
 }

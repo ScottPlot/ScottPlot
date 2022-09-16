@@ -128,7 +128,7 @@ namespace ScottPlot.Plottables
             {
                 return PixelSize.Zero;
             }
-            
+
             using SKPaint paint = new(Font);
 
             PixelSize labelRect = Drawing.MeasureString(item.Label ?? "", paint);

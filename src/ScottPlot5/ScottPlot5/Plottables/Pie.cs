@@ -47,7 +47,7 @@ namespace ScottPlot.Plottables
             new LegendItem
             {
                 Label = Label,
-                Children = Slices.Select(slice => new LegendItem { 
+                Children = Slices.Select(slice => new LegendItem {
                     Label = slice.Label,
                     Fill = slice.Fill
                 }).ToArray()
