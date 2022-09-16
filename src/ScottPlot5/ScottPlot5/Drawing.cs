@@ -15,7 +15,7 @@ public static class Drawing
     {
         SKRect bounds = new();
         paint.MeasureText(text, ref bounds);
-        
+
         float width = bounds.Width;
         float height = bounds.Height;
         return new PixelSize(width, height);

@@ -51,7 +51,7 @@ namespace ScottPlot.Plottables
             surface.Canvas.Translate(Border.Width, Border.Width);
 
             float y = VerticalPadding;
-            foreach(var curr in LegendItems)
+            foreach (var curr in LegendItems)
             {
                 RenderLegendItem(surface, curr, y);
                 y += Measure(curr).Height;
@@ -70,9 +70,9 @@ namespace ScottPlot.Plottables
 
             RenderLegendSymbol(surface, item, new(0, top, SymbolWidth, top + paint.TextSize));
             surface.Canvas.DrawText(item.Label, new(HorizontalPadding + SymbolWidth, top + paint.TextSize), paint);
-            
+
             y += Measure(item, false).Height;
-            foreach(var curr in item.Children)
+            foreach (var curr in item.Children)
             {
                 RenderLegendItem(surface, curr, y);
                 y += Measure(curr).Height;
@@ -110,8 +110,8 @@ namespace ScottPlot.Plottables
 
                 surface.Canvas.DrawRect(rect, paint);
             }
-        } 
- 
+        }
+
         public PixelSize Measure(LegendItem item, bool includeChildren = true)
         {
             using SKPaint paint = new(Font);
@@ -145,7 +145,7 @@ namespace ScottPlot.Plottables
                 .Select((LegendItem item) => Measure(item))
                 .Aggregate(
                     new PixelSize(Border.Width * 2, Border.Width * 2),
-                    (a, b) => 
+                    (a, b) =>
                         new(
                             Math.Max(a.Width, b.Width),
                             a.Height + b.Height)
