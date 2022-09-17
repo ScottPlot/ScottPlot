@@ -263,7 +263,7 @@ public class Plot
     public IEnumerable<LegendItem> LegendItems()
     {
         foreach (var curr in Plottables)
-            foreach (var item in curr.GetLegendItems())
+            foreach (var item in curr.LegendItems)
                 yield return item;
     }
 

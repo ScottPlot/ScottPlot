@@ -43,16 +43,15 @@ namespace ScottPlot.Plottables
                 yMin: -1 - ExplodeFraction - padding,
                 yMax: 1 + ExplodeFraction + padding);
         }
-        public IList<LegendItem> GetLegendItems() => new LegendItem[] {
+        public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
             new LegendItem
             {
                 Label = Label,
                 Children = Slices.Select(slice => new LegendItem {
                     Label = slice.Label,
                     Fill = slice.Fill
-                }).ToArray()
-            }
-        };
+                })
+            });
 
         public void Render(SKSurface surface)
         {

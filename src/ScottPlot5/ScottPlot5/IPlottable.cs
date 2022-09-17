@@ -31,5 +31,5 @@ public interface IPlottable
     /// By default the surface is already clipped to the data area, but this can be cleared inside the plottable.
     /// </summary>
     void Render(SKSurface surface);
-    IList<LegendItem> GetLegendItems();
+    IEnumerable<LegendItem> LegendItems { get; }
 }

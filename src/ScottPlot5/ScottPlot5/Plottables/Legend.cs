@@ -17,10 +17,10 @@ namespace ScottPlot.Plottables
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = Axis.Axes.Default;
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
-        public IList<LegendItem> GetLegendItems() => Array.Empty<LegendItem>();
+        public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
         public Corner Position { get; set; } = Corner.BottomRight; // TODO: Should we support positions that aren't corners?
-        public IEnumerable<LegendItem> LegendItems { get; set; }
+        public IEnumerable<LegendItem> Items { get; set; }
         public SKFont Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
         public Stroke Border { get; set; } = new(Colors.DarkGray, 1);
         public Fill Background { get; set; } = new Fill(Colors.White);
@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
 
         public Legend(IEnumerable<LegendItem> legendItems)
         {
-            LegendItems = legendItems;
+            Items = legendItems;
         }
 
         public void Render(SKSurface surface)
@@ -52,7 +52,7 @@ namespace ScottPlot.Plottables
             surface.Canvas.Translate(Border.Width, Border.Width);
 
             float y = VerticalPadding;
-            foreach (var curr in LegendItems)
+            foreach (var curr in Items)
             {
                 RenderLegendItem(surface, curr, y);
                 y += Measure(curr).Height;
@@ -157,7 +157,7 @@ namespace ScottPlot.Plottables
 
         // I'm a Javascript developer, this was bound to happen someday
         public PixelSize Measure() =>
-            LegendItems
+            Items
                 .Select((LegendItem item) => Measure(item))
                 .Aggregate(
                     new PixelSize(Border.Width * 2, Border.Width * 2),
