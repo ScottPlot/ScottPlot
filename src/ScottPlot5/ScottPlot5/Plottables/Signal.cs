@@ -27,10 +27,11 @@ public class Signal : IPlottable
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
-    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One( 
-        new LegendItem { 
-            Label = Label, 
-            Marker = new(Style.MarkerShape.Circle, Color), 
+    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+        new LegendItem
+        {
+            Label = Label,
+            Marker = new(Style.MarkerShape.Circle, Color),
             Line = new(Color, LineWidth)
         });
 
