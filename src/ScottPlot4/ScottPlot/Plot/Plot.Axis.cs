@@ -308,7 +308,8 @@ namespace ScottPlot
         {
             IEnumerable<Renderable.Axis> results = settings.Axes;
 
-            if (axisIndex.HasValue) {
+            if (axisIndex.HasValue)
+            {
                 results = results.Where(axis => axis.AxisIndex == axisIndex.Value);
             }
 
