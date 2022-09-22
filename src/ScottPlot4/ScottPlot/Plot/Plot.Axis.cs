@@ -10,6 +10,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -294,6 +295,29 @@ namespace ScottPlot
         public void RemoveAxis(Renderable.Axis axis)
         {
             settings.Axes.Remove(axis);
+        }
+
+
+        /// <summary>
+        /// Returns axes matching the given axisIndex and isVertical.
+        /// </summary>
+        /// <param name="axisIndex">The axis index to match, or null to allow any index</param>
+        /// <param name="isVertical">True to match only Y axes, false to match only X axes, or null to match either</param>
+        /// <returns>The axes matching the given properties</returns>
+        public IEnumerable<Renderable.Axis> GetAxesMatching(int? axisIndex = null, bool? isVertical = null)
+        {
+            IEnumerable<Renderable.Axis> results = settings.Axes;
+
+            if (axisIndex.HasValue) {
+                results = results.Where(axis => axis.AxisIndex == axisIndex.Value);
+            }
+
+            if (isVertical.HasValue)
+            {
+                results = results.Where(axis => axis.IsVertical == isVertical.Value);
+            }
+
+            return results;
         }
 
         #endregion
