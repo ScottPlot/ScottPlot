@@ -241,6 +241,15 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Manually define the string format to use for translating exponential part of a number to corner label
+        /// </summary>
+        /// <param name="format"> String.Format(format,exponent)</param>
+        public void CornerLabelFormat(string format)
+        {
+            AxisTicks.TickCollection.CornerLabelFormat = format;
+        }
+
+        /// <summary>
         /// Customize string settings for the tick labels
         /// </summary>
         public void TickLabelNotation(
