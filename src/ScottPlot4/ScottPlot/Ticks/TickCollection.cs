@@ -390,7 +390,7 @@ namespace ScottPlot.Ticks
             return Math.Round(value, 10).ToString("G", culture);
         }
 
-        public virtual (string[], string) GetPrettyTickLabels(
+        public (string[], string) GetPrettyTickLabels(
                 double[] positions,
                 bool useMultiplierNotation,
                 bool useOffsetNotation,
