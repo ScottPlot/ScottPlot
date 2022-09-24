@@ -69,8 +69,8 @@ namespace ScottPlotTests.Ticks
 
             var ticks12Hour = dateTimeKinds.Select(kind => factory.Create(kind, culture12HourClock, 1, null).GetTicksAndLabels(almostMidnight, almostMidnight, null));
             var ticks24Hour = dateTimeKinds.Select(kind => factory.Create(kind, culture24HourClock, 1, null).GetTicksAndLabels(almostMidnight, almostMidnight, null));
-            
-            foreach(var label in ticks12Hour.SelectMany(c => c.Labels))
+
+            foreach (var label in ticks12Hour.SelectMany(c => c.Labels))
             {
                 // The first line contains the date, the second line contains the time
                 StringAssert.StartsWith("11:59:59", label.Split('\n')[1]);

@@ -25,7 +25,7 @@ namespace ScottPlot.Ticks.DateTimeTickUnits
         protected override string GetTickLabel(DateTime value)
         {
             string date = value.ToString("d", culture); // short date
-            
+
             string hourSpecifier = Tools.Uses24HourClock(culture) ? "HH" : "hh";
             string time = value.ToString($"{hourSpecifier}:mm:ss.fff", culture); // long time
             return $"{date}\n{time}";
