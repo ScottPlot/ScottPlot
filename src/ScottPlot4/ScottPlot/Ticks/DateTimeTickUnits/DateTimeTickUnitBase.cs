@@ -34,7 +34,7 @@ namespace ScottPlot.Ticks.DateTimeTickUnits
         protected virtual string GetTickLabel(DateTime value)
         {
             string date = value.ToString("d", culture); // short date
-            string time = value.ToString("t", culture); // short time
+            string time = value.ToString("T", culture); // long time
             return $"{date}\n{time}";
         }
 
