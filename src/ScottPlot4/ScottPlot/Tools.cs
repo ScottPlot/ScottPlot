@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -461,5 +462,7 @@ namespace ScottPlot
 
             return output;
         }
+
+        public static bool Uses24HourClock(CultureInfo culture) => culture.DateTimeFormat.LongTimePattern.Contains("H");
     }
 }
