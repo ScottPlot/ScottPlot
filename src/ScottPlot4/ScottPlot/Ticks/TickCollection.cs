@@ -31,6 +31,11 @@ namespace ScottPlot.Ticks
         public string[] additionalTickLabels;
 
         /// <summary>
+        /// Controls how to translate exponential part of a number to strings
+        /// </summary>
+        public string CornerLabelFormat { get; set; } = "E{0}";
+
+        /// <summary>
         /// Label to show in the corner when using multiplier or offset notation
         /// </summary>
         public string CornerLabel { get; private set; }
@@ -434,7 +439,7 @@ namespace ScottPlot.Ticks
             if (useExponentialNotation)
             {
                 if (multiplier != 1)
-                    cornerLabel += $"e{exponent} ";
+                    cornerLabel += String.Format(CornerLabelFormat, exponent);
                 if (offset != 0)
                     cornerLabel += Tools.ScientificNotation(offset);
             }
