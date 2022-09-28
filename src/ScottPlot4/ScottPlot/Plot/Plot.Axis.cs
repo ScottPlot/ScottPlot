@@ -10,6 +10,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -254,30 +255,33 @@ namespace ScottPlot
         #endregion
 
         #region Axis creation
+        private int NextAxisIndex => settings.Axes.Select(a => a.AxisIndex).Max() + 1; // MaxBy isn't available on all targets
 
         /// <summary>
         /// Create and return an additional axis
         /// </summary>
         /// <param name="edge">Edge of the plot the new axis will belong to</param>
-        /// <param name="axisIndex">Only plottables with the same axis index will use this axis</param>
+        /// <param name="axisIndex">Only plottables with the same axis index will use this axis. Creates an auto-generated index if null.</param>
         /// <param name="title">defualt label to use for the axis</param>
         /// <param name="color">defualt color to use for the axis</param>
         /// <returns>The axis that was just created and added to the plot. You can further customize it by interacting with it.</returns>
-        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, Color? color = null)
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int? axisIndex = null, string title = null, Color? color = null)
         {
+            axisIndex ??= NextAxisIndex;
+
             if (axisIndex <= 1)
                 throw new ArgumentException("The default axes already occupy indexes 0 and 1. Additional axes require higher indexes.");
 
             Renderable.Axis axis;
 
             if (edge == Renderable.Edge.Left)
-                axis = new Renderable.AdditionalLeftAxis(axisIndex, title);
+                axis = new Renderable.AdditionalLeftAxis(axisIndex.Value, title);
             else if (edge == Renderable.Edge.Right)
-                axis = new Renderable.AdditionalRightAxis(axisIndex, title);
+                axis = new Renderable.AdditionalRightAxis(axisIndex.Value, title);
             else if (edge == Renderable.Edge.Bottom)
-                axis = new Renderable.AdditionalBottomAxis(axisIndex, title);
+                axis = new Renderable.AdditionalBottomAxis(axisIndex.Value, title);
             else if (edge == Renderable.Edge.Top)
-                axis = new Renderable.AdditionalTopAxis(axisIndex, title);
+                axis = new Renderable.AdditionalTopAxis(axisIndex.Value, title);
             else
                 throw new NotImplementedException("unsupported edge");
 
@@ -294,6 +298,29 @@ namespace ScottPlot
         public void RemoveAxis(Renderable.Axis axis)
         {
             settings.Axes.Remove(axis);
+        }
+
+        /// <summary>
+        /// Returns axes matching the given axisIndex and isVertical.
+        /// </summary>
+        /// <param name="axisIndex">The axis index to match, or null to allow any index</param>
+        /// <param name="isVertical">True to match only Y axes, false to match only X axes, or null to match either</param>
+        /// <returns>The axes matching the given properties</returns>
+        public IEnumerable<Renderable.Axis> GetAxesMatching(int? axisIndex = null, bool? isVertical = null)
+        {
+            IEnumerable<Renderable.Axis> results = settings.Axes;
+
+            if (axisIndex.HasValue)
+            {
+                results = results.Where(axis => axis.AxisIndex == axisIndex.Value);
+            }
+
+            if (isVertical.HasValue)
+            {
+                results = results.Where(axis => axis.IsVertical == isVertical.Value);
+            }
+
+            return results;
         }
 
         #endregion
