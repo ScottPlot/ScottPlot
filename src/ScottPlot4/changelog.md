@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.59
 _not yet published on NuGet..._
+* Ticks: Improve datetime tick labels for systems with a 24-hour display format (#2132, #2135) _Thanks @MareMare and @bclehmann_
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
