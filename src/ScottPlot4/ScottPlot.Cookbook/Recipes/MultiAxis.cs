@@ -59,8 +59,8 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot another set of data using an additional axis
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100));
-            var yAxis3 = plt.AddAxis(Renderable.Edge.Left, axisIndex: 2);
-            sigBig.YAxisIndex = 2;
+            var yAxis3 = plt.AddAxis(Renderable.Edge.Left);
+            sigBig.YAxisIndex = yAxis3.AxisIndex;
             yAxis3.Label("Additional Axis");
             yAxis3.Color(sigBig.Color);
         }

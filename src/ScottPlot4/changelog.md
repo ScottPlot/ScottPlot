@@ -2,6 +2,10 @@
 
 ## ScottPlot 4.1.59
 _not yet published on NuGet..._
+* Ticks: Improve datetime tick labels for systems with a 24-hour display format (#2132, #2135) _Thanks @MareMare and @bclehmann_
+* Axis: `Plot.AddAxis()` now uses auto-incremented axis index unless one is explicitly defined (#2133) _Thanks @bclehmann and Discord/Nick_
+* Axis: `Plot.GetAxesMatching()` was created to obtain a given vertical or horizontal axis (#2133) _Thanks @bclehmann and Discord/Nick_
+* Axis: Corner label format can be customized for any axis by calling `CornerLabelFormat()` (#2134) _Thanks @ShannonZ_
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
