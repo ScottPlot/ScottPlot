@@ -3,6 +3,7 @@ using ScottPlot.Axis;
 using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
 using SkiaSharp;
+using ScottPlot.Plottables;
 
 namespace ScottPlot;
 
@@ -254,6 +255,16 @@ public class Plot
 
         byte[] bytes = GetImageBytes(width, height, format, quality);
         File.WriteAllBytes(path, bytes);
+    }
+
+    #endregion
+
+    #region Legend
+    public IEnumerable<LegendItem> LegendItems()
+    {
+        foreach (var curr in Plottables)
+            foreach (var item in curr.LegendItems)
+                yield return item;
     }
 
     #endregion

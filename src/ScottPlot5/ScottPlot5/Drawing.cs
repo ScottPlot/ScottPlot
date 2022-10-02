@@ -13,8 +13,11 @@ public static class Drawing
      */
     public static PixelSize MeasureString(string text, SKPaint paint)
     {
-        float width = paint.MeasureText(text);
-        float height = paint.TextSize;
+        SKRect bounds = new();
+        paint.MeasureText(text, ref bounds);
+
+        float width = bounds.Width;
+        float height = bounds.Height;
         return new PixelSize(width, height);
     }
 

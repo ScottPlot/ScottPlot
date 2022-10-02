@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables
 {
     public class PieSlice
     {
-        public Label? Label { get; set; } = null; // TODO: render label
+        public string? Label { get; set; } // TODO: render label
         public double Value { get; set; }
         public Fill Fill { get; set; }
 
@@ -21,6 +21,7 @@ namespace ScottPlot.Plottables
 
     public class Pie : IPlottable
     {
+        public string? Label { get; set; }
         public IList<PieSlice> Slices { get; set; }
         public Stroke Stroke { get; set; } = new() { Width = 0 };
         public bool IsVisible { get; set; } = true;
@@ -42,6 +43,16 @@ namespace ScottPlot.Plottables
                 yMin: -1 - ExplodeFraction - padding,
                 yMax: 1 + ExplodeFraction + padding);
         }
+        public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+            new LegendItem
+            {
+                Label = Label,
+                Children = Slices.Select(slice => new LegendItem
+                {
+                    Label = slice.Label,
+                    Fill = slice.Fill
+                })
+            });
 
         public void Render(SKSurface surface)
         {
