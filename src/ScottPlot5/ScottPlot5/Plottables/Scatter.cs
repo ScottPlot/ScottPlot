@@ -11,10 +11,18 @@ namespace ScottPlot.Plottables;
 
 public class Scatter : IPlottable
 {
+    public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
+    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One<LegendItem>(
+        new LegendItem
+        {
+            Label = Label,
+            Marker = new(Style.MarkerShape.Circle, Color, MarkerSize),
+            Line = new(Color, LineWidth),
+        });
 
     public readonly DataSource.IScatterSource Data;
     public Color Color = new(0, 0, 255);

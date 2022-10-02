@@ -8,9 +8,16 @@ public class DebugPoint : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+        new LegendItem
+        {
+            Label = Label,
+            Marker = new(Style.MarkerShape.Circle, Color)
+        });
 
     public Coordinates Position { get; set; }
     public Color Color { get; set; } = new(255, 00, 255);
+    public string? Label { get; set; }
 
     public DebugPoint()
     {
