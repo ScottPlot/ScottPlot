@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1200"
+   height="630"
+   viewBox="0 0 317.49998 166.6875"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="github-banner.svg"
+   inkscape:export-filename="C:\Users\scott\Documents\GitHub\ScottPlot\dev\icon\v5\github-banner.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="651.47902"
+     inkscape:cy="399.92208"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:pagecheckerboard="true"
+     borderlayer="true"
+     inkscape:showpageshadow="true"
+     inkscape:window-width="1740"
+     inkscape:window-height="954"
+     inkscape:window-x="3178"
+     inkscape:window-y="284"
+     inkscape:window-maximized="0"
+     showborder="true"
+     inkscape:snap-path-clip="false"
+     guidetolerance="10000">
+    <inkscape:grid
+       type="xygrid"
+       id="grid833"
+       spacingx="8.4666666"
+       spacingy="8.4666666" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#67217a;fill-opacity:1;stroke:none;stroke-width:9.9909;stroke-linejoin:round;paint-order:fill markers stroke"
+       id="rect841"
+       width="317.5"
+       height="166.6875"
+       x="0"
+       y="0"
+       ry="0" />
+    <g
+       id="g918"
+       transform="matrix(0.62771655,0,0,0.62771655,58.921953,21.340923)">
+      <g
+         id="g837"
+         transform="translate(91.016927,15.213543)">
+        <path
+           id="rect835"
+           style="opacity:1;fill:#67217a;fill-opacity:1;stroke:#ffffff;stroke-width:0.755906;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.0645161"
+           d="M 128,0 C 57.088004,0 0,57.088004 0,128 V 362.88672 L 147.19531,207.47656 263.32617,289.15625 488.67188,54.134766 C 465.53924,21.342617 427.35552,0 384,0 Z M 512,139.02734 272.95312,388.33984 157.14648,306.88867 19.544922,452.17773 C 42.151668,488.16713 82.186824,512 128,512 h 256 c 70.912,0 128,-57.088 128,-128 z"
+           transform="scale(0.26458333)" />
+        <path
+           id="rect835-5"
+           style="fill:#9a4993;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           d="M 512,139.02344 272.95312,388.33984 157.14648,306.88672 19.544922,452.17773 C 42.151668,488.16713 82.186825,512 128,512 h 256 c 70.91199,0 128,-57.08797 128,-128 z"
+           transform="scale(0.26458333)" />
+        <path
+           id="rect835-8"
+           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.0645161"
+           d="M 129.29392,14.323157 69.671715,76.505924 38.944909,54.894839 -5.1858333e-4,96.013777 V 101.6 c 0,6.64073 1.89435848333,12.82194 5.17125998333,18.03869 L 41.577823,81.197626 72.218329,102.74825 135.46615,36.784317 v -2.917651 c 0,-7.290985 -2.28209,-14.028938 -6.17223,-19.543509 z" />
+      </g>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#9a4993;stroke-width:15;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+         id="rect911"
+         width="135.4409"
+         height="135.16701"
+         x="91.313187"
+         y="15.235895"
+         ry="27.641289" />
+    </g>
+    <g
+       id="g919"
+       style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="matrix(0.7819027,0,0,0.7819027,32.489338,21.436868)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.3135px;line-height:1.25;font-family:Praxis-Light;-inkscape-font-specification:Praxis-Light;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+         x="100.09174"
+         y="151.90172"
+         id="text863"><tspan
+           sodipodi:role="line"
+           id="tspan861"
+           x="100.09174"
+           y="151.90172"
+           style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">ScottPlot</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.3135px;line-height:1.25;font-family:Praxis-Light;-inkscape-font-specification:Praxis-Light;fill:#9a4993;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+         x="181.91885"
+         y="152.0506"
+         id="text863-7"><tspan
+           sodipodi:role="line"
+           id="tspan861-4"
+           x="181.91885"
+           y="152.0506"
+           style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#9a4993;fill-opacity:1;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">.NET</tspan></text>
+    </g>
+  </g>
+</svg>
