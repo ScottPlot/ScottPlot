@@ -56,6 +56,11 @@ public class BarSeries : IPlottable
             float top = dims.GetPixelY(bar.Value);
             float width = right - left;
             float height = bottom - top;
+            if (bar.Value < 0)
+            {
+                (top, _) = (bottom, top);
+                height = -height;
+            }
             return new RectangleF(left, top, width, height);
         }
         else
