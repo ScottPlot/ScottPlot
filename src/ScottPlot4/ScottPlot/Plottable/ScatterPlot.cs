@@ -423,31 +423,34 @@ namespace ScottPlot.Plottable
                     DrawLinesWithGaps(points, gfx, penLine);
                 }
 
+                if (DataPointLabels != null)
+                {
+                    for (var i = 0; i < DataPointLabels.Length; i++)
+                    {
+                        var label = DataPointLabels[i];
+                        if (!string.IsNullOrEmpty(label))
+                        {
+                            Drawing.Font textFont = new();
+                            var stringSize = GDI.MeasureString(gfx, label, textFont);
+                            gfx.TranslateTransform(points[i].X, points[i].Y);
+                            gfx.RotateTransform(textFont.Rotation);
+
+                            (var dX, var dY) = GDI.TranslateString(gfx, label, textFont);
+                            gfx.TranslateTransform(-dX, -dY);
+
+                            using var font = GDI.Font(textFont);
+                            using var fontBrush = new SolidBrush(textFont.Color);
+                            gfx.DrawString(label, font, fontBrush, new PointF(0, 0));
+
+                            GDI.ResetTransformPreservingScale(gfx, dims);
+                        }
+                    }
+                }
+
                 // draw a marker at each point
                 if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
                 {
                     MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
-                    if (DataPointLabels != null)
-                        for (var i = 0; i < DataPointLabels.Length; i++)
-                        {
-                            var label = DataPointLabels[i];
-                            if (!string.IsNullOrEmpty(label))
-                            {
-                                Drawing.Font textFont = new();
-                                var stringSize = GDI.MeasureString(gfx, label, textFont);
-                                gfx.TranslateTransform(points[i].X, points[i].Y);
-                                gfx.RotateTransform(textFont.Rotation);
-
-                                (var dX, var dY) = GDI.TranslateString(gfx, label, textFont);
-                                gfx.TranslateTransform(-dX, -dY);
-
-                                using var font = GDI.Font(textFont);
-                                using var fontBrush = new SolidBrush(textFont.Color);
-                                gfx.DrawString(label, font, fontBrush, new PointF(0, 0));
-
-                                GDI.ResetTransformPreservingScale(gfx, dims);
-                            }
-                        }
                 }
             }
         }
