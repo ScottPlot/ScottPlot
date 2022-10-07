@@ -45,7 +45,7 @@ namespace ScottPlot.Plottable
             double xStart = XMin.IsFinite() ? XMin : dims.XMin;
             double xEnd = XMax.IsFinite() ? XMax : dims.XMax;
             double width = xEnd - xStart;
-            
+
             PointCount = (int)(width * dims.PxPerUnitX) + 1;
 
             for (int columnIndex = 0; columnIndex < PointCount; columnIndex++)
@@ -58,7 +58,7 @@ namespace ScottPlot.Plottable
                     Debug.WriteLine($"Y({x}) failed because y was null");
                     continue;
                 }
-                
+
                 if (double.IsNaN(y.Value) || double.IsInfinity(y.Value))
                 {
                     Debug.WriteLine($"Y({x}) failed because y was not a real number");
