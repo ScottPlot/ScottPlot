@@ -18,6 +18,7 @@ namespace ScottPlot.Plottable
         public double[] XError { get; set; }
         public double[] YError { get; set; }
         public string[] DataPointLabels { get; set; }
+        public Drawing.Font DataPointLabelFont { get; set; } = new();
 
         public enum NanBehavior
         {
@@ -423,23 +424,21 @@ namespace ScottPlot.Plottable
                     DrawLinesWithGaps(points, gfx, penLine);
                 }
 
-                if (DataPointLabels != null)
+                if (DataPointLabels is not null)
                 {
                     for (var i = 0; i < DataPointLabels.Length; i++)
                     {
                         var label = DataPointLabels[i];
                         if (!string.IsNullOrEmpty(label))
                         {
-                            Drawing.Font textFont = new();
-                            var stringSize = GDI.MeasureString(gfx, label, textFont);
                             gfx.TranslateTransform(points[i].X, points[i].Y);
-                            gfx.RotateTransform(textFont.Rotation);
+                            gfx.RotateTransform(DataPointLabelFont.Rotation);
 
-                            (var dX, var dY) = GDI.TranslateString(gfx, label, textFont);
+                            var (dX, dY) = GDI.TranslateString(gfx, label, DataPointLabelFont);
                             gfx.TranslateTransform(-dX, -dY);
 
-                            using var font = GDI.Font(textFont);
-                            using var fontBrush = new SolidBrush(textFont.Color);
+                            using var font = GDI.Font(DataPointLabelFont);
+                            using var fontBrush = new SolidBrush(DataPointLabelFont.Color);
                             gfx.DrawString(label, font, fontBrush, new PointF(0, 0));
 
                             GDI.ResetTransformPreservingScale(gfx, dims);
