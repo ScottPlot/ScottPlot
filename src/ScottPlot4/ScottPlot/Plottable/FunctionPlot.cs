@@ -43,24 +43,22 @@ namespace ScottPlot.Plottable
             for (int columnIndex = 0; columnIndex < dims.DataWidth; columnIndex++)
             {
                 double x = columnIndex * dims.UnitsPerPxX + dims.XMin;
-                try
+                double? y = Function(x);
+
+                if (y is null)
                 {
-                    double? y = Function(x);
-
-                    if (y is null)
-                        throw new NoNullAllowedException();
-
-                    if (double.IsNaN(y.Value) || double.IsInfinity(y.Value))
-                        throw new ArithmeticException("not a real number");
-
-                    xList.Add(x);
-                    yList.Add(y.Value);
-                }
-                catch (Exception e) //Domain error, such log(-1) or 1/0
-                {
-                    Debug.WriteLine($"Y({x}) failed because {e}");
+                    Debug.WriteLine($"Y({x}) failed because y was null");
                     continue;
                 }
+                
+                if (double.IsNaN(y.Value) || double.IsInfinity(y.Value))
+                {
+                    Debug.WriteLine($"Y({x}) failed because y was not a real number");
+                    continue;
+                }
+
+                xList.Add(x);
+                yList.Add(y.Value);
             }
 
             // create a temporary scatter plot and use it for rendering
