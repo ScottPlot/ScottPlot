@@ -17,6 +17,8 @@ namespace ScottPlot.Plottable
         public double[] Ys { get; private set; }
         public double[] XError { get; set; }
         public double[] YError { get; set; }
+        public string[] DataPointLabels { get; set; }
+        public Drawing.Font DataPointLabelFont { get; set; } = new();
 
         public enum NanBehavior
         {
@@ -420,6 +422,28 @@ namespace ScottPlot.Plottable
                 else if (OnNaN == NanBehavior.Gap)
                 {
                     DrawLinesWithGaps(points, gfx, penLine);
+                }
+
+                if (DataPointLabels is not null)
+                {
+                    for (var i = 0; i < DataPointLabels.Length; i++)
+                    {
+                        var label = DataPointLabels[i];
+                        if (!string.IsNullOrEmpty(label))
+                        {
+                            gfx.TranslateTransform(points[i].X, points[i].Y);
+                            gfx.RotateTransform(DataPointLabelFont.Rotation);
+
+                            var (dX, dY) = GDI.TranslateString(gfx, label, DataPointLabelFont);
+                            gfx.TranslateTransform(-dX, -dY);
+
+                            using var font = GDI.Font(DataPointLabelFont);
+                            using var fontBrush = new SolidBrush(DataPointLabelFont.Color);
+                            gfx.DrawString(label, font, fontBrush, new PointF(0, 0));
+
+                            GDI.ResetTransformPreservingScale(gfx, dims);
+                        }
+                    }
                 }
 
                 // draw a marker at each point

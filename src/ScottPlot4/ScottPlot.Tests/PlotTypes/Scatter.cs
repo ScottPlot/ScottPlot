@@ -181,5 +181,19 @@ namespace ScottPlotTests.PlotTypes
             sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             Assert.DoesNotThrow(() => { plt.Render(); });
         }
+
+        [Test]
+        public void Test_Scatter_DataPointLabels()
+        {
+            double[] xs = { 18.5, 20.6, 22.3, 24.5, 26.6, 15, 15 };
+            double[] ys = { 1.43, 1.48, 1.6, 1.59, 1.53, 1.52, 1.6 };
+            string[] labels = { "test", "1", "2", "3", "4", "5", "6" };
+
+            var plt = new ScottPlot.Plot(400, 300);
+            var scatter = plt.AddScatter(xs, ys);
+            scatter.DataPointLabels = labels;
+            Assert.DoesNotThrow(() => { plt.Render(); });
+            TestTools.SaveFig(plt);
+        }
     }
 }
