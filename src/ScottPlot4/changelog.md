@@ -7,7 +7,9 @@ _not yet published on NuGet..._
 * Axis: `Plot.GetAxesMatching()` was created to obtain a given vertical or horizontal axis (#2133) _Thanks @bclehmann and Discord/Nick_
 * Axis: Corner label format can be customized for any axis by calling `CornerLabelFormat()` (#2134) _Thanks @ShannonZ_
 * BarSeries: Improved rendering of negative values (#2147, #2152) _Thanks @fe-c_
+* Function Plot: Added optional `XMin` and `XMax` fields which limit function rendering to a defined horizontal span (#2158, #2156, #2138) _Thanks @bclehmann and @phil100vol_
 * FormsPlot: Plot viewer now has `RefreshLegendImage()` allowing the pop-out legend to be redrawn programmatically (#2157, #2153) _Thanks @rosdyana_
+* Function Plot: Improved performance for functions which return null (#2158, #2156, #2138) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
