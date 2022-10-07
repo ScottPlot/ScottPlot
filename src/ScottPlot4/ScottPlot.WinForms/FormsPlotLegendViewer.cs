@@ -28,16 +28,7 @@ namespace ScottPlot
             RefreshLegendImage();
             ResizeWindowToFitLegendImage();
         }
-
-        private void OnClosed(object sender, EventArgs e)
-        {
-            RemoveHighlightFromAllPlottables();
-            Legend.IsDetached = false;
-            FormsPlot.Plot.Legend(enable: LegendWasInitiallyVisible, location: null);
-            FormsPlot.Refresh();
-        }
-
-        private void RefreshLegendImage()
+        public void RefreshLegendImage()
         {
             FormsPlot.Refresh();
             Legend.UpdateLegendItems(FormsPlot.Plot, includeHidden: true);
@@ -48,6 +39,14 @@ namespace ScottPlot
 
             if (originalImage is not null)
                 originalImage.Dispose();
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            RemoveHighlightFromAllPlottables();
+            Legend.IsDetached = false;
+            FormsPlot.Plot.Legend(enable: LegendWasInitiallyVisible, location: null);
+            FormsPlot.Refresh();
         }
 
         private void ResizeWindowToFitLegendImage()
