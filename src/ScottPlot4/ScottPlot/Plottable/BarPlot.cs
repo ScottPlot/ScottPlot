@@ -86,7 +86,8 @@ namespace ScottPlot.Plottable
 
                 using var valueTextFont = GDI.Font(Font);
                 using var valueTextBrush = GDI.Brush(Font.Color);
-                using var sf = new StringFormat() { 
+                using var sf = new StringFormat()
+                {
                     LineAlignment = belowBar ? StringAlignment.Near : StringAlignment.Far,
                     Alignment = StringAlignment.Center
                 };
@@ -134,7 +135,8 @@ namespace ScottPlot.Plottable
 
                 using var valueTextFont = GDI.Font(Font);
                 using var valueTextBrush = GDI.Brush(Font.Color);
-                using var sf = new StringFormat() { 
+                using var sf = new StringFormat()
+                {
                     LineAlignment = StringAlignment.Center,
                     Alignment = belowBar ? StringAlignment.Far : StringAlignment.Near
                 };
