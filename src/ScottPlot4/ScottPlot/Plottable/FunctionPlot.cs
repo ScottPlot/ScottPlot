@@ -25,6 +25,9 @@ namespace ScottPlot.Plottable
         public string Label { get; set; }
         public Color Color { get; set; } = Color.Black;
         public Color LineColor { get; set; } = Color.Black;
+        public double XMin { get; set; } = double.NegativeInfinity;
+        public double XMax { get; set; } = double.PositiveInfinity;
+
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
         public FunctionPlot(Func<double, double?> function)
@@ -39,10 +42,15 @@ namespace ScottPlot.Plottable
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
 
-            PointCount = (int)dims.DataWidth;
-            for (int columnIndex = 0; columnIndex < dims.DataWidth; columnIndex++)
+            double xStart = XMin.IsFinite() ? XMin : dims.XMin;
+            double xEnd = XMax.IsFinite() ? XMax : dims.XMax;
+            double width = xEnd - xStart;
+            
+            PointCount = (int)(width * dims.PxPerUnitX) + 1;
+
+            for (int columnIndex = 0; columnIndex < PointCount; columnIndex++)
             {
-                double x = columnIndex * dims.UnitsPerPxX + dims.XMin;
+                double x = columnIndex * dims.UnitsPerPxX + xStart;
                 double? y = Function(x);
 
                 if (y is null)
