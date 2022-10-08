@@ -137,7 +137,7 @@ public class BarSeries : IPlottable
                 {
                     using StringFormat sfHoriz = GDI.StringFormat(drawBelow ? HorizontalAlignment.Right : HorizontalAlignment.Left, VerticalAlignment.Middle);
 
-                    var pos = drawBelow ? rect.Left: rect.Right;
+                    var pos = drawBelow ? rect.Left : rect.Right;
                     gfx.DrawString(bar.Label, font, brush, pos, rect.Top + rect.Height / 2, sfHoriz);
                 }
             }
