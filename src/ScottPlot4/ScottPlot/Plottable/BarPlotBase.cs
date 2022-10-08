@@ -121,7 +121,14 @@ namespace ScottPlot.Plottable
             }
 
             if (ShowValuesAboveBars)
-                valueMax += (valueMax - valueMin) * .1; // increase by 10% to accommodate label
+            {
+                double span = valueMax - valueMin;
+                if (valueMax > 0)
+                    valueMax += span * .1; // increase by 10% to accommodate label
+
+                if (valueMin < 0)
+                    valueMin -= span * .1;
+            }
 
             positionMin -= BarWidth / 2;
             positionMax += BarWidth / 2;

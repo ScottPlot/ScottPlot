@@ -69,6 +69,14 @@ public class Bar
         double left = Position - Thickness / 2;
         double right = Position + Thickness / 2;
 
+        // Make room for labels, if present
+        if (Label is not null)
+        {
+            double span = top - bottom;
+            top += 0.1 * span;
+            bottom -= 0.1 * span;
+        }
+
         return IsVertical
             ? new AxisLimits(left, right, bottom, top)
             : new AxisLimits(bottom, top, left, right);
