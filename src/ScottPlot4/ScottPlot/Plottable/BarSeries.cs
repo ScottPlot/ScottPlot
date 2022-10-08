@@ -102,8 +102,6 @@ public class BarSeries : IPlottable
         using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
         using Brush brush = GDI.Brush(Color.Black);
         using Pen pen = GDI.Pen(Color.Black);
-        using StringFormat sfVert = GDI.StringFormat(Alignment.LowerCenter);
-        using StringFormat sfHoriz = GDI.StringFormat(Alignment.MiddleLeft);
 
         foreach (Bar bar in Bars)
         {
@@ -126,14 +124,21 @@ public class BarSeries : IPlottable
             {
                 using var font = GDI.Font(bar.Font);
                 ((SolidBrush)brush).Color = bar.Font.Color;
+                bool drawBelow = bar.Value < 0;
 
                 if (bar.IsVertical)
                 {
-                    gfx.DrawString(bar.Label, font, brush, rect.Left + rect.Width / 2, rect.Top, sfVert);
+                    using StringFormat sfVert = GDI.StringFormat(HorizontalAlignment.Center, drawBelow ? VerticalAlignment.Upper : VerticalAlignment.Lower);
+
+                    var pos = drawBelow ? rect.Bottom : rect.Top;
+                    gfx.DrawString(bar.Label, font, brush, rect.Left + rect.Width / 2, pos, sfVert);
                 }
                 else
                 {
-                    gfx.DrawString(bar.Label, font, brush, rect.Right, rect.Top + rect.Height / 2, sfHoriz);
+                    using StringFormat sfHoriz = GDI.StringFormat(drawBelow ? HorizontalAlignment.Right : HorizontalAlignment.Left, VerticalAlignment.Middle);
+
+                    var pos = drawBelow ? rect.Left: rect.Right;
+                    gfx.DrawString(bar.Label, font, brush, pos, rect.Top + rect.Height / 2, sfHoriz);
                 }
             }
         }
