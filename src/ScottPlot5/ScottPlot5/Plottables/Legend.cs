@@ -19,7 +19,7 @@ namespace ScottPlot.Plottables
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
         public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-        public Corner Position { get; set; } = Corner.BottomRight; // TODO: Should we support positions that aren't corners?
+        public IPosition Position = new CornerPosition(Corner.BottomRight);
         public IEnumerable<LegendItem> Items { get; set; }
         public SKFont Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
         public Stroke Border { get; set; } = new(Colors.DarkGray, 1);
@@ -35,7 +35,7 @@ namespace ScottPlot.Plottables
         {
             PixelSize size = Measure();
 
-            Pixel topLeftCorner = GetTopLeftCorner(size);
+            Pixel topLeftCorner = Position.GetPosition(Axes.DataRect, size);
 
             surface.Canvas.Translate(topLeftCorner.X, topLeftCorner.Y);
 
@@ -166,20 +166,6 @@ namespace ScottPlot.Plottables
                             Math.Max(a.Width, b.Width),
                             a.Height + b.Height)
                         );
-
-        private Pixel GetTopLeftCorner(PixelSize size)
-        {
-            const int margin = 5;
-
-            return Position switch
-            {
-                Corner.TopLeft => new Pixel(Axes.DataRect.Left, Axes.DataRect.Top) + new Pixel(margin, margin),
-                Corner.TopRight => new Pixel(Axes.DataRect.Right - size.Width, Axes.DataRect.Top) + new Pixel(-margin, margin),
-                Corner.BottomLeft => new Pixel(Axes.DataRect.Left, Axes.DataRect.Bottom - size.Height) + new Pixel(margin, -margin),
-                Corner.BottomRight => new Pixel(Axes.DataRect.Right - size.Width, Axes.DataRect.Bottom - size.Height) + new Pixel(-margin, -margin),
-                _ => throw new NotImplementedException(),
-            };
-        }
 
         private bool ShouldHide(LegendItem item) => string.IsNullOrEmpty(item.Label) && !(item.Children?.Any(c => !ShouldHide(c)) ?? false);
 
