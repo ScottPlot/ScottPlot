@@ -73,12 +73,18 @@ public class PlottableFactory
         return scatter;
     }
 
-    public Signal Signal(double[] ys, double period = 1, Color? color = null)
+    public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
+    {
+        Marker marker = new(color ?? NextColor);
+        return Signal(ys, period, marker);
+    }
+
+    public Signal Signal(IReadOnlyList<double> ys, double period, Marker marker)
     {
         DataSource.SignalSource data = new(ys, period);
         Signal scatter = new(data)
         {
-            Color = color ?? NextColor
+            Marker = marker
         };
         Plot.Plottables.Add(scatter);
         return scatter;

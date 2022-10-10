@@ -5,6 +5,7 @@
  */
 
 using ScottPlot.Axis;
+using ScottPlot.Style;
 using SkiaSharp;
 using System.Data;
 
@@ -17,8 +18,8 @@ public class Signal : IPlottable
 
     public readonly DataSource.ISignalSource Data;
 
-    public Color Color = new(0, 0, 255);
-    public float LineWidth = 1;
+    public Marker Marker { get; set; } = new();
+    public float LineWidth { get; set; } = 1;
     public string? Label { get; set; }
 
     public Signal(DataSource.ISignalSource data)
@@ -31,8 +32,8 @@ public class Signal : IPlottable
         new LegendItem
         {
             Label = Label,
-            Marker = new(Style.MarkerShape.Circle, Color),
-            Line = new(Color, LineWidth)
+            Marker = Marker,
+            Line = new(Marker.Color, LineWidth)
         });
 
     /// <summary>
@@ -100,25 +101,25 @@ public class Signal : IPlottable
 
         IReadOnlyList<double> Ys = Data.GetYs();
 
-        List<SKPoint> points = new();
+        List<Pixel> points = new();
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
             float y = Axes.GetPixelY(Ys[i]);
             Pixel px = new(x, y);
-            points.Add(px.ToSKPoint());
+            points.Add(px);
         }
 
         using SKPath path = new();
-        path.MoveTo(points[0]);
-        foreach (SKPoint point in points)
-            path.LineTo(point);
+        path.MoveTo(points[0].ToSKPoint());
+        foreach (Pixel point in points)
+            path.LineTo(point.ToSKPoint());
 
         using SKPaint paint = new()
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Color.ToSKColor(),
+            Color = Marker.Color.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 
@@ -130,10 +131,10 @@ public class Signal : IPlottable
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), 4);
-            foreach (SKPoint pt in points)
-            {
-                surface.Canvas.DrawCircle(pt, radius, paint);
-            }
+            Marker modifiedMarker = Marker;
+            modifiedMarker.Size = radius;
+
+            Drawing.DrawMarkers(surface, modifiedMarker, points);
         }
     }
 
@@ -147,7 +148,7 @@ public class Signal : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Color.ToSKColor(),
+            Color = Marker.Color.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 
