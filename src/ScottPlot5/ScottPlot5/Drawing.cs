@@ -62,7 +62,8 @@ public static class Drawing
         surface.Canvas.DrawPath(path, paint);
     }
 
-    public static void DrawMarkers(SKSurface surface, in Marker marker, IEnumerable<Pixel> positions) {
+    public static void DrawMarkers(SKSurface surface, in Marker marker, IEnumerable<Pixel> positions)
+    {
         using SKPaint paint = new()
         {
             IsAntialias = true,
@@ -70,9 +71,9 @@ public static class Drawing
             Color = marker.Color.ToSKColor(),
         };
 
-        foreach(Pixel pos in positions)
+        foreach (Pixel pos in positions)
         {
-            switch(marker.Shape)
+            switch (marker.Shape)
             {
                 case MarkerShape.Circle:
                     surface.Canvas.DrawCircle(pos.X, pos.Y, marker.Size / 2, paint);

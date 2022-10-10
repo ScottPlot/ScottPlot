@@ -27,7 +27,7 @@ namespace ScottPlot.Style
         {
             Color = color;
         }
-        
+
         public Marker(MarkerShape shape, Color color, float size = 5)
         {
             Shape = shape;

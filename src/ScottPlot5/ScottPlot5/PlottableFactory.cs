@@ -61,7 +61,7 @@ public class PlottableFactory
         Marker marker = new(color ?? NextColor);
         return Scatter(coordinates, marker);
     }
-    
+
     public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Marker marker)
     {
         DataSource.ScatterSourceCoordinates data = new(coordinates);
