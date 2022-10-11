@@ -21,6 +21,8 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public bool StepDisplay { get; set; } = false;
+        public bool Smooth { get; set; } = false;
+        public double SmoothTension { get; set; } = 0.5f;
 
         /// <summary>
         /// Describes orientation of steps if <see cref="StepDisplay"/> is enabled.
@@ -366,7 +368,15 @@ namespace ScottPlot.Plottable
                     pointsArray = ScatterPlot.GetStepDisplayPoints(pointsArray, StepDisplayRight);
 
                 if (LineWidth > 0 && LineStyle != LineStyle.None)
-                    gfx.DrawLines(penLD, pointsArray);
+                    if (Smooth)
+                    {
+                        gfx.DrawCurve(penLD, pointsArray, (float)SmoothTension);
+                    }
+                    else
+                    {
+                        gfx.DrawLines(penLD, pointsArray);
+                    }
+                    
 
                 switch (_FillType)
                 {
