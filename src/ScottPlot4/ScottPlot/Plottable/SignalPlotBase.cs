@@ -376,7 +376,7 @@ namespace ScottPlot.Plottable
                     {
                         gfx.DrawLines(penLD, pointsArray);
                     }
-                    
+
 
                 switch (_FillType)
                 {
