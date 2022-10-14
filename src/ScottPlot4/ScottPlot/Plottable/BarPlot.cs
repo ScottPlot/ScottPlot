@@ -81,10 +81,20 @@ namespace ScottPlot.Plottable
             }
 
             if (ShowValuesAboveBars)
-                using (var valueTextFont = GDI.Font(Font))
-                using (var valueTextBrush = GDI.Brush(Font.Color))
-                using (var sf = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center })
-                    gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
+            {
+                bool belowBar = value < 0;
+
+                using var valueTextFont = GDI.Font(Font);
+                using var valueTextBrush = GDI.Brush(Font.Color);
+                using var sf = new StringFormat()
+                {
+                    LineAlignment = belowBar ? StringAlignment.Near : StringAlignment.Far,
+                    Alignment = StringAlignment.Center
+                };
+
+                var y = belowBar ? rect.Bottom : rect.Top;
+                gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, centerPx, y, sf);
+            }
         }
 
         private void RenderBarHorizontal(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
@@ -120,10 +130,20 @@ namespace ScottPlot.Plottable
             }
 
             if (ShowValuesAboveBars)
-                using (var valueTextFont = GDI.Font(Font))
-                using (var valueTextBrush = GDI.Brush(Font.Color))
-                using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
-                    gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
+            {
+                bool belowBar = value < 0;
+
+                using var valueTextFont = GDI.Font(Font);
+                using var valueTextBrush = GDI.Brush(Font.Color);
+                using var sf = new StringFormat()
+                {
+                    LineAlignment = StringAlignment.Center,
+                    Alignment = belowBar ? StringAlignment.Far : StringAlignment.Near
+                };
+
+                var x = belowBar ? rect.Left : rect.Right;
+                gfx.DrawString(ValueFormatter(value), valueTextFont, valueTextBrush, x, centerPx, sf);
+            }
         }
 
         protected void RenderBarFromRect(RectangleF rect, bool negative, Graphics gfx)

@@ -241,6 +241,16 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Create a BarSeries filled with the given bars, add it to the plot, and return it.
+        /// </summary>
+        public BarSeries AddBarSeries(Bar[] bars)
+        {
+            BarSeries barSeries = new(bars.ToList());
+            Add(barSeries);
+            return barSeries;
+        }
+
+        /// <summary>
         /// Add an empty bubble plot. Call it's Add() method to add bubbles with custom position and styling.
         /// </summary>
         public BubblePlot AddBubblePlot()

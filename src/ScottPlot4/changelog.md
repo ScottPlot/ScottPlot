@@ -7,6 +7,12 @@ _not yet published on NuGet..._
 * Axis: `Plot.GetAxesMatching()` was created to obtain a given vertical or horizontal axis (#2133) _Thanks @bclehmann and Discord/Nick_
 * Axis: Corner label format can be customized for any axis by calling `CornerLabelFormat()` (#2134) _Thanks @ShannonZ_
 * BarSeries: Improved rendering of negative values (#2147, #2152) _Thanks @fe-c_
+* Function Plot: Added optional `XMin` and `XMax` fields which limit function rendering to a defined horizontal span (#2158, #2156, #2138) _Thanks @bclehmann and @phil100vol_
+* FormsPlot: Plot viewer now has `RefreshLegendImage()` allowing the pop-out legend to be redrawn programmatically (#2157, #2153) _Thanks @rosdyana_
+* Function Plot: Improved performance for functions which return null (#2158, #2156, #2138) _Thanks @bclehmann_
+* BarSeries: improve support for negative and horizontal bar labels (#2148, #2159, #2152) _Thanks @bclehmann_
+* Palette: Added `Normal` Palette based on [Anton Tsitsulin's Normal 6-color palette](http://tsitsul.in/blog/coloropt/) (#2161, #2010) _Thanks @martinkleppe_
+* BarSeries: Added helper function to create a bar series from an array of values (#2161) _Thanks @KonH_
 * SignalPlot: Add `Smooth` option (#2174, #2137) _Thanks @rosdyana_
 
 ## ScottPlot 4.1.58
