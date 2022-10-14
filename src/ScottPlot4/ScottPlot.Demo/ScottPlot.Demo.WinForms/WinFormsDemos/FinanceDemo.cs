@@ -49,14 +49,15 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void AddNewDataPoint(bool refresh = true)
         {
-            double open = Rand.NextDouble() * 50 + 100;
-            double close = open + (Rand.NextDouble() - .5) * 10;
+            double lastClose = CandlePlot.OHLCs.Any() ? CandlePlot.OHLCs.Last().Close : 100;
+            double open = lastClose + (Rand.NextDouble() - .5) * 10;
+            double close = open + (Rand.NextDouble() - .4) * 10;
             double low = Math.Min(open, close) - Rand.NextDouble() * 5;
             double high = Math.Max(open, close) + Rand.NextDouble() * 5;
             double volume = Rand.NextDouble() * 500 + 100;
 
-            TimeSpan span = TimeSpan.FromDays(1);
-            DateTime date = CandlePlot.OHLCs.Any() ? CandlePlot.OHLCs.Last().DateTime + span : new DateTime(1985, 09, 24);
+            TimeSpan span = TimeSpan.FromSeconds(1);
+            DateTime date = CandlePlot.OHLCs.Any() ? CandlePlot.OHLCs.Last().DateTime + span : DateTime.Today + TimeSpan.FromHours(9.5);
 
             OHLC ohlc = new OHLC(open, high, low, close, date, span, volume);
             CandlePlot.Add(ohlc);
@@ -68,6 +69,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 BarPlot.Replace(
                     positions: CandlePlot.OHLCs.Select(x => x.DateTime.ToOADate()).ToArray(),
                     values: CandlePlot.OHLCs.Select(x => x.Volume).ToArray());
+
+                BarPlot.BarWidth = .9 * span.TotalSeconds / TimeSpan.FromDays(1).TotalSeconds;
 
                 formsPlot2.Plot.AxisAuto();
                 formsPlot2.Plot.SetAxisLimits(yMin: 0);
