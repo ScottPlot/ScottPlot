@@ -38,8 +38,14 @@ public class CoordinateRange
     /// </summary>
     public void Expand(double value)
     {
-        Min = Math.Min(Min, value);
-        Max = Math.Max(Max, value);
+        if (double.IsNaN(value))
+            return;
+
+        if (double.IsNaN(Min) || value < Min)
+            Min = value;
+
+        if (double.IsNaN(Max) || value > Max)
+            Max = value;
     }
 
     /// <summary>
@@ -47,8 +53,8 @@ public class CoordinateRange
     /// </summary>
     public void Expand(CoordinateRange range)
     {
-        Min = Math.Min(Min, range.Min);
-        Max = Math.Max(Max, range.Max);
+        Expand(range.Min);
+        Expand(range.Max);
     }
 
     /// <summary>
