@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Plottables;
+using ScottPlot.Style;
+using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -58,5 +60,27 @@ public static class Drawing
         }
 
         surface.Canvas.DrawPath(path, paint);
+    }
+
+    public static void DrawMarkers(SKSurface surface, in Marker marker, IEnumerable<Pixel> positions)
+    {
+        using SKPaint paint = new()
+        {
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+            Color = marker.Color.ToSKColor(),
+        };
+
+        foreach (Pixel pos in positions)
+        {
+            switch (marker.Shape)
+            {
+                case MarkerShape.Circle:
+                    surface.Canvas.DrawCircle(pos.X, pos.Y, marker.Size / 2, paint);
+                    break;
+                default:
+                    throw new NotSupportedException(nameof(marker.Shape));
+            }
+        }
     }
 }

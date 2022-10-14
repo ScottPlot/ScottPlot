@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Plottables;
+using ScottPlot.Style;
 
 namespace ScottPlot;
 
@@ -38,56 +39,52 @@ public class PlottableFactory
         return pie;
     }
 
-    public Scatter Scatter(double[] xs, double[] ys, Color? color = null)
+    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
+    {
+        Marker marker = new(color ?? NextColor);
+        return Scatter(xs, ys, marker);
+    }
+
+    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Marker marker)
     {
         DataSource.ScatterSourceXsYs data = new(xs, ys);
         Scatter scatter = new(data)
         {
-            Color = color ?? NextColor
+            Marker = marker
         };
         Plot.Plottables.Add(scatter);
         return scatter;
     }
 
-    public Scatter Scatter(List<double> xs, List<double> ys, Color? color = null)
+    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
     {
-        DataSource.ScatterSourceXsYs data = new(xs, ys);
-        Scatter scatter = new(data)
-        {
-            Color = color ?? NextColor
-        };
-        Plot.Plottables.Add(scatter);
-        return scatter;
+        Marker marker = new(color ?? NextColor);
+        return Scatter(coordinates, marker);
     }
 
-    public Scatter Scatter(Coordinates[] coordinates, Color? color = null)
+    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Marker marker)
     {
         DataSource.ScatterSourceCoordinates data = new(coordinates);
         Scatter scatter = new(data)
         {
-            Color = color ?? NextColor
+            Marker = marker
         };
         Plot.Plottables.Add(scatter);
         return scatter;
     }
 
-    public Scatter Scatter(List<Coordinates> coordinates, Color? color = null)
+    public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        DataSource.ScatterSourceCoordinates data = new(coordinates);
-        Scatter scatter = new(data)
-        {
-            Color = color ?? NextColor
-        };
-        Plot.Plottables.Add(scatter);
-        return scatter;
+        Marker marker = new(color ?? NextColor);
+        return Signal(ys, period, marker);
     }
 
-    public Signal Signal(double[] ys, double period = 1, Color? color = null)
+    public Signal Signal(IReadOnlyList<double> ys, double period, Marker marker)
     {
         DataSource.SignalSource data = new(ys, period);
         Signal scatter = new(data)
         {
-            Color = color ?? NextColor
+            Marker = marker
         };
         Plot.Plottables.Add(scatter);
         return scatter;

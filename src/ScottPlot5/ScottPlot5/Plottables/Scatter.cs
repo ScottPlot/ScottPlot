@@ -5,6 +5,7 @@
  */
 
 using ScottPlot.Axis;
+using ScottPlot.Style;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables;
@@ -14,20 +15,20 @@ public class Scatter : IPlottable
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public Marker Marker { get; set; } = new();
+    public readonly DataSource.IScatterSource Data;
+    public float LineWidth { get; set; } = 1;
+
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
     public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One<LegendItem>(
         new LegendItem
         {
             Label = Label,
-            Marker = new(Style.MarkerShape.Circle, Color, MarkerSize),
-            Line = new(Color, LineWidth),
+            Marker = Marker,
+            Line = new(Marker.Color, LineWidth),
         });
 
-    public readonly DataSource.IScatterSource Data;
-    public Color Color = new(0, 0, 255);
-    public float LineWidth = 1;
-    public float MarkerSize = 5;
 
     public Scatter(DataSource.IScatterSource data)
     {
@@ -42,7 +43,7 @@ public class Scatter : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Color.ToSKColor(),
+            Color = Marker.Color.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 
@@ -55,11 +56,6 @@ public class Scatter : IPlottable
         }
         surface.Canvas.DrawPath(path, paint);
 
-        // draw markers
-        paint.IsStroke = false;
-        foreach (Pixel pixel in pixels)
-        {
-            surface.Canvas.DrawCircle(pixel.X, pixel.Y, MarkerSize / 2, paint);
-        }
+        Drawing.DrawMarkers(surface, Marker, pixels);
     }
 }

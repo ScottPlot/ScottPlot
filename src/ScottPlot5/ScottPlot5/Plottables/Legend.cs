@@ -104,14 +104,7 @@ namespace ScottPlot.Plottables
                 paint.Style = SKPaintStyle.Fill;
                 paint.Color = item.Marker.Value.Color.ToSKColor();
 
-                if (item.Marker.Value.Shape == MarkerShape.Circle)
-                {
-                    surface.Canvas.DrawCircle(new(rect.MidX, rect.MidY), item.Marker.Value.Size / 2, paint);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                Drawing.DrawMarkers(surface, item.Marker.Value, EnumerableHelpers.One<Pixel>(new(rect.MidX, rect.MidY)));
             }
 
             if (item.Fill.HasValue)
