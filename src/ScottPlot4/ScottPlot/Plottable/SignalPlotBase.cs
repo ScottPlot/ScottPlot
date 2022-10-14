@@ -755,7 +755,7 @@ namespace ScottPlot.Plottable
                 color = Color,
                 lineStyle = LineStyle,
                 lineWidth = LineWidth,
-                markerShape = ShowMarkersInLegend ? MarkerShape.filledCircle : MarkerShape.none,
+                markerShape = ShowMarkersInLegend ? MarkerShape : MarkerShape.none,
                 markerSize = ShowMarkersInLegend ? MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
