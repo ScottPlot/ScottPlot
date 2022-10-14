@@ -228,5 +228,23 @@ namespace ScottPlotTests.PlotTypes
 
             Assert.That(nearestX, Is.EqualTo(expectedNearestX));
         }
+
+        [Test]
+        public void Test_Signal_Smooth()
+        {
+            Random rand = new(0);
+            double[] values = ScottPlot.DataGen.Random(rand, pointCount: 10, offset: -.5);
+
+            var plt = new ScottPlot.Plot(400, 300);
+            var sig = plt.AddSignal(values);
+            sig.Color = ScottPlot.Drawing.GDI.Semitransparent(System.Drawing.Color.Red, .5);
+            sig.FillAboveAndBelow(System.Drawing.Color.Green, System.Drawing.Color.Blue);
+            sig.MarkerSize = 0;
+            sig.LineWidth = 5;
+            sig.BaselineY = 0.2;
+            sig.Smooth = true;
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

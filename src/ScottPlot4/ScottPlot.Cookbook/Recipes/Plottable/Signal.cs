@@ -306,4 +306,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Margins(x: 0);
         }
     }
+
+    public class SignalSmooth : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_smooth";
+        public string Title => "Signal Plot with Smooth Lines";
+        public string Description =>
+            "The Smooth field controls whether signal plot lines are drawn with smooth or straight line.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] data = DataGen.RandomWalk(1000);
+            plt.Palette = new ScottPlot.Palettes.ColorblindFriendly();
+
+            var sp = plt.AddSignal(data);
+            sp.Smooth = true;
+
+            plt.Legend();
+        }
+    }
 }

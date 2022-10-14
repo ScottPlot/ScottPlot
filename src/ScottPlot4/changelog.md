@@ -13,6 +13,7 @@ _not yet published on NuGet..._
 * BarSeries: improve support for negative and horizontal bar labels (#2148, #2159, #2152) _Thanks @bclehmann_
 * Palette: Added `Normal` Palette based on [Anton Tsitsulin's Normal 6-color palette](http://tsitsul.in/blog/coloropt/) (#2161, #2010) _Thanks @martinkleppe_
 * BarSeries: Added helper function to create a bar series from an array of values (#2161) _Thanks @KonH_
+* SignalPlot: Add `Smooth` option (#2174, #2137) _Thanks @rosdyana_
 * Signal Plot: Use correct marker when displaying in legend (#2172, #2173) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.58
