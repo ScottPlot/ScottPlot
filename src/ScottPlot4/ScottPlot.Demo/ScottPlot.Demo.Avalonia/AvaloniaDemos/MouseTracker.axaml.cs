@@ -25,8 +25,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Refresh();
 
             avaPlot1.PointerMoved += OnMouseMove;
-            avaPlot1.PointerLeave += OnMouseLeave;
-            avaPlot1.PointerEnter += OnMouseEnter;
+            avaPlot1.PointerExited += OnMouseLeave;
+            avaPlot1.PointerEntered += OnMouseEnter;
         }
 
         private void InitializeComponent()
