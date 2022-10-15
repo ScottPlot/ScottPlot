@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using Ava = Avalonia;
 
 #pragma warning disable IDE1006 // lowercase public properties
@@ -159,8 +160,8 @@ namespace ScottPlot.Avalonia
         private void OnDoubleClick(object sender, RoutedEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
         private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
-        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
-        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
+        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEntered(e);
+        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerExited(e);
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
@@ -188,8 +189,8 @@ namespace ScottPlot.Avalonia
             PointerMoved += OnMouseMove;
             // Note: PointerReleased is handled in OnPointerReleased override instead
             PointerWheelChanged += OnMouseWheel;
-            PointerEnter += OnMouseEnter;
-            PointerLeave += OnMouseLeave;
+            PointerEntered += OnMouseEnter;
+            PointerExited += OnMouseLeave;
             DoubleTapped += OnDoubleClick;
             PropertyChanged += AvaPlot_PropertyChanged;
         }
@@ -269,7 +270,7 @@ namespace ScottPlot.Avalonia
 
         private void ContextMenuChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            // Make sure that any context menus that get assigned do not 
+            // Make sure that any context menus that get assigned do not
             // display when the right mouse button is released if the mouse
             // was dragged while the button was down
 
@@ -302,8 +303,8 @@ namespace ScottPlot.Avalonia
         }
 
         /// <summary>
-        /// This default handler is no longer used to display a context menu, but is kept 
-        /// around for backwards compatibility with existing code that expects to remove 
+        /// This default handler is no longer used to display a context menu, but is kept
+        /// around for backwards compatibility with existing code that expects to remove
         /// this handler before adding custom right-click handling.
         /// </summary>
         [Obsolete("use 'ContextMenu' property instead to assign custom context menus")]
@@ -313,42 +314,36 @@ namespace ScottPlot.Avalonia
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
-            SaveFileDialog savefile = new SaveFileDialog { InitialFileName = "ScottPlot.png" };
-
-            var filtersPNG = new FileDialogFilter { Name = "PNG Files" };
-            filtersPNG.Extensions.Add("png");
-
-            var filtersJPEG = new FileDialogFilter { Name = "JPG Files" };
-            filtersJPEG.Extensions.Add("jpg");
-            filtersJPEG.Extensions.Add("jpeg");
-
-            var filtersBMP = new FileDialogFilter { Name = "BMP Files" };
-            filtersBMP.Extensions.Add("bmp");
-
-            var filtersTIFF = new FileDialogFilter { Name = "TIF Files" };
-            filtersTIFF.Extensions.Add("tif");
-            filtersTIFF.Extensions.Add("tiff");
-
-            var filtersGeneric = new FileDialogFilter { Name = "All Files" };
-            filtersGeneric.Extensions.Add("*");
-
-            savefile.Filters.Add(filtersPNG);
-            savefile.Filters.Add(filtersJPEG);
-            savefile.Filters.Add(filtersBMP);
-            savefile.Filters.Add(filtersTIFF);
-            savefile.Filters.Add(filtersGeneric);
-
-
-            Task<string> filenameTask = savefile.ShowAsync((Window)this.GetVisualRoot());
-            await filenameTask;
-
-            if (filenameTask.Exception != null)
+            var window = (Window)this.GetVisualRoot() ?? throw new NullReferenceException("Visual root was null");
+            var saveFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
-                return;
-            }
+                SuggestedFileName = "ScottPlot.png",
+                FileTypeChoices = new []{
+                    new FilePickerFileType("PNG Files")
+                {
+                    Patterns = new[]{"*.png"}
+                },
+                    new FilePickerFileType("JPG Files")
+                    {
+                        Patterns = new[]{"*.jpg", "*.jpeg"}
+                    },
+                    new FilePickerFileType("BMP Files")
+                    {
+                        Patterns = new[]{"*.bmp"}
+                    },
+                    new FilePickerFileType("TIF Files")
+                    {
+                        Patterns = new[]{"*.tif", "*.tiff"}
+                    },
+                    new FilePickerFileType("All Files")
+                    {
+                        Patterns = new[]{"*"}
+                    }
+                }
+            });
 
-            if ((filenameTask.Result ?? "") != "")
-                Plot.SaveFig(filenameTask.Result);
+            if (saveFile is { CanOpenWrite: true } && saveFile.TryGetUri(out var path))
+                Plot.SaveFig(path.AbsolutePath);
         }
         private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new AvaPlotViewer(Plot).Show(); }
 
