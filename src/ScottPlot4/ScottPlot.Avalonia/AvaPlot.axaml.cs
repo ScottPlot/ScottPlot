@@ -318,7 +318,7 @@ namespace ScottPlot.Avalonia
             var saveFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
                 SuggestedFileName = "ScottPlot.png",
-                FileTypeChoices = new []{
+                FileTypeChoices = new[]{
                     new FilePickerFileType("PNG Files")
                 {
                     Patterns = new[]{"*.png"}
