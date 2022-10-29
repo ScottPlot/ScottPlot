@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Axis.StandardAxes;
+﻿using SkiaSharp;
 
-public abstract class XAxisBase
+namespace ScottPlot.Axis.StandardAxes;
+
+public abstract class XAxisBase : IAxis
 {
     public double Left
     {
@@ -29,14 +31,19 @@ public abstract class XAxisBase
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
-        Bold = true,
-        FontSize = 16
+        Font = new Style.Font()
+        {
+            Family = "Consolas",
+            Size = 16,
+            Bold = true
+        },
     };
+    public abstract Edge Edge { get; }
 
     public void Measure()
     {
-        float labelHeight = Label.FontSize;
-        float largestTickHeight = Label.FontSize;
+        float labelHeight = Label.Font.Size;
+        float largestTickHeight = Label.Font.Size;
         PixelSize = labelHeight + largestTickHeight + 18;
     }
 
@@ -54,5 +61,15 @@ public abstract class XAxisBase
         float pxFromLeftEdge = pixel - dataArea.Left;
         double unitsFromEdge = pxFromLeftEdge / pxPerUnit;
         return Left + unitsFromEdge;
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect)
+    {
+        using SKFont font = Label.Font.GetFont();
+        var ticks = TickGenerator.GetVisibleTicks(Range);
+
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicks(surface, font, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }

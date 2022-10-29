@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public abstract class YAxisBase
+public abstract class YAxisBase : IAxis
 {
     public double Bottom
     {
@@ -31,10 +31,15 @@ public abstract class YAxisBase
     public Label Label { get; private set; } = new()
     {
         Text = "Vertical Axis",
-        Bold = true,
-        FontSize = 16,
+        Font = new Style.Font()
+        {
+            Family = "Consolas",
+            Size = 16,
+            Bold = true
+        },
         Rotation = -90
     };
+    public abstract Edge Edge { get; }
 
     public float GetPixel(double position, PixelRect dataArea)
     {
@@ -54,7 +59,7 @@ public abstract class YAxisBase
 
     public void Measure()
     {
-        float labelWidth = Label.FontSize;
+        float labelWidth = Label.Font.Size;
         float largestTickWidth = 0;
 
         using SKPaint paint = Label.MakePaint();
@@ -67,4 +72,15 @@ public abstract class YAxisBase
 
         PixelSize = labelWidth + largestTickWidth;
     }
+
+    public void Render(SKSurface surface, PixelRect dataRect)
+    {
+        using SKFont font = Label.Font.GetFont();
+
+        var ticks = TickGenerator.GetVisibleTicks(Range);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicks(surface, font, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+    }
+
 }
