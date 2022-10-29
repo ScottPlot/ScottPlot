@@ -28,6 +28,6 @@ namespace ScottPlot.Style
         // SKFontStyle implements IDisposable, but `FromFamilyName` adopts the font style and prevents disposal, so we don't need a using block here
         public SKTypeface GetTypeface() => SKTypeface.FromFamilyName(Family, skFontStyle);
         public SKFont GetFont() => new(GetTypeface(), Size);
-        public bool FontAvailable(string fontFamily) => fontManager.FontFamilies.Contains(fontFamily);
+        public static bool FontAvailable(string fontFamily) => fontManager.FontFamilies.Contains(fontFamily);
     }
 }
