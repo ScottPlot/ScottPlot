@@ -221,4 +221,30 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.XAxis.DateTimeFormat(true);
         }
     }
+    class TicksDateTimeSignal : IRecipe
+    {
+        public ICategory Category => new Categories.Axis();
+        public string ID => "ticks_dateTime_signal";
+        public string Title => "Plotting DateTime Data on a Signal Plot";
+        public string Description =>
+            "DateTime can be displayed on the horizontal axis of a signal plot by " +
+            "using the sample rate to set the time interval per data point, and then " +
+            "setting the OffsetX to the desired start date.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data sample data
+            double[] ys = DataGen.RandomWalk(100);
+
+            TimeSpan ts = TimeSpan.FromSeconds(1); // time between data points
+            double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+            var signalPlot = plt.AddSignal(ys, sampleRate);
+
+            // Then tell the axis to display tick labels using a time format
+            plt.XAxis.DateTimeFormat(true);
+
+            // Set start date
+            signalPlot.OffsetX = new DateTime(1985, 10, 1).ToOADate();
+        }
+    }
 }
