@@ -26,7 +26,8 @@ namespace ScottPlot
                 if (disposing)
                 {
                     canvas.RestoreToCount(restoreIndex);
-                } else
+                }
+                else
                 {
                     System.Diagnostics.Debug.WriteLine("ScopedTransform was not disposed before finalizer ran. This will likely cause incorrect drawing.");
                     // We shouldn't RestoreToCount here, as a) it's probably even harder to debug, and b) this.canvas has likely been disposed already

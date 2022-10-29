@@ -105,7 +105,7 @@ public static class AxisRendering
         {
             float xPx = axis.GetPixel(tick.Position, dataRect);
             float y = axis.Edge == Edge.Bottom ? dataRect.Bottom + offset : dataRect.Top - offset;
-            float yEdge = axis.Edge == Edge.Bottom ? y + 3: y - 3;
+            float yEdge = axis.Edge == Edge.Bottom ? y + 3 : y - 3;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
             surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
