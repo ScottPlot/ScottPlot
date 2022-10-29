@@ -16,8 +16,9 @@ namespace ScottPlot.Style
         public string Family { get; set; } = SKTypeface.Default.FamilyName;
         public int Size { get; set; } = 12;
         public SKFontStyleWeight Weight { get; set; } = SKFontStyleWeight.Normal;
-        public bool Bold { 
-            get => Weight >= SKFontStyleWeight.Bold; 
+        public bool Bold
+        {
+            get => Weight >= SKFontStyleWeight.Bold;
             set => Weight = value ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         }
         public bool Italic { get; set; } = false;

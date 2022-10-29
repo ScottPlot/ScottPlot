@@ -35,7 +35,7 @@ namespace ScottPlot.Plottables
         {
             using SKFont font = Font.GetFont();
             using SKPaint paint = new(font);
-            
+
             PixelSize size = Measure(paint);
 
             Pixel topLeftCorner = Position.GetPosition(Axes.DataRect, size);
