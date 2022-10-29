@@ -15,7 +15,7 @@ namespace ScottPlot.Ticks.DateTimeTickUnits
 
         public DateTimeTickUnitBase(CultureInfo culture, int maxTickCount, int? manualSpacing)
         {
-            this.culture = culture;
+            this.culture = culture ?? CultureInfo.CurrentCulture;
             this.maxTickCount = maxTickCount;
             if (manualSpacing.HasValue)
                 deltas = new int[] { manualSpacing.Value };
