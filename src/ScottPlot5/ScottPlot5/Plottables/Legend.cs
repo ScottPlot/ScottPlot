@@ -21,7 +21,7 @@ namespace ScottPlot.Plottables
 
         public IPosition Position = new CornerPosition(Corner.BottomRight);
         public IEnumerable<LegendItem> Items { get; set; }
-        public SKFont Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
+        public Font Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
         public Stroke Border { get; set; } = new(Colors.DarkGray, 1);
         public Fill Background { get; set; } = new Fill(Colors.White);
 
@@ -33,14 +33,16 @@ namespace ScottPlot.Plottables
 
         public void Render(SKSurface surface)
         {
-            PixelSize size = Measure();
+            using SKFont font = Font.GetFont();
+            using SKPaint paint = new(font);
+            
+            PixelSize size = Measure(paint);
 
             Pixel topLeftCorner = Position.GetPosition(Axes.DataRect, size);
 
             surface.Canvas.Translate(topLeftCorner.X, topLeftCorner.Y);
 
 
-            using SKPaint paint = new();
             paint.SetFill(Background);
 
             SKRect border = new(0, 0, size.Width, size.Height);
@@ -54,12 +56,12 @@ namespace ScottPlot.Plottables
             float y = VerticalPadding;
             foreach (var curr in Items)
             {
-                RenderLegendItem(surface, curr, y);
-                y += Measure(curr).Height;
+                RenderLegendItem(surface, paint, curr, y);
+                y += Measure(curr, paint).Height;
             }
         }
 
-        private void RenderLegendItem(SKSurface surface, LegendItem item, float y)
+        private void RenderLegendItem(SKSurface surface, SKPaint paint, LegendItem item, float y)
         {
             if (ShouldHide(item))
             {
@@ -67,7 +69,6 @@ namespace ScottPlot.Plottables
             }
 
             using ScopedTransform transform = new(surface.Canvas);
-            using SKPaint paint = new(Font);
             paint.SetFill(new(Colors.Black));
 
             surface.Canvas.Translate(HorizontalPadding, 0);
@@ -80,11 +81,11 @@ namespace ScottPlot.Plottables
 
             surface.Canvas.DrawText(item.Label ?? "", new(x, top + paint.TextSize), paint);
 
-            y += Measure(item, false).Height;
+            y += Measure(item, paint, false).Height;
             foreach (var curr in item.Children)
             {
-                RenderLegendItem(surface, curr, y);
-                y += Measure(curr).Height;
+                RenderLegendItem(surface, paint, curr, y);
+                y += Measure(curr, paint).Height;
             }
         }
 
@@ -115,14 +116,12 @@ namespace ScottPlot.Plottables
             }
         }
 
-        public PixelSize Measure(LegendItem item, bool includeChildren = true)
+        public PixelSize Measure(LegendItem item, SKPaint paint, bool includeChildren = true)
         {
             if (ShouldHide(item))
             {
                 return PixelSize.Zero;
             }
-
-            using SKPaint paint = new(Font);
 
             PixelSize labelRect = Drawing.MeasureString(item.Label ?? "", paint);
 
@@ -139,7 +138,7 @@ namespace ScottPlot.Plottables
             {
                 for (int i = 0; i < childrenArray.Length; i++)
                 {
-                    var childSize = Measure(childrenArray[i]);
+                    var childSize = Measure(childrenArray[i], paint);
                     width = Math.Max(width, HorizontalPadding + childSize.Width);
                     height += childSize.Height;
                 }
@@ -149,9 +148,9 @@ namespace ScottPlot.Plottables
         }
 
         // I'm a Javascript developer, this was bound to happen someday
-        public PixelSize Measure() =>
+        public PixelSize Measure(SKPaint paint) =>
             Items
-                .Select((LegendItem item) => Measure(item))
+                .Select((LegendItem item) => Measure(item, paint))
                 .Aggregate(
                     new PixelSize(Border.Width * 2, Border.Width * 2),
                     (a, b) =>
