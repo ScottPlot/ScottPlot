@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Style;
+using SkiaSharp;
 
 namespace ScottPlot.Axis.StandardAxes;
 
@@ -38,13 +39,15 @@ public abstract class XAxisBase : IAxis
             Bold = true
         },
     };
+    public Font TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
 
     public void Measure()
     {
         float labelHeight = Label.Font.Size;
         float largestTickHeight = Label.Font.Size;
-        PixelSize = labelHeight + largestTickHeight + 18;
+        float extraPadding = Edge == Edge.Bottom ? 18 : 0;
+        PixelSize = labelHeight + largestTickHeight + extraPadding;
     }
 
     public float GetPixel(double position, PixelRect dataArea)
@@ -65,11 +68,11 @@ public abstract class XAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
-        using SKFont font = Label.Font.GetFont();
+        using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
 
         AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
-        AxisRendering.DrawTicks(surface, font, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }
