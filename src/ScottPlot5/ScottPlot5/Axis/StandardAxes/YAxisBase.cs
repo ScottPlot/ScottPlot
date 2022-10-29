@@ -62,10 +62,16 @@ public abstract class YAxisBase : IAxis
 
     public void Measure()
     {
-        float labelWidth = Label.Font.Size;
-        float largestTickWidth = 0;
+        float labelWidth = Label.Font.Size + 15;
+        float largestTickWidth = MeasureTicks();
 
-        using SKPaint paint = Label.MakePaint();
+        PixelSize = labelWidth + largestTickWidth;
+    }
+
+    private float MeasureTicks()
+    {
+        using SKPaint paint = new(TickFont.GetFont());
+        float largestTickWidth = 0;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
@@ -73,7 +79,7 @@ public abstract class YAxisBase : IAxis
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
-        PixelSize = labelWidth + largestTickWidth;
+        return largestTickWidth;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
@@ -81,6 +87,8 @@ public abstract class YAxisBase : IAxis
         using SKFont tickFont = TickFont.GetFont();
 
         var ticks = TickGenerator.GetVisibleTicks(Range);
+        float tickSize = MeasureTicks();
+
         AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);

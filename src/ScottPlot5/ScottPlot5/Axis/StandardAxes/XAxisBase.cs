@@ -44,10 +44,24 @@ public abstract class XAxisBase : IAxis
 
     public void Measure()
     {
-        float labelHeight = Label.Font.Size;
-        float largestTickHeight = Label.Font.Size;
+        float labelHeight = Label.Font.Size + 15;
+        float largestTickHeight = MeasureTicks();
         float extraPadding = Edge == Edge.Bottom ? 18 : 0;
         PixelSize = labelHeight + largestTickHeight + extraPadding;
+    }
+
+    private float MeasureTicks()
+    {
+        using SKPaint paint = new(TickFont.GetFont());
+        float largestTickHeight = 0;
+
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
+        {
+            PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
+            largestTickHeight = Math.Max(largestTickHeight, tickLabelSize.Height + 10);
+        }
+
+        return largestTickHeight;
     }
 
     public float GetPixel(double position, PixelRect dataArea)
@@ -70,6 +84,7 @@ public abstract class XAxisBase : IAxis
     {
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
+        float tickSize = MeasureTicks();
 
         AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);

@@ -74,11 +74,11 @@ public static class AxisRendering
 
             Edge.Bottom => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Bottom + paint.FontSpacing + offset),
+                y: dataRect.Bottom + offset + pixelSize - paint.FontSpacing - 5),
 
             Edge.Top => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Top - paint.FontSpacing - 16 - offset), // tick label size
+                y: dataRect.Top - paint.FontSpacing - 16 - offset - pixelSize), // tick label size
 
             _ => throw new InvalidEnumArgumentException()
         };
@@ -100,14 +100,16 @@ public static class AxisRendering
             Color = color.ToSKColor(),
         };
 
+
         foreach (Tick tick in ticks)
         {
             float xPx = axis.GetPixel(tick.Position, dataRect);
-            float yEdge = axis.Edge == Edge.Bottom ? dataRect.Bottom + offset + 3: dataRect.Top - offset - 3;
-            float fontSpacing = axis.Edge == Edge.Bottom ? paint.FontSpacing : -4;
+            float y = axis.Edge == Edge.Bottom ? dataRect.Bottom + offset : dataRect.Top - offset;
+            float yEdge = axis.Edge == Edge.Bottom ? y + 3: y - 3;
+            float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
-            surface.Canvas.DrawLine(xPx, yEdge, xPx, yEdge, paint);
-            
+            surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
+
             if (!string.IsNullOrWhiteSpace(tick.Label))
                 surface.Canvas.DrawText(tick.Label, xPx, yEdge + fontSpacing, paint);
         }
