@@ -201,7 +201,7 @@ namespace ScottPlot
                 {
                     subtrahend = rand.NextDouble();
                 }
-                return 1.0 - rand.NextDouble();
+                return 1.0 - subtrahend;
                 // The simpler 1.0 - rand.NextDouble() actually grabs from the interval [0, 1), not (0, 1)
             }
 
