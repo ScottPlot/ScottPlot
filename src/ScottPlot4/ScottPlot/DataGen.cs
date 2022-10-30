@@ -197,7 +197,7 @@ namespace ScottPlot
             double UniformOpenInterval()
             {
                 double subtrahend = 0;
-                while(subtrahend == 0)
+                while (subtrahend == 0)
                 {
                     subtrahend = rand.NextDouble();
                 }
