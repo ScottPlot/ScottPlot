@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -164,6 +165,86 @@ namespace ScottPlot
                     data[y, x] = rand.NextDouble() * multiplier + offset;
 
             return data;
+        }
+
+        /// <summary>
+        /// Generates a 2D array of numbers with constant spacing.
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="columns"></param>
+        /// <param name="spacing">The space between points.</param>
+        /// <param name="offset">The first point.</param>
+        /// <returns></returns>
+        public static double[,] Consecutive2D(int rows, int columns, double spacing = 1, double offset = 0)
+        {
+            double[,] data = new double[rows, columns];
+
+            var count = offset;
+            for (var y = 0; y < data.GetLength(0); y++)
+                for (int x = 0; x < data.GetLength(1); x++)
+                {
+                    data[y, x] = count;
+                    count += spacing;
+                }
+
+            return data;
+        }
+
+        /// <summary>
+        /// Generates a 2D sine pattern.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="xPeriod">Frequency factor in x direction.</param>
+        /// <param name="yPeriod">Frequency factor in y direction.</param>
+        /// <param name="multiple">Intensity factor.</param>
+        /// <returns></returns>
+        public static double[,] Sin2D(int width, int height, double xPeriod = .2, double yPeriod = .2, double multiple = 100)
+        {
+            double[,] intensities = new double[height, width];
+
+            for (int y = 0; y < height; y++)
+            {
+                double siny = Math.Cos(y * yPeriod) * multiple;
+                for (int x = 0; x < width; x++)
+                {
+                    double sinx = Math.Sin(x * xPeriod) * multiple;
+                    intensities[y, x] = sinx + siny;
+                }
+            }
+
+            return intensities;
+        }
+
+        /// <summary>
+        /// Generate a 2D array in a diagonal gradient pattern
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static double[,] Ramp2D(int width, int height, double min = 0, double max = 1)
+        {
+            double[,] intensities = new double[height, width];
+
+            double span = max - min;
+
+            for (int y = 0; y < height; y++)
+            {
+                double fracY = (double)y / height;
+                double valY = fracY * span + min;
+
+                for (int x = 0; x < width; x++)
+                {
+                    double fracX = (double)x / width;
+                    double valX = fracX * span + min;
+
+                    intensities[y, x] = (valX + valY) / 2;
+                }
+            }
+
+            return intensities;
         }
 
         /// <summary>
