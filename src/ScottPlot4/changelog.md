@@ -15,6 +15,7 @@ _not yet published on NuGet..._
 * BarSeries: Added helper function to create a bar series from an array of values (#2161) _Thanks @KonH_
 * SignalPlot: Add `Smooth` option (#2174, #2137) _Thanks @rosdyana_
 * Signal Plot: Use correct marker when displaying in legend (#2172, #2173) _Thanks @bclehmann_
+* Data Generation: Improved floating point precision of `RandomNormalValue` randomness (#2189, #2206) _Thanks @arthurits and @bclehmann__
 * Finance Plot: Improved SMA calculations for charts with unordered candlesticks (#2199, #2207) _Thanks @zachesposito and @xenedia_
 
 ## ScottPlot 4.1.58
