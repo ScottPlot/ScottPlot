@@ -275,10 +275,21 @@ namespace ScottPlot
         /// <returns>A single value from a normal distribution.</returns>
         public static double RandomNormalValue(Random rand, double mean, double stdDev, double maxSdMultiple = 10)
         {
+            double UniformOpenInterval()
+            {
+                double subtrahend = 0;
+                while (subtrahend == 0)
+                {
+                    subtrahend = rand.NextDouble();
+                }
+                return 1.0 - subtrahend;
+                // The simpler 1.0 - rand.NextDouble() actually grabs from the interval [0, 1), not (0, 1)
+            }
+
             while (true)
             {
-                double u1 = 1.0 - rand.NextDouble();
-                double u2 = 1.0 - rand.NextDouble();
+                double u1 = UniformOpenInterval();
+                double u2 = UniformOpenInterval();
                 double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
                 if (Math.Abs(randStdNormal) < maxSdMultiple)
                     return mean + stdDev * randStdNormal;
