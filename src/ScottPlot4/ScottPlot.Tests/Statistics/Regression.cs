@@ -8,10 +8,10 @@ namespace ScottPlotTests.Statistics
 {
     public class Regression
     {
-        private (double[] xs, double[] ys) GetNoisyLinearData_EvenlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true)
+        private (double[] xs, double[] ys) GetNoisyLinearData_EvenlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true, double noiseLevel = 50)
         {
             Random rand = new Random(0);
-            double[] ys = ScottPlot.DataGen.NoisyLinear(rand, pointCount, actualSlope, actualOffset, noise: 50);
+            double[] ys = ScottPlot.DataGen.NoisyLinear(rand, pointCount, actualSlope, actualOffset, noise: noiseLevel);
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
 
             if (display)
@@ -21,12 +21,11 @@ namespace ScottPlotTests.Statistics
             return (xs, ys);
         }
 
-        private (double[] xs, double[] ys) GetNoisyLinearData_RandomlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true)
+        private (double[] xs, double[] ys) GetNoisyLinearData_RandomlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true, double noiseLevel = 50)
         {
             Random rand = new Random(0);
             double[] xs = ScottPlot.DataGen.RandomNormal(rand, pointCount, mean: pointCount / 2, stdDev: Math.Sqrt(pointCount));
 
-            double noiseLevel = 50;
             double[] ys = new double[pointCount];
             for (int i = 0; i < pointCount; i++)
                 ys[i] = actualSlope * xs[i] + actualOffset + (rand.NextDouble() - .5) * noiseLevel;
@@ -44,7 +43,7 @@ namespace ScottPlotTests.Statistics
             int pointCount = 50;
             double actualSlope = 3;
             double actualOffset = 200;
-            (double[] xs, double[] ys) = GetNoisyLinearData_EvenlySpaced(pointCount, actualSlope, actualOffset);
+            (double[] xs, double[] ys) = GetNoisyLinearData_EvenlySpaced(pointCount, actualSlope, actualOffset, noiseLevel: 15);
 
             // fit the random data with the linear regression model
             var model = new ScottPlot.Statistics.LinearRegressionLine(ys, firstX: 0, xSpacing: 1);
@@ -60,7 +59,7 @@ namespace ScottPlotTests.Statistics
             TestTools.SaveFig(plt);
 
             // ensure the fit is good
-            Assert.AreEqual(actualSlope, model.slope, .1);
+            Assert.AreEqual(actualSlope, model.slope, .25);
             Assert.AreEqual(actualOffset, model.offset, 10);
         }
 
@@ -70,7 +69,7 @@ namespace ScottPlotTests.Statistics
             int pointCount = 50;
             double actualSlope = 3;
             double actualOffset = 200;
-            (double[] xs, double[] ys) = GetNoisyLinearData_RandomlySpaced(pointCount, actualSlope, actualOffset);
+            (double[] xs, double[] ys) = GetNoisyLinearData_RandomlySpaced(pointCount, actualSlope, actualOffset, noiseLevel: 15);
 
             // fit the random data with the linear regression model
             var model = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
@@ -86,7 +85,7 @@ namespace ScottPlotTests.Statistics
             TestTools.SaveFig(plt);
 
             // ensure the fit is good
-            Assert.AreEqual(actualSlope, model.slope, .5);
+            Assert.AreEqual(actualSlope, model.slope, .25);
             Assert.AreEqual(actualOffset, model.offset, 10);
         }
 
