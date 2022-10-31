@@ -15,6 +15,7 @@ _not yet published on NuGet..._
 * BarSeries: Added helper function to create a bar series from an array of values (#2161) _Thanks @KonH_
 * SignalPlot: Add `Smooth` option (#2174, #2137) _Thanks @rosdyana_
 * Signal Plot: Use correct marker when displaying in legend (#2172, #2173) _Thanks @bclehmann_
+* Data Generation: Improved floating point precision of `RandomNormalValue` randomness (#2189, #2206) _Thanks @arthurits and @bclehmann__
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
