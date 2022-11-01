@@ -1170,7 +1170,7 @@ namespace ScottPlot
         /// </summary>
         public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
         {
-            SignalPlot signal = new SignalPlot()
+            var signal = new SignalPlot()
             {
                 Ys = ys,
                 SampleRate = sampleRate,
@@ -1184,6 +1184,27 @@ namespace ScottPlot
             Add(signal);
             return signal;
         }
+
+        /// <summary>
+        /// Signal plots have evenly-spaced X points and render very fast.
+        /// </summary>
+        public SignalPlotGeneric<T> AddSignalGeneric<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
+        {
+            var signal = new SignalPlotGeneric<T>()
+            {
+                Ys = ys,
+                SampleRate = sampleRate,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
+
+                // TODO: FIX THIS!!!
+                MinRenderIndex = 0,
+                MaxRenderIndex = ys.Length - 1,
+            };
+            Add(signal);
+            return signal;
+        }
+
 
         /// <summary>
         /// SignalConts plots have evenly-spaced X points and render faster than Signal plots
