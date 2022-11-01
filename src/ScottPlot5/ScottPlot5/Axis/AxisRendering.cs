@@ -74,11 +74,11 @@ public static class AxisRendering
 
             Edge.Bottom => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Bottom + paint.FontSpacing + offset),
+                y: dataRect.Bottom + offset + pixelSize - paint.FontSpacing - 5),
 
             Edge.Top => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Top - paint.FontSpacing - 16 - offset), // tick label size
+                y: dataRect.Top - paint.FontSpacing - 16 - offset - pixelSize), // tick label size
 
             _ => throw new InvalidEnumArgumentException()
         };
@@ -86,85 +86,72 @@ public static class AxisRendering
         label.Draw(surface, px, paint);
     }
 
-    public static void DrawTicksBottom(SKSurface surface, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IXAxis axis)
+    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
     {
-        using SKPaint paint = new()
+        if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
+        {
+            throw new InvalidEnumArgumentException();
+        }
+
+        using SKPaint paint = new(font)
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,
             Color = color.ToSKColor(),
         };
 
-        foreach (Tick tick in ticks)
-        {
-            float xPx = axis.GetPixel(tick.Position, dataRect);
-            float yEdge = dataRect.Bottom + offset;
-            surface.Canvas.DrawLine(xPx, yEdge, xPx, yEdge + 3, paint);
-            surface.Canvas.DrawText(tick.Label, xPx, yEdge + 3 + paint.FontSpacing, paint);
-        }
-    }
-
-    public static void DrawTicksTop(SKSurface surface, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IXAxis axis)
-    {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            TextAlign = SKTextAlign.Center,
-            Color = color.ToSKColor(),
-        };
 
         foreach (Tick tick in ticks)
         {
             float xPx = axis.GetPixel(tick.Position, dataRect);
-            float yEdge = dataRect.Top - offset;
-            surface.Canvas.DrawLine(xPx, yEdge, xPx, yEdge - 3, paint);
-            surface.Canvas.DrawText(tick.Label, xPx, yEdge - 7, paint);
+            float y = axis.Edge == Edge.Bottom ? dataRect.Bottom + offset : dataRect.Top - offset;
+            float yEdge = axis.Edge == Edge.Bottom ? y + 3 : y - 3;
+            float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
+
+            surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
+
+            if (!string.IsNullOrWhiteSpace(tick.Label))
+                surface.Canvas.DrawText(tick.Label, xPx, yEdge + fontSpacing, paint);
         }
     }
 
-    public static void DrawTicksLeft(SKSurface surface, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IYAxis axis)
+    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
     {
-        using SKPaint paint = new()
+        if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
+        {
+            throw new InvalidEnumArgumentException();
+        }
+
+        using SKPaint paint = new(font)
         {
             IsAntialias = true,
-            TextAlign = SKTextAlign.Right,
+            TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left,
             Color = color.ToSKColor(),
         };
 
         foreach (Tick tick in ticks)
         {
-            float x = dataRect.Left - offset;
+            float x = axis.Edge == Edge.Left ? dataRect.Left - offset : dataRect.Right + offset;
             float y = axis.GetPixel(tick.Position, dataRect);
 
             float majorTickLength = 5;
-            surface.Canvas.DrawLine(x, y, x - majorTickLength, y, paint);
+            float xEdge = axis.Edge == Edge.Left ? x - majorTickLength : x + majorTickLength;
+            surface.Canvas.DrawLine(x, y, xEdge, y, paint);
 
             float majorTickLabelPadding = 7;
+            float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, x - majorTickLabelPadding, y + paint.TextSize * .4f, paint);
+                surface.Canvas.DrawText(tick.Label, labelPos, y + paint.TextSize * .4f, paint);
         }
     }
 
-    public static void DrawTicksRight(SKSurface surface, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IYAxis axis)
+    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
     {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            TextAlign = SKTextAlign.Left,
-            Color = color.ToSKColor(),
-        };
-
-        foreach (Tick tick in ticks)
-        {
-            float x = dataRect.Right + offset;
-            float y = axis.GetPixel(tick.Position, dataRect);
-
-            float majorTickLength = 5;
-            surface.Canvas.DrawLine(x, y, x + majorTickLength, y, paint);
-
-            float majorTickLabelPadding = 7;
-            if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, x + majorTickLabelPadding, y + paint.TextSize * .4f, paint);
-        }
+        if (axis.Edge == Edge.Left || axis.Edge == Edge.Right)
+            DrawTicksVerticalAxis(surface, font, dataRect, color, offset, ticks, axis);
+        else if (axis.Edge == Edge.Bottom || axis.Edge == Edge.Top)
+            DrawTicksHorizontalAxis(surface, font, dataRect, color, offset, ticks, axis);
+        else
+            throw new InvalidEnumArgumentException();
     }
 }
