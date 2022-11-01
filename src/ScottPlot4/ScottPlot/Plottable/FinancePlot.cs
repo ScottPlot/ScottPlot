@@ -277,8 +277,9 @@ namespace ScottPlot.Plottable
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            double[] xs = OHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
-            double[] ys = Statistics.Finance.SMA(OHLCs.ToArray(), N);
+            var sortedOHLCs = GetSortedOHLCs();
+            double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
+            double[] ys = Statistics.Finance.SMA(sortedOHLCs.ToArray(), N);
             return (xs, ys);
         }
 
@@ -294,9 +295,33 @@ namespace ScottPlot.Plottable
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            double[] xs = OHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
-            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(OHLCs.ToArray(), N);
+            var sortedOHLCs = GetSortedOHLCs();
+            double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
+            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N);
             return (xs, sma, lower, upper);
+        }
+
+        private List<OHLC> GetSortedOHLCs()
+        {
+            if (OHLCsAreSorted())
+            {
+                return OHLCs;
+            }
+
+            return OHLCs.OrderBy(ohlc => ohlc.DateTime).ToList();
+        }
+
+        private bool OHLCsAreSorted()
+        {
+            for (var i = 0; i < OHLCs.Count - 1; i++)
+            {
+                if (OHLCs[i].DateTime > OHLCs[i + 1].DateTime)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

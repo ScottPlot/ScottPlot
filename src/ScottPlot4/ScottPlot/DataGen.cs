@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -167,6 +168,86 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Generates a 2D array of numbers with constant spacing.
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="columns"></param>
+        /// <param name="spacing">The space between points.</param>
+        /// <param name="offset">The first point.</param>
+        /// <returns></returns>
+        public static double[,] Consecutive2D(int rows, int columns, double spacing = 1, double offset = 0)
+        {
+            double[,] data = new double[rows, columns];
+
+            var count = offset;
+            for (var y = 0; y < data.GetLength(0); y++)
+                for (int x = 0; x < data.GetLength(1); x++)
+                {
+                    data[y, x] = count;
+                    count += spacing;
+                }
+
+            return data;
+        }
+
+        /// <summary>
+        /// Generates a 2D sine pattern.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="xPeriod">Frequency factor in x direction.</param>
+        /// <param name="yPeriod">Frequency factor in y direction.</param>
+        /// <param name="multiple">Intensity factor.</param>
+        /// <returns></returns>
+        public static double[,] Sin2D(int width, int height, double xPeriod = .2, double yPeriod = .2, double multiple = 100)
+        {
+            double[,] intensities = new double[height, width];
+
+            for (int y = 0; y < height; y++)
+            {
+                double siny = Math.Cos(y * yPeriod) * multiple;
+                for (int x = 0; x < width; x++)
+                {
+                    double sinx = Math.Sin(x * xPeriod) * multiple;
+                    intensities[y, x] = sinx + siny;
+                }
+            }
+
+            return intensities;
+        }
+
+        /// <summary>
+        /// Generate a 2D array in a diagonal gradient pattern
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static double[,] Ramp2D(int width, int height, double min = 0, double max = 1)
+        {
+            double[,] intensities = new double[height, width];
+
+            double span = max - min;
+
+            for (int y = 0; y < height; y++)
+            {
+                double fracY = (double)y / height;
+                double valY = fracY * span + min;
+
+                for (int x = 0; x < width; x++)
+                {
+                    double fracX = (double)x / width;
+                    double valX = fracX * span + min;
+
+                    intensities[y, x] = (valX + valY) / 2;
+                }
+            }
+
+            return intensities;
+        }
+
+        /// <summary>
         /// Generates an array of random numbers following a uniform distribution on the interval [offset, multiplier].
         /// </summary>
         /// <param name="rand">The Random object to use.</param>
@@ -194,10 +275,20 @@ namespace ScottPlot
         /// <returns>A single value from a normal distribution.</returns>
         public static double RandomNormalValue(Random rand, double mean, double stdDev, double maxSdMultiple = 10)
         {
+            double UniformOpenInterval()
+            {
+                double value = 0;
+                while (value == 0)
+                {
+                    value = rand.NextDouble();
+                }
+                return value;
+            }
+
             while (true)
             {
-                double u1 = 1.0 - rand.NextDouble();
-                double u2 = 1.0 - rand.NextDouble();
+                double u1 = UniformOpenInterval();
+                double u2 = UniformOpenInterval();
                 double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
                 if (Math.Abs(randStdNormal) < maxSdMultiple)
                     return mean + stdDev * randStdNormal;
