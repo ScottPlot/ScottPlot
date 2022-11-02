@@ -75,6 +75,11 @@ namespace ScottPlot.Avalonia
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
 
+        static AvaPlot()
+        {
+            ContextMenuProperty.Changed.AddClassHandler<AvaPlot>((plot, args) => plot.ContextMenuChanged(args));
+        }
+
         public AvaPlot()
         {
             InitializeComponent();
@@ -103,7 +108,6 @@ namespace ScottPlot.Avalonia
             Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
             Configuration = Backend.Configuration;
 
-            ContextMenuProperty.Changed.Subscribe(ContextMenuChanged);
             ContextMenu = GetDefaultContextMenu();
 
             InitializeLayout();
