@@ -19,7 +19,7 @@ public abstract class YAxisBase : IAxis
 
     public double Height => Range.Span;
 
-    public CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
+    public virtual CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
     public float Offset { get; set; } = 0;
 
