@@ -1,6 +1,9 @@
-﻿namespace ScottPlot.Axis.StandardAxes;
+﻿using ScottPlot.Style;
+using SkiaSharp;
 
-public abstract class XAxisBase
+namespace ScottPlot.Axis.StandardAxes;
+
+public abstract class XAxisBase : IAxis
 {
     public double Left
     {
@@ -29,15 +32,36 @@ public abstract class XAxisBase
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
-        Bold = true,
-        FontSize = 16
+        Font = new Style.Font()
+        {
+            Family = "Consolas",
+            Size = 16,
+            Bold = true
+        },
     };
+    public Font TickFont { get; set; } = new();
+    public abstract Edge Edge { get; }
 
     public void Measure()
     {
-        float labelHeight = Label.FontSize;
-        float largestTickHeight = Label.FontSize;
-        PixelSize = labelHeight + largestTickHeight + 18;
+        float labelHeight = Label.Font.Size + 15;
+        float largestTickHeight = MeasureTicks();
+        float extraPadding = Edge == Edge.Bottom ? 18 : 0;
+        PixelSize = labelHeight + largestTickHeight + extraPadding;
+    }
+
+    private float MeasureTicks()
+    {
+        using SKPaint paint = new(TickFont.GetFont());
+        float largestTickHeight = 0;
+
+        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
+        {
+            PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
+            largestTickHeight = Math.Max(largestTickHeight, tickLabelSize.Height + 10);
+        }
+
+        return largestTickHeight;
     }
 
     public float GetPixel(double position, PixelRect dataArea)
@@ -54,5 +78,16 @@ public abstract class XAxisBase
         float pxFromLeftEdge = pixel - dataArea.Left;
         double unitsFromEdge = pxFromLeftEdge / pxPerUnit;
         return Left + unitsFromEdge;
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect)
+    {
+        using SKFont tickFont = TickFont.GetFont();
+        var ticks = TickGenerator.GetVisibleTicks(Range);
+        float tickSize = MeasureTicks();
+
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
 }

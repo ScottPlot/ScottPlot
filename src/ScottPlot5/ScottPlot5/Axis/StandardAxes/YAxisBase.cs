@@ -1,8 +1,9 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Style;
+using SkiaSharp;
 
 namespace ScottPlot.Axis.StandardAxes;
 
-public abstract class YAxisBase
+public abstract class YAxisBase : IAxis
 {
     public double Bottom
     {
@@ -31,10 +32,17 @@ public abstract class YAxisBase
     public Label Label { get; private set; } = new()
     {
         Text = "Vertical Axis",
-        Bold = true,
-        FontSize = 16,
+        Font = new Style.Font()
+        {
+            Family = "Consolas",
+            Size = 16,
+            Bold = true
+        },
         Rotation = -90
     };
+    public Font TickFont { get; set; } = new();
+
+    public abstract Edge Edge { get; }
 
     public float GetPixel(double position, PixelRect dataArea)
     {
@@ -54,10 +62,16 @@ public abstract class YAxisBase
 
     public void Measure()
     {
-        float labelWidth = Label.FontSize;
-        float largestTickWidth = 0;
+        float labelWidth = Label.Font.Size + 15;
+        float largestTickWidth = MeasureTicks();
 
-        using SKPaint paint = Label.MakePaint();
+        PixelSize = labelWidth + largestTickWidth;
+    }
+
+    private float MeasureTicks()
+    {
+        using SKPaint paint = new(TickFont.GetFont());
+        float largestTickWidth = 0;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
         {
@@ -65,6 +79,19 @@ public abstract class YAxisBase
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
-        PixelSize = labelWidth + largestTickWidth;
+        return largestTickWidth;
     }
+
+    public void Render(SKSurface surface, PixelRect dataRect)
+    {
+        using SKFont tickFont = TickFont.GetFont();
+
+        var ticks = TickGenerator.GetVisibleTicks(Range);
+        float tickSize = MeasureTicks();
+
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+    }
+
 }

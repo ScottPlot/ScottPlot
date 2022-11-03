@@ -277,13 +277,12 @@ namespace ScottPlot
         {
             double UniformOpenInterval()
             {
-                double subtrahend = 0;
-                while (subtrahend == 0)
+                double value = 0;
+                while (value == 0)
                 {
-                    subtrahend = rand.NextDouble();
+                    value = rand.NextDouble();
                 }
-                return 1.0 - subtrahend;
-                // The simpler 1.0 - rand.NextDouble() actually grabs from the interval [0, 1), not (0, 1)
+                return value;
             }
 
             while (true)
