@@ -42,6 +42,8 @@ namespace ScottPlot.Renderable
         public float ShadowOffsetX = 2;
         public float ShadowOffsetY = 2;
 
+        public LegendOrientation Orientation { get; set; } = LegendOrientation.Vertical;
+
         public Drawing.Font Font = new Drawing.Font();
         public string FontName { set { Font.Name = value; } }
         public float FontSize { set { Font.Size = value; } }
@@ -98,15 +100,27 @@ namespace ScottPlot.Renderable
             // determine maximum label size and use it to define legend size
             float maxLabelWidth = 0;
             float maxLabelHeight = 0;
+            float totLegendWidth = 0;
             for (int i = 0; i < items.Length; i++)
             {
                 var labelSize = gfx.MeasureString(items[i].label, font);
                 maxLabelWidth = Math.Max(maxLabelWidth, labelSize.Width);
+                totLegendWidth += SymbolWidth + labelSize.Width + SymbolPad;
                 maxLabelHeight = Math.Max(maxLabelHeight, labelSize.Height);
             }
 
-            float width = SymbolWidth + maxLabelWidth + SymbolPad;
-            float height = maxLabelHeight * items.Length;
+            float width = 0;
+            float height = 0;
+            if (Orientation == LegendOrientation.Vertical)
+            {
+                width = SymbolWidth + maxLabelWidth + SymbolPad;
+                height = maxLabelHeight * items.Length;
+            }
+            else if (Orientation == LegendOrientation.Horizontal)
+            {
+                width = totLegendWidth;
+                height = maxLabelHeight;
+            }
 
             return (maxLabelWidth, maxLabelHeight, width, height);
         }
@@ -114,6 +128,22 @@ namespace ScottPlot.Renderable
         private void RenderOnBitmap(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
             float locationX, float locationY, float width, float height, float maxLabelHeight,
             bool shadow = true, bool outline = true)
+        {
+            switch (Orientation)
+            {
+                case LegendOrientation.Horizontal:
+                    RenderOnBitmapHorizontal(gfx, items, font, locationX, locationY, width, height, maxLabelHeight, shadow, outline);
+                    break;
+                case LegendOrientation.Vertical:
+                default:
+                    RenderOnBitmapVertical(gfx, items, font, locationX, locationY, width, height, maxLabelHeight, shadow, outline);
+                    break;
+            }
+        }
+
+        private void RenderOnBitmapVertical(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
+          float locationX, float locationY, float width, float height, float maxLabelHeight,
+          bool shadow, bool outline)
         {
             using (var fillBrush = new SolidBrush(FillColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
@@ -146,7 +176,6 @@ namespace ScottPlot.Renderable
                     float lineY = locationY + verticalOffset + maxLabelHeight / 2;
                     float lineX1 = locationX + SymbolPad;
                     float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
-
 
                     if (item.ShowAsRectangleInLegend)
                     {
@@ -187,6 +216,88 @@ namespace ScottPlot.Renderable
                         RectangleF hideRect = new(hideRectOrigin, hideRectSize);
                         gfx.FillRectangle(legendItemHideBrush, hideRect);
                     }
+                }
+            }
+        }
+
+        private void RenderOnBitmapHorizontal(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
+          float locationX, float locationY, float width, float height, float maxLabelHeight,
+          bool shadow, bool outline)
+        {
+            using (var fillBrush = new SolidBrush(FillColor))
+            using (var shadowBrush = new SolidBrush(ShadowColor))
+            using (var textBrush = new SolidBrush(Font.Color))
+            using (var outlinePen = new Pen(OutlineColor))
+            using (var legendItemHideBrush = GDI.Brush(FillColor, 100))
+            {
+                RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
+                RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
+
+                if (shadow)
+                    gfx.FillRectangle(shadowBrush, rectShadow);
+
+                gfx.FillRectangle(fillBrush, rectFill);
+
+                if (outline)
+                    gfx.DrawRectangle(outlinePen, Rectangle.Round(rectFill));
+
+                float currentXDisplacement = 0;
+                for (int i = 0; i < items.Length; i++)
+                {
+                    LegendItem item = items[i];
+
+                    SizeF labelSize = gfx.MeasureString(items[i].label, font);
+
+                    // draw text
+                    gfx.DrawString(item.label, font, textBrush, locationX + currentXDisplacement + SymbolWidth, locationY);
+
+                    // prepare values for drawing a line
+                    outlinePen.Color = item.color;
+                    outlinePen.Width = 1;
+                    float lineY = locationY + maxLabelHeight / 2;
+                    float lineX1 = locationX + SymbolPad + currentXDisplacement;
+                    float lineX2 = lineX1 + SymbolWidth - SymbolPad;
+
+                    if (item.ShowAsRectangleInLegend)
+                    {
+                        // prepare values for drawing a rectangle
+                        PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
+                        SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
+                        RectangleF rect = new RectangleF(rectOrigin, rectSize);
+                        // draw a rectangle
+                        using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
+                        using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderWith, item.borderLineStyle))
+                        {
+                            gfx.FillRectangle(legendItemFillBrush, rect);
+                            gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+                        }
+                    }
+                    else
+                    {
+                        // draw a line
+                        if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
+                        {
+                            using var linePen = GDI.Pen(item.LineColor, item.lineWidth, item.lineStyle, false);
+                            gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                        }
+
+                        // and perhaps a marker in the middle of the line
+                        float lineXcenter = (lineX1 + lineX2) / 2;
+                        PointF markerPoint = new PointF(lineXcenter, lineY);
+                        if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
+                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, item.markerSize, item.MarkerColor, item.markerLineWidth);
+                    }
+
+                    // Typically invisible legend items don't make it in the list.
+                    // If they do, display them simulating semi-transparency.
+                    if (!item.Parent.IsVisible)
+                    {
+                        PointF hideRectOrigin = new(lineX1, locationY);
+                        SizeF hideRectSize = new(width, maxLabelHeight);
+                        RectangleF hideRect = new(hideRectOrigin, hideRectSize);
+                        gfx.FillRectangle(legendItemHideBrush, hideRect);
+                    }
+                    currentXDisplacement = lineX2 + labelSize.Width - locationX + SymbolPad;
                 }
             }
         }
@@ -243,5 +354,11 @@ namespace ScottPlot.Renderable
                     throw new NotImplementedException();
             }
         }
+    }
+
+    public enum LegendOrientation
+    {
+        Vertical,
+        Horizontal,
     }
 }
