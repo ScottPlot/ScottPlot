@@ -19,7 +19,7 @@ public abstract class XAxisBase : IAxis
 
     public double Width => Range.Span;
 
-    public CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
+    public virtual CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
     public ITickGenerator TickGenerator { get; set; } = null!;
 
