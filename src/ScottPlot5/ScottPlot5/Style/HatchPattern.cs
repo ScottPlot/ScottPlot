@@ -8,4 +8,7 @@ public enum HatchPattern
     VerticalLines,
     DiagonalUp,
     DiagonalDown,
+    Squares,
+    CheckerBoard,
+    Dots,
 }
