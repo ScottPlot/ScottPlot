@@ -76,7 +76,7 @@ public struct Fill
         return Pattern switch
         {
             HatchPattern.HorizontalLines => HorizontalLines(),
-            HatchPattern.VerticalLines=> VerticalLines(),
+            HatchPattern.VerticalLines => VerticalLines(),
             HatchPattern.DiagonalUp => DiagonalUp(),
             HatchPattern.DiagonalDown => DiagonalDown(),
             HatchPattern.Squares => Squares(),
@@ -87,7 +87,7 @@ public struct Fill
         };
     }
 
-    private SKShader HorizontalLines() => 
+    private SKShader HorizontalLines() =>
         SKShader.CreateBitmap(
             Stripe(),
             SKShaderTileMode.Repeat,
@@ -108,7 +108,7 @@ public struct Fill
             SKShaderTileMode.Repeat,
             SKMatrix.CreateScale(0.1f, 0.15f)
                 .PostConcat(SKMatrix.CreateRotationDegrees(-45)));
-    
+
     private SKShader DiagonalDown() =>
         SKShader.CreateBitmap(
             Stripe(),
