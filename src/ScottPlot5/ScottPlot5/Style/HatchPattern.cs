@@ -6,6 +6,6 @@ public enum HatchPattern
     None,
     HorizontalLines,
     VerticalLines,
-    DiagnalUp,
-    DiagnalDown,
+    DiagonalUp,
+    DiagonalDown,
 }
