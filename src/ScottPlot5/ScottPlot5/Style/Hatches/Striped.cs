@@ -17,13 +17,13 @@ namespace ScottPlot.Style.Hatches
 
     public class Striped : IHatch
     {
-        public Striped (StripeDirection stripeDirection = StripeDirection.DiagonalUp)
+        public Striped(StripeDirection stripeDirection = StripeDirection.DiagonalUp)
         {
             StripeDirection = stripeDirection;
         }
 
         // This is implemented as a transformation of the shader, so we don't need to invalidate the bitmap in the setter
-        public StripeDirection StripeDirection { get; set; } 
+        public StripeDirection StripeDirection { get; set; }
         protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
         {
             var bitmap = new SKBitmap(20, 50);

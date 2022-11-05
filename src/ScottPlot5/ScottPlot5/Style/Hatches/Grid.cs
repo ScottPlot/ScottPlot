@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Style.Hatches
 {
-    public  class Grid : IHatch
+    public class Grid : IHatch
     {
         protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
         {
