@@ -9,6 +9,13 @@ namespace ScottPlot.Style.Hatches
 {
     public class Grid : IHatch
     {
+        public bool Rotate { get; set; }
+
+        public Grid(bool rotate = false)
+        {
+            Rotate = rotate;
+        }
+
         protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
         {
             var bmp = new SKBitmap(20, 20);
@@ -29,11 +36,14 @@ namespace ScottPlot.Style.Hatches
 
         public SKShader GetShader(Color backgroundColor, Color hatchColor)
         {
+            var rotationMatrix = Rotate ? SKMatrix.CreateRotationDegrees(45) : SKMatrix.Identity;
+
             return SKShader.CreateBitmap(
                 CreateBitmap(backgroundColor, hatchColor),
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
-                SKMatrix.CreateScale(0.5f, 0.5f));
+                SKMatrix.CreateScale(0.5f, 0.5f)
+                    .PostConcat(rotationMatrix));
         }
     }
 }
