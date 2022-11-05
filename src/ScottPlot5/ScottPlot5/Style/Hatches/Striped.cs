@@ -24,15 +24,20 @@ namespace ScottPlot.Style.Hatches
 
         // This is implemented as a transformation of the shader, so we don't need to invalidate the bitmap in the setter
         public StripeDirection StripeDirection { get; set; }
-        protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
+        static Striped()
+        {
+            bmp = CreateBitmap();
+        }
+        private static SKBitmap bmp;
+        private static SKBitmap CreateBitmap()
         {
             var bitmap = new SKBitmap(20, 50);
 
-            using var paint = new SKPaint() { Color = hatchColor.ToSKColor() };
+            using var paint = new SKPaint() { Color = Colors.White.ToSKColor() };
             using var path = new SKPath();
             using var canvas = new SKCanvas(bitmap);
 
-            canvas.Clear(backgroundColor.ToSKColor());
+            canvas.Clear(Colors.Black.ToSKColor());
             canvas.DrawRect(new SKRect(0, 0, 20, 20), paint);
 
             return bitmap;
@@ -50,11 +55,12 @@ namespace ScottPlot.Style.Hatches
             };
 
             return SKShader.CreateBitmap(
-                CreateBitmap(backgroundColor, hatchColor),
+                bmp,
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
                 SKMatrix.CreateScale(0.1f, 0.15f)
-                    .PostConcat(rotationMatrix));
+                    .PostConcat(rotationMatrix))
+                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

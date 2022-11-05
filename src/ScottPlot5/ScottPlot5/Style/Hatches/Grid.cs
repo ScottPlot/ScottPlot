@@ -11,24 +11,29 @@ namespace ScottPlot.Style.Hatches
     {
         public bool Rotate { get; set; }
 
+        static Grid()
+        {
+            bmp = CreateBitmap();
+        }
         public Grid(bool rotate = false)
         {
             Rotate = rotate;
         }
 
-        protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
+        private static SKBitmap bmp;
+        private static SKBitmap CreateBitmap()
         {
             var bmp = new SKBitmap(20, 20);
             using var paint = new SKPaint()
             {
-                Color = hatchColor.ToSKColor(),
+                Color = Colors.White.ToSKColor(),
                 IsStroke = true,
                 StrokeWidth = 3
             };
             using var path = new SKPath();
             using var canvas = new SKCanvas(bmp);
 
-            canvas.Clear(backgroundColor.ToSKColor());
+            canvas.Clear(Colors.Black.ToSKColor());
             canvas.DrawRect(0, 0, 20, 20, paint);
 
             return bmp;
@@ -39,11 +44,12 @@ namespace ScottPlot.Style.Hatches
             var rotationMatrix = Rotate ? SKMatrix.CreateRotationDegrees(45) : SKMatrix.Identity;
 
             return SKShader.CreateBitmap(
-                CreateBitmap(backgroundColor, hatchColor),
+                bmp,
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
                 SKMatrix.CreateScale(0.5f, 0.5f)
-                    .PostConcat(rotationMatrix));
+                    .PostConcat(rotationMatrix))
+                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

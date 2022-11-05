@@ -9,16 +9,21 @@ namespace ScottPlot.Style.Hatches
 {
     public class Dots : IHatch
     {
-        protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
+        static Dots()
+        {
+            bmp = CreateBitmap();
+        }
+        private static SKBitmap bmp;
+        private static SKBitmap CreateBitmap()
         {
             var bmp = new SKBitmap(20, 20);
-            using var paint = new SKPaint() { Color = hatchColor.ToSKColor() };
+            using var paint = new SKPaint() { Color = Colors.White.ToSKColor() };
             using var path = new SKPath();
             using var canvas = new SKCanvas(bmp);
 
             paint.IsAntialias = true; // AA is especially important for circles, it seems to do little for the other shapes
 
-            canvas.Clear(backgroundColor.ToSKColor());
+            canvas.Clear(Colors.Black.ToSKColor());
             canvas.DrawCircle(5, 5, 5, paint);
 
             return bmp;
@@ -27,10 +32,11 @@ namespace ScottPlot.Style.Hatches
         public SKShader GetShader(Color backgroundColor, Color hatchColor)
         {
             return SKShader.CreateBitmap(
-                CreateBitmap(backgroundColor, hatchColor),
+                bmp,
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
-                SKMatrix.CreateScale(0.5f, 0.5f));
+                SKMatrix.CreateScale(0.5f, 0.5f))
+                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

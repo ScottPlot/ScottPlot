@@ -10,14 +10,19 @@ namespace ScottPlot.Style.Hatches
 {
     public class Checker : IHatch
     {
-        protected SKBitmap CreateBitmap(Color backgroundColor, Color hatchColor)
+        static Checker()
+        {
+            bmp = CreateBitmap();
+        }
+        private static SKBitmap bmp;
+        private static SKBitmap CreateBitmap()
         {
             var bmp = new SKBitmap(20, 20);
-            using var paint = new SKPaint() { Color = hatchColor.ToSKColor() };
+            using var paint = new SKPaint() { Color = Colors.White.ToSKColor() };
             using var path = new SKPath();
             using var canvas = new SKCanvas(bmp);
 
-            canvas.Clear(backgroundColor.ToSKColor());
+            canvas.Clear(Colors.Black.ToSKColor());
             canvas.DrawRect(new SKRect(0, 0, 10, 10), paint);
             canvas.DrawRect(new SKRect(10, 10, 20, 20), paint);
 
@@ -27,10 +32,11 @@ namespace ScottPlot.Style.Hatches
         public SKShader GetShader(Color backgroundColor, Color hatchColor)
         {
             return SKShader.CreateBitmap(
-                CreateBitmap(backgroundColor, hatchColor),
+                bmp,
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
-                SKMatrix.CreateScale(0.5f, 0.5f));
+                SKMatrix.CreateScale(0.5f, 0.5f))
+                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }
