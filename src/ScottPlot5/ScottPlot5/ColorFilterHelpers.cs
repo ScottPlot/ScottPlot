@@ -14,7 +14,7 @@ namespace ScottPlot
             background ??= Colors.Black;
 
             float redDifference = foreground.Red - background.Value.Red;
-            float greenDifference = foreground.Green  - background.Value.Green;
+            float greenDifference = foreground.Green - background.Value.Green;
             float blueDifference = foreground.Blue - background.Value.Blue;
             float alphaDifference = foreground.Alpha - background.Value.Alpha;
 
@@ -26,7 +26,7 @@ namespace ScottPlot
                 0, 0, 0, alphaDifference / 255, background.Value.Alpha / 255.0f,
             };
 
-            var filter =  SKColorFilter.CreateColorMatrix(mat);
+            var filter = SKColorFilter.CreateColorMatrix(mat);
             return filter;
         }
     }
