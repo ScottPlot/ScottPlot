@@ -50,7 +50,7 @@ public struct Fill
         using var paint = new SKPaint() { Color = HatchColor.ToSKColor() };
         using var path = new SKPath();
         using var canvas = new SKCanvas(bmp);
-        
+
         canvas.Clear(Color.ToSKColor());
         canvas.DrawRect(new SKRect(0, 0, 10, 10), paint);
         canvas.DrawRect(new SKRect(10, 10, 20, 20), paint);
@@ -76,7 +76,8 @@ public struct Fill
     private SKBitmap Lattice()
     {
         var bmp = new SKBitmap(20, 20);
-        using var paint = new SKPaint() { 
+        using var paint = new SKPaint()
+        {
             Color = HatchColor.ToSKColor(),
             IsStroke = true,
             StrokeWidth = 3
