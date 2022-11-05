@@ -19,6 +19,9 @@ namespace ScottPlot
             float alphaDifference = foreground.Alpha - background.Value.Alpha;
 
             // See https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/effects/color-filters for an explanation of this matrix
+            // 
+            // Essentially, this matrix maps all gray colours to a line from `background.Value` to `foreground`. Black and white are at the extremes on this line, 
+            // so they get mapped to `background.Value` and `foreground` respectively
             var mat = new float[] {
                 redDifference / 255, 0, 0, 0, background.Value.Red / 255.0f,
                 0, greenDifference / 255, 0, 0, background.Value.Green / 255.0f,
