@@ -11,4 +11,5 @@ public enum HatchPattern
     Squares,
     CheckerBoard,
     Dots,
+    Grid,
 }

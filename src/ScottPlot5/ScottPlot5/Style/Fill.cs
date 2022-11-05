@@ -73,6 +73,23 @@ public struct Fill
         return bmp;
     }
 
+    private SKBitmap Lattice()
+    {
+        var bmp = new SKBitmap(20, 20);
+        using var paint = new SKPaint() { 
+            Color = HatchColor.ToSKColor(),
+            IsStroke = true,
+            StrokeWidth = 3
+        };
+        using var path = new SKPath();
+        using var canvas = new SKCanvas(bmp);
+
+        canvas.Clear(Color.ToSKColor());
+        canvas.DrawRect(0, 0, 20, 20, paint);
+
+        return bmp;
+    }
+
     public SKShader? GetShader()
     {
         return Pattern switch
@@ -84,6 +101,7 @@ public struct Fill
             HatchPattern.Squares => Squares(),
             HatchPattern.CheckerBoard => Checkerboard(),
             HatchPattern.Dots => Dots(),
+            HatchPattern.Grid => Grid(),
             HatchPattern.None => null,
             _ => throw new NotImplementedException(nameof(Pattern))
         };
@@ -122,20 +140,27 @@ public struct Fill
     private SKShader Squares() =>
         SKShader.CreateBitmap(
             Square(),
-            SKShaderTileMode.Mirror,
-            SKShaderTileMode.Mirror,
-            SKMatrix.CreateScale(0.25f, 0.25f));
+            SKShaderTileMode.Repeat,
+            SKShaderTileMode.Repeat,
+            SKMatrix.CreateScale(0.5f, 0.5f));
 
     private SKShader Checkerboard() =>
         SKShader.CreateBitmap(
             Checker(),
-            SKShaderTileMode.Mirror,
-            SKShaderTileMode.Mirror,
-            SKMatrix.CreateScale(0.25f, 0.25f));
+            SKShaderTileMode.Repeat,
+            SKShaderTileMode.Repeat,
+            SKMatrix.CreateScale(0.5f, 0.5f));
 
     private SKShader Dots() =>
         SKShader.CreateBitmap(
             Dot(),
+            SKShaderTileMode.Repeat,
+            SKShaderTileMode.Repeat,
+            SKMatrix.CreateScale(0.5f, 0.5f));
+
+    private SKShader Grid() =>
+        SKShader.CreateBitmap(
+            Lattice(),
             SKShaderTileMode.Repeat,
             SKShaderTileMode.Repeat,
             SKMatrix.CreateScale(0.5f, 0.5f));
