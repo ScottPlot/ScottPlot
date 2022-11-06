@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Renderable;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -156,6 +157,24 @@ namespace ScottPlot.Cookbook.Recipes
 
             plt.YAxis.MajorGrid(lineWidth: 2);
             plt.XAxis.MajorGrid(lineWidth: 2);
+        }
+    }
+
+    class LegendOrientation : IRecipe
+    {
+        public ICategory Category => new Categories.Misc();
+        public string ID => "misc_legend_orientation";
+        public string Title => "Legend Orientation";
+        public string Description =>
+            "Legends can be customized to support horizontal orientation";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+
+            Legend legend = plt.Legend(enable: true);
+            legend.Orientation = Orientation.Horizontal;
         }
     }
 }
