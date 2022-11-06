@@ -18,6 +18,7 @@ _not yet published on NuGet..._
 * Data Generation: Improved floating point precision of `RandomNormalValue` randomness (#2189, #2206) _Thanks @arthurits and @bclehmann__
 * Finance Plot: Improved SMA calculations for charts with unordered candlesticks (#2199, #2207) _Thanks @zachesposito and @xenedia_
 * Avalonia Control: Fixed subscription to ContexMenu property changes (#2215) _Thanks @DmitryZhelnin_
+* Legend: Support horizontal orientation and added cookbook example (#2216) _Thanks @lucabat_
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
