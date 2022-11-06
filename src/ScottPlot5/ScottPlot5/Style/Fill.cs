@@ -1,10 +1,13 @@
-﻿namespace ScottPlot.Style;
+﻿using ScottPlot.Style.Hatches;
+using SkiaSharp;
+
+namespace ScottPlot.Style;
 
 public struct Fill
 {
     public Color Color { get; set; } = Colors.CornflowerBlue;
-
-    public Hatch? Hatch { get; set; } = null;
+    public Color HatchColor { get; set; } = Colors.Gray;
+    public IHatch? Hatch { get; set; } = null;
 
     public Fill()
     {
@@ -14,4 +17,6 @@ public struct Fill
     {
         Color = color;
     }
+
+    public SKShader? GetShader() => Hatch?.GetShader(Color, HatchColor);
 }

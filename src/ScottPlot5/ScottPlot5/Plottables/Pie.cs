@@ -73,9 +73,11 @@ namespace ScottPlot.Plottables
             float sweepStart = 0;
             for (int i = 0; i < Slices.Count(); i++)
             {
-                int savePoint = surface.Canvas.Save();
+                using var _ = new SKAutoCanvasRestore(surface.Canvas);
+
+                float rotation = sweepStart + sweeps[i] / 2;
                 surface.Canvas.Translate(origin.X, origin.Y);
-                surface.Canvas.RotateDegrees(sweepStart + sweeps[i] / 2);
+                surface.Canvas.RotateDegrees(rotation);
                 surface.Canvas.Translate(explosionRadius, 0);
 
                 path.MoveTo(0, 0);
@@ -83,14 +85,13 @@ namespace ScottPlot.Plottables
                 path.Close();
 
                 paint.SetFill(Slices[i].Fill);
+                paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
                 surface.Canvas.DrawPath(path, paint);
 
                 paint.SetStroke(Stroke);
                 surface.Canvas.DrawPath(path, paint);
 
                 path.Reset();
-                surface.Canvas.RestoreToCount(savePoint);
-
                 sweepStart += sweeps[i];
             }
         }
