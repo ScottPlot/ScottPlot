@@ -14,7 +14,7 @@ namespace ScottPlotTests.Plot
         {
             Random rand = new Random(0);
             var plt = new ScottPlot.Plot();
-            plt.AddScatter(DataGen.Random(rand, 100, 20), DataGen.Random(rand, 100, 5, 3), label: "scatter1");
+            plt.AddScatter(DataGen.Random(rand, 100, 20), DataGen.Random<double>(rand, 100, 5, 3), label: "scatter1");
             plt.AddSignal(DataGen.RandomWalk(rand, 100), label: "signal1");
             plt.AddScatter(DataGen.Random(rand, 100), ScottPlot.DataGen.Random(rand, 100), label: "scatter2");
             plt.AddSignal(DataGen.RandomWalk(rand, 100), label: "signal2");
