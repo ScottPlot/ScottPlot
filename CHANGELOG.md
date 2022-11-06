@@ -19,6 +19,8 @@ _not yet published on NuGet..._
 * Finance Plot: Improved SMA calculations for charts with unordered candlesticks (#2199, #2207) _Thanks @zachesposito and @xenedia_
 * Avalonia Control: Fixed subscription to ContexMenu property changes (#2215) _Thanks @DmitryZhelnin_
 * Legend: Support horizontal orientation and added cookbook example (#2216) _Thanks @lucabat_
+* Data Generation: Added generic support for `Consecutive()`, `Random()`, and `RandomWalk()`
+* SignalPlot: New `SignalPlotGeneric` type allows `AddSignal()` to support generic data types (#2217) _Thanks @codecrafty_
 
 ## ScottPlot 4.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-09-08_
