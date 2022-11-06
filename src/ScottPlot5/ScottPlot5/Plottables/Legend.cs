@@ -68,7 +68,7 @@ namespace ScottPlot.Plottables
                 return;
             }
 
-            using ScopedTransform transform = new(surface.Canvas);
+            using SKAutoCanvasRestore _ = new(surface.Canvas);
             paint.SetFill(new(Colors.Black));
 
             surface.Canvas.Translate(HorizontalPadding, 0);
