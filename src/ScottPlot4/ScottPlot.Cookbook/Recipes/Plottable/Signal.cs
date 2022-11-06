@@ -27,6 +27,31 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SignalGeneric : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_generic";
+        public string Title => "Signal Plot with Generic Data";
+        public string Description => "Signal plots accept double arrays by default, but " +
+            "a generic signal plot exists which can display most numeric data types.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new(0);
+            int points = 10_000;
+
+            float[] valuesFLOAT = DataGen.RandomWalk<float>(rand, points, 1, 0);
+            short[] valuesSHORT = DataGen.RandomWalk<short>(rand, points, 1, 0);
+            Int16[] valuesINT16 = DataGen.RandomWalk<Int16>(rand, points, 1, 0);
+
+            plt.AddSignal(valuesFLOAT, label: "float[]");
+            plt.AddSignal(valuesSHORT, label: "short[]");
+            plt.AddSignal(valuesINT16, label: "Int16[]");
+
+            plt.Legend();
+        }
+    }
+
     public class SignalOffset : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Signal();
