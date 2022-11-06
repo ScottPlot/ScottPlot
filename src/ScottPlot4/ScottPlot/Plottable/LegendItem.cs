@@ -67,5 +67,62 @@ namespace ScottPlot.Plottable
 
             return new LegendItem[] { singleItem };
         }
+
+        public void Render(Graphics gfx, float x, float y,
+            float labelWidth, float labelHeight, System.Drawing.Font labelFont,
+            float symbolWidth, float symbolPad,
+            Pen outlinePen, SolidBrush textBrush, Brush legendItemHideBrush)
+        {
+            // draw text
+            gfx.DrawString(label, labelFont, textBrush, x + symbolWidth, y);
+
+            // prepare values for drawing a line
+            outlinePen.Color = color;
+            outlinePen.Width = 1;
+            float lineY = y + labelHeight / 2;
+            float lineX1 = x + symbolPad;
+            float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
+
+            if (ShowAsRectangleInLegend)
+            {
+                // prepare values for drawing a rectangle
+                PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
+                SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
+                RectangleF rect = new RectangleF(rectOrigin, rectSize);
+
+                // draw a rectangle
+                using (var legendItemFillBrush = GDI.Brush(color, hatchColor, hatchStyle))
+                using (var legendItemOutlinePen = GDI.Pen(borderColor, borderWith, borderLineStyle))
+                {
+                    gfx.FillRectangle(legendItemFillBrush, rect);
+                    gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+                }
+            }
+            else
+            {
+                // draw a line
+                if (lineWidth > 0 && lineStyle != LineStyle.None)
+                {
+                    using var linePen = GDI.Pen(LineColor, lineWidth, lineStyle, false);
+                    gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                }
+
+                // and perhaps a marker in the middle of the line
+                float lineXcenter = (lineX1 + lineX2) / 2;
+                PointF markerPoint = new PointF(lineXcenter, lineY);
+                if ((markerShape != MarkerShape.none) && (markerSize > 0))
+                    MarkerTools.DrawMarker(gfx, markerPoint, markerShape, markerSize, MarkerColor, markerLineWidth);
+            }
+
+            // Typically invisible legend items don't make it in the list.
+            // If they do, display them simulating semi-transparency by drawing a white box over the legend item
+            if (!Parent.IsVisible)
+            {
+                PointF hideRectOrigin = new(lineX1, y);
+                SizeF hideRectSize = new(symbolWidth + labelWidth + symbolPad, labelHeight);
+                RectangleF hideRect = new(hideRectOrigin, hideRectSize);
+                gfx.FillRectangle(legendItemHideBrush, hideRect);
+            }
+        }
     }
 }

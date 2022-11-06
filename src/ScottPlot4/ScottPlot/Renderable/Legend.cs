@@ -17,7 +17,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// List of items appearing in the legend during the last render
         /// </summary>
-        private LegendItem[] LegendItems = new LegendItem[] { };
+        private LegendItem[] LegendItems = Array.Empty<LegendItem>();
 
         /// <summary>
         /// Number of items appearing in the legend during the last render
@@ -29,31 +29,30 @@ namespace ScottPlot.Renderable
         /// </summary>
         public bool HasItems => LegendItems is not null && LegendItems.Length > 0;
 
-        public Alignment Location = Alignment.LowerRight;
-        public bool FixedLineWidth = false;
-        public bool ReverseOrder = false;
-        public bool AntiAlias = true;
+        public Alignment Location { get; set; } = Alignment.LowerRight;
+        public bool FixedLineWidth { get; set; } = false;
+        public bool ReverseOrder { get; set; } = false;
+        public bool AntiAlias { get; set; } = true;
         public bool IsVisible { get; set; } = false;
         public bool IsDetached { get; set; } = false;
 
-        public Color FillColor = Color.White;
-        public Color OutlineColor = Color.Black;
-        public Color ShadowColor = Color.FromArgb(50, Color.Black);
-        public float ShadowOffsetX = 2;
-        public float ShadowOffsetY = 2;
+        public Color FillColor { get; set; } = Color.White;
+        public Color OutlineColor { get; set; } = Color.Black;
+        public Color ShadowColor { get; set; } = Color.FromArgb(50, Color.Black);
+        public float ShadowOffsetX { get; set; } = 2;
+        public float ShadowOffsetY { get; set; } = 2;
 
         public Orientation Orientation { get; set; } = Orientation.Vertical;
 
-        public Drawing.Font Font = new Drawing.Font();
+        public Drawing.Font Font { get; } = new Drawing.Font();
         public string FontName { set { Font.Name = value; } }
         public float FontSize { set { Font.Size = value; } }
         public Color FontColor { set { Font.Color = value; } }
         public bool FontBold { set { Font.Bold = value; } }
 
-        public float Padding = 5;
+        public float Padding { get; set; } = 5;
         private float SymbolWidth { get { return 40 * Font.Size / 12; } }
         private float SymbolPad { get { return Font.Size / 3; } }
-        private float MarkerWidth { get { return Font.Size / 2; } }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -65,7 +64,7 @@ namespace ScottPlot.Renderable
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);
                 var (x, y) = GetLocationPx(dims, width, height);
-                RenderOnBitmap(gfx, LegendItems, font, x, y, width, height, maxLabelHeight);
+                Render(gfx, LegendItems, font, x, y, width, height, maxLabelHeight);
             }
         }
 
@@ -89,7 +88,7 @@ namespace ScottPlot.Renderable
             int height = (int)(totalLabelHeight * scale);
             Bitmap bmp = new(width, height, PixelFormat.Format32bppPArgb);
             using var gfx = GDI.Graphics(bmp, lowQuality, scale);
-            RenderOnBitmap(gfx, LegendItems, legendFont, 0, 0, totalLabelWidth, totalLabelHeight, maxLabelHeight);
+            Render(gfx, LegendItems, legendFont, 0, 0, totalLabelWidth, totalLabelHeight, maxLabelHeight);
 
             return bmp;
         }
@@ -127,7 +126,7 @@ namespace ScottPlot.Renderable
             return (maxLabelWidth, maxLabelHeight, width, height);
         }
 
-        private void RenderOnBitmap(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
+        private void Render(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
             float locationX, float locationY, float width, float height, float maxLabelHeight,
             bool shadow = true, bool outline = true)
         {
@@ -160,7 +159,9 @@ namespace ScottPlot.Renderable
                     float itemStartXLocation = locationX + offsetX;
                     float itemStartYLocation = locationY + offsetY;
 
-                    DrawLegendItem(gfx, item, itemStartXLocation, itemStartYLocation, labelSize.Width, maxLabelHeight, font, outlinePen, textBrush, legendItemHideBrush);
+                    item.Render(gfx, itemStartXLocation, itemStartYLocation,
+                        labelSize.Width, maxLabelHeight, font,
+                        SymbolWidth, SymbolPad, outlinePen, textBrush, legendItemHideBrush);
 
                     if (Orientation == Orientation.Vertical)
                     {
@@ -171,60 +172,6 @@ namespace ScottPlot.Renderable
                         offsetX += SymbolWidth + labelSize.Width + SymbolPad;
                     }
                 }
-            }
-        }
-
-        private void DrawLegendItem(Graphics gfx, LegendItem item, float itemStartXLocation, float itemStartYLocation, float currentLabelWidth, float maxLabelHeight, System.Drawing.Font font, Pen outlinePen, SolidBrush textBrush, Brush legendItemHideBrush)
-        {
-            // draw text
-            gfx.DrawString(item.label, font, textBrush, itemStartXLocation + SymbolWidth, itemStartYLocation);
-
-            // prepare values for drawing a line
-            outlinePen.Color = item.color;
-            outlinePen.Width = 1;
-            float lineY = itemStartYLocation + maxLabelHeight / 2;
-            float lineX1 = itemStartXLocation + SymbolPad;
-            float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
-
-            if (item.ShowAsRectangleInLegend)
-            {
-                // prepare values for drawing a rectangle
-                PointF rectOrigin = new PointF(lineX1, (float)(lineY - 5));
-                SizeF rectSize = new SizeF(lineX2 - lineX1, 10);
-                RectangleF rect = new RectangleF(rectOrigin, rectSize);
-
-                // draw a rectangle
-                using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
-                using (var legendItemOutlinePen = GDI.Pen(item.borderColor, item.borderWith, item.borderLineStyle))
-                {
-                    gfx.FillRectangle(legendItemFillBrush, rect);
-                    gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
-                }
-            }
-            else
-            {
-                // draw a line
-                if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
-                {
-                    using var linePen = GDI.Pen(item.LineColor, item.lineWidth, item.lineStyle, false);
-                    gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
-                }
-
-                // and perhaps a marker in the middle of the line
-                float lineXcenter = (lineX1 + lineX2) / 2;
-                PointF markerPoint = new PointF(lineXcenter, lineY);
-                if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
-                    MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, item.markerSize, item.MarkerColor, item.markerLineWidth);
-            }
-
-            // Typically invisible legend items don't make it in the list.
-            // If they do, display them simulating semi-transparency.
-            if (!item.Parent.IsVisible)
-            {
-                PointF hideRectOrigin = new(lineX1, itemStartYLocation);
-                SizeF hideRectSize = new(SymbolWidth + currentLabelWidth + SymbolPad, maxLabelHeight);
-                RectangleF hideRect = new(hideRectOrigin, hideRectSize);
-                gfx.FillRectangle(legendItemHideBrush, hideRect);
             }
         }
 
