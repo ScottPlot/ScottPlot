@@ -1188,7 +1188,7 @@ namespace ScottPlot
         /// <summary>
         /// Signal plots have evenly-spaced X points and render very fast.
         /// </summary>
-        public SignalPlotGeneric<T> AddSignalGeneric<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
+        public SignalPlotGeneric<T> AddSignal<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
         {
             var signal = new SignalPlotGeneric<T>()
             {
@@ -1197,7 +1197,6 @@ namespace ScottPlot
                 Color = color ?? settings.GetNextColor(),
                 Label = label,
 
-                // TODO: FIX THIS!!!
                 MinRenderIndex = 0,
                 MaxRenderIndex = ys.Length - 1,
             };
