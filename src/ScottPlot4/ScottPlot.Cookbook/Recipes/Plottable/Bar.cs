@@ -400,7 +400,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // generate some random values
             var rand = new Random(0);
-            double[] values = DataGen.Random(rand, pointCount, 1, 2);
+            double[] values = DataGen.Random(rand, pointCount);
 
             // space every time point by 1 hour from a starting point
             DateTime start = new DateTime(2021, 09, 24, 0, 0, 0);

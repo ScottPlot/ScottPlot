@@ -29,6 +29,15 @@ namespace ScottPlot
             return ys;
         }
 
+        public static T[] Consecutive<T>(int pointCount, T spacing, T offset)
+        {
+            double spacingDouble = NumericConversion.GenericToDouble(ref spacing);
+            double offsetDouble = NumericConversion.GenericToDouble(ref offset);
+            double[] values = Consecutive(pointCount, spacingDouble, offsetDouble);
+            T[] valuesGeneric = NumericConversion.ToGenericArray<T>(values);
+            return valuesGeneric;
+        }
+
         /// <summary>
         /// Generates an array of sine values of an input array.
         /// </summary>
@@ -142,6 +151,15 @@ namespace ScottPlot
             for (int i = 0; i < pointCount; i++)
                 ys[i] = rand.NextDouble() * multiplier + offset;
             return ys;
+        }
+
+        public static T[] Random<T>(Random rand, int pointCount, T multiplier, T offset)
+        {
+            double multDouble = NumericConversion.GenericToDouble(ref multiplier);
+            double offsetDouble = NumericConversion.GenericToDouble(ref offset);
+            double[] values = Random(rand, pointCount, multDouble, offsetDouble);
+            T[] valuesGeneric = NumericConversion.ToGenericArray<T>(values);
+            return valuesGeneric;
         }
 
         /// <summary>
@@ -411,6 +429,15 @@ namespace ScottPlot
             for (int i = 1; i < data.Length; i++)
                 data[i] = data[i - 1] + (rand.NextDouble() * 2 - 1) * mult;
             return data;
+        }
+
+        public static T[] RandomWalk<T>(Random rand, int pointCount, T mult, T offset)
+        {
+            double multDouble = NumericConversion.GenericToDouble(ref mult);
+            double offsetDouble = NumericConversion.GenericToDouble(ref offset);
+            double[] values = RandomWalk(rand, pointCount, multDouble, offsetDouble);
+            T[] valuesGeneric = NumericConversion.ToGenericArray<T>(values);
+            return valuesGeneric;
         }
 
         /// <summary>
