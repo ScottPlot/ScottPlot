@@ -315,7 +315,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] values = DataGen.RandomNormal(0, 12, 5, 10);
+            double[] values = DataGen.RandomNormal(1, 12, 5, 10);
             double[] offsets = Enumerable.Range(0, values.Length).Select(x => values.Take(x).Sum()).ToArray();
 
             var bar = plt.AddBar(values);
@@ -400,7 +400,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // generate some random values
             var rand = new Random(0);
-            double[] values = DataGen.Random(rand, pointCount);
+            double[] values = DataGen.Random(rand, pointCount, 1.0, 2.5);
 
             // space every time point by 1 hour from a starting point
             DateTime start = new DateTime(2021, 09, 24, 0, 0, 0);
@@ -417,6 +417,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // adjust axis limits so there is no padding below the bar graph
             plt.SetAxisLimits(yMin: 0);
+            plt.Layout(right: 20); // add room for the far right date tick
         }
     }
 }
