@@ -1,5 +1,4 @@
-﻿using ScottPlot.Renderable;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -173,7 +172,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Sin(51), label: "sin");
             plt.AddSignal(DataGen.Cos(51), label: "cos");
 
-            Legend legend = plt.Legend(enable: true);
+            var legend = plt.Legend(enable: true);
             legend.Orientation = Orientation.Horizontal;
         }
     }
