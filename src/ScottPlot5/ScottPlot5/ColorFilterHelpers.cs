@@ -9,6 +9,7 @@ namespace ScottPlot
 {
     internal static class ColorFilterHelpers
     {
+        // This function and the math is explained here: https://bclehmann.github.io/2022/11/06/UnmaskingWithSKColorFilter.html
         public static SKColorFilter GetMaskColorFilter(Color foreground, Color? background = null)
         {
             background ??= Colors.Black;
@@ -26,7 +27,7 @@ namespace ScottPlot
                 redDifference / 255, 0, 0, 0, background.Value.Red / 255.0f,
                 0, greenDifference / 255, 0, 0, background.Value.Green / 255.0f,
                 0, 0, blueDifference / 255, 0, background.Value.Blue / 255.0f,
-                0, 0, 0, alphaDifference / 255, background.Value.Alpha / 255.0f,
+                alphaDifference / 255, 0, 0, 0, background.Value.Alpha / 255.0f,
             };
 
             var filter = SKColorFilter.CreateColorMatrix(mat);
