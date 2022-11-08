@@ -238,22 +238,27 @@ public class Plot
         return bytes;
     }
 
-    public void SaveImage(int width, int height, string path, int quality = 100)
+    public void SaveJpeg(string path, int width, int height, int quality = 85)
     {
-        SKEncodedImageFormat format;
+        byte[] bytes = GetImageBytes(width, height, SKEncodedImageFormat.Jpeg, quality);
+        File.WriteAllBytes(path, bytes);
+    }
 
-        if (path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Png;
-        else if (path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Jpeg;
-        else if (path.EndsWith(".jepg", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Jpeg;
-        else if (path.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Bmp;
-        else
-            throw new ArgumentException("unsupported image format");
+    public void SavePng(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, SKEncodedImageFormat.Png, quality);
+        File.WriteAllBytes(path, bytes);
+    }
 
-        byte[] bytes = GetImageBytes(width, height, format, quality);
+    public void SaveBmp(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, SKEncodedImageFormat.Bmp, quality);
+        File.WriteAllBytes(path, bytes);
+    }
+
+    public void SaveWebp(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, SKEncodedImageFormat.Webp, quality);
         File.WriteAllBytes(path, bytes);
     }
 
