@@ -71,15 +71,17 @@ namespace ScottPlot.Plottables
             using SKAutoCanvasRestore _ = new(surface.Canvas);
             paint.SetFill(new(Colors.Black));
 
-            surface.Canvas.Translate(HorizontalPadding, 0);
-
             float top = y;
 
-            RenderLegendSymbol(surface, item, new(0, top, SymbolWidth, top + paint.TextSize));
+            // Unlabeled nodes should not be rendered, and there children shall not be indented
+            if (!string.IsNullOrEmpty(item.Label))
+            {
+                surface.Canvas.Translate(HorizontalPadding, 0);
+                RenderLegendSymbol(surface, item, new(0, top, SymbolWidth, top + paint.TextSize));
 
-            float x = HasSymbol(item) ? HorizontalPadding + SymbolWidth : 0;
-
-            surface.Canvas.DrawText(item.Label ?? "", new(x, top + paint.TextSize), paint);
+                float x = HasSymbol(item) ? HorizontalPadding + SymbolWidth : 0;
+                surface.Canvas.DrawText(item.Label ?? "", new(x, top + paint.TextSize), paint);
+            }
 
             y += Measure(item, paint, false).Height;
             foreach (var curr in item.Children)
