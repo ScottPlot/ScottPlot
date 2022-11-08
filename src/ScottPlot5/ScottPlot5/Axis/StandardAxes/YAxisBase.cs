@@ -93,5 +93,13 @@ public abstract class YAxisBase : IAxis
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
+    public double GetPixelDistance(double distance, PixelRect dataArea)
+    {
+        return distance * dataArea.Height / Height;
+    }
 
+    public double GetCoordinateDistance(double distance, PixelRect dataArea)
+    {
+        return distance / (dataArea.Height / Height);
+    }
 }

@@ -90,4 +90,14 @@ public abstract class XAxisBase : IAxis
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
+
+    public double GetPixelDistance(double distance, PixelRect dataArea)
+    {
+        return distance * dataArea.Width / Width;
+    }
+
+    public double GetCoordinateDistance(double distance, PixelRect dataArea)
+    {
+        return distance / (dataArea.Width / Width);
+    }
 }
