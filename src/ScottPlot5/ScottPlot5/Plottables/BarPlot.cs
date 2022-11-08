@@ -18,7 +18,7 @@ namespace ScottPlot.Plottables
 
     public class BarSeries
     {
-        public IList<Bar> Bars { get; set; }
+        public IList<Bar> Bars { get; set; } = Array.Empty<Bar>();
         public string? Label { get; set; }
         public Fill Fill { get; set; }
     }
