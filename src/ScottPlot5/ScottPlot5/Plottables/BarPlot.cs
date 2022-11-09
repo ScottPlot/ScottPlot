@@ -29,9 +29,11 @@ namespace ScottPlot.Plottables
         public IAxes Axes { get; set; } = Axis.Axes.Default;
         public string? Label { get; set; }
         public IList<BarSeries> Series { get; set; }
-        public double BarWidth { get; set; } = 0.8;
+        public double Padding { get; set; } = 0.05;
+        private double MaxBarWidth => 1 - Padding * 2;
         public Orientation Orientation { get; set; } = Orientation.Vertical;
         public Stroke Stroke { get; set; } = new();
+        public bool GroupBarsWithSameXPosition = true; // Disable for stacked bar charts
 
         public BarPlot(IList<BarSeries> series)
         {
@@ -49,7 +51,6 @@ namespace ScottPlot.Plottables
                 })
             });
 
-        // TODO: Multiple bars on the same coordinate
         public AxisLimits GetAxisLimits()
         {
             AxisLimits limits = new(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity);
@@ -71,50 +72,68 @@ namespace ScottPlot.Plottables
                 }
             }
 
-            limits.Rect.XMin -= BarWidth / 2;
-            limits.Rect.XMax += BarWidth / 2;
-            limits.Rect.YMin -= BarWidth / 2;
-            limits.Rect.YMax += BarWidth / 2;
+            limits.Rect.XMin -= MaxBarWidth / 2;
+            limits.Rect.XMax += MaxBarWidth / 2;
+            limits.Rect.YMin -= MaxBarWidth / 2;
+            limits.Rect.YMax += MaxBarWidth / 2;
 
             return limits;
         }
 
-        // TODO: Multiple bars on the same coordinate
         public void Render(SKSurface surface)
         {
             using var paint = new SKPaint();
+            var barsByXCoordinate = Series
+                .SelectMany(s => s.Bars.Select(b => (Bar: b, Series: s)))
+                .ToLookup(t => t.Bar.Position);
 
-            foreach (var s in Series)
+            int maxPerXCoordinate = GroupBarsWithSameXPosition ? barsByXCoordinate.Max(g => g.Count()) : 1;
+            double widthPerGroup = 1 - (maxPerXCoordinate + 1) * Padding;
+            double barWidth = widthPerGroup / maxPerXCoordinate;
+            
+            foreach (IGrouping<double, (Bar Bar, BarSeries Series)>? group in barsByXCoordinate)
             {
-                foreach (var bar in s.Bars)
+                int barsInGroup = group.Count();
+                int i = 0;
+                foreach(var t in group)
                 {
-                    var rect = GetRect(bar);
+                    double barWidthAndPadding = barWidth + Padding;
+                    double groupWidth = barWidthAndPadding * barsInGroup;
 
-                    paint.SetFill(s.Fill);
+                    double newPosition = GroupBarsWithSameXPosition ?
+                        group.Key - groupWidth / 2 + (i + 0.5) * barWidthAndPadding :
+                        group.Key;
+
+
+                    var rect = GetRect(t.Bar, newPosition, barWidth);
+
+                    paint.SetFill(t.Series.Fill);
                     surface.Canvas.DrawRect(rect, paint);
 
                     paint.SetStroke(Stroke);
                     surface.Canvas.DrawRect(rect, paint);
+                    
+                    i++;
                 }
             }
         }
 
-        private SKRect GetRect(Bar bar)
+        private SKRect GetRect(Bar bar, double pos, double barWidth)
         {
             return Orientation switch
             {
                 // Left, top, right, bottom
                 Orientation.Vertical => new SKRect(
-                        Axes.GetPixelX(bar.Position - BarWidth / 2),
+                        Axes.GetPixelX(pos - barWidth / 2),
                         Axes.GetPixelY(bar.Value),
-                        Axes.GetPixelX(bar.Position + BarWidth / 2),
+                        Axes.GetPixelX(pos + barWidth / 2),
                         Axes.GetPixelY(bar.ValueBase)
                     ),
                 Orientation.Horizontal => new SKRect(
                         Axes.GetPixelX(bar.ValueBase),
-                        Axes.GetPixelY(bar.Position - BarWidth / 2),
+                        Axes.GetPixelY(pos - barWidth / 2),
                         Axes.GetPixelX(bar.Value),
-                        Axes.GetPixelY(bar.Position + BarWidth / 2)
+                        Axes.GetPixelY(pos + barWidth / 2)
                     ),
                 _ => throw new NotImplementedException(),
             };
