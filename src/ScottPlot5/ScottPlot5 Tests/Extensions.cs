@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-namespace ScottPlot_Tests;
+namespace ScottPlotTests;
 
 internal static class Extensions
 {
@@ -22,7 +22,7 @@ internal static class Extensions
         string fileName = callingMethod + subName + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
 
-        plt.SaveImage(width, height, filePath);
+        plt.SaveJpeg(filePath, width, height);
         Console.WriteLine(filePath);
     }
 }

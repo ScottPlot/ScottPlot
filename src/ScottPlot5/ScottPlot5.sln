@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{6500EB02-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinForms Demo", "ScottPlot5 Demos\ScottPlot5 WinForms Demo\WinForms Demo.csproj", "{B8430DC2-421A-4688-99CC-ABDBF983F925}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "ScottPlot5 Cookbook\ScottPlot Cookbook.csproj", "{6DE0B192-9B44-4771-A888-3581D638C8A1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5 Sandbox\ScottPlot.Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{4289B222-4682-4138-89EC-305D43FF79CB}"
@@ -31,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5 S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "ScottPlot5 Sandbox\ScottPlot.Sandbox.WPF\WPF.csproj", "{E4A9D4D9-2E09-4666-B742-8AF36C23E776}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoLauncher", "ScottPlot5 Demos\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj", "{D45C8951-5E45-43FF-8D7A-B140522F70CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoLauncher", "ScottPlot5 Demos\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj", "{D45C8951-5E45-43FF-8D7A-B140522F70CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "ScottPlot Cookbook\ScottPlot Cookbook.csproj", "{15FA3B6F-9541-4A72-B453-838F48D9C852}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,6 @@ Global
 		{B8430DC2-421A-4688-99CC-ABDBF983F925}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8430DC2-421A-4688-99CC-ABDBF983F925}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8430DC2-421A-4688-99CC-ABDBF983F925}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DE0B192-9B44-4771-A888-3581D638C8A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DE0B192-9B44-4771-A888-3581D638C8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DE0B192-9B44-4771-A888-3581D638C8A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DE0B192-9B44-4771-A888-3581D638C8A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4289B222-4682-4138-89EC-305D43FF79CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4289B222-4682-4138-89EC-305D43FF79CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4289B222-4682-4138-89EC-305D43FF79CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,6 +83,10 @@ Global
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
