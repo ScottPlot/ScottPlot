@@ -227,34 +227,52 @@ public class Plot
         LastRenderInfo = Renderer.Render(surface, this);
     }
 
-    public byte[] GetImageBytes(int width, int height, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100)
+    public byte[] GetImageBytes(int width, int height, ImageFormat format = ImageFormat.Png, int quality = 100)
     {
+        if (width < 1)
+            throw new ArgumentException($"{nameof(width)} must be greater than 0");
+
+        if (height < 1)
+            throw new ArgumentException($"{nameof(height)} must be greater than 0");
+
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
         SKSurface surface = SKSurface.Create(info);
+        if (surface is null)
+            throw new NullReferenceException($"invalid SKImageInfo");
         Render(surface);
         SKImage snap = surface.Snapshot();
-        SKData data = snap.Encode(format, quality);
+        SKEncodedImageFormat skFormat = format.ToSKFormat();
+        SKData data = snap.Encode(skFormat, quality);
         byte[] bytes = data.ToArray();
         return bytes;
     }
 
-    public void SaveImage(int width, int height, string path, int quality = 100)
+    public string SaveJpeg(string path, int width, int height, int quality = 85)
     {
-        SKEncodedImageFormat format;
-
-        if (path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Png;
-        else if (path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Jpeg;
-        else if (path.EndsWith(".jepg", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Jpeg;
-        else if (path.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase))
-            format = SKEncodedImageFormat.Bmp;
-        else
-            throw new ArgumentException("unsupported image format");
-
-        byte[] bytes = GetImageBytes(width, height, format, quality);
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Jpeg, quality);
         File.WriteAllBytes(path, bytes);
+        return Path.GetFullPath(path);
+    }
+
+    public string SavePng(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, quality);
+        File.WriteAllBytes(path, bytes);
+        return Path.GetFullPath(path);
+    }
+
+    public string SaveBmp(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, quality);
+        File.WriteAllBytes(path, bytes);
+        return Path.GetFullPath(path);
+    }
+
+    public string SaveWebp(string path, int width, int height, int quality = 85)
+    {
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Webp, quality);
+        File.WriteAllBytes(path, bytes);
+        return Path.GetFullPath(path);
     }
 
     #endregion

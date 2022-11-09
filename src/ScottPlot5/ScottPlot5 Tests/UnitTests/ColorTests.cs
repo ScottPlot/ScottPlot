@@ -1,4 +1,4 @@
-﻿namespace ScottPlot_Tests.UnitTests;
+﻿namespace ScottPlotTests.UnitTests;
 
 internal class ColorTests
 {

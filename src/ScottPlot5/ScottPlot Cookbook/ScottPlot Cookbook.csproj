@@ -2,11 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>ScottPlot_Cookbook</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
+        <RootNamespace>ScottPlotCookbook</RootNamespace>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>ScottPlotTests</RootNamespace>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
