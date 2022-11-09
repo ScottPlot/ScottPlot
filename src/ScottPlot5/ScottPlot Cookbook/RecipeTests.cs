@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NUnit.Framework.Internal;
-using System.Reflection;
 
 namespace ScottPlotCookbook;
 
@@ -21,18 +20,35 @@ internal class RecipeTests
     [Test]
     public void Test_Pages_Found()
     {
-        List<RecipePage> recipes = Cookbook.GetPages();
-        recipes.Should().NotBeNull();
-        recipes.Should().NotBeEmpty();
-        recipes.ForEach(x => TestContext.WriteLine(x));
+        List<RecipePage> pages = Cookbook.GetPages();
+        pages.Should().NotBeNull();
+        pages.Should().NotBeEmpty();
+        pages.ForEach(x => TestContext.WriteLine(x));
     }
 
     [Test]
     public void Test_Chapters_Found()
     {
-        List<RecipeChapter> recipes = Cookbook.GetChapters();
-        recipes.Should().NotBeNull();
-        recipes.Should().NotBeEmpty();
-        recipes.ForEach(x => TestContext.WriteLine(x));
+        List<RecipeChapter> chapters = Cookbook.GetChapters();
+        chapters.Should().NotBeNull();
+        chapters.Should().NotBeEmpty();
+        chapters.ForEach(x => TestContext.WriteLine(x));
+    }
+
+    [Test]
+    public void Test_Recipe_Nest()
+    {
+        foreach (RecipeChapter chapter in Cookbook.GetChapters())
+        {
+            TestContext.WriteLine($"Chapter: {chapter.Name}");
+            foreach (RecipePage page in Cookbook.GetPages())
+            {
+                TestContext.WriteLine($"  Page: {page.PageName}");
+                foreach (IRecipe recipe in Cookbook.GetRecipes(page))
+                {
+                    TestContext.WriteLine($"    Recipe: {recipe.Name}");
+                }
+            }
+        }
     }
 }

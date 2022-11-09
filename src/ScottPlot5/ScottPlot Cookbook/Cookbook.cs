@@ -6,9 +6,19 @@ public static class Cookbook
 {
     public static List<IRecipe> GetRecipes() => GetInstantiated<IRecipe>();
 
+    public static List<IRecipe> GetRecipes(RecipePage page) => page
+        .GetType()
+        .GetNestedTypes(BindingFlags.NonPublic)
+        .Where(x => typeof(IRecipe).IsAssignableFrom(x))
+        .Select(x => (IRecipe)(Activator.CreateInstance(x) ?? throw new NullReferenceException()))
+        .ToList();
+
     internal static List<RecipePage> GetPages() => GetInstantiated<RecipePage>();
 
-    internal static List<RecipeChapter> GetChapters() => GetInstantiated<RecipePage>().Select(x => x.Chapter).Distinct().ToList();
+    internal static List<RecipeChapter> GetChapters() => GetInstantiated<RecipePage>()
+        .Select(x => x.Chapter)
+        .Distinct()
+        .ToList();
 
     private static List<T> GetInstantiated<T>()
     {
@@ -23,9 +33,7 @@ public static class Cookbook
 
                 if (typeof(T).IsAssignableFrom(assemblyType))
                 {
-                    object instance = Activator.CreateInstance(assemblyType) ?? throw new NullReferenceException();
-                    T page = (T)instance;
-                    pages.Add(page);
+                    pages.Add((T)(Activator.CreateInstance(assemblyType) ?? throw new NullReferenceException()));
                 }
             }
         }

@@ -2,14 +2,14 @@
 
 internal class Quickstart : RecipePage
 {
-    internal override string PageName => "Plot Data";
-    internal override string PageDescription => "Display paired X/Y data as a scatter plot.";
+    internal override string PageName => "ScottPlot 5 Quickstart";
+    internal override string PageDescription => "A survey of basic functionality in ScottPlot 5";
     internal override RecipeChapter Chapter => RecipeChapters.Introduction;
 
     internal class Scatter : RecipeTestBase
     {
-        public override string Title => "ScottPlot 5 Quickstart";
-        public override string Description => "A minimal example showing how to plot data using ScottPlot 5";
+        public override string Name => "Plot Data";
+        public override string Description => "Display paired X/Y data as a scatter plot.";
 
         [Test]
         public override void Recipe()
@@ -22,7 +22,7 @@ internal class Quickstart : RecipePage
 
     internal class AxisLabels : RecipeTestBase
     {
-        public override string Title => "Customize Axis Labels";
+        public override string Name => "Customize Axis Labels";
         public override string Description => "Axis labels are the text labels centered on each axis. " +
             "The text inside these labels can be changed, and the style of the text can be extensively customized.";
 

@@ -12,7 +12,7 @@ public abstract class RecipeTestBase : IRecipe
     private int Width = 400;
     private int Height = 300;
 
-    public abstract string Title { get; }
+    public abstract string Name { get; }
     public abstract string Description { get; }
 
     /// <summary>

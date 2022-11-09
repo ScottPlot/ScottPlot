@@ -3,7 +3,7 @@
 /// <summary>
 /// A page of recipes groups similar recipes together and displays them in order.
 /// </summary>
-internal abstract class RecipePage
+public abstract class RecipePage
 {
     internal abstract string PageName { get; }
     internal abstract string PageDescription { get; }
