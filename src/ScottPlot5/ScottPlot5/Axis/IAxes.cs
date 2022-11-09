@@ -27,4 +27,10 @@ public interface IAxes
     Coordinates GetCoordinates(Pixel pixel);
     double GetCoordinateX(float pixel);
     double GetCoordinateY(float pixel);
+
+    double GetPixelDistanceX(double xDistance);
+    double GetPixelDistanceY(double yDistance);
+
+    double GetCoordinateDistanceX(double xDistance);
+    double GetCoordinateDistanceY(double yDistance);
 }

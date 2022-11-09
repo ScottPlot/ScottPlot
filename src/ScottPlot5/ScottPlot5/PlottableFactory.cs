@@ -89,4 +89,26 @@ public class PlottableFactory
         Plot.Plottables.Add(scatter);
         return scatter;
     }
+
+    public BarPlot Bar(IList<BarSeries> series)
+    {
+        var barPlot = new BarPlot(series);
+        Plot.Plottables.Add(barPlot);
+        return barPlot;
+    }
+
+    public BarPlot Bar(IList<Bar> bars, Fill? fill = null, string? label = null)
+    {
+        var serie = new BarSeries()
+        {
+            Bars = bars,
+            Fill = fill ?? new(NextColor),
+            Label = label
+        };
+
+        var series = new List<BarSeries>(1);
+        series.Add(serie);
+
+        return Bar(series);
+    }
 }

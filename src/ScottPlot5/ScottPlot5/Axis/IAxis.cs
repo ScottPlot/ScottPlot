@@ -28,6 +28,9 @@ public interface IAxis
     /// </summary>
     double GetCoordinate(float pixel, PixelRect dataArea);
 
+    double GetPixelDistance(double distance, PixelRect dataArea);
+    double GetCoordinateDistance(double distance, PixelRect dataArea);
+
     /// <summary>
     /// Logic for determining tick positions and formatting tick labels
     /// </summary>
