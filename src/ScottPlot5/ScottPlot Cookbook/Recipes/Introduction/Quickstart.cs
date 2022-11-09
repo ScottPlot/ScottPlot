@@ -1,11 +1,12 @@
-﻿namespace ScottPlotCookbook.Recipes;
+﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class IntroductionRecipeGroup : RecipeGroup
+internal class Quickstart : RecipePage
 {
-    internal override string Name => "Quickstart";
-    internal override string Description => "An introduction to ScottPlot5";
+    internal override string PageName => "Plot Data";
+    internal override string PageDescription => "Display paired X/Y data as a scatter plot.";
+    internal override RecipeChapter Chapter => RecipeChapters.Introduction;
 
-    internal class QuickstartScatter : RecipeTestBase
+    internal class Scatter : RecipeTestBase
     {
         public override string Title => "ScottPlot 5 Quickstart";
         public override string Description => "A minimal example showing how to plot data using ScottPlot 5";
@@ -19,9 +20,9 @@ internal class IntroductionRecipeGroup : RecipeGroup
         }
     }
 
-    internal class QuickstartAxisLabels : RecipeTestBase
+    internal class AxisLabels : RecipeTestBase
     {
-        public override string Title => "Axis Labels";
+        public override string Title => "Customize Axis Labels";
         public override string Description => "Axis labels are the text labels centered on each axis. " +
             "The text inside these labels can be changed, and the style of the text can be extensively customized.";
 
