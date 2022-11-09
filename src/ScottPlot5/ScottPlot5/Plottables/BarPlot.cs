@@ -90,12 +90,12 @@ namespace ScottPlot.Plottables
             int maxPerXCoordinate = GroupBarsWithSameXPosition ? barsByXCoordinate.Max(g => g.Count()) : 1;
             double widthPerGroup = 1 - (maxPerXCoordinate + 1) * Padding;
             double barWidth = widthPerGroup / maxPerXCoordinate;
-            
+
             foreach (IGrouping<double, (Bar Bar, BarSeries Series)>? group in barsByXCoordinate)
             {
                 int barsInGroup = group.Count();
                 int i = 0;
-                foreach(var t in group)
+                foreach (var t in group)
                 {
                     double barWidthAndPadding = barWidth + Padding;
                     double groupWidth = barWidthAndPadding * barsInGroup;
@@ -112,7 +112,7 @@ namespace ScottPlot.Plottables
 
                     paint.SetStroke(Stroke);
                     surface.Canvas.DrawRect(rect, paint);
-                    
+
                     i++;
                 }
             }
