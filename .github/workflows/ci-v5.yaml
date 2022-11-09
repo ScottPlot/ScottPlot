@@ -1,4 +1,4 @@
-name: ScottPlot 5 CI
+name: ScottPlot5
 
 on:
   workflow_dispatch:
@@ -49,15 +49,17 @@ jobs:
         with:
           dotnet-version: "6.0.x"
 
-      - name: 🚚 ScottPlot5 Restore
+      - name: 🚚 Restore
         run: dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
-      - name: 🛠️ ScottPlot5 Build
+      - name: 🛠️ Build
         run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore -warnaserror -nowarn:CS2002
-      - name: 🧪 ScottPlot5 Test
+      - name: 🧪 Test
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
+      - name: 🧑‍🍳 Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
 
       # msbuild is required to build a solution containing .NET Framework projects
-      - name: 🐢 Set up MSBuild
+      - name: 🐢 Setup MSBuild
         if: startsWith(matrix.os, 'windows')
         uses: microsoft/setup-msbuild@v1.1
       - name: 🚚 Restore Solution
