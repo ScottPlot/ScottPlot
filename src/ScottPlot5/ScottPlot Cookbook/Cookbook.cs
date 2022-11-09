@@ -15,10 +15,11 @@ public static class Cookbook
 
     internal static List<RecipePage> GetPages() => GetInstantiated<RecipePage>();
 
-    internal static List<RecipeChapter> GetChapters() => GetInstantiated<RecipePage>()
-        .Select(x => x.Chapter)
-        .Distinct()
+    internal static List<RecipePage> GetPages(Chapter chapter) => GetInstantiated<RecipePage>()
+        .Where(x => x.Chapter == chapter)
         .ToList();
+
+    internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
 
     private static List<T> GetInstantiated<T>()
     {

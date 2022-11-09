@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Generation;
 
 internal abstract class PageBase
 {
-    protected readonly string OutputFolder = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook-output"));
+    public static string OutputFolder => Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook-output"));
 
     protected readonly StringBuilder MD = new();
 
@@ -24,5 +24,22 @@ internal abstract class PageBase
         string saveAsMD = Path.Combine(folder, "index.md");
         File.WriteAllText(saveAsMD, MD.ToString());
         TestContext.WriteLine(saveAsMD);
+    }
+
+    public static string UrlSafe(string text)
+    {
+        StringBuilder sb = new();
+
+        string charsToReplaceWithDash = " _-+:";
+
+        foreach (char c in text.ToLower().ToCharArray())
+        {
+            if (charsToReplaceWithDash.Contains(c))
+                sb.Append("-");
+            else if (char.IsLetterOrDigit(c))
+                sb.Append(c);
+        }
+
+        return sb.ToString();
     }
 }
