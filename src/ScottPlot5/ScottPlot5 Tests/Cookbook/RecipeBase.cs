@@ -13,29 +13,21 @@ public abstract class RecipeBase : IRecipe
     public abstract string Description { get; }
     public abstract RecipeCategory Category { get; }
 
-    [TearDown]
-    public void TearDown()
-    {
-        SaveRecipeImage();
-    }
-
     [Test]
     public abstract void Recipe();
 
-    public string GetTestFolder()
-    {
-        string path = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook"));
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
-        return path;
-    }
-
+    [TearDown]
     public void SaveRecipeImage()
     {
         System.Diagnostics.StackTrace stackTrace = new();
         string callingMethod = stackTrace.GetFrame(1)!.GetMethod()!.Name;
         string fileName = $"{callingMethod}.png";
-        string filePath = Path.Combine(GetTestFolder(), fileName);
+
+        string outputFolder = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook"));
+        if (!Directory.Exists(outputFolder))
+            Directory.CreateDirectory(outputFolder);
+        string filePath = Path.Combine(outputFolder, fileName);
+
         myPlot.SavePng(filePath, Width, Height);
         TestContext.WriteLine($"{filePath}");
     }
