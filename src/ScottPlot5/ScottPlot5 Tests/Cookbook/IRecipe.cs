@@ -2,5 +2,5 @@
 
 public interface IRecipe
 {
-    void Render(ScottPlot.Plot plt);
+
 }
