@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "ScottPlot5 Sandbox\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoLauncher", "ScottPlot5 Demos\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj", "{D45C8951-5E45-43FF-8D7A-B140522F70CF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "ScottPlot Cookbook\ScottPlot Cookbook.csproj", "{15FA3B6F-9541-4A72-B453-838F48D9C852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D45C8951-5E45-43FF-8D7A-B140522F70CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15FA3B6F-9541-4A72-B453-838F48D9C852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

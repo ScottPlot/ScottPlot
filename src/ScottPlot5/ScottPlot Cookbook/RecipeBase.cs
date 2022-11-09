@@ -1,7 +1,11 @@
 ﻿using NUnit.Framework.Internal;
 
-namespace ScottPlot_Tests.Cookbook.Recipes.Introduction;
+namespace ScottPlotCookbook;
 
+/// <summary>
+/// Individual recipes can inherit this so they double as <see cref="IRecipe"/> and
+/// test cases that have a function decorated with the <see cref="Test"/> attribute.
+/// </summary>
 public abstract class RecipeTestBase : IRecipe
 {
     public Plot MyPlot { get; private set; } = new();
@@ -10,7 +14,6 @@ public abstract class RecipeTestBase : IRecipe
 
     public abstract string Title { get; }
     public abstract string Description { get; }
-    public abstract Category Category { get; }
 
     /// <summary>
     /// This function is called by code interacting with <see cref="IRecipe"/>

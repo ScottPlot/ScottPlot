@@ -1,4 +1,4 @@
-﻿namespace ScottPlot_Tests.RenderTests.Figure;
+﻿namespace ScottPlotTests.RenderTests.Figure;
 
 internal class BasicImageTests
 {

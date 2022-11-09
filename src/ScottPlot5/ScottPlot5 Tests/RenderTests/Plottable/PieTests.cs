@@ -1,4 +1,4 @@
-﻿namespace ScottPlot_Tests.RenderTests.Plottable;
+﻿namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class PieTests
 {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-namespace ScottPlot_Tests;
+namespace ScottPlotTests;
 
 internal static class Extensions
 {
