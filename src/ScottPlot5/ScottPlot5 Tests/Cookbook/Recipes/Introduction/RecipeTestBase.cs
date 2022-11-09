@@ -1,20 +1,32 @@
 ﻿using NUnit.Framework.Internal;
-using SkiaSharp;
 
-namespace ScottPlot_Tests.Cookbook;
+namespace ScottPlot_Tests.Cookbook.Recipes.Introduction;
 
-public abstract class RecipeBase : IRecipe
+public abstract class RecipeTestBase : IRecipe
 {
-    public Plot myPlot = new();
-    public int Width = 400;
-    public int Height = 300;
+    public Plot MyPlot { get; private set; } = new();
+    private int Width = 400;
+    private int Height = 300;
 
     public abstract string Title { get; }
     public abstract string Description { get; }
-    public abstract RecipeCategory Category { get; }
+    public abstract Category Category { get; }
 
+    /// <summary>
+    /// This function is called by code interacting with <see cref="IRecipe"/>
+    /// </summary>
+    public void Recipe(Plot plot)
+    {
+        MyPlot = plot;
+        Recipe();
+    }
+
+    /// <summary>
+    /// This function is called from within the test system
+    /// </summary>
     [Test]
     public abstract void Recipe();
+    public bool RecipeHasTestAttribute => GetType().IsDefined(typeof(Test), false);
 
     [TearDown]
     public void SaveRecipeImage()
@@ -28,7 +40,7 @@ public abstract class RecipeBase : IRecipe
             Directory.CreateDirectory(outputFolder);
         string filePath = Path.Combine(outputFolder, fileName);
 
-        myPlot.SavePng(filePath, Width, Height);
+        MyPlot.SavePng(filePath, Width, Height);
         TestContext.WriteLine($"{filePath}");
     }
 }
