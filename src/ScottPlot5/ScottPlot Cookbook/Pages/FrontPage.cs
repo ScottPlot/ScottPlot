@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace ScottPlotCookbook.Generation;
+namespace ScottPlotCookbook.Pages;
 
-internal class FrontPageHtml
+internal class FrontPage
 {
     StringBuilder SB = new();
 
@@ -52,13 +52,13 @@ internal class FrontPageHtml
 
     public void Export()
     {
-        string partial = Path.Combine(Output.OutputFolder, "index.html");
+        string partial = Path.Combine(CookbookGenerator.OutputFolder, "index.html");
         File.WriteAllText(partial, SB.ToString());
-        TestContext.WriteLine(partial);
+        TestContext.WriteLine($"SAVING: {partial}");
 
-        string full = Path.Combine(Output.OutputFolder, "index.local.html");
+        string full = Path.Combine(CookbookGenerator.OutputFolder, "index.local.html");
         File.WriteAllText(full, WrapPage(SB.ToString(), "ScottPlot 5 Cookbook"));
-        TestContext.WriteLine(full);
+        TestContext.WriteLine($"SAVING: {full}");
     }
 
     private void AddPage(RecipePageBase page)
@@ -70,7 +70,7 @@ internal class FrontPageHtml
 
     private void AddRecipeImage(RecipePageBase page, IRecipe recipe)
     {
-        string imageUrl = Output.GetBaseImageUrl(page.PageDetails, recipe) + ".png";
+        string imageUrl = CookbookGenerator.GetBaseImageUrl(page.PageDetails, recipe) + ".png";
         SB.AppendLine("<div class='d-flex'>");
 
         SB.AppendLine($"<a href='{imageUrl}'><img src='{imageUrl}' /></a>");

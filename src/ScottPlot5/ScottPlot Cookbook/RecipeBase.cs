@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework.Internal;
-using ScottPlotCookbook.Generation;
 
 namespace ScottPlotCookbook;
 
@@ -47,8 +46,14 @@ public abstract class RecipeTestBase : IRecipe
     public void SaveRecipeImage()
     {
         RecipePageDetails pageDetails = GetRecipePageDetails();
-        string saveAs = Output.GetBaseImagePath(pageDetails, this, true) + ".png";
+        string saveAs = CookbookGenerator.GetBaseImagePath(pageDetails, this) + ".png";
         MyPlot.SavePng(saveAs, Width, Height);
         TestContext.WriteLine($"{saveAs}");
+    }
+
+    [OneTimeTearDown]
+    public void RunAfterAnyTests()
+    {
+        Console.WriteLine("TEARDOWN");
     }
 }
