@@ -2,7 +2,12 @@ name: ScottPlot 4 CI
 
 on:
   workflow_dispatch:
-  push:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
+    paths:
+      - "src/ScottPlot4/**"
+  pull_request: # runs on commits to bull request branches
     paths:
       - "src/ScottPlot4/**"
 
