@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ScottPlotCookbook.Recipes.Introduction;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 internal class Bar : RecipePageBase
 {

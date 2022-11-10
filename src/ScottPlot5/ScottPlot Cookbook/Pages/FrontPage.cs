@@ -70,7 +70,7 @@ internal class FrontPage
 
     private void AddRecipeImage(RecipePageBase page, IRecipe recipe)
     {
-        string imageUrl = CookbookGenerator.GetBaseImageUrl(page.PageDetails, recipe) + ".png";
+        string imageUrl = Html.GetImageUrl(page, recipe);
         SB.AppendLine("<div class='d-flex'>");
 
         SB.AppendLine($"<a href='{imageUrl}'><img src='{imageUrl}' /></a>");

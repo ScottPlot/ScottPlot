@@ -29,9 +29,11 @@ public abstract class RecipeTestBase : IRecipe
     /// </summary>
     [Test]
     public abstract void Recipe();
+
+    // TODO: create test to assert true for all tests
     public bool RecipeHasTestAttribute => GetType().IsDefined(typeof(Test), false);
 
-    private RecipePageDetails GetRecipePageDetails()
+    private RecipePageBase GetPage()
     {
         Type declaringType = GetType().DeclaringType
             ?? throw new NullReferenceException();
@@ -39,21 +41,15 @@ public abstract class RecipeTestBase : IRecipe
         RecipePageBase page = Activator.CreateInstance(declaringType) as RecipePageBase
             ?? throw new NullReferenceException();
 
-        return page.PageDetails;
+        return page;
     }
 
     [TearDown]
     public void SaveRecipeImage()
     {
-        RecipePageDetails pageDetails = GetRecipePageDetails();
-        string saveAs = CookbookGenerator.GetBaseImagePath(pageDetails, this) + ".png";
+        string fileUrl = Html.GetImageUrl(GetPage(), this);
+        string saveAs = Path.Combine(CookbookGenerator.OutputFolder, fileUrl);
         MyPlot.SavePng(saveAs, Width, Height);
         TestContext.WriteLine($"{saveAs}");
-    }
-
-    [OneTimeTearDown]
-    public void RunAfterAnyTests()
-    {
-        Console.WriteLine("TEARDOWN");
     }
 }

@@ -2,9 +2,9 @@
 
 namespace ScottPlotCookbook;
 
-public static class Html
+internal static class Html
 {
-    public static string UrlSafe(string text)
+    internal static string UrlSafe(string text)
     {
         StringBuilder sb = new();
         string charsToReplaceWithDash = " _-+:";
@@ -16,6 +16,17 @@ public static class Html
                 sb.Append(c);
         }
         return sb.ToString();
+    }
 
+    internal static string GetPageUrl(RecipePageBase page)
+    {
+        return Html.UrlSafe(page.PageDetails.PageName);
+    }
+
+    internal static string GetImageUrl(RecipePageBase page, IRecipe recipe, string extension = ".png")
+    {
+        string folder = GetPageUrl(page);
+        string filename = Html.UrlSafe(recipe.Name) + extension;
+        return Path.Combine(folder, filename).Replace("\\", "/");
     }
 }

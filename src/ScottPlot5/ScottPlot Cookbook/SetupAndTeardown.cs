@@ -16,9 +16,8 @@ internal class SetupAndTeardown
         // create subfolders for every page
         foreach (RecipePageBase page in Cookbook.GetPages())
         {
-            string folderName = Html.UrlSafe(page.PageDetails.PageName);
-            string folderPath = Path.Combine(CookbookGenerator.OutputFolder, folderName);
-            Directory.CreateDirectory(folderPath);
+            string pageFolder = Path.Combine(CookbookGenerator.OutputFolder, Html.GetPageUrl(page));
+            Directory.CreateDirectory(pageFolder);
         }
     }
 
