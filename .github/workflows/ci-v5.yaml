@@ -2,12 +2,7 @@ name: ScottPlot5
 
 on:
   workflow_dispatch:
-  push: # only runs on commits to main branch (typically after a merge)
-    branches:
-      - main
-    paths:
-      - "src/ScottPlot5/**"
-  pull_request: # runs on commits to bull request branches
+  push:
     paths:
       - "src/ScottPlot5/**"
 
