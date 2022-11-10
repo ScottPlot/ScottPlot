@@ -4,7 +4,8 @@ public class RecipeInfo
 {
     public string Name { get; }
     public string Description { get; }
-    public string ImageUrl { get; }
+    public string ImageFilename { get; }
+    public string AnchorName { get; }
     public string SourceCode { get; } = string.Empty;
     public IRecipe Recipe { get; }
 
@@ -12,7 +13,8 @@ public class RecipeInfo
     {
         Name = recipe.Name;
         Description = recipe.Description;
-        ImageUrl = $"{page.FolderUrl}/{Html.UrlSafe(Name)}.png";
+        ImageFilename = $"{UrlTools.UrlSafe(Name)}.png";
+        AnchorName = $"#{UrlTools.UrlSafe(Name)}";
         Recipe = recipe;
     }
 }

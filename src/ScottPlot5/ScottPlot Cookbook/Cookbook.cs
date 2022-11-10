@@ -8,6 +8,9 @@ namespace ScottPlotCookbook;
 /// </summary>
 public static class Cookbook
 {
+    public static readonly string OutputFolder =
+        Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook-output"));
+
     internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
 
     internal static List<RecipePageBase> GetPages() => GetInstantiated<RecipePageBase>();

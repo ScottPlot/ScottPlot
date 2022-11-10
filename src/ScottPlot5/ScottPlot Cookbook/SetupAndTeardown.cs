@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.HtmlPages;
+
+namespace ScottPlotCookbook;
 
 [SetUpFixture]
 internal class SetupAndTeardown
@@ -7,16 +9,16 @@ internal class SetupAndTeardown
     public void RunBeforeAnyTests()
     {
         // delete all old cookbook content
-        if (Directory.Exists(CookbookGenerator.OutputFolder))
-            Directory.Delete(CookbookGenerator.OutputFolder, true);
+        if (Directory.Exists(HtmlPageGenerator.OutputFolder))
+            Directory.Delete(HtmlPageGenerator.OutputFolder, true);
 
         // create a fresh cookbook folder
-        Directory.CreateDirectory(CookbookGenerator.OutputFolder);
+        Directory.CreateDirectory(HtmlPageGenerator.OutputFolder);
 
         // create subfolders for every page
         foreach (RecipePageBase page in Cookbook.GetPages())
         {
-            string pageFolder = Path.Combine(CookbookGenerator.OutputFolder, Html.GetPageUrl(page));
+            string pageFolder = Path.Combine(HtmlPageGenerator.OutputFolder, UrlTools.GetPageUrl(page));
             Directory.CreateDirectory(pageFolder);
         }
     }

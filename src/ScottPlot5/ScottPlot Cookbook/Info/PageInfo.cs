@@ -11,7 +11,7 @@ public class PageInfo
     {
         Name = page.PageDetails.PageName;
         Description = page.PageDetails.PageDescription;
-        FolderUrl = Html.UrlSafe(Name);
+        FolderUrl = UrlTools.UrlSafe(Name);
         Recipes = page.GetRecipes()
             .Select(x => new RecipeInfo(x, this))
             .ToList();

@@ -2,7 +2,7 @@
 
 namespace ScottPlotCookbook;
 
-internal static class Html
+internal static class UrlTools
 {
     internal static string UrlSafe(string text)
     {
@@ -20,13 +20,13 @@ internal static class Html
 
     internal static string GetPageUrl(RecipePageBase page)
     {
-        return Html.UrlSafe(page.PageDetails.PageName);
+        return UrlTools.UrlSafe(page.PageDetails.PageName);
     }
 
     internal static string GetImageUrl(RecipePageBase page, IRecipe recipe, string extension = ".png")
     {
         string folder = GetPageUrl(page);
-        string filename = Html.UrlSafe(recipe.Name) + extension;
+        string filename = UrlTools.UrlSafe(recipe.Name) + extension;
         return Path.Combine(folder, filename).Replace("\\", "/");
     }
 }
