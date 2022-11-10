@@ -11,7 +11,8 @@ public class PlottableFactory
     private readonly Plot Plot;
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
-    private Color NextColor => Palette.GetColor(Plot.Plottables.Count);
+    private int colorsUsed = 0;
+    private Color NextColor => Palette.GetColor(colorsUsed++);
 
     public PlottableFactory(Plot plot)
     {
@@ -37,6 +38,16 @@ public class PlottableFactory
         Pie pie = new(slices);
         Plot.Plottables.Add(pie);
         return pie;
+    }
+
+    public Pie Pie(IEnumerable<double> values)
+    {
+        var slices = values.Select(v => new PieSlice
+        {
+            Value = v,
+            Fill = new(NextColor)
+        }).ToList();
+        return Pie(slices);
     }
 
     public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
