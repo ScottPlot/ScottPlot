@@ -153,22 +153,26 @@ namespace ScottPlot.Plottable
                     labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
                     using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
-                    gfx.FillPie(brush: sliceFillBrush,
-                        x: (int)(boundingRectangle.X + xOffset),
-                        y: (int)(boundingRectangle.Y + yOffset),
-                        width: boundingRectangle.Width,
-                        height: boundingRectangle.Height,
-                        startAngle: (float)start,
-                        sweepAngle: (float)(sweep + sweepOffset));
 
-                    if (Explode)
+                    var offsetRectangle = new Rectangle((int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), (int)boundingRectangle.Width, (int)boundingRectangle.Height);
+                    if (sweep != 360)
+                    {
+                        gfx.FillPie(brush: sliceFillBrush,
+                            rect: offsetRectangle,
+                            startAngle: (float)start,
+                            sweepAngle: (float)(sweep + sweepOffset));
+                    }
+                    else
+                    {
+                        gfx.FillEllipse(sliceFillBrush, offsetRectangle);
+                    }
+
+
+                    if (Explode && sweep != 360)
                     {
                         gfx.DrawPie(
                             pen: backgroundPen,
-                            x: (int)(boundingRectangle.X + xOffset),
-                            y: (int)(boundingRectangle.Y + yOffset),
-                            width: boundingRectangle.Width,
-                            height: boundingRectangle.Height,
+                            rect: offsetRectangle,
                             startAngle: (float)start,
                             sweepAngle: (float)(sweep + sweepOffset));
                     }

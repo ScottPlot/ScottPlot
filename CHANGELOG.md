@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.59
+## ScottPlot 4.1.60
 _not yet published on NuGet..._
+* Pie Chart: Improved display when a single slice covers the entire pie (#2248, #2251) _Thanks @bclehmann_
+
+## ScottPlot 4.1.59
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
 * Ticks: Improve datetime tick labels for systems with a 24-hour display format (#2132, #2135) _Thanks @MareMare and @bclehmann_
 * Axis: `Plot.AddAxis()` now uses auto-incremented axis index unless one is explicitly defined (#2133) _Thanks @bclehmann and Discord/Nick_
 * Axis: `Plot.GetAxesMatching()` was created to obtain a given vertical or horizontal axis (#2133) _Thanks @bclehmann and Discord/Nick_
