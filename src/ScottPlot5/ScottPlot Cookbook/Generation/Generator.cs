@@ -11,23 +11,22 @@ internal class Generator
     [Test]
     public void Generate_Front_Page()
     {
-        FrontPage pb = new();
+        FrontPageHtml page = new();
+        page.Generate();
     }
 
     [Test]
-    public void Generate_Recipe_Pages()
+    public void Generate_Recipe_Images()
     {
-        foreach (RecipePage page in Cookbook.GetPages())
+        foreach (RecipePageBase page in Cookbook.GetPages())
         {
-            string pageFolderName = PageBase.UrlSafe(page.PageName);
-            string pageFolderPath = Path.Combine(PageBase.OutputFolder, pageFolderName);
-            Directory.CreateDirectory(pageFolderPath);
+            string pageFolderName = Output.GetPagePath(page.PageDetails);
+            TestContext.WriteLine(pageFolderName);
 
-            foreach (IRecipe recipe in Cookbook.GetRecipes(page))
+            foreach (IRecipe recipe in page.GetRecipes())
             {
-                string recipeImageFileName = PageBase.UrlSafe(recipe.Name) + ".jpg";
-                string recipeImagePath = Path.Combine(pageFolderPath, recipeImageFileName);
-                TestContext.WriteLine(recipeImageFileName);
+                string recipeImagePath = Output.GetBaseImagePath(page.PageDetails, recipe);
+                TestContext.WriteLine("  " + Path.GetFileName(recipeImagePath));
             }
         }
     }

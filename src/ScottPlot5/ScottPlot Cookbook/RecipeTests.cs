@@ -9,6 +9,8 @@ internal class RecipeTests
     // TODO: page and chapter descriptions should not end with a period
     // TODO: pages must have unique names
     // TODO: recipes must have unique names within pages
+    // TODO: no undefined chapters
+    // TODO: all recipes should be public
 
     [Test]
     public void Test_Recipes_Found()
@@ -22,7 +24,7 @@ internal class RecipeTests
     [Test]
     public void Test_Pages_Found()
     {
-        List<RecipePage> pages = Cookbook.GetPages();
+        List<RecipePageBase> pages = Cookbook.GetPages();
         pages.Should().NotBeNull();
         pages.Should().NotBeEmpty();
         pages.ForEach(x => TestContext.WriteLine(x));
@@ -43,10 +45,10 @@ internal class RecipeTests
         foreach (Chapter chapter in Cookbook.GetChapters())
         {
             TestContext.WriteLine($"Chapter: {chapter}");
-            foreach (RecipePage page in Cookbook.GetPages())
+            foreach (RecipePageBase page in Cookbook.GetPages())
             {
-                TestContext.WriteLine($"  Page: {page.PageName}");
-                foreach (IRecipe recipe in Cookbook.GetRecipes(page))
+                TestContext.WriteLine($"  Page: {page.PageDetails.PageName}");
+                foreach (IRecipe recipe in page.GetRecipes())
                 {
                     TestContext.WriteLine($"    Recipe: {recipe.Name}");
                 }

@@ -1,10 +1,13 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Quickstart : RecipePage
+internal class Quickstart : RecipePageBase
 {
-    public override Chapter Chapter => Chapter.Introduction;
-    public override string PageName => "ScottPlot 5 Quickstart";
-    public override string PageDescription => "A survey of basic functionality in ScottPlot 5";
+    public override RecipePageDetails PageDetails => new()
+    {
+        Chapter = Chapter.Introduction,
+        PageName = "ScottPlot 5 Quickstart",
+        PageDescription = "A survey of basic functionality in ScottPlot 5",
+    };
 
     internal class Scatter : RecipeTestBase
     {

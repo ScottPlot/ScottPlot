@@ -1,13 +1,19 @@
-﻿namespace ScottPlotCookbook.Recipes.Introduction;
+﻿using System.Runtime.CompilerServices;
 
-internal class Bar : RecipePage
+namespace ScottPlotCookbook.Recipes.Introduction;
+
+internal class Bar : RecipePageBase
 {
-    public override Chapter Chapter => Chapter.PlotTypes;
-    public override string PageName => "Bar Plot";
-    public override string PageDescription => "Bar plots represent values as horizontal or vertical rectangles";
+    public override RecipePageDetails PageDetails => new()
+    {
+        Chapter = Chapter.PlotTypes,
+        PageName = "Bar Plot",
+        PageDescription = "Bar plots represent values as horizontal or vertical rectangles",
+    };
 
     internal class Quickstart : RecipeTestBase
     {
+
         public override string Name => "Bar Plot Quickstart";
         public override string Description => "Bar plots can be added from a series of values.";
 

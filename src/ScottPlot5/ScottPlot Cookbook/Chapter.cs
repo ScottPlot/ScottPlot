@@ -8,4 +8,5 @@ public enum Chapter
     PlotTypes,
     ChangingData,
     Misc,
+    UNDEFINED,
 }

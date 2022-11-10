@@ -4,22 +4,15 @@ namespace ScottPlotCookbook;
 
 public static class Cookbook
 {
-    public static List<IRecipe> GetRecipes() => GetInstantiated<IRecipe>();
-
-    public static List<IRecipe> GetRecipes(RecipePage page) => page
-        .GetType()
-        .GetNestedTypes(BindingFlags.NonPublic)
-        .Where(x => typeof(IRecipe).IsAssignableFrom(x))
-        .Select(x => (IRecipe)(Activator.CreateInstance(x) ?? throw new NullReferenceException()))
-        .ToList();
-
-    internal static List<RecipePage> GetPages() => GetInstantiated<RecipePage>();
-
-    internal static List<RecipePage> GetPages(Chapter chapter) => GetInstantiated<RecipePage>()
-        .Where(x => x.Chapter == chapter)
-        .ToList();
-
     internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
+
+    internal static List<RecipePageBase> GetPages() => GetInstantiated<RecipePageBase>();
+
+    internal static List<RecipePageBase> GetPagesInChapter(Chapter chapter) => GetInstantiated<RecipePageBase>()
+        .Where(x => x.PageDetails.Chapter == chapter)
+        .ToList();
+
+    internal static List<IRecipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
 
     private static List<T> GetInstantiated<T>()
     {

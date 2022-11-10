@@ -1,10 +1,13 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Axis : RecipePage
+internal class Axis : RecipePageBase
 {
-    public override Chapter Chapter => Chapter.Customization;
-    public override string PageName => "Axis and Ticks";
-    public override string PageDescription => "Examples of common customizations for axis labels and ticks";
+    public override RecipePageDetails PageDetails => new()
+    {
+        Chapter = Chapter.Customization,
+        PageName = "Axis and Ticks",
+        PageDescription = "Examples of common customizations for axis labels and ticks",
+    };
 
     internal class AxisLabels : RecipeTestBase
     {
