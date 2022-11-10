@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ScottPlotCookbook.Info;
 
 namespace ScottPlotCookbook.Pages;
 
@@ -42,13 +43,12 @@ internal class FrontPage
         SB.AppendLine("</header>");
         SB.AppendLine("<hr />");
 
-        foreach (Chapter chapter in Cookbook.GetChapters())
+        foreach (ChapterInfo chapter in Query.GetChapters())
         {
-            List<RecipePageBase> pagesInChapter = Cookbook.GetPagesInChapter(chapter);
-            if (!pagesInChapter.Any())
+            if (!chapter.Pages.Any())
                 continue;
             SB.AppendLine($"<h2 class='mt-5'>{chapter.ToString()}</h2>");
-            pagesInChapter.ForEach(x => AddPage(x));
+            chapter.Pages.ForEach(x => AddPage(x));
         }
 
         Export();
@@ -65,22 +65,21 @@ internal class FrontPage
         TestContext.WriteLine($"SAVING: {full}");
     }
 
-    private void AddPage(RecipePageBase page)
+    private void AddPage(PageInfo page)
     {
-        SB.AppendLine($"<div class='fs-4 mt-4'>{page.PageDetails.PageName}</div>");
-        SB.AppendLine($"<div>{page.PageDetails.PageDescription}</div>");
-        page.GetRecipes().ForEach(x => AddRecipeImage(page, x));
+        SB.AppendLine($"<div class='fs-4 mt-4'>{page.Name}</div>");
+        SB.AppendLine($"<div>{page.Description}</div>");
+        page.Recipes.ForEach(x => AddRecipeImage(x));
     }
 
-    private void AddRecipeImage(RecipePageBase page, IRecipe recipe)
+    private void AddRecipeImage(RecipeInfo recipe)
     {
-        string imageUrl = Html.GetImageUrl(page, recipe);
         SB.AppendLine("<div class='d-flex'>");
 
-        SB.AppendLine($"<a href='{imageUrl}'><img src='{imageUrl}' /></a>");
+        SB.AppendLine($"<a href='{recipe.ImageUrl}'><img src='{recipe.ImageUrl}' /></a>");
 
         SB.AppendLine("<div class='p-3'>");
-        SB.AppendLine($"<div><a href='{imageUrl}'><b>{recipe.Name}</b></a></div>");
+        SB.AppendLine($"<div><a href='{recipe.ImageUrl}'><b>{recipe.Name}</b></a></div>");
         SB.AppendLine($"<div>{recipe.Description}</div>");
         SB.AppendLine("</div>");
 

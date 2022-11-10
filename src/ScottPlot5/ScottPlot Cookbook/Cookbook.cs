@@ -2,6 +2,10 @@
 
 namespace ScottPlotCookbook;
 
+/// <summary>
+/// These functions are used to locate components internally.
+/// Consumers of the cookbook will interact with the <see cref="Query"/> class to get this information.
+/// </summary>
 public static class Cookbook
 {
     internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();

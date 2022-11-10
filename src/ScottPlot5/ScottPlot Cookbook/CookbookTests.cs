@@ -1,9 +1,8 @@
 ﻿using FluentAssertions;
-using NUnit.Framework.Internal;
 
 namespace ScottPlotCookbook;
 
-internal class RecipeTests
+internal class CookbookTests
 {
     // TODO: recipe descriptions should end with a period
     // TODO: page and chapter descriptions should not end with a period
@@ -37,22 +36,5 @@ internal class RecipeTests
         chapters.Should().NotBeNull();
         chapters.Should().NotBeEmpty();
         chapters.ForEach(x => TestContext.WriteLine(x));
-    }
-
-    [Test]
-    public void Test_Recipe_Nest()
-    {
-        foreach (Chapter chapter in Cookbook.GetChapters())
-        {
-            TestContext.WriteLine($"Chapter: {chapter}");
-            foreach (RecipePageBase page in Cookbook.GetPages())
-            {
-                TestContext.WriteLine($"  Page: {page.PageDetails.PageName}");
-                foreach (IRecipe recipe in page.GetRecipes())
-                {
-                    TestContext.WriteLine($"    Recipe: {recipe.Name}");
-                }
-            }
-        }
     }
 }
