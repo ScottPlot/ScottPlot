@@ -2,6 +2,10 @@
 
 namespace ScottPlotCookbook.Pages;
 
+/// <summary>
+/// The front page is /index.html and it lists all recipes.
+/// Recipes are grouped by page, and pages are grouped by category.
+/// </summary>
 internal class FrontPage
 {
     StringBuilder SB = new();
