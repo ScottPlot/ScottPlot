@@ -80,9 +80,16 @@ namespace ScottPlot.Plottables
                 surface.Canvas.RotateDegrees(rotation);
                 surface.Canvas.Translate(explosionRadius, 0);
 
-                path.MoveTo(0, 0);
-                path.ArcTo(rect, -sweeps[i] / 2, sweeps[i], false);
-                path.Close();
+                if (sweeps[i] != 360)
+                {
+                    path.MoveTo(0, 0);
+                    path.ArcTo(rect, -sweeps[i] / 2, sweeps[i], false);
+                    path.Close();
+                }
+                else
+                {
+                    path.AddOval(rect);
+                }
 
                 paint.SetFill(Slices[i].Fill);
                 paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
