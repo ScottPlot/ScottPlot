@@ -38,7 +38,7 @@ internal class HtmlRecipePage : HtmlPageBase
             SB.AppendLine($"<a href='{recipe.ImageFilename}'><img src='{recipe.ImageFilename}' /></a>");
         }
 
-        string outputFolder = Path.Combine(HtmlPageGenerator.OutputFolder, Page.FolderUrl);
+        string outputFolder = Path.Combine(Cookbook.OutputFolder, Page.FolderUrl);
         Save(outputFolder, $"{Page.Name} - ScottPlot 5.0 Cookbook");
     }
 }

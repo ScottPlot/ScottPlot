@@ -8,8 +8,28 @@ namespace ScottPlotCookbook;
 /// </summary>
 public static class Cookbook
 {
-    public static readonly string OutputFolder =
-        Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook-output"));
+    public static readonly string OutputFolder = GetCookbookFolder();
+
+    private static string GetCookbookFolder()
+    {
+        string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory);
+        string cookbookOutputSubFolder = "dev/www/cookbook/5.0";
+
+        string? repoFolder = defaultFolder;
+        while (repoFolder is not null)
+        {
+            if (File.Exists(Path.Combine(repoFolder, "LICENSE")))
+            {
+                return Path.Combine(repoFolder, cookbookOutputSubFolder);
+            }
+            else
+            {
+                repoFolder = Path.GetDirectoryName(repoFolder);
+            }
+        }
+
+        return Path.Combine(defaultFolder, cookbookOutputSubFolder);
+    }
 
     internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
 
