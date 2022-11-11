@@ -49,7 +49,7 @@ public abstract class RecipeTestBase : IRecipe
     public void SaveRecipeImage()
     {
         string fileUrl = UrlTools.GetImageUrl(GetPage(), this);
-        string saveAs = Path.Combine(HtmlPageGenerator.OutputFolder, fileUrl);
+        string saveAs = Path.Combine(Cookbook.OutputFolder, fileUrl);
         MyPlot.SavePng(saveAs, Width, Height);
         TestContext.WriteLine($"{saveAs}");
     }

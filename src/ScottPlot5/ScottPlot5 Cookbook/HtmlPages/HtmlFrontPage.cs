@@ -27,8 +27,8 @@ internal class HtmlFrontPage : HtmlPageBase
             chapter.Pages.ForEach(x => AddPage(x));
         }
 
-        Save(HtmlPageGenerator.OutputFolder, "ScottPlot 5.0 Cookbook");
-        Save(HtmlPageGenerator.OutputFolder, "ScottPlot 5.0 Cookbook", localFile: true);
+        Save(Cookbook.OutputFolder, "ScottPlot 5.0 Cookbook");
+        Save(Cookbook.OutputFolder, "ScottPlot 5.0 Cookbook", localFile: true);
     }
 
     private void AddPage(PageInfo page)

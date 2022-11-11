@@ -2,9 +2,6 @@
 
 internal class HtmlPageGenerator
 {
-    public static readonly string OutputFolder =
-        Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook-output"));
-
     [Test]
     public void Generate_Cookbook_Pages()
     {
