@@ -7,11 +7,23 @@ on:
       - main
     paths:
       - "src/ScottPlot5/ScottPlot5 Cookbook/**"
+  pull_request: # ⚠️⚠️⚠️ DELETE THIS ONCE THE CI SYSTEM IS FUNCTIONING PROPERLY ⚠️⚠️⚠️
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    name: Cookbook
+    environment:
+      name: Cookbook
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -26,12 +38,13 @@ jobs:
         run: dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore
       - name: 🧑‍🍳 Generate Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
-      - name: 🔑 Install SSH Key
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-      - name: 🚀 Deploy
-        run: rsync --archive --stats -e 'ssh -p 18765' 'src/ScottPlot5/ScottPlot5 Cookbook/bin/Debug/net6.0/cookbook-output' ${{ secrets.REMOTE_DEST_COOKBOOK50 }} # user@scottplot.net:/scottplot.net/public_html/cookbook/5.0/
-      - name: 🧹 Purge Cache
-        run: curl --user deploy:${{ secrets.PURGE_PASSWORD }} https://scottplot.net/admin/purge/
+
+      - name: 🛠️ Configure Pages
+        uses: actions/configure-pages@v2
+      - name: 📦 Upload Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "./www"
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
