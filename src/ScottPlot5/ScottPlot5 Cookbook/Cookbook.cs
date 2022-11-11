@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using NUnit.Framework.Internal.Execution;
+using System.Reflection;
 
 namespace ScottPlotCookbook;
 
@@ -8,19 +9,19 @@ namespace ScottPlotCookbook;
 /// </summary>
 public static class Cookbook
 {
-    public static readonly string OutputFolder = GetCookbookFolder();
+    public static readonly string OutputFolder = Path.Combine(GetRepoFolder(), "dev/www/cookbook/5.0");
 
-    private static string GetCookbookFolder()
+    public static readonly string RecipeSourceFolder = Path.Combine(GetRepoFolder(), "src/ScottPlot5/ScottPlot5 Cookbook/Recipes");
+
+    private static string GetRepoFolder()
     {
-        string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory);
-        string cookbookOutputSubFolder = "dev/www/cookbook/5.0";
-
+        string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory); ;
         string? repoFolder = defaultFolder;
         while (repoFolder is not null)
         {
             if (File.Exists(Path.Combine(repoFolder, "LICENSE")))
             {
-                return Path.Combine(repoFolder, cookbookOutputSubFolder);
+                return repoFolder;
             }
             else
             {
@@ -28,7 +29,7 @@ public static class Cookbook
             }
         }
 
-        return Path.Combine(defaultFolder, cookbookOutputSubFolder);
+        throw new InvalidOperationException($"repository folder not found in any folder above {defaultFolder}");
     }
 
     internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
