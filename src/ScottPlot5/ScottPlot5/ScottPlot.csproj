@@ -5,7 +5,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>5.1.0-beta</Version>
+        <Version>5.0.0-beta</Version>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 

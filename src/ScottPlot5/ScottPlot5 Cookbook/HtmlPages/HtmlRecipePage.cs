@@ -6,9 +6,12 @@ internal class HtmlRecipePage : HtmlPageBase
 {
     private readonly PageInfo Page;
 
-    public HtmlRecipePage(PageInfo page)
+    public HtmlRecipePage(PageInfo page, List<RecipeSource> sources)
     {
         Page = page;
+
+        foreach (RecipeInfo recipe in Page.Recipes)
+            recipe.AddSource(sources);
     }
 
     public void Generate()
@@ -30,10 +33,7 @@ internal class HtmlRecipePage : HtmlPageBase
         {
             SB.AppendLine($"<h3>{recipe.Name}</h3>");
             SB.AppendLine($"<p>{recipe.Description}</p>");
-            if (!string.IsNullOrEmpty(recipe.SourceCode))
-            {
-                SB.AppendLine($"<pre>{recipe.SourceCode}</pre>");
-            }
+            SB.AppendLine($"<pre>{recipe.SourceCode}</pre>");
 
             SB.AppendLine($"<a href='{recipe.ImageFilename}'><img src='{recipe.ImageFilename}' /></a>");
         }
