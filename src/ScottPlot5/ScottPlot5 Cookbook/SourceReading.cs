@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
+using ScottPlotCookbook.Info;
 using System.Text;
 
 namespace ScottPlotCookbook;
 
 internal static class SourceReading
 {
-    public static List<string> GetRecipeSourceFilePaths()
+    private static List<string> GetRecipeSourceFilePaths()
     {
         List<string> paths = new();
 
@@ -45,13 +46,13 @@ internal static class SourceReading
             {
                 if (line.StartsWith("        PageName = "))
                 {
-                    pageNameSafe = UrlTools.UrlSafe(line.Split('"')[1]);
+                    pageNameSafe = line.Split('"')[1];
                     continue;
                 }
 
                 if (line.StartsWith("        public override string Name ="))
                 {
-                    recipeNameSafe = UrlTools.UrlSafe(line.Split('"')[1]);
+                    recipeNameSafe = line.Split('"')[1];
                     continue;
                 }
 
@@ -87,7 +88,10 @@ internal static class SourceReading
         sources.Should().NotBeEmpty();
         sources.Should().HaveCount(Cookbook.GetRecipes().Count);
 
-        foreach (RecipeSource source in sources)
-            TestContext.WriteLine($"{source.PageName}/{source.RecipeName} ({source.SourceCode.Length} characters)");
+        foreach (RecipeInfo recipe in Query.GetRecipes())
+        {
+            recipe.AddSource(sources);
+            recipe.SourceCode.Should().NotBeNull();
+        }
     }
 }

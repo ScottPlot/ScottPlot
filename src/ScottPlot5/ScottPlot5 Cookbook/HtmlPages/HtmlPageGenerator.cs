@@ -11,9 +11,11 @@ internal class HtmlPageGenerator
         HtmlFrontPage frontPage = new();
         frontPage.Generate();
 
+        List<RecipeSource> sources = SourceReading.GetRecipeSources();
+
         foreach (Info.PageInfo page in Query.GetPages())
         {
-            HtmlRecipePage recipePage = new(page);
+            HtmlRecipePage recipePage = new(page, sources);
             recipePage.Generate();
         }
     }
