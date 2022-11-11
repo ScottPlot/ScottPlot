@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework.Internal;
+using ScottPlotCookbook.HtmlPages;
 
 namespace ScottPlotCookbook;
 
@@ -29,21 +30,27 @@ public abstract class RecipeTestBase : IRecipe
     /// </summary>
     [Test]
     public abstract void Recipe();
+
+    // TODO: create test to assert true for all tests
     public bool RecipeHasTestAttribute => GetType().IsDefined(typeof(Test), false);
+
+    private RecipePageBase GetPage()
+    {
+        Type declaringType = GetType().DeclaringType
+            ?? throw new NullReferenceException();
+
+        RecipePageBase page = Activator.CreateInstance(declaringType) as RecipePageBase
+            ?? throw new NullReferenceException();
+
+        return page;
+    }
 
     [TearDown]
     public void SaveRecipeImage()
     {
-        System.Diagnostics.StackTrace stackTrace = new();
-        string callingMethod = stackTrace.GetFrame(1)!.GetMethod()!.Name;
-        string fileName = $"{callingMethod}.png";
-
-        string outputFolder = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "cookbook"));
-        if (!Directory.Exists(outputFolder))
-            Directory.CreateDirectory(outputFolder);
-        string filePath = Path.Combine(outputFolder, fileName);
-
-        MyPlot.SavePng(filePath, Width, Height);
-        TestContext.WriteLine($"{filePath}");
+        string fileUrl = UrlTools.GetImageUrl(GetPage(), this);
+        string saveAs = Path.Combine(HtmlPageGenerator.OutputFolder, fileUrl);
+        MyPlot.SavePng(saveAs, Width, Height);
+        TestContext.WriteLine($"{saveAs}");
     }
 }

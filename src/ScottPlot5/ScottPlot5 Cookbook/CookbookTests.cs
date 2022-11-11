@@ -1,12 +1,15 @@
 ﻿using FluentAssertions;
-using NUnit.Framework.Internal;
 
 namespace ScottPlotCookbook;
 
-internal class RecipeTests
+internal class CookbookTests
 {
     // TODO: recipe descriptions should end with a period
     // TODO: page and chapter descriptions should not end with a period
+    // TODO: pages must have unique names
+    // TODO: recipes must have unique names within pages
+    // TODO: no undefined chapters
+    // TODO: all recipes should be public
 
     [Test]
     public void Test_Recipes_Found()
@@ -20,7 +23,7 @@ internal class RecipeTests
     [Test]
     public void Test_Pages_Found()
     {
-        List<RecipePage> pages = Cookbook.GetPages();
+        List<RecipePageBase> pages = Cookbook.GetPages();
         pages.Should().NotBeNull();
         pages.Should().NotBeEmpty();
         pages.ForEach(x => TestContext.WriteLine(x));
@@ -29,26 +32,9 @@ internal class RecipeTests
     [Test]
     public void Test_Chapters_Found()
     {
-        List<RecipeChapter> chapters = Cookbook.GetChapters();
+        List<Chapter> chapters = Cookbook.GetChapters();
         chapters.Should().NotBeNull();
         chapters.Should().NotBeEmpty();
         chapters.ForEach(x => TestContext.WriteLine(x));
-    }
-
-    [Test]
-    public void Test_Recipe_Nest()
-    {
-        foreach (RecipeChapter chapter in Cookbook.GetChapters())
-        {
-            TestContext.WriteLine($"Chapter: {chapter.Name}");
-            foreach (RecipePage page in Cookbook.GetPages())
-            {
-                TestContext.WriteLine($"  Page: {page.PageName}");
-                foreach (IRecipe recipe in Cookbook.GetRecipes(page))
-                {
-                    TestContext.WriteLine($"    Recipe: {recipe.Name}");
-                }
-            }
-        }
     }
 }
