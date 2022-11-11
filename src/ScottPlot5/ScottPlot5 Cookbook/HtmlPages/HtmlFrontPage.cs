@@ -23,7 +23,7 @@ internal class HtmlFrontPage : HtmlPageBase
         {
             if (!chapter.Pages.Any())
                 continue;
-            SB.AppendLine($"<h2 class='mt-5'>{chapter.ToString()}</h2>");
+            SB.AppendLine($"<h2 class='mt-5'>{chapter.Name}</h2>");
             chapter.Pages.ForEach(x => AddPage(x));
         }
 
