@@ -20,3 +20,7 @@ plt.SaveJpeg("test.jpg", width: 500, height: 400, quality: 85);
 plt.SavePng("test.png", width: 500, height: 400);
 plt.SaveWebp("test.png", width: 500, height: 400);
 ```
+
+### CI
+
+Figure out how to enable auto-merge for _optional_ status checks

@@ -9,10 +9,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: ✨ Setup .NET 6
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
 
@@ -57,7 +57,7 @@ jobs:
           nuget push "src\ScottPlot4\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 💾 Store Packages
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ScottPlot-Packages
           retention-days: 1
