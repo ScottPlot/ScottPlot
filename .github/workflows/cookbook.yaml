@@ -10,7 +10,7 @@ on:
 
 jobs:
   publish:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: Cookbook
     steps:
       - name: 🛒 Checkout
