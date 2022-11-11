@@ -1,0 +1,37 @@
+name: ScottPlot5
+
+on:
+  workflow_dispatch:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
+    paths:
+      - "src/ScottPlot5/ScottPlot5 Cookbook/**"
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    name: Cookbook
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Set up .NET 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: 🚚 Restore
+        run: dotnet restore "src/ScottPlot5/ScottPlot5 Cookbook"
+      - name: 🛠️ Build
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore
+      - name: 🧑‍🍳 Generate Cookbook
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
+      - name: 🔑 Install SSH Key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: 🚀 Deploy
+        run: rsync --archive --stats -e 'ssh -p 18765' 'src/ScottPlot5/ScottPlot5 Cookbook/bin/Debug/net6.0/cookbook-output' ${{ secrets.REMOTE_DEST_COOKBOOK50 }} # user@scottplot.net:/scottplot.net/public_html/cookbook/5.0/
+      - name: 🧹 Purge Cache
+        run: curl --user deploy:${{ secrets.PURGE_PASSWORD }} https://scottplot.net/admin/purge/

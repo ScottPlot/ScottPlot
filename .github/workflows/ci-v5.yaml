@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "src/ScottPlot5/**"
-  pull_request: # runs on commits to bull request branches
+  pull_request: # runs on commits to pull request branches
     paths:
       - "src/ScottPlot5/**"
 
