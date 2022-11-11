@@ -13,7 +13,7 @@ public static class Cookbook
     private static string GetCookbookFolder()
     {
         string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory);
-        string cookbookOutputSubFolder = "www/cookbook/5.0";
+        string cookbookOutputSubFolder = "dev/www/cookbook/5.0";
 
         string? repoFolder = defaultFolder;
         while (repoFolder is not null)
