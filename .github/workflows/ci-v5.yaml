@@ -27,6 +27,8 @@ jobs:
       - name: 🧐 Check Code Format
         working-directory: src/ScottPlot5
         run: dotnet-format --check
+      - name: ⚠️ Check for Warnings
+        run: dotnet build "src/ScottPlot5/ScottPlot5" --configuration Release -warnaserror -nowarn:CS2002
 
   test4:
     strategy:
@@ -50,13 +52,17 @@ jobs:
           dotnet-version: "6.0.x"
 
       - name: 🚚 Restore
-        run: dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
+        run: |
+          dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
+          dotnet restore "src/ScottPlot5/ScottPlot5 Cookbook"
       - name: 🛠️ Build
-        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore -warnaserror -nowarn:CS2002
+        run: |
+          dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
+          dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --configuration Release --no-restore
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
       - name: 🧑‍🍳 Cookbook
-        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
 
       # msbuild is required to build a solution containing .NET Framework projects
       - name: 🐢 Setup MSBuild
