@@ -7,7 +7,6 @@ on:
       - main
     paths:
       - "src/ScottPlot5/ScottPlot5 Cookbook/**"
-  pull_request: # ⚠️⚠️⚠️ DELETE THIS ONCE THE CI SYSTEM IS FUNCTIONING PROPERLY ⚠️⚠️⚠️
 
 permissions:
   contents: read
