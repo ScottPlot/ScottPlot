@@ -1340,5 +1340,14 @@ namespace ScottPlot
             Add(plottable);
             return plottable;
         }
+
+
+        public Spectrogram AddSpectrogram(SpectrogramData data, Drawing.Colormap colormap = null, double? min = null, double? max = null)
+        {
+            var plottable = new Spectrogram(data, colormap, min, max);
+            plottable.Update();
+            Add(plottable);
+            return plottable;
+        }
     }
 }

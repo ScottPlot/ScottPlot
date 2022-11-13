@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Demo.WinForms.WinFormsDemos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -35,5 +36,6 @@ namespace ScottPlot.Demo.WinForms
         private void SplineInterpolationButton_Click(object sender, EventArgs e) => new WinFormsDemos.SplineInterpolation().ShowDialog();
         private void FinanceDemoButton_Click(object sender, EventArgs e) => new WinFormsDemos.FinanceDemo().ShowDialog();
         private void HittableButton_Click(object sender, EventArgs e) => new WinFormsDemos.HittableDemo().ShowDialog();
+        private void SpectrogramButton_Click(object sender, EventArgs e) => new WinFormsDemos.SpectrogramDemo().ShowDialog();
     }
 }

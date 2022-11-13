@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <PackageIcon>icon.png</PackageIcon>
