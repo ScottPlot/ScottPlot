@@ -255,6 +255,51 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class AxisSpanDraggableEvents : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisSpan_draggable_events";
+        public string Title => "Draggable Axis Span Events";
+        public string Description =>
+            "Axis spans can be dragged using the mouse. " +
+            "Span events can be useful for binding span edge values to UI elements.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            var minText = plt.AddTooltip("min: default", 0, 1);
+            var maxText = plt.AddTooltip("max: default", 50, 1);
+
+            var edge1Tooltip = plt.AddTooltip("Edge1: 0", 0, 0.6);
+            var edge2Tooltip = plt.AddTooltip("Edge2: 50", 50, 0.2);
+
+            // dragging can be enabled and optionally limited to a range
+            var vSpan = plt.AddHorizontalSpan(0, 50);
+            vSpan.DragEnabled = true;
+            vSpan.DragLimitMin = 0;
+            vSpan.DragLimitMax = 50;
+            vSpan.Label = "Draggable vSpan";
+
+            vSpan.MinDragged += (s, e) => minText.Label = $"Min: {e}";
+            vSpan.MaxDragged += (s, e) => maxText.Label = $"Max: {e}";
+            vSpan.Edge1Dragged += (s, e) =>
+            {
+                edge1Tooltip.X = e;
+                edge1Tooltip.Label = $"Edge1: {e}";
+            };
+            vSpan.Edge2Dragged += (s, e) =>
+            {
+                edge2Tooltip.X = e;
+                edge2Tooltip.Label = $"Edge2: {e}";
+            };
+
+            plt.Legend(true);
+        }
+    }
+
     public class AxisLineAndSpanIgnore : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();

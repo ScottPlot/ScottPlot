@@ -1,12 +1,12 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.SnapLogic;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {
-    public abstract class AxisSpan : IPlottable, IDraggable, IHasColor, IHasArea
+    public abstract class AxisSpan : IPlottable, IDraggable, IDraggableSpan, IHasColor, IHasArea
     {
         // location and orientation
         protected double Position1;
@@ -43,6 +43,23 @@ namespace ScottPlot.Plottable
         /// This event is invoked after the line is dragged 
         /// </summary>
         public event EventHandler Dragged = delegate { };
+
+        /// <summary>
+        /// This event is invoked after the Edge1 is dragged 
+        /// </summary>
+        public event EventHandler<double> Edge1Dragged = delegate { };
+        /// <summary>
+        /// This event is invoked after the Edge2 is dragged 
+        /// </summary>
+        public event EventHandler<double> Edge2Dragged = delegate { };
+        /// <summary>
+        /// This event is invoked after the min edge is dragged 
+        /// </summary>
+        public event EventHandler<double> MinDragged = delegate { };
+        /// <summary>
+        /// This event is invoked after the max edge is dragged 
+        /// </summary>
+        public event EventHandler<double> MaxDragged = delegate { };
 
         /// <summary>
         /// This function applies snapping logic while dragging
@@ -135,6 +152,9 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
+            bool position1Changed = false;
+            bool position2Changed = false;
+
             Coordinate original = new(coordinateX, coordinateY);
             Coordinate snapped = DragSnap.Snap(original);
             coordinateX = snapped.X;
@@ -155,14 +175,22 @@ namespace ScottPlot.Plottable
             if (edgeUnderMouse == Edge.Edge1)
             {
                 Position1 = IsHorizontal ? coordinateX : coordinateY;
+                position1Changed = true;
                 if (DragFixedSize || fixedSize)
+                {
                     Position2 = Position1 + sizeBeforeDrag;
+                    position2Changed = true;
+                }
             }
             else if (edgeUnderMouse == Edge.Edge2)
             {
                 Position2 = IsHorizontal ? coordinateX : coordinateY;
+                position2Changed = true;
                 if (DragFixedSize || fixedSize)
+                {
                     Position1 = Position2 - sizeBeforeDrag;
+                    position1Changed = true;
+                }
             }
             else
             {
@@ -176,14 +204,34 @@ namespace ScottPlot.Plottable
             {
                 Position1 += belowLimit;
                 Position2 += belowLimit;
+                position1Changed = true;
+                position2Changed = true;
             }
             if (aboveLimit > 0)
             {
                 Position1 -= aboveLimit;
                 Position2 -= aboveLimit;
+                position1Changed = true;
+                position2Changed = true;
             }
 
             Dragged(this, EventArgs.Empty);
+            if (position1Changed)
+            {
+                Edge1Dragged(this, Position1);
+                if (Position1 <= Position2)
+                    MinDragged(this, Position1);
+                else
+                    MaxDragged(this, Position1);
+            }
+            if (position2Changed)
+            {
+                Edge2Dragged(this, Position2);
+                if (Position2 <= Position1)
+                    MinDragged(this, Position2);
+                else
+                    MaxDragged(this, Position2);
+            }
         }
 
         private RectangleF GetClippedRectangle(PlotDimensions dims)
