@@ -277,20 +277,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var edge2Tooltip = plt.AddTooltip("Edge2: 50", 50, 0.2);
 
             // dragging can be enabled and optionally limited to a range
-            var vSpan = plt.AddHorizontalSpan(0, 50);
-            vSpan.DragEnabled = true;
-            vSpan.DragLimitMin = 0;
-            vSpan.DragLimitMax = 50;
-            vSpan.Label = "Draggable vSpan";
+            var hSpan = plt.AddHorizontalSpan(0, 50);
+            hSpan.DragEnabled = true;
+            hSpan.DragLimitMin = 0;
+            hSpan.DragLimitMax = 50;
+            hSpan.Label = "Draggable vSpan";
 
-            vSpan.MinDragged += (s, e) => minText.Label = $"Min: {e}";
-            vSpan.MaxDragged += (s, e) => maxText.Label = $"Max: {e}";
-            vSpan.Edge1Dragged += (s, e) =>
+            hSpan.MinDragged += (s, e) => minText.Label = $"Min: {e}";
+            hSpan.MaxDragged += (s, e) => maxText.Label = $"Max: {e}";
+            hSpan.Edge1Dragged += (s, e) =>
             {
                 edge1Tooltip.X = e;
                 edge1Tooltip.Label = $"Edge1: {e}";
             };
-            vSpan.Edge2Dragged += (s, e) =>
+            hSpan.Edge2Dragged += (s, e) =>
             {
                 edge2Tooltip.X = e;
                 edge2Tooltip.Label = $"Edge2: {e}";
