@@ -5,7 +5,7 @@ namespace ScottPlot.Palettes;
 
 public class LightOcean : HexPaletteBase, IPalette
 {
-    public override string Name => "Xgfs 25";
+    public override string Name => "Light ocean";
 
     public override string Description => "A 9-color palette by Arthurits created by a mixture of light greens, blues, and purples";
 
