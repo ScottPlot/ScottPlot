@@ -25,10 +25,6 @@ public abstract class XAxisBase : IAxis
 
     public float Offset { get; set; } = 0;
 
-    public float PixelSize { get; private set; } = 50;
-
-    public float PixelHeight => PixelSize;
-
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
@@ -42,12 +38,12 @@ public abstract class XAxisBase : IAxis
     public Font TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
 
-    public void Measure()
+    public float Measure()
     {
         float labelHeight = Label.Font.Size + 15;
         float largestTickHeight = MeasureTicks();
         float extraPadding = Edge == Edge.Bottom ? 18 : 0;
-        PixelSize = labelHeight + largestTickHeight + extraPadding;
+        return labelHeight + largestTickHeight + extraPadding;
     }
 
     private float MeasureTicks()
@@ -86,7 +82,7 @@ public abstract class XAxisBase : IAxis
         var ticks = TickGenerator.GetVisibleTicks(Range);
         float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, Measure());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }

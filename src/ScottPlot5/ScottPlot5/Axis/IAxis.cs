@@ -37,14 +37,9 @@ public interface IAxis
     ITickGenerator TickGenerator { get; set; }
 
     /// <summary>
-    /// Update the value of <see cref="PixelSize"/> 
+    /// Gets the size of the axis in pixels.
     /// </summary>
-    void Measure();
-
-    /// <summary>
-    /// Size required to draw this axis given the most recently generated ticks.
-    /// </summary>
-    float PixelSize { get; }
+    float Measure();
 
     /// <summary>
     /// The label is the text displayed distal to the ticks

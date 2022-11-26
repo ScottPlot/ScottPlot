@@ -8,7 +8,6 @@ public class StandardLayoutSystem : ILayoutSystem
     public PixelRect AutoSizeDataArea(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
     {
         RegenerateTicksForAllAxes(figureRect, xAxes, yAxes);
-        RemeasureAllAxes(figureRect, xAxes, yAxes);
         PixelRect dataArea = GetTotalAxisPadding(figureRect, xAxes, yAxes);
         return dataArea;
     }
@@ -25,18 +24,6 @@ public class StandardLayoutSystem : ILayoutSystem
         }
     }
 
-    private void RemeasureAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
-    {
-        foreach (IXAxis xAxis in xAxes)
-        {
-            xAxis.Measure();
-        }
-        foreach (IYAxis yAxis in yAxes)
-        {
-            yAxis.Measure();
-        }
-    }
-
     private PixelRect GetTotalAxisPadding(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
     {
         PixelPadding axisSizeByEdge = new();
@@ -44,33 +31,41 @@ public class StandardLayoutSystem : ILayoutSystem
         float bottomOffset = 0;
         foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Bottom))
         {
-            axisSizeByEdge.Bottom += xAxis.PixelHeight;
+            var pxHeight = xAxis.Measure();
+            
+            axisSizeByEdge.Bottom += pxHeight;
             xAxis.Offset = bottomOffset;
-            bottomOffset += xAxis.PixelHeight;
+            bottomOffset += pxHeight;
         }
 
         float topOffset = 0;
         foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Top))
         {
-            axisSizeByEdge.Top += xAxis.PixelHeight;
+            var pxHeight = xAxis.Measure();
+
+            axisSizeByEdge.Top += pxHeight;
             xAxis.Offset = topOffset;
-            topOffset += xAxis.PixelHeight;
+            topOffset += pxHeight;
         }
 
         float leftOffset = 0;
         foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Left))
         {
-            axisSizeByEdge.Left += yAxis.PixelWidth;
+            var pxWidth = yAxis.Measure();
+
+            axisSizeByEdge.Left += pxWidth;
             yAxis.Offset = leftOffset;
-            leftOffset += yAxis.PixelWidth;
+            leftOffset += pxWidth;
         }
 
         float rightOffset = 0;
         foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Right))
         {
-            axisSizeByEdge.Right += yAxis.PixelWidth;
+            var pxWidth = yAxis.Measure();
+            
+            axisSizeByEdge.Right += pxWidth;
             yAxis.Offset = rightOffset;
-            rightOffset += yAxis.PixelWidth;
+            rightOffset += pxWidth;
         }
 
         // TODO: manual reduction remove this

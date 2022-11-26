@@ -23,10 +23,6 @@ public abstract class YAxisBase : IAxis
 
     public float Offset { get; set; } = 0;
 
-    public float PixelSize { get; private set; } = 50;
-
-    public float PixelWidth => PixelSize;
-
     public ITickGenerator TickGenerator { get; set; } = null!;
 
     public Label Label { get; private set; } = new()
@@ -60,12 +56,12 @@ public abstract class YAxisBase : IAxis
         return Bottom - unitsFromMinValue;
     }
 
-    public void Measure()
+    public float Measure()
     {
         float labelWidth = Label.Font.Size + 15;
         float largestTickWidth = MeasureTicks();
 
-        PixelSize = labelWidth + largestTickWidth;
+        return labelWidth + largestTickWidth;
     }
 
     private float MeasureTicks()
@@ -89,7 +85,7 @@ public abstract class YAxisBase : IAxis
         var ticks = TickGenerator.GetVisibleTicks(Range);
         float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, Measure());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
     }
