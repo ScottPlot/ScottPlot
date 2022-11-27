@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Axis;
+﻿using ScottPlot.LayoutSystem;
+
+namespace ScottPlot.Axis;
 
 /// <summary>
 /// This interface describes a 1D axis (horizontal or vertical).
@@ -6,13 +8,8 @@
 /// tick generation (and rendering), axis label rendering, 
 /// and self-measurement for layout purposes.
 /// </summary>
-public interface IAxis
+public interface IAxis : IPanel
 {
-    /// <summary>
-    /// Describes which edge this 1D axis represents
-    /// </summary>
-    Edge Edge { get; }
-
     /// <summary>
     /// Min/Max range currently displayed by this axis
     /// </summary>
@@ -37,23 +34,7 @@ public interface IAxis
     ITickGenerator TickGenerator { get; set; }
 
     /// <summary>
-    /// Gets the size of the axis in pixels.
-    /// </summary>
-    float Measure();
-
-    /// <summary>
     /// The label is the text displayed distal to the ticks
     /// </summary>
     Label Label { get; }
-
-    /// <summary>
-    /// Distance from the data are to offset this axis (to make room for multiple axes)
-    /// </summary>
-    float Offset { get; set; }
-
-    // TODO: move the label and ticks into their own interfaces each with a Render()
-    /// <summary>
-    /// Draw axis label and tick marks
-    /// </summary>
-    void Render(SkiaSharp.SKSurface surface, PixelRect dataRect);
 }

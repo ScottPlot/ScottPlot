@@ -23,8 +23,6 @@ public abstract class XAxisBase : IAxis
 
     public ITickGenerator TickGenerator { get; set; } = null!;
 
-    public float Offset { get; set; } = 0;
-
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
@@ -82,9 +80,9 @@ public abstract class XAxisBase : IAxis
         var ticks = TickGenerator.GetVisibleTicks(Range);
         float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, Measure());
-        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
-        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Measure());
+        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

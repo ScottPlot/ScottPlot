@@ -2,5 +2,5 @@
 
 public interface ILayoutSystem
 {
-    PixelRect AutoSizeDataArea(PixelRect figureRect, IEnumerable<Axis.IXAxis> xAxes, IEnumerable<Axis.IYAxis> yAxes);
+    FinalLayout GetLayout(PixelRect figureRect, IEnumerable<Axis.IXAxis> xAxes, IEnumerable<Axis.IYAxis> yAxes);
 }

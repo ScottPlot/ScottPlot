@@ -1,7 +1,9 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.LayoutSystem;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,11 +41,6 @@ public static class Common
         }
     }
 
-    public static PixelRect AutoSizeDataArea(PixelRect figureRect, Plot plot)
-    {
-        return plot.Layout.AutoSizeDataArea(figureRect, plot.XAxes, plot.YAxes);
-    }
-
     public static void RenderBackground(SKSurface surface, PixelRect dataRect, Plot plot)
     {
         surface.Canvas.Clear(SKColors.White);
@@ -69,18 +66,13 @@ public static class Common
         }
     }
 
-    public static void RenderAxes(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderPanels(SKSurface surface, PixelRect area, IEnumerable<PanelWithOffset> panels)
     {
-        // TODO: axes should render their own frame edges
-
-        foreach (var xAxis in plot.XAxes)
+        foreach (var panel in panels)
         {
-            xAxis.Render(surface, dataRect);
-        }
-
-        foreach (var yAxis in plot.YAxes)
-        {
-            yAxis.Render(surface, dataRect);
+            using SKAutoCanvasRestore _ = new(surface.Canvas);
+            surface.Canvas.Translate(panel.Offset.Width, panel.Offset.Height);
+            panel.Panel.Render(surface, area);
         }
     }
 
