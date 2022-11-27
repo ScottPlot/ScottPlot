@@ -5,13 +5,13 @@ namespace ScottPlot.Axis.StandardAxes;
 
 public abstract class XAxisBase : IAxis
 {
-    public double Left
+    public double Min
     {
         get => Range.Min;
         set => Range.Min = value;
     }
 
-    public double Right
+    public double Max
     {
         get => Range.Max;
         set => Range.Max = value;
@@ -63,7 +63,7 @@ public abstract class XAxisBase : IAxis
     public float GetPixel(double position, PixelRect dataArea)
     {
         double pxPerUnit = dataArea.Width / Width;
-        double unitsFromLeftEdge = position - Left;
+        double unitsFromLeftEdge = position - Min;
         float pxFromEdge = (float)(unitsFromLeftEdge * pxPerUnit);
         return dataArea.Left + pxFromEdge;
     }
@@ -73,7 +73,7 @@ public abstract class XAxisBase : IAxis
         double pxPerUnit = dataArea.Width / Width;
         float pxFromLeftEdge = pixel - dataArea.Left;
         double unitsFromEdge = pxFromLeftEdge / pxPerUnit;
-        return Left + unitsFromEdge;
+        return Min + unitsFromEdge;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)

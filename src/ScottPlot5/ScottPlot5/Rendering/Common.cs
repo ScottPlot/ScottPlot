@@ -33,10 +33,10 @@ public static class Common
             if (!plottable.Axes.XAxis.Range.HasBeenSet || !plottable.Axes.YAxis.Range.HasBeenSet)
             {
                 AxisLimits limits = plottable.GetAxisLimits();
-                plottable.Axes.XAxis.Left = limits.Rect.XMin;
-                plottable.Axes.XAxis.Right = limits.Rect.XMax;
-                plottable.Axes.YAxis.Bottom = limits.Rect.YMin;
-                plottable.Axes.YAxis.Top = limits.Rect.YMax;
+                plottable.Axes.XAxis.Min = limits.Rect.XMin;
+                plottable.Axes.XAxis.Max = limits.Rect.XMax;
+                plottable.Axes.YAxis.Min = limits.Rect.YMin;
+                plottable.Axes.YAxis.Max = limits.Rect.YMax;
             }
         }
     }

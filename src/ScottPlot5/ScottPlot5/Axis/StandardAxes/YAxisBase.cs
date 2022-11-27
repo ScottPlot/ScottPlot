@@ -5,13 +5,13 @@ namespace ScottPlot.Axis.StandardAxes;
 
 public abstract class YAxisBase : IAxis
 {
-    public double Bottom
+    public double Min
     {
         get => Range.Min;
         set => Range.Min = value;
     }
 
-    public double Top
+    public double Max
     {
         get => Range.Max;
         set => Range.Max = value;
@@ -41,7 +41,7 @@ public abstract class YAxisBase : IAxis
     public float GetPixel(double position, PixelRect dataArea)
     {
         double pxPerUnit = dataArea.Height / Height;
-        double unitsFromMinValue = position - Bottom;
+        double unitsFromMinValue = position - Min;
         float pxFromEdge = (float)(unitsFromMinValue * pxPerUnit);
         return dataArea.Bottom - pxFromEdge;
     }
@@ -51,7 +51,7 @@ public abstract class YAxisBase : IAxis
         double pxPerUnit = dataArea.Height / Height;
         float pxFromMinValue = pixel - dataArea.Bottom;
         double unitsFromMinValue = pxFromMinValue / pxPerUnit;
-        return Bottom - unitsFromMinValue;
+        return Min - unitsFromMinValue;
     }
 
     public float Measure()

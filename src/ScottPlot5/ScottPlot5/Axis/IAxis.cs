@@ -15,6 +15,9 @@ public interface IAxis : IPanel
     /// </summary>
     CoordinateRange Range { get; }
 
+    double Min { get; set; }
+    double Max { get; set; }
+
     /// <summary>
     /// Get the pixel position of a coordinate given the location and size of the data area
     /// </summary>
