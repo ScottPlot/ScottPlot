@@ -42,9 +42,9 @@ public class StandardLayoutSystem : ILayoutSystem
         foreach (var panel in xPanels.Where(x => x.Edge == Edge.Bottom))
         {
             var pxHeight = panel.Measure();
-            
+
             panelSizeByEdge.Bottom += pxHeight;
-            
+
             offsets.Add(new(panel, new(0, bottomOffset)));
             bottomOffset += pxHeight;
         }
@@ -66,7 +66,7 @@ public class StandardLayoutSystem : ILayoutSystem
             var pxWidth = panel.Measure();
 
             panelSizeByEdge.Left += pxWidth;
-            
+
             offsets.Add(new(panel, new(leftOffset, 0)));
             leftOffset -= pxWidth;
         }
@@ -75,7 +75,7 @@ public class StandardLayoutSystem : ILayoutSystem
         foreach (var panel in yPanels.Where(x => x.Edge == Edge.Right))
         {
             var pxWidth = panel.Measure();
-            
+
             panelSizeByEdge.Right += pxWidth;
 
             offsets.Add(new(panel, new(rightOffset, 0)));

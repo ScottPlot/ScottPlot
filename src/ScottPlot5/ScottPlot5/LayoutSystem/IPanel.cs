@@ -12,7 +12,7 @@ namespace ScottPlot.LayoutSystem
         Edge Edge { get; }
         void Render(SkiaSharp.SKSurface surface, PixelRect rect);
     }
-    
+
     // Default interface implentationss aren't a thing yet on all of our targeted platforms :/
     public static class IPanelExtensions
     {
