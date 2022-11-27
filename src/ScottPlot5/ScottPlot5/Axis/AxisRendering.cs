@@ -58,8 +58,6 @@ public static class AxisRendering
         surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
     }
 
-    static int i = 0;
-    static int j = 0;
     public static void DrawLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float pixelSize)
     {
         using var paint = label.MakePaint();

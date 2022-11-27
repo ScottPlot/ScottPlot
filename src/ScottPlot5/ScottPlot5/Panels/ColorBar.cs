@@ -29,7 +29,8 @@ namespace ScottPlot.Panels
 
         public void Render(SKSurface surface, PixelRect rect)
         {
-            SKRect colorbarRect = Edge switch {
+            SKRect colorbarRect = Edge switch
+            {
                 Edge.Left => new(rect.Left - Width, rect.Top, rect.Left, rect.Top + rect.Height),
                 Edge.Right => new(rect.Right, rect.Top, rect.Right + Width, rect.Top + rect.Height),
                 Edge.Bottom => new(rect.Left, rect.Bottom, rect.Left + rect.Width, rect.Bottom + Width),
@@ -48,7 +49,7 @@ namespace ScottPlot.Panels
 
             using var bmp = GetBitmap();
             surface.Canvas.DrawBitmap(bmp, colorbarRect);
-            
+
             var colorbarLength = Edge.IsVertical() ? rect.Height : rect.Width;
             var axis = GetAxis(colorbarLength);
 
@@ -81,7 +82,7 @@ namespace ScottPlot.Panels
             };
 
             axis.Label.Text = null;
-            
+
             var range = Source.GetRange();
             axis.Min = range.Min;
             axis.Max = range.Max;
