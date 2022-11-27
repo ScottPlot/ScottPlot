@@ -4,7 +4,7 @@ namespace ScottPlot;
 
 public class Label
 {
-    public string Text { get; set; } = string.Empty;
+    public string? Text { get; set; } = string.Empty;
     public Style.Font Font { get; set; } = new()
     {
         Family = "Consolas",
@@ -39,7 +39,7 @@ public class Label
         surface.Canvas.Save();
         surface.Canvas.Translate(point.X, point.Y);
         surface.Canvas.RotateDegrees(Rotation);
-        surface.Canvas.DrawText(Text, 0, font.Size, font, paint);
+        surface.Canvas.DrawText(Text ?? "", 0, font.Size, font, paint);
         surface.Canvas.Restore();
     }
 }
