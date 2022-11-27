@@ -58,6 +58,8 @@ public static class AxisRendering
         surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
     }
 
+    static int i = 0;
+    static int j = 0;
     public static void DrawLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float pixelSize)
     {
         using var paint = label.MakePaint();
@@ -65,7 +67,7 @@ public static class AxisRendering
         Pixel px = edge switch
         {
             Edge.Left => new(
-                x: dataRect.Left - pixelSize,
+                x: dataRect.Left - pixelSize + 5,
                 y: dataRect.VerticalCenter),
 
             Edge.Right => new(
@@ -82,6 +84,12 @@ public static class AxisRendering
 
             _ => throw new InvalidEnumArgumentException()
         };
+
+        if (edge == Edge.Bottom)
+            surface.Canvas.DrawRect(dataRect.Left, dataRect.Bottom, dataRect.Width, pixelSize, new SKPaint() { Color = i++ % 2 == 0 ? SKColors.Cyan.WithAlpha(80) : SKColors.Pink.WithAlpha(80) });
+
+        if (edge == Edge.Left)
+            surface.Canvas.DrawRect(dataRect.Left - pixelSize, dataRect.Top, pixelSize, dataRect.Height, new SKPaint() { Color = j++ % 2 == 0 ? SKColors.Cyan.WithAlpha(80) : SKColors.Pink.WithAlpha(80) });
 
         label.Draw(surface, px, paint);
     }

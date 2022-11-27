@@ -56,10 +56,12 @@ public abstract class YAxisBase : IAxis
 
     public float Measure()
     {
-        float labelWidth = Label.Font.Size + 15;
+        using SKPaint paint = new(Label.Font.GetFont());
+
+        float labelWidth = Drawing.MeasureString(Label.Text, paint).Height;
         float largestTickWidth = MeasureTicks();
 
-        return labelWidth + largestTickWidth;
+        return labelWidth + largestTickWidth + 15;
     }
 
     private float MeasureTicks()

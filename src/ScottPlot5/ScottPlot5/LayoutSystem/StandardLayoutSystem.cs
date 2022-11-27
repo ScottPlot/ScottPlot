@@ -83,6 +83,8 @@ public class StandardLayoutSystem : ILayoutSystem
         }
 
         // TODO: manual reduction remove this
+        panelSizeByEdge.Left += 20;
+        panelSizeByEdge.Bottom += 20;
         panelSizeByEdge.Right += 20;
         panelSizeByEdge.Top += 20;
 
