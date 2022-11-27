@@ -85,12 +85,6 @@ public static class AxisRendering
             _ => throw new InvalidEnumArgumentException()
         };
 
-        if (edge == Edge.Bottom)
-            surface.Canvas.DrawRect(dataRect.Left, dataRect.Bottom, dataRect.Width, pixelSize, new SKPaint() { Color = i++ % 2 == 0 ? SKColors.Cyan.WithAlpha(80) : SKColors.Pink.WithAlpha(80) });
-
-        if (edge == Edge.Left)
-            surface.Canvas.DrawRect(dataRect.Left - pixelSize, dataRect.Top, pixelSize, dataRect.Height, new SKPaint() { Color = j++ % 2 == 0 ? SKColors.Cyan.WithAlpha(80) : SKColors.Pink.WithAlpha(80) });
-
         label.Draw(surface, px, paint);
     }
 
