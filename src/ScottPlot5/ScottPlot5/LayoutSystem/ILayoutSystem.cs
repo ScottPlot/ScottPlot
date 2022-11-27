@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.LayoutSystem;
+﻿using ScottPlot.Axis;
+
+namespace ScottPlot.LayoutSystem;
 
 public interface ILayoutSystem
 {
-    FinalLayout GetLayout(PixelRect figureRect, IEnumerable<Axis.IXAxis> xAxes, IEnumerable<Axis.IYAxis> yAxes);
+    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes, IEnumerable<IPanel> otherPanels);
 }

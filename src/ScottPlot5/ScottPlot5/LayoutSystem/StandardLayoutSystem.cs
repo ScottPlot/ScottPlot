@@ -5,10 +5,17 @@ namespace ScottPlot.LayoutSystem;
 
 public class StandardLayoutSystem : ILayoutSystem
 {
-    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes, IEnumerable<IPanel> otherPanels)
     {
         RegenerateTicksForAllAxes(figureRect, xAxes, yAxes);
-        return GetPanelPositionsAndPadding(figureRect, xAxes, yAxes);
+
+        var panels = xAxes
+            .Cast<IPanel>()
+            .Concat(yAxes)
+            .Concat(otherPanels)
+            .ToArray(); // It's probably worth reifying this given the number of times we iterate over it.
+
+        return GetPanelPositionsAndPadding(figureRect, panels);
     }
 
     private void RegenerateTicksForAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
@@ -23,10 +30,13 @@ public class StandardLayoutSystem : ILayoutSystem
         }
     }
 
-    private FinalLayout GetPanelPositionsAndPadding(PixelRect figureRect, IEnumerable<IPanel> xPanels, IEnumerable<IPanel> yPanels)
+    private FinalLayout GetPanelPositionsAndPadding(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         PixelPadding panelSizeByEdge = new();
-        List<PanelWithOffset> panels = new();
+        List<PanelWithOffset> offsets = new();
+
+        var xPanels = panels.Where(p => p.IsHorizontal());
+        var yPanels = panels.Where(p => p.IsVertical());
 
         float bottomOffset = 0;
         foreach (var panel in xPanels.Where(x => x.Edge == Edge.Bottom))
@@ -35,7 +45,7 @@ public class StandardLayoutSystem : ILayoutSystem
             
             panelSizeByEdge.Bottom += pxHeight;
             
-            panels.Add(new(panel, new(0, bottomOffset)));
+            offsets.Add(new(panel, new(0, bottomOffset)));
             bottomOffset += pxHeight;
         }
 
@@ -46,7 +56,7 @@ public class StandardLayoutSystem : ILayoutSystem
 
             panelSizeByEdge.Top += pxHeight;
 
-            panels.Add(new(panel, new(0, topOffset)));
+            offsets.Add(new(panel, new(0, topOffset)));
             topOffset -= pxHeight;
         }
 
@@ -57,7 +67,7 @@ public class StandardLayoutSystem : ILayoutSystem
 
             panelSizeByEdge.Left += pxWidth;
             
-            panels.Add(new(panel, new(leftOffset, 0)));
+            offsets.Add(new(panel, new(leftOffset, 0)));
             leftOffset -= pxWidth;
         }
 
@@ -68,7 +78,7 @@ public class StandardLayoutSystem : ILayoutSystem
             
             panelSizeByEdge.Right += pxWidth;
 
-            panels.Add(new(panel, new(rightOffset, 0)));
+            offsets.Add(new(panel, new(rightOffset, 0)));
             rightOffset += pxWidth;
         }
 
@@ -76,6 +86,6 @@ public class StandardLayoutSystem : ILayoutSystem
         panelSizeByEdge.Right += 20;
         panelSizeByEdge.Top += 20;
 
-        return new(figureRect.Contract(panelSizeByEdge), panels);
+        return new(figureRect.Contract(panelSizeByEdge), offsets);
     }
 }

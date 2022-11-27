@@ -17,6 +17,6 @@ namespace ScottPlot.LayoutSystem
     public static class IPanelExtensions
     {
         public static bool IsHorizontal(this IPanel panel) => panel.Edge == Edge.Bottom || panel.Edge == Edge.Top;
-        public static bool IsVertical(this IPanel panel) => panel.Edge == Edge.Bottom || panel.Edge == Edge.Top;
+        public static bool IsVertical(this IPanel panel) => !panel.IsHorizontal();
     }
 }

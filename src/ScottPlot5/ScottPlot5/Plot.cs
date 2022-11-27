@@ -11,6 +11,9 @@ public class Plot
 {
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
+
+    public readonly List<IPanel> Panels = new();
+
     public readonly List<IGrid> Grids = new();
     public readonly List<IPlottable> Plottables = new();
 
