@@ -4,7 +4,7 @@ namespace ScottPlot;
 
 public class Label
 {
-    public string? Text { get; set; } = string.Empty;
+    public string Text { get; set; } = string.Empty;
     public Style.Font Font { get; set; } = new()
     {
         Family = "Consolas",

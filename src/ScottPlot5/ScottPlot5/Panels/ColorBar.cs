@@ -17,6 +17,7 @@ namespace ScottPlot.Panels
 
         public Edge Edge { get; set; }
         public float Width { get; set; } = 50;
+        public float Margin { get; set; } = 15;
 
         public ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
         {
@@ -25,10 +26,12 @@ namespace ScottPlot.Panels
         }
 
         // Unfortunately the size of the axis depends on the size of the plotting window, so we just have to guess here. 2000 should be larger than most
-        public float Measure() => GetAxis(2000).Measure() + Width;
+        public float Measure() => Margin + GetAxis(2000).Measure() + Width;
 
         public void Render(SKSurface surface, PixelRect rect)
         {
+            using var _ = new SKAutoCanvasRestore(surface.Canvas);
+
             SKRect colorbarRect = Edge switch
             {
                 Edge.Left => new(rect.Left - Width, rect.Top, rect.Left, rect.Top + rect.Height),
@@ -38,29 +41,33 @@ namespace ScottPlot.Panels
                 _ => throw new ArgumentOutOfRangeException(nameof(Edge))
             };
 
-            SKPoint axisTranslation = Edge switch
-            {
-                Edge.Left => new(-Width, 0),
-                Edge.Right => new(Width, 0),
-                Edge.Bottom => new(0, Width),
-                Edge.Top => new(0, -Width),
-                _ => throw new ArgumentOutOfRangeException(nameof(Edge))
-            };
+            SKPoint marginTranslation = GetTranslation(Margin);
+            SKPoint axisTranslation = GetTranslation(Width);
 
             using var bmp = GetBitmap();
+
+            surface.Canvas.Translate(marginTranslation);
             surface.Canvas.DrawBitmap(bmp, colorbarRect);
 
             var colorbarLength = Edge.IsVertical() ? rect.Height : rect.Width;
             var axis = GetAxis(colorbarLength);
 
-            using var _ = new SKAutoCanvasRestore(surface.Canvas);
 
             surface.Canvas.Translate(axisTranslation);
             axis.Render(surface, rect);
 
         }
 
-        public SKBitmap GetBitmap()
+        private SKPoint GetTranslation(float magnitude) => Edge switch
+        {
+            Edge.Left => new(-magnitude, 0),
+            Edge.Right => new(magnitude, 0),
+            Edge.Bottom => new(0, magnitude),
+            Edge.Top => new(0, -magnitude),
+            _ => throw new ArgumentOutOfRangeException(nameof(Edge))
+        };
+
+        private SKBitmap GetBitmap()
         {
             uint[] argbs = Enumerable.Range(0, 256).Select(i => Source.Colormap.GetColor((Edge.IsVertical() ? 255 - i : i) / 255f).ARGB).ToArray();
 
@@ -70,7 +77,7 @@ namespace ScottPlot.Panels
             return SKBitmapHelpers.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
         }
 
-        public IAxis GetAxis(float length)
+        private IAxis GetAxis(float length)
         {
             IAxis axis = Edge switch
             {
@@ -81,7 +88,7 @@ namespace ScottPlot.Panels
                 _ => throw new ArgumentOutOfRangeException(nameof(Edge))
             };
 
-            axis.Label.Text = null;
+            axis.Label.Text = "";
 
             var range = Source.GetRange();
             axis.Min = range.Min;
