@@ -14,7 +14,7 @@ namespace ScottPlot.Ticks
     public class TickCollection
     {
         // This class creates pretty tick labels (with offset and exponent) uses graph settings
-        // to inspect the tick font and ensure tick labels will not overlap. 
+        // to inspect the tick font and ensure tick labels will not overlap.
         // It also respects manually defined tick spacing settings set via plt.Grid().
 
         // TODO: store these in a class
@@ -369,7 +369,18 @@ namespace ScottPlot.Ticks
                 tickCount = (int)(range / tickSpacings.Last());
             }
 
-            return tickSpacings[tickSpacings.Count - 3];
+            int startIndex = 3;
+
+            double maxSpacing = range / 2.0;
+            double idealSpacing = tickSpacings[tickSpacings.Count - startIndex];
+
+            while (idealSpacing > maxSpacing && startIndex >= 1)
+            {
+                idealSpacing = tickSpacings[tickSpacings.Count - startIndex];
+                startIndex--;
+            }
+
+            return idealSpacing;
         }
 
         private string FormatLocal(double value, CultureInfo culture)
