@@ -11,12 +11,12 @@ public static class AxisRendering
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
-    public static void DrawFrame(SKSurface surface, PixelRect dataRect, Edge edge, Color color, float offset)
+    public static void DrawFrame(SKSurface surface, PixelRect dataRect, Edge edge, Color color)
     {
         float x1 = edge switch
         {
-            Edge.Left => dataRect.Left - offset,
-            Edge.Right => dataRect.Right + offset,
+            Edge.Left => dataRect.Left,
+            Edge.Right => dataRect.Right,
             Edge.Top => dataRect.Left,
             Edge.Bottom => dataRect.Left,
             _ => throw new InvalidEnumArgumentException(),
@@ -24,8 +24,8 @@ public static class AxisRendering
 
         float x2 = edge switch
         {
-            Edge.Left => dataRect.Left - offset,
-            Edge.Right => dataRect.Right + offset,
+            Edge.Left => dataRect.Left,
+            Edge.Right => dataRect.Right,
             Edge.Top => dataRect.Right,
             Edge.Bottom => dataRect.Right,
             _ => throw new InvalidEnumArgumentException(),
@@ -35,8 +35,8 @@ public static class AxisRendering
         {
             Edge.Left => dataRect.Top,
             Edge.Right => dataRect.Top,
-            Edge.Top => dataRect.Top - offset,
-            Edge.Bottom => dataRect.Bottom + offset,
+            Edge.Top => dataRect.Top,
+            Edge.Bottom => dataRect.Bottom,
             _ => throw new InvalidEnumArgumentException(),
         };
 
@@ -44,8 +44,8 @@ public static class AxisRendering
         {
             Edge.Left => dataRect.Bottom,
             Edge.Right => dataRect.Bottom,
-            Edge.Top => dataRect.Top - offset,
-            Edge.Bottom => dataRect.Bottom + offset,
+            Edge.Top => dataRect.Top,
+            Edge.Bottom => dataRect.Bottom,
             _ => throw new InvalidEnumArgumentException(),
         };
 
@@ -58,27 +58,27 @@ public static class AxisRendering
         surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
     }
 
-    public static void DrawLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float offset, float pixelSize)
+    public static void DrawLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float pixelSize)
     {
         using var paint = label.MakePaint();
 
         Pixel px = edge switch
         {
             Edge.Left => new(
-                x: dataRect.Left - offset - pixelSize,
+                x: dataRect.Left - pixelSize + 5,
                 y: dataRect.VerticalCenter),
 
             Edge.Right => new(
-                x: dataRect.Right + offset + pixelSize - paint.FontSpacing,
+                x: dataRect.Right + pixelSize - paint.FontSpacing - 5,
                 y: dataRect.VerticalCenter),
 
             Edge.Bottom => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Bottom + offset + pixelSize - paint.FontSpacing - 5),
+                y: dataRect.Bottom + pixelSize - paint.FontSpacing - 5),
 
             Edge.Top => new(
                 x: dataRect.HorizontalCenter,
-                y: dataRect.Top - paint.FontSpacing - 16 - offset - pixelSize), // tick label size
+                y: dataRect.Top - pixelSize),
 
             _ => throw new InvalidEnumArgumentException()
         };
@@ -86,7 +86,7 @@ public static class AxisRendering
         label.Draw(surface, px, paint);
     }
 
-    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -104,7 +104,7 @@ public static class AxisRendering
         foreach (Tick tick in ticks)
         {
             float xPx = axis.GetPixel(tick.Position, dataRect);
-            float y = axis.Edge == Edge.Bottom ? dataRect.Bottom + offset : dataRect.Top - offset;
+            float y = axis.Edge == Edge.Bottom ? dataRect.Bottom : dataRect.Top;
             float yEdge = axis.Edge == Edge.Bottom ? y + 3 : y - 3;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
@@ -115,7 +115,7 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -131,7 +131,7 @@ public static class AxisRendering
 
         foreach (Tick tick in ticks)
         {
-            float x = axis.Edge == Edge.Left ? dataRect.Left - offset : dataRect.Right + offset;
+            float x = axis.Edge == Edge.Left ? dataRect.Left : dataRect.Right;
             float y = axis.GetPixel(tick.Position, dataRect);
 
             float majorTickLength = 5;
@@ -145,12 +145,12 @@ public static class AxisRendering
         }
     }
 
-    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect dataRect, Color color, float offset, IEnumerable<Tick> ticks, IAxis axis)
+    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge == Edge.Left || axis.Edge == Edge.Right)
-            DrawTicksVerticalAxis(surface, font, dataRect, color, offset, ticks, axis);
+            DrawTicksVerticalAxis(surface, font, dataRect, color, ticks, axis);
         else if (axis.Edge == Edge.Bottom || axis.Edge == Edge.Top)
-            DrawTicksHorizontalAxis(surface, font, dataRect, color, offset, ticks, axis);
+            DrawTicksHorizontalAxis(surface, font, dataRect, color, ticks, axis);
         else
             throw new InvalidEnumArgumentException();
     }

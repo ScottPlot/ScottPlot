@@ -11,6 +11,9 @@ public class Plot
 {
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
+
+    public readonly List<IPanel> Panels = new();
+
     public readonly List<IGrid> Grids = new();
     public readonly List<IPlottable> Plottables = new();
 
@@ -66,11 +69,11 @@ public class Plot
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
         // TODO: move set limits inside XAxis and YAxis
-        XAxis.Left = left;
-        XAxis.Right = right;
+        XAxis.Min = left;
+        XAxis.Max = right;
 
-        YAxis.Bottom = bottom;
-        YAxis.Top = top;
+        YAxis.Min = bottom;
+        YAxis.Max = top;
     }
 
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
@@ -87,14 +90,14 @@ public class Plot
 
     public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(XAxis.Left, XAxis.Right, YAxis.Bottom, YAxis.Top);
+        return new AxisLimits(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
     }
 
     public MultiAxisLimits GetMultiAxisLimits()
     {
         MultiAxisLimits limits = new();
-        XAxes.ForEach(xAxis => limits.RememberLimits(xAxis, xAxis.Left, xAxis.Right));
-        YAxes.ForEach(yAxis => limits.RememberLimits(yAxis, yAxis.Bottom, yAxis.Top));
+        XAxes.ForEach(xAxis => limits.RememberLimits(xAxis, xAxis.Min, xAxis.Max));
+        YAxes.ForEach(yAxis => limits.RememberLimits(yAxis, yAxis.Min, yAxis.Max));
         return limits;
     }
 
