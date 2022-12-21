@@ -128,4 +128,42 @@ public struct Color
 
         return (h, s, l);
     }
+
+    public static Color FromHSL(float hue, float saturation, float luminosity)
+    {
+        // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
+
+        if (luminosity == 0)
+        {
+            return new Color(0, 0, 0);
+        }
+
+        if (saturation == 0)
+        {
+            return new Color(luminosity, luminosity, luminosity);
+        }
+        float temp2 = luminosity <= 0.5f ? luminosity * (1.0f + saturation) : luminosity + saturation - luminosity * saturation;
+        float temp1 = 2.0f * luminosity - temp2;
+
+        var t3 = new[] { hue + 1.0f / 3.0f, hue, hue - 1.0f / 3.0f };
+        var clr = new float[] { 0, 0, 0 };
+        for (var i = 0; i < 3; i++)
+        {
+            if (t3[i] < 0)
+                t3[i] += 1.0f;
+            if (t3[i] > 1)
+                t3[i] -= 1.0f;
+            if (6.0 * t3[i] < 1.0)
+                clr[i] = temp1 + (temp2 - temp1) * t3[i] * 6.0f;
+            else if (2.0 * t3[i] < 1.0)
+                clr[i] = temp2;
+            else if (3.0 * t3[i] < 2.0)
+                clr[i] = temp1 + (temp2 - temp1) * (2.0f / 3.0f - t3[i]) * 6.0f;
+            else
+                clr[i] = temp1;
+        }
+
+        return new Color(clr[0], clr[1], clr[2]);
+    }
+
 }
