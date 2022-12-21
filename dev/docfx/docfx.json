@@ -5,18 +5,19 @@
                 {
                     "files": [
                         "ScottPlot/ScottPlot.csproj",
-                        "controls/ScottPlot.WinForms/ScottPlot.WinForms.csproj",
-                        "controls/ScottPlot.WPF/ScottPlot.WPF.csproj",
-                        "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.csproj"
+                        "ScottPlot.WinForms/ScottPlot.WinForms.csproj",
+                        "ScottPlot.WPF/ScottPlot.WPF.csproj",
+                        "ScottPlot.Avalonia/ScottPlot.Avalonia.csproj",
+                        "ScottPlot.Eto/ScottPlot.Eto.csproj"
                     ],
                     "exclude": [
                         "**/bin/**",
                         "**/obj/**"
                     ],
-                    "src": "../../src/"
+                    "src": "../../src/ScottPlot4"
                 }
             ],
-            "dest": "api",
+            "dest": "_api",
             "disableGitFeatures": true,
             "disableDefaultFilter": false,
             "_disableAffix": true
@@ -26,7 +27,7 @@
         "content": [
             {
                 "files": [
-                    "api/**.yml",
+                    "_api/**.yml",
                     "api/index.md",
                     "toc.yml",
                     "index.md"
