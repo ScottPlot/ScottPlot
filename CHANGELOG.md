@@ -5,6 +5,7 @@ _not yet published on NuGet..._
 * Pie Chart: Improved display when a single slice covers the entire pie (#2248, #2251) _Thanks @bclehmann_
 * Plot: Added `AddFill()` arguments for `LineWidth` and `LineColor` (#2258) _Thanks @Fruchtzwerg94_
 * Plot: Improved support for filled polygons with fewer than 3 points (#2258) _Thanks @Fruchtzwerg94_
+* A new `IDraggableSpan` interface was added to trigger events when the edges of spans are dragged (#2268) _Thanks @StendProg_
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
