@@ -80,4 +80,52 @@ public struct Color
     {
         return new SkiaSharp.SKColor(ARGB);
     }
+
+    public (float h, float s, float l) ToHSL()
+    {
+        // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
+
+        float v = Math.Max(Red, Green);
+        v = Math.Max(v, Blue);
+
+        float m = Math.Min(Red, Green);
+        m = Math.Min(m, Blue);
+
+        float h, s, l;
+        l = (m + v) / 2.0f;
+        if (l <= 0.0)
+        {
+            return (0, 0, 0);
+        }
+
+        float vm = v - m;
+        s = vm;
+        if (s <= 0.0)
+        {
+            return (0, 0, l);
+        }
+
+        s /= l <= 0.5f ? v + m : 2.0f - v - m;
+
+        float r2 = (v - Red) / vm;
+        float g2 = (v - Green) / vm;
+        float b2 = (v - Blue) / vm;
+
+        if (Red == v)
+        {
+            h = Green == m ? 5.0f + b2 : 1.0f - g2;
+        }
+        else if (Green == v)
+        {
+            h = Blue == m ? 1.0f + r2 : 3.0f - b2;
+        }
+        else
+        {
+            h = Red == m ? 3.0f + g2 : 5.0f - r2;
+        }
+
+        h /= 6.0f;
+
+        return (h, s, l);
+    }
 }
