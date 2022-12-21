@@ -39,7 +39,7 @@ public class Label
         surface.Canvas.Save();
         surface.Canvas.Translate(point.X, point.Y);
         surface.Canvas.RotateDegrees(Rotation);
-        surface.Canvas.DrawText(Text, 0, font.Size, font, paint);
+        surface.Canvas.DrawText(Text ?? "", 0, font.Size, font, paint);
         surface.Canvas.Restore();
     }
 }

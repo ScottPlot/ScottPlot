@@ -1,4 +1,5 @@
-﻿using ScottPlot.Plottables;
+﻿using ScottPlot.Panels;
+using ScottPlot.Plottables;
 using ScottPlot.Style;
 
 namespace ScottPlot;
@@ -121,5 +122,13 @@ public class PlottableFactory
         series.Add(serie);
 
         return Bar(series);
+    }
+
+    public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
+    {
+        ColorBar colorBar = new(source, edge);
+
+        Plot.Panels.Add(colorBar);
+        return colorBar;
     }
 }

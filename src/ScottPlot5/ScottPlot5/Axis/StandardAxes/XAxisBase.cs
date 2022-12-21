@@ -5,13 +5,13 @@ namespace ScottPlot.Axis.StandardAxes;
 
 public abstract class XAxisBase : IAxis
 {
-    public double Left
+    public double Min
     {
         get => Range.Min;
         set => Range.Min = value;
     }
 
-    public double Right
+    public double Max
     {
         get => Range.Max;
         set => Range.Max = value;
@@ -22,12 +22,6 @@ public abstract class XAxisBase : IAxis
     public virtual CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
 
     public ITickGenerator TickGenerator { get; set; } = null!;
-
-    public float Offset { get; set; } = 0;
-
-    public float PixelSize { get; private set; } = 50;
-
-    public float PixelHeight => PixelSize;
 
     public Label Label { get; private set; } = new()
     {
@@ -42,12 +36,14 @@ public abstract class XAxisBase : IAxis
     public Font TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
 
-    public void Measure()
+    public float Measure()
     {
-        float labelHeight = Label.Font.Size + 15;
+        using SKPaint paint = new(Label.Font.GetFont());
+
+        float labelHeight = Drawing.MeasureString(Label.Text, paint).Height;
         float largestTickHeight = MeasureTicks();
-        float extraPadding = Edge == Edge.Bottom ? 18 : 0;
-        PixelSize = labelHeight + largestTickHeight + extraPadding;
+
+        return labelHeight + largestTickHeight + 15;
     }
 
     private float MeasureTicks()
@@ -67,7 +63,7 @@ public abstract class XAxisBase : IAxis
     public float GetPixel(double position, PixelRect dataArea)
     {
         double pxPerUnit = dataArea.Width / Width;
-        double unitsFromLeftEdge = position - Left;
+        double unitsFromLeftEdge = position - Min;
         float pxFromEdge = (float)(unitsFromLeftEdge * pxPerUnit);
         return dataArea.Left + pxFromEdge;
     }
@@ -77,7 +73,7 @@ public abstract class XAxisBase : IAxis
         double pxPerUnit = dataArea.Width / Width;
         float pxFromLeftEdge = pixel - dataArea.Left;
         double unitsFromEdge = pxFromLeftEdge / pxPerUnit;
-        return Left + unitsFromEdge;
+        return Min + unitsFromEdge;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect)
@@ -86,9 +82,9 @@ public abstract class XAxisBase : IAxis
         var ticks = TickGenerator.GetVisibleTicks(Range);
         float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Offset, PixelSize);
-        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, Offset, ticks, this);
-        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color, Offset);
+        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Measure());
+        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
+        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.LayoutSystem;
+using SkiaSharp;
 
 namespace ScottPlot.Rendering;
 
@@ -12,20 +13,23 @@ public class StandardRenderer : IRenderer
         Common.AutoAxisAnyUnsetAxes(plot);
 
         PixelRect figureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
-        PixelRect dataRect = Common.AutoSizeDataArea(figureRect, plot);
-        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);
-        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
 
-        Common.RenderBackground(surface, dataRect, plot);
-        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);
-        Common.RenderPlottables(surface, dataRect, plot);
-        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: false);
-        Common.RenderAxes(surface, dataRect, plot);
-        Common.RenderZoomRectangle(surface, dataRect, plot);
+        FinalLayout layout = plot.Layout.GetLayout(figureRect, plot.XAxes, plot.YAxes, plot.Panels);
+        PixelRect area = layout.Area;
+
+        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, area.Width);
+        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, area.Height);
+
+        Common.RenderBackground(surface, area, plot);
+        Common.RenderGrids(surface, area, plot, beneathPlottables: true);
+        Common.RenderPlottables(surface, area, plot);
+        Common.RenderGrids(surface, area, plot, beneathPlottables: false);
+        Common.RenderPanels(surface, area, layout.Panels);
+        Common.RenderZoomRectangle(surface, area, plot);
         sw.Stop();
 
-        Common.RenderBenchmark(surface, dataRect, sw.Elapsed, plot);
+        Common.RenderBenchmark(surface, area, sw.Elapsed, plot);
 
-        return new RenderDetails(figureRect, dataRect, sw.Elapsed);
+        return new RenderDetails(figureRect, area, sw.Elapsed);
     }
 }
