@@ -166,4 +166,21 @@ public struct Color
         return new Color(clr[0], clr[1], clr[2]);
     }
 
+    public Color WithLightness(float lightness = .5f)
+    {
+        (float h, float s, float l) = ToHSL();
+        return FromHSL(h, s, lightness);
+    }
+
+    public Color Lighten(float fraction = .5f)
+    {
+        (float h, float s, float l) = ToHSL();
+        return FromHSL(h, s, l + (1 - l) * fraction);
+    }
+
+    public Color Darken(float fraction = .5f)
+    {
+        (float h, float s, float l) = ToHSL();
+        return FromHSL(h, s, l * fraction);
+    }
 }
