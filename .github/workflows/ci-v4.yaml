@@ -37,8 +37,8 @@ jobs:
             osName: Linux
           - os: windows-latest
             osName: Windows
-          - os: macos-latest
-            osName: MacOS
+          #- os: macos-latest
+            #osName: MacOS
     runs-on: ${{ matrix.os }}
     name: Test on ${{ matrix.osName }}
     steps:

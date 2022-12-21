@@ -343,7 +343,8 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
-        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
+        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null,
+            double lineWidth = 0, Color? lineColor = null)
         {
             var plottable = new Polygon(
                 xs: Tools.Pad(xs, cloneEdges: true),
@@ -351,6 +352,8 @@ namespace ScottPlot
             {
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
             };
             Add(plottable);
             return plottable;
@@ -359,16 +362,18 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between two Y curves that share the same X positions.
         /// </summary>
-        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null)
+        public Polygon AddFill(double[] xs, double[] ys1, double[] ys2, Color? color = null,
+            double lineWidth = 0, Color? lineColor = null)
         {
-            double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
-            double[] polyYs = ys1.Concat(ys2.Reverse()).ToArray();
+            double[] polyXs = new double[] { xs[0] }.Concat(xs.Concat(xs.Reverse())).ToArray();
+            double[] polyYs = new double[] { ys1[0] }.Concat(ys1.Concat(ys2.Reverse())).ToArray();
 
             var plottable = new Polygon(polyXs, polyYs)
             {
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
-                LineWidth = 0,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
             };
 
             Add(plottable);
@@ -378,7 +383,8 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area between Y values of two curves.
         /// </summary>
-        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)
+        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null,
+            double lineWidth = 0, Color? lineColor = null)
         {
             // combine xs and ys to make one big curve
             int pointCount = xs1.Length + xs2.Length;
@@ -400,6 +406,8 @@ namespace ScottPlot
             {
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
             };
             Add(plottable);
             return plottable;
@@ -408,7 +416,8 @@ namespace ScottPlot
         /// <summary>
         /// Create a polygon to fill the area above and below a Y curve
         /// </summary>
-        public Polygon AddFillError(double[] xs, double[] ys, double[] yError, Color? color = null)
+        public Polygon AddFillError(double[] xs, double[] ys, double[] yError, Color? color = null,
+            double lineWidth = 0, Color? lineColor = null)
         {
             double[] polyXs = xs.Concat(xs.Reverse()).ToArray();
 
@@ -421,7 +430,8 @@ namespace ScottPlot
             {
                 Fill = true,
                 FillColor = color ?? GetNextColor(.5),
-                LineWidth = 0,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
             };
 
             Add(plottable);
@@ -432,12 +442,23 @@ namespace ScottPlot
         /// Create a polygon to fill the area between Y values and a baseline
         /// that uses two different colors for area above and area below the baseline.
         /// </summary>
-        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
+        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null,
+            double lineWidth = 0, Color? lineColor = null)
         {
             var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
 
-            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
-            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
+            var polyAbove = new Polygon(xs2, ysAbove)
+            {
+                FillColor = colorAbove ?? Color.Green,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
+            };
+            var polyBelow = new Polygon(xs2, ysBelow)
+            {
+                FillColor = colorBelow ?? Color.Red,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black
+            };
             Add(polyAbove);
             Add(polyBelow);
 
