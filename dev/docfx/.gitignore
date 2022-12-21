@@ -2,3 +2,4 @@ obj
 api/*.yml
 api/.manifest
 _site
+_api/
