@@ -11,7 +11,7 @@ public class PastelWheel : HexPaletteBase, IPalette
 
     internal override string[] HexColors => new string[]
     {
-        "#f8c5c7", "#fadec3", "#fbf6c42",
+        "#f8c5c7", "#fadec3", "#fbf6c4",
         "#e1ecc8", "#d7e8cb", "#daebd7",
         "#d9eef3", "#cadbed", "#c7d2e6",
         "#d4d1e5", "#e8d3e6", "#f8c7de"
