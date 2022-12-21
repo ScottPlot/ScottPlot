@@ -43,8 +43,8 @@
       is associated with assembly issues that break .NET Framework projects on Windows.
       https://github.com/ScottPlot/ScottPlot/issues/1004
     -->
-    <PackageVersion Condition="!$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.2" />
-    <PackageVersion Condition="$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="4.6.1" />
+    <PackageVersion Condition="!$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.3" />
+    <PackageVersion Condition="$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.3" />
   </ItemGroup>
 
   <ItemGroup>
