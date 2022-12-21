@@ -17,6 +17,13 @@ public struct Color
         Alpha = alpha;
     }
 
+    public Color(float red, float green, float blue, float alpha = 1)
+    {
+        Red = (byte)(red * 255);
+        Green = (byte)(green * 255);
+        Blue = (byte)(blue * 255);
+    }
+
     public readonly Color WithRed(byte red) => new(red, Green, Blue, Alpha);
     public readonly Color WithGreen(byte green) => new(Red, green, Blue, Alpha);
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
