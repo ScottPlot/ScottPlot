@@ -470,11 +470,13 @@ namespace ScottPlot
         /// </summary>
         public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
         {
-            FunctionPlot plottable = new FunctionPlot(function)
+            Color color2 = color ?? settings.GetNextColor();
+            FunctionPlot plottable = new(function)
             {
-                Color = color ?? settings.GetNextColor(),
+                Color = color2,
                 LineWidth = lineWidth,
-                LineStyle = lineStyle
+                LineStyle = lineStyle,
+                FillColor = Color.FromArgb(50, color2),
             };
             Add(plottable);
             return plottable;

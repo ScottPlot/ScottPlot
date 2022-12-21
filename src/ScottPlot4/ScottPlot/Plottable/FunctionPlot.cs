@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Xml;
 
@@ -26,8 +27,10 @@ namespace ScottPlot.Plottable
         public double LineWidth { get; set; } = 1;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public string Label { get; set; }
-        public Color Color { get; set; } = Color.Black;
+        public Color Color { get => LineColor; set => LineColor = value; }
         public Color LineColor { get; set; } = Color.Black;
+        public FillType FillType { get; set; } = FillType.NoFill;
+        public Color FillColor { get; set; } = Color.FromArgb(50, Color.Black);
         public double XMin { get; set; } = double.NegativeInfinity;
         public double XMax { get; set; } = double.PositiveInfinity;
 
@@ -80,6 +83,11 @@ namespace ScottPlot.Plottable
             PointF[] points = GetPoints(dims);
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var penLine = GDI.Pen(LineColor, LineWidth, LineStyle, true);
+            if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
+            {
+                bool above = FillType == FillType.FillAbove;
+                GDI.FillToInfinity(dims, gfx, points.First().X, points.Last().X, points, above, FillColor, FillColor);
+            }
             gfx.DrawLines(penLine, points);
         }
 
