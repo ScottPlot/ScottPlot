@@ -10,7 +10,7 @@ using ScottPlot.Colormaps;
 
 namespace ScottPlot.Plottables
 {
-    public class Heatmap : IPlottable
+    public class Heatmap : IPlottable, IHasColorAxis
     {
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = Axis.Axes.Default;
@@ -123,33 +123,25 @@ namespace ScottPlot.Plottables
         /// </summary>
         private uint[] GetArgbValues()
         {
-            Range range = Range.GetRange(Intensities);
-
-            uint[] rgba = new uint[Intensities.Length];
+            Range range = GetRange();
+            uint[] argb = new uint[Intensities.Length];
             for (int y = 0; y < Height; y++)
             {
                 int rowOffset = FlipVertically ? (Height - 1 - y) * Width : y * Width;
                 for (int x = 0; x < Width; x++)
                 {
-                    rgba[rowOffset + x] = Colormap.GetColor(Intensities[y, x], range).ARGB;
+                    argb[rowOffset + x] = Colormap.GetColor(Intensities[y, x], range).ARGB;
                 }
             }
 
-            return rgba;
+            return argb;
         }
 
         public void Update()
         {
-            uint[] rgba = GetArgbValues();
-            GCHandle handle = GCHandle.Alloc(rgba, GCHandleType.Pinned);
-            SKImageInfo imageInfo = new(Width, Height);
+            uint[] argbs = GetArgbValues();
             Bitmap?.Dispose();
-            Bitmap = new SKBitmap(imageInfo);
-            Bitmap.InstallPixels(
-                info: imageInfo,
-                pixels: handle.AddrOfPinnedObject(),
-                rowBytes: imageInfo.RowBytes,
-                releaseProc: (IntPtr _, object _) => handle.Free());
+            Bitmap = SKBitmapHelpers.BitmapFromArgbs(argbs, Width, Height);
         }
 
         public AxisLimits GetAxisLimits()
@@ -157,6 +149,8 @@ namespace ScottPlot.Plottables
             return new(AlignedExtent);
         }
         public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
+
+        public Range GetRange() => Range.GetRange(Intensities);
 
         public void Render(SKSurface surface)
         {

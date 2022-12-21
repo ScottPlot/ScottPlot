@@ -5,12 +5,17 @@ namespace ScottPlot.LayoutSystem;
 
 public class StandardLayoutSystem : ILayoutSystem
 {
-    public PixelRect AutoSizeDataArea(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes, IEnumerable<IPanel> otherPanels)
     {
         RegenerateTicksForAllAxes(figureRect, xAxes, yAxes);
-        RemeasureAllAxes(figureRect, xAxes, yAxes);
-        PixelRect dataArea = GetTotalAxisPadding(figureRect, xAxes, yAxes);
-        return dataArea;
+
+        var panels = xAxes
+            .Cast<IPanel>()
+            .Concat(yAxes)
+            .Concat(otherPanels)
+            .ToArray(); // It's probably worth reifying this given the number of times we iterate over it.
+
+        return GetPanelPositionsAndPadding(figureRect, panels);
     }
 
     private void RegenerateTicksForAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
@@ -25,58 +30,64 @@ public class StandardLayoutSystem : ILayoutSystem
         }
     }
 
-    private void RemeasureAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
+    private FinalLayout GetPanelPositionsAndPadding(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
-        foreach (IXAxis xAxis in xAxes)
-        {
-            xAxis.Measure();
-        }
-        foreach (IYAxis yAxis in yAxes)
-        {
-            yAxis.Measure();
-        }
-    }
+        PixelPadding panelSizeByEdge = new();
+        List<PanelWithOffset> offsets = new();
 
-    private PixelRect GetTotalAxisPadding(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
-    {
-        PixelPadding axisSizeByEdge = new();
+        var xPanels = panels.Where(p => p.IsHorizontal());
+        var yPanels = panels.Where(p => p.IsVertical());
 
         float bottomOffset = 0;
-        foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Bottom))
+        foreach (var panel in xPanels.Where(x => x.Edge == Edge.Bottom))
         {
-            axisSizeByEdge.Bottom += xAxis.PixelHeight;
-            xAxis.Offset = bottomOffset;
-            bottomOffset += xAxis.PixelHeight;
+            var pxHeight = panel.Measure();
+
+            panelSizeByEdge.Bottom += pxHeight;
+
+            offsets.Add(new(panel, new(0, bottomOffset)));
+            bottomOffset += pxHeight;
         }
 
         float topOffset = 0;
-        foreach (IXAxis xAxis in xAxes.Where(x => x.Edge == Edge.Top))
+        foreach (var panel in xPanels.Where(x => x.Edge == Edge.Top))
         {
-            axisSizeByEdge.Top += xAxis.PixelHeight;
-            xAxis.Offset = topOffset;
-            topOffset += xAxis.PixelHeight;
+            var pxHeight = panel.Measure();
+
+            panelSizeByEdge.Top += pxHeight;
+
+            offsets.Add(new(panel, new(0, topOffset)));
+            topOffset -= pxHeight;
         }
 
         float leftOffset = 0;
-        foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Left))
+        foreach (var panel in yPanels.Where(x => x.Edge == Edge.Left))
         {
-            axisSizeByEdge.Left += yAxis.PixelWidth;
-            yAxis.Offset = leftOffset;
-            leftOffset += yAxis.PixelWidth;
+            var pxWidth = panel.Measure();
+
+            panelSizeByEdge.Left += pxWidth;
+
+            offsets.Add(new(panel, new(leftOffset, 0)));
+            leftOffset -= pxWidth;
         }
 
         float rightOffset = 0;
-        foreach (IYAxis yAxis in yAxes.Where(x => x.Edge == Edge.Right))
+        foreach (var panel in yPanels.Where(x => x.Edge == Edge.Right))
         {
-            axisSizeByEdge.Right += yAxis.PixelWidth;
-            yAxis.Offset = rightOffset;
-            rightOffset += yAxis.PixelWidth;
+            var pxWidth = panel.Measure();
+
+            panelSizeByEdge.Right += pxWidth;
+
+            offsets.Add(new(panel, new(rightOffset, 0)));
+            rightOffset += pxWidth;
         }
 
         // TODO: manual reduction remove this
-        axisSizeByEdge.Right += 20;
-        axisSizeByEdge.Top += 20;
+        panelSizeByEdge.Left += 20;
+        panelSizeByEdge.Bottom += 20;
+        panelSizeByEdge.Right += 20;
+        panelSizeByEdge.Top += 20;
 
-        return figureRect.Contract(axisSizeByEdge);
+        return new(figureRect.Contract(panelSizeByEdge), offsets);
     }
 }

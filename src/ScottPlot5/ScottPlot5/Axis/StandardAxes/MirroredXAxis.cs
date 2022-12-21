@@ -5,7 +5,7 @@ public sealed class MirroredXAxis : XAxisBase, IXAxis
     private readonly Edge _edge;
     private readonly IXAxis _axis;
     public override Edge Edge => _edge;
-    public override CoordinateRange Range => _axis.Range;
+    public override CoordinateRange Range => new(_axis.Min, _axis.Max);
 
     public MirroredXAxis(IXAxis axis, Edge? edge)
     {
