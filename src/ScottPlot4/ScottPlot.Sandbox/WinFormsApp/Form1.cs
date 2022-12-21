@@ -11,8 +11,9 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            double[,] data = DataGen.Random2D(new Random(0), rows: 10, columns: 1 << 15);
-            formsPlot1.Plot.AddHeatmap(data, lockScales: false);
+            var func1 = new Func<double, double?>((x) => 5 * Math.Sin(x) * Math.Sin(x / 2));
+
+            ScottPlot.Plottable.FunctionPlot f = formsPlot1.Plot.AddFunction(func1);
 
             formsPlot1.Refresh();
         }

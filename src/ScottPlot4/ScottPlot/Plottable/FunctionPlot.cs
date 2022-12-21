@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Xml;
 
 namespace ScottPlot.Plottable
 {
@@ -37,10 +40,9 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get; private set; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        private PointF[] GetPoints(PlotDimensions dims)
         {
-            List<double> xList = new List<double>();
-            List<double> yList = new List<double>();
+            List<PointF> points = new();
 
             double xStart = XMin.IsFinite() ? XMin : dims.XMin;
             double xEnd = XMax.IsFinite() ? XMax : dims.XMax;
@@ -65,23 +67,20 @@ namespace ScottPlot.Plottable
                     continue;
                 }
 
-                xList.Add(x);
-                yList.Add(y.Value);
+                float xPx = dims.GetPixelX(x);
+                float yPx = dims.GetPixelY(y.Value);
+                points.Add(new PointF(xPx, yPx));
             }
 
-            // create a temporary scatter plot and use it for rendering
-            double[] xs = xList.ToArray();
-            double[] ys = yList.ToArray();
-            var scatter = new ScatterPlot(xs, ys)
-            {
-                Color = Color,
-                LineWidth = LineWidth,
-                MarkerSize = 0,
-                Label = Label,
-                MarkerShape = MarkerShape.none,
-                LineStyle = LineStyle
-            };
-            scatter.Render(dims, bmp, lowQuality);
+            return points.ToArray();
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            PointF[] points = GetPoints(dims);
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using var penLine = GDI.Pen(LineColor, LineWidth, LineStyle, true);
+            gfx.DrawLines(penLine, points);
         }
 
         public void ValidateData(bool deepValidation = false)
