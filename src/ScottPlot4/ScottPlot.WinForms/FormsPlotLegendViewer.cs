@@ -28,6 +28,7 @@ namespace ScottPlot
             RefreshLegendImage();
             ResizeWindowToFitLegendImage();
         }
+
         public void RefreshLegendImage()
         {
             FormsPlot.Refresh();
@@ -35,7 +36,10 @@ namespace ScottPlot
 
             System.Drawing.Image originalImage = PictureBoxLegend.Image;
 
+            var originalLegendOrientation = Legend.Orientation;
+            Legend.Orientation = Orientation.Vertical;
             PictureBoxLegend.Image = Legend.GetBitmap(false);
+            Legend.Orientation = originalLegendOrientation;
 
             if (originalImage is not null)
                 originalImage.Dispose();
