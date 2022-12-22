@@ -180,7 +180,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set boundaries beyond which this axis cannot be panned or zoomed
         /// </summary>
-        public void SetBoundsInner(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
+        public void SetBoundsInner(double lower = double.PositiveInfinity, double upper = double.NegativeInfinity)
         {
             InnerBoundaryMin = lower;
             InnerBoundaryMax = upper;

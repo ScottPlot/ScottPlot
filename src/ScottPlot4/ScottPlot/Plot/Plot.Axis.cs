@@ -527,8 +527,8 @@ namespace ScottPlot
         /// Set minimum innter limits which will always be visible on the plot.
         /// </summary>
         public void SetInnerViewLimits(
-            double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            double xMin = double.PositiveInfinity, double xMax = double.NegativeInfinity,
+            double yMin = double.PositiveInfinity, double yMax = double.NegativeInfinity,
             int xAxisIndex = 0, int yAxisIndex = 0)
         {
             settings.GetXAxis(xAxisIndex).Dims.SetBoundsInner(xMin, xMax);
