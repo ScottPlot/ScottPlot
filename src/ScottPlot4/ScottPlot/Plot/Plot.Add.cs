@@ -1202,7 +1202,7 @@ namespace ScottPlot
 
                 // TODO: FIX THIS!!!
                 MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
+                MaxRenderIndex = Math.Max(0, ys.Length - 1),
             };
             Add(signal);
             return signal;

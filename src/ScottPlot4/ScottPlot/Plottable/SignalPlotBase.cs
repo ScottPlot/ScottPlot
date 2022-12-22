@@ -279,6 +279,9 @@ namespace ScottPlot.Plottable
 
         public virtual AxisLimits GetAxisLimits()
         {
+            if (Ys.Length == 0)
+                return AxisLimits.NoLimits;
+
             double xMin = _SamplePeriod * MinRenderIndex;
             double xMax = _SamplePeriod * MaxRenderIndex;
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
@@ -740,6 +743,9 @@ namespace ScottPlot.Plottable
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (Ys.Length == 0)
+                return;
+
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color);
             using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
@@ -790,6 +796,8 @@ namespace ScottPlot.Plottable
             // check Y values
             if (Ys is null)
                 throw new InvalidOperationException($"{nameof(Ys)} cannot be null");
+            if (Ys.Length == 0)
+                return; // no additional validation required since nothing will be rendered
             if (deep)
                 Validate.AssertAllReal(nameof(Ys), Ys);
 
