@@ -147,6 +147,8 @@ namespace ScottPlot.Renderable
             Min = double.NaN;
             Max = double.NaN;
             HasBeenSet = false;
+            SetBoundsOuter();
+            SetBoundsInner();
         }
 
         /// <summary>
