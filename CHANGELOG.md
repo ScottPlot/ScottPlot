@@ -12,6 +12,7 @@ _not yet published on NuGet..._
 * Function Plot: Added support for filling above and below lines (#2239, #2238) _Thanks @SGanard_
 * Signal Plot: Improved error messages for when `Update()` fails to replace data (#2263)
 * Plot: `Clear()` now resets inner and outer view limits (#2264) _Thanks @vietanhbui_
+* FormsPlot: Right-click help menu is now `TopMost` (#2282) _Thanks @dusko23_
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_

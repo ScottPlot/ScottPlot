@@ -15,6 +15,9 @@ namespace ScottPlot
         public FormHelp()
         {
             InitializeComponent();
+            Text = $"ScottPlot {Plot.Version} Help";
+            StartPosition = FormStartPosition.CenterScreen;
+            TopMost = true;
             lblVersion.Text = $"ScottPlot.WinForms {Plot.Version}";
             lblMessage.Text = Control.ControlBackEnd.GetHelpMessage();
         }
