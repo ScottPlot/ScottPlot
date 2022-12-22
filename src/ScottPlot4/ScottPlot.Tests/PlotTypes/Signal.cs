@@ -246,5 +246,16 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Signal_Empty()
+        {
+            double[] values = Array.Empty<double>();
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(values);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

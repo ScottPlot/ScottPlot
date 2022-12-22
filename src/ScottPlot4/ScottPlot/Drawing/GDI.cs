@@ -414,5 +414,33 @@ namespace ScottPlot.Drawing
             path.AddPolygon(points);
             gfx.SetClip(path, CombineMode.Intersect);
         }
+
+        /// <summary>
+        /// Shade the region abvove or below the curve (to infinity) by drawing a polygon to the edge of the visible plot area.
+        /// </summary>
+        public static void FillToInfinity(PlotDimensions dims, Graphics gfx, float pxLeft, float pxRight, PointF[] points, bool fillAbove, Color color1, Color color2)
+        {
+            if ((int)(pxRight - pxLeft) == 0 || (int)dims.Height == 0)
+                return;
+            float minVal = 0;
+            float maxVal = (dims.DataHeight * (fillAbove ? -1 : 1)) + dims.DataOffsetY;
+
+            PointF first = new(pxLeft, maxVal);
+            PointF last = new(pxRight, maxVal);
+
+            points = new PointF[] { first }
+                            .Concat(points)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
+
+            Rectangle gradientRectangle = new(
+                    x: (int)first.X,
+                    y: (int)minVal - (fillAbove ? 2 : 0),
+                    width: (int)(last.X - first.X),
+                    height: (int)dims.Height);
+
+            using LinearGradientBrush brush = new(gradientRectangle, color1, color2, LinearGradientMode.Vertical);
+            gfx.FillPolygon(brush, points);
+        }
     }
 }

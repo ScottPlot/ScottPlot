@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing.Colormaps;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,6 @@ namespace ScottPlot.Plottable
     public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IHighlightable, IHasColor, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
-        protected bool MaxRenderIndexLowerYSPromise = false;
-        protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
-        protected bool FillColor1MustBeSetPromise = false;
-        protected bool FillColor2MustBeSetPromise = false;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
@@ -124,9 +121,6 @@ namespace ScottPlot.Plottable
             {
                 if (value == null)
                     throw new Exception("Y data cannot be null");
-
-                MaxRenderIndexLowerYSPromise = MaxRenderIndex > value.Length - 1;
-
                 _Ys = value;
                 Strategy.SourceArray = _Ys;
             }
@@ -166,9 +160,6 @@ namespace ScottPlot.Plottable
             {
                 if (value < 0)
                     throw new ArgumentException("MinRenderIndex must be positive");
-
-                MaxRenderIndexHigherMinRenderIndexPromise = value > MaxRenderIndex;
-
                 _MinRenderIndex = value;
             }
         }
@@ -180,11 +171,6 @@ namespace ScottPlot.Plottable
             {
                 if (value < 0)
                     throw new ArgumentException("MaxRenderIndex must be positive");
-
-                MaxRenderIndexHigherMinRenderIndexPromise = MinRenderIndex > value;
-
-                MaxRenderIndexLowerYSPromise = value > _Ys.Length - 1;
-
                 _maxRenderIndex = value;
             }
         }
@@ -215,10 +201,6 @@ namespace ScottPlot.Plottable
             get => _FillType;
             set
             {
-                FillColor1MustBeSetPromise = (_FillColor1 == null && value != FillType.NoFill);
-
-                FillColor2MustBeSetPromise = (_FillColor2 == null && value == FillType.FillAboveAndBelow);
-
                 _FillType = value;
             }
         }
@@ -229,8 +211,6 @@ namespace ScottPlot.Plottable
             get => _FillColor1;
             set
             {
-                FillColor1MustBeSetPromise = (value == null && FillType != FillType.NoFill);
-
                 _FillColor1 = value;
             }
         }
@@ -241,8 +221,6 @@ namespace ScottPlot.Plottable
             get => _FillColor2;
             set
             {
-                FillColor2MustBeSetPromise = (value == null && FillType == FillType.FillAboveAndBelow);
-
                 _FillColor2 = value;
             }
         }
@@ -284,24 +262,43 @@ namespace ScottPlot.Plottable
         /// <param name="lastIndex">last index to replace</param>
         /// <param name="newData">source for new data</param>
         /// <param name="fromData">source data offset</param>
-        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
+        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            if (lastIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(lastIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
+        }
 
         /// <summary>
         /// Replace all Y values from the given index through the end of the array
         /// </summary>
         /// <param name="firstIndex">first index to begin replacing</param>
         /// <param name="newData">new values</param>
-        public void Update(int firstIndex, T[] newData) => Update(firstIndex, firstIndex + newData.Length, newData);
+        public void Update(int firstIndex, T[] newData)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(firstIndex, firstIndex + newData.Length, newData);
+        }
 
         /// <summary>
         /// Replace all Y values with new ones
         /// </summary>
         /// <param name="newData">new Y values</param>
-        public void Update(T[] newData) => Update(0, newData.Length, newData);
+        public void Update(T[] newData)
+        {
+            if (newData.Length > Ys.Length)
+                throw new InvalidOperationException($"{nameof(newData)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(0, newData.Length, newData);
+        }
 
         public virtual AxisLimits GetAxisLimits()
         {
+            if (Ys.Length == 0)
+                return AxisLimits.NoLimits;
+
             double xMin = _SamplePeriod * MinRenderIndex;
             double xMax = _SamplePeriod * MaxRenderIndex;
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
@@ -763,6 +760,9 @@ namespace ScottPlot.Plottable
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (Ys.Length == 0)
+                return;
+
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
             using var brush = GDI.Brush(Color);
             using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
@@ -813,6 +813,8 @@ namespace ScottPlot.Plottable
             // check Y values
             if (Ys is null)
                 throw new InvalidOperationException($"{nameof(Ys)} cannot be null");
+            if (Ys.Length == 0)
+                return; // no additional validation required since nothing will be rendered
             if (deep)
                 Validate.AssertAllReal(nameof(Ys), Ys);
 
@@ -821,15 +823,15 @@ namespace ScottPlot.Plottable
                 throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
             if ((MaxRenderIndex > Ys.Length - 1) || MaxRenderIndex < 0)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
-            if (MaxRenderIndexLowerYSPromise)
+            if (MaxRenderIndex > Ys.Length - 1)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
-            if (MaxRenderIndexHigherMinRenderIndexPromise)
+            if (MinRenderIndex > MaxRenderIndex)
                 throw new IndexOutOfRangeException("minRenderIndex must be lower maxRenderIndex");
 
             // check misc styling options
-            if (FillColor1MustBeSetPromise)
+            if (_FillColor1 is null && _FillType != FillType.NoFill)
                 throw new InvalidOperationException($"A Color must be assigned to FillColor1 to use fill type '{_FillType}'");
-            if (FillColor2MustBeSetPromise)
+            if (_FillColor1 is null && _FillType == FillType.FillAboveAndBelow)
                 throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{_FillType}'");
         }
 

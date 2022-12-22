@@ -1,8 +1,12 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Xml;
 
 namespace ScottPlot.Plottable
 {
@@ -23,8 +27,10 @@ namespace ScottPlot.Plottable
         public double LineWidth { get; set; } = 1;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public string Label { get; set; }
-        public Color Color { get; set; } = Color.Black;
+        public Color Color { get => LineColor; set => LineColor = value; }
         public Color LineColor { get; set; } = Color.Black;
+        public FillType FillType { get; set; } = FillType.NoFill;
+        public Color FillColor { get; set; } = Color.FromArgb(50, Color.Black);
         public double XMin { get; set; } = double.NegativeInfinity;
         public double XMax { get; set; } = double.PositiveInfinity;
 
@@ -37,10 +43,9 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get; private set; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        private PointF[] GetPoints(PlotDimensions dims)
         {
-            List<double> xList = new List<double>();
-            List<double> yList = new List<double>();
+            List<PointF> points = new();
 
             double xStart = XMin.IsFinite() ? XMin : dims.XMin;
             double xEnd = XMax.IsFinite() ? XMax : dims.XMax;
@@ -65,23 +70,25 @@ namespace ScottPlot.Plottable
                     continue;
                 }
 
-                xList.Add(x);
-                yList.Add(y.Value);
+                float xPx = dims.GetPixelX(x);
+                float yPx = dims.GetPixelY(y.Value);
+                points.Add(new PointF(xPx, yPx));
             }
 
-            // create a temporary scatter plot and use it for rendering
-            double[] xs = xList.ToArray();
-            double[] ys = yList.ToArray();
-            var scatter = new ScatterPlot(xs, ys)
+            return points.ToArray();
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            PointF[] points = GetPoints(dims);
+            using var gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using var penLine = GDI.Pen(LineColor, LineWidth, LineStyle, true);
+            if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
             {
-                Color = Color,
-                LineWidth = LineWidth,
-                MarkerSize = 0,
-                Label = Label,
-                MarkerShape = MarkerShape.none,
-                LineStyle = LineStyle
-            };
-            scatter.Render(dims, bmp, lowQuality);
+                bool above = FillType == FillType.FillAbove;
+                GDI.FillToInfinity(dims, gfx, points.First().X, points.Last().X, points, above, FillColor, FillColor);
+            }
+            gfx.DrawLines(penLine, points);
         }
 
         public void ValidateData(bool deepValidation = false)

@@ -11,8 +11,14 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            double[,] data = DataGen.Random2D(new Random(0), rows: 10, columns: 1 << 15);
-            formsPlot1.Plot.AddHeatmap(data, lockScales: false);
+            var func1 = new Func<double, double?>((x) => 5 * Math.Sin(x) * Math.Sin(x / 2));
+            var func2 = new Func<double, double?>((x) => 4 * Math.Sin(x) * Math.Sin(x / 3) - 1);
+
+            var fp1 = formsPlot1.Plot.AddFunction(func1);
+            fp1.FillType = FillType.FillBelow;
+
+            var fp2 = formsPlot1.Plot.AddFunction(func2);
+            fp2.FillType = FillType.FillBelow;
 
             formsPlot1.Refresh();
         }

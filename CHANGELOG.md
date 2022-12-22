@@ -9,6 +9,8 @@ _not yet published on NuGet..._
 * Palettes: Added new light-color palettes PastelWheel, LightSpectrum, and LightOcean (#2271, #2272, #2273) _Thanks @arthurits_
 * Ticks: Improved tick calculations for very small plots (#2280, #2278) _Thanks @Xerxes004_
 * Crosshair: HLine and VLine are no longer readonly (#2208) _Thanks @arthurits_
+* Function Plot: Added support for filling above and below lines (#2239, #2238) _Thanks @SGanard_
+* Signal Plot: Improved error messages for when Update() fails to replace data (#2263)
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
