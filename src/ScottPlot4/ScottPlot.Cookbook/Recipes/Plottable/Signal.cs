@@ -351,4 +351,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend();
         }
     }
+
+    public class SignalMarkerColor : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_marker_color";
+        public string Title => "Signal Marker Color";
+        public string Description => "The markers that display when signal plots are zoomed in " +
+            "may have a different color than the lines connecting them";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.Sin(51);
+            var sig = plt.AddSignal(values);
+
+            sig.LineColor = Color.LightBlue;
+            sig.LineWidth = 3;
+            sig.MarkerColor = Color.Blue;
+        }
+    }
 }

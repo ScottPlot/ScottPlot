@@ -61,9 +61,9 @@ namespace ScottPlot.Plottable
         }
 
         public string Label { get; set; } = null;
-        public Color Color { get; set; } = Color.Green;
-        public Color LineColor { get => Color; set { Color = value; } }
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public Color Color { get => LineColor; set { LineColor = value; MarkerColor = value; } }
+        public Color LineColor { get; set; } = Color.Black;
+        public Color MarkerColor { get; set; } = Color.Black;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         public bool IsHighlighted { get; set; } = false;
@@ -333,7 +333,7 @@ namespace ScottPlot.Plottable
         /// Render when the data is zoomed in such that there is more than 1 column per data point.
         /// Rendering is accomplished by drawing a straight line from point to point.
         /// </summary>
-        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
+        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Pen penLD)
         {
             int capacity = visibleIndex2 - visibleIndex1 + 2;
             List<PointF> linePoints = new(capacity);
@@ -403,7 +403,7 @@ namespace ScottPlot.Plottable
                 if (markerPxRadius > .25)
                 {
                     ShowMarkersInLegend = true;
-                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
+                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, MarkerColor, MarkerLineWidth);
                 }
                 else
                 {
@@ -764,9 +764,8 @@ namespace ScottPlot.Plottable
                 return;
 
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using var brush = GDI.Brush(Color);
-            using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
-            using var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true);
+            using var penLD = GDI.Pen(LineColor, (float)LineWidth, LineStyle, true);
+            using var penHD = GDI.Pen(LineColor, (float)LineWidth, LineStyle.Solid, true);
 
             double dataSpanUnits = _Ys.Length * _SamplePeriod;
             double columnSpanUnits = dims.XSpan / dims.DataWidth;
@@ -797,7 +796,7 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, brush, penLD, penHD);
+                RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, penLD);
             }
         }
 

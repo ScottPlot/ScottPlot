@@ -13,6 +13,7 @@ _not yet published on NuGet..._
 * Signal Plot: Improved error messages for when `Update()` fails to replace data (#2263)
 * Plot: `Clear()` now resets inner and outer view limits (#2264) _Thanks @vietanhbui_
 * FormsPlot: Right-click help menu is now `TopMost` (#2282) _Thanks @dusko23_
+* Signal Plot: Allow users to apply different colors to lines and markers (#2288) _Thanks @Nuliax7_
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
