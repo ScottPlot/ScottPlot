@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing.Colormaps;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
@@ -261,21 +262,37 @@ namespace ScottPlot.Plottable
         /// <param name="lastIndex">last index to replace</param>
         /// <param name="newData">source for new data</param>
         /// <param name="fromData">source data offset</param>
-        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
+        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            if (lastIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(lastIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
+        }
 
         /// <summary>
         /// Replace all Y values from the given index through the end of the array
         /// </summary>
         /// <param name="firstIndex">first index to begin replacing</param>
         /// <param name="newData">new values</param>
-        public void Update(int firstIndex, T[] newData) => Update(firstIndex, firstIndex + newData.Length, newData);
+        public void Update(int firstIndex, T[] newData)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(firstIndex, firstIndex + newData.Length, newData);
+        }
 
         /// <summary>
         /// Replace all Y values with new ones
         /// </summary>
         /// <param name="newData">new Y values</param>
-        public void Update(T[] newData) => Update(0, newData.Length, newData);
+        public void Update(T[] newData)
+        {
+            if (newData.Length > Ys.Length)
+                throw new InvalidOperationException($"{nameof(newData)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(0, newData.Length, newData);
+        }
 
         public virtual AxisLimits GetAxisLimits()
         {
