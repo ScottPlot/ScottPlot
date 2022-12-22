@@ -243,4 +243,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             pie.ShowLabels = true;
         }
     }
+
+    public class PieSize : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Pie();
+        public string ID => "pie_size";
+        public string Title => "Custom Size";
+        public string Description =>
+            "You can define the size of the pie to make room for large labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Title("Really\nLarge\nTitle");
+
+            double[] values = { 778, 283, 184, 76, 43 };
+            var pie = plt.AddPie(values);
+
+            pie.Size = .6; // size of the pie (default is .9)
+        }
+    }
 }

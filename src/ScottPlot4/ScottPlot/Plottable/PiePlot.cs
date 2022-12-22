@@ -16,6 +16,11 @@ namespace ScottPlot.Plottable
         public string Label { get; set; }
         public string[] SliceLabels { get; set; }
 
+        /// <summary>
+        /// Defines how large the pie is relative to the pixel size of the smallest axis
+        /// </summary>
+        public double Size { get; set; } = 0.9;
+
         public Color[] SliceFillColors { get; set; }
         public Color[] SliceLabelColors { get; set; }
         public Color BackgroundColor { get; set; }
@@ -106,7 +111,7 @@ namespace ScottPlot.Plottable
 
                 double centreX = 0;
                 double centreY = 0;
-                float diameterPixels = .9f * Math.Min(dims.DataWidth, dims.DataHeight);
+                float diameterPixels = (float)Size * Math.Min(dims.DataWidth, dims.DataHeight);
 
                 // record label details and draw them after slices to prevent cover-ups
                 double[] labelXs = new double[Values.Length];
