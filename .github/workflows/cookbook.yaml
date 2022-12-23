@@ -1,4 +1,7 @@
-name: ScottPlot5
+name: Developer Website
+
+# This script builds the ScottPlot 5 cookbook
+# and publishes it to dev.scottplot.net (hosted by GitHub Pages)
 
 on:
   workflow_dispatch:
@@ -31,14 +34,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
-
       - name: 🚚 Restore
         run: dotnet restore "src/ScottPlot5/ScottPlot5 Cookbook"
       - name: 🛠️ Build
         run: dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore
       - name: 🧑‍🍳 Generate Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
-
       - name: 🛠️ Configure Pages
         uses: actions/configure-pages@v2
       - name: 📦 Upload Artifact
