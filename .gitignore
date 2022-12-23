@@ -307,3 +307,5 @@ tests/data/sample.csproj
 src/ScottPlot/ScottPlot.xml
 src/ScottPlot4/ScottPlot/ScottPlot.xml
 src/ScottPlot4/ScottPlot/ScottPlot.xml
+dev/docfx/_exported_templates/
+dev/docfx/api/*.yml

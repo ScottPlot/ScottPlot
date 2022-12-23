@@ -1,6 +1,6 @@
-- name: ScottPlot 4.1.16 API
-  href: index.md
+- name: ScottPlot 4.1.60 API
+  href: api
 - name: ScottPlot Cookbook
-  href: https://swharden.com/scottplot/cookbook
+  href: https://scottplot.net/cookbook
 - name: ScottPlot FAQ
-  href: https://swharden.com/scottplot/faq
+  href: https://scottplot.net/faq

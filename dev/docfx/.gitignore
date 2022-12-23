@@ -1,5 +1,9 @@
-obj
-api/*.yml
-api/.manifest
+###############
+#    folder   #
+###############
+/**/DROP/
+/**/TEMP/
+/**/packages/
+/**/bin/
+/**/obj/
 _site
-_api/
