@@ -1,7 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.60
+## ScottPlot 4.1.61
 _not yet published on NuGet..._
+
+## ScottPlot 4.1.60
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
 * Pie Chart: Improved display when a single slice covers the entire pie (#2248, #2251) _Thanks @bclehmann_
 * Plot: Added `AddFill()` arguments for `LineWidth` and `LineColor` (#2258) _Thanks @Fruchtzwerg94_
 * Plot: Improved support for filled polygons with fewer than 3 points (#2258) _Thanks @Fruchtzwerg94_
