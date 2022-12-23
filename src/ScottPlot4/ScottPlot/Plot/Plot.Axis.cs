@@ -709,6 +709,21 @@ namespace ScottPlot
             settings.GetXAxis(xAxisIndex).Dims.Pan(dx);
             settings.GetYAxis(yAxisIndex).Dims.Pan(dy);
         }
+
+        /// <summary>
+        /// Pan the primary X and Y axes to center the view on the given coordinate
+        /// </summary>
+        /// <param name="x">new horizontal center (coordinate units)</param>
+        /// <param name="y">new vertical center (in coordinate units)</param>
+        /// <param name="xAxisIndex">index of the axis to act on</param>
+        /// <param name="yAxisIndex">index of the axis to act on</param>
+        public void AxisPanCenter(double x = 0, double y = 0, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            settings.AxisAutoUnsetAxes();
+
+            double dx = x - settings.GetXAxis(xAxisIndex).Dims.Center;
+            double dy = y - settings.GetYAxis(yAxisIndex).Dims.Center;
+            AxisPan(dx, dy);
         }
 
         #endregion

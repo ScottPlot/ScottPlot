@@ -17,6 +17,7 @@ _not yet published on NuGet..._
 * Pie: Added `Size` option to allow customizing how large the pie chart is (#2317) _Thanks @Rudde_
 * FormsPlot: Improved support for horizontal legends in the pop-out legend viewer (#2300) _Thanks @rotger_
 * Axis: Added arguments to `AxisPan()` to improve multi-axis support (#2293)
+* Axis: Added `AxisPanCenter()` to center the view on a coordinate (#2293) _Thanks @dusko23_
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
