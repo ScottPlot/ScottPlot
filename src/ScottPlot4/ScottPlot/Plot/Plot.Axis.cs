@@ -685,8 +685,11 @@ namespace ScottPlot
             var xAxis = settings.GetXAxis(xAxisIndex);
             var yAxis = settings.GetYAxis(yAxisIndex);
 
-            if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
-                settings.AxisAutoAll();
+            if (xAxis.Dims.HasBeenSet == false)
+                settings.AxisAutoX(xAxis.AxisIndex);
+
+            if (yAxis.Dims.HasBeenSet == false)
+                settings.AxisAutoY(yAxis.AxisIndex);
 
             xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
             yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);
@@ -699,8 +702,7 @@ namespace ScottPlot
         /// <param name="dy">vertical distance to pan (in coordinate units)</param>
         public void AxisPan(double dx = 0, double dy = 0)
         {
-            if (!settings.AllAxesHaveBeenSet)
-                settings.AxisAutoAll();
+            settings.AxisAutoUnsetAxes();
 
             settings.XAxis.Dims.Pan(dx);
             settings.YAxis.Dims.Pan(dy);
