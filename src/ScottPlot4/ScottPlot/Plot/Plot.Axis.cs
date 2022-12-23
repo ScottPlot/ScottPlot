@@ -700,12 +700,15 @@ namespace ScottPlot
         /// </summary>
         /// <param name="dx">horizontal distance to pan (in coordinate units)</param>
         /// <param name="dy">vertical distance to pan (in coordinate units)</param>
-        public void AxisPan(double dx = 0, double dy = 0)
+        /// <param name="xAxisIndex">index of the axis to act on</param>
+        /// <param name="yAxisIndex">index of the axis to act on</param>
+        public void AxisPan(double dx = 0, double dy = 0, int xAxisIndex = 0, int yAxisIndex = 0)
         {
             settings.AxisAutoUnsetAxes();
 
-            settings.XAxis.Dims.Pan(dx);
-            settings.YAxis.Dims.Pan(dy);
+            settings.GetXAxis(xAxisIndex).Dims.Pan(dx);
+            settings.GetYAxis(yAxisIndex).Dims.Pan(dy);
+        }
         }
 
         #endregion

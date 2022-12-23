@@ -16,6 +16,7 @@ _not yet published on NuGet..._
 * Signal Plot: Allow users to apply different colors to lines and markers (#2288) _Thanks @Nuliax7_
 * Pie: Added `Size` option to allow customizing how large the pie chart is (#2317) _Thanks @Rudde_
 * FormsPlot: Improved support for horizontal legends in the pop-out legend viewer (#2300) _Thanks @rotger_
+* Axis: Added arguments to `AxisPan()` to improve multi-axis support (#2293)
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
