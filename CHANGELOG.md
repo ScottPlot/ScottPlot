@@ -18,6 +18,7 @@ _not yet published on NuGet..._
 * FormsPlot: Improved support for horizontal legends in the pop-out legend viewer (#2300) _Thanks @rotger_
 * Axis: Added arguments to `AxisPan()` to improve multi-axis support (#2293)
 * Axis: Added `AxisPanCenter()` to center the view on a coordinate (#2293) _Thanks @dusko23_
+* Project: Use System.Drawing.Common version 4.7.2 to avoid CVE-2021-26701 (#2303, #1004, #1413) _Thanks @gobikulandaisamy_
 
 ## ScottPlot 4.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-11-06_
