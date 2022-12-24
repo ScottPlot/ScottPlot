@@ -33,9 +33,9 @@ internal class HtmlFrontPage : HtmlPageBase
 
     private void AddRecipeImage(RecipeInfo recipe, PageInfo page)
     {
-        SB.AppendLine("<div class='d-flex'>");
+        SB.AppendLine("<div class='d-flex align-items-center'>");
 
-        SB.AppendLine($"<a href='{page.FolderUrl}/{recipe.AnchorName}'><img src='{page.FolderUrl}/{recipe.ImageFilename}' /></a>");
+        SB.AppendLine($"<a href='{page.FolderUrl}/{recipe.AnchorName}'><img class='w-100' src='{page.FolderUrl}/{recipe.ImageFilename}' /></a>");
 
         SB.AppendLine("<div class='p-3'>");
         SB.AppendLine($"<div><a href='{page.FolderUrl}/{recipe.AnchorName}'><b>{recipe.Name}</b></a></div>");

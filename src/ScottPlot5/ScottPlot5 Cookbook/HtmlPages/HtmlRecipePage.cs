@@ -27,20 +27,22 @@ internal class HtmlRecipePage : HtmlPageBase
 
     public void Generate()
     {
-        string templateRecipe = File.ReadAllText("HtmlTemplates/Recipe.html");
+        string recipeTemplate = File.ReadAllText("HtmlTemplates/Recipe.html");
 
         foreach (RecipeInfo recipe in Page.Recipes)
         {
-            string templateHtml = templateRecipe
+            string recipeHtml = recipeTemplate
                 .Replace("{{NAME}}", recipe.Name)
                 .Replace("{{DESCRIPTION}}", recipe.Description)
                 .Replace("{{CODE}}", CodeToHtml(recipe.SourceCode))
-                .Replace("{{IMAGE_URL}}", recipe.ImageFilename);
+                .Replace("{{IMAGE_URL}}", recipe.ImageFilename)
+                ;
 
-            SB.AppendLine(templateHtml);
+            SB.AppendLine(recipeHtml);
         }
 
         string outputFolder = Path.Combine(Cookbook.OutputFolder, Page.FolderUrl);
-        Save(outputFolder, Page.Name);
+        Save(outputFolder, Page.Name, rootUrl: "../#");
+        Save(outputFolder, Page.Name, rootUrl: "../#", localFile: true);
     }
 }

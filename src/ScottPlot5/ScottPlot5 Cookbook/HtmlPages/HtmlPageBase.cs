@@ -12,18 +12,20 @@ internal abstract class HtmlPageBase
     /// will be replaced by ugly file URLs like '/5.0/index.html#graph'
     /// which allow browsing on a local filesystem.
     /// </summary>
-    protected void Save(string folder, string title, bool localFile = false, string filename = "index.html")
+    protected void Save(string folder, string title, string rootUrl = "", bool localFile = false, string filename = "index.html")
     {
         string html = File.ReadAllText("HtmlTemplates/Page.html")
             .Replace("{{VERSION}}", ScottPlot.Version.InformalVersion)
             .Replace("{{DATE}}", DateTime.Now.ToShortDateString())
             .Replace("{{TIME}}", DateTime.Now.ToShortTimeString())
             .Replace("{{TITLE}}", title)
-            .Replace("{{CONTENT}}", SB.ToString());
+            .Replace("{{CONTENT}}", SB.ToString())
+            .Replace("{{HEADER_LINK}}", rootUrl)
+            ;
 
         if (localFile)
         {
-            html = html.Replace("/#", "/index.html#");
+            html = html.Replace("/#", "/index.local.html#");
             filename = filename.Replace(".html", ".local.html");
         }
 
