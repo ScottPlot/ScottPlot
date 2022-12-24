@@ -12,35 +12,35 @@ on:
       - "src/ScottPlot5/**"
 
 jobs:
-  format:
-    runs-on: windows-latest
-    name: Check Formatting
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Set up .NET 6.0
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "6.0.x"
-      - name: ✒️ Set up dotnet-format
-        run: dotnet tool install -g dotnet-format
-      - name: 🧐 Check Code Format
-        working-directory: src/ScottPlot5
-        run: dotnet-format --check
-      - name: ⚠️ Check for Warnings
-        run: dotnet build "src/ScottPlot5/ScottPlot5" --configuration Release -warnaserror -nowarn:CS2002
+  # format:
+  #   runs-on: windows-latest
+  #   name: Check Formatting
+  #   steps:
+  #     - name: 🛒 Checkout
+  #       uses: actions/checkout@v3
+  #     - name: ✨ Set up .NET 6.0
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: "6.0.x"
+  #     - name: ✒️ Set up dotnet-format
+  #       run: dotnet tool install -g dotnet-format
+  #     - name: 🧐 Check Code Format
+  #       working-directory: src/ScottPlot5
+  #       run: dotnet-format --check
+  #     - name: ⚠️ Check for Warnings
+  #       run: dotnet build "src/ScottPlot5/ScottPlot5" --configuration Release -warnaserror -nowarn:CS2002
 
   test4:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            osName: Linux
+          #- os: ubuntu-latest
+            #osName: Linux
           - os: windows-latest
             osName: Windows
-          - os: macos-latest
-            osName: MacOS
+          #- os: macos-latest
+            #osName: MacOS
     runs-on: ${{ matrix.os }}
     name: Test on ${{ matrix.osName }}
     steps:
