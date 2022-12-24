@@ -29,6 +29,8 @@ internal static class SourceReading
 
     public static List<RecipeSource> GetRecipeSources()
     {
+        const int indentationCharacters = 12;
+
         List<RecipeSource> sources = new();
 
         string recipeStartSignal = "        {";
@@ -73,7 +75,7 @@ internal static class SourceReading
 
                 bool lineIsWhitespace = line.Trim().Length == 0;
                 if (InRecipe)
-                    sourceBeingExtended.AppendLine(lineIsWhitespace ? "" : line.Substring(8));
+                    sourceBeingExtended.AppendLine(lineIsWhitespace ? "" : line.Substring(indentationCharacters));
             }
         }
 

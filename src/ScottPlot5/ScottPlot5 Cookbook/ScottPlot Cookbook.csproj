@@ -21,4 +21,17 @@
         <ProjectReference Include="..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="HtmlTemplates\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="HtmlTemplates\Page.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="HtmlTemplates\Recipe.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

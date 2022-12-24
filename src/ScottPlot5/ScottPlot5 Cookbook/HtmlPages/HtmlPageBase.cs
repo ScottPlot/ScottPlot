@@ -6,37 +6,25 @@ internal abstract class HtmlPageBase
 {
     protected StringBuilder SB = new();
 
-    private static string WrapPage(string content, string title) => @"<!doctype html>
-        <html lang=""en"">
-          <head>
-            <meta charset=""utf-8"">
-            <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
-            <title>{{TITLE}}</title>
-            <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"" rel=""stylesheet"" >
-            <style>
-            a {text-decoration: none;}
-            a:hover {text-decoration: underline;}
-            </style>
-          </head>
-          <body>
-            <div class=""container"">
-                <main>{{CONTENT}}</main>
-            </div>
-          </body>
-        </html>"
-        .Replace("{{TITLE}}", title)
-        .Replace("{{CONTENT}}", content)
-        .Replace("    ", "");
-
-    protected void Save(string folder, string title, bool localFile = false)
+    /// <summary>
+    /// Write the HTML file to disk.
+    /// If local file mode is enabled, pretty URLs like '/5.0/#graph' 
+    /// will be replaced by ugly file URLs like '/5.0/index.html#graph'
+    /// which allow browsing on a local filesystem.
+    /// </summary>
+    protected void Save(string folder, string title, bool localFile = false, string filename = "index.html")
     {
-        string html = WrapPage(SB.ToString(), title);
-        string filename = "index.html";
+        string html = File.ReadAllText("HtmlTemplates/Page.html")
+            .Replace("{{VERSION}}", ScottPlot.Version.InformalVersion)
+            .Replace("{{DATE}}", DateTime.Now.ToShortDateString())
+            .Replace("{{TIME}}", DateTime.Now.ToShortTimeString())
+            .Replace("{{TITLE}}", title)
+            .Replace("{{CONTENT}}", SB.ToString());
 
         if (localFile)
         {
             html = html.Replace("/#", "/index.html#");
-            filename = "index.local.html";
+            filename = filename.Replace(".html", ".local.html");
         }
 
         string saveAs = Path.Combine(folder, filename);
