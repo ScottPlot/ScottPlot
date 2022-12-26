@@ -42,10 +42,6 @@ public struct PixelRect
         Top = Math.Min(px1.Y, px2.Y);
     }
 
-    /// <summary>
-    /// Because Y pixel positions ascend from top to bottom, 
-    /// <paramref name="bottom"/> should almost always be be a greater than <paramref name="top"/>.
-    /// </summary>
     public PixelRect(float left, float right, float bottom, float top)
     {
         Left = left;
@@ -64,9 +60,6 @@ public struct PixelRect
         return new SkiaSharp.SKRect(Left, Top, Right, Bottom);
     }
 
-    /// <summary>
-    /// Return a new rectangle reduced on all sides by the given number of pixels
-    /// </summary>
     public PixelRect ShrinkBy(float delta)
     {
         float left = Math.Min(Left + delta, HorizontalCenter);
@@ -76,6 +69,16 @@ public struct PixelRect
         return new PixelRect(left, right, bottom, top);
     }
 
+    public PixelRect Inflated(float delta)
+    {
+        return ShrinkBy(-delta);
+    }
+
+    public PixelRect Deflated(float delta)
+    {
+        return ShrinkBy(-delta);
+    }
+
     public PixelRect Contract(PixelPadding padding)
     {
         float left = Math.Min(Left + padding.Left, HorizontalCenter);
@@ -83,5 +86,10 @@ public struct PixelRect
         float bottom = Math.Max(Bottom - padding.Bottom, VerticalCenter);
         float top = Math.Min(Top + padding.Top, VerticalCenter);
         return new PixelRect(left, right, bottom, top);
+    }
+
+    public PixelRect WithDelta(float x, float y)
+    {
+        return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
     }
 }
