@@ -33,6 +33,11 @@ public struct Pixel
         return new Pixel(a.X - b.X, a.Y - b.Y);
     }
 
+    public Pixel WithDelta(float x, float y)
+    {
+        return new Pixel(X + x, Y + y);
+    }
+
     // TODO: create a PixelVector type?
     public float Hypotenuse => (float)Math.Sqrt(X * X + Y * Y);
 }
