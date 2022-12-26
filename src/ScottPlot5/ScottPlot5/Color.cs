@@ -29,6 +29,8 @@ public struct Color
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
     public readonly Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
 
+    public readonly Color WithOpacity(double opacity = .5) => new(Red, Green, Blue, (byte)(opacity * 255));
+
     public static Color Gray(byte value) => new(value, value, value);
 
     public static Color FromARGB(uint argb)
