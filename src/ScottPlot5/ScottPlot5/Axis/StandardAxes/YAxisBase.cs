@@ -26,7 +26,7 @@ public abstract class YAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Vertical Axis",
-        FontName = "Consolas",
+        FontName = FontService.DefaultFontName,
         FontSize = 16,
         Bold = true,
         Rotation = -90,

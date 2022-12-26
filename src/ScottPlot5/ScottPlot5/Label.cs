@@ -6,7 +6,7 @@ namespace ScottPlot;
 /// Describes text using methods from the new font provider.
 /// Holds all customization required to style and draw text.
 /// </summary>
-public class Label // TODO: rename later
+public class Label
 {
     public string Text { get; set; } = string.Empty;
     public Font Font { get; set; } = Font.Default;
@@ -36,6 +36,8 @@ public class Label // TODO: rename later
             Typeface = SKTypeface.FromFamilyName(FontName),
             TextSize = FontSize,
             IsAntialias = AntiAlias,
+            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
+            FakeBoldText = Bold,
         };
     }
 
@@ -44,8 +46,9 @@ public class Label // TODO: rename later
         return new SKPaint()
         {
             IsStroke = false,
-            IsAntialias = true,
             Color = BackgroundColor.ToSKColor(),
+            IsAntialias = AntiAlias,
+            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
         };
     }
 
@@ -54,8 +57,9 @@ public class Label // TODO: rename later
         return new SKPaint()
         {
             IsStroke = true,
-            IsAntialias = true,
             Color = BorderColor.ToSKColor(),
+            IsAntialias = AntiAlias,
+            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
         };
     }
 
@@ -64,8 +68,9 @@ public class Label // TODO: rename later
         return new SKPaint()
         {
             IsStroke = false,
-            IsAntialias = true,
             Color = PointColor.ToSKColor(),
+            IsAntialias = AntiAlias,
+            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
         };
     }
 

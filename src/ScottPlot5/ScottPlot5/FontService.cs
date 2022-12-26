@@ -5,7 +5,7 @@
 /// </summary>
 public static class FontService
 {
-    public static string DefaultFontName { get; private set; } = "Times New Roman";
+    public static string DefaultFontName { get; private set; } = "Segoe UI";
 
     public static PixelSize Measure(Font font, string text)
     {
