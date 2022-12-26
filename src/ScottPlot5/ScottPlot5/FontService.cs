@@ -5,7 +5,9 @@
 /// </summary>
 public static class FontService
 {
-    public static PixelSize MeasureString(Font font, string text)
+    public static string DefaultFontName { get; private set; } = "Times New Roman";
+
+    public static PixelSize Measure(Font font, string text)
     {
         float width = font.Size * text.Length;
         float height = font.Size;

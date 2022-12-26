@@ -57,6 +57,8 @@ public struct Alignment
     public static Alignment LowerLeft => new(HorizontalAlignment.Left, VerticalAlignment.Bottom);
     public static Alignment UpperRight => new(HorizontalAlignment.Right, VerticalAlignment.Top);
     public static Alignment LowerRight => new(HorizontalAlignment.Right, VerticalAlignment.Bottom);
+    public Alignment WithHorizontalAlignment(HorizontalAlignment horizontalAlignment) => new(horizontalAlignment, Y);
+    public Alignment WithVerticalAlignment(VerticalAlignment verticalAlignment) => new(X, verticalAlignment);
 }
 
 public enum HorizontalAlignment

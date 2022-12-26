@@ -106,4 +106,15 @@ public static class Drawing
 
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5)
+    {
+        using SKPaint paint = new()
+        {
+            Color = color.ToSKColor(),
+            IsStroke = false,
+        };
+
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
 }
