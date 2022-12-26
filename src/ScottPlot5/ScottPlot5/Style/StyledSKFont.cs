@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Style
 {
-    public struct Font
+    public struct StyledSKFont
     {
         private static readonly SKFontManager fontManager = SKFontManager.Default;
 
-        public Font() { } // Required since we have field initializers
+        public StyledSKFont() { } // Required since we have field initializers
 
         public string Family { get; set; } = SKTypeface.Default.FamilyName;
         public int Size { get; set; } = 12;

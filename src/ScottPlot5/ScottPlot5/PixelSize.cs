@@ -13,4 +13,9 @@ public struct PixelSize
         Width = width;
         Height = height;
     }
+
+    public override string ToString()
+    {
+        return $"PixelSize: Width={Width}, Height={Height}";
+    }
 }

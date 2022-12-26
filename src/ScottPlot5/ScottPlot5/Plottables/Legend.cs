@@ -21,7 +21,7 @@ namespace ScottPlot.Plottables
 
         public IPosition Position = new CornerPosition(Corner.BottomRight);
         public IEnumerable<LegendItem> Items { get; set; }
-        public Font Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
+        public Style.StyledSKFont Font { get; set; } = new(); // TODO: Do we want our own abstraction for this? It wraps a native object and implements IDisposable
         public Stroke Border { get; set; } = new(Colors.DarkGray, 1);
         public Fill Background { get; set; } = new Fill(Colors.White);
 

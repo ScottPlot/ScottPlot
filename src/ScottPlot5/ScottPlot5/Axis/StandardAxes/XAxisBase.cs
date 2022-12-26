@@ -26,14 +26,14 @@ public abstract class XAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
-        Font = new Style.Font()
+        Font = new Style.StyledSKFont()
         {
             Family = "Consolas",
             Size = 16,
             Bold = true
         },
     };
-    public Font TickFont { get; set; } = new();
+    public Style.StyledSKFont TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
 
     public float Measure()

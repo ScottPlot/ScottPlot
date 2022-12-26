@@ -26,7 +26,7 @@ public abstract class YAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Vertical Axis",
-        Font = new Style.Font()
+        Font = new Style.StyledSKFont()
         {
             Family = "Consolas",
             Size = 16,
@@ -34,7 +34,7 @@ public abstract class YAxisBase : IAxis
         },
         Rotation = -90
     };
-    public Font TickFont { get; set; } = new();
+    public Style.StyledSKFont TickFont { get; set; } = new();
 
     public abstract Edge Edge { get; }
 
