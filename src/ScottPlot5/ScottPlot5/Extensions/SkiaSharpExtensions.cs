@@ -1,8 +1,8 @@
 ﻿using SkiaSharp;
 
-namespace ScottPlot;
+namespace ScottPlot.Extensions;
 
-internal static class SkiaSharpExtensions
+public static class SkiaSharpExtensions
 {
     public static PixelSize ToPixelSize(this SKRect rect)
     {
@@ -36,5 +36,10 @@ internal static class SkiaSharpExtensions
             ImageFormat.Webp => SKEncodedImageFormat.Webp,
             _ => throw new NotImplementedException($"unsupported format: {fmt}")
         };
+    }
+
+    public static Pixel CenterPixel(this SKBitmap bmp)
+    {
+        return new Pixel(bmp.Width / 2, bmp.Height / 2);
     }
 }

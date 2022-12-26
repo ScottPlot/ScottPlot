@@ -60,8 +60,6 @@ public static class AxisRendering
 
     public static void DrawAxisLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float padToData)
     {
-        using var paint = label.MakePaint();
-
         Pixel px = edge switch
         {
             Edge.Left => new(dataRect.Left - padToData, dataRect.VerticalCenter),

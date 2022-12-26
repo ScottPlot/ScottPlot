@@ -23,9 +23,11 @@ public class Label // TODO: rename later
     public float OutlineWidth { get; set; } = 0;
     public bool AntiAlias { get; set; } = true;
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
-    public float Rotation = 0;
+    public float Rotation { get; set; } = 0;
+    public float PointSize { get; set; } = 0;
+    public Color PointColor { get; set; } = Colors.Magenta;
 
-    public SKPaint MakePaint()
+    private SKPaint MakeTextPaint()
     {
         return new SKPaint()
         {
@@ -37,6 +39,36 @@ public class Label // TODO: rename later
         };
     }
 
+    private SKPaint MakeBackgroundPaint()
+    {
+        return new SKPaint()
+        {
+            IsStroke = false,
+            IsAntialias = true,
+            Color = BackgroundColor.ToSKColor(),
+        };
+    }
+
+    private SKPaint MakeBorderPaint()
+    {
+        return new SKPaint()
+        {
+            IsStroke = true,
+            IsAntialias = true,
+            Color = BorderColor.ToSKColor(),
+        };
+    }
+
+    private SKPaint MakePointPaint()
+    {
+        return new SKPaint()
+        {
+            IsStroke = false,
+            IsAntialias = true,
+            Color = PointColor.ToSKColor(),
+        };
+    }
+
     public PixelSize Measure()
     {
         return Measure(Text);
@@ -44,7 +76,7 @@ public class Label // TODO: rename later
 
     public PixelSize Measure(string text)
     {
-        using SKPaint paint = MakePaint();
+        using SKPaint paint = MakeTextPaint();
         SKRect textBounds = new();
         paint.MeasureText(text, ref textBounds);
         return textBounds.ToPixelSize();
@@ -52,20 +84,46 @@ public class Label // TODO: rename later
 
     public PixelRect GetRectangle(Pixel pixel)
     {
-        using SKPaint paint = MakePaint();
+        using SKPaint paint = MakeTextPaint();
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
         return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
     }
 
-    public PixelRect Draw(SKCanvas canvas, Pixel pixel)
+    public void Draw(SKCanvas canvas, Pixel pixel)
     {
-        using SKPaint paint = MakePaint();
+        using SKPaint textPaint = MakeTextPaint();
         SKRect textBounds = new();
-        paint.MeasureText(Text, ref textBounds);
+        textPaint.MeasureText(Text, ref textBounds);
+        float xOffset = textBounds.Width * Alignment.HorizontalFraction();
         float yOffset = textBounds.Height * Alignment.VerticalFraction();
-        SKPoint pt = new(pixel.X, pixel.Y + yOffset);
-        canvas.DrawText(Text, pt, paint);
-        return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
+        PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
+        textRect = textRect.WithDelta(-xOffset, yOffset - textBounds.Height);
+
+        canvas.Save();
+        canvas.Translate(pixel.ToSKPoint());
+        canvas.RotateDegrees(Rotation);
+
+        if (BackgroundColor.Alpha > 0)
+        {
+            using SKPaint backgroundPaint = MakeBackgroundPaint();
+            canvas.DrawRect(textRect.ToSKRect(), backgroundPaint);
+        }
+
+        canvas.DrawText(Text, new(0, yOffset), textPaint);
+
+        if (BorderWidth > 0)
+        {
+            using SKPaint borderPaint = MakeBorderPaint();
+            canvas.DrawRect(textRect.ToSKRect(), borderPaint);
+        }
+
+        if (PointSize > 0)
+        {
+            using SKPaint pointPaint = MakePointPaint();
+            canvas.DrawCircle(new SKPoint(0, 0), PointSize, pointPaint);
+        }
+
+        canvas.Restore();
     }
 }
