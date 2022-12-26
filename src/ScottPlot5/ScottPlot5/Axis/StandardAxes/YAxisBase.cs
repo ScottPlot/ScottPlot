@@ -26,13 +26,10 @@ public abstract class YAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Vertical Axis",
-        Font = new Style.StyledSKFont()
-        {
-            Family = "Consolas",
-            Size = 16,
-            Bold = true
-        },
-        Rotation = -90
+        FontName = "Consolas",
+        FontSize = 16,
+        Bold = true,
+        Rotation = -90,
     };
     public Style.StyledSKFont TickFont { get; set; } = new();
 
@@ -54,14 +51,14 @@ public abstract class YAxisBase : IAxis
         return Min - unitsFromMinValue;
     }
 
+    public float MeasureTicksAndTickLabels()
+    {
+        return MeasureTicks() + 5;
+    }
+
     public float Measure()
     {
-        using SKPaint paint = new(Label.Font.GetFont());
-
-        float labelWidth = Drawing.MeasureString(Label.Text, paint).Height;
-        float largestTickWidth = MeasureTicks();
-
-        return labelWidth + largestTickWidth + 15;
+        return MeasureTicksAndTickLabels() + Label.Measure().Height + 5;
     }
 
     private float MeasureTicks()
@@ -83,9 +80,8 @@ public abstract class YAxisBase : IAxis
         using SKFont tickFont = TickFont.GetFont();
 
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Measure());
+        AxisRendering.DrawAxisLabel(surface, dataRect, Edge, Label, MeasureTicksAndTickLabels());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }

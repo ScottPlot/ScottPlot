@@ -2,10 +2,10 @@
 
 namespace ScottPlotTests.DrawingTests;
 
-internal class AlignmentTests
+internal class LabelTests
 {
     [Test]
-    public void Test_Rectange_Alignment()
+    public void Test_Label_Alignment()
     {
         SKBitmap bmp = new(500, 500);
         using SKCanvas canvas = new(bmp);

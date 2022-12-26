@@ -3,6 +3,7 @@ using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
+// TODO: obsolete
 public class DebugPoint : IPlottable
 {
     public bool IsVisible { get; set; } = true;

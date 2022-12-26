@@ -26,24 +26,22 @@ public abstract class XAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
-        Font = new Style.StyledSKFont()
-        {
-            Family = "Consolas",
-            Size = 16,
-            Bold = true
-        },
+        FontName = "Consolas",
+        FontSize = 16,
+        Bold = true,
     };
+
     public Style.StyledSKFont TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
 
+    public float MeasureTicksAndTickLabels()
+    {
+        return MeasureTicks() + 5;
+    }
+
     public float Measure()
     {
-        using SKPaint paint = new(Label.Font.GetFont());
-
-        float labelHeight = Drawing.MeasureString(Label.Text, paint).Height;
-        float largestTickHeight = MeasureTicks();
-
-        return labelHeight + largestTickHeight + 15;
+        return MeasureTicksAndTickLabels() + Label.Measure().Height + 5;
     }
 
     private float MeasureTicks()
@@ -80,9 +78,8 @@ public abstract class XAxisBase : IAxis
     {
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        float tickSize = MeasureTicks();
 
-        AxisRendering.DrawLabel(surface, dataRect, Edge, Label, Measure());
+        AxisRendering.DrawAxisLabel(surface, dataRect, Edge, Label, MeasureTicksAndTickLabels());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }

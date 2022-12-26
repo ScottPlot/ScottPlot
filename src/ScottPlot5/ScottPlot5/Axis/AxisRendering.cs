@@ -58,32 +58,33 @@ public static class AxisRendering
         surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
     }
 
-    public static void DrawLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float pixelSize)
+    public static void DrawAxisLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float padToData)
     {
         using var paint = label.MakePaint();
 
         Pixel px = edge switch
         {
-            Edge.Left => new(
-                x: dataRect.Left - pixelSize + 5,
-                y: dataRect.VerticalCenter),
-
-            Edge.Right => new(
-                x: dataRect.Right + pixelSize - paint.FontSpacing - 5,
-                y: dataRect.VerticalCenter),
-
-            Edge.Bottom => new(
-                x: dataRect.HorizontalCenter,
-                y: dataRect.Bottom + pixelSize - paint.FontSpacing - 5),
-
-            Edge.Top => new(
-                x: dataRect.HorizontalCenter,
-                y: dataRect.Top - pixelSize),
-
+            Edge.Left => new(dataRect.Left - padToData, dataRect.VerticalCenter),
+            Edge.Right => new(dataRect.Right + padToData, dataRect.VerticalCenter),
+            Edge.Bottom => new(dataRect.HorizontalCenter, dataRect.Bottom + padToData),
+            Edge.Top => new(dataRect.HorizontalCenter, dataRect.Top - padToData),
             _ => throw new InvalidEnumArgumentException()
         };
 
-        label.Draw(surface, px, paint);
+        Alignment align = edge switch
+        {
+            Edge.Left => Alignment.LowerCenter,
+            Edge.Right => Alignment.UpperCenter,
+            Edge.Bottom => Alignment.UpperCenter,
+            Edge.Top => Alignment.LowerCenter,
+            _ => throw new NotImplementedException(),
+        };
+
+        // Draw a circle at the pivot point to test alignment and rotation
+        //Drawing.DrawCircle(surface.Canvas, px, Colors.RebeccaPurple);
+
+        label.Alignment = align;
+        label.Draw(surface.Canvas, px);
     }
 
     private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)

@@ -16,7 +16,7 @@ internal class FontMeasurementTests
         float yOffset = 20;
         foreach (string font in fonts)
         {
-            Label2 lbl = new()
+            Label lbl = new()
             {
                 Text = "Hello, World",
                 FontName = font,
@@ -27,7 +27,7 @@ internal class FontMeasurementTests
             Pixel px = new(20, yOffset);
             lbl.Draw(canvas, px);
 
-            PixelRect rect = lbl.Measure(px);
+            PixelRect rect = lbl.GetRectangle(px);
             Drawing.DrawRectangle(canvas, rect, Colors.Yellow);
 
             yOffset += 100;

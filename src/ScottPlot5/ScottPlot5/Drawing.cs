@@ -11,10 +11,6 @@ namespace ScottPlot;
 /// </summary>
 public static class Drawing
 {
-    /* WARNING: Never call MeasureText() anywhere in the codebase except this one time in this function.
-     * This way one day we can make a version which is independent of system fonts for development and testing.
-     * It's not easy writing pixel-perfect unit tests when font sizes changes on every platform.
-     */
     public static PixelSize MeasureString(string text, SKPaint paint)
     {
         SKRect bounds = new();
@@ -125,7 +121,7 @@ public static class Drawing
 
     public static PixelRect DrawText(SKCanvas canvas, Pixel pixel, string text, float fontSize, Color color, Alignment alignment = Alignment.UpperLeft)
     {
-        Label2 lbl = new()
+        Label lbl = new()
         {
             Text = text,
             Alignment = alignment,
