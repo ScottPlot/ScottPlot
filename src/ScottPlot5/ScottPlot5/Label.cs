@@ -29,15 +29,19 @@ public class Label
 
     private SKPaint MakeTextPaint()
     {
+        SKFontStyleWeight weight = Bold ? SKFontStyleWeight.SemiBold : SKFontStyleWeight.Normal;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyleSlant slant = Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+
         return new SKPaint()
         {
             Color = Color.ToSKColor(),
             TextAlign = Alignment.ToSKTextAlign(),
-            Typeface = SKTypeface.FromFamilyName(FontName),
+            Typeface = SKTypeface.FromFamilyName(FontName, weight, width, slant),
             TextSize = FontSize,
             IsAntialias = AntiAlias,
             FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-            FakeBoldText = Bold,
+            //FakeBoldText = Bold,
         };
     }
 
