@@ -2,6 +2,7 @@
 
 namespace ScottPlot;
 
+[Obsolete("Favor Alignment2 until this class is eliminated")]
 public struct Alignment
 {
     public HorizontalAlignment X { get; set; } = HorizontalAlignment.Center;

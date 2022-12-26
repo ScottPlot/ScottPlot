@@ -22,25 +22,14 @@ public class Label2 // TODO: rename later
     public bool Outline { get; set; } = false;
     public float OutlineWidth { get; set; } = 0;
     public bool AntiAlias { get; set; } = true;
-
-    public Alignment Alignment { get; set; } = Alignment.UpperLeft;
-    public HorizontalAlignment HorizontalAlignment
-    {
-        get => Alignment.X;
-        set => Alignment = Alignment.WithHorizontalAlignment(value);
-    }
-    public VerticalAlignment VerticalAlignment
-    {
-        get => Alignment.Y;
-        set => Alignment.WithVerticalAlignment(value);
-    }
+    public Alignment2 Alignment { get; set; } = Alignment2.UpperLeft;
 
     public SKPaint MakePaint()
     {
         return new SKPaint()
         {
             Color = SKColors.White.WithAlpha(100),
-            TextAlign = Alignment.X.ToSKTextAlign(),
+            TextAlign = Alignment.ToSKTextAlign(),
             Typeface = SKTypeface.FromFamilyName(FontName),
             TextSize = FontSize,
             IsAntialias = AntiAlias,
@@ -52,25 +41,17 @@ public class Label2 // TODO: rename later
         using SKPaint paint = MakePaint();
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
-
-        (double xOffsetFraction, double yOffsetFraction) = Alignment.GetOffset();
-        pixel = new Pixel(
-            x: pixel.X - textBounds.Width * (float)xOffsetFraction,
-            y: pixel.Y
-        );
-
-        return new PixelRect(
-            left: pixel.X,
-            right: pixel.X + textBounds.Width,
-            bottom: pixel.Y + textBounds.Height,
-            top: pixel.Y);
+        return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
     }
 
-    public void Draw(SKCanvas canvas, Pixel pixel)
+    public PixelRect Draw(SKCanvas canvas, Pixel pixel)
     {
         using SKPaint paint = MakePaint();
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
-        canvas.DrawText(Text, pixel.X, pixel.Y + textBounds.Height, paint);
+        float yOffset = textBounds.Height * Alignment.VerticalFraction();
+        SKPoint pt = new(pixel.X, pixel.Y + yOffset);
+        canvas.DrawText(Text, pt, paint);
+        return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
     }
 }

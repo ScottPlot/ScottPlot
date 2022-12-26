@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Plottables;
 using ScottPlot.Style;
 using SkiaSharp;
+using System.Drawing;
 
 namespace ScottPlot;
 
@@ -90,6 +91,7 @@ public static class Drawing
         {
             Color = color.ToSKColor(),
             IsStroke = false,
+            IsAntialias = true,
         };
 
         canvas.DrawRect(rect.ToSKRect(), paint);
@@ -102,6 +104,7 @@ public static class Drawing
             Color = color.ToSKColor(),
             IsStroke = true,
             StrokeWidth = thickness,
+            IsAntialias = true,
         };
 
         canvas.DrawRect(rect.ToSKRect(), paint);
@@ -113,8 +116,22 @@ public static class Drawing
         {
             Color = color.ToSKColor(),
             IsStroke = false,
+            IsAntialias = true,
         };
 
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static PixelRect DrawText(SKCanvas canvas, Pixel pixel, string text, float fontSize, Color color, Alignment2 alignment = Alignment2.UpperLeft)
+    {
+        Label2 lbl = new()
+        {
+            Text = text,
+            Alignment = alignment,
+            Color = color,
+            FontSize = fontSize,
+        };
+
+        return lbl.Draw(canvas, pixel);
     }
 }

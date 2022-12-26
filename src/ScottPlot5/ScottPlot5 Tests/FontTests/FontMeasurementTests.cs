@@ -52,7 +52,7 @@ internal class FontMeasurementTests
             Text = text,
             FontName = fontName,
             FontSize = 64,
-            Alignment = alignment,
+            //Alignment = alignment,
         };
 
         PixelRect rect = lbl.GetRectangle(pixel);
