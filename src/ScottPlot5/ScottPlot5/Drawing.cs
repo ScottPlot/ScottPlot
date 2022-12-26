@@ -83,4 +83,27 @@ public static class Drawing
             }
         }
     }
+
+    public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)
+    {
+        using SKPaint paint = new()
+        {
+            Color = color.ToSKColor(),
+            IsStroke = false,
+        };
+
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float thickness = 1)
+    {
+        using SKPaint paint = new()
+        {
+            Color = color.ToSKColor(),
+            IsStroke = true,
+            StrokeWidth = thickness,
+        };
+
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
 }
