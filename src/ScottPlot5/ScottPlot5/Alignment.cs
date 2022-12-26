@@ -1,77 +1,55 @@
-﻿using System.ComponentModel;
+﻿namespace ScottPlot;
 
-namespace ScottPlot;
-
-[Obsolete("Favor Alignment2 until this class is eliminated")]
-public struct Alignment
+/// <summary>
+/// Represents the location of a point relative to a rectangle.
+/// UpperLeft means the point is at the top left of the rectangle.
+/// </summary>
+public enum Alignment
 {
-    public HorizontalAlignment X { get; set; } = HorizontalAlignment.Center;
-    public VerticalAlignment Y { get; set; } = VerticalAlignment.Center;
-
-    public Alignment(
-        HorizontalAlignment x = HorizontalAlignment.Center,
-        VerticalAlignment y = VerticalAlignment.Center)
-    {
-        X = x;
-        Y = y;
-    }
-
-    /// <summary>
-    /// Return the fractional offset (0-1)
-    /// Bottom is 0
-    /// Left is 0
-    /// </summary>
-    public (double x, double y) GetOffset()
-    {
-        double xOffset = X switch
-        {
-            HorizontalAlignment.Left => 0,
-            HorizontalAlignment.Center => .5,
-            HorizontalAlignment.Right => 1,
-            _ => throw new InvalidEnumArgumentException(X.ToString()),
-        };
-
-        double yOffset = Y switch
-        {
-            VerticalAlignment.Bottom => 0,
-            VerticalAlignment.Center => .5,
-            VerticalAlignment.Top => 1,
-            _ => throw new InvalidEnumArgumentException(X.ToString()),
-        };
-
-        return (xOffset, yOffset);
-    }
-
-    /// <summary>
-    /// Return the offset for a rectangle of given dimensions
-    /// Bottom is 0
-    /// Left is 0
-    /// </summary>
-    public (double x, double y) GetOffset(double width, double height)
-    {
-        (double xOffset, double yOffset) = GetOffset();
-        return (xOffset * width, yOffset * height);
-    }
-
-    public static Alignment Center => new(HorizontalAlignment.Center, VerticalAlignment.Center);
-    public static Alignment UpperLeft => new(HorizontalAlignment.Left, VerticalAlignment.Top);
-    public static Alignment LowerLeft => new(HorizontalAlignment.Left, VerticalAlignment.Bottom);
-    public static Alignment UpperRight => new(HorizontalAlignment.Right, VerticalAlignment.Top);
-    public static Alignment LowerRight => new(HorizontalAlignment.Right, VerticalAlignment.Bottom);
-    public Alignment WithHorizontalAlignment(HorizontalAlignment horizontalAlignment) => new(horizontalAlignment, Y);
-    public Alignment WithVerticalAlignment(VerticalAlignment verticalAlignment) => new(X, verticalAlignment);
+    UpperLeft,
+    UpperCenter,
+    UpperRight,
+    MiddleLeft,
+    MiddleCenter,
+    MiddleRight,
+    LowerLeft,
+    LowerCenter,
+    LowerRight,
 }
 
-public enum HorizontalAlignment
+public static class AlignmentExtensions
 {
-    Left,
-    Center,
-    Right,
-}
+    public static float HorizontalFraction(this Alignment alignment)
+    {
+        return alignment switch
+        {
+            Alignment.UpperLeft => 0,
+            Alignment.UpperCenter => .5f,
+            Alignment.UpperRight => 1,
+            Alignment.MiddleLeft => 0,
+            Alignment.MiddleCenter => .5f,
+            Alignment.MiddleRight => 1,
+            Alignment.LowerLeft => 0,
+            Alignment.LowerCenter => .5f,
+            Alignment.LowerRight => 1,
+            _ => throw new NotImplementedException(),
+        };
+    }
 
-public enum VerticalAlignment
-{
-    Bottom,
-    Center,
-    Top,
+    public static float VerticalFraction(this Alignment alignment)
+    {
+        return alignment switch
+        {
+            Alignment.UpperLeft => 1,
+            Alignment.UpperCenter => 1,
+            Alignment.UpperRight => 1,
+            Alignment.MiddleLeft => .5f,
+            Alignment.MiddleCenter => .5f,
+            Alignment.MiddleRight => .5f,
+            Alignment.LowerLeft => 0,
+            Alignment.LowerCenter => 0,
+            Alignment.LowerRight => 0,
+            _ => throw new NotImplementedException(),
+        };
+    }
 }

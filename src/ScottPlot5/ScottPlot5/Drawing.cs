@@ -2,6 +2,7 @@
 using ScottPlot.Style;
 using SkiaSharp;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -122,7 +123,7 @@ public static class Drawing
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
-    public static PixelRect DrawText(SKCanvas canvas, Pixel pixel, string text, float fontSize, Color color, Alignment2 alignment = Alignment2.UpperLeft)
+    public static PixelRect DrawText(SKCanvas canvas, Pixel pixel, string text, float fontSize, Color color, Alignment alignment = Alignment.UpperLeft)
     {
         Label2 lbl = new()
         {
@@ -133,5 +134,20 @@ public static class Drawing
         };
 
         return lbl.Draw(canvas, pixel);
+    }
+
+    public static SKBitmap BitmapFromArgbs(uint[] argbs, int width, int height)
+    {
+        GCHandle handle = GCHandle.Alloc(argbs, GCHandleType.Pinned);
+
+        var imageInfo = new SKImageInfo(width, height);
+        var bmp = new SKBitmap(imageInfo);
+        bmp.InstallPixels(
+            info: imageInfo,
+            pixels: handle.AddrOfPinnedObject(),
+            rowBytes: imageInfo.RowBytes,
+            releaseProc: (IntPtr _, object _) => handle.Free());
+
+        return bmp;
     }
 }

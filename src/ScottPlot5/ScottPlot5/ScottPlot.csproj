@@ -33,5 +33,8 @@
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
 
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="autoformat.bat" />
+    </ItemGroup>
 
 </Project>

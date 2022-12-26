@@ -21,7 +21,7 @@ public struct PixelSize
         return $"PixelSize: Width={Width}, Height={Height}";
     }
 
-    public PixelRect ToPixelRect(Pixel pixel, Alignment2 alignment)
+    public PixelRect ToPixelRect(Pixel pixel, Alignment alignment)
     {
         PixelRect rect = new(
             left: pixel.X,

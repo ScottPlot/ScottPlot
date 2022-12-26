@@ -74,7 +74,7 @@ namespace ScottPlot.Panels
             int bmpWidth = Edge.IsVertical() ? 1 : 256;
             int bmpHeight = !Edge.IsVertical() ? 1 : 256;
 
-            return SKBitmapHelpers.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
+            return Drawing.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
         }
 
         private IAxis GetAxis(float length)

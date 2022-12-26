@@ -14,7 +14,7 @@ internal class AlignmentTests
         PixelSize size = new(40, 20);
 
         int y = 20;
-        foreach (Alignment2 alignment in Enum.GetValues(typeof(Alignment2)))
+        foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
             PixelRect rect = Drawing.DrawText(canvas, pixel, alignment.ToString(), 32, Colors.White, alignment);

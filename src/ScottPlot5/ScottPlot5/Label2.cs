@@ -22,7 +22,7 @@ public class Label2 // TODO: rename later
     public bool Outline { get; set; } = false;
     public float OutlineWidth { get; set; } = 0;
     public bool AntiAlias { get; set; } = true;
-    public Alignment2 Alignment { get; set; } = Alignment2.UpperLeft;
+    public Alignment Alignment { get; set; } = Alignment.UpperLeft;
 
     public SKPaint MakePaint()
     {
@@ -36,7 +36,7 @@ public class Label2 // TODO: rename later
         };
     }
 
-    public PixelRect GetRectangle(Pixel pixel)
+    public PixelRect Measure(Pixel pixel)
     {
         using SKPaint paint = MakePaint();
         SKRect textBounds = new();

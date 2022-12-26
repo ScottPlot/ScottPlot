@@ -9,19 +9,19 @@ internal static class SkiaSharpExtensions
         return new PixelSize(rect.Width, rect.Height);
     }
 
-    public static SKTextAlign ToSKTextAlign(this Alignment2 alignment)
+    public static SKTextAlign ToSKTextAlign(this Alignment alignment)
     {
         return alignment switch
         {
-            Alignment2.UpperLeft => SKTextAlign.Left,
-            Alignment2.UpperCenter => SKTextAlign.Center,
-            Alignment2.UpperRight => SKTextAlign.Right,
-            Alignment2.MiddleLeft => SKTextAlign.Left,
-            Alignment2.MiddleCenter => SKTextAlign.Center,
-            Alignment2.MiddleRight => SKTextAlign.Right,
-            Alignment2.LowerLeft => SKTextAlign.Left,
-            Alignment2.LowerCenter => SKTextAlign.Center,
-            Alignment2.LowerRight => SKTextAlign.Right,
+            Alignment.UpperLeft => SKTextAlign.Left,
+            Alignment.UpperCenter => SKTextAlign.Center,
+            Alignment.UpperRight => SKTextAlign.Right,
+            Alignment.MiddleLeft => SKTextAlign.Left,
+            Alignment.MiddleCenter => SKTextAlign.Center,
+            Alignment.MiddleRight => SKTextAlign.Right,
+            Alignment.LowerLeft => SKTextAlign.Left,
+            Alignment.LowerCenter => SKTextAlign.Center,
+            Alignment.LowerRight => SKTextAlign.Right,
             _ => throw new NotImplementedException(),
         };
     }

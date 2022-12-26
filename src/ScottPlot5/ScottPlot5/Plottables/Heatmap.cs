@@ -20,7 +20,7 @@ namespace ScottPlot.Plottables
         /// Indicates position of the data point relative to the rectangle used to represent it.
         /// An alignment of upper right means the rectangle will appear to the lower left of the point itself.
         /// </summary>
-        public Alignment CellAlignment { get; set; } = Alignment.Center;
+        public Alignment CellAlignment { get; set; } = Alignment.MiddleCenter;
 
         /// <summary>
         /// If defined, the this rectangle sets the axis boundaries of heatmap data.
@@ -48,7 +48,8 @@ namespace ScottPlot.Plottables
         {
             get
             {
-                (double x, double y) = CellAlignment.GetOffset(CellWidth, CellHeight);
+                double x = CellWidth * CellAlignment.HorizontalFraction();
+                double y = CellWidth * CellAlignment.VerticalFraction();
                 Coordinates cellOffset = new(-x, -y);
                 return ExtentOrDefault.WithTranslation(cellOffset);
             }
@@ -141,7 +142,7 @@ namespace ScottPlot.Plottables
         {
             uint[] argbs = GetArgbValues();
             Bitmap?.Dispose();
-            Bitmap = SKBitmapHelpers.BitmapFromArgbs(argbs, Width, Height);
+            Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
         }
 
         public AxisLimits GetAxisLimits()

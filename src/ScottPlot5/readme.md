@@ -15,3 +15,8 @@
 * When it runs it outputs HTML pages in /dev/www/cookbook/5.0
 * `index.html` pages have pretty folder-level URLs (e.g., `/5.0/#plot`) and are suitable for deploying online
 * `index.local.html` pages have ugly URLs that point to HTML files by name (e.g., `/5.0/index.html#plot`) but they can be browsed on a local file system
+
+## Coding
+
+### Drawing
+* Although you could draw by calling methods in the `SkiaSharp.SKCanvas` object, favor using methods in `ScottPlot.Drawing` so enhancements and optimizations can be applied system-wide
