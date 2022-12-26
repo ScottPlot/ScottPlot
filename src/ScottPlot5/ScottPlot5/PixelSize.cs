@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp;
+
+namespace ScottPlot;
 
 public struct PixelSize
 {
@@ -6,7 +8,7 @@ public struct PixelSize
     public readonly float Height;
     public float Area => Width * Height;
 
-    public static readonly PixelSize Zero = new PixelSize(0, 0);
+    public static PixelSize Zero => new(0, 0);
 
     public PixelSize(float width, float height)
     {
@@ -17,5 +19,20 @@ public struct PixelSize
     public override string ToString()
     {
         return $"PixelSize: Width={Width}, Height={Height}";
+    }
+
+    public PixelRect ToPixelRect(Pixel pixel, Alignment2 alignment)
+    {
+        PixelRect rect = new(
+            left: pixel.X,
+            right: pixel.X + Width,
+            bottom: pixel.Y + Height,
+            top: pixel.Y);
+
+        rect = rect.WithDelta(
+            x: -Width * alignment.HorizontalFraction(),
+            y: -Height * (1 - alignment.VerticalFraction()));
+
+        return rect;
     }
 }
