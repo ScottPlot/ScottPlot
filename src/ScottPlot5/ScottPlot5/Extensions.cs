@@ -34,5 +34,16 @@ internal static class Extensions
         };
     }
 
+    public static SKTextAlign ToSKTextAlign(this HorizontalAlignment alignment)
+    {
+        return alignment switch
+        {
+            HorizontalAlignment.Left => SKTextAlign.Left,
+            HorizontalAlignment.Center => SKTextAlign.Center,
+            HorizontalAlignment.Right => SKTextAlign.Right,
+            _ => throw new NotImplementedException(),
+        };
+    }
+
     #endregion
 }
