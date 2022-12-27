@@ -17,4 +17,14 @@ public struct PixelPadding
         Bottom = bottom;
         Top = top;
     }
+
+    public void Expand(float amount)
+    {
+        Left += amount;
+        Right += amount;
+        Bottom += amount;
+        Top += amount;
+    }
+
+    public void Contract(float amount) => Expand(-amount);
 }
