@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Style;
 using SkiaSharp;
+using System.Reflection.Emit;
 
 namespace ScottPlot.Axis.StandardAxes;
 
@@ -33,6 +34,7 @@ public abstract class XAxisBase : IAxis
 
     public Style.StyledSKFont TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
+    public bool ShowDebugInformation { get; set; } = false;
 
     public float MeasureTicksAndTickLabels()
     {
@@ -76,10 +78,28 @@ public abstract class XAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
+        PixelRect figureRect = surface.GetPixelRect();
+
+        PixelRect panelRect = new(
+            left: dataRect.Left,
+            right: dataRect.Right,
+            bottom: figureRect.Bottom,
+            top: dataRect.Bottom);
+
+        float textDistanceFromData = figureRect.Bottom - dataRect.Bottom - 15;
+
+        Pixel labelPoint = new(dataRect.HorizontalCenter, dataRect.Bottom + textDistanceFromData);
+
+        if (ShowDebugInformation)
+        {
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Colors.Magenta);
+        }
+
+        Label.Alignment = Alignment.LowerCenter;
+        Label.Draw(surface.Canvas, labelPoint);
+
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
-
-        AxisRendering.DrawAxisLabel(surface, dataRect, Edge, Label, MeasureTicksAndTickLabels());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }

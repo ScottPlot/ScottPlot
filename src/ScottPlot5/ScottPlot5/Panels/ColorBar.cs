@@ -18,6 +18,7 @@ namespace ScottPlot.Panels
         public Edge Edge { get; set; }
         public float Width { get; set; } = 50;
         public float Margin { get; set; } = 15;
+        public bool ShowDebugInformation { get; set; } = false;
 
         public ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
         {

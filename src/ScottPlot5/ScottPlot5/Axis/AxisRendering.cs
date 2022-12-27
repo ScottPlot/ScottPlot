@@ -58,33 +58,6 @@ public static class AxisRendering
         surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
     }
 
-    public static void DrawAxisLabel(SKSurface surface, PixelRect dataRect, Edge edge, Label label, float padToData)
-    {
-        Pixel px = edge switch
-        {
-            Edge.Left => new(dataRect.Left - padToData, dataRect.VerticalCenter),
-            Edge.Right => new(dataRect.Right + padToData, dataRect.VerticalCenter),
-            Edge.Bottom => new(dataRect.HorizontalCenter, dataRect.Bottom + padToData),
-            Edge.Top => new(dataRect.HorizontalCenter, dataRect.Top - padToData),
-            _ => throw new InvalidEnumArgumentException()
-        };
-
-        Alignment align = edge switch
-        {
-            Edge.Left => Alignment.LowerCenter,
-            Edge.Right => Alignment.UpperCenter,
-            Edge.Bottom => Alignment.UpperCenter,
-            Edge.Top => Alignment.LowerCenter,
-            _ => throw new NotImplementedException(),
-        };
-
-        // Draw a circle at the pivot point to test alignment and rotation
-        //Drawing.DrawCircle(surface.Canvas, px, Colors.RebeccaPurple);
-
-        label.Alignment = align;
-        label.Draw(surface.Canvas, px);
-    }
-
     private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)

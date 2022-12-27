@@ -107,12 +107,33 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5)
+    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float thickness = 1)
     {
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
-            IsStroke = false,
+            IsStroke = true,
+            StrokeWidth = thickness,
+            IsAntialias = true,
+        };
+
+        canvas.DrawRect(rect.ToSKRect(), paint);
+        canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint);
+        canvas.DrawLine(rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(), paint);
+
+        canvas.DrawCircle(point.ToSKPoint(), 5, paint);
+
+        paint.IsStroke = false;
+        paint.Color = paint.Color.WithAlpha(20);
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5, bool fill = true)
+    {
+        using SKPaint paint = new()
+        {
+            Color = color.ToSKColor(),
+            IsStroke = !fill,
             IsAntialias = true,
         };
 

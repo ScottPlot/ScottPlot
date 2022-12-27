@@ -42,4 +42,20 @@ public static class SkiaSharpExtensions
     {
         return new Pixel(bmp.Width / 2, bmp.Height / 2);
     }
+
+    public static PixelSize GetPixelSize(this SKSurface surface)
+    {
+        return new PixelSize(
+            width: surface.Canvas.LocalClipBounds.Width,
+            height: surface.Canvas.LocalClipBounds.Height);
+    }
+
+    public static PixelRect GetPixelRect(this SKSurface surface)
+    {
+        return new PixelRect(
+            left: 0,
+            right: surface.Canvas.LocalClipBounds.Width,
+            bottom: surface.Canvas.LocalClipBounds.Height,
+            top: 0);
+    }
 }

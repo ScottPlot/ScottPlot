@@ -35,6 +35,8 @@ public abstract class YAxisBase : IAxis
 
     public abstract Edge Edge { get; }
 
+    public bool ShowDebugInformation { get; set; } = false;
+
     public float GetPixel(double position, PixelRect dataArea)
     {
         double pxPerUnit = dataArea.Height / Height;
@@ -77,14 +79,33 @@ public abstract class YAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect)
     {
+        PixelRect figureRect = surface.GetPixelRect();
+
+        PixelRect panelRect = new(
+            left: figureRect.Left,
+            right: dataRect.Left,
+            bottom: dataRect.Bottom,
+            top: dataRect.Top);
+
+        float textDistanceFromData = dataRect.Left - 15;
+
+        Pixel labelPoint = new(dataRect.Left - textDistanceFromData, dataRect.VerticalCenter);
+
+        if (ShowDebugInformation)
+        {
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Colors.Magenta);
+        }
+
+        Label.Alignment = Alignment.UpperCenter;
+        Label.Rotation = -90;
+        Label.Draw(surface.Canvas, labelPoint);
+
         using SKFont tickFont = TickFont.GetFont();
-
         var ticks = TickGenerator.GetVisibleTicks(Range);
-
-        AxisRendering.DrawAxisLabel(surface, dataRect, Edge, Label, MeasureTicksAndTickLabels());
         AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
         AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
     }
+
     public double GetPixelDistance(double distance, PixelRect dataArea)
     {
         return distance * dataArea.Height / Height;

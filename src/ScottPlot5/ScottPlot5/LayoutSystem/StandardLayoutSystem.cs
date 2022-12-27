@@ -1,33 +1,25 @@
 ﻿using ScottPlot.Axis;
-using System.Security.Cryptography;
 
 namespace ScottPlot.LayoutSystem;
 
 public class StandardLayoutSystem : ILayoutSystem
 {
-    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes, IEnumerable<IPanel> otherPanels)
+    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
-        RegenerateTicksForAllAxes(figureRect, xAxes, yAxes);
+        // regenerate ticks using the figure are (not the data area)
+        // to create a first-pass estimate of the space needed for axis panels
 
-        var panels = xAxes
-            .Cast<IPanel>()
-            .Concat(yAxes)
-            .Concat(otherPanels)
-            .ToArray(); // It's probably worth reifying this given the number of times we iterate over it.
+        panels.OfType<IXAxis>()
+            .ToList()
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, figureRect.Width));
 
-        return GetPanelPositionsAndPadding(figureRect, panels);
-    }
+        panels.OfType<IYAxis>()
+            .ToList()
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height));
 
-    private void RegenerateTicksForAllAxes(PixelRect figureRect, IEnumerable<IXAxis> xAxes, IEnumerable<IYAxis> yAxes)
-    {
-        foreach (IXAxis xAxis in xAxes)
-        {
-            xAxis.TickGenerator.Regenerate(xAxis.Range, figureRect.Width);
-        }
-        foreach (IYAxis yAxis in yAxes)
-        {
-            yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Width);
-        }
+        FinalLayout layout = GetPanelPositionsAndPadding(figureRect, panels);
+
+        return layout;
     }
 
     private FinalLayout GetPanelPositionsAndPadding(PixelRect figureRect, IEnumerable<IPanel> panels)

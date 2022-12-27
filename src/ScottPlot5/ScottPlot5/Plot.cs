@@ -4,6 +4,8 @@ using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
 using SkiaSharp;
 using ScottPlot.Plottables;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace ScottPlot;
 
@@ -64,6 +66,9 @@ public class Plot
     }
 
     #region Axis Management
+
+    public IAxis[] GetAllAxes() => XAxes.Select(x => (IAxis)x).Concat(YAxes).ToArray();
+    public IPanel[] GetAllPanels() => XAxes.Select(x => (IPanel)x).Concat(YAxes).Concat(Panels).ToArray();
 
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double left, double right, double bottom, double top)
@@ -286,6 +291,18 @@ public class Plot
         foreach (var curr in Plottables)
             foreach (var item in curr.LegendItems)
                 yield return item;
+    }
+
+    #endregion
+
+    #region Developer Tools
+
+    public void Developer_ShowAxisDetails(bool enable = true)
+    {
+        foreach (IPanel panel in GetAllAxes())
+        {
+            panel.ShowDebugInformation = enable;
+        }
     }
 
     #endregion

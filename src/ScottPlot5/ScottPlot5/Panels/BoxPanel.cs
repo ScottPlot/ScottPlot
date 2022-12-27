@@ -12,6 +12,7 @@ namespace ScottPlot.Panels
     {
         public Edge Edge { get; set; }
         public float Size { get; set; }
+        public bool ShowDebugInformation { get; set; } = false;
 
         public float Measure() => Size;
 

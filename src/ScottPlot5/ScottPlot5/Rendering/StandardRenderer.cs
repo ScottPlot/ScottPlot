@@ -14,7 +14,8 @@ public class StandardRenderer : IRenderer
 
         PixelRect figureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
 
-        FinalLayout layout = plot.Layout.GetLayout(figureRect, plot.XAxes, plot.YAxes, plot.Panels);
+        IPanel[] panels = plot.GetAllPanels();
+        FinalLayout layout = plot.Layout.GetLayout(figureRect, panels);
         PixelRect area = layout.Area;
 
         plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, area.Width);
