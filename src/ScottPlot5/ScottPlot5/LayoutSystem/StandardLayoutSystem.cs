@@ -17,69 +17,65 @@ public class StandardLayoutSystem : ILayoutSystem
             .ToList()
             .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height));
 
-        FinalLayout layout = GetPanelPositionsAndPadding(figureRect, panels);
+        FinalLayout layout = MakeFinalLayout(figureRect, panels);
 
         return layout;
     }
 
-    private FinalLayout GetPanelPositionsAndPadding(PixelRect figureRect, IEnumerable<IPanel> panels)
+    private FinalLayout MakeFinalLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
-        PixelPadding panelSizeByEdge = new();
-        List<PanelWithOffset> offsets = new();
+        // Plot edges with visible axes require padding between the figure rectangle and data rectangle.
+        // Panels have size and increase the amount of padding needed.
+        // This function iterates all panels and records the total padding needed and offset of each panel.
 
-        var xPanels = panels.Where(p => p.IsHorizontal());
-        var yPanels = panels.Where(p => p.IsVertical());
+        PixelPadding dataRectPadding = new();
+
+        Dictionary<IPanel, float> panelOffset = new();
 
         float bottomOffset = 0;
-        foreach (var panel in xPanels.Where(x => x.Edge == Edge.Bottom))
+        foreach (var panel in panels.Where(x => x.Edge == Edge.Bottom))
         {
-            var pxHeight = panel.Measure();
-
-            panelSizeByEdge.Bottom += pxHeight;
-
-            offsets.Add(new(panel, new(0, bottomOffset)));
+            float pxHeight = panel.Measure();
+            dataRectPadding.Bottom += pxHeight;
+            panelOffset[panel] = bottomOffset;
             bottomOffset += pxHeight;
         }
 
         float topOffset = 0;
-        foreach (var panel in xPanels.Where(x => x.Edge == Edge.Top))
+        foreach (var panel in panels.Where(x => x.Edge == Edge.Top))
         {
-            var pxHeight = panel.Measure();
-
-            panelSizeByEdge.Top += pxHeight;
-
-            offsets.Add(new(panel, new(0, topOffset)));
+            float pxHeight = panel.Measure();
+            dataRectPadding.Top += pxHeight;
+            panelOffset[panel] = topOffset;
             topOffset -= pxHeight;
         }
 
         float leftOffset = 0;
-        foreach (var panel in yPanels.Where(x => x.Edge == Edge.Left))
+        foreach (var panel in panels.Where(x => x.Edge == Edge.Left))
         {
-            var pxWidth = panel.Measure();
-
-            panelSizeByEdge.Left += pxWidth;
-
-            offsets.Add(new(panel, new(leftOffset, 0)));
+            float pxWidth = panel.Measure();
+            dataRectPadding.Left += pxWidth;
+            panelOffset[panel] = leftOffset;
             leftOffset -= pxWidth;
         }
 
         float rightOffset = 0;
-        foreach (var panel in yPanels.Where(x => x.Edge == Edge.Right))
+        foreach (var panel in panels.Where(x => x.Edge == Edge.Right))
         {
-            var pxWidth = panel.Measure();
-
-            panelSizeByEdge.Right += pxWidth;
-
-            offsets.Add(new(panel, new(rightOffset, 0)));
+            float pxWidth = panel.Measure();
+            dataRectPadding.Right += pxWidth;
+            panelOffset[panel] = rightOffset;
             rightOffset += pxWidth;
         }
 
-        // TODO: manual reduction remove this
-        panelSizeByEdge.Left += 20;
-        panelSizeByEdge.Bottom += 20;
-        panelSizeByEdge.Right += 20;
-        panelSizeByEdge.Top += 20;
+        // Add a little extra padding around the perimeter of the figure so axes don't touch the edge of the image.
+        // NOTE: This must be set to zero for frameless plots.
+        dataRectPadding.Expand(20);
 
-        return new(figureRect.Contract(panelSizeByEdge), offsets);
+        PixelRect dataArea = figureRect.Contract(dataRectPadding);
+
+        FinalLayout layout = new(figureRect, dataArea, panelOffset);
+
+        return layout;
     }
 }

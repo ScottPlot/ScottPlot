@@ -1,6 +1,4 @@
-﻿using ScottPlot.Style;
-using SkiaSharp;
-using System.Reflection.Emit;
+﻿using SkiaSharp;
 
 namespace ScottPlot.Axis.StandardAxes;
 
@@ -76,7 +74,7 @@ public abstract class XAxisBase : IAxis
         return Min + unitsFromEdge;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect)
+    public void Render(SKSurface surface, PixelRect dataRect, float offset)
     {
         PixelRect figureRect = surface.GetPixelRect();
 

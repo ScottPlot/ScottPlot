@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
 public class BottomAxis : XAxisBase, IXAxis
 {

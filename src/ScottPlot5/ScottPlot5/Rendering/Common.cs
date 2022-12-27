@@ -66,13 +66,16 @@ public static class Common
         }
     }
 
-    public static void RenderPanels(SKSurface surface, PixelRect area, IEnumerable<PanelWithOffset> panels)
+    public static void RenderPanels(SKSurface surface, PixelRect dataRect, IPanel[] panels, FinalLayout layout)
     {
-        foreach (var panel in panels)
+        foreach (IPanel panel in panels)
         {
+            float offset = layout.PanelOffset[panel];
+            float dX = panel.IsVertical() ? offset : 0;
+            float dY = panel.IsHorizontal() ? offset : 0;
             using SKAutoCanvasRestore _ = new(surface.Canvas);
-            surface.Canvas.Translate(panel.Offset.Width, panel.Offset.Height);
-            panel.Panel.Render(surface, area);
+            surface.Canvas.Translate(dX, dY);
+            panel.Render(surface, dataRect, offset);
         }
     }
 

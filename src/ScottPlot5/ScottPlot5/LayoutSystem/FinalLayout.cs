@@ -1,32 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.LayoutSystem;
 
-namespace ScottPlot.LayoutSystem
+public struct FinalLayout
 {
-    public struct PanelWithOffset
+    /// <summary>
+    /// Size of the figure this layout represents
+    /// </summary>
+    public readonly PixelRect FigureRect { get; }
+
+    /// <summary>
+    /// Final size of the data area
+    /// </summary>
+    public readonly PixelRect DataRect { get; }
+
+    /// <summary>
+    /// Distance (pixels) each panel is to be placed from the edge of the data rectangle
+    /// </summary>
+    public readonly Dictionary<IPanel, float> PanelOffset { get; }
+
+    public FinalLayout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> panelOffset)
     {
-        public IPanel Panel { get; private set; }
-        public PixelSize Offset { get; private set; }
-
-        public PanelWithOffset(IPanel panel, PixelSize offset)
-        {
-            Panel = panel;
-            Offset = offset;
-        }
-    }
-
-    public struct FinalLayout
-    {
-        public PixelRect Area { get; private set; }
-        public IEnumerable<PanelWithOffset> Panels { get; private set; }
-
-        public FinalLayout(PixelRect area, IEnumerable<PanelWithOffset> panels)
-        {
-            Area = area;
-            Panels = panels;
-        }
+        FigureRect = figureRect;
+        DataRect = dataRect;
+        PanelOffset = panelOffset;
     }
 }

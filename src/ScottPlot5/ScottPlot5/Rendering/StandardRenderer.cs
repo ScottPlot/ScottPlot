@@ -7,30 +7,30 @@ public class StandardRenderer : IRenderer
 {
     public RenderDetails Render(SKSurface surface, Plot plot)
     {
-        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var sw = System.Diagnostics.Stopwatch.StartNew(); // TODO: use struct timer
 
         Common.ReplaceNullAxesWithDefaults(plot);
         Common.AutoAxisAnyUnsetAxes(plot);
 
-        PixelRect figureRect = PixelRect.FromSKRect(surface.Canvas.LocalClipBounds);
+        PixelRect figureRect = surface.GetPixelRect();
 
         IPanel[] panels = plot.GetAllPanels();
         FinalLayout layout = plot.Layout.GetLayout(figureRect, panels);
-        PixelRect area = layout.Area;
+        PixelRect dataRect = layout.DataRect;
 
-        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, area.Width);
-        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, area.Height);
+        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);
+        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
 
-        Common.RenderBackground(surface, area, plot);
-        Common.RenderGrids(surface, area, plot, beneathPlottables: true);
-        Common.RenderPlottables(surface, area, plot);
-        Common.RenderGrids(surface, area, plot, beneathPlottables: false);
-        Common.RenderPanels(surface, area, layout.Panels);
-        Common.RenderZoomRectangle(surface, area, plot);
+        Common.RenderBackground(surface, dataRect, plot);
+        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);
+        Common.RenderPlottables(surface, dataRect, plot);
+        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: false);
+        Common.RenderPanels(surface, dataRect, panels, layout);
+        Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();
 
-        Common.RenderBenchmark(surface, area, sw.Elapsed, plot);
+        Common.RenderBenchmark(surface, dataRect, sw.Elapsed, plot);
 
-        return new RenderDetails(figureRect, area, sw.Elapsed);
+        return new RenderDetails(figureRect, dataRect, sw.Elapsed);
     }
 }
