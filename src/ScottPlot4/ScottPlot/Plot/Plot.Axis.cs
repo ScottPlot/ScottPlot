@@ -473,9 +473,16 @@ namespace ScottPlot
             double? yMin = null, double? yMax = null,
             int xAxisIndex = 0, int yAxisIndex = 0)
         {
+            if (xMin >= xMax)
+                throw new InvalidOperationException($"{nameof(xMax)} must be greater than {nameof(xMin)}");
+
+            if (yMin >= yMax)
+                throw new InvalidOperationException($"{nameof(yMax)} must be greater than {nameof(yMin)}");
+
             bool notAllAxesDefined = xMin is null || xMax is null || yMin is null || yMax is null;
             if (notAllAxesDefined)
                 settings.AxisAutoUnsetAxes();
+
             settings.AxisSet(xMin, xMax, yMin, yMax, xAxisIndex, yAxisIndex);
         }
 

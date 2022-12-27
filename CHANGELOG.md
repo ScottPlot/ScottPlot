@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.1.61
 _not yet published on NuGet..._
+* Axis: Throw exception immediately upon setting invalid axis limits (#2327) _Thanks @mjpz_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
