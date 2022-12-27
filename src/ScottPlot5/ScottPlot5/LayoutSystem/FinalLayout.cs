@@ -15,12 +15,18 @@ public struct FinalLayout
     /// <summary>
     /// Distance (pixels) each panel is to be placed from the edge of the data rectangle
     /// </summary>
-    public readonly Dictionary<IPanel, float> PanelOffset { get; }
+    public readonly Dictionary<IPanel, float> PanelOffsets { get; }
 
-    public FinalLayout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> panelOffset)
+    /// <summary>
+    /// Size (pixels) of each panel in the dimension perpendicular to the data edge it is placed on
+    /// </summary>
+    public readonly Dictionary<IPanel, float> PanelSizes { get; }
+
+    public FinalLayout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
     {
         FigureRect = figureRect;
         DataRect = dataRect;
-        PanelOffset = panelOffset;
+        PanelSizes = sizes;
+        PanelOffsets = offsets;
     }
 }

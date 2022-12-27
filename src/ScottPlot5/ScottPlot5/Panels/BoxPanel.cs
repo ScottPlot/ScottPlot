@@ -17,7 +17,7 @@ public class BoxPanel : IPanel
         Size = size;
     }
 
-    public void Render(SKSurface surface, PixelRect rect, float offset)
+    public void Render(SKSurface surface, PixelRect rect, float size, float offset)
     {
         using var paint = new SKPaint() { Color = SKColors.LightGray };
 

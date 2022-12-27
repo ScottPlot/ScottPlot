@@ -14,9 +14,13 @@ public interface IPanel
     Edge Edge { get; }
 
     /// <summary>
-    /// Draw this panel on the given surface knowing the data area and the offset this panel is to be drawn from it
+    /// Draw this panel on a canvas
     /// </summary>
-    void Render(SkiaSharp.SKSurface surface, PixelRect dataRect, float offset);
+    /// <param name="surface">contains the canvas to draw on</param>
+    /// <param name="dataRect">dimensions of the data area (pixel units)</param>
+    /// <param name="size">size of this panel (pixel units)</param>
+    /// <param name="offset">distance from the edge of this panel to the edge of the data area</param>
+    void Render(SkiaSharp.SKSurface surface, PixelRect dataRect, float size, float offset);
 
     /// <summary>
     /// Enable this to display extra information on the axis to facilitate development

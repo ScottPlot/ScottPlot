@@ -73,10 +73,8 @@ public abstract class YAxisBase : IAxis
         return largestTickWidth;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float offset)
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
-        float size = Measure(); // TODO: pass this in
-
         PixelRect panelRect = new(
             left: dataRect.Left - offset - size,
             right: dataRect.Left - offset,

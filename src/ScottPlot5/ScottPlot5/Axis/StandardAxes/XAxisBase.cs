@@ -71,14 +71,12 @@ public abstract class XAxisBase : IAxis
         return Min + unitsFromEdge;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float offset)
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
-        float panelSize = Measure(); // TODO: pass this in
-
         PixelRect panelRect = new(
             left: dataRect.Left,
             right: dataRect.Right,
-            bottom: dataRect.Bottom + offset + panelSize,
+            bottom: dataRect.Bottom + offset + size,
             top: dataRect.Bottom + offset);
 
         float textDistanceFromEdge = 10;
@@ -90,6 +88,7 @@ public abstract class XAxisBase : IAxis
         }
 
         Label.Alignment = Alignment.LowerCenter;
+        Label.Rotation = 0;
         Label.Draw(surface.Canvas, labelPoint);
 
         using SKFont tickFont = TickFont.GetFont();

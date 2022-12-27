@@ -23,7 +23,7 @@ public class ColorBar : IPanel
     // Unfortunately the size of the axis depends on the size of the plotting window, so we just have to guess here. 2000 should be larger than most
     public float Measure() => Margin + GetAxis(2000).Measure() + Width;
 
-    public void Render(SKSurface surface, PixelRect rect, float offset)
+    public void Render(SKSurface surface, PixelRect rect, float size, float offset)
     {
         using var _ = new SKAutoCanvasRestore(surface.Canvas);
 
@@ -48,7 +48,7 @@ public class ColorBar : IPanel
         var axis = GetAxis(colorbarLength);
 
         surface.Canvas.Translate(axisTranslation);
-        axis.Render(surface, rect, offset);
+        axis.Render(surface, rect, size, offset);
     }
 
     private SKPoint GetTranslation(float magnitude) => Edge switch

@@ -70,7 +70,7 @@ public static class Common
     {
         foreach (IPanel panel in panels)
         {
-            panel.Render(surface, dataRect, layout.PanelOffset[panel]);
+            panel.Render(surface, dataRect, layout.PanelSizes[panel], layout.PanelOffsets[panel]);
         }
     }
 

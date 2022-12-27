@@ -6,8 +6,10 @@ public class StandardLayoutSystem : ILayoutSystem
 {
     public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
-        // regenerate ticks using the figure are (not the data area)
-        // to create a first-pass estimate of the space needed for axis panels
+        // Regenerate ticks using the figure area (not the data area)
+        // to create a first-pass estimate of the space needed for axis panels.
+        // Ticks require recalculation once more after the axes are repositioned
+        // according to the layout determined by this function.
 
         panels.OfType<IXAxis>()
             .ToList()
@@ -69,6 +71,6 @@ public class StandardLayoutSystem : ILayoutSystem
         // NOTE: This must be set to zero for frameless plots.
         dataArea = dataArea.Contract(20);
 
-        return new FinalLayout(figureRect, dataArea, panelOffsets);
+        return new FinalLayout(figureRect, dataArea, panelSizes, panelOffsets);
     }
 }
