@@ -23,17 +23,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinForms Demo", "ScottPlot5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5 Sandbox\ScottPlot.Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{4289B222-4682-4138-89EC-305D43FF79CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia", "ScottPlot5 Sandbox\Sandbox.Avalonia\Sandbox.Avalonia.csproj", "{4289B222-4682-4138-89EC-305D43FF79CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5 Sandbox\ScottPlot.Sandbox.Eto\Sandbox.Eto.csproj", "{BAB54E6C-7114-481D-8F5E-0EC668F1644A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5 Sandbox\Sandbox.Eto\Sandbox.Eto.csproj", "{BAB54E6C-7114-481D-8F5E-0EC668F1644A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WPF", "ScottPlot5 Sandbox\ScottPlot.Sandbox.WPF\Sandbox.WPF.csproj", "{E4A9D4D9-2E09-4666-B742-8AF36C23E776}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WPF", "ScottPlot5 Sandbox\Sandbox.WPF\Sandbox.WPF.csproj", "{E4A9D4D9-2E09-4666-B742-8AF36C23E776}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoLauncher", "ScottPlot5 Demos\ScottPlot5 Demo Launcher\DemoLauncher\DemoLauncher.csproj", "{D45C8951-5E45-43FF-8D7A-B140522F70CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "ScottPlot5 Cookbook\ScottPlot Cookbook.csproj", "{15FA3B6F-9541-4A72-B453-838F48D9C852}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\ScottPlot.Sandbox.WinForms\Sandbox.WinForms.csproj", "{E3534AA4-E834-4648-83EF-94D667D17AEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E3534AA4-E834-4648-83EF-94D667D17AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
