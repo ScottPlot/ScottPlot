@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Sandbox.Eto
+namespace Sandbox.Eto
 {
     public partial class MainWindow : Form
     {

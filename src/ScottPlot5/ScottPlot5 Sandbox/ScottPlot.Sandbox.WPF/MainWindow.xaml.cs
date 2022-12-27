@@ -5,7 +5,7 @@ using Colors = ScottPlot.Colors;
 
 #pragma warning disable CA1416 // Validate platform compatibility
 
-namespace WPFDemo
+namespace Sandbox.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

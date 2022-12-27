@@ -1,7 +1,7 @@
 ﻿using Eto.Forms;
 
 
-namespace ScottPlot.Sandbox.Eto
+namespace Sandbox.Eto
 {
     static class Program
     {

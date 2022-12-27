@@ -2,7 +2,7 @@
 using ScottPlot;
 using ScottPlot.Plottables;
 
-namespace ScottPlot.Sandbox.Eto
+namespace Sandbox.Eto
 {
     partial class MainWindow : Form
     {

@@ -41,7 +41,6 @@ public class Label
             TextSize = FontSize,
             IsAntialias = AntiAlias,
             FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-            //FakeBoldText = Bold,
         };
     }
 
