@@ -229,9 +229,6 @@ namespace ScottPlot.Renderable
             if (LockedLimits)
                 return;
 
-            if (min >= max)
-                throw new InvalidOperationException("Axis alimis: Max must be greater than Min");
-
             HasBeenSet = true;
             Min = min ?? Min;
             Max = max ?? Max;
