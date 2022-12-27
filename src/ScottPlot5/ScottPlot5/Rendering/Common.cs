@@ -70,12 +70,7 @@ public static class Common
     {
         foreach (IPanel panel in panels)
         {
-            float offset = layout.PanelOffset[panel];
-            float dX = panel.IsVertical() ? offset : 0;
-            float dY = panel.IsHorizontal() ? offset : 0;
-            using SKAutoCanvasRestore _ = new(surface.Canvas);
-            surface.Canvas.Translate(dX, dY);
-            panel.Render(surface, dataRect, offset);
+            panel.Render(surface, dataRect, layout.PanelOffset[panel]);
         }
     }
 

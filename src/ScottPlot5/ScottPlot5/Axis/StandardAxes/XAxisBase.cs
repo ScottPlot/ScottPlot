@@ -34,14 +34,11 @@ public abstract class XAxisBase : IAxis
     public abstract Edge Edge { get; }
     public bool ShowDebugInformation { get; set; } = false;
 
-    public float MeasureTicksAndTickLabels()
-    {
-        return MeasureTicks() + 5;
-    }
-
     public float Measure()
     {
-        return MeasureTicksAndTickLabels() + Label.Measure().Height + 5;
+        float tickSpace = MeasureTicks() + 5;
+        float labelSpace = Label.Measure().Height + 5;
+        return tickSpace + labelSpace;
     }
 
     private float MeasureTicks()
@@ -76,21 +73,20 @@ public abstract class XAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect, float offset)
     {
-        PixelRect figureRect = surface.GetPixelRect();
+        float panelSize = Measure(); // TODO: pass this in
 
         PixelRect panelRect = new(
             left: dataRect.Left,
             right: dataRect.Right,
-            bottom: figureRect.Bottom,
-            top: dataRect.Bottom);
+            bottom: dataRect.Bottom + offset + panelSize,
+            top: dataRect.Bottom + offset);
 
-        float textDistanceFromData = figureRect.Bottom - dataRect.Bottom - 15;
-
-        Pixel labelPoint = new(dataRect.HorizontalCenter, dataRect.Bottom + textDistanceFromData);
+        float textDistanceFromEdge = 10;
+        Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Colors.Magenta);
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
         }
 
         Label.Alignment = Alignment.LowerCenter;
@@ -98,8 +94,8 @@ public abstract class XAxisBase : IAxis
 
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
-        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
+        AxisRendering.DrawTicks(surface, tickFont, panelRect, Label.Color, ticks, this);
+        AxisRendering.DrawFrame(surface, panelRect, Edge, Label.Color);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

@@ -61,7 +61,7 @@ public struct PixelRect
         return new SkiaSharp.SKRect(Left, Top, Right, Bottom);
     }
 
-    public PixelRect ShrinkBy(float delta)
+    public PixelRect Contract(float delta)
     {
         float left = Math.Min(Left + delta, HorizontalCenter);
         float right = Math.Max(Right - delta, HorizontalCenter);
@@ -70,14 +70,9 @@ public struct PixelRect
         return new PixelRect(left, right, bottom, top);
     }
 
-    public PixelRect Inflated(float delta)
+    public PixelRect Expand(float delta)
     {
-        return ShrinkBy(-delta);
-    }
-
-    public PixelRect Deflated(float delta)
-    {
-        return ShrinkBy(-delta);
+        return Contract(-delta);
     }
 
     public PixelRect Contract(PixelPadding padding)

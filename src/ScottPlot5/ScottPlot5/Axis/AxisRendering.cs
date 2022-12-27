@@ -11,54 +11,57 @@ public static class AxisRendering
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
-    public static void DrawFrame(SKSurface surface, PixelRect dataRect, Edge edge, Color color)
+    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, Color color)
     {
-        float x1 = edge switch
-        {
-            Edge.Left => dataRect.Left,
-            Edge.Right => dataRect.Right,
-            Edge.Top => dataRect.Left,
-            Edge.Bottom => dataRect.Left,
-            _ => throw new InvalidEnumArgumentException(),
-        };
-
-        float x2 = edge switch
-        {
-            Edge.Left => dataRect.Left,
-            Edge.Right => dataRect.Right,
-            Edge.Top => dataRect.Right,
-            Edge.Bottom => dataRect.Right,
-            _ => throw new InvalidEnumArgumentException(),
-        };
-
-        float y1 = edge switch
-        {
-            Edge.Left => dataRect.Top,
-            Edge.Right => dataRect.Top,
-            Edge.Top => dataRect.Top,
-            Edge.Bottom => dataRect.Bottom,
-            _ => throw new InvalidEnumArgumentException(),
-        };
-
-        float y2 = edge switch
-        {
-            Edge.Left => dataRect.Bottom,
-            Edge.Right => dataRect.Bottom,
-            Edge.Top => dataRect.Top,
-            Edge.Bottom => dataRect.Bottom,
-            _ => throw new InvalidEnumArgumentException(),
-        };
-
-        using SKPaint paint = new()
+        using SKPaint framePaint = new()
         {
             Color = color.ToSKColor(),
             IsAntialias = true,
         };
 
-        surface.Canvas.DrawLine(x1, y1, x2, y2, paint);
+        if (edge == Edge.Left)
+        {
+            surface.Canvas.DrawLine(
+                x0: panelRect.Right,
+                y0: panelRect.Bottom,
+                x1: panelRect.Right,
+                y1: panelRect.Top,
+                paint: framePaint);
+        }
+        else if (edge == Edge.Right)
+        {
+            surface.Canvas.DrawLine(
+                x0: panelRect.Left,
+                y0: panelRect.Bottom,
+                x1: panelRect.Left,
+                y1: panelRect.Top,
+                paint: framePaint);
+        }
+        else if (edge == Edge.Bottom)
+        {
+            surface.Canvas.DrawLine(
+                x0: panelRect.Left,
+                y0: panelRect.Top,
+                x1: panelRect.Right,
+                y1: panelRect.Top,
+                paint: framePaint);
+        }
+        else if (edge == Edge.Top)
+        {
+            surface.Canvas.DrawLine(
+                x0: panelRect.Left,
+                y0: panelRect.Bottom,
+                x1: panelRect.Right,
+                y1: panelRect.Bottom,
+                paint: framePaint);
+        }
+        else
+        {
+            throw new NotImplementedException(edge.ToString());
+        }
     }
 
-    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -75,8 +78,8 @@ public static class AxisRendering
 
         foreach (Tick tick in ticks)
         {
-            float xPx = axis.GetPixel(tick.Position, dataRect);
-            float y = axis.Edge == Edge.Bottom ? dataRect.Bottom : dataRect.Top;
+            float xPx = axis.GetPixel(tick.Position, panelRect);
+            float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
             float yEdge = axis.Edge == Edge.Bottom ? y + 3 : y - 3;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
@@ -87,7 +90,7 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -103,8 +106,8 @@ public static class AxisRendering
 
         foreach (Tick tick in ticks)
         {
-            float x = axis.Edge == Edge.Left ? dataRect.Left : dataRect.Right;
-            float y = axis.GetPixel(tick.Position, dataRect);
+            float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
+            float y = axis.GetPixel(tick.Position, panelRect);
 
             float majorTickLength = 5;
             float xEdge = axis.Edge == Edge.Left ? x - majorTickLength : x + majorTickLength;
@@ -117,13 +120,11 @@ public static class AxisRendering
         }
     }
 
-    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect dataRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
     {
-        if (axis.Edge == Edge.Left || axis.Edge == Edge.Right)
-            DrawTicksVerticalAxis(surface, font, dataRect, color, ticks, axis);
-        else if (axis.Edge == Edge.Bottom || axis.Edge == Edge.Top)
-            DrawTicksHorizontalAxis(surface, font, dataRect, color, ticks, axis);
+        if (axis.Edge.IsVertical())
+            DrawTicksVerticalAxis(surface, font, panelRect, color, ticks, axis);
         else
-            throw new InvalidEnumArgumentException();
+            DrawTicksHorizontalAxis(surface, font, panelRect, color, ticks, axis);
     }
 }

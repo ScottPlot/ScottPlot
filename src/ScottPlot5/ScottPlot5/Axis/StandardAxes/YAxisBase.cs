@@ -52,14 +52,11 @@ public abstract class YAxisBase : IAxis
         return Min - unitsFromMinValue;
     }
 
-    public float MeasureTicksAndTickLabels()
-    {
-        return MeasureTicks() + 5;
-    }
-
     public float Measure()
     {
-        return MeasureTicksAndTickLabels() + Label.Measure().Height + 5;
+        float tickSpace = MeasureTicks() + 5;
+        float labelSpace = Label.Measure().Height + 5;
+        return tickSpace + labelSpace;
     }
 
     private float MeasureTicks()
@@ -78,21 +75,20 @@ public abstract class YAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect, float offset)
     {
-        PixelRect figureRect = surface.GetPixelRect();
+        float size = Measure(); // TODO: pass this in
 
         PixelRect panelRect = new(
-            left: figureRect.Left,
-            right: dataRect.Left,
+            left: dataRect.Left - offset - size,
+            right: dataRect.Left - offset,
             bottom: dataRect.Bottom,
             top: dataRect.Top);
 
-        float textDistanceFromData = dataRect.Left - 15;
-
-        Pixel labelPoint = new(dataRect.Left - textDistanceFromData, dataRect.VerticalCenter);
+        float textDistanceFromEdge = 10;
+        Pixel labelPoint = new(panelRect.Left + textDistanceFromEdge, dataRect.VerticalCenter);
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Colors.Magenta);
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
         }
 
         Label.Alignment = Alignment.UpperCenter;
@@ -101,8 +97,8 @@ public abstract class YAxisBase : IAxis
 
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        AxisRendering.DrawTicks(surface, tickFont, dataRect, Label.Color, ticks, this);
-        AxisRendering.DrawFrame(surface, dataRect, Edge, Label.Color);
+        AxisRendering.DrawTicks(surface, tickFont, panelRect, Label.Color, ticks, this);
+        AxisRendering.DrawFrame(surface, panelRect, Edge, Label.Color);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

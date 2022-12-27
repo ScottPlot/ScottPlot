@@ -22,60 +22,53 @@ public class StandardLayoutSystem : ILayoutSystem
         return layout;
     }
 
+    /// <summary>
+    /// Given panels all of a single edge, update the panelOffset dictionary with their offsets
+    /// </summary>
+    private void CalculateOffsets(IEnumerable<IPanel> panels, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
+    {
+        float offset = 0;
+        foreach (IPanel panel in panels)
+        {
+            offsets[panel] = offset;
+            offset += sizes[panel];
+        }
+    }
+
     private FinalLayout MakeFinalLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         // Plot edges with visible axes require padding between the figure rectangle and data rectangle.
         // Panels have size and increase the amount of padding needed.
         // This function iterates all panels and records the total padding needed and offset of each panel.
 
-        PixelPadding dataRectPadding = new();
+        IEnumerable<IPanel> leftPanels = panels.Where(x => x.Edge == Edge.Left);
+        IEnumerable<IPanel> rightPanels = panels.Where(x => x.Edge == Edge.Right);
+        IEnumerable<IPanel> bottomPanels = panels.Where(x => x.Edge == Edge.Bottom);
+        IEnumerable<IPanel> topPanels = panels.Where(x => x.Edge == Edge.Top);
 
-        Dictionary<IPanel, float> panelOffset = new();
+        // Measure the size of every panel
+        Dictionary<IPanel, float> panelSizes = panels.ToDictionary(x => x, y => y.Measure());
 
-        float bottomOffset = 0;
-        foreach (var panel in panels.Where(x => x.Edge == Edge.Bottom))
-        {
-            float pxHeight = panel.Measure();
-            dataRectPadding.Bottom += pxHeight;
-            panelOffset[panel] = bottomOffset;
-            bottomOffset += pxHeight;
-        }
+        // Determine the offset needed for each panel
+        Dictionary<IPanel, float> panelOffsets = new();
+        CalculateOffsets(leftPanels, panelSizes, panelOffsets);
+        CalculateOffsets(rightPanels, panelSizes, panelOffsets);
+        CalculateOffsets(bottomPanels, panelSizes, panelOffsets);
+        CalculateOffsets(topPanels, panelSizes, panelOffsets);
 
-        float topOffset = 0;
-        foreach (var panel in panels.Where(x => x.Edge == Edge.Top))
-        {
-            float pxHeight = panel.Measure();
-            dataRectPadding.Top += pxHeight;
-            panelOffset[panel] = topOffset;
-            topOffset -= pxHeight;
-        }
+        // Determine how large the data area should be
+        PixelPadding paddingNeededForPanels = new(
+            left: leftPanels.Select(x => panelSizes[x]).Sum(),
+            right: rightPanels.Select(x => panelSizes[x]).Sum(),
+            bottom: bottomPanels.Select(x => panelSizes[x]).Sum(),
+            top: topPanels.Select(x => panelSizes[x]).Sum());
 
-        float leftOffset = 0;
-        foreach (var panel in panels.Where(x => x.Edge == Edge.Left))
-        {
-            float pxWidth = panel.Measure();
-            dataRectPadding.Left += pxWidth;
-            panelOffset[panel] = leftOffset;
-            leftOffset -= pxWidth;
-        }
+        PixelRect dataArea = figureRect.Contract(paddingNeededForPanels);
 
-        float rightOffset = 0;
-        foreach (var panel in panels.Where(x => x.Edge == Edge.Right))
-        {
-            float pxWidth = panel.Measure();
-            dataRectPadding.Right += pxWidth;
-            panelOffset[panel] = rightOffset;
-            rightOffset += pxWidth;
-        }
-
-        // Add a little extra padding around the perimeter of the figure so axes don't touch the edge of the image.
+        // Shrink slightly so the axis edges don't touch the edge of the figure.
         // NOTE: This must be set to zero for frameless plots.
-        dataRectPadding.Expand(20);
+        dataArea = dataArea.Contract(20);
 
-        PixelRect dataArea = figureRect.Contract(dataRectPadding);
-
-        FinalLayout layout = new(figureRect, dataArea, panelOffset);
-
-        return layout;
+        return new FinalLayout(figureRect, dataArea, panelOffsets);
     }
 }

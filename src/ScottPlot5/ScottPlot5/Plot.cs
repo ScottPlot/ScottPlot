@@ -117,6 +117,9 @@ public class Plot
         XAxes.ForEach(xAxis => xAxis.Range.Reset());
         YAxes.ForEach(yAxis => yAxis.Range.Reset());
 
+        // assign default axes to plottables without axes
+        Rendering.Common.ReplaceNullAxesWithDefaults(this);
+
         // expand all axes by the limits of each plot
         foreach (IPlottable plottable in Plottables)
         {
