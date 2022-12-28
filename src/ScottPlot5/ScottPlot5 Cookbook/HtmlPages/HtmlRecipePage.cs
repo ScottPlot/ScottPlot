@@ -36,6 +36,7 @@ internal class HtmlRecipePage : HtmlPageBase
                 .Replace("{{DESCRIPTION}}", recipe.Description)
                 .Replace("{{CODE}}", CodeToHtml(recipe.SourceCode))
                 .Replace("{{IMAGE_URL}}", recipe.ImageFilename)
+                .Replace("{{ANCHOR}}", recipe.AnchorName)
                 ;
 
             SB.AppendLine(recipeHtml);

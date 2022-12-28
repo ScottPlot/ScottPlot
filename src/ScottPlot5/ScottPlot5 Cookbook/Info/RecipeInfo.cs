@@ -15,7 +15,7 @@ public class RecipeInfo
         Name = recipe.Name;
         Description = recipe.Description;
         ImageFilename = $"{UrlTools.UrlSafe(Name)}.png";
-        AnchorName = $"#{UrlTools.UrlSafe(Name)}";
+        AnchorName = UrlTools.UrlSafe(Name);
         Recipe = recipe;
         PageName = page.Name;
     }

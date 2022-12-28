@@ -36,11 +36,11 @@ internal class HtmlFrontPage : HtmlPageBase
         SB.AppendLine("<div class='row my-4'>");
 
         SB.AppendLine("<div class='col'>");
-        SB.AppendLine($"<a href='{page.FolderUrl}/{recipe.AnchorName}'><img class='img-fluid' src='{page.FolderUrl}/{recipe.ImageFilename}' /></a>");
+        SB.AppendLine($"<a href='{page.FolderUrl}/#{recipe.AnchorName}'><img class='img-fluid' src='{page.FolderUrl}/{recipe.ImageFilename}' /></a>");
         SB.AppendLine("</div>");
 
         SB.AppendLine("<div class='col'>");
-        SB.AppendLine($"<div><a href='{page.FolderUrl}/{recipe.AnchorName}'><b>{recipe.Name}</b></a></div>");
+        SB.AppendLine($"<div><a href='{page.FolderUrl}/#{recipe.AnchorName}'><b>{recipe.Name}</b></a></div>");
         SB.AppendLine($"<div>{recipe.Description}</div>");
         SB.AppendLine("</div>");
 
