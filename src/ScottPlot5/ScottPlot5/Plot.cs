@@ -132,6 +132,25 @@ public class Plot
         // expand all axes by the limits of each plot
         foreach (IPlottable plottable in Plottables)
         {
+            AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, tight);
+        }
+    }
+
+    /// <summary>
+    /// Automatically scale the given axes to fit the data in plottables which use them
+    /// </summary>
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool tight = false)
+    {
+        // reset limits only for these axes
+        xAxis.Range.Reset();
+        yAxis.Range.Reset();
+
+        // assign default axes to plottables without axes
+        Rendering.Common.ReplaceNullAxesWithDefaults(this);
+
+        // expand all axes by the limits of each plot
+        foreach (IPlottable plottable in Plottables)
+        {
             AxisLimits limits = plottable.GetAxisLimits();
             plottable.Axes.YAxis.Range.Expand(limits.Rect.YRange);
             plottable.Axes.XAxis.Range.Expand(limits.Rect.XRange);
