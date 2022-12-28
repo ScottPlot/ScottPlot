@@ -4,8 +4,11 @@ namespace ScottPlotCookbook.TestImages;
 
 internal class Fonts
 {
-    [Test]
-    public void Test_Fonts_Available()
+    /// <summary>
+    /// This test function creates a large image demonstrating every installed font.
+    /// It is only enabled when developers need to evaluate which fonts are available in the CI system.
+    /// </summary>
+    public void Test_CreateImageShowingEveryFont()
     {
         using SKPaint paint = new() { IsAntialias = true, TextSize = 16 };
 

@@ -18,7 +18,7 @@ public readonly struct Font
         Italic = italic;
     }
 
-    public static Font Default => new(FontService.DefaultFontName);
+    public static Font Default => new(FontService.SansFontName);
 
     public Font WithSize(float size) => new(Name, size, Weight, Italic);
     public Font WithName(string name) => new(name, Size, Weight, Italic);

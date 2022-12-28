@@ -25,7 +25,7 @@ public abstract class XAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = "Horizontal Axis",
-        FontName = FontService.DefaultFontName,
+        FontName = FontService.SansFontName,
         FontSize = 16,
         Bold = true,
     };
