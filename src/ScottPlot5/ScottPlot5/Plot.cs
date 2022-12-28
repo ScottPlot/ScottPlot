@@ -5,7 +5,6 @@ using ScottPlot.LayoutSystem;
 using SkiaSharp;
 using ScottPlot.Plottables;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace ScottPlot;
 
@@ -30,10 +29,10 @@ public class Plot
 
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly Plottables.DebugBenchmark Benchmark = new();
+    public readonly DebugBenchmark Benchmark = new();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly Plottables.ZoomRectangle ZoomRectangle;
+    public readonly ZoomRectangle ZoomRectangle;
 
     /// <summary>
     /// Any state stored across renders can be stored here.
@@ -52,16 +51,26 @@ public class Plot
 
     public Plot()
     {
-        var xAxis = new Axis.StandardAxes.BottomAxis();
-        var yAxis = new Axis.StandardAxes.LeftAxis();
-        XAxes.Add(xAxis);
-        YAxes.Add(yAxis);
+        // setup the default primary X and Y axes
+        IXAxis xAxisPrimary = new Axis.StandardAxes.BottomAxis();
+        IYAxis yAxisPrimary = new Axis.StandardAxes.LeftAxis();
+        XAxes.Add(xAxisPrimary);
+        YAxes.Add(yAxisPrimary);
 
-        ZoomRectangle = new(xAxis, yAxis);
+        // add labeless secondary axes to get right side ticks and padding
+        IXAxis xAxisSecondary = new Axis.StandardAxes.TopAxis();
+        IYAxis yAxisSecondary = new Axis.StandardAxes.RightAxis();
+        XAxes.Add(xAxisSecondary);
+        YAxes.Add(yAxisSecondary);
 
-        var grid = new Grids.DefaultGrid(xAxis, yAxis);
+        // setup the zoom rectangle to use the primary axes
+        ZoomRectangle = new(xAxisPrimary, yAxisPrimary);
+
+        // add a default grid using the primary axes
+        IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
         Grids.Add(grid);
 
+        // setup the helper class that creates and adds plottables to this plot
         Add = new(this);
     }
 

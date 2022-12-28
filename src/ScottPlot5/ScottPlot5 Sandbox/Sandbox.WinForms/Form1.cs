@@ -9,6 +9,7 @@ public partial class Form1 : Form
         InitializeComponent();
         formsPlot1.Plot.Add.Signal(Generate.Sin(51));
         formsPlot1.Plot.Add.Signal(Generate.Cos(51));
+        //formsPlot1.Plot.Developer_ShowAxisDetails();
         formsPlot1.Refresh();
     }
 }
