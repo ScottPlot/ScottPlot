@@ -29,7 +29,7 @@ public class Label
 
     private SKPaint MakeTextPaint()
     {
-        SKFontStyleWeight weight = Bold ? SKFontStyleWeight.SemiBold : SKFontStyleWeight.Normal;
+        SKFontStyleWeight weight = SKFontStyleWeight.Normal; // favor the paint's fake bold text
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
         SKFontStyleSlant slant = Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
 
@@ -40,6 +40,7 @@ public class Label
             Typeface = SKTypeface.FromFamilyName(FontName, weight, width, slant),
             TextSize = FontSize,
             IsAntialias = AntiAlias,
+            FakeBoldText = Bold,
             FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
         };
     }
