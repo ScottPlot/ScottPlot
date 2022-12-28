@@ -36,9 +36,10 @@ public abstract class XAxisBase : IAxis
 
     public float Measure()
     {
-        float tickSpace = MeasureTicks() + 5;
-        float labelSpace = Label.Measure().Height + 5;
-        return tickSpace + labelSpace;
+        float largestTickSize = MeasureTicks();
+        float largestTickLabelSize = Label.Measure().Height;
+        float spaceBetweenTicksAndAxisLabel = 15;
+        return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
     }
 
     private float MeasureTicks()
