@@ -24,9 +24,7 @@ public static class FontService
     {
         HashSet<string> installedFonts = new(SKFontManager.Default.FontFamilies);
 
-        // NOTE: Lato has more bold options on Linux in GitHub Actions
-
-        string[] preferredFonts = { "Segoe UI", "Lato", "DejaVu Sans", "Helvetica" };
+        string[] preferredFonts = { "Segoe UI", "DejaVu Sans", "Helvetica" };
         foreach (string preferredFont in preferredFonts)
         {
             if (installedFonts.Contains(preferredFont))
