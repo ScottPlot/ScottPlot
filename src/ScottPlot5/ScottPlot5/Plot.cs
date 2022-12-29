@@ -293,16 +293,16 @@ public class Plot
         return Path.GetFullPath(path);
     }
 
-    public string SavePng(string path, int width, int height, int quality = 85)
+    public string SavePng(string path, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, quality);
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, 100);
         File.WriteAllBytes(path, bytes);
         return Path.GetFullPath(path);
     }
 
-    public string SaveBmp(string path, int width, int height, int quality = 85)
+    public string SaveBmp(string path, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, quality);
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, 100);
         File.WriteAllBytes(path, bytes);
         return Path.GetFullPath(path);
     }

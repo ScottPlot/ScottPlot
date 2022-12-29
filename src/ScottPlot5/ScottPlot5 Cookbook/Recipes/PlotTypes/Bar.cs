@@ -27,9 +27,9 @@ internal class Bar : RecipePageBase
                     Position = j,
                     Value = rand.NextDouble() * 10
                 }).ToArray(),
-                Fill = new(MyPlot.Palette.GetColor(i))
+                Fill = new(myPlot.Palette.GetColor(i))
                 {
-                    HatchColor = MyPlot.Palette.GetColor(i + 1),
+                    HatchColor = myPlot.Palette.GetColor(i + 1),
                     Hatch = new ScottPlot.Style.Hatches.Striped(ScottPlot.Style.Hatches.StripeDirection.DiagonalDown)
                 },
                 Label = $"Series {i + 1}"
@@ -39,9 +39,9 @@ internal class Bar : RecipePageBase
                 for (int i = 1; i < s.Bars.Count; i++)
                     s.Bars[i].ValueBase = s.Bars[i - 1].Value;
 
-            MyPlot.Add.Bar(series);
+            myPlot.Add.Bar(series);
 
-            MyPlot.Add.Legend();
+            myPlot.Add.Legend();
         }
     }
 }

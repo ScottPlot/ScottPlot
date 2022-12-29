@@ -14,14 +14,11 @@ internal class HtmlRecipePage : HtmlPageBase
             recipe.AddSource(sources);
     }
 
-    private static string CodeToHtml(string code)
+    private static string HtmlSafeCode(string code)
     {
         return code
             .Replace("<", "&lt;")
             .Replace(">", "&gt;")
-            .Replace(" ", "&nbsp;")
-            //.Replace("\r", "")
-            //.Replace("\n", "<br>\n")
             ;
     }
 
@@ -34,7 +31,7 @@ internal class HtmlRecipePage : HtmlPageBase
             string recipeHtml = recipeTemplate
                 .Replace("{{NAME}}", recipe.Name)
                 .Replace("{{DESCRIPTION}}", recipe.Description)
-                .Replace("{{CODE}}", CodeToHtml(recipe.SourceCode))
+                .Replace("{{CODE}}", HtmlSafeCode(recipe.SourceCode))
                 .Replace("{{IMAGE_URL}}", recipe.ImageFilename)
                 .Replace("{{ANCHOR}}", recipe.AnchorName)
                 ;

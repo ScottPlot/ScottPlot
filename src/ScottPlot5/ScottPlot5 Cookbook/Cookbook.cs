@@ -13,6 +13,10 @@ public static class Cookbook
 
     public static readonly string RecipeSourceFolder = Path.Combine(GetRepoFolder(), "src/ScottPlot5/ScottPlot5 Cookbook/Recipes");
 
+    public static int ImageWidth = 400;
+
+    public static int ImageHeight = 300;
+
     private static string GetRepoFolder()
     {
         string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory); ;

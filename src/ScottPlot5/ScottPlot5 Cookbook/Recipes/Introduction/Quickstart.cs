@@ -19,7 +19,7 @@ internal class Quickstart : RecipePageBase
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
             double[] dataY = { 1, 4, 9, 16, 25 };
-            MyPlot.Add.Scatter(dataX, dataY);
+            myPlot.Add.Scatter(dataX, dataY);
         }
     }
 
@@ -34,7 +34,7 @@ internal class Quickstart : RecipePageBase
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
             double[] dataY = { 1, 4, 9, 16, 25 };
-            var myScatter = MyPlot.Add.Scatter(dataX, dataY);
+            var myScatter = myPlot.Add.Scatter(dataX, dataY);
             myScatter.LineWidth = 5;
             myScatter.LineColor = Colors.Green.WithOpacity(.2);
             myScatter.MarkerColor = Colors.Magenta;
@@ -52,8 +52,8 @@ internal class Quickstart : RecipePageBase
         {
             double[] sin = Generate.Sin(51);
             double[] cos = Generate.Cos(51);
-            MyPlot.Add.Signal(sin);
-            MyPlot.Add.Signal(cos);
+            myPlot.Add.Signal(sin);
+            myPlot.Add.Signal(cos);
         }
     }
 
@@ -65,11 +65,11 @@ internal class Quickstart : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            MyPlot.Add.Signal(Generate.Sin(51));
-            MyPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
-            MyPlot.XAxis.Label.Text = "Horizonal Axis";
-            MyPlot.YAxis.Label.Text = "Vertical Axis";
+            myPlot.XAxis.Label.Text = "Horizonal Axis";
+            myPlot.YAxis.Label.Text = "Vertical Axis";
         }
     }
 }
