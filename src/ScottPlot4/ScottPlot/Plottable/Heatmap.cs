@@ -281,7 +281,7 @@ namespace ScottPlot.Plottable
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] alphaVals = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            double?[,] tmpAlpha = null; 
+            double?[,] tmpAlpha = null;
             if (alphaVals != null) tmpAlpha = new double?[alphaVals.GetLength(0), alphaVals.GetLength(1)];
 
             for (int i = 0; i < intensities.GetLength(0); i++)
@@ -327,7 +327,7 @@ namespace ScottPlot.Plottable
             double?[] alphaValsFlattened = alphaVals.Cast<double?>().ToArray();
 
             int[] flatARGB = Colormap.GetRGBAs(alphaValsFlattened, fixColor);
-                        
+
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
             Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
