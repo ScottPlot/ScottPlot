@@ -1,6 +1,6 @@
 ﻿using WinForms_Demo;
 
-namespace ScottPlot5_WinForms_Demo;
+namespace WinForms_Demo;
 
 static class Program
 {

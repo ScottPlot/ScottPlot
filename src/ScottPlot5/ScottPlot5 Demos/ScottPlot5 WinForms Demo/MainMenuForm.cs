@@ -1,5 +1,4 @@
-﻿using ScottPlot5_WinForms_Demo;
-using System.Data;
+﻿using System.Data;
 using System.Runtime.Serialization;
 
 namespace WinForms_Demo;
@@ -25,9 +24,9 @@ public partial class MainMenuForm : Form
         int paddingBetweenItems = 10;
         int itemHeight = 83;
 
-        IDemoForm[] demoForms = Demos.Values.Select(x => (IDemoForm)FormatterServices.GetUninitializedObject(x)).ToArray();
+        IDemoWindow[] demoForms = Demos.Values.Select(x => (IDemoWindow)FormatterServices.GetUninitializedObject(x)).ToArray();
 
-        foreach (IDemoForm demoForm in demoForms)
+        foreach (IDemoWindow demoForm in demoForms)
         {
             MenuItem item = new(demoForm, Demos[demoForm.Title])
             {

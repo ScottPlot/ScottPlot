@@ -1,4 +1,4 @@
-﻿namespace ScottPlot5_WinForms_Demo.Demos
+﻿namespace WinForms_Demo.Demos
 {
     partial class SignalPerformance
     {

@@ -1,14 +1,6 @@
-﻿using ScottPlot5_WinForms_Demo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿namespace WinForms_Demo.Demos;
 
-namespace Demos;
-public partial class CookbookViewer : Form, IDemoForm
+public partial class CookbookViewer : Form, IDemoWindow
 {
     public string Title => "ScottPlot Cookbook";
 
@@ -18,5 +10,10 @@ public partial class CookbookViewer : Form, IDemoForm
     public CookbookViewer()
     {
         InitializeComponent();
+    }
+
+    private void CookbookViewer_Load(object sender, EventArgs e)
+    {
+
     }
 }

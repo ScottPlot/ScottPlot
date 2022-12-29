@@ -1,5 +1,4 @@
-﻿using ScottPlot5_WinForms_Demo;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using WinForms_Demo.Properties;
 
 namespace WinForms_Demo;
@@ -13,7 +12,7 @@ public partial class MenuItem : UserControl
     readonly Bitmap ImageFaded;
     readonly Type FormType;
 
-    public MenuItem(IDemoForm demoForm, Type formType)
+    public MenuItem(IDemoWindow demoForm, Type formType)
     {
         InitializeComponent();
         FormType = formType;

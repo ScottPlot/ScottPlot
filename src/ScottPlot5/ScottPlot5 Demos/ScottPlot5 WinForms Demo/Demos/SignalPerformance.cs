@@ -1,6 +1,6 @@
-﻿namespace ScottPlot5_WinForms_Demo.Demos;
+﻿namespace WinForms_Demo.Demos;
 
-public partial class SignalPerformance : Form, IDemoForm
+public partial class SignalPerformance : Form, IDemoWindow
 {
     public string Title => "Signal Plot Performance";
 
