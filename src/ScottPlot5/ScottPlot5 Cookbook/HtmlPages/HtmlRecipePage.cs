@@ -20,8 +20,8 @@ internal class HtmlRecipePage : HtmlPageBase
             .Replace("<", "&lt;")
             .Replace(">", "&gt;")
             .Replace(" ", "&nbsp;")
-            .Replace("\r", "")
-            .Replace("\n", "<br>")
+            //.Replace("\r", "")
+            //.Replace("\n", "<br>\n")
             ;
     }
 

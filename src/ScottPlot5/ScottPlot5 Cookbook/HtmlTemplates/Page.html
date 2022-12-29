@@ -32,6 +32,8 @@
         gtag('config', 'G-R61M9LQZB3');
     </script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs.min.css" crossorigin="anonymous">
+
     <style>
         .limited-width {
             max-width: 800px;
@@ -45,6 +47,14 @@
             a:hover {
                 text-decoration: underline;
             }
+
+        .hljs {
+            background: transparent;
+        }
+
+        pre code.hljs {
+            padding: 0em;
+        }
     </style>
 </head>
 
@@ -107,6 +117,9 @@
     </script>
 
     <script src="https://swharden.github.io/MatrixWall/matrix.js?6"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
 
 </html>
