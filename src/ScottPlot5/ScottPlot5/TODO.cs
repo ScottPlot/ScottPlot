@@ -10,4 +10,6 @@ internal static class TODO
     // custom object for line style
 
     // need more marker shapes
+
+    // add extension methods to convert System.Drawing.Color to ScottPlot.Color
 }

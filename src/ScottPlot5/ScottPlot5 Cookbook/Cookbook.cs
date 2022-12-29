@@ -36,11 +36,23 @@ public static class Cookbook
         throw new InvalidOperationException($"repository folder not found in any folder above {defaultFolder}");
     }
 
-    internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
+    /// <summary>
+    /// Return a collection of chapters.
+    /// Chapters are groups of pages (each page has many recipes).
+    /// </summary>
+    public static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
 
+    /// <summary>
+    /// Return a list of all pages (each page has many recipes) not grouped by chapter.
+    /// This function should only be used for running tests on all pages.
+    /// </summary>
     internal static List<RecipePageBase> GetPages() => GetInstantiated<RecipePageBase>();
 
-    internal static List<RecipePageBase> GetPagesInChapter(Chapter chapter) => GetInstantiated<RecipePageBase>()
+    /// <summary>
+    /// Return all pages for the given chapter.
+    /// Each page contains many recipes.
+    /// </summary>
+    public static List<RecipePageBase> GetPagesInChapter(Chapter chapter) => GetInstantiated<RecipePageBase>()
         .Where(x => x.PageDetails.Chapter == chapter)
         .ToList();
 

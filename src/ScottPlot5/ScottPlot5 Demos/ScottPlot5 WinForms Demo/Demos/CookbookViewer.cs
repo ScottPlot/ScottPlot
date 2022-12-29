@@ -17,17 +17,36 @@ public partial class CookbookViewer : Form, IDemoWindow
     private void CookbookViewer_Load(object sender, EventArgs e)
     {
         listView1.Items.Clear();
+        listView1.Groups.Clear();
 
-        foreach (IRecipe recipe in Cookbook.GetRecipes())
+        foreach (Chapter chapter in Cookbook.GetChapters())
         {
-            ListViewItem item = new()
+            foreach (RecipePageBase recipePage in Cookbook.GetPagesInChapter(chapter))
             {
-                Text = recipe.Name,
-                Tag = recipe,
-            };
+                ListViewGroup group = new()
+                {
+                    HeaderAlignment = HorizontalAlignment.Center,
+                    Header = recipePage.PageDetails.PageName,
+                };
 
-            listView1.Items.Add(item);
+                listView1.Groups.Add(group);
+
+                foreach (IRecipe recipe in recipePage.GetRecipes())
+                {
+
+                    ListViewItem item = new()
+                    {
+                        Text = recipe.Name,
+                        Tag = recipe,
+                        Group = group,
+                    };
+
+                    listView1.Items.Add(item);
+                }
+            }
         }
+
+        listView1.Items[0].Selected = true;
     }
 
     private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -38,6 +57,7 @@ public partial class CookbookViewer : Form, IDemoWindow
         IRecipe recipe = (IRecipe)listView1.SelectedItems[0].Tag;
         formsPlot1.Reset();
         recipe.Recipe(formsPlot1.Plot);
+        // TODO: set background color to control color
         formsPlot1.Refresh();
     }
 }

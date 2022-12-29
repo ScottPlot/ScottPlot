@@ -2,7 +2,7 @@
 
 namespace ScottPlotCookbook;
 
-internal abstract class RecipePageBase
+public abstract class RecipePageBase
 {
     public abstract RecipePageDetails PageDetails { get; }
 
