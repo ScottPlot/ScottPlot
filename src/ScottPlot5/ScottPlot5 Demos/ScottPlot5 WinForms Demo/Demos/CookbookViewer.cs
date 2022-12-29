@@ -1,4 +1,6 @@
-﻿namespace WinForms_Demo.Demos;
+﻿using ScottPlotCookbook;
+
+namespace WinForms_Demo.Demos;
 
 public partial class CookbookViewer : Form, IDemoWindow
 {
@@ -14,6 +16,28 @@ public partial class CookbookViewer : Form, IDemoWindow
 
     private void CookbookViewer_Load(object sender, EventArgs e)
     {
+        listView1.Items.Clear();
 
+        foreach (IRecipe recipe in Cookbook.GetRecipes())
+        {
+            ListViewItem item = new()
+            {
+                Text = recipe.Name,
+                Tag = recipe,
+            };
+
+            listView1.Items.Add(item);
+        }
+    }
+
+    private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (listView1.SelectedItems.Count == 0)
+            return;
+
+        IRecipe recipe = (IRecipe)listView1.SelectedItems[0].Tag;
+        formsPlot1.Reset();
+        recipe.Recipe(formsPlot1.Plot);
+        formsPlot1.Refresh();
     }
 }

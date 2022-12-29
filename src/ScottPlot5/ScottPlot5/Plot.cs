@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ScottPlot;
 
-public class Plot
+public class Plot : IDisposable
 {
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
@@ -72,6 +72,15 @@ public class Plot
 
         // setup the helper class that creates and adds plottables to this plot
         Add = new(this);
+    }
+
+    public void Dispose()
+    {
+        Plottables.Clear();
+        Grids.Clear();
+        Panels.Clear();
+        YAxes.Clear();
+        XAxes.Clear();
     }
 
     #region Axis Management

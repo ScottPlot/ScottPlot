@@ -9,7 +9,7 @@ public class FormsPlot : UserControl, IPlotControl
 {
     readonly SKGLControl SKElement;
 
-    public Plot Plot { get; } = new();
+    public Plot Plot { get; private set; } = new();
 
     public Interaction Interaction { get; private set; }
 
@@ -30,6 +30,18 @@ public class FormsPlot : UserControl, IPlotControl
         Controls.Add(SKElement);
 
         HandleDestroyed += (s, e) => SKElement.Dispose();
+    }
+
+    public void Reset()
+    {
+        Reset(new Plot());
+    }
+
+    public void Reset(Plot newPlot)
+    {
+        Plot oldPlot = Plot;
+        Plot = newPlot;
+        oldPlot.Dispose();
     }
 
     public void Replace(Interaction interaction)
