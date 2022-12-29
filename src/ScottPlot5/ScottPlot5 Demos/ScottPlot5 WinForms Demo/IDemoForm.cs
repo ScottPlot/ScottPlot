@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot5_WinForms_Demo;
 
-internal interface IDemoForm
+public interface IDemoForm
 {
     string Title { get; }
     string Description { get; }

@@ -15,7 +15,7 @@ internal abstract class HtmlPageBase
     protected void Save(string folder, string title, string rootUrl = "", bool localFile = false, string filename = "index.html")
     {
         string html = File.ReadAllText("HtmlTemplates/Page.html")
-            .Replace("{{VERSION}}", ScottPlot.Version.InformalVersion)
+            .Replace("{{VERSION}}", ScottPlot.Version.VersionString)
             .Replace("{{DATE}}", DateTime.Now.ToShortDateString())
             .Replace("{{TIME}}", DateTime.Now.ToShortTimeString())
             .Replace("{{TITLE}}", title)
