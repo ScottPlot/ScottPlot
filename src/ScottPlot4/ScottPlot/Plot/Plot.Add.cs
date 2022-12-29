@@ -534,6 +534,21 @@ namespace ScottPlot
             return plottable;
         }
 
+        public Heatmap AddHeatmap(Color fixColor, double?[,] alphaVals, bool? lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(fixColor, alphaVals);
+            Add(plottable);
+
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
+                AxisScaleLock(true);
+
+            return plottable;
+        }
+
         /// <summary>
         /// Add heatmap to the plot stretched to fit the given dimensions.
         /// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 

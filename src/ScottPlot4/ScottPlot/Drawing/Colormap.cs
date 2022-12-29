@@ -151,6 +151,32 @@ namespace ScottPlot.Drawing
             return rgbas;
         }
 
+        public static int[] GetRGBAs(double[] intensities, double[] alphaVals, Colormap colorMap)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
+                var (r, g, b) = colorMap.GetRGB(pixelIntensity);                
+                byte alpha = (byte)Math.Max(Math.Min(alphaVals[i] * 255, 255), 0);
+                byte[] argb = { b, g, r, alpha };
+                rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+        
+        public static int[] GetRGBAs(double[] alphaVals, Color fixColor)
+        {
+            int[] rgbas = new int[alphaVals.Length];
+            for (int i = 0; i < alphaVals.Length; i++)
+            {                                
+                byte alpha = (byte)Math.Max(Math.Min(alphaVals[i] * 255, 255), 0);
+                byte[] argb = { fixColor.B, fixColor.G, fixColor.R, alpha };
+                rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
         public static int[] GetRGBAs(double?[] intensities, Colormap colorMap, double minimumIntensity = 0)
         {
             int[] rgbas = new int[intensities.Length];
@@ -162,6 +188,52 @@ namespace ScottPlot.Drawing
                     var (r, g, b) = colorMap.GetRGB(pixelIntensity);
                     byte alpha = intensities[i] < minimumIntensity ? (byte)0 : (byte)255;
                     byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+            }
+            return rgbas;
+        }
+
+        public static int[] GetRGBAs(double?[] intensities, double?[] alphaVals, Colormap colorMap)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                if (intensities[i].HasValue)
+                {
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                    byte alpha;
+                    if (alphaVals[i].HasValue) alpha = (byte)Math.Max(Math.Min(alphaVals[i].Value * 255, 255), 0);
+                    else alpha = 0;                    
+                    byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+            }
+            return rgbas;
+        }
+
+        public static int[] GetRGBAs(double?[] alphaVals, Color fixColor)
+        {
+            int[] rgbas = new int[alphaVals.Length];
+            for (int i = 0; i < alphaVals.Length; i++)
+            {
+                if (alphaVals[i].HasValue)
+                {                    
+                    byte alpha;
+                    if (alphaVals[i].HasValue) alpha = (byte)Math.Max(Math.Min(alphaVals[i].Value * 255, 255), 0);
+                    else alpha = 0;
+                    byte[] argb = { fixColor.B, fixColor.G, fixColor.R, alpha };
                     rgbas[i] = BitConverter.ToInt32(argb, 0);
                 }
                 else
