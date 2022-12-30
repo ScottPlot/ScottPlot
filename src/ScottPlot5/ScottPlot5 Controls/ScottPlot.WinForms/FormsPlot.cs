@@ -2,6 +2,8 @@
 using ScottPlot.Extensions;
 using SkiaSharp.Views.Desktop;
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -33,6 +35,12 @@ public class FormsPlot : UserControl, IPlotControl
         HandleDestroyed += (s, e) => SKElement.Dispose();
 
         Plot = Reset();
+
+        // TODO: replace this with an annotation instead of title
+        bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
+        Plot.Title.Label.Text = isDesignMode
+            ? $"ScottPlot {Version.VersionString}"
+            : string.Empty;
     }
 
     // make it so changing the background color of the control changes background color of the plot too
