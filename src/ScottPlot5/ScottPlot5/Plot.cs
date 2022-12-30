@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using ScottPlot.Axis;
+﻿using ScottPlot.Axis;
 using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
-using SkiaSharp;
 using ScottPlot.Plottables;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -19,6 +16,7 @@ public class Plot : IDisposable
     public readonly List<IPlottable> Plottables = new();
 
     public readonly PlottableFactory Add;
+
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
 
     public IRenderer Renderer = new StandardRenderer();
@@ -332,6 +330,20 @@ public class Plot : IDisposable
             foreach (var item in curr.LegendItems)
                 yield return item;
     }
+
+    #endregion
+
+    #region Shortcuts
+
+    /// <summary>
+    /// Clears the <see cref="Plottables"/> list
+    /// </summary>
+    public void Clear() => Plottables.Clear();
+
+    /// <summary>
+    /// Sets the label for the secondary axis
+    /// </summary>
+    public void Title(string text) => XAxes.Last().Label.Text = text;
 
     #endregion
 
