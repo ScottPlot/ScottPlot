@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+
 using WinForms_Demo.Properties;
 
 namespace WinForms_Demo;
@@ -24,7 +25,16 @@ public partial class MenuItem : UserControl
         pictureBox1.Image = ImageFaded;
         pictureBox1.MouseEnter += (s, e) => pictureBox1.Image = ImageOriginal;
         pictureBox1.MouseLeave += (s, e) => pictureBox1.Image = ImageFaded;
+        pictureBox1.MouseClick += (s, e) => LaunchSourceBrowser(formType);
         button1.Click += (s, e) => LaunchDemoWindow(demoForm.Title);
+    }
+
+    private void LaunchSourceBrowser(Type formType)
+    {
+        string folder = "https://github.com/ScottPlot/ScottPlot/tree/main/src/ScottPlot5/ScottPlot5%20Demos/ScottPlot5%20WinForms%20Demo/Demos/";
+        string filename = formType.Name + ".cs";
+        string url = folder + filename;
+        ScottPlot.Platform.LaunchWebBrowser(url);
     }
 
     private Bitmap GetFadedButtonImage()
