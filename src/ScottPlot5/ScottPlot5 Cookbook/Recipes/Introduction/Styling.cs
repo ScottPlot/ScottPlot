@@ -28,7 +28,7 @@ internal class Styling : RecipePageBase
     internal class AxisCustom : RecipeTestBase
     {
         public override string Name => "Axis Customization";
-        public override string Description => "Axis labels, tick marks, tick labels, and axis frame can all be customized";
+        public override string Description => "Axis labels, tick marks, and frame can all be customized";
 
         [Test]
         public override void Recipe()
@@ -48,9 +48,16 @@ internal class Styling : RecipePageBase
             myPlot.YAxis.Label.Italic = true;
 
             myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.XAxis.Label.Color = Colors.Green;
             myPlot.XAxis.Label.Bold = false;
             myPlot.XAxis.Label.FontName = Font.MonospaceFontName;
+
+            myPlot.XAxis.MajorTickLength = 10;
+            myPlot.XAxis.MajorTickLineWidth = 3;
+            myPlot.XAxis.MajorTickColor = Colors.Magenta;
+            myPlot.XAxis.MinorTickLength = 5;
+            myPlot.XAxis.MinorTickLineWidth = 0.5f;
+            myPlot.XAxis.MinorTickColor = Colors.Green;
+            myPlot.XAxis.FrameColor = Colors.LightBlue;
         }
     }
 

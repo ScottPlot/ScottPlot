@@ -2,6 +2,8 @@
 using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
 using ScottPlot.Plottables;
+using System.Linq;
+using ScottPlot.Axis.StandardAxes;
 
 namespace ScottPlot;
 
@@ -34,14 +36,45 @@ public class Plot : IDisposable
     internal RenderDetails LastRenderInfo = new();
 
     /// <summary>
-    /// The primary horizontal axis (the first one in the list of <see cref="XAxes"/>)
+    /// This property provides access to the primary horizontal axis below the plot.
+    /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public IXAxis XAxis => XAxes.First();
+    public BottomAxis XAxis
+    {
+        get
+        {
+            var lowerAxes = XAxes.Where(x => x.Edge == Edge.Bottom);
+
+            if (!lowerAxes.Any())
+                throw new InvalidOperationException("Plot does not contain any bottom axes");
+
+            if (lowerAxes.First() is not BottomAxis)
+                throw new InvalidOperationException("Primary bottom axis is not a standard bottom axis");
+
+            return (BottomAxis)lowerAxes.First();
+        }
+    }
+
 
     /// <summary>
-    /// The primary vertical axis (the first one in the list of <see cref="YAxes"/>)
+    /// This property provides access to the primary vertical axis to the left of the plot.
+    /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public IYAxis YAxis => YAxes.First();
+    public LeftAxis YAxis
+    {
+        get
+        {
+            var leftAxes = YAxes.Where(x => x.Edge == Edge.Left);
+
+            if (!leftAxes.Any())
+                throw new InvalidOperationException("Plot does not contain any left axes");
+
+            if (leftAxes.First() is not LeftAxis)
+                throw new InvalidOperationException("Primary left axis is not a standard left axis");
+
+            return (LeftAxis)leftAxes.First();
+        }
+    }
 
     public Plot()
     {

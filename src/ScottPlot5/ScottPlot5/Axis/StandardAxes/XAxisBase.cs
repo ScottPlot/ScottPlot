@@ -1,8 +1,4 @@
-﻿using SkiaSharp;
-using System.Data;
-using System.Drawing;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
 public abstract class XAxisBase : IAxis
 {
@@ -35,6 +31,29 @@ public abstract class XAxisBase : IAxis
     public Style.StyledSKFont TickFont { get; set; } = new();
     public abstract Edge Edge { get; }
     public bool ShowDebugInformation { get; set; } = false;
+
+    public float MajorTickLength { get; set; } = 4;
+    public float MajorTickLineWidth { get; set; } = 1;
+    public Color MajorTickColor { get; set; } = Colors.Black;
+    public TickStyle MajorTickStyle => new()
+    {
+        Length = MajorTickLength,
+        LineWidth = MajorTickLineWidth,
+        Color = MajorTickColor
+    };
+
+    public float MinorTickLength { get; set; } = 2;
+    public float MinorTickLineWidth { get; set; } = 1;
+    public Color MinorTickColor { get; set; } = Colors.Black;
+    public TickStyle MinorTickStyle => new()
+    {
+        Length = MinorTickLength,
+        LineWidth = MinorTickLineWidth,
+        Color = MinorTickColor
+    };
+
+    public float FrameLineWidth { get; set; } = 1;
+    public Color FrameColor { get; set; } = Colors.Black;
 
     public float Measure()
     {
@@ -116,9 +135,10 @@ public abstract class XAxisBase : IAxis
         Label.Draw(surface.Canvas, labelPoint);
 
         using SKFont tickFont = TickFont.GetFont();
-        var ticks = TickGenerator.GetVisibleTicks(Range);
-        AxisRendering.DrawTicks(surface, tickFont, panelRect, Label.Color, ticks, this);
-        AxisRendering.DrawFrame(surface, panelRect, Edge, Label.Color);
+        IEnumerable<Tick> ticks = TickGenerator.GetVisibleTicks(Range);
+
+        AxisRendering.DrawTicks(surface, tickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineWidth, FrameColor);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

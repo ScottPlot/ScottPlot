@@ -18,12 +18,26 @@ internal class Axis : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            double[] dataX = new double[] { 1, 2, 3, 4, 5 };
-            double[] dataY = new double[] { 1, 4, 9, 16, 25 };
-            myPlot.Add.Scatter(dataX, dataY);
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.XAxis.Label.Text = "Yep, this works";
-            myPlot.YAxis.Label.Text = "This works too!";
+            myPlot.XAxis.Label.Text = "Horizontal Axis";
+            myPlot.YAxis.Label.Text = "Vertical Axis";
+        }
+    }
+
+    internal class TickLabels : RecipeTestBase
+    {
+        public override string Name => "Customize Tick Labels";
+        public override string Description => "The labels shown by major ticks can be customized.";
+
+        [Test]
+        public override void Recipe()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            //myPlot.XAxis.TickFont
         }
     }
 }

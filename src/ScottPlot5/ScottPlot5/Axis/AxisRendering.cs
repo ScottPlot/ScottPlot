@@ -1,5 +1,4 @@
-﻿using SkiaSharp;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace ScottPlot.Axis;
 
@@ -8,18 +7,16 @@ namespace ScottPlot.Axis;
 /// </summary>
 public static class AxisRendering
 {
-    public static float MajorTickLength = 4;
-    public static float MinorTickLength = 2;
-
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
-    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, Color color)
+    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, float frameLineWidth, Color frameColor)
     {
         using SKPaint framePaint = new()
         {
-            Color = color.ToSKColor(),
+            Color = frameColor.ToSKColor(),
             IsAntialias = true,
+            StrokeWidth = frameLineWidth,
         };
 
         if (edge == Edge.Left)
@@ -64,7 +61,7 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -75,15 +72,17 @@ public static class AxisRendering
         {
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,
-            Color = color.ToSKColor(),
         };
 
 
         foreach (Tick tick in ticks)
         {
+            paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.StrokeWidth = tick.IsMajor ? majorStyle.LineWidth : minorStyle.LineWidth;
+            float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
+
             float xPx = axis.GetPixel(tick.Position, panelRect);
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
-            float tickLength = tick.IsMajor ? MajorTickLength : MinorTickLength;
             float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
@@ -94,7 +93,7 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -105,15 +104,16 @@ public static class AxisRendering
         {
             IsAntialias = true,
             TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left,
-            Color = color.ToSKColor(),
         };
 
         foreach (Tick tick in ticks)
         {
+            paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.StrokeWidth = tick.IsMajor ? majorStyle.LineWidth : minorStyle.LineWidth;
+            float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
+
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float y = axis.GetPixel(tick.Position, panelRect);
-
-            float tickLength = tick.IsMajor ? MajorTickLength : MinorTickLength;
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
             surface.Canvas.DrawLine(x, y, xEdge, y, paint);
 
@@ -124,11 +124,11 @@ public static class AxisRendering
         }
     }
 
-    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect panelRect, Color color, IEnumerable<Tick> ticks, IAxis axis)
+    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge.IsVertical())
-            DrawTicksVerticalAxis(surface, font, panelRect, color, ticks, axis);
+            DrawTicksVerticalAxis(surface, font, panelRect, ticks, axis, majorStyle, minorStyle);
         else
-            DrawTicksHorizontalAxis(surface, font, panelRect, color, ticks, axis);
+            DrawTicksHorizontalAxis(surface, font, panelRect, ticks, axis, majorStyle, minorStyle);
     }
 }
