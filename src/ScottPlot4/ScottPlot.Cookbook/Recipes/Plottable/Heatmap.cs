@@ -122,8 +122,19 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double?[,] imageData = DataGen.SampleImageDataNullable();
-            plt.AddHeatmap(Color.Green, imageData);
+            double?[,] data = DataGen.SampleImageDataNullable();
+
+            var hm1 = plt.AddHeatmap(Color.Red, data, lockScales: false);
+            hm1.OffsetX = 0;
+            hm1.OffsetY = 0;
+
+            var hm2 = plt.AddHeatmap(Color.Green, data, lockScales: false);
+            hm2.OffsetX = 30;
+            hm2.OffsetY = 20;
+
+            var hm3 = plt.AddHeatmap(Color.Blue, data, lockScales: false);
+            hm3.OffsetX = 60;
+            hm3.OffsetY = 40;
         }
     }
 
