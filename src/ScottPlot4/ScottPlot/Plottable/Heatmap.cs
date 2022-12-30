@@ -251,9 +251,18 @@ namespace ScottPlot.Plottable
             double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
 
             int[] flatARGB;
-            if (opacity != null) flatARGB = Colormap.GetRGBAs(NormalizedIntensities, opacityFlattened, Colormap);
-            else if (TransparencyThreshold.HasValue) flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
-            else flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
+            if (opacity != null)
+            {
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, opacityFlattened, Colormap);
+            }
+            else if (TransparencyThreshold.HasValue)
+            {
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
+            }
+            else
+            {
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
+            }
 
             double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
             double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
@@ -279,30 +288,37 @@ namespace ScottPlot.Plottable
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
-            double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            double?[,] tmpOpacity = null;
-            if (opacity != null) tmpOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
+            double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
+
+            double?[,] finalOpacity = null;
+
+            if (opacity is not null)
+            {
+                finalOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
+            }
 
             for (int i = 0; i < intensities.GetLength(0); i++)
             {
                 for (int j = 0; j < intensities.GetLength(1); j++)
                 {
-                    tmp[i, j] = intensities[i, j];
-                    if (opacity != null) tmpOpacity[i, j] = opacity[i, j];
+                    finalIntensity[i, j] = intensities[i, j];
+
+                    if (opacity is not null)
+                    {
+                        finalOpacity[i, j] = opacity[i, j];
+                    }
                 }
             }
-            Update(tmp, colormap, min, max, tmpOpacity);
+
+            Update(finalIntensity, colormap, min, max, finalOpacity);
         }
 
         /// <summary>
-        /// This method creates a bitmap with the specified fix color and
-        /// transparency. The bitmap is stored
-        /// and displayed (without anti-alias interpolation) when Render() is called.
-        /// </summary>        /// 
-        /// <param name="fixColor">fixed color for the bitmap</param>
-        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
-        /// Null values are not shown.</param>
-        public void Update(Color fixColor, double?[,] opacity)
+        /// Update the heatmap where every cell is given the same color, but with various opacities.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        public void Update(Color color, double?[,] opacity)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -312,6 +328,7 @@ namespace ScottPlot.Plottable
                 throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
                     $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
             }
+
             // limit total size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/772
             int maxTotalValues = 10_000_000;
@@ -325,7 +342,7 @@ namespace ScottPlot.Plottable
             DataHeight = opacity.GetLength(0);
             double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
 
-            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, fixColor);
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
 
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
