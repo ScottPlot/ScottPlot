@@ -2,6 +2,8 @@
 
 internal static class TODO
 {
+    // what do empty plots look like?
+
     // control designer view sucks - at least add some axes and a grid
 
     // signal plots containing only horizontal data look bad at the edges.
@@ -11,5 +13,5 @@ internal static class TODO
 
     // need more marker shapes
 
-    // add extension methods to convert System.Drawing.Color to ScottPlot.Color
+    // tick styles need to be exposed. Right now color is just whatever the label color is.
 }
