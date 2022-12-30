@@ -70,6 +70,7 @@ internal class Quickstart : RecipePageBase
 
             myPlot.XAxis.Label.Text = "Horizonal Axis";
             myPlot.YAxis.Label.Text = "Vertical Axis";
+            myPlot.Title.Label.Text = "Plot Title";
         }
     }
 }

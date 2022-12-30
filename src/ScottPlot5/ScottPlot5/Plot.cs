@@ -7,23 +7,17 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public readonly List<IXAxis> XAxes = new();
-    public readonly List<IYAxis> YAxes = new();
-
-    public readonly List<IPanel> Panels = new();
-
-    public readonly List<IGrid> Grids = new();
-    public readonly List<IPlottable> Plottables = new();
-
-    public readonly PlottableFactory Add;
-
+    public List<IXAxis> XAxes { get; } = new();
+    public List<IYAxis> YAxes { get; } = new();
+    public List<IPanel> Panels { get; } = new();
+    public Panels.TitlePanel Title { get; } = new();
+    public List<IGrid> Grids { get; } = new();
+    public List<IPlottable> Plottables { get; } = new();
+    public PlottableFactory Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
-
-    public IRenderer Renderer = new StandardRenderer();
-
-    public ILayoutSystem Layout = new StandardLayoutSystem();
-
-    public readonly AutoScaleMargins Margins = new();
+    public IRenderer Renderer { get; set; } = new StandardRenderer();
+    public ILayoutSystem Layout { get; set; } = new StandardLayoutSystem();
+    public AutoScaleMargins Margins { get; } = new();
 
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
@@ -83,8 +77,13 @@ public class Plot : IDisposable
 
     #region Axis Management
 
-    public IAxis[] GetAllAxes() => XAxes.Select(x => (IAxis)x).Concat(YAxes).ToArray();
-    public IPanel[] GetAllPanels() => XAxes.Select(x => (IPanel)x).Concat(YAxes).Concat(Panels).ToArray();
+    internal IAxis[] GetAllAxes() => XAxes.Select(x => (IAxis)x).Concat(YAxes).ToArray();
+
+    internal IPanel[] GetAllPanels() => XAxes.Select(x => (IPanel)x)
+        .Concat(YAxes)
+        .Concat(Panels)
+        .Concat(new[] { Title })
+        .ToArray();
 
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double left, double right, double bottom, double top)
@@ -339,11 +338,6 @@ public class Plot : IDisposable
     /// Clears the <see cref="Plottables"/> list
     /// </summary>
     public void Clear() => Plottables.Clear();
-
-    /// <summary>
-    /// Sets the label for the secondary axis
-    /// </summary>
-    public void Title(string text) => XAxes.Last().Label.Text = text;
 
     #endregion
 

@@ -26,7 +26,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.Title("one million points");
+            formsPlot1.Plot.Title.Label.Text = "one million points";
         }
         else
         {
@@ -35,7 +35,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
             sp.MarkerSize = 0;
-            formsPlot1.Plot.Title("ten thousand points");
+            formsPlot1.Plot.Title.Label.Text = "ten thousand points";
         }
 
         formsPlot1.Plot.AutoScale();
