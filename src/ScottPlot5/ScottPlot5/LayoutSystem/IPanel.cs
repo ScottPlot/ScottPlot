@@ -26,6 +26,11 @@ public interface IPanel
     /// Enable this to display extra information on the axis to facilitate development
     /// </summary>
     bool ShowDebugInformation { get; set; }
+
+    /// <summary>
+    /// Return the rectangle for this panel
+    /// </summary>
+    PixelRect GetPanelRect(PixelRect dataRect, float size, float offset);
 }
 
 public static class IPanelExtensions

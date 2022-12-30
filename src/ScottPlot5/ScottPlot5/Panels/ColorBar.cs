@@ -23,18 +23,23 @@ public class ColorBar : IPanel
     // Unfortunately the size of the axis depends on the size of the plotting window, so we just have to guess here. 2000 should be larger than most
     public float Measure() => Margin + GetAxis(2000).Measure() + Width;
 
-    public void Render(SKSurface surface, PixelRect rect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    {
+        return Edge switch
+        {
+            Edge.Left => new SKRect(dataRect.Left - Width, dataRect.Top, dataRect.Left, dataRect.Top + dataRect.Height).ToPixelRect(),
+            Edge.Right => new SKRect(dataRect.Right, dataRect.Top, dataRect.Right + Width, dataRect.Top + dataRect.Height).ToPixelRect(),
+            Edge.Bottom => new SKRect(dataRect.Left, dataRect.Bottom, dataRect.Left + dataRect.Width, dataRect.Bottom + Width).ToPixelRect(),
+            Edge.Top => new SKRect(dataRect.Left, dataRect.Top - Width, dataRect.Left + dataRect.Width, dataRect.Top).ToPixelRect(),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
         using var _ = new SKAutoCanvasRestore(surface.Canvas);
 
-        SKRect colorbarRect = Edge switch
-        {
-            Edge.Left => new(rect.Left - Width, rect.Top, rect.Left, rect.Top + rect.Height),
-            Edge.Right => new(rect.Right, rect.Top, rect.Right + Width, rect.Top + rect.Height),
-            Edge.Bottom => new(rect.Left, rect.Bottom, rect.Left + rect.Width, rect.Bottom + Width),
-            Edge.Top => new(rect.Left, rect.Top - Width, rect.Left + rect.Width, rect.Top),
-            _ => throw new ArgumentOutOfRangeException(nameof(Edge))
-        };
+        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
 
         SKPoint marginTranslation = GetTranslation(Margin);
         SKPoint axisTranslation = GetTranslation(Width);
@@ -42,13 +47,13 @@ public class ColorBar : IPanel
         using var bmp = GetBitmap();
 
         surface.Canvas.Translate(marginTranslation);
-        surface.Canvas.DrawBitmap(bmp, colorbarRect);
+        surface.Canvas.DrawBitmap(bmp, panelRect.ToSKRect());
 
-        var colorbarLength = Edge.IsVertical() ? rect.Height : rect.Width;
+        var colorbarLength = Edge.IsVertical() ? dataRect.Height : dataRect.Width;
         var axis = GetAxis(colorbarLength);
 
         surface.Canvas.Translate(axisTranslation);
-        axis.Render(surface, rect, size, offset);
+        axis.Render(surface, dataRect, size, offset);
     }
 
     private SKPoint GetTranslation(float magnitude) => Edge switch

@@ -92,11 +92,16 @@ public abstract class XAxisBase : IAxis
             top: dataRect.Top - offset - size);
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
     {
-        PixelRect panelRect = Edge == Edge.Bottom
+        return Edge == Edge.Bottom
             ? GetPanelRectangleBottom(dataRect, size, offset)
             : GetPanelRectangleTop(dataRect, size, offset);
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    {
+        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
 
         float textDistanceFromEdge = 10;
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);

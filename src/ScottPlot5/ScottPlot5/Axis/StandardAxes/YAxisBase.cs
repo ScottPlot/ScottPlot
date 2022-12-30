@@ -92,11 +92,16 @@ public abstract class YAxisBase : IAxis
             top: dataRect.Top);
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
     {
-        PixelRect panelRect = Edge == Edge.Left
+        return Edge == Edge.Left
             ? GetPanelRectangleLeft(dataRect, size, offset)
             : GetPanelRectangleRight(dataRect, size, offset);
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    {
+        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
 
         float textDistanceFromEdge = 10;
         Pixel labelPoint = new(panelRect.Left + textDistanceFromEdge, dataRect.VerticalCenter);
