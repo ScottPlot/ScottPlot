@@ -9,6 +9,7 @@ public struct AxisLimits
     public CoordinateRect Rect;
     public bool XHasBeenSet => !double.IsNaN(Rect.Width);
     public bool YHasBeenSet => !double.IsNaN(Rect.Height);
+    public static CoordinateRect Default { get; } = new(-10, 10, -10, 10);
 
     public AxisLimits(CoordinateRect rect)
     {
