@@ -28,7 +28,8 @@ public abstract class XAxisBase : IAxis
         Bold = true,
     };
 
-    public Style.StyledSKFont TickFont { get; set; } = new();
+    public Font TickFont { get; set; } = new();
+
     public abstract Edge Edge { get; }
     public bool ShowDebugInformation { get; set; } = false;
 
@@ -65,7 +66,11 @@ public abstract class XAxisBase : IAxis
 
     private float MeasureTicks()
     {
-        using SKPaint paint = new(TickFont.GetFont());
+        using SKPaint paint = new()
+        {
+            Typeface = TickFont.ToSKTypeface(),
+        };
+
         float largestTickHeight = 0;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
@@ -134,7 +139,10 @@ public abstract class XAxisBase : IAxis
         Label.Rotation = 0;
         Label.Draw(surface.Canvas, labelPoint);
 
-        using SKFont tickFont = TickFont.GetFont();
+        using SKFont tickFont = new()
+        {
+            Typeface = TickFont.ToSKTypeface(),
+        };
         IEnumerable<Tick> ticks = TickGenerator.GetVisibleTicks(Range);
 
         AxisRendering.DrawTicks(surface, tickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);

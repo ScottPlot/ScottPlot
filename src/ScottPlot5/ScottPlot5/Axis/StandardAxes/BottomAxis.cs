@@ -6,6 +6,6 @@ public class BottomAxis : XAxisBase, IXAxis
 
     public BottomAxis()
     {
-        TickGenerator = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
+        TickGenerator = new TickGenerators.NumericAutomatic(false);
     }
 }

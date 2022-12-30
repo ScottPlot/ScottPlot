@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
 public class TopAxis : XAxisBase, IXAxis
 {
@@ -8,6 +6,6 @@ public class TopAxis : XAxisBase, IXAxis
 
     public TopAxis()
     {
-        TickGenerator = new TickGenerators.ScottPlot4.NumericTickGenerator(false);
+        TickGenerator = new TickGenerators.NumericAutomatic(false);
     }
 }

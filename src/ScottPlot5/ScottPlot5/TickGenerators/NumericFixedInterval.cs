@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.TickGenerators;
 
-public class FixedSpacingTickGenerator : ITickGenerator
+public class NumericFixedInterval : ITickGenerator
 {
     public double InterTickSpacing = 1;
 

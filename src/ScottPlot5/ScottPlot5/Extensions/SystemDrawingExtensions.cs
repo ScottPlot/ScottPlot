@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Extensions;
+﻿using SkiaSharp;
+
+namespace ScottPlot.Extensions;
 
 public static class SystemDrawingExtensions
 {
@@ -35,5 +37,15 @@ public static class SystemDrawingExtensions
     public static Pixel ToPixel(this System.Drawing.PointF point)
     {
         return new Pixel(point.X, point.Y);
+    }
+
+    public static SKTypeface ToSKTypeface(this Font font)
+    {
+        return
+            SKTypeface.FromFamilyName(
+                familyName: font.Name,
+                weight: font.Weight > 400 ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal, // TODO: smarter conversion
+                width: SKFontStyleWidth.Normal,
+                slant: font.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
     }
 }

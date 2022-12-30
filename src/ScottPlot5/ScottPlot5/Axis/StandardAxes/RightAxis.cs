@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
 public class RightAxis : YAxisBase, IYAxis
 {
@@ -8,6 +6,6 @@ public class RightAxis : YAxisBase, IYAxis
 
     public RightAxis()
     {
-        TickGenerator = new TickGenerators.ScottPlot4.NumericTickGenerator(true);
+        TickGenerator = new TickGenerators.NumericAutomatic(true);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 
-namespace ScottPlot.TickGenerators.ScottPlot4;
+namespace ScottPlot.TickGenerators;
 
-internal class NumericTickGenerator : ITickGenerator
+internal class NumericAutomatic : ITickGenerator
 {
     private readonly bool IsVertical;
 
@@ -15,7 +15,7 @@ internal class NumericTickGenerator : ITickGenerator
         return Ticks.Where(x => range.Contains(x.Position));
     }
 
-    public NumericTickGenerator(bool isVertical)
+    public NumericAutomatic(bool isVertical)
     {
         IsVertical = isVertical;
     }
@@ -29,7 +29,7 @@ internal class NumericTickGenerator : ITickGenerator
     private Tick[] GenerateTicks(CoordinateRange range, PixelLength size, PixelSize predictedTickSize, int depth = 0)
     {
         if (depth > 3)
-            System.Diagnostics.Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
+            Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
 
         // generate ticks and labels based on predicted maximum label size
         float maxPredictedSize = IsVertical ? predictedTickSize.Height : predictedTickSize.Width;
@@ -37,7 +37,7 @@ internal class NumericTickGenerator : ITickGenerator
         string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
 
         // determine if the actual tick labels are larger than predicted (suggesting density is too high and overlapping may occur)
-        using SkiaSharp.SKPaint paint = new();
+        using SKPaint paint = new();
         PixelSize measuredLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
         PixelSize largestLabel = new(
             width: Math.Max(predictedTickSize.Width, measuredLabel.Width),
@@ -149,7 +149,7 @@ internal class NumericTickGenerator : ITickGenerator
     private static string GetPrettyTickLabel(double position)
     {
         string label = FormatLocal(position, CultureInfo.CurrentCulture);
-        return (label == "-0") ? "0" : label;
+        return label == "-0" ? "0" : label;
     }
 
     private static string FormatLocal(double value, CultureInfo culture)

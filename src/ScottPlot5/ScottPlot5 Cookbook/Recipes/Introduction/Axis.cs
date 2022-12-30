@@ -26,10 +26,11 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class TickLabels : RecipeTestBase
+    internal class AltTickGen : RecipeTestBase
     {
-        public override string Name => "Customize Tick Labels";
-        public override string Description => "The labels shown by major ticks can be customized.";
+        public override string Name => "Custom Tick Generators";
+        public override string Description => "Alternative tick generators can be created and assigned to axes. " +
+            "Some common tick generators are provided with ScottPlot, and users also have the option create their own.";
 
         [Test]
         public override void Recipe()
@@ -37,7 +38,10 @@ internal class Axis : RecipePageBase
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            //myPlot.XAxis.TickFont
+            myPlot.XAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval()
+            {
+                InterTickSpacing = 15
+            };
         }
     }
 }
