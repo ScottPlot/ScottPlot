@@ -100,4 +100,26 @@ internal class Styling : RecipePageBase
             grid.IsBeneathPlottables = false;
         }
     }
+
+    internal class Palette : RecipeTestBase
+    {
+        public override string Name => "Palettes";
+        public override string Description => "A palette is a set of colors, and the Plot's palette " +
+            "defines the default colors to use when adding new plottables. ScottPlot comes with many " +
+            "standard palettes, but users may also create their own.";
+
+        [Test]
+        public override void Recipe()
+        {
+            IPalette palette = new ScottPlot.Palettes.Nord();
+            myPlot.Palette = palette;
+
+            for (int i = 0; i < 5; i++)
+            {
+                double[] data = Generate.Sin(100, phase: -i / 20.0f);
+                var sig = myPlot.Add.Signal(data);
+                sig.LineWidth = 3;
+            }
+        }
+    }
 }
