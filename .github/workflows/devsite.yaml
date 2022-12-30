@@ -1,4 +1,4 @@
-name: Developer Website
+name: ScottPlot 5 Developer Website
 
 # This script builds the ScottPlot 5 cookbook
 # and publishes it to dev.scottplot.net (hosted by GitHub Pages)
@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - "src/ScottPlot5/ScottPlot5 Cookbook/**"
+      - "src/ScottPlot5/**"
 
 permissions:
   contents: read

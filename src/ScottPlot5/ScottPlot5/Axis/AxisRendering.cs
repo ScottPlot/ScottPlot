@@ -8,6 +8,9 @@ namespace ScottPlot.Axis;
 /// </summary>
 public static class AxisRendering
 {
+    public static float MajorTickLength = 4;
+    public static float MinorTickLength = 2;
+
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
@@ -80,7 +83,8 @@ public static class AxisRendering
         {
             float xPx = axis.GetPixel(tick.Position, panelRect);
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
-            float yEdge = axis.Edge == Edge.Bottom ? y + 3 : y - 3;
+            float tickLength = tick.IsMajor ? MajorTickLength : MinorTickLength;
+            float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
             surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
@@ -109,8 +113,8 @@ public static class AxisRendering
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float y = axis.GetPixel(tick.Position, panelRect);
 
-            float majorTickLength = 5;
-            float xEdge = axis.Edge == Edge.Left ? x - majorTickLength : x + majorTickLength;
+            float tickLength = tick.IsMajor ? MajorTickLength : MinorTickLength;
+            float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
             surface.Canvas.DrawLine(x, y, xEdge, y, paint);
 
             float majorTickLabelPadding = 7;

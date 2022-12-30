@@ -5,8 +5,8 @@
 /// </summary>
 public class AutoScaleMargins
 {
-    private double X = .05;
-    private double Y = .1;
+    private double X = .1;
+    private double Y = .15;
 
     /// <summary>
     /// Zoom out using this fraction to apply the current margin

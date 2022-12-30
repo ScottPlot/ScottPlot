@@ -13,6 +13,10 @@ public static class Cookbook
 
     public static readonly string RecipeSourceFolder = Path.Combine(GetRepoFolder(), "src/ScottPlot5/ScottPlot5 Cookbook/Recipes");
 
+    public static int ImageWidth = 400;
+
+    public static int ImageHeight = 300;
+
     private static string GetRepoFolder()
     {
         string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory); ;
@@ -32,15 +36,27 @@ public static class Cookbook
         throw new InvalidOperationException($"repository folder not found in any folder above {defaultFolder}");
     }
 
-    internal static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
+    /// <summary>
+    /// Return a collection of chapters.
+    /// Chapters are groups of pages (each page has many recipes).
+    /// </summary>
+    public static List<Chapter> GetChapters() => Enum.GetValues<Chapter>().ToList();
 
+    /// <summary>
+    /// Return a list of all pages (each page has many recipes) not grouped by chapter.
+    /// This function should only be used for running tests on all pages.
+    /// </summary>
     internal static List<RecipePageBase> GetPages() => GetInstantiated<RecipePageBase>();
 
-    internal static List<RecipePageBase> GetPagesInChapter(Chapter chapter) => GetInstantiated<RecipePageBase>()
+    /// <summary>
+    /// Return all pages for the given chapter.
+    /// Each page contains many recipes.
+    /// </summary>
+    public static List<RecipePageBase> GetPagesInChapter(Chapter chapter) => GetInstantiated<RecipePageBase>()
         .Where(x => x.PageDetails.Chapter == chapter)
         .ToList();
 
-    internal static List<IRecipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
+    public static List<IRecipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
 
     private static List<T> GetInstantiated<T>()
     {

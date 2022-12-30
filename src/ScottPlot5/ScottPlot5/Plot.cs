@@ -5,11 +5,10 @@ using ScottPlot.LayoutSystem;
 using SkiaSharp;
 using ScottPlot.Plottables;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace ScottPlot;
 
-public class Plot
+public class Plot : IDisposable
 {
     public readonly List<IXAxis> XAxes = new();
     public readonly List<IYAxis> YAxes = new();
@@ -30,10 +29,10 @@ public class Plot
 
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly Plottables.DebugBenchmark Benchmark = new();
+    public readonly DebugBenchmark Benchmark = new();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly Plottables.ZoomRectangle ZoomRectangle;
+    public readonly ZoomRectangle ZoomRectangle;
 
     /// <summary>
     /// Any state stored across renders can be stored here.
@@ -52,17 +51,36 @@ public class Plot
 
     public Plot()
     {
-        var xAxis = new Axis.StandardAxes.BottomAxis();
-        var yAxis = new Axis.StandardAxes.LeftAxis();
-        XAxes.Add(xAxis);
-        YAxes.Add(yAxis);
+        // setup the default primary X and Y axes
+        IXAxis xAxisPrimary = new Axis.StandardAxes.BottomAxis();
+        IYAxis yAxisPrimary = new Axis.StandardAxes.LeftAxis();
+        XAxes.Add(xAxisPrimary);
+        YAxes.Add(yAxisPrimary);
 
-        ZoomRectangle = new(xAxis, yAxis);
+        // add labeless secondary axes to get right side ticks and padding
+        IXAxis xAxisSecondary = new Axis.StandardAxes.TopAxis();
+        IYAxis yAxisSecondary = new Axis.StandardAxes.RightAxis();
+        XAxes.Add(xAxisSecondary);
+        YAxes.Add(yAxisSecondary);
 
-        var grid = new Grids.DefaultGrid(xAxis, yAxis);
+        // setup the zoom rectangle to use the primary axes
+        ZoomRectangle = new(xAxisPrimary, yAxisPrimary);
+
+        // add a default grid using the primary axes
+        IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
         Grids.Add(grid);
 
+        // setup the helper class that creates and adds plottables to this plot
         Add = new(this);
+    }
+
+    public void Dispose()
+    {
+        Plottables.Clear();
+        Grids.Clear();
+        Panels.Clear();
+        YAxes.Clear();
+        XAxes.Clear();
     }
 
     #region Axis Management
@@ -116,6 +134,25 @@ public class Plot
         // reset limits for all axes
         XAxes.ForEach(xAxis => xAxis.Range.Reset());
         YAxes.ForEach(yAxis => yAxis.Range.Reset());
+
+        // assign default axes to plottables without axes
+        Rendering.Common.ReplaceNullAxesWithDefaults(this);
+
+        // expand all axes by the limits of each plot
+        foreach (IPlottable plottable in Plottables)
+        {
+            AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, tight);
+        }
+    }
+
+    /// <summary>
+    /// Automatically scale the given axes to fit the data in plottables which use them
+    /// </summary>
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool tight = false)
+    {
+        // reset limits only for these axes
+        xAxis.Range.Reset();
+        yAxis.Range.Reset();
 
         // assign default axes to plottables without axes
         Rendering.Common.ReplaceNullAxesWithDefaults(this);
@@ -265,16 +302,16 @@ public class Plot
         return Path.GetFullPath(path);
     }
 
-    public string SavePng(string path, int width, int height, int quality = 85)
+    public string SavePng(string path, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, quality);
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, 100);
         File.WriteAllBytes(path, bytes);
         return Path.GetFullPath(path);
     }
 
-    public string SaveBmp(string path, int width, int height, int quality = 85)
+    public string SaveBmp(string path, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, quality);
+        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, 100);
         File.WriteAllBytes(path, bytes);
         return Path.GetFullPath(path);
     }

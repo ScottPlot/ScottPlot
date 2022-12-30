@@ -15,20 +15,26 @@ public class Scatter : IPlottable
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
-    public Marker Marker { get; set; } = new();
-    public readonly DataSource.IScatterSource Data;
+    public float MarkerSize { get; set; } = 5;
+    public Color MarkerColor { get; set; }
     public float LineWidth { get; set; } = 1;
-
+    public Color LineColor { get; set; }
+    public DataSource.IScatterSource Data { get; }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
+
     public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One<LegendItem>(
         new LegendItem
         {
             Label = Label,
-            Marker = Marker,
-            Line = new(Marker.Color, LineWidth),
+            Marker = CreateMarker(),
+            Line = new(LineColor, LineWidth),
         });
 
+    private Marker CreateMarker()
+    {
+        return new Marker(MarkerShape.Circle, MarkerColor, MarkerSize);
+    }
 
     public Scatter(DataSource.IScatterSource data)
     {
@@ -43,7 +49,7 @@ public class Scatter : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
+            Color = LineColor.ToSKColor(),
             StrokeWidth = LineWidth,
         };
 
@@ -56,6 +62,7 @@ public class Scatter : IPlottable
         }
         surface.Canvas.DrawPath(path, paint);
 
-        Drawing.DrawMarkers(surface, Marker, pixels);
+        Marker marker = CreateMarker();
+        Drawing.DrawMarkers(surface, marker, pixels);
     }
 }

@@ -20,10 +20,10 @@ internal class Axis : RecipePageBase
         {
             double[] dataX = new double[] { 1, 2, 3, 4, 5 };
             double[] dataY = new double[] { 1, 4, 9, 16, 25 };
-            MyPlot.Add.Scatter(dataX, dataY);
+            myPlot.Add.Scatter(dataX, dataY);
 
-            MyPlot.XAxis.Label.Text = "Yep, this works";
-            MyPlot.YAxis.Label.Text = "This works too!";
+            myPlot.XAxis.Label.Text = "Yep, this works";
+            myPlot.YAxis.Label.Text = "This works too!";
         }
     }
 }

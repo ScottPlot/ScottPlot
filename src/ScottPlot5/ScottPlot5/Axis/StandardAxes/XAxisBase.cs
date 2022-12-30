@@ -1,4 +1,6 @@
 ﻿using SkiaSharp;
+using System.Data;
+using System.Drawing;
 
 namespace ScottPlot.Axis.StandardAxes;
 
@@ -24,8 +26,8 @@ public abstract class XAxisBase : IAxis
 
     public Label Label { get; private set; } = new()
     {
-        Text = "Horizontal Axis",
-        FontName = FontService.DefaultFontName,
+        Text = string.Empty,
+        FontName = FontService.SansFontName,
         FontSize = 16,
         Bold = true,
     };
@@ -36,9 +38,10 @@ public abstract class XAxisBase : IAxis
 
     public float Measure()
     {
-        float tickSpace = MeasureTicks() + 5;
-        float labelSpace = Label.Measure().Height + 5;
-        return tickSpace + labelSpace;
+        float largestTickSize = MeasureTicks();
+        float largestTickLabelSize = Label.Measure().Height;
+        float spaceBetweenTicksAndAxisLabel = 15;
+        return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
     }
 
     private float MeasureTicks()
@@ -71,13 +74,29 @@ public abstract class XAxisBase : IAxis
         return Min + unitsFromEdge;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    private PixelRect GetPanelRectangleBottom(PixelRect dataRect, float size, float offset)
     {
-        PixelRect panelRect = new(
+        return new PixelRect(
             left: dataRect.Left,
             right: dataRect.Right,
             bottom: dataRect.Bottom + offset + size,
             top: dataRect.Bottom + offset);
+    }
+
+    private PixelRect GetPanelRectangleTop(PixelRect dataRect, float size, float offset)
+    {
+        return new PixelRect(
+            left: dataRect.Left,
+            right: dataRect.Right,
+            bottom: dataRect.Top - offset,
+            top: dataRect.Top - offset - size);
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    {
+        PixelRect panelRect = Edge == Edge.Bottom
+            ? GetPanelRectangleBottom(dataRect, size, offset)
+            : GetPanelRectangleTop(dataRect, size, offset);
 
         float textDistanceFromEdge = 10;
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);

@@ -32,11 +32,7 @@ public static class Common
         {
             if (!plottable.Axes.XAxis.Range.HasBeenSet || !plottable.Axes.YAxis.Range.HasBeenSet)
             {
-                AxisLimits limits = plottable.GetAxisLimits();
-                plottable.Axes.XAxis.Min = limits.Rect.XMin;
-                plottable.Axes.XAxis.Max = limits.Rect.XMax;
-                plottable.Axes.YAxis.Min = limits.Rect.YMin;
-                plottable.Axes.YAxis.Max = limits.Rect.YMax;
+                plot.AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
             }
         }
     }

@@ -1,22 +1,71 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp;
+
+namespace ScottPlot;
 
 /// <summary>
 /// This class provides cross-platform tools for working with fonts
 /// </summary>
 public static class FontService
 {
-    public static string DefaultFontName { get; private set; } = "Segoe UI";
+    public static SKTypeface SansTypeface { get; private set; } = GetDefaultSansFont();
+    public static SKTypeface MonospaceTypeface { get; private set; } = GetDefaultMonospaceFont();
+    public static SKTypeface SerifTypeface { get; private set; } = GetDefaultSerifFont();
 
-    public static PixelSize Measure(Font font, string text)
+    public static string SansFontName => SansTypeface.FamilyName;
+    public static string MonospaceFontName => MonospaceTypeface.FamilyName;
+    public static string SerifFontName => SerifTypeface.FamilyName;
+
+    public static string[] GetInstalledFonts()
     {
-        float width = font.Size * text.Length;
-        float height = font.Size;
-        return new PixelSize(width, height);
+        return SKFontManager.Default.FontFamilies.ToArray();
     }
 
-    public static Font GetSystemDefaultMonospaceFont(float size)
+    private static SKTypeface GetDefaultSansFont()
     {
-        string name = "Consolas";
-        return new Font(name, size);
+        HashSet<string> installedFonts = new(SKFontManager.Default.FontFamilies);
+
+        // NOTE: Lato has more bold options on Linux in GitHub Actions
+        string[] preferredFonts = { "Segoe UI", "Lato", "DejaVu Sans", "Helvetica" };
+        foreach (string preferredFont in preferredFonts)
+        {
+            if (installedFonts.Contains(preferredFont))
+            {
+                return SKTypeface.FromFamilyName(preferredFont);
+            }
+        }
+
+        return SKTypeface.Default;
+    }
+
+    private static SKTypeface GetDefaultMonospaceFont()
+    {
+        HashSet<string> installedFonts = new(SKFontManager.Default.FontFamilies);
+
+        string[] preferredFonts = { "Consolas", "DejaVu Sans Mono", "Courier" };
+        foreach (string preferredFont in preferredFonts)
+        {
+            if (installedFonts.Contains(preferredFont))
+            {
+                return SKTypeface.FromFamilyName(preferredFont);
+            }
+        }
+
+        return SKTypeface.Default;
+    }
+
+    private static SKTypeface GetDefaultSerifFont()
+    {
+        HashSet<string> installedFonts = new(SKFontManager.Default.FontFamilies);
+
+        string[] preferredFonts = { "Times New Roman", "DejaVu Serif", "Times" };
+        foreach (string preferredFont in preferredFonts)
+        {
+            if (installedFonts.Contains(preferredFont))
+            {
+                return SKTypeface.FromFamilyName(preferredFont);
+            }
+        }
+
+        return SKTypeface.Default;
     }
 }

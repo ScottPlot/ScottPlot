@@ -24,8 +24,8 @@ public abstract class YAxisBase : IAxis
 
     public Label Label { get; private set; } = new()
     {
-        Text = "Vertical Axis",
-        FontName = FontService.DefaultFontName,
+        Text = string.Empty,
+        FontName = FontService.SansFontName,
         FontSize = 16,
         Bold = true,
         Rotation = -90,
@@ -54,9 +54,10 @@ public abstract class YAxisBase : IAxis
 
     public float Measure()
     {
-        float tickSpace = MeasureTicks() + 5;
-        float labelSpace = Label.Measure().Height + 5;
-        return tickSpace + labelSpace;
+        float largestTickSize = MeasureTicks();
+        float largestTickLabelSize = Label.Measure().Height;
+        float spaceBetweenTicksAndAxisLabel = 15;
+        return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
     }
 
     private float MeasureTicks()
@@ -73,13 +74,29 @@ public abstract class YAxisBase : IAxis
         return largestTickWidth;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    private PixelRect GetPanelRectangleLeft(PixelRect dataRect, float size, float offset)
     {
-        PixelRect panelRect = new(
+        return new PixelRect(
             left: dataRect.Left - offset - size,
             right: dataRect.Left - offset,
             bottom: dataRect.Bottom,
             top: dataRect.Top);
+    }
+
+    private PixelRect GetPanelRectangleRight(PixelRect dataRect, float size, float offset)
+    {
+        return new PixelRect(
+            left: dataRect.Right + offset,
+            right: dataRect.Right + offset + size,
+            bottom: dataRect.Bottom,
+            top: dataRect.Top);
+    }
+
+    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    {
+        PixelRect panelRect = Edge == Edge.Left
+            ? GetPanelRectangleLeft(dataRect, size, offset)
+            : GetPanelRectangleRight(dataRect, size, offset);
 
         float textDistanceFromEdge = 10;
         Pixel labelPoint = new(panelRect.Left + textDistanceFromEdge, dataRect.VerticalCenter);
@@ -89,8 +106,8 @@ public abstract class YAxisBase : IAxis
             Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
         }
 
-        Label.Alignment = Alignment.UpperCenter;
-        Label.Rotation = -90;
+        Label.Alignment = Edge == Edge.Left ? Alignment.UpperCenter : Alignment.LowerCenter;
+        Label.Rotation = Edge == Edge.Left ? -90 : 90;
         Label.Draw(surface.Canvas, labelPoint);
 
         using SKFont tickFont = TickFont.GetFont();

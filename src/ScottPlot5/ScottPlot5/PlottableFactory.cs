@@ -1,6 +1,8 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.Style;
+using ScottPlot.DataSource;
+using System.Drawing;
 
 namespace ScottPlot;
 
@@ -51,38 +53,26 @@ public class PlottableFactory
         return Pie(slices);
     }
 
-    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
+    public Scatter Scatter(IScatterSource data, Color? color = null)
     {
-        Marker marker = new(color ?? NextColor);
-        return Scatter(xs, ys, marker);
-    }
-
-    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Marker marker)
-    {
-        DataSource.ScatterSourceXsYs data = new(xs, ys);
+        Color nextColor = color ?? NextColor;
         Scatter scatter = new(data)
         {
-            Marker = marker
+            MarkerColor = nextColor,
+            LineColor = nextColor,
         };
         Plot.Plottables.Add(scatter);
         return scatter;
+    }
+
+    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
+    {
+        return Scatter(new ScatterSourceXsYs(xs, ys), color);
     }
 
     public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
     {
-        Marker marker = new(color ?? NextColor);
-        return Scatter(coordinates, marker);
-    }
-
-    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Marker marker)
-    {
-        DataSource.ScatterSourceCoordinates data = new(coordinates);
-        Scatter scatter = new(data)
-        {
-            Marker = marker
-        };
-        Plot.Plottables.Add(scatter);
-        return scatter;
+        return Scatter(new ScatterSourceCoordinates(coordinates), color);
     }
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)

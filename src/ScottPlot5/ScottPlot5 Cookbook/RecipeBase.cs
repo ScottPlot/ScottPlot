@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework.Internal;
-using ScottPlotCookbook.HtmlPages;
 
 namespace ScottPlotCookbook;
+
+#pragma warning disable IDE1006 // Ignore lowercase public variable names
 
 /// <summary>
 /// Individual recipes can inherit this so they double as <see cref="IRecipe"/> and
@@ -9,9 +10,8 @@ namespace ScottPlotCookbook;
 /// </summary>
 public abstract class RecipeTestBase : IRecipe
 {
-    public Plot MyPlot { get; private set; } = new();
-    private int Width = 400;
-    private int Height = 300;
+    // keep this lowercase because it should be lowercase in recipe source code
+    public Plot myPlot { get; private set; } = new();
 
     public abstract string Name { get; }
     public abstract string Description { get; }
@@ -21,7 +21,7 @@ public abstract class RecipeTestBase : IRecipe
     /// </summary>
     public void Recipe(Plot plot)
     {
-        MyPlot = plot;
+        myPlot = plot;
         Recipe();
     }
 
@@ -50,7 +50,7 @@ public abstract class RecipeTestBase : IRecipe
     {
         string fileUrl = UrlTools.GetImageUrl(GetPage(), this);
         string saveAs = Path.Combine(Cookbook.OutputFolder, fileUrl);
-        MyPlot.SavePng(saveAs, Width, Height);
+        myPlot.SavePng(saveAs, Cookbook.ImageWidth, Cookbook.ImageHeight);
         TestContext.WriteLine($"{saveAs}");
     }
 }

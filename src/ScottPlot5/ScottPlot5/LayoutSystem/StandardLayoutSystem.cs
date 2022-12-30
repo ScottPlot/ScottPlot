@@ -67,10 +67,6 @@ public class StandardLayoutSystem : ILayoutSystem
 
         PixelRect dataArea = figureRect.Contract(paddingNeededForPanels);
 
-        // Shrink slightly so the axis edges don't touch the edge of the figure.
-        // NOTE: This must be set to zero for frameless plots.
-        dataArea = dataArea.Contract(20);
-
         return new FinalLayout(figureRect, dataArea, panelSizes, panelOffsets);
     }
 }
