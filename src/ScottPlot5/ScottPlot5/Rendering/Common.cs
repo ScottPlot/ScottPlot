@@ -45,9 +45,17 @@ public static class Common
         surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
     }
 
-    public static void RenderGrids(SKSurface surface, PixelRect dataRect, Plot plot, bool beneathPlottables)
+    public static void RenderGridsBelowPlottables(SKSurface surface, PixelRect dataRect, Plot plot)
     {
-        foreach (IGrid grid in plot.Grids.Where(x => x.IsBeneathPlottables == beneathPlottables))
+        foreach (IGrid grid in plot.Grids.Where(x => x.IsBeneathPlottables))
+        {
+            grid.Render(surface, dataRect);
+        }
+    }
+
+    public static void RenderGridsAbovePlottables(SKSurface surface, PixelRect dataRect, Plot plot)
+    {
+        foreach (IGrid grid in plot.Grids.Where(x => !x.IsBeneathPlottables))
         {
             grid.Render(surface, dataRect);
         }

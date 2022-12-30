@@ -22,9 +22,9 @@ public class StandardRenderer : IRenderer
         plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
 
         Common.RenderBackground(surface, dataRect, plot);
-        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: true);
+        Common.RenderGridsBelowPlottables(surface, dataRect, plot);
         Common.RenderPlottables(surface, dataRect, plot);
-        Common.RenderGrids(surface, dataRect, plot, beneathPlottables: false);
+        Common.RenderGridsAbovePlottables(surface, dataRect, plot);
         Common.RenderPanels(surface, dataRect, panels, layout);
         Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();

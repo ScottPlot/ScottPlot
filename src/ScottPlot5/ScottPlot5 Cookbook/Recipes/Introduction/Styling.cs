@@ -74,4 +74,23 @@ internal class Styling : RecipePageBase
             grid.MinorGridLineWidth = 1;
         }
     }
+
+    internal class GridAbove : RecipeTestBase
+    {
+        public override string Name => "Grid Above Data";
+        public override string Description => "Grid lines are typically drawn beneath " +
+            "data, but grids can be configured to render on top of plottables too.";
+
+        [Test]
+        public override void Recipe()
+        {
+            var sig = myPlot.Add.Signal(Generate.Sin(51));
+            sig.LineWidth = 10;
+
+            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
+            grid.MajorGridLineWidth = 3;
+            grid.MajorGridLineColor = Colors.WhiteSmoke;
+            grid.IsBeneathPlottables = false;
+        }
+    }
 }
