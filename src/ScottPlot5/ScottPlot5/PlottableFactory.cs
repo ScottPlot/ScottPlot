@@ -2,7 +2,6 @@
 using ScottPlot.Plottables;
 using ScottPlot.Style;
 using ScottPlot.DataSource;
-using System.Drawing;
 
 namespace ScottPlot;
 
@@ -14,8 +13,8 @@ public class PlottableFactory
     private readonly Plot Plot;
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
-    private int colorsUsed = 0;
-    private Color NextColor => Palette.GetColor(colorsUsed++);
+
+    private Color NextColor => Palette.GetColor(Plot.Plottables.Count);
 
     public PlottableFactory(Plot plot)
     {
