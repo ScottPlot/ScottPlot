@@ -9,7 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SkiaSharp" Version="2.88.0" />
+        <PackageReference Include="SkiaSharp" Version="2.88.3" />
+        <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
@@ -32,9 +33,6 @@
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
 
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="autoformat.bat" />
     </ItemGroup>
 
 </Project>
