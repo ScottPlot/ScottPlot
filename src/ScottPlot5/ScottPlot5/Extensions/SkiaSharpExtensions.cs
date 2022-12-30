@@ -58,4 +58,9 @@ public static class SkiaSharpExtensions
             bottom: surface.Canvas.LocalClipBounds.Height,
             top: 0);
     }
+
+    public static PixelRect ToPixelRect(this SKRect rect)
+    {
+        return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
+    }
 }
