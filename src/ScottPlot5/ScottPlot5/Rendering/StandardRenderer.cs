@@ -1,5 +1,4 @@
 ﻿using ScottPlot.LayoutSystem;
-using SkiaSharp;
 
 namespace ScottPlot.Rendering;
 
@@ -14,7 +13,7 @@ public class StandardRenderer : IRenderer
 
         PixelRect figureRect = surface.GetPixelRect();
 
-        IPanel[] panels = plot.GetAllPanels();
+        IPanel[] panels = plot.GetAllPanels(); // includes axis and non-axis panels
         FinalLayout layout = plot.Layout.GetLayout(figureRect, panels);
         PixelRect dataRect = layout.DataRect;
 

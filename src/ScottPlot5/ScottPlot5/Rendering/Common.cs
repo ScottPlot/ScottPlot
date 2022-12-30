@@ -1,12 +1,6 @@
-﻿using ScottPlot.LayoutSystem;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Axis;
+using ScottPlot.LayoutSystem;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Rendering;
 
@@ -34,6 +28,11 @@ public static class Common
             {
                 plot.AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
             }
+        }
+
+        if (!plot.XAxis.Range.HasBeenSet) // may occur when there are no plottables with data
+        {
+            plot.SetAxisLimits(AxisLimits.Default);
         }
     }
 
@@ -77,7 +76,9 @@ public static class Common
     {
         foreach (IPanel panel in panels)
         {
-            panel.Render(surface, dataRect, layout.PanelSizes[panel], layout.PanelOffsets[panel]);
+            float size = layout.PanelSizes[panel];
+            float offset = layout.PanelOffsets[panel];
+            panel.Render(surface, dataRect, size, offset);
         }
     }
 

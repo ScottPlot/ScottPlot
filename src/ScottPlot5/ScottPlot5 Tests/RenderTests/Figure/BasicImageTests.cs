@@ -12,4 +12,11 @@ internal class BasicImageTests
 
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_No_Data()
+    {
+        Plot plt = new();
+        plt.SaveTestImage();
+    }
 }
