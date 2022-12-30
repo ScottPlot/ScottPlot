@@ -9,7 +9,7 @@ namespace ScottPlot;
 public class Label
 {
     public string Text { get; set; } = string.Empty;
-    public Font Font { get; set; } = Font.Default;
+    public Font Font { get; set; } = Font.Default; // TODO: I don't like how assigning this clears the existing font size
     public string FontName { get => Font.Name; set => Font = Font.WithName(value); }
     public float FontSize { get => Font.Size; set => Font = Font.WithSize(value); }
     public FontWeight FontWeight { get => Font.GetNearestWeight(); set => Font = Font.WithWeight(value); }

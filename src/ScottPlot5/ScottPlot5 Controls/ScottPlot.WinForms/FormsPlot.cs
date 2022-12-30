@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Control;
+using ScottPlot.Extensions;
 using SkiaSharp.Views.Desktop;
 using System;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ public class FormsPlot : UserControl, IPlotControl
 {
     readonly SKGLControl SKElement;
 
-    public Plot Plot { get; private set; } = new();
+    public Plot Plot { get; private set; }
 
     public Interaction Interaction { get; private set; }
 
@@ -30,18 +31,38 @@ public class FormsPlot : UserControl, IPlotControl
         Controls.Add(SKElement);
 
         HandleDestroyed += (s, e) => SKElement.Dispose();
+
+        Plot = Reset();
     }
 
-    public void Reset()
+    // make it so changing the background color of the control changes background color of the plot too
+    public override System.Drawing.Color BackColor
     {
-        Reset(new Plot());
+        get => base.BackColor;
+        set
+        {
+            base.BackColor = value;
+            if (Plot is not null)
+                Plot.FigureBackground = value.ToColor();
+        }
     }
 
-    public void Reset(Plot newPlot)
+    public Plot Reset()
+    {
+        Plot newPlot = new()
+        {
+            FigureBackground = this.BackColor.ToColor(),
+        };
+
+        return Reset(newPlot);
+    }
+
+    public Plot Reset(Plot newPlot)
     {
         Plot oldPlot = Plot;
         Plot = newPlot;
-        oldPlot.Dispose();
+        oldPlot?.Dispose();
+        return newPlot;
     }
 
     public void Replace(Interaction interaction)

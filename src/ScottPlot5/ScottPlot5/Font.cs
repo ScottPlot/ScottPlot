@@ -19,6 +19,10 @@ public readonly struct Font
     }
 
     public static Font Default => new(FontService.SansFontName);
+    public static string DefaultFontName => SansFontName;
+    public static string SansFontName => FontService.SansFontName;
+    public static string SerifFontName => FontService.SerifFontName;
+    public static string MonospaceFontName => FontService.MonospaceFontName;
 
     public Font WithSize(float size) => new(Name, size, Weight, Italic);
     public Font WithName(string name) => new(name, Size, Weight, Italic);

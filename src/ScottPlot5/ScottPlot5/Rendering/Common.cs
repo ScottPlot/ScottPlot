@@ -39,7 +39,10 @@ public static class Common
 
     public static void RenderBackground(SKSurface surface, PixelRect dataRect, Plot plot)
     {
-        surface.Canvas.Clear(SKColors.White);
+        surface.Canvas.Clear(plot.FigureBackground.ToSKColor());
+
+        using SKPaint paint = new() { Color = plot.DataBackground.ToSKColor() };
+        surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
     }
 
     public static void RenderGrids(SKSurface surface, PixelRect dataRect, Plot plot, bool beneathPlottables)

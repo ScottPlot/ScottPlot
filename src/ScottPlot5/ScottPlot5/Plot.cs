@@ -18,6 +18,8 @@ public class Plot : IDisposable
     public IRenderer Renderer { get; set; } = new StandardRenderer();
     public ILayoutSystem Layout { get; set; } = new StandardLayoutSystem();
     public AutoScaleMargins Margins { get; } = new();
+    public Color FigureBackground { get; set; } = Colors.White;
+    public Color DataBackground { get; set; } = Colors.White;
 
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
@@ -338,6 +340,19 @@ public class Plot : IDisposable
     /// Clears the <see cref="Plottables"/> list
     /// </summary>
     public void Clear() => Plottables.Clear();
+
+    /// <summary>
+    /// Return the first default grid in use.
+    /// Throws an exception if no default grids exist.
+    /// </summary>
+    public Grids.DefaultGrid GetDefaultGrid()
+    {
+        IEnumerable<Grids.DefaultGrid> defaultGrids = Grids.OfType<Grids.DefaultGrid>();
+        if (defaultGrids.Any())
+            return defaultGrids.First();
+        else
+            throw new InvalidOperationException("The plot has no default grids");
+    }
 
     #endregion
 
