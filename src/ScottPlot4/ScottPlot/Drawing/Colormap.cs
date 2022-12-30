@@ -137,6 +137,9 @@ namespace ScottPlot.Drawing
             return output;
         }
 
+        /// <summary>
+        /// Convert intensities to colors using the given colormap and return the results as integer RGBA values.
+        /// </summary>
         public static int[] GetRGBAs(double[] intensities, Colormap colorMap, double minimumIntensity = 0)
         {
             int[] rgbas = new int[intensities.Length];
@@ -151,6 +154,44 @@ namespace ScottPlot.Drawing
             return rgbas;
         }
 
+        /// <summary>
+        /// Convert intensities to colors using the given colormap and return the results as integer RGBA values.
+        /// RGBA alpha value will be set according to the given array of opacities (values from 0 to 1).
+        /// </summary>
+        public static int[] GetRGBAs(double[] intensities, double[] opacity, Colormap colorMap)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
+                var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                byte alpha = (byte)Math.Max(Math.Min(opacity[i] * 255, 255), 0);
+                byte[] argb = { b, g, r, alpha };
+                rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
+        /// <summary>
+        /// Return an array of RGBA integer values for a single color where the alpha
+        /// channel is defined by an array of values from 0 to 1.
+        /// </summary>
+        public static int[] GetRGBAs(double[] opacity, Color color)
+        {
+            int[] rgbas = new int[opacity.Length];
+            for (int i = 0; i < opacity.Length; i++)
+            {
+                byte alpha = (byte)Math.Max(Math.Min(opacity[i] * 255, 255), 0);
+                byte[] argb = { color.B, color.G, color.R, alpha };
+                rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
+        /// <summary>
+        /// Return an array of RGBA integer values set according to a colormap
+        /// where intensities are clamped to a lower limit.
+        /// </summary>
         public static int[] GetRGBAs(double?[] intensities, Colormap colorMap, double minimumIntensity = 0)
         {
             int[] rgbas = new int[intensities.Length];
@@ -173,6 +214,64 @@ namespace ScottPlot.Drawing
             return rgbas;
         }
 
+        /// <summary>
+        /// Convert intensities to colors using the given colormap and return the results as integer RGBA values.
+        /// RGBA alpha value will be set according to the given array of opacities (values from 0 to 1).
+        /// </summary>
+        public static int[] GetRGBAs(double?[] intensities, double?[] opacity, Colormap colorMap)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                if (intensities[i].HasValue)
+                {
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                    byte alpha;
+                    if (opacity[i].HasValue) alpha = (byte)Math.Max(Math.Min(opacity[i].Value * 255, 255), 0);
+                    else alpha = 0;
+                    byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+            }
+            return rgbas;
+        }
+
+        /// <summary>
+        /// Return an array of RGBA integer values for a single color where the alpha
+        /// channel is defined by an array of values from 0 to 1.
+        /// </summary>
+        public static int[] GetRGBAs(double?[] opacity, Color color)
+        {
+            int[] rgbas = new int[opacity.Length];
+            for (int i = 0; i < opacity.Length; i++)
+            {
+                if (opacity[i].HasValue)
+                {
+                    byte alpha;
+                    if (opacity[i].HasValue) alpha = (byte)Math.Max(Math.Min(opacity[i].Value * 255, 255), 0);
+                    else alpha = 0;
+                    byte[] argb = { color.B, color.G, color.R, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+            }
+            return rgbas;
+        }
+
+        /// <summary>
+        /// Given an array of intensities (ranging from 0 to 1) return an array of
+        /// colors according to the given colormap.
+        /// </summary>
         public static Color[] GetColors(double[] intensities, Colormap colorMap)
         {
             Color[] colors = new Color[intensities.Length];

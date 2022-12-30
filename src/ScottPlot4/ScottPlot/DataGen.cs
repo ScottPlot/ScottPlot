@@ -690,6 +690,34 @@ namespace ScottPlot
         public static Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
 
         /// <summary>
+        /// Returns a sample 2D array of grayscale values as a nullable array with values scaled from 0 to 1.
+        /// </summary>
+        public static double?[,] SampleImageDataNullable()
+        {
+            double[,] original = SampleImageData();
+
+            double maxValue = original[0, 0];
+            for (int i = 0; i < original.GetLength(0); i++)
+            {
+                for (int j = 0; j < original.GetLength(1); j++)
+                {
+                    maxValue = Math.Max(maxValue, original[i, j]);
+                }
+            }
+
+            double?[,] nullable = new double?[original.GetLength(0), original.GetLength(1)];
+            for (int i = 0; i < original.GetLength(0); i++)
+            {
+                for (int j = 0; j < original.GetLength(1); j++)
+                {
+                    nullable[i, j] = 1 - original[i, j] / maxValue;
+                }
+            }
+
+            return nullable;
+        }
+
+        /// <summary>
         /// Returns a sample 2D array of grayscale values.
         /// </summary>
         /// <returns>2D array of grayscale values.</returns>

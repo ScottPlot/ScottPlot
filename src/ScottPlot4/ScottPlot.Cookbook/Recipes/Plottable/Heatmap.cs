@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -108,6 +109,32 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[,] imageData = DataGen.SampleImageData();
             plt.AddHeatmap(imageData);
+        }
+    }
+
+    public class SingleColorHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_single_color";
+        public string Title => "Single Color Heatmap";
+        public string Description =>
+            "A single-color heatmap can be created where cell transparency is defined by a 2D array containing values 0 to 1.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double?[,] data = DataGen.SampleImageDataNullable();
+
+            var hm1 = plt.AddHeatmap(Color.Red, data, lockScales: false);
+            hm1.OffsetX = 0;
+            hm1.OffsetY = 0;
+
+            var hm2 = plt.AddHeatmap(Color.Green, data, lockScales: false);
+            hm2.OffsetX = 30;
+            hm2.OffsetY = 20;
+
+            var hm3 = plt.AddHeatmap(Color.Blue, data, lockScales: false);
+            hm3.OffsetX = 60;
+            hm3.OffsetY = 40;
         }
     }
 

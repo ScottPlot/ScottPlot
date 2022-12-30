@@ -488,7 +488,7 @@ namespace ScottPlot
         /// <param name="intensities">2D array of intensities. 
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
@@ -514,7 +514,7 @@ namespace ScottPlot
         /// <param name="intensities">2D array of intensities. 
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
@@ -523,6 +523,28 @@ namespace ScottPlot
         {
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
+            Add(plottable);
+
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
+                AxisScaleLock(true);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a single-color heatmap where opacity is defined by a 2D array.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square</param>
+        /// <returns></returns>
+        public Heatmap AddHeatmap(Color color, double?[,] opacity, bool? lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(color, opacity);
             Add(plottable);
 
             if (lockScales.HasValue && lockScales.Value == true)
