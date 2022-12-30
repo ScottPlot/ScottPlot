@@ -57,6 +57,21 @@ internal class Quickstart : RecipePageBase
         }
     }
 
+    internal class SignalPerformance : RecipeTestBase
+    {
+        public override string Name => "Signal Plot Performance";
+        public override string Description => "Signal plots can interactively display millions of data points in real time. " +
+            "Double-click the plot to display performance benchmarks.";
+
+        [Test]
+        public override void Recipe()
+        {
+            double[] data = Generate.RandomWalk(1_000_000);
+            myPlot.Add.Signal(data);
+            myPlot.Title.Label.Text = $"Signal plot with one million points";
+        }
+    }
+
     internal class AxisLabels : RecipeTestBase
     {
         public override string Name => "Axis Labels";
