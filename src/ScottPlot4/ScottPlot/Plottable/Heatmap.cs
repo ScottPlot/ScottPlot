@@ -186,9 +186,9 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// <param name="alphaVals">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] alphaVals = null)
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -216,8 +216,8 @@ namespace ScottPlot.Plottable
             ScaleMax = max;
 
             double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
-            double?[] alphaValsFlattened = null;
-            if (alphaVals != null) alphaValsFlattened = alphaVals.Cast<double?>().ToArray();
+            double?[] opacityFlattened = null;
+            if (opacity != null) opacityFlattened = opacity.Cast<double?>().ToArray();
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
 
@@ -251,13 +251,12 @@ namespace ScottPlot.Plottable
             double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
 
             int[] flatARGB;
-            if (alphaVals != null) flatARGB = Colormap.GetRGBAs(NormalizedIntensities, alphaValsFlattened, Colormap);
+            if (opacity != null) flatARGB = Colormap.GetRGBAs(NormalizedIntensities, opacityFlattened, Colormap);
             else if (TransparencyThreshold.HasValue) flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
             else flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
 
             double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
             double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
-            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
@@ -276,23 +275,23 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// /// <param name="alphaVals">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] alphaVals = null)
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            double?[,] tmpAlpha = null;
-            if (alphaVals != null) tmpAlpha = new double?[alphaVals.GetLength(0), alphaVals.GetLength(1)];
+            double?[,] tmpOpacity = null;
+            if (opacity != null) tmpOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
 
             for (int i = 0; i < intensities.GetLength(0); i++)
             {
                 for (int j = 0; j < intensities.GetLength(1); j++)
                 {
                     tmp[i, j] = intensities[i, j];
-                    if (alphaVals != null) tmpAlpha[i, j] = alphaVals[i, j];
+                    if (opacity != null) tmpOpacity[i, j] = opacity[i, j];
                 }
             }
-            Update(tmp, colormap, min, max, tmpAlpha);
+            Update(tmp, colormap, min, max, tmpOpacity);
         }
 
         /// <summary>
@@ -301,14 +300,14 @@ namespace ScottPlot.Plottable
         /// and displayed (without anti-alias interpolation) when Render() is called.
         /// </summary>        /// 
         /// <param name="fixColor">fixed color for the bitmap</param>
-        /// <param name="alphaVals">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// Null values are not shown.</param>
-        public void Update(Color fixColor, double?[,] alphaVals)
+        public void Update(Color fixColor, double?[,] opacity)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
             int maxEdgeLength = 1 << 15;
-            if (alphaVals.GetLength(1) > maxEdgeLength || alphaVals.GetLength(0) > maxEdgeLength)
+            if (opacity.GetLength(1) > maxEdgeLength || opacity.GetLength(0) > maxEdgeLength)
             {
                 throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
                     $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
@@ -316,17 +315,17 @@ namespace ScottPlot.Plottable
             // limit total size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/772
             int maxTotalValues = 10_000_000;
-            if (alphaVals.GetLength(1) * alphaVals.GetLength(0) > maxTotalValues)
+            if (opacity.GetLength(1) * opacity.GetLength(0) > maxTotalValues)
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
             }
 
-            DataWidth = alphaVals.GetLength(1);
-            DataHeight = alphaVals.GetLength(0);
-            double?[] alphaValsFlattened = alphaVals.Cast<double?>().ToArray();
+            DataWidth = opacity.GetLength(1);
+            DataHeight = opacity.GetLength(0);
+            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
 
-            int[] flatARGB = Colormap.GetRGBAs(alphaValsFlattened, fixColor);
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, fixColor);
 
             BmpHeatmap?.Dispose();
             BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);

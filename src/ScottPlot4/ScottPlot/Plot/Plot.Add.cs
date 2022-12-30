@@ -534,10 +534,10 @@ namespace ScottPlot
             return plottable;
         }
 
-        public Heatmap AddHeatmap(Color fixColor, double?[,] alphaVals, bool? lockScales = true)
+        public Heatmap AddHeatmap(Color fixColor, double?[,] opacity, bool? lockScales = true)
         {
             var plottable = new Heatmap();
-            plottable.Update(fixColor, alphaVals);
+            plottable.Update(fixColor, opacity);
             Add(plottable);
 
             if (lockScales.HasValue && lockScales.Value == true)
