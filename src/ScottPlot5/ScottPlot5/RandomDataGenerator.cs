@@ -34,4 +34,13 @@ public class RandomDataGenerator
         double span = max - min;
         return min + Rand.NextDouble() * span;
     }
+
+    public double[] RandomWalk(int pointCount, double mult = 1, double offset = 0)
+    {
+        double[] data = new double[pointCount];
+        data[0] = offset;
+        for (int i = 1; i < data.Length; i++)
+            data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
+        return data;
+    }
 }

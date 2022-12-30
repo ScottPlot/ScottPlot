@@ -149,4 +149,15 @@ public static class Generate
 
         return intensities;
     }
+
+    /// <summary>
+    /// Return a series of values starting with <paramref name="offset"/> and
+    /// each randomly deviating from the previous by at most <paramref name="mult"/>.
+    /// Random values are deterministic based on the value of <paramref name="seed"/>.
+    /// </summary>
+    public static double[] RandomWalk(int count, double mult = 1, double offset = 0, int seed = 0)
+    {
+        RandomDataGenerator gen = new(seed);
+        return gen.RandomWalk(count, mult, offset);
+    }
 }
