@@ -2,11 +2,16 @@
 
 public class NumericFixedInterval : ITickGenerator
 {
-    public double InterTickSpacing = 1;
+    public double Interval { get; set; }
 
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
 
     public int MaxTickCount { get; set; } = 10_000;
+
+    public NumericFixedInterval(int interval = 1)
+    {
+        Interval = interval;
+    }
 
     public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
     {
@@ -17,14 +22,14 @@ public class NumericFixedInterval : ITickGenerator
     {
         List<Tick> ticks = new();
 
-        double lowest = range.Min - range.Min % InterTickSpacing;
-        double highest = range.Max - range.Max % InterTickSpacing + InterTickSpacing;
-        int tickCount = (int)((highest - lowest) / InterTickSpacing);
+        double lowest = range.Min - range.Min % Interval;
+        double highest = range.Max - range.Max % Interval + Interval;
+        int tickCount = (int)((highest - lowest) / Interval);
         tickCount = Math.Min(tickCount, MaxTickCount);
 
         for (int i = 0; i < tickCount; i++)
         {
-            double position = lowest + i * InterTickSpacing;
+            double position = lowest + i * Interval;
             string label = position.ToString();
             ticks.Add(new Tick(position, label, true));
         }

@@ -38,10 +38,9 @@ internal class Axis : RecipePageBase
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.XAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval()
-            {
-                InterTickSpacing = 15
-            };
+            ITickGenerator customTickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
+
+            myPlot.XAxis.TickGenerator = customTickGenerator;
         }
     }
 }
