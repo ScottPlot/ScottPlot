@@ -2,8 +2,10 @@
  *
  */
 
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
+using System; // DO NOT REMOVE - required for .NET Framework
+using System.Collections.Generic; // DO NOT REMOVE - required for .NET Framework
+using System.Linq.Expressions; // DO NOT REMOVE - required for .NET Framework
+using System.Runtime.CompilerServices; // DO NOT REMOVE - required for .NET Framework
 
 namespace ScottPlot
 {
