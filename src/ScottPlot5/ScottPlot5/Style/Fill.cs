@@ -19,4 +19,6 @@ public struct Fill
     }
 
     public SKShader? GetShader() => Hatch?.GetShader(Color, HatchColor);
+
+    public Fill WithColor(Color color) => new Fill() { Color = color, Hatch = Hatch, HatchColor = HatchColor };
 }

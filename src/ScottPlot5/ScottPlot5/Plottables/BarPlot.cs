@@ -1,11 +1,4 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Style;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Plottables
 {
@@ -20,7 +13,7 @@ namespace ScottPlot.Plottables
     {
         public IList<Bar> Bars { get; set; } = Array.Empty<Bar>();
         public string? Label { get; set; }
-        public Fill Fill { get; set; }
+        public Color Color { get; set; }
     }
 
     public class BarPlot : IPlottable
@@ -32,7 +25,8 @@ namespace ScottPlot.Plottables
         public double Padding { get; set; } = 0.05;
         private double MaxBarWidth => 1 - Padding * 2;
         public Orientation Orientation { get; set; } = Orientation.Vertical;
-        public Stroke Stroke { get; set; } = new();
+        public float LineWidth = 1;
+        public Color LineColor = Colors.Black;
         public bool GroupBarsWithSameXPosition = true; // Disable for stacked bar charts
 
         public BarPlot(IList<BarSeries> series)
@@ -44,10 +38,10 @@ namespace ScottPlot.Plottables
             new LegendItem
             {
                 Label = Label,
-                Children = Series.Select(s => new LegendItem
+                Children = Series.Select(barSeries => new LegendItem
                 {
-                    Label = s.Label,
-                    Fill = s.Fill
+                    Label = barSeries.Label,
+                    Fill = new Style.Fill() { Color = barSeries.Color }
                 })
             });
 
@@ -104,14 +98,9 @@ namespace ScottPlot.Plottables
                         group.Key - groupWidth / 2 + (i + 0.5) * barWidthAndPadding :
                         group.Key;
 
-
-                    var rect = GetRect(t.Bar, newPosition, barWidth);
-
-                    paint.SetFill(t.Series.Fill);
-                    surface.Canvas.DrawRect(rect, paint);
-
-                    paint.SetStroke(Stroke);
-                    surface.Canvas.DrawRect(rect, paint);
+                    PixelRect rect = GetRect(t.Bar, newPosition, barWidth).ToPixelRect();
+                    Drawing.Fillectangle(surface.Canvas, rect, t.Series.Color);
+                    Drawing.DrawRectangle(surface.Canvas, rect, LineColor, LineWidth);
 
                     i++;
                 }
@@ -122,7 +111,6 @@ namespace ScottPlot.Plottables
         {
             return Orientation switch
             {
-                // Left, top, right, bottom
                 Orientation.Vertical => new SKRect(
                         Axes.GetPixelX(pos - barWidth / 2),
                         Axes.GetPixelY(bar.Value),

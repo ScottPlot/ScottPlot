@@ -128,12 +128,19 @@ public class Plot : IDisposable
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
-        // TODO: move set limits inside XAxis and YAxis
         XAxis.Min = left;
         XAxis.Max = right;
-
         YAxis.Min = bottom;
         YAxis.Max = top;
+    }
+
+    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
+    public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
+    {
+        XAxis.Min = left ?? XAxis.Min;
+        XAxis.Max = right ?? XAxis.Max;
+        YAxis.Min = bottom ?? YAxis.Min;
+        YAxis.Max = top ?? YAxis.Max;
     }
 
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]

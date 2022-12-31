@@ -8,7 +8,6 @@ public class StandardLegend : ILegend
     public PixelPadding Padding { get; set; } = new PixelPadding(3);
     public PixelPadding ItemPadding { get; set; } = new PixelPadding(3);
 
-    // TODO: use a class to store these grouped font properties
     public string FontName = Font.SansFontName;
     public float FontSize = 12;
     public Color FontColor = Colors.Black;
@@ -16,8 +15,8 @@ public class StandardLegend : ILegend
     public bool FontItalic = false;
     public Font Font => new(FontName, FontSize, FontBold ? 800 : 400, FontItalic);
 
-    public float LineWidth = 1;
     public Color LineColor = Colors.Black;
+    public float LineWidth = 1;
     public Color BackgroundColor = Colors.White;
 
     public Color ShadowColor = Colors.Black.WithOpacity(.2);
@@ -27,23 +26,24 @@ public class StandardLegend : ILegend
     private const float SymbolWidth = 20;
     private const float SymbolLabelSeparation = 5;
 
+    public LegendItem[]? ManualLegendItems { get; set; } = null;
+
     public void Render(SKCanvas canvas, PixelRect dataRect, LegendItem[] items)
     {
-        items = GetVisibleItems(items);
+        if (ManualLegendItems is not null)
+            items = ManualLegendItems.ToArray();
+
+        items = GetAllLegendItems(items).Where(x => x.IsVisible).ToArray();
         if (!items.Any())
             return;
 
-        // TODO: I don't like the recursion or frequent measurements that happen in the render loop.
-        // This section should be refactored to:
-        //   1.) Recursively identify every item to show in the legend and store it as LegendItem[]
-        //   2.) Measure every item and store it as PixelSize[]
-        //   3.) Render each item one by one
-
         // measure all items to determine dimensions of the legend
-        using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = FontSize, IsAntialias = true };
-        PixelSize[] itemSizes = items.Select(x => Measure(x, paint)).ToArray();
-        float maxWidth = itemSizes.Select(x => x.Width).Max();
-        float totalheight = itemSizes.Select(x => x.Height).Sum();
+        using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = Font.Size, IsAntialias = true };
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
+
+        float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
+
         PixelSize legendSize = new PixelSize(maxWidth, totalheight).Expand(Padding);
         PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment.LowerRight, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
@@ -55,103 +55,49 @@ public class StandardLegend : ILegend
 
         // render all items inside the legend
         float yOffset = legendRect.Top + Padding.Top;
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < sizedItems.Length; i++)
         {
-            RenderItem(canvas, paint, items[i], legendRect.Left + Padding.Left, yOffset);
-            yOffset += itemSizes[i].Height;
+            LegendRendering.RenderItem(
+                canvas: canvas,
+                paint: paint,
+                sizedItem: sizedItems[i],
+                x: legendRect.Left + Padding.Left,
+                y: yOffset,
+                symbolWidth: SymbolWidth,
+                symbolPadRight: SymbolLabelSeparation,
+                itemPadding: ItemPadding);
+
+            yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
 
-    private void RenderItem(SKCanvas canvas, SKPaint paint, LegendItem item, float x, float y)
+    /// <summary>
+    /// Recursively walk through children and return a flat array with all legend items
+    /// </summary>
+    private LegendItem[] GetAllLegendItems(IEnumerable<LegendItem> items)
     {
-        if (string.IsNullOrEmpty(item.Label))
-            throw new ArgumentNullException(nameof(item.Label));
-
-        SKPoint textPoint = new(x, y + paint.TextSize);
-
-        bool hasSymbol = item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
-        if (hasSymbol)
+        List<LegendItem> allItems = new();
+        foreach (LegendItem item in items)
         {
-            RenderSymbol(canvas, item, x, y, paint.TextSize);
-            textPoint.X += SymbolWidth + SymbolLabelSeparation;
+            allItems.Add(item);
+            allItems.AddRange(GetAllLegendItems(item.Children));
         }
-
-        canvas.DrawText(item.Label, textPoint, paint);
-
-        // TODO: use child measurements that were already made
-        y += Measure(item, paint, includeChildren: false).Height;
-        foreach (var curr in item.Children)
-        {
-            RenderItem(canvas, paint, curr, x, y);
-            y += Measure(curr, paint).Height;
-        }
+        return allItems.ToArray();
     }
 
-    private void RenderSymbol(SKCanvas canvas, LegendItem item, float x, float y, float height)
+    private SizedLegendItem[] GetSizedLegendItems(IEnumerable<LegendItem> items, SKPaint paint)
     {
-        // TODO: symbol/text alignment is pretty wonky
-
-        PixelRect rect = new(x, x + SymbolWidth, y + height * 1.5f, y);
-
-        using SKPaint paint = new();
-
-        if (item.Line.HasValue)
-        {
-            paint.SetStroke(item.Line.Value);
-            canvas.DrawLine(new(rect.Left, rect.VerticalCenter), new(rect.Right, rect.VerticalCenter), paint);
-        }
-
-        if (item.Marker.HasValue)
-        {
-            paint.Style = SKPaintStyle.Fill;
-            paint.Color = item.Marker.Value.Color.ToSKColor();
-            Drawing.DrawMarkers(canvas, item.Marker.Value, EnumerableHelpers.One<Pixel>(new(rect.HorizontalCenter, rect.VerticalCenter)));
-        }
-
-        if (item.Fill.HasValue)
-        {
-            paint.SetFill(item.Fill.Value);
-            canvas.DrawRect(rect.ToSKRect(), paint);
-        }
-    }
-
-    private PixelSize Measure(LegendItem item, SKPaint paint, bool includeChildren = true)
-    {
-        if (string.IsNullOrWhiteSpace(item.Label))
-            throw new NullReferenceException(nameof(item.Label));
-
-        PixelSize labelRect = Drawing.MeasureString(item.Label, paint);
-
-        float width = SymbolWidth + SymbolLabelSeparation + labelRect.Width + ItemPadding.TotalHorizontal;
-        float height = paint.TextSize + Padding.TotalVertical;
-
-        if (!includeChildren)
-            return new PixelSize(width, height);
-
-        foreach (LegendItem childItem in item.Children)
-        {
-            PixelSize childSize = Measure(childItem, paint);
-            width = Math.Max(width, Padding.Left + childSize.Width);
-            height += childSize.Height;
-        }
-
-        return new PixelSize(width, height);
-    }
-
-    private LegendItem[] GetVisibleItems(IEnumerable<LegendItem> items)
-    {
-        List<LegendItem> visibleItems = new();
+        List<SizedLegendItem> sizedItems = new();
 
         foreach (LegendItem item in items)
         {
-            if (!string.IsNullOrWhiteSpace(item.Label))
-            {
-                visibleItems.Add(item);
-            }
-
-            visibleItems.AddRange(GetVisibleItems(item.Children));
+            LegendItem[] visibleItems = GetAllLegendItems(item.Children).Where(x => x.IsVisible).ToArray();
+            SizedLegendItem[] sizedChildren = GetSizedLegendItems(visibleItems, paint);
+            LegendItemSize itemSize = LegendRendering.Measure(item, paint, sizedChildren, SymbolWidth, SymbolLabelSeparation, Padding, ItemPadding);
+            SizedLegendItem sizedItem = new(item, itemSize, sizedChildren);
+            sizedItems.Add(sizedItem);
         }
 
-        return visibleItems.ToArray();
+        return sizedItems.ToArray();
     }
 }
