@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.Introduction;
+﻿using ScottPlot.Style;
+
+namespace ScottPlotCookbook.Recipes.Introduction;
 
 internal class Styling : RecipePageBase
 {
@@ -133,17 +135,15 @@ internal class Styling : RecipePageBase
         {
             int count = 51;
             double[] xs = Generate.Consecutive(count);
-            double[] ys1 = Generate.Sin(count);
-            double[] ys2 = Generate.Cos(count);
+            double[] ys = Generate.Sin(count);
 
-            var scatter1 = myPlot.Add.Scatter(xs, ys1);
-            scatter1.MarkerStyle.Size = 10;
-            scatter1.MarkerStyle.Outline.Width = 2;
-            scatter1.MarkerStyle.Outline.Color = Colors.Navy;
-
-            var scatter2 = myPlot.Add.Scatter(xs, ys2);
-            scatter2.MarkerStyle.Size = 6;
-            scatter2.MarkerStyle.Shape = ScottPlot.Style.MarkerShape.Square;
+            MarkerShape[] shapes = Enum.GetValues<MarkerShape>().Where(e => e != MarkerShape.None).ToArray();
+            for(int i = 0; i < shapes.Length; i++)
+            {
+                var shiftedYs = ys.Select(y => y + i).ToArray();
+                var scat = myPlot.Add.Scatter(xs, shiftedYs);
+                scat.MarkerStyle = new(shapes[i], 10, myPlot.Palette.GetColor(i));
+            }
         }
     }
 }

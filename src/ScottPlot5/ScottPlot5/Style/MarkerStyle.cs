@@ -6,30 +6,36 @@
 /// </summary>
 public class MarkerStyle
 {
-    public bool IsVisible => Shape != MarkerShape.None && Size > 0;
+    public bool IsVisible { get; set; }
 
-    /// <summary>
-    /// Standard marker shape.
-    /// Ignored when using a custom marker renderer.
-    /// </summary>
-    public MarkerShape Shape
+    public MarkerStyle(MarkerShape shape = MarkerShape.FilledCircle, float size = 5) : this(shape, size, Colors.Gray)
+    { }
+
+    public MarkerStyle(MarkerShape shape, float size, Color color)
     {
-        get => _Shape;
-        set
-        {
-            _Shape = value;
-            MarkerRenderer = value.GetRenderer();
-        }
-    }
+        MarkerRenderer = shape.GetRenderer();
+        IsVisible = shape != MarkerShape.None;
 
-    private MarkerShape _Shape = MarkerShape.Circle;
+        Outline.Color = color;
+        if (shape.IsOutlined())
+        {
+            Fill.Color = Colors.Transparent;
+            Outline.Width = 2;
+        }
+        else
+        {
+            Fill.Color = color;
+        }
+
+        Size = size;
+    }
 
     /// <summary>
     /// Diameter of the marker (in pixels)
     /// </summary>
-    public float Size { get; set; } = 5;
+    public float Size { get; set; }
 
-    public IMarkerRenderer MarkerRenderer = new MarkerRenderers.Circle();
+    public IMarkerRenderer MarkerRenderer { get; set; }
 
     public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
 
