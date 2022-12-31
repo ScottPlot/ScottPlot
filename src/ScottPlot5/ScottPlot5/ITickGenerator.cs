@@ -5,7 +5,7 @@ public interface ITickGenerator
     /// <summary>
     /// Ticks to display the next time the axis is rendered
     /// </summary>
-    Tick[] Ticks { get; set; } // TODO LATER: Obsolete this. Don't store ticks. Generate them once on render and pass them around.
+    Tick[] Ticks { get; set; } // TODO: Obsolete this. Don't store ticks. Generate them once on render and pass them around.
 
     /// <summary>
     /// Do not automatically generate more ticks than this

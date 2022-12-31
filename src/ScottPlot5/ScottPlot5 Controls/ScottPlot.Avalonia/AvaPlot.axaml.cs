@@ -53,7 +53,6 @@ namespace ScottPlot.Avalonia
 
             Plot.Render(surface);
 
-            // TODO: can this sequence be improved to reduce copying?
             SKImage img = surface.Snapshot();
             SKPixmap pixels = img.ToRasterImage().PeekPixels();
             byte[] bytes = pixels.GetPixelSpan().ToArray();

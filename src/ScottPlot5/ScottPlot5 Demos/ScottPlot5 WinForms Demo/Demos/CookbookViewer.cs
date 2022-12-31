@@ -57,7 +57,6 @@ public partial class CookbookViewer : Form, IDemoWindow
         IRecipe recipe = (IRecipe)listView1.SelectedItems[0].Tag;
         formsPlot1.Reset();
         recipe.Recipe(formsPlot1.Plot);
-        // TODO: set background color to control color
         formsPlot1.Refresh();
     }
 }

@@ -5,9 +5,6 @@ namespace WinForms_Demo;
 
 public partial class MainMenuForm : Form
 {
-    // TODO: how the types are held is a bit wonky. Maybe wrap this crazy insize a DemoWindowManager class or something.
-    // TODO: improve demo item ordering.
-
     private readonly Dictionary<string, Type> Demos = DemoWindows.GetDemoTypesByTitle();
 
     public MainMenuForm()
