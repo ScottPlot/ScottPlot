@@ -87,16 +87,6 @@ public static class SkiaSharpExtensions
         }
     }
 
-    public static SKFont MakeFont(this FontStyle fontStyle)
-    {
-        SKFontStyleWeight weight = fontStyle.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = fontStyle.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle skfs = new(weight, width, slant);
-        SKTypeface typeface = SKTypeface.FromFamilyName(fontStyle.Name, skfs);
-        return new SKFont(typeface, fontStyle.Size);
-    }
-
     public static void ApplyToPaint(this FontStyle fontStyle, SKPaint paint)
     {
         SKFontStyleWeight weight = fontStyle.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
@@ -106,5 +96,7 @@ public static class SkiaSharpExtensions
         SKTypeface typeface = SKTypeface.FromFamilyName(fontStyle.Name, skfs);
         paint.Typeface = typeface;
         paint.TextSize = fontStyle.Size;
+        paint.Color = fontStyle.Color.ToSKColor();
+        paint.IsAntialias = fontStyle.AntiAlias;
     }
 }

@@ -33,7 +33,9 @@ public abstract class YAxisBase : AxisBase, IAxis
 
     private float MeasureTicks()
     {
-        using SKPaint paint = new(TickFont.MakeFont());
+        using SKPaint paint = new();
+        TickFont.ApplyToPaint(paint);
+
         float largestTickWidth = 0;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
