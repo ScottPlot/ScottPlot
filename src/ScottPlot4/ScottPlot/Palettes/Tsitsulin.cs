@@ -4,8 +4,6 @@
  * https://github.com/xgfs/coloropt
  */
 
-// TODO: add more colormaps from http://tsitsul.in/blog/coloropt/ called XgfsNormal6, XgfsNormal12, etc.
-
 namespace ScottPlot.Palettes;
 
 public class Tsitsulin : HexPaletteBase, IPalette
