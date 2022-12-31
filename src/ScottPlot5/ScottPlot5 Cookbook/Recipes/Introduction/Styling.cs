@@ -133,16 +133,24 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            int count = 51;
+            int count = 21;
             double[] xs = Generate.Consecutive(count);
             double[] ys = Generate.Sin(count);
 
-            MarkerShape[] shapes = Enum.GetValues<MarkerShape>().Where(e => e != MarkerShape.None).ToArray();
-            for(int i = 0; i < shapes.Length; i++)
+            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+
+            for (int i = 0; i < markerShapes.Length; i++)
             {
-                var shiftedYs = ys.Select(y => y + i).ToArray();
-                var scat = myPlot.Add.Scatter(xs, shiftedYs);
-                scat.MarkerStyle = new(shapes[i], 10, myPlot.Palette.GetColor(i));
+                double[] data = ys.Select(y => markerShapes.Length - y + i).ToArray();
+
+                var scatter = myPlot.Add.Scatter(xs, data);
+
+                scatter.Label = markerShapes[i].ToString();
+
+                scatter.MarkerStyle = new MarkerStyle(
+                    shape: markerShapes[i],
+                    size: 10,
+                    color: scatter.LineStyle.Color);
             }
         }
     }
