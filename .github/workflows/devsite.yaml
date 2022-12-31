@@ -30,6 +30,12 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
+      - name: 🗛 Download Fonts
+        run: |
+          wget -O open_sans.zip https://fonts.google.com/download?family=Open%20Sans
+          unzip -d open_sans/ open_sans.zip
+          mv open_sans /usr/share/fonts/
+          fc-cache -fv
       - name: ✨ Set up .NET 6.0
         uses: actions/setup-dotnet@v3
         with:
