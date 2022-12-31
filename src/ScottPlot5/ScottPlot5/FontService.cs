@@ -38,7 +38,7 @@ public static class FontService
     {
         HashSet<string> installedFonts = new(SKFontManager.Default.FontFamilies);
 
-        string[] preferredFonts = { "Consolas", "DejaVu Sans Mono", "Courier" };
+        string[] preferredFonts = { "Roboto Mono", "Consolas", "DejaVu Sans Mono", "Courier" };
         foreach (string preferredFont in preferredFonts)
         {
             if (installedFonts.Contains(preferredFont))

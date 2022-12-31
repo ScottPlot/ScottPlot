@@ -1,4 +1,4 @@
-name: ScottPlot 5 Developer Website
+name: ScottPlot5 Dev
 
 # This script builds the ScottPlot 5 cookbook
 # and publishes it to dev.scottplot.net (hosted by GitHub Pages)
@@ -35,6 +35,9 @@ jobs:
           wget -O open_sans.zip https://fonts.google.com/download?family=Open%20Sans
           unzip -d open_sans/ open_sans.zip
           mv open_sans /usr/share/fonts/
+          wget -O roberto_mono.zip https://fonts.google.com/download?family=Roboto%20Mono
+          unzip -d roberto_mono/ roberto_mono.zip
+          mv roberto_mono /usr/share/fonts/
           fc-cache -fv
       - name: ✨ Set up .NET 6.0
         uses: actions/setup-dotnet@v3
