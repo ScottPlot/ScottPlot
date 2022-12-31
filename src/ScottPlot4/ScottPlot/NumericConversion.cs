@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/* WARNING: DO NOT MODIFY THIS API! IT IS USED BY SCOTTPLOT 4 AND SCOTTPLOT 5 
+ *
+ */
+
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
@@ -102,6 +104,16 @@ namespace ScottPlot
         }
 
         public static T[] DoubleToGeneric<T>(this double[] input)
+        {
+            T[] result = new T[input.Length];
+            for (int i = 0; i < input.Length; i++)
+            {
+                DoubleToGeneric<T>(input[i], out result[i]);
+            }
+            return result;
+        }
+
+        public static T[] ToGenericArray<T>(this double[] input)
         {
             T[] result = new T[input.Length];
             for (int i = 0; i < input.Length; i++)
