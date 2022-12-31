@@ -1,5 +1,6 @@
 ﻿namespace ScottPlot.Style;
 
+[Obsolete()]
 public struct Stroke
 {
     public Color Color { get; set; } = Colors.Black;

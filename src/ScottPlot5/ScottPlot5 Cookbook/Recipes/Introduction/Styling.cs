@@ -139,7 +139,8 @@ internal class Styling : RecipePageBase
             sig2.Label = "Cos";
 
             var legend = myPlot.GetLegend();
-            legend.Stroke = new(Colors.Navy, 2);
+            legend.LineColor = Colors.Navy;
+            legend.LineWidth = 2;
             legend.BackgroundColor = Colors.LightBlue;
             legend.ShadowColor = Colors.Blue.WithOpacity(.5);
             legend.FontSize = 16;
