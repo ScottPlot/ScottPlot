@@ -179,7 +179,8 @@ public class StandardLegend : ILegend
             if (!string.IsNullOrWhiteSpace(item.Label))
             {
                 visibleItems.Add(item);
-            } else
+            }
+            else
             {
                 visibleItems.AddRange(item.Children);
             }
