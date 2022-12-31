@@ -40,8 +40,6 @@ internal class Bar : RecipePageBase
                     s.Bars[i].ValueBase = s.Bars[i - 1].Value;
 
             myPlot.Add.Bar(series);
-
-            myPlot.Add.Legend();
         }
     }
 }

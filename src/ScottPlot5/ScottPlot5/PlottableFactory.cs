@@ -28,13 +28,6 @@ public class PlottableFactory
         return heatmap;
     }
 
-    public Legend Legend(IList<LegendItem>? legendItems = null)
-    {
-        Legend legend = new(legendItems ?? Plot.LegendItems());
-        Plot.Plottables.Add(legend);
-        return legend;
-    }
-
     public Pie Pie(IList<PieSlice> slices)
     {
         Pie pie = new(slices);

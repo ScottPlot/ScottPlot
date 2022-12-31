@@ -88,4 +88,21 @@ internal class Quickstart : RecipePageBase
             myPlot.Title.Label.Text = "Plot Title";
         }
     }
+
+    internal class Legend : RecipeTestBase
+    {
+        public override string Name => "Legend";
+        public override string Description => "A legend displays plottables in a key along the edge of a plot. " +
+            "Most plottables have a Label property which configures what text appears in the legend.";
+
+        [Test]
+        public override void Recipe()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.Label = "Sin";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.Label = "Cos";
+        }
+    }
 }

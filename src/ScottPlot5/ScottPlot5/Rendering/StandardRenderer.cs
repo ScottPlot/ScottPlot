@@ -24,6 +24,7 @@ public class StandardRenderer : IRenderer
         Common.RenderGridsBelowPlottables(surface, dataRect, plot);
         Common.RenderPlottables(surface, dataRect, plot);
         Common.RenderGridsAbovePlottables(surface, dataRect, plot);
+        Common.RenderLegends(surface, dataRect, plot);
         Common.RenderPanels(surface, dataRect, panels, layout);
         Common.RenderZoomRectangle(surface, dataRect, plot);
         sw.Stop();

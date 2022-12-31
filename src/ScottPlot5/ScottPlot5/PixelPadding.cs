@@ -10,6 +10,17 @@ public struct PixelPadding
     public float Bottom;
     public float Top;
 
+    public float TotalHorizontal => Left + Right;
+    public float TotalVertical => Top + Bottom;
+
+    public PixelPadding(float padding)
+    {
+        Left = padding;
+        Right = padding;
+        Bottom = padding;
+        Top = padding;
+    }
+
     public PixelPadding(float left, float right, float bottom, float top)
     {
         Left = left;
@@ -27,4 +38,6 @@ public struct PixelPadding
     }
 
     public void Contract(float amount) => Expand(-amount);
+
+    public static PixelPadding Zero => new();
 }

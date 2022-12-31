@@ -72,6 +72,16 @@ public static class Common
         }
     }
 
+    public static void RenderLegends(SKSurface surface, PixelRect dataRect, Plot plot)
+    {
+        LegendItem[] items = plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
+
+        foreach (ILegend legend in plot.Legends)
+        {
+            legend.Render(surface.Canvas, dataRect, items);
+        }
+    }
+
     public static void RenderPanels(SKSurface surface, PixelRect dataRect, IPanel[] panels, FinalLayout layout)
     {
         foreach (IPanel panel in panels)

@@ -60,7 +60,13 @@ public static class Drawing
         surface.Canvas.DrawPath(path, paint);
     }
 
+    [Obsolete()]
     public static void DrawMarkers(SKSurface surface, in Marker marker, IEnumerable<Pixel> positions)
+    {
+        DrawMarkers(surface.Canvas, marker, positions);
+    }
+
+    public static void DrawMarkers(SKCanvas canvas, in Marker marker, IEnumerable<Pixel> positions)
     {
         using SKPaint paint = new()
         {
@@ -74,7 +80,7 @@ public static class Drawing
             switch (marker.Shape)
             {
                 case MarkerShape.Circle:
-                    surface.Canvas.DrawCircle(pos.X, pos.Y, marker.Size / 2, paint);
+                    canvas.DrawCircle(pos.X, pos.Y, marker.Size / 2, paint);
                     break;
                 default:
                     throw new NotSupportedException(nameof(marker.Shape));

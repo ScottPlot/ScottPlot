@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Axis;
-using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -30,6 +29,10 @@ public interface IPlottable
     /// Draw the data from this plottable into the data area defined in the <see cref="Axes"/>.
     /// By default the surface is already clipped to the data area, but this can be cleared inside the plottable.
     /// </summary>
-    void Render(SKSurface surface);
+    void Render(SKSurface surface); // TODO: pass a canvas and figure area instead. Consider passing datarect too (currently inside IAxes).
+
+    /// <summary>
+    /// Items which will appear in the legend
+    /// </summary>
     IEnumerable<LegendItem> LegendItems { get; }
 }

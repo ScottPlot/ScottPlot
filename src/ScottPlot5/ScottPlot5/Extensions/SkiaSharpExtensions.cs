@@ -63,4 +63,20 @@ public static class SkiaSharpExtensions
     {
         return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
+
+    public static void SetStroke(this SKPaint paint, Style.Stroke stroke)
+    {
+        paint.StrokeWidth = (float)stroke.Width;
+        paint.Color = stroke.Color.ToSKColor();
+        paint.Style = SKPaintStyle.Stroke;
+
+        paint.Shader = null;
+    }
+
+    public static void SetFill(this SKPaint paint, Style.Fill fill, byte alpha = 255)
+    {
+        paint.Color = fill.Color.WithAlpha(alpha).ToSKColor();
+        paint.Shader = fill.GetShader();
+        paint.Style = SKPaintStyle.Fill;
+    }
 }

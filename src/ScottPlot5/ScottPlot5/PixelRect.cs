@@ -84,8 +84,88 @@ public struct PixelRect
         return new PixelRect(left, right, bottom, top);
     }
 
+    public PixelRect WithDelta(PixelSize size)
+    {
+        return new PixelRect(Left + size.Width, Right + size.Width, Bottom + size.Height, Top + size.Height);
+    }
+
     public PixelRect WithDelta(float x, float y)
     {
         return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
+    }
+
+    public PixelRect WithDelta(float x, float y, Alignment alignment)
+    {
+        return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
+    }
+}
+
+public static class PixelRectExtensions
+{
+    /// <summary>
+    /// Create a rectangle of given sized aligned inside a larger rectangle
+    /// </summary>
+    public static PixelRect AlignedInside(this PixelSize size, PixelRect rect, Alignment alignment, PixelPadding padding)
+    {
+        PixelRect inner = rect.Contract(padding);
+
+        return alignment switch
+        {
+            Alignment.UpperLeft => new PixelRect(
+                left: inner.Left,
+                right: inner.Left + size.Width,
+                bottom: inner.Top + size.Height,
+                top: inner.Top),
+
+            Alignment.UpperCenter => new PixelRect(
+                left: inner.HorizontalCenter - size.Width / 2,
+                right: inner.HorizontalCenter + size.Width / 2,
+                bottom: inner.Top + size.Height,
+                top: inner.Top),
+
+            Alignment.UpperRight => new PixelRect(
+                left: inner.Right - size.Width,
+                right: inner.Right,
+                bottom: inner.Top + size.Height,
+                top: inner.Top),
+
+            Alignment.MiddleLeft => new PixelRect(
+                left: inner.Left,
+                right: inner.Left + size.Width,
+                bottom: inner.VerticalCenter + size.Height / 2,
+                top: inner.VerticalCenter - size.Height / 2),
+
+            Alignment.MiddleCenter => new PixelRect(
+                left: inner.HorizontalCenter - size.Width / 2,
+                right: inner.HorizontalCenter + size.Width / 2,
+                bottom: inner.VerticalCenter + size.Height / 2,
+                top: inner.VerticalCenter - size.Height / 2),
+
+            Alignment.MiddleRight => new PixelRect(
+                left: inner.Right - size.Width,
+                right: inner.Right,
+                bottom: inner.VerticalCenter + size.Height / 2,
+                top: inner.VerticalCenter - size.Height / 2),
+
+            Alignment.LowerLeft => new PixelRect(
+                left: inner.Left,
+                right: inner.Left + size.Width,
+                bottom: inner.Bottom,
+                top: inner.Bottom - size.Height),
+
+            Alignment.LowerCenter => new PixelRect(
+                left: inner.HorizontalCenter - size.Width / 2,
+                right: inner.HorizontalCenter + size.Width / 2,
+                bottom: inner.Bottom,
+                top: inner.Bottom - size.Height),
+
+            Alignment.LowerRight => new PixelRect(
+                left: inner.Right - size.Width,
+                right: inner.Right,
+                bottom: inner.Bottom,
+                top: inner.Bottom - size.Height),
+
+            _ => throw new NotImplementedException(),
+        };
     }
 }
