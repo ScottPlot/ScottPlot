@@ -90,21 +90,23 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class AltTickGen : RecipeTestBase
+    internal class Frameless : RecipeTestBase
     {
-        public override string Name => "Custom Tick Generators";
-        public override string Description => "Alternative tick generators can be created and assigned to axes. " +
-            "Some common tick generators are provided with ScottPlot, and users also have the option create their own.";
+        public override string Name => "Frameless Plot";
+        public override string Description => "How to create a plot containig only the data area and no axes";
 
         [Test]
         public override void Recipe()
         {
+            myPlot.FigureBackground = Colors.Magenta; // should not be seen
+            myPlot.DataBackground = Colors.WhiteSmoke;
+
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            ITickGenerator customTickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
-
-            myPlot.XAxis.TickGenerator = customTickGenerator;
+            myPlot.XAxes.ForEach(x => x.IsVisible = false);
+            myPlot.YAxes.ForEach(x => x.IsVisible = false);
+            myPlot.Title.IsVisible = false;
         }
     }
 }
