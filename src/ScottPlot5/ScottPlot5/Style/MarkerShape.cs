@@ -3,8 +3,10 @@
 public enum MarkerShape
 {
     None,
-    Circle,
-    Square,
+    FilledCircle,
+    OpenCircle,
+    FilledSquare,
+    OpenSquare,
 }
 
 public static class MarkerShapeExtensions
@@ -13,9 +15,18 @@ public static class MarkerShapeExtensions
     {
         return shape switch
         {
-            MarkerShape.Circle or MarkerShape.None => new MarkerRenderers.Circle(),
-            MarkerShape.Square => new MarkerRenderers.Square(),
+            MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.None => new MarkerRenderers.Circle(),
+            MarkerShape.FilledSquare or MarkerShape.OpenSquare => new MarkerRenderers.Square(),
             _ => throw new NotImplementedException(shape.ToString()),
+        };
+    }
+
+    public static bool IsOutlined(this MarkerShape shape)
+    {
+        return shape switch
+        {
+            MarkerShape.OpenCircle or MarkerShape.OpenSquare => true,
+            _ => false,
         };
     }
 }
