@@ -38,14 +38,4 @@ public static class SystemDrawingExtensions
     {
         return new Pixel(point.X, point.Y);
     }
-
-    public static SKTypeface ToSKTypeface(this Font font)
-    {
-        return
-            SKTypeface.FromFamilyName(
-                familyName: font.Name,
-                weight: font.Weight > 400 ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal, // TODO: smarter conversion
-                width: SKFontStyleWidth.Normal,
-                slant: font.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
-    }
 }

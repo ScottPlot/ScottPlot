@@ -27,12 +27,10 @@ public abstract class XAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = string.Empty,
-        FontName = FontService.SansFontName,
-        FontSize = 16,
-        Bold = true,
+        Font = new() { Size = 16, Bold = true },
     };
 
-    public Font TickFont { get; set; } = new();
+    public FontStyle TickFont { get; set; } = new();
 
     public abstract Edge Edge { get; }
     public bool ShowDebugInformation { get; set; } = false;
@@ -73,10 +71,7 @@ public abstract class XAxisBase : IAxis
 
     private float MeasureTicks()
     {
-        using SKPaint paint = new()
-        {
-            Typeface = TickFont.ToSKTypeface(),
-        };
+        using SKPaint paint = TickFont.MakePaint();
 
         float largestTickHeight = 0;
 
@@ -142,20 +137,17 @@ public abstract class XAxisBase : IAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
         Label.Alignment = Alignment.LowerCenter;
         Label.Rotation = 0;
         Label.Draw(surface.Canvas, labelPoint);
 
-        using SKFont tickFont = new()
-        {
-            Typeface = TickFont.ToSKTypeface(),
-        };
+
         IEnumerable<Tick> ticks = TickGenerator.GetVisibleTicks(Range);
 
-        AxisRendering.DrawTicks(surface, tickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        AxisRendering.DrawTicks(surface, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
         AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
     }
 

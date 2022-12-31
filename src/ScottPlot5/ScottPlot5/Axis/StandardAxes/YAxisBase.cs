@@ -29,12 +29,11 @@ public abstract class YAxisBase : IAxis
     public Label Label { get; private set; } = new()
     {
         Text = string.Empty,
-        FontName = FontService.SansFontName,
-        FontSize = 16,
-        Bold = true,
+        Font = new() { Size = 16, Bold = true },
         Rotation = -90,
     };
-    public Style.StyledSKFont TickFont { get; set; } = new();
+
+    public FontStyle TickFont { get; set; } = new();
 
     public abstract Edge Edge { get; }
 
@@ -91,7 +90,7 @@ public abstract class YAxisBase : IAxis
 
     private float MeasureTicks()
     {
-        using SKPaint paint = new(TickFont.GetFont());
+        using SKPaint paint = new(TickFont.MakeFont());
         float largestTickWidth = 0;
 
         foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
@@ -140,16 +139,15 @@ public abstract class YAxisBase : IAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
         Label.Alignment = Edge == Edge.Left ? Alignment.UpperCenter : Alignment.LowerCenter;
         Label.Rotation = Edge == Edge.Left ? -90 : 90;
         Label.Draw(surface.Canvas, labelPoint);
 
-        using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
-        AxisRendering.DrawTicks(surface, tickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        AxisRendering.DrawTicks(surface, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
         AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
     }
 

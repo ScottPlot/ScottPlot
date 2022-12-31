@@ -22,10 +22,8 @@ internal class LabelTests
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
-                FontSize = 32,
-                Color = Colors.White.WithOpacity(.5),
-                BorderColor = Colors.Yellow,
-                BorderWidth = 1,
+                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
+                Border = new() { Color = Colors.Yellow, Width = 1 },
                 PointSize = 5,
             };
 
@@ -56,12 +54,10 @@ internal class LabelTests
             Label lbl = new()
             {
                 Text = $"R{i}",
-                FontSize = 32,
-                Color = Colors.White.WithOpacity(.5),
+                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
                 Rotation = i,
                 PointSize = 5,
-                BorderWidth = 1,
-                BorderColor = Colors.Yellow,
+                Border = new() { Color = Colors.Yellow },
                 BackgroundColor = Colors.White.WithOpacity(.2),
             };
             lbl.Draw(canvas, center);
@@ -87,10 +83,8 @@ internal class LabelTests
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
-                FontSize = 32,
-                Color = Colors.White.WithOpacity(.5),
-                BorderColor = Colors.Yellow,
-                BorderWidth = 1,
+                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
+                Border = new() { Color = Colors.Yellow },
                 PointSize = 5,
                 Rotation = 30,
             };

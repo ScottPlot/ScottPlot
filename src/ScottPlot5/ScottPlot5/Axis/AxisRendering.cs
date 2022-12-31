@@ -62,19 +62,15 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksHorizontalAxis(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksHorizontalAxis(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
             throw new InvalidEnumArgumentException();
         }
 
-        using SKPaint paint = new(font)
-        {
-            IsAntialias = true,
-            TextAlign = SKTextAlign.Center,
-        };
-
+        using SKPaint paint = font.MakePaint();
+        paint.TextAlign = SKTextAlign.Center;
 
         foreach (Tick tick in ticks)
         {
@@ -94,18 +90,15 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksVerticalAxis(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksVerticalAxis(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
             throw new InvalidEnumArgumentException();
         }
 
-        using SKPaint paint = new(font)
-        {
-            IsAntialias = true,
-            TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left,
-        };
+        using SKPaint paint = font.MakePaint();
+        paint.TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left;
 
         foreach (Tick tick in ticks)
         {
@@ -125,7 +118,7 @@ public static class AxisRendering
         }
     }
 
-    public static void DrawTicks(SKSurface surface, SKFont font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    public static void DrawTicks(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge.IsVertical())
             DrawTicksVerticalAxis(surface, font, panelRect, ticks, axis, majorStyle, minorStyle);

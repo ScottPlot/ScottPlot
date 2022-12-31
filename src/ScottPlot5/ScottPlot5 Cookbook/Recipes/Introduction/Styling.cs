@@ -37,19 +37,19 @@ internal class Styling : RecipePageBase
             myPlot.Add.Signal(Generate.Cos(51));
 
             myPlot.Title.Label.Text = "Plot Title";
-            myPlot.Title.Label.Color = Colors.RebeccaPurple;
-            myPlot.Title.Label.FontSize = 32;
+            myPlot.Title.Label.Font.Color = Colors.RebeccaPurple;
+            myPlot.Title.Label.Font.Size = 32;
+            myPlot.Title.Label.Font.Name = FontService.SerifFontName;
             myPlot.Title.Label.Rotation = -5;
-            myPlot.Title.Label.FontName = Font.SerifFontName;
-            myPlot.Title.Label.Bold = false;
+            myPlot.Title.Label.Font.Bold = false;
 
             myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.YAxis.Label.Color = Colors.Magenta;
-            myPlot.YAxis.Label.Italic = true;
+            myPlot.YAxis.Label.Font.Color = Colors.Magenta;
+            myPlot.YAxis.Label.Font.Italic = true;
 
             myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.XAxis.Label.Bold = false;
-            myPlot.XAxis.Label.FontName = Font.MonospaceFontName;
+            myPlot.XAxis.Label.Font.Bold = false;
+            myPlot.XAxis.Label.Font.Name = FontService.MonospaceFontName;
 
             myPlot.XAxis.MajorTickLength = 10;
             myPlot.XAxis.MajorTickWidth = 3;
@@ -143,8 +143,8 @@ internal class Styling : RecipePageBase
             legend.LineStyle.Width = 2;
             legend.BackgroundColor = Colors.LightBlue;
             legend.ShadowColor = Colors.Blue.WithOpacity(.5);
-            legend.FontSize = 16;
-            legend.FontName = Font.SerifFontName;
+            legend.Font.Size = 16;
+            legend.Font.Name = FontService.SerifFontName;
             legend.Alignment = Alignment.UpperCenter;
         }
     }

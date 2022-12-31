@@ -88,4 +88,25 @@ public static class SkiaSharpExtensions
         paint.StrokeWidth = lineStyle.Width;
         paint.Color = lineStyle.Color.ToSKColor();
     }
+
+    public static SKFont MakeFont(this FontStyle fontStyle)
+    {
+        SKFontStyleWeight weight = fontStyle.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = fontStyle.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyle skfs = new(weight, width, slant);
+        SKTypeface typeface = SKTypeface.FromFamilyName(fontStyle.Name, skfs);
+        return new SKFont(typeface, fontStyle.Size);
+    }
+
+    public static SKPaint MakePaint(this FontStyle fontStyle, bool antiAlias = true)
+    {
+        SKFontStyleWeight weight = fontStyle.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = fontStyle.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyle skfs = new(weight, width, slant);
+        SKTypeface typeface = SKTypeface.FromFamilyName(fontStyle.Name, skfs);
+        SKFont skFont = new(typeface, fontStyle.Size);
+        return new SKPaint(skFont) { IsAntialias = antiAlias };
+    }
 }

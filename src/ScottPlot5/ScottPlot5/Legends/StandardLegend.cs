@@ -10,12 +10,10 @@ public class StandardLegend : ILegend
     public PixelPadding Padding { get; set; } = new PixelPadding(3);
     public PixelPadding ItemPadding { get; set; } = new PixelPadding(3);
 
-    public string FontName = Font.SansFontName;
-    public float FontSize = 12;
-    public Color FontColor = Colors.Black;
+    public FontStyle Font { get; set; } = new();
+
     public bool FontBold = false;
     public bool FontItalic = false;
-    public Font Font => new(FontName, FontSize, FontBold ? 800 : 400, FontItalic);
 
     public LineStyle LineStyle { get; } = new();
 
@@ -40,7 +38,7 @@ public class StandardLegend : ILegend
             return;
 
         // measure all items to determine dimensions of the legend
-        using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = Font.Size, IsAntialias = true };
+        using SKPaint paint = Font.MakePaint();
         SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
 
         float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();

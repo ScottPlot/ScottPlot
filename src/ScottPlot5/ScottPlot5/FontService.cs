@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This class provides cross-platform tools for working with fonts

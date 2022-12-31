@@ -146,19 +146,6 @@ public static class Drawing
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
-    public static void DrawText(SKCanvas canvas, Pixel pixel, string text, float fontSize, Color color, Alignment alignment = Alignment.UpperLeft)
-    {
-        Label lbl = new()
-        {
-            Text = text,
-            Alignment = alignment,
-            Color = color,
-            FontSize = fontSize,
-        };
-
-        lbl.Draw(canvas, pixel);
-    }
-
     public static SKBitmap BitmapFromArgbs(uint[] argbs, int width, int height)
     {
         GCHandle handle = GCHandle.Alloc(argbs, GCHandleType.Pinned);

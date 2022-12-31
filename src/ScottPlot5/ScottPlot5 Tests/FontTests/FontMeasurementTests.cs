@@ -19,9 +19,7 @@ internal class FontMeasurementTests
             Label lbl = new()
             {
                 Text = "Hello, World",
-                FontName = font,
-                FontSize = 64,
-                Color = Colors.White,
+                Font = new() { Name = font, Size = 64, Color = Colors.White },
             };
 
             Pixel px = new(20, yOffset);

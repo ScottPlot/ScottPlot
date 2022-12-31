@@ -10,42 +10,16 @@ namespace ScottPlot;
 public class Label
 {
     public string Text { get; set; } = string.Empty;
-    public Font Font { get; set; } = Font.Default; // TODO: I don't like how assigning this clears the existing font size
-    public string FontName { get => Font.Name; set => Font = Font.WithName(value); }
-    public float FontSize { get => Font.Size; set => Font = Font.WithSize(value); }
-    public FontWeight FontWeight { get => Font.GetNearestWeight(); set => Font = Font.WithWeight(value); }
-    public bool Bold { get => Font.Weight > (float)FontWeight.Normal; set => Font = Font.WithBold(value); }
-    public bool Italic { get => Font.Italic; set => Font = Font.WithItalic(value); }
-    public Color Color { get; set; } = Colors.Black;
+    public FontStyle Font { get; set; } = new();
     public Color BackgroundColor { get; set; } = Colors.Transparent;
-    public Color BorderColor { get; set; } = Colors.Black;
-    public float BorderWidth { get; set; } = 0;
-
-    // TODO: respect this
-    public LineStyle Outline { get; set; } = new() { Width = 0 };
+    public LineStyle Border { get; set; } = new() { Width = 0 };
+    public LineStyle Outline { get; set; } = new() { Width = 0 };// TODO: respect this
 
     public bool AntiAlias { get; set; } = true;
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float Rotation { get; set; } = 0;
     public float PointSize { get; set; } = 0;
     public Color PointColor { get; set; } = Colors.Magenta;
-
-    private SKPaint MakeTextPaint()
-    {
-        SKFontStyleWeight weight = Bold ? SKFontStyleWeight.SemiBold : SKFontStyleWeight.Normal;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyleSlant slant = Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-
-        return new SKPaint()
-        {
-            Color = Color.ToSKColor(),
-            TextAlign = Alignment.ToSKTextAlign(),
-            Typeface = SKTypeface.FromFamilyName(FontName, weight, width, slant),
-            TextSize = FontSize,
-            IsAntialias = AntiAlias,
-            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-        };
-    }
 
     private SKPaint MakeBackgroundPaint()
     {
@@ -63,7 +37,7 @@ public class Label
         return new SKPaint()
         {
             IsStroke = true,
-            Color = BorderColor.ToSKColor(),
+            Color = Border.Color.ToSKColor(),
             IsAntialias = AntiAlias,
             FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
         };
@@ -87,7 +61,7 @@ public class Label
 
     public PixelSize Measure(string text)
     {
-        using SKPaint paint = MakeTextPaint();
+        using SKPaint paint = Font.MakePaint();
         SKRect textBounds = new();
         paint.MeasureText(text, ref textBounds);
         return textBounds.ToPixelSize();
@@ -95,7 +69,7 @@ public class Label
 
     public PixelRect GetRectangle(Pixel pixel)
     {
-        using SKPaint paint = MakeTextPaint();
+        using SKPaint paint = Font.MakePaint();
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
         return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
@@ -103,7 +77,7 @@ public class Label
 
     public void Draw(SKCanvas canvas, Pixel pixel)
     {
-        using SKPaint textPaint = MakeTextPaint();
+        using SKPaint textPaint = Font.MakePaint();
         SKRect textBounds = new();
         textPaint.MeasureText(Text, ref textBounds);
         float xOffset = textBounds.Width * Alignment.HorizontalFraction();
@@ -123,7 +97,7 @@ public class Label
 
         canvas.DrawText(Text, new(0, yOffset), textPaint);
 
-        if (BorderWidth > 0)
+        if (Border.Width > 0)
         {
             using SKPaint borderPaint = MakeBorderPaint();
             canvas.DrawRect(textRect.ToSKRect(), borderPaint);

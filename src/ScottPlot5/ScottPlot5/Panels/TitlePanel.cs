@@ -13,9 +13,7 @@ public class TitlePanel : IPanel
     public Label Label { get; } = new()
     {
         Text = string.Empty,
-        FontName = FontService.SansFontName,
-        FontSize = 16,
-        Bold = true,
+        Font = new() { Size = 16, Bold = true },
         Alignment = Alignment.LowerCenter,
     };
 
@@ -55,7 +53,7 @@ public class TitlePanel : IPanel
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Color);
+            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
         Label.Draw(surface.Canvas, labelPoint);
