@@ -8,8 +8,11 @@ public class MarkerStyle
 {
     public bool IsVisible { get; set; }
 
-    public MarkerStyle(MarkerShape shape = MarkerShape.FilledCircle, float size = 5) : this(shape, size, Colors.Gray)
+    public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
     { }
+
+    public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
+    public static MarkerStyle None => new(MarkerShape.None, 0);
 
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {

@@ -13,7 +13,7 @@ public class Scatter : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public LineStyle LineStyle { get; set; } = new();
-    public MarkerStyle MarkerStyle { get; set; } = new();
+    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSource.IScatterSource Data { get; }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();

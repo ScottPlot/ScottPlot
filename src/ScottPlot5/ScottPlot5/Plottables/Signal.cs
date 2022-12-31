@@ -14,7 +14,7 @@ public class Signal : IPlottable
 
     public readonly DataSource.ISignalSource Data;
 
-    public MarkerStyle Marker { get; set; } = new() { Outline = LineStyle.NoLine };
+    public MarkerStyle Marker { get; set; } = new(MarkerShape.FilledCircle, 5) { Outline = LineStyle.NoLine };
     public string? Label { get; set; }
 
     public LineStyle LineStyle { get; } = new();
