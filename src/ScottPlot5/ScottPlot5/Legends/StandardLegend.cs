@@ -104,6 +104,9 @@ public class StandardLegend : ILegend
         canvas.DrawText(item.Label, textPoint, paint);
 
         y += ownHeight;
+        using SKAutoCanvasRestore _ = new(canvas);
+        canvas.Translate(ItemPadding.Left, 0);
+
         foreach (var curr in sizedItem.Children)
         {
             RenderItem(canvas, paint, curr, x, y);
