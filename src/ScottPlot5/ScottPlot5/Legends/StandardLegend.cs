@@ -174,6 +174,9 @@ public class StandardLegend : ILegend
             if (!string.IsNullOrWhiteSpace(item.Label))
             {
                 visibleItems.Add(item);
+            } else
+            {
+                visibleItems.AddRange(item.Children);
             }
         }
 
