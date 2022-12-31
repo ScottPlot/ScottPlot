@@ -17,7 +17,8 @@ public abstract class XAxisBase : AxisBase, IAxis
 
     private float MeasureTicks()
     {
-        using SKPaint paint = TickFont.MakePaint();
+        using SKPaint paint = new();
+        TickFont.ApplyToPaint(paint);
 
         float largestTickHeight = 0;
 

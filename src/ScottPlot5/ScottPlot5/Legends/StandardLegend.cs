@@ -33,7 +33,9 @@ public class StandardLegend : ILegend
             return;
 
         // measure all items to determine dimensions of the legend
-        using SKPaint paint = Font.MakePaint();
+        using SKPaint paint = new();
+        Font.ApplyToPaint(paint);
+
         SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
 
         float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
