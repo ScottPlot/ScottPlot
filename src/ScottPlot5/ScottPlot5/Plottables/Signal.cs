@@ -19,8 +19,11 @@ public class Signal : IPlottable
     public readonly DataSource.ISignalSource Data;
 
     public Marker Marker { get; set; } = new();
-    public float LineWidth { get; set; } = 1;
     public string? Label { get; set; }
+
+    // TODO: colors throughout this code are taken from weird places
+    // TODO: use MakePaint()
+    public LineStyle LineStyle { get; } = new();
 
     public Signal(DataSource.ISignalSource data)
     {
@@ -33,7 +36,7 @@ public class Signal : IPlottable
         {
             Label = Label,
             Marker = Marker,
-            Line = new(Marker.Color, LineWidth)
+            Line = LineStyle,
         });
 
     /// <summary>
@@ -120,7 +123,7 @@ public class Signal : IPlottable
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
             Color = Marker.Color.ToSKColor(),
-            StrokeWidth = LineWidth,
+            StrokeWidth = LineStyle.Width,
         };
 
         surface.Canvas.DrawPath(path, paint);
@@ -149,7 +152,7 @@ public class Signal : IPlottable
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
             Color = Marker.Color.ToSKColor(),
-            StrokeWidth = LineWidth,
+            StrokeWidth = LineStyle.Width,
         };
 
         PixelRangeY[] verticalBars = GetVerticalBars();

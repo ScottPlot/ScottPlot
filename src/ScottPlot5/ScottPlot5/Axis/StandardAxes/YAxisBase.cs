@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Axis.StandardAxes;
+﻿using ScottPlot.Style;
+
+namespace ScottPlot.Axis.StandardAxes;
 
 // TODO: move shared code into a common AxisBase class
 
@@ -39,27 +41,26 @@ public abstract class YAxisBase : IAxis
     public bool ShowDebugInformation { get; set; } = false;
 
     public float MajorTickLength { get; set; } = 4;
-    public float MajorTickLineWidth { get; set; } = 1;
+    public float MajorTickWidth { get; set; } = 1;
     public Color MajorTickColor { get; set; } = Colors.Black;
     public TickStyle MajorTickStyle => new()
     {
         Length = MajorTickLength,
-        LineWidth = MajorTickLineWidth,
+        Width = MajorTickWidth,
         Color = MajorTickColor
     };
 
     public float MinorTickLength { get; set; } = 2;
-    public float MinorTickLineWidth { get; set; } = 1;
+    public float MinorTickWidth { get; set; } = 1;
     public Color MinorTickColor { get; set; } = Colors.Black;
     public TickStyle MinorTickStyle => new()
     {
         Length = MinorTickLength,
-        LineWidth = MinorTickLineWidth,
+        Width = MinorTickWidth,
         Color = MinorTickColor
     };
 
-    public float FrameLineWidth { get; set; } = 1;
-    public Color FrameColor { get; set; } = Colors.Black;
+    public LineStyle FrameLineStyle { get; } = new();
 
     public float GetPixel(double position, PixelRect dataArea)
     {
@@ -149,7 +150,7 @@ public abstract class YAxisBase : IAxis
         using SKFont tickFont = TickFont.GetFont();
         var ticks = TickGenerator.GetVisibleTicks(Range);
         AxisRendering.DrawTicks(surface, tickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
-        AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineWidth, FrameColor);
+        AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

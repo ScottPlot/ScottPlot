@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ScottPlot.Style;
+using System.ComponentModel;
 
 namespace ScottPlot.Axis;
 
@@ -10,13 +11,13 @@ public static class AxisRendering
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
-    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, float frameLineWidth, Color frameColor)
+    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, LineStyle lineStyle)
     {
         using SKPaint framePaint = new()
         {
-            Color = frameColor.ToSKColor(),
+            Color = lineStyle.Color.ToSKColor(),
             IsAntialias = true,
-            StrokeWidth = frameLineWidth,
+            StrokeWidth = lineStyle.Width,
         };
 
         if (edge == Edge.Left)
@@ -78,7 +79,7 @@ public static class AxisRendering
         foreach (Tick tick in ticks)
         {
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
-            paint.StrokeWidth = tick.IsMajor ? majorStyle.LineWidth : minorStyle.LineWidth;
+            paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
 
             float xPx = axis.GetPixel(tick.Position, panelRect);
@@ -109,7 +110,7 @@ public static class AxisRendering
         foreach (Tick tick in ticks)
         {
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
-            paint.StrokeWidth = tick.IsMajor ? majorStyle.LineWidth : minorStyle.LineWidth;
+            paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
 
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;

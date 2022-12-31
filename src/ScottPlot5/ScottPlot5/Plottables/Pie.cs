@@ -23,7 +23,7 @@ namespace ScottPlot.Plottables
     {
         public string? Label { get; set; }
         public IList<PieSlice> Slices { get; set; }
-        public Stroke Stroke { get; set; } = new() { Width = 0 };
+        public LineStyle LineStyle { get; set; } = new() { Width = 0 };
         public bool IsVisible { get; set; } = true;
         public double ExplodeFraction { get; set; } = 0;
 
@@ -95,7 +95,7 @@ namespace ScottPlot.Plottables
                 paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
                 surface.Canvas.DrawPath(path, paint);
 
-                paint.SetStroke(Stroke);
+                LineStyle.ApplyToPaint(paint);
                 surface.Canvas.DrawPath(path, paint);
 
                 path.Reset();

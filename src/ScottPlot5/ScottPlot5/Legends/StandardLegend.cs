@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Legends;
+﻿using ScottPlot.Style;
+
+namespace ScottPlot.Legends;
 
 public class StandardLegend : ILegend
 {
@@ -15,8 +17,8 @@ public class StandardLegend : ILegend
     public bool FontItalic = false;
     public Font Font => new(FontName, FontSize, FontBold ? 800 : 400, FontItalic);
 
-    public Color LineColor = Colors.Black;
-    public float LineWidth = 1;
+    public LineStyle LineStyle { get; } = new();
+
     public Color BackgroundColor = Colors.White;
 
     public Color ShadowColor = Colors.Black.WithOpacity(.2);
@@ -51,7 +53,7 @@ public class StandardLegend : ILegend
         // render the legend panel
         Drawing.Fillectangle(canvas, legendShadowRect, ShadowColor);
         Drawing.Fillectangle(canvas, legendRect, BackgroundColor);
-        Drawing.DrawRectangle(canvas, legendRect, LineColor, LineWidth);
+        Drawing.DrawRectangle(canvas, legendRect, LineStyle.Color, LineStyle.Width);
 
         // render all items inside the legend
         float yOffset = legendRect.Top + Padding.Top;

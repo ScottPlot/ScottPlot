@@ -24,7 +24,7 @@ public class Scatter : IPlottable
         {
             Label = Label,
             Marker = CreateMarker(),
-            Line = new(LineStyle.Color, LineStyle.Width),
+            Line = LineStyle,
         });
 
     private Marker CreateMarker()

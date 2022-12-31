@@ -68,9 +68,9 @@ public static class LegendRendering
 
         using SKPaint paint = new();
 
-        if (item.Line.HasValue)
+        if (item.Line is not null)
         {
-            paint.SetStroke(item.Line.Value);
+            item.Line.ApplyToPaint(paint);
             canvas.DrawLine(new(rect.Left, rect.VerticalCenter), new(rect.Right, rect.VerticalCenter), paint);
         }
 

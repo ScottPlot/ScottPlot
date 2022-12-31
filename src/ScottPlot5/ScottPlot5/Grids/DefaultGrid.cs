@@ -1,16 +1,14 @@
 ﻿using ScottPlot.Axis;
-using SkiaSharp;
+using ScottPlot.Style;
 using System.Data;
-using System.Linq;
 
 namespace ScottPlot.Grids;
 
 public class DefaultGrid : IGrid
 {
-    public float MajorGridLineWidth = 1;
-    public Color MajorGridLineColor = Colors.Black.WithOpacity(.1);
-    public float MinorGridLineWidth = 0;
-    public Color MinorGridLineColor = Colors.Black.WithOpacity(.05);
+    public LineStyle MajorLineStyle = new() { Width = 1, Color = Colors.Black.WithOpacity(.1) };
+    public LineStyle MinorLineStyle = new() { Width = 0, Color = Colors.Black.WithOpacity(.05) };
+
     public int MaximumNumberOfGridLines = 1000;
 
     public bool IsBeneathPlottables { get; set; } = true;
@@ -27,24 +25,24 @@ public class DefaultGrid : IGrid
     public void Render(SKSurface surface, PixelRect dataRect)
     {
 
-        if (MinorGridLineWidth > 0)
+        if (MinorLineStyle.Width > 0)
         {
             float[] xTicksMinor = XAxis.TickGenerator.Ticks.Where(x => !x.IsMajor).Select(x => XAxis.GetPixel(x.Position, dataRect)).ToArray();
             float[] yTicksMinor = YAxis.TickGenerator.Ticks.Where(x => !x.IsMajor).Select(x => YAxis.GetPixel(x.Position, dataRect)).ToArray();
-            RenderGridLines(surface, dataRect, xTicksMinor, XAxis.Edge, MinorGridLineColor, MinorGridLineWidth);
-            RenderGridLines(surface, dataRect, yTicksMinor, YAxis.Edge, MinorGridLineColor, MinorGridLineWidth);
+            RenderGridLines(surface, dataRect, xTicksMinor, XAxis.Edge, MinorLineStyle);
+            RenderGridLines(surface, dataRect, yTicksMinor, YAxis.Edge, MinorLineStyle);
         }
 
-        if (MajorGridLineWidth > 0)
+        if (MajorLineStyle.Width > 0)
         {
             float[] xTicksMajor = XAxis.TickGenerator.Ticks.Where(x => x.IsMajor).Select(x => XAxis.GetPixel(x.Position, dataRect)).ToArray();
             float[] yTicksMajor = YAxis.TickGenerator.Ticks.Where(x => x.IsMajor).Select(x => YAxis.GetPixel(x.Position, dataRect)).ToArray();
-            RenderGridLines(surface, dataRect, xTicksMajor, XAxis.Edge, MajorGridLineColor, MajorGridLineWidth);
-            RenderGridLines(surface, dataRect, yTicksMajor, YAxis.Edge, MajorGridLineColor, MajorGridLineWidth);
+            RenderGridLines(surface, dataRect, xTicksMajor, XAxis.Edge, MajorLineStyle);
+            RenderGridLines(surface, dataRect, yTicksMajor, YAxis.Edge, MajorLineStyle);
         }
     }
 
-    private void RenderGridLines(SKSurface surface, PixelRect dataRect, float[] positions, Edge edge, Color color, float lineWidth)
+    private void RenderGridLines(SKSurface surface, PixelRect dataRect, float[] positions, Edge edge, LineStyle lineStyle)
     {
         Pixel[] starts = new Pixel[positions.Length];
         Pixel[] ends = new Pixel[positions.Length];
@@ -56,6 +54,6 @@ public class DefaultGrid : IGrid
             ends[i] = edge.IsHorizontal() ? new Pixel(px, dataRect.Top) : new Pixel(dataRect.Right, px);
         }
 
-        Drawing.DrawLines(surface, starts, ends, color, lineWidth);
+        Drawing.DrawLines(surface, starts, ends, lineStyle.Color, lineStyle.Width);
     }
 }

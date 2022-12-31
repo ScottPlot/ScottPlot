@@ -3,6 +3,6 @@
 public struct TickStyle
 {
     public float Length;
-    public float LineWidth;
+    public float Width;
     public Color Color;
 }

@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Axis;
+using ScottPlot.Style;
 
 namespace ScottPlot.Plottables
 {
@@ -25,8 +26,9 @@ namespace ScottPlot.Plottables
         public double Padding { get; set; } = 0.05;
         private double MaxBarWidth => 1 - Padding * 2;
         public Orientation Orientation { get; set; } = Orientation.Vertical;
-        public float LineWidth = 1;
-        public Color LineColor = Colors.Black;
+
+        public LineStyle LineStyle { get; set; } = new();
+
         public bool GroupBarsWithSameXPosition = true; // Disable for stacked bar charts
 
         public BarPlot(IList<BarSeries> series)
@@ -100,7 +102,7 @@ namespace ScottPlot.Plottables
 
                     PixelRect rect = GetRect(t.Bar, newPosition, barWidth).ToPixelRect();
                     Drawing.Fillectangle(surface.Canvas, rect, t.Series.Color);
-                    Drawing.DrawRectangle(surface.Canvas, rect, LineColor, LineWidth);
+                    Drawing.DrawRectangle(surface.Canvas, rect, LineStyle.Color, LineStyle.Width);
 
                     i++;
                 }

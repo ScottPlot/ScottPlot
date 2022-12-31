@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Style;
+using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -19,8 +20,10 @@ public class Label
     public Color BackgroundColor { get; set; } = Colors.Transparent;
     public Color BorderColor { get; set; } = Colors.Black;
     public float BorderWidth { get; set; } = 0;
-    public bool Outline { get; set; } = false;
-    public float OutlineWidth { get; set; } = 0;
+
+    // TODO: respect this
+    public LineStyle Outline { get; set; } = new() { Width = 0 };
+
     public bool AntiAlias { get; set; } = true;
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float Rotation { get; set; } = 0;

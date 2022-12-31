@@ -52,12 +52,12 @@ internal class Styling : RecipePageBase
             myPlot.XAxis.Label.FontName = Font.MonospaceFontName;
 
             myPlot.XAxis.MajorTickLength = 10;
-            myPlot.XAxis.MajorTickLineWidth = 3;
+            myPlot.XAxis.MajorTickWidth = 3;
             myPlot.XAxis.MajorTickColor = Colors.Magenta;
             myPlot.XAxis.MinorTickLength = 5;
-            myPlot.XAxis.MinorTickLineWidth = 0.5f;
+            myPlot.XAxis.MinorTickWidth = 0.5f;
             myPlot.XAxis.MinorTickColor = Colors.Green;
-            myPlot.XAxis.FrameColor = Colors.LightBlue;
+            myPlot.XAxis.FrameLineStyle.Color = Colors.LightBlue;
         }
     }
 
@@ -76,9 +76,9 @@ internal class Styling : RecipePageBase
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
 
-            grid.MajorGridLineColor = Colors.Green.WithOpacity(.5);
-            grid.MinorGridLineColor = Colors.Green.WithOpacity(.1);
-            grid.MinorGridLineWidth = 1;
+            grid.MajorLineStyle.Color = Colors.Green.WithOpacity(.5);
+            grid.MinorLineStyle.Color = Colors.Green.WithOpacity(.1);
+            grid.MinorLineStyle.Width = 1;
         }
     }
 
@@ -92,11 +92,11 @@ internal class Styling : RecipePageBase
         public override void Recipe()
         {
             var sig = myPlot.Add.Signal(Generate.Sin(51));
-            sig.LineWidth = 10;
+            sig.LineStyle.Width = 10;
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-            grid.MajorGridLineWidth = 3;
-            grid.MajorGridLineColor = Colors.WhiteSmoke;
+            grid.MajorLineStyle.Width = 3;
+            grid.MajorLineStyle.Color = Colors.WhiteSmoke;
             grid.IsBeneathPlottables = false;
         }
     }
@@ -118,7 +118,7 @@ internal class Styling : RecipePageBase
             {
                 double[] data = Generate.Sin(100, phase: -i / 20.0f);
                 var sig = myPlot.Add.Signal(data);
-                sig.LineWidth = 3;
+                sig.LineStyle.Width = 3;
             }
         }
     }
@@ -139,8 +139,8 @@ internal class Styling : RecipePageBase
             sig2.Label = "Cos";
 
             var legend = myPlot.GetLegend();
-            legend.LineColor = Colors.Navy;
-            legend.LineWidth = 2;
+            legend.LineStyle.Color = Colors.Navy;
+            legend.LineStyle.Width = 2;
             legend.BackgroundColor = Colors.LightBlue;
             legend.ShadowColor = Colors.Blue.WithOpacity(.5);
             legend.FontSize = 16;

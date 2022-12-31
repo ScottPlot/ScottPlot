@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Axis;
+using ScottPlot.Style;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables;
@@ -11,8 +12,9 @@ public class ZoomRectangle : IPlottable
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
-    public Color EdgeColor = new Color(255, 0, 0).WithAlpha(200);
-    public float LineWidth = 2;
+
+    public LineStyle LineStyle { get; } = new() { Color = new Color(255, 0, 0).WithAlpha(200) };
+
     public Pixel MouseDown { get; private set; }
     public Pixel MouseUp { get; private set; }
     public bool HorizontalSpan = false;
@@ -65,8 +67,8 @@ public class ZoomRectangle : IPlottable
         paint.IsStroke = false;
         surface.Canvas.DrawRect(rect, paint);
 
-        paint.Color = EdgeColor.ToSKColor();
-        paint.StrokeWidth = LineWidth;
+        paint.Color = LineStyle.Color.ToSKColor();
+        paint.StrokeWidth = LineStyle.Width;
         paint.IsStroke = true;
         surface.Canvas.DrawRect(rect, paint);
     }
