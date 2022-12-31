@@ -41,7 +41,7 @@ internal class Bar : RecipePageBase
                 for (int i = 1; i < s.Bars.Count; i++)
                     s.Bars[i].ValueBase = s.Bars[i - 1].Value;
 
-            myPlot.Add.Bar(series).Label = "Currently this will not render if I remove this";
+            myPlot.Add.Bar(series);
         }
     }
 }
