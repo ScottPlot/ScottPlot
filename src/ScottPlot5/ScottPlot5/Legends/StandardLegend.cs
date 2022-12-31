@@ -63,10 +63,10 @@ public class StandardLegend : ILegend
         // measure all items to determine dimensions of the legend
         using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = Font.Size, IsAntialias = true };
         SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
-        
+
         float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
         float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
-        
+
         PixelSize legendSize = new PixelSize(maxWidth, totalheight).Expand(Padding);
         PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment.LowerRight, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);

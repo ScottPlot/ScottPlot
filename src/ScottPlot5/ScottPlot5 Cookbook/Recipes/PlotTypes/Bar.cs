@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using ScottPlot.Legends;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 internal class Bar : RecipePageBase
 {
@@ -39,7 +41,7 @@ internal class Bar : RecipePageBase
                 for (int i = 1; i < s.Bars.Count; i++)
                     s.Bars[i].ValueBase = s.Bars[i - 1].Value;
 
-            myPlot.Add.Bar(series);
+            myPlot.Add.Bar(series).Label = "Currently this will not render if I remove this";
         }
     }
 }
