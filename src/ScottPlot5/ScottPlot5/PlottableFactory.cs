@@ -84,6 +84,12 @@ public class PlottableFactory
         return scatter;
     }
 
+    public BarPlot Bar(double[] values)
+    {
+        IList<Bar> bars = values.Select(x => new Bar() { Value = x }).ToList();
+        return Bar(bars);
+    }
+
     public BarPlot Bar(IList<BarSeries> series)
     {
         var barPlot = new BarPlot(series);
@@ -91,19 +97,18 @@ public class PlottableFactory
         return barPlot;
     }
 
-    public BarPlot Bar(IList<Bar> bars, Fill? fill = null, string? label = null)
+    public BarPlot Bar(IList<Bar> bars, Color? color = null, string? label = null)
     {
-        var serie = new BarSeries()
+        var series = new BarSeries()
         {
             Bars = bars,
-            Fill = fill ?? new(NextColor),
+            Color = color ?? NextColor,
             Label = label
         };
 
-        var series = new List<BarSeries>(1);
-        series.Add(serie);
+        List<BarSeries> seriesList = new() { series };
 
-        return Bar(series);
+        return Bar(seriesList);
     }
 
     public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)

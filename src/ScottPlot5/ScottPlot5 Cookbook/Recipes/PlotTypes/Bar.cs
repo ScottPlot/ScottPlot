@@ -1,6 +1,4 @@
-﻿using ScottPlot.Legends;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 internal class Bar : RecipePageBase
 {
@@ -13,35 +11,60 @@ internal class Bar : RecipePageBase
 
     internal class Quickstart : RecipeTestBase
     {
-
         public override string Name => "Bar Plot Quickstart";
         public override string Description => "Bar plots can be added from a series of values.";
 
         [Test]
         public override void Recipe()
         {
-            Random rand = new(0);
+            double[] values = { 5, 10, 7, 13 };
+            myPlot.Add.Bar(values);
+            myPlot.AutoScale();
+            myPlot.SetAxisLimits(bottom: 0);
+        }
+    }
 
-            var series = Enumerable.Range(0, 4).Select(i => new ScottPlot.Plottables.BarSeries
+    internal class BarPosition : RecipeTestBase
+    {
+        public override string Name => "Bar Positioning";
+        public override string Description => "The exact position and size of each bar may be customized.";
+
+        [Test]
+        public override void Recipe()
+        {
+            List<ScottPlot.Plottables.Bar> bars = new()
             {
-                Bars = Enumerable.Range(0, rand.Next(3, 10)).Select(j => new ScottPlot.Plottables.Bar
-                {
-                    Position = j,
-                    Value = rand.NextDouble() * 10
-                }).ToArray(),
-                Fill = new(myPlot.Palette.GetColor(i))
-                {
-                    HatchColor = myPlot.Palette.GetColor(i + 1),
-                    Hatch = new ScottPlot.Style.Hatches.Striped(ScottPlot.Style.Hatches.StripeDirection.DiagonalDown)
-                },
-                Label = $"Series {i + 1}"
-            }).ToArray();
+                new() { Position = 5, Value = 5, ValueBase = 3, },
+                new() { Position = 10, Value = 7, ValueBase = 0, },
+                new() { Position = 15, Value = 3, ValueBase = 2, },
+            };
 
-            foreach (var s in series)
-                for (int i = 1; i < s.Bars.Count; i++)
-                    s.Bars[i].ValueBase = s.Bars[i - 1].Value;
+            myPlot.Add.Bar(bars);
+        }
+    }
 
-            myPlot.Add.Bar(series);
+    internal class BarSeries : RecipeTestBase
+    {
+        public override string Name => "Bar Series";
+        public override string Description => "Bar plots can be grouped into bar series and plotted together.";
+
+        [Test]
+        public override void Recipe()
+        {
+            List<ScottPlot.Plottables.Bar> bars1 = new() { new() { Value = 5 }, new() { Value = 7 }, new() { Value = 9 }, };
+            List<ScottPlot.Plottables.Bar> bars2 = new() { new() { Value = 3 }, new() { Value = 8 }, new() { Value = 5 }, };
+            List<ScottPlot.Plottables.Bar> bars3 = new() { new() { Value = 7 }, new() { Value = 10 }, new() { Value = 7 }, };
+
+            ScottPlot.Plottables.BarSeries series1 = new() { Bars = bars1, Label = "Series 1", Color = Colors.Red };
+            ScottPlot.Plottables.BarSeries series2 = new() { Bars = bars2, Label = "Series 2", Color = Colors.Green };
+            ScottPlot.Plottables.BarSeries series3 = new() { Bars = bars3, Label = "Series 3", Color = Colors.Blue };
+
+            List<ScottPlot.Plottables.BarSeries> seriesList = new() { series1, series2, series3 };
+
+            myPlot.Add.Bar(seriesList);
+
+            myPlot.AutoScale();
+            myPlot.SetAxisLimits(bottom: 0);
         }
     }
 }
