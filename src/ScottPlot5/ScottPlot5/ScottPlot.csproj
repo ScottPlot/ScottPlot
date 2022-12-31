@@ -6,9 +6,21 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <Version>5.0.0-beta</Version>
+
+        <!-- Functions with multiple overloads and optional parameters -->
+        <NoWarn>RS0026</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
+        <AdditionalFiles Remove="PublicAPI.Shipped.txt" />
+        <AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="SkiaSharp" Version="2.*" />
         <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
     </ItemGroup>
