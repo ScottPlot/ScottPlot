@@ -1,13 +1,22 @@
 ﻿namespace ScottPlot;
 
-public struct Color
+public readonly struct Color
 {
     public readonly byte Red;
     public readonly byte Green;
     public readonly byte Blue;
     public readonly byte Alpha;
 
-    public uint ARGB => (uint)Alpha << 24 | (uint)Red << 16 | (uint)Green << 8 | (uint)Blue << 0;
+    public uint ARGB
+    {
+        get
+        {
+            return (uint)Alpha << 24 |
+                (uint)Red << 16 |
+                (uint)Green << 8 |
+                (uint)Blue << 0;
+        }
+    }
 
     public Color(byte red, byte green, byte blue, byte alpha = 255)
     {
@@ -22,6 +31,32 @@ public struct Color
         Red = (byte)(red * 255);
         Green = (byte)(green * 255);
         Blue = (byte)(blue * 255);
+    }
+
+    public static bool operator ==(Color a, Color b)
+    {
+        return a.ARGB == b.ARGB;
+    }
+
+    public static bool operator !=(Color a, Color b)
+    {
+        return a.ARGB != b.ARGB;
+    }
+
+    public override int GetHashCode()
+    {
+        return (int)ARGB;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is not Color)
+            return false;
+
+        return ((Color)obj).ARGB == ARGB;
     }
 
     public readonly Color WithRed(byte red) => new(red, Green, Blue, Alpha);

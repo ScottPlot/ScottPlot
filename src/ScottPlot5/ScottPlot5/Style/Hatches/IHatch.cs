@@ -1,14 +1,6 @@
-﻿using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.Style.Hatches;
 
-namespace ScottPlot.Style.Hatches
+public interface IHatch
 {
-    public interface IHatch
-    {
-        SKShader GetShader(Color backgroundColor, Color hatchColor);
-    }
+    SKShader GetShader(Color backgroundColor, Color hatchColor);
 }

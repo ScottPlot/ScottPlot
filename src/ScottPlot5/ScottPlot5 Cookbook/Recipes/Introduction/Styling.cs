@@ -122,30 +122,4 @@ internal class Styling : RecipePageBase
             }
         }
     }
-
-    internal class LegendStyle : RecipeTestBase
-    {
-        public override string Name => "Legend Customization";
-        public override string Description => "The default legend can be easily accessed and customized. " +
-            "It is possible to add multiple legends, including custom ones implementing ILegend.";
-
-        [Test]
-        public override void Recipe()
-        {
-            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.Label = "Sin";
-
-            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.Label = "Cos";
-
-            var legend = myPlot.GetLegend();
-            legend.LineStyle.Color = Colors.Navy;
-            legend.LineStyle.Width = 2;
-            legend.BackgroundColor = Colors.LightBlue;
-            legend.ShadowColor = Colors.Blue.WithOpacity(.5);
-            legend.Font.Size = 16;
-            legend.Font.Name = FontService.SerifFontName;
-            legend.Alignment = Alignment.UpperCenter;
-        }
-    }
 }

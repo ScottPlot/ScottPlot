@@ -65,13 +65,6 @@ public static class SkiaSharpExtensions
         return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
-    public static void SetFill(this SKPaint paint, Style.Fill fill, byte alpha = 255)
-    {
-        paint.Color = fill.Color.WithAlpha(alpha).ToSKColor();
-        paint.Shader = fill.GetShader();
-        paint.Style = SKPaintStyle.Fill;
-    }
-
     public static SKPaint MakePaint(this LineStyle style, bool antiAlias = true)
     {
         return new SKPaint()
@@ -83,10 +76,44 @@ public static class SkiaSharpExtensions
         };
     }
 
-    public static void ApplyToPaint(this LineStyle lineStyle, SKPaint paint)
+    public static void ApplyToPaint(this LineStyle style, SKPaint paint)
     {
-        paint.StrokeWidth = lineStyle.Width;
-        paint.Color = lineStyle.Color.ToSKColor();
+        paint.IsStroke = true;
+        paint.Color = style.Color.ToSKColor();
+        paint.StrokeWidth = style.Width;
+    }
+
+
+    public static SKPaint MakePaint(this FillStyle fs, bool antiAlias = true)
+    {
+        SKPaint paint = new()
+        {
+            Color = fs.Color.ToSKColor(),
+            IsAntialias = antiAlias,
+            IsStroke = false,
+        };
+
+        if (fs.Hatch is not null)
+        {
+            paint.Shader = fs.Hatch.GetShader(fs.Color, fs.HatchColor);
+        }
+
+        return paint;
+    }
+
+    public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
+    {
+        paint.Color = fs.Color.ToSKColor();
+        paint.IsStroke = false;
+
+        if (fs.Hatch is not null)
+        {
+            paint.Shader = fs.Hatch.GetShader(fs.Color, fs.HatchColor);
+        }
+        else
+        {
+            paint.Shader = null;
+        }
     }
 
     public static SKFont MakeFont(this FontStyle fontStyle)

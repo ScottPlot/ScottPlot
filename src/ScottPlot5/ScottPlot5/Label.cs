@@ -78,6 +78,7 @@ public class Label
     public void Draw(SKCanvas canvas, Pixel pixel)
     {
         using SKPaint textPaint = Font.MakePaint();
+        textPaint.TextAlign = Alignment.ToSKTextAlign();
         SKRect textBounds = new();
         textPaint.MeasureText(Text, ref textBounds);
         float xOffset = textBounds.Width * Alignment.HorizontalFraction();

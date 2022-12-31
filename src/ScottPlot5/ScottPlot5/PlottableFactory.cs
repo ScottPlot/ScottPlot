@@ -40,7 +40,7 @@ public class PlottableFactory
         var slices = values.Select(v => new PieSlice
         {
             Value = v,
-            Fill = new(NextColor)
+            Fill = new() { Color = NextColor },
         }).ToList();
         return Pie(slices);
     }

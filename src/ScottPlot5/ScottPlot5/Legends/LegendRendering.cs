@@ -83,7 +83,7 @@ public static class LegendRendering
 
         if (item.Fill.HasValue)
         {
-            paint.SetFill(item.Fill.Value);
+            item.Fill.ApplyToPaint(paint);
             canvas.DrawRect(rect.ToSKRect(), paint);
         }
     }

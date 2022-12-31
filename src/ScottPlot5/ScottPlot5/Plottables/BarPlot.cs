@@ -43,7 +43,7 @@ namespace ScottPlot.Plottables
                 Children = Series.Select(barSeries => new LegendItem
                 {
                     Label = barSeries.Label,
-                    Fill = new Style.Fill() { Color = barSeries.Color }
+                    Fill = new() { Color = barSeries.Color }
                 })
             });
 

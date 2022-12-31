@@ -11,15 +11,10 @@ public class StandardLegend : ILegend
     public PixelPadding ItemPadding { get; set; } = new PixelPadding(3);
 
     public FontStyle Font { get; set; } = new();
+    public LineStyle OutlineStyle { get; set; } = new();
+    public FillStyle BackgroundFill { get; set; } = new() { Color = Colors.White };
+    public FillStyle ShadowFill { get; set; } = new() { Color = Colors.Black.WithOpacity(.2) };
 
-    public bool FontBold = false;
-    public bool FontItalic = false;
-
-    public LineStyle LineStyle { get; } = new();
-
-    public Color BackgroundColor = Colors.White;
-
-    public Color ShadowColor = Colors.Black.WithOpacity(.2);
     public float ShadowOffset = 3;
     public Alignment ShadowAlignment = Alignment.LowerRight;
 
@@ -49,9 +44,9 @@ public class StandardLegend : ILegend
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
 
         // render the legend panel
-        Drawing.Fillectangle(canvas, legendShadowRect, ShadowColor);
-        Drawing.Fillectangle(canvas, legendRect, BackgroundColor);
-        Drawing.DrawRectangle(canvas, legendRect, LineStyle.Color, LineStyle.Width);
+        Drawing.Fillectangle(canvas, legendShadowRect, ShadowFill.Color);
+        Drawing.Fillectangle(canvas, legendRect, BackgroundFill.Color);
+        Drawing.DrawRectangle(canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
 
         // render all items inside the legend
         float yOffset = legendRect.Top + Padding.Top;

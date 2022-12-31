@@ -8,14 +8,14 @@ namespace ScottPlot.Plottables
     {
         public string? Label { get; set; } // TODO: render label
         public double Value { get; set; }
-        public Fill Fill { get; set; }
+        public FillStyle Fill { get; set; } = new();
 
         public PieSlice() { }
 
         public PieSlice(double value, Color color)
         {
             Value = value;
-            Fill = new Fill(color);
+            Fill = new() { Color = color };
         }
     }
 
@@ -91,7 +91,7 @@ namespace ScottPlot.Plottables
                     path.AddOval(rect);
                 }
 
-                paint.SetFill(Slices[i].Fill);
+                Slices[i].Fill.ApplyToPaint(paint);
                 paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
                 surface.Canvas.DrawPath(path, paint);
 
