@@ -48,11 +48,9 @@ public class PlottableFactory
     public Scatter Scatter(IScatterSource data, Color? color = null)
     {
         Color nextColor = color ?? NextColor;
-        Scatter scatter = new(data)
-        {
-            MarkerColor = nextColor,
-            LineColor = nextColor,
-        };
+        Scatter scatter = new(data);
+        scatter.LineStyle.Color = nextColor;
+        scatter.MarkerColor = nextColor;
         Plot.Plottables.Add(scatter);
         return scatter;
     }

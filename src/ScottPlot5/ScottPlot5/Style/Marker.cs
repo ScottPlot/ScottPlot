@@ -1,11 +1,13 @@
 ﻿namespace ScottPlot.Style;
 
+[Obsolete()]
 public enum MarkerShape
 {
     // TODO: need more shapes... no actually make this a class!
     Circle
 }
 
+[Obsolete()]
 public struct Marker
 {
     public Color Color { get; set; } = Colors.Black;

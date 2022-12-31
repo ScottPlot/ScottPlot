@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Style;
 
-[Obsolete("use ScottPlot.Font")]
+[Obsolete()]
 public struct StyledSKFont
 {
     private static readonly SKFontManager fontManager = SKFontManager.Default;

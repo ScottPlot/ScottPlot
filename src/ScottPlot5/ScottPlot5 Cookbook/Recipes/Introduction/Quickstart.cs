@@ -35,8 +35,8 @@ internal class Quickstart : RecipePageBase
             double[] dataX = { 1, 2, 3, 4, 5 };
             double[] dataY = { 1, 4, 9, 16, 25 };
             var myScatter = myPlot.Add.Scatter(dataX, dataY);
-            myScatter.LineWidth = 5;
-            myScatter.LineColor = Colors.Green.WithOpacity(.2);
+            myScatter.LineStyle.Width = 5;
+            myScatter.LineStyle.Color = Colors.Green.WithOpacity(.2);
             myScatter.MarkerColor = Colors.Magenta;
             myScatter.MarkerSize = 15;
         }

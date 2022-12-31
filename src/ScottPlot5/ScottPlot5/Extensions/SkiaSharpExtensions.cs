@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Style;
+using SkiaSharp;
 
 namespace ScottPlot.Extensions;
 
@@ -78,5 +79,16 @@ public static class SkiaSharpExtensions
         paint.Color = fill.Color.WithAlpha(alpha).ToSKColor();
         paint.Shader = fill.GetShader();
         paint.Style = SKPaintStyle.Fill;
+    }
+
+    public static SKPaint MakePaint(this LineStyle style, bool antiAlias = true)
+    {
+        return new SKPaint()
+        {
+            IsAntialias = antiAlias,
+            Style = SKPaintStyle.Stroke,
+            Color = style.Color.ToSKColor(),
+            StrokeWidth = style.Width,
+        };
     }
 }

@@ -1,8 +1,8 @@
 ﻿using ScottPlot.Style.Hatches;
-using SkiaSharp;
 
 namespace ScottPlot.Style;
 
+[Obsolete()]
 public struct Fill
 {
     public Color Color { get; set; } = Colors.CornflowerBlue;

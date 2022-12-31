@@ -1,12 +1,9 @@
-﻿/* Minimal case scatter plot for testing only
- * 
- * !! Avoid temptation to use generics or generic math at this early stage of development
- * 
+﻿/* Minimal case scatter plot for testing only.
+ * Avoid temptation to use generics or generic math at this early stage of development!
  */
 
 using ScottPlot.Axis;
 using ScottPlot.Style;
-using SkiaSharp;
 
 namespace ScottPlot.Plottables;
 
@@ -17,8 +14,7 @@ public class Scatter : IPlottable
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public float MarkerSize { get; set; } = 5;
     public Color MarkerColor { get; set; }
-    public float LineWidth { get; set; } = 1;
-    public Color LineColor { get; set; }
+    public LineStyle LineStyle { get; set; } = new();
     public DataSource.IScatterSource Data { get; }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
@@ -28,7 +24,7 @@ public class Scatter : IPlottable
         {
             Label = Label,
             Marker = CreateMarker(),
-            Line = new(LineColor, LineWidth),
+            Line = new(LineStyle.Color, LineStyle.Width),
         });
 
     private Marker CreateMarker()
@@ -45,15 +41,8 @@ public class Scatter : IPlottable
     {
         IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
 
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = LineColor.ToSKColor(),
-            StrokeWidth = LineWidth,
-        };
+        using SKPaint paint = LineStyle.MakePaint();
 
-        // draw lines
         using SKPath path = new();
         path.MoveTo(pixels.First().X, pixels.First().Y);
         foreach (Pixel pixel in pixels)
