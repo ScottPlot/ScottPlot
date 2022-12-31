@@ -30,6 +30,13 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+        <!-- obvlivious reference types -->
+        <!-- Missing XML comment -->
+        <!-- Optional parameter back compat -->
+        <!-- Multiple overloads back compat -->
+        <NoWarn>RS0041;CS1591;RS0027;RS0026</NoWarn>
+
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,6 +47,10 @@
       is associated with assembly issues that break .NET Framework projects on Windows.
       https://github.com/ScottPlot/ScottPlot/issues/1004
     -->
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
         <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
