@@ -38,6 +38,5 @@ public struct Pixel
         return new Pixel(X + x, Y + y);
     }
 
-    // TODO: create a PixelVector type?
     public float Hypotenuse => (float)Math.Sqrt(X * X + Y * Y);
 }

@@ -4,6 +4,7 @@ using ScottPlot.LayoutSystem;
 using ScottPlot.Plottables;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
+using ScottPlot.Benchmarking;
 
 namespace ScottPlot;
 
@@ -24,9 +25,7 @@ public class Plot : IDisposable
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
 
-
-    // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly DebugBenchmark Benchmark = new();
+    public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
 
     // TODO: allow the user to inject their own visual debugging and performance monitoring tools
     public readonly ZoomRectangle ZoomRectangle;

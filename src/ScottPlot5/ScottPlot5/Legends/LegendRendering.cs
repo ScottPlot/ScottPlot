@@ -64,7 +64,7 @@ public static class LegendRendering
         float height,
         float symbolWidth)
     {
-        // TODO: make LegendSymbol its own object that include size and padding
+        // TODO LATER: make LegendSymbol its own object that include size and padding
 
         PixelRect rect = new(x, x + symbolWidth, y + height, y);
 

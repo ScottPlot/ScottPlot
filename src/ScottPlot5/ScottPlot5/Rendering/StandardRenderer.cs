@@ -6,8 +6,7 @@ public class StandardRenderer : IRenderer
 {
     public RenderDetails Render(SKSurface surface, Plot plot)
     {
-        var sw = System.Diagnostics.Stopwatch.StartNew(); // TODO: use struct timer
-
+        plot.Benchmark.Restart();
         Common.ReplaceNullAxesWithDefaults(plot);
         Common.AutoAxisAnyUnsetAxes(plot);
 
@@ -27,10 +26,10 @@ public class StandardRenderer : IRenderer
         Common.RenderLegends(surface, dataRect, plot);
         Common.RenderPanels(surface, dataRect, panels, layout);
         Common.RenderZoomRectangle(surface, dataRect, plot);
-        sw.Stop();
+        plot.Benchmark.Stop();
 
-        Common.RenderBenchmark(surface, dataRect, sw.Elapsed, plot);
+        Common.RenderBenchmark(surface, dataRect, plot);
 
-        return new RenderDetails(figureRect, dataRect, sw.Elapsed);
+        return new RenderDetails(figureRect, dataRect, plot.Benchmark.Elapsed);
     }
 }
