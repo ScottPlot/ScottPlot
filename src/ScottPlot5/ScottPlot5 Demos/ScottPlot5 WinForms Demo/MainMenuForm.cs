@@ -33,7 +33,7 @@ public partial class MainMenuForm : Form
     private void AddBlankRow(int height = 300)
     {
         int rowIndex = tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        Panel panel = new() { Height = 500 };
+        Panel panel = new() { Height = height };
         panel.Dock = DockStyle.Fill;
         tableLayoutPanel1.Controls.Add(panel, 0, rowIndex);
     }

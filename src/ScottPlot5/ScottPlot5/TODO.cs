@@ -4,7 +4,6 @@ internal static class TODO
 {
     /* ### TASKS TO DO BEFORE RELEASE ###
      * setup API tracking system
-     * improve ordering of cookbook recipes on website and in demo
      * add docs to website
      * 
      * ### TASKS TO COMPLETE AFTER THE FIRST RELEASE ###
