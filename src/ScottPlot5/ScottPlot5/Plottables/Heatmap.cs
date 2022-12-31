@@ -90,7 +90,7 @@ namespace ScottPlot.Plottables
         /// After editing contents users must call <see cref="Update"/> before changes
         /// appear on the heatmap.
         /// </summary>
-        public readonly double[,] Intensities; // TODO: consider data class
+        public readonly double[,] Intensities;
 
         /// <summary>
         /// Height of the heatmap data (rows)

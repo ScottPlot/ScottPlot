@@ -1,7 +1,5 @@
 ﻿/* Minimal case signal plot for testing only
- * 
  * !! Avoid temptation to use generics or generic math at this early stage of development
- * 
  */
 
 using ScottPlot.Axis;
@@ -19,8 +17,6 @@ public class Signal : IPlottable
     public MarkerStyle Marker { get; set; } = new() { Outline = LineStyle.NoLine };
     public string? Label { get; set; }
 
-    // TODO: colors throughout this code are taken from weird places
-    // TODO: use MakePaint()
     public LineStyle LineStyle { get; } = new();
 
     public Signal(DataSource.ISignalSource data)

@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables
 {
     public class PieSlice
     {
-        public string? Label { get; set; } // TODO: render label
+        public string? Label { get; set; }
         public double Value { get; set; }
         public FillStyle Fill { get; set; } = new();
 

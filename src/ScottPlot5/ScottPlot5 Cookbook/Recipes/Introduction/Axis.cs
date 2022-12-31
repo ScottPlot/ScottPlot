@@ -93,7 +93,7 @@ internal class Axis : RecipePageBase
     internal class Frameless : RecipeTestBase
     {
         public override string Name => "Frameless Plot";
-        public override string Description => "How to create a plot containig only the data area and no axes";
+        public override string Description => "How to create a plot containig only the data area and no axes.";
 
         [Test]
         public override void Recipe()

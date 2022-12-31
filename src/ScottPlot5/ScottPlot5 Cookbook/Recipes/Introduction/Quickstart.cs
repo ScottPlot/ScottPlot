@@ -27,7 +27,7 @@ internal class Quickstart : RecipePageBase
     {
         public override string Name => "Customizing Plottables";
         public override string Description => "Functions that add things to plots return the plottables they create. " +
-            "Interact with the properties of plottables to customize their styling and behavior";
+            "Interact with the properties of plottables to customize their styling and behavior.";
 
         [Test]
         public override void Recipe()
@@ -45,7 +45,7 @@ internal class Quickstart : RecipePageBase
     internal class Signal : RecipeTestBase
     {
         public override string Name => "Signal Plot";
-        public override string Description => "Signal plots are optimized for displaying evenly spaced data";
+        public override string Description => "Signal plots are optimized for displaying evenly spaced data.";
 
         [Test]
         public override void Recipe()
@@ -68,14 +68,14 @@ internal class Quickstart : RecipePageBase
         {
             double[] data = Generate.RandomWalk(1_000_000);
             myPlot.Add.Signal(data);
-            myPlot.Title.Label.Text = $"Signal plot with one million points";
+            myPlot.Title.Label.Text = $"Signal plot with one million points.";
         }
     }
 
     internal class AxisLabels : RecipeTestBase
     {
         public override string Name => "Axis Labels";
-        public override string Description => "Axis labels can be extensively customized";
+        public override string Description => "Axis labels can be extensively customized.";
 
         [Test]
         public override void Recipe()

@@ -30,7 +30,7 @@ internal class Styling : RecipePageBase
     internal class AxisCustom : RecipeTestBase
     {
         public override string Name => "Axis Customization";
-        public override string Description => "Axis labels, tick marks, and frame can all be customized";
+        public override string Description => "Axis labels, tick marks, and frame can all be customized.";
 
         [Test]
         public override void Recipe()
