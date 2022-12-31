@@ -2,6 +2,8 @@
 
 public abstract class XAxisBase : IAxis
 {
+    public bool IsVisible { get; set; } = true;
+
     public double Min
     {
         get => Range.Min;
@@ -58,6 +60,9 @@ public abstract class XAxisBase : IAxis
 
     public float Measure()
     {
+        if (!IsVisible)
+            return 0;
+
         float largestTickSize = MeasureTicks();
         float largestTickLabelSize = Label.Measure().Height;
         float spaceBetweenTicksAndAxisLabel = 15;
@@ -125,6 +130,9 @@ public abstract class XAxisBase : IAxis
 
     public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
+        if (!IsVisible)
+            return;
+
         PixelRect panelRect = GetPanelRect(dataRect, size, offset);
 
         float textDistanceFromEdge = 10;

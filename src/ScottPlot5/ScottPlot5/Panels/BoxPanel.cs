@@ -4,11 +4,12 @@ namespace ScottPlot.Panels;
 
 public class BoxPanel : IPanel
 {
+    public bool IsVisible { get; set; } = true;
     public Edge Edge { get; set; }
     public float Size { get; set; }
     public bool ShowDebugInformation { get; set; } = false;
 
-    public float Measure() => Size;
+    public float Measure() => IsVisible ? Size : 0;
 
     public BoxPanel(Edge edge, float size)
     {
@@ -18,6 +19,9 @@ public class BoxPanel : IPanel
 
     public PixelRect GetPanelRect(PixelRect rect, float size, float offset)
     {
+        if (!IsVisible)
+            return PixelRect.Zero;
+
         return Edge switch
         {
             Edge.Left => new SKRect(rect.Left - Size, rect.Top, Size, rect.Height).ToPixelRect(),
@@ -30,6 +34,9 @@ public class BoxPanel : IPanel
 
     public void Render(SKSurface surface, PixelRect rect, float size, float offset)
     {
+        if (!IsVisible)
+            return;
+
         PixelRect panelRect = GetPanelRect(rect, size, offset);
         Drawing.DrawRectangle(surface.Canvas, panelRect, Colors.LightGray);
     }

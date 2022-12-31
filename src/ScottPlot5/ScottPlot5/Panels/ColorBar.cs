@@ -7,6 +7,8 @@ namespace ScottPlot.Panels;
 
 public class ColorBar : IPanel
 {
+    public bool IsVisible { get; set; } = true;
+
     public IHasColorAxis Source { get; set; }
 
     public Edge Edge { get; set; }
@@ -21,10 +23,13 @@ public class ColorBar : IPanel
     }
 
     // Unfortunately the size of the axis depends on the size of the plotting window, so we just have to guess here. 2000 should be larger than most
-    public float Measure() => Margin + GetAxis(2000).Measure() + Width;
+    public float Measure() => IsVisible ? Margin + GetAxis(2000).Measure() + Width : 0;
 
     public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
     {
+        if (!IsVisible)
+            return PixelRect.Zero;
+
         return Edge switch
         {
             Edge.Left => new SKRect(dataRect.Left - Width, dataRect.Top, dataRect.Left, dataRect.Top + dataRect.Height).ToPixelRect(),
@@ -37,6 +42,9 @@ public class ColorBar : IPanel
 
     public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
+        if (!IsVisible)
+            return;
+
         using var _ = new SKAutoCanvasRestore(surface.Canvas);
 
         PixelRect panelRect = GetPanelRect(dataRect, size, offset);

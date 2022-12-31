@@ -4,6 +4,8 @@ namespace ScottPlot.Panels;
 
 public class TitlePanel : IPanel
 {
+    public bool IsVisible { get; set; } = true;
+
     public Edge Edge => Edge.Top;
 
     public bool ShowDebugInformation { get; set; } = false;
@@ -33,14 +35,20 @@ public class TitlePanel : IPanel
 
     public float Measure()
     {
+        if (!IsVisible)
+            return 0;
+
         if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
-        else
-            return Label.Measure().Height + VerticalPadding;
+
+        return Label.Measure().Height + VerticalPadding;
     }
 
     public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
     {
+        if (!IsVisible)
+            return;
+
         PixelRect panelRect = GetPanelRect(dataRect, size, offset);
 
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom);

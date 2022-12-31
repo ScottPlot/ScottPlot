@@ -3,6 +3,11 @@
 public interface IPanel
 {
     /// <summary>
+    /// If false, the panel will not be displayed or report any size
+    /// </summary>
+    public bool IsVisible { get; set; }
+
+    /// <summary>
     /// Return the size (in pixels) of the panel in the dimension perpendicular to the edge it lays on
     /// </summary>
     /// <returns></returns>
