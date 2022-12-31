@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace WinForms_Demo;
@@ -7,33 +8,42 @@ public partial class MainMenuForm : Form
 {
     private readonly Dictionary<string, Type> Demos = DemoWindows.GetDemoTypesByTitle();
 
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
+    private enum ScrollBarDirection { HORZ = 0, VERT = 1, CTL = 2, BOTH = 3 }
+
     public MainMenuForm()
     {
         InitializeComponent();
         label2.Text = ScottPlot.Version.VersionString;
+        ShowScrollBar(tableLayoutPanel1.Handle, (int)ScrollBarDirection.VERT, true);
     }
 
     private void MainMenuForm_Load(object sender, EventArgs e)
     {
-        int initialWidth = Width;
+        IDemoWindow[] demos = Demos.Values.Select(x => (IDemoWindow)FormatterServices.GetUninitializedObject(x)).ToArray();
 
-        int nextItemPositionY = 100;
-        int paddingBetweenItems = 10;
-        int itemHeight = 83;
+        foreach (IDemoWindow demo in demos)
+            AddLauncherRow(demo);
 
-        IDemoWindow[] demoForms = Demos.Values.Select(x => (IDemoWindow)FormatterServices.GetUninitializedObject(x)).ToArray();
+        AddBlankRow();
+    }
 
-        foreach (IDemoWindow demoForm in demoForms)
-        {
-            MenuItem item = new(demoForm, Demos[demoForm.Title])
-            {
-                Location = new Point(12, nextItemPositionY),
-                Size = new Size(initialWidth - 55, itemHeight),
-            };
+    private void AddBlankRow(int height = 300)
+    {
+        int rowIndex = tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        Panel panel = new() { Height = 500 };
+        panel.Dock = DockStyle.Fill;
+        tableLayoutPanel1.Controls.Add(panel, 0, rowIndex);
+    }
 
-            nextItemPositionY += itemHeight + paddingBetweenItems;
-
-            Controls.Add(item);
-        }
+    private void AddLauncherRow(IDemoWindow demoForm)
+    {
+        int rowIndex = tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        DemoWindowInfo info = new(demoForm, Demos[demoForm.Title]);
+        info.Margin = new(10, 10, 10, 10);
+        info.Dock = DockStyle.Fill;
+        tableLayoutPanel1.Controls.Add(info, 0, rowIndex);
     }
 }

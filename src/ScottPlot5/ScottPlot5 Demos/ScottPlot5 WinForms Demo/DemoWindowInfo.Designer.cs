@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo;
 
-partial class MenuItem
+partial class DemoWindowInfo
 {
     /// <summary> 
     /// Required designer variable.

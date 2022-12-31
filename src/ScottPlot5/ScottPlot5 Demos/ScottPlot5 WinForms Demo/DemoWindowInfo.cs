@@ -4,7 +4,7 @@ using WinForms_Demo.Properties;
 
 namespace WinForms_Demo;
 
-public partial class MenuItem : UserControl
+public partial class DemoWindowInfo : UserControl
 {
     [DllImport("user32.dll")]
     static extern bool HideCaret(IntPtr hWnd);
@@ -13,7 +13,7 @@ public partial class MenuItem : UserControl
     readonly Bitmap ImageFaded;
     readonly Type FormType;
 
-    public MenuItem(IDemoWindow demoForm, Type formType)
+    public DemoWindowInfo(IDemoWindow demoForm, Type formType)
     {
         InitializeComponent();
         FormType = formType;

@@ -3,10 +3,9 @@
 internal static class TODO
 {
     /* ### TASKS TO DO BEFORE RELEASE ###
-     * create class-based style objects
      * setup API tracking system
-     * get winforms cookbook layout working better
      * improve ordering of cookbook recipes on website and in demo
+     * add docs to website
      * 
      * ### TASKS TO COMPLETE AFTER THE FIRST RELEASE ###
      * DateTime tick generator
