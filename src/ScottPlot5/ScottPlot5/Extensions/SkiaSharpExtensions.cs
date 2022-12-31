@@ -65,17 +65,6 @@ public static class SkiaSharpExtensions
         return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
-    public static SKPaint MakePaint(this LineStyle style, bool antiAlias = true)
-    {
-        return new SKPaint()
-        {
-            IsAntialias = antiAlias,
-            Style = SKPaintStyle.Stroke,
-            Color = style.Color.ToSKColor(),
-            StrokeWidth = style.Width,
-        };
-    }
-
     public static void ApplyToPaint(this LineStyle style, SKPaint paint)
     {
         paint.IsStroke = true;
@@ -100,8 +89,6 @@ public static class SkiaSharpExtensions
 
         return paint;
     }
-
-    // TODO: remove all MakePaint here to force callers to handle their own "using"
 
     public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
     {
@@ -128,14 +115,14 @@ public static class SkiaSharpExtensions
         return new SKFont(typeface, fontStyle.Size);
     }
 
-    public static SKPaint MakePaint(this FontStyle fontStyle, bool antiAlias = true)
+    public static void ApplyToPaint(this FontStyle fontStyle, SKPaint paint)
     {
         SKFontStyleWeight weight = fontStyle.Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         SKFontStyleSlant slant = fontStyle.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
         SKFontStyle skfs = new(weight, width, slant);
         SKTypeface typeface = SKTypeface.FromFamilyName(fontStyle.Name, skfs);
-        SKFont skFont = new(typeface, fontStyle.Size);
-        return new SKPaint(skFont) { IsAntialias = antiAlias };
+        paint.Typeface = typeface;
+        paint.TextSize = fontStyle.Size;
     }
 }

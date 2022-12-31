@@ -1,9 +1,7 @@
 ﻿namespace ScottPlot;
 
-// TODO: Coordinate should be Coordinates (the object describes a pair of coordinates: X and Y)
-
 /// <summary>
-/// Represents a point in coordinate space using axis units
+/// Represents a point in coordinate space (X and Y axis units)
 /// </summary>
 public struct Coordinates
 {
@@ -18,12 +16,10 @@ public struct Coordinates
 
     public override string ToString()
     {
-        return $"Coordinate: X={X}, Y={Y}";
+        return $"Coordinates: X={X}, Y={Y}";
     }
 
     public static Coordinates NaN => new(double.NaN, double.NaN);
 
     public static Coordinates Origin => new(0, 0);
-
-    // TODO: create CoordinateVector and related operational overloads
 }

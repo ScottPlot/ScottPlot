@@ -20,8 +20,8 @@ public class MultiAxisLimits
         }
     }
 
-    // TODO: collapse into a single IAxis dictionary
     private readonly Dictionary<IXAxis, ImmutableRange> RememberedLimitsX = new();
+
     private readonly Dictionary<IYAxis, ImmutableRange> RememberedLimitsY = new();
 
     public MultiAxisLimits()

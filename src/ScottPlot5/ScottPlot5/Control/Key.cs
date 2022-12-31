@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace ScottPlot.Control;
 
-namespace ScottPlot.Control
+public enum Key
 {
-    // TODO: create an abstraction so users can define their own keys
-    public enum Key
-    {
-        Unknown,
-        Ctrl,
-        Alt,
-        Shift,
-    }
+    Unknown,
+    Ctrl,
+    Alt,
+    Shift,
 }

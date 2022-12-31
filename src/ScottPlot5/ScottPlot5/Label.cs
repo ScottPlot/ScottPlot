@@ -61,7 +61,8 @@ public class Label
 
     public PixelSize Measure(string text)
     {
-        using SKPaint paint = Font.MakePaint();
+        using SKPaint paint = new();
+        Font.ApplyToPaint(paint);
         SKRect textBounds = new();
         paint.MeasureText(text, ref textBounds);
         return textBounds.ToPixelSize();
@@ -69,7 +70,9 @@ public class Label
 
     public PixelRect GetRectangle(Pixel pixel)
     {
-        using SKPaint paint = Font.MakePaint();
+        using SKPaint paint = new();
+        Font.ApplyToPaint(paint);
+
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
         return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
@@ -77,10 +80,12 @@ public class Label
 
     public void Draw(SKCanvas canvas, Pixel pixel)
     {
-        using SKPaint textPaint = Font.MakePaint();
-        textPaint.TextAlign = Alignment.ToSKTextAlign();
+        using SKPaint paint = new();
+        Font.ApplyToPaint(paint);
+
+        paint.TextAlign = Alignment.ToSKTextAlign();
         SKRect textBounds = new();
-        textPaint.MeasureText(Text, ref textBounds);
+        paint.MeasureText(Text, ref textBounds);
         float xOffset = textBounds.Width * Alignment.HorizontalFraction();
         float yOffset = textBounds.Height * Alignment.VerticalFraction();
         PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
@@ -96,7 +101,7 @@ public class Label
             canvas.DrawRect(textRect.ToSKRect(), backgroundPaint);
         }
 
-        canvas.DrawText(Text, new(0, yOffset), textPaint);
+        canvas.DrawText(Text, new(0, yOffset), paint);
 
         if (Border.Width > 0)
         {

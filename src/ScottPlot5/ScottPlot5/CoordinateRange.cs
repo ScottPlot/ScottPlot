@@ -1,8 +1,5 @@
 ﻿namespace ScottPlot;
 
-// TODO: break this into CoordinateRangeX and CoordinateRangeY?
-// TODO: a struct is useful and a class is useful for limits only within the axis base or something
-
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>

@@ -69,7 +69,9 @@ public static class AxisRendering
             throw new InvalidEnumArgumentException();
         }
 
-        using SKPaint paint = font.MakePaint();
+        using SKPaint paint = new();
+        font.ApplyToPaint(paint);
+
         paint.TextAlign = SKTextAlign.Center;
 
         foreach (Tick tick in ticks)
@@ -97,7 +99,9 @@ public static class AxisRendering
             throw new InvalidEnumArgumentException();
         }
 
-        using SKPaint paint = font.MakePaint();
+        using SKPaint paint = new();
+        font.ApplyToPaint(paint);
+
         paint.TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left;
 
         foreach (Tick tick in ticks)

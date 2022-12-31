@@ -4,9 +4,6 @@ namespace ScottPlot.Control;
 
 public class MouseState
 {
-    // TODO: add a flag so once the distance is exceeded it is ignored when you return to it, 
-    // otherwise it feels laggy when you drag the cursor in small circles.
-
     /// <summary>
     /// A click-drag must exceed this number of pixels before it is considered a drag.
     /// </summary>
