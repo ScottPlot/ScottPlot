@@ -12,9 +12,8 @@ public class Scatter : IPlottable
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
-    public float MarkerSize { get; set; } = 5;
-    public Color MarkerColor { get; set; }
     public LineStyle LineStyle { get; set; } = new();
+    public MarkerStyle MarkerStyle { get; set; } = new();
     public DataSource.IScatterSource Data { get; }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
@@ -23,14 +22,9 @@ public class Scatter : IPlottable
         new LegendItem
         {
             Label = Label,
-            Marker = CreateMarker(),
+            Marker = MarkerStyle,
             Line = LineStyle,
         });
-
-    private Marker CreateMarker()
-    {
-        return new Marker(MarkerShape.Circle, MarkerColor, MarkerSize);
-    }
 
     public Scatter(DataSource.IScatterSource data)
     {
@@ -51,7 +45,6 @@ public class Scatter : IPlottable
         }
         surface.Canvas.DrawPath(path, paint);
 
-        Marker marker = CreateMarker();
-        Drawing.DrawMarkers(surface, marker, pixels);
+        MarkerStyle.Render(surface.Canvas, pixels);
     }
 }

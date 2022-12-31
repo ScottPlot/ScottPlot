@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Legends;
+﻿using ScottPlot.Style;
+
+namespace ScottPlot.Legends;
 
 /// <summary>
 /// Common methods which legends may choose to use for rendering
@@ -74,11 +76,10 @@ public static class LegendRendering
             canvas.DrawLine(new(rect.Left, rect.VerticalCenter), new(rect.Right, rect.VerticalCenter), paint);
         }
 
-        if (item.Marker.HasValue)
+        if (item.Marker.IsVisible)
         {
-            paint.Style = SKPaintStyle.Fill;
-            paint.Color = item.Marker.Value.Color.ToSKColor();
-            Drawing.DrawMarkers(canvas, item.Marker.Value, EnumerableHelpers.One<Pixel>(new(rect.HorizontalCenter, rect.VerticalCenter)));
+            Pixel px = new(rect.HorizontalCenter, rect.VerticalCenter);
+            item.Marker.Render(canvas, px);
         }
 
         if (item.Fill.HasValue)

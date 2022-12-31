@@ -122,4 +122,28 @@ internal class Styling : RecipePageBase
             }
         }
     }
+
+    internal class Markers : RecipeTestBase
+    {
+        public override string Name => "Markers";
+        public override string Description => "Many plot types have a MarkerStyle which can be customized.";
+
+        [Test]
+        public override void Recipe()
+        {
+            int count = 51;
+            double[] xs = Generate.Consecutive(count);
+            double[] ys1 = Generate.Sin(count);
+            double[] ys2 = Generate.Cos(count);
+
+            var scatter1 = myPlot.Add.Scatter(xs, ys1);
+            scatter1.MarkerStyle.Size = 10;
+            scatter1.MarkerStyle.Outline.Width = 2;
+            scatter1.MarkerStyle.Outline.Color = Colors.Navy;
+
+            var scatter2 = myPlot.Add.Scatter(xs, ys2);
+            scatter2.MarkerStyle.Size = 6;
+            scatter2.MarkerStyle.Shape = ScottPlot.Style.MarkerShape.Square;
+        }
+    }
 }

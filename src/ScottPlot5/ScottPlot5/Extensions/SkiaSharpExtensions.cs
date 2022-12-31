@@ -101,6 +101,8 @@ public static class SkiaSharpExtensions
         return paint;
     }
 
+    // TODO: remove all MakePaint here to force callers to handle their own "using"
+
     public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
     {
         paint.Color = fs.Color.ToSKColor();

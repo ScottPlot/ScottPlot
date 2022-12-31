@@ -28,6 +28,15 @@ public struct PixelRect
 
     public static PixelRect Zero => new();
 
+    public static PixelRect Centered(Pixel center, float radius)
+    {
+        return new PixelRect(
+            left: center.X - radius,
+            right: center.X + radius,
+            bottom: center.Y + radius,
+            top: center.Y - radius);
+    }
+
     [Obsolete("use PixelSize")]
     public PixelRect(float width, float height)
     {

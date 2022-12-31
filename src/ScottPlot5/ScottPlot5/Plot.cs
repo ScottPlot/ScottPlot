@@ -16,7 +16,7 @@ public class Plot : IDisposable
     public List<IGrid> Grids { get; } = new();
     public List<ILegend> Legends { get; } = new();
     public List<IPlottable> Plottables { get; } = new();
-    public PlottableFactory Add { get; }
+    public AddPlottable Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public IRenderer Renderer { get; set; } = new StandardRenderer();
     public ILayoutSystem Layout { get; set; } = new StandardLayoutSystem();

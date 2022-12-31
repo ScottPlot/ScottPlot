@@ -6,8 +6,6 @@
 
 using ScottPlot.Axis;
 using ScottPlot.Style;
-using SkiaSharp;
-using System.Data;
 
 namespace ScottPlot.Plottables;
 
@@ -18,7 +16,7 @@ public class Signal : IPlottable
 
     public readonly DataSource.ISignalSource Data;
 
-    public Marker Marker { get; set; } = new();
+    public MarkerStyle Marker { get; set; } = new() { Outline = LineStyle.NoLine };
     public string? Label { get; set; }
 
     // TODO: colors throughout this code are taken from weird places
@@ -122,7 +120,7 @@ public class Signal : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
+            Color = LineStyle.Color.ToSKColor(),
             StrokeWidth = LineStyle.Width,
         };
 
@@ -134,10 +132,8 @@ public class Signal : IPlottable
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), 4);
-            Marker modifiedMarker = Marker;
-            modifiedMarker.Size = radius;
-
-            Drawing.DrawMarkers(surface, modifiedMarker, points);
+            Marker.Size = radius;
+            Marker.Render(surface.Canvas, points);
         }
     }
 
@@ -151,7 +147,7 @@ public class Signal : IPlottable
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
+            Color = LineStyle.Color.ToSKColor(),
             StrokeWidth = LineStyle.Width,
         };
 

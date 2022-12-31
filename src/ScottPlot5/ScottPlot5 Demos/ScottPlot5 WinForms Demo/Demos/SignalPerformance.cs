@@ -34,7 +34,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
-            sp.MarkerSize = 0;
+            sp.MarkerStyle.Shape = ScottPlot.Style.MarkerShape.None;
             formsPlot1.Plot.Title.Label.Text = "ten thousand points";
         }
 

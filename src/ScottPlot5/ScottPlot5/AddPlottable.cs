@@ -1,6 +1,5 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
-using ScottPlot.Style;
 using ScottPlot.DataSource;
 
 namespace ScottPlot;
@@ -8,7 +7,7 @@ namespace ScottPlot;
 /// <summary>
 /// Helper methods to create plottable objects and add them to the plot
 /// </summary>
-public class PlottableFactory
+public class AddPlottable
 {
     private readonly Plot Plot;
 
@@ -16,7 +15,7 @@ public class PlottableFactory
 
     private Color NextColor => Palette.GetColor(Plot.Plottables.Count);
 
-    public PlottableFactory(Plot plot)
+    public AddPlottable(Plot plot)
     {
         Plot = plot;
     }
@@ -50,7 +49,7 @@ public class PlottableFactory
         Color nextColor = color ?? NextColor;
         Scatter scatter = new(data);
         scatter.LineStyle.Color = nextColor;
-        scatter.MarkerColor = nextColor;
+        scatter.MarkerStyle.Fill.Color = nextColor;
         Plot.Plottables.Add(scatter);
         return scatter;
     }
@@ -67,19 +66,13 @@ public class PlottableFactory
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        Marker marker = new(color ?? NextColor);
-        return Signal(ys, period, marker);
-    }
-
-    public Signal Signal(IReadOnlyList<double> ys, double period, Marker marker)
-    {
-        DataSource.SignalSource data = new(ys, period);
-        Signal scatter = new(data)
-        {
-            Marker = marker
-        };
-        Plot.Plottables.Add(scatter);
-        return scatter;
+        Color nextColor = color ?? NextColor;
+        SignalSource data = new(ys, period);
+        var sig = new Signal(data);
+        sig.LineStyle.Color = nextColor;
+        sig.Marker.Fill.Color = nextColor;
+        Plot.Plottables.Add(sig);
+        return sig;
     }
 
     public BarPlot Bar(double[] values)

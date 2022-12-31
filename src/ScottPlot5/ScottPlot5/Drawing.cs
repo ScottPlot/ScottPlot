@@ -60,34 +60,6 @@ public static class Drawing
         surface.Canvas.DrawPath(path, paint);
     }
 
-    [Obsolete()]
-    public static void DrawMarkers(SKSurface surface, in Marker marker, IEnumerable<Pixel> positions)
-    {
-        DrawMarkers(surface.Canvas, marker, positions);
-    }
-
-    public static void DrawMarkers(SKCanvas canvas, in Marker marker, IEnumerable<Pixel> positions)
-    {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Fill,
-            Color = marker.Color.ToSKColor(),
-        };
-
-        foreach (Pixel pos in positions)
-        {
-            switch (marker.Shape)
-            {
-                case MarkerShape.Circle:
-                    canvas.DrawCircle(pos.X, pos.Y, marker.Size / 2, paint);
-                    break;
-                default:
-                    throw new NotSupportedException(nameof(marker.Shape));
-            }
-        }
-    }
-
     public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
         using SKPaint paint = new()
