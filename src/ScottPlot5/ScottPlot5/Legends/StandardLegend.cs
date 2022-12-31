@@ -81,7 +81,7 @@ public class StandardLegend : ILegend
 
         // TODO: use child measurements that were already made
         y += height;
-        foreach (var curr in item.Children)
+        foreach (var curr in GetVisibleItems(item.Children))
         {
             RenderItem(canvas, paint, curr, x, y);
             y += Measure(curr, paint).Height;
@@ -147,8 +147,6 @@ public class StandardLegend : ILegend
             {
                 visibleItems.Add(item);
             }
-
-            visibleItems.AddRange(GetVisibleItems(item.Children));
         }
 
         return visibleItems.ToArray();
