@@ -142,8 +142,7 @@ internal class Styling : RecipePageBase
             scatter1.MarkerStyle.Outline.Color = Colors.Navy;
 
             var scatter2 = myPlot.Add.Scatter(xs, ys2);
-            scatter2.MarkerStyle.Size = 6;
-            scatter2.MarkerStyle.Shape = ScottPlot.Style.MarkerShape.Square;
+            scatter2.MarkerStyle = new(ScottPlot.Style.MarkerShape.Square, 6);
         }
     }
 }

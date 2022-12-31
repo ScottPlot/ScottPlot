@@ -13,7 +13,7 @@ public static class MarkerShapeExtensions
     {
         return shape switch
         {
-            MarkerShape.Circle => new MarkerRenderers.Circle(),
+            MarkerShape.Circle or MarkerShape.None => new MarkerRenderers.Circle(),
             MarkerShape.Square => new MarkerRenderers.Square(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
