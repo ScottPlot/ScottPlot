@@ -26,8 +26,13 @@ public class StandardLegend : ILegend
     private const float SymbolWidth = 20;
     private const float SymbolLabelSeparation = 5;
 
+    public LegendItem[]? ManualLegendItems { get; set; } = null;
+
     public void Render(SKCanvas canvas, PixelRect dataRect, LegendItem[] items)
     {
+        if (ManualLegendItems is not null)
+            items = ManualLegendItems.ToArray();
+
         items = GetAllLegendItems(items).Where(x => x.IsVisible).ToArray();
         if (!items.Any())
             return;

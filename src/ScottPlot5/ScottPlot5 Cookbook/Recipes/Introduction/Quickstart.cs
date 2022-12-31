@@ -105,4 +105,32 @@ internal class Quickstart : RecipePageBase
             sig2.Label = "Cos";
         }
     }
+
+    internal class ManualLegend : RecipeTestBase
+    {
+        public override string Name => "Manual Legend";
+        public override string Description => "Legends may be constructed manually.";
+
+        [Test]
+        public override void Recipe()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            LegendItem item1 = new()
+            {
+                Label = "alpha",
+                Line = new ScottPlot.Style.Stroke(Colors.Magenta, 2),
+            };
+
+            LegendItem item2 = new()
+            {
+                Label = "beta",
+                Line = new ScottPlot.Style.Stroke(Colors.Green, 4),
+            };
+
+            var legend = myPlot.GetLegend();
+            legend.ManualLegendItems = new[] { item1, item2 };
+        }
+    }
 }
