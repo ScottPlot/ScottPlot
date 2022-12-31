@@ -3,7 +3,7 @@
 /// <summary>
 /// This object performs 2D coordinate/pixel conversions based on the data area and two axes it contains.
 /// </summary>
-internal class Axes : IAxes
+public class Axes : IAxes
 {
     public IXAxis XAxis { get; set; } = null!;
     public IYAxis YAxis { get; set; } = null!;

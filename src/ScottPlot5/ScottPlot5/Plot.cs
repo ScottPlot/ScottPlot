@@ -1,10 +1,10 @@
 ﻿using ScottPlot.Axis;
 using ScottPlot.Rendering;
 using ScottPlot.LayoutSystem;
-using ScottPlot.Plottables;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Benchmarking;
+using ScottPlot.Control;
 
 namespace ScottPlot;
 
@@ -24,11 +24,8 @@ public class Plot : IDisposable
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
-
     public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
-
-    // TODO: allow the user to inject their own visual debugging and performance monitoring tools
-    public readonly ZoomRectangle ZoomRectangle;
+    public IZoomRectangle ZoomRectangle { get; set; }
 
     /// <summary>
     /// Any state stored across renders can be stored here.
@@ -79,19 +76,19 @@ public class Plot : IDisposable
     public Plot()
     {
         // setup the default primary X and Y axes
-        IXAxis xAxisPrimary = new Axis.StandardAxes.BottomAxis();
-        IYAxis yAxisPrimary = new Axis.StandardAxes.LeftAxis();
+        IXAxis xAxisPrimary = new BottomAxis();
+        IYAxis yAxisPrimary = new LeftAxis();
         XAxes.Add(xAxisPrimary);
         YAxes.Add(yAxisPrimary);
 
         // add labeless secondary axes to get right side ticks and padding
-        IXAxis xAxisSecondary = new Axis.StandardAxes.TopAxis();
-        IYAxis yAxisSecondary = new Axis.StandardAxes.RightAxis();
+        IXAxis xAxisSecondary = new TopAxis();
+        IYAxis yAxisSecondary = new RightAxis();
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
         // setup the zoom rectangle to use the primary axes
-        ZoomRectangle = new(xAxisPrimary, yAxisPrimary);
+        ZoomRectangle = new StandardZoomRectangle(xAxisPrimary, yAxisPrimary);
 
         // add a default grid using the primary axes
         IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);

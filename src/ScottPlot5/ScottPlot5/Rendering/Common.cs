@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-using ScottPlot.LayoutSystem;
-using System.Data;
+﻿using ScottPlot.LayoutSystem;
 
 namespace ScottPlot.Rendering;
 
@@ -97,7 +95,7 @@ public static class Common
         if (plot.ZoomRectangle.IsVisible)
         {
             plot.ZoomRectangle.Axes.DataRect = dataRect;
-            plot.ZoomRectangle.Render(surface);
+            plot.ZoomRectangle.Render(surface.Canvas, dataRect);
         }
     }
 
