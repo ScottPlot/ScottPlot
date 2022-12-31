@@ -101,7 +101,9 @@ public static class LegendRendering
         PixelPadding Padding,
         PixelPadding ItemPadding)
     {
-        PixelSize labelRect = !string.IsNullOrWhiteSpace(item.Label) ? Drawing.MeasureString(item.Label, paint) : new(0, 0);
+        PixelSize labelRect = !string.IsNullOrWhiteSpace(item.Label)
+            ? Drawing.MeasureString(item.Label ?? string.Empty, paint)
+            : new(0, 0);
 
         float width2 = item.HasSymbol ? symbolWidth : 0;
         float width = width2 + symbolPadRight + labelRect.Width + ItemPadding.TotalHorizontal;
