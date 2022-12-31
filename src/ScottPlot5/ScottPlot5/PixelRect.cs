@@ -26,6 +26,8 @@ public struct PixelRect
         return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
     }
 
+    public static PixelRect Zero => new();
+
     [Obsolete("use PixelSize")]
     public PixelRect(float width, float height)
     {
