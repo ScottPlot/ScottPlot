@@ -178,7 +178,7 @@ public class StandardLegend : ILegend
             }
             else
             {
-                visibleItems.AddRange(item.Children);
+                visibleItems.AddRange(GetVisibleItems(item.Children));
             }
         }
 
