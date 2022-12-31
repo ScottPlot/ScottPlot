@@ -95,8 +95,7 @@ public class StandardLegend : ILegend
         SKPoint textPoint = new(x, y + paint.TextSize);
         var ownHeight = sizedItem.Size.OwnSize.Height;
 
-        bool hasSymbol = item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
-        if (hasSymbol)
+        if (HasSymbol(item))
         {
             RenderSymbol(canvas, item, x, y + ItemPadding.Bottom, ownHeight - ItemPadding.TotalVertical);
             textPoint.X += SymbolWidth + SymbolLabelSeparation;
@@ -111,6 +110,8 @@ public class StandardLegend : ILegend
             y += curr.Size.WithChildren.Height;
         }
     }
+
+    private bool HasSymbol(LegendItem item) => item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
 
     private void RenderSymbol(SKCanvas canvas, LegendItem item, float x, float y, float height)
     {
@@ -151,7 +152,8 @@ public class StandardLegend : ILegend
 
         PixelSize labelRect = Drawing.MeasureString(item.Label, paint);
 
-        float width = SymbolWidth + SymbolLabelSeparation + labelRect.Width + ItemPadding.TotalHorizontal;
+        var symbolWidth = HasSymbol(item) ? SymbolWidth : 0;
+        float width = symbolWidth + SymbolLabelSeparation + labelRect.Width + ItemPadding.TotalHorizontal;
         float height = paint.TextSize + Padding.TotalVertical;
 
         PixelSize ownSize = new(width, height);
