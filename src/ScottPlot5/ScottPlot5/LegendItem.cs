@@ -5,7 +5,7 @@ namespace ScottPlot;
 public class LegendItem
 {
     public string? Label { get; set; }
-    public LineStyle Line { get; set; }
+    public LineStyle Line { get; set; } = new();
     public Marker? Marker { get; set; }
     public Fill? Fill { get; set; }
     public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();
