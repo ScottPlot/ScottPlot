@@ -89,9 +89,6 @@ public class StandardLegend : ILegend
     {
         var item = sizedItem.Item;
 
-        if (string.IsNullOrEmpty(item.Label))
-            throw new ArgumentNullException(nameof(item.Label));
-
         SKPoint textPoint = new(x, y + paint.TextSize);
         var ownHeight = sizedItem.Size.OwnSize.Height;
 
@@ -101,12 +98,14 @@ public class StandardLegend : ILegend
             textPoint.X += SymbolWidth + SymbolLabelSeparation;
         }
 
-        canvas.DrawText(item.Label, textPoint, paint);
+        using SKAutoCanvasRestore _ = new(canvas);
+        if (!string.IsNullOrEmpty(item.Label))
+        {
+            canvas.DrawText(item.Label, textPoint, paint);
+            canvas.Translate(ItemPadding.Left, 0);
+        }
 
         y += ownHeight;
-        using SKAutoCanvasRestore _ = new(canvas);
-        canvas.Translate(ItemPadding.Left, 0);
-
         foreach (var curr in sizedItem.Children)
         {
             RenderItem(canvas, paint, curr, x, y);
@@ -150,10 +149,7 @@ public class StandardLegend : ILegend
     // This overload is faster because it uses the cached sizes of its children, rather than remeasuring them
     private LegendItemSize Measure(LegendItem item, SKPaint paint, SizedLegendItem[] children)
     {
-        if (string.IsNullOrWhiteSpace(item.Label))
-            throw new NullReferenceException(nameof(item.Label));
-
-        PixelSize labelRect = Drawing.MeasureString(item.Label, paint);
+        PixelSize labelRect = !string.IsNullOrWhiteSpace(item.Label) ? Drawing.MeasureString(item.Label, paint) : new(0, 0);
 
         var symbolWidth = HasSymbol(item) ? SymbolWidth : 0;
         float width = symbolWidth + SymbolLabelSeparation + labelRect.Width + ItemPadding.TotalHorizontal;
