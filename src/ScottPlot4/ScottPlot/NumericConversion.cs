@@ -101,7 +101,6 @@ namespace ScottPlot
             }
         }
 
-        // TODO: rename DoubleToGeneric
         public static T[] DoubleToGeneric<T>(this double[] input)
         {
             T[] result = new T[input.Length];
