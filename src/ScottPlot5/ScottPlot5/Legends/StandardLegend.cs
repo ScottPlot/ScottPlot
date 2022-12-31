@@ -1,5 +1,31 @@
 ﻿namespace ScottPlot.Legends;
 
+internal struct LegendItemSize
+{
+    public PixelSize OwnSize { get; }
+    public PixelSize WithChildren { get; }
+
+    public LegendItemSize(PixelSize ownSize, PixelSize withChildren)
+    {
+        OwnSize = ownSize;
+        WithChildren = withChildren;
+    }
+}
+
+internal struct SizedLegendItem
+{
+    public LegendItem Item { get; }
+    public LegendItemSize Size { get; }
+    public SizedLegendItem[] Children { get; }
+
+    public SizedLegendItem(LegendItem item, LegendItemSize size, SizedLegendItem[] children)
+    {
+        Item = item;
+        Size = size;
+        Children = children;
+    }
+}
+
 public class StandardLegend : ILegend
 {
     public bool IsVisible { get; set; } = true;
@@ -33,17 +59,13 @@ public class StandardLegend : ILegend
         if (!items.Any())
             return;
 
-        // TODO: I don't like the recursion or frequent measurements that happen in the render loop.
-        // This section should be refactored to:
-        //   1.) Recursively identify every item to show in the legend and store it as LegendItem[]
-        //   2.) Measure every item and store it as PixelSize[]
-        //   3.) Render each item one by one
-
         // measure all items to determine dimensions of the legend
-        using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = FontSize, IsAntialias = true };
-        PixelSize[] itemSizes = items.Select(x => Measure(x, paint)).ToArray();
-        float maxWidth = itemSizes.Select(x => x.Width).Max();
-        float totalheight = itemSizes.Select(x => x.Height).Sum();
+        using SKPaint paint = new() { Typeface = Font.ToSKTypeface(), TextSize = Font.Size, IsAntialias = true };
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
+        
+        float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
+        
         PixelSize legendSize = new PixelSize(maxWidth, totalheight).Expand(Padding);
         PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment.LowerRight, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
@@ -55,36 +77,37 @@ public class StandardLegend : ILegend
 
         // render all items inside the legend
         float yOffset = legendRect.Top + Padding.Top;
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < sizedItems.Length; i++)
         {
-            RenderItem(canvas, paint, items[i], legendRect.Left + Padding.Left, yOffset);
-            yOffset += itemSizes[i].Height;
+            RenderItem(canvas, paint, sizedItems[i], legendRect.Left + Padding.Left, yOffset);
+            yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
 
-    private void RenderItem(SKCanvas canvas, SKPaint paint, LegendItem item, float x, float y)
+    private void RenderItem(SKCanvas canvas, SKPaint paint, SizedLegendItem sizedItem, float x, float y)
     {
+        var item = sizedItem.Item;
+
         if (string.IsNullOrEmpty(item.Label))
             throw new ArgumentNullException(nameof(item.Label));
 
         SKPoint textPoint = new(x, y + paint.TextSize);
-        var height = Measure(item, paint, includeChildren: false).Height;
+        var ownHeight = sizedItem.Size.OwnSize.Height;
 
         bool hasSymbol = item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
         if (hasSymbol)
         {
-            RenderSymbol(canvas, item, x, y + ItemPadding.Bottom, height - ItemPadding.TotalVertical);
+            RenderSymbol(canvas, item, x, y + ItemPadding.Bottom, ownHeight - ItemPadding.TotalVertical);
             textPoint.X += SymbolWidth + SymbolLabelSeparation;
         }
 
         canvas.DrawText(item.Label, textPoint, paint);
 
-        // TODO: use child measurements that were already made
-        y += height;
-        foreach (var curr in GetVisibleItems(item.Children))
+        y += ownHeight;
+        foreach (var curr in sizedItem.Children)
         {
             RenderItem(canvas, paint, curr, x, y);
-            y += Measure(curr, paint).Height;
+            y += curr.Size.WithChildren.Height;
         }
     }
 
@@ -114,7 +137,13 @@ public class StandardLegend : ILegend
         }
     }
 
-    private PixelSize Measure(LegendItem item, SKPaint paint, bool includeChildren = true)
+    private LegendItemSize Measure(LegendItem item, SKPaint paint)
+    {
+        return Measure(item, paint, GetSizedLegendItems(GetVisibleItems(item.Children), paint));
+    }
+
+    // This overload is faster because it uses the cached sizes of its children, rather than remeasuring them
+    private LegendItemSize Measure(LegendItem item, SKPaint paint, SizedLegendItem[] children)
     {
         if (string.IsNullOrWhiteSpace(item.Label))
             throw new NullReferenceException(nameof(item.Label));
@@ -124,17 +153,15 @@ public class StandardLegend : ILegend
         float width = SymbolWidth + SymbolLabelSeparation + labelRect.Width + ItemPadding.TotalHorizontal;
         float height = paint.TextSize + Padding.TotalVertical;
 
-        if (!includeChildren)
-            return new PixelSize(width, height);
+        PixelSize ownSize = new(width, height);
 
-        foreach (LegendItem childItem in item.Children)
+        foreach (SizedLegendItem childItem in children)
         {
-            PixelSize childSize = Measure(childItem, paint);
-            width = Math.Max(width, Padding.Left + childSize.Width);
-            height += childSize.Height;
+            width = Math.Max(width, Padding.Left + childItem.Size.WithChildren.Width);
+            height += childItem.Size.WithChildren.Height;
         }
 
-        return new PixelSize(width, height);
+        return new LegendItemSize(ownSize, new(width, height));
     }
 
     private LegendItem[] GetVisibleItems(IEnumerable<LegendItem> items)
@@ -150,5 +177,18 @@ public class StandardLegend : ILegend
         }
 
         return visibleItems.ToArray();
+    }
+
+    private SizedLegendItem[] GetSizedLegendItems(IEnumerable<LegendItem> items, SKPaint paint)
+    {
+        List<SizedLegendItem> sizedItems = new();
+
+        foreach (var item in items)
+        {
+            var sizedChildren = GetSizedLegendItems(GetVisibleItems(item.Children), paint);
+            sizedItems.Add(new(item, Measure(item, paint, sizedChildren), sizedChildren));
+        }
+
+        return sizedItems.ToArray();
     }
 }
