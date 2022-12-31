@@ -68,18 +68,19 @@ public class StandardLegend : ILegend
             throw new ArgumentNullException(nameof(item.Label));
 
         SKPoint textPoint = new(x, y + paint.TextSize);
+        var height = Measure(item, paint, includeChildren: false).Height;
 
         bool hasSymbol = item.Line.HasValue || item.Marker.HasValue || item.Fill.HasValue;
         if (hasSymbol)
         {
-            RenderSymbol(canvas, item, x, y, paint.TextSize);
+            RenderSymbol(canvas, item, x, y + ItemPadding.Bottom, height - ItemPadding.TotalVertical);
             textPoint.X += SymbolWidth + SymbolLabelSeparation;
         }
 
         canvas.DrawText(item.Label, textPoint, paint);
 
         // TODO: use child measurements that were already made
-        y += Measure(item, paint, includeChildren: false).Height;
+        y += height;
         foreach (var curr in item.Children)
         {
             RenderItem(canvas, paint, curr, x, y);
@@ -89,9 +90,7 @@ public class StandardLegend : ILegend
 
     private void RenderSymbol(SKCanvas canvas, LegendItem item, float x, float y, float height)
     {
-        // TODO: symbol/text alignment is pretty wonky
-
-        PixelRect rect = new(x, x + SymbolWidth, y + height * 1.5f, y);
+        PixelRect rect = new(x, x + SymbolWidth, y + height, y);
 
         using SKPaint paint = new();
 
