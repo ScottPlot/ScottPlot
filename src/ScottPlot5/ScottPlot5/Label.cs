@@ -13,8 +13,6 @@ public class Label
     public FontStyle Font { get; set; } = new();
     public Color BackgroundColor { get; set; } = Colors.Transparent;
     public LineStyle Border { get; set; } = new() { Width = 0 };
-    public LineStyle Outline { get; set; } = new() { Width = 0 };// TODO: respect this
-
     public bool AntiAlias { get; set; } = true;
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float Rotation { get; set; } = 0;
