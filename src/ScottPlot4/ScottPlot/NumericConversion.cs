@@ -102,7 +102,7 @@ namespace ScottPlot
         }
 
         // TODO: rename DoubleToGeneric
-        public static T[] ToGenericArray<T>(this double[] input)
+        public static T[] DoubleToGeneric<T>(this double[] input)
         {
             T[] result = new T[input.Length];
             for (int i = 0; i < input.Length; i++)

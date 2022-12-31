@@ -20,7 +20,7 @@ public static class Generate
 
     public static T[] Consecutive<T>(int count, double delta = 1, double first = 0)
     {
-        return Consecutive(count, delta, first).ToGenericArray<T>();
+        return Consecutive(count, delta, first).DoubleToGeneric<T>();
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public static class Generate
 
     public static T[] Sin<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
-        return Sin(count, mult, offset, oscillations, phase).ToGenericArray<T>();
+        return Sin(count, mult, offset, oscillations, phase).DoubleToGeneric<T>();
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public static class Generate
 
     public static T[] Cos<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
-        return Cos(count, mult, offset, oscillations, phase).ToGenericArray<T>();
+        return Cos(count, mult, offset, oscillations, phase).DoubleToGeneric<T>();
     }
 
     public static double[] NoisySin(Random rand, int count, double noiseLevel = 1)
