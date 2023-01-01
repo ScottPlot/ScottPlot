@@ -12,57 +12,41 @@
     <style>
         a {
             text-decoration: none;
+            color: #BBB;
         }
 
         a:hover {
-            text-decoration: underline;
+            color: white;
         }
     </style>
 </head>
 
-<body>
+<body style="background-color: #67217a;" class="text-light">
 
-    <header>
-
-        <div class="text-light p-3 shadow-sm" style="background-color: #67217a;">
-            <div class="d-flex align-items-center mx-auto" style="max-width: 800px;">
-                <img src="favicon.svg" width="40" height="40" class="shadow-sm" />
-                <div class="ps-3 pt-2">
-                    <h3 class="fw-normal shadow-sm">ScottPlot Developer Website</h3>
-                </div>
-            </div>
+    <div id="matrixDiv" class="bg-dark text-light my-5"
+        style="height: 100vh; justify-content: center; align-items: center;">
+        <div style="position: absolute;">
+            <a href="https://scottplot.net">
+                <img src="banner-transparent.svg" class="img-fluid mx-auto d-block mt-5" style="height: 300px;" />
+            </a>
         </div>
+    </div>
 
-        <div class="border-bottom bg-light">
-            <div class="px-2 py-3 mx-auto" style="max-width: 800px;">
-                <strong class="fw-semibold">⚠️ WARNING: This website is for ScottPlot developers.</strong>
-                Information here describes source code in the main branch of the
-                <a href="https://github.com/scottplot/scottplot">ScottPlot repository</a>
-                and may include experimental features not yet available in the public packages.
-                Visit the <a href="https://scottplot.net">standard ScottPlot website</a>
-                for documentation about released versions of ScottPlot.
-            </div>
-        </div>
+    <!-- set matrix wall options -->
+    <script type="text/javascript">
+        const matrixSettings = {
+            target: document.getElementById("matrixDiv"),
+            background: "#67217a",
+            foreground: "#9a4993",
+            highlight: "#ba5db2",
+            characterSize: 15,
+            speed: .5,
+        };
+    </script>
 
-    </header>
+    <!-- start the matrix wall -->
+    <script type="text/javascript" src="https://swharden.github.io/MatrixWall/matrix.js"></script>
 
-    <article class="mx-auto px-2 my-3" style="max-width: 800px;">
-
-        <h4>Developer Links</h4>
-        <ul>
-            <li class="mt-3">
-                <a href='https://dev.scottplot.net/cookbook/5.0'>ScottPlot 5.0 Developer Cookbook</a>
-            </li>
-            <li class="mt-2">
-                <a href='https://scottplot.net/discord'>ScottPlot Discord Channel</a>
-            </li>
-            <li class="mt-2">
-                <a href='https://github.com/ScottPlot/ScottPlot/blob/main/dev/www/index.html'>Edit this page on
-                    GitHub</a>
-            </li>
-        </ul>
-
-    </article>
 </body>
 
 </html>

@@ -1,15 +1,9 @@
-name: Rebuild Developer Website
+name: Update Developer Website
 
-# This script builds the ScottPlot 5 cookbook
-# and publishes it to dev.scottplot.net (hosted by GitHub Pages)
+# This script copies contents of /dev/www to dev.scottplot.net (hosted by GitHub Pages)
 
 on:
   workflow_dispatch:
-  push: # only runs on commits to main branch (typically after a merge)
-    branches:
-      - main
-    paths:
-      - "src/ScottPlot5/**"
 
 permissions:
   contents: read
@@ -22,7 +16,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Cookbook
+    name: Deploy
     runs-on: ubuntu-latest
     environment:
       name: Cookbook
@@ -30,25 +24,6 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: 🗛 Download Fonts
-        run: |
-          wget -O open_sans.zip https://fonts.google.com/download?family=Open%20Sans
-          unzip -d open_sans/ open_sans.zip
-          mv open_sans /usr/share/fonts/
-          wget -O roberto_mono.zip https://fonts.google.com/download?family=Roboto%20Mono
-          unzip -d roberto_mono/ roberto_mono.zip
-          mv roberto_mono /usr/share/fonts/
-          fc-cache -fv
-      - name: ✨ Set up .NET 6.0
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "6.0.x"
-      - name: 🚚 Restore
-        run: dotnet restore "src/ScottPlot5/ScottPlot5 Cookbook"
-      - name: 🛠️ Build
-        run: dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore
-      - name: 🧑‍🍳 Generate Cookbook
-        run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
       - name: 🛠️ Configure Pages
         uses: actions/configure-pages@v2
       - name: 📦 Upload Artifact
