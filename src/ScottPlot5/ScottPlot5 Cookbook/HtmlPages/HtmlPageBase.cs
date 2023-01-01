@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace ScottPlotCookbook.HtmlPages;
+﻿namespace ScottPlotCookbook.HtmlPages;
 
 internal abstract class HtmlPageBase
 {
