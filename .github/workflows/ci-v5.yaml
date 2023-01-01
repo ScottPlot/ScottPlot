@@ -60,7 +60,12 @@ jobs:
           dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
           dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --configuration Release --no-restore
       - name: 📦 Pack
-        run: dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
+        run: |
+          dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
       - name: 🧑‍🍳 Cookbook
