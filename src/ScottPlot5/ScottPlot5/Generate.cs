@@ -160,4 +160,17 @@ public static class Generate
         RandomDataGenerator gen = new(seed);
         return gen.RandomWalk(count, mult, offset);
     }
+
+    /// <summary>
+    /// Return a series of values starting with <paramref name="offset"/> and
+    /// each randomly deviating from the previous by at most <paramref name="mult"/>.
+    /// Random values are deterministic based on the value of <paramref name="seed"/>.
+    /// </summary>
+    public static double[] Random(int count, double min = 0, double max = 1, int seed = 0)
+    {
+        RandomDataGenerator gen = new(seed);
+        return Enumerable.Range(0, count)
+            .Select(_ => gen.RandomNumber(min, max))
+            .ToArray();
+    }
 }
