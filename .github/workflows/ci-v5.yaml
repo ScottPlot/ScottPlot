@@ -14,7 +14,7 @@ on:
 jobs:
   linux:
     runs-on: ubuntu-latest
-    name: Test on Linux
+    name: Test
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -36,7 +36,7 @@ jobs:
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
   windows:
     runs-on: windows-latest
-    name: Full build on Windows
+    name: Full Build
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -46,11 +46,23 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
+      - name: 📦 Setup Package Caching
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
       - name: 🚚 Restore
         run: dotnet restore "src/ScottPlot5"
       - name: 🛠️ Build
         run: dotnet build "src/ScottPlot5" --configuration Release --no-restore
       - name: 📦 Pack
-        run: dotnet pack "src/ScottPlot5" --configuration Release
+        run: |
+          dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5" --no-restore --verbosity minimal

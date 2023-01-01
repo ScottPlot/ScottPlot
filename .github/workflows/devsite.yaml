@@ -1,4 +1,4 @@
-name: ScottPlot5 Dev
+name: Rebuild Developer Website
 
 # This script builds the ScottPlot 5 cookbook
 # and publishes it to dev.scottplot.net (hosted by GitHub Pages)
