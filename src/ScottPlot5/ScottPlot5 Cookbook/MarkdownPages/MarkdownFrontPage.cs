@@ -6,6 +6,8 @@ internal class MarkdownFrontPage : MarkdownPage
 {
     public void Generate()
     {
+        AddVersionInformation();
+
         foreach (ChapterInfo chapter in Query.GetChapters())
         {
             if (!chapter.Pages.Any())

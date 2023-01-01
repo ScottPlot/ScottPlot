@@ -11,7 +11,14 @@ public static class Version
     /// <summary>
     /// Version formatted like "5.0.0-beta"
     /// </summary>
-    public static string VersionString { get; private set; } = Assembly.GetAssembly(typeof(Plot))!
-        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
-        .InformationalVersion;
+    public static string VersionString { get; private set; } = GetVersionString();
+
+    private static string GetVersionString()
+    {
+        string v = Assembly.GetAssembly(typeof(Plot))!
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
+            .InformationalVersion;
+
+        return v.Contains("+") ? v.Split('+')[0] : v;
+    }
 }

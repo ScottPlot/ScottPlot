@@ -18,6 +18,8 @@ internal class MarkdownRecipePage : MarkdownPage
 
     public void Generate()
     {
+        AddVersionInformation();
+
         foreach (RecipeInfo recipe in Page.Recipes)
         {
             SB.AppendLine();
