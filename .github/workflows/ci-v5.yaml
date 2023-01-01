@@ -59,6 +59,8 @@ jobs:
         run: |
           dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
           dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --configuration Release --no-restore
+      - name: 📦 Pack
+        run: dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
       - name: 🧑‍🍳 Cookbook

@@ -5,28 +5,35 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <Version>5.0.0-beta</Version>
 
-        <!-- Functions with multiple overloads and optional parameters -->
+        <!-- NuGet info -->
+        <PackageId>ScottPlot</PackageId>
+        <Version>5.0.0-beta</Version>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+        <description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for displaying plots interactively are available as separate NuGet packages.</description>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+
+        <!--- SourceLink configuration -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+        <!-- Ignore warnings about multiple overloads and optional parameters -->
         <NoWarn>RS0026;RS0027</NoWarn>
     </PropertyGroup>
 
+    <!-- Include additional files for the NuGet package -->
     <ItemGroup>
-        <AdditionalFiles Remove="PublicAPI.Shipped.txt" />
-        <AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="SkiaSharp" Version="2.*" />
-        <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.*" />
+        <None Include="../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
+        <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 
     <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
@@ -45,6 +52,30 @@
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
         <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
 
+    </ItemGroup>
+
+    <!-- NuGet package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="SkiaSharp" Version="2.*" />
+        <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.*" />
+    </ItemGroup>
+
+    <!-- API Tracking -->
+    <ItemGroup>
+        <AdditionalFiles Remove="PublicAPI.Shipped.txt" />
+        <AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
     </ItemGroup>
 
 </Project>
