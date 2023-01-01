@@ -45,9 +45,9 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: 🚀 Publish Packages
-        run: |
-          nuget push "src/ScottPlot5/ScottPlot5/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+        run: | # WARNING: forward slashes are not supported
+          nuget push "src\ScottPlot5\ScottPlot5\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
