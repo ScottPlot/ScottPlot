@@ -46,13 +46,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
-      - name: 📦 Setup Package Caching
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
       - name: 🚚 Restore
         run: dotnet restore "src/ScottPlot5"
       - name: 🛠️ Build
