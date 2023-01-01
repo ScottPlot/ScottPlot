@@ -1,4 +1,4 @@
-name: Deploy NuGet Packages
+name: ScottPlot 4 Deploy
 
 on:
   workflow_dispatch:

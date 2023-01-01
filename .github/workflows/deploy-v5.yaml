@@ -1,0 +1,48 @@
+name: ScottPlot 5 Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    name: Push to NuGet
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore "src/ScottPlot5"
+      - name: 🛠️ Build
+        run: dotnet build "src/ScottPlot5" --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test "src/ScottPlot5" --no-restore --verbosity minimal
+      - name: 📦 Pack
+        run: dotnet pack "src/ScottPlot5" --configuration Release
+      - name: 💾 Store Packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: ScottPlot-Packages
+          retention-days: 1
+          path: |
+            src/ScottPlot5/ScottPlot5/bin/Release/*.nupkg
+            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms/bin/Release/*.nupkg
+            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF/bin/Release/*.nupkg
+            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia/bin/Release/*.nupkg
+            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto/bin/Release/*.nupkg
+      # - name: 🛠️ Setup NuGet
+      #   uses: nuget/setup-nuget@v1
+      #   with:
+      #     nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      # - name: 🚀 Publish Packages
+      #   run: |
+      #     nuget push "src\ScottPlot4\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      #     nuget push "src\ScottPlot4\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      #     nuget push "src\ScottPlot4\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      #     nuget push "src\ScottPlot4\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      #     nuget push "src\ScottPlot4\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

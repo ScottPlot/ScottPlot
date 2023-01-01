@@ -1,4 +1,4 @@
-name: ScottPlot5
+name: ScottPlot 5 CI
 
 on:
   workflow_dispatch:
@@ -12,37 +12,9 @@ on:
       - "src/ScottPlot5/**"
 
 jobs:
-  # format:
-  #   runs-on: windows-latest
-  #   name: Check Formatting
-  #   steps:
-  #     - name: 🛒 Checkout
-  #       uses: actions/checkout@v3
-  #     - name: ✨ Set up .NET 6.0
-  #       uses: actions/setup-dotnet@v3
-  #       with:
-  #         dotnet-version: "6.0.x"
-  #     - name: ✒️ Set up dotnet-format
-  #       run: dotnet tool install -g dotnet-format
-  #     - name: 🧐 Check Code Format
-  #       working-directory: src/ScottPlot5
-  #       run: dotnet-format --check
-  #     - name: ⚠️ Check for Warnings
-  #       run: dotnet build "src/ScottPlot5/ScottPlot5" --configuration Release -warnaserror -nowarn:CS2002
-
-  test4:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          #- os: ubuntu-latest
-            #osName: Linux
-          - os: windows-latest
-            osName: Windows
-          #- os: macos-latest
-            #osName: MacOS
-    runs-on: ${{ matrix.os }}
-    name: Test on ${{ matrix.osName }}
+  linux:
+    runs-on: ubuntu-latest
+    name: Test on Linux
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -50,7 +22,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
-
       - name: 🚚 Restore
         run: |
           dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
@@ -59,25 +30,27 @@ jobs:
         run: |
           dotnet build "src/ScottPlot5/ScottPlot5 Tests" --configuration Release --no-restore
           dotnet build "src/ScottPlot5/ScottPlot5 Cookbook" --configuration Release --no-restore
-      - name: 📦 Pack
-        run: |
-          dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
       - name: 🧑‍🍳 Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
-
-      # msbuild is required to build a solution containing .NET Framework projects
+  windows:
+    runs-on: windows-latest
+    name: Full build on Windows
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
       - name: 🐢 Setup MSBuild
-        if: startsWith(matrix.os, 'windows')
         uses: microsoft/setup-msbuild@v1.1
-      - name: 🚚 Restore Solution
-        if: startsWith(matrix.os, 'windows')
-        run: dotnet restore src/ScottPlot5
-      - name: 🐌 Build Solution
-        if: startsWith(matrix.os, 'windows')
-        run: msbuild src/ScottPlot5 -property:Configuration=Release -verbosity:minimal
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore "src/ScottPlot5"
+      - name: 🛠️ Build
+        run: dotnet build "src/ScottPlot5" --configuration Release --no-restore
+      - name: 📦 Pack
+        run: dotnet pack "src/ScottPlot5" --configuration Release
+      - name: 🧪 Test
+        run: dotnet test "src/ScottPlot5" --no-restore --verbosity minimal
