@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Style;
 using SkiaSharp;
 
 namespace ScottPlot.Plottables
@@ -43,7 +42,7 @@ namespace ScottPlot.Plottables
                 yMin: -1 - ExplodeFraction - padding,
                 yMax: 1 + ExplodeFraction + padding);
         }
-        public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+        public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
             new LegendItem
             {
                 Label = Label,

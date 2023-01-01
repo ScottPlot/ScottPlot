@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Style;
 using System.Data;
 
 namespace ScottPlot.Grids;

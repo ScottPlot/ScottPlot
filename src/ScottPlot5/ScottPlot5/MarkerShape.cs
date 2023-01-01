@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Style;
+﻿namespace ScottPlot;
 
 public enum MarkerShape
 {
@@ -11,12 +11,12 @@ public enum MarkerShape
 
 public static class MarkerShapeExtensions
 {
-    public static IMarkerRenderer GetRenderer(this MarkerShape shape)
+    public static IMarker GetRenderer(this MarkerShape shape)
     {
         return shape switch
         {
-            MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.None => new MarkerRenderers.Circle(),
-            MarkerShape.FilledSquare or MarkerShape.OpenSquare => new MarkerRenderers.Square(),
+            MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.None => new Markers.Circle(),
+            MarkerShape.FilledSquare or MarkerShape.OpenSquare => new Markers.Square(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }

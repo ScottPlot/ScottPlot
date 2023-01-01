@@ -1,5 +1,4 @@
-﻿using ScottPlot.Style;
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace ScottPlot;
 

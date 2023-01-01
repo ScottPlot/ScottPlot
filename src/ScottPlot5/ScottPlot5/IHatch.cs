@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Style.Hatches;
+﻿namespace ScottPlot;
 
 public interface IHatch
 {

@@ -1,7 +1,4 @@
-﻿using ScottPlot.Style;
-using SkiaSharp;
-
-namespace ScottPlot.Extensions;
+﻿namespace ScottPlot.Extensions;
 
 public static class SystemDrawingExtensions
 {

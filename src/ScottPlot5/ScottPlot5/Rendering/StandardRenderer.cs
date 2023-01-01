@@ -1,4 +1,4 @@
-﻿using ScottPlot.LayoutSystem;
+﻿using ScottPlot.Layouts;
 
 namespace ScottPlot.Rendering;
 
@@ -13,7 +13,7 @@ public class StandardRenderer : IRenderer
         PixelRect figureRect = surface.GetPixelRect();
 
         IPanel[] panels = plot.GetAllPanels(); // includes axis and non-axis panels
-        FinalLayout layout = plot.Layout.GetLayout(figureRect, panels);
+        Layout layout = plot.Layout.GetLayout(figureRect, panels);
         PixelRect dataRect = layout.DataRect;
 
         plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);

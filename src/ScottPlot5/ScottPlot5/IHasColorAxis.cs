@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot;
 
-namespace ScottPlot
+public interface IHasColorAxis
 {
-    public interface IHasColorAxis
-    {
-        Range GetRange();
-        IColormap Colormap { get; }
-    }
+    Range GetRange();
+    IColormap Colormap { get; }
 }

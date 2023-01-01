@@ -1,5 +1,9 @@
-﻿namespace ScottPlot.LayoutSystem;
+﻿namespace ScottPlot;
 
+/// <summary>
+/// A panel is a rectangular region outside the data area of a plot.
+/// Example panels include axes, colorbars, and titles
+/// </summary>
 public interface IPanel
 {
     /// <summary>
@@ -25,7 +29,7 @@ public interface IPanel
     /// <param name="dataRect">dimensions of the data area (pixel units)</param>
     /// <param name="size">size of this panel (pixel units)</param>
     /// <param name="offset">distance from the edge of this panel to the edge of the data area</param>
-    void Render(SkiaSharp.SKSurface surface, PixelRect dataRect, float size, float offset);
+    void Render(SKSurface surface, PixelRect dataRect, float size, float offset);
 
     /// <summary>
     /// Enable this to display extra information on the axis to facilitate development

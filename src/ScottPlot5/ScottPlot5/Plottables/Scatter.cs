@@ -3,7 +3,6 @@
  */
 
 using ScottPlot.Axis;
-using ScottPlot.Style;
 
 namespace ScottPlot.Plottables;
 
@@ -18,7 +17,7 @@ public class Scatter : IPlottable
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One<LegendItem>(
+    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
         new LegendItem
         {
             Label = Label,

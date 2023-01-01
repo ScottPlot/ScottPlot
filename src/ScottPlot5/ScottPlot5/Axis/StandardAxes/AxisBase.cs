@@ -1,6 +1,4 @@
-﻿using ScottPlot.Style;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.Axis.StandardAxes;
 
 public abstract class AxisBase
 {

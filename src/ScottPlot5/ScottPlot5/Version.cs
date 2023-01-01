@@ -8,6 +8,9 @@ public static class Version
     public static int Minor => int.Parse(VersionString.Split('-')[0].Split('.')[1]);
     public static int Build => int.Parse(VersionString.Split('-')[0].Split('.')[2]);
 
+    /// <summary>
+    /// Version formatted like "5.0.0-beta"
+    /// </summary>
     public static string VersionString { get; private set; } = Assembly.GetAssembly(typeof(Plot))!
         .GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
         .InformationalVersion;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Style.Hatches
+namespace ScottPlot.Hatches
 {
     public class Square : IHatch
     {
@@ -34,7 +34,7 @@ namespace ScottPlot.Style.Hatches
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
                 SKMatrix.CreateScale(0.5f, 0.5f))
-                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
+                    .WithColorFilter(Drawing.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

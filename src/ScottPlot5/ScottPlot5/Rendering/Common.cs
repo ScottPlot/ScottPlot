@@ -1,6 +1,4 @@
-﻿using ScottPlot.LayoutSystem;
-
-namespace ScottPlot.Rendering;
+﻿namespace ScottPlot.Rendering;
 
 /// <summary>
 /// Common rendering tasks
@@ -80,7 +78,7 @@ public static class Common
         }
     }
 
-    public static void RenderPanels(SKSurface surface, PixelRect dataRect, IPanel[] panels, FinalLayout layout)
+    public static void RenderPanels(SKSurface surface, PixelRect dataRect, IPanel[] panels, Layouts.Layout layout)
     {
         foreach (IPanel panel in panels)
         {

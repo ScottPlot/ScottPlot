@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Style;
+﻿namespace ScottPlot;
 
 public enum LinePattern
 {

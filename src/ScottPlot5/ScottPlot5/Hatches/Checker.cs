@@ -1,15 +1,16 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Style.Hatches
+namespace ScottPlot.Hatches
 {
-    public class Dots : IHatch
+    public class Checker : IHatch
     {
-        static Dots()
+        static Checker()
         {
             bmp = CreateBitmap();
         }
@@ -21,10 +22,9 @@ namespace ScottPlot.Style.Hatches
             using var path = new SKPath();
             using var canvas = new SKCanvas(bmp);
 
-            paint.IsAntialias = true; // AA is especially important for circles, it seems to do little for the other shapes
-
             canvas.Clear(Colors.Black.ToSKColor());
-            canvas.DrawCircle(5, 5, 5, paint);
+            canvas.DrawRect(new SKRect(0, 0, 10, 10), paint);
+            canvas.DrawRect(new SKRect(10, 10, 20, 20), paint);
 
             return bmp;
         }
@@ -36,7 +36,7 @@ namespace ScottPlot.Style.Hatches
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
                 SKMatrix.CreateScale(0.5f, 0.5f))
-                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
+                    .WithColorFilter(Drawing.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

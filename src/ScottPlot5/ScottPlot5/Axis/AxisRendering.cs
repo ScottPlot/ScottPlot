@@ -1,5 +1,4 @@
-﻿using ScottPlot.Style;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace ScottPlot.Axis;
 

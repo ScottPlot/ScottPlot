@@ -1,8 +1,4 @@
-﻿using ScottPlot.Plottables;
-using ScottPlot.Style;
-using SkiaSharp;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -131,5 +127,33 @@ public static class Drawing
             releaseProc: (IntPtr _, object _) => handle.Free());
 
         return bmp;
+    }
+
+    public static SKColorFilter GetMaskColorFilter(Color foreground, Color? background = null)
+    {
+        // This function and the math is explained here: https://bclehmann.github.io/2022/11/06/UnmaskingWithSKColorFilter.html
+
+        background ??= Colors.Black;
+
+        float redDifference = foreground.Red - background.Value.Red;
+        float greenDifference = foreground.Green - background.Value.Green;
+        float blueDifference = foreground.Blue - background.Value.Blue;
+        float alphaDifference = foreground.Alpha - background.Value.Alpha;
+
+        // See https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/effects/color-filters
+        // for an explanation of this matrix
+        // 
+        // Essentially, this matrix maps all gray colours to a line from `background.Value` to `foreground`.
+        // Black and white are at the extremes on this line, 
+        // so they get mapped to `background.Value` and `foreground` respectively
+        var mat = new float[] {
+                redDifference / 255, 0, 0, 0, background.Value.Red / 255.0f,
+                0, greenDifference / 255, 0, 0, background.Value.Green / 255.0f,
+                0, 0, blueDifference / 255, 0, background.Value.Blue / 255.0f,
+                alphaDifference / 255, 0, 0, 0, background.Value.Alpha / 255.0f,
+            };
+
+        var filter = SKColorFilter.CreateColorMatrix(mat);
+        return filter;
     }
 }

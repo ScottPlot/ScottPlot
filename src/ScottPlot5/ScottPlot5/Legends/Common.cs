@@ -1,11 +1,9 @@
-﻿using ScottPlot.Style;
-
-namespace ScottPlot.Legends;
+﻿namespace ScottPlot.Legends;
 
 /// <summary>
 /// Common methods which legends may choose to use for rendering
 /// </summary>
-public static class LegendRendering
+public static class Common
 {
     /// <summary>
     /// Render a leger item: its label, symbol, and all its children

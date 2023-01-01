@@ -1,6 +1,4 @@
-﻿using ScottPlot.LayoutSystem;
-
-namespace ScottPlot.Panels;
+﻿namespace ScottPlot.Panels;
 
 public class TitlePanel : IPanel
 {

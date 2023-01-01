@@ -1,6 +1,6 @@
 ﻿using ScottPlot.Axis;
 using ScottPlot.Rendering;
-using ScottPlot.LayoutSystem;
+using ScottPlot.Layouts;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Benchmarking;
@@ -20,7 +20,7 @@ public class Plot : IDisposable
     public AddPlottable Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public IRenderer Renderer { get; set; } = new StandardRenderer();
-    public ILayoutSystem Layout { get; set; } = new StandardLayoutSystem();
+    public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;

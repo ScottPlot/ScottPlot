@@ -1,6 +1,4 @@
-﻿using ScottPlot.Style;
-
-namespace ScottPlotCookbook.Recipes.Introduction;
+﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
 internal class Styling : RecipePageBase
 {

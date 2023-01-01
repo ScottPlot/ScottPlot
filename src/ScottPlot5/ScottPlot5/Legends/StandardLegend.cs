@@ -1,4 +1,4 @@
-﻿using ScottPlot.Style;
+﻿using ScottPlot;
 
 namespace ScottPlot.Legends;
 
@@ -54,7 +54,7 @@ public class StandardLegend : ILegend
         float yOffset = legendRect.Top + Padding.Top;
         for (int i = 0; i < sizedItems.Length; i++)
         {
-            LegendRendering.RenderItem(
+            Common.RenderItem(
                 canvas: canvas,
                 paint: paint,
                 sizedItem: sizedItems[i],
@@ -90,7 +90,7 @@ public class StandardLegend : ILegend
         {
             LegendItem[] visibleItems = GetAllLegendItems(item.Children).Where(x => x.IsVisible).ToArray();
             SizedLegendItem[] sizedChildren = GetSizedLegendItems(visibleItems, paint);
-            LegendItemSize itemSize = LegendRendering.Measure(item, paint, sizedChildren, SymbolWidth, SymbolLabelSeparation, Padding, ItemPadding);
+            LegendItemSize itemSize = Common.Measure(item, paint, sizedChildren, SymbolWidth, SymbolLabelSeparation, Padding, ItemPadding);
             SizedLegendItem sizedItem = new(item, itemSize, sizedChildren);
             sizedItems.Add(sizedItem);
         }

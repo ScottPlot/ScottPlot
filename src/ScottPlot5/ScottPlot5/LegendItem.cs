@@ -1,6 +1,4 @@
-﻿using ScottPlot.Style;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class LegendItem
 {

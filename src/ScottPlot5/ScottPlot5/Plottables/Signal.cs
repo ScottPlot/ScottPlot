@@ -3,7 +3,6 @@
  */
 
 using ScottPlot.Axis;
-using ScottPlot.Style;
 
 namespace ScottPlot.Plottables;
 
@@ -25,7 +24,7 @@ public class Signal : IPlottable
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
-    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
             Label = Label,

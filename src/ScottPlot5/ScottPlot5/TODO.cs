@@ -2,11 +2,7 @@
 
 internal static class TODO
 {
-    /* ### TASKS TO DO BEFORE RELEASE ###
-     * setup API tracking system
-     * add docs to website
-     * 
-     * ### TASKS TO COMPLETE AFTER THE FIRST RELEASE ###
+    /* ### TASKS TO COMPLETE AFTER THE FIRST RELEASE ###
      * DateTime tick generator
      * Manual tick generator
      * Marker class

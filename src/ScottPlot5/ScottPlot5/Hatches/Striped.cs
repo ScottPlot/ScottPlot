@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Style.Hatches
+namespace ScottPlot.Hatches
 {
     public enum StripeDirection
     {
@@ -60,7 +60,7 @@ namespace ScottPlot.Style.Hatches
                 SKShaderTileMode.Repeat,
                 SKMatrix.CreateScale(0.1f, 0.15f)
                     .PostConcat(rotationMatrix))
-                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
+                    .WithColorFilter(Drawing.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

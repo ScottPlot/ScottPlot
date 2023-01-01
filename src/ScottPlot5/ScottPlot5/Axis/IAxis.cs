@@ -1,6 +1,4 @@
-﻿using ScottPlot.LayoutSystem;
-
-namespace ScottPlot.Axis;
+﻿namespace ScottPlot.Axis;
 
 /// <summary>
 /// This interface describes a 1D axis (horizontal or vertical).

@@ -5,51 +5,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Style.Hatches
+namespace ScottPlot.Hatches
 {
-    public class Grid : IHatch
+    public class Dots : IHatch
     {
-        public bool Rotate { get; set; }
-
-        static Grid()
+        static Dots()
         {
             bmp = CreateBitmap();
         }
-        public Grid(bool rotate = false)
-        {
-            Rotate = rotate;
-        }
-
         private static SKBitmap bmp;
         private static SKBitmap CreateBitmap()
         {
             var bmp = new SKBitmap(20, 20);
-            using var paint = new SKPaint()
-            {
-                Color = Colors.White.ToSKColor(),
-                IsStroke = true,
-                StrokeWidth = 3
-            };
+            using var paint = new SKPaint() { Color = Colors.White.ToSKColor() };
             using var path = new SKPath();
             using var canvas = new SKCanvas(bmp);
 
+            paint.IsAntialias = true; // AA is especially important for circles, it seems to do little for the other shapes
+
             canvas.Clear(Colors.Black.ToSKColor());
-            canvas.DrawRect(0, 0, 20, 20, paint);
+            canvas.DrawCircle(5, 5, 5, paint);
 
             return bmp;
         }
 
         public SKShader GetShader(Color backgroundColor, Color hatchColor)
         {
-            var rotationMatrix = Rotate ? SKMatrix.CreateRotationDegrees(45) : SKMatrix.Identity;
-
             return SKShader.CreateBitmap(
                 bmp,
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat,
-                SKMatrix.CreateScale(0.5f, 0.5f)
-                    .PostConcat(rotationMatrix))
-                    .WithColorFilter(ColorFilterHelpers.GetMaskColorFilter(hatchColor, backgroundColor));
+                SKMatrix.CreateScale(0.5f, 0.5f))
+                    .WithColorFilter(Drawing.GetMaskColorFilter(hatchColor, backgroundColor));
         }
     }
 }

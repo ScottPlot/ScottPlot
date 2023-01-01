@@ -260,7 +260,7 @@ ScottPlot.Axis.MultiAxisLimits.RestoreLimits(ScottPlot.Axis.IXAxis! xAxis) -> vo
 ScottPlot.Axis.MultiAxisLimits.RestoreLimits(ScottPlot.Axis.IYAxis! yAxis) -> void
 ScottPlot.Axis.StandardAxes.AxisBase
 ScottPlot.Axis.StandardAxes.AxisBase.AxisBase() -> void
-ScottPlot.Axis.StandardAxes.AxisBase.FrameLineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Axis.StandardAxes.AxisBase.FrameLineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Axis.StandardAxes.AxisBase.IsVisible.get -> bool
 ScottPlot.Axis.StandardAxes.AxisBase.IsVisible.set -> void
 ScottPlot.Axis.StandardAxes.AxisBase.Label.get -> ScottPlot.Label!
@@ -284,7 +284,7 @@ ScottPlot.Axis.StandardAxes.AxisBase.MinorTickWidth.get -> float
 ScottPlot.Axis.StandardAxes.AxisBase.MinorTickWidth.set -> void
 ScottPlot.Axis.StandardAxes.AxisBase.ShowDebugInformation.get -> bool
 ScottPlot.Axis.StandardAxes.AxisBase.ShowDebugInformation.set -> void
-ScottPlot.Axis.StandardAxes.AxisBase.TickFont.get -> ScottPlot.Style.FontStyle!
+ScottPlot.Axis.StandardAxes.AxisBase.TickFont.get -> ScottPlot.FontStyle!
 ScottPlot.Axis.StandardAxes.AxisBase.TickFont.set -> void
 ScottPlot.Axis.StandardAxes.AxisBase.TickGenerator.get -> ScottPlot.ITickGenerator!
 ScottPlot.Axis.StandardAxes.AxisBase.TickGenerator.set -> void
@@ -552,7 +552,7 @@ ScottPlot.Control.StandardZoomRectangle.HorizontalSpan.get -> bool
 ScottPlot.Control.StandardZoomRectangle.HorizontalSpan.set -> void
 ScottPlot.Control.StandardZoomRectangle.IsVisible.get -> bool
 ScottPlot.Control.StandardZoomRectangle.IsVisible.set -> void
-ScottPlot.Control.StandardZoomRectangle.LineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Control.StandardZoomRectangle.LineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Control.StandardZoomRectangle.MouseDown.get -> ScottPlot.Pixel
 ScottPlot.Control.StandardZoomRectangle.MouseUp.get -> ScottPlot.Pixel
 ScottPlot.Control.StandardZoomRectangle.Render(SkiaSharp.SKCanvas! canvas, ScottPlot.PixelRect dataRect) -> void
@@ -665,7 +665,30 @@ ScottPlot.EdgeExtensions
 ScottPlot.Extensions.NumericExtensions
 ScottPlot.Extensions.SkiaSharpExtensions
 ScottPlot.Extensions.SystemDrawingExtensions
+ScottPlot.FillStyle
+ScottPlot.FillStyle.Color.get -> ScottPlot.Color
+ScottPlot.FillStyle.Color.set -> void
+ScottPlot.FillStyle.FillStyle() -> void
+ScottPlot.FillStyle.HasValue.get -> bool
+ScottPlot.FillStyle.Hatch.get -> ScottPlot.IHatch?
+ScottPlot.FillStyle.Hatch.set -> void
+ScottPlot.FillStyle.HatchColor.get -> ScottPlot.Color
+ScottPlot.FillStyle.HatchColor.set -> void
 ScottPlot.FontService
+ScottPlot.FontStyle
+ScottPlot.FontStyle.AntiAlias.get -> bool
+ScottPlot.FontStyle.AntiAlias.set -> void
+ScottPlot.FontStyle.Bold.get -> bool
+ScottPlot.FontStyle.Bold.set -> void
+ScottPlot.FontStyle.Color.get -> ScottPlot.Color
+ScottPlot.FontStyle.Color.set -> void
+ScottPlot.FontStyle.FontStyle() -> void
+ScottPlot.FontStyle.Italic.get -> bool
+ScottPlot.FontStyle.Italic.set -> void
+ScottPlot.FontStyle.Name.get -> string!
+ScottPlot.FontStyle.Name.set -> void
+ScottPlot.FontStyle.Size.get -> float
+ScottPlot.FontStyle.Size.set -> void
 ScottPlot.FontWeight
 ScottPlot.FontWeight.Black = 900 -> ScottPlot.FontWeight
 ScottPlot.FontWeight.Bold = 700 -> ScottPlot.FontWeight
@@ -682,10 +705,36 @@ ScottPlot.Grids.DefaultGrid
 ScottPlot.Grids.DefaultGrid.DefaultGrid(ScottPlot.Axis.IXAxis! xAxis, ScottPlot.Axis.IYAxis! yAxis) -> void
 ScottPlot.Grids.DefaultGrid.IsBeneathPlottables.get -> bool
 ScottPlot.Grids.DefaultGrid.IsBeneathPlottables.set -> void
-ScottPlot.Grids.DefaultGrid.MajorLineStyle -> ScottPlot.Style.LineStyle!
+ScottPlot.Grids.DefaultGrid.MajorLineStyle -> ScottPlot.LineStyle!
 ScottPlot.Grids.DefaultGrid.MaximumNumberOfGridLines -> int
-ScottPlot.Grids.DefaultGrid.MinorLineStyle -> ScottPlot.Style.LineStyle!
+ScottPlot.Grids.DefaultGrid.MinorLineStyle -> ScottPlot.LineStyle!
 ScottPlot.Grids.DefaultGrid.Render(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect) -> void
+ScottPlot.Hatches.Checker
+ScottPlot.Hatches.Checker.Checker() -> void
+ScottPlot.Hatches.Checker.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Dots
+ScottPlot.Hatches.Dots.Dots() -> void
+ScottPlot.Hatches.Dots.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Grid
+ScottPlot.Hatches.Grid.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Grid.Grid(bool rotate = false) -> void
+ScottPlot.Hatches.Grid.Rotate.get -> bool
+ScottPlot.Hatches.Grid.Rotate.set -> void
+ScottPlot.Hatches.IHatch
+ScottPlot.Hatches.IHatch.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Square
+ScottPlot.Hatches.Square.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Square.Square() -> void
+ScottPlot.Hatches.Striped
+ScottPlot.Hatches.Striped.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
+ScottPlot.Hatches.Striped.Striped(ScottPlot.Hatches.StripeDirection stripeDirection = ScottPlot.Hatches.StripeDirection.DiagonalUp) -> void
+ScottPlot.Hatches.Striped.StripeDirection.get -> ScottPlot.Hatches.StripeDirection
+ScottPlot.Hatches.Striped.StripeDirection.set -> void
+ScottPlot.Hatches.StripeDirection
+ScottPlot.Hatches.StripeDirection.DiagonalDown = 1 -> ScottPlot.Hatches.StripeDirection
+ScottPlot.Hatches.StripeDirection.DiagonalUp = 0 -> ScottPlot.Hatches.StripeDirection
+ScottPlot.Hatches.StripeDirection.Horizontal = 2 -> ScottPlot.Hatches.StripeDirection
+ScottPlot.Hatches.StripeDirection.Vertical = 3 -> ScottPlot.Hatches.StripeDirection
 ScottPlot.IColormap
 ScottPlot.IColormap.GetColor(double position) -> ScottPlot.Color
 ScottPlot.IColormap.GetColor(double position, ScottPlot.Range range) -> ScottPlot.Color
@@ -697,6 +746,8 @@ ScottPlot.IGrid.Render(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRec
 ScottPlot.IHasColorAxis
 ScottPlot.IHasColorAxis.Colormap.get -> ScottPlot.IColormap!
 ScottPlot.IHasColorAxis.GetRange() -> ScottPlot.Range
+ScottPlot.IHatch
+ScottPlot.IHatch.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
 ScottPlot.ILegend
 ScottPlot.ILegend.Render(SkiaSharp.SKCanvas! canvas, ScottPlot.PixelRect dataRect, ScottPlot.LegendItem![]! items) -> void
 ScottPlot.ImageFormat
@@ -704,12 +755,24 @@ ScottPlot.ImageFormat.Bmp = 0 -> ScottPlot.ImageFormat
 ScottPlot.ImageFormat.Jpeg = 1 -> ScottPlot.ImageFormat
 ScottPlot.ImageFormat.Png = 2 -> ScottPlot.ImageFormat
 ScottPlot.ImageFormat.Webp = 3 -> ScottPlot.ImageFormat
+ScottPlot.IMarker
+ScottPlot.IMarker.Render(SkiaSharp.SKCanvas! canvas, SkiaSharp.SKPaint! paint, ScottPlot.Pixel center, float size, ScottPlot.FillStyle! fill, ScottPlot.LineStyle! outline) -> void
 ScottPlot.IPalette
 ScottPlot.IPalette.Colors.get -> ScottPlot.Color[]!
 ScottPlot.IPalette.Description.get -> string!
 ScottPlot.IPalette.GetColor(int index) -> ScottPlot.Color
 ScottPlot.IPalette.Length.get -> int
 ScottPlot.IPalette.Name.get -> string!
+ScottPlot.IPanel
+ScottPlot.IPanel.Edge.get -> ScottPlot.Edge
+ScottPlot.IPanel.GetPanelRect(ScottPlot.PixelRect dataRect, float size, float offset) -> ScottPlot.PixelRect
+ScottPlot.IPanel.IsVisible.get -> bool
+ScottPlot.IPanel.IsVisible.set -> void
+ScottPlot.IPanel.Measure() -> float
+ScottPlot.IPanel.Render(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, float size, float offset) -> void
+ScottPlot.IPanel.ShowDebugInformation.get -> bool
+ScottPlot.IPanel.ShowDebugInformation.set -> void
+ScottPlot.IPanelExtensions
 ScottPlot.IPlottable
 ScottPlot.IPlottable.Axes.get -> ScottPlot.Axis.IAxes!
 ScottPlot.IPlottable.Axes.set -> void
@@ -732,10 +795,10 @@ ScottPlot.Label.AntiAlias.get -> bool
 ScottPlot.Label.AntiAlias.set -> void
 ScottPlot.Label.BackgroundColor.get -> ScottPlot.Color
 ScottPlot.Label.BackgroundColor.set -> void
-ScottPlot.Label.Border.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Label.Border.get -> ScottPlot.LineStyle!
 ScottPlot.Label.Border.set -> void
 ScottPlot.Label.Draw(SkiaSharp.SKCanvas! canvas, ScottPlot.Pixel pixel) -> void
-ScottPlot.Label.Font.get -> ScottPlot.Style.FontStyle!
+ScottPlot.Label.Font.get -> ScottPlot.FontStyle!
 ScottPlot.Label.Font.set -> void
 ScottPlot.Label.GetRectangle(ScottPlot.Pixel pixel) -> ScottPlot.PixelRect
 ScottPlot.Label.Label() -> void
@@ -749,48 +812,38 @@ ScottPlot.Label.Rotation.get -> float
 ScottPlot.Label.Rotation.set -> void
 ScottPlot.Label.Text.get -> string!
 ScottPlot.Label.Text.set -> void
-ScottPlot.LayoutSystem.FinalLayout
-ScottPlot.LayoutSystem.FinalLayout.DataRect.get -> ScottPlot.PixelRect
-ScottPlot.LayoutSystem.FinalLayout.FigureRect.get -> ScottPlot.PixelRect
-ScottPlot.LayoutSystem.FinalLayout.FinalLayout() -> void
-ScottPlot.LayoutSystem.FinalLayout.FinalLayout(ScottPlot.PixelRect figureRect, ScottPlot.PixelRect dataRect, System.Collections.Generic.Dictionary<ScottPlot.LayoutSystem.IPanel!, float>! sizes, System.Collections.Generic.Dictionary<ScottPlot.LayoutSystem.IPanel!, float>! offsets) -> void
-ScottPlot.LayoutSystem.FinalLayout.PanelOffsets.get -> System.Collections.Generic.Dictionary<ScottPlot.LayoutSystem.IPanel!, float>!
-ScottPlot.LayoutSystem.FinalLayout.PanelSizes.get -> System.Collections.Generic.Dictionary<ScottPlot.LayoutSystem.IPanel!, float>!
-ScottPlot.LayoutSystem.ILayoutSystem
-ScottPlot.LayoutSystem.ILayoutSystem.GetLayout(ScottPlot.PixelRect figureRect, System.Collections.Generic.IEnumerable<ScottPlot.LayoutSystem.IPanel!>! panels) -> ScottPlot.LayoutSystem.FinalLayout
-ScottPlot.LayoutSystem.IPanel
-ScottPlot.LayoutSystem.IPanel.Edge.get -> ScottPlot.Edge
-ScottPlot.LayoutSystem.IPanel.GetPanelRect(ScottPlot.PixelRect dataRect, float size, float offset) -> ScottPlot.PixelRect
-ScottPlot.LayoutSystem.IPanel.IsVisible.get -> bool
-ScottPlot.LayoutSystem.IPanel.IsVisible.set -> void
-ScottPlot.LayoutSystem.IPanel.Measure() -> float
-ScottPlot.LayoutSystem.IPanel.Render(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, float size, float offset) -> void
-ScottPlot.LayoutSystem.IPanel.ShowDebugInformation.get -> bool
-ScottPlot.LayoutSystem.IPanel.ShowDebugInformation.set -> void
-ScottPlot.LayoutSystem.IPanelExtensions
-ScottPlot.LayoutSystem.StandardLayoutSystem
-ScottPlot.LayoutSystem.StandardLayoutSystem.GetLayout(ScottPlot.PixelRect figureRect, System.Collections.Generic.IEnumerable<ScottPlot.LayoutSystem.IPanel!>! panels) -> ScottPlot.LayoutSystem.FinalLayout
-ScottPlot.LayoutSystem.StandardLayoutSystem.StandardLayoutSystem() -> void
+ScottPlot.Layouts.ILayoutMaker
+ScottPlot.Layouts.ILayoutMaker.GetLayout(ScottPlot.PixelRect figureRect, System.Collections.Generic.IEnumerable<ScottPlot.IPanel!>! panels) -> ScottPlot.Layouts.Layout
+ScottPlot.Layouts.Layout
+ScottPlot.Layouts.Layout.DataRect.get -> ScottPlot.PixelRect
+ScottPlot.Layouts.Layout.FigureRect.get -> ScottPlot.PixelRect
+ScottPlot.Layouts.Layout.Layout() -> void
+ScottPlot.Layouts.Layout.Layout(ScottPlot.PixelRect figureRect, ScottPlot.PixelRect dataRect, System.Collections.Generic.Dictionary<ScottPlot.IPanel!, float>! sizes, System.Collections.Generic.Dictionary<ScottPlot.IPanel!, float>! offsets) -> void
+ScottPlot.Layouts.Layout.PanelOffsets.get -> System.Collections.Generic.Dictionary<ScottPlot.IPanel!, float>!
+ScottPlot.Layouts.Layout.PanelSizes.get -> System.Collections.Generic.Dictionary<ScottPlot.IPanel!, float>!
+ScottPlot.Layouts.StandardLayoutMaker
+ScottPlot.Layouts.StandardLayoutMaker.GetLayout(ScottPlot.PixelRect figureRect, System.Collections.Generic.IEnumerable<ScottPlot.IPanel!>! panels) -> ScottPlot.Layouts.Layout
+ScottPlot.Layouts.StandardLayoutMaker.StandardLayoutMaker() -> void
 ScottPlot.LegendItem
 ScottPlot.LegendItem.Children.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
 ScottPlot.LegendItem.Children.set -> void
-ScottPlot.LegendItem.Fill.get -> ScottPlot.Style.FillStyle!
+ScottPlot.LegendItem.Fill.get -> ScottPlot.FillStyle!
 ScottPlot.LegendItem.Fill.set -> void
 ScottPlot.LegendItem.HasSymbol.get -> bool
 ScottPlot.LegendItem.IsVisible.get -> bool
 ScottPlot.LegendItem.Label.get -> string?
 ScottPlot.LegendItem.Label.set -> void
 ScottPlot.LegendItem.LegendItem() -> void
-ScottPlot.LegendItem.Line.get -> ScottPlot.Style.LineStyle!
+ScottPlot.LegendItem.Line.get -> ScottPlot.LineStyle!
 ScottPlot.LegendItem.Line.set -> void
-ScottPlot.LegendItem.Marker.get -> ScottPlot.Style.MarkerStyle!
+ScottPlot.LegendItem.Marker.get -> ScottPlot.MarkerStyle!
 ScottPlot.LegendItem.Marker.set -> void
+ScottPlot.Legends.Common
 ScottPlot.Legends.LegendItemSize
 ScottPlot.Legends.LegendItemSize.LegendItemSize() -> void
 ScottPlot.Legends.LegendItemSize.LegendItemSize(ScottPlot.PixelSize ownSize, ScottPlot.PixelSize withChildren) -> void
 ScottPlot.Legends.LegendItemSize.OwnSize.get -> ScottPlot.PixelSize
 ScottPlot.Legends.LegendItemSize.WithChildren.get -> ScottPlot.PixelSize
-ScottPlot.Legends.LegendRendering
 ScottPlot.Legends.SizedLegendItem
 ScottPlot.Legends.SizedLegendItem.Children.get -> ScottPlot.Legends.SizedLegendItem[]!
 ScottPlot.Legends.SizedLegendItem.Item.get -> ScottPlot.LegendItem!
@@ -800,9 +853,9 @@ ScottPlot.Legends.SizedLegendItem.SizedLegendItem(ScottPlot.LegendItem! item, Sc
 ScottPlot.Legends.StandardLegend
 ScottPlot.Legends.StandardLegend.Alignment.get -> ScottPlot.Alignment
 ScottPlot.Legends.StandardLegend.Alignment.set -> void
-ScottPlot.Legends.StandardLegend.BackgroundFill.get -> ScottPlot.Style.FillStyle!
+ScottPlot.Legends.StandardLegend.BackgroundFill.get -> ScottPlot.FillStyle!
 ScottPlot.Legends.StandardLegend.BackgroundFill.set -> void
-ScottPlot.Legends.StandardLegend.Font.get -> ScottPlot.Style.FontStyle!
+ScottPlot.Legends.StandardLegend.Font.get -> ScottPlot.FontStyle!
 ScottPlot.Legends.StandardLegend.Font.set -> void
 ScottPlot.Legends.StandardLegend.IsVisible.get -> bool
 ScottPlot.Legends.StandardLegend.IsVisible.set -> void
@@ -812,16 +865,51 @@ ScottPlot.Legends.StandardLegend.ManualLegendItems.get -> ScottPlot.LegendItem![
 ScottPlot.Legends.StandardLegend.ManualLegendItems.set -> void
 ScottPlot.Legends.StandardLegend.Margin.get -> ScottPlot.PixelPadding
 ScottPlot.Legends.StandardLegend.Margin.set -> void
-ScottPlot.Legends.StandardLegend.OutlineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Legends.StandardLegend.OutlineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Legends.StandardLegend.OutlineStyle.set -> void
 ScottPlot.Legends.StandardLegend.Padding.get -> ScottPlot.PixelPadding
 ScottPlot.Legends.StandardLegend.Padding.set -> void
 ScottPlot.Legends.StandardLegend.Render(SkiaSharp.SKCanvas! canvas, ScottPlot.PixelRect dataRect, ScottPlot.LegendItem![]! items) -> void
 ScottPlot.Legends.StandardLegend.ShadowAlignment -> ScottPlot.Alignment
-ScottPlot.Legends.StandardLegend.ShadowFill.get -> ScottPlot.Style.FillStyle!
+ScottPlot.Legends.StandardLegend.ShadowFill.get -> ScottPlot.FillStyle!
 ScottPlot.Legends.StandardLegend.ShadowFill.set -> void
 ScottPlot.Legends.StandardLegend.ShadowOffset -> float
 ScottPlot.Legends.StandardLegend.StandardLegend() -> void
+ScottPlot.LinePattern
+ScottPlot.LinePattern.Dash = 1 -> ScottPlot.LinePattern
+ScottPlot.LinePattern.Dot = 2 -> ScottPlot.LinePattern
+ScottPlot.LinePattern.Solid = 0 -> ScottPlot.LinePattern
+ScottPlot.LineStyle
+ScottPlot.LineStyle.Color.get -> ScottPlot.Color
+ScottPlot.LineStyle.Color.set -> void
+ScottPlot.LineStyle.IsVisible.get -> bool
+ScottPlot.LineStyle.LineStyle() -> void
+ScottPlot.LineStyle.Pattern.get -> ScottPlot.LinePattern
+ScottPlot.LineStyle.Pattern.set -> void
+ScottPlot.LineStyle.Width.get -> float
+ScottPlot.LineStyle.Width.set -> void
+ScottPlot.MarkerShape
+ScottPlot.MarkerShape.FilledCircle = 1 -> ScottPlot.MarkerShape
+ScottPlot.MarkerShape.FilledSquare = 3 -> ScottPlot.MarkerShape
+ScottPlot.MarkerShape.None = 0 -> ScottPlot.MarkerShape
+ScottPlot.MarkerShape.OpenCircle = 2 -> ScottPlot.MarkerShape
+ScottPlot.MarkerShape.OpenSquare = 4 -> ScottPlot.MarkerShape
+ScottPlot.MarkerShapeExtensions
+ScottPlot.MarkerStyle
+ScottPlot.MarkerStyle.Fill.get -> ScottPlot.FillStyle!
+ScottPlot.MarkerStyle.Fill.set -> void
+ScottPlot.MarkerStyle.IsVisible.get -> bool
+ScottPlot.MarkerStyle.IsVisible.set -> void
+ScottPlot.MarkerStyle.MarkerRenderer.get -> ScottPlot.IMarker!
+ScottPlot.MarkerStyle.MarkerRenderer.set -> void
+ScottPlot.MarkerStyle.MarkerStyle(ScottPlot.MarkerShape shape, float size) -> void
+ScottPlot.MarkerStyle.MarkerStyle(ScottPlot.MarkerShape shape, float size, ScottPlot.Color color) -> void
+ScottPlot.MarkerStyle.Outline.get -> ScottPlot.LineStyle!
+ScottPlot.MarkerStyle.Outline.set -> void
+ScottPlot.MarkerStyle.Render(SkiaSharp.SKCanvas! canvas, ScottPlot.Pixel pixel) -> void
+ScottPlot.MarkerStyle.Render(SkiaSharp.SKCanvas! canvas, System.Collections.Generic.IEnumerable<ScottPlot.Pixel>! pixels) -> void
+ScottPlot.MarkerStyle.Size.get -> float
+ScottPlot.MarkerStyle.Size.set -> void
 ScottPlot.NamedColors.NamedColorsBase
 ScottPlot.NamedColors.NamedColorsBase.GetAllColors() -> ScottPlot.Color[]!
 ScottPlot.NamedColors.NamedColorsBase.NamedColorsBase() -> void
@@ -1033,7 +1121,7 @@ ScottPlot.Plot.GetLegend() -> ScottPlot.Legends.StandardLegend!
 ScottPlot.Plot.GetMultiAxisLimits() -> ScottPlot.Axis.MultiAxisLimits!
 ScottPlot.Plot.GetPixel(ScottPlot.Coordinates coord) -> ScottPlot.Pixel
 ScottPlot.Plot.Grids.get -> System.Collections.Generic.List<ScottPlot.IGrid!>!
-ScottPlot.Plot.Layout.get -> ScottPlot.LayoutSystem.ILayoutSystem!
+ScottPlot.Plot.Layout.get -> ScottPlot.Layouts.ILayoutMaker!
 ScottPlot.Plot.Layout.set -> void
 ScottPlot.Plot.Legends.get -> System.Collections.Generic.List<ScottPlot.ILegend!>!
 ScottPlot.Plot.Margins.get -> ScottPlot.AutoScaleMargins!
@@ -1043,7 +1131,7 @@ ScottPlot.Plot.MouseZoom(ScottPlot.Axis.MultiAxisLimits! originalLimits, ScottPl
 ScottPlot.Plot.MouseZoomRectangle(ScottPlot.Pixel mouseDown, ScottPlot.Pixel mouseNow, bool vSpan, bool hSpan) -> void
 ScottPlot.Plot.Palette.get -> ScottPlot.IPalette!
 ScottPlot.Plot.Palette.set -> void
-ScottPlot.Plot.Panels.get -> System.Collections.Generic.List<ScottPlot.LayoutSystem.IPanel!>!
+ScottPlot.Plot.Panels.get -> System.Collections.Generic.List<ScottPlot.IPanel!>!
 ScottPlot.Plot.Plot() -> void
 ScottPlot.Plot.Plottables.get -> System.Collections.Generic.List<ScottPlot.IPlottable!>!
 ScottPlot.Plot.Render(SkiaSharp.SKSurface! surface) -> void
@@ -1083,7 +1171,7 @@ ScottPlot.Plottables.BarPlot.IsVisible.set -> void
 ScottPlot.Plottables.BarPlot.Label.get -> string?
 ScottPlot.Plottables.BarPlot.Label.set -> void
 ScottPlot.Plottables.BarPlot.LegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
-ScottPlot.Plottables.BarPlot.LineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Plottables.BarPlot.LineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Plottables.BarPlot.LineStyle.set -> void
 ScottPlot.Plottables.BarPlot.Orientation.get -> ScottPlot.Orientation
 ScottPlot.Plottables.BarPlot.Orientation.set -> void
@@ -1133,14 +1221,14 @@ ScottPlot.Plottables.Pie.IsVisible.set -> void
 ScottPlot.Plottables.Pie.Label.get -> string?
 ScottPlot.Plottables.Pie.Label.set -> void
 ScottPlot.Plottables.Pie.LegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
-ScottPlot.Plottables.Pie.LineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Plottables.Pie.LineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Plottables.Pie.LineStyle.set -> void
 ScottPlot.Plottables.Pie.Pie(System.Collections.Generic.IList<ScottPlot.Plottables.PieSlice!>! slices) -> void
 ScottPlot.Plottables.Pie.Render(SkiaSharp.SKSurface! surface) -> void
 ScottPlot.Plottables.Pie.Slices.get -> System.Collections.Generic.IList<ScottPlot.Plottables.PieSlice!>!
 ScottPlot.Plottables.Pie.Slices.set -> void
 ScottPlot.Plottables.PieSlice
-ScottPlot.Plottables.PieSlice.Fill.get -> ScottPlot.Style.FillStyle!
+ScottPlot.Plottables.PieSlice.Fill.get -> ScottPlot.FillStyle!
 ScottPlot.Plottables.PieSlice.Fill.set -> void
 ScottPlot.Plottables.PieSlice.Label.get -> string?
 ScottPlot.Plottables.PieSlice.Label.set -> void
@@ -1158,9 +1246,9 @@ ScottPlot.Plottables.Scatter.IsVisible.set -> void
 ScottPlot.Plottables.Scatter.Label.get -> string?
 ScottPlot.Plottables.Scatter.Label.set -> void
 ScottPlot.Plottables.Scatter.LegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
-ScottPlot.Plottables.Scatter.LineStyle.get -> ScottPlot.Style.LineStyle!
+ScottPlot.Plottables.Scatter.LineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Plottables.Scatter.LineStyle.set -> void
-ScottPlot.Plottables.Scatter.MarkerStyle.get -> ScottPlot.Style.MarkerStyle!
+ScottPlot.Plottables.Scatter.MarkerStyle.get -> ScottPlot.MarkerStyle!
 ScottPlot.Plottables.Scatter.MarkerStyle.set -> void
 ScottPlot.Plottables.Scatter.Render(SkiaSharp.SKSurface! surface) -> void
 ScottPlot.Plottables.Scatter.Scatter(ScottPlot.DataSource.IScatterSource! data) -> void
@@ -1173,8 +1261,8 @@ ScottPlot.Plottables.Signal.IsVisible.set -> void
 ScottPlot.Plottables.Signal.Label.get -> string?
 ScottPlot.Plottables.Signal.Label.set -> void
 ScottPlot.Plottables.Signal.LegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
-ScottPlot.Plottables.Signal.LineStyle.get -> ScottPlot.Style.LineStyle!
-ScottPlot.Plottables.Signal.Marker.get -> ScottPlot.Style.MarkerStyle!
+ScottPlot.Plottables.Signal.LineStyle.get -> ScottPlot.LineStyle!
+ScottPlot.Plottables.Signal.Marker.get -> ScottPlot.MarkerStyle!
 ScottPlot.Plottables.Signal.Marker.set -> void
 ScottPlot.Plottables.Signal.Render(SkiaSharp.SKSurface! surface) -> void
 ScottPlot.Plottables.Signal.Signal(ScottPlot.DataSource.ISignalSource! data) -> void
@@ -1200,92 +1288,6 @@ ScottPlot.Rendering.RenderDetails.RenderDetails(ScottPlot.PixelRect figureArea, 
 ScottPlot.Rendering.StandardRenderer
 ScottPlot.Rendering.StandardRenderer.Render(SkiaSharp.SKSurface! surface, ScottPlot.Plot! plot) -> ScottPlot.Rendering.RenderDetails
 ScottPlot.Rendering.StandardRenderer.StandardRenderer() -> void
-ScottPlot.Style.FillStyle
-ScottPlot.Style.FillStyle.Color.get -> ScottPlot.Color
-ScottPlot.Style.FillStyle.Color.set -> void
-ScottPlot.Style.FillStyle.FillStyle() -> void
-ScottPlot.Style.FillStyle.HasValue.get -> bool
-ScottPlot.Style.FillStyle.Hatch.get -> ScottPlot.Style.Hatches.IHatch?
-ScottPlot.Style.FillStyle.Hatch.set -> void
-ScottPlot.Style.FillStyle.HatchColor.get -> ScottPlot.Color
-ScottPlot.Style.FillStyle.HatchColor.set -> void
-ScottPlot.Style.FontStyle
-ScottPlot.Style.FontStyle.AntiAlias.get -> bool
-ScottPlot.Style.FontStyle.AntiAlias.set -> void
-ScottPlot.Style.FontStyle.Bold.get -> bool
-ScottPlot.Style.FontStyle.Bold.set -> void
-ScottPlot.Style.FontStyle.Color.get -> ScottPlot.Color
-ScottPlot.Style.FontStyle.Color.set -> void
-ScottPlot.Style.FontStyle.FontStyle() -> void
-ScottPlot.Style.FontStyle.Italic.get -> bool
-ScottPlot.Style.FontStyle.Italic.set -> void
-ScottPlot.Style.FontStyle.Name.get -> string!
-ScottPlot.Style.FontStyle.Name.set -> void
-ScottPlot.Style.FontStyle.Size.get -> float
-ScottPlot.Style.FontStyle.Size.set -> void
-ScottPlot.Style.Hatches.Checker
-ScottPlot.Style.Hatches.Checker.Checker() -> void
-ScottPlot.Style.Hatches.Checker.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Dots
-ScottPlot.Style.Hatches.Dots.Dots() -> void
-ScottPlot.Style.Hatches.Dots.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Grid
-ScottPlot.Style.Hatches.Grid.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Grid.Grid(bool rotate = false) -> void
-ScottPlot.Style.Hatches.Grid.Rotate.get -> bool
-ScottPlot.Style.Hatches.Grid.Rotate.set -> void
-ScottPlot.Style.Hatches.IHatch
-ScottPlot.Style.Hatches.IHatch.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Square
-ScottPlot.Style.Hatches.Square.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Square.Square() -> void
-ScottPlot.Style.Hatches.Striped
-ScottPlot.Style.Hatches.Striped.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
-ScottPlot.Style.Hatches.Striped.Striped(ScottPlot.Style.Hatches.StripeDirection stripeDirection = ScottPlot.Style.Hatches.StripeDirection.DiagonalUp) -> void
-ScottPlot.Style.Hatches.Striped.StripeDirection.get -> ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.Hatches.Striped.StripeDirection.set -> void
-ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.Hatches.StripeDirection.DiagonalDown = 1 -> ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.Hatches.StripeDirection.DiagonalUp = 0 -> ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.Hatches.StripeDirection.Horizontal = 2 -> ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.Hatches.StripeDirection.Vertical = 3 -> ScottPlot.Style.Hatches.StripeDirection
-ScottPlot.Style.IMarkerRenderer
-ScottPlot.Style.IMarkerRenderer.Render(SkiaSharp.SKCanvas! canvas, SkiaSharp.SKPaint! paint, ScottPlot.Pixel center, float size, ScottPlot.Style.FillStyle! fill, ScottPlot.Style.LineStyle! outline) -> void
-ScottPlot.Style.LinePattern
-ScottPlot.Style.LinePattern.Dash = 1 -> ScottPlot.Style.LinePattern
-ScottPlot.Style.LinePattern.Dot = 2 -> ScottPlot.Style.LinePattern
-ScottPlot.Style.LinePattern.Solid = 0 -> ScottPlot.Style.LinePattern
-ScottPlot.Style.LineStyle
-ScottPlot.Style.LineStyle.Color.get -> ScottPlot.Color
-ScottPlot.Style.LineStyle.Color.set -> void
-ScottPlot.Style.LineStyle.IsVisible.get -> bool
-ScottPlot.Style.LineStyle.LineStyle() -> void
-ScottPlot.Style.LineStyle.Pattern.get -> ScottPlot.Style.LinePattern
-ScottPlot.Style.LineStyle.Pattern.set -> void
-ScottPlot.Style.LineStyle.Width.get -> float
-ScottPlot.Style.LineStyle.Width.set -> void
-ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShape.FilledCircle = 1 -> ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShape.FilledSquare = 3 -> ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShape.None = 0 -> ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShape.OpenCircle = 2 -> ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShape.OpenSquare = 4 -> ScottPlot.Style.MarkerShape
-ScottPlot.Style.MarkerShapeExtensions
-ScottPlot.Style.MarkerStyle
-ScottPlot.Style.MarkerStyle.Fill.get -> ScottPlot.Style.FillStyle!
-ScottPlot.Style.MarkerStyle.Fill.set -> void
-ScottPlot.Style.MarkerStyle.IsVisible.get -> bool
-ScottPlot.Style.MarkerStyle.IsVisible.set -> void
-ScottPlot.Style.MarkerStyle.MarkerRenderer.get -> ScottPlot.Style.IMarkerRenderer!
-ScottPlot.Style.MarkerStyle.MarkerRenderer.set -> void
-ScottPlot.Style.MarkerStyle.MarkerStyle(ScottPlot.Style.MarkerShape shape, float size) -> void
-ScottPlot.Style.MarkerStyle.MarkerStyle(ScottPlot.Style.MarkerShape shape, float size, ScottPlot.Color color) -> void
-ScottPlot.Style.MarkerStyle.Outline.get -> ScottPlot.Style.LineStyle!
-ScottPlot.Style.MarkerStyle.Outline.set -> void
-ScottPlot.Style.MarkerStyle.Render(SkiaSharp.SKCanvas! canvas, ScottPlot.Pixel pixel) -> void
-ScottPlot.Style.MarkerStyle.Render(SkiaSharp.SKCanvas! canvas, System.Collections.Generic.IEnumerable<ScottPlot.Pixel>! pixels) -> void
-ScottPlot.Style.MarkerStyle.Size.get -> float
-ScottPlot.Style.MarkerStyle.Size.set -> void
 ScottPlot.Tick
 ScottPlot.Tick.Tick() -> void
 ScottPlot.Tick.Tick(double position, string! label, bool isMajor) -> void
@@ -1304,8 +1306,8 @@ static readonly ScottPlot.Range.UnitRange -> ScottPlot.Range
 static ScottPlot.AlignmentExtensions.HorizontalFraction(this ScottPlot.Alignment alignment) -> float
 static ScottPlot.AlignmentExtensions.VerticalFraction(this ScottPlot.Alignment alignment) -> float
 static ScottPlot.Axis.Axes.Default.get -> ScottPlot.Axis.Axes!
-static ScottPlot.Axis.AxisRendering.DrawFrame(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect panelRect, ScottPlot.Edge edge, ScottPlot.Style.LineStyle! lineStyle) -> void
-static ScottPlot.Axis.AxisRendering.DrawTicks(SkiaSharp.SKSurface! surface, ScottPlot.Style.FontStyle! font, ScottPlot.PixelRect panelRect, System.Collections.Generic.IEnumerable<ScottPlot.Tick>! ticks, ScottPlot.Axis.IAxis! axis, ScottPlot.Axis.TickStyle majorStyle, ScottPlot.Axis.TickStyle minorStyle) -> void
+static ScottPlot.Axis.AxisRendering.DrawFrame(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect panelRect, ScottPlot.Edge edge, ScottPlot.LineStyle! lineStyle) -> void
+static ScottPlot.Axis.AxisRendering.DrawTicks(SkiaSharp.SKSurface! surface, ScottPlot.FontStyle! font, ScottPlot.PixelRect panelRect, System.Collections.Generic.IEnumerable<ScottPlot.Tick>! ticks, ScottPlot.Axis.IAxis! axis, ScottPlot.Axis.TickStyle majorStyle, ScottPlot.Axis.TickStyle minorStyle) -> void
 static ScottPlot.AxisLimits.Default.get -> ScottPlot.CoordinateRect
 static ScottPlot.AxisLimits.NoLimits.get -> ScottPlot.AxisLimits
 static ScottPlot.Color.FromARGB(uint argb) -> ScottPlot.Color
@@ -1491,6 +1493,7 @@ static ScottPlot.Drawing.DrawDebugRectangle(SkiaSharp.SKCanvas! canvas, ScottPlo
 static ScottPlot.Drawing.DrawLines(SkiaSharp.SKSurface! surface, ScottPlot.Pixel[]! starts, ScottPlot.Pixel[]! ends, ScottPlot.Color color, float width = 1, bool antiAlias = true) -> void
 static ScottPlot.Drawing.DrawRectangle(SkiaSharp.SKCanvas! canvas, ScottPlot.PixelRect rect, ScottPlot.Color color, float thickness = 1) -> void
 static ScottPlot.Drawing.Fillectangle(SkiaSharp.SKCanvas! canvas, ScottPlot.PixelRect rect, ScottPlot.Color color) -> void
+static ScottPlot.Drawing.GetMaskColorFilter(ScottPlot.Color foreground, ScottPlot.Color? background = null) -> SkiaSharp.SKColorFilter!
 static ScottPlot.Drawing.MeasureLargestString(string![]! strings, SkiaSharp.SKPaint! paint) -> ScottPlot.PixelSize
 static ScottPlot.Drawing.MeasureString(string! text, SkiaSharp.SKPaint! paint) -> ScottPlot.PixelSize
 static ScottPlot.EdgeExtensions.IsHorizontal(this ScottPlot.Edge edge) -> bool
@@ -1501,9 +1504,9 @@ static ScottPlot.Extensions.NumericExtensions.ToDegrees(this double radians) -> 
 static ScottPlot.Extensions.NumericExtensions.ToRadians(this double degrees) -> float
 static ScottPlot.Extensions.NumericExtensions.ToRadians(this float degrees) -> float
 static ScottPlot.Extensions.NumericExtensions.ToRadians(this int degrees) -> float
-static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.Style.FillStyle! fs, SkiaSharp.SKPaint! paint) -> void
-static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.Style.FontStyle! fontStyle, SkiaSharp.SKPaint! paint) -> void
-static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.Style.LineStyle! style, SkiaSharp.SKPaint! paint) -> void
+static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.FillStyle! fs, SkiaSharp.SKPaint! paint) -> void
+static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.FontStyle! fontStyle, SkiaSharp.SKPaint! paint) -> void
+static ScottPlot.Extensions.SkiaSharpExtensions.ApplyToPaint(this ScottPlot.LineStyle! style, SkiaSharp.SKPaint! paint) -> void
 static ScottPlot.Extensions.SkiaSharpExtensions.CenterPixel(this SkiaSharp.SKBitmap! bmp) -> ScottPlot.Pixel
 static ScottPlot.Extensions.SkiaSharpExtensions.GetPixelRect(this SkiaSharp.SKSurface! surface) -> ScottPlot.PixelRect
 static ScottPlot.Extensions.SkiaSharpExtensions.GetPixelSize(this SkiaSharp.SKSurface! surface) -> ScottPlot.PixelSize
@@ -1536,11 +1539,16 @@ static ScottPlot.Generate.RandomWalk(int count, double mult = 1, double offset =
 static ScottPlot.Generate.Sin(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0) -> double[]!
 static ScottPlot.Generate.Sin2D(int width, int height, double xPeriod = 0.2, double yPeriod = 0.2, double multiple = 100) -> double[,]!
 static ScottPlot.Generate.Sin<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0) -> T[]!
-static ScottPlot.LayoutSystem.IPanelExtensions.IsHorizontal(this ScottPlot.LayoutSystem.IPanel! panel) -> bool
-static ScottPlot.LayoutSystem.IPanelExtensions.IsVertical(this ScottPlot.LayoutSystem.IPanel! panel) -> bool
-static ScottPlot.Legends.LegendRendering.Measure(ScottPlot.LegendItem! item, SkiaSharp.SKPaint! paint, ScottPlot.Legends.SizedLegendItem[]! children, float symbolWidth, float symbolPadRight, ScottPlot.PixelPadding Padding, ScottPlot.PixelPadding ItemPadding) -> ScottPlot.Legends.LegendItemSize
-static ScottPlot.Legends.LegendRendering.RenderItem(SkiaSharp.SKCanvas! canvas, SkiaSharp.SKPaint! paint, ScottPlot.Legends.SizedLegendItem sizedItem, float x, float y, float symbolWidth, float symbolPadRight, ScottPlot.PixelPadding itemPadding) -> void
-static ScottPlot.Legends.LegendRendering.RenderSymbol(SkiaSharp.SKCanvas! canvas, ScottPlot.LegendItem! item, float x, float y, float height, float symbolWidth) -> void
+static ScottPlot.IPanelExtensions.IsHorizontal(this ScottPlot.IPanel! panel) -> bool
+static ScottPlot.IPanelExtensions.IsVertical(this ScottPlot.IPanel! panel) -> bool
+static ScottPlot.Legends.Common.Measure(ScottPlot.LegendItem! item, SkiaSharp.SKPaint! paint, ScottPlot.Legends.SizedLegendItem[]! children, float symbolWidth, float symbolPadRight, ScottPlot.PixelPadding Padding, ScottPlot.PixelPadding ItemPadding) -> ScottPlot.Legends.LegendItemSize
+static ScottPlot.Legends.Common.RenderItem(SkiaSharp.SKCanvas! canvas, SkiaSharp.SKPaint! paint, ScottPlot.Legends.SizedLegendItem sizedItem, float x, float y, float symbolWidth, float symbolPadRight, ScottPlot.PixelPadding itemPadding) -> void
+static ScottPlot.Legends.Common.RenderSymbol(SkiaSharp.SKCanvas! canvas, ScottPlot.LegendItem! item, float x, float y, float height, float symbolWidth) -> void
+static ScottPlot.LineStyle.NoLine.get -> ScottPlot.LineStyle!
+static ScottPlot.MarkerShapeExtensions.GetRenderer(this ScottPlot.MarkerShape shape) -> ScottPlot.IMarker!
+static ScottPlot.MarkerShapeExtensions.IsOutlined(this ScottPlot.MarkerShape shape) -> bool
+static ScottPlot.MarkerStyle.Default.get -> ScottPlot.MarkerStyle!
+static ScottPlot.MarkerStyle.None.get -> ScottPlot.MarkerStyle!
 static ScottPlot.NamedColors.WebColors.AliceBlue.get -> ScottPlot.Color
 static ScottPlot.NamedColors.WebColors.AntiqueWhite.get -> ScottPlot.Color
 static ScottPlot.NamedColors.WebColors.Aqua.get -> ScottPlot.Color
@@ -2757,15 +2765,10 @@ static ScottPlot.Rendering.Common.RenderBenchmark(SkiaSharp.SKSurface! surface, 
 static ScottPlot.Rendering.Common.RenderGridsAbovePlottables(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.Plot! plot) -> void
 static ScottPlot.Rendering.Common.RenderGridsBelowPlottables(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.Plot! plot) -> void
 static ScottPlot.Rendering.Common.RenderLegends(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.Plot! plot) -> void
-static ScottPlot.Rendering.Common.RenderPanels(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.LayoutSystem.IPanel![]! panels, ScottPlot.LayoutSystem.FinalLayout layout) -> void
+static ScottPlot.Rendering.Common.RenderPanels(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.IPanel![]! panels, ScottPlot.Layouts.Layout layout) -> void
 static ScottPlot.Rendering.Common.RenderPlottables(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.Plot! plot) -> void
 static ScottPlot.Rendering.Common.RenderZoomRectangle(SkiaSharp.SKSurface! surface, ScottPlot.PixelRect dataRect, ScottPlot.Plot! plot) -> void
 static ScottPlot.Rendering.Common.ReplaceNullAxesWithDefaults(ScottPlot.Plot! plot) -> void
-static ScottPlot.Style.LineStyle.NoLine.get -> ScottPlot.Style.LineStyle!
-static ScottPlot.Style.MarkerShapeExtensions.GetRenderer(this ScottPlot.Style.MarkerShape shape) -> ScottPlot.Style.IMarkerRenderer!
-static ScottPlot.Style.MarkerShapeExtensions.IsOutlined(this ScottPlot.Style.MarkerShape shape) -> bool
-static ScottPlot.Style.MarkerStyle.Default.get -> ScottPlot.Style.MarkerStyle!
-static ScottPlot.Style.MarkerStyle.None.get -> ScottPlot.Style.MarkerStyle!
 static ScottPlot.Tick.Major(double position, string! label) -> ScottPlot.Tick
 static ScottPlot.Tick.Minor(double position) -> ScottPlot.Tick
 static ScottPlot.Version.Build.get -> int

@@ -1,10 +1,10 @@
 ﻿using ScottPlot.Axis;
 
-namespace ScottPlot.LayoutSystem;
+namespace ScottPlot.Layouts;
 
-public class StandardLayoutSystem : ILayoutSystem
+public class StandardLayoutMaker : ILayoutMaker
 {
-    public FinalLayout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         // Regenerate ticks using the figure area (not the data area)
         // to create a first-pass estimate of the space needed for axis panels.
@@ -19,7 +19,7 @@ public class StandardLayoutSystem : ILayoutSystem
             .ToList()
             .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height));
 
-        FinalLayout layout = MakeFinalLayout(figureRect, panels);
+        Layout layout = MakeFinalLayout(figureRect, panels);
 
         return layout;
     }
@@ -37,7 +37,7 @@ public class StandardLayoutSystem : ILayoutSystem
         }
     }
 
-    private FinalLayout MakeFinalLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
+    private Layout MakeFinalLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         // Plot edges with visible axes require padding between the figure rectangle and data rectangle.
         // Panels have size and increase the amount of padding needed.
@@ -67,6 +67,6 @@ public class StandardLayoutSystem : ILayoutSystem
 
         PixelRect dataArea = figureRect.Contract(paddingNeededForPanels);
 
-        return new FinalLayout(figureRect, dataArea, panelSizes, panelOffsets);
+        return new Layout(figureRect, dataArea, panelSizes, panelOffsets);
     }
 }

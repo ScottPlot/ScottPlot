@@ -1,4 +1,13 @@
-﻿namespace ScottPlot.Style;
+﻿/* Unmerged change from project 'ScottPlot (net462)'
+Before:
+namespace ScottPlot.Style;
+After:
+using ScottPlot;
+using ScottPlot;
+using ScottPlot.Style;
+*/
+
+namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -38,7 +47,7 @@ public class MarkerStyle
     /// </summary>
     public float Size { get; set; }
 
-    public IMarkerRenderer MarkerRenderer { get; set; }
+    public IMarker MarkerRenderer { get; set; }
 
     public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
 

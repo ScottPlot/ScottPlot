@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.LayoutSystem;
+﻿namespace ScottPlot.Layouts;
 
-public struct FinalLayout
+public struct Layout
 {
     /// <summary>
     /// Size of the figure this layout represents
@@ -22,7 +22,7 @@ public struct FinalLayout
     /// </summary>
     public readonly Dictionary<IPanel, float> PanelSizes { get; }
 
-    public FinalLayout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
+    public Layout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
     {
         FigureRect = figureRect;
         DataRect = dataRect;

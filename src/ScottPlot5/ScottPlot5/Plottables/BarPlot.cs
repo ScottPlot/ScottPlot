@@ -1,5 +1,5 @@
-﻿using ScottPlot.Axis;
-using ScottPlot.Style;
+﻿using ScottPlot;
+using ScottPlot.Axis;
 
 namespace ScottPlot.Plottables
 {
@@ -36,7 +36,7 @@ namespace ScottPlot.Plottables
             Series = series;
         }
 
-        public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+        public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
             new LegendItem
             {
                 Label = Label,

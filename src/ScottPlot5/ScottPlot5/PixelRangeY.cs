@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// Represents a range of pixels between two pixels on the vertical axis.
+/// Represents a range of pixels between two pixels on the vertical axis used in Signal plots.
 /// The value of <see cref="Top"/> will be SMALLER than the value of <see cref="Bottom"/>.
 /// </summary>
 public struct PixelRangeY

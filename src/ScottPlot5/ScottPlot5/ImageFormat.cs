@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public enum ImageFormat
 {

@@ -1,6 +1,5 @@
 ﻿using ScottPlot.Axis;
 using ScottPlot.Axis.StandardAxes;
-using ScottPlot.LayoutSystem;
 using SkiaSharp;
 
 namespace ScottPlot.Panels;
