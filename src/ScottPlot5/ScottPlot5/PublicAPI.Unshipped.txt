@@ -720,8 +720,6 @@ ScottPlot.Hatches.Grid.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Colo
 ScottPlot.Hatches.Grid.Grid(bool rotate = false) -> void
 ScottPlot.Hatches.Grid.Rotate.get -> bool
 ScottPlot.Hatches.Grid.Rotate.set -> void
-ScottPlot.Hatches.IHatch
-ScottPlot.Hatches.IHatch.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
 ScottPlot.Hatches.Square
 ScottPlot.Hatches.Square.GetShader(ScottPlot.Color backgroundColor, ScottPlot.Color hatchColor) -> SkiaSharp.SKShader!
 ScottPlot.Hatches.Square.Square() -> void
@@ -861,7 +859,7 @@ ScottPlot.Legends.StandardLegend.IsVisible.get -> bool
 ScottPlot.Legends.StandardLegend.IsVisible.set -> void
 ScottPlot.Legends.StandardLegend.ItemPadding.get -> ScottPlot.PixelPadding
 ScottPlot.Legends.StandardLegend.ItemPadding.set -> void
-ScottPlot.Legends.StandardLegend.ManualLegendItems.get -> ScottPlot.LegendItem![]?
+ScottPlot.Legends.StandardLegend.ManualLegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>?
 ScottPlot.Legends.StandardLegend.ManualLegendItems.set -> void
 ScottPlot.Legends.StandardLegend.Margin.get -> ScottPlot.PixelPadding
 ScottPlot.Legends.StandardLegend.Margin.set -> void

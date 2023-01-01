@@ -21,7 +21,10 @@ public class StandardLegend : ILegend
     private const float SymbolWidth = 20;
     private const float SymbolLabelSeparation = 5;
 
-    public LegendItem[]? ManualLegendItems { get; set; } = null;
+    /// <summary>
+    /// If populated, only these items will be displayed in the legend
+    /// </summary>
+    public IEnumerable<LegendItem>? ManualLegendItems { get; set; } = null;
 
     public void Render(SKCanvas canvas, PixelRect dataRect, LegendItem[] items)
     {

@@ -60,4 +60,24 @@ internal class Legend : RecipePageBase
             legend.ManualLegendItems = new[] { item1, item2 };
         }
     }
+
+    internal class SomePlottablesInLegend : RecipeTestBase
+    {
+        public override string Name => "Limit Plottables in Legend";
+        public override string Description => "Legends typically show all plot items with populated Label fields. " +
+            "However, users can use the manual legend property to only show legend items from specific plottables.";
+
+        [Test]
+        public override void Recipe()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.Label = "Sin";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.Label = "Cos";
+
+            var legend = myPlot.GetLegend();
+            legend.ManualLegendItems = sig1.LegendItems;
+        }
+    }
 }
