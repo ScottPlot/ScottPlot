@@ -68,8 +68,8 @@ namespace ScottPlot.Plottables
 
             for (int i = 0; i < vals.Count; i++)
             {
-                double bottom = vals[i] - errorNegative?[i] ?? 0;
-                double top = vals[i] + errorPositive?[i] ?? 0;
+                double bottom = vals[i] - (errorNegative?[i] ?? 0);
+                double top = vals[i] + (errorPositive?[i] ?? 0);
 
                 if (bottom == top && bottom == vals[i])
                     continue;
