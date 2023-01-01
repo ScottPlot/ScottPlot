@@ -4,6 +4,11 @@ name: Update Developer Website
 
 on:
   workflow_dispatch:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
+    paths:
+      - "dev/www/**"
 
 permissions:
   contents: read
