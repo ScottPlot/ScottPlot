@@ -167,7 +167,7 @@ ScottPlot.AddPlottable.Bar(double[]! values) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.Bar(System.Collections.Generic.IList<ScottPlot.Plottables.Bar!>! bars, ScottPlot.Color? color = null, string? label = null) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.Bar(System.Collections.Generic.IList<ScottPlot.Plottables.BarSeries!>! series) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.ColorBar(ScottPlot.IHasColorAxis! source, ScottPlot.Edge edge = ScottPlot.Edge.Right) -> ScottPlot.Panels.ColorBar!
-ScottPlot.AddPlottable.ErrorBar(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys, System.Collections.Generic.IReadOnlyList<double>? xErrorPositive, System.Collections.Generic.IReadOnlyList<double>? xErrorNegative, System.Collections.Generic.IReadOnlyList<double>? yErrorPositive, System.Collections.Generic.IReadOnlyList<double>? yErrorNegative, ScottPlot.Color? color = null) -> ScottPlot.Plottables.ErrorBar!
+ScottPlot.AddPlottable.ErrorBar(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys, System.Collections.Generic.IReadOnlyList<double>? xErrorPositive = null, System.Collections.Generic.IReadOnlyList<double>? xErrorNegative = null, System.Collections.Generic.IReadOnlyList<double>? yErrorPositive = null, System.Collections.Generic.IReadOnlyList<double>? yErrorNegative = null, ScottPlot.Color? color = null) -> ScottPlot.Plottables.ErrorBar!
 ScottPlot.AddPlottable.Heatmap(double[,]! intensities) -> ScottPlot.Plottables.Heatmap!
 ScottPlot.AddPlottable.Palette.get -> ScottPlot.IPalette!
 ScottPlot.AddPlottable.Palette.set -> void

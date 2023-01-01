@@ -110,7 +110,7 @@ public class AddPlottable
         return colorBar;
     }
 
-    public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive, IReadOnlyList<double>? xErrorNegative, IReadOnlyList<double>? yErrorPositive, IReadOnlyList<double>? yErrorNegative, Color? color = null)
+    public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive = null, IReadOnlyList<double>? xErrorNegative = null, IReadOnlyList<double>? yErrorPositive = null, IReadOnlyList<double>? yErrorNegative = null, Color? color = null)
     {
         color = color ?? NextColor;
         ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
