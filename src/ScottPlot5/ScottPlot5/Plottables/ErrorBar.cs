@@ -66,7 +66,7 @@ namespace ScottPlot.Plottables
 
             LineStyle.ApplyToPaint(paint);
 
-            for(int i = 0; i < vals.Count; i++)
+            for (int i = 0; i < vals.Count; i++)
             {
                 double bottom = vals[i] - errorNegative?[i] ?? 0;
                 double top = vals[i] + errorPositive?[i] ?? 0;
@@ -83,14 +83,14 @@ namespace ScottPlot.Plottables
                 Pixel centreBottomPx = Axes.GetPixel(centreBottom);
                 Pixel leftBottomPx = centreBottomPx - capOffset;
                 Pixel rightBottomPx = centreBottomPx + capOffset;
-                
+
                 Pixel centreTopPx = Axes.GetPixel(centreTop);
                 Pixel leftTopPx = centreTopPx - capOffset;
                 Pixel rightTopPx = centreTopPx + capOffset;
 
                 path.MoveTo(leftBottomPx.ToSKPoint());
                 path.LineTo(rightBottomPx.ToSKPoint());
-                
+
                 path.MoveTo(centreBottomPx.ToSKPoint());
                 path.LineTo(centreTopPx.ToSKPoint());
 
