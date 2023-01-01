@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1200"
+   width="630"
    height="630"
-   viewBox="0 0 317.49998 166.6875"
+   viewBox="0 0 166.68749 166.6875"
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
@@ -69,7 +69,7 @@
      id="layer1">
     <g
        id="g918"
-       transform="matrix(0.75836428,0,0,0.75836428,38.14457,8.436456)">
+       transform="matrix(0.75836428,0,0,0.75836428,-37.26168,8.436456)">
       <g
          id="g837"
          transform="translate(91.016927,15.213543)">
@@ -100,7 +100,7 @@
     <g
        id="g919"
        style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
-       transform="matrix(0.94464145,0,0,0.94464145,6.2104892,8.5523705)">
+       transform="matrix(0.94464145,0,0,0.94464145,-69.195761,8.5523705)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.3135px;line-height:1.25;font-family:Praxis-Light;-inkscape-font-specification:Praxis-Light;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
