@@ -1,4 +1,4 @@
-name: Security Analysis
+name: CodeQL
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   windows:
-    name: Analyze
+    name: Security Analysis
     runs-on: windows-latest
     permissions:
       security-events: write
@@ -28,9 +28,13 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: csharp
-      - name: 🛠️ SP4 Build
+      - name: 🚚 Restore SP4
+        run: dotnet restore "src/ScottPlot4"
+      - name: 🛠️ Build SP4
         run: dotnet build "src/ScottPlot4"
-      - name: 🛠️ SP5 Build
+      - name: 🚚 Restore SP5
+        run: dotnet restore "src/ScottPlot5"
+      - name: 🛠️ Build SP5
         run: dotnet build "src/ScottPlot5"
-      - name: 🔐 Security Analysis
+      - name: 🔐 Analyze
         uses: github/codeql-action/analyze@v2
