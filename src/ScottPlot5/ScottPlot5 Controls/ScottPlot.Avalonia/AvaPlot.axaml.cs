@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -12,6 +13,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Visuals.Media.Imaging;
+using Avalonia.VisualTree;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -23,12 +25,68 @@ namespace ScottPlot.Avalonia
 
         public Interaction Interaction { get; private set; }
 
+        private readonly List<FileDialogFilter> fileDialogFilters = new()
+        {
+            new() { Name = "PNG Files", Extensions = new List<string> { "png" } },
+            new() { Name = "JPEG Files", Extensions = new List<string> { "jpg", "jpeg" } },
+            // new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } }, // TODO: BMP support
+            new() { Name = "WebP Files", Extensions = new List<string> { "webp" } },
+            new() { Name = "All Files", Extensions = new List<string> { "*" } },
+        };
+
         public AvaPlot()
         {
             InitializeComponent();
             Interaction = new(this);
+            Interaction.ContextMenuItems = GetDefaultContextMenuItems();
 
             Refresh();
+        }
+
+        private ContextMenuItem[] GetDefaultContextMenuItems()
+        {
+            ContextMenuItem saveImage = new() { Header = "Save Image", OnInvoke = OpenSaveImageDialog };
+            // TODO: Copying images to the clipboard is still difficult in Avalonia https://github.com/AvaloniaUI/Avalonia/issues/3588
+
+            return new ContextMenuItem[] { saveImage };
+        }
+
+        private ContextMenu GetContextMenu()
+        {
+            List<MenuItem> items = new();
+            foreach (var curr in Interaction.ContextMenuItems)
+            {
+                var menuItem = new MenuItem { Header = curr.Header };
+                menuItem.Click += (s, e) => curr.OnInvoke();
+
+                items.Add(menuItem);
+            }
+
+
+            return new()
+            {
+                Items = items
+            };
+        }
+
+        private async void OpenSaveImageDialog()
+        {
+            SaveFileDialog dialog = new() { InitialFileName = "ScottPlot.png", Filters = fileDialogFilters };
+            Task<string?> filenameTask = dialog.ShowAsync((Window)this.GetVisualRoot());
+            var filename = await filenameTask;
+
+            if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
+                return;
+
+            PixelRect rect = Plot.FigureRect;
+            try
+            {
+                Plot.Save(filename, (int)rect.Width, (int)rect.Height);
+            }
+            catch (Exception _)
+            {
+                // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
+            }
         }
 
         public void Replace(Interaction interaction)
@@ -76,6 +134,15 @@ namespace ScottPlot.Avalonia
         public void Refresh()
         {
             InvalidateVisual();
+        }
+
+        public void RequestContextMenu(Pixel position)
+        {
+            var manualContextMenu = GetContextMenu();
+
+            // I am fully aware of how janky it is to place the menu in a 1x1 rect, unfortunately the Avalonia docs were down when I wrote this
+            manualContextMenu.PlacementRect = new(position.X, position.Y, 1, 1);
+            manualContextMenu.Open(this);
         }
 
         private void OnMouseDown(object sender, PointerPressedEventArgs e)
