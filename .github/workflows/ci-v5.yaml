@@ -15,8 +15,6 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     name: Test
-    permissions:
-      security-events: write
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -24,10 +22,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
-      - name: ⚙️ Setup CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: csharp
       - name: 🚚 Restore
         run: |
           dotnet restore "src/ScottPlot5/ScottPlot5 Tests"
@@ -40,8 +34,6 @@ jobs:
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests" --no-restore --verbosity minimal
       - name: 🧑‍🍳 Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook" --no-restore --verbosity minimal
-      - name: 🔐 Security Analysis
-        uses: github/codeql-action/analyze@v2
 
   windows:
     runs-on: windows-latest

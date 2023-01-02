@@ -1,0 +1,36 @@
+name: Security Analysis
+
+on:
+  workflow_dispatch:
+  push: # only runs on commits to main branch (typically after a merge)
+    branches:
+      - main
+    paths:
+      - "src/ScottPlot5/**"
+      - "src/ScottPlot4/**"
+
+jobs:
+  windows:
+    name: Analyze
+    runs-on: windows-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: csharp
+      - name: 🛠️ SP4 Build
+        run: dotnet build "src/ScottPlot4"
+      - name: 🛠️ SP5 Build
+        run: dotnet build "src/ScottPlot5"
+      - name: 🔐 Security Analysis
+        uses: github/codeql-action/analyze@v2
