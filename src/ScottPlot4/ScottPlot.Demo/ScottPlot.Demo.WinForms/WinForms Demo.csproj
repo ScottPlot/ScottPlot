@@ -11,6 +11,7 @@
         <PackageIcon></PackageIcon>
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <LangVersion>latest</LangVersion>
+        <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     </PropertyGroup>
 
     <ItemGroup>
