@@ -4,6 +4,7 @@ using SkiaSharp.Views.Desktop;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -18,7 +19,10 @@ public class FormsPlot : UserControl, IPlotControl
 
     public FormsPlot()
     {
-        Interaction = new(this);
+        Interaction = new(this)
+        {
+            ContextMenuItems = GetDefaultContextMenuItems()
+        };
 
         SKElement = new() { Dock = DockStyle.Fill, VSync = true };
         SKElement.PaintSurface += SKControl_PaintSurface;
@@ -41,6 +45,29 @@ public class FormsPlot : UserControl, IPlotControl
         Plot.Title.Label.Text = isDesignMode
             ? $"ScottPlot {Version.VersionString}"
             : string.Empty;
+    }
+
+    private ContextMenuItem[] GetDefaultContextMenuItems()
+    {
+        ContextMenuItem saveImage = new() { Header = "Save Image", OnInvoke = OpenSaveImageDialog };
+        ContextMenuItem copyImage = new() { Header = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+
+        return new ContextMenuItem[] { saveImage, copyImage };
+    }
+
+    // ContextMenu isn't available on net6-windows, ContextMenuStrip is the more modern replacement
+    private ContextMenuStrip GetContextMenu()
+    {
+        ContextMenuStrip menu = new();
+        foreach (var curr in Interaction.ContextMenuItems)
+        {
+            var menuItem = new ToolStripMenuItem(curr.Header);
+            menuItem.Click += (s, e) => curr.OnInvoke();
+
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
     }
 
     // make it so changing the background color of the control changes background color of the plot too
@@ -82,6 +109,11 @@ public class FormsPlot : UserControl, IPlotControl
     {
         SKElement.Invalidate();
         base.Refresh();
+    }
+    public void RequestContextMenu(Pixel position)
+    {
+        var menu = GetContextMenu();
+        menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
     }
 
     private void SKControl_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
@@ -129,5 +161,39 @@ public class FormsPlot : UserControl, IPlotControl
     {
         Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);
+    }
+
+    private void OpenSaveImageDialog()
+    {
+        SaveFileDialog dialog = new()
+        {
+            FileName = "ScottPlot.png",
+            Filter = "PNG Files (*.png)|*.png" +
+                     "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
+                     // "|BMP Files (*.bmp)|*.bmp" + // TODO: BMP support
+                     "|WebP Files (*.webp)|*.webp" +
+                     "|All files (*.*)|*.*"
+        };
+
+        if (dialog.ShowDialog() == DialogResult.OK)
+        {
+            PixelRect rect = Plot.FigureRect;
+            try
+            {
+                Plot.Save(dialog.FileName, (int)rect.Width, (int)rect.Height);
+            }
+            catch (Exception _)
+            {
+                // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
+            }
+        }
+    }
+
+    private void CopyImageToClipboard()
+    {
+        PixelRect rect = Plot.FigureRect;
+        using var bmp = new System.Drawing.Bitmap(new MemoryStream(Plot.GetImageBytes((int)rect.Width, (int)rect.Height)));
+
+        Clipboard.SetImage(bmp);
     }
 }
