@@ -1,8 +1,9 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.1-beta
-* Error Bar: New plot type (#2346) _Thanks @bclehmann_
 * Namespace: DataSource → DataSources
+* Error Bar: New plot type (#2346) _Thanks @bclehmann_
+* Plot: Added `Style` object to group functions that perform complex styling tasks
 
 ## ScottPlot 5.0.0-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_

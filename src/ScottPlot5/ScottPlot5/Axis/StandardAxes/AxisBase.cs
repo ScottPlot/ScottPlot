@@ -53,4 +53,17 @@ public abstract class AxisBase
         Width = MinorTickWidth,
         Color = MinorTickColor
     };
+
+    /// <summary>
+    /// Apply a single color to all axis components: label, tick labels, tick marks, and frame
+    /// </summary>
+    /// <param name="color"></param>
+    public void Color(Color color)
+    {
+        Label.Font.Color = color;
+        TickFont.Color = color;
+        MajorTickColor = color;
+        MinorTickColor = color;
+        FrameLineStyle.Color = color;
+    }
 }

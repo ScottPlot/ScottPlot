@@ -5,6 +5,7 @@ using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Benchmarking;
 using ScottPlot.Control;
+using ScottPlot.Stylers;
 
 namespace ScottPlot;
 
@@ -26,11 +27,8 @@ public class Plot : IDisposable
     public Color DataBackground { get; set; } = Colors.White;
     public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
     public IZoomRectangle ZoomRectangle { get; set; }
-
-    /// <summary>
-    /// Any state stored across renders can be stored here.
-    /// </summary>
-    internal RenderDetails LastRenderInfo = new();
+    internal RenderDetails LastRenderInfo { get; set; } = new();
+    public PlotStyler Style { get; }
 
     /// <summary>
     /// This property provides access to the primary horizontal axis below the plot.
@@ -100,6 +98,9 @@ public class Plot : IDisposable
 
         // setup the helper class that creates and adds plottables to this plot
         Add = new(this);
+
+        // add styling helper classes
+        Style = new(this);
     }
 
     public void Dispose()
@@ -112,6 +113,18 @@ public class Plot : IDisposable
     }
 
     #region Axis Management
+
+    internal AxisBase[] GetStandardAxes()
+    {
+        // TODO: throw if custom axes in use
+        return new AxisBase[]
+        {
+            (AxisBase)XAxes[0],
+            (AxisBase)XAxes[1],
+            (AxisBase)YAxes[0],
+            (AxisBase)YAxes[1],
+        };
+    }
 
     internal IAxis[] GetAllAxes() => XAxes.Select(x => (IAxis)x).Concat(YAxes).ToArray();
 

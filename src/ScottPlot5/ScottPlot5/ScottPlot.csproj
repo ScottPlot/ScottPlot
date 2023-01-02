@@ -26,8 +26,9 @@
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
-        <!-- Ignore warnings about multiple overloads and optional parameters -->
-        <NoWarn>RS0026;RS0027</NoWarn>
+        <!-- RS0016 and RS0017: public API change / ignore this warning while SP5 is in beta -->
+        <!-- RS0026 and RS0027: multiple overloads and optional parameters -->
+        <NoWarn>RS0016;RS0017;RS0026;RS0027</NoWarn>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
@@ -61,8 +62,8 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="SkiaSharp" Version="2.*" />
         <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
