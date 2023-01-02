@@ -6,15 +6,22 @@ internal abstract class MarkdownPage
 
     public void AddVersionInformation()
     {
-        SB.AppendLine();
-        SB.AppendLine("<div class=\"alert alert-warning\" role=\"alert\">");
-        SB.AppendLine($"<strong>⚠️ WARNING:</strong> " +
-            $"This page describes <code>ScottPlot {ScottPlot.Version.VersionString}</code>, " +
-            $"a preview version of ScottPlot available on NuGet. " +
-            $"This package is not recommended for production use, and the API may change in future releases. " +
-            $"Visit the <a href='/cookbook/4.1/'>ScottPlot 4.1 Cookbook</a> for information about the current stable version of ScottPlot.");
-        SB.AppendLine("</div>");
-        SB.AppendLine();
+        string alertHtml = "\n\n" +
+            "<div class='alert alert-warning' role='alert'>" +
+            "<h4 class='alert-heading py-0 my-0'>" +
+            $"⚠️ ScottPlot {ScottPlot.Version.VersionString} is a preview package" +
+            "</h4>" +
+            "<hr />" +
+            "<p class='mb-0'>" +
+            "<span class='fw-semibold'>This page describes a beta release of ScottPlot.</span> " +
+            "It is available on NuGet as a preview package, but its API is not stable " +
+            "and it is not recommended for production use. " +
+            "See the <a href='https://scottplot.net/versions/'>ScottPlot Versions</a> page for more information. " +
+            "</p>" +
+            "</div>" +
+            "\n\n";
+
+        SB.AppendLine(alertHtml);
     }
 
     public void Save(string folder, string title, string description, string filename, string url)
