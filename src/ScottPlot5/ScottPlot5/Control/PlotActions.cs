@@ -19,6 +19,7 @@ public class PlotActions
     public Action<IPlotControl> ZoomRectangleApply = delegate { };
     public Action<IPlotControl> ToggleBenchmark = delegate { };
     public Action<IPlotControl> AutoScale = delegate { };
+    public Action<IPlotControl, Pixel> RequestContextMenu = delegate { };
 
     public static PlotActions Standard()
     {
@@ -37,6 +38,7 @@ public class PlotActions
             ZoomRectangleApply = StandardActions.ZoomRectangleApply,
             ToggleBenchmark = StandardActions.ToggleBenchmark,
             AutoScale = StandardActions.AutoScale,
+            RequestContextMenu = StandardActions.RequestContextMenu,
         };
     }
 
@@ -57,6 +59,7 @@ public class PlotActions
             ZoomRectangleApply = delegate { },
             ToggleBenchmark = delegate { },
             AutoScale = delegate { },
+            RequestContextMenu = delegate { },
         };
     }
 }

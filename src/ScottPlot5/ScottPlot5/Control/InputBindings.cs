@@ -10,6 +10,7 @@ public class InputBindings
     public MouseButton? DragZoomRectangleButton = null;
     public MouseButton? DoubleClickButton = null;
     public MouseButton? ClickAutoAxisButton = null;
+    public MouseButton? ClickContextMenuButton = null;
 
     public MouseWheelDirection? ZoomInWheelDirection = null;
     public MouseWheelDirection? ZoomOutWheelDirection = null;
@@ -65,6 +66,7 @@ public class InputBindings
         DragZoomRectangleButton = MouseButton.Middle,
         DragZoomButton = MouseButton.Right,
         ClickAutoAxisButton = MouseButton.Middle,
+        ClickContextMenuButton = MouseButton.Right,
         DoubleClickButton = MouseButton.Left,
         ZoomInWheelDirection = MouseWheelDirection.Up,
         ZoomOutWheelDirection = MouseWheelDirection.Down,

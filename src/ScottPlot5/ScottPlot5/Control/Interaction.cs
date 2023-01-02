@@ -26,9 +26,13 @@ public class Interaction
 
     private readonly KeyboardState Keyboard = new();
     private readonly MouseState Mouse = new();
+
+    public bool IsDraggingMouse(Pixel pos) => Mouse.PressedButtons.Any() && Mouse.IsDragging(pos);
     private bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
     private bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
     private bool IsZoomingRectangle = false;
+
+    public ContextMenuItem[] ContextMenuItems = Array.Empty<ContextMenuItem>();
 
     public Interaction(IPlotControl control)
     {
@@ -47,7 +51,7 @@ public class Interaction
     {
         Mouse.LastPosition = newPosition;
 
-        if (Mouse.PressedButtons.Any() && Mouse.IsDragging(newPosition))
+        if (IsDraggingMouse(newPosition))
         {
             MouseDrag(
                 from: Mouse.MouseDownPosition,
@@ -123,6 +127,11 @@ public class Interaction
         {
             Actions.ZoomRectangleClear(Control);
             IsZoomingRectangle = false;
+        }
+
+        if (!isDragging && (button == Inputs.ClickContextMenuButton))
+        {
+            Control.RequestContextMenu(position);
         }
 
         Mouse.Up(button);

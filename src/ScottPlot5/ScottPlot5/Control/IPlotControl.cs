@@ -21,4 +21,6 @@ public interface IPlotControl
     /// Replace the interaction back-end with a custom one
     /// </summary>
     void Replace(Interaction interaction);
+
+    void RequestContextMenu(Pixel position);
 }
