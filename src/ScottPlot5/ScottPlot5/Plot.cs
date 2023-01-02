@@ -28,6 +28,8 @@ public class Plot : IDisposable
     public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
+
+    public PixelRect FigureRect => LastRenderInfo.FigureRect;
     public PlotStyler Style { get; }
 
     /// <summary>
@@ -374,6 +376,20 @@ public class Plot : IDisposable
         byte[] bytes = GetImageBytes(width, height, ImageFormat.Webp, quality);
         File.WriteAllBytes(path, bytes);
         return Path.GetFullPath(path);
+    }
+
+    public string Save(string path, int width, int height, int quality = 85)
+    {
+        string ext = Path.GetExtension(path).ToLower();
+
+        return ext switch
+        {
+            ".jpg" or ".jpeg" => SaveJpeg(path, width, height, quality),
+            ".png" => SavePng(path, width, height),
+            // ".bmp" => SaveBmp(path, width, height), TODO: Get SaveBmp working
+            ".webp" => SaveWebp(path, width, height, quality),
+            _ => throw new ArgumentException($"Invalid file extension: {ext}")
+        };
     }
 
     #endregion
