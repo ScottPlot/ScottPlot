@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSource;
+﻿namespace ScottPlot.DataSources;
 
 public class SignalSource : ISignalSource
 {

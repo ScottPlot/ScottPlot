@@ -13,7 +13,7 @@ public class Scatter : IPlottable
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
-    public DataSource.IScatterSource Data { get; }
+    public DataSources.IScatterSource Data { get; }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
@@ -25,7 +25,7 @@ public class Scatter : IPlottable
             Line = LineStyle,
         });
 
-    public Scatter(DataSource.IScatterSource data)
+    public Scatter(DataSources.IScatterSource data)
     {
         Data = data;
     }

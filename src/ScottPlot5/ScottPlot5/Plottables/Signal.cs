@@ -11,14 +11,14 @@ public class Signal : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
 
-    public readonly DataSource.ISignalSource Data;
+    public readonly DataSources.ISignalSource Data;
 
     public MarkerStyle Marker { get; set; } = new(MarkerShape.FilledCircle, 5) { Outline = LineStyle.NoLine };
     public string? Label { get; set; }
 
     public LineStyle LineStyle { get; } = new();
 
-    public Signal(DataSource.ISignalSource data)
+    public Signal(DataSources.ISignalSource data)
     {
         Data = data;
     }
