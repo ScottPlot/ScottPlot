@@ -153,7 +153,7 @@ readonly ScottPlot.PixelRect.Top -> float
 readonly ScottPlot.PixelSize.Height -> float
 readonly ScottPlot.PixelSize.Width -> float
 readonly ScottPlot.Plottables.Heatmap.Intensities -> double[,]!
-readonly ScottPlot.Plottables.Signal.Data -> ScottPlot.DataSource.ISignalSource!
+readonly ScottPlot.Plottables.Signal.Data -> ScottPlot.DataSources.ISignalSource!
 readonly ScottPlot.Rendering.RenderDetails.DataRect -> ScottPlot.PixelRect
 readonly ScottPlot.Rendering.RenderDetails.Elapsed -> System.TimeSpan
 readonly ScottPlot.Rendering.RenderDetails.FigureRect -> ScottPlot.PixelRect
@@ -173,7 +173,7 @@ ScottPlot.AddPlottable.Palette.get -> ScottPlot.IPalette!
 ScottPlot.AddPlottable.Palette.set -> void
 ScottPlot.AddPlottable.Pie(System.Collections.Generic.IEnumerable<double>! values) -> ScottPlot.Plottables.Pie!
 ScottPlot.AddPlottable.Pie(System.Collections.Generic.IList<ScottPlot.Plottables.PieSlice!>! slices) -> ScottPlot.Plottables.Pie!
-ScottPlot.AddPlottable.Scatter(ScottPlot.DataSource.IScatterSource! data, ScottPlot.Color? color = null) -> ScottPlot.Plottables.Scatter!
+ScottPlot.AddPlottable.Scatter(ScottPlot.DataSources.IScatterSource! data, ScottPlot.Color? color = null) -> ScottPlot.Plottables.Scatter!
 ScottPlot.AddPlottable.Scatter(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys, ScottPlot.Color? color = null) -> ScottPlot.Plottables.Scatter!
 ScottPlot.AddPlottable.Scatter(System.Collections.Generic.IReadOnlyList<ScottPlot.Coordinates>! coordinates, ScottPlot.Color? color = null) -> ScottPlot.Plottables.Scatter!
 ScottPlot.AddPlottable.Signal(System.Collections.Generic.IReadOnlyList<double>! ys, double period = 1, ScottPlot.Color? color = null) -> ScottPlot.Plottables.Signal!
@@ -656,6 +656,45 @@ ScottPlot.DataSource.SignalSource.Period.set -> void
 ScottPlot.DataSource.SignalSource.SignalSource(System.Collections.Generic.IReadOnlyList<double>! ys, double period) -> void
 ScottPlot.DataSource.SignalSource.XOffset.get -> double
 ScottPlot.DataSource.SignalSource.XOffset.set -> void
+ScottPlot.DataSources.IHasAxisLimits
+ScottPlot.DataSources.IHasAxisLimits.GetLimits() -> ScottPlot.AxisLimits
+ScottPlot.DataSources.IHasAxisLimits.GetLimitsX() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.IHasAxisLimits.GetLimitsY() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.IScatterSource
+ScottPlot.DataSources.IScatterSource.GetScatterPoints() -> System.Collections.Generic.IReadOnlyList<ScottPlot.Coordinates>!
+ScottPlot.DataSources.ISignalSource
+ScottPlot.DataSources.ISignalSource.GetIndex(double x, bool clamp) -> int
+ScottPlot.DataSources.ISignalSource.GetX(int index) -> double
+ScottPlot.DataSources.ISignalSource.GetYRange(ScottPlot.CoordinateRange! xRange) -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.ISignalSource.GetYs() -> System.Collections.Generic.IReadOnlyList<double>!
+ScottPlot.DataSources.ISignalSource.Period.get -> double
+ScottPlot.DataSources.ISignalSource.Period.set -> void
+ScottPlot.DataSources.ISignalSource.XOffset.get -> double
+ScottPlot.DataSources.ScatterSourceCoordinates
+ScottPlot.DataSources.ScatterSourceCoordinates.GetLimits() -> ScottPlot.AxisLimits
+ScottPlot.DataSources.ScatterSourceCoordinates.GetLimitsX() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.ScatterSourceCoordinates.GetLimitsY() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.ScatterSourceCoordinates.GetScatterPoints() -> System.Collections.Generic.IReadOnlyList<ScottPlot.Coordinates>!
+ScottPlot.DataSources.ScatterSourceCoordinates.ScatterSourceCoordinates(System.Collections.Generic.IReadOnlyList<ScottPlot.Coordinates>! coordinates) -> void
+ScottPlot.DataSources.ScatterSourceXsYs
+ScottPlot.DataSources.ScatterSourceXsYs.GetLimits() -> ScottPlot.AxisLimits
+ScottPlot.DataSources.ScatterSourceXsYs.GetLimitsX() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.ScatterSourceXsYs.GetLimitsY() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.ScatterSourceXsYs.GetScatterPoints() -> System.Collections.Generic.IReadOnlyList<ScottPlot.Coordinates>!
+ScottPlot.DataSources.ScatterSourceXsYs.ScatterSourceXsYs(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys) -> void
+ScottPlot.DataSources.SignalSource
+ScottPlot.DataSources.SignalSource.GetIndex(double x, bool clamp) -> int
+ScottPlot.DataSources.SignalSource.GetLimits() -> ScottPlot.AxisLimits
+ScottPlot.DataSources.SignalSource.GetLimitsX() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.SignalSource.GetLimitsY() -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.SignalSource.GetX(int index) -> double
+ScottPlot.DataSources.SignalSource.GetYRange(ScottPlot.CoordinateRange! xRange) -> ScottPlot.CoordinateRange!
+ScottPlot.DataSources.SignalSource.GetYs() -> System.Collections.Generic.IReadOnlyList<double>!
+ScottPlot.DataSources.SignalSource.Period.get -> double
+ScottPlot.DataSources.SignalSource.Period.set -> void
+ScottPlot.DataSources.SignalSource.SignalSource(System.Collections.Generic.IReadOnlyList<double>! ys, double period) -> void
+ScottPlot.DataSources.SignalSource.XOffset.get -> double
+ScottPlot.DataSources.SignalSource.XOffset.set -> void
 ScottPlot.Drawing
 ScottPlot.Edge
 ScottPlot.Edge.Bottom = 2 -> ScottPlot.Edge
@@ -1263,7 +1302,7 @@ ScottPlot.Plottables.PieSlice.Value.set -> void
 ScottPlot.Plottables.Scatter
 ScottPlot.Plottables.Scatter.Axes.get -> ScottPlot.Axis.IAxes!
 ScottPlot.Plottables.Scatter.Axes.set -> void
-ScottPlot.Plottables.Scatter.Data.get -> ScottPlot.DataSource.IScatterSource!
+ScottPlot.Plottables.Scatter.Data.get -> ScottPlot.DataSources.IScatterSource!
 ScottPlot.Plottables.Scatter.GetAxisLimits() -> ScottPlot.AxisLimits
 ScottPlot.Plottables.Scatter.IsVisible.get -> bool
 ScottPlot.Plottables.Scatter.IsVisible.set -> void
@@ -1275,7 +1314,7 @@ ScottPlot.Plottables.Scatter.LineStyle.set -> void
 ScottPlot.Plottables.Scatter.MarkerStyle.get -> ScottPlot.MarkerStyle!
 ScottPlot.Plottables.Scatter.MarkerStyle.set -> void
 ScottPlot.Plottables.Scatter.Render(SkiaSharp.SKSurface! surface) -> void
-ScottPlot.Plottables.Scatter.Scatter(ScottPlot.DataSource.IScatterSource! data) -> void
+ScottPlot.Plottables.Scatter.Scatter(ScottPlot.DataSources.IScatterSource! data) -> void
 ScottPlot.Plottables.Signal
 ScottPlot.Plottables.Signal.Axes.get -> ScottPlot.Axis.IAxes!
 ScottPlot.Plottables.Signal.Axes.set -> void
@@ -1289,7 +1328,7 @@ ScottPlot.Plottables.Signal.LineStyle.get -> ScottPlot.LineStyle!
 ScottPlot.Plottables.Signal.Marker.get -> ScottPlot.MarkerStyle!
 ScottPlot.Plottables.Signal.Marker.set -> void
 ScottPlot.Plottables.Signal.Render(SkiaSharp.SKSurface! surface) -> void
-ScottPlot.Plottables.Signal.Signal(ScottPlot.DataSource.ISignalSource! data) -> void
+ScottPlot.Plottables.Signal.Signal(ScottPlot.DataSources.ISignalSource! data) -> void
 ScottPlot.RandomDataGenerator
 ScottPlot.RandomDataGenerator.RandomDataGenerator() -> void
 ScottPlot.RandomDataGenerator.RandomDataGenerator(int seed = 0) -> void

@@ -1,5 +1,12 @@
 # ScottPlot Changelog
 
+## ScottPlot 5.0.1-beta
+* Namespace: DataSource → DataSources
+
+## ScottPlot 5.0.0-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
+* ScottPlot 5: First version 5 release published to NuGet #2304
+
 ## ScottPlot 4.1.61
 _not yet published on NuGet..._
 * Axis: Throw exception immediately upon setting invalid axis limits (#2327) _Thanks @mjpz_

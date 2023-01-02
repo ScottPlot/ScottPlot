@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSource;
+﻿namespace ScottPlot.DataSources;
 
 /// <summary>
 /// This interface is used by plottables to access data while rendering.
