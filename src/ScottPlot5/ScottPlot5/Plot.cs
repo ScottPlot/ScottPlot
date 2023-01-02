@@ -364,12 +364,13 @@ public class Plot : IDisposable
         return Path.GetFullPath(path);
     }
 
-    public string SaveBmp(string path, int width, int height)
-    {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, 100);
-        File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
-    }
+    // TODO: This currently throws because SKSnapshot.Encode(SKEncodedImageFormat.Bmp) returns null
+    //public string SaveBmp(string path, int width, int height)
+    //{
+    //    byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, 100);
+    //    File.WriteAllBytes(path, bytes);
+    //    return Path.GetFullPath(path);
+    //}
 
     public string SaveWebp(string path, int width, int height, int quality = 85)
     {
