@@ -109,4 +109,12 @@ public class AddPlottable
         Plot.Panels.Add(colorBar);
         return colorBar;
     }
+
+    public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive = null, IReadOnlyList<double>? xErrorNegative = null, IReadOnlyList<double>? yErrorPositive = null, IReadOnlyList<double>? yErrorNegative = null, Color? color = null)
+    {
+        color = color ?? NextColor;
+        ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
+        Plot.Plottables.Add(errorBar);
+        return errorBar;
+    }
 }

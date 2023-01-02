@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.1-beta
+* Error Bar: New plot type (#2346) _Thanks @bclehmann_
 * Namespace: DataSource → DataSources
 
 ## ScottPlot 5.0.0-beta

@@ -167,6 +167,7 @@ ScottPlot.AddPlottable.Bar(double[]! values) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.Bar(System.Collections.Generic.IList<ScottPlot.Plottables.Bar!>! bars, ScottPlot.Color? color = null, string? label = null) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.Bar(System.Collections.Generic.IList<ScottPlot.Plottables.BarSeries!>! series) -> ScottPlot.Plottables.BarPlot!
 ScottPlot.AddPlottable.ColorBar(ScottPlot.IHasColorAxis! source, ScottPlot.Edge edge = ScottPlot.Edge.Right) -> ScottPlot.Panels.ColorBar!
+ScottPlot.AddPlottable.ErrorBar(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys, System.Collections.Generic.IReadOnlyList<double>? xErrorPositive = null, System.Collections.Generic.IReadOnlyList<double>? xErrorNegative = null, System.Collections.Generic.IReadOnlyList<double>? yErrorPositive = null, System.Collections.Generic.IReadOnlyList<double>? yErrorNegative = null, ScottPlot.Color? color = null) -> ScottPlot.Plottables.ErrorBar!
 ScottPlot.AddPlottable.Heatmap(double[,]! intensities) -> ScottPlot.Plottables.Heatmap!
 ScottPlot.AddPlottable.Palette.get -> ScottPlot.IPalette!
 ScottPlot.AddPlottable.Palette.set -> void
@@ -1225,6 +1226,31 @@ ScottPlot.Plottables.BarSeries.Color.get -> ScottPlot.Color
 ScottPlot.Plottables.BarSeries.Color.set -> void
 ScottPlot.Plottables.BarSeries.Label.get -> string?
 ScottPlot.Plottables.BarSeries.Label.set -> void
+ScottPlot.Plottables.ErrorBar
+ScottPlot.Plottables.ErrorBar.Axes.get -> ScottPlot.Axis.IAxes!
+ScottPlot.Plottables.ErrorBar.Axes.set -> void
+ScottPlot.Plottables.ErrorBar.CapSize.get -> float
+ScottPlot.Plottables.ErrorBar.CapSize.set -> void
+ScottPlot.Plottables.ErrorBar.ErrorBar(System.Collections.Generic.IReadOnlyList<double>! xs, System.Collections.Generic.IReadOnlyList<double>! ys, System.Collections.Generic.IReadOnlyList<double>? xErrorsPositive, System.Collections.Generic.IReadOnlyList<double>? xErrorsNegative, System.Collections.Generic.IReadOnlyList<double>? yErrorsPositive, System.Collections.Generic.IReadOnlyList<double>? yErrorsNegative, ScottPlot.Color color) -> void
+ScottPlot.Plottables.ErrorBar.GetAxisLimits() -> ScottPlot.AxisLimits
+ScottPlot.Plottables.ErrorBar.IsVisible.get -> bool
+ScottPlot.Plottables.ErrorBar.IsVisible.set -> void
+ScottPlot.Plottables.ErrorBar.LegendItems.get -> System.Collections.Generic.IEnumerable<ScottPlot.LegendItem!>!
+ScottPlot.Plottables.ErrorBar.LineStyle.get -> ScottPlot.LineStyle!
+ScottPlot.Plottables.ErrorBar.LineStyle.set -> void
+ScottPlot.Plottables.ErrorBar.Render(SkiaSharp.SKSurface! surface) -> void
+ScottPlot.Plottables.ErrorBar.XErrorsNegative.get -> System.Collections.Generic.IReadOnlyList<double>?
+ScottPlot.Plottables.ErrorBar.XErrorsNegative.set -> void
+ScottPlot.Plottables.ErrorBar.XErrorsPositive.get -> System.Collections.Generic.IReadOnlyList<double>?
+ScottPlot.Plottables.ErrorBar.XErrorsPositive.set -> void
+ScottPlot.Plottables.ErrorBar.Xs.get -> System.Collections.Generic.IReadOnlyList<double>!
+ScottPlot.Plottables.ErrorBar.Xs.set -> void
+ScottPlot.Plottables.ErrorBar.YErrorsNegative.get -> System.Collections.Generic.IReadOnlyList<double>?
+ScottPlot.Plottables.ErrorBar.YErrorsNegative.set -> void
+ScottPlot.Plottables.ErrorBar.YErrorsPositive.get -> System.Collections.Generic.IReadOnlyList<double>?
+ScottPlot.Plottables.ErrorBar.YErrorsPositive.set -> void
+ScottPlot.Plottables.ErrorBar.Ys.get -> System.Collections.Generic.IReadOnlyList<double>!
+ScottPlot.Plottables.ErrorBar.Ys.set -> void
 ScottPlot.Plottables.Heatmap
 ScottPlot.Plottables.Heatmap.Axes.get -> ScottPlot.Axis.IAxes!
 ScottPlot.Plottables.Heatmap.Axes.set -> void
@@ -1572,6 +1598,7 @@ static ScottPlot.Generate.Cos(int count, double mult = 1, double offset = 0, dou
 static ScottPlot.Generate.Cos<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0) -> T[]!
 static ScottPlot.Generate.NoisySin(System.Random! rand, int count, double noiseLevel = 1) -> double[]!
 static ScottPlot.Generate.Ramp2D(int width, int height, double min = 0, double max = 1) -> double[,]!
+static ScottPlot.Generate.Random(int count, double min = 0, double max = 1, int seed = 0) -> double[]!
 static ScottPlot.Generate.RandomWalk(int count, double mult = 1, double offset = 0, int seed = 0) -> double[]!
 static ScottPlot.Generate.Sin(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0) -> double[]!
 static ScottPlot.Generate.Sin2D(int width, int height, double xPeriod = 0.2, double yPeriod = 0.2, double multiple = 100) -> double[,]!
