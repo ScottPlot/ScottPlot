@@ -78,10 +78,13 @@ namespace ScottPlot.Avalonia
             if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
                 return;
 
-            PixelRect rect = Plot.FigureRect;
+            var format = ImageFormatHelpers.FromFilePath(filename);
+            if (!format.HasValue)
+                return;
+
             try
             {
-                Plot.Save(filename, (int)rect.Width, (int)rect.Height);
+                Plot.GetImage().Save(filename, format.Value);
             }
             catch (Exception _)
             {

@@ -156,16 +156,21 @@ namespace ScottPlot.Eto
 
             if (dialog.ShowDialog(this) == DialogResult.Ok)
             {
-                PixelRect rect = Plot.FigureRect;
                 var filename = dialog.FileName;
 
                 // Eto doesn't add the extension for you when you select a filter :/
                 if (!Path.HasExtension(filename))
                     filename += $".{dialog.CurrentFilter.Extensions[0]}";
 
+                var format = ImageFormatHelpers.FromFilePath(filename);
+                if (!format.HasValue)
+                {
+                    return;
+                }
+
                 try
                 {
-                    Plot.Save(filename, (int)rect.Width, (int)rect.Height);
+                    Plot.GetImage().Save(filename, format.Value);
                 }
                 catch (Exception)
                 {
@@ -176,8 +181,7 @@ namespace ScottPlot.Eto
 
         private void CopyImageToClipboard()
         {
-            PixelRect rect = Plot.FigureRect;
-            using var bmp = new Bitmap(new MemoryStream(Plot.GetImageBytes((int)rect.Width, (int)rect.Height)));
+            using var bmp = new Bitmap(new MemoryStream(Plot.GetImage().GetImageBytes()));
 
             Clipboard.Instance.Image = bmp;
         }

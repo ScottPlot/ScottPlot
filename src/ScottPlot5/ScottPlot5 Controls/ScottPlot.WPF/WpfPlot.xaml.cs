@@ -131,7 +131,7 @@ namespace ScottPlot.WPF
             {
                 FileName = "ScottPlot.png",
                 Filter = "PNG Files (*.png)|*.png" +
-                         "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
+                         "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                          // "|BMP Files (*.bmp)|*.bmp" + // TODO: BMP support
                          "|WebP Files (*.webp)|*.webp" +
                          "|All files (*.*)|*.*"
@@ -139,12 +139,15 @@ namespace ScottPlot.WPF
 
             if (dialog.ShowDialog() is true)
             {
-                PixelRect rect = Plot.FigureRect;
+                var format = ImageFormatHelpers.FromFilePath(dialog.FileName);
+                if (!format.HasValue)
+                    return;
+
                 try
                 {
-                    Plot.Save(dialog.FileName, (int)rect.Width, (int)rect.Height);
+                    Plot.GetImage().Save(dialog.FileName, format.Value);
                 }
-                catch (Exception _)
+                catch (Exception)
                 {
                     // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
                 }
@@ -153,10 +156,9 @@ namespace ScottPlot.WPF
 
         private void CopyImageToClipboard()
         {
-            PixelRect rect = Plot.FigureRect;
             var bmp = new BitmapImage();
             bmp.BeginInit();
-            bmp.StreamSource = new MemoryStream(Plot.GetImageBytes((int)rect.Width, (int)rect.Height));
+            bmp.StreamSource = new MemoryStream(Plot.GetImage().GetImageBytes());
             bmp.EndInit();
             bmp.Freeze();
 
