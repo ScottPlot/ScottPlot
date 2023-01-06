@@ -20,7 +20,7 @@ namespace ScottPlot.Eto
         {
             new() { Name = "PNG Files", Extensions = new string[] { "png" } },
             new() { Name = "JPEG Files", Extensions = new string[] { "jpg", "jpeg" } },
-            // new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } }, // TODO: BMP support
+            new() { Name = "BMP Files", Extensions = new string[] { "bmp" } },
             new() { Name = "WebP Files", Extensions = new string[] { "webp" } },
             new() { Name = "All Files", Extensions = new string[] { "*" } },
         };

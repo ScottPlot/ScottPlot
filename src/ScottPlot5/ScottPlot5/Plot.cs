@@ -362,6 +362,12 @@ public class Plot : IDisposable
         image.SavePng(filePath);
     }
 
+    public void SaveBmp(string filePath, int? newWidth = null, int? newHeight = null)
+    {
+        using Image image = GetImage(newWidth, newHeight);
+        image.SaveBmp(filePath);
+    }
+
     public void SaveWebp(string filePath, int? newWidth = null, int? newHeight = null, int quality = 85)
     {
         using Image image = GetImage(newWidth, newHeight);

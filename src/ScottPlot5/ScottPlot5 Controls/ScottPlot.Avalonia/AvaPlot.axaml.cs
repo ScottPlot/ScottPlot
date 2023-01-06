@@ -29,7 +29,7 @@ namespace ScottPlot.Avalonia
         {
             new() { Name = "PNG Files", Extensions = new List<string> { "png" } },
             new() { Name = "JPEG Files", Extensions = new List<string> { "jpg", "jpeg" } },
-            // new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } }, // TODO: BMP support
+            new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } },
             new() { Name = "WebP Files", Extensions = new List<string> { "webp" } },
             new() { Name = "All Files", Extensions = new List<string> { "*" } },
         };

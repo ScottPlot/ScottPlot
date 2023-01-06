@@ -132,7 +132,7 @@ namespace ScottPlot.WPF
                 FileName = "ScottPlot.png",
                 Filter = "PNG Files (*.png)|*.png" +
                          "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
-                         // "|BMP Files (*.bmp)|*.bmp" + // TODO: BMP support
+                         "|BMP Files (*.bmp)|*.bmp" +
                          "|WebP Files (*.webp)|*.webp" +
                          "|All files (*.*)|*.*"
             };
