@@ -44,7 +44,7 @@ public class Image : IDisposable
     {
         SKEncodedImageFormat skFormat = format.ToSKFormat();
 
-        if (format == ImageFormat.Bmp)
+        if (format == ImageFormat.Bmp) // SkiaSharp cannot create BMP files, so we have to implement this ourselves https://github.com/mono/SkiaSharp/issues/320
         {
             return GetBitmapBytes();
         }
