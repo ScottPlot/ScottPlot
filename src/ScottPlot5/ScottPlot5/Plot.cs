@@ -350,6 +350,30 @@ public class Plot : IDisposable
         return new(surface.Snapshot());
     }
 
+    public void SaveJpeg(string filePath, int? newWidth = null, int? newHeight = null, int quality = 85)
+    {
+        using Image image = GetImage(newWidth, newHeight);
+        image.SaveJpeg(filePath, quality);
+    }
+
+    public void SavePng(string filePath, int? newWidth = null, int? newHeight = null)
+    {
+        using Image image = GetImage(newWidth, newHeight);
+        image.SavePng(filePath);
+    }
+
+    public void SaveWebp(string filePath, int? newWidth = null, int? newHeight = null, int quality = 85)
+    {
+        using Image image = GetImage(newWidth, newHeight);
+        image.SaveWebp(filePath, quality);
+    }
+
+    public void Save(string filePath, int? newWidth = null, int? newHeight = null, ImageFormat format = ImageFormat.Png, int quality = 85)
+    {
+        using Image image = GetImage(newWidth, newHeight);
+        image.Save(filePath, format, quality);
+    }
+
     #endregion
 
     #region Shortcuts

@@ -177,13 +177,16 @@ public class FormsPlot : UserControl, IPlotControl
 
         if (dialog.ShowDialog() == DialogResult.OK)
         {
+            if (string.IsNullOrEmpty(dialog.FileName))
+                return;
+
             var format = ImageFormatHelpers.FromFilePath(dialog.FileName);
             if (!format.HasValue)
                 return;
 
             try
             {
-                Plot.GetImage().Save(dialog.FileName, format.Value);
+                Plot.Save(dialog.FileName, format: format.Value);
             }
             catch (Exception)
             {

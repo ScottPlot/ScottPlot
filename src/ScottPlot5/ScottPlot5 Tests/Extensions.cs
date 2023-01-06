@@ -26,7 +26,7 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         // actually save the thing
-        plt.GetImage(width, height).SaveJpeg(filePath);
+        plt.SaveJpeg(filePath, width, height);
     }
 
     internal static void SaveTestImage(this SKBitmap bmp, string subName = "")

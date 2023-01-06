@@ -158,6 +158,9 @@ namespace ScottPlot.Eto
             {
                 var filename = dialog.FileName;
 
+                if (string.IsNullOrEmpty(filename))
+                    return;
+
                 // Eto doesn't add the extension for you when you select a filter :/
                 if (!Path.HasExtension(filename))
                     filename += $".{dialog.CurrentFilter.Extensions[0]}";
@@ -170,7 +173,7 @@ namespace ScottPlot.Eto
 
                 try
                 {
-                    Plot.GetImage().Save(filename, format.Value);
+                    Plot.Save(filename, format: format.Value);
                 }
                 catch (Exception)
                 {

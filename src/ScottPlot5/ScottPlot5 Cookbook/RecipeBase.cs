@@ -51,7 +51,7 @@ public abstract class RecipeTestBase : IRecipe
         string fileUrl = UrlTools.GetImageUrl(GetPage(), this);
         string saveAs = Path.Combine(Cookbook.OutputFolder, fileUrl);
         saveAs = saveAs.Replace('/', Path.DirectorySeparatorChar);
-        myPlot.GetImage(Cookbook.ImageWidth, Cookbook.ImageHeight).SavePng(saveAs);
+        myPlot.SavePng(saveAs, Cookbook.ImageWidth, Cookbook.ImageHeight);
         TestContext.WriteLine($"{saveAs}");
     }
 }

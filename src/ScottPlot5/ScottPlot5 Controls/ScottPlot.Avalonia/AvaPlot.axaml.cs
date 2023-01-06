@@ -78,15 +78,15 @@ namespace ScottPlot.Avalonia
             if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
                 return;
 
-            var format = ImageFormatHelpers.FromFilePath(filename);
+            var format = ImageFormatHelpers.FromFilePath(filename!);
             if (!format.HasValue)
                 return;
 
             try
             {
-                Plot.GetImage().Save(filename, format.Value);
+                Plot.Save(filename!, format: format.Value);
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
             }

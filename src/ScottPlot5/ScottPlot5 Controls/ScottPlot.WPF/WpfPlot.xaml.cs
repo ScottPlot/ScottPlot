@@ -145,7 +145,7 @@ namespace ScottPlot.WPF
 
                 try
                 {
-                    Plot.GetImage().Save(dialog.FileName, format.Value);
+                    Plot.Save(dialog.FileName, format: format.Value);
                 }
                 catch (Exception)
                 {
