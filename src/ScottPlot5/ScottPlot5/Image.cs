@@ -6,7 +6,7 @@ public class Image : IDisposable
 {
     private bool disposed;
 
-    private readonly SKImage skiaImage;
+    protected readonly SKImage skiaImage;
     public int Width => skiaImage.Width;
     public int Height => skiaImage.Height;
 
