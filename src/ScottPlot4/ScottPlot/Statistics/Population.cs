@@ -78,7 +78,9 @@ namespace ScottPlot.Statistics
 
             min = sortedValues.First();
             max = sortedValues.Last();
-            median = sortedValues[count / 2];
+
+            // median is average of the two values in the middle if value count is even
+            median = count % 2 == 0 ? ((sortedValues[(count / 2) - 1] + sortedValues[count / 2]) / 2d) : sortedValues[count / 2];
 
             Q1 = sortedValues[QSize];
             Q3 = sortedValues[sortedValues.Length - QSize - 1];
