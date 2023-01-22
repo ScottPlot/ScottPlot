@@ -6,6 +6,7 @@ using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace ScottPlot.Eto
 {
@@ -15,9 +16,21 @@ namespace ScottPlot.Eto
 
         public Interaction Interaction { get; private set; }
 
+        private readonly List<FileFilter> fileDialogFilters = new()
+        {
+            new() { Name = "PNG Files", Extensions = new string[] { "png" } },
+            new() { Name = "JPEG Files", Extensions = new string[] { "jpg", "jpeg" } },
+            new() { Name = "BMP Files", Extensions = new string[] { "bmp" } },
+            new() { Name = "WebP Files", Extensions = new string[] { "webp" } },
+            new() { Name = "All Files", Extensions = new string[] { "*" } },
+        };
+
         public EtoPlot()
         {
-            Interaction = new(this);
+            Interaction = new(this)
+            {
+                ContextMenuItems = GetDefaultContextMenuItems()
+            };
 
             this.MouseDown += OnMouseDown;
             this.MouseUp += OnMouseUp;
@@ -28,6 +41,27 @@ namespace ScottPlot.Eto
             this.MouseDoubleClick += OnDoubleClick;
             this.SizeChanged += OnSizeChanged;
         }
+        private ContextMenuItem[] GetDefaultContextMenuItems()
+        {
+            ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
+            ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+
+            return new ContextMenuItem[] { saveImage, copyImage };
+        }
+
+        private ContextMenu GetContextMenu()
+        {
+            ContextMenu menu = new();
+            foreach (var curr in Interaction.ContextMenuItems)
+            {
+                var menuItem = new ButtonMenuItem() { Text = curr.Label };
+                menuItem.Click += (s, e) => curr.OnInvoke();
+
+                menu.Items.Add(menuItem);
+            }
+
+            return menu;
+        }
 
         public void Replace(Interaction interaction)
         {
@@ -37,6 +71,12 @@ namespace ScottPlot.Eto
         public void Refresh()
         {
             Invalidate();
+        }
+
+        public void ShowContextMenu(Pixel position)
+        {
+            var menu = GetContextMenu();
+            menu.Show(this, new Point((int)position.X, (int)position.Y));
         }
 
         protected override void OnPaint(PaintEventArgs args)
@@ -105,6 +145,38 @@ namespace ScottPlot.Eto
         private void OnSizeChanged(object? sender, EventArgs e)
         {
             Refresh();
+        }
+
+        private void OpenSaveImageDialog()
+        {
+            SaveFileDialog dialog = new() { FileName = Interaction.DefaultSaveImageFilename };
+
+            foreach (var curr in fileDialogFilters)
+                dialog.Filters.Add(curr);
+
+            if (dialog.ShowDialog(this) == DialogResult.Ok)
+            {
+                var filename = dialog.FileName;
+
+                if (string.IsNullOrEmpty(filename))
+                    return;
+
+                // Eto doesn't add the extension for you when you select a filter :/
+                if (!Path.HasExtension(filename))
+                    filename += $".{dialog.CurrentFilter.Extensions[0]}";
+
+                // TODO: launch a pop-up window indicating if extension is invalid or save failed
+                ImageFormat format = ImageFormatLookup.FromFilePath(filename);
+                Plot.Save(filename, Width, Height, format);
+            }
+        }
+
+        private void CopyImageToClipboard()
+        {
+            byte[] bytes = Plot.GetImage(Width, Height).GetImageBytes();
+            MemoryStream ms = new(bytes);
+            using Bitmap bmp = new(ms);
+            Clipboard.Instance.Image = bmp;
         }
     }
 }

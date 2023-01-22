@@ -4,6 +4,8 @@
 * Namespace: DataSource → DataSources
 * Error Bar: New plot type (#2346) _Thanks @bclehmann_
 * Plot: Added `Style` object to group functions that perform complex styling tasks
+* Controls: Added right-click context menus (#2350) _Thanks @bclehmann_
+* Rendering: Added support for saving bitmap files (#2350) _Thanks @bclehmann_
 
 ## ScottPlot 5.0.0-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
