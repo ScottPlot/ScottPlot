@@ -49,8 +49,17 @@ public class FormsPlot : UserControl, IPlotControl
 
     private ContextMenuItem[] GetDefaultContextMenuItems()
     {
-        ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
-        ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+        ContextMenuItem saveImage = new()
+        {
+            Label = "Save Image",
+            OnInvoke = OpenSaveImageDialog
+        };
+
+        ContextMenuItem copyImage = new()
+        {
+            Label = "Copy to Clipboard",
+            OnInvoke = () => { CopyImageToClipboard(Width, Height); }
+        };
 
         return new ContextMenuItem[] { saveImage, copyImage };
     }
@@ -181,24 +190,35 @@ public class FormsPlot : UserControl, IPlotControl
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            var format = ImageFormatLookup.FromFilePath(dialog.FileName);
-            if (!format.HasValue)
-                return;
+            ImageFormat format;
 
             try
             {
-                Plot.Save(dialog.FileName, format: format.Value);
+                format = ImageFormatLookup.FromFilePath(dialog.FileName);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Unsupported image file format", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                Plot.Save(dialog.FileName, Width, Height, format);
             }
             catch (Exception)
             {
-                // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
+                MessageBox.Show("Image save failed", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }
 
-    private void CopyImageToClipboard()
+    private void CopyImageToClipboard(int width, int height)
     {
-        using var bmp = new System.Drawing.Bitmap(new MemoryStream(Plot.GetImage().GetImageBytes()));
+        byte[] bytes = Plot.GetImage(width, height).GetImageBytes();
+        using MemoryStream ms = new(bytes);
+        using var bmp = new System.Drawing.Bitmap(ms);
         Clipboard.SetImage(bmp);
     }
 }

@@ -139,26 +139,19 @@ namespace ScottPlot.WPF
 
             if (dialog.ShowDialog() is true)
             {
-                var format = ImageFormatLookup.FromFilePath(dialog.FileName);
-                if (!format.HasValue)
-                    return;
-
-                try
-                {
-                    Plot.Save(dialog.FileName, format: format.Value);
-                }
-                catch (Exception)
-                {
-                    // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
-                }
+                // TODO: launch a pop-up window indicating if extension is invalid or save failed
+                ImageFormat format = ImageFormatLookup.FromFilePath(dialog.FileName);
+                Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
             }
         }
 
         private void CopyImageToClipboard()
         {
-            var bmp = new BitmapImage();
+            BitmapImage bmp = new();
             bmp.BeginInit();
-            bmp.StreamSource = new MemoryStream(Plot.GetImage().GetImageBytes());
+            byte[] bytes = Plot.GetImage((int)ActualWidth, (int)ActualHeight).GetImageBytes();
+            using MemoryStream ms = new(bytes);
+            bmp.StreamSource = ms;
             bmp.EndInit();
             bmp.Freeze();
 

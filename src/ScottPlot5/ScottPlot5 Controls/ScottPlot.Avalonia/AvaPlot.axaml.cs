@@ -78,18 +78,8 @@ namespace ScottPlot.Avalonia
             if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
                 return;
 
-            var format = ImageFormatLookup.FromFilePath(filename!);
-            if (!format.HasValue)
-                return;
-
-            try
-            {
-                Plot.Save(filename!, format: format.Value);
-            }
-            catch (Exception)
-            {
-                // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
-            }
+            ImageFormat format = ImageFormatLookup.FromFilePath(filename!);
+            Plot.Save(filename!, (int)Width, (int)Height, format);
         }
 
         public void Replace(Interaction interaction)

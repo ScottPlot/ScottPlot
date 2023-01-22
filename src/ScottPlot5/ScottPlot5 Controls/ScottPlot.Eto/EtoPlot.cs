@@ -165,27 +165,17 @@ namespace ScottPlot.Eto
                 if (!Path.HasExtension(filename))
                     filename += $".{dialog.CurrentFilter.Extensions[0]}";
 
-                var format = ImageFormatLookup.FromFilePath(filename);
-                if (!format.HasValue)
-                {
-                    return;
-                }
-
-                try
-                {
-                    Plot.Save(filename, format: format.Value);
-                }
-                catch (Exception)
-                {
-                    // TODO: Not sure if we can meaningfully do anything except perhaps show an error dialog?
-                }
+                // TODO: launch a pop-up window indicating if extension is invalid or save failed
+                ImageFormat format = ImageFormatLookup.FromFilePath(filename);
+                Plot.Save(filename, Width, Height, format);
             }
         }
 
         private void CopyImageToClipboard()
         {
-            using var bmp = new Bitmap(new MemoryStream(Plot.GetImage().GetImageBytes()));
-
+            byte[] bytes = Plot.GetImage(Width, Height).GetImageBytes();
+            MemoryStream ms = new(bytes);
+            using Bitmap bmp = new(ms);
             Clipboard.Instance.Image = bmp;
         }
     }
