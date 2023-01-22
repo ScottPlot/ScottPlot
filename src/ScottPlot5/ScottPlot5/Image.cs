@@ -1,7 +1,14 @@
-﻿using System.Runtime.InteropServices;
+﻿/* SkiaSharp cannot create BMP files, so bitmap IO is implemented manually
+ * https://github.com/mono/SkiaSharp/issues/320
+ */
+
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
+/// <summary>
+/// Bitmap representation of a <seealso cref="SKImage"/>
+/// </summary>
 public class Image : IDisposable
 {
     private bool disposed;
@@ -15,36 +22,45 @@ public class Image : IDisposable
         this.skiaImage = skiaImage;
     }
 
+    /// <summary>
+    /// SkiaSharp cannot natively create BMP files. 
+    /// This function creates bitmaps in memory manually.
+    /// https://github.com/mono/SkiaSharp/issues/320
+    /// </summary>
     private byte[] GetBitmapBytes()
     {
-        using var bmp = SKBitmap.FromImage(skiaImage);
+        using SKBitmap skBitmap = SKBitmap.FromImage(skiaImage);
 
-        byte[] pixelBytes = bmp.Bytes;
-        BitmapHeader header = new(Width, Height, pixelBytes.Length, true);
+        BitmapHeader header = new(Width, Height);
 
-        byte[] bmpBytes = new byte[pixelBytes.Length + BitmapHeader.FileHeaderSize];
-        IntPtr ptr = IntPtr.Zero;
+        byte[] bitmapBytes = new byte[skBitmap.Bytes.Length + BitmapHeader.FileHeaderSize];
+
+        IntPtr pHeader = IntPtr.Zero;
+
         try
         {
-            ptr = Marshal.AllocHGlobal(BitmapHeader.FileHeaderSize);
-            Marshal.StructureToPtr(header, ptr, false);
-            Marshal.Copy(ptr, bmpBytes, 0, BitmapHeader.FileHeaderSize);
+            pHeader = Marshal.AllocHGlobal(BitmapHeader.FileHeaderSize);
+            Marshal.StructureToPtr(header, pHeader, false);
 
-            Array.Copy(pixelBytes, 0, bmpBytes, BitmapHeader.FileHeaderSize, pixelBytes.Length);
+            // copy the header from the bytes of our custom bitmap header struct
+            Marshal.Copy(pHeader, bitmapBytes, 0, BitmapHeader.FileHeaderSize);
+
+            // copy the content of the bitmap from the SkiaSharp image
+            Array.Copy(skBitmap.Bytes, 0, bitmapBytes, BitmapHeader.FileHeaderSize, skBitmap.Bytes.Length);
         }
         finally
         {
-            Marshal.FreeHGlobal(ptr);
+            Marshal.FreeHGlobal(pHeader);
         }
 
-        return bmpBytes;
+        return bitmapBytes;
     }
 
     public byte[] GetImageBytes(ImageFormat format = ImageFormat.Png, int quality = 100)
     {
         SKEncodedImageFormat skFormat = format.ToSKFormat();
 
-        if (format == ImageFormat.Bmp) // SkiaSharp cannot create BMP files, so we have to implement this ourselves https://github.com/mono/SkiaSharp/issues/320
+        if (format == ImageFormat.Bmp)
         {
             return GetBitmapBytes();
         }
