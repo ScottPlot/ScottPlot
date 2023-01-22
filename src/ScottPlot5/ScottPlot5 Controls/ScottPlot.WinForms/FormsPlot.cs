@@ -4,6 +4,7 @@ using SkiaSharp.Views.Desktop;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -18,7 +19,10 @@ public class FormsPlot : UserControl, IPlotControl
 
     public FormsPlot()
     {
-        Interaction = new(this);
+        Interaction = new(this)
+        {
+            ContextMenuItems = GetDefaultContextMenuItems()
+        };
 
         SKElement = new() { Dock = DockStyle.Fill, VSync = true };
         SKElement.PaintSurface += SKControl_PaintSurface;
@@ -41,6 +45,38 @@ public class FormsPlot : UserControl, IPlotControl
         Plot.Title.Label.Text = isDesignMode
             ? $"ScottPlot {Version.VersionString}"
             : string.Empty;
+    }
+
+    private ContextMenuItem[] GetDefaultContextMenuItems()
+    {
+        ContextMenuItem saveImage = new()
+        {
+            Label = "Save Image",
+            OnInvoke = OpenSaveImageDialog
+        };
+
+        ContextMenuItem copyImage = new()
+        {
+            Label = "Copy to Clipboard",
+            OnInvoke = () => { CopyImageToClipboard(Width, Height); }
+        };
+
+        return new ContextMenuItem[] { saveImage, copyImage };
+    }
+
+    // ContextMenu isn't available on net6-windows, ContextMenuStrip is the more modern replacement
+    private ContextMenuStrip GetContextMenu()
+    {
+        ContextMenuStrip menu = new();
+        foreach (var curr in Interaction.ContextMenuItems)
+        {
+            var menuItem = new ToolStripMenuItem(curr.Label);
+            menuItem.Click += (s, e) => curr.OnInvoke();
+
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
     }
 
     // make it so changing the background color of the control changes background color of the plot too
@@ -82,6 +118,12 @@ public class FormsPlot : UserControl, IPlotControl
     {
         SKElement.Invalidate();
         base.Refresh();
+    }
+
+    public void ShowContextMenu(Pixel position)
+    {
+        var menu = GetContextMenu();
+        menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
     }
 
     private void SKControl_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
@@ -129,5 +171,54 @@ public class FormsPlot : UserControl, IPlotControl
     {
         Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);
+    }
+
+    private void OpenSaveImageDialog()
+    {
+        SaveFileDialog dialog = new()
+        {
+            FileName = Interaction.DefaultSaveImageFilename,
+            Filter = "PNG Files (*.png)|*.png" +
+                     "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
+                     "|BMP Files (*.bmp)|*.bmp" +
+                     "|WebP Files (*.webp)|*.webp" +
+                     "|All files (*.*)|*.*"
+        };
+
+        if (dialog.ShowDialog() == DialogResult.OK)
+        {
+            if (string.IsNullOrEmpty(dialog.FileName))
+                return;
+
+            ImageFormat format;
+
+            try
+            {
+                format = ImageFormatLookup.FromFilePath(dialog.FileName);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Unsupported image file format", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                Plot.Save(dialog.FileName, Width, Height, format);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Image save failed", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+    }
+
+    private void CopyImageToClipboard(int width, int height)
+    {
+        byte[] bytes = Plot.GetImage(width, height).GetImageBytes();
+        using MemoryStream ms = new(bytes);
+        using var bmp = new System.Drawing.Bitmap(ms);
+        Clipboard.SetImage(bmp);
     }
 }

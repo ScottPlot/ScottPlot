@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot.Rendering;
 
 /// <summary>
-/// Detaiols about a completed render
+/// Details about a completed render
 /// </summary>
 public struct RenderDetails
 {

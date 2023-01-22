@@ -6,6 +6,7 @@ using ScottPlot.Legends;
 using ScottPlot.Benchmarking;
 using ScottPlot.Control;
 using ScottPlot.Stylers;
+using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -28,6 +29,7 @@ public class Plot : IDisposable
     public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
+
     public PlotStyler Style { get; }
 
     /// <summary>
@@ -328,7 +330,7 @@ public class Plot : IDisposable
         LastRenderInfo = Renderer.Render(surface, this);
     }
 
-    public byte[] GetImageBytes(int width, int height, ImageFormat format = ImageFormat.Png, int quality = 100)
+    public Image GetImage(int width, int height)
     {
         if (width < 1)
             throw new ArgumentException($"{nameof(width)} must be greater than 0");
@@ -337,43 +339,42 @@ public class Plot : IDisposable
             throw new ArgumentException($"{nameof(height)} must be greater than 0");
 
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-        SKSurface surface = SKSurface.Create(info);
+        using SKSurface surface = SKSurface.Create(info);
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
+
         Render(surface);
-        SKImage snap = surface.Snapshot();
-        SKEncodedImageFormat skFormat = format.ToSKFormat();
-        SKData data = snap.Encode(skFormat, quality);
-        byte[] bytes = data.ToArray();
-        return bytes;
+        return new(surface.Snapshot());
     }
 
-    public string SaveJpeg(string path, int width, int height, int quality = 85)
+    public void SaveJpeg(string filePath, int width, int height, int quality = 85)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Jpeg, quality);
-        File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        using Image image = GetImage(width, height);
+        image.SaveJpeg(filePath, quality);
     }
 
-    public string SavePng(string path, int width, int height)
+    public void SavePng(string filePath, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Png, 100);
-        File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        using Image image = GetImage(width, height);
+        image.SavePng(filePath);
     }
 
-    public string SaveBmp(string path, int width, int height)
+    public void SaveBmp(string filePath, int width, int height)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Bmp, 100);
-        File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        using Image image = GetImage(width, height);
+        image.SaveBmp(filePath);
     }
 
-    public string SaveWebp(string path, int width, int height, int quality = 85)
+    public void SaveWebp(string filePath, int width, int height, int quality = 85)
     {
-        byte[] bytes = GetImageBytes(width, height, ImageFormat.Webp, quality);
-        File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        using Image image = GetImage(width, height);
+        image.SaveWebp(filePath, quality);
+    }
+
+    public void Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
+    {
+        using Image image = GetImage(width, height);
+        image.Save(filePath, format, quality);
     }
 
     #endregion

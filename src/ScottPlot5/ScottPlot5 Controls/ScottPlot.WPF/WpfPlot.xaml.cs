@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp.Views.Desktop;
 
@@ -22,7 +27,32 @@ namespace ScottPlot.WPF
         public WpfPlot()
         {
             InitializeComponent();
-            Interaction = new(this);
+            Interaction = new(this)
+            {
+                ContextMenuItems = GetDefaultContextMenuItems()
+            };
+        }
+
+        private ContextMenuItem[] GetDefaultContextMenuItems()
+        {
+            ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
+            ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+
+            return new ContextMenuItem[] { saveImage, copyImage };
+        }
+
+        private ContextMenu GetContextMenu()
+        {
+            ContextMenu menu = new();
+            foreach (var curr in Interaction.ContextMenuItems)
+            {
+                var menuItem = new MenuItem { Header = curr.Label };
+                menuItem.Click += (s, e) => curr.OnInvoke();
+
+                menu.Items.Add(menuItem);
+            }
+
+            return menu;
         }
 
         public void Replace(Interaction interaction)
@@ -33,6 +63,14 @@ namespace ScottPlot.WPF
         public void Refresh()
         {
             SKElement.InvalidateVisual();
+        }
+
+        public void ShowContextMenu(Pixel position)
+        {
+            var menu = GetContextMenu();
+            menu.PlacementTarget = this;
+            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+            menu.IsOpen = true;
         }
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -85,6 +123,39 @@ namespace ScottPlot.WPF
         {
             Interaction.KeyUp(e.Key());
             base.OnKeyUp(e);
+        }
+
+        private void OpenSaveImageDialog()
+        {
+            SaveFileDialog dialog = new()
+            {
+                FileName = Interaction.DefaultSaveImageFilename,
+                Filter = "PNG Files (*.png)|*.png" +
+                         "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
+                         "|BMP Files (*.bmp)|*.bmp" +
+                         "|WebP Files (*.webp)|*.webp" +
+                         "|All files (*.*)|*.*"
+            };
+
+            if (dialog.ShowDialog() is true)
+            {
+                // TODO: launch a pop-up window indicating if extension is invalid or save failed
+                ImageFormat format = ImageFormatLookup.FromFilePath(dialog.FileName);
+                Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
+            }
+        }
+
+        private void CopyImageToClipboard()
+        {
+            BitmapImage bmp = new();
+            bmp.BeginInit();
+            byte[] bytes = Plot.GetImage((int)ActualWidth, (int)ActualHeight).GetImageBytes();
+            using MemoryStream ms = new(bytes);
+            bmp.StreamSource = ms;
+            bmp.EndInit();
+            bmp.Freeze();
+
+            Clipboard.SetImage(bmp);
         }
     }
 }

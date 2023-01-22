@@ -132,4 +132,9 @@ public static class StandardActions
         control.Plot.AutoScale();
         control.Refresh();
     }
+
+    public static void ShowContextMenu(IPlotControl control, Pixel position)
+    {
+        control.ShowContextMenu(position);
+    }
 }
