@@ -133,8 +133,8 @@ public static class StandardActions
         control.Refresh();
     }
 
-    public static void RequestContextMenu(IPlotControl control, Pixel position)
+    public static void ShowContextMenu(IPlotControl control, Pixel position)
     {
-        control.RequestContextMenu(position);
+        control.ShowContextMenu(position);
     }
 }

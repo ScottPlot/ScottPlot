@@ -73,7 +73,7 @@ namespace ScottPlot.Eto
             Invalidate();
         }
 
-        public void RequestContextMenu(Pixel position)
+        public void ShowContextMenu(Pixel position)
         {
             var menu = GetContextMenu();
             menu.Show(this, new Point((int)position.X, (int)position.Y));

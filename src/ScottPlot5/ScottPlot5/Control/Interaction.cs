@@ -131,7 +131,7 @@ public class Interaction
 
         if (!isDragging && (button == Inputs.ClickContextMenuButton))
         {
-            Control.RequestContextMenu(position);
+            Control.ShowContextMenu(position);
         }
 
         Mouse.Up(button);

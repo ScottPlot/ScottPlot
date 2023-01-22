@@ -22,5 +22,8 @@ public interface IPlotControl
     /// </summary>
     void Replace(Interaction interaction);
 
-    void RequestContextMenu(Pixel position);
+    /// <summary>
+    /// Launch the default pop-up menu (typically in response to a right-click) at the given position in the control
+    /// </summary>
+    void ShowContextMenu(Pixel position);
 }

@@ -139,7 +139,7 @@ namespace ScottPlot.Avalonia
             InvalidateVisual();
         }
 
-        public void RequestContextMenu(Pixel position)
+        public void ShowContextMenu(Pixel position)
         {
             var manualContextMenu = GetContextMenu();
 

@@ -65,7 +65,7 @@ namespace ScottPlot.WPF
             SKElement.InvalidateVisual();
         }
 
-        public void RequestContextMenu(Pixel position)
+        public void ShowContextMenu(Pixel position)
         {
             var menu = GetContextMenu();
             menu.PlacementTarget = this;

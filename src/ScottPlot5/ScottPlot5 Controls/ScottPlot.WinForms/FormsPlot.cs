@@ -110,7 +110,8 @@ public class FormsPlot : UserControl, IPlotControl
         SKElement.Invalidate();
         base.Refresh();
     }
-    public void RequestContextMenu(Pixel position)
+
+    public void ShowContextMenu(Pixel position)
     {
         var menu = GetContextMenu();
         menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
