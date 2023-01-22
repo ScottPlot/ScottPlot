@@ -181,7 +181,7 @@ public class FormsPlot : UserControl, IPlotControl
             if (string.IsNullOrEmpty(dialog.FileName))
                 return;
 
-            var format = ImageFormatHelpers.FromFilePath(dialog.FileName);
+            var format = ImageFormatLookup.FromFilePath(dialog.FileName);
             if (!format.HasValue)
                 return;
 

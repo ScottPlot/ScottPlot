@@ -78,7 +78,7 @@ namespace ScottPlot.Avalonia
             if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
                 return;
 
-            var format = ImageFormatHelpers.FromFilePath(filename!);
+            var format = ImageFormatLookup.FromFilePath(filename!);
             if (!format.HasValue)
                 return;
 

@@ -139,7 +139,7 @@ namespace ScottPlot.WPF
 
             if (dialog.ShowDialog() is true)
             {
-                var format = ImageFormatHelpers.FromFilePath(dialog.FileName);
+                var format = ImageFormatLookup.FromFilePath(dialog.FileName);
                 if (!format.HasValue)
                     return;
 

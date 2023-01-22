@@ -165,7 +165,7 @@ namespace ScottPlot.Eto
                 if (!Path.HasExtension(filename))
                     filename += $".{dialog.CurrentFilter.Extensions[0]}";
 
-                var format = ImageFormatHelpers.FromFilePath(filename);
+                var format = ImageFormatLookup.FromFilePath(filename);
                 if (!format.HasValue)
                 {
                     return;
