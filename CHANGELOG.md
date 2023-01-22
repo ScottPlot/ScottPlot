@@ -13,6 +13,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
 _not yet published on NuGet..._
 * Axis: Throw exception immediately upon setting invalid axis limits (#2327) _Thanks @mjpz_
 * Heatmap: Added support for transparent single-color heatmaps (#2336) _Thanks @bukkideme_
+* Statistics: Improved median calculation method in population plots (#2363) _Thanks @Syntaxrabbit_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
