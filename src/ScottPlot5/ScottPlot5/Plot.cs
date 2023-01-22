@@ -330,11 +330,8 @@ public class Plot : IDisposable
         LastRenderInfo = Renderer.Render(surface, this);
     }
 
-    public Image GetImage(int? newWidth = null, int? newHeight = null)
+    public Image GetImage(int width, int height)
     {
-        int width = newWidth ?? (int)LastRenderInfo.FigureRect.Width;
-        int height = newHeight ?? (int)LastRenderInfo.FigureRect.Height;
-
         if (width < 1)
             throw new ArgumentException($"{nameof(width)} must be greater than 0");
 
@@ -350,33 +347,33 @@ public class Plot : IDisposable
         return new(surface.Snapshot());
     }
 
-    public void SaveJpeg(string filePath, int? newWidth = null, int? newHeight = null, int quality = 85)
+    public void SaveJpeg(string filePath, int width, int height, int quality = 85)
     {
-        using Image image = GetImage(newWidth, newHeight);
+        using Image image = GetImage(width, height);
         image.SaveJpeg(filePath, quality);
     }
 
-    public void SavePng(string filePath, int? newWidth = null, int? newHeight = null)
+    public void SavePng(string filePath, int width, int height)
     {
-        using Image image = GetImage(newWidth, newHeight);
+        using Image image = GetImage(width, height);
         image.SavePng(filePath);
     }
 
-    public void SaveBmp(string filePath, int? newWidth = null, int? newHeight = null)
+    public void SaveBmp(string filePath, int width, int height)
     {
-        using Image image = GetImage(newWidth, newHeight);
+        using Image image = GetImage(width, height);
         image.SaveBmp(filePath);
     }
 
-    public void SaveWebp(string filePath, int? newWidth = null, int? newHeight = null, int quality = 85)
+    public void SaveWebp(string filePath, int width, int height, int quality = 85)
     {
-        using Image image = GetImage(newWidth, newHeight);
+        using Image image = GetImage(width, height);
         image.SaveWebp(filePath, quality);
     }
 
-    public void Save(string filePath, int? newWidth = null, int? newHeight = null, ImageFormat format = ImageFormat.Png, int quality = 85)
+    public void Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
     {
-        using Image image = GetImage(newWidth, newHeight);
+        using Image image = GetImage(width, height);
         image.Save(filePath, format, quality);
     }
 
