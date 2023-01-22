@@ -149,7 +149,7 @@ namespace ScottPlot.Eto
 
         private void OpenSaveImageDialog()
         {
-            SaveFileDialog dialog = new() { FileName = "ScottPlot" };
+            SaveFileDialog dialog = new() { FileName = Interaction.DefaultSaveImageFilename };
 
             foreach (var curr in fileDialogFilters)
                 dialog.Filters.Add(curr);

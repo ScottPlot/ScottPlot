@@ -33,6 +33,7 @@ public class Interaction
     private bool IsZoomingRectangle = false;
 
     public ContextMenuItem[] ContextMenuItems = Array.Empty<ContextMenuItem>();
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
 
     public Interaction(IPlotControl control)
     {

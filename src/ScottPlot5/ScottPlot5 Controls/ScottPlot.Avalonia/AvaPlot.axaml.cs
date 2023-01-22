@@ -71,7 +71,7 @@ namespace ScottPlot.Avalonia
 
         private async void OpenSaveImageDialog()
         {
-            SaveFileDialog dialog = new() { InitialFileName = "ScottPlot.png", Filters = fileDialogFilters };
+            SaveFileDialog dialog = new() { InitialFileName = Interaction.DefaultSaveImageFilename, Filters = fileDialogFilters };
             Task<string?> filenameTask = dialog.ShowAsync((Window)this.GetVisualRoot());
             var filename = await filenameTask;
 

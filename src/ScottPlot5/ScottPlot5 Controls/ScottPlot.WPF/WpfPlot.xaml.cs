@@ -129,7 +129,7 @@ namespace ScottPlot.WPF
         {
             SaveFileDialog dialog = new()
             {
-                FileName = "ScottPlot.png",
+                FileName = Interaction.DefaultSaveImageFilename,
                 Filter = "PNG Files (*.png)|*.png" +
                          "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                          "|BMP Files (*.bmp)|*.bmp" +
