@@ -45,7 +45,7 @@ namespace ScottPlot.Avalonia
 
         private ContextMenuItem[] GetDefaultContextMenuItems()
         {
-            ContextMenuItem saveImage = new() { Header = "Save Image", OnInvoke = OpenSaveImageDialog };
+            ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
             // TODO: Copying images to the clipboard is still difficult in Avalonia https://github.com/AvaloniaUI/Avalonia/issues/3588
 
             return new ContextMenuItem[] { saveImage };
@@ -56,7 +56,7 @@ namespace ScottPlot.Avalonia
             List<MenuItem> items = new();
             foreach (var curr in Interaction.ContextMenuItems)
             {
-                var menuItem = new MenuItem { Header = curr.Header };
+                var menuItem = new MenuItem { Header = curr.Label };
                 menuItem.Click += (s, e) => curr.OnInvoke();
 
                 items.Add(menuItem);

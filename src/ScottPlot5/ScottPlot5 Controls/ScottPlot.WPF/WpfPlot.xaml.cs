@@ -35,8 +35,8 @@ namespace ScottPlot.WPF
 
         private ContextMenuItem[] GetDefaultContextMenuItems()
         {
-            ContextMenuItem saveImage = new() { Header = "Save Image", OnInvoke = OpenSaveImageDialog };
-            ContextMenuItem copyImage = new() { Header = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+            ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
+            ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
 
             return new ContextMenuItem[] { saveImage, copyImage };
         }
@@ -46,7 +46,7 @@ namespace ScottPlot.WPF
             ContextMenu menu = new();
             foreach (var curr in Interaction.ContextMenuItems)
             {
-                var menuItem = new MenuItem { Header = curr.Header };
+                var menuItem = new MenuItem { Header = curr.Label };
                 menuItem.Click += (s, e) => curr.OnInvoke();
 
                 menu.Items.Add(menuItem);

@@ -49,8 +49,8 @@ public class FormsPlot : UserControl, IPlotControl
 
     private ContextMenuItem[] GetDefaultContextMenuItems()
     {
-        ContextMenuItem saveImage = new() { Header = "Save Image", OnInvoke = OpenSaveImageDialog };
-        ContextMenuItem copyImage = new() { Header = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
+        ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
+        ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
 
         return new ContextMenuItem[] { saveImage, copyImage };
     }
@@ -61,7 +61,7 @@ public class FormsPlot : UserControl, IPlotControl
         ContextMenuStrip menu = new();
         foreach (var curr in Interaction.ContextMenuItems)
         {
-            var menuItem = new ToolStripMenuItem(curr.Header);
+            var menuItem = new ToolStripMenuItem(curr.Label);
             menuItem.Click += (s, e) => curr.OnInvoke();
 
             menu.Items.Add(menuItem);
