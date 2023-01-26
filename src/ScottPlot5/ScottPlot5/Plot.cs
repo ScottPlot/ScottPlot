@@ -36,7 +36,7 @@ public class Plot : IDisposable
     /// This property provides access to the primary horizontal axis below the plot.
     /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public BottomAxis XAxis
+    public IXAxis XAxis
     {
         get
         {
@@ -45,10 +45,7 @@ public class Plot : IDisposable
             if (!lowerAxes.Any())
                 throw new InvalidOperationException("Plot does not contain any bottom axes");
 
-            if (lowerAxes.First() is not BottomAxis)
-                throw new InvalidOperationException("Primary bottom axis is not a standard bottom axis");
-
-            return (BottomAxis)lowerAxes.First();
+            return lowerAxes.First();
         }
     }
 
@@ -57,7 +54,7 @@ public class Plot : IDisposable
     /// This property provides access to the primary vertical axis to the left of the plot.
     /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public LeftAxis YAxis
+    public IYAxis YAxis
     {
         get
         {
@@ -66,10 +63,7 @@ public class Plot : IDisposable
             if (!leftAxes.Any())
                 throw new InvalidOperationException("Plot does not contain any left axes");
 
-            if (leftAxes.First() is not LeftAxis)
-                throw new InvalidOperationException("Primary left axis is not a standard left axis");
-
-            return (LeftAxis)leftAxes.First();
+            return leftAxes.First();
         }
     }
 
