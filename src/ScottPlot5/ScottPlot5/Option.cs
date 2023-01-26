@@ -10,7 +10,7 @@ namespace ScottPlot
 
     internal struct Option<T1, T2>
     { 
-        public int ActiveField = 0;
+        public readonly int ActiveField = 0;
 
         private T1 _first;
         private T2 _second;
