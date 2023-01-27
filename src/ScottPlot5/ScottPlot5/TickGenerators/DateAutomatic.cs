@@ -96,7 +96,6 @@ public class DateAutomatic : ITickGenerator
 
     private static Option<List<Tick>, PixelSize> GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize bounds, SKPaint paint)
     {
-        // TODO: This generates tick labels with newlines, which are not measured or rendered correctly by skia
         List<Tick> ticks = new();
 
         DateTime start = unit.Next(DateTime.FromOADate(range.Min), -increment);
