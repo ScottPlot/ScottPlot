@@ -30,7 +30,7 @@ public class DateAutomatic : ITickGenerator
             long estimatedUnitTicks = timeSpan.Ticks / timeUnit.MinSize.Ticks;
             foreach (var increment in timeUnit.NiceIncrements) {
                 long estimatedTicks = estimatedUnitTicks / increment;
-                if (estimatedTicks > targetTickCount / 2 && estimatedTicks < targetTickCount * 2)
+                if (estimatedTicks > targetTickCount / 3 && estimatedTicks < targetTickCount * 3)
                     return timeUnit;
             }
         }
@@ -90,6 +90,7 @@ public class DateAutomatic : ITickGenerator
             else
             {
                 bounds = bounds.Max(result.Second);
+                bounds.Expand(new PixelPadding(10, 10, 0, 0));
             }
         }
     }
