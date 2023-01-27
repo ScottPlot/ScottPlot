@@ -38,4 +38,11 @@ public interface IAxis : IPanel
     /// The label is the text displayed distal to the ticks
     /// </summary>
     Label Label { get; }
+    float MajorTickLength { get; set; }
+    float MajorTickWidth { get; set; }
+    Color MajorTickColor { get; set; }
+    float MinorTickLength { get; set; }
+    float MinorTickWidth { get; set; }
+    Color MinorTickColor { get; set; }
+    LineStyle FrameLineStyle { get; }
 }
