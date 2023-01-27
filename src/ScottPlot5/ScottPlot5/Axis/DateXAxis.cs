@@ -11,7 +11,7 @@ namespace ScottPlot.Axis
     {
         public override Edge Edge { get; } = Edge.Bottom;
         public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
-        
+
         public DateXAxis()
         {
             TickGenerator = new TickGenerators.DateAutomatic();

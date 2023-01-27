@@ -9,7 +9,8 @@ namespace ScottPlot.TickGenerators;
 public class DateAutomatic : ITickGenerator
 {
     private readonly static IReadOnlyList<ITimeUnit> defaultTimeUnits;
-    static DateAutomatic() { 
+    static DateAutomatic()
+    {
         defaultTimeUnits = typeof(ITimeUnit).Assembly
         .GetTypes()
         .Where(t => t.IsClass && t.Namespace == "ScottPlot.Axis.TimeUnits" && t.GetInterfaces().Contains(typeof(ITimeUnit)))
@@ -17,24 +18,25 @@ public class DateAutomatic : ITickGenerator
         .OrderBy(t => t.MinSize)
         .ToArray();
     }
-    
+
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
     public int MaxTickCount { get; set; } = 10_000;
 
     public IReadOnlyList<ITimeUnit> TimeUnits { get; set; } = defaultTimeUnits;
-    
+
     private ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
         foreach (var timeUnit in TimeUnits)
         {
             long estimatedUnitTicks = timeSpan.Ticks / timeUnit.MinSize.Ticks;
-            foreach (var increment in timeUnit.NiceIncrements) {
+            foreach (var increment in timeUnit.NiceIncrements)
+            {
                 long estimatedTicks = estimatedUnitTicks / increment;
                 if (estimatedTicks > targetTickCount / 3 && estimatedTicks < targetTickCount * 3)
                     return timeUnit;
             }
         }
-        
+
         return TimeUnits.Last();
     }
 
@@ -66,7 +68,7 @@ public class DateAutomatic : ITickGenerator
             double coordinatesPerPixel = range.Span / size.Length;
             double increment = coordinatesPerPixel * bounds.Width / timeUnit.MinSize.TotalDays;
             int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.NiceIncrements);
-            
+
             if (niceIncrement is null)
             {
                 timeUnit = TimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
@@ -74,7 +76,8 @@ public class DateAutomatic : ITickGenerator
                 {
                     timeUnit = TimeUnits.Last();
                     niceIncrement = (int)Math.Ceiling(increment);
-                } else
+                }
+                else
                 {
                     continue;
                 }
