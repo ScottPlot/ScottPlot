@@ -10,7 +10,8 @@ namespace ScottPlot.Axis
     public class DateXAxis : XAxisBase, IXAxis
     {
         public override Edge Edge { get; } = Edge.Bottom;
-
+        public IEnumerable<double> ConvertDates(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
+        
         public DateXAxis()
         {
             TickGenerator = new TickGenerators.DateAutomatic();

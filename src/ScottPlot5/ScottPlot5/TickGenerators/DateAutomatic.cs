@@ -1,63 +1,119 @@
-﻿namespace ScottPlot.TickGenerators
+﻿using ScottPlot;
+using ScottPlot.Axis.TimeUnits;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace ScottPlot.TickGenerators;
+
+public class DateAutomatic : ITickGenerator
 {
-    public class DateAutomatic : ITickGenerator
+    private readonly static IReadOnlyList<ITimeUnit> defaultTimeUnits;
+    static DateAutomatic() { 
+        defaultTimeUnits = typeof(ITimeUnit).Assembly
+        .GetTypes()
+        .Where(t => t.IsClass && t.Namespace == "ScottPlot.Axis.TimeUnits" && t.GetInterfaces().Contains(typeof(ITimeUnit)))
+        .Select(t => (ITimeUnit)Activator.CreateInstance(t))
+        .OrderBy(t => t.MinSize)
+        .ToArray();
+    }
+    
+    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public int MaxTickCount { get; set; } = 10_000;
+
+    public IReadOnlyList<ITimeUnit> TimeUnits { get; set; } = defaultTimeUnits;
+
+    public ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
-        public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
-        public int MaxTickCount { get; set; } = 10_000;
-
-        public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
+        foreach (var timeUnit in TimeUnits)
         {
-            return Ticks.Where(x => range.Contains(x.Position));
+            long estimatedUnitTicks = timeSpan.Ticks / timeUnit.MinSize.Ticks;
+            foreach (var increment in timeUnit.NiceIncrements) {
+                long estimatedTicks = estimatedUnitTicks / increment;
+                if (estimatedTicks > targetTickCount / 2 && estimatedTicks < targetTickCount * 2)
+                    return timeUnit;
+            }
         }
+        
+        return TimeUnits.Last();
+    }
 
-        public void Regenerate(CoordinateRange range, PixelLength size)
+    private int? LeastMemberGreaterThan(double value, IReadOnlyList<int> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+            if (list[i] > value)
+                return list[i];
+        return null;
+    }
+
+    public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
+    {
+        return Ticks.Where(x => range.Contains(x.Position));
+    }
+
+    public void Regenerate(CoordinateRange range, PixelLength size)
+    {
+        using SKPaint paint = new();
+        TimeSpan span = TimeSpan.FromDays(range.Span);
+
+        ITimeUnit timeUnit = GetAppropriateTimeUnit(span);
+
+        int minTickWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
+        PixelSize bounds = new(minTickWidth, 12);
+
+        while (true)
         {
-            using SKPaint paint = new();
-            TimeSpan span = TimeSpan.FromDays(range.Span);
-            TimeSpan increment = TimeSpan.FromDays(1); // TODO: Don't hardcode this
-
-            int minTickWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
-            PixelSize bounds = new(minTickWidth, 12);
+            double coordinatesPerPixel = range.Span / size.Length;
+            double increment = coordinatesPerPixel * bounds.Width / timeUnit.MinSize.TotalDays;
+            int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.NiceIncrements);
             
-            while(true)
+            if (niceIncrement is null)
             {
-                double coordinatesPerPixel = range.Span / size.Length;
-                int numberOfIncrements = (int)Math.Ceiling(coordinatesPerPixel * bounds.Width); // TODO: Favour nice numbers (6 hours, 7 days, 3 months, etc)
-
-                var newIncrement = TimeSpan.FromTicks(increment.Ticks * numberOfIncrements); // Multiplication of TimeSpans isn't supported on all targets
-                var result = GenerateTicks(range, newIncrement, bounds, paint);
-                
-                if (result.ActiveField == 0)
+                timeUnit = TimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
+                if (timeUnit is null)
                 {
-                    Ticks = result.First.ToArray();
-                    return;
+                    timeUnit = TimeUnits.Last();
+                    niceIncrement = (int)Math.Ceiling(increment);
                 } else
                 {
-                    bounds = bounds.Max(result.Second);
+                    continue;
                 }
             }
-        }
 
-        private static Option<List<Tick>, PixelSize> GenerateTicks(CoordinateRange range, TimeSpan increment, PixelSize bounds, SKPaint paint)
-        {
-            List<Tick> ticks = new();
+            var result = GenerateTicks(range, timeUnit, niceIncrement.Value, bounds, paint);
 
-            DateTime start = DateTime.FromOADate(range.Min) - increment;
-            DateTime end = DateTime.FromOADate(range.Max) + increment;
-            for (DateTime dt = start; dt <= end; dt += increment)
+            if (result.ActiveField == 0)
             {
-                var text = dt.ToLongDateString(); // TODO: Proper format
+                Ticks = result.First.ToArray();
+                return;
+            }
+            else
+            {
+                bounds = bounds.Max(result.Second);
+            }
+        }
+    }
 
-                var actualSize = Drawing.MeasureString(text, paint);
-                if (!bounds.Contains(actualSize))
-                {
-                    return new(actualSize);
-                }
-                
-                ticks.Add(new Tick(dt.ToOADate(), text, true));
+    private static Option<List<Tick>, PixelSize> GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize bounds, SKPaint paint)
+    {
+        // TODO: This generates tick labels with newlines, which are not measured or rendered correctly by skia
+        List<Tick> ticks = new();
+
+        DateTime start = unit.Next(DateTime.FromOADate(range.Min), -increment);
+        DateTime end = unit.Next(DateTime.FromOADate(range.Max), increment);
+        for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
+        {
+            var text = dt.ToString(unit.GetFormat());
+
+            var actualSize = Drawing.MeasureString(text, paint);
+            if (!bounds.Contains(actualSize))
+            {
+                return new(actualSize);
             }
 
-            return new(ticks);
+            ticks.Add(new Tick(dt.ToOADate(), text, true));
         }
+
+        return new(ticks);
     }
 }
