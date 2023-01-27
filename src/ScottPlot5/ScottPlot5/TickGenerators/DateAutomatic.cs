@@ -22,8 +22,8 @@ public class DateAutomatic : ITickGenerator
     public int MaxTickCount { get; set; } = 10_000;
 
     public IReadOnlyList<ITimeUnit> TimeUnits { get; set; } = defaultTimeUnits;
-
-    public ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
+    
+    private ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
         foreach (var timeUnit in TimeUnits)
         {

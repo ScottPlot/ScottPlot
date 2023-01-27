@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Axis
 {
-    public class DateXAxis : XAxisBase, IXAxis
+    public class DateXAxis : XAxisBase, IXAxis, IDateAxis
     {
         public override Edge Edge { get; } = Edge.Bottom;
-        public IEnumerable<double> ConvertDates(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
+        public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
         
         public DateXAxis()
         {
