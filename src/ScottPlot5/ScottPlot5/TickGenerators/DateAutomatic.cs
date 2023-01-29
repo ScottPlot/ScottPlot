@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace ScottPlot.TickGenerators;
 
-public class DateAutomatic : ITickGenerator
+public class DateAutomatic : IDateTickGenerator
 {
     private readonly static IReadOnlyList<ITimeUnit> defaultTimeUnits;
     static DateAutomatic()
@@ -119,4 +119,6 @@ public class DateAutomatic : ITickGenerator
 
         return new(ticks);
     }
+
+    public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
 }
