@@ -81,8 +81,8 @@ public class Plot : IDisposable
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
-        // setup the zoom rectangle to use the primary axes
-        ZoomRectangle = new StandardZoomRectangle(xAxisPrimary, yAxisPrimary);
+        // setup the zoom rectangle
+        ZoomRectangle = new StandardZoomRectangle();
 
         // add a default grid using the primary axes
         IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);

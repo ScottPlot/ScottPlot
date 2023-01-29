@@ -92,7 +92,6 @@ public static class Common
     {
         if (plot.ZoomRectangle.IsVisible)
         {
-            plot.ZoomRectangle.Axes.DataRect = dataRect;
             plot.ZoomRectangle.Render(surface.Canvas, dataRect);
         }
     }

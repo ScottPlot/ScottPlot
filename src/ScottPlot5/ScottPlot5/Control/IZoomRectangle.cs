@@ -14,6 +14,4 @@ public interface IZoomRectangle
     void Clear();
 
     void Render(SKCanvas canvas, PixelRect dataRect);
-
-    IAxes Axes { get; }
 }
