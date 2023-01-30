@@ -13,9 +13,11 @@ namespace ScottPlot.Axis
         public override Edge Edge { get; } = Edge.Bottom;
 
         private IDateTickGenerator _tickGenerator = null!;
-        public override ITickGenerator TickGenerator { 
+        public override ITickGenerator TickGenerator
+        {
             get => _tickGenerator;
-            set {
+            set
+            {
                 if (value is IDateTickGenerator dateTickGenerator)
                     _tickGenerator = dateTickGenerator;
                 else
