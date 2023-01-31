@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using ScottPlot.TickGenerators.TimeUnits;
 
 namespace ScottPlot.Axis.TimeUnits;
 
@@ -8,7 +9,7 @@ public class Day : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromDays(1);
 
-    public string GetFormat()
+    public string GetDateTimeFormatString()
     {
         return $"d";
     }

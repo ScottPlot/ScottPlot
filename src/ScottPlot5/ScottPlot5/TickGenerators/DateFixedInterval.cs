@@ -31,7 +31,7 @@ namespace ScottPlot.TickGenerators
             DateTime end = Interval.Next(DateTime.FromOADate(range.Max), 1);
             for (DateTime dt = start; dt <= end; dt = Interval.Next(dt, IntervalsPerTick))
             {
-                ticks.Add(new Tick(dt.ToOADate(), dt.ToString(Interval.GetFormat()), true));
+                ticks.Add(new Tick(dt.ToOADate(), dt.ToString(Interval.GetDateTimeFormatString()), true));
             }
 
             Ticks = ticks.ToArray();

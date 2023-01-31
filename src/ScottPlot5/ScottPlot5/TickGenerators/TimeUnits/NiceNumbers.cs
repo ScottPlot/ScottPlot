@@ -1,7 +1,12 @@
-﻿namespace ScottPlot;
+﻿namespace ScottPlot.TickGenerators.TimeUnits;
 
+/// <summary>
+/// This class holds sequences of numbers to use as divisors for different DateTime spacings.
+/// </summary>
 internal static class NiceNumbers
 {
+    // TODO: shouldn't this live inside the TimeUnits classes themselves?
+
     public static readonly IReadOnlyList<int> Decimal = new int[] { 1, 5, 10 };
     public static readonly IReadOnlyList<int> Sexagesimal = new int[] { 1, 5, 10, 15, 20, 30, 60 };
     public static readonly IReadOnlyList<int> Dozenal = new int[] { 1, 2, 3, 4, 6, 12 };

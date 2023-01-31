@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using ScottPlot.TickGenerators.TimeUnits;
 
 namespace ScottPlot.Axis.TimeUnits;
 
@@ -8,7 +9,7 @@ public class Hour : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromHours(1);
 
-    public string GetFormat()
+    public string GetDateTimeFormatString()
     {
         return $"{CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern}\n{CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern}";
     }

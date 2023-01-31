@@ -51,69 +51,81 @@ public class DateAutomatic : IDateTickGenerator
 
     public void Regenerate(CoordinateRange range, PixelLength size)
     {
-        using SKPaint paint = new();
         TimeSpan span = TimeSpan.FromDays(range.Span);
+        ITimeUnit? timeUnit = GetAppropriateTimeUnit(span);
 
-        ITimeUnit timeUnit = GetAppropriateTimeUnit(span);
-
-        int minTickWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
-        PixelSize bounds = new(minTickWidth, 12);
+        // estimate the size of the largest tick label for this unit this unit
+        int maxExpectedTickLabelWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
+        int tickLabelHeight = 12;
+        PixelSize tickLabelBounds = new(maxExpectedTickLabelWidth, tickLabelHeight);
+        double coordinatesPerPixel = range.Span / size.Length;
 
         while (true)
         {
-            double coordinatesPerPixel = range.Span / size.Length;
-            double increment = coordinatesPerPixel * bounds.Width / timeUnit.MinSize.TotalDays;
+            // determine the ideal spacing to use between ticks
+            double increment = coordinatesPerPixel * tickLabelBounds.Width / timeUnit.MinSize.TotalDays;
             int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.NiceIncrements);
-
             if (niceIncrement is null)
             {
                 timeUnit = TimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
-                if (timeUnit is null)
-                {
-                    timeUnit = TimeUnits.Last();
-                    niceIncrement = (int)Math.Ceiling(increment);
-                }
-                else
-                {
+                if (timeUnit is not null)
                     continue;
-                }
+                timeUnit = TimeUnits[TimeUnits.Count - 1];
+                niceIncrement = (int)Math.Ceiling(increment);
             }
 
-            var result = GenerateTicks(range, timeUnit, niceIncrement.Value, bounds, paint);
+            // attempt to generate the ticks given these conditions
+            (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds);
 
-            if (result.ActiveField == 0)
+            // if ticks were returned, use them
+            if (ticks is not null)
             {
-                Ticks = result.First.ToArray();
+                Ticks = ticks.ToArray();
                 return;
             }
-            else
+
+            // if no ticks were returned it means the conditions were too dense and tick labels
+            // overlapped, so expand the tick label bounds and try again.
+            if (largestTickLabelSize is not null)
             {
-                bounds = bounds.Max(result.Second);
-                bounds.Expand(new PixelPadding(10, 10, 0, 0));
+                tickLabelBounds = tickLabelBounds.Max(largestTickLabelSize.Value);
+                tickLabelBounds.Expand(new PixelPadding(10, 10, 0, 0));
+                continue;
             }
+
+            throw new InvalidOperationException($"{nameof(ticks)} and {nameof(largestTickLabelSize)} are both null");
         }
     }
 
-    private static Option<List<Tick>, PixelSize> GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize bounds, SKPaint paint)
+    /// <summary>
+    /// If a tick is too large ????? returns the size of the large label that broke the bank
+    /// If ticks all fit, returns their positions
+    /// </summary>
+    private static (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
     {
+        using SKPaint paint = new();
+
         List<Tick> ticks = new();
 
         DateTime start = unit.Next(DateTime.FromOADate(range.Min), -increment);
         DateTime end = unit.Next(DateTime.FromOADate(range.Max), increment);
+
+        string dtFormat = unit.GetDateTimeFormatString();
         for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
         {
-            var text = dt.ToString(unit.GetFormat());
+            string tickLabel = dt.ToString(dtFormat);
+            PixelSize tickLabelSize = Drawing.MeasureString(tickLabel, paint);
 
-            var actualSize = Drawing.MeasureString(text, paint);
-            if (!bounds.Contains(actualSize))
-            {
-                return new(actualSize);
-            }
+            bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
+            if (tickLabelIsTooLarge)
+                return (null, tickLabelSize);
 
-            ticks.Add(new Tick(dt.ToOADate(), text, true));
+            double tickPosition = dt.ToOADate();
+            Tick tick = new(tickPosition, tickLabel, isMajor: true);
+            ticks.Add(tick);
         }
 
-        return new(ticks);
+        return (ticks, null);
     }
 
     public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
