@@ -9,6 +9,11 @@ public class Day : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromDays(1);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, dt.Day);
+    }
+
     public string GetDateTimeFormatString()
     {
         return $"d";

@@ -105,14 +105,19 @@ public class DateTimeAutomatic : IDateTickGenerator
     /// </summary>
     private static (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
     {
-        using SKPaint paint = new();
+        DateTime rangeMin = DateTime.FromOADate(range.Min);
+        DateTime rangeMax = DateTime.FromOADate(range.Max);
 
-        List<Tick> ticks = new();
+        // range.Min could be anything, but when calculating start and stop it must be "snapped" to the best tick
+        rangeMin = unit.Snap(rangeMin);
+        rangeMax = unit.Snap(rangeMax);
 
-        DateTime start = unit.Next(DateTime.FromOADate(range.Min), -increment);
-        DateTime end = unit.Next(DateTime.FromOADate(range.Max), increment);
-
+        DateTime start = unit.Next(rangeMin, -increment);
+        DateTime end = unit.Next(rangeMax, increment);
         string dtFormat = unit.GetDateTimeFormatString();
+
+        using SKPaint paint = new();
+        List<Tick> ticks = new();
         for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
         {
             string tickLabel = dt.ToString(dtFormat);

@@ -9,6 +9,11 @@ public class Minute : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromMinutes(1);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, dt.Day);
+    }
+
     public string GetDateTimeFormatString()
     {
         return $"{CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern}\n{CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern}";

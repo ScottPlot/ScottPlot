@@ -9,6 +9,11 @@ public class Year : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromDays(365);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year);
+    }
+
     public string GetDateTimeFormatString()
     {
         return $"yyyy";
@@ -16,6 +21,13 @@ public class Year : ITimeUnit
 
     public DateTime Next(DateTime dateTime, int increment = 1)
     {
-        return dateTime.AddYears(increment);
+        try
+        {
+            return dateTime.AddYears(increment);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return DateTime.MaxValue;
+        }
     }
 }

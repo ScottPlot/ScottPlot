@@ -8,6 +8,11 @@ public class Month : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromDays(28);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, 1);
+    }
+
     public string GetDateTimeFormatString()
     {
         return $"d";

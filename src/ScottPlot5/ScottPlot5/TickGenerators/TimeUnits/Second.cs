@@ -9,6 +9,11 @@ public class Second : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromSeconds(1);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+    }
+
     public string GetDateTimeFormatString()
     {
         return $"{CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern}\n{CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern}";

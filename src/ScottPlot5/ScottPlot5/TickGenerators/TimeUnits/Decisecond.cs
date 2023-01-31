@@ -9,6 +9,11 @@ public class Decisecond : ITimeUnit
 
     public TimeSpan MinSize => TimeSpan.FromMilliseconds(100);
 
+    public DateTime Snap(DateTime dt)
+    {
+        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, dt.Millisecond % 100);
+    }
+
     public string GetDateTimeFormatString()
     {
         string hourSpecifier = CultureInfo.CurrentCulture.Uses24HourClock() ? "HH" : "hh";

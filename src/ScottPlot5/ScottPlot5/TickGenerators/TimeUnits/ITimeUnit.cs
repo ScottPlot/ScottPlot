@@ -23,4 +23,9 @@ public interface ITimeUnit
     /// To represent spans smaller than this, try the next smaller unit.
     /// </summary>
     public TimeSpan MinSize { get; }
+
+    /// <summary>
+    /// Return a given date "snapped" to the nearest nice tick position
+    /// </summary>
+    public DateTime Snap(DateTime dateTime);
 }
