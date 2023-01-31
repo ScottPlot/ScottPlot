@@ -10,6 +10,9 @@ public enum Edge
 
 public static class EdgeExtensions
 {
+    /// <summary>
+    /// True for bottom and top axes
+    /// </summary>
     public static bool IsHorizontal(this Edge edge) => edge switch
     {
         Edge.Left => false,
@@ -19,6 +22,9 @@ public static class EdgeExtensions
         _ => throw new NotImplementedException(edge.ToString())
     };
 
+    /// <summary>
+    /// True for left and right axes
+    /// </summary>
     public static bool IsVertical(this Edge edge) => edge switch
     {
         Edge.Left => true,
