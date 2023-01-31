@@ -5,7 +5,7 @@ namespace ScottPlot.Axis.TimeUnits;
 
 public class Decisecond : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Decimal;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Decimal;
 
     public TimeSpan MinSize => TimeSpan.FromMilliseconds(100);
 

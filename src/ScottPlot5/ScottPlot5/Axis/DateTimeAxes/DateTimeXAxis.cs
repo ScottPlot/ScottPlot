@@ -7,7 +7,7 @@ public class DateTimeXAxis : XAxisBase, IXAxis, IDateAxis
 {
     public override Edge Edge { get; } = Edge.Bottom;
 
-    private IDateTickGenerator _tickGenerator = new DateAutomatic();
+    private IDateTickGenerator _tickGenerator = new DateTimeAutomatic();
     public override ITickGenerator TickGenerator
     {
         get => _tickGenerator;

@@ -5,7 +5,7 @@ namespace ScottPlot.Axis.TimeUnits;
 
 public class Hour : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Dozenal;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Dozenal;
 
     public TimeSpan MinSize => TimeSpan.FromHours(1);
 

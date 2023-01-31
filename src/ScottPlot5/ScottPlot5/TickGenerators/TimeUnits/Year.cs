@@ -5,7 +5,7 @@ namespace ScottPlot.Axis.TimeUnits;
 
 public class Year : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Years;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Years;
 
     public TimeSpan MinSize => TimeSpan.FromDays(365);
 

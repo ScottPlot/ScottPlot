@@ -2,12 +2,12 @@
 
 namespace ScottPlot.TickGenerators
 {
-    public class DateFixedInterval : IDateTickGenerator
+    public class DateTimeFixedInterval : IDateTickGenerator
     {
         public ITimeUnit Interval { get; set; }
         public int IntervalsPerTick { get; set; } = 1;
 
-        public DateFixedInterval(ITimeUnit interval, int intervalsPerTick = 1)
+        public DateTimeFixedInterval(ITimeUnit interval, int intervalsPerTick = 1)
         {
             Interval = interval;
             IntervalsPerTick = intervalsPerTick;

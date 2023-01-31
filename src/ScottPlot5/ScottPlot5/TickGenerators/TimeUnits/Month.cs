@@ -1,11 +1,10 @@
-﻿using System.Globalization;
-using ScottPlot.TickGenerators.TimeUnits;
+﻿using ScottPlot.TickGenerators.TimeUnits;
 
 namespace ScottPlot.Axis.TimeUnits;
 
 public class Month : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Months;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Months;
 
     public TimeSpan MinSize => TimeSpan.FromDays(28);
 

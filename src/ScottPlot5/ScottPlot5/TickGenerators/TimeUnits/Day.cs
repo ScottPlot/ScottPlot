@@ -5,7 +5,7 @@ namespace ScottPlot.Axis.TimeUnits;
 
 public class Day : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Days;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Days;
 
     public TimeSpan MinSize => TimeSpan.FromDays(1);
 

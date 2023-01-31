@@ -5,7 +5,7 @@ namespace ScottPlot.Axis.TimeUnits;
 
 public class Minute : ITimeUnit
 {
-    public IReadOnlyList<int> NiceIncrements => NiceNumbers.Sexagesimal;
+    public IReadOnlyList<int> Divisors => StandardDivisors.Sexagesimal;
 
     public TimeSpan MinSize => TimeSpan.FromMinutes(1);
 

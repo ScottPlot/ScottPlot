@@ -2,17 +2,18 @@
 
 namespace ScottPlot.TickGenerators;
 
-public class DateAutomatic : IDateTickGenerator
+public class DateTimeAutomatic : IDateTickGenerator
 {
     private readonly static IReadOnlyList<ITimeUnit> defaultTimeUnits;
-    static DateAutomatic()
+
+    static DateTimeAutomatic()
     {
         defaultTimeUnits = typeof(ITimeUnit).Assembly
-        .GetTypes()
-        .Where(t => t.IsClass && t.Namespace == "ScottPlot.Axis.TimeUnits" && t.GetInterfaces().Contains(typeof(ITimeUnit)))
-        .Select(t => (ITimeUnit)Activator.CreateInstance(t))
-        .OrderBy(t => t.MinSize)
-        .ToArray();
+            .GetTypes()
+            .Where(t => t.IsClass && t.Namespace == "ScottPlot.Axis.TimeUnits" && t.GetInterfaces().Contains(typeof(ITimeUnit)))
+            .Select(t => (ITimeUnit)Activator.CreateInstance(t)!)
+            .OrderBy(t => t.MinSize)
+            .ToArray();
     }
 
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
@@ -25,7 +26,7 @@ public class DateAutomatic : IDateTickGenerator
         foreach (var timeUnit in TimeUnits)
         {
             long estimatedUnitTicks = timeSpan.Ticks / timeUnit.MinSize.Ticks;
-            foreach (var increment in timeUnit.NiceIncrements)
+            foreach (var increment in timeUnit.Divisors)
             {
                 long estimatedTicks = estimatedUnitTicks / increment;
                 if (estimatedTicks > targetTickCount / 3 && estimatedTicks < targetTickCount * 3)
@@ -64,7 +65,7 @@ public class DateAutomatic : IDateTickGenerator
         {
             // determine the ideal spacing to use between ticks
             double increment = coordinatesPerPixel * tickLabelBounds.Width / timeUnit.MinSize.TotalDays;
-            int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.NiceIncrements);
+            int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.Divisors);
             if (niceIncrement is null)
             {
                 timeUnit = TimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
@@ -98,8 +99,9 @@ public class DateAutomatic : IDateTickGenerator
     }
 
     /// <summary>
-    /// If a tick is too large ????? returns the size of the large label that broke the bank
-    /// If ticks all fit, returns their positions
+    /// This method attempts to find an ideal set of ticks.
+    /// If all labels fit within the bounds, the list of ticks is returned.
+    /// If a label doesn't fit in the bounds, the list is null and the size of the large tick label is returned.
     /// </summary>
     private static (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
     {

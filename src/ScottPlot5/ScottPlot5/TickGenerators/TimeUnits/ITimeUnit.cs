@@ -5,7 +5,7 @@ public interface ITimeUnit
     /// <summary>
     /// An array of integers that serve as good divisors to subdivide this time unit
     /// </summary>
-    public IReadOnlyList<int> NiceIncrements { get; }
+    public IReadOnlyList<int> Divisors { get; }
 
     /// <summary>
     /// Returns the format string used to display tick labels of this time unit.
@@ -19,7 +19,8 @@ public interface ITimeUnit
     public DateTime Next(DateTime dateTime, int increment = 1);
 
     /// <summary>
-    /// ??????????
+    /// Minimum span this time unit can represent.
+    /// To represent spans smaller than this, try the next smaller unit.
     /// </summary>
     public TimeSpan MinSize { get; }
 }
