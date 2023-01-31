@@ -30,6 +30,8 @@ public class Plot : IDisposable
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
 
+    public AxisStyler Axes { get; }
+
     public PlotStyler Style { get; }
 
     /// <summary>
@@ -96,6 +98,7 @@ public class Plot : IDisposable
         Add = new(this);
 
         // add styling helper classes
+        Axes = new(this);
         Style = new(this);
     }
 
