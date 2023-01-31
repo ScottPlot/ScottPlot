@@ -4,6 +4,7 @@ internal static class TODO
 {
     /* ### SCOSCOTT'S RUNNING LIST OF UPCOMING TASKS ##    
      * DateTime tick generator
+     *   IAxis.cs has lots of tick styling that should be a Axis.TickStyle
      * Manual tick generator
      * Make more marker class
      * LinePattern is not currently supported

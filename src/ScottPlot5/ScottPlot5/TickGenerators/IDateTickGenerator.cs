@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.TickGenerators;
 
-namespace ScottPlot.TickGenerators
+public interface IDateTickGenerator : ITickGenerator
 {
-    public interface IDateTickGenerator : ITickGenerator
-    {
-        IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates);
-    }
+    IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates);
 }

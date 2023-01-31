@@ -1,8 +1,4 @@
-﻿using ScottPlot;
-using ScottPlot.Axis.TimeUnits;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using ScottPlot.Axis.TimeUnits;
 
 namespace ScottPlot.TickGenerators;
 
