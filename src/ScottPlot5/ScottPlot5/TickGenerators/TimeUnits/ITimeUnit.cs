@@ -25,7 +25,8 @@ public interface ITimeUnit
     public TimeSpan MinSize { get; }
 
     /// <summary>
-    /// Return a given date "snapped" to the nearest nice tick position
+    /// Return a given date "snapped" back to the nearest nice tick position.
+    /// Use this to find a good tick position for a given DateTime.
     /// </summary>
     public DateTime Snap(DateTime dateTime);
 }

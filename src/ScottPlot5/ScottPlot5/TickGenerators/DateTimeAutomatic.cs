@@ -37,6 +37,19 @@ public class DateTimeAutomatic : IDateTickGenerator
         return TimeUnits.Last();
     }
 
+    private ITimeUnit GetLargerTimeUnit(ITimeUnit timeUnit)
+    {
+        for (int i = 0; i < TimeUnits.Count - 1; i++)
+        {
+            if (timeUnit.GetType() == TimeUnits[i].GetType())
+            {
+                return TimeUnits[i + 1];
+            }
+        }
+
+        return TimeUnits.Last();
+    }
+
     private int? LeastMemberGreaterThan(double value, IReadOnlyList<int> list)
     {
         for (int i = 0; i < list.Count; i++)
@@ -103,13 +116,13 @@ public class DateTimeAutomatic : IDateTickGenerator
     /// If all labels fit within the bounds, the list of ticks is returned.
     /// If a label doesn't fit in the bounds, the list is null and the size of the large tick label is returned.
     /// </summary>
-    private static (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
+    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
     {
         DateTime rangeMin = DateTime.FromOADate(range.Min);
         DateTime rangeMax = DateTime.FromOADate(range.Max);
 
         // range.Min could be anything, but when calculating start and stop it must be "snapped" to the best tick
-        rangeMin = unit.Snap(rangeMin);
+        rangeMin = GetLargerTimeUnit(unit).Snap(rangeMin);
         rangeMax = unit.Snap(rangeMax);
 
         DateTime start = unit.Next(rangeMin, -increment);
