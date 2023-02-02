@@ -11,7 +11,7 @@ public class Minute : ITimeUnit
 
     public DateTime Snap(DateTime dt)
     {
-        return new DateTime(dt.Year, dt.Month, dt.Day);
+        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
     }
 
     public string GetDateTimeFormatString()
