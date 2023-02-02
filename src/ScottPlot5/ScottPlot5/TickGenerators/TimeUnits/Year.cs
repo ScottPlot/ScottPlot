@@ -21,13 +21,16 @@ public class Year : ITimeUnit
 
     public DateTime Next(DateTime dateTime, int increment = 1)
     {
-        try
-        {
-            return dateTime.AddYears(increment);
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            return DateTime.MaxValue;
-        }
+        // TODO: move this into extension methods file
+
+        int newYear = dateTime.Year + increment;
+
+        if (newYear <= 100)
+            return new DateTime(100, 1, 1);
+
+        if (newYear > 10_000)
+            return new DateTime(9_999, 1, 1);
+
+        return dateTime.AddYears(increment);
     }
 }

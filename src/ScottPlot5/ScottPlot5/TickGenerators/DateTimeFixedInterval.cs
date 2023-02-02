@@ -16,7 +16,10 @@ namespace ScottPlot.TickGenerators
         public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
         public int MaxTickCount { get; set; } = 10_000;
 
-        public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
+        public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
+        {
+            return dates.Select(dt => dt.ToNumber());
+        }
 
         public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
         {
@@ -27,11 +30,11 @@ namespace ScottPlot.TickGenerators
         {
             List<Tick> ticks = new();
 
-            DateTime start = Interval.Next(DateTime.FromOADate(range.Min), -1);
-            DateTime end = Interval.Next(DateTime.FromOADate(range.Max), 1);
+            DateTime start = Interval.Next(range.Min.ToDateTime(), -1);
+            DateTime end = Interval.Next(range.Max.ToDateTime(), 1);
             for (DateTime dt = start; dt <= end; dt = Interval.Next(dt, IntervalsPerTick))
             {
-                ticks.Add(new Tick(dt.ToOADate(), dt.ToString(Interval.GetDateTimeFormatString()), true));
+                ticks.Add(new Tick(dt.ToNumber(), dt.ToString(Interval.GetDateTimeFormatString()), true));
             }
 
             Ticks = ticks.ToArray();

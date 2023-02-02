@@ -65,6 +65,13 @@ public class DateTimeAutomatic : IDateTickGenerator
 
     public void Regenerate(CoordinateRange range, PixelLength size)
     {
+        if (range.Span >= TimeSpan.MaxValue.Days)
+        {
+            // cases of extreme zoom (10,000 years)
+            Ticks = Array.Empty<Tick>();
+            return;
+        }
+
         TimeSpan span = TimeSpan.FromDays(range.Span);
         ITimeUnit? timeUnit = GetAppropriateTimeUnit(span);
 
@@ -118,8 +125,8 @@ public class DateTimeAutomatic : IDateTickGenerator
     /// </summary>
     private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds)
     {
-        DateTime rangeMin = DateTime.FromOADate(range.Min);
-        DateTime rangeMax = DateTime.FromOADate(range.Max);
+        DateTime rangeMin = range.Min.ToDateTime();
+        DateTime rangeMax = range.Max.ToDateTime();
 
         // range.Min could be anything, but when calculating start and stop it must be "snapped" to the best tick
         rangeMin = GetLargerTimeUnit(unit).Snap(rangeMin);
@@ -131,6 +138,8 @@ public class DateTimeAutomatic : IDateTickGenerator
 
         using SKPaint paint = new();
         List<Tick> ticks = new();
+
+        const int maxTickCount = 1000;
         for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
         {
             string tickLabel = dt.ToString(dtFormat);
@@ -140,13 +149,20 @@ public class DateTimeAutomatic : IDateTickGenerator
             if (tickLabelIsTooLarge)
                 return (null, tickLabelSize);
 
-            double tickPosition = dt.ToOADate();
+            double tickPosition = dt.ToNumber();
             Tick tick = new(tickPosition, tickLabel, isMajor: true);
             ticks.Add(tick);
+
+            // this prevents infinite loops with weird axis limits or small delta (e.g., DateTime)
+            if (ticks.Count >= maxTickCount)
+                break;
         }
 
         return (ticks, null);
     }
 
-    public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates) => dates.Select(dt => dt.ToOADate());
+    public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
+    {
+        return dates.Select(dt => dt.ToNumber());
+    }
 }
