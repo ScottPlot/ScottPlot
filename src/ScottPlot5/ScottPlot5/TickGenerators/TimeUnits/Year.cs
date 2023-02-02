@@ -11,7 +11,7 @@ public class Year : ITimeUnit
 
     public DateTime Snap(DateTime dt)
     {
-        return new DateTime(dt.Year);
+        return new DateTime(dt.Year, 1, 1);
     }
 
     public string GetDateTimeFormatString()
