@@ -87,7 +87,13 @@ public static class AxisRendering
             surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
 
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, xPx, yEdge + fontSpacing, paint);
+            {
+                foreach (string line in tick.Label.Split('\n'))
+                {
+                    surface.Canvas.DrawText(line, xPx, yEdge + fontSpacing, paint);
+                    fontSpacing += paint.TextSize;
+                }
+            }
         }
     }
 

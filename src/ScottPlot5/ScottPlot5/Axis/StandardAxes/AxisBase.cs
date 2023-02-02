@@ -20,7 +20,7 @@ public abstract class AxisBase
         set => Range.Max = value;
     }
 
-    public ITickGenerator TickGenerator { get; set; } = null!;
+    public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
     public Label Label { get; private set; } = new()
     {

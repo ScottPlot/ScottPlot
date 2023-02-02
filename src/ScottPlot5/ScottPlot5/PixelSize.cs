@@ -48,6 +48,11 @@ public struct PixelSize
     {
         return new PixelSize(Width - padding.TotalHorizontal, Height - padding.TotalVertical);
     }
+
+    public bool Contains(PixelSize size)
+    {
+        return Width >= size.Width && Height >= size.Height;
+    }
 }
 
 public static class PixelSizeExtensions

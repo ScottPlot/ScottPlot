@@ -18,12 +18,8 @@ public class StandardZoomRectangle : IZoomRectangle
     public bool HorizontalSpan { get; set; } = false;
     public bool VerticalSpan { get; set; } = false;
 
-    public IAxes Axes { get; } = Axis.Axes.Default;
-
-    public StandardZoomRectangle(IXAxis xAxis, IYAxis yAxis)
+    public StandardZoomRectangle()
     {
-        Axes.XAxis = xAxis;
-        Axes.YAxis = yAxis;
     }
 
     public void Update(Pixel mouseDown, Pixel mouseUp)
@@ -40,11 +36,7 @@ public class StandardZoomRectangle : IZoomRectangle
 
     public void Render(SKCanvas canvas, PixelRect dataRect)
     {
-        Coordinates coordDown = Axes.GetCoordinates(MouseDown);
-        Coordinates coordUp = Axes.GetCoordinates(MouseUp);
-        CoordinateRect coordRect = new(coordDown, coordUp);
-        PixelRect pxRect = Axes.GetPixelRect(coordRect);
-        SKRect rect = pxRect.ToSKRect();
+        SKRect rect = new(MouseDown.X, MouseDown.Y, MouseUp.X, MouseUp.Y);
 
         canvas.Save();
         canvas.ClipRect(dataRect.ToSKRect());

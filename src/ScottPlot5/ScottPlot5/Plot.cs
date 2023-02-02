@@ -30,13 +30,15 @@ public class Plot : IDisposable
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
 
+    public AxisStyler Axes { get; }
+
     public PlotStyler Style { get; }
 
     /// <summary>
     /// This property provides access to the primary horizontal axis below the plot.
     /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public BottomAxis XAxis
+    public IXAxis XAxis
     {
         get
         {
@@ -45,10 +47,7 @@ public class Plot : IDisposable
             if (!lowerAxes.Any())
                 throw new InvalidOperationException("Plot does not contain any bottom axes");
 
-            if (lowerAxes.First() is not BottomAxis)
-                throw new InvalidOperationException("Primary bottom axis is not a standard bottom axis");
-
-            return (BottomAxis)lowerAxes.First();
+            return lowerAxes.First();
         }
     }
 
@@ -57,7 +56,7 @@ public class Plot : IDisposable
     /// This property provides access to the primary vertical axis to the left of the plot.
     /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
     /// </summary>
-    public LeftAxis YAxis
+    public IYAxis YAxis
     {
         get
         {
@@ -66,10 +65,7 @@ public class Plot : IDisposable
             if (!leftAxes.Any())
                 throw new InvalidOperationException("Plot does not contain any left axes");
 
-            if (leftAxes.First() is not LeftAxis)
-                throw new InvalidOperationException("Primary left axis is not a standard left axis");
-
-            return (LeftAxis)leftAxes.First();
+            return leftAxes.First();
         }
     }
 
@@ -87,8 +83,8 @@ public class Plot : IDisposable
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
-        // setup the zoom rectangle to use the primary axes
-        ZoomRectangle = new StandardZoomRectangle(xAxisPrimary, yAxisPrimary);
+        // setup the zoom rectangle
+        ZoomRectangle = new StandardZoomRectangle();
 
         // add a default grid using the primary axes
         IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
@@ -102,6 +98,7 @@ public class Plot : IDisposable
         Add = new(this);
 
         // add styling helper classes
+        Axes = new(this);
         Style = new(this);
     }
 

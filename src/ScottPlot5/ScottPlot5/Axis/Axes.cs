@@ -44,24 +44,4 @@ public class Axes : IAxes
             bottom: GetPixelY(rect.YMin),
             top: GetPixelY(rect.YMax));
     }
-
-    public double GetPixelDistanceX(double xDistance)
-    {
-        return XAxis.GetPixelDistance(xDistance, DataRect);
-    }
-
-    public double GetPixelDistanceY(double yDistance)
-    {
-        return YAxis.GetPixelDistance(yDistance, DataRect);
-    }
-
-    public double GetCoordinateDistanceX(double xDistance)
-    {
-        return XAxis.GetCoordinateDistance(xDistance, DataRect);
-    }
-
-    public double GetCoordinateDistanceY(double yDistance)
-    {
-        return YAxis.GetCoordinateDistance(yDistance, DataRect);
-    }
 }

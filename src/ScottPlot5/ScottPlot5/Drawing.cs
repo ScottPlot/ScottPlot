@@ -9,6 +9,14 @@ public static class Drawing
 {
     public static PixelSize MeasureString(string text, SKPaint paint)
     {
+        var strings = text.Split('\n');
+        if (strings.Length > 1)
+        {
+            return strings
+                .Select(s => MeasureString(s, paint))
+                .Aggregate((a, b) => new PixelSize(Math.Max(a.Width, b.Width), a.Height + b.Height));
+        }
+
         SKRect bounds = new();
         paint.MeasureText(text, ref bounds);
 

@@ -173,4 +173,19 @@ public static class Generate
             .Select(_ => gen.RandomNumber(min, max))
             .ToArray();
     }
+
+    /// <summary>
+    /// Return an array of DateTimes starting at the given value changing by the step size
+    /// </summary>
+    public static DateTime[] ConsecutiveDateTimes(DateTime start, TimeSpan step, int count)
+    {
+        DateTime dt = start;
+        DateTime[] values = new DateTime[count];
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = dt;
+            dt += step;
+        }
+        return values;
+    }
 }
