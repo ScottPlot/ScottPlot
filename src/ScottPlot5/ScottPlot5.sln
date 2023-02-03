@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E3534AA4-E834-4648-83EF-94D667D17AEC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Uno", "ScottPlot5 Sandbox\Sandbox.Uno\Sandbox.Uno.csproj", "{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Uno", "ScottPlot5 Controls\ScottPlot.Uno\ScottPlot.Uno.csproj", "{74C680C8-8EE4-4DF3-BAC7-06C4762B1318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{E3534AA4-E834-4648-83EF-94D667D17AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3534AA4-E834-4648-83EF-94D667D17AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3534AA4-E834-4648-83EF-94D667D17AEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C680C8-8EE4-4DF3-BAC7-06C4762B1318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C680C8-8EE4-4DF3-BAC7-06C4762B1318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C680C8-8EE4-4DF3-BAC7-06C4762B1318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C680C8-8EE4-4DF3-BAC7-06C4762B1318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +113,8 @@ Global
 		{BAB54E6C-7114-481D-8F5E-0EC668F1644A} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{E4A9D4D9-2E09-4666-B742-8AF36C23E776} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{E3534AA4-E834-4648-83EF-94D667D17AEC} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
+		{84AA3CA9-C3DE-45D6-8C9A-4E108C6DA48F} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
+		{74C680C8-8EE4-4DF3-BAC7-06C4762B1318} = {957BAA80-422B-4231-BEC1-D03FD89425A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
