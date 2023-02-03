@@ -1,13 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <Nullable>enable</Nullable>
-        <UseWPF>true</UseWPF>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <WindowsPackageType>None</WindowsPackageType>
+    <Nullable>enable</Nullable>
+    <UseWinUI>true</UseWinUI>
+  </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
       <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Uno\ScottPlot.Uno.csproj" />
-    </ItemGroup>
+      -->
+  </ItemGroup>
 </Project>
