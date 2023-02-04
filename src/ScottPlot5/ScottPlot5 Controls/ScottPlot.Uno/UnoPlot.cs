@@ -4,20 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ScottPlot.Control;
-using SkiaSharp.Views.Desktop;
+using SkiaSharp.Views.Windows;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 
 namespace ScottPlot.Uno
 {
-    /// <summary>
-    /// Interaction logic for UnoPlot.xaml
-    /// </summary>
     public partial class UnoPlot : UserControl, IPlotControl
     {
         public Plot Plot { get; } = new();
@@ -26,7 +22,7 @@ namespace ScottPlot.Uno
 
         public UnoPlot()
         {
-            InitializeComponent();
+            // InitializeComponent();
             Interaction = new(this)
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
@@ -40,8 +36,8 @@ namespace ScottPlot.Uno
 
             return new ContextMenuItem[] { saveImage, copyImage };
         }
-
-        private ContextMenu GetContextMenu()
+#if false
+      private ContextMenu GetContextMenu()
         {
             ContextMenu menu = new();
             foreach (var curr in Interaction.ContextMenuItems)
@@ -54,29 +50,31 @@ namespace ScottPlot.Uno
 
             return menu;
         }
+#endif
 
-        public void Replace(Interaction interaction)
+		public void Replace(Interaction interaction)
         {
             Interaction = interaction;
         }
 
         public void Refresh()
         {
-            SKElement.InvalidateVisual();
+            //SKElement.InvalidateVisual();
         }
 
         public void ShowContextMenu(Pixel position)
         {
-            var menu = GetContextMenu();
-            menu.PlacementTarget = this;
-            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
-            menu.IsOpen = true;
+            //var menu = GetContextMenu();
+            //menu.PlacementTarget = this;
+            //menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+            //menu.IsOpen = true;
         }
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             Plot.Render(e.Surface);
         }
+#if false
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -112,7 +110,6 @@ namespace ScottPlot.Uno
             Interaction.MouseWheelVertical(e.Pixel(this), e.Delta);
             base.OnMouseWheel(e);
         }
-
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             Interaction.KeyDown(e.Key());
@@ -124,10 +121,12 @@ namespace ScottPlot.Uno
             Interaction.KeyUp(e.Key());
             base.OnKeyUp(e);
         }
+#endif
 
-        private void OpenSaveImageDialog()
+		private void OpenSaveImageDialog()
         {
-            SaveFileDialog dialog = new()
+#if false
+         SaveFileDialog dialog = new()
             {
                 FileName = Interaction.DefaultSaveImageFilename,
                 Filter = "PNG Files (*.png)|*.png" +
@@ -143,11 +142,13 @@ namespace ScottPlot.Uno
                 ImageFormat format = ImageFormatLookup.FromFilePath(dialog.FileName);
                 Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
             }
+#endif
         }
 
-        private void CopyImageToClipboard()
+		private void CopyImageToClipboard()
         {
-            BitmapImage bmp = new();
+#if false
+         BitmapImage bmp = new();
             bmp.BeginInit();
             byte[] bytes = Plot.GetImage((int)ActualWidth, (int)ActualHeight).GetImageBytes();
             using MemoryStream ms = new(bytes);
@@ -156,6 +157,7 @@ namespace ScottPlot.Uno
             bmp.Freeze();
 
             Clipboard.SetImage(bmp);
+#endif
         }
-    }
+	}
 }

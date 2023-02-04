@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--
       <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Uno\ScottPlot.Uno.csproj" />
-      -->
   </ItemGroup>
 </Project>

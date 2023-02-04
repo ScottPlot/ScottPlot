@@ -1,12 +1,14 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 
 namespace ScottPlot.Uno;
 
 internal static class UnoPlotExtensions
 {
-    internal static Pixel Pixel(this MouseEventArgs e, UnoPlot plot)
+#if false
+   internal static Pixel Pixel(this MouseEventArgs e, UnoPlot plot)
     {
         DpiScale dpiScale = VisualTreeHelper.GetDpi(plot);
         double x = e.GetPosition(plot).X * dpiScale.DpiScaleX;
@@ -42,5 +44,6 @@ internal static class UnoPlotExtensions
             _ => Control.Key.Unknown,
         };
     }
+#endif
 }
 
