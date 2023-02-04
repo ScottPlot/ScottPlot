@@ -114,10 +114,8 @@ public class Signal : IPlottable
         using SKPaint paint = new()
         {
             IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = LineStyle.Color.ToSKColor(),
-            StrokeWidth = LineStyle.Width,
         };
+        LineStyle.ApplyToPaint(paint);
 
         surface.Canvas.DrawPath(path, paint);
 
@@ -141,10 +139,8 @@ public class Signal : IPlottable
         using SKPaint paint = new()
         {
             IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = LineStyle.Color.ToSKColor(),
-            StrokeWidth = LineStyle.Width,
         };
+        LineStyle.ApplyToPaint(paint);
 
         PixelRangeY[] verticalBars = GetVerticalBars();
         for (int i = 0; i < verticalBars.Length; i++)
