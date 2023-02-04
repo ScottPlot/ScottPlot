@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <WindowsPackageType>None</WindowsPackageType>
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.*" />
   </ItemGroup>
 
   <ItemGroup>

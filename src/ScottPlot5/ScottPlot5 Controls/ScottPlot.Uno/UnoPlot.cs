@@ -1,31 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using ScottPlot.Control;
-using SkiaSharp.Views.Windows;
+﻿using Windows.UI.Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using SkiaSharp.Views.Windows;
+using ScottPlot.Control;
 
 namespace ScottPlot.Uno
 {
     public partial class UnoPlot : UserControl, IPlotControl
     {
+        private readonly SKXamlCanvas _canvas = CreateRenderTarget();
+
         public Plot Plot { get; } = new();
 
         public Interaction Interaction { get; private set; }
 
         public UnoPlot()
         {
-            // InitializeComponent();
             Interaction = new(this)
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
+            };
+
+            Background = new SolidColorBrush(Microsoft.UI.Colors.White);
+
+            _canvas.PaintSurface += OnPaintSurface;
+
+            this.Content = _canvas;
+        }
+
+        private static SKXamlCanvas CreateRenderTarget()
+        {
+            return new SKXamlCanvas
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent)
             };
         }
 
@@ -52,14 +62,20 @@ namespace ScottPlot.Uno
         }
 #endif
 
-		public void Replace(Interaction interaction)
+        public void Replace(Interaction interaction)
         {
             Interaction = interaction;
         }
 
         public void Refresh()
         {
-            //SKElement.InvalidateVisual();
+            if (Dispatcher is null)
+                return;
+
+            if (Dispatcher.HasThreadAccess)
+                _canvas.Invalidate();
+            else
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Refresh());
         }
 
         public void ShowContextMenu(Pixel position)
@@ -70,7 +86,7 @@ namespace ScottPlot.Uno
             //menu.IsOpen = true;
         }
 
-        private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+        private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)
         {
             Plot.Render(e.Surface);
         }
@@ -123,7 +139,7 @@ namespace ScottPlot.Uno
         }
 #endif
 
-		private void OpenSaveImageDialog()
+        private void OpenSaveImageDialog()
         {
 #if false
          SaveFileDialog dialog = new()
@@ -145,7 +161,7 @@ namespace ScottPlot.Uno
 #endif
         }
 
-		private void CopyImageToClipboard()
+        private void CopyImageToClipboard()
         {
 #if false
          BitmapImage bmp = new();
@@ -159,5 +175,5 @@ namespace ScottPlot.Uno
             Clipboard.SetImage(bmp);
 #endif
         }
-	}
+    }
 }
