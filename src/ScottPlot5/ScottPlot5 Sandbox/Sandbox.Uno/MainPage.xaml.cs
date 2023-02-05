@@ -14,6 +14,9 @@ namespace Sandbox.Uno
         {
             this.InitializeComponent();
 
+            App.Window.Title = "ScottPlot 5 - Uno Sandbox";
+            UnoPlot.AppWindow = App.Window;
+
             UnoPlot.Plot.Add.Signal(Generate.Sin(51));
             UnoPlot.Plot.Add.Signal(Generate.Cos(51));
         }

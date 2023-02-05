@@ -1,5 +1,11 @@
-﻿using Windows.UI.Core;
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.ApplicationModel.DataTransfer;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
@@ -15,6 +21,8 @@ namespace ScottPlot.Uno
 
         public Interaction Interaction { get; private set; }
 
+        public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
+
         public UnoPlot()
         {
             Interaction = new(this)
@@ -25,6 +33,14 @@ namespace ScottPlot.Uno
             Background = new SolidColorBrush(Microsoft.UI.Colors.White);
 
             _canvas.PaintSurface += OnPaintSurface;
+
+            _canvas.PointerWheelChanged += OnPointerWheelChanged;
+            _canvas.PointerReleased += OnPointerReleased;
+            _canvas.PointerPressed += OnPointerPressed;
+            _canvas.PointerMoved += OnPointerMoved;
+            _canvas.DoubleTapped += OnDoubleTapped;
+            _canvas.KeyDown += OnKeyDown;
+            _canvas.KeyUp += OnKeyUp;
 
             this.Content = _canvas;
         }
@@ -46,13 +62,12 @@ namespace ScottPlot.Uno
 
             return new ContextMenuItem[] { saveImage, copyImage };
         }
-#if false
-      private ContextMenu GetContextMenu()
+        private MenuFlyout GetContextMenu()
         {
-            ContextMenu menu = new();
+            MenuFlyout menu = new();
             foreach (var curr in Interaction.ContextMenuItems)
             {
-                var menuItem = new MenuItem { Header = curr.Label };
+                var menuItem = new MenuFlyoutItem { Text = curr.Label };
                 menuItem.Click += (s, e) => curr.OnInvoke();
 
                 menu.Items.Add(menuItem);
@@ -60,7 +75,6 @@ namespace ScottPlot.Uno
 
             return menu;
         }
-#endif
 
         public void Replace(Interaction interaction)
         {
@@ -69,111 +83,104 @@ namespace ScottPlot.Uno
 
         public void Refresh()
         {
-            if (Dispatcher is null)
-                return;
-
-            if (Dispatcher.HasThreadAccess)
-                _canvas.Invalidate();
-            else
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Refresh());
+            _canvas.Invalidate();
         }
 
         public void ShowContextMenu(Pixel position)
         {
-            //var menu = GetContextMenu();
-            //menu.PlacementTarget = this;
-            //menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
-            //menu.IsOpen = true;
+            var menu = GetContextMenu();
+
+            menu.ShowAt(this, position.ToPoint());
         }
 
         private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)
         {
             Plot.Render(e.Surface);
         }
-#if false
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Keyboard.Focus(this);
+            Focus(FocusState.Pointer);
 
-            Interaction.MouseDown(e.Pixel(this), e.ToButton());
+            Interaction.MouseDown(e.Pixel(this), e.ToButton(this));
 
-            (sender as UIElement)?.CaptureMouse();
+            (sender as UIElement)?.CapturePointer(e.Pointer);
 
-            if (e.ClickCount == 2)
-            {
-                Interaction.DoubleClick();
-            }
-
-            base.OnMouseDown(e);
+            base.OnPointerPressed(e);
         }
-
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            Interaction.MouseUp(e.Pixel(this), e.ToButton());
-            (sender as UIElement)?.ReleaseMouseCapture();
-            base.OnMouseUp(e);
-        }
+            Interaction.MouseUp(e.Pixel(this), e.ToButton(this));
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+            (sender as UIElement)?.ReleasePointerCapture(e.Pointer);
+
+            base.OnPointerReleased(e);
+        }
+        private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
         {
             Interaction.OnMouseMove(e.Pixel(this));
-            base.OnMouseMove(e);
+            base.OnPointerMoved(e);
+        }
+        private void OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            Interaction.DoubleClick();
+            base.OnDoubleTapped(e);
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
-            Interaction.MouseWheelVertical(e.Pixel(this), e.Delta);
-            base.OnMouseWheel(e);
+            Interaction.MouseWheelVertical(e.Pixel(this), e.GetCurrentPoint(this).Properties.MouseWheelDelta);
+            base.OnPointerWheelChanged(e);
         }
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private void OnKeyDown(object sender, KeyRoutedEventArgs e)
         {
             Interaction.KeyDown(e.Key());
             base.OnKeyDown(e);
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, KeyRoutedEventArgs e)
         {
             Interaction.KeyUp(e.Key());
             base.OnKeyUp(e);
         }
+        private async void OpenSaveImageDialog()
+        {
+            FileSavePicker dialog = new()
+            {
+                SuggestedFileName = Interaction.DefaultSaveImageFilename
+            };
+            dialog.FileTypeChoices.Add("PNG Files", new List<string>() { ".png" });
+            dialog.FileTypeChoices.Add("JPEG Files", new List<string>() { ".jpg", ".jpeg" });
+            dialog.FileTypeChoices.Add("BMP Files", new List<string>() { ".bmp" });
+            dialog.FileTypeChoices.Add("WebP Files", new List<string>() { ".webp" });
+
+#if NET6_0_WINDOWS10_0_18362 // https://github.com/microsoft/CsWinRT/blob/master/docs/interop.md#windows-sdk
+            // TODO: launch a pop-up window or otherwise inform if AppWindow is not set before using save-dialog
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(AppWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(dialog, hwnd);
 #endif
 
-        private void OpenSaveImageDialog()
-        {
-#if false
-         SaveFileDialog dialog = new()
-            {
-                FileName = Interaction.DefaultSaveImageFilename,
-                Filter = "PNG Files (*.png)|*.png" +
-                         "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
-                         "|BMP Files (*.bmp)|*.bmp" +
-                         "|WebP Files (*.webp)|*.webp" +
-                         "|All files (*.*)|*.*"
-            };
+            var file = await dialog.PickSaveFileAsync();
 
-            if (dialog.ShowDialog() is true)
+            if (file != null)
             {
                 // TODO: launch a pop-up window indicating if extension is invalid or save failed
-                ImageFormat format = ImageFormatLookup.FromFilePath(dialog.FileName);
-                Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
+                ImageFormat format = ImageFormatLookup.FromFilePath(file.Name);
+                Plot.Save(file.Path, (int)ActualWidth, (int)ActualHeight, format);
             }
-#endif
         }
 
         private void CopyImageToClipboard()
         {
-#if false
-         BitmapImage bmp = new();
-            bmp.BeginInit();
             byte[] bytes = Plot.GetImage((int)ActualWidth, (int)ActualHeight).GetImageBytes();
-            using MemoryStream ms = new(bytes);
-            bmp.StreamSource = ms;
-            bmp.EndInit();
-            bmp.Freeze();
 
-            Clipboard.SetImage(bmp);
-#endif
+            var stream = new InMemoryRandomAccessStream();
+            stream.AsStreamForWrite().Write(bytes);
+
+            var content = new DataPackage();
+            content.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
+
+            Clipboard.SetContent(content);
         }
     }
 }

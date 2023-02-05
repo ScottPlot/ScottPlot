@@ -1,49 +1,61 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+﻿using Windows.System;
+using Windows.Foundation;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 
 namespace ScottPlot.Uno;
 
 internal static class UnoPlotExtensions
 {
-#if false
-   internal static Pixel Pixel(this MouseEventArgs e, UnoPlot plot)
+    internal static Pixel Pixel(this PointerRoutedEventArgs e, UnoPlot plot)
     {
-        DpiScale dpiScale = VisualTreeHelper.GetDpi(plot);
-        double x = e.GetPosition(plot).X * dpiScale.DpiScaleX;
-        double y = e.GetPosition(plot).Y * dpiScale.DpiScaleY;
-        return new Pixel((float)x, (float)y);
+        return e.GetCurrentPoint(plot).Position.ToPixel();
+    }
+    internal static Pixel ToPixel(this Point p)
+    {
+        return new Pixel((float)p.X, (float)p.Y);
+    }
+    internal static Point ToPoint(this Pixel p)
+    {
+        return new Point(p.X, p.Y);
     }
 
-    internal static Control.MouseButton ToButton(this MouseButtonEventArgs e)
+    internal static Control.MouseButton ToButton(this PointerRoutedEventArgs e, UnoPlot plot)
     {
-        if (e.ChangedButton == MouseButton.Middle)
-            return Control.MouseButton.Middle;
-        else if (e.ChangedButton == MouseButton.Left)
-            return Control.MouseButton.Left;
-        else if (e.ChangedButton == MouseButton.Right)
-            return Control.MouseButton.Right;
-        else
-            return Control.MouseButton.Unknown;
-    }
-
-    internal static Control.Key Key(this KeyEventArgs e)
-    {
-        // Uno likes to snatch Alt, in which case we have to grab the system key value
-        var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
-
-        return key switch
+        var props = e.GetCurrentPoint(plot).Properties;
+        switch (props.PointerUpdateKind)
         {
-            System.Windows.Input.Key.LeftCtrl => Control.Key.Ctrl,
-            System.Windows.Input.Key.RightCtrl => Control.Key.Ctrl,
-            System.Windows.Input.Key.LeftAlt => Control.Key.Alt,
-            System.Windows.Input.Key.RightAlt => Control.Key.Alt,
-            System.Windows.Input.Key.LeftShift => Control.Key.Shift,
-            System.Windows.Input.Key.RightShift => Control.Key.Shift,
+            case PointerUpdateKind.MiddleButtonPressed:
+            case PointerUpdateKind.MiddleButtonReleased:
+                return Control.MouseButton.Middle;
+            case PointerUpdateKind.LeftButtonPressed:
+            case PointerUpdateKind.LeftButtonReleased:
+                return Control.MouseButton.Left;
+            case PointerUpdateKind.RightButtonPressed:
+            case PointerUpdateKind.RightButtonReleased:
+                return Control.MouseButton.Right;
+            default:
+                return Control.MouseButton.Unknown;
+        }
+    }
+    internal static Control.Key Key(this KeyRoutedEventArgs e)
+    {
+        return e.Key switch
+        {
+            VirtualKey.Control => Control.Key.Ctrl,
+            VirtualKey.LeftControl => Control.Key.Ctrl,
+            VirtualKey.RightControl => Control.Key.Ctrl,
+
+            VirtualKey.Menu => Control.Key.Alt,
+            VirtualKey.LeftMenu => Control.Key.Alt,
+            VirtualKey.RightMenu => Control.Key.Alt,
+
+            VirtualKey.Shift => Control.Key.Shift,
+            VirtualKey.LeftShift => Control.Key.Shift,
+            VirtualKey.RightShift => Control.Key.Shift,
+
             _ => Control.Key.Unknown,
         };
     }
-#endif
 }
 

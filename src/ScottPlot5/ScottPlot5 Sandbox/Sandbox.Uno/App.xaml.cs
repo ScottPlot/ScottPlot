@@ -12,7 +12,7 @@ namespace Sandbox.Uno
     /// </summary>
     public sealed partial class App : Application
     {
-        private Window? _window;
+        private static Window? _window;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -26,6 +26,8 @@ namespace Sandbox.Uno
             this.Suspending += OnSuspending;
 #endif
         }
+
+        public static Window Window => _window!;
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -47,8 +49,6 @@ namespace Sandbox.Uno
 #else
             _window = Microsoft.UI.Xaml.Window.Current;
 #endif
-            _window.Title = "ScottPlot 5 - Uno Sandbox";
-
             var rootFrame = _window.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
