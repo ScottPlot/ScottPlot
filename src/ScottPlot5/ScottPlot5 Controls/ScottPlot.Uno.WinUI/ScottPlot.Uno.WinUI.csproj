@@ -39,14 +39,14 @@
     <!-- Package dependencies -->
     <ItemGroup Condition="'$(TargetFramework)'=='net6.0-windows10.0.18362'">
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
-        <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.1" />
+        <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.2" />
         <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22000.24" />
         <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22000.24" />
       </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'!='net6.0-windows10.0.18362'">
-        <PackageReference Include="Uno.WinUI" Version="4.2.6" />
-        <PackageReference Include="SkiaSharp.Views.Uno.WinUI" Version="2.88.1" />
+        <PackageReference Include="Uno.WinUI" Version="4.6.41" />
+        <PackageReference Include="SkiaSharp.Views.Uno.WinUI" Version="2.88.2" />
     </ItemGroup>
   
     <ItemGroup>
