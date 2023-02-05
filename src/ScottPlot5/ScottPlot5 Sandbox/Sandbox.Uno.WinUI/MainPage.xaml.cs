@@ -3,7 +3,7 @@ using ScottPlot;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace Sandbox.Uno
+namespace Sandbox.Uno.WinUI
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -14,7 +14,7 @@ namespace Sandbox.Uno
         {
             this.InitializeComponent();
 
-            App.Window.Title = "ScottPlot 5 - Uno Sandbox";
+            App.Window.Title = "ScottPlot 5 - Uno.WinUI Sandbox";
             UnoPlot.AppWindow = App.Window;
 
             UnoPlot.Plot.Add.Signal(Generate.Sin(51));
