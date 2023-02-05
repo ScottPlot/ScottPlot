@@ -3,7 +3,7 @@ using Windows.Foundation;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Input;
 
-namespace ScottPlot.Uno;
+namespace ScottPlot.Uno.WinUI;
 
 internal static class UnoPlotExtensions
 {
