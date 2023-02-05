@@ -5,6 +5,8 @@
     <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <WindowsPackageType>None</WindowsPackageType>
     <Nullable>enable</Nullable>
+    <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
+    <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
   </PropertyGroup>
 
   <ItemGroup>

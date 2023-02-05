@@ -28,6 +28,8 @@
 
         <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
         <GenerateLibraryLayout>true</GenerateLibraryLayout>
+        <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
+        <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
