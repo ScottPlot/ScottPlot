@@ -14,11 +14,11 @@ namespace Sandbox.Uno.WinUI
         {
             this.InitializeComponent();
 
-            App.Window.Title = "ScottPlot 5 - Uno.WinUI Sandbox";
-            UnoPlot.AppWindow = App.Window;
+            App.Window.Title = "ScottPlot 5 - WinUI Sandbox";
+            WinUIPlot.AppWindow = App.Window;
 
-            UnoPlot.Plot.Add.Signal(Generate.Sin(51));
-            UnoPlot.Plot.Add.Signal(Generate.Cos(51));
+            WinUIPlot.Plot.Add.Signal(Generate.Sin(51));
+            WinUIPlot.Plot.Add.Signal(Generate.Cos(51));
         }
     }
 }

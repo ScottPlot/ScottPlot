@@ -8,5 +8,5 @@
     xmlns:ScottPlot="using:ScottPlot.Uno.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <ScottPlot:UnoPlot Name="UnoPlot" />
+    <ScottPlot:WinUIPlot Name="WinUIPlot" />
 </Page>
