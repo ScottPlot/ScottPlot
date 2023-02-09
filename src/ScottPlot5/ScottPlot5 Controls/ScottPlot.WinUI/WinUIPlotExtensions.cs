@@ -11,10 +11,12 @@ internal static class WinUIPlotExtensions
     {
         return e.GetCurrentPoint(plot).Position.ToPixel();
     }
+
     internal static Pixel ToPixel(this Point p)
     {
         return new Pixel((float)p.X, (float)p.Y);
     }
+
     internal static Point ToPoint(this Pixel p)
     {
         return new Point(p.X, p.Y);
@@ -38,6 +40,7 @@ internal static class WinUIPlotExtensions
                 return Control.MouseButton.Unknown;
         }
     }
+
     internal static Control.Key Key(this KeyRoutedEventArgs e)
     {
         return e.Key switch
