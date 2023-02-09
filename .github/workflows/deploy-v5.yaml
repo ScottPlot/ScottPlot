@@ -29,6 +29,7 @@ jobs:
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI" --configuration Release
       - name: 💾 Store Packages
         uses: actions/upload-artifact@v3
         with:
@@ -40,6 +41,7 @@ jobs:
             src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF/bin/Release/*.nupkg
             src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia/bin/Release/*.nupkg
             src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto/bin/Release/*.nupkg
+            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI/bin/Release/*.nupkg
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
         with:
@@ -51,3 +53,4 @@ jobs:
           nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
           nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
           nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
