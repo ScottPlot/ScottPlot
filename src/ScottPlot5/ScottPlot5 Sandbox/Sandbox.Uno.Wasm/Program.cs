@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using System;
-
+﻿
 namespace Sandbox.Uno.Wasm
 {
 	public class Program

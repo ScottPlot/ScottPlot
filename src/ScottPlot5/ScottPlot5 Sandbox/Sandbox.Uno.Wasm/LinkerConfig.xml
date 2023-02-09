@@ -1,5 +1,5 @@
 ﻿<linker>
-  <assembly fullname="UnoApp1.Wasm" />
+  <assembly fullname="Sandbox.Uno.Wasm" />
   <assembly fullname="Uno.UI" />
   <assembly fullname="Microsoft.Extensions.Options" />
 
