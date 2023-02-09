@@ -58,5 +58,6 @@ jobs:
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
           dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
+          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI" --configuration Release
       - name: 🧪 Test
         run: dotnet test "src/ScottPlot5" --no-restore --verbosity minimal
