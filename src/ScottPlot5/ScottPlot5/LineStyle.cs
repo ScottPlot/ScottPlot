@@ -11,4 +11,5 @@ public class LineStyle
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
     public bool IsVisible => Color != Colors.Transparent && Width > 0; // TODO: make this a settable property
     public static LineStyle NoLine => new() { Width = 0 };
+    public bool AntiAlias { get; set; } = true;
 }

@@ -70,6 +70,7 @@ public static class SkiaSharpExtensions
         paint.Color = style.Color.ToSKColor();
         paint.StrokeWidth = style.Width;
         paint.PathEffect = style.Pattern.GetPathEffect();
+        paint.IsAntialias = style.AntiAlias;
     }
 
     public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
