@@ -5,9 +5,9 @@ using Microsoft.UI.Xaml.Input;
 
 namespace ScottPlot.Uno.WinUI;
 
-internal static class UnoPlotExtensions
+internal static class WinUIPlotExtensions
 {
-    internal static Pixel Pixel(this PointerRoutedEventArgs e, UnoPlot plot)
+    internal static Pixel Pixel(this PointerRoutedEventArgs e, WinUIPlot plot)
     {
         return e.GetCurrentPoint(plot).Position.ToPixel();
     }
@@ -20,7 +20,7 @@ internal static class UnoPlotExtensions
         return new Point(p.X, p.Y);
     }
 
-    internal static Control.MouseButton ToButton(this PointerRoutedEventArgs e, UnoPlot plot)
+    internal static Control.MouseButton ToButton(this PointerRoutedEventArgs e, WinUIPlot plot)
     {
         var props = e.GetCurrentPoint(plot).Properties;
         switch (props.PointerUpdateKind)

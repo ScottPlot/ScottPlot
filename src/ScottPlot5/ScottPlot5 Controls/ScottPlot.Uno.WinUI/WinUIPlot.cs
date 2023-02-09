@@ -13,7 +13,7 @@ using ScottPlot.Control;
 
 namespace ScottPlot.Uno.WinUI
 {
-    public partial class UnoPlot : UserControl, IPlotControl
+    public partial class WinUIPlot : UserControl, IPlotControl
     {
         private readonly SKXamlCanvas _canvas = CreateRenderTarget();
 
@@ -23,7 +23,7 @@ namespace ScottPlot.Uno.WinUI
 
         public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
-        public UnoPlot()
+        public WinUIPlot()
         {
             Interaction = new(this)
             {
