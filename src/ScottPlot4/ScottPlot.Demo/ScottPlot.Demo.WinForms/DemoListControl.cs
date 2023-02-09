@@ -35,5 +35,6 @@ namespace ScottPlot.Demo.WinForms
         private void SplineInterpolationButton_Click(object sender, EventArgs e) => new WinFormsDemos.SplineInterpolation().ShowDialog();
         private void FinanceDemoButton_Click(object sender, EventArgs e) => new WinFormsDemos.FinanceDemo().ShowDialog();
         private void HittableButton_Click(object sender, EventArgs e) => new WinFormsDemos.HittableDemo().ShowDialog();
+        private void DataLoggerButton_Click(object sender, EventArgs e) => new WinFormsDemos.DataLogger().ShowDialog();
     }
 }

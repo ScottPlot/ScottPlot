@@ -64,6 +64,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.HittableButton = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
+            this.DataLoggerButton = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label17
@@ -446,14 +448,34 @@
             this.label18.Text = "Example use of IHittable for mouse interactivity";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // DataLoggerButton
+            // 
+            this.DataLoggerButton.Location = new System.Drawing.Point(3, 784);
+            this.DataLoggerButton.Name = "DataLoggerButton";
+            this.DataLoggerButton.Size = new System.Drawing.Size(75, 38);
+            this.DataLoggerButton.TabIndex = 72;
+            this.DataLoggerButton.Text = "Data Logger";
+            this.DataLoggerButton.UseVisualStyleBackColor = true;
+            this.DataLoggerButton.Click += new System.EventHandler(this.DataLoggerButton_Click);
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.Location = new System.Drawing.Point(84, 784);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(232, 38);
+            this.label19.TabIndex = 73;
+            this.label19.Text = "Log and display streaming data";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // DemoListControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label19);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.HittableButton);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.FinanceDemoButton);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label4);
@@ -468,6 +490,9 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.HittableButton);
+            this.Controls.Add(this.FinanceDemoButton);
+            this.Controls.Add(this.DataLoggerButton);
             this.Controls.Add(this.SplineInterpolationButton);
             this.Controls.Add(this.PlotViewerButton);
             this.Controls.Add(this.MouseTrackerButton);
@@ -487,7 +512,7 @@
             this.Controls.Add(this.AxisLimitsButton);
             this.Controls.Add(this.ScrollViewerButton);
             this.Name = "DemoListControl";
-            this.Size = new System.Drawing.Size(357, 830);
+            this.Size = new System.Drawing.Size(357, 870);
             this.ResumeLayout(false);
 
         }
@@ -530,5 +555,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button HittableButton;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button DataLoggerButton;
+        private System.Windows.Forms.Label label19;
     }
 }
