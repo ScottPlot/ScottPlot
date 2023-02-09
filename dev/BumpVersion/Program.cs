@@ -49,8 +49,14 @@ Version oldVersion = new(versionString);
 // bump it
 Version newVersion = new(oldVersion.Major, oldVersion.Minor, oldVersion.Build + 1);
 Console.Write($"{oldVersion} -> {newVersion} ");
+string newVersionString = newVersion.ToString();
+string newVersionStringLong = newVersionString + ".0";
 if (previewName is not null)
+{
     Console.Write($"({previewName})");
+    newVersionString += "-" + previewName;
+    newVersionStringLong += "-" + previewName;
+}
 
 Console.WriteLine();
 
@@ -58,9 +64,9 @@ Console.WriteLine();
 string[] lines = File.ReadAllLines(csprojPath);
 for (int i = 0; i < lines.Length; i++)
 {
-    ReplaceElement(lines, "Version", newVersion.ToString());
-    ReplaceElement(lines, "AssemblyVersion", newVersion.ToString() + ".0");
-    ReplaceElement(lines, "FileVersion", newVersion.ToString() + ".0");
+    ReplaceElement(lines, "Version", newVersionString);
+    ReplaceElement(lines, "AssemblyVersion", newVersionStringLong);
+    ReplaceElement(lines, "FileVersion", newVersionStringLong);
 }
 File.WriteAllLines(csprojPath, lines);
 
