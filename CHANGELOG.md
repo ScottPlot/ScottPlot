@@ -7,6 +7,7 @@
 * Controls: Added right-click context menus (#2350) _Thanks @bclehmann_
 * Rendering: Added support for saving bitmap files (#2350) _Thanks @bclehmann_
 * Axes: Added support for DateTime Axes (#2369) _Thanks @bclehmann_
+* Rendering: Added support for line styles (#2373) _Thanks @bclehmann_
 
 ## ScottPlot 5.0.0-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
