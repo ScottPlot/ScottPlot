@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 
-namespace Sandbox.Uno.WinUI
+namespace Sandbox.WinUI
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

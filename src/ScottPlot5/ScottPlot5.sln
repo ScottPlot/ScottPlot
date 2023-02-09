@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E3534AA4-E834-4648-83EF-94D667D17AEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Uno.WinUI", "ScottPlot5 Sandbox\Sandbox.Uno.WinUI\Sandbox.Uno.WinUI.csproj", "{09961DF4-5E0E-4779-B85E-0FD304267750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI", "ScottPlot5 Sandbox\Sandbox.WinUI\Sandbox.WinUI.csproj", "{09961DF4-5E0E-4779-B85E-0FD304267750}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Uno.WinUI", "ScottPlot5 Controls\ScottPlot.Uno.WinUI\ScottPlot.Uno.WinUI.csproj", "{F2C622DE-1D3D-4027-9009-5FB02428856E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinUI", "ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj", "{F2C622DE-1D3D-4027-9009-5FB02428856E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

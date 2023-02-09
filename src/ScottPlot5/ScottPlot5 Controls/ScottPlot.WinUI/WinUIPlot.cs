@@ -11,7 +11,7 @@ using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
 using ScottPlot.Control;
 
-namespace ScottPlot.Uno.WinUI;
+namespace ScottPlot.WinUI;
 
 public partial class WinUIPlot : UserControl, IPlotControl
 {

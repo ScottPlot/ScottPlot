@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Uno.WinUI\ScottPlot.Uno.WinUI.csproj" />
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
     </ItemGroup>
 
 </Project>
