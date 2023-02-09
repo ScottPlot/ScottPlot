@@ -62,6 +62,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
         return new ContextMenuItem[] { saveImage, copyImage };
     }
+
     private MenuFlyout GetContextMenu()
     {
         MenuFlyout menu = new();
@@ -108,6 +109,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
         base.OnPointerPressed(e);
     }
+
     private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
     {
         Interaction.MouseUp(e.Pixel(this), e.ToButton(this));
@@ -116,11 +118,13 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
         base.OnPointerReleased(e);
     }
+
     private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
     {
         Interaction.OnMouseMove(e.Pixel(this));
         base.OnPointerMoved(e);
     }
+
     private void OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
     {
         Interaction.DoubleClick();
@@ -132,6 +136,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
         Interaction.MouseWheelVertical(e.Pixel(this), e.GetCurrentPoint(this).Properties.MouseWheelDelta);
         base.OnPointerWheelChanged(e);
     }
+
     private void OnKeyDown(object sender, KeyRoutedEventArgs e)
     {
         Interaction.KeyDown(e.Key());
@@ -143,6 +148,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
         Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);
     }
+
     private async void OpenSaveImageDialog()
     {
         FileSavePicker dialog = new()
