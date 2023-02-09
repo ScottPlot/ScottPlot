@@ -111,13 +111,8 @@ public class Signal : IPlottable
         foreach (Pixel point in points)
             path.LineTo(point.ToSKPoint());
 
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = LineStyle.Color.ToSKColor(),
-            StrokeWidth = LineStyle.Width,
-        };
+        using SKPaint paint = new();
+        LineStyle.ApplyToPaint(paint);
 
         surface.Canvas.DrawPath(path, paint);
 
@@ -138,13 +133,8 @@ public class Signal : IPlottable
     /// </summary>
     private void RenderHighDensity(SKSurface surface)
     {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = LineStyle.Color.ToSKColor(),
-            StrokeWidth = LineStyle.Width,
-        };
+        using SKPaint paint = new();
+        LineStyle.ApplyToPaint(paint);
 
         PixelRangeY[] verticalBars = GetVerticalBars();
         for (int i = 0; i < verticalBars.Length; i++)

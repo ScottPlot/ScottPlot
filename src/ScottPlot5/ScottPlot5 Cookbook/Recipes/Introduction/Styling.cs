@@ -161,4 +161,32 @@ internal class Styling : RecipePageBase
             }
         }
     }
+
+    internal class LineStyles : RecipeTestBase
+    {
+        public override string Name => "Line Styles";
+        public override string Description => "Many plot types have a LineStyle which can be customized.";
+
+        [Test]
+        public override void Recipe()
+        {
+            int count = 21;
+            double[] xs = Generate.Consecutive(count);
+            double[] ys = Generate.Sin(count);
+
+            LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
+
+            for (int i = 0; i < linePatterns.Length; i++)
+            {
+                double[] data = ys.Select(y => linePatterns.Length - y + i).ToArray();
+
+                var scatter = myPlot.Add.Scatter(xs, data);
+
+                scatter.Label = linePatterns[i].ToString();
+                scatter.LineStyle.Width = 2;
+                scatter.LineStyle.Pattern = linePatterns[i];
+                scatter.MarkerStyle = MarkerStyle.None;
+            }
+        }
+    }
 }
