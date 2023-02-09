@@ -69,6 +69,8 @@ public static class SkiaSharpExtensions
         paint.IsStroke = true;
         paint.Color = style.Color.ToSKColor();
         paint.StrokeWidth = style.Width;
+        paint.PathEffect = style.Pattern.GetPathEffect();
+        paint.IsAntialias = style.AntiAlias;
     }
 
     public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
@@ -97,5 +99,16 @@ public static class SkiaSharpExtensions
         paint.TextSize = fontStyle.Size;
         paint.Color = fontStyle.Color.ToSKColor();
         paint.IsAntialias = fontStyle.AntiAlias;
+    }
+
+    public static SKPathEffect? GetPathEffect(this LinePattern pattern)
+    {
+        return pattern switch
+        {
+            LinePattern.Solid => null,
+            LinePattern.Dash => SKPathEffect.CreateDash(new float[] { 10, 10 }, 0),
+            LinePattern.Dot => SKPathEffect.CreateDash(new float[] { 3, 5 }, 0),
+            _ => throw new NotImplementedException(),
+        };
     }
 }

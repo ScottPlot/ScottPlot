@@ -7,6 +7,7 @@
 * Controls: Added right-click context menus (#2350) _Thanks @bclehmann_
 * Rendering: Added support for saving bitmap files (#2350) _Thanks @bclehmann_
 * Axes: Added support for DateTime Axes (#2369) _Thanks @bclehmann_
+* Rendering: Added support for line styles (#2373) _Thanks @bclehmann_
 * WinUI3: Created a Uno WinUI3 control (#2374, #2039) _Thanks @rafntor_
 
 ## ScottPlot 5.0.0-beta

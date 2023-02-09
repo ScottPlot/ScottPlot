@@ -7,7 +7,6 @@ internal static class TODO
      *   IAxis.cs has lots of tick styling that should be a Axis.TickStyle
      * Manual tick generator
      * Make more marker class
-     * LinePattern is not currently supported
      * Improve signal plot rendering when several repeated values produce a vertical height of zero
      * AutoScale() is called in the first render if SetAxisLimits() was used to set only a single axis value
      * Add offset X and offset Y support to signal plots
