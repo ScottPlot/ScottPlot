@@ -1,4 +1,4 @@
-<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
     <!-- ref ; https://github.com/unoplatform/uno/discussions/10977 -->
     <PropertyGroup>
         <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net6.0-ios;net6.0-maccatalyst;net6.0-android</TargetFrameworks>
@@ -8,7 +8,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Uno.WinUI</PackageId>
-        <Version>5.0.1</Version>
+        <Version>5.0.0-beta</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
