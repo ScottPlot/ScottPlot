@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+        <nowarn>Uno0001</nowarn>
     </PropertyGroup>
 
     <ItemGroup>
