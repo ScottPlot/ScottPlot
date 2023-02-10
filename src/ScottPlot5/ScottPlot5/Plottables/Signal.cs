@@ -24,6 +24,7 @@ public class Signal : IPlottable
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
+
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
@@ -101,7 +102,7 @@ public class Signal : IPlottable
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Ys[i]);
+            float y = Axes.GetPixelY(Ys[i] + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }

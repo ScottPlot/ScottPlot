@@ -1,6 +1,11 @@
 # ScottPlot Changelog
 
+## ScottPlot 5.0.2-beta
+_not yet published on NuGet..._
+* Signal Plot: Support X and Y offset (#2378) _Thanks @minjjKang_
+
 ## ScottPlot 5.0.1-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
 * Namespace: DataSource → DataSources
 * Error Bar: New plot type (#2346) _Thanks @bclehmann_
 * Plot: Added `Style` object to group functions that perform complex styling tasks
