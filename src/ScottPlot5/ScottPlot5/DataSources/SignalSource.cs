@@ -8,6 +8,8 @@ public class SignalSource : ISignalSource
 
     public double XOffset { get; set; }
 
+    public double YOffset { get; set; }
+
     public SignalSource(IReadOnlyList<double> ys, double period)
     {
         Ys = ys;
@@ -25,6 +27,9 @@ public class SignalSource : ISignalSource
         {
             yRange.Expand(Ys[i]);
         }
+
+        if (YOffset != 0)
+            yRange.Pan(YOffset);
 
         return yRange;
     }
@@ -54,6 +59,10 @@ public class SignalSource : ISignalSource
     {
         CoordinateRange xRange = new(0, Ys.Count * Period);
         CoordinateRange yRange = GetYRange(xRange);
+
+        xRange.Pan(XOffset);
+        yRange.Pan(YOffset);
+
         return new AxisLimits(xRange, yRange);
     }
 

@@ -14,7 +14,12 @@ public interface ISignalSource : IHasAxisLimits
     /// <summary>
     /// X position of the first data point
     /// </summary>
-    double XOffset { get; }
+    double XOffset { get; set; }
+
+    /// <summary>
+    /// Shift Y position of all values by this amount
+    /// </summary>
+    double YOffset { get; set; }
 
     /// <summary>
     /// Returns the min/max Y values between a range of Xs (inclusive)
