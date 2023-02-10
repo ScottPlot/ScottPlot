@@ -7,7 +7,7 @@
         <LangVersion>11.0</LangVersion>
 
         <!-- NuGet info -->
-        <PackageId>ScottPlot.Uno.WinUI</PackageId>
+        <PackageId>ScottPlot.WinUI</PackageId>
         <Version>5.0.1-beta</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
