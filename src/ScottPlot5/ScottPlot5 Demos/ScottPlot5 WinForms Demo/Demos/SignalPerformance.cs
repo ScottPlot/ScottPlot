@@ -1,4 +1,6 @@
 ﻿using ScottPlot;
+using ScottPlot.DataSources;
+using ScottPlot.WinForms;
 
 namespace WinForms_Demo.Demos;
 
@@ -30,7 +32,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             formsPlot1.Plot.Add.Signal(ys);
             formsPlot1.Plot.Title.Label.Text = "one million points";
         }
-        else
+        else if (rbScatter.Checked)
         {
             int pointCount = 10_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
@@ -38,6 +40,15 @@ public partial class SignalPerformance : Form, IDemoWindow
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
             sp.MarkerStyle = MarkerStyle.None;
             formsPlot1.Plot.Title.Label.Text = "ten thousand points";
+        }
+        else if (rbScatterGL.Checked)
+        {
+            int pointCount = 20_000_000;
+            double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
+            double[] xs = ScottPlot.Generate.Consecutive(pointCount);
+            var spGL = new ScatterGL(new ScatterSourceXsYs(xs, ys), formsPlot1.GRContext);
+            formsPlot1.Plot.Plottables.Add(spGL);
+            formsPlot1.Plot.Title.Label.Text = "two million points";
         }
 
         formsPlot1.Plot.AutoScale();

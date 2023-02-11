@@ -62,7 +62,8 @@ public static class Common
         {
             plottable.Axes.DataRect = dataRect;
             surface.Canvas.Save();
-            surface.Canvas.ClipRect(dataRect.ToSKRect());
+            if (plottable is not IPlottableGL)
+                surface.Canvas.ClipRect(dataRect.ToSKRect());
             plottable.Render(surface);
             surface.Canvas.Restore();
         }
