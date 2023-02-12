@@ -21,6 +21,8 @@
         <!-- <WasmShellMonoRuntimeExecutionMode>InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode> -->
         <!-- Temporarily uncomment to generate an AOT profile https://aka.platform.uno/wasm-aot-profile -->
         <!-- <WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile> -->
+        <!-- IL Linking is disabled https://aka.platform.uno/wasm-il-linker -->
+        <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\Sandbox.WinUI\App.xaml.cs" Link="App.xaml.cs" />
