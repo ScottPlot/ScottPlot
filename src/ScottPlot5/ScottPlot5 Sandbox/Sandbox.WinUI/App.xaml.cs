@@ -22,6 +22,7 @@ namespace Sandbox.WinUI
         /// </remarks>
         public App()
         {
+            this.InitializeComponent();
         }
 
         /// <summary>
