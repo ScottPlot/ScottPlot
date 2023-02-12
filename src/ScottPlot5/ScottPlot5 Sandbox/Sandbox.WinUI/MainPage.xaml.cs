@@ -14,8 +14,8 @@ namespace Sandbox.WinUI
         {
             this.InitializeComponent();
 
-            App.Window.Title = "ScottPlot 5 - WinUI Sandbox";
-            WinUIPlot.AppWindow = App.Window;
+            App.MainWindow.Title = "ScottPlot 5 - WinUI Sandbox";
+            WinUIPlot.AppWindow = App.MainWindow;
 
             WinUIPlot.Plot.Add.Signal(Generate.Sin(51));
             WinUIPlot.Plot.Add.Signal(Generate.Cos(51));
