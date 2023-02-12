@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI", "ScottPlot5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinUI", "ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj", "{F2C622DE-1D3D-4027-9009-5FB02428856E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Uno.Wasm", "ScottPlot5 Sandbox\Sandbox.Uno.Wasm\Sandbox.Uno.Wasm.csproj", "{CBF0C2BD-B5FB-47F5-95F0-B917DA97CA9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Wasm", "ScottPlot5 Sandbox\Sandbox.Wasm\Sandbox.Wasm.csproj", "{CBF0C2BD-B5FB-47F5-95F0-B917DA97CA9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
