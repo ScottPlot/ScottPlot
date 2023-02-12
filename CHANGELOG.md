@@ -3,6 +3,7 @@
 ## ScottPlot 5.0.2-beta
 _not yet published on NuGet..._
 * Signal Plot: Support X and Y offset (#2378) _Thanks @minjjKang_
+* WebAssembly: New sandbox demonstrates interactive ScottPlot in a browser (#2380, #2374) _Thanks rafntor_
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
