@@ -4,7 +4,7 @@
         <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net6.0-ios;net6.0-maccatalyst;net6.0-android</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <LangVersion>11.0</LangVersion>
+        <LangVersion>latest</LangVersion>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Uno.WinUI</PackageId>

@@ -27,7 +27,12 @@ namespace Sandbox.WinUI
         /// <summary>
         /// Gets the main window of the app.
         /// </summary>
-        internal static Window MainWindow { get; private set; }
+        internal static Window MainWindow 
+        { 
+            get { return _window!; }
+            private set { _window = value; }
+        }
+        private static Window? _window;
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
