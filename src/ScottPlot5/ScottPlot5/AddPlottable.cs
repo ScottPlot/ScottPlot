@@ -117,4 +117,11 @@ public class AddPlottable
         Plot.Plottables.Add(errorBar);
         return errorBar;
     }
+
+    public OHLCPlot OHLC(IReadOnlyList<double> xs, IReadOnlyList<OHLC> ohlcs)
+    {
+        OHLCPlot ohlc = new(new OHLCSourceXsYs(xs, ohlcs));
+        Plot.Plottables.Add(ohlc);
+        return ohlc;
+    }
 }

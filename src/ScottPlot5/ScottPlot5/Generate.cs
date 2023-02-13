@@ -188,4 +188,27 @@ public static class Generate
         }
         return values;
     }
+    
+    public static IEnumerable<OHLC> RandomWalkOHLC(int count, double mult = 1, double offset = 150, int seed = 0)
+    {
+        RandomDataGenerator gen = new(seed);
+        double[] openingPrices = gen.RandomWalk(count + 1, mult, offset);
+
+        OHLC GetOHLC(double open, double close)
+        {
+            double min = Math.Min(open, close);
+            double max = Math.Max(open, close);
+
+            double span = max - min;
+
+            double high = gen.RandomNumber(max, max + span * 1.02);
+            double low = gen.RandomNumber(min - span * 0.98, min);
+
+            return new(open, high, low, close);
+        }
+
+        return openingPrices
+            .Take(count)
+            .Select((p, i) => GetOHLC(p, openingPrices[i + 1]));
+    }
 }
