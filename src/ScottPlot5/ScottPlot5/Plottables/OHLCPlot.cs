@@ -33,12 +33,12 @@ namespace ScottPlot.Plottables
         public void Render(SKSurface surface)
         {
             using SKPaint paint = new();
-            using SKPath path = new();
+            using SKPath growingPath = new();
+            using SKPath fallingPath = new();
 
             foreach ((double x, OHLC y) in Data.GetOHLCPoints())
             {
-                LineStyle lineStyle = y.Close >= y.Open ? GrowingStyle : FallingStyle;
-                lineStyle.ApplyToPaint(paint);
+                SKPath path = y.Close >= y.Open ? growingPath : fallingPath;
 
                 float center = Axes.GetPixelX(x);
                 float top = Axes.GetPixelY(y.High);
@@ -55,10 +55,13 @@ namespace ScottPlot.Plottables
 
                 path.MoveTo(center, close);
                 path.LineTo(center + Width / 2, close);
-
-                surface.Canvas.DrawPath(path, paint);
-                path.Reset();
             }
+
+            GrowingStyle.ApplyToPaint(paint);
+            surface.Canvas.DrawPath(growingPath, paint);
+
+            FallingStyle.ApplyToPaint(paint);
+            surface.Canvas.DrawPath(fallingPath, paint);
         }
     }
 }
