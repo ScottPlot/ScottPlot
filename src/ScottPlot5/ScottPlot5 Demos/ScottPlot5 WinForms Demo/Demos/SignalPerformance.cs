@@ -43,7 +43,7 @@ public partial class SignalPerformance : Form, IDemoWindow
         }
         else if (rbScatterGL.Checked)
         {
-            int pointCount = 20_000_000;
+            int pointCount = 2_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             var spGL = new ScatterGL(new ScatterSourceXsYs(xs, ys), formsPlot1.GRContext);
