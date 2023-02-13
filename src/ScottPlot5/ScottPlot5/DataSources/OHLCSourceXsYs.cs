@@ -24,7 +24,7 @@ public class OHLCSourceXsYs : IOHLCSource
 
     public IReadOnlyList<Tuple<double, OHLC>> GetOHLCPoints()
     {
-        return Enumerable.Range(0, Xs.Count).Select(i => GetCoordinatesAt(i)).ToArray();
+        return Xs.Zip(Ys, (x, y) => new Tuple<double, OHLC>(x, y)).ToArray();
     }
 
     public AxisLimits GetLimits()
@@ -39,15 +39,6 @@ public class OHLCSourceXsYs : IOHLCSource
 
     public CoordinateRange GetLimitsY()
     {
-        // LINQ MinBy and MaxBy are not available on all targets
-        double min = double.PositiveInfinity;
-        double max = double.NegativeInfinity;
-        foreach(var y in Ys)
-        {
-            min = Math.Min(min, y.Low);
-            max = Math.Max(max, y.High);
-        }
-        
-        return new CoordinateRange(min,  max);
+        return new CoordinateRange(Ys.Min(y => y.Low),  Ys.Max(y => y.High));
     }
 }

@@ -209,6 +209,6 @@ public static class Generate
 
         return openingPrices
             .Take(count)
-            .Select((p, i) => GetOHLC(p, openingPrices[i + 1]));
+            .Zip(openingPrices.Skip(1), GetOHLC);
     }
 }
