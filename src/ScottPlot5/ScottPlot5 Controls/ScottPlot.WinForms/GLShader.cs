@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using System;
+using System.Diagnostics;
 
 namespace ScottPlot.WinForms
 {
@@ -8,13 +9,15 @@ namespace ScottPlot.WinForms
         private int Handle;
 
         string _vertexShaderSource =
-        @"# version 330 core
-        layout(location = 0) in vec3 aPosition;
-        uniform mat4 transform;
+        @"# version 410 core
+        layout(location = 0) in dvec2 aPosition;
+        uniform dmat4 transform;
 
         void main()
         {
-            gl_Position = vec4(aPosition, 1.0) * transform;
+            dvec4 posd = dvec4(aPosition, 0.0, 1.0);
+            dvec4 transformedD = posd * transform;
+            gl_Position = vec4(transformedD);
         }";
 
         string _fragmentShaderSource =
@@ -41,7 +44,7 @@ namespace ScottPlot.WinForms
             if (successVertex == 0)
             {
                 string infoLog = GL.GetShaderInfoLog(VertexShader);
-                Console.WriteLine(infoLog);
+                Debug.WriteLine(infoLog);
             }
 
             GL.CompileShader(FragmentShader);
@@ -50,7 +53,7 @@ namespace ScottPlot.WinForms
             if (successFragment == 0)
             {
                 string infoLog = GL.GetShaderInfoLog(FragmentShader);
-                Console.WriteLine(infoLog);
+                Debug.WriteLine(infoLog);
             }
 
             Handle = GL.CreateProgram();
@@ -64,7 +67,7 @@ namespace ScottPlot.WinForms
             if (success == 0)
             {
                 string infoLog = GL.GetProgramInfoLog(Handle);
-                Console.WriteLine(infoLog);
+                Debug.WriteLine(infoLog);
             }
 
             GL.DetachShader(Handle, VertexShader);

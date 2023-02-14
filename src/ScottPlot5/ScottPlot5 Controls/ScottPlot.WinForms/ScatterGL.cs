@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using ScottPlot.DataSources;
 using ScottPlot.Plottables;
 using SkiaSharp;
+using System;
 using System.Linq;
 
 namespace ScottPlot.WinForms
@@ -13,7 +14,7 @@ namespace ScottPlot.WinForms
         private int VertexBufferObject;
         private int VertexArrayObject;
         private GLShader shader;
-        private float[] vertices;
+        private double[] vertices;
         private int verticesCount;
 
         private bool _glInit = false;
@@ -23,10 +24,10 @@ namespace ScottPlot.WinForms
             _context = context;
             vertices = data.GetScatterPoints().Select(p =>
             {
-                return new float[] { (float)p.X, (float)p.Y, 0 };
+                return new double[] { p.X, p.Y };
             }).
             SelectMany(t => t).ToArray();
-            verticesCount = vertices.Length / 3;
+            verticesCount = vertices.Length / 2;
         }
 
         private void InitGL()
@@ -36,11 +37,20 @@ namespace ScottPlot.WinForms
             VertexBufferObject = GL.GenBuffer();
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(double), vertices, BufferUsageHint.StaticDraw);
+            GL.VertexAttribLPointer(0, 2, VertexAttribDoubleType.Double, 0, IntPtr.Zero);
             GL.EnableVertexAttribArray(0);
             vertices = null;
             _glInit = true;
+        }
+
+        private Matrix4d CreateScale(double x, double y, double z)
+        {
+            return new Matrix4d(
+                x, 0.0, 0.0, 0.0,
+                0.0, y, 0.0, 0.0,
+                0.0, 0.0, z, 0.0,
+                0.0, 0.0, 0.0, 1.0);
         }
 
         public override void Render(SKSurface surface)
@@ -59,16 +69,13 @@ namespace ScottPlot.WinForms
             var xRange = Axes.XAxis.Range;
             var yRange = Axes.YAxis.Range;
 
-            float xTranslation = (float)(-1.0 * (xRange.Min + xRange.Max) / 2);
-            float yTranslation = (float)(-1.0 * (yRange.Min + yRange.Max) / 2);
-            float xScaling = (float)(2.0 / (xRange.Max - xRange.Min));
-            float yScaling = (float)(2.0 / (yRange.Max - yRange.Min));
-            Matrix4 translate = Matrix4.CreateTranslation(xTranslation, yTranslation, 0);
-            Matrix4 scale = Matrix4.CreateScale(xScaling, yScaling, 1.0f);
-            Matrix4 normGL = translate * scale;
+            Matrix4d translateD = Matrix4d.CreateTranslation(-1.0 * (xRange.Min + xRange.Max) / 2, -1.0 * (yRange.Min + yRange.Max) / 2, 0.0);
+            Matrix4d scaleD = CreateScale(2.0 / (xRange.Max - xRange.Min), 2.0 / (yRange.Max - yRange.Min), 1.0);
+
+            Matrix4d normGLD = translateD * scaleD;
 
             int location = shader.GetUniformLocation("transform");
-            GL.UniformMatrix4(location, true, ref normGL);
+            GL.UniformMatrix4(location, true, ref normGLD);
             int colorLocation = shader.GetUniformLocation("pathColor");
             GL.Uniform4(colorLocation, OpenTK.Graphics.Color4.Blue);
 
