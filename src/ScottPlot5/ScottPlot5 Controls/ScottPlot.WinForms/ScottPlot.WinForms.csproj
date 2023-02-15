@@ -48,7 +48,7 @@
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Plottables\" />
+        <Folder Include="Plottables\" />
     </ItemGroup>
 
 </Project>
