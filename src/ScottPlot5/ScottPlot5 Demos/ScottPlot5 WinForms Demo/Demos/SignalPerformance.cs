@@ -27,16 +27,16 @@ public partial class SignalPerformance : Form, IDemoWindow
             int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.Title.Label.Text = "one million points";
+            formsPlot1.Plot.Title.Label.Text = "Signal plot with one million points";
         }
         else if (rbScatter.Checked)
         {
-            int pointCount = 10_000;
+            int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
             sp.MarkerStyle = MarkerStyle.None;
-            formsPlot1.Plot.Title.Label.Text = "ten thousand points";
+            formsPlot1.Plot.Title.Label.Text = "Scatter plot with one million points";
         }
         else if (rbScatterGL.Checked)
         {
@@ -44,7 +44,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             formsPlot1.Plot.Add.ScatterGL(xs, ys, formsPlot1.GRContext);
-            formsPlot1.Plot.Title.Label.Text = "one million points (OpenGL Rendering)";
+            formsPlot1.Plot.Title.Label.Text = "ScatterGL plot with one million points";
         }
 
         formsPlot1.Plot.AutoScale();
