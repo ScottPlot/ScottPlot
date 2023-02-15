@@ -13,5 +13,6 @@ internal static class TODO
      * Multiplot (#1337)
      * Add more data source classes
      * Add XLabel(), YLabel(), and Title() shortcuts methods
+     * Need Plot.Remove to match Plot.Add and maybe even Plot.GetPlottables()
      */
 }

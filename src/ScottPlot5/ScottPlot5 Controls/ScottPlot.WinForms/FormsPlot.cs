@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Control;
 using ScottPlot.Extensions;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System;
 using System.ComponentModel;
@@ -12,6 +13,8 @@ namespace ScottPlot.WinForms;
 public class FormsPlot : UserControl, IPlotControl
 {
     readonly SKGLControl SKElement;
+
+    public GRContext GRContext => SKElement.GRContext;
 
     public Plot Plot { get; private set; }
 
