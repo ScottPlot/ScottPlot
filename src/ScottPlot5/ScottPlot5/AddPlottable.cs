@@ -13,7 +13,7 @@ public class AddPlottable
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    private Color NextColor => Palette.GetColor(Plot.Plottables.Count);
+    public Color NextColor => Palette.GetColor(Plot.Plottables.Count);
 
     public AddPlottable(Plot plot)
     {
