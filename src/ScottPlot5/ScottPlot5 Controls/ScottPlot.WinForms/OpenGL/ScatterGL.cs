@@ -100,7 +100,7 @@ public class ScatterGL : Scatter, IPlottableGL
         int location = Shader.GetUniformLocation("transform");
         GL.UniformMatrix4(location, true, ref normGLD);
         int colorLocation = Shader.GetUniformLocation("pathColor");
-        GL.Uniform4(colorLocation, OpenTK.Graphics.Color4.Blue);
+        GL.Uniform4(colorLocation, LineStyle.Color.ToTkColor());
 
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
