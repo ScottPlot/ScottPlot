@@ -22,6 +22,8 @@ public class ScatterGL : Scatter, IPlottableGL
 
     private bool _glInit = false;
 
+    public GRContext GRContext => _context;
+
     public ScatterGL(IScatterSource data, GRContext context) : base(data)
     {
         _context = context;
@@ -59,12 +61,12 @@ public class ScatterGL : Scatter, IPlottableGL
             0.0, 0.0, 0.0, 1.0);
     }
 
-    public override void Render(SKSurface surface)
+    public void Render(SKSurface surface, GRContext context)
     {
         int height = (int)surface.Canvas.LocalClipBounds.Height;
 
-        _context.Flush();
-        _context.ResetContext();
+        context.Flush();
+        context.ResetContext();
 
         if (!_glInit)
             InitGL();

@@ -30,7 +30,7 @@ public class Scatter : IPlottable
         Data = data;
     }
 
-    public virtual void Render(SKSurface surface)
+    public void Render(SKSurface surface)
     {
         IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
 
