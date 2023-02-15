@@ -5,7 +5,7 @@
 /// </summary>
 public static class AddPlottableExtensions
 {
-    public static void ScatterGL(this AddPlottable add, double[] xs, double[] ys, SkiaSharp.GRContext context)
+    public static void ScatterGL(this AddPlottable add, SkiaSharp.GRContext context, double[] xs, double[] ys)
     {
         DataSources.ScatterSourceXsYs data = new(xs, ys);
         Plottables.ScatterGL sp = new(data, context);
