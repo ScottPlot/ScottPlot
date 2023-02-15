@@ -28,8 +28,8 @@ namespace Sandbox.WinUI
         /// <summary>
         /// Gets the main window of the app.
         /// </summary>
-        internal static Window MainWindow 
-        { 
+        internal static Window MainWindow
+        {
             get { return _window!; }
             private set { _window = value; }
         }
