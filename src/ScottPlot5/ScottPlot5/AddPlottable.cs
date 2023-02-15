@@ -41,7 +41,14 @@ public class AddPlottable
             Value = v,
             Fill = new() { Color = NextColor },
         }).ToList();
-        return Pie(slices);
+        var pie = Pie(slices);
+        Plot.Plottables.Add(pie);
+        return pie;
+    }
+
+    public void Plottable(IPlottable plottable)
+    {
+        Plot.Plottables.Add(plottable);
     }
 
     public Scatter Scatter(IScatterSource data, Color? color = null)

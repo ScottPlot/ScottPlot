@@ -1,6 +1,4 @@
 ﻿using ScottPlot;
-using ScottPlot.DataSources;
-using ScottPlot.WinForms;
 
 namespace WinForms_Demo.Demos;
 
@@ -10,7 +8,6 @@ public partial class SignalPerformance : Form, IDemoWindow
 
     public string Description => "Demonstrates how Signal plots can display " +
         "millions of points interactively at high framerates";
-
 
     public SignalPerformance()
     {
@@ -43,12 +40,11 @@ public partial class SignalPerformance : Form, IDemoWindow
         }
         else if (rbScatterGL.Checked)
         {
-            int pointCount = 2_000_000;
+            int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
-            var spGL = new ScatterGL(new ScatterSourceXsYs(xs, ys), formsPlot1.GRContext);
-            formsPlot1.Plot.Plottables.Add(spGL);
-            formsPlot1.Plot.Title.Label.Text = "two million points";
+            formsPlot1.Plot.Add.ScatterGL(xs, ys, formsPlot1.GRContext);
+            formsPlot1.Plot.Title.Label.Text = "one million points (OpenGL Rendering)";
         }
 
         formsPlot1.Plot.AutoScale();
