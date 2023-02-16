@@ -9,10 +9,7 @@ public partial class Form1 : Form
         InitializeComponent();
 
         // begin with an array of DateTime values
-        DateTime[] dates = Generate.ConsecutiveDateTimes(
-            start: new DateTime(1985, 09, 24),
-            step: TimeSpan.FromDays(1),
-            count: 100);
+        DateTime[] dates = Generate.DateTime.Days(100);
 
         // convert DateTime to OLE Automation (OADate) format
         double[] xs = dates.Select(x => x.ToOADate()).ToArray();
