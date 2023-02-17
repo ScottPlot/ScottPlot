@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Layouts;
-using System.Linq;
 
 namespace ScottPlot.Rendering;
 
