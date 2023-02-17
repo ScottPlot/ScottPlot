@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "ScottPlot5.sln",
+    "projects": [
+      "ScottPlot5 Cookbook\\ScottPlot Cookbook.csproj",
+      "ScottPlot5 Tests\\ScottPlot Tests.csproj",
+      "ScottPlot5\\ScottPlot.csproj"
+    ]
+  }
+}
