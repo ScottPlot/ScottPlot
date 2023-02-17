@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "ScottPlot5.sln",
+    "projects": [
+      "ScottPlot5 Controls\\ScottPlot.WinForms\\ScottPlot.WinForms.csproj",
+      "ScottPlot5 Cookbook\\ScottPlot Cookbook.csproj",
+      "ScottPlot5 Demos\\ScottPlot5 WinForms Demo\\WinForms Demo.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WinForms\\Sandbox.WinForms.csproj",
+      "ScottPlot5 Tests\\ScottPlot Tests.csproj",
+      "ScottPlot5\\ScottPlot.csproj"
+    ]
+  }
+}
