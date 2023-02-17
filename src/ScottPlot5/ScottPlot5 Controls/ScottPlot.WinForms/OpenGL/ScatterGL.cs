@@ -4,7 +4,6 @@ using ScottPlot.DataSources;
 using ScottPlot.WinForms.OpenGL;
 using SkiaSharp;
 using System;
-using System.Linq;
 
 namespace ScottPlot.Plottables;
 
@@ -27,11 +26,13 @@ public class ScatterGL : Scatter, IPlottableGL
     public ScatterGL(IScatterSource data, GRContext context) : base(data)
     {
         _context = context;
-        Vertices = data.GetScatterPoints().Select(p =>
+        var dataPoints = data.GetScatterPoints();
+        Vertices = new double[dataPoints.Count];
+        for (int i = 0; i < dataPoints.Count; i++)
         {
-            return new double[] { p.X, p.Y };
-        }).
-        SelectMany(t => t).ToArray();
+            Vertices[i * 2] = dataPoints[i].X;
+            Vertices[i * 2 + 1] = dataPoints[i].Y;
+        }
         VerticesCount = Vertices.Length / 2;
     }
 
