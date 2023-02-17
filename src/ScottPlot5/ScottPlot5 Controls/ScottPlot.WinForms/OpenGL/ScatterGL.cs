@@ -12,22 +12,24 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGL : Scatter, IPlottableGL
 {
-    private readonly GRContext _context;
+    private readonly Func<GRContext> _contextRequest;
     private int VertexBufferObject;
     private int VertexArrayObject;
     private GLShader? Shader;
-    private double[]? Vertices;
+    private double[] Vertices;
     private readonly int VerticesCount;
 
     private bool _glInit = false;
 
-    public GRContext GRContext => _context;
+    public FallbackStrategy RenderFallbackStrategy { get; set; } = FallbackStrategy.Software;
 
-    public ScatterGL(IScatterSource data, GRContext context) : base(data)
+    public GRContext GRContext => _contextRequest();
+
+    public ScatterGL(IScatterSource data, Func<GRContext> contextRequest) : base(data)
     {
-        _context = context;
+        _contextRequest = contextRequest;
         var dataPoints = data.GetScatterPoints();
-        Vertices = new double[dataPoints.Count];
+        Vertices = new double[dataPoints.Count * 2];
         for (int i = 0; i < dataPoints.Count; i++)
         {
             Vertices[i * 2] = dataPoints[i].X;
@@ -38,10 +40,8 @@ public class ScatterGL : Scatter, IPlottableGL
 
     private void InitGL()
     {
-        if (Vertices is null)
-            throw new NullReferenceException(nameof(Vertices));
-
         Shader = new GLShader();
+
         VertexArrayObject = GL.GenVertexArray();
         VertexBufferObject = GL.GenBuffer();
         GL.BindVertexArray(VertexArrayObject);
@@ -49,7 +49,7 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
         GL.VertexAttribLPointer(0, 2, VertexAttribDoubleType.Double, 0, IntPtr.Zero);
         GL.EnableVertexAttribArray(0);
-        Vertices = null;
+        Vertices = Array.Empty<double>();
         _glInit = true;
     }
 
@@ -64,6 +64,16 @@ public class ScatterGL : Scatter, IPlottableGL
 
     public void Render(SKSurface surface, GRContext context)
     {
+        if (context is null)
+        {
+            if (RenderFallbackStrategy == FallbackStrategy.Software)
+            {
+                surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
+                Render(surface);
+            }
+            return;
+        }
+
         int height = (int)surface.Canvas.LocalClipBounds.Height;
 
         context.Flush();
@@ -107,8 +117,11 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
 
-    public void FinishRender()
+    public void FinishRender(GRContext context)
     {
+        if (context is null)
+            return;
+
         GL.Finish();
     }
 }
