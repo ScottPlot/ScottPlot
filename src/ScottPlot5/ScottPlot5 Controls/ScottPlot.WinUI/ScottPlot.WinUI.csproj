@@ -30,6 +30,9 @@
         <GenerateLibraryLayout>true</GenerateLibraryLayout>
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+
+        <!-- Don't warn about features not implemented by Uno -->
+        <NoWarn>Uno0001</NoWarn>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
