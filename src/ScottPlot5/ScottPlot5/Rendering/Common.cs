@@ -109,4 +109,10 @@ public static class Common
     {
         plot.Benchmark.Render(surface.Canvas, dataRect);
     }
+
+    public static void SyncGLPlottables(Plot plot)
+    {
+        var glPlottable = plot.Plottables.FirstOrDefault(p => p is IPlottableGL);
+        (glPlottable as IPlottableGL)?.FinishRender();
+    }
 }

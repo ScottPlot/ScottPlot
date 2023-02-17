@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Layouts;
+using System.Linq;
 
 namespace ScottPlot.Rendering;
 
@@ -26,6 +27,7 @@ public class StandardRenderer : IRenderer
         Common.RenderLegends(surface, dataRect, plot);
         Common.RenderPanels(surface, dataRect, panels, layout);
         Common.RenderZoomRectangle(surface, dataRect, plot);
+        Common.SyncGLPlottables(plot);
         plot.Benchmark.Stop();
 
         Common.RenderBenchmark(surface, dataRect, plot);

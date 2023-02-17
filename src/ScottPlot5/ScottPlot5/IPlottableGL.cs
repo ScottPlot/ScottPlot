@@ -7,4 +7,5 @@ public interface IPlottableGL
 {
     GRContext GRContext { get; }
     void Render(SKSurface surface, GRContext context);
+    void FinishRender();
 }

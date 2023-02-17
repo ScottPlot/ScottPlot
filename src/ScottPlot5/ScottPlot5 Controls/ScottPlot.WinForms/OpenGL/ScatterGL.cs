@@ -105,4 +105,9 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
+
+    public void FinishRender()
+    {
+        GL.Finish();
+    }
 }
