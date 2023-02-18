@@ -65,7 +65,7 @@ public static class Common
 
             if (plottable is IPlottableGL plottableGL)
             {
-                plottableGL.Render(surface, plottableGL.GRContext);
+                plottableGL.Render(surface);
             }
             else
             {
@@ -114,6 +114,6 @@ public static class Common
     {
         var anyGL = plot.Plottables.FirstOrDefault(p => p is IPlottableGL);
         if (anyGL is IPlottableGL plottableGL)
-            plottableGL.FinishRender(plottableGL.GRContext);
+            plottableGL.RenderFinish();
     }
 }

@@ -43,8 +43,7 @@ public partial class SignalPerformance : Form, IDemoWindow
             int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
-            Func<SkiaSharp.GRContext> getContext = () => formsPlot1.GRContext;
-            var spGL = formsPlot1.Plot.Add.ScatterGL(getContext, xs, ys);
+            var spGL = formsPlot1.Plot.Add.ScatterGL(formsPlot1, xs, ys);
             spGL.MarkerStyle = MarkerStyle.None;
             formsPlot1.Plot.Title.Label.Text = "ScatterGL plot with one million points";
         }

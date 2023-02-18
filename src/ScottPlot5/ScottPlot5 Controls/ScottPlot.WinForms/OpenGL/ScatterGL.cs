@@ -1,9 +1,11 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using ScottPlot.Control;
 using ScottPlot.DataSources;
 using ScottPlot.WinForms.OpenGL;
 using SkiaSharp;
 using System;
+using System.Reflection.Emit;
 
 namespace ScottPlot.Plottables;
 
@@ -12,7 +14,7 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGL : Scatter, IPlottableGL
 {
-    private readonly Func<GRContext> GetContext;
+    private readonly IPlotControl PlotControl;
     private int VertexBufferObject;
     private int VertexArrayObject;
     private GLShader? Shader;
@@ -23,11 +25,9 @@ public class ScatterGL : Scatter, IPlottableGL
 
     public GLFallbackRenderStrategy Fallback { get; set; } = GLFallbackRenderStrategy.Software;
 
-    public GRContext GRContext => GetContext();
-
-    public ScatterGL(IScatterSource data, Func<GRContext> getContext) : base(data)
+    public ScatterGL(IScatterSource data, IPlotControl control) : base(data)
     {
-        GetContext = getContext;
+        PlotControl = control;
         var dataPoints = data.GetScatterPoints();
         Vertices = new double[dataPoints.Count * 2];
         for (int i = 0; i < dataPoints.Count; i++)
@@ -62,18 +62,23 @@ public class ScatterGL : Scatter, IPlottableGL
             0.0, 0.0, 0.0, 1.0);
     }
 
-    public void Render(SKSurface surface, GRContext context)
+    public new void Render(SKSurface surface)
     {
-        if (context is null)
+        if (PlotControl.GRContext is not null)
         {
-            if (Fallback == GLFallbackRenderStrategy.Software)
-            {
-                surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
-                Render(surface);
-            }
+            RenderWithOpenGL(surface, PlotControl.GRContext);
             return;
         }
 
+        if (Fallback == GLFallbackRenderStrategy.Software)
+        {
+            surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
+            base.Render(surface);
+        }
+    }
+
+    private void RenderWithOpenGL(SKSurface surface, GRContext context)
+    {
         int height = (int)surface.Canvas.LocalClipBounds.Height;
 
         context.Flush();
@@ -117,9 +122,9 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
 
-    public void FinishRender(GRContext context)
+    public void RenderFinish()
     {
-        if (context is null)
+        if (PlotControl.GRContext is null)
             return;
 
         GL.Finish();

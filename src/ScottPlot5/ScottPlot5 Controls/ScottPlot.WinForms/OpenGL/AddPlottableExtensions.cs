@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Control;
+using System;
 
 namespace ScottPlot;
 
@@ -7,10 +8,10 @@ namespace ScottPlot;
 /// </summary>
 public static class AddPlottableExtensions
 {
-    public static Plottables.ScatterGL ScatterGL(this AddPlottable add, Func<SkiaSharp.GRContext> getContext, double[] xs, double[] ys)
+    public static Plottables.ScatterGL ScatterGL(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
     {
         DataSources.ScatterSourceXsYs data = new(xs, ys);
-        Plottables.ScatterGL sp = new(data, getContext);
+        Plottables.ScatterGL sp = new(data, control);
         Color nextColor = add.NextColor;
         sp.LineStyle.Color = nextColor;
         sp.MarkerStyle.Fill.Color = nextColor;
