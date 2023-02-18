@@ -5,7 +5,6 @@ using ScottPlot.DataSources;
 using ScottPlot.WinForms.OpenGL;
 using SkiaSharp;
 using System;
-using System.Reflection.Emit;
 
 namespace ScottPlot.Plottables;
 
@@ -122,9 +121,5 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
 
-    public void GLFinish()
-    {
-        if (PlotControl.GRContext is not null)
-            GL.Finish();
-    }
+    public void GLFinish() => Shader?.GLFinish();
 }

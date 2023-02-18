@@ -104,6 +104,8 @@ public class GLShader : IDisposable
         }
     }
 
+    public void GLFinish() => GL.Finish();
+
     public void Dispose()
     {
         Dispose(true);
