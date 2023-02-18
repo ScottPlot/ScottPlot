@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Axis;
 
 namespace ScottPlot;
 
@@ -7,6 +7,8 @@ namespace ScottPlot;
 /// </summary>
 public interface IGrid
 {
-    public bool IsBeneathPlottables { get; set; }
-    public void Render(SKSurface surface, PixelRect dataRect);
+    bool IsBeneathPlottables { get; set; }
+    void Render(SKSurface surface, PixelRect dataRect);
+    void Replace(IXAxis xAxis);
+    void Replace(IYAxis yAxis);
 }
