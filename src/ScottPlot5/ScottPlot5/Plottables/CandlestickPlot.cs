@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottables;
 
-public class OhlcPlot : IPlottable
+public class CandlestickPlot : IPlottable
 {
     public bool IsVisible { get; set; } = true;
 
@@ -11,23 +11,33 @@ public class OhlcPlot : IPlottable
     private readonly DataSources.IOHLCSource Data;
 
     /// <summary>
-    /// Fractional width of the OHLC symbol relative to its time span
+    /// Fractional width of the candle symbol relative to its time span
     /// </summary>
     public double SymbolWidth = .8;
 
-    public LineStyle RisingStyle { get; } = new()
+    public LineStyle RisingLineStyle { get; } = new()
     {
         Color = Color.FromHex("#089981"),
         Width = 2,
     };
 
-    public LineStyle FallingStyle { get; } = new()
+    public LineStyle FallingLineStyle { get; } = new()
     {
         Color = Color.FromHex("#f23645"),
         Width = 2,
     };
 
-    public OhlcPlot(DataSources.IOHLCSource data)
+    public FillStyle RisingFillStyle { get; } = new()
+    {
+        Color = Color.FromHex("#089981"),
+    };
+
+    public FillStyle FallingFillStyle { get; } = new()
+    {
+        Color = Color.FromHex("#f23645"),
+    };
+
+    public CandlestickPlot(DataSources.IOHLCSource data)
     {
         Data = data;
     }
@@ -39,13 +49,12 @@ public class OhlcPlot : IPlottable
     public void Render(SKSurface surface)
     {
         using SKPaint paint = new();
-        using SKPath risingPath = new();
-        using SKPath fallingPath = new();
 
         foreach (OHLC ohlc in Data.GetOHLCs())
         {
             bool isRising = ohlc.Close >= ohlc.Open;
-            SKPath path = isRising ? risingPath : fallingPath;
+            LineStyle lineStyle = isRising ? RisingLineStyle : FallingLineStyle;
+            FillStyle fillStlye = isRising ? RisingFillStyle : FallingFillStyle;
 
             float center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
             float top = Axes.GetPixelY(ohlc.High);
@@ -61,22 +70,17 @@ public class OhlcPlot : IPlottable
             float close = Axes.GetPixelY(ohlc.Close);
 
             // center line
+            using SKPath path = new();
             path.MoveTo(center, top);
             path.LineTo(center, bottom);
 
-            // left peg
-            path.MoveTo(left, open);
-            path.LineTo(center, open);
+            lineStyle.ApplyToPaint(paint);
+            surface.Canvas.DrawPath(path, paint);
 
-            // right peg
-            path.MoveTo(center, close);
-            path.LineTo(right, close);
+            // rectangle
+            SKRect rect = new(left, Math.Max(open, close), right, Math.Min(open, close));
+            fillStlye.ApplyToPaint(paint);
+            surface.Canvas.DrawRect(rect, paint);
         }
-
-        RisingStyle.ApplyToPaint(paint);
-        surface.Canvas.DrawPath(risingPath, paint);
-
-        FallingStyle.ApplyToPaint(paint);
-        surface.Canvas.DrawPath(fallingPath, paint);
     }
 }

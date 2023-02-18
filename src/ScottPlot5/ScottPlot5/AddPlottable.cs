@@ -109,6 +109,14 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
+    public CandlestickPlot Candlestick(IReadOnlyList<OHLC> ohlcs)
+    {
+        OHLCSource dataSource = new(ohlcs);
+        CandlestickPlot candlestickPlot = new(dataSource);
+        Plot.Plottables.Add(candlestickPlot);
+        return candlestickPlot;
+    }
+
     public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
     {
         ColorBar colorBar = new(source, edge);
