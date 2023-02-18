@@ -14,7 +14,7 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGL : Scatter, IPlottableGL
 {
-    private readonly IPlotControl PlotControl;
+    public IPlotControl PlotControl { get; }
     private int VertexBufferObject;
     private int VertexArrayObject;
     private GLShader? Shader;
@@ -122,11 +122,9 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
 
-    public void RenderFinish()
+    public void GLFinish()
     {
-        if (PlotControl.GRContext is null)
-            return;
-
-        GL.Finish();
+        if (PlotControl.GRContext is not null)
+            GL.Finish();
     }
 }

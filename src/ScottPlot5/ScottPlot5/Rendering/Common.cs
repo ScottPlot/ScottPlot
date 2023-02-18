@@ -112,8 +112,8 @@ public static class Common
 
     public static void SyncGLPlottables(Plot plot)
     {
-        var anyGL = plot.Plottables.FirstOrDefault(p => p is IPlottableGL);
-        if (anyGL is IPlottableGL plottableGL)
-            plottableGL.RenderFinish();
+        var glPlottables = plot.Plottables.OfType<IPlottableGL>();
+        if (glPlottables.Any())
+            glPlottables.First().GLFinish();
     }
 }
