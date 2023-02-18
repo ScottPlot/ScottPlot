@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.DataSources;
+﻿using System.Linq;
+
+namespace ScottPlot.DataSources;
 
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
@@ -21,7 +23,8 @@ public class ScatterSourceXsYs : IScatterSource
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        return Enumerable.Range(0, Xs.Count).Select(i => GetCoordinatesAt(i)).ToArray();
+        return Xs.Zip(Ys, (x, y) => new Coordinates(x, y)).ToArray();
+
     }
 
     public AxisLimits GetLimits()

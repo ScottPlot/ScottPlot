@@ -39,9 +39,10 @@ public class AxisStyler
 
     public void DateTimeTicks(Edge edge)
     {
+        // replace the old axis with a new DateTime axis
         ClearAxes(edge);
 
-        var dateAxis = edge switch
+        IXAxis dateAxis = edge switch
         {
             Edge.Left => throw new NotImplementedException(),
             Edge.Right => throw new NotImplementedException(),
@@ -51,5 +52,10 @@ public class AxisStyler
         };
 
         Plot.XAxes.Add(dateAxis);
+
+        foreach (IGrid grid in Plot.Grids)
+        {
+            grid.Replace(dateAxis);
+        }
     }
 }

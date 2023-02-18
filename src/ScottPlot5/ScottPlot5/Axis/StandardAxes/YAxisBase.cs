@@ -38,7 +38,7 @@ public abstract class YAxisBase : AxisBase, IAxis
 
         float largestTickWidth = 0;
 
-        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
+        foreach (Tick tick in TickGenerator.Ticks)
         {
             PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
@@ -91,8 +91,7 @@ public abstract class YAxisBase : AxisBase, IAxis
         Label.Rotation = Edge == Edge.Left ? -90 : 90;
         Label.Draw(surface.Canvas, labelPoint);
 
-        var ticks = TickGenerator.GetVisibleTicks(Range);
-        AxisRendering.DrawTicks(surface, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        AxisRendering.DrawTicks(surface, TickFont, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
     }
 

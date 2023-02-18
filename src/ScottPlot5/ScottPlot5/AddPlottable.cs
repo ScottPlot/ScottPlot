@@ -109,6 +109,14 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
+    public CandlestickPlot Candlestick(IReadOnlyList<OHLC> ohlcs)
+    {
+        OHLCSource dataSource = new(ohlcs);
+        CandlestickPlot candlestickPlot = new(dataSource);
+        Plot.Plottables.Add(candlestickPlot);
+        return candlestickPlot;
+    }
+
     public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
     {
         ColorBar colorBar = new(source, edge);
@@ -119,9 +127,17 @@ public class AddPlottable
 
     public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive = null, IReadOnlyList<double>? xErrorNegative = null, IReadOnlyList<double>? yErrorPositive = null, IReadOnlyList<double>? yErrorNegative = null, Color? color = null)
     {
-        color = color ?? NextColor;
+        color ??= NextColor;
         ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
         Plot.Plottables.Add(errorBar);
         return errorBar;
+    }
+
+    public OhlcPlot OHLC(IReadOnlyList<OHLC> ohlcs)
+    {
+        OHLCSource dataSource = new(ohlcs);
+        OhlcPlot ohlc = new(dataSource);
+        Plot.Plottables.Add(ohlc);
+        return ohlc;
     }
 }

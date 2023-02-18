@@ -12,12 +12,22 @@ public class DefaultGrid : IGrid
 
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public readonly IXAxis XAxis;
-    public readonly IYAxis YAxis;
+    public IXAxis XAxis { get; private set; }
+    public IYAxis YAxis { get; private set; }
 
     public DefaultGrid(IXAxis xAxis, IYAxis yAxis)
     {
         XAxis = xAxis;
+        YAxis = yAxis;
+    }
+
+    public void Replace(IXAxis xAxis)
+    {
+        XAxis = xAxis;
+    }
+
+    public void Replace(IYAxis yAxis)
+    {
         YAxis = yAxis;
     }
 

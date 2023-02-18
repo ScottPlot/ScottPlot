@@ -43,4 +43,25 @@ public class RandomDataGenerator
             data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
         return data;
     }
+
+    public IEnumerable<OHLC> RandomOHLCs(int count)
+    {
+        DateTime[] dates = Generate.DateTime.Weekdays(count);
+        TimeSpan span = TimeSpan.FromDays(1);
+
+        double mult = 1;
+
+        OHLC[] ohlcs = new OHLC[count];
+        double open = RandomNumber(150, 250);
+        for (int i = 0; i < count; i++)
+        {
+            double close = open + RandomNumber(-mult, mult);
+            double high = Math.Max(open, close) + RandomNumber(0, mult);
+            double low = Math.Min(open, close) - RandomNumber(0, mult);
+            ohlcs[i] = new OHLC(open, high, low, close, dates[i], span);
+            open = close + RandomNumber(-mult / 2, mult / 2);
+        }
+
+        return ohlcs;
+    }
 }

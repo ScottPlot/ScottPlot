@@ -13,11 +13,6 @@ public class NumericFixedInterval : ITickGenerator
         Interval = interval;
     }
 
-    public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
-    {
-        return Ticks.Where(x => range.Contains(x.Position));
-    }
-
     public void Regenerate(CoordinateRange range, PixelLength size)
     {
         List<Tick> ticks = new();
@@ -34,6 +29,6 @@ public class NumericFixedInterval : ITickGenerator
             ticks.Add(new Tick(position, label, true));
         }
 
-        Ticks = ticks.ToArray();
+        Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
     }
 }

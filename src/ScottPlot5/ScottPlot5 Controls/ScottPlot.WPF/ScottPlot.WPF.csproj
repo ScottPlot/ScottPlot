@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
@@ -36,6 +36,14 @@
     </ItemGroup>
 
     <!-- Package dependencies -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+		<PackageReference Include="OpenTK" Version="3.3.1" NoWarn="NU1701" />
+		<PackageReference Include="OpenTK.GLWpfControl" Version="3.3.0" NoWarn="NU1701" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+		<PackageReference Include="OpenTK" Version="4.3.0" NoWarn="NU1701" />
+		<PackageReference Include="OpenTK.GLWpfControl" Version="4.2.2" />
+	</ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <PrivateAssets>all</PrivateAssets>
