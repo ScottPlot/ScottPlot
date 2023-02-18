@@ -6,7 +6,7 @@ internal class Finance : RecipePageBase
     {
         Chapter = Chapter.PlotTypes,
         PageName = "Financial Plot",
-        PageDescription = "Finance plots display price data binned into time ranges.",
+        PageDescription = "Finance plots display price data binned into time ranges",
     };
 
     internal class OHLC : RecipeTestBase
