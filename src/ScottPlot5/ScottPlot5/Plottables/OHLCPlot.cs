@@ -2,21 +2,32 @@
 
 namespace ScottPlot.Plottables;
 
-public class OHLCPlot : IPlottable
+public class OhlcPlot : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
-    public readonly DataSources.IOHLCSource Data;
 
-    public LineStyle GrowingStyle { get; } = new() { Color = Color.FromHex("#089981"), Width = 2 };
-    public LineStyle FallingStyle { get; } = new() { Color = Color.FromHex("#f23645"), Width = 2 };
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
+
+    private readonly DataSources.IOHLCSource Data;
 
     /// <summary>
-    /// Width (in pixels) of each symbol on the chart
+    /// Fractional width of the OHLC symbol relative to its time span
     /// </summary>
-    public int Width { get; set; } = 10; // TODO: OHLCs should store their own time span used to calculate symbol width
+    public double SymbolWidth = .8;
 
-    public OHLCPlot(DataSources.IOHLCSource data)
+    public LineStyle RisingStyle { get; } = new()
+    {
+        Color = Color.FromHex("#089981"),
+        Width = 2,
+    };
+
+    public LineStyle FallingStyle { get; } = new()
+    {
+        Color = Color.FromHex("#f23645"),
+        Width = 2,
+    };
+
+    public OhlcPlot(DataSources.IOHLCSource data)
     {
         Data = data;
     }
@@ -28,16 +39,23 @@ public class OHLCPlot : IPlottable
     public void Render(SKSurface surface)
     {
         using SKPaint paint = new();
-        using SKPath growingPath = new();
+        using SKPath risingPath = new();
         using SKPath fallingPath = new();
 
         foreach (OHLC ohlc in Data.GetOHLCs())
         {
-            SKPath path = ohlc.Close >= ohlc.Open ? growingPath : fallingPath;
+            bool isRising = ohlc.Close >= ohlc.Open;
+            SKPath path = isRising ? risingPath : fallingPath;
 
             float center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
             float top = Axes.GetPixelY(ohlc.High);
             float bottom = Axes.GetPixelY(ohlc.Low);
+
+            TimeSpan halfWidth = new((long)(ohlc.TimeSpan.Ticks * SymbolWidth / 2));
+            DateTime leftTime = ohlc.DateTime - halfWidth;
+            DateTime rightTime = ohlc.DateTime + halfWidth;
+            float left = Axes.GetPixelX(leftTime.ToNumber());
+            float right = Axes.GetPixelX(rightTime.ToNumber());
 
             path.MoveTo(center, top);
             path.LineTo(center, bottom);
@@ -45,15 +63,15 @@ public class OHLCPlot : IPlottable
             float open = Axes.GetPixelY(ohlc.Open);
             float close = Axes.GetPixelY(ohlc.Close);
 
-            path.MoveTo(center - Width / 2, open);
+            path.MoveTo(left, open);
             path.LineTo(center, open);
 
             path.MoveTo(center, close);
-            path.LineTo(center + Width / 2, close);
+            path.LineTo(right, close);
         }
 
-        GrowingStyle.ApplyToPaint(paint);
-        surface.Canvas.DrawPath(growingPath, paint);
+        RisingStyle.ApplyToPaint(paint);
+        surface.Canvas.DrawPath(risingPath, paint);
 
         FallingStyle.ApplyToPaint(paint);
         surface.Canvas.DrawPath(fallingPath, paint);

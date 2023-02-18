@@ -125,10 +125,10 @@ public class AddPlottable
         return errorBar;
     }
 
-    public OHLCPlot OHLC(IReadOnlyList<OHLC> ohlcs)
+    public OhlcPlot OHLC(IReadOnlyList<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
-        OHLCPlot ohlc = new(dataSource);
+        OhlcPlot ohlc = new(dataSource);
         Plot.Plottables.Add(ohlc);
         return ohlc;
     }
