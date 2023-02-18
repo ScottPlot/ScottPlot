@@ -24,10 +24,10 @@ jobs:
           dotnet-version: "6.0.x"
       - name: ✒️ Set up dotnet-format
         run: dotnet tool install -g dotnet-format
-      - name: 🧐 Check Code Formatting
-        run: |
-          dotnet-format --check ${{env.SLN_SP4_FULL}}
-          dotnet-format --check ${{env.SLN_SP5_FULL}}
+      - name: 🧐 Check ScottPlot 4 code format
+        run: dotnet-format --check ${{env.SLN_SP4_FULL}}
+      - name: 🧐 Check ScottPlot 5 code format
+        run: dotnet-format --check ${{env.SLN_SP5_FULL}}
 
   test-linux:
     runs-on: ubuntu-latest
@@ -68,8 +68,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
-      - name: ✒️ Set up dotnet-format
-        run: dotnet tool install -g dotnet-format
 
       - name: 🚚 ScottPlot4 Restore
         run: dotnet restore ${{env.SLN_SP4_FULL}}
