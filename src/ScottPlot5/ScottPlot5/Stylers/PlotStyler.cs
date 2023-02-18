@@ -20,8 +20,8 @@ public class PlotStyler
     /// </summary>
     public void Background(Color figure, Color data)
     {
-        Plot.FigureBackground = Color.FromHex("#07263b");
-        Plot.DataBackground = Color.FromHex("#0b3049");
+        Plot.FigureBackground = figure;
+        Plot.DataBackground = data;
     }
 
     /// <summary>
