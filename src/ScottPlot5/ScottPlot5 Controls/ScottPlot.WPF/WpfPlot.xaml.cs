@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ScottPlot.Control;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
 namespace ScottPlot.WPF;
@@ -23,6 +24,8 @@ public partial class WpfPlot : UserControl, IPlotControl
     public Plot Plot { get; } = new();
 
     public Interaction Interaction { get; private set; }
+
+    public GRContext GRContext => SKElement.GRContext;
 
     public WpfPlot()
     {
@@ -73,7 +76,7 @@ public partial class WpfPlot : UserControl, IPlotControl
         menu.IsOpen = true;
     }
 
-    private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+    private void OnPaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
     {
         Plot.Render(e.Surface);
     }
