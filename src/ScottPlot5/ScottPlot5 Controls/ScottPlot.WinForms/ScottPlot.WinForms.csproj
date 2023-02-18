@@ -47,8 +47,5 @@
         <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="2.*" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Plottables\" />
-    </ItemGroup>
 
 </Project>
