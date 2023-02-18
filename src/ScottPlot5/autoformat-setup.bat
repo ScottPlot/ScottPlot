@@ -1,2 +1,2 @@
-dotnet-format
+dotnet tool update -g dotnet-format
 pause

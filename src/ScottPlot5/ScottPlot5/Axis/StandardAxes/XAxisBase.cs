@@ -22,7 +22,7 @@ public abstract class XAxisBase : AxisBase, IAxis
 
         float largestTickHeight = 0;
 
-        foreach (Tick tick in TickGenerator.GetVisibleTicks(Range))
+        foreach (Tick tick in TickGenerator.Ticks)
         {
             PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
             largestTickHeight = Math.Max(largestTickHeight, tickLabelSize.Height + 10);
@@ -92,7 +92,7 @@ public abstract class XAxisBase : AxisBase, IAxis
         Label.Draw(surface.Canvas, labelPoint);
 
 
-        IEnumerable<Tick> ticks = TickGenerator.GetVisibleTicks(Range);
+        IEnumerable<Tick> ticks = TickGenerator.Ticks;
 
         AxisRendering.DrawTicks(surface, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
         AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
