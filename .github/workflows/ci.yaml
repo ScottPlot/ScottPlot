@@ -42,3 +42,34 @@ jobs:
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
       - name: 🧐 ScottPlot5 Autoformat
         run: dotnet-format --check ${{env.SLN_SP5_FULL}}
+
+  test-windows:
+    runs-on: windows-latest
+    name: Test on Windows
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Setup .NET 6.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: 🚚 ScottPlot4 Restore
+        run: dotnet restore ${{env.SLN_SP4_FULL}}
+      - name: 🛠️ ScottPlot4 Build
+        run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
+      - name: 🧪 ScottPlot4 Test
+        run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
+      - name: 🧐 ScottPlot4 Autoformat
+        run: dotnet-format --check ${{env.SLN_SP4_FULL}}
+
+      - name: 🚚 ScottPlot5 Restore
+        run: dotnet restore ${{env.SLN_SP5_FULL}}
+      - name: 🛠️ ScottPlot5 Build
+        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release --no-restore
+      - name: 🧪 ScottPlot5 Test
+        run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
+      - name: 🧐 ScottPlot5 Autoformat
+        run: dotnet-format --check ${{env.SLN_SP5_FULL}}
