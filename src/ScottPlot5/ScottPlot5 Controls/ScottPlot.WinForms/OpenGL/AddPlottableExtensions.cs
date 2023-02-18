@@ -1,17 +1,21 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Control;
+using System;
+
+namespace ScottPlot;
 
 /// <summary>
 /// This class extends Plot.Add.* to add additional plottables provided by this NuGet package
 /// </summary>
 public static class AddPlottableExtensions
 {
-    public static void ScatterGL(this AddPlottable add, SkiaSharp.GRContext context, double[] xs, double[] ys)
+    public static Plottables.ScatterGL ScatterGL(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
     {
         DataSources.ScatterSourceXsYs data = new(xs, ys);
-        Plottables.ScatterGL sp = new(data, context);
+        Plottables.ScatterGL sp = new(data, control);
         Color nextColor = add.NextColor;
         sp.LineStyle.Color = nextColor;
         sp.MarkerStyle.Fill.Color = nextColor;
         add.Plottable(sp);
+        return sp;
     }
 }

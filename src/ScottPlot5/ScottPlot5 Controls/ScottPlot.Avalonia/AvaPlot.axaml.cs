@@ -25,6 +25,8 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public Interaction Interaction { get; private set; }
 
+    public GRContext? GRContext => null;
+
     private readonly List<FileDialogFilter> fileDialogFilters = new()
     {
         new() { Name = "PNG Files", Extensions = new List<string> { "png" } },

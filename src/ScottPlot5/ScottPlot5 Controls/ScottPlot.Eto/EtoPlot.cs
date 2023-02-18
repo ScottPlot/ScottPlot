@@ -14,6 +14,8 @@ public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; } = new();
 
+    public GRContext? GRContext => null;
+
     public Interaction Interaction { get; private set; }
 
     private readonly List<FileFilter> fileDialogFilters = new()
