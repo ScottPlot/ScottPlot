@@ -9,7 +9,6 @@ public partial class SignalPerformance : Form, IDemoWindow
     public string Description => "Demonstrates how Signal plots can display " +
         "millions of points interactively at high framerates";
 
-
     public SignalPerformance()
     {
         InitializeComponent();
@@ -28,16 +27,24 @@ public partial class SignalPerformance : Form, IDemoWindow
             int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.Title.Label.Text = "one million points";
+            formsPlot1.Plot.Title.Label.Text = "Signal plot with one million points";
         }
-        else
+        else if (rbScatter.Checked)
         {
-            int pointCount = 10_000;
+            int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
             sp.MarkerStyle = MarkerStyle.None;
-            formsPlot1.Plot.Title.Label.Text = "ten thousand points";
+            formsPlot1.Plot.Title.Label.Text = "Scatter plot with one million points";
+        }
+        else if (rbScatterGL.Checked)
+        {
+            int pointCount = 1_000_000;
+            double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
+            double[] xs = ScottPlot.Generate.Consecutive(pointCount);
+            formsPlot1.Plot.Add.ScatterGL(formsPlot1.GRContext, xs, ys);
+            formsPlot1.Plot.Title.Label.Text = "ScatterGL plot with one million points";
         }
 
         formsPlot1.Plot.AutoScale();

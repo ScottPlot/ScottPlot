@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 
@@ -10,24 +10,30 @@ namespace Sandbox.WinUI
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public sealed partial class App : Application
+    public partial class App : Application
     {
-        private static Window? _window;
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+        /// <remarks>
+        /// If you're looking for App.xaml.cs, the file is present in each platform head
+        /// of the solution.
+        /// </remarks>
         public App()
         {
             this.InitializeComponent();
-
-#if HAS_UNO || NETFX_CORE
-            this.Suspending += OnSuspending;
-#endif
         }
 
-        public static Window Window => _window!;
+        /// <summary>
+        /// Gets the main window of the app.
+        /// </summary>
+        internal static Window MainWindow
+        {
+            get { return _window!; }
+            private set { _window = value; }
+        }
+        private static Window? _window;
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -44,16 +50,15 @@ namespace Sandbox.WinUI
 #endif
 
 #if NET6_0_OR_GREATER && WINDOWS && !HAS_UNO
-            _window = new Window();
-            _window.Activate();
+            MainWindow = new Window();
+            MainWindow.Activate();
 #else
-            _window = Microsoft.UI.Xaml.Window.Current;
+			MainWindow = Microsoft.UI.Xaml.Window.Current;
 #endif
-            var rootFrame = _window.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (MainWindow.Content is not Frame rootFrame)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -66,11 +71,11 @@ namespace Sandbox.WinUI
                 }
 
                 // Place the frame in the current Window
-                _window.Content = rootFrame;
+                MainWindow.Content = rootFrame;
             }
 
 #if !(NET6_0_OR_GREATER && WINDOWS)
-            if (args.UWPLaunchActivatedEventArgs.PrelaunchActivated == false)
+			if (args.UWPLaunchActivatedEventArgs.PrelaunchActivated == false)
 #endif
             {
                 if (rootFrame.Content == null)
@@ -81,7 +86,7 @@ namespace Sandbox.WinUI
                     rootFrame.Navigate(typeof(MainPage), args.Arguments);
                 }
                 // Ensure the current window is active
-                _window.Activate();
+                MainWindow.Activate();
             }
         }
 
@@ -105,7 +110,7 @@ namespace Sandbox.WinUI
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+            //TODO: Save the application state and stop any background activity
             deferral.Complete();
         }
     }

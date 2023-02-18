@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This class contains methods which generate sample data for testing and demonstration purposes
 /// </summary>
 public static class Generate
 {
+    #region numerical 1D
+
     /// <summary>
     /// Return an array of evenly-spaced numbers
     /// </summary>
@@ -70,6 +70,10 @@ public static class Generate
         }
         return data;
     }
+
+    #endregion
+
+    #region numerical 2D
 
     /// <summary>
     /// Generates a 2D array of numbers with constant spacing.
@@ -150,6 +154,10 @@ public static class Generate
         return intensities;
     }
 
+    #endregion
+
+    #region numerical random
+
     /// <summary>
     /// Return a series of values starting with <paramref name="offset"/> and
     /// each randomly deviating from the previous by at most <paramref name="mult"/>.
@@ -174,41 +182,70 @@ public static class Generate
             .ToArray();
     }
 
+    #endregion
+
+    #region DateTime
+
     /// <summary>
-    /// Return an array of DateTimes starting at the given value changing by the step size
+    /// Contains methods for generating DateTime sequences
     /// </summary>
-    public static DateTime[] ConsecutiveDateTimes(DateTime start, TimeSpan step, int count)
+    public static class DateTime
     {
-        DateTime dt = start;
-        DateTime[] values = new DateTime[count];
-        for (int i = 0; i < count; i++)
+        /// <summary>
+        /// Date of the first ScottPlot commit
+        /// </summary>
+        public static readonly System.DateTime ExampleDate = new(2018, 01, 03);
+
+        /// <summary>
+        /// Evenly-spaced DateTimes
+        /// </summary>
+        public static System.DateTime[] Consecutive(System.DateTime start, TimeSpan step, int count)
         {
-            values[i] = dt;
-            dt += step;
+            System.DateTime dt = start;
+            System.DateTime[] values = new System.DateTime[count];
+            for (int i = 0; i < count; i++)
+            {
+                values[i] = dt;
+                dt += step;
+            }
+            return values;
         }
-        return values;
+
+        public static System.DateTime[] Weekdays(int count, System.DateTime start)
+        {
+            System.DateTime[] dates = new System.DateTime[count];
+            int i = 0;
+            while (i < count)
+            {
+                if (start.DayOfWeek != DayOfWeek.Saturday && start.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    dates[i] = start;
+                    i++;
+                }
+
+                start = start.AddDays(1);
+            }
+            return dates;
+        }
+
+        public static System.DateTime[] Weekdays(int count) => Weekdays(count, ExampleDate);
+
+        public static System.DateTime[] Days(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromDays(1), count);
+
+        public static System.DateTime[] Days(int count) => Days(count, ExampleDate);
+
+        public static System.DateTime[] Hours(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromHours(1), count);
+
+        public static System.DateTime[] Hours(int count) => Hours(count, ExampleDate);
+
+        public static System.DateTime[] Minutes(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromMinutes(1), count);
+
+        public static System.DateTime[] Minutes(int count) => Hours(count, ExampleDate);
+
+        public static System.DateTime[] Seconds(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromSeconds(1), count);
+
+        public static System.DateTime[] Seconds(int count) => Hours(count, ExampleDate);
     }
     
-    public static IEnumerable<OHLC> RandomWalkOHLC(int count, double mult = 1, double offset = 150, int seed = 0)
-    {
-        RandomDataGenerator gen = new(seed);
-        double[] openingPrices = gen.RandomWalk(count + 1, mult, offset);
-
-        OHLC GetOHLC(double open, double close)
-        {
-            double min = Math.Min(open, close);
-            double max = Math.Max(open, close);
-
-            double span = max - min;
-
-            double high = gen.RandomNumber(max, max + span * 1.02);
-            double low = gen.RandomNumber(min - span * 0.98, min);
-
-            return new(open, high, low, close);
-        }
-
-        return openingPrices
-            .Take(count)
-            .Zip(openingPrices.Skip(1), GetOHLC);
-    }
+    #endregion
 }

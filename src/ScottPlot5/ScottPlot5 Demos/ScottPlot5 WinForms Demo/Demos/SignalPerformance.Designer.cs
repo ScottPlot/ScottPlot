@@ -31,6 +31,7 @@
             this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             this.rbSignal = new System.Windows.Forms.RadioButton();
             this.rbScatter = new System.Windows.Forms.RadioButton();
+            this.rbScatterGL = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -67,11 +68,23 @@
             this.rbScatter.UseVisualStyleBackColor = true;
             this.rbScatter.CheckedChanged += new System.EventHandler(this.rbScatter_CheckedChanged);
             // 
+            // rbScatterGL
+            // 
+            this.rbScatterGL.AutoSize = true;
+            this.rbScatterGL.Location = new System.Drawing.Point(190, 12);
+            this.rbScatterGL.Name = "rbScatterGL";
+            this.rbScatterGL.Size = new System.Drawing.Size(75, 19);
+            this.rbScatterGL.TabIndex = 3;
+            this.rbScatterGL.TabStop = true;
+            this.rbScatterGL.Text = "ScatterGL";
+            this.rbScatterGL.UseVisualStyleBackColor = true;
+            // 
             // SignalPerformance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.rbScatterGL);
             this.Controls.Add(this.rbScatter);
             this.Controls.Add(this.rbSignal);
             this.Controls.Add(this.formsPlot1);
@@ -87,5 +100,6 @@
         private ScottPlot.WinForms.FormsPlot formsPlot1;
         private RadioButton rbSignal;
         private RadioButton rbScatter;
+        private RadioButton rbScatterGL;
     }
 }
