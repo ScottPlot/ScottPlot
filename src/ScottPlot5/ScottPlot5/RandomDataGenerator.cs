@@ -44,25 +44,24 @@ public class RandomDataGenerator
         return data;
     }
 
-    public IEnumerable<OHLC> RandomOHLCs(int count, double mult = 1, double offset = 150)
+    public IEnumerable<OHLC> RandomOHLCs(int count)
     {
-        double[] openingPrices = RandomWalk(count + 1, mult, offset);
+        DateTime[] dates = Generate.DateTime.Weekdays(count);
+        TimeSpan span = TimeSpan.FromDays(1);
 
-        OHLC GetOHLC(double open, double close)
+        double mult = 1;
+
+        OHLC[] ohlcs = new OHLC[count];
+        double open = RandomNumber(150, 250);
+        for (int i = 0; i < count; i++)
         {
-            double min = Math.Min(open, close);
-            double max = Math.Max(open, close);
-
-            double span = max - min;
-
-            double high = RandomNumber(max, max + span * 1.02);
-            double low = RandomNumber(min - span * 0.98, min);
-
-            return new OHLC(open, high, low, close);
+            double close = open + RandomNumber(-mult, mult);
+            double high = Math.Max(open, close) + RandomNumber(0, mult);
+            double low = Math.Min(open, close) - RandomNumber(0, mult);
+            ohlcs[i] = new OHLC(open, high, low, close, dates[i], span);
+            open = close + RandomNumber(-mult / 2, mult / 2);
         }
 
-        return openingPrices
-            .Take(count)
-            .Zip(openingPrices.Skip(1), GetOHLC);
+        return ohlcs;
     }
 }

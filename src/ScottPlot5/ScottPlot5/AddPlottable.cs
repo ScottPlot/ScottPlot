@@ -119,15 +119,16 @@ public class AddPlottable
 
     public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive = null, IReadOnlyList<double>? xErrorNegative = null, IReadOnlyList<double>? yErrorPositive = null, IReadOnlyList<double>? yErrorNegative = null, Color? color = null)
     {
-        color = color ?? NextColor;
+        color ??= NextColor;
         ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
         Plot.Plottables.Add(errorBar);
         return errorBar;
     }
 
-    public OHLCPlot OHLC(IReadOnlyList<double> xs, IReadOnlyList<OHLC> ohlcs)
+    public OHLCPlot OHLC(IReadOnlyList<OHLC> ohlcs)
     {
-        OHLCPlot ohlc = new(new OHLCSourceXsYs(xs, ohlcs));
+        OHLCSource dataSource = new(ohlcs);
+        OHLCPlot ohlc = new(dataSource);
         Plot.Plottables.Add(ohlc);
         return ohlc;
     }

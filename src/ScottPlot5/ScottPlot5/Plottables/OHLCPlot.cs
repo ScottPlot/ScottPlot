@@ -7,7 +7,7 @@ public class OHLCPlot : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public readonly DataSources.IOHLCSource Data;
-    
+
     public LineStyle GrowingStyle { get; } = new() { Color = Color.FromHex("#089981"), Width = 2 };
     public LineStyle FallingStyle { get; } = new() { Color = Color.FromHex("#f23645"), Width = 2 };
 
@@ -31,19 +31,19 @@ public class OHLCPlot : IPlottable
         using SKPath growingPath = new();
         using SKPath fallingPath = new();
 
-        foreach ((double x, OHLC y) in Data.GetOHLCPoints())
+        foreach (OHLC ohlc in Data.GetOHLCs())
         {
-            SKPath path = y.Close >= y.Open ? growingPath : fallingPath;
+            SKPath path = ohlc.Close >= ohlc.Open ? growingPath : fallingPath;
 
-            float center = Axes.GetPixelX(x);
-            float top = Axes.GetPixelY(y.High);
-            float bottom = Axes.GetPixelY(y.Low);
+            float center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
+            float top = Axes.GetPixelY(ohlc.High);
+            float bottom = Axes.GetPixelY(ohlc.Low);
 
             path.MoveTo(center, top);
             path.LineTo(center, bottom);
 
-            float open = Axes.GetPixelY(y.Open);
-            float close = Axes.GetPixelY(y.Close);
+            float open = Axes.GetPixelY(ohlc.Open);
+            float close = Axes.GetPixelY(ohlc.Close);
 
             path.MoveTo(center - Width / 2, open);
             path.LineTo(center, open);

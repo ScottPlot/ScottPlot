@@ -19,9 +19,7 @@ internal class Finance : RecipePageBase
         public override void Recipe()
         {
             ScottPlot.OHLC[] ohlcs = ScottPlot.Generate.OHLC.Random(30);
-            DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(ohlcs.Length);
-            double[] xs = dates.Select(x => x.ToOADate()).ToArray(); // TODO: there must be a better way
-            myPlot.Add.OHLC(xs, ohlcs);
+            myPlot.Add.OHLC(ohlcs);
             myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
     }

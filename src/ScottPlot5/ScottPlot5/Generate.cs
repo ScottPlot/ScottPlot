@@ -253,9 +253,9 @@ public static class Generate
 
     public static class OHLC
     {
-        public static ScottPlot.OHLC[] Random(int count, double mult = 1, double offset = 150, int seed = 0)
+        public static ScottPlot.OHLC[] Random(int count, int seed = 8)
         {
-            return new RandomDataGenerator(seed).RandomOHLCs(count, mult, offset).ToArray();
+            return new RandomDataGenerator(seed).RandomOHLCs(count).ToArray();
         }
     }
 

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.DataSources;
 
-namespace ScottPlot.DataSources;
 public interface IOHLCSource : IHasAxisLimits
 {
-    IReadOnlyList<Tuple<double, OHLC>> GetOHLCPoints();
+    IReadOnlyList<OHLC> GetOHLCs();
 }
