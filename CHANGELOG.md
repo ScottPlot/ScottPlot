@@ -6,6 +6,7 @@ _not yet published on NuGet..._
 * WebAssembly: New sandbox demonstrates interactive ScottPlot in a browser (#2380, #2374) _Thanks rafntor_
 * OpenGL: Added experimental support for direct GPU rendering (#2383) _Thanks @StendProg_
 * Finance Plots: Added OHLC and Candlestick plot types (#2386) _Thanks @bclehmann_
+* Style: Improved Plot.Style.Background() color configuration (#2398) _Thanks @Jonathanio123_
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
