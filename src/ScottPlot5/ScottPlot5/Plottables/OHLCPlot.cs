@@ -1,67 +1,61 @@
 ﻿using ScottPlot.Axis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ScottPlot.Plottables
+namespace ScottPlot.Plottables;
+
+public class OHLCPlot : IPlottable
 {
-    public class OHLCPlot : IPlottable
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public readonly DataSources.IOHLCSource Data;
+    
+    public LineStyle GrowingStyle { get; } = new() { Color = Colors.LightGreen, Width = 2 };
+    public LineStyle FallingStyle { get; } = new() { Color = Colors.LightCoral, Width = 2 };
+
+    /// <summary>
+    /// The number of pixels taken up by each wick
+    /// </summary>
+    public int Width { get; set; } = 10;
+
+    public OHLCPlot(DataSources.IOHLCSource data)
     {
-        public bool IsVisible { get; set; } = true;
-        public IAxes Axes { get; set; } = Axis.Axes.Default;
-        public readonly DataSources.IOHLCSource Data;
-        
-        public LineStyle GrowingStyle { get; } = new() { Color = Colors.LightGreen, Width = 2 };
-        public LineStyle FallingStyle { get; } = new() { Color = Colors.LightCoral, Width = 2 };
+        Data = data;
+    }
 
-        /// <summary>
-        /// The number of pixels taken up by each wick
-        /// </summary>
-        public int Width { get; set; } = 10;
+    public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-        public OHLCPlot(DataSources.IOHLCSource data)
+    public AxisLimits GetAxisLimits() => Data.GetLimits();
+
+    public void Render(SKSurface surface)
+    {
+        using SKPaint paint = new();
+        using SKPath growingPath = new();
+        using SKPath fallingPath = new();
+
+        foreach ((double x, OHLC y) in Data.GetOHLCPoints())
         {
-            Data = data;
+            SKPath path = y.Close >= y.Open ? growingPath : fallingPath;
+
+            float center = Axes.GetPixelX(x);
+            float top = Axes.GetPixelY(y.High);
+            float bottom = Axes.GetPixelY(y.Low);
+
+            path.MoveTo(center, top);
+            path.LineTo(center, bottom);
+
+            float open = Axes.GetPixelY(y.Open);
+            float close = Axes.GetPixelY(y.Close);
+
+            path.MoveTo(center - Width / 2, open);
+            path.LineTo(center, open);
+
+            path.MoveTo(center, close);
+            path.LineTo(center + Width / 2, close);
         }
 
-        public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
+        GrowingStyle.ApplyToPaint(paint);
+        surface.Canvas.DrawPath(growingPath, paint);
 
-        public AxisLimits GetAxisLimits() => Data.GetLimits();
-
-        public void Render(SKSurface surface)
-        {
-            using SKPaint paint = new();
-            using SKPath growingPath = new();
-            using SKPath fallingPath = new();
-
-            foreach ((double x, OHLC y) in Data.GetOHLCPoints())
-            {
-                SKPath path = y.Close >= y.Open ? growingPath : fallingPath;
-
-                float center = Axes.GetPixelX(x);
-                float top = Axes.GetPixelY(y.High);
-                float bottom = Axes.GetPixelY(y.Low);
-
-                path.MoveTo(center, top);
-                path.LineTo(center, bottom);
-
-                float open = Axes.GetPixelY(y.Open);
-                float close = Axes.GetPixelY(y.Close);
-
-                path.MoveTo(center - Width / 2, open);
-                path.LineTo(center, open);
-
-                path.MoveTo(center, close);
-                path.LineTo(center + Width / 2, close);
-            }
-
-            GrowingStyle.ApplyToPaint(paint);
-            surface.Canvas.DrawPath(growingPath, paint);
-
-            FallingStyle.ApplyToPaint(paint);
-            surface.Canvas.DrawPath(fallingPath, paint);
-        }
+        FallingStyle.ApplyToPaint(paint);
+        surface.Canvas.DrawPath(fallingPath, paint);
     }
 }

@@ -6,19 +6,19 @@ internal class Finance : RecipePageBase
     {
         Chapter = Chapter.PlotTypes,
         PageName = "Financial Plot",
-        PageDescription = "Finance plots display OHLC data representing prices " +
-        "(open, high, low, close) for specific time ranges",
+        PageDescription = "Finance plots display price data binned into time ranges.";
     };
 
-    internal class Candlestick : RecipeTestBase
+    internal class OHLC : RecipeTestBase
     {
-        public override string Name => "Candlestick Chart";
-        public override string Description => "A candlestick chart can be created from OHLC data.";
+        public override string Name => "OHLC Chart";
+        public override string Description => "OHLC charts use symbols to display price data " +
+            "(open, high, low, and close) for specific time ranges.";
 
         [Test]
         public override void Recipe()
         {
-            OHLC[] ohlcs = ScottPlot.Generate.OHLC.Random(30);
+            ScottPlot.OHLC[] ohlcs = ScottPlot.Generate.OHLC.Random(30);
             DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(ohlcs.Length);
             double[] xs = dates.Select(x => x.ToOADate()).ToArray(); // TODO: there must be a better way
             myPlot.Add.OHLC(xs, ohlcs);
