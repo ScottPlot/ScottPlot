@@ -28,7 +28,7 @@ public interface IPlotControl
     void ShowContextMenu(Pixel position);
 
     /// <summary>
-    /// Context for hardware-accelerated graphics (if available)
+    /// Context for hardware-accelerated graphics (or null if not available)
     /// </summary>
     GRContext? GRContext { get; }
 }
