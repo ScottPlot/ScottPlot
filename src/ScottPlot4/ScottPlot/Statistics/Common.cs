@@ -326,26 +326,31 @@ namespace ScottPlot.Statistics
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
         /// <param name="binSize">Width of each bin.</param>
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
-        public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
+        /// <param name="includeOutliers">If True, the first bin of the result will include outlier count from values below the specified <paramref name="min"/>, and the last bin will include outlier count from values above the <paramref name="max"/>.</param>
+        public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) Histogram(double[] values, double min, double max, double binSize, bool density = false, bool includeOutliers = false)
         {
             int binCount = (int)((max - min) / binSize);
-            return Histogram(values, binCount, density, min, max);
+            return Histogram(values, binCount, density, min, max, includeOutliers);
         }
 
         /// <summary>
         /// Compute the histogram of a dataset.
         /// </summary>
         /// <param name="values">Input data</param>
-        /// <param name="binCount">Number of equal-width bins</param>
+        /// <param name="binCount">Number of equal-width bins</param>  
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        /// <param name="includeOutliers">If True, the first bin of the result will include outlier count from values below the specified <paramref name="min"/>, and the last bin will include outlier count from values above the <paramref name="max"/>.</param>
         /// <returns></returns>
-        public static (double[] hist, double[] binEdges) Histogram(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
+        public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) Histogram(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN, bool includeOutliers = false)
         {
             /* note: function signature loosely matches numpy: 
              * https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
              */
+
+            int minOutliers = 0;
+            int maxOutliers = 0;
 
             // determine min/max based on the data (if not provided)
             if (double.IsNaN(min) || double.IsNaN(max))
@@ -367,8 +372,17 @@ namespace ScottPlot.Statistics
             double[] hist = new double[binCount];
             for (int i = 0; i < values.Length; i++)
             {
-                if (values[i] < min || values[i] > max)
+                if (values[i] < min)
                 {
+                    minOutliers += 1;
+                    if (includeOutliers) hist[0] += 1;
+                    continue;
+                }
+
+                if (values[i] > max)
+                {
+                    maxOutliers += 1;
+                    if (includeOutliers) hist[hist.Length - 1] += 1;
                     continue;
                 }
 
@@ -391,7 +405,7 @@ namespace ScottPlot.Statistics
                     hist[i] /= binScale;
             }
 
-            return (hist, binEdges);
+            return (hist, binEdges, minOutliers, maxOutliers);
         }
     }
 }
