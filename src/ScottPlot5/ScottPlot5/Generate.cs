@@ -247,5 +247,18 @@ public static class Generate
         public static System.DateTime[] Seconds(int count) => Hours(count, ExampleDate);
     }
     
+
+    #endregion
+
+    #region OHLC
+
+    public static class OHLC
+    {
+        public static ScottPlot.OHLC[] Random(int count, double mult = 1, double offset = 150, int seed = 0)
+        {
+            return new RandomDataGenerator(seed).RandomOHLCs(count, mult, offset).ToArray();
+        }
+    }
+
     #endregion
 }

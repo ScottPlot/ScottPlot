@@ -43,4 +43,26 @@ public class RandomDataGenerator
             data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
         return data;
     }
+
+    public IEnumerable<OHLC> RandomOHLCs(int count, double mult = 1, double offset = 150)
+    {
+        double[] openingPrices = RandomWalk(count + 1, mult, offset);
+
+        OHLC GetOHLC(double open, double close)
+        {
+            double min = Math.Min(open, close);
+            double max = Math.Max(open, close);
+
+            double span = max - min;
+
+            double high = RandomNumber(max, max + span * 1.02);
+            double low = RandomNumber(min - span * 0.98, min);
+
+            return new OHLC(open, high, low, close);
+        }
+
+        return openingPrices
+            .Take(count)
+            .Zip(openingPrices.Skip(1), GetOHLC);
+    }
 }
