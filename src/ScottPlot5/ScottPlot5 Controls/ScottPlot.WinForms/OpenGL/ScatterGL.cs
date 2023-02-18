@@ -12,22 +12,22 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGL : Scatter, IPlottableGL
 {
-    private readonly Func<GRContext> _contextRequest;
+    private readonly Func<GRContext> GetContext;
     private int VertexBufferObject;
     private int VertexArrayObject;
     private GLShader? Shader;
     private double[] Vertices;
     private readonly int VerticesCount;
 
-    private bool _glInit = false;
+    private bool GLHasBeenInitialized = false;
 
-    public FallbackStrategy RenderFallbackStrategy { get; set; } = FallbackStrategy.Software;
+    public GLFallbackRenderStrategy Fallback { get; set; } = GLFallbackRenderStrategy.Software;
 
-    public GRContext GRContext => _contextRequest();
+    public GRContext GRContext => GetContext();
 
-    public ScatterGL(IScatterSource data, Func<GRContext> contextRequest) : base(data)
+    public ScatterGL(IScatterSource data, Func<GRContext> getContext) : base(data)
     {
-        _contextRequest = contextRequest;
+        GetContext = getContext;
         var dataPoints = data.GetScatterPoints();
         Vertices = new double[dataPoints.Count * 2];
         for (int i = 0; i < dataPoints.Count; i++)
@@ -38,7 +38,7 @@ public class ScatterGL : Scatter, IPlottableGL
         VerticesCount = Vertices.Length / 2;
     }
 
-    private void InitGL()
+    private void InitializeGL()
     {
         Shader = new GLShader();
 
@@ -50,7 +50,7 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.VertexAttribLPointer(0, 2, VertexAttribDoubleType.Double, 0, IntPtr.Zero);
         GL.EnableVertexAttribArray(0);
         Vertices = Array.Empty<double>();
-        _glInit = true;
+        GLHasBeenInitialized = true;
     }
 
     private static Matrix4d CreateScale(double x, double y, double z)
@@ -66,7 +66,7 @@ public class ScatterGL : Scatter, IPlottableGL
     {
         if (context is null)
         {
-            if (RenderFallbackStrategy == FallbackStrategy.Software)
+            if (Fallback == GLFallbackRenderStrategy.Software)
             {
                 surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
                 Render(surface);
@@ -79,8 +79,8 @@ public class ScatterGL : Scatter, IPlottableGL
         context.Flush();
         context.ResetContext();
 
-        if (!_glInit)
-            InitGL();
+        if (!GLHasBeenInitialized)
+            InitializeGL();
 
         if (Shader is null)
             throw new NullReferenceException(nameof(Shader));
