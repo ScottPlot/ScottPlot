@@ -58,11 +58,6 @@ public class DateTimeAutomatic : IDateTickGenerator
         return null;
     }
 
-    public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
-    {
-        return Ticks.Where(x => range.Contains(x.Position));
-    }
-
     public void Regenerate(CoordinateRange range, PixelLength size)
     {
         if (range.Span >= TimeSpan.MaxValue.Days)
@@ -101,7 +96,7 @@ public class DateTimeAutomatic : IDateTickGenerator
             // if ticks were returned, use them
             if (ticks is not null)
             {
-                Ticks = ticks.ToArray();
+                Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
                 return;
             }
 

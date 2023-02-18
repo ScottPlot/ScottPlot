@@ -199,7 +199,7 @@ public static class Generate
         /// <summary>
         /// Evenly-spaced DateTimes
         /// </summary>
-        public static System.DateTime[] Consecutive(System.DateTime start, TimeSpan step, int count)
+        public static System.DateTime[] Consecutive(int count, System.DateTime start, TimeSpan step)
         {
             System.DateTime dt = start;
             System.DateTime[] values = new System.DateTime[count];
@@ -230,21 +230,33 @@ public static class Generate
 
         public static System.DateTime[] Weekdays(int count) => Weekdays(count, ExampleDate);
 
-        public static System.DateTime[] Days(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromDays(1), count);
+        public static System.DateTime[] Days(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromDays(1));
 
         public static System.DateTime[] Days(int count) => Days(count, ExampleDate);
 
-        public static System.DateTime[] Hours(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromHours(1), count);
+        public static System.DateTime[] Hours(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromHours(1));
 
         public static System.DateTime[] Hours(int count) => Hours(count, ExampleDate);
 
-        public static System.DateTime[] Minutes(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromMinutes(1), count);
+        public static System.DateTime[] Minutes(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromMinutes(1));
 
         public static System.DateTime[] Minutes(int count) => Hours(count, ExampleDate);
 
-        public static System.DateTime[] Seconds(int count, System.DateTime start) => Consecutive(start, TimeSpan.FromSeconds(1), count);
+        public static System.DateTime[] Seconds(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromSeconds(1));
 
         public static System.DateTime[] Seconds(int count) => Hours(count, ExampleDate);
+    }
+
+    #endregion
+
+    #region OHLC
+
+    public static class OHLC
+    {
+        public static ScottPlot.OHLC[] Random(int count, int seed = 8)
+        {
+            return new RandomDataGenerator(seed).RandomOHLCs(count).ToArray();
+        }
     }
 
     #endregion

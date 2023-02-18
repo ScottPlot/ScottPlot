@@ -5,7 +5,7 @@ public interface ITickGenerator
     /// <summary>
     /// Ticks to display the next time the axis is rendered
     /// </summary>
-    Tick[] Ticks { get; set; } // TODO: Obsolete this. Don't store ticks. Generate them once on render and pass them around.
+    Tick[] Ticks { get; set; }
 
     /// <summary>
     /// Do not automatically generate more ticks than this
@@ -13,12 +13,8 @@ public interface ITickGenerator
     int MaxTickCount { get; set; }
 
     /// <summary>
-    /// Logic for generating ticks automatically
+    /// Logic for generating ticks automatically.
+    /// Generated ticks are stored in <see cref="Ticks"/>.
     /// </summary>
     void Regenerate(CoordinateRange range, PixelLength size);
-
-    /// <summary>
-    /// Return just the ticks within a range (inclusive) up to a maximum number
-    /// </summary>
-    IEnumerable<Tick> GetVisibleTicks(CoordinateRange range);
 }

@@ -21,11 +21,6 @@ namespace ScottPlot.TickGenerators
             return dates.Select(dt => dt.ToNumber());
         }
 
-        public IEnumerable<Tick> GetVisibleTicks(CoordinateRange range)
-        {
-            return Ticks.Where(x => range.Contains(x.Position));
-        }
-
         public void Regenerate(CoordinateRange range, PixelLength size)
         {
             List<Tick> ticks = new();
@@ -37,7 +32,7 @@ namespace ScottPlot.TickGenerators
                 ticks.Add(new Tick(dt.ToNumber(), dt.ToString(Interval.GetDateTimeFormatString()), true));
             }
 
-            Ticks = ticks.ToArray();
+            Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
         }
     }
 }
