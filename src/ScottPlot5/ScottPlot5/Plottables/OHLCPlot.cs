@@ -8,13 +8,13 @@ public class OHLCPlot : IPlottable
     public IAxes Axes { get; set; } = Axis.Axes.Default;
     public readonly DataSources.IOHLCSource Data;
     
-    public LineStyle GrowingStyle { get; } = new() { Color = Colors.LightGreen, Width = 2 };
-    public LineStyle FallingStyle { get; } = new() { Color = Colors.LightCoral, Width = 2 };
+    public LineStyle GrowingStyle { get; } = new() { Color = Color.FromHex("#089981"), Width = 2 };
+    public LineStyle FallingStyle { get; } = new() { Color = Color.FromHex("#f23645"), Width = 2 };
 
     /// <summary>
-    /// The number of pixels taken up by each wick
+    /// Width (in pixels) of each symbol on the chart
     /// </summary>
-    public int Width { get; set; } = 10;
+    public int Width { get; set; } = 10; // TODO: OHLCs should store their own time span used to calculate symbol width
 
     public OHLCPlot(DataSources.IOHLCSource data)
     {
