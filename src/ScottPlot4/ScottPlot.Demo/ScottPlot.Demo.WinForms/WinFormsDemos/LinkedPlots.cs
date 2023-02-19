@@ -5,41 +5,29 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class LinkedPlots : Form
     {
-        readonly FormsPlot[] FormsPlots;
-
         public LinkedPlots()
         {
             InitializeComponent();
-            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
-            formsPlot2.Plot.AddSignal(DataGen.Cos(51));
+            formsPlot1.Plot.AddSignal(DataGen.Sin(51, 2), color: System.Drawing.Color.Blue);
+            formsPlot2.Plot.AddSignal(DataGen.Cos(51, 2), color: System.Drawing.Color.Red);
 
             formsPlot1.Refresh();
             formsPlot2.Refresh();
 
-            // create a list of plot controls we can easily iterate through later
-            FormsPlots = new FormsPlot[] { formsPlot1, formsPlot2 };
-            foreach (var fp in FormsPlots)
-                fp.AxesChanged += OnAxesChanged;
+            cbLinked_CheckedChanged(null, null);
         }
 
-        private void OnAxesChanged(object sender, EventArgs e)
+        private void cbLinked_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbLinked.Checked == false)
-                return;
-
-            FormsPlot changedPlot = (FormsPlot)sender;
-            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
-
-            foreach (var fp in FormsPlots)
+            if (cbLinked.Checked)
             {
-                if (fp == changedPlot)
-                    continue;
-
-                // disable events briefly to avoid an infinite loop
-                fp.Configuration.AxesChangedEventEnabled = false;
-                fp.Plot.SetAxisLimits(newAxisLimits);
-                fp.Refresh();
-                fp.Configuration.AxesChangedEventEnabled = true;
+                formsPlot1.AddLinkedControl(formsPlot2); // update plot 2 when plot 1 changes
+                formsPlot2.AddLinkedControl(formsPlot1); // update plot 1 when plot 2 changes
+            }
+            else
+            {
+                formsPlot1.ClearLinkedControls();
+                formsPlot2.ClearLinkedControls();
             }
         }
     }

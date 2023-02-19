@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Control;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ScottPlot
 {
-    public partial class FormsPlot : UserControl
+    public partial class FormsPlot : UserControl, IPlotControl
     {
         /// <summary>
         /// This is the plot displayed by the user control.
@@ -20,7 +21,7 @@ namespace ScottPlot
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public readonly Control.Configuration Configuration;
+        public Control.Configuration Configuration { get; }
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -151,6 +152,15 @@ namespace ScottPlot
         /// <summary>
         /// Re-render the plot and update the image displayed by this control.
         /// </summary>
+        public override void Refresh()
+        {
+            Refresh(false, false);
+            base.Refresh();
+        }
+
+        /// <summary>
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
         /// <param name="lowQuality">disable anti-aliasing to produce faster (but lower quality) plots</param>
         /// <param name="skipIfCurrentlyRendering"></param>
         public void Refresh(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
@@ -190,8 +200,8 @@ namespace ScottPlot
         private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
-        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
-        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
+        private void OnSizeChanged(object sender, EventArgs e) { Backend.Resize(Width, Height, useDelayedRendering: true); UpdateLinkedPlotControls(); }
+        private void OnAxesChanged(object sender, EventArgs e) { AxesChanged?.Invoke(this, e); UpdateLinkedPlotControls(); }
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnLeftClicked(object sender, EventArgs e) => LeftClicked?.Invoke(this, e);
         private void OnLeftClickedPlottable(object sender, EventArgs e) => LeftClickedPlottable?.Invoke(sender, e);
@@ -254,5 +264,54 @@ namespace ScottPlot
         }
 
         private void RightClickMenu_PlotObjectEditor_Click(object sender, EventArgs e) => new PlotObjectEditor(this).ShowDialog();
+
+        /// <summary>
+        /// Plots whose axes and layout will be updated when this plot changes
+        /// </summary>
+        readonly List<LinkedPlotControl> LinkedPlotControls = new();
+        public bool EnableLinkedPlotUpdates = true;
+
+        /// <summary>
+        /// Add a plot which will have its axes and layout updated when this plot changes
+        /// </summary>
+        public void AddLinkedControl(FormsPlot otherPlot, bool horizontal = true, bool vertical = true, bool layout = true)
+        {
+            LinkedPlotControl linkedControl = new(otherPlot, horizontal, vertical, layout);
+            LinkedPlotControls.Add(linkedControl);
+            UpdateLinkedPlotControls();
+        }
+
+        public void ClearLinkedControls()
+        {
+            LinkedPlotControls.Clear();
+        }
+
+        private void UpdateLinkedPlotControls()
+        {
+            if (!Configuration.EmitLinkedControlUpdateSignals)
+                return;
+
+            foreach (LinkedPlotControl linkedPlotControl in LinkedPlotControls)
+            {
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = false;
+
+                linkedPlotControl.PlotControl.Plot.MatchAxis(
+                    sourcePlot: this.Plot,
+                    horizontal: linkedPlotControl.LinkHorizontal,
+                    vertical: linkedPlotControl.LinkVertical);
+
+                if (linkedPlotControl.LinkLayout)
+                {
+                    linkedPlotControl.PlotControl.Plot.MatchLayout(
+                        sourcePlot: this.Plot,
+                        horizontal: linkedPlotControl.LinkHorizontal,
+                        vertical: linkedPlotControl.LinkVertical);
+                }
+
+                linkedPlotControl.PlotControl.Refresh();
+
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
+            }
+        }
     }
 }
