@@ -17,38 +17,18 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class LinkedPlots : Window
     {
-        readonly WpfPlot[] WpfPlots;
-
         public LinkedPlots()
         {
             InitializeComponent();
-            wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
-            wpfPlot2.Plot.AddSignal(DataGen.Cos(51));
 
-            // create a list of plot controls we can easily iterate through later
-            WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2 };
+            wpfPlot1.Plot.AddSignal(DataGen.Sin(51, 2), color: System.Drawing.Color.Blue);
+            wpfPlot2.Plot.AddSignal(DataGen.Cos(51, 2), color: System.Drawing.Color.Red);
 
-            // perform an initial render
             wpfPlot1.Refresh();
             wpfPlot2.Refresh();
-        }
 
-        private void AxesChanged(object sender, EventArgs e)
-        {
-            WpfPlot changedPlot = (WpfPlot)sender;
-            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
-
-            foreach (WpfPlot wp in WpfPlots)
-            {
-                if (wp == changedPlot)
-                    continue;
-
-                // disable events briefly to prevent an infinite loop
-                wp.Configuration.AxesChangedEventEnabled = false;
-                wp.Plot.SetAxisLimits(newAxisLimits);
-                wp.Refresh();
-                wp.Configuration.AxesChangedEventEnabled = true;
-            }
+            //wpfPlot1.AddLinkedControl(wpfPlot2); // update plot 2 when plot 1 changes
+            //wpfPlot2.AddLinkedControl(wpfPlot1); // update plot 1 when plot 2 changes
         }
     }
 }

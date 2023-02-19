@@ -15,7 +15,7 @@ namespace ScottPlot
 {
     [System.ComponentModel.ToolboxItem(true)]
     [System.ComponentModel.DesignTimeVisible(true)]
-    public partial class WpfPlot : UserControl
+    public partial class WpfPlot : UserControl, ScottPlot.Control.IPlotControl
     {
         /// <summary>
         /// This is the plot displayed by the user control.
@@ -26,7 +26,7 @@ namespace ScottPlot
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public readonly Control.Configuration Configuration;
+        public Control.Configuration Configuration { get; }
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -151,6 +151,14 @@ namespace ScottPlot
         /// Reset this control by replacing the current plot with an existing plot
         /// </summary>
         public void Reset(Plot newPlot) => Backend.Reset((float)ActualWidth, (float)ActualHeight, newPlot);
+
+        /// <summary>
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
+        public void Refresh()
+        {
+            Refresh(false);
+        }
 
         /// <summary>
         /// Re-render the plot and update the image displayed by this control.

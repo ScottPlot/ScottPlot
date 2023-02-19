@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Label Content="This example demonstrates how to link axes of two separate plots." Grid.Column="0" Grid.Row="0"/>
-        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="1" Name="wpfPlot1" AxesChanged="AxesChanged"/>
-        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="2" Name="wpfPlot2" AxesChanged="AxesChanged"/>
+        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="1" Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="2" Name="wpfPlot2"/>
     </Grid>
 </Window>
