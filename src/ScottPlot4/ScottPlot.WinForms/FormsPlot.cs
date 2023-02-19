@@ -200,8 +200,8 @@ namespace ScottPlot
         private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
-        private void OnSizeChanged(object sender, EventArgs e) { Backend.Resize(Width, Height, useDelayedRendering: true); UpdateLinkedPlotControls(); }
-        private void OnAxesChanged(object sender, EventArgs e) { AxesChanged?.Invoke(this, e); UpdateLinkedPlotControls(); }
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
+        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnLeftClicked(object sender, EventArgs e) => LeftClicked?.Invoke(this, e);
         private void OnLeftClickedPlottable(object sender, EventArgs e) => LeftClickedPlottable?.Invoke(sender, e);
@@ -264,54 +264,7 @@ namespace ScottPlot
         }
 
         private void RightClickMenu_PlotObjectEditor_Click(object sender, EventArgs e) => new PlotObjectEditor(this).ShowDialog();
-
-        /// <summary>
-        /// Plots whose axes and layout will be updated when this plot changes
-        /// </summary>
-        readonly List<LinkedPlotControl> LinkedPlotControls = new();
-        public bool EnableLinkedPlotUpdates = true;
-
-        /// <summary>
-        /// Add a plot which will have its axes and layout updated when this plot changes
-        /// </summary>
-        public void AddLinkedControl(FormsPlot otherPlot, bool horizontal = true, bool vertical = true, bool layout = true)
-        {
-            LinkedPlotControl linkedControl = new(otherPlot, horizontal, vertical, layout);
-            LinkedPlotControls.Add(linkedControl);
-            UpdateLinkedPlotControls();
-        }
-
-        public void ClearLinkedControls()
-        {
-            LinkedPlotControls.Clear();
-        }
-
-        private void UpdateLinkedPlotControls()
-        {
-            if (!Configuration.EmitLinkedControlUpdateSignals)
-                return;
-
-            foreach (LinkedPlotControl linkedPlotControl in LinkedPlotControls)
-            {
-                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = false;
-
-                linkedPlotControl.PlotControl.Plot.MatchAxis(
-                    sourcePlot: this.Plot,
-                    horizontal: linkedPlotControl.LinkHorizontal,
-                    vertical: linkedPlotControl.LinkVertical);
-
-                if (linkedPlotControl.LinkLayout)
-                {
-                    linkedPlotControl.PlotControl.Plot.MatchLayout(
-                        sourcePlot: this.Plot,
-                        horizontal: linkedPlotControl.LinkHorizontal,
-                        vertical: linkedPlotControl.LinkVertical);
-                }
-
-                linkedPlotControl.PlotControl.Refresh();
-
-                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
-            }
-        }
+        public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
+        public void ClearLinkedControls() => Backend.ClearLinkedControls();
     }
 }

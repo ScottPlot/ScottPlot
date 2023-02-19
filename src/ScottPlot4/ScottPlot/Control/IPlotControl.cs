@@ -19,4 +19,14 @@ public interface IPlotControl
     /// Configuration object holding advanced control options
     /// </summary>
     Configuration Configuration { get; }
+
+    /// <summary>
+    /// Link a plot control so its axis and layout updates with this one
+    /// </summary>
+    void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true);
+
+    /// <summary>
+    /// Clear all linked plot controls
+    /// </summary>
+    void ClearLinkedControls();
 }

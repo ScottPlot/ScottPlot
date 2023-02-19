@@ -240,6 +240,11 @@ namespace ScottPlot.Control
         public readonly string ControlName;
 
         /// <summary>
+        /// Plots whose axes and layout will be updated when this plot changes
+        /// </summary>
+        readonly List<LinkedPlotControl> LinkedPlotControls = new();
+
+        /// <summary>
         /// Create a back-end for a user control
         /// </summary>
         /// <param name="width">initial bitmap size (pixels)</param>
@@ -354,7 +359,10 @@ namespace ScottPlot.Control
 
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
+            {
                 AxesChanged(null, EventArgs.Empty);
+                UpdateLinkedPlotControls();
+            }
             LimitsOnLastRender = newLimits;
 
             if (BitmapRenderCount == 1)
@@ -719,6 +727,49 @@ namespace ScottPlot.Control
             {
                 IUIEvent mouseEvent = EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp);
                 ProcessEvent(mouseEvent);
+            }
+        }
+
+        /// <summary>
+        /// Add a plot which will have its axes and layout updated when this plot changes
+        /// </summary>
+        public void AddLinkedControl(IPlotControl otherPlot, bool horizontal = true, bool vertical = true, bool layout = true)
+        {
+            LinkedPlotControl linkedControl = new(otherPlot, horizontal, vertical, layout);
+            LinkedPlotControls.Add(linkedControl);
+            UpdateLinkedPlotControls();
+        }
+
+        public void ClearLinkedControls()
+        {
+            LinkedPlotControls.Clear();
+        }
+
+        private void UpdateLinkedPlotControls()
+        {
+            if (!Configuration.EmitLinkedControlUpdateSignals)
+                return;
+
+            foreach (LinkedPlotControl linkedPlotControl in LinkedPlotControls)
+            {
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = false;
+
+                linkedPlotControl.PlotControl.Plot.MatchAxis(
+                    sourcePlot: this.Plot,
+                    horizontal: linkedPlotControl.LinkHorizontal,
+                    vertical: linkedPlotControl.LinkVertical);
+
+                if (linkedPlotControl.LinkLayout)
+                {
+                    linkedPlotControl.PlotControl.Plot.MatchLayout(
+                        sourcePlot: this.Plot,
+                        horizontal: linkedPlotControl.LinkHorizontal,
+                        vertical: linkedPlotControl.LinkVertical);
+                }
+
+                linkedPlotControl.PlotControl.Refresh();
+
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
             }
         }
     }
