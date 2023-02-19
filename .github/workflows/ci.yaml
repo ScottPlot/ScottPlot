@@ -2,8 +2,10 @@ name: CI
 
 on:
   workflow_dispatch:
-  push:
-  pull_request:
+  push: # run on pushes to main (only happens when PRs are merged or admin commits directly to main)
+    branches:
+      - main
+  pull_request: # run on all PR actions (push, open, reopen)
 
 env:
   SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
