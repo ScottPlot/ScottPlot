@@ -3958,3 +3958,6 @@ virtual ScottPlot.Ticks.DateTimeTickUnits.DateTimeTickUnitBase.Increment(System.
 ~virtual ScottPlot.Styles.Default.TitleFontName.get -> string
 ~virtual ScottPlot.Ticks.DateTimeTickUnits.DateTimeTickUnitBase.GetTickLabel(System.DateTime value) -> string
 ~virtual ScottPlot.Ticks.DateTimeTickUnits.DateTimeTickUnitBase.GetTicks(System.DateTime from, System.DateTime to, int delta) -> System.DateTime[]
+
+# new features manually added to the public API
+~static ScottPlot.Statistics.Common.HistogramWithOutliers(double[] values, double min, double max, double binSize, bool density = false) -> (double[] hist, double[] binEdges, int minOutliers, int maxOutliers)
