@@ -203,5 +203,12 @@ namespace ScottPlot.Control
         /// Default cursor to use (when not hovering or dragging an interactive plottable)
         /// </summary>
         public Cursor DefaultCursor { get; set; } = Cursor.Arrow;
+
+        /// <summary>
+        /// Notify linked plots when axis, size, or layout of this plot changes.
+        /// Temporarially disable this when applying configuration from another linked plot
+        /// to prevent an infinite circular update loop.
+        /// </summary>
+        public bool EmitLinkedControlUpdateSignals = true;
     }
 }
