@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ScottPlot.Control;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -339,5 +340,8 @@ namespace ScottPlot
             if (sfd.ShowDialog() is true)
                 Plot.SaveFig(sfd.FileName);
         }
+
+        public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
+        public void ClearLinkedControls() => Backend.ClearLinkedControls();
     }
 }

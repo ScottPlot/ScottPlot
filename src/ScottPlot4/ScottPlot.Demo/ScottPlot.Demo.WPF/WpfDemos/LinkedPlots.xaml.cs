@@ -27,8 +27,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.Refresh();
             wpfPlot2.Refresh();
 
-            //wpfPlot1.AddLinkedControl(wpfPlot2); // update plot 2 when plot 1 changes
-            //wpfPlot2.AddLinkedControl(wpfPlot1); // update plot 1 when plot 2 changes
+            wpfPlot1.AddLinkedControl(wpfPlot2); // update plot 2 when plot 1 changes
+            wpfPlot2.AddLinkedControl(wpfPlot1); // update plot 1 when plot 2 changes
         }
     }
 }
