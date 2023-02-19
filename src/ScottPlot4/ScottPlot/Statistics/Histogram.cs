@@ -64,7 +64,7 @@ public class Histogram
         Max = max;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
         Counts = new int[binCount];
-        Normalized= new double[binCount];
+        Normalized = new double[binCount];
         BinEdges = new double[binCount];
 
         // create evenly sized bins
@@ -117,7 +117,7 @@ public class Histogram
         {
             double binScale = Counts.Sum() * BinSize;
             for (int i = 0; i < Counts.Length; i++) Normalized[i] = Counts[i] / binScale;
-        }        
+        }
     }
 
     /// <summary>
