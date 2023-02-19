@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
-#pragma warning disable SYSLIB0023
+#pragma warning disable SYSLIB0023 // ignore warning that RNGCryptoServiceProvider is obsolete
 
 namespace ScottPlot.Statistics
 {
@@ -333,6 +331,20 @@ namespace ScottPlot.Statistics
         }
 
         /// <summary>
+        /// Compute the histogram of a dataset, also returns the minOutliers and maxOutliers counts. These outlier counts are also included in the first and last histogram bin counts respectively. 
+        /// </summary>
+        /// <param name="values">Input data</param>
+        /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
+        /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        /// <param name="binSize">Width of each bin.</param>
+        /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) HistogramWithOutliers(double[] values, double min, double max, double binSize, bool density = false)
+        {
+            int binCount = (int)((max - min) / binSize);
+            return HistogramWithOutliers(values, binCount, density, min, max);
+        }
+
+        /// <summary>
         /// Compute the histogram of a dataset.
         /// </summary>
         /// <param name="values">Input data</param>
@@ -340,7 +352,6 @@ namespace ScottPlot.Statistics
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
-        /// <returns></returns>
         public static (double[] hist, double[] binEdges) Histogram(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
         {
             /* note: function signature loosely matches numpy: 
@@ -392,6 +403,79 @@ namespace ScottPlot.Statistics
             }
 
             return (hist, binEdges);
+        }
+
+        /// <summary>
+        /// Compute the histogram of a dataset, also returns the minOutliers and maxOutliers counts. These outlier counts are also included in the first and last histogram bin counts respectively.
+        /// </summary>
+        /// <param name="values">Input data</param>
+        /// <param name="binCount">Number of equal-width bins</param>  
+        /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
+        /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
+        public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) HistogramWithOutliers(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
+        {
+            /* note: function signature loosely matches numpy: 
+             * https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
+             */
+
+            int minOutliers = 0;
+            int maxOutliers = 0;
+
+            // determine min/max based on the data (if not provided)
+            if (double.IsNaN(min) || double.IsNaN(max))
+            {
+                var stats = new BasicStats(values);
+                if (double.IsNaN(min))
+                    min = stats.Min;
+                if (double.IsNaN(max))
+                    max = stats.Max;
+            }
+
+            // create evenly sized bins
+            double binWidth = (max - min) / binCount;
+            double[] binEdges = new double[binCount + 1];
+            for (int i = 0; i < binEdges.Length; i++)
+                binEdges[i] = min + binWidth * i;
+
+            // place values in histogram
+            double[] hist = new double[binCount];
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] < min)
+                {
+                    minOutliers += 1;
+                    hist[0] += 1;
+                    continue;
+                }
+
+                if (values[i] > max)
+                {
+                    maxOutliers += 1;
+                    hist[hist.Length - 1] += 1;
+                    continue;
+                }
+
+                if (values[i] == max)
+                {
+                    hist[hist.Length - 1] += 1;
+                    continue;
+                }
+
+                double distanceFromMin = values[i] - min;
+                int binsFromMin = (int)(distanceFromMin / binWidth);
+                hist[binsFromMin] += 1;
+            }
+
+            // optionally normalize the data
+            if (density)
+            {
+                double binScale = hist.Sum() * binWidth;
+                for (int i = 0; i < hist.Length; i++)
+                    hist[i] /= binScale;
+            }
+
+            return (hist, binEdges, minOutliers, maxOutliers);
         }
     }
 }
