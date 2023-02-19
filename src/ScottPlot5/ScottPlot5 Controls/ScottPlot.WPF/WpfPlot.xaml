@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
+             xmlns:skiaPreview="clr-namespace:SkiaSharp.Views.WPF"
              xmlns:local="clr-namespace:ScottPlot.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -11,8 +12,8 @@
              KeyDown="OnKeyDown"
              KeyUp="OnKeyUp"
              >
-    <skia:SKElement 
-        Name="SKElement" 
+    <skiaPreview:SKGLElement 
+        x:Name="SKElement" 
         PaintSurface="OnPaintSurface" 
         MouseDown="OnMouseDown" 
         MouseUp="OnMouseUp" 

@@ -65,7 +65,7 @@ public static class Common
 
             if (plottable is IPlottableGL plottableGL)
             {
-                plottableGL.Render(surface, plottableGL.GRContext);
+                plottableGL.Render(surface);
             }
             else
             {
@@ -108,5 +108,12 @@ public static class Common
     public static void RenderBenchmark(SKSurface surface, PixelRect dataRect, Plot plot)
     {
         plot.Benchmark.Render(surface.Canvas, dataRect);
+    }
+
+    public static void SyncGLPlottables(Plot plot)
+    {
+        var glPlottables = plot.Plottables.OfType<IPlottableGL>();
+        if (glPlottables.Any())
+            glPlottables.First().GLFinish();
     }
 }

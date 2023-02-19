@@ -26,4 +26,9 @@ public interface IPlotControl
     /// Launch the default pop-up menu (typically in response to a right-click) at the given position in the control
     /// </summary>
     void ShowContextMenu(Pixel position);
+
+    /// <summary>
+    /// Context for hardware-accelerated graphics (or null if not available)
+    /// </summary>
+    GRContext? GRContext { get; }
 }

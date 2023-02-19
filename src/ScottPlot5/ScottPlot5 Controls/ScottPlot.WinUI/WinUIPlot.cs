@@ -19,6 +19,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public Plot Plot { get; } = new();
 
+    public SkiaSharp.GRContext? GRContext => null;
+
     public Interaction Interaction { get; private set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947

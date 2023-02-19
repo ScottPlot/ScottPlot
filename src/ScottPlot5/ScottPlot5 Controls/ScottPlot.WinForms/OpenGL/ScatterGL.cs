@@ -1,10 +1,10 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using ScottPlot.Control;
 using ScottPlot.DataSources;
 using ScottPlot.WinForms.OpenGL;
 using SkiaSharp;
 using System;
-using System.Linq;
 
 namespace ScottPlot.Plottables;
 
@@ -13,34 +13,34 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGL : Scatter, IPlottableGL
 {
-    private readonly GRContext _context;
+    public IPlotControl PlotControl { get; }
     private int VertexBufferObject;
     private int VertexArrayObject;
     private GLShader? Shader;
-    private double[]? Vertices;
+    private double[] Vertices;
     private readonly int VerticesCount;
 
-    private bool _glInit = false;
+    private bool GLHasBeenInitialized = false;
 
-    public GRContext GRContext => _context;
+    public GLFallbackRenderStrategy Fallback { get; set; } = GLFallbackRenderStrategy.Software;
 
-    public ScatterGL(IScatterSource data, GRContext context) : base(data)
+    public ScatterGL(IScatterSource data, IPlotControl control) : base(data)
     {
-        _context = context;
-        Vertices = data.GetScatterPoints().Select(p =>
+        PlotControl = control;
+        var dataPoints = data.GetScatterPoints();
+        Vertices = new double[dataPoints.Count * 2];
+        for (int i = 0; i < dataPoints.Count; i++)
         {
-            return new double[] { p.X, p.Y };
-        }).
-        SelectMany(t => t).ToArray();
+            Vertices[i * 2] = dataPoints[i].X;
+            Vertices[i * 2 + 1] = dataPoints[i].Y;
+        }
         VerticesCount = Vertices.Length / 2;
     }
 
-    private void InitGL()
+    private void InitializeGL()
     {
-        if (Vertices is null)
-            throw new NullReferenceException(nameof(Vertices));
-
         Shader = new GLShader();
+
         VertexArrayObject = GL.GenVertexArray();
         VertexBufferObject = GL.GenBuffer();
         GL.BindVertexArray(VertexArrayObject);
@@ -48,8 +48,8 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
         GL.VertexAttribLPointer(0, 2, VertexAttribDoubleType.Double, 0, IntPtr.Zero);
         GL.EnableVertexAttribArray(0);
-        Vertices = null;
-        _glInit = true;
+        Vertices = Array.Empty<double>();
+        GLHasBeenInitialized = true;
     }
 
     private static Matrix4d CreateScale(double x, double y, double z)
@@ -61,15 +61,30 @@ public class ScatterGL : Scatter, IPlottableGL
             0.0, 0.0, 0.0, 1.0);
     }
 
-    public void Render(SKSurface surface, GRContext context)
+    public new void Render(SKSurface surface)
+    {
+        if (PlotControl.GRContext is not null)
+        {
+            RenderWithOpenGL(surface, PlotControl.GRContext);
+            return;
+        }
+
+        if (Fallback == GLFallbackRenderStrategy.Software)
+        {
+            surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
+            base.Render(surface);
+        }
+    }
+
+    private void RenderWithOpenGL(SKSurface surface, GRContext context)
     {
         int height = (int)surface.Canvas.LocalClipBounds.Height;
 
         context.Flush();
         context.ResetContext();
 
-        if (!_glInit)
-            InitGL();
+        if (!GLHasBeenInitialized)
+            InitializeGL();
 
         if (Shader is null)
             throw new NullReferenceException(nameof(Shader));
@@ -105,4 +120,6 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
     }
+
+    public void GLFinish() => Shader?.GLFinish();
 }

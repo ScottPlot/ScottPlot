@@ -3,7 +3,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <NoWarn>NU1701</NoWarn>
+        <NoWarn>NU1701;Uno0001</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
