@@ -264,7 +264,5 @@ namespace ScottPlot
         }
 
         private void RightClickMenu_PlotObjectEditor_Click(object sender, EventArgs e) => new PlotObjectEditor(this).ShowDialog();
-        public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
-        public void ClearLinkedControls() => Backend.ClearLinkedControls();
     }
 }

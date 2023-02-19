@@ -21,13 +21,13 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             if (cbLinked.Checked)
             {
-                formsPlot1.AddLinkedControl(formsPlot2); // update plot 2 when plot 1 changes
-                formsPlot2.AddLinkedControl(formsPlot1); // update plot 1 when plot 2 changes
+                formsPlot1.Configuration.AddLinkedControl(formsPlot2); // update plot 2 when plot 1 changes
+                formsPlot2.Configuration.AddLinkedControl(formsPlot1); // update plot 1 when plot 2 changes
             }
             else
             {
-                formsPlot1.ClearLinkedControls();
-                formsPlot2.ClearLinkedControls();
+                formsPlot1.Configuration.ClearLinkedControls();
+                formsPlot2.Configuration.ClearLinkedControls();
             }
         }
     }

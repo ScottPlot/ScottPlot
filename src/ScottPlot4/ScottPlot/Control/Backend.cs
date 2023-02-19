@@ -111,7 +111,7 @@ namespace ScottPlot.Control
         /// The control configuration object stores advanced customization and behavior settings
         /// for mouse-interactive plots.
         /// </summary>
-        public readonly Configuration Configuration = new();
+        public readonly Configuration Configuration;
 
         /// <summary>
         /// True if the middle mouse button is pressed
@@ -252,6 +252,7 @@ namespace ScottPlot.Control
         /// <param name="name">variable name of the user control using this backend</param>
         public ControlBackEnd(float width, float height, string name = "UnamedControl")
         {
+            Configuration = new(this);
             Cursor = Configuration.DefaultCursor;
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             EventsProcessor = new EventsProcessor(

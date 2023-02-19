@@ -210,5 +210,16 @@ namespace ScottPlot.Control
         /// to prevent an infinite circular update loop.
         /// </summary>
         public bool EmitLinkedControlUpdateSignals = true;
+
+        readonly ControlBackEnd Backend;
+
+        public Configuration(ControlBackEnd backend)
+        {
+            Backend = backend;
+        }
+
+        public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
+
+        public void ClearLinkedControls() => Backend.ClearLinkedControls();
     }
 }
