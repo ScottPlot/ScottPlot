@@ -86,6 +86,32 @@ public class Histogram
     }
 
     /// <summary>
+    /// Return the cumulative histogram counts.
+    /// Each value is the number of counts in that bin and all bins below it.
+    /// </summary>
+    public int[] GetCumulative()
+    {
+        int[] cumulative = new int[Counts.Length];
+        cumulative[0] = Counts[0];
+        for (int i = 1; i < Counts.Length; i++)
+        {
+            cumulative[i] = cumulative[i - 1] + Counts[i];
+        }
+        return cumulative;
+    }
+
+    /// <summary>
+    /// Return the cumulative probability histogram.
+    /// Each value is the fraction of counts in that bin and all bins below it.
+    /// </summary>
+    public double[] GetCumulativeProbability()
+    {
+        int[] cumulative = GetCumulative();
+        double final = cumulative.Last();
+        return cumulative.Select(x => x / final).ToArray();
+    }
+
+    /// <summary>
     /// Add a single value to the histogram
     /// </summary>
     public void Add(double value)

@@ -163,5 +163,21 @@ namespace ScottPlotTests.Statistics
 
             hist.GetNormalized(256).Should().BeEquivalentTo(new double[] { 0, 128, 256, 128, 0 });
         }
+
+        [Test]
+        public void Test_Histogram_CPH()
+        {
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5);
+
+            hist.Add(125);
+            hist.Add(145);
+            hist.Add(145);
+            hist.Add(165);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 1, 2, 1, 0 });
+
+            hist.GetCumulative().Should().BeEquivalentTo(new double[] { 0, 1, 3, 4, 4 });
+
+            hist.GetCumulativeProbability().Should().BeEquivalentTo(new double[] { 0, .25, .75, 1, 1 });
+        }
     }
 }
