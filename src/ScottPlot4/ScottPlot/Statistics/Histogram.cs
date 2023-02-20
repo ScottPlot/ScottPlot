@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace ScottPlot.Statistics;
 
@@ -12,9 +13,24 @@ public class Histogram
     public readonly double[] Counts;
 
     /// <summary>
+    /// Running total of all values counted.
+    /// </summary>
+    public double Sum { get; private set; }
+
+    /// <summary>
+    /// Total number of values accumulated.
+    /// </summary>
+    public int ValuesCounted { get; private set; }
+
+    /// <summary>
     /// Lower edge for each bin.
     /// </summary>
     public readonly double[] BinEdges;
+
+    /// <summary>
+    /// Number of bins.
+    /// </summary>
+    public readonly int BinCount;
 
     /// <summary>
     /// Default behavior is that outlier values are not counted.
@@ -48,12 +64,13 @@ public class Histogram
     public int MaxOutlierCount { get; private set; } = 0;
 
     /// <summary>
-    /// Create a histogram which will count values supplied by <see cref="Add"/> and <see cref="AddRange"/>
+    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange"/>
     /// </summary>
     public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
     {
         Min = min;
         Max = max;
+        BinCount = binCount;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
         Counts = new double[binCount];
         BinEdges = new double[binCount];
@@ -78,19 +95,23 @@ public class Histogram
     /// </summary>
     public double[] GetProbability()
     {
-        double total = Counts.Sum();
-        return Counts.Select(x => x / total).ToArray();
+        return Counts.Select(x => x / ValuesCounted).ToArray();
     }
 
     /// <summary>
-    /// Return a function describing the probability function (a Gaussian curve fitted to the histogram probabilities)
+    /// Return a function describing the probability function (a Gaussian curve fitted to the histogram probabilities).
     /// </summary>
-    public Func<double, double?> GetProbabilityCurve()
+    public Func<double, double?> GetProbabilityCurve(double[] values, bool scaleToBinnedProbability = false)
     {
-        // TODO: this doesn't work as expected
-        BasicStats stats = new(Counts);
-        double xPerBin = (Max - Min) / Counts.Length;
-        return x => Math.Exp(-.5 * Math.Pow(((x * xPerBin - Min) - stats.Mean) / stats.StDev, 2)) / stats.Sum;
+        BasicStats stats = new(values);
+
+        Func<double, double?> unscaled = x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
+        if (!scaleToBinnedProbability)
+            return unscaled;
+
+        double sum = (double)BinEdges.Select(x => unscaled(x)).Sum();
+        Func<double, double?> scaled = x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2)) / sum;
+        return scaled;
     }
 
     /// <summary>
@@ -133,29 +154,35 @@ public class Histogram
     /// </summary>
     public void Add(double value)
     {
-        // place values in histogram
         if (value < Min)
         {
             MinOutlierCount += 1;
             if (AddOutliersToEdgeBins)
             {
                 Counts[0] += 1;
+                Sum += value;
+                ValuesCounted += 1;
             }
+            return;
         }
-        else if (value >= Max)
+
+        if (value >= Max)
         {
             MaxOutlierCount += 1;
             if (AddOutliersToEdgeBins)
             {
                 Counts[Counts.Length - 1] += 1;
+                Sum += value;
+                ValuesCounted += 1;
             }
+            return;
         }
-        else
-        {
-            double distanceFromMin = value - Min;
-            int binsFromMin = (int)(distanceFromMin / BinSize);
-            Counts[binsFromMin] += 1;
-        }
+
+        double distanceFromMin = value - Min;
+        int binsFromMin = (int)(distanceFromMin / BinSize);
+        Counts[binsFromMin] += 1;
+        Sum += value;
+        ValuesCounted += 1;
     }
 
     /// <summary>
@@ -183,6 +210,8 @@ public class Histogram
     {
         MinOutlierCount = 0;
         MaxOutlierCount = 0;
+        Sum = 0;
+        ValuesCounted = 0;
         for (int i = 0; i < Counts.Length; i++)
         {
             Counts[i] = 0;

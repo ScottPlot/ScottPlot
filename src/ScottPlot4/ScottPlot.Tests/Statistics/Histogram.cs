@@ -122,6 +122,8 @@ namespace ScottPlotTests.Statistics
             hist.Add(123);
             hist.Counts.Should().BeEquivalentTo(new double[] { 0, 2, 0, 1, 0 });
 
+            hist.Sum.Should().Be(123 + 173 + 123);
+
             hist.Clear();
             hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
 
@@ -130,6 +132,8 @@ namespace ScottPlotTests.Statistics
 
             hist.Add(250);
             hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+
+            hist.Sum.Should().Be(0);
         }
 
         [Test]
@@ -144,6 +148,8 @@ namespace ScottPlotTests.Statistics
 
             hist.Add(250);
             hist.Counts.Should().BeEquivalentTo(new double[] { 1, 0, 0, 0, 1 });
+
+            hist.Sum.Should().Be(50 + 250);
         }
 
         [Test]
