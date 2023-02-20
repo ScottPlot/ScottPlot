@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +101,49 @@ namespace ScottPlotTests.Statistics
 
             Console.WriteLine("Counts:" + String.Join(", ", counts.Select(x => x.ToString())));
             Console.WriteLine("Edges:" + String.Join(", ", binEdges.Select(x => x.ToString())));
+        }
+
+        [Test]
+        public void Test_Histogram_IgnoringOutliers()
+        {
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: false);
+
+            hist.Min.Should().Be(100);
+            hist.Max.Should().Be(200);
+            hist.BinEdges.Should().BeEquivalentTo(new double[] { 100, 120, 140, 160, 180 });
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+
+            hist.Add(123);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 1, 0, 0, 0 });
+
+            hist.Add(173);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 1, 0, 1, 0 });
+
+            hist.Add(123);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 2, 0, 1, 0 });
+
+            hist.Clear();
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+
+            hist.Add(50);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+
+            hist.Add(250);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+        }
+
+        [Test]
+        public void Test_Histogram_IncludingOutliers()
+        {
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: true);
+
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
+
+            hist.Add(50);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 1, 0, 0, 0, 0 });
+
+            hist.Add(250);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 1, 0, 0, 0, 1 });
         }
     }
 }
