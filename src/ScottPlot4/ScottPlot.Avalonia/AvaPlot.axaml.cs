@@ -22,10 +22,10 @@ namespace ScottPlot.Avalonia
 
     [System.ComponentModel.ToolboxItem(true)]
     [System.ComponentModel.DesignTimeVisible(true)]
-    public partial class AvaPlot : UserControl
+    public partial class AvaPlot : UserControl, ScottPlot.Control.IPlotControl
     {
         public Plot Plot => Backend.Plot;
-        public readonly ScottPlot.Control.Configuration Configuration;
+        public ScottPlot.Control.Configuration Configuration { get; }
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -119,6 +119,7 @@ namespace ScottPlot.Avalonia
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset(ScaledWidth, ScaledHeight);
         public void Reset(Plot newPlot) => Backend.Reset(ScaledWidth, ScaledHeight, newPlot);
+        public void Refresh() => Refresh(false);
         public void Refresh(bool lowQuality = false)
         {
             Backend.WasManuallyRendered = true;
