@@ -111,7 +111,7 @@ namespace ScottPlot.Control
         /// The control configuration object stores advanced customization and behavior settings
         /// for mouse-interactive plots.
         /// </summary>
-        public readonly Configuration Configuration = new();
+        public readonly Configuration Configuration;
 
         /// <summary>
         /// True if the middle mouse button is pressed
@@ -240,6 +240,11 @@ namespace ScottPlot.Control
         public readonly string ControlName;
 
         /// <summary>
+        /// Plots whose axes and layout will be updated when this plot changes
+        /// </summary>
+        readonly List<LinkedPlotControl> LinkedPlotControls = new();
+
+        /// <summary>
         /// Create a back-end for a user control
         /// </summary>
         /// <param name="width">initial bitmap size (pixels)</param>
@@ -247,6 +252,7 @@ namespace ScottPlot.Control
         /// <param name="name">variable name of the user control using this backend</param>
         public ControlBackEnd(float width, float height, string name = "UnamedControl")
         {
+            Configuration = new(this);
             Cursor = Configuration.DefaultCursor;
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             EventsProcessor = new EventsProcessor(
@@ -354,7 +360,10 @@ namespace ScottPlot.Control
 
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
+            {
                 AxesChanged(null, EventArgs.Empty);
+                UpdateLinkedPlotControls();
+            }
             LimitsOnLastRender = newLimits;
 
             if (BitmapRenderCount == 1)
@@ -719,6 +728,49 @@ namespace ScottPlot.Control
             {
                 IUIEvent mouseEvent = EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp);
                 ProcessEvent(mouseEvent);
+            }
+        }
+
+        /// <summary>
+        /// Add a plot which will have its axes and layout updated when this plot changes
+        /// </summary>
+        public void AddLinkedControl(IPlotControl otherPlot, bool horizontal = true, bool vertical = true, bool layout = true)
+        {
+            LinkedPlotControl linkedControl = new(otherPlot, horizontal, vertical, layout);
+            LinkedPlotControls.Add(linkedControl);
+            UpdateLinkedPlotControls();
+        }
+
+        public void ClearLinkedControls()
+        {
+            LinkedPlotControls.Clear();
+        }
+
+        private void UpdateLinkedPlotControls()
+        {
+            if (!Configuration.EmitLinkedControlUpdateSignals)
+                return;
+
+            foreach (LinkedPlotControl linkedPlotControl in LinkedPlotControls)
+            {
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = false;
+
+                linkedPlotControl.PlotControl.Plot.MatchAxis(
+                    sourcePlot: this.Plot,
+                    horizontal: linkedPlotControl.LinkHorizontal,
+                    vertical: linkedPlotControl.LinkVertical);
+
+                if (linkedPlotControl.LinkLayout)
+                {
+                    linkedPlotControl.PlotControl.Plot.MatchLayout(
+                        sourcePlot: this.Plot,
+                        horizontal: linkedPlotControl.LinkHorizontal,
+                        vertical: linkedPlotControl.LinkVertical);
+                }
+
+                linkedPlotControl.PlotControl.Refresh();
+
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
             }
         }
     }

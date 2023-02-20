@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "ScottPlot4.sln",
+    "projects": [
+      "ScottPlot.Cookbook\\ScottPlot.Cookbook.csproj",
+      "ScottPlot.Demo\\ScottPlot.Demo.WPF\\WPF Demo.csproj",
+      "ScottPlot.Sandbox\\WpfApp\\WpfApp.csproj",
+      "ScottPlot.Tests\\ScottPlot.Tests.csproj",
+      "ScottPlot.WPF\\ScottPlot.WPF.csproj",
+      "ScottPlot\\ScottPlot.csproj"
+    ]
+  }
+}

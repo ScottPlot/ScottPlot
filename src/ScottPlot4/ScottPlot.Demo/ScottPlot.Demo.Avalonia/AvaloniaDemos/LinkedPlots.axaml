@@ -18,8 +18,8 @@
 		</Grid.RowDefinitions>
 
 		<TextBlock Text="This example demonstrates how to link axes of two separate plots." Grid.Column="0" Grid.Row="0"/>
-		<ScottPlot:AvaPlot Grid.Column="0" Grid.Row="1" Name="avaPlot1" AxesChanged="AxesChanged" Height="200" Width="400" />
-		<ScottPlot:AvaPlot Grid.Column="0" Grid.Row="2" Name="avaPlot2" AxesChanged="AxesChanged" Height="200" Width="400" />
+		<ScottPlot:AvaPlot Grid.Column="0" Grid.Row="1" Name="avaPlot1" Height="200" Width="400" />
+		<ScottPlot:AvaPlot Grid.Column="0" Grid.Row="2" Name="avaPlot2" Height="200" Width="400" />
 	</Grid>
 
 </Window>
