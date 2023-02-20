@@ -145,5 +145,23 @@ namespace ScottPlotTests.Statistics
             hist.Add(250);
             hist.Counts.Should().BeEquivalentTo(new double[] { 1, 0, 0, 0, 1 });
         }
+
+        [Test]
+        public void Test_Histogram_Normalization()
+        {
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5);
+
+            hist.Add(125);
+            hist.Add(145);
+            hist.Add(145);
+            hist.Add(165);
+            hist.Counts.Should().BeEquivalentTo(new double[] { 0, 1, 2, 1, 0 });
+
+            hist.GetProbability().Should().BeEquivalentTo(new double[] { 0, .25, .5, .25, 0 });
+
+            hist.GetNormalized().Should().BeEquivalentTo(new double[] { 0, .5, 1, .5, 0 });
+
+            hist.GetNormalized(256).Should().BeEquivalentTo(new double[] { 0, 128, 256, 128, 0 });
+        }
     }
 }

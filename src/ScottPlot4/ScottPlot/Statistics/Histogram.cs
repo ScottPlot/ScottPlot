@@ -12,11 +12,6 @@ public class Histogram
     public readonly int[] Counts;
 
     /// <summary>
-    /// Normalized values calculated for each bin.
-    /// </summary>
-    public readonly double[] Normalized;
-
-    /// <summary>
     /// Lower edge for each bin.
     /// </summary>
     public readonly double[] BinEdges;
@@ -61,7 +56,6 @@ public class Histogram
         Max = max;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
         Counts = new int[binCount];
-        Normalized = new double[binCount];
         BinEdges = new double[binCount];
 
         // create evenly sized bins
@@ -74,14 +68,28 @@ public class Histogram
     }
 
     /// <summary>
+    /// Return counts normalized so the sum of all counts equals 1
+    /// </summary>
+    public double[] GetProbability()
+    {
+        double total = Counts.Sum();
+        return Counts.Select(x => x / total).ToArray();
+    }
+
+    /// <summary>
+    /// Return counts normalized so the maximum value equals the given value
+    /// </summary>
+    public double[] GetNormalized(double maxValue = 1)
+    {
+        double mult = maxValue / Counts.Max();
+        return Counts.Select(x => x * mult).ToArray();
+    }
+
+    /// <summary>
     /// Add a single value to the histogram
     /// </summary>
     public void Add(double value)
     {
-        //For performance reasons,only recalculate the normalized
-        //array if value is not an outlier, or AddOutliersToEdgeBins is set true 
-        bool recalcNormalized = false;
-
         // place values in histogram
         if (value < Min)
         {
@@ -89,7 +97,6 @@ public class Histogram
             if (AddOutliersToEdgeBins)
             {
                 Counts[0] += 1;
-                recalcNormalized = true;
             }
         }
         else if (value >= Max)
@@ -98,7 +105,6 @@ public class Histogram
             if (AddOutliersToEdgeBins)
             {
                 Counts[Counts.Length - 1] += 1;
-                recalcNormalized = true;
             }
         }
         else
@@ -106,14 +112,6 @@ public class Histogram
             double distanceFromMin = value - Min;
             int binsFromMin = (int)(distanceFromMin / BinSize);
             Counts[binsFromMin] += 1;
-            recalcNormalized = true;
-        }
-
-        // normalize the available data
-        if (recalcNormalized)
-        {
-            double binScale = Counts.Sum() * BinSize;
-            for (int i = 0; i < Counts.Length; i++) Normalized[i] = Counts[i] / binScale;
         }
     }
 
@@ -136,7 +134,6 @@ public class Histogram
         for (int i = 0; i < Counts.Length; i++)
         {
             Counts[i] = 0;
-            Normalized[i] = 0;
         }
     }
 }
