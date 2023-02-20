@@ -9,7 +9,7 @@ public class Histogram
     /// <summary>
     /// Number of values counted for each bin.
     /// </summary>
-    public readonly int[] Counts;
+    public readonly double[] Counts;
 
     /// <summary>
     /// Lower edge for each bin.
@@ -55,7 +55,7 @@ public class Histogram
         Min = min;
         Max = max;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
-        Counts = new int[binCount];
+        Counts = new double[binCount];
         BinEdges = new double[binCount];
 
         // create evenly sized bins
@@ -67,6 +67,12 @@ public class Histogram
         }
     }
 
+    public static Histogram WithFixedSizeBins(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
+    {
+        int binCount = (int)((max - min) / binSize);
+        return new Histogram(min, max, binCount, addOutliersToEdgeBins);
+    }
+
     /// <summary>
     /// Return counts normalized so the sum of all counts equals 1
     /// </summary>
@@ -74,6 +80,17 @@ public class Histogram
     {
         double total = Counts.Sum();
         return Counts.Select(x => x / total).ToArray();
+    }
+
+    /// <summary>
+    /// Return a function describing the probability function (a Gaussian curve fitted to the histogram probabilities)
+    /// </summary>
+    public Func<double, double?> GetProbabilityCurve()
+    {
+        // TODO: this doesn't work as expected
+        BasicStats stats = new(Counts);
+        double xPerBin = (Max - Min) / Counts.Length;
+        return x => Math.Exp(-.5 * Math.Pow(((x * xPerBin - Min) - stats.Mean) / stats.StDev, 2)) / stats.Sum;
     }
 
     /// <summary>
@@ -89,9 +106,9 @@ public class Histogram
     /// Return the cumulative histogram counts.
     /// Each value is the number of counts in that bin and all bins below it.
     /// </summary>
-    public int[] GetCumulative()
+    public double[] GetCumulative()
     {
-        int[] cumulative = new int[Counts.Length];
+        double[] cumulative = new double[Counts.Length];
         cumulative[0] = Counts[0];
         for (int i = 1; i < Counts.Length; i++)
         {
@@ -106,7 +123,7 @@ public class Histogram
     /// </summary>
     public double[] GetCumulativeProbability()
     {
-        int[] cumulative = GetCumulative();
+        double[] cumulative = GetCumulative();
         double final = cumulative.Last();
         return cumulative.Select(x => x / final).ToArray();
     }
@@ -139,6 +156,15 @@ public class Histogram
             int binsFromMin = (int)(distanceFromMin / BinSize);
             Counts[binsFromMin] += 1;
         }
+    }
+
+    /// <summary>
+    /// Add multiple values to the histogram
+    /// </summary>
+    public void Add(IEnumerable<double> values)
+    {
+        foreach (double value in values)
+            Add(value);
     }
 
     /// <summary>
