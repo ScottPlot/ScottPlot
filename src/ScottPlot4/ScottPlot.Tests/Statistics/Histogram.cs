@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using ScottPlot.Cookbook.Recipes.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -196,19 +197,35 @@ namespace ScottPlotTests.Statistics
 
             double[] data = { 1.0, 2.0, 3.0 };
             double binSize = 1.5;
-            double[] expectedBins = { 1.0, 2.5 };
+            double[] expectedBins = { 1.0, 2.5 }; // numpy behavior (bins has one more element than counts)
+            double[] expectedBinsWithOneExtra = { 1.0, 2.5, 4.0 }; // preferred behavior (bin length equals count length)
             double min = data.Min();
             double max = data.Max();
 
             // Test old static methods
             (_, double[] bins1) = ScottPlot.Statistics.Common.Histogram(data, min, max, binSize);
-            bins1.Should().BeEquivalentTo(expectedBins);
+            bins1.Should().BeEquivalentTo(expectedBinsWithOneExtra);
             (_, double[] bins2, _, _) = ScottPlot.Statistics.Common.HistogramWithOutliers(data, min, max, binSize);
-            bins2.Should().BeEquivalentTo(expectedBins);
+            bins2.Should().BeEquivalentTo(expectedBinsWithOneExtra);
 
             // Test new Histogram class
             var hist = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min, max, binSize);
             hist.BinEdges.Should().BeEquivalentTo(expectedBins);
+        }
+
+        [Test]
+        public void Test_Histogram_Bins2()
+        {
+            // Extending conversation in #2403, this test confirms bins meet expectations
+            // https://github.com/ScottPlot/ScottPlot/issues/2403
+
+            var hist1 = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min: 0, max: 10, binSize: 1);
+
+            hist1.BinEdges.Should().BeEquivalentTo(new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+            hist1.Add(10); // since bins are max-exclusive, this counts as an outlier
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
         }
     }
 }
