@@ -14,7 +14,7 @@ public class Histogram
     /// <summary>
     /// Number of bins.
     /// </summary>
-    public readonly int N;
+    public readonly int BinCount;
 
     /// <summary>
     /// Running total of all values counted.
@@ -63,7 +63,7 @@ public class Histogram
     public int MaxOutlierCount { get; private set; } = 0;
 
     /// <summary>
-    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange"/>
+    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="Add(IEnumerable{double})"/>
     /// </summary>
     /// <param name="min">minimum value to be counted</param>
     /// <param name="max">maximum value to be counted</param>
@@ -78,7 +78,7 @@ public class Histogram
         if (addFinalBin)
             binCount += 1;
 
-        N = binCount;
+        BinCount = binCount;
         Min = min;
         Max = min + BinSize * binCount;
 
@@ -207,15 +207,6 @@ public class Histogram
     /// Add multiple values to the histogram
     /// </summary>
     public void Add(IEnumerable<double> values)
-    {
-        foreach (double value in values)
-            Add(value);
-    }
-
-    /// <summary>
-    /// Add multiple values to the histogram
-    /// </summary>
-    public void AddRange(IEnumerable<double> values)
     {
         foreach (double value in values)
             Add(value);
