@@ -12,12 +12,12 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos;
 public partial class HistogramDemo : Form
 {
     readonly Random Rand = new();
-    readonly ScottPlot.Statistics.Histogram Hist = new(min: 0, max: 1, binCount: 100);
+    readonly ScottPlot.Statistics.Histogram Hist = new(min: 0, max: 1, binCount: 40);
 
     public HistogramDemo()
     {
         InitializeComponent();
-        var bar = formsPlot1.Plot.AddBar(values: Hist.Counts, positions: Hist.Bins);
+        var bar = formsPlot1.Plot.AddBar(values: Hist.Counts, positions: Hist.BinCenters);
         bar.BarWidth = Hist.BinSize;
         formsPlot1.Plot.XLabel("Value");
         formsPlot1.Plot.YLabel("Count");

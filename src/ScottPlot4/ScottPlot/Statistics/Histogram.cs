@@ -29,28 +29,33 @@ public class Histogram
     /// <summary>
     /// Lower edge for each bin.
     /// </summary>
-    public readonly double[] Bins;
+    public double[] Bins { get; }
+
+    /// <summary>
+    /// Center of each bin.
+    /// </summary>
+    public double[] BinCenters { get; }
 
     /// <summary>
     /// Default behavior is that outlier values are not counted.
     /// If this is enabled, min/max outliers will be counted in the first/last bin.
     /// </summary>
-    public readonly bool AddOutliersToEdgeBins;
+    public bool AddOutliersToEdgeBins { get; }
 
     /// <summary>
     /// Lower edge of the first bin (inclusive)
     /// </summary>
-    public readonly double Min;
+    public double Min { get; }
 
     /// <summary>
     /// Upper edge of the last bin (exclusive)
     /// </summary>
-    public readonly double Max;
+    public double Max { get; }
 
     /// <summary>
     /// The calculated bin size.
     /// </summary>
-    public double BinSize { get; private set; } = 0;
+    public double BinSize { get; }
 
     /// <summary>
     /// Number of values that were smaller than the lower edge of the first bin.
@@ -84,9 +89,11 @@ public class Histogram
 
         Counts = new double[binCount];
         Bins = new double[binCount];
+        BinCenters = new double[binCount];
         for (int i = 0; i < binCount; i++)
         {
             Bins[i] = min + BinSize * i;
+            BinCenters[i] = Bins[i] + BinSize / 2;
         }
     }
 
