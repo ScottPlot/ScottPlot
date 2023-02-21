@@ -185,5 +185,27 @@ namespace ScottPlotTests.Statistics
 
             hist.GetCumulativeProbability().Should().BeEquivalentTo(new double[] { 0, .25, .75, 1, 1 });
         }
+
+        [Test]
+        public void Test_Histogram_Bins()
+        {
+            // This test reproduces issue described by @Xerxes004 in #2299
+            // https://github.com/ScottPlot/ScottPlot/issues/2299
+
+            double[] data = { 1.0, 2.0, 3.0 };
+            double binSize = 1.5;
+            double[] expectedBins = { 1.0, 2.5 };
+            double min = data.Min();
+            double max = data.Max();
+
+            // Demonstrate that the old function returns incorrect bins
+            (_, double[] bins) = ScottPlot.Statistics.Common.Histogram(data, min, max, binSize);
+            double[] incorrectBins = { 1.0, 3.0 };
+            bins.Should().BeEquivalentTo(incorrectBins);
+
+            // Demonstrate that the new histogram returns the correct bins
+            var hist = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min, max, binSize);
+            hist.BinEdges.Should().BeEquivalentTo(expectedBins);
+        }
     }
 }
