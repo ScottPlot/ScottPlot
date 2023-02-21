@@ -373,7 +373,7 @@ namespace ScottPlot.Statistics
             // create evenly sized bins
             double binWidth = (max - min) / binCount;
 
-            double[] binEdges = new double[binCount];
+            double[] binEdges = new double[binCount + 1];
             for (int i = 0; i < binEdges.Length; i++)
                 binEdges[i] = min + binWidth * i;
 
@@ -437,7 +437,7 @@ namespace ScottPlot.Statistics
 
             // create evenly sized bins
             double binWidth = (max - min) / binCount;
-            double[] binEdges = new double[binCount];
+            double[] binEdges = new double[binCount + 1];
             for (int i = 0; i < binEdges.Length; i++)
                 binEdges[i] = min + binWidth * i;
 
