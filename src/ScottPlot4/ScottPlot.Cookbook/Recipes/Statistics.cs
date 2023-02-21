@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes
             hist.Add(heights);
 
             // show the histogram counts as a bar plot
-            plt.AddBar(values: hist.Counts, positions: hist.BinEdges);
+            plt.AddBar(values: hist.Counts, positions: hist.Bins);
 
             // customize the plot style
             plt.YAxis.Label("Count (#)");
@@ -45,7 +45,7 @@ namespace ScottPlot.Cookbook.Recipes
         public void ExecuteRecipe(Plot plt)
         {
             // create a histogram with a fixed number of bins
-            var hist = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min: 140, max: 220, binSize: 2);
+            var hist = ScottPlot.Statistics.Histogram.WithFixedBinSize(min: 140, max: 220, binSize: 2);
 
             // add random data to the histogram
             Random rand = new(0);
@@ -53,7 +53,7 @@ namespace ScottPlot.Cookbook.Recipes
             hist.Add(heights);
 
             // show the histogram counts as a bar plot
-            var bar = plt.AddBar(values: hist.Counts, positions: hist.BinEdges);
+            var bar = plt.AddBar(values: hist.Counts, positions: hist.Bins);
             bar.BarWidth = 2;
 
             // customize the plot style
@@ -84,7 +84,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // display histogram probabability as a bar plot
             double[] probabilities = hist.GetProbability();
-            var bar = plt.AddBar(values: probabilities, positions: hist.BinEdges);
+            var bar = plt.AddBar(values: probabilities, positions: hist.Bins);
             bar.BarWidth = 1;
             bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
             bar.BorderColor = ColorTranslator.FromHtml("#82add9");
@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes
             hist.Add(heights);
 
             // display histogram probabability as a bar plot
-            var bar = plt.AddBar(values: hist.Counts, positions: hist.BinEdges);
+            var bar = plt.AddBar(values: hist.Counts, positions: hist.Bins);
             bar.BarWidth = 1;
             bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
             bar.BorderColor = ColorTranslator.FromHtml("#82add9");
@@ -160,7 +160,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // display histogram probabability as a bar plot
             double[] probabilities = hist.GetProbability();
-            var bar = plt.AddBar(values: probabilities, positions: hist.BinEdges);
+            var bar = plt.AddBar(values: probabilities, positions: hist.Bins);
             bar.BarWidth = 1;
             bar.FillColor = ColorTranslator.FromHtml("#9bc3eb");
             bar.BorderColor = ColorTranslator.FromHtml("#82add9");
@@ -210,12 +210,12 @@ namespace ScottPlot.Cookbook.Recipes
             histFemale.Add(femaleHeights);
 
             // plot histograms
-            var barMale = plt.AddBar(values: histMale.GetProbability(), positions: histMale.BinEdges);
+            var barMale = plt.AddBar(values: histMale.GetProbability(), positions: histMale.Bins);
             barMale.BarWidth = 1;
             barMale.FillColor = Color.FromArgb(50, Color.Blue);
             barMale.BorderLineWidth = 0;
 
-            var barFemale = plt.AddBar(values: histFemale.GetProbability(), positions: histFemale.BinEdges);
+            var barFemale = plt.AddBar(values: histFemale.GetProbability(), positions: histFemale.Bins);
             barFemale.BarWidth = 1;
             barFemale.FillColor = Color.FromArgb(50, Color.Red);
             barFemale.BorderLineWidth = 0;
@@ -258,8 +258,8 @@ namespace ScottPlot.Cookbook.Recipes
             hist2.Add(DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25));
 
             // display datasets as step plots
-            plt.AddScatterStep(xs: hist1.BinEdges, ys: hist1.GetCumulativeProbability(), label: "Sample A");
-            plt.AddScatterStep(xs: hist2.BinEdges, ys: hist2.GetCumulativeProbability(), label: "Sample B");
+            plt.AddScatterStep(xs: hist1.Bins, ys: hist1.GetCumulativeProbability(), label: "Sample A");
+            plt.AddScatterStep(xs: hist2.Bins, ys: hist2.GetCumulativeProbability(), label: "Sample B");
 
             // decorate the plot
             plt.Legend();

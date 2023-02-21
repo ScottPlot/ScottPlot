@@ -109,11 +109,14 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_Histogram_IgnoringOutliers()
         {
-            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: false);
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: false, addFinalBin: false);
 
             hist.Min.Should().Be(100);
             hist.Max.Should().Be(200);
-            hist.BinEdges.Should().BeEquivalentTo(new double[] { 100, 120, 140, 160, 180 });
+            hist.Bins.First().Should().Be(100);
+            hist.Bins.Last().Should().Be(180);
+
+            hist.Bins.Should().BeEquivalentTo(new double[] { 100, 120, 140, 160, 180 });
             hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
 
             hist.Add(123);
@@ -142,7 +145,7 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_Histogram_IncludingOutliers()
         {
-            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: true);
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: true, addFinalBin: false);
 
             hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
 
@@ -158,7 +161,7 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_Histogram_Normalization()
         {
-            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5);
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
 
             hist.Add(125);
             hist.Add(145);
@@ -176,7 +179,7 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_Histogram_CPH()
         {
-            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5);
+            ScottPlot.Statistics.Histogram hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
 
             hist.Add(125);
             hist.Add(145);
@@ -190,42 +193,56 @@ namespace ScottPlotTests.Statistics
         }
 
         [Test]
-        public void Test_Histogram_Bins()
+        public void Test_Histogram_FixedSizeBins()
         {
             // This test reproduces issue described by @Xerxes004 in #2299
             // https://github.com/ScottPlot/ScottPlot/issues/2299
 
             double[] data = { 1.0, 2.0, 3.0 };
             double binSize = 1.5;
-            double[] expectedBins = { 1.0, 2.5 }; // numpy behavior (bins has one more element than counts)
-            double[] expectedBinsWithOneExtra = { 1.0, 2.5, 4.0 }; // preferred behavior (bin length equals count length)
+            double[] expectedBins = { 1.0, 2.5, 4.0 };
             double min = data.Min();
             double max = data.Max();
 
             // Test old static methods
             (_, double[] bins1) = ScottPlot.Statistics.Common.Histogram(data, min, max, binSize);
-            bins1.Should().BeEquivalentTo(expectedBinsWithOneExtra);
+            bins1.Should().BeEquivalentTo(expectedBins);
             (_, double[] bins2, _, _) = ScottPlot.Statistics.Common.HistogramWithOutliers(data, min, max, binSize);
-            bins2.Should().BeEquivalentTo(expectedBinsWithOneExtra);
-
-            // Test new Histogram class
-            var hist = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min, max, binSize);
-            hist.BinEdges.Should().BeEquivalentTo(expectedBins);
+            bins2.Should().BeEquivalentTo(expectedBins);
         }
 
         [Test]
-        public void Test_Histogram_Bins2()
+        public void Test_Histogram_FixedBinSize()
         {
             // Extending conversation in #2403, this test confirms bins meet expectations
             // https://github.com/ScottPlot/ScottPlot/issues/2403
 
-            var hist1 = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min: 0, max: 10, binSize: 1);
+            var hist1 = ScottPlot.Statistics.Histogram.WithFixedBinSize(min: 0, max: 10, binSize: 1);
 
-            hist1.BinEdges.Should().BeEquivalentTo(new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            hist1.BinSize.Should().Be(1);
+
+            hist1.Bins.Should().BeEquivalentTo(new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             hist1.Add(10); // since bins are max-exclusive, this counts as an outlier
-            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+        }
+
+        [Test]
+        public void Test_Histogram_FixedBinCount()
+        {
+            // Extending conversation in #2403, this test confirms bins meet expectations
+            // https://github.com/ScottPlot/ScottPlot/issues/2403
+
+            var hist1 = ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 0, max: 10, binCount: 10);
+
+            hist1.BinSize.Should().Be(1);
+
+            hist1.Bins.Should().BeEquivalentTo(new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+            hist1.Add(10); // since bins are max-exclusive, this counts as an outlier
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
         }
     }
 }

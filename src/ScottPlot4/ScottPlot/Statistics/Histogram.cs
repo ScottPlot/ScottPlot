@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 
 namespace ScottPlot.Statistics;
 
@@ -11,6 +10,11 @@ public class Histogram
     /// Number of values counted for each bin.
     /// </summary>
     public readonly double[] Counts;
+
+    /// <summary>
+    /// Number of bins.
+    /// </summary>
+    public readonly int N;
 
     /// <summary>
     /// Running total of all values counted.
@@ -25,12 +29,7 @@ public class Histogram
     /// <summary>
     /// Lower edge for each bin.
     /// </summary>
-    public readonly double[] BinEdges;
-
-    /// <summary>
-    /// Number of bins.
-    /// </summary>
-    public readonly int BinCount;
+    public readonly double[] Bins;
 
     /// <summary>
     /// Default behavior is that outlier values are not counted.
@@ -39,12 +38,12 @@ public class Histogram
     public readonly bool AddOutliersToEdgeBins;
 
     /// <summary>
-    /// Lower edge of the first bin
+    /// Lower edge of the first bin (inclusive)
     /// </summary>
     public readonly double Min;
 
     /// <summary>
-    /// Upper edge of the last bin
+    /// Upper edge of the last bin (exclusive)
     /// </summary>
     public readonly double Max;
 
@@ -66,28 +65,46 @@ public class Histogram
     /// <summary>
     /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange"/>
     /// </summary>
-    public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
+    /// <param name="min">minimum value to be counted</param>
+    /// <param name="max">maximum value to be counted</param>
+    /// <param name="binCount">number of bins between <paramref name="min"/> and <paramref name="max"/></param>
+    /// <param name="addOutliersToEdgeBins">if false, outliers will not be counted</param>
+    /// <param name="addFinalBin">if true, one more bin will be added so values equal to <paramref name="max"/> can be counted too</param>
+    public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
     {
-        Min = min;
-        Max = max;
-        BinCount = binCount;
+        BinSize = (max - min) / binCount;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
+
+        if (addFinalBin)
+            binCount += 1;
+
+        N = binCount;
+        Min = min;
+        Max = min + BinSize * binCount;
+
         Counts = new double[binCount];
-        BinEdges = new double[binCount];
-
-        // create evenly sized bins
-        BinSize = (Max - Min) / binCount;
-
+        Bins = new double[binCount];
         for (int i = 0; i < binCount; i++)
         {
-            BinEdges[i] = min + BinSize * i;
+            Bins[i] = min + BinSize * i;
         }
     }
 
-    public static Histogram WithFixedSizeBins(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
+    /// <summary>
+    /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
+    /// </summary>
+    public static Histogram WithFixedBinSize(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
     {
-        int binCount = (int)Math.Ceiling((max - min) / binSize);
+        int binCount = (int)Math.Ceiling((max - min) / binSize) + 1;
         max = binCount * binSize + min;
+        return new Histogram(min, max, binCount, addOutliersToEdgeBins, addFinalBin: false);
+    }
+
+    /// <summary>
+    /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
+    /// </summary>
+    public static Histogram WithFixedBinCount(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
+    {
         return new Histogram(min, max, binCount, addOutliersToEdgeBins);
     }
 
@@ -110,7 +127,7 @@ public class Histogram
         if (!scaleToBinnedProbability)
             return unscaled;
 
-        double sum = (double)BinEdges.Select(x => unscaled(x)).Sum();
+        double sum = (double)Bins.Select(x => unscaled(x)).Sum();
         Func<double, double?> scaled = x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2)) / sum;
         return scaled;
     }
