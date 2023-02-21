@@ -198,12 +198,13 @@ namespace ScottPlotTests.Statistics
             double min = data.Min();
             double max = data.Max();
 
-            // Demonstrate that the old function returns incorrect bins
-            (_, double[] bins) = ScottPlot.Statistics.Common.Histogram(data, min, max, binSize);
-            double[] incorrectBins = { 1.0, 3.0 };
-            bins.Should().BeEquivalentTo(incorrectBins);
+            // Test old static methods
+            (_, double[] bins1) = ScottPlot.Statistics.Common.Histogram(data, min, max, binSize);
+            bins1.Should().BeEquivalentTo(expectedBins);
+            (_, double[] bins2, _, _) = ScottPlot.Statistics.Common.HistogramWithOutliers(data, min, max, binSize);
+            bins2.Should().BeEquivalentTo(expectedBins);
 
-            // Demonstrate that the new histogram returns the correct bins
+            // Test new Histogram class
             var hist = ScottPlot.Statistics.Histogram.WithFixedSizeBins(min, max, binSize);
             hist.BinEdges.Should().BeEquivalentTo(expectedBins);
         }

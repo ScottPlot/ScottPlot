@@ -86,7 +86,8 @@ public class Histogram
 
     public static Histogram WithFixedSizeBins(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
     {
-        int binCount = (int)((max - min) / binSize);
+        int binCount = (int)Math.Ceiling((max - min) / binSize);
+        max = binCount * binSize + min;
         return new Histogram(min, max, binCount, addOutliersToEdgeBins);
     }
 

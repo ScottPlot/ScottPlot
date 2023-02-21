@@ -326,7 +326,8 @@ namespace ScottPlot.Statistics
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
         {
-            int binCount = (int)((max - min) / binSize);
+            int binCount = (int)Math.Ceiling((max - min) / binSize);
+            max = min + binCount * binSize;
             return Histogram(values, binCount, density, min, max);
         }
 
@@ -340,7 +341,8 @@ namespace ScottPlot.Statistics
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) HistogramWithOutliers(double[] values, double min, double max, double binSize, bool density = false)
         {
-            int binCount = (int)((max - min) / binSize);
+            int binCount = (int)Math.Ceiling((max - min) / binSize);
+            max = min + binCount * binSize;
             return HistogramWithOutliers(values, binCount, density, min, max);
         }
 
@@ -370,7 +372,8 @@ namespace ScottPlot.Statistics
 
             // create evenly sized bins
             double binWidth = (max - min) / binCount;
-            double[] binEdges = new double[binCount + 1];
+
+            double[] binEdges = new double[binCount];
             for (int i = 0; i < binEdges.Length; i++)
                 binEdges[i] = min + binWidth * i;
 
@@ -434,7 +437,7 @@ namespace ScottPlot.Statistics
 
             // create evenly sized bins
             double binWidth = (max - min) / binCount;
-            double[] binEdges = new double[binCount + 1];
+            double[] binEdges = new double[binCount];
             for (int i = 0; i < binEdges.Length; i++)
                 binEdges[i] = min + binWidth * i;
 
