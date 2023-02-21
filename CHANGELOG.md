@@ -32,6 +32,7 @@ _not yet published on NuGet..._
 * AxisLineVector: Improved automatic axis limits when using limited axis lines (#2371) _Thanks @ChrisAtVault_
 * Controls: Configuration.AddLinkedControl() simplifies axis sharing across multiple controls (#2402, #2372)
 * Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme_
+* Statistics: Improved bin edge calculations for histograms with fixed bin size bins (#2299) _Thanks @Xerxes004_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
