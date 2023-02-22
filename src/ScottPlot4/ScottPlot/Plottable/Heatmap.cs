@@ -420,9 +420,9 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Gets the Pre-rendered heatmap image.        
+        /// Gets a copy of the Pre-rendered heatmap image.        
         /// </summary>
-        public Bitmap GetBitmapClone()
+        public Bitmap GetBitmap()
         {
             return BmpHeatmap.Clone(new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height), BmpHeatmap.PixelFormat);
         }
