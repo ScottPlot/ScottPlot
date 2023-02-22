@@ -23,11 +23,6 @@ public static class Generate
         return ys;
     }
 
-    public static T[] Consecutive<T>(int count, double delta = 1, double first = 0)
-    {
-        return Consecutive(count, delta, first).DoubleToGeneric<T>();
-    }
-
     /// <summary>
     /// Return an array of sine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
@@ -42,11 +37,6 @@ public static class Generate
         return ys;
     }
 
-    public static T[] Sin<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
-    {
-        return Sin(count, mult, offset, oscillations, phase).DoubleToGeneric<T>();
-    }
-
     /// <summary>
     /// Return an array of cosine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
@@ -59,11 +49,6 @@ public static class Generate
         for (int i = 0; i < ys.Length; i++)
             ys[i] = Math.Cos(i * sinScale + phase * Math.PI * 2) * mult + offset;
         return ys;
-    }
-
-    public static T[] Cos<T>(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
-    {
-        return Cos(count, mult, offset, oscillations, phase).DoubleToGeneric<T>();
     }
 
     public static double[] NoisySin(Random rand, int count, double noiseLevel = 1)
@@ -250,18 +235,6 @@ public static class Generate
         public static System.DateTime[] Seconds(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromSeconds(1));
 
         public static System.DateTime[] Seconds(int count) => Hours(count, ExampleDate);
-    }
-
-    #endregion
-
-    #region OHLC
-
-    public static class OHLC
-    {
-        public static ScottPlot.OHLC[] Random(int count, int seed = 8)
-        {
-            return new RandomDataGenerator(seed).RandomOHLCs(count).ToArray();
-        }
     }
 
     #endregion

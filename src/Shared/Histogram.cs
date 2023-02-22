@@ -134,14 +134,15 @@ public class Histogram
     /// </summary>
     public Func<double, double?> GetProbabilityCurve(double[] values, bool scaleToBinnedProbability = false)
     {
-        BasicStats stats = new(values);
+        double mean = Statistics.Descriptive.Mean(values);
+        double stDev = Statistics.Descriptive.StDev(values, mean);
 
-        double? unscaled(double x) => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
+        double? unscaled(double x) => Math.Exp(-.5 * Math.Pow((x - mean) / stDev, 2));
         if (!scaleToBinnedProbability)
             return unscaled;
 
-        double sum = (double)Bins.Select(x => unscaled(x)).Sum();
-        double? scaled(double x) => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2)) / sum;
+        double sum = Bins.Select(x => unscaled(x)).Sum()!.Value;
+        double? scaled(double x) => Math.Exp(-.5 * Math.Pow((x - mean) / stDev, 2)) / sum;
         return scaled;
     }
 
