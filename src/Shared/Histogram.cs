@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace ScottPlot.Statistics;
 
-#pragma warning disable RS0016 // Ignore warnings that this class is not yet documented
-
-[Obsolete("This class is a work in progress. Its API may change as it continues to evolve.")]
 public class Histogram
 {
     /// <summary>

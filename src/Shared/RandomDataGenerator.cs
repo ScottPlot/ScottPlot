@@ -1,4 +1,9 @@
-﻿namespace ScottPlot;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ScottPlot;
+
+#nullable enable
 
 public class RandomDataGenerator
 {

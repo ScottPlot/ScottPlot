@@ -2,6 +2,7 @@
   "solution": {
     "path": "ScottPlot5.sln",
     "projects": [
+      "..\\Shared\\Shared.shproj",
       "ScottPlot5 Controls\\ScottPlot.WPF\\ScottPlot.WPF.csproj",
       "ScottPlot5 Cookbook\\ScottPlot Cookbook.csproj",
       "ScottPlot5 Sandbox\\Sandbox.WPF\\Sandbox.WPF.csproj",

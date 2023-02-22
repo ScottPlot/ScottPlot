@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinUI", "ScottPlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Wasm", "ScottPlot5 Sandbox\Sandbox.Wasm\Sandbox.Wasm.csproj", "{CBF0C2BD-B5FB-47F5-95F0-B917DA97CA9E}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "..\Shared\Shared.shproj", "{93BC39FC-E052-4B07-9149-E3120A10CFF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,5 +127,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Shared\Shared.projitems*{93bc39fc-e052-4b07-9149-e3120a10cff5}*SharedItemsImports = 13
+		..\Shared\Shared.projitems*{9ebde18f-f155-4c30-aedc-624d4aa13e8c}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

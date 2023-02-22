@@ -78,5 +78,6 @@
         <AdditionalFiles Remove="PublicAPI.Shipped.txt" />
         <AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
     </ItemGroup>
+    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
 
 </Project>

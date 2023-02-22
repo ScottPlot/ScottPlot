@@ -1,4 +1,9 @@
-﻿namespace ScottPlot;
+﻿using System;
+using System.Linq;
+
+namespace ScottPlot;
+
+#nullable enable
 
 /// <summary>
 /// This class contains methods which generate sample data for testing and demonstration purposes

@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{68
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Benchmarks", "ScottPlot.Benchmarks\ScottPlot.Benchmarks.csproj", "{80381368-144D-4CAE-8FA7-56E8E5AF5B60}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "..\Shared\Shared.shproj", "{93BC39FC-E052-4B07-9149-E3120A10CFF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,5 +133,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Shared\Shared.projitems*{93bc39fc-e052-4b07-9149-e3120a10cff5}*SharedItemsImports = 13
+		..\Shared\Shared.projitems*{ee9215c6-01c1-4835-8514-3a708f9291f1}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
