@@ -9,6 +9,7 @@
     <Import_RootNamespace>ScottPlot</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Descriptive.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Histogram.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RandomDataGenerator.cs" />
