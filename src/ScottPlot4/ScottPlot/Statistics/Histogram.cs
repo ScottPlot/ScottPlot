@@ -130,12 +130,12 @@ public class Histogram
     {
         BasicStats stats = new(values);
 
-        Func<double, double?> unscaled = x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
+        double? unscaled(double x) => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2));
         if (!scaleToBinnedProbability)
             return unscaled;
 
         double sum = (double)Bins.Select(x => unscaled(x)).Sum();
-        Func<double, double?> scaled = x => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2)) / sum;
+        double? scaled(double x) => Math.Exp(-.5 * Math.Pow((x - stats.Mean) / stats.StDev, 2)) / sum;
         return scaled;
     }
 
