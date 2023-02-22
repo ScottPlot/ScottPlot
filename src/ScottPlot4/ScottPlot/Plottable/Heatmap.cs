@@ -419,6 +419,14 @@ namespace ScottPlot.Plottable
             return (xIndex, yIndex);
         }
 
+        /// <summary>
+        /// Gets the Pre-rendered heatmap image.        
+        /// </summary>
+        public Bitmap GetBitmapClone()
+        {
+            return BmpHeatmap.Clone(new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height), BmpHeatmap.PixelFormat);
+        }
+
         public void ValidateData(bool deepValidation = false)
         {
             if (BmpHeatmap is null)
