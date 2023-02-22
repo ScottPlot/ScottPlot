@@ -31,7 +31,7 @@ public partial class HistogramDemo : Form
 
         int newValueCount = Rand.Next(123, 1234);
         double[] newData = ScottPlot.DataGen.RandomNormal(Rand, newValueCount, stdDev: .15);
-        Hist.Add(newData);
+        Hist.AddRange(newData);
 
         formsPlot1.Plot.AxisAuto();
         formsPlot1.Plot.SetAxisLimits(xMin: -.1, xMax: 1.1, yMin: 0);
