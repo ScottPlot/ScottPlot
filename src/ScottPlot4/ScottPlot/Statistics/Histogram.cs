@@ -77,6 +77,12 @@ public class Histogram
     /// <param name="addFinalBin">if true, one more bin will be added so values equal to <paramref name="max"/> can be counted too</param>
     public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
     {
+        if (min >= max)
+            throw new ArgumentException($"{nameof(max)} must be greater than {nameof(min)}");
+
+        if (binCount < 1)
+            throw new ArgumentException($"must have at least 1 bin");
+
         BinSize = (max - min) / binCount;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
 
