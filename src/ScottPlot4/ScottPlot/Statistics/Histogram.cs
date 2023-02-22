@@ -43,12 +43,12 @@ public class Histogram
     public bool AddOutliersToEdgeBins { get; }
 
     /// <summary>
-    /// Lower edge of the first bin (inclusive)
+    /// Lower edge of the first bin
     /// </summary>
     public double Min { get; }
 
     /// <summary>
-    /// Upper edge of the last bin (exclusive)
+    /// Upper edge of the last bin
     /// </summary>
     public double Max { get; }
 
