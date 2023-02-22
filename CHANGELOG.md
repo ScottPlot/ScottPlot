@@ -31,7 +31,7 @@ _not yet published on NuGet..._
 * Statistics: Improved median calculation method in population plots (#2363) _Thanks @Syntaxrabbit_
 * AxisLineVector: Improved automatic axis limits when using limited axis lines (#2371) _Thanks @ChrisAtVault_
 * Controls: Configuration.AddLinkedControl() simplifies axis sharing across multiple controls (#2402, #2372)
-* Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme_
+* Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme and @Xerxes004_
 * Statistics: Improved bin edge calculations for histograms with fixed bin size bins (#2299) _Thanks @Xerxes004_
 
 ## ScottPlot 4.1.60
