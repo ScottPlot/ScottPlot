@@ -324,6 +324,7 @@ namespace ScottPlot.Statistics
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
         /// <param name="binSize">Width of each bin.</param>
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        [Obsolete("This method is obsolete. Consider using ScottPlot.Statistics.Histogram as demonstrated by the ScottPlot Cookbook.")]
         public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
         {
             int binCount = (int)Math.Ceiling((max - min) / binSize);
@@ -339,6 +340,7 @@ namespace ScottPlot.Statistics
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
         /// <param name="binSize">Width of each bin.</param>
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
+        [Obsolete("This method is obsolete. Consider using ScottPlot.Statistics.Histogram as demonstrated by the ScottPlot Cookbook.")]
         public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) HistogramWithOutliers(double[] values, double min, double max, double binSize, bool density = false)
         {
             int binCount = (int)Math.Ceiling((max - min) / binSize);

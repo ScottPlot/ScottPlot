@@ -95,6 +95,7 @@ namespace ScottPlotTests.Statistics
         }
 
         [Test]
+        [Obsolete]
         public void Test_Histogram_jwsuh()
         {
             // https://github.com/ScottPlot/ScottPlot/issues/1348
@@ -193,6 +194,7 @@ namespace ScottPlotTests.Statistics
         }
 
         [Test]
+        [Obsolete]
         public void Test_Histogram_FixedSizeBins()
         {
             // This test reproduces issue described by @Xerxes004 in #2299
