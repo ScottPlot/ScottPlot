@@ -22,7 +22,7 @@ namespace ScottPlot.Cookbook.Recipes
             // add random data to the histogram
             Random rand = new(0);
             double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
-            hist.Add(heights);
+            hist.AddRange(heights);
 
             // show the histogram counts as a bar plot
             plt.AddBar(values: hist.Counts, positions: hist.Bins);
@@ -50,7 +50,7 @@ namespace ScottPlot.Cookbook.Recipes
             // add random data to the histogram
             Random rand = new(0);
             double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
-            hist.Add(heights);
+            hist.AddRange(heights);
 
             // show the histogram counts as a bar plot
             var bar = plt.AddBar(values: hist.Counts, positions: hist.Bins);
@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes
             // add random data to the histogram
             Random rand = new(0);
             double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
-            hist.Add(heights);
+            hist.AddRange(heights);
 
             // display histogram probabability as a bar plot
             double[] probabilities = hist.GetProbability();
@@ -117,7 +117,7 @@ namespace ScottPlot.Cookbook.Recipes
             // add random data to the histogram
             Random rand = new(0);
             double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
-            hist.Add(heights);
+            hist.AddRange(heights);
 
             // display histogram probabability as a bar plot
             var bar = plt.AddBar(values: hist.Counts, positions: hist.Bins);
@@ -156,7 +156,7 @@ namespace ScottPlot.Cookbook.Recipes
             // add random data to the histogram
             Random rand = new(0);
             double[] heights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 178.4, stdDev: 7.6);
-            hist.Add(heights);
+            hist.AddRange(heights);
 
             // display histogram probabability as a bar plot
             double[] probabilities = hist.GetProbability();
@@ -206,8 +206,8 @@ namespace ScottPlot.Cookbook.Recipes
             Random rand = new(0);
             double[] maleHeights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 2345, mean: 178.4, stdDev: 7.6);
             double[] femaleHeights = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1234, mean: 164.7, stdDev: 7.1);
-            histMale.Add(maleHeights);
-            histFemale.Add(femaleHeights);
+            histMale.AddRange(maleHeights);
+            histFemale.AddRange(femaleHeights);
 
             // plot histograms
             var barMale = plt.AddBar(values: histMale.GetProbability(), positions: histMale.Bins);
@@ -254,8 +254,8 @@ namespace ScottPlot.Cookbook.Recipes
 
             // create sample data for two datasets
             Random rand = new Random(0);
-            hist1.Add(DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20));
-            hist2.Add(DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25));
+            hist1.AddRange(DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20));
+            hist2.AddRange(DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25));
 
             // display datasets as step plots
             plt.AddScatterStep(xs: hist1.Bins, ys: hist1.GetCumulativeProbability(), label: "Sample A");

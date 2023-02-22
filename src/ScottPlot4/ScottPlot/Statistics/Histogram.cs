@@ -68,7 +68,7 @@ public class Histogram
     public int MaxOutlierCount { get; private set; } = 0;
 
     /// <summary>
-    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="Add(IEnumerable{double})"/>
+    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange(IEnumerable{double})"/>
     /// </summary>
     /// <param name="min">minimum value to be counted</param>
     /// <param name="max">maximum value to be counted</param>
@@ -219,7 +219,7 @@ public class Histogram
     /// <summary>
     /// Add multiple values to the histogram
     /// </summary>
-    public void Add(IEnumerable<double> values)
+    public void AddRange(IEnumerable<double> values)
     {
         foreach (double value in values)
             Add(value);
