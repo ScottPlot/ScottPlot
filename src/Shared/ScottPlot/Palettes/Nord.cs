@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Nord : ISharedPalette
+public class Nord : IPalette
 {
     public string Name { get; } = "Nord";
 

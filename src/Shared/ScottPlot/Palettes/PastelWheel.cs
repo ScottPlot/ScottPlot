@@ -3,7 +3,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class PastelWheel : ISharedPalette
+public class PastelWheel : IPalette
 {
     public string Name { get; } = "Pastel wheel";
 

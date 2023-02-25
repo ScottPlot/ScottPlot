@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Penumbra : ISharedPalette
+public class Penumbra : IPalette
 {
     public string Name { get; } = "Penumbra";
 

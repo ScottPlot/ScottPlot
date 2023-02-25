@@ -20,7 +20,7 @@ public class Plot : IDisposable
     public List<ILegend> Legends { get; } = new();
     public List<IPlottable> Plottables { get; } = new();
     public AddPlottable Add { get; }
-    public ISharedPalette Palette { get => Add.Palette; set => Add.Palette = value; }
+    public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public IRenderer Renderer { get; set; } = new StandardRenderer();
     public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();
     public AutoScaleMargins Margins { get; } = new();

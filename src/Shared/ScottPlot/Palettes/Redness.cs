@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Redness : ISharedPalette
+public class Redness : IPalette
 {
     public string Name { get; } = "Redness";
 

@@ -81,7 +81,7 @@ public static class Website
         sb.AppendLine("```");
         sb.AppendLine();
 
-        foreach (ISharedPalette palette in ScottPlot.Palette.GetPalettes())
+        foreach (IPalette palette in ScottPlot.Palette.GetPalettes())
         {
             sb.AppendLine();
             sb.AppendLine($"### {palette.Name}");

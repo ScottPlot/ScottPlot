@@ -5,9 +5,9 @@
 
 namespace ScottPlot.Palettes;
 
-public class Frost : ISharedPalette
+public class Aurora : IPalette
 {
-    public string Name { get; } = "Frost";
+    public string Name { get; } = "Aurora";
 
     public string Description { get; } = "From the Nord " +
         "collection of palettes: https://github.com/arcticicestudio/nord";
@@ -16,6 +16,6 @@ public class Frost : ISharedPalette
 
     private static readonly string[] HexColors =
     {
-        "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
+        "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD",
     };
 }

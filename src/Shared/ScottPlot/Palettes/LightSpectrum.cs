@@ -3,7 +3,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class LightSpectrum : ISharedPalette
+public class LightSpectrum : IPalette
 {
     public string Name { get; } = "Light spectrum";
 

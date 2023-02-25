@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Tsitsulin : ISharedPalette
+public class Tsitsulin : IPalette
 {
     public string Name { get; } = "Xgfs 25";
 

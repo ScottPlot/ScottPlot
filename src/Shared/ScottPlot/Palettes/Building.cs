@@ -4,7 +4,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Building : ISharedPalette
+public class Building : IPalette
 {
     public string Name { get; } = "Building";
 

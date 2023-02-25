@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Nero : ISharedPalette
+public class Nero : IPalette
 {
     public string Name { get; } = "Nero";
 

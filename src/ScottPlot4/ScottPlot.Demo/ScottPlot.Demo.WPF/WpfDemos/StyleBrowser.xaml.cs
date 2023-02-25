@@ -40,7 +40,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var style = (ScottPlot.Styles.IStyle)ListBoxStyle.SelectedItem;
-            var palette = (ScottPlot.ISharedPalette)ListBoxPalette.SelectedItem;
+            var palette = (ScottPlot.IPalette)ListBoxPalette.SelectedItem;
 
             if (style is null || palette is null)
                 return;

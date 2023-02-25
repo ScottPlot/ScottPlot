@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class ColorblindFriendly : ISharedPalette
+public class ColorblindFriendly : IPalette
 {
     public string Name { get; } = "Colorblind Friendly";
 

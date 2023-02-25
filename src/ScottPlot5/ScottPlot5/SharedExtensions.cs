@@ -21,7 +21,7 @@ public static class SharedExtensions
         return colors.Select(x => x.Convert()).ToArray();
     }
 
-    public static Color GetColor(this ISharedPalette pal, int index)
+    public static Color GetColor(this IPalette pal, int index)
     {
         int colorIndex = index % pal.Colors.Length;
         SharedColor color = pal.Colors[colorIndex];

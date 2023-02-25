@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Normal : ISharedPalette
+public class Normal : IPalette
 {
     public string Name { get; } = "Xgfs Normal 6";
 

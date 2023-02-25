@@ -5,17 +5,17 @@
 
 namespace ScottPlot.Palettes;
 
-public class Aurora : ISharedPalette
+public class SnowStorm : IPalette
 {
-    public string Name { get; } = "Aurora";
+    public string Name { get; } = "Snow Storm";
 
-    public string Description { get; } = "From the Nord " +
-        "collection of palettes: https://github.com/arcticicestudio/nord";
+    public string Description { get; } = "From the " +
+        "Nord collection of palettes: https://github.com/arcticicestudio/nord";
 
     public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {
-        "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD",
+        "#D8DEE9", "#E5E9F0", "#ECEFF4"
     };
 }

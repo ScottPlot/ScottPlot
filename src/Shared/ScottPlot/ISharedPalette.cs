@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public interface ISharedPalette
+public interface IPalette
 {
     /// <summary>
     /// All colors in this palette

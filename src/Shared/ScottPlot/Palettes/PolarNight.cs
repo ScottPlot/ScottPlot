@@ -5,9 +5,9 @@
 
 namespace ScottPlot.Palettes;
 
-public class SnowStorm : ISharedPalette
+public class PolarNight : IPalette
 {
-    public string Name { get; } = "Snow Storm";
+    public string Name { get; } = "Polar Night";
 
     public string Description { get; } = "From the " +
         "Nord collection of palettes: https://github.com/arcticicestudio/nord";
@@ -16,6 +16,6 @@ public class SnowStorm : ISharedPalette
 
     private static readonly string[] HexColors =
     {
-        "#D8DEE9", "#E5E9F0", "#ECEFF4"
+        "#2E3440", "#3B4252", "#434C5E", "#4C566A",
     };
 }

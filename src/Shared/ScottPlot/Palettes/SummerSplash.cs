@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class SummerSplash : ISharedPalette
+public class SummerSplash : IPalette
 {
     public string Name { get; } = "Summer Splash";
 

@@ -6,7 +6,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class Microcharts : ISharedPalette
+public class Microcharts : IPalette
 {
     public string Name { get; } = "Microcharts";
 

@@ -5,17 +5,17 @@
 
 namespace ScottPlot.Palettes;
 
-public class PolarNight : ISharedPalette
+public class Frost : IPalette
 {
-    public string Name { get; } = "Polar Night";
+    public string Name { get; } = "Frost";
 
-    public string Description { get; } = "From the " +
-        "Nord collection of palettes: https://github.com/arcticicestudio/nord";
+    public string Description { get; } = "From the Nord " +
+        "collection of palettes: https://github.com/arcticicestudio/nord";
 
     public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {
-        "#2E3440", "#3B4252", "#434C5E", "#4C566A",
+        "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
     };
 }

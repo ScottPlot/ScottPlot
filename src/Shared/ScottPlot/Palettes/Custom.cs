@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Palettes;
 
-internal class Custom : ISharedPalette
+internal class Custom : IPalette
 {
     public SharedColor[] Colors { get; }
 

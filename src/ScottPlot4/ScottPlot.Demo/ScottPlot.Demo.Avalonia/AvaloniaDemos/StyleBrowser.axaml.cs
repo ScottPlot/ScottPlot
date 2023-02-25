@@ -41,7 +41,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var style = (ScottPlot.Styles.IStyle)listBoxStyle.SelectedItem;
-            var palette = (ScottPlot.ISharedPalette)listBoxPalette.SelectedItem;
+            var palette = (ScottPlot.IPalette)listBoxPalette.SelectedItem;
 
             if (style is null || palette is null)
                 return;

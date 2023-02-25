@@ -3,7 +3,7 @@
 
 namespace ScottPlot.Palettes;
 
-public class LightOcean : ISharedPalette
+public class LightOcean : IPalette
 {
     public string Name { get; } = "Light ocean";
 

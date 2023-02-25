@@ -38,7 +38,7 @@ namespace ScottPlot
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
-        public ISharedPalette PlottablePalette = new Palettes.Category10();
+        public IPalette PlottablePalette = new Palettes.Category10();
 
         /// <summary>
         /// List of all axes used in this plot.
