@@ -39,9 +39,8 @@
 
     <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
     <ItemGroup>
-
-        <!-- Use ScottPlot4's numeric conversion class to provide platform-specific optimizations for generic math operations -->
-        <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
+        
+        <!-- TODO: move all these into the shared project -->
 
         <!-- Bring all ScottPlot4 palettes into ScottPlot5 -->
         <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
