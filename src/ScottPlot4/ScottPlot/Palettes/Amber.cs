@@ -1,17 +1,12 @@
-﻿/* Sourced from Material Design
- * https://material.io/design/color/the-color-system.html
- */
+﻿namespace ScottPlot.Palettes;
 
-namespace ScottPlot.Palettes;
-
-public class Amber : HexPaletteBase
+public class Amber : PaletteBase, IPalette
 {
-    public override string Name => GetType().Name;
-
-    public override string Description => string.Empty;
-
-    internal override string[] HexColors => new string[]
+    public Amber()
     {
-        "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
-    };
+        ISharedPalette shared = new SharedPalettes.Amber();
+        Colors = shared.Colors.ToSDColors();
+        Name = shared.Title;
+        Description = shared.Description;
+    }
 }

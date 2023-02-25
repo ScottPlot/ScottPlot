@@ -17,4 +17,17 @@ public class Custom : PaletteBase
         Name = name;
         Description = description;
     }
+
+    public Custom(System.Drawing.Color[] colors, string name = "", string description = "")
+    {
+        if (colors is null)
+            throw new System.ArgumentNullException("must provide at least one color");
+
+        if (colors.Length == 0)
+            throw new System.ArgumentException("must provide at least one color");
+
+        Colors = colors;
+        Name = name;
+        Description = description;
+    }
 }

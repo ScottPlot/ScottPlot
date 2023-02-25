@@ -4,9 +4,9 @@ internal class DemoSharedPalette : ISharedPalette
 {
     public SharedColor[] Colors { get; } =
     {
-        new SharedColor("#003366"),
+        SharedColor.FromHex("#003366"),
         new SharedColor(0,255,0),
-        new SharedColor("#3399AA"),
+        SharedColor.FromHex("#336699AA"),
         new SharedColor(255,0,255),
     };
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -21,7 +22,7 @@ public struct SharedColor
         A = a;
     }
 
-    public SharedColor(string hex)
+    public static SharedColor FromHex(string hex)
     {
         if (hex[0] == '#')
             hex = hex.Substring(1);
@@ -33,9 +34,15 @@ public struct SharedColor
         if (!success)
             throw new ArgumentException($"invalid color hex string: {hex}");
 
-        R = (byte)(rgba >> 24);
-        G = (byte)(rgba >> 16);
-        B = (byte)(rgba >> 8);
-        A = (byte)(rgba >> 0);
+        byte r = (byte)(rgba >> 24);
+        byte g = (byte)(rgba >> 16);
+        byte b = (byte)(rgba >> 8);
+        byte a = (byte)(rgba >> 0);
+        return new SharedColor(r, g, b, a);
+    }
+
+    public static SharedColor[] FromHex(string[] hex)
+    {
+        return hex.Select(FromHex).ToArray();
     }
 }

@@ -15,7 +15,7 @@ internal class SharedColorTests
     [Test]
     public void Test_RgbColor_HexConstructor()
     {
-        ScottPlot.SharedColor color = new("#336699");
+        ScottPlot.SharedColor color = ScottPlot.SharedColor.FromHex("#336699");
         color.R.Should().Be(51);
         color.G.Should().Be(102);
         color.B.Should().Be(153);
@@ -25,7 +25,7 @@ internal class SharedColorTests
     [Test]
     public void Test_RgbColor_HexConstructorWithAlpha()
     {
-        ScottPlot.SharedColor color = new("#336699AA");
+        ScottPlot.SharedColor color = ScottPlot.SharedColor.FromHex("#336699AA");
         color.R.Should().Be(51);
         color.G.Should().Be(102);
         color.B.Should().Be(153);
