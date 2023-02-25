@@ -10,7 +10,7 @@ public interface ISharedPalette
     /// <summary>
     /// Display name
     /// </summary>
-    public string Title { get; }
+    public string Name { get; }
 
     /// <summary>
     /// Additional information such as the source of this palette

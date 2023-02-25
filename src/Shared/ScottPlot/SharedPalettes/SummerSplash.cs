@@ -6,13 +6,15 @@
 
 namespace ScottPlot.Palettes;
 
-public class SummerSplash : HexPaletteBase, IPalette
+public class SummerSplash : ISharedPalette
 {
-    public override string Name => "Summer Splash";
+    public string Name { get; } = "Summer Splash";
 
-    public override string Description => string.Empty;
+    public string Description { get; } = string.Empty;
 
-    internal override string[] HexColors => new string[]
+    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+
+    private static readonly string[] HexColors =
     {
         "#05445E", "#189AB4", "#75E6DA" , "#D4F1F4"
     };

@@ -6,13 +6,16 @@
 
 namespace ScottPlot.Palettes;
 
-public class ColorblindFriendly : HexPaletteBase, IPalette
+public class ColorblindFriendly : ISharedPalette
 {
-    public override string Name => "Colorblind Friendly";
+    public string Name { get; } = "Colorblind Friendly";
 
-    public override string Description => "A set of 8 colorblind-friendly colors from Bang Wong's Nature Methods paper https://www.nature.com/articles/nmeth.1618.pdf";
+    public string Description { get; } = "A set of 8 colorblind-friendly colors " +
+        "from Bang Wong's Nature Methods paper https://www.nature.com/articles/nmeth.1618.pdf";
 
-    internal override string[] HexColors => new string[]
+    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+
+    private static readonly string[] HexColors =
     {
         "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
         "#0072B2", "#D55E00", "#CC79A7",

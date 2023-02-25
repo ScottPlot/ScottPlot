@@ -16,7 +16,7 @@ internal class SharedPaletteTests
     {
         foreach (var palette in ScottPlot.SharedPalette.GetPalettes())
         {
-            if (string.IsNullOrEmpty(palette.Title))
+            if (string.IsNullOrEmpty(palette.Name))
                 throw new InvalidOperationException($"Palette has invalid title: {palette}");
         }
     }
@@ -27,10 +27,10 @@ internal class SharedPaletteTests
         HashSet<string> titles = new();
         foreach (var palette in ScottPlot.SharedPalette.GetPalettes())
         {
-            if (titles.Contains(palette.Title))
-                throw new InvalidOperationException($"duplicate Palette title: {palette.Title}");
+            if (titles.Contains(palette.Name))
+                throw new InvalidOperationException($"duplicate Palette title: {palette.Name}");
 
-            titles.Add(palette.Title);
+            titles.Add(palette.Name);
         }
     }
 }

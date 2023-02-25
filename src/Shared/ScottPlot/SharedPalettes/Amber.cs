@@ -2,11 +2,11 @@
  * https://material.io/design/color/the-color-system.html
  */
 
-namespace ScottPlot.SharedPalettes;
+namespace ScottPlot.Palettes;
 
 public class Amber : ISharedPalette
 {
-    public string Title { get; } = "Amber";
+    public string Name { get; } = "Amber";
 
     public string Description { get; } = string.Empty;
 
