@@ -1,4 +1,6 @@
-﻿namespace SharedTests;
+﻿using System;
+
+namespace SharedTests;
 
 internal class NumericConversion
 {

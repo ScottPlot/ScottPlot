@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Platform-independent representation of a color.

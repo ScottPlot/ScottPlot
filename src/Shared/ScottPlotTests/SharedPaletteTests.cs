@@ -1,4 +1,7 @@
-﻿namespace SharedTests;
+﻿using System;
+using System.Collections.Generic;
+
+namespace SharedTests;
 
 internal class SharedPaletteTests
 {
