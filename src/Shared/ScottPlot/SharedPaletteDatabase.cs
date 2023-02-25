@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace ScottPlot;
 
+// NOTE: projects should implement their own version of this
 internal static class SharedPalette
 {
     /// <summary>

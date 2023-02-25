@@ -5,7 +5,7 @@ internal class PaletteTests
     [Test]
     public void Test_GetPalette_ReturnsPalettes()
     {
-        IPalette[] palettes = ScottPlot.Palette.GetAllPalettes();
+        ISharedPalette[] palettes = ScottPlot.Palette.GetAllPalettes();
         palettes.Should().NotBeNullOrEmpty();
         Console.WriteLine("Palettes: " + string.Join(", ", palettes.Select(x => x.ToString())));
     }

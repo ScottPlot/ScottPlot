@@ -11,7 +11,7 @@ public class AddPlottable
 {
     private readonly Plot Plot;
 
-    public IPalette Palette { get; set; } = new SharedPalettes.Amber().ToPalette(); // TODO: default category 10
+    public ISharedPalette Palette { get; set; } = new Palettes.Category10();
 
     public Color NextColor => Palette.GetColor(Plot.Plottables.Count);
 

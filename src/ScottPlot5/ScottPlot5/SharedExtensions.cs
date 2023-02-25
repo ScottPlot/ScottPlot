@@ -2,18 +2,29 @@
 
 public static class SharedExtensions
 {
-    public static IPalette ToPalette(this ISharedPalette pal)
-    {
-        return new Palettes.Custom(pal.Colors.ToSDColors(), pal.Title, pal.Description);
-    }
-
-    public static Color ToSDColor(this SharedColor color)
+    public static Color Convert(this SharedColor color)
     {
         return new Color(color.R, color.G, color.B, color.A);
     }
-
-    public static Color[] ToSDColors(this SharedColor[] colors)
+    public static SharedColor Convert(this Color color)
     {
-        return colors.Select(x => x.ToSDColor()).ToArray();
+        return new SharedColor(color.Red, color.Green, color.Blue, color.Alpha);
+    }
+
+    public static Color[] Convert(this SharedColor[] colors)
+    {
+        return colors.Select(x => x.Convert()).ToArray();
+    }
+
+    public static SharedColor[] Convert(this Color[] colors)
+    {
+        return colors.Select(x => x.Convert()).ToArray();
+    }
+
+    public static Color GetColor(this ISharedPalette pal, int index)
+    {
+        int colorIndex = index % pal.Colors.Length;
+        SharedColor color = pal.Colors[colorIndex];
+        return color.Convert();
     }
 }
