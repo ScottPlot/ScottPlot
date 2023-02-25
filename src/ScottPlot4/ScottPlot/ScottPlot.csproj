@@ -80,6 +80,8 @@
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
-    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
 
+    <!-- Shared project code -->
+    <Import Project="..\..\Shared\ScottPlot\ScottPlotShared.projitems" Label="ScottPlotShared" />
+    
 </Project>

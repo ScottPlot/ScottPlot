@@ -9,7 +9,7 @@
     <Import_RootNamespace>ScottPlot</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ScottPlot\*.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ScottPlot\Statistics\*.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)*.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\*.cs" />
   </ItemGroup>
 </Project>

@@ -78,6 +78,8 @@
         <AdditionalFiles Remove="PublicAPI.Shipped.txt" />
         <AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
     </ItemGroup>
-    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+
+    <!-- Include shared source files -->
+    <Import Project="..\..\Shared\ScottPlot\ScottPlotShared.projitems" Label="ScottPlotShared" />
 
 </Project>
