@@ -17,4 +17,18 @@ public class Tests
         double stDev = ScottPlot.Statistics.Descriptive.StDev(values);
         stDev.Should().BeApproximately(0.81649658092773, precision: 1e-10);
     }
+
+    [Test]
+    public void Test_FirstHundredPrimes_Mean_ShouldMatchNumpy()
+    {
+        // known values calculated using Python and Numpy (source file in repo dev folder)
+        ScottPlot.Statistics.Descriptive.Mean(ScottPlot.SampleData.FirstHundredPrimes).Should().Be(241.33);
+    }
+
+    [Test]
+    public void Test_FirstHundredPrimes_StDev_ShouldMatchNumpy()
+    {
+        // known values calculated using Python and Numpy (source file in repo dev folder)
+        ScottPlot.Statistics.Descriptive.StDev(ScottPlot.SampleData.FirstHundredPrimes).Should().BeApproximately(160.02218939884557, precision: 1e-10);
+    }
 }
