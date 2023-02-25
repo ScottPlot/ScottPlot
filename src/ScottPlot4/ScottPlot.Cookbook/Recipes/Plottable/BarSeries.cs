@@ -133,7 +133,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // Manually add each Bar to the BarSeries
             double lastBarTop = 0;
-            IPalette palette = new ScottPlot.Palettes.Tsitsulin();
+            ISharedPalette palette = new ScottPlot.Palettes.Tsitsulin();
             for (int i = 0; i < values.Length; i++)
             {
                 // Determine how high the bar should be
@@ -179,7 +179,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 10, 23, 13, 7, 9 };
 
             // Create a palette to use for bar and label colors
-            IPalette myPalette = new ScottPlot.Palettes.Aurora();
+            ISharedPalette myPalette = new ScottPlot.Palettes.Aurora();
 
             // Add a BarSeries to the plot
             BarSeries barSeries = plt.AddBarSeries();

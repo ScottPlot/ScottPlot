@@ -3,20 +3,51 @@ using System.Linq;
 
 namespace ScottPlot;
 
-internal static class SharedExtensions
+public static class SharedExtensions
 {
-    public static IPalette ToPalette(this ISharedPalette pal)
-    {
-        return new Palettes.Custom(pal.Colors.ToSDColors(), pal.Title, pal.Description);
-    }
-
-    public static Color ToSDColor(this SharedColor color)
+    public static Color Convert(this SharedColor color)
     {
         return Color.FromArgb(color.A, color.R, color.G, color.B);
     }
 
-    public static Color[] ToSDColors(this SharedColor[] colors)
+    public static Color[] Convert(this SharedColor[] colors)
     {
-        return colors.Select(x => x.ToSDColor()).ToArray();
+        return colors.Select(x => x.Convert()).ToArray();
+    }
+
+    public static SharedColor Convert(this Color color)
+    {
+        return new SharedColor(color.R, color.G, color.B, color.A);
+    }
+
+    public static SharedColor[] Convert(this Color[] colors)
+    {
+        return colors.Select(x => x.Convert()).ToArray();
+    }
+
+    public static Color GetColor(this ISharedPalette pal, int index)
+    {
+        int colorIndex = index % pal.Colors.Length;
+        SharedColor color = pal.Colors[colorIndex];
+        return color.Convert();
+    }
+
+    public static Color GetColor(this ISharedPalette pal, int index, double alpha)
+    {
+        int colorIndex = index % pal.Colors.Length;
+        SharedColor color = pal.Colors[colorIndex];
+        return Color.FromArgb((byte)(alpha * 255), color.R, color.G, color.B);
+    }
+
+    public static int Count(this ISharedPalette pal)
+    {
+        return pal.Colors.Length;
+    }
+
+    public static Color[] GetColors(this ISharedPalette pal, int count, int offset = 0, double alpha = 1)
+    {
+        return Enumerable.Range(offset, count)
+            .Select(x => pal.GetColor(x, alpha))
+            .ToArray();
     }
 }

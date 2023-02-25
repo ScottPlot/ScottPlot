@@ -974,7 +974,7 @@ namespace ScottPlot
         /// <returns>The radial gaugle plot that was just created and added to the plot</returns>
         public ScottPlot.Plottable.RadialGaugePlot AddRadialGauge(double[] values, bool disableFrameAndGrid = true)
         {
-            Color[] colors = Palette.GetColors(values.Length);
+            Color[] colors = Enumerable.Range(0, values.Length).Select(x => Palette.GetColor(x)).ToArray();
             ScottPlot.Plottable.RadialGaugePlot plottable = new(values, colors);
             Add(plottable);
 

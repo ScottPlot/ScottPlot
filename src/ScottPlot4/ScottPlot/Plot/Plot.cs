@@ -253,7 +253,7 @@ namespace ScottPlot
         /// <summary>
         /// The palette defines default colors to use for new plottables.
         /// </summary>
-        public IPalette Palette
+        public ISharedPalette Palette
         {
             get => settings.PlottablePalette;
             set => settings.PlottablePalette = value ?? throw new ArgumentNullException();
