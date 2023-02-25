@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-internal interface ISharedPalette
+public interface ISharedPalette
 {
     /// <summary>
     /// All colors in this palette
@@ -16,4 +16,6 @@ internal interface ISharedPalette
     /// Additional information such as the source of this palette
     /// </summary>
     public string Description { get; }
+
+    // NOTE: Implementing platforms should create their own GetColor() extension method
 }

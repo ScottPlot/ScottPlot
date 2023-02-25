@@ -37,23 +37,6 @@
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 
-    <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
-    <ItemGroup>
-        
-        <!-- TODO: move all these into the shared project -->
-
-        <!-- Bring all ScottPlot4 palettes into ScottPlot5 -->
-        <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
-            <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
-        </Compile>
-
-        <!-- Exclude palette classes that contain ScottPlot4-specific code -->
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
-
-    </ItemGroup>
-
     <!-- NuGet package dependencies -->
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">

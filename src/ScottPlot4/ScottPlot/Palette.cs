@@ -10,7 +10,7 @@ namespace ScottPlot;
 /// </summary>
 public static class Palette
 {
-    public static IPalette Amber => new Palettes.Amber();
+    public static IPalette Amber => new SharedPalettes.Amber().ToPalette();
     public static IPalette Aurora => new Palettes.Aurora();
     public static IPalette Category10 => new Palettes.Category10();
     public static IPalette Category20 => new Palettes.Category20();

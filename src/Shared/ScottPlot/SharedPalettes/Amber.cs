@@ -4,7 +4,7 @@
 
 namespace ScottPlot.SharedPalettes;
 
-internal class Amber : ISharedPalette
+public class Amber : ISharedPalette
 {
     public string Title { get; } = "Amber";
 

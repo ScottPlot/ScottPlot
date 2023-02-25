@@ -120,7 +120,7 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            IPalette palette = new ScottPlot.Palettes.Nord();
+            IPalette palette = new ScottPlot.SharedPalettes.Amber().ToPalette(); // TODO: NORD
             myPlot.Palette = palette;
 
             for (int i = 0; i < 5; i++)
