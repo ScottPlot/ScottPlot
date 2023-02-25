@@ -6,8 +6,8 @@ namespace ScottPlot.Palettes;
 
 public class OneHalf : ISharedPalette
 {
-    public string Name { get; } = "One Half"; 
-    
+    public string Name { get; } = "One Half";
+
     public string Description { get; } = "A Sublime color scheme " +
         "by Son A. Pham: https://github.com/sonph/onehalf";
 

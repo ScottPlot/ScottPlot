@@ -7,8 +7,8 @@ namespace ScottPlot.Palettes;
 
 public class Normal : ISharedPalette
 {
-    public string Name { get; } = "Xgfs Normal 6"; 
-    
+    public string Name { get; } = "Xgfs Normal 6";
+
     public string Description { get; } = "A color palette adapted from " +
         "Tsitsulin's 6-color normal xgfs palette: http://tsitsul.in/blog/coloropt";
 
