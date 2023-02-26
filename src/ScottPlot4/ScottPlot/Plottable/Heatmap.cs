@@ -420,7 +420,8 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Returns a copy of the heatmap image.        
+        /// Returns a copy of the heatmap image as a <see cref="Bitmap"/>.
+        /// Dimensions of the image will be equal to those of the source data used to create it.
         /// </summary>
         public Bitmap GetBitmap()
         {
