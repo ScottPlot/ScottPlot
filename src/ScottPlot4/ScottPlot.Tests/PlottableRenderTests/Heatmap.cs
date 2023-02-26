@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using ScottPlot;
+using FluentAssertions;
 
 namespace ScottPlotTests.PlottableRenderTests
 {
@@ -92,6 +94,22 @@ namespace ScottPlotTests.PlottableRenderTests
 
             plt.Margins(0, 0);
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Heatmap_GetBitmap()
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            ScottPlot.Plot plt = new(500, 400);
+            var hm = plt.AddHeatmap(data);
+
+            System.Drawing.Bitmap bmp = hm.GetBitmap();
+            bmp.Should().NotBeNull();
+            bmp.Width.Should().Be(65);
+            bmp.Height.Should().Be(100);
+
+            TestTools.SaveFig(bmp);
         }
     }
 }

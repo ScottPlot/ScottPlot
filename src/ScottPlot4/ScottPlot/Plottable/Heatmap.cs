@@ -419,6 +419,17 @@ namespace ScottPlot.Plottable
             return (xIndex, yIndex);
         }
 
+        /// <summary>
+        /// Returns a copy of the heatmap image as a <see cref="Bitmap"/>.
+        /// Dimensions of the image will be equal to those of the source data used to create it.
+        /// </summary>
+        public Bitmap GetBitmap()
+        {
+            Rectangle fullSizeRect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            Bitmap bmp = BmpHeatmap.Clone(fullSizeRect, BmpHeatmap.PixelFormat);
+            return bmp;
+        }
+
         public void ValidateData(bool deepValidation = false)
         {
             if (BmpHeatmap is null)
