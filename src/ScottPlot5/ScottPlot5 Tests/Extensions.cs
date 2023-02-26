@@ -52,4 +52,24 @@ internal static class Extensions
         using SKFileWStream fs = new(filePath);
         bmp.Encode(fs, SKEncodedImageFormat.Png, quality: 100);
     }
+
+    internal static void SaveTestString(this string s, string extension = ".html")
+    {
+        // determine filename based on name of calling function
+        StackTrace stackTrace = new();
+        StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("bad caller");
+        MethodBase method = frame.GetMethod() ?? throw new InvalidDataException("bad method");
+        string callingMethod = method.Name;
+
+        string saveFolder = Path.Combine(TestContext.CurrentContext.TestDirectory, "test-images");
+        if (!Directory.Exists(saveFolder))
+            Directory.CreateDirectory(saveFolder);
+
+        string fileName = callingMethod + extension;
+        string filePath = Path.Combine(saveFolder, fileName);
+        Console.WriteLine(filePath);
+
+        // actually save the thing
+        File.WriteAllText(filePath, s);
+    }
 }

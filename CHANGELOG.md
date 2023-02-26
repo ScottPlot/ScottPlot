@@ -9,6 +9,7 @@ _not yet published on NuGet..._
 * Style: Improved Plot.Style.Background() color configuration (#2398) _Thanks @Jonathanio123_
 * WPF: Added OpenGL support to the WPF control (#2395) _Thanks @StendProg_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
+* Plot: Added GetImageHTML() for improved rendering in interactive notebooks (#2385, #1772)
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
