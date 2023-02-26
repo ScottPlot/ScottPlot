@@ -35,6 +35,7 @@ _not yet published on NuGet..._
 * Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme and @Xerxes004_
 * Statistics: Improved bin edge calculations for histograms with fixed bin size bins (#2299) _Thanks @Xerxes004_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
+* Heatmap: Added GetBitmap() to provide access to raw heatmap image data (#2396, #2410) _Thanks @bukkideme_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
