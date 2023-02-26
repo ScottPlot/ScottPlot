@@ -8,6 +8,7 @@ _not yet published on NuGet..._
 * Finance Plots: Added OHLC and Candlestick plot types (#2386) _Thanks @bclehmann_
 * Style: Improved Plot.Style.Background() color configuration (#2398) _Thanks @Jonathanio123_
 * WPF: Added OpenGL support to the WPF control (#2395) _Thanks @StendProg_
+* Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
@@ -33,6 +34,7 @@ _not yet published on NuGet..._
 * Controls: Configuration.AddLinkedControl() simplifies axis sharing across multiple controls (#2402, #2372)
 * Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme and @Xerxes004_
 * Statistics: Improved bin edge calculations for histograms with fixed bin size bins (#2299) _Thanks @Xerxes004_
+* Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
