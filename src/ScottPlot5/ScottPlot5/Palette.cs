@@ -7,15 +7,15 @@ public static class Palette
     /// </summary>
     public static IPalette FromColors(string[] hexColors)
     {
-        return new Palettes.Palette(hexColors, string.Empty, string.Empty);
+        return new Palettes.Custom(hexColors, string.Empty, string.Empty);
     }
 
     /// <summary>
     /// Create a custom palette from an array of colors
     /// </summary>
-    public static IPalette FromColors(Color[] hexColors)
+    public static IPalette FromColors(Color[] colors)
     {
-        return new Palettes.Palette(hexColors, string.Empty, string.Empty);
+        return new Palettes.Custom(colors.Convert(), string.Empty, string.Empty);
     }
 
     /// <summary>

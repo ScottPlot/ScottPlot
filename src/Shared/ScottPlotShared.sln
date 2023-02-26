@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotSharedTests", "ScottPlotTests\ScottPlotSharedTests.csproj", "{A055948F-C8DC-4029-B770-BEB7944720EB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ScottPlotShared", "ScottPlot\ScottPlotShared.shproj", "{93BC39FC-E052-4B07-9149-E3120A10CFF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A055948F-C8DC-4029-B770-BEB7944720EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A055948F-C8DC-4029-B770-BEB7944720EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A055948F-C8DC-4029-B770-BEB7944720EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A055948F-C8DC-4029-B770-BEB7944720EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51F2886B-E34D-464A-AE59-6EDD80A76C0C}
+	EndGlobalSection
+EndGlobal
