@@ -2,6 +2,8 @@
   "solution": {
     "path": "ScottPlot5.sln",
     "projects": [
+      "..\\Shared\\ScottPlotTests\\ScottPlotSharedTests.csproj",
+      "..\\Shared\\ScottPlot\\ScottPlotShared.shproj",
       "ScottPlot5 Controls\\ScottPlot.WinForms\\ScottPlot.WinForms.csproj",
       "ScottPlot5 Cookbook\\ScottPlot Cookbook.csproj",
       "ScottPlot5 Demos\\ScottPlot5 WinForms Demo\\WinForms Demo.csproj",

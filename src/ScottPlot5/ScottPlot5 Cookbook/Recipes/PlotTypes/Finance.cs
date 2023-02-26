@@ -18,7 +18,8 @@ internal class Finance : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            ScottPlot.OHLC[] prices = ScottPlot.Generate.OHLC.Random(30);
+            ScottPlot.RandomDataGenerator gen = new(0);
+            ScottPlot.OHLC[] prices = gen.RandomOHLCs(30);
             myPlot.Add.OHLC(prices);
             myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
@@ -35,7 +36,8 @@ internal class Finance : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            ScottPlot.OHLC[] prices = ScottPlot.Generate.OHLC.Random(30);
+            ScottPlot.RandomDataGenerator gen = new(0);
+            ScottPlot.OHLC[] prices = gen.RandomOHLCs(30);
             myPlot.Add.Candlestick(prices);
             myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
