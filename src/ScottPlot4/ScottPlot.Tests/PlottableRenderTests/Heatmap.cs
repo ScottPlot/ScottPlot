@@ -111,5 +111,40 @@ namespace ScottPlotTests.PlottableRenderTests
 
             TestTools.SaveFig(bmp);
         }
+
+        [Test]
+        public void Test_Heatmap_PaletteColormap()
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            ScottPlot.Plot plt = new(500, 400);
+
+            // create a colormap from a defined set of colors
+            System.Drawing.Color[] colors = {
+                System.Drawing.Color.Indigo,
+                System.Drawing.Color.Blue,
+                System.Drawing.Color.Green,
+                System.Drawing.Color.Yellow,
+                System.Drawing.Color.Orange,
+                System.Drawing.Color.Red,
+            };
+
+            // display the colormap on the plot as a colorbar
+            ScottPlot.Drawing.Colormap cmap = new(colors);
+            var cbar = plt.AddColorbar(cmap);
+            cbar.MaxValue = 255;
+
+            // use custom tick positions
+            double[] tickPositions = Enumerable.Range(0, colors.Length + 1)
+                .Select(x => (double)x / colors.Length)
+                .ToArray();
+            string[] tickLabels = tickPositions.Select(x => $"{x * 255:N2}").ToArray();
+            cbar.SetTicks(tickPositions, tickLabels);
+
+            // add a heatmap using the custom colormap
+            plt.AddHeatmap(data, cmap);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }
