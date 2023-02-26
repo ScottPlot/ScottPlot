@@ -204,6 +204,38 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapPaletteColormap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_palette";
+        public string Title => "Palette Colormap";
+        public string Description =>
+            "Heatmap data can be presented using a colormap defined by a fixed set of colors.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            // create a colormap from a defined set of colors
+            Color[] colors = { Color.Indigo, Color.Blue, Color.Green, Color.Yellow, Color.Orange, Color.Red, };
+
+            // display the colormap on the plot as a colorbar
+            ScottPlot.Drawing.Colormap cmap = new(colors);
+            var cbar = plt.AddColorbar(cmap);
+            cbar.MaxValue = 255;
+
+            // use custom tick positions
+            double[] tickPositions = Enumerable.Range(0, colors.Length + 1)
+                .Select(x => (double)x / colors.Length)
+                .ToArray();
+            string[] tickLabels = tickPositions.Select(x => $"{x * 255:N2}").ToArray();
+            cbar.SetTicks(tickPositions, tickLabels);
+
+            // add a heatmap using the custom colormap
+            plt.AddHeatmap(data, cmap);
+        }
+    }
+
     public class HeatmapLimitScale : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();

@@ -52,6 +52,17 @@ namespace ScottPlot.Drawing
             ThisColormap = colormap ?? ColormapFactory.GetDefaultColormap();
         }
 
+        public Colormap(Color[] colors)
+        {
+            ThisColormap = new Colormaps.Palette(colors);
+        }
+
+        public Colormap(IPalette palette)
+        {
+            Color[] colors = palette.GetColors(palette.Count());
+            ThisColormap = new Colormaps.Palette(colors);
+        }
+
         public override string ToString() => $"Colormap {Name}";
 
         /// <summary>
