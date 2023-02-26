@@ -718,9 +718,8 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Returns a sample 2D array of grayscale values.
+        /// Returns an image of the Mona Lisa as a 2D array (65 x 100) of grayscale values (0-255)
         /// </summary>
-        /// <returns>2D array of grayscale values.</returns>
         public static double[,] SampleImageData()
         {
             double[,] imageData = {
