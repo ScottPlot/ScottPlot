@@ -159,7 +159,17 @@ namespace ScottPlot.Plottable
 
                     using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
 
-                    var offsetRectangle = new Rectangle((int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), (int)boundingRectangle.Width, (int)boundingRectangle.Height);
+                    Rectangle offsetRectangle = new(
+                        x: (int)(boundingRectangle.X + xOffset),
+                        y: (int)(boundingRectangle.Y + yOffset),
+                        width: (int)boundingRectangle.Width,
+                        height: (int)boundingRectangle.Height);
+
+                    // System.Drawing cannot render extremely small shapes
+                    // https://github.com/ScottPlot/ScottPlot/issues/2415
+                    if (offsetRectangle.Width < 1 || offsetRectangle.Height < 1)
+                        return;
+
                     if (sweep != 360)
                     {
                         gfx.FillPie(brush: sliceFillBrush,
