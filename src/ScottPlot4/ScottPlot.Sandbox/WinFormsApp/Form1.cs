@@ -1,6 +1,5 @@
 ﻿using System;
 using ScottPlot;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -11,15 +10,19 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            var func1 = new Func<double, double?>((x) => 5 * Math.Sin(x) * Math.Sin(x / 2));
-            var func2 = new Func<double, double?>((x) => 4 * Math.Sin(x) * Math.Sin(x / 3) - 1);
+            Random rand = new(0);
+            var popSeries = new ScottPlot.Statistics.PopulationSeries[10];
+            for (int i = 0; i < popSeries.Length; i++)
+            {
+                double[] values = DataGen.RandomNormal(rand, 320);
+                ScottPlot.Statistics.Population[] populations = { new(values) };
+                popSeries[i] = new(populations, $"Pop {i + 1}");
+            }
 
-            var fp1 = formsPlot1.Plot.AddFunction(func1);
-            fp1.FillType = FillType.FillBelow;
+            var multiSeries = new ScottPlot.Statistics.PopulationMultiSeries(popSeries);
 
-            var fp2 = formsPlot1.Plot.AddFunction(func2);
-            fp2.FillType = FillType.FillBelow;
-
+            formsPlot1.Plot.Frameless();
+            formsPlot1.Plot.AddPopulations(multiSeries);
             formsPlot1.Refresh();
         }
     }
