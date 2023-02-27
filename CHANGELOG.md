@@ -9,7 +9,7 @@ _not yet published on NuGet..._
 * Style: Improved Plot.Style.Background() color configuration (#2398) _Thanks @Jonathanio123_
 * WPF: Added OpenGL support to the WPF control (#2395) _Thanks @StendProg_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
-* Plot: Added GetImageHTML() for improved rendering in interactive notebooks (#2385, #1772)
+* Plot: Added GetImageHTML() for improved rendering in interactive notebooks (#2385, #1772) _Thanks @neilyoung2008_
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
@@ -39,6 +39,7 @@ _not yet published on NuGet..._
 * Heatmap: Added GetBitmap() to provide access to raw heatmap image data (#2396, #2410) _Thanks @bukkideme_
 * Pie: Prevent invalid argument exceptions when drawing zero-size pie charts (#2415) _Thanks @KC7465128305_
 * Colormap: Colormaps can be created from a set of colors (#2375, #2191, #2187) _Thanks @dhgigisoave_
+* Function Plot: New optional `AxisLimits` allows users to define default axis limits (#2428, #2412) _Thanks @bukkideme_
 * Population: Fixed bug causing argument exceptions for 1px high plots (#2429, #2384) _Thanks @Sprenk_
 
 ## ScottPlot 4.1.60

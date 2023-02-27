@@ -33,8 +33,8 @@ namespace ScottPlot.Plottable
         public Color FillColor { get; set; } = Color.FromArgb(50, Color.Black);
         public double XMin { get; set; } = double.NegativeInfinity;
         public double XMax { get; set; } = double.PositiveInfinity;
-
-        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+        public AxisLimits AxisLimits { get; set; } = AxisLimits.NoLimits;
+        public AxisLimits GetAxisLimits() => AxisLimits;
 
         public FunctionPlot(Func<double, double?> function)
         {
