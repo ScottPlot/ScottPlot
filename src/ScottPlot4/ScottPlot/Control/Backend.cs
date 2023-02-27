@@ -547,7 +547,7 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseMove(InputState input)
         {
-            bool isZoomingRectangleWithAltLeft = IsLeftDown && input.AltDown;
+            bool isZoomingRectangleWithAltLeft = IsLeftDown && input.AltDown && Configuration.AltLeftClickDragZoom;
             bool isZoomingRectangleWithMiddle = IsMiddleDown && Configuration.MiddleClickDragZoom;
 
             bool wasZoomingRectangle = IsZoomingRectangle;
@@ -667,7 +667,7 @@ namespace ScottPlot.Control
             var droppedPlottable = PlottableBeingDragged;
 
             IUIEvent mouseEvent;
-            if (IsZoomingRectangle && MouseDownDragged && Configuration.MiddleClickDragZoom)
+            if (IsZoomingRectangle && MouseDownDragged)
                 mouseEvent = EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y);
             else if (IsMiddleDown && Configuration.MiddleClickAutoAxis && MouseDownDragged == false)
                 mouseEvent = EventFactory.CreateMouseAutoAxis();
