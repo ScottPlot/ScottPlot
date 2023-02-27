@@ -15,7 +15,7 @@ namespace ScottPlot.Control
         public bool Zoom
         {
             get => RightClickDragZoom;
-            set => (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom) = (value, value, value);
+            set => (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom, AltLeftClickDragZoom) = (value, value, value, value);
         }
 
         /// <summary>
@@ -70,9 +70,14 @@ namespace ScottPlot.Control
         public double ScrollWheelZoomHighQualityDelay = 500;
 
         /// <summary>
-        /// Control whether middle-click-drag zooming to a rectangle is enabled
+        /// Control whether middle-click-drag zooming to a rectangle is enabled.
         /// </summary>
         public bool MiddleClickDragZoom = true;
+
+        /// <summary>
+        /// Control whether ALT + left-click-drag rectangle zoom is enabled.
+        /// </summary>
+        public bool AltLeftClickDragZoom = true;
 
         /// <summary>
         /// Control whether middle-click can be used to reset axis limits
