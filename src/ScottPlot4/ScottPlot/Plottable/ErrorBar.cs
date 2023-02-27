@@ -29,6 +29,7 @@ namespace ScottPlot.Plottable
         public float MarkerLineWidth { get; set; } = 1;
         public float MarkerSize { get; set; } = 0;
         public Color MarkerColor { get => Color; set { Color = value; } }
+        public string Label { get; set; } = string.Empty;
 
         public ErrorBar(double[] xs, double[] ys, double[] xErrorsPositive, double[] xErrorsNegative, double[] yErrorsPositive, double[] yErrorsNegative)
         {
@@ -40,7 +41,16 @@ namespace ScottPlot.Plottable
             YErrorsNegative = yErrorsNegative;
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems()
+        {
+            LegendItem item = new(this)
+            {
+                lineStyle = LineStyle,
+                label = Label
+            };
+
+            return new LegendItem[] { item };
+        }
 
         public AxisLimits GetAxisLimits()
         {
