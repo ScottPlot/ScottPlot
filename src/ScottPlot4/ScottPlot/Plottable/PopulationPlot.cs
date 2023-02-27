@@ -261,7 +261,8 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(color, 1, lineStyle, true))
             {
-                gfx.DrawLines(pen, points);
+                if (points.Length > 1)
+                    gfx.DrawLines(pen, points);
             }
         }
 
