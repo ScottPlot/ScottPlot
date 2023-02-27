@@ -39,6 +39,7 @@ _not yet published on NuGet..._
 * Heatmap: Added GetBitmap() to provide access to raw heatmap image data (#2396, #2410) _Thanks @bukkideme_
 * Pie: Prevent invalid argument exceptions when drawing zero-size pie charts (#2415) _Thanks @KC7465128305_
 * Colormap: Colormaps can be created from a set of colors (#2375, #2191, #2187) _Thanks @dhgigisoave_
+* Population: Fixed bug causing argument exceptions for 1px high plots (#2429, #2384) _Thanks @Sprenk_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
