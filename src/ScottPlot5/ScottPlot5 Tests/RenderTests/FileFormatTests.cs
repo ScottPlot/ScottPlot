@@ -37,4 +37,15 @@ internal class FileFormatTests
         plt.Add.Signal(Generate.Cos(51));
         plt.SaveWebp("test_save.webp", 200, 100);
     }
+
+    [Test]
+    public void Test_Save_Html()
+    {
+        Plot plt = new();
+        plt.Add.Signal(Generate.Sin(51));
+        plt.Add.Signal(Generate.Cos(51));
+        string img = plt.GetImageHtml(300, 200);
+        string html = $"<html><body>{img}</body></html>";
+        html.SaveTestString();
+    }
 }

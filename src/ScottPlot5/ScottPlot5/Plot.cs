@@ -344,6 +344,16 @@ public class Plot : IDisposable
         return new(surface.Snapshot());
     }
 
+    /// <summary>
+    /// Render the plot and return an HTML img element containing a Base64-encoded PNG
+    /// </summary>
+    public string GetImageHtml(int width, int height)
+    {
+        Image img = GetImage(width, height);
+        byte[] bytes = img.GetImageBytes();
+        return ImageOperations.GetImageHtml(bytes);
+    }
+
     public void SaveJpeg(string filePath, int width, int height, int quality = 85)
     {
         using Image image = GetImage(width, height);
