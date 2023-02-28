@@ -1,15 +1,15 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.2-beta
-_not yet published on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Signal Plot: Support X and Y offset (#2378) _Thanks @minjjKang_
 * WebAssembly: New sandbox demonstrates interactive ScottPlot in a browser (#2380, #2374) _Thanks rafntor_
 * OpenGL: Added experimental support for direct GPU rendering (#2383, #2397) _Thanks @StendProg_
 * Finance Plots: Added OHLC and Candlestick plot types (#2386) _Thanks @bclehmann_
-* Style: Improved Plot.Style.Background() color configuration (#2398) _Thanks @Jonathanio123_
+* Style: Improved `Plot.Style.Background()` color configuration (#2398) _Thanks @Jonathanio123_
 * WPF: Added OpenGL support to the WPF control (#2395) _Thanks @StendProg_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
-* Plot: Added GetImageHTML() for improved rendering in interactive notebooks (#2385, #1772) _Thanks @neilyoung2008_
+* Plot: Added `GetImageHTML()` for improved rendering in interactive notebooks (#2385, #1772) _Thanks @neilyoung2008_
 
 ## ScottPlot 5.0.1-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
@@ -27,16 +27,16 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
 * ScottPlot 5: First version 5 release published to NuGet #2304
 
 ## ScottPlot 4.1.61
-_not yet published on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Axis: Throw exception immediately upon setting invalid axis limits (#2327) _Thanks @mjpz_
 * Heatmap: Added support for transparent single-color heatmaps (#2336) _Thanks @bukkideme_
 * Statistics: Improved median calculation method in population plots (#2363) _Thanks @Syntaxrabbit_
 * AxisLineVector: Improved automatic axis limits when using limited axis lines (#2371) _Thanks @ChrisAtVault_
-* Controls: Configuration.AddLinkedControl() simplifies axis sharing across multiple controls (#2402, #2372)
-* Statistics: New ScottPlot.Statistics.Histogram class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme and @Xerxes004_
+* Controls: `Configuration.AddLinkedControl()` simplifies axis sharing across multiple controls (#2402, #2372)
+* Statistics: New `ScottPlot.Statistics.Histogram` class optimized for simplicity and live data (#2403, #2389) _Thanks @bukkideme and @Xerxes004_
 * Statistics: Improved bin edge calculations for histograms with fixed bin size bins (#2299) _Thanks @Xerxes004_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
-* Heatmap: Added GetBitmap() to provide access to raw heatmap image data (#2396, #2410) _Thanks @bukkideme_
+* Heatmap: Added `GetBitmap()` to provide access to raw heatmap image data (#2396, #2410) _Thanks @bukkideme_
 * Pie: Prevent invalid argument exceptions when drawing zero-size pie charts (#2415) _Thanks @KC7465128305_
 * Colormap: Colormaps can be created from a set of colors (#2375, #2191, #2187) _Thanks @dhgigisoave_
 * Function Plot: New optional `AxisLimits` allows users to define default axis limits (#2428, #2412) _Thanks @bukkideme_
