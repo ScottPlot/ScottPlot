@@ -42,6 +42,7 @@ _not yet published on NuGet..._
 * Function Plot: New optional `AxisLimits` allows users to define default axis limits (#2428, #2412) _Thanks @bukkideme_
 * Population: Fixed bug causing argument exceptions for 1px high plots (#2429, #2384) _Thanks @Sprenk_
 * Controls: Added `Configuration.AltLeftClickDragZoom` option to customize zooming behavior (#2391, #2392) _Thanks @DevJins_
+* Error Bar: Added `Label` property which allows error bars to appear independently in the legend (#2432, #2388) _Thanks @dongyi-cai-windsab_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
