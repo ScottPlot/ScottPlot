@@ -39,7 +39,7 @@ namespace ScottPlot.Plottable
         public CirclePlot(double x, double y, float radius, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
             X = x;
-            Y = y;            
+            Y = y;
             Radius = radius;
             LineWidth = lineWidth;
             LineStyle = lineStyle;
@@ -64,7 +64,7 @@ namespace ScottPlot.Plottable
             double yMax = Y + Radius;
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
-        
+
         // This method describes how to plot the data on the cart.
         public void Render(PlotDimensions dims, System.Drawing.Bitmap bmp, bool lowQuality = false)
         {
@@ -77,7 +77,7 @@ namespace ScottPlot.Plottable
             float yPixel = dims.GetPixelY(Y);
 
             // Render data by drawing on the Graphics object
-            gfx.DrawEllipse(pen, xPixel, yPixel, Radius * 2, Radius * 2);            
+            gfx.DrawEllipse(pen, xPixel, yPixel, Radius * 2, Radius * 2);
         }
     }
 }

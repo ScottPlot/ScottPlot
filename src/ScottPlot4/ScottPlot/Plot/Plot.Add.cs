@@ -277,7 +277,7 @@ namespace ScottPlot
         /// </summary>
         public CirclePlot AddCirclePlot(double x, double y, float radius = 10, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
-            CirclePlot circlePlot = new CirclePlot(x, y, radius, lineWidth, lineStyle);            
+            CirclePlot circlePlot = new CirclePlot(x, y, radius, lineWidth, lineStyle);
             Add(circlePlot);
             return circlePlot;
         }
