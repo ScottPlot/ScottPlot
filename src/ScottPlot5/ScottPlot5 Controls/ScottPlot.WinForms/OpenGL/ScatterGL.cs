@@ -124,7 +124,7 @@ public class ScatterGL : Scatter, IPlottableGL
             MarkerShape.FilledCircle when markerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
             MarkerShape.FilledSquare or MarkerShape.FilledCircle => null,
             _ => throw new NotSupportedException($"Marker shape `{MarkerStyle.Shape}` is not supported by GLPlottables"),
-        }; 
+        };
 
         if (newProgram is not null)
         {
