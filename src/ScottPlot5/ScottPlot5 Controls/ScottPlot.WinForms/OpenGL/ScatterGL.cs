@@ -105,7 +105,7 @@ public class ScatterGL : Scatter, IPlottableGL
             height: (int)Axes.DataRect.Height);
 
         if (linesProgram is null)
-            throw new NullReferenceException(nameof(markerProgram));
+            throw new NullReferenceException(nameof(linesProgram));
 
         linesProgram.Use();
         linesProgram.SetTransform(CalcTransform());

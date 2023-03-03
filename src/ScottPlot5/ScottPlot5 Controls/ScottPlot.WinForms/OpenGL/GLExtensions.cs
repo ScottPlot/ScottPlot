@@ -1,6 +1,4 @@
-﻿using OpenTK;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public static class GLExtensions
 {

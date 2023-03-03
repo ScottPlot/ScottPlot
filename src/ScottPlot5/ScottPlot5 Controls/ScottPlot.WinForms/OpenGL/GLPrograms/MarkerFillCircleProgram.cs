@@ -1,9 +1,9 @@
-﻿namespace ScottPlot.WinForms.OpenGL.GLPrograms
+﻿namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+
+internal class MarkerFillCircleProgram : MarkersProgram
 {
-    internal class MarkerFillCircleProgram : MarkersProgram
-    {
-        protected override string VertexShaderSource =>
-        @"# version 430 core
+    protected override string VertexShaderSource =>
+    @"# version 430 core
         layout(location = 0) in dvec2 aPosition;
         uniform dmat4 transform;
 
@@ -14,8 +14,8 @@
             gl_Position = vec4(transformedD);
         }";
 
-        protected override string GeometryShaderSource =>
-        @"# version 430 core
+    protected override string GeometryShaderSource =>
+    @"# version 430 core
         layout(points) in;
         layout(triangle_strip, max_vertices=4) out;
 
@@ -46,8 +46,8 @@
             EndPrimitive();
         }";
 
-        protected override string FragmentShaderSource =>
-        @"#version 430 core
+    protected override string FragmentShaderSource =>
+    @"#version 430 core
 
         uniform vec4 pathColor;
         in noperspective vec2 g_uv;
@@ -59,5 +59,4 @@
             if (distance <= 1)
                 FragColor = pathColor;
         }";
-    }
 }

@@ -2,12 +2,12 @@
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms
+namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+
+public class MarkersProgram : GLProgramBase, IMarkersDrawProgram
 {
-    public class MarkersProgram : GLProgramBase, IMarkersDrawProgram
-    {
-        protected override string VertexShaderSource =>
-        @"# version 430 core
+    protected override string VertexShaderSource =>
+    @"# version 430 core
         layout(location = 0) in dvec2 aPosition;
         uniform dmat4 transform;
 
@@ -18,8 +18,8 @@ namespace ScottPlot.WinForms.OpenGL.GLPrograms
             gl_Position = vec4(transformedD);
         }";
 
-        protected override string GeometryShaderSource =>
-        @"# version 430 core
+    protected override string GeometryShaderSource =>
+    @"# version 430 core
         layout(points) in;
         layout(triangle_strip, max_vertices=4) out;
 
@@ -44,8 +44,8 @@ namespace ScottPlot.WinForms.OpenGL.GLPrograms
             EndPrimitive();
         }";
 
-        protected override string FragmentShaderSource =>
-        @"#version 430 core
+    protected override string FragmentShaderSource =>
+    @"#version 430 core
         out vec4 FragColor;
         uniform vec4 pathColor;
 
@@ -53,29 +53,29 @@ namespace ScottPlot.WinForms.OpenGL.GLPrograms
         {
             FragColor = pathColor;
         }";
-        public void SetTransform(Matrix4d transform)
-        {
-            var location = GetUniformLocation("transform");
-            GL.UniformMatrix4(location, true, ref transform);
-        }
 
-        public void SetColor(Color4 color)
-        {
-            var location = GetUniformLocation("pathColor");
-            GL.Uniform4(location, color);
-        }
+    public void SetTransform(Matrix4d transform)
+    {
+        var location = GetUniformLocation("transform");
+        GL.UniformMatrix4(location, true, ref transform);
+    }
 
-        public void SetMarkerSize(float size)
-        {
-            var location = GetUniformLocation("marker_size");
-            GL.Uniform1(location, size);
-        }
+    public void SetColor(Color4 color)
+    {
+        var location = GetUniformLocation("pathColor");
+        GL.Uniform4(location, color);
+    }
 
-        public void SetViewPortSize(float width, float height)
-        {
-            int location = GetUniformLocation("u_viewport_size");
-            Vector2 viewPortSize = new Vector2(width, height);
-            GL.Uniform2(location, viewPortSize);
-        }
+    public void SetMarkerSize(float size)
+    {
+        var location = GetUniformLocation("marker_size");
+        GL.Uniform1(location, size);
+    }
+
+    public void SetViewPortSize(float width, float height)
+    {
+        int location = GetUniformLocation("u_viewport_size");
+        Vector2 viewPortSize = new Vector2(width, height);
+        GL.Uniform2(location, viewPortSize);
     }
 }
