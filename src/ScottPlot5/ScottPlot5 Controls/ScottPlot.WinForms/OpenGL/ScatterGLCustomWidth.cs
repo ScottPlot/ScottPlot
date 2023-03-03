@@ -1,12 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ScottPlot.Control;
 using ScottPlot.DataSources;
-using ScottPlot.Plottables;
 using ScottPlot.WinForms.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;
 
-namespace ScottPlot.WinForms.OpenGL;
+namespace ScottPlot.Plottables;
 
 public class ScatterGLCustomWidth : ScatterGL
 {
