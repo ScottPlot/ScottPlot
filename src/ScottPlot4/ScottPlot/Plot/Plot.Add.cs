@@ -275,10 +275,18 @@ namespace ScottPlot
         /// <summary>
         /// Add a circle plot.
         /// </summary>
-        public CirclePlot AddCirclePlot(double x, double y, float radius = 10, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public CirclePlot AddCirclePlot(double x, double y, double radius = 10, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
-            CirclePlot circlePlot = new CirclePlot(x, y, radius, lineWidth, lineStyle);
+            CirclePlot circlePlot = new(x, y, radius)
+            {
+                LineColor = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                LineStyle = lineStyle,
+
+            };
+
             Add(circlePlot);
+
             return circlePlot;
         }
 

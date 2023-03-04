@@ -1,48 +1,48 @@
-﻿using ScottPlot.Plottable;
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
     public class CirclePlot : IPlottable
     {
+        /// <summary>
+        /// Horizontal center of the circle (axis units)
+        /// </summary>
         double X { get; }
 
+        /// <summary>
+        /// Vertical center of the circle (axis units)
+        /// </summary>
         double Y { get; }
 
-        // radius
-        public float Radius { get; set; }
-
         /// <summary>
-        /// Color of the circle
+        /// Radius of the circle (axis units)
         /// </summary>
-        public Color Color { get; set; } = Color.Black;
+        public double Radius { get; set; }
 
         /// <summary>
-        /// Thickness of circle line
+        /// Thickness of circle outline (pixel units)
+        /// </summary>
+        public Color LineColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Thickness of circle outline (pixel units)
         /// </summary>
         public double LineWidth { get; set; } = 2;
 
         /// <summary>
-        /// Style of the circle line
+        /// Style of circle outline (pixel units)
         /// </summary>
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         /// <summary>
-        /// Creates a circle at position xs, ys with radius size
+        /// Represents a circle centered at (x, y) with a given radius
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="radius"></param>        
-        /// <param name="lineWidth"></param>
-        /// <param name="lineStyle"></param>
-        public CirclePlot(double x, double y, float radius, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public CirclePlot(double x, double y, double radius)
         {
             X = x;
             Y = y;
             Radius = radius;
-            LineWidth = lineWidth;
-            LineStyle = lineStyle;
         }
 
         // These default values are fine for most cases
@@ -70,7 +70,7 @@ namespace ScottPlot.Plottable
         {
             // Use ScottPlot's GDI helper functions to create System.Drawing objects
             using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle);
+            using var pen = ScottPlot.Drawing.GDI.Pen(LineColor, LineWidth, LineStyle);
 
             // Use 'dims' methods to convert between axis coordinates and pixel positions
             float xPixel = dims.GetPixelX(X);
