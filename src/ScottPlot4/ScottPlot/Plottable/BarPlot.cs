@@ -178,7 +178,7 @@ namespace ScottPlot.Plottable
                 borderColor = BorderColor,
                 borderWith = BorderLineWidth
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         private static RectangleF ClipRectToDataArea(RectangleF rect, PlotDimensions dims)

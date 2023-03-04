@@ -58,7 +58,7 @@ namespace ScottPlot.Plottable
             Parent = parent;
         }
 
-        public static LegendItem[] SingleItem(LegendItem item)
+        public static LegendItem[] Single(LegendItem item)
         {
             return new LegendItem[] { item };
         }

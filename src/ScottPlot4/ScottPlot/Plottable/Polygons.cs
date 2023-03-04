@@ -85,7 +85,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = Fill ? FillColor : LineColor,
@@ -94,7 +94,7 @@ namespace ScottPlot.Plottable
                 hatchColor = HatchColor,
                 hatchStyle = HatchStyle
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
 
         private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)

@@ -96,7 +96,7 @@ namespace ScottPlot.Plottable
                 borderWith = BorderLineWidth,
             };
 
-            return LegendItem.SingleItem(item);
+            return LegendItem.Single(item);
         }
 
         // This method returns the bounds of the data

@@ -112,7 +112,7 @@ namespace ScottPlot.Plottable
                 color = Color,
             };
 
-            return LegendItem.SingleItem(item);
+            return LegendItem.Single(item);
         }
 
         public void ValidateData(bool deep = false)
