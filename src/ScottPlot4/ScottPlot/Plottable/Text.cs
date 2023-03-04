@@ -35,7 +35,7 @@ namespace ScottPlot.Plottable
         RectangleF LastRenderRectangleCoordinates { get; set; }
         private double DeltaCX { get; set; } = 0;
         private double DeltaCY { get; set; } = 0;
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
         public ISnap2D DragSnap { get; set; } = new NoSnap2D();
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";

@@ -273,6 +273,14 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a circle to the plot
+        /// </summary>
+        public Ellipse AddCircle(double x, double y, double radius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            return AddEllipse(x, y, radius, radius, color, lineWidth, lineStyle);
+        }
+
+        /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
         public FinancePlot AddCandlesticks(OHLC[] ohlcs)
@@ -338,6 +346,23 @@ namespace ScottPlot
             Crosshair ch = new() { X = x, Y = y };
             Add(ch);
             return ch;
+        }
+
+
+        /// <summary>
+        /// Add an ellipse to the plot
+        /// </summary>
+        public Ellipse AddEllipse(double x, double y, double xRadius, double yRadius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            Color c = color ?? GetNextColor();
+            Ellipse plottable = new(x, y, xRadius, yRadius)
+            {
+                BorderColor = c,
+                BorderLineWidth = lineWidth,
+                BorderLineStyle = lineStyle,
+            };
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>

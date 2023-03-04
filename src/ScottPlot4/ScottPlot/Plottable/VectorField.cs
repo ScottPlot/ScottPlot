@@ -94,14 +94,14 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = VectorColors[0],
                 lineWidth = 10,
                 markerShape = MarkerShape.none
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
 
         public AxisLimits GetAxisLimits()
