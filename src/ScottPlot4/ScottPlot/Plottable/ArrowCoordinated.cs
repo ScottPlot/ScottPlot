@@ -105,7 +105,14 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            return LegendItem.SingleItem(this, Label);
+            LegendItem item = new(this)
+            {
+                label = Label,
+                lineWidth = LineWidth,
+                color = Color,
+            };
+
+            return LegendItem.SingleItem(item);
         }
 
         public void ValidateData(bool deep = false)
