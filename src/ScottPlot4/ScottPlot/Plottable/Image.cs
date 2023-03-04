@@ -83,7 +83,7 @@ namespace ScottPlot.Plottable
                 yMax: Y);
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public override string ToString()
         {
