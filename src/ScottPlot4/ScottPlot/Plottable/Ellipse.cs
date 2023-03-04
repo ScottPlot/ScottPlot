@@ -36,6 +36,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public float BorderLineWidth { get; set; } = 2;
 
+        private bool HasBorder => (BorderLineStyle != LineStyle.None) && (BorderColor != Color.Transparent);
+
         /// <summary>
         /// Outline line style
         /// </summary>
@@ -57,6 +59,11 @@ namespace ScottPlot.Plottable
         public Color HatchColor { get; set; } = Color.Black;
 
         /// <summary>
+        /// Text to appear in the legend
+        /// </summary>
+        public string Label { get; set; } = string.Empty;
+
+        /// <summary>
         /// Create an ellipse centered at (x, y) with the given horizontal and vertical radius
         /// </summary>
         public Ellipse(double x, double y, double xRadius, double yRadius)
@@ -76,7 +83,21 @@ namespace ScottPlot.Plottable
 
         // Return an empty array for plottables that do not appear in the legend
         public LegendItem[] GetLegendItems()
-            => Array.Empty<LegendItem>();
+        {
+            if (string.IsNullOrWhiteSpace(Label))
+                return LegendItem.None;
+
+            LegendItem item = new(this)
+            {
+                label = Label,
+                color = Color,
+                borderColor = BorderColor,
+                borderLineStyle = BorderLineStyle,
+                borderWith = BorderLineWidth,
+            };
+
+            return LegendItem.SingleItem(item);
+        }
 
         // This method returns the bounds of the data
         public AxisLimits GetAxisLimits()
@@ -113,7 +134,7 @@ namespace ScottPlot.Plottable
             // Render data by drawing on the Graphics object
             if (Color != Color.Transparent)
                 gfx.FillEllipse(brush, rect);
-            
+
             gfx.DrawEllipse(pen, rect);
         }
     }

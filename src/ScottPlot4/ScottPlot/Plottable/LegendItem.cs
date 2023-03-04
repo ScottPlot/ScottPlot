@@ -68,6 +68,13 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleItem };
         }
 
+        public static LegendItem[] SingleItem(LegendItem item)
+        {
+            return new LegendItem[] { item };
+        }
+
+        public static LegendItem[] None => Array.Empty<LegendItem>();
+
         public void Render(Graphics gfx, float x, float y,
             float labelWidth, float labelHeight, System.Drawing.Font labelFont,
             float symbolWidth, float symbolPad,
