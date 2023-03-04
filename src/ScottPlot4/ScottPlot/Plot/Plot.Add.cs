@@ -273,21 +273,19 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a circle plot.
+        /// Add a circle to the plot
         /// </summary>
-        public CirclePlot AddCirclePlot(double x, double y, double radius = 10, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public Ellipse AddCircle(double x, double y, double radius, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
-            CirclePlot circlePlot = new(x, y, radius)
+            Ellipse plottable = new(x, y, radius, radius)
             {
                 LineColor = color ?? GetNextColor(),
                 LineWidth = lineWidth,
                 LineStyle = lineStyle,
 
             };
-
-            Add(circlePlot);
-
-            return circlePlot;
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>
@@ -356,6 +354,22 @@ namespace ScottPlot
             Crosshair ch = new() { X = x, Y = y };
             Add(ch);
             return ch;
+        }
+
+
+        /// <summary>
+        /// Add an ellipse to the plot
+        /// </summary>
+        public Ellipse AddEllipse(double x, double y, double radiusX, double radiusY, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            Ellipse plottable = new(x, y, radiusX, radiusY)
+            {
+                LineColor = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                LineStyle = lineStyle,
+            };
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>

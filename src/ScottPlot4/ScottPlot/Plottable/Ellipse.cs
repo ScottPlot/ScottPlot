@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class CirclePlot : IPlottable
+    public class Ellipse : IPlottable
     {
         /// <summary>
         /// Horizontal center of the circle (axis units)
@@ -16,33 +16,39 @@ namespace ScottPlot.Plottable
         double Y { get; }
 
         /// <summary>
-        /// Radius of the circle (axis units)
+        /// Horizontal radius (axis units)
         /// </summary>
-        public double Radius { get; set; }
+        public double RadiusX { get; set; }
 
         /// <summary>
-        /// Thickness of circle outline (pixel units)
+        /// Vertical radius (axis units)
+        /// </summary>
+        public double RadiusY { get; set; }
+
+        /// <summary>
+        /// Outline color
         /// </summary>
         public Color LineColor { get; set; } = Color.Black;
 
         /// <summary>
-        /// Thickness of circle outline (pixel units)
+        /// Outline thickness (pixel units)
         /// </summary>
         public double LineWidth { get; set; } = 2;
 
         /// <summary>
-        /// Style of circle outline (pixel units)
+        /// Outline line style
         /// </summary>
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         /// <summary>
-        /// Represents a circle centered at (x, y) with a given radius
+        /// Create an ellipse centered at (x, y) with the given horizontal and vertical radius
         /// </summary>
-        public CirclePlot(double x, double y, double radius)
+        public Ellipse(double x, double y, double xRadius, double yRadius)
         {
             X = x;
             Y = y;
-            Radius = radius;
+            RadiusX = xRadius;
+            RadiusY = yRadius;
         }
 
         // These default values are fine for most cases
@@ -58,11 +64,11 @@ namespace ScottPlot.Plottable
         // This method returns the bounds of the data
         public AxisLimits GetAxisLimits()
         {
-            double xMin = X - Radius;
-            double xMax = X + Radius;
-            double yMin = Y - Radius;
-            double yMax = Y + Radius;
-            return new AxisLimits(xMin, xMax, yMin, yMax);
+            return new AxisLimits(
+                xMin: X - RadiusX,
+                xMax: X + RadiusX, 
+                yMin: Y - RadiusY, 
+                yMax: Y + RadiusY);
         }
 
         // This method describes how to plot the data on the cart.
@@ -77,8 +83,8 @@ namespace ScottPlot.Plottable
             float yPixel = dims.GetPixelY(Y);
 
             // Use 'dims' to determine how large the radius is in pixel units
-            float xRadiusPixels = dims.GetPixelX(X + Radius) - xPixel;
-            float yRadiusPixels = dims.GetPixelY(Y + Radius) - yPixel;
+            float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
+            float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
             // Render data by drawing on the Graphics object
             gfx.DrawEllipse(pen, xPixel - xRadiusPixels, yPixel - yRadiusPixels, xRadiusPixels * 2, yRadiusPixels * 2);
