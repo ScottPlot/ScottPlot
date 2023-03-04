@@ -275,17 +275,9 @@ namespace ScottPlot
         /// <summary>
         /// Add a circle to the plot
         /// </summary>
-        public Ellipse AddCircle(double x, double y, double radius, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public Ellipse AddCircle(double x, double y, double radius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
-            Ellipse plottable = new(x, y, radius, radius)
-            {
-                LineColor = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                LineStyle = lineStyle,
-
-            };
-            Add(plottable);
-            return plottable;
+            return AddEllipse(x, y, radius, radius, color, lineWidth, lineStyle);
         }
 
         /// <summary>
@@ -360,13 +352,13 @@ namespace ScottPlot
         /// <summary>
         /// Add an ellipse to the plot
         /// </summary>
-        public Ellipse AddEllipse(double x, double y, double radiusX, double radiusY, Color? color = null, double lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public Ellipse AddEllipse(double x, double y, double radiusX, double radiusY, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
             Ellipse plottable = new(x, y, radiusX, radiusY)
             {
-                LineColor = color ?? GetNextColor(),
-                LineWidth = lineWidth,
-                LineStyle = lineStyle,
+                BorderColor = color ?? GetNextColor(),
+                BorderLineWidth = lineWidth,
+                BorderLineStyle = lineStyle,
             };
             Add(plottable);
             return plottable;

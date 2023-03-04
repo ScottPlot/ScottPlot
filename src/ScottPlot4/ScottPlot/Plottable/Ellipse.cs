@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Ellipse : IPlottable
+    public class Ellipse : IPlottable, IHasColor, IHasArea
     {
         /// <summary>
         /// Horizontal center of the circle (axis units)
@@ -28,17 +29,32 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Outline color
         /// </summary>
-        public Color LineColor { get; set; } = Color.Black;
+        public Color BorderColor { get; set; } = Color.Black;
 
         /// <summary>
         /// Outline thickness (pixel units)
         /// </summary>
-        public double LineWidth { get; set; } = 2;
+        public float BorderLineWidth { get; set; } = 2;
 
         /// <summary>
         /// Outline line style
         /// </summary>
-        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public LineStyle BorderLineStyle { get; set; } = LineStyle.Solid;
+
+        /// <summary>
+        /// Fill color
+        /// </summary>
+        public Color Color { get; set; } = Color.Transparent;
+
+        /// <summary>
+        /// Fill pattern
+        /// </summary>
+        public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
+
+        /// <summary>
+        /// Alternate color for fill pattern
+        /// </summary>
+        public Color HatchColor { get; set; } = Color.Black;
 
         /// <summary>
         /// Create an ellipse centered at (x, y) with the given horizontal and vertical radius
@@ -55,6 +71,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+
         public void ValidateData(bool deep = false) { }
 
         // Return an empty array for plottables that do not appear in the legend
@@ -66,8 +83,8 @@ namespace ScottPlot.Plottable
         {
             return new AxisLimits(
                 xMin: X - RadiusX,
-                xMax: X + RadiusX, 
-                yMin: Y - RadiusY, 
+                xMax: X + RadiusX,
+                yMin: Y - RadiusY,
                 yMax: Y + RadiusY);
         }
 
@@ -76,7 +93,8 @@ namespace ScottPlot.Plottable
         {
             // Use ScottPlot's GDI helper functions to create System.Drawing objects
             using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            using var pen = ScottPlot.Drawing.GDI.Pen(LineColor, LineWidth, LineStyle);
+            using var pen = ScottPlot.Drawing.GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle);
+            using var brush = ScottPlot.Drawing.GDI.Brush(Color, HatchColor, HatchStyle);
 
             // Use 'dims' methods to convert between axis coordinates and pixel positions
             float xPixel = dims.GetPixelX(X);
@@ -86,8 +104,17 @@ namespace ScottPlot.Plottable
             float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
             float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
+            RectangleF rect = new(
+                x: xPixel - xRadiusPixels,
+                y: yPixel - yRadiusPixels,
+                width: xRadiusPixels * 2,
+                height: yRadiusPixels * 2);
+
             // Render data by drawing on the Graphics object
-            gfx.DrawEllipse(pen, xPixel - xRadiusPixels, yPixel - yRadiusPixels, xRadiusPixels * 2, yRadiusPixels * 2);
+            if (Color != Color.Transparent)
+                gfx.FillEllipse(brush, rect);
+            
+            gfx.DrawEllipse(pen, rect);
         }
     }
 }

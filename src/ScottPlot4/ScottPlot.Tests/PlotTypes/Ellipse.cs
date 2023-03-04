@@ -13,7 +13,11 @@ internal class Ellipse
         plt.AddCircle(0, 0, 5);
         plt.AddCircle(2, 3, 5);
         plt.AddCircle(2, 3, 0.5);
-        plt.AddCircle(0, 0, -1);
+
+        var filled = plt.AddCircle(0, 0, -1);
+        filled.Color = System.Drawing.Color.Navy;
+        filled.HatchColor= System.Drawing.Color.Yellow;
+        filled.HatchStyle = Drawing.HatchStyle.DottedDiamond;
 
         TestTools.SaveFig(plt);
     }
