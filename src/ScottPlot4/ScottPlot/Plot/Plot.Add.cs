@@ -352,11 +352,12 @@ namespace ScottPlot
         /// <summary>
         /// Add an ellipse to the plot
         /// </summary>
-        public Ellipse AddEllipse(double x, double y, double radiusX, double radiusY, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        public Ellipse AddEllipse(double x, double y, double xRadius, double yRadius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
         {
-            Ellipse plottable = new(x, y, radiusX, radiusY)
+            Color c = color ?? GetNextColor();
+            Ellipse plottable = new(x, y, xRadius, yRadius)
             {
-                BorderColor = color ?? GetNextColor(),
+                BorderColor = c,
                 BorderLineWidth = lineWidth,
                 BorderLineStyle = lineStyle,
             };

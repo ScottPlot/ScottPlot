@@ -49,6 +49,7 @@ namespace ScottPlot.Cookbook
 
         private static Dictionary<string, IRecipe[]> RecipesByCategory = GetRecipes()
             .GroupBy(x => x.Category.Name)
+            .OrderBy(x => x.Key.ToLower())
             .ToDictionary(group => group.Key, group => group.ToArray());
 
         private static Dictionary<string, IRecipe> RecipesByID = GetRecipes()
@@ -80,11 +81,11 @@ namespace ScottPlot.Cookbook
             "Multi-Axis",
             "Style",
             "Palette",
-            "Misc"
         };
 
         private static readonly string[] bottomCategories =
         {
+            "Miscellaneous",
         };
 
         private static int CategoryIndex(KeyValuePair<string, IRecipe[]> input)
@@ -102,6 +103,7 @@ namespace ScottPlot.Cookbook
         private static int IndexWithinCategory(KeyValuePair<string, IRecipe[]> input)
         {
             string category = input.Key;
+
             for (int i = 0; i < topCategories.Length; i++)
                 if (topCategories[i] == category)
                     return i;
