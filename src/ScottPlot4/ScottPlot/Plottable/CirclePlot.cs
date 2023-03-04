@@ -76,8 +76,12 @@ namespace ScottPlot.Plottable
             float xPixel = dims.GetPixelX(X);
             float yPixel = dims.GetPixelY(Y);
 
+            // Use 'dims' to determine how large the radius is in pixel units
+            float xRadiusPixels = dims.GetPixelX(X + Radius) - xPixel;
+            float yRadiusPixels = dims.GetPixelY(Y + Radius) - yPixel;
+
             // Render data by drawing on the Graphics object
-            gfx.DrawEllipse(pen, xPixel, yPixel, Radius * 2, Radius * 2);
+            gfx.DrawEllipse(pen, xPixel - xRadiusPixels, yPixel - yRadiusPixels, xRadiusPixels * 2, yRadiusPixels * 2);
         }
     }
 }
