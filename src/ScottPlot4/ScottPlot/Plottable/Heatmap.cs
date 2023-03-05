@@ -169,12 +169,14 @@ namespace ScottPlot.Plottable
         public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
 
         /// <summary>
-        /// If true the Heatmap will be drawn from the bottom left corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
+        /// By default the first row of the 2D array represents the top of the heatmap.
+        /// If this is true, the first row of the 2D array represents the bottom of the heatmap.
         /// </summary>
         public bool FlipVertically { get; set; } = false;
-        
+
         /// <summary>
-        /// If true the Heatmap will be drawn from the top right corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
+        /// By default the first column of the 2D array represents the left side of the heatmap.
+        /// If this is true, the first column of the 2D array represents the right side of the heatmap.
         /// </summary>
         public bool FlipHorizontally { get; set; } = false;
 
@@ -463,21 +465,16 @@ namespace ScottPlot.Plottable
 
             gfx.TranslateTransform(fromX, fromY);
 
-            if (FlipVertically && FlipHorizontally)
-            {
-                gfx.ScaleTransform(-1, -1);
-            }
-            else if (FlipVertically)
-            {
-                gfx.ScaleTransform(1, -1);
-            }
-            else if (FlipHorizontally)
-            {
-                gfx.ScaleTransform(-1, 1);
-            }
+            gfx.ScaleTransform(
+                sx: FlipHorizontally ? -1 : 1,
+                sy: FlipVertically ? -1 : 1);
 
-            Rectangle destRect = (FlipVertically && FlipHorizontally) ? new(-width, -height, width, height) : FlipVertically ? new(0, -height, width, height) : FlipHorizontally ? new(-width, 0, width, height) : new(0, 0, width, height);
-            
+            Rectangle destRect = new(
+                x: FlipHorizontally ? -width : 0,
+                y: FlipVertically ? -height : 0,
+                width: width,
+                height: height);
+
             gfx.DrawImage(
                     image: BmpHeatmap,
                     destRect: destRect,
