@@ -62,7 +62,7 @@ namespace ScottPlot.Plottable
                 borderColor = BorderColor,
                 borderWith = 1
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

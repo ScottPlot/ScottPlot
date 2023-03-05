@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

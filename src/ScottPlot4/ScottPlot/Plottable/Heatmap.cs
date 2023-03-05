@@ -182,7 +182,7 @@ namespace ScottPlot.Plottable
 
         public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
