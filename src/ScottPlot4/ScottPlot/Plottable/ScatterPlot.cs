@@ -532,7 +532,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = LineColor,
@@ -541,7 +541,7 @@ namespace ScottPlot.Plottable
                 markerShape = MarkerShape,
                 markerSize = MarkerSize,
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
 
         /// <summary>

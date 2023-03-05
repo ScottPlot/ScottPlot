@@ -1,5 +1,10 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.62 (in development)
+* Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
+
+# Releases
+
 ## ScottPlot 5.0.2-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Signal Plot: Support X and Y offset (#2378) _Thanks @minjjKang_

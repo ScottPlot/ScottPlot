@@ -118,7 +118,7 @@ namespace ScottPlot.Plottable
                 lineWidth = LineWidth,
                 markerShape = MarkerShape.none
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         public void ValidateData(bool deep = false) { }

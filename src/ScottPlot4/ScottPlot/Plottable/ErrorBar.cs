@@ -43,13 +43,13 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            LegendItem item = new(this)
+            LegendItem singleItem = new(this)
             {
                 lineStyle = LineStyle,
                 label = Label
             };
 
-            return new LegendItem[] { item };
+            return LegendItem.Single(singleItem);
         }
 
         public AxisLimits GetAxisLimits()

@@ -327,7 +327,7 @@ namespace ScottPlot.Plottable
                 lineWidth = LineWidth,
                 markerShape = MarkerShape.none
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         private double ComputePosition(double Position, int Offset, double Shift, int i, bool RelativePosition)
