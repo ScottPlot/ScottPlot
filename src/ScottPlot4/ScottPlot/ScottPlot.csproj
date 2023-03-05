@@ -53,6 +53,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
+        <!-- Code analysis -->
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+
         <!-- 
             Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
             Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
