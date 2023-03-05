@@ -42,11 +42,11 @@
     <ItemGroup>
 
         <!-- 
-        The PublicApiAnalyzers throws tons of warnings if a change was made to the public API.
-        In theory this makes it easy to ensure code modifications don't break existing code.
-        In practice, this makes it frustrating and difficult for contributors to intentionally
-        add or modify the public API. It turned-out to be more trouble than it was worth, so
-        I'm disabling it.
+            The PublicApiAnalyzers throws tons of warnings if a change was made to the public API.
+            In theory this makes it easy to ensure code modifications don't break existing code.
+            In practice, this makes it frustrating and difficult for contributors to intentionally
+            add or modify the public API. It turned-out to be more trouble than it was worth, so
+            I'm disabling it.
         -->
         <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" Condition="false">
             <PrivateAssets>all</PrivateAssets>
@@ -54,11 +54,11 @@
         </PackageReference>
 
         <!-- 
-      Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
-      Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
-      is associated with assembly issues that break .NET Framework projects on Windows.
-      https://github.com/ScottPlot/ScottPlot/issues/1004
-    -->
+            Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
+            Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
+            is associated with assembly issues that break .NET Framework projects on Windows.
+            https://github.com/ScottPlot/ScottPlot/issues/1004
+        -->
         <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
         <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
@@ -83,5 +83,5 @@
 
     <!-- Shared project code -->
     <Import Project="..\..\Shared\ScottPlot\ScottPlotShared.projitems" Label="ScottPlotShared" />
-    
+
 </Project>
