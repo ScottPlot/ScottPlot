@@ -2,12 +2,6 @@ name: CodeQL
 
 on:
   workflow_dispatch:
-  push: # only runs on commits to main branch (typically after a merge)
-    branches:
-      - main
-    paths:
-      - "src/ScottPlot5/**"
-      - "src/ScottPlot4/**"
 
 jobs:
   windows:

@@ -27,15 +27,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_flip";
         public string Title => "Flipped Heatmap";
         public string Description =>
-            "Sometimes it's more intuitive to draw heatmaps from the bottom-left corner.";
+            "Heatmaps can be flipped vertically and/or horizontally.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[,] data2D = { { 1, 2, 3 },
-                                 { 4, 5, 6 } };
+            double[,] data = ScottPlot.DataGen.SampleImageData();
 
-            var hm = plt.AddHeatmap(data2D);
-            hm.FlipVertically = true;
+            var hm1 = plt.AddHeatmap(data, lockScales: false);
+            hm1.XMin = 0;
+
+            var hm2 = plt.AddHeatmap(data, lockScales: false);
+            hm2.XMin = 100;
+            hm2.FlipHorizontally = true;
+
+            var hm3 = plt.AddHeatmap(data, lockScales: false);
+            hm3.XMin = 200;
+            hm3.FlipVertically = true;
+
+            var hm4 = plt.AddHeatmap(data, lockScales: false);
+            hm4.XMin = 300;
+            hm4.FlipVertically = true;
+            hm4.FlipHorizontally = true;
         }
     }
 
