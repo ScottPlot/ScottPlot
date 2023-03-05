@@ -91,7 +91,7 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public void ValidateData(bool deep = false) { }
 

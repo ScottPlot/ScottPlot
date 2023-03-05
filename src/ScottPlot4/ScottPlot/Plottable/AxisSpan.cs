@@ -92,7 +92,7 @@ namespace ScottPlot.Plottable
                 hatchColor = HatchColor,
                 hatchStyle = HatchStyle,
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         public AxisLimits GetAxisLimits()
