@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
         /// <param name="ohlcs"></param>
         public FinancePlot(OHLC[] ohlcs) => AddRange(ohlcs);
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         /// <summary>
         /// Add a single candle representing a defined time span
