@@ -62,9 +62,9 @@ public class ScatterGLCustomWidth : ScatterGL
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
 
         // Draw joins only if they bigger than markers
-        if (MarkerStyle.Size < LineStyle.Width 
-                || MarkerStyle.Shape == MarkerShape.OpenSquare 
-                || MarkerStyle.Shape == MarkerShape.OpenCircle 
+        if (MarkerStyle.Size < LineStyle.Width
+                || MarkerStyle.Shape == MarkerShape.OpenSquare
+                || MarkerStyle.Shape == MarkerShape.OpenCircle
                 || MarkerStyle.Shape == MarkerShape.None)
         {
             if (joinsProgram is null)
