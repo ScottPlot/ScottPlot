@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.WinForms.OpenGL.GLPrograms;
 
-internal class MarkerFillCircleProgram : MarkersProgram
+public class MarkerFillCircleProgram : MarkersProgram
 {
     protected override string VertexShaderSource =>
     @"# version 430 core

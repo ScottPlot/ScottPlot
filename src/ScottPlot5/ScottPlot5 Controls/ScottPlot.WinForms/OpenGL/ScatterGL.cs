@@ -118,11 +118,16 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected void RenderMarkers()
     {
+        if (MarkerStyle.Shape == MarkerShape.None || MarkerStyle.Size == 0)
+            return;
+
         IMarkersDrawProgram? newProgram = MarkerStyle.Shape switch
         {
             MarkerShape.FilledSquare when markerProgram is not MarkerFillSquareProgram => new MarkerFillSquareProgram(),
             MarkerShape.FilledCircle when markerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
-            MarkerShape.FilledSquare or MarkerShape.FilledCircle => null,
+            MarkerShape.OpenCircle when markerProgram is not MarkerOpenCircleProgram => new MarkerOpenCircleProgram(),
+            MarkerShape.OpenSquare when markerProgram is not MarkerOpenSquareProgram => new MarkerOpenSquareProgram(),
+            MarkerShape.FilledSquare or MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.OpenSquare => null,
             _ => throw new NotSupportedException($"Marker shape `{MarkerStyle.Shape}` is not supported by GLPlottables"),
         };
 
@@ -138,8 +143,10 @@ public class ScatterGL : Scatter, IPlottableGL
         markerProgram.Use();
         markerProgram.SetTransform(CalcTransform());
         markerProgram.SetMarkerSize(MarkerStyle.Size);
-        markerProgram.SetColor(MarkerStyle.Fill.Color.ToTkColor());
+        markerProgram.SetFillColor(MarkerStyle.Fill.Color.ToTkColor());
         markerProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
+        markerProgram.SetOutlineColor(MarkerStyle.Outline.Color.ToTkColor());
+        markerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.Outline.Width * 2 / MarkerStyle.Size);
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
     }

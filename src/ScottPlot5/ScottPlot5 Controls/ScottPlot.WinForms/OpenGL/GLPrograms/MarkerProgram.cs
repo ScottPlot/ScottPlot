@@ -60,7 +60,7 @@ public class MarkersProgram : GLProgramBase, IMarkersDrawProgram
         GL.UniformMatrix4(location, true, ref transform);
     }
 
-    public void SetColor(Color4 color)
+    public virtual void SetFillColor(Color4 color)
     {
         var location = GetUniformLocation("pathColor");
         GL.Uniform4(location, color);
@@ -72,10 +72,20 @@ public class MarkersProgram : GLProgramBase, IMarkersDrawProgram
         GL.Uniform1(location, size);
     }
 
+    public virtual void SetOutlineColor(Color4 color)
+    {
+
+    }
+
     public void SetViewPortSize(float width, float height)
     {
         int location = GetUniformLocation("u_viewport_size");
         Vector2 viewPortSize = new Vector2(width, height);
         GL.Uniform2(location, viewPortSize);
+    }
+
+    public virtual void SetOpenFactor(float factor)
+    {
+
     }
 }
