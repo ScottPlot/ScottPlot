@@ -75,30 +75,36 @@ public class Histogram
     /// <param name="binCount">number of bins between <paramref name="min"/> and <paramref name="max"/></param>
     /// <param name="addOutliersToEdgeBins">if false, outliers will not be counted</param>
     /// <param name="addFinalBin">if true, one more bin will be added so values equal to <paramref name="max"/> can be counted too</param>
+    /// <remarks>
+    /// If <see cref="min"/> and <see cref="max"/> are the same value, the <see cref="Min"/> and <see cref="Max"/>
+    /// properties will be <see cref="min"/> - 0.5 and <see cref="max"/> + 0.5, respectively. This is to handle an edge
+    /// case where all values of an array are exactly the same, producing an identical min and max.
+    /// </remarks>
     public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
     {
-        if (min >= max)
+        if (min > max)
             throw new ArgumentException($"{nameof(max)} must be greater than {nameof(min)}");
 
         if (binCount < 1)
             throw new ArgumentException($"must have at least 1 bin");
 
-        BinSize = (max - min) / binCount;
+        BinSize = Math.Max(1, (max - min) / binCount);
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
 
         if (addFinalBin)
             binCount += 1;
 
         BinCount = binCount;
-        Min = min;
-        Max = min + BinSize * binCount;
+
+        Min = min == max ? min - 0.5 : min;
+        Max = min == max ? max + 0.5 : min + BinSize * binCount;
 
         Counts = new double[binCount];
         Bins = new double[binCount];
         BinCenters = new double[binCount];
         for (int i = 0; i < binCount; i++)
         {
-            Bins[i] = min + BinSize * i;
+            Bins[i] = Min + BinSize * i;
             BinCenters[i] = Bins[i] + BinSize / 2;
         }
     }

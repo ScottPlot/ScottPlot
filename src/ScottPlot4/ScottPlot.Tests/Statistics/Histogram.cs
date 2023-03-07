@@ -246,5 +246,41 @@ namespace ScottPlotTests.Statistics
             hist1.Add(10); // since bins are max-exclusive, this counts as an outlier
             hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
         }
+
+        [Test]
+        public void Test_Common_Histogram_AllSameData()
+        {
+            // This test reproduces issue described by @Xerxes004 #2463
+            // https://github.com/ScottPlot/ScottPlot/issues/2463
+            double[] data = ScottPlot.DataGen.Zeros(10);
+            var stats = new ScottPlot.Statistics.BasicStats(data);
+
+            var (hist, binEdges) = ScottPlot.Statistics.Common.Histogram(data, min: stats.Min, max: stats.Max, binSize: 1);
+
+            hist.Length.Should().Be(1);
+            hist.Should().BeEquivalentTo(new double[] { 10 });
+            binEdges.Length.Should().Be(2);
+        }
+
+        [Test]
+        public void Test_Statistics_Histogram_AllSameData()
+        {
+            // This test reproduces issue described by @Xerxes004 #2463
+            // https://github.com/ScottPlot/ScottPlot/issues/2463
+            double[] data = ScottPlot.DataGen.Zeros(10);
+            var stats = new ScottPlot.Statistics.BasicStats(data);
+
+            var hist1 = new ScottPlot.Statistics.Histogram(min: stats.Min, max: stats.Max, binCount: 1, addOutliersToEdgeBins: false, addFinalBin: false);
+            hist1.AddRange(data);
+
+            hist1.Min.Should().Be(-0.5);
+            hist1.Max.Should().Be(0.5);
+            hist1.Bins.Length.Should().Be(1);
+            hist1.Bins.Should().BeEquivalentTo(new double[] { -0.5 });
+            hist1.Counts.Length.Should().Be(1);
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 10 });
+            hist1.BinCenters.Length.Should().Be(1);
+            hist1.BinCenters.Should().BeEquivalentTo(new double[] { 0 });
+        }
     }
 }
