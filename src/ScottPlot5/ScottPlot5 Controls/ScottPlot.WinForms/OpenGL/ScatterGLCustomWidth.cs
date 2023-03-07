@@ -42,7 +42,6 @@ public class ScatterGLCustomWidth : ScatterGL
         if (!GLHasBeenInitialized)
             InitializeGL();
 
-
         GL.Viewport(
             x: (int)Axes.DataRect.Left,
             y: (int)(height - Axes.DataRect.Bottom),
@@ -61,7 +60,7 @@ public class ScatterGLCustomWidth : ScatterGL
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
 
-        // Draw joins only if they bigger than markers
+        // skip joins rendering if they are completely overlapped by markers
         if (MarkerStyle.Size < LineStyle.Width
                 || MarkerStyle.Shape == MarkerShape.OpenSquare
                 || MarkerStyle.Shape == MarkerShape.OpenCircle
