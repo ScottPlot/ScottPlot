@@ -12,6 +12,9 @@
 		<None Remove="CookbookOutput\**" />
 		<ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
 		<PackageReference Include="System.Text.Json" Version="5.0.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 </Project>

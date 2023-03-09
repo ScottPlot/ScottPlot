@@ -8,6 +8,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
