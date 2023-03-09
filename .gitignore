@@ -1,3 +1,4 @@
+/dev/www/metrics
 *.Metrics.xml
 /dev/www/cookbook
 src/ScottPlot4/ScottPlot.Cookbook/CookbookOutput
