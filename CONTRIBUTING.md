@@ -19,7 +19,7 @@ Consider creating an issue to discuss your pull request _before_ investing a lot
 
 ### Run the AutoFormatter
 
-**If your code is not auto-formatted, the build will fail** when you create your pull request. Use [autoformat.bat](src/autoformat.bat) or run these commands to autoformat the entire code base:
+**If your code is not auto-formatted, the build will fail** when you create your pull request. Use [autoformat.bat](src/ScottPlot4/autoformat.bat) or run these commands to autoformat the entire code base:
 
 ```sh
 dotnet tool update -g dotnet-format
