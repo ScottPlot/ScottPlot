@@ -10,6 +10,9 @@
     <ItemGroup>
         <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
         <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>
