@@ -164,7 +164,7 @@ namespace ScottPlot.Statistics
         private static double QuickSelect(double[] values, int leftIndex, int rightIndex, int k)
         {
             /*
-             * QuickSelect (aka Hoare's Algorithm) is a selection algorithm 
+             * QuickSelect (aka Hoare's Algorithm) is a selection algorithm
              *  - Given an integer k it returns the kth smallest element in a sequence) with O(n) expected time.
              *  - In the worst case it is O(n^2), i.e. when the chosen pivot is always the max or min at each call.
              *  - The use of a random pivot virtually assures linear time performance.
@@ -327,13 +327,13 @@ namespace ScottPlot.Statistics
         [Obsolete("This method is obsolete. Consider using ScottPlot.Statistics.Histogram as demonstrated by the ScottPlot Cookbook.")]
         public static (double[] hist, double[] binEdges) Histogram(double[] values, double min, double max, double binSize, bool density = false)
         {
-            int binCount = (int)Math.Ceiling((max - min) / binSize);
+            int binCount = Math.Max(1, (int)Math.Ceiling((max - min) / binSize));
             max = min + binCount * binSize;
             return Histogram(values, binCount, density, min, max);
         }
 
         /// <summary>
-        /// Compute the histogram of a dataset, also returns the minOutliers and maxOutliers counts. These outlier counts are also included in the first and last histogram bin counts respectively. 
+        /// Compute the histogram of a dataset, also returns the minOutliers and maxOutliers counts. These outlier counts are also included in the first and last histogram bin counts respectively.
         /// </summary>
         /// <param name="values">Input data</param>
         /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
@@ -358,7 +358,7 @@ namespace ScottPlot.Statistics
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
         public static (double[] hist, double[] binEdges) Histogram(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
         {
-            /* note: function signature loosely matches numpy: 
+            /* note: function signature loosely matches numpy:
              * https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
              */
 
@@ -414,13 +414,13 @@ namespace ScottPlot.Statistics
         /// Compute the histogram of a dataset, also returns the minOutliers and maxOutliers counts. These outlier counts are also included in the first and last histogram bin counts respectively.
         /// </summary>
         /// <param name="values">Input data</param>
-        /// <param name="binCount">Number of equal-width bins</param>  
+        /// <param name="binCount">Number of equal-width bins</param>
         /// <param name="density">If False, the result will contain the number of samples in each bin. If True, the result is the value of the probability density function at the bin (the sum of all values will be 1 if the bin size is 1).</param>
         /// <param name="min">Lower edge of the first bin (inclusive). If NaN, minimum of input values will be used.</param>
         /// <param name="max">High edge of the largest bin (inclusive). If NaN, maximum of input values will be used.</param>
         public static (double[] hist, double[] binEdges, int minOutliers, int maxOutliers) HistogramWithOutliers(double[] values, int binCount, bool density = false, double min = double.NaN, double max = double.NaN)
         {
-            /* note: function signature loosely matches numpy: 
+            /* note: function signature loosely matches numpy:
              * https://numpy.org/doc/stable/reference/generated/numpy.histogram.html
              */
 
