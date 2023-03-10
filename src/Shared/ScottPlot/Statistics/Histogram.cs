@@ -76,8 +76,8 @@ public class Histogram
     /// <param name="addOutliersToEdgeBins">if false, outliers will not be counted</param>
     /// <param name="addFinalBin">if true, one more bin will be added so values equal to <paramref name="max"/> can be counted too</param>
     /// <remarks>
-    /// If <see cref="min"/> and <see cref="max"/> are the same value, the <see cref="Min"/> and <see cref="Max"/>
-    /// properties will be <see cref="min"/> - 0.5 and <see cref="max"/> + 0.5, respectively. This is to handle an edge
+    /// If <paramref name="min"/> and <paramref name="max"/> are the same value, the <paramref name="Min"/> and <paramref name="Max"/>
+    /// properties will be <paramref name="min"/> - 0.5 and <paramref name="max"/> + 0.5, respectively. This is to handle an edge
     /// case where all values of an array are exactly the same, producing an identical min and max.
     /// </remarks>
     public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
