@@ -194,8 +194,9 @@ namespace ScottPlot.Plottable
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null, double? singleOpacity = null)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -213,6 +214,13 @@ namespace ScottPlot.Plottable
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
+            }
+
+            //handle if both opacity parameters are provided
+            if (opacity != null && singleOpacity != null)
+            {
+                throw new ArgumentException("Both \"double?[,] opacity\" and \"double? singleOpacity\" inputs are provided. " +
+                    "Only provide one of them for this method!");
             }
 
             DataWidth = intensities.GetLength(1);
@@ -261,6 +269,10 @@ namespace ScottPlot.Plottable
             if (opacity != null)
             {
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, opacityFlattened, Colormap);
+            }
+            else if (singleOpacity != null)
+            {
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, singleOpacity, Colormap);
             }
             else if (TransparencyThreshold.HasValue)
             {
