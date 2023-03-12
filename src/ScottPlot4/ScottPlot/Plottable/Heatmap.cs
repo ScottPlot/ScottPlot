@@ -193,9 +193,9 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
-        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).        
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
+        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null, double? singleOpacity = null)
         {
             // limit edge size due to System.Drawing rendering artifacts
@@ -303,12 +303,19 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
+        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null, double? singleOpacity = null)
         {
-            double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
+            //handle if both opacity parameters are provided
+            if (opacity != null && singleOpacity != null)
+            {
+                throw new ArgumentException("Both \"double?[,] opacity\" and \"double? singleOpacity\" inputs are provided. " +
+                    "Only provide one of them for this method!");
+            }
 
+            double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             double?[,] finalOpacity = null;
 
             if (opacity is not null)
@@ -329,7 +336,8 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            Update(finalIntensity, colormap, min, max, finalOpacity);
+            if (singleOpacity == null) Update(finalIntensity, colormap, min, max, finalOpacity);
+            else Update(finalIntensity, colormap, min, max, singleOpacity: singleOpacity);
         }
 
         /// <summary>
