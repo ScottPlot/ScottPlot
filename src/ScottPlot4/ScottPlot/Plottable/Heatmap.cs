@@ -379,6 +379,45 @@ namespace ScottPlot.Plottable
             BmpHeatmap.UnlockBits(bmpData);
         }
 
+        /// <summary>
+        /// Update the heatmap where every cell is given the same color, but with various opacities.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        public void Update(Color color, double[,] opacity)
+        {
+            // limit edge size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/2119
+            int maxEdgeLength = 1 << 15;
+            if (opacity.GetLength(1) > maxEdgeLength || opacity.GetLength(0) > maxEdgeLength)
+            {
+                throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
+                    $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
+            }
+
+            // limit total size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/772
+            int maxTotalValues = 10_000_000;
+            if (opacity.GetLength(1) * opacity.GetLength(0) > maxTotalValues)
+            {
+                throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
+                    $"with more than {maxTotalValues:N0} values");
+            }
+
+            DataWidth = opacity.GetLength(1);
+            DataHeight = opacity.GetLength(0);
+            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
+
+            BmpHeatmap?.Dispose();
+            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
+            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
+            Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
+            BmpHeatmap.UnlockBits(bmpData);
+        }
+
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
             => Normalize(new double?[] { input }, min, max, scaleMin, scaleMax)[0];
 

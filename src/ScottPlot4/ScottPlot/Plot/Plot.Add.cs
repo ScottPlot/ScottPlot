@@ -582,6 +582,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a single-color heatmap where opacity is defined by a 2D array.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square</param>
+        /// <returns></returns>
+        public Heatmap AddHeatmap(Color color, double[,] opacity, bool? lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(color, opacity);
+            Add(plottable);
+
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
+                AxisScaleLock(true);
+
+            return plottable;
+        }
+
+        /// <summary>
         /// Add heatmap to the plot stretched to fit the given dimensions.
         /// Unlike the regular heatmap which gives each cell a size of 1x1 and starts at the axis origin, 
         /// this heatmap stretches the array so that it covers the defined X and Y spans.
