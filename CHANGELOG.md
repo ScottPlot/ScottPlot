@@ -2,6 +2,7 @@
 
 ## ScottPlot 5.0.3-beta (in development)
 * OpenGL: Enhanced customization options for OpenGL-accelerated scatter plots (#2446) _Thanks @StendProg_
+* Data: Added axis limit caching functionality for improved performance of large scatter plots (#2460) _Thanks @StendProg_
 
 ## ScottPlot 4.1.62 (in development)
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
