@@ -6,7 +6,7 @@ using System;
 namespace ScottPlot.WinForms.OpenGL.GLPrograms;
 
 /// <summary>
-/// This program is used by OpenGL plot types
+/// A lines program which draws effeciently but does not allow line width customization.
 /// </summary>
 public class GLLinesProgram : GLProgramBase, ILinesDrawProgram
 {
@@ -46,10 +46,11 @@ public class GLLinesProgram : GLProgramBase, ILinesDrawProgram
 
     public void SetLineWidth(float lineWidth)
     {
-        throw new NotSupportedException("Line width not supported");
+        throw new NotSupportedException(nameof(SetLineWidth));
     }
 
     public void SetViewPortSize(float width, float height)
     {
+        throw new NotSupportedException(nameof(SetViewPortSize));
     }
 }

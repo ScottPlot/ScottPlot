@@ -8,7 +8,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        int pointCount = 1_000_000;
+        int pointCount = 100_000;
         double[] ys = Generate.NoisySin(Random.Shared, pointCount);
         double[] xs = Generate.Consecutive(pointCount);
 

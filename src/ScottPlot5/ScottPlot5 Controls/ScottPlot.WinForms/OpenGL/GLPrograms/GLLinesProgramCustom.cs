@@ -4,7 +4,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ScottPlot.WinForms.OpenGL.GLPrograms;
 
-public class CustomLinesProgram : GLProgramBase, ILinesDrawProgram
+/// <summary>
+/// A lines program which allows customization of color and width
+/// </summary>
+public class GLLinesProgramCustom : GLProgramBase, ILinesDrawProgram
 {
     protected override string VertexShaderSource =>
     @"# version 430 core
@@ -81,6 +84,7 @@ public class CustomLinesProgram : GLProgramBase, ILinesDrawProgram
         Vector2 viewPortSize = new Vector2(width, height);
         GL.Uniform2(location, viewPortSize);
     }
+
     public void SetTransform(Matrix4d transform)
     {
         var location = GetUniformLocation("transform");
