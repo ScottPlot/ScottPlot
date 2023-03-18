@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 public interface IGLProgram : IDisposable
 {

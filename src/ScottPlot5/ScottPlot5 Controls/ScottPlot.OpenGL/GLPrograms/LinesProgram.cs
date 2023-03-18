@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 /// <summary>
 /// A lines program which draws effeciently but does not allow line width customization.

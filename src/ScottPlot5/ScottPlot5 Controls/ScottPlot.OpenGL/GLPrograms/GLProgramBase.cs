@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 public abstract class GLProgramBase : IGLProgram
 {

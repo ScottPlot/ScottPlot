@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+
+        <!-- NuGet info -->
+        <PackageId>ScottPlot.OpenGL</PackageId>
+        <Version>5.0.2-beta</Version>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+        <description>OpenGL-accelerated Plot Types</description>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+
+        <!--- SourceLink configuration -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+        <!-- ignore warnings about OpenTK.GLControl restored using .NET Framework 4.6.1 -->
+        <NoWarn>NU1701</NoWarn>
+    </PropertyGroup>
+
+    <!-- Include additional files for the NuGet package -->
+    <ItemGroup>
+        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
+        <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
+    </ItemGroup>
+    
+    <!-- Package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="2.*" />
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+    </ItemGroup>
+
+</Project>
