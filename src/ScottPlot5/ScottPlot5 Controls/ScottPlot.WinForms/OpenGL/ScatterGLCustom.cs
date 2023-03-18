@@ -23,7 +23,7 @@ public class ScatterGLCustom : ScatterGL
     {
         base.InitializeGL();
 
-        LinesProgram = new GLLinesProgramCustom();
+        LinesProgram = new LinesProgramCustom();
         JoinsProgram = new MarkerFillCircleProgram();
     }
 

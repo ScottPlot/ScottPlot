@@ -41,7 +41,7 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected virtual void InitializeGL()
     {
-        LinesProgram = new GLLinesProgram();
+        LinesProgram = new LinesProgram();
         MarkerProgram = new MarkerFillCircleProgram();
 
         VertexArrayObject = GL.GenVertexArray();

@@ -8,7 +8,7 @@ namespace ScottPlot.WinForms.OpenGL.GLPrograms;
 /// <summary>
 /// A lines program which draws effeciently but does not allow line width customization.
 /// </summary>
-public class GLLinesProgram : GLProgramBase, ILinesDrawProgram
+public class LinesProgram : GLProgramBase, ILinesDrawProgram
 {
     protected override string VertexShaderSource =>
     @"#version 410 core
