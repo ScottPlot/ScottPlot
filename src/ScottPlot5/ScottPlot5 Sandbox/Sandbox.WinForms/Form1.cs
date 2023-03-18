@@ -8,16 +8,14 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        // begin with an array of DateTime values
-        DateTime[] dates = Generate.DateTime.Days(100);
+        int pointCount = 100_000;
+        double[] ys = Generate.NoisySin(Random.Shared, pointCount);
+        double[] xs = Generate.Consecutive(pointCount);
 
-        // convert DateTime to OLE Automation (OADate) format
-        double[] xs = dates.Select(x => x.ToOADate()).ToArray();
-        double[] ys = Generate.RandomWalk(xs.Length);
-        formsPlot1.Plot.Add.Scatter(xs, ys);
-
-        // tell the plot to display dates on the bottom axis
-        formsPlot1.Plot.Axes.DateTimeTicks(Edge.Bottom);
+        var sp = formsPlot1.Plot.Add.ScatterGLCustom(formsPlot1, xs, ys);
+        sp.LineStyle.Width = 5;
+        sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
+        sp.MarkerStyle.Outline.Width = 3;
 
         formsPlot1.Refresh();
     }

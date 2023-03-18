@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using ScottPlot.Control;
 using ScottPlot.DataSources;
 using ScottPlot.WinForms.OpenGL;
+using ScottPlot.WinForms.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;
 
@@ -14,13 +15,14 @@ namespace ScottPlot.Plottables;
 public class ScatterGL : Scatter, IPlottableGL
 {
     public IPlotControl PlotControl { get; }
-    private int VertexBufferObject;
-    private int VertexArrayObject;
-    private GLShader? Shader;
-    private double[] Vertices;
-    private readonly int VerticesCount;
+    protected int VertexBufferObject;
+    protected int VertexArrayObject;
+    protected ILinesDrawProgram? LinesProgram;
+    protected IMarkersDrawProgram? MarkerProgram;
+    protected double[] Vertices;
+    protected readonly int VerticesCount;
 
-    private bool GLHasBeenInitialized = false;
+    protected bool GLHasBeenInitialized = false;
 
     public GLFallbackRenderStrategy Fallback { get; set; } = GLFallbackRenderStrategy.Software;
 
@@ -37,9 +39,10 @@ public class ScatterGL : Scatter, IPlottableGL
         VerticesCount = Vertices.Length / 2;
     }
 
-    private void InitializeGL()
+    protected virtual void InitializeGL()
     {
-        Shader = new GLShader();
+        LinesProgram = new LinesProgram();
+        MarkerProgram = new MarkerFillCircleProgram();
 
         VertexArrayObject = GL.GenVertexArray();
         VertexBufferObject = GL.GenBuffer();
@@ -52,13 +55,22 @@ public class ScatterGL : Scatter, IPlottableGL
         GLHasBeenInitialized = true;
     }
 
-    private static Matrix4d CreateScale(double x, double y, double z)
+    protected Matrix4d CalcTransform()
     {
-        return new Matrix4d(
-            x, 0.0, 0.0, 0.0,
-            0.0, y, 0.0, 0.0,
-            0.0, 0.0, z, 0.0,
-            0.0, 0.0, 0.0, 1.0);
+        var xRange = Axes.XAxis.Range;
+        var yRange = Axes.YAxis.Range;
+
+        Matrix4d translate = Matrix4d.CreateTranslation(
+            x: -1.0 * (xRange.Min + xRange.Max) / 2,
+            y: -1.0 * (yRange.Min + yRange.Max) / 2,
+            z: 0.0);
+
+        Matrix4d scale = Matrix4d.Scale(
+            x: 2.0 / (xRange.Max - xRange.Min),
+            y: 2.0 / (yRange.Max - yRange.Min),
+            z: 1.0);
+
+        return translate * scale;
     }
 
     public new void Render(SKSurface surface)
@@ -76,7 +88,7 @@ public class ScatterGL : Scatter, IPlottableGL
         }
     }
 
-    private void RenderWithOpenGL(SKSurface surface, GRContext context)
+    protected virtual void RenderWithOpenGL(SKSurface surface, GRContext context)
     {
         int height = (int)surface.Canvas.LocalClipBounds.Height;
 
@@ -86,40 +98,58 @@ public class ScatterGL : Scatter, IPlottableGL
         if (!GLHasBeenInitialized)
             InitializeGL();
 
-        if (Shader is null)
-            throw new NullReferenceException(nameof(Shader));
-
-        Shader.Use();
-
         GL.Viewport(
             x: (int)Axes.DataRect.Left,
             y: (int)(height - Axes.DataRect.Bottom),
             width: (int)Axes.DataRect.Width,
             height: (int)Axes.DataRect.Height);
 
-        var xRange = Axes.XAxis.Range;
-        var yRange = Axes.YAxis.Range;
+        if (LinesProgram is null)
+            throw new NullReferenceException(nameof(LinesProgram));
 
-        Matrix4d translateD = Matrix4d.CreateTranslation(
-            x: -1.0 * (xRange.Min + xRange.Max) / 2,
-            y: -1.0 * (yRange.Min + yRange.Max) / 2,
-            z: 0.0);
-
-        Matrix4d scaleD = ScatterGL.CreateScale(
-            x: 2.0 / (xRange.Max - xRange.Min),
-            y: 2.0 / (yRange.Max - yRange.Min),
-            z: 1.0);
-
-        Matrix4d normGLD = translateD * scaleD;
-
-        int location = Shader.GetUniformLocation("transform");
-        GL.UniformMatrix4(location, true, ref normGLD);
-        int colorLocation = Shader.GetUniformLocation("pathColor");
-        GL.Uniform4(colorLocation, LineStyle.Color.ToTkColor());
-
+        LinesProgram.Use();
+        LinesProgram.SetTransform(CalcTransform());
+        LinesProgram.SetColor(LineStyle.Color.ToTkColor());
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
+
+        RenderMarkers();
     }
 
-    public void GLFinish() => Shader?.GLFinish();
+    protected void RenderMarkers()
+    {
+        if (MarkerStyle.Shape == MarkerShape.None || MarkerStyle.Size == 0)
+            return;
+
+        IMarkersDrawProgram? newProgram = MarkerStyle.Shape switch
+        {
+            MarkerShape.FilledSquare when MarkerProgram is not MarkerFillSquareProgram => new MarkerFillSquareProgram(),
+            MarkerShape.FilledCircle when MarkerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
+            MarkerShape.OpenCircle when MarkerProgram is not MarkerOpenCircleProgram => new MarkerOpenCircleProgram(),
+            MarkerShape.OpenSquare when MarkerProgram is not MarkerOpenSquareProgram => new MarkerOpenSquareProgram(),
+            MarkerShape.FilledSquare or MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.OpenSquare => null,
+            _ => throw new NotSupportedException($"Marker shape `{MarkerStyle.Shape}` is not supported by GLPlottables"),
+        };
+
+        if (newProgram is not null)
+        {
+            MarkerProgram?.Dispose();
+            MarkerProgram = newProgram;
+        }
+
+        if (MarkerProgram is null)
+            throw new NullReferenceException(nameof(MarkerProgram));
+
+        MarkerProgram.Use();
+        MarkerProgram.SetTransform(CalcTransform());
+        MarkerProgram.SetMarkerSize(MarkerStyle.Size);
+        MarkerProgram.SetFillColor(MarkerStyle.Fill.Color.ToTkColor());
+        MarkerProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
+        MarkerProgram.SetOutlineColor(MarkerStyle.Outline.Color.ToTkColor());
+        MarkerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.Outline.Width * 2 / MarkerStyle.Size);
+        GL.BindVertexArray(VertexArrayObject);
+        GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
+    }
+
+    public void GLFinish() => LinesProgram?.GLFinish();
 }
