@@ -193,9 +193,9 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).        
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
-        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null, double? singleOpacity = null)
         {
             // limit edge size due to System.Drawing rendering artifacts
@@ -305,7 +305,7 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
-        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="singleOpacity">If defined, this value indicates the opacity for all cells in the heatmap from 0 (transparent) to 1 (opaque).</param>
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null, double? singleOpacity = null)
         {
             //handle if both opacity parameters are provided
