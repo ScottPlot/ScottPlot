@@ -16,7 +16,7 @@ namespace ScottPlot;
 public class MarkerStyle
 {
     public bool IsVisible { get; set; }
-
+    public MarkerShape Shape { get; private set; }
     public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
     { }
 
@@ -25,6 +25,7 @@ public class MarkerStyle
 
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {
+        Shape = shape;
         MarkerRenderer = shape.GetRenderer();
         IsVisible = shape != MarkerShape.None;
 
