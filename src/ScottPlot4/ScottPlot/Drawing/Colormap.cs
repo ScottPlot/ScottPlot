@@ -254,6 +254,35 @@ namespace ScottPlot.Drawing
         }
 
         /// <summary>
+        /// Convert intensities to colors using the given colormap and return the results as integer RGBA values.
+        /// RGBA alpha value will be set according to the given opacity (value from 0 to 1).
+        /// </summary>
+        public static int[] GetRGBAs(double?[] intensities, double? opacity, Colormap colorMap)
+        {
+            int[] rgbas = new int[intensities.Length];
+            byte alpha;
+            if (opacity.HasValue) alpha = (byte)Math.Max(Math.Min(opacity.Value * 255, 255), 0);
+            else alpha = 0;
+
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                if (intensities[i].HasValue)
+                {
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                    byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+            }
+            return rgbas;
+        }
+
+        /// <summary>
         /// Return an array of RGBA integer values for a single color where the alpha
         /// channel is defined by an array of values from 0 to 1.
         /// </summary>

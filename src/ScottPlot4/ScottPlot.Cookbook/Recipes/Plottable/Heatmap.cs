@@ -124,6 +124,22 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapOpacity : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_opacity";
+        public string Title => "Heatmap Opacity";
+        public string Description => "Heatmaps have an Opacity property " +
+            "that can be set anywhere from 0 (transparent) to 1 (opaque).";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var hm = plt.AddHeatmap(imageData);
+            hm.Opacity = 0.5;
+        }
+    }
+
     public class SingleColorHeatmap : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();

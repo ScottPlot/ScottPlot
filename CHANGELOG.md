@@ -8,6 +8,7 @@
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
 * Heatmap: Added `FlipVertically` to invert vertical axis of heatmap data (#2444, #2450) _Thanks @Neopentane1_
 * Histogram: Improved support for datasets with low variance (#2464, #2463) _Thanks @Xerxes004_
+* Heatmap: Added `Opacity` property (#2461, #2484) _Thanks @bukkideme_
 
 # Releases
 

@@ -38,7 +38,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Pre-rendered heatmap image
         /// </summary>
-        protected Bitmap BmpHeatmap;
+        protected Bitmap BmpHeatmap { get; private set; }
 
         /// <summary>
         /// Horizontal location of the lower-left cell
@@ -185,6 +185,11 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems() => LegendItem.None;
 
         /// <summary>
+        /// Heatmap transparency from 0 (transparent) to 1 (opaque).
+        /// </summary>
+        public double Opacity = 1;
+
+        /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
         /// with a single pixel for every intensity value. The bitmap is stored
         /// and displayed (without anti-alias interpolation) when Render() is called.
@@ -271,15 +276,11 @@ namespace ScottPlot.Plottable
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
             }
 
+            // TODO: are these calculated and never used?
             double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
             double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
 
-            BmpHeatmap?.Dispose();
-            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
-            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
-            BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
-            Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
-            BmpHeatmap.UnlockBits(bmpData);
+            UpdateBitmap(flatARGB);
         }
 
         /// <summary>
@@ -291,12 +292,11 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        /// /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
             double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-
             double?[,] finalOpacity = null;
 
             if (opacity is not null)
@@ -317,7 +317,7 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            Update(finalIntensity, colormap, min, max, finalOpacity);
+            Update(finalIntensity, colormap, min, max);
         }
 
         /// <summary>
@@ -348,15 +348,57 @@ namespace ScottPlot.Plottable
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
             double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
-
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
+            UpdateBitmap(flatARGB);
+        }
 
-            BmpHeatmap?.Dispose();
-            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
-            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
-            BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
+        /// <summary>
+        /// Update the heatmap where every cell is given the same color, but with various opacities.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        public void Update(Color color, double[,] opacity)
+        {
+            // limit edge size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/2119
+            int maxEdgeLength = 1 << 15;
+            if (opacity.GetLength(1) > maxEdgeLength || opacity.GetLength(0) > maxEdgeLength)
+            {
+                throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
+                    $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
+            }
+
+            // limit total size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/772
+            int maxTotalValues = 10_000_000;
+            if (opacity.GetLength(1) * opacity.GetLength(0) > maxTotalValues)
+            {
+                throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
+                    $"with more than {maxTotalValues:N0} values");
+            }
+
+            DataWidth = opacity.GetLength(1);
+            DataHeight = opacity.GetLength(0);
+            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
+            UpdateBitmap(flatARGB);
+        }
+
+        /// <summary>
+        /// This should be the only method which creates or modifies <see cref="BmpHeatmap"/>
+        /// </summary>
+        /// <param name="flatARGB"></param>
+        private void UpdateBitmap(int[] flatARGB)
+        {
+            Bitmap bmp = new(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
+            Rectangle rect = new(0, 0, DataWidth, DataHeight);
+            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
-            BmpHeatmap.UnlockBits(bmpData);
+            bmp.UnlockBits(bmpData);
+
+            Bitmap originalBmp = BmpHeatmap;
+            BmpHeatmap = bmp;
+            originalBmp?.Dispose();
         }
 
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
@@ -442,6 +484,7 @@ namespace ScottPlot.Plottable
             if (BmpHeatmap is null)
                 throw new InvalidOperationException("Update() was not called prior to rendering");
         }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
@@ -474,6 +517,10 @@ namespace ScottPlot.Plottable
                 y: FlipVertically ? -height : 0,
                 width: width,
                 height: height);
+
+            ColorMatrix cm = new() { Matrix33 = (float)Opacity };
+            ImageAttributes att = new();
+            attr.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
             gfx.DrawImage(
                     image: BmpHeatmap,
