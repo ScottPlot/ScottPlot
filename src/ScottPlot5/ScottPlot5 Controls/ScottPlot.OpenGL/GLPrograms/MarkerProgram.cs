@@ -2,7 +2,7 @@
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 public abstract class MarkersProgram : GLProgramBase, IMarkersDrawProgram
 {

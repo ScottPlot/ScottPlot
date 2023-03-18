@@ -2,8 +2,8 @@
 using OpenTK.Graphics.OpenGL;
 using ScottPlot.Control;
 using ScottPlot.DataSources;
-using ScottPlot.WinForms.OpenGL;
-using ScottPlot.WinForms.OpenGL.GLPrograms;
+using ScottPlot.OpenGL;
+using ScottPlot.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;
 

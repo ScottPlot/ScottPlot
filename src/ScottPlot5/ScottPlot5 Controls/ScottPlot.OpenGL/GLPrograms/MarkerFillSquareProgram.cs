@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+﻿namespace ScottPlot.OpenGL.GLPrograms;
 
-public class MarkerFillCircleProgram : MarkersProgram
+public class MarkerFillSquareProgram : MarkersProgram
 {
     protected override string VertexShaderSource =>
     @"# version 430 core
@@ -22,25 +22,19 @@ public class MarkerFillCircleProgram : MarkersProgram
         layout(location = 1) uniform vec2 u_viewport_size;
         layout(location = 2) uniform float marker_size;
 
-        out noperspective vec2 g_uv;
-
         void main()
         {
             vec4 center = gl_in[0].gl_Position;
+            float offset_x = marker_size / u_viewport_size[0];
+            float offset_y = marker_size / u_viewport_size[1];
 
-            vec2 offset = vec2(marker_size, marker_size) / u_viewport_size;
-
-            g_uv = vec2(-1, -1);
-            gl_Position = center + vec4(g_uv * offset, 0, 0);
+            gl_Position = center + vec4(-offset_x, -offset_y, 0, 0);
             EmitVertex();
-            g_uv = vec2(1, -1);
-            gl_Position = center + vec4(g_uv * offset, 0, 0);
+            gl_Position = center + vec4(offset_x, -offset_y, 0, 0);
             EmitVertex();
-            g_uv = vec2(-1, 1);
-            gl_Position = center + vec4(g_uv * offset, 0, 0);
+            gl_Position = center + vec4(-offset_x, offset_y, 0, 0);
             EmitVertex();
-            g_uv = vec2(1, 1);
-            gl_Position = center + vec4(g_uv * offset, 0, 0);
+            gl_Position = center + vec4(offset_x, offset_y, 0, 0);
             EmitVertex();
 
             EndPrimitive();
@@ -48,15 +42,11 @@ public class MarkerFillCircleProgram : MarkersProgram
 
     protected override string FragmentShaderSource =>
     @"#version 430 core
-
-        uniform vec4 pathColor;
-        in noperspective vec2 g_uv;
         out vec4 FragColor;
+        uniform vec4 pathColor;
 
         void main()
         {
-            float distance = length(g_uv);
-            if (distance <= 1)
-                FragColor = pathColor;
+            FragColor = pathColor;
         }";
 }

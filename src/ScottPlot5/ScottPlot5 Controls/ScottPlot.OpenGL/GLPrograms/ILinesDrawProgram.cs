@@ -1,7 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 
-namespace ScottPlot.WinForms.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 public interface ILinesDrawProgram : IGLProgram
 {
