@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.WinForms.OpenGL;
+﻿namespace ScottPlot.OpenGL;
 
 /// <summary>
 /// Defines behavior to use when OpenGL is not available

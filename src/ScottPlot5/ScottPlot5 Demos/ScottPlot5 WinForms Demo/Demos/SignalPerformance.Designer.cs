@@ -32,6 +32,7 @@
             this.rbSignal = new System.Windows.Forms.RadioButton();
             this.rbScatter = new System.Windows.Forms.RadioButton();
             this.rbScatterGL = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -39,9 +40,9 @@
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.Location = new System.Drawing.Point(12, 37);
+            this.formsPlot1.Location = new System.Drawing.Point(12, 70);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(776, 401);
+            this.formsPlot1.Size = new System.Drawing.Size(776, 368);
             this.formsPlot1.TabIndex = 0;
             // 
             // rbSignal
@@ -79,17 +80,28 @@
             this.rbScatterGL.Text = "ScatterGL";
             this.rbScatterGL.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(12, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 21);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "label1";
+            // 
             // SignalPerformance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.rbScatterGL);
             this.Controls.Add(this.rbScatter);
             this.Controls.Add(this.rbSignal);
             this.Controls.Add(this.formsPlot1);
             this.Name = "SignalPerformance";
-            this.Text = "Signal plot with one million points";
+            this.Text = "ScottPlot 5 Performance Demo";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -101,5 +113,6 @@
         private RadioButton rbSignal;
         private RadioButton rbScatter;
         private RadioButton rbScatterGL;
+        private Label label1;
     }
 }

@@ -10,6 +10,9 @@
 
     <ItemGroup>
         <PackageReference Include="Eto.Forms" Version="2.5.11" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

@@ -221,6 +221,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.XAxis.DateTimeFormat(true);
         }
     }
+
     class TicksDateTimeSignal : IRecipe
     {
         public ICategory Category => new Categories.Axis();
