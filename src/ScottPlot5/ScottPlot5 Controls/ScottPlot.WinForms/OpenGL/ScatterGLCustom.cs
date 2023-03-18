@@ -21,19 +21,10 @@ public class ScatterGLCustom : ScatterGL
 
     protected override void InitializeGL()
     {
-        LinesProgram = new CustomLinesProgram();
-        JoinsProgram = new MarkerFillCircleProgram();
-        MarkerProgram = new MarkerFillCircleProgram();
+        base.InitializeGL();
 
-        VertexArrayObject = GL.GenVertexArray();
-        VertexBufferObject = GL.GenBuffer();
-        GL.BindVertexArray(VertexArrayObject);
-        GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-        GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
-        GL.VertexAttribLPointer(0, 2, VertexAttribDoubleType.Double, 0, IntPtr.Zero);
-        GL.EnableVertexAttribArray(0);
-        Vertices = Array.Empty<double>();
-        GLHasBeenInitialized = true;
+        LinesProgram = new GLLinesProgramCustom();
+        JoinsProgram = new MarkerFillCircleProgram();
     }
 
     protected override void RenderWithOpenGL(SKSurface surface, GRContext context)
