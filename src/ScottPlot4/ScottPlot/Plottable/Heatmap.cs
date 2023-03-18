@@ -169,13 +169,20 @@ namespace ScottPlot.Plottable
         public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
 
         /// <summary>
-        /// If true the Heatmap will be drawn from the bottom left corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
+        /// By default the first row of the 2D array represents the top of the heatmap.
+        /// If this is true, the first row of the 2D array represents the bottom of the heatmap.
         /// </summary>
         public bool FlipVertically { get; set; } = false;
 
+        /// <summary>
+        /// By default the first column of the 2D array represents the left side of the heatmap.
+        /// If this is true, the first column of the 2D array represents the right side of the heatmap.
+        /// </summary>
+        public bool FlipHorizontally { get; set; } = false;
+
         public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -458,12 +465,15 @@ namespace ScottPlot.Plottable
 
             gfx.TranslateTransform(fromX, fromY);
 
-            if (FlipVertically)
-            {
-                gfx.ScaleTransform(1, -1);
-            }
+            gfx.ScaleTransform(
+                sx: FlipHorizontally ? -1 : 1,
+                sy: FlipVertically ? -1 : 1);
 
-            Rectangle destRect = FlipVertically ? new(0, -height, width, height) : new(0, 0, width, height);
+            Rectangle destRect = new(
+                x: FlipHorizontally ? -width : 0,
+                y: FlipVertically ? -height : 0,
+                width: width,
+                height: height);
 
             gfx.DrawImage(
                     image: BmpHeatmap,

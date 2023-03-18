@@ -142,12 +142,20 @@ namespace ScottPlot
         /// <summary>
         /// Reset this control by replacing the current plot with a new empty plot
         /// </summary>
-        public void Reset() => Backend.Reset(Width, Height);
+        public void Reset()
+        {
+            Backend.Reset(Width, Height);
+            Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+        }
 
         /// <summary>
         /// Reset this control by replacing the current plot with an existing plot
         /// </summary>
-        public void Reset(Plot newPlot) => Backend.Reset(Width, Height, newPlot);
+        public void Reset(Plot newPlot)
+        {
+            Backend.Reset(Width, Height, newPlot);
+            Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+        }
 
         /// <summary>
         /// Re-render the plot and update the image displayed by this control.

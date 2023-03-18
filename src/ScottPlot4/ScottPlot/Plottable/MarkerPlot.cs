@@ -62,7 +62,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            LegendItem item = new(this)
+            LegendItem singleItem = new(this)
             {
                 label = Label,
                 markerShape = MarkerShape,
@@ -70,7 +70,7 @@ namespace ScottPlot.Plottable
                 color = Color
             };
 
-            return new LegendItem[] { item };
+            return LegendItem.Single(singleItem);
         }
 
         public void ValidateData(bool deep = false)

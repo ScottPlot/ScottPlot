@@ -1,5 +1,12 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.62 (in development)
+* Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
+* Heatmap: Added `FlipVertically` to invert vertical axis of heatmap data (#2444, #2450) _Thanks @Neopentane1_
+* Histogram: Improved support for datasets with low variance (#2464, #2463) _Thanks @Xerxes004_
+
+# Releases
+
 ## ScottPlot 5.0.2-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Signal Plot: Support X and Y offset (#2378) _Thanks @minjjKang_
@@ -26,6 +33,10 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
 * ScottPlot 5: First version 5 release published to NuGet #2304
 
+## ScottPlot 4.1.62
+⚠️ In development / not yet published
+* WinForms Control: `Reset()` makes new plots transparent (#2445) _Thanks @Neopentane1_
+
 ## ScottPlot 4.1.61
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Axis: Throw exception immediately upon setting invalid axis limits (#2327) _Thanks @mjpz_
@@ -43,6 +54,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Population: Fixed bug causing argument exceptions for 1px high plots (#2429, #2384) _Thanks @Sprenk_
 * Controls: Added `Configuration.AltLeftClickDragZoom` option to customize zooming behavior (#2391, #2392) _Thanks @DevJins_
 * Error Bar: Added `Label` property which allows error bars to appear independently in the legend (#2432, #2388) _Thanks @dongyi-cai-windsab_
+* Demo: Fixed bug preventing the cookbook from launching (#2443) _Thanks @FannyAtGitHub_
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_
