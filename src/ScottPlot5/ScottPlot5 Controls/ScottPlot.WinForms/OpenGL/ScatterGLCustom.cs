@@ -7,19 +7,23 @@ using System;
 
 namespace ScottPlot.Plottables;
 
-public class ScatterGLCustomWidth : ScatterGL
+/// <summary>
+/// This plot type uses an OpenGL shader for rendering.
+/// It extends <see cref="ScatterGL"/> to provide additional customizations.
+/// </summary>
+public class ScatterGLCustom : ScatterGL
 {
-    private IMarkersDrawProgram? joinsProgram;
+    private IMarkersDrawProgram? JoinsProgram;
 
-    public ScatterGLCustomWidth(IScatterSource data, IPlotControl control) : base(data, control)
+    public ScatterGLCustom(IScatterSource data, IPlotControl control) : base(data, control)
     {
     }
 
     protected override void InitializeGL()
     {
-        linesProgram = new CustomLinesProgram();
-        joinsProgram = new MarkerFillCircleProgram();
-        markerProgram = new MarkerFillCircleProgram();
+        LinesProgram = new CustomLinesProgram();
+        JoinsProgram = new MarkerFillCircleProgram();
+        MarkerProgram = new MarkerFillCircleProgram();
 
         VertexArrayObject = GL.GenVertexArray();
         VertexBufferObject = GL.GenBuffer();
@@ -48,14 +52,14 @@ public class ScatterGLCustomWidth : ScatterGL
             width: (int)Axes.DataRect.Width,
             height: (int)Axes.DataRect.Height);
 
-        if (linesProgram is null)
-            throw new NullReferenceException(nameof(linesProgram));
+        if (LinesProgram is null)
+            throw new NullReferenceException(nameof(LinesProgram));
 
-        linesProgram.Use();
-        linesProgram.SetTransform(CalcTransform());
-        linesProgram.SetColor(LineStyle.Color.ToTkColor());
-        linesProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
-        linesProgram.SetLineWidth(LineStyle.Width);
+        LinesProgram.Use();
+        LinesProgram.SetTransform(CalcTransform());
+        LinesProgram.SetColor(LineStyle.Color.ToTkColor());
+        LinesProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
+        LinesProgram.SetLineWidth(LineStyle.Width);
 
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
@@ -66,14 +70,14 @@ public class ScatterGLCustomWidth : ScatterGL
                 || MarkerStyle.Shape == MarkerShape.OpenCircle
                 || MarkerStyle.Shape == MarkerShape.None)
         {
-            if (joinsProgram is null)
-                throw new NullReferenceException(nameof(joinsProgram));
+            if (JoinsProgram is null)
+                throw new NullReferenceException(nameof(JoinsProgram));
 
-            joinsProgram.Use();
-            joinsProgram.SetTransform(CalcTransform());
-            joinsProgram.SetFillColor(LineStyle.Color.ToTkColor());
-            joinsProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
-            joinsProgram.SetMarkerSize(LineStyle.Width);
+            JoinsProgram.Use();
+            JoinsProgram.SetTransform(CalcTransform());
+            JoinsProgram.SetFillColor(LineStyle.Color.ToTkColor());
+            JoinsProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
+            JoinsProgram.SetMarkerSize(LineStyle.Width);
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
         }

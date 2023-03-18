@@ -18,11 +18,11 @@ public static class AddPlottableExtensions
         return sp;
     }
 
-    public static Plottables.ScatterGLCustomWidth ScatterGLCustomWidth(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
+    public static Plottables.ScatterGLCustom ScatterGLCustom(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
     {
         DataSources.ScatterSourceXsYs data = new(xs, ys);
 
-        Plottables.ScatterGLCustomWidth sp = new(data, control);
+        Plottables.ScatterGLCustom sp = new(data, control);
         Color nextColor = add.NextColor;
         sp.LineStyle.Color = nextColor;
         sp.MarkerStyle.Fill.Color = nextColor;

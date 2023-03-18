@@ -17,8 +17,8 @@ public class ScatterGL : Scatter, IPlottableGL
     public IPlotControl PlotControl { get; }
     protected int VertexBufferObject;
     protected int VertexArrayObject;
-    protected ILinesDrawProgram? linesProgram;
-    protected IMarkersDrawProgram? markerProgram;
+    protected ILinesDrawProgram? LinesProgram;
+    protected IMarkersDrawProgram? MarkerProgram;
     protected double[] Vertices;
     protected readonly int VerticesCount;
 
@@ -41,8 +41,8 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected virtual void InitializeGL()
     {
-        linesProgram = new GLLinesProgram();
-        markerProgram = new MarkerFillCircleProgram();
+        LinesProgram = new GLLinesProgram();
+        MarkerProgram = new MarkerFillCircleProgram();
 
         VertexArrayObject = GL.GenVertexArray();
         VertexBufferObject = GL.GenBuffer();
@@ -104,12 +104,12 @@ public class ScatterGL : Scatter, IPlottableGL
             width: (int)Axes.DataRect.Width,
             height: (int)Axes.DataRect.Height);
 
-        if (linesProgram is null)
-            throw new NullReferenceException(nameof(linesProgram));
+        if (LinesProgram is null)
+            throw new NullReferenceException(nameof(LinesProgram));
 
-        linesProgram.Use();
-        linesProgram.SetTransform(CalcTransform());
-        linesProgram.SetColor(LineStyle.Color.ToTkColor());
+        LinesProgram.Use();
+        LinesProgram.SetTransform(CalcTransform());
+        LinesProgram.SetColor(LineStyle.Color.ToTkColor());
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.LineStrip, 0, VerticesCount);
 
@@ -123,33 +123,33 @@ public class ScatterGL : Scatter, IPlottableGL
 
         IMarkersDrawProgram? newProgram = MarkerStyle.Shape switch
         {
-            MarkerShape.FilledSquare when markerProgram is not MarkerFillSquareProgram => new MarkerFillSquareProgram(),
-            MarkerShape.FilledCircle when markerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
-            MarkerShape.OpenCircle when markerProgram is not MarkerOpenCircleProgram => new MarkerOpenCircleProgram(),
-            MarkerShape.OpenSquare when markerProgram is not MarkerOpenSquareProgram => new MarkerOpenSquareProgram(),
+            MarkerShape.FilledSquare when MarkerProgram is not MarkerFillSquareProgram => new MarkerFillSquareProgram(),
+            MarkerShape.FilledCircle when MarkerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
+            MarkerShape.OpenCircle when MarkerProgram is not MarkerOpenCircleProgram => new MarkerOpenCircleProgram(),
+            MarkerShape.OpenSquare when MarkerProgram is not MarkerOpenSquareProgram => new MarkerOpenSquareProgram(),
             MarkerShape.FilledSquare or MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.OpenSquare => null,
             _ => throw new NotSupportedException($"Marker shape `{MarkerStyle.Shape}` is not supported by GLPlottables"),
         };
 
         if (newProgram is not null)
         {
-            markerProgram?.Dispose();
-            markerProgram = newProgram;
+            MarkerProgram?.Dispose();
+            MarkerProgram = newProgram;
         }
 
-        if (markerProgram is null)
-            throw new NullReferenceException(nameof(markerProgram));
+        if (MarkerProgram is null)
+            throw new NullReferenceException(nameof(MarkerProgram));
 
-        markerProgram.Use();
-        markerProgram.SetTransform(CalcTransform());
-        markerProgram.SetMarkerSize(MarkerStyle.Size);
-        markerProgram.SetFillColor(MarkerStyle.Fill.Color.ToTkColor());
-        markerProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
-        markerProgram.SetOutlineColor(MarkerStyle.Outline.Color.ToTkColor());
-        markerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.Outline.Width * 2 / MarkerStyle.Size);
+        MarkerProgram.Use();
+        MarkerProgram.SetTransform(CalcTransform());
+        MarkerProgram.SetMarkerSize(MarkerStyle.Size);
+        MarkerProgram.SetFillColor(MarkerStyle.Fill.Color.ToTkColor());
+        MarkerProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
+        MarkerProgram.SetOutlineColor(MarkerStyle.Outline.Color.ToTkColor());
+        MarkerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.Outline.Width * 2 / MarkerStyle.Size);
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
     }
 
-    public void GLFinish() => linesProgram?.GLFinish();
+    public void GLFinish() => LinesProgram?.GLFinish();
 }

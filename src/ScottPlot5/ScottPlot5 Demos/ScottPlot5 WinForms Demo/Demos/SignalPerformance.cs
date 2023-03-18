@@ -43,10 +43,8 @@ public partial class SignalPerformance : Form, IDemoWindow
             int pointCount = 1_000_000;
             double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
             double[] xs = ScottPlot.Generate.Consecutive(pointCount);
-            var spGLCustom = formsPlot1.Plot.Add.ScatterGLCustomWidth(formsPlot1, xs, ys);
-            spGLCustom.LineStyle.Width = 5;
-            spGLCustom.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
-            spGLCustom.MarkerStyle.Outline.Width = 3;
+            var spGL = formsPlot1.Plot.Add.ScatterGL(formsPlot1, xs, ys);
+            spGL.MarkerStyle = MarkerStyle.None;
             formsPlot1.Plot.Title.Label.Text = "ScatterGL plot with one million points";
         }
 
