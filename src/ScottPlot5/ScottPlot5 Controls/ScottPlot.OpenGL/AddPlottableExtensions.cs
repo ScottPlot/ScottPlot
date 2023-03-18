@@ -13,9 +13,9 @@ public static class AddPlottableExtensions
     /// </summary>
     public static Plottables.ScatterGL ScatterGL(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
     {
-        ScatterSourceXsYs data = new(xs, ys);
-        var cachedData = new CacheScatterLimitsDecorator(data);
-        Plottables.ScatterGL sp = new(cachedData, control);
+        ScatterSourceXsYs source = new(xs, ys);
+        IScatterSource sourceWithCaching = new CacheScatterLimitsDecorator(source);
+        Plottables.ScatterGL sp = new(sourceWithCaching, control);
         Color nextColor = add.NextColor;
         sp.LineStyle.Color = nextColor;
         sp.MarkerStyle.Fill.Color = nextColor;
