@@ -45,6 +45,7 @@ namespace ScottPlot.Plottable
         public Color ScatterOutlineColor { get; set; } = Color.Black;
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
+        public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Center;
 
         public PopulationPlot(PopulationMultiSeries groupedSeries)
         {
@@ -183,10 +184,10 @@ namespace ScottPlot.Plottable
                             Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: false);
                             break;
                         case BoxStyle.BoxMeanStdevStderr:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.StdevStderrMean);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.StdevStderrMean, ErrorBarAlignment);
                             break;
                         case BoxStyle.BoxMedianQuartileOutlier:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.OutlierQuartileMedian);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.OutlierQuartileMedian, ErrorBarAlignment);
                             break;
                         case BoxStyle.MeanAndStderr:
                             MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: true);
