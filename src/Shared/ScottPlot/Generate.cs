@@ -172,6 +172,14 @@ public static class Generate
             .ToArray();
     }
 
+    public static double[] RandomNormal(int count, double mean = 0, double stdDev = 1, int seed = 0)
+    {
+        RandomDataGenerator gen = new(seed);
+        return Enumerable.Range(0, count)
+            .Select(_ => gen.RandomNormal(mean, stdDev))
+            .ToArray();
+    }
+
     #endregion
 
     #region DateTime
