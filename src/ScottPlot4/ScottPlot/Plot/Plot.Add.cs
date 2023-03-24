@@ -132,23 +132,18 @@ namespace ScottPlot
         /// <summary>
         /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
         /// </summary>
-        public BarPlot AddBar(double[] values, Color? color = null)
+        public BarPlot AddBar(double[] values, Color? color = default, Drawing.Font font = default)
         {
             double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new BarPlot(xs, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
+            return AddBar(values, xs, color, font);
         }
 
         /// <summary>
         /// Add a bar plot for the given values using defined bar positions
         /// </summary>
-        public BarPlot AddBar(double[] values, double[] positions, Color? color = null)
+        public BarPlot AddBar(double[] values, double[] positions, Color? color = null, Drawing.Font font = default)
         {
-            var plottable = new BarPlot(positions, values, null, null)
+            var plottable = new BarPlot(positions, values, null, null, font)
             {
                 FillColor = color ?? GetNextColor()
             };

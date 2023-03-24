@@ -20,7 +20,7 @@ namespace ScottPlotTests
 
         public static string SaveFig(ScottPlot.Plot plt, string subName = "", bool artifact = false)
         {
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
             string callingClass = stackTrace.GetFrame(1).GetMethod().DeclaringType.ToString();
             string prefix = callingClass + "." + callingMethod;
@@ -44,7 +44,7 @@ namespace ScottPlotTests
 
         public static void SaveBitmap(System.Drawing.Bitmap bmp, string subName = "")
         {
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
             string fileName = callingMethod + subName + ".png";
             string filePath = System.IO.Path.GetFullPath(fileName);
@@ -55,7 +55,7 @@ namespace ScottPlotTests
 
         public static void SaveText(string txt, string subName = "")
         {
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
             string fileName = callingMethod + subName + ".txt";
             string filePath = System.IO.Path.GetFullPath(fileName);
@@ -66,7 +66,7 @@ namespace ScottPlotTests
 
         public static void SaveHtml(string body, string subName = "")
         {
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
             string fileName = callingMethod + subName + ".html";
             string filePath = System.IO.Path.GetFullPath(fileName);
@@ -92,7 +92,7 @@ namespace ScottPlotTests
 
         public static string SaveFig(System.Drawing.Bitmap bmp, string subName = "")
         {
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
 
             if (subName != "")
@@ -100,7 +100,7 @@ namespace ScottPlotTests
 
             string fileName = callingMethod + subName + ".png";
             string filePath = System.IO.Path.GetFullPath(fileName);
-            bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(filePath, ImageFormat.Png);
 
             DisplayRenderInfo(callingMethod, subName, 0);
             Console.WriteLine($"Saved: {filePath}");
@@ -119,7 +119,7 @@ namespace ScottPlotTests
         {
             string hash = ScottPlot.Tools.BitmapHash(plt.Render(lowQuality: true));
 
-            var stackTrace = new System.Diagnostics.StackTrace();
+            var stackTrace = new StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
 
             DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).BenchmarkMessage.MSec);

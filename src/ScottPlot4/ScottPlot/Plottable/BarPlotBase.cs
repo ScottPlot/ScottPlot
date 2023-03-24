@@ -9,6 +9,14 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        public BarPlotBase() : this(new Drawing.Font())
+        { }
+
+        public BarPlotBase(Drawing.Font font)
+        {
+            Font = font;
+        }
+
         /// <summary>
         /// Orientation of the bars.
         /// Default behavior is vertical so values are on the Y axis and positions are on the X axis.

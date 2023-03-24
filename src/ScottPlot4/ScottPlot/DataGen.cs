@@ -1,14 +1,9 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
