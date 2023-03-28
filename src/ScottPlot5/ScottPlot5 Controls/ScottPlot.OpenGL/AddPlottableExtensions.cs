@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Control;
+using ScottPlot.DataSources;
 
 namespace ScottPlot;
 
@@ -12,8 +13,9 @@ public static class AddPlottableExtensions
     /// </summary>
     public static Plottables.ScatterGL ScatterGL(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
     {
-        DataSources.ScatterSourceXsYs data = new(xs, ys);
-        Plottables.ScatterGL sp = new(data, control);
+        ScatterSourceXsYs source = new(xs, ys);
+        IScatterSource sourceWithCaching = new CacheScatterLimitsDecorator(source);
+        Plottables.ScatterGL sp = new(sourceWithCaching, control);
         Color nextColor = add.NextColor;
         sp.LineStyle.Color = nextColor;
         sp.MarkerStyle.Fill.Color = nextColor;
