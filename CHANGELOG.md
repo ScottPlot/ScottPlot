@@ -11,6 +11,7 @@
 * Heatmap: Added `Opacity` property (#2461, #2484) _Thanks @bukkideme_
 * DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
 * Population: Added option for customizing horizontal errorbar alignment (#2502) _Thanks @benton-anderson_
+* Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
 
 # Releases
 

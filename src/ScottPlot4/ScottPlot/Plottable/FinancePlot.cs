@@ -11,12 +11,12 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class FinancePlot : IPlottable
     {
-        public readonly List<OHLC> OHLCs = new();
+        public readonly List<IOHLC> OHLCs = new();
 
         /// <summary>
         /// Returns the last element of OHLCs so users can modify FinancePlots in real time.
         /// </summary>
-        public OHLC Last() => OHLCs.Last();
+        public IOHLC Last() => OHLCs.Last();
 
         /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
@@ -59,7 +59,7 @@ namespace ScottPlot.Plottable
         /// Create a finance plot from existing OHLC data.
         /// </summary>
         /// <param name="ohlcs"></param>
-        public FinancePlot(OHLC[] ohlcs) => AddRange(ohlcs);
+        public FinancePlot(IOHLC[] ohlcs) => AddRange(ohlcs);
 
         public LegendItem[] GetLegendItems() => LegendItem.None;
 
@@ -89,7 +89,7 @@ namespace ScottPlot.Plottable
         /// Add a single OHLC to the plot
         /// </summary>
         /// <param name="ohlc"></param>
-        public void Add(OHLC ohlc)
+        public void Add(IOHLC ohlc)
         {
             if (ohlc is null)
                 throw new ArgumentNullException();
@@ -100,12 +100,12 @@ namespace ScottPlot.Plottable
         /// Add multiple OHLCs to the plot
         /// </summary>
         /// <param name="ohlcs"></param>
-        public void AddRange(OHLC[] ohlcs)
+        public void AddRange(IOHLC[] ohlcs)
         {
             if (ohlcs is null)
                 throw new ArgumentNullException();
 
-            foreach (var ohlc in ohlcs)
+            foreach (IOHLC ohlc in ohlcs)
                 if (ohlc is null)
                     throw new ArgumentNullException("no OHLCs may be null");
 
@@ -161,8 +161,6 @@ namespace ScottPlot.Plottable
             {
                 if (OHLCs[i] is null)
                     throw new InvalidOperationException($"ohlcs[{i}] cannot be null");
-                if (!OHLCs[i].IsValid)
-                    throw new InvalidOperationException($"ohlcs[{i}] does not contain valid data");
             }
         }
 
@@ -238,7 +236,7 @@ namespace ScottPlot.Plottable
             using Pen pen = new Pen(Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
             {
-                var ohlc = OHLCs[i];
+                IOHLC ohlc = OHLCs[i];
                 bool closedHigher = ohlc.Close >= ohlc.Open;
 
                 var ohlcTime = (Sequential) ? i : ohlc.DateTime.ToOADate();
@@ -277,7 +275,7 @@ namespace ScottPlot.Plottable
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            var sortedOHLCs = GetSortedOHLCs();
+            List<IOHLC> sortedOHLCs = GetSortedOHLCs();
             double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
             double[] ys = Statistics.Finance.SMA(sortedOHLCs.ToArray(), N);
             return (xs, ys);
@@ -295,13 +293,13 @@ namespace ScottPlot.Plottable
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            var sortedOHLCs = GetSortedOHLCs();
+            List<IOHLC> sortedOHLCs = GetSortedOHLCs();
             double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
             (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N);
             return (xs, sma, lower, upper);
         }
 
-        private List<OHLC> GetSortedOHLCs()
+        private List<IOHLC> GetSortedOHLCs()
         {
             if (OHLCsAreSorted())
             {

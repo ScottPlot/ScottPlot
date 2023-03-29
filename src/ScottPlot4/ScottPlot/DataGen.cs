@@ -470,7 +470,7 @@ namespace ScottPlot
         {
             OHLC[] ohlcs = RandomStockPrices(rand, pointCount, mult, startingPrice);
 
-            DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
+            DateTime dt = new(1985, 9, 24, 9, 30, 0);
 
             for (int i = 0; i < ohlcs.Length; i++)
             {

@@ -4,10 +4,10 @@ namespace ScottPlot;
 
 public interface IOHLC
 {
-    double Open { get; }
-    double High { get; }
-    double Low { get; }
-    double Close { get; }
-    DateTime DateTime { get; }
-    TimeSpan TimeSpan { get; }
+    double Open { get; set; }
+    double High { get; set; }
+    double Low { get; set; }
+    double Close { get; set; }
+    DateTime DateTime { get; set; }
+    TimeSpan TimeSpan { get; set; }
 }

@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot
 {
     /// <summary>
     /// This class holds open/high/low/close (OHLC) price data over a time range.
     /// </summary>
-    public class OHLC
+    public class OHLC : IOHLC
     {
-        public double Open;
-        public double High;
-        public double Low;
-        public double Close;
-        public double Volume;
-        public DateTime DateTime;
-        public TimeSpan TimeSpan;
+        public double Open { get; set; }
+        public double High { get; set; }
+        public double Low { get; set; }
+        public double Close { get; set; }
+        public DateTime DateTime { get; set; }
+        public TimeSpan TimeSpan { get; set; }
+
+        // TODO: obsolete this
+        public double Volume { get; set; }
 
         private bool IsNanOrInfinity(double val) => double.IsInfinity(val) || double.IsNaN(val);
 
