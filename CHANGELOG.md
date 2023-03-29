@@ -9,6 +9,7 @@
 * Heatmap: Added `FlipVertically` to invert vertical axis of heatmap data (#2444, #2450) _Thanks @Neopentane1_
 * Histogram: Improved support for datasets with low variance (#2464, #2463) _Thanks @Xerxes004_
 * Heatmap: Added `Opacity` property (#2461, #2484) _Thanks @bukkideme_
+* DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
 
 # Releases
 
