@@ -146,6 +146,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class BarShowValueCustomFont : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Bar();
+        public string ID => "bar_values_custom_font";
+        public string Title => "Customizing Value Label Font";
+        public string Description => "Font styling for bar value labels can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 27.3, 23.1, 21.2, 16.1, 6.4, 19.2, 18.7, 17.3, 20.3, 13.1 };
+
+            var bar = plt.AddBar(values);
+            bar.ShowValuesAboveBars = true;
+            bar.Font.Color = Color.Green;
+            bar.Font.Size = 18;
+            bar.Font.Bold = true;
+
+            plt.SetAxisLimits(yMin: 0);
+        }
+    }
+
     public class BarShowValueCustom : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Bar();
