@@ -14,6 +14,7 @@
 * DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
 * Population: Added option for customizing horizontal errorbar alignment (#2502) _Thanks @benton-anderson_
 * Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
+* OHLC: The `Volume` property and constructor overload initializing it have been deprecated (#2404)
 
 # Releases
 

@@ -14,13 +14,11 @@ namespace ScottPlot
         public DateTime DateTime { get; set; }
         public TimeSpan TimeSpan { get; set; }
 
-        //[Obsolete("The `Volume` property of OHLCs has been deprecated.")]
+        [Obsolete("The `Volume` property of OHLCs has been deprecated.", true)]
         public double Volume { get; set; }
 
-        private bool IsNanOrInfinity(double val) => double.IsInfinity(val) || double.IsNaN(val);
-
         public override string ToString() =>
-            $"OHLC: open={Open}, high={High}, low={Low}, close={Close}, start={DateTime}, span={TimeSpan}, volume={Volume}";
+            $"OHLC: open={Open}, high={High}, low={Low}, close={Close}, start={DateTime}, span={TimeSpan}";
 
         /// <summary>
         /// OHLC price over a specific period of time
@@ -41,7 +39,7 @@ namespace ScottPlot
             TimeSpan = timeSpan;
         }
 
-        //[Obsolete("This constructor has been deprecated.")]
+        [Obsolete("This constructor has been deprecated.", true)]
         public OHLC(double open, double high, double low, double close, double timeStart, double timeSpan = 1, double volume = 0)
         {
             Open = open;

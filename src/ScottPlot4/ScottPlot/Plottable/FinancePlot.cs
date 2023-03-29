@@ -75,15 +75,9 @@ namespace ScottPlot.Plottable
         public void Add(double open, double high, double low, double close, DateTime timeStart, TimeSpan timeSpan) =>
             Add(new OHLC(open, high, low, close, timeStart, timeSpan));
 
-        /// <summary>
-        /// Add a single candle to the end of the list assuming each candle is spaced 1 horizontal unit apart
-        /// </summary>
-        /// <param name="open"></param>
-        /// <param name="high"></param>
-        /// <param name="low"></param>
-        /// <param name="close"></param>
+        [Obsolete("This overload has been deprecated", true)]
         public void Add(double open, double high, double low, double close) =>
-            Add(new OHLC(open, high, low, close, OHLCs.Count));
+            Add(new OHLC(open, high, low, close, new DateTime(0) + TimeSpan.FromDays(OHLCs.Count), TimeSpan.FromDays(1)));
 
         /// <summary>
         /// Add a single OHLC to the plot
