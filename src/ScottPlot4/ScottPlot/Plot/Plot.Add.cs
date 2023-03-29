@@ -135,12 +135,7 @@ namespace ScottPlot
         public BarPlot AddBar(double[] values, Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new BarPlot(xs, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
+            return AddBar(values, xs, color);
         }
 
         /// <summary>
