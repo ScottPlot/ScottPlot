@@ -15,17 +15,6 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
-        public void Test_Bar_Series_With_Coloured_Values()
-        {
-            double[] values = { 10, 15, 12, 6, 8, 4, 12 };
-
-            var plt = new ScottPlot.Plot(400, 300);
-            var bar = plt.AddBar(values, font: new ScottPlot.Drawing.Font { Color = System.Drawing.Color.Red });
-            bar.ShowValuesAboveBars = true;
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
         public void Test_Bar_PositiveAndNegative()
         {
             var plt = new ScottPlot.Plot(600, 400);
