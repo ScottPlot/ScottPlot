@@ -45,7 +45,7 @@ namespace ScottPlot.Plottable
         public Color ScatterOutlineColor { get; set; } = Color.Black;
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
-        public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Center;
+        public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
 
         public PopulationPlot(PopulationMultiSeries groupedSeries)
         {
@@ -364,7 +364,6 @@ namespace ScottPlot.Plottable
         }
 
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
-        public enum HorizontalAlignment { Left, Center, Right }
 
         private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, byte alpha, Position position, BoxFormat boxFormat,
