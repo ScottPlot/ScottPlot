@@ -1,4 +1,5 @@
-﻿using ScottPlot.Statistics;
+﻿using ScottPlot.Control.EventProcess.Events;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -548,6 +549,30 @@ namespace ScottPlot.Cookbook.Recipes
 
             plt.XAxis.TickMarkDirection(outward: false);
             plt.YAxis.TickMarkDirection(outward: false);
+        }
+    }
+
+    class AdvancedAxisCustomization : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "advanced_axis_customization";
+        public string Title => "Advanced Axis Customization";
+        public string Description =>
+            "Axis labels, tick marks, and axis lines can all be extensively customized " +
+            "by interacting directly with axis configuration objects.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.XAxis.AxisTicks.MajorTickLength = 10;
+            plt.XAxis.AxisTicks.MinorTickLength = 5;
+
+            plt.XAxis.AxisTicks.MajorTickColor = Color.Magenta;
+            plt.XAxis.AxisTicks.MinorTickColor = Color.LightSkyBlue;
+
+            plt.YAxis.AxisLine.Width = 3;
         }
     }
 }
