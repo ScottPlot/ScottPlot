@@ -2,14 +2,14 @@
 
 public class OHLCSource : IOHLCSource
 {
-    private readonly IReadOnlyList<OHLC> Prices;
+    private readonly IList<IOHLC> Prices;
 
-    public OHLCSource(IReadOnlyList<OHLC> prices)
+    public OHLCSource(IList<IOHLC> prices)
     {
         Prices = prices;
     }
 
-    public IReadOnlyList<OHLC> GetOHLCs()
+    public IList<IOHLC> GetOHLCs()
     {
         return Prices;
     }

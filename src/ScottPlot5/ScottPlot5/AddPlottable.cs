@@ -109,7 +109,7 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
-    public CandlestickPlot Candlestick(IReadOnlyList<OHLC> ohlcs)
+    public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
         CandlestickPlot candlestickPlot = new(dataSource);
@@ -133,7 +133,7 @@ public class AddPlottable
         return errorBar;
     }
 
-    public OhlcPlot OHLC(IReadOnlyList<OHLC> ohlcs)
+    public OhlcPlot OHLC(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
         OhlcPlot ohlc = new(dataSource);
