@@ -14,7 +14,7 @@ namespace ScottPlot
         public DateTime DateTime { get; set; }
         public TimeSpan TimeSpan { get; set; }
 
-        [Obsolete("The `Volume` property of OHLCs has been deprecated.", true)]
+        [Obsolete("The `Volume` property of OHLCs has been deprecated.")]
         public double Volume { get; set; }
 
         public override string ToString() =>
@@ -39,7 +39,7 @@ namespace ScottPlot
             TimeSpan = timeSpan;
         }
 
-        [Obsolete("This constructor has been deprecated.", true)]
+        [Obsolete("This constructor has been deprecated.")]
         public OHLC(double open, double high, double low, double close, double timeStart, double timeSpan = 1, double volume = 0)
         {
             Open = open;
