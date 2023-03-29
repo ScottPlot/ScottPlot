@@ -85,7 +85,6 @@
             this.Controls.Add(this.formsPlot1);
             this.Name = "FinanceDemo";
             this.Text = "FinanceDemo";
-            this.Load += new System.EventHandler(this.FinanceDemo_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

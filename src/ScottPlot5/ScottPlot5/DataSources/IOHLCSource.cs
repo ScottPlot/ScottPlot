@@ -2,5 +2,5 @@
 
 public interface IOHLCSource : IHasAxisLimits
 {
-    IReadOnlyList<OHLC> GetOHLCs();
+    IList<IOHLC> GetOHLCs();
 }

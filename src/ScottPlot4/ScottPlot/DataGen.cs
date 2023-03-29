@@ -470,7 +470,7 @@ namespace ScottPlot
         {
             OHLC[] ohlcs = RandomStockPrices(rand, pointCount, mult, startingPrice);
 
-            DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
+            DateTime dt = new(1985, 9, 24, 9, 30, 0);
 
             for (int i = 0; i < ohlcs.Length; i++)
             {
@@ -502,6 +502,7 @@ namespace ScottPlot
             double[] basePrices = RandomWalk(rand, pointCount, mult, startingPrice);
 
             OHLC[] ohlcs = new OHLC[pointCount];
+            DateTime start = new(1985, 09, 24);
             for (int i = 0; i < ohlcs.Length; i++)
             {
                 double basePrice = basePrices[i];
@@ -515,7 +516,7 @@ namespace ScottPlot
                 high += basePrice;
                 low += basePrice;
 
-                ohlcs[i] = new OHLC(open, high, low, close, i);
+                ohlcs[i] = new OHLC(open, high, low, close, start, TimeSpan.FromDays(1));
             }
 
             return ohlcs;
@@ -539,11 +540,6 @@ namespace ScottPlot
             OHLC[] prices = sequential
                 ? RandomStockPrices(rand, pointCount, mult, startingPrice)
                 : RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
-
-            if (rand is null)
-                rand = new Random(0);
-            foreach (OHLC price in prices)
-                price.Volume = rand.NextDouble() * 900 + 100;
 
             return prices;
         }

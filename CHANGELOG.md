@@ -3,6 +3,8 @@
 ## ScottPlot 5.0.3-beta (in development)
 * OpenGL: Enhanced customization options for OpenGL-accelerated scatter plots (#2446) _Thanks @StendProg_
 * Data: Added axis limit caching functionality for improved performance of large scatter plots (#2460) _Thanks @StendProg_
+* DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
+* Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
 
 ## ScottPlot 4.1.62 (in development)
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
@@ -11,6 +13,8 @@
 * Heatmap: Added `Opacity` property (#2461, #2484) _Thanks @bukkideme_
 * DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
 * Population: Added option for customizing horizontal errorbar alignment (#2502) _Thanks @benton-anderson_
+* Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
+* OHLC: The `Volume` property and constructor overload initializing it have been deprecated (#2404)
 
 # Releases
 
