@@ -54,10 +54,20 @@ namespace ScottPlot.Renderable
         public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
 
-        // private renderable components
-        private readonly AxisLabel AxisLabel = new AxisLabel();
-        private readonly AxisTicks AxisTicks = new AxisTicks();
-        private readonly AxisLine AxisLine = new AxisLine();
+        /// <summary>
+        /// Customization options for the text label displayed on an axis
+        /// </summary>
+        public readonly AxisLabel AxisLabel = new();
+
+        /// <summary>
+        /// Customization options for axis tick marks
+        /// </summary>
+        public readonly AxisTicks AxisTicks = new();
+
+        /// <summary>
+        /// Customization options for the line between an axis and the data area
+        /// </summary>
+        public readonly AxisLine AxisLine = new();
 
         /// <summary>
         /// Return configuration objects to allow deep customization of axis settings.
