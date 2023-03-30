@@ -57,7 +57,7 @@ public static class Palette
         { StandardPalettes.Category20, ScottPlot.Palette.Category20 },
         { StandardPalettes.ColorblindFriendly, ScottPlot.Palette.ColorblindFriendly },
         { StandardPalettes.Dark, ScottPlot.Palette.Dark },
-        { StandardPalettes.DarkPastel, ScottPlot.Palette.DarkPastel},
+        { StandardPalettes.DarkPastel, ScottPlot.Palette.DarkPastel },
         { StandardPalettes.Frost, ScottPlot.Palette.Frost },
         { StandardPalettes.Microcharts, ScottPlot.Palette.Microcharts },
         { StandardPalettes.Nero, ScottPlot.Palette.Nero },
