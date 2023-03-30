@@ -16,6 +16,7 @@
 * Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
 * OHLC: The `Volume` property and constructor overload initializing it have been deprecated (#2404)
 * Axis: Expose tick, spine, and label configuration objects (#2512, #2513) _Thanks @cxjcqu_
+* Signal: Improved `FillDisable()` behavior (#2436) _Thanks @szescxz_
 
 # Releases
 
