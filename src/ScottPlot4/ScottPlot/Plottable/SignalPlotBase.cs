@@ -871,7 +871,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillDisable()
         {
-            _FillType = FillType.FillBelow;
+            _FillType = FillType.NoFill;
             _GradientFillColor1 = null;
             _GradientFillColor2 = null;
         }
