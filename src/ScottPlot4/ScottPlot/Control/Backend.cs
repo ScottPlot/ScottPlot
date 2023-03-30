@@ -267,7 +267,15 @@ namespace ScottPlot.Control
         /// before it has fully connected its event handlers. To prevent processing events before
         /// the host is control is ready, the processor will be stopped until is called by the host control.
         /// </summary>
-        public void StartProcessingEvents() => EventsProcessor.Enable = true;
+        public void StartProcessingEvents()
+        {
+            EventsProcessor.Enable = true;
+
+            // initialize with a simulated click to clear NaNs and provide accurate coordinates
+            // https://github.com/ScottPlot/ScottPlot/issues/2468
+            MouseDown(InputState.Empty);
+            MouseUp(InputState.Empty);
+        }
 
         /// <summary>
         /// Reset the back-end by creating an entirely new plot of the given dimensions

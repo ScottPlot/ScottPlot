@@ -1,5 +1,4 @@
 ﻿using System;
-using ScottPlot;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -10,20 +9,12 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            Random rand = new(0);
-            var popSeries = new ScottPlot.Statistics.PopulationSeries[10];
-            for (int i = 0; i < popSeries.Length; i++)
-            {
-                double[] values = DataGen.RandomNormal(rand, 320);
-                ScottPlot.Statistics.Population[] populations = { new(values) };
-                popSeries[i] = new(populations, $"Pop {i + 1}");
-            }
+            formsPlot1.MouseMove += FormsPlot1_MouseMove;
+        }
 
-            var multiSeries = new ScottPlot.Statistics.PopulationMultiSeries(popSeries);
-
-            formsPlot1.Plot.Frameless();
-            formsPlot1.Plot.AddPopulations(multiSeries);
-            formsPlot1.Refresh();
+        private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
+        {
+            Text = $"{formsPlot1.Plot.GetCoordinate(e.X, e.Y)}";
         }
     }
 }
