@@ -2,7 +2,7 @@
 
 internal static class TODO
 {
-    /* ### SCOSCOTT'S RUNNING LIST OF UPCOMING TASKS ##    
+    /* ### SCOTT'S RUNNING LIST OF UPCOMING TASKS ##    
      * DateTime tick generator
      *   IAxis.cs has lots of tick styling that should be a Axis.TickStyle
      * Manual tick generator
@@ -14,5 +14,6 @@ internal static class TODO
      * Add more data source classes
      * Add XLabel(), YLabel(), and Title() shortcuts methods
      * Need Plot.Remove to match Plot.Add and maybe even Plot.GetPlottables()
+     * Use something like an ILegendItemGenerator for each plottable so users can inject their own logic for formatting legend items
      */
 }

@@ -14,7 +14,16 @@ namespace ScottPlot.Plottable
     {
         public double[] Values { get; set; }
         public string Label { get; set; }
+
+        /// <summary>
+        /// Labels to display on top of each slice or in the legend.
+        /// </summary>
         public string[] SliceLabels { get; set; }
+
+        /// <summary>
+        /// If populated, this array of strings will be used for the legend.
+        /// </summary>
+        public string[] LegendLabels { get; set; }
 
         /// <summary>
         /// Defines how large the pie is relative to the pixel size of the smallest axis
@@ -29,6 +38,10 @@ namespace ScottPlot.Plottable
         public bool Explode { get; set; }
         public bool ShowValues { get; set; }
         public bool ShowPercentages { get; set; }
+
+        /// <summary>
+        /// If enabled, <see cref="SliceLabels"/> will be displayed above each slice.
+        /// </summary>
         public bool ShowLabels { get; set; }
 
         public double DonutSize { get; set; }
@@ -68,11 +81,20 @@ namespace ScottPlot.Plottable
             if (SliceLabels is null)
                 return LegendItem.None;
 
+            string[] labels = SliceLabels;
+
+            if (LegendLabels is not null)
+            {
+                if (LegendLabels.Length != Values.Length)
+                    throw new InvalidOperationException("custom legend labels must have the same number of items as slices");
+                labels = LegendLabels;
+            }
+
             return Enumerable
                 .Range(0, Values.Length)
                 .Select(i => new LegendItem(this)
                 {
-                    label = SliceLabels[i],
+                    label = labels[i],
                     color = SliceFillColors[i],
                     lineWidth = 10,
                     hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,

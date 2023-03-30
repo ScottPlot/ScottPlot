@@ -262,4 +262,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             pie.Size = .6; // size of the pie (default is .9)
         }
     }
+
+    public class CustomLegendLabels : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Pie();
+        public string ID => "pie_custom_legend_labels";
+        public string Title => "Custom Legend Labels";
+        public string Description =>
+            "Labels for slices and legend items can be independently configured.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 778, 43, 283, 76, 184 };
+            string[] SliceLabels = { "Cat", "Dog", "Snake", "Frog", "Fox" };
+            string[] LegendLabels = { "Meow", "Woof", "Ssst", "Ribbit", "RingDing" };
+
+            var pie = plt.AddPie(values);
+            pie.SliceLabels = SliceLabels;
+            pie.ShowLabels = true;
+
+            pie.LegendLabels = LegendLabels;
+            plt.Legend();
+        }
+    }
 }
