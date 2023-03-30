@@ -264,6 +264,14 @@ namespace ScottPlot.Plottable
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+
+            if (GaugeCount == 3)
+                pxPerUnit /= 2.1f;
+            else if (GaugeCount == 2)
+                pxPerUnit /= 2.2f;
+            else if (GaugeCount == 1)
+                pxPerUnit /= 2.5f;
+
             float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));
             float radiusPixels = gaugeWidthPx * ((float)SpaceFraction + 1);
 
