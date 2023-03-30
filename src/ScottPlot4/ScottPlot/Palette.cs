@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -58,5 +59,16 @@ public static class Palette
             .Where(x => x.GetConstructors().Where(x => x.GetParameters().Count() == 0).Any())
             .Select(x => (IPalette)Activator.CreateInstance(x))
             .ToArray();
+    }
+    public static Dictionary<string, IPalette> ToDictionary()
+    {
+        return Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(x => x.IsClass)
+            .Where(x => !x.IsAbstract)
+            .Where(x => x.GetInterfaces().Contains(typeof(ScottPlot.IPalette)))
+            .Where(x => x.GetConstructors().Where(x => x.GetParameters().Count() == 0).Any())
+            .Select(x => (IPalette)Activator.CreateInstance(x))
+            .ToDictionary(x => x.Name, x => x);
     }
 }

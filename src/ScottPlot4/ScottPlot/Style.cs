@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Styles;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -35,6 +36,16 @@ namespace ScottPlot
                 .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
                 .Select(x => (IStyle)FormatterServices.GetUninitializedObject(x))
                 .ToArray();
+        }
+        public static Dictionary<string, IStyle> ToDictionary()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(x => x.IsClass)
+                .Where(x => !x.IsAbstract)
+                .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
+                .Select(x => new KeyValuePair<string, IStyle>(x.ToString().Split('.').Last(), (IStyle)FormatterServices.GetUninitializedObject(x)))
+                .ToDictionary(x=>x.Key, x=>x.Value);
         }
     }
 
