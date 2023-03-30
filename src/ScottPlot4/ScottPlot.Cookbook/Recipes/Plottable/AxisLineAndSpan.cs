@@ -197,6 +197,41 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class AxisLineWithPositionLabels2 : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLine_positionLabels2";
+        public string Title => "Position Labels on Additional Axes";
+        public string Description =>
+            "Position labels can be added to multi-axis plots. " +
+            "The axis line must be told which axis to render the label on.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var hlineA = plt.AddHorizontalLine(3);
+            hlineA.YAxisIndex = 1;
+            hlineA.PositionLabel = true;
+            hlineA.PositionLabelOppositeAxis = true;
+            hlineA.PositionLabelBackground = hlineA.Color;
+
+            var hlineB = plt.AddHorizontalLine(7);
+            hlineB.YAxisIndex = 2;
+            hlineB.PositionLabel = true;
+            hlineB.PositionLabelOppositeAxis = true;
+            hlineB.PositionLabelBackground = hlineB.Color;
+
+            // tell the line which axis to draw the label on
+            var yAxis2 = plt.XAxis2;
+            var yAxis3 = plt.AddAxis(ScottPlot.Renderable.Edge.Right);
+            hlineA.PositionLabelAxis = yAxis2;
+            hlineB.PositionLabelAxis = yAxis3;
+
+            plt.YAxis2.Ticks(true);
+            plt.SetAxisLimits(yMin: -10, yMax: 10, yAxisIndex: 1);
+            plt.SetAxisLimits(yMin: -10, yMax: 10, yAxisIndex: 2);
+        }
+    }
+
     public class AxisSpan : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
