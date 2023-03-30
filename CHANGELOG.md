@@ -19,6 +19,7 @@
 * Signal: Improved `FillDisable()` behavior (#2436) _Thanks @szescxz_
 * RadialGaugePlot: Improve alignment for plots with 1-3 gauges (#2448) _Thanks @DavidWhataGIT and daddydavid_
 * Pie: Added `LegendLabels` property so slices and legend items can have different labels (#2459) _Thanks @vietanhbui_
+* Controls: Improved `GetCoordinate()` behavior for empty plots (#2468) _Thanks @dusko23_
 
 # Releases
 
