@@ -201,34 +201,15 @@ namespace ScottPlot
         }
         #endregion
         #region Plot Style
-        public enum PlotStyles
+        public static readonly DependencyProperty PlotStyleProperty = DependencyProperty.Register("PlotStyle", typeof(ScottPlot.Style.StandardStyles), typeof(WpfPlot), new FrameworkPropertyMetadata(ScottPlot.Style.StandardStyles.Default, OnPlotStyleChanged));
+        public ScottPlot.Style.StandardStyles PlotStyle
         {
-            Black,
-            Blue1,
-            Blue2,
-            Blue3,
-            Burgundy,
-            Control,
-            Default,
-            Gray1,
-            Gray2,
-            Hazel,
-            Light1,
-            Light2,
-            Monospace,
-            Pink,
-            Seaborn
-        }
-        public static readonly DependencyProperty PlotStyleProperty = DependencyProperty.Register("PlotStyle", typeof(PlotStyles), typeof(WpfPlot), new FrameworkPropertyMetadata(PlotStyles.Default, OnPlotStyleChanged));
-        public PlotStyles PlotStyle
-        {
-            get => (PlotStyles)GetValue(PlotStyleProperty); set => SetValue(PlotStyleProperty, value);
+            get => (ScottPlot.Style.StandardStyles)GetValue(PlotStyleProperty); set => SetValue(PlotStyleProperty, value);
         }
         private static void OnPlotStyleChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = (WpfPlot)modifiedObject;
-            var styles = ScottPlot.Style.ToDictionary();
-            if (styles.TryGetValue(ctrl.PlotStyle.ToString(), out var style))
+            if (ScottPlot.Style.StyleDictionary.TryGetValue(ctrl.PlotStyle, out var style))
             {
                 ctrl.Plot.Style(style);
                 ctrl.Refresh();
@@ -236,36 +217,15 @@ namespace ScottPlot
         }
         #endregion
         #region Plot Palette
-        public enum PlotPalettes
+        public static readonly DependencyProperty PlotPaletteProperty = DependencyProperty.Register("PlotPalette", typeof(ScottPlot.Palette.StandardPalettes), typeof(WpfPlot), new FrameworkPropertyMetadata(ScottPlot.Palette.StandardPalettes.Category10, OnPlotPaletteChanged));
+        public ScottPlot.Palette.StandardPalettes PlotPalette
         {
-            Amber,
-            Aurora,
-            Category10,
-            Category20,
-            ColorblindFriendly,
-            Dark,
-            DarkPastel,
-            Frost,
-            Microcharts,
-            Nero,
-            Nord,
-            OneHalf,
-            OneHalfDark,
-            PolarNight,
-            Rednessm,
-            SnowStorm,
-            Tsitsulin
-        }
-        public static readonly DependencyProperty PlotPaletteProperty = DependencyProperty.Register("PlotPalette", typeof(PlotPalettes), typeof(WpfPlot), new FrameworkPropertyMetadata(PlotPalettes.Category10, OnPlotPaletteChanged));
-        public PlotPalettes PlotPalette
-        {
-            get => (PlotPalettes)GetValue(PlotPaletteProperty); set => SetValue(PlotPaletteProperty, value);
+            get => (ScottPlot.Palette.StandardPalettes)GetValue(PlotPaletteProperty); set => SetValue(PlotPaletteProperty, value);
         }
         private static void OnPlotPaletteChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
         {
             var ctrl = (WpfPlot)modifiedObject;
-            var palettes = ScottPlot.Palette.ToDictionary();
-            if (palettes.TryGetValue(ctrl.PlotStyle.ToString(), out var palette))
+            if (ScottPlot.Palette.PaletteDictionary.TryGetValue(ctrl.PlotPalette, out var palette))
             {
                 ctrl.Plot.Palette = palette;
                 ctrl.Refresh();

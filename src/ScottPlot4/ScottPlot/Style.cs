@@ -8,6 +8,24 @@ namespace ScottPlot
 {
     public static class Style
     {
+        public enum StandardStyles
+        {
+            Black,
+            Blue1,
+            Blue2,
+            Blue3,
+            Burgundy,
+            Control,
+            Default,
+            Gray1,
+            Gray2,
+            Hazel,
+            Light1,
+            Light2,
+            Monospace,
+            Pink,
+            Seaborn
+        }
         public static IStyle Black => new Black();
         public static IStyle Blue1 => new Blue1();
         public static IStyle Blue2 => new Blue2();
@@ -24,6 +42,26 @@ namespace ScottPlot
         public static IStyle Pink => new Pink();
         public static IStyle Seaborn => new Seaborn();
 
+        public static readonly Dictionary<StandardStyles, ScottPlot.Styles.IStyle> StyleDictionary = new()
+        {
+            { StandardStyles.Black, ScottPlot.Style.Black },
+            { StandardStyles.Blue1, ScottPlot.Style.Blue1 },
+            { StandardStyles.Blue2, ScottPlot.Style.Blue2 },
+            { StandardStyles.Blue3, ScottPlot.Style.Blue3 },
+            { StandardStyles.Burgundy, ScottPlot.Style.Burgundy },
+            { StandardStyles.Control, ScottPlot.Style.Control },
+            { StandardStyles.Default, ScottPlot.Style.Default },
+            { StandardStyles.Gray1, ScottPlot.Style.Gray1 },
+            { StandardStyles.Gray2, ScottPlot.Style.Gray2 },
+            { StandardStyles.Hazel, ScottPlot.Style.Hazel },
+            { StandardStyles.Light1, ScottPlot.Style.Light1 },
+            { StandardStyles.Light2, ScottPlot.Style.Light2 },
+            { StandardStyles.Monospace, ScottPlot.Style.Monospace },
+            { StandardStyles.Pink, ScottPlot.Style.Pink },
+            { StandardStyles.Seaborn, ScottPlot.Style.Seaborn }
+        };
+
+
         /// <summary>
         /// Return an array containing every available style
         /// </summary>
@@ -36,16 +74,6 @@ namespace ScottPlot
                 .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
                 .Select(x => (IStyle)FormatterServices.GetUninitializedObject(x))
                 .ToArray();
-        }
-        public static Dictionary<string, IStyle> ToDictionary()
-        {
-            return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(x => x.IsClass)
-                .Where(x => !x.IsAbstract)
-                .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
-                .Select(x => new KeyValuePair<string, IStyle>(x.ToString().Split('.').Last(), (IStyle)FormatterServices.GetUninitializedObject(x)))
-                .ToDictionary(x => x.Key, x => x.Value);
         }
     }
 }
