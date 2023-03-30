@@ -17,6 +17,7 @@
 * OHLC: The `Volume` property and constructor overload initializing it have been deprecated (#2404)
 * Axis: Expose tick, spine, and label configuration objects (#2512, #2513) _Thanks @cxjcqu_
 * Signal: Improved `FillDisable()` behavior (#2436) _Thanks @szescxz_
+* RadialGaugePlot: Improve alignment for plots with 1-3 gauges (#2448) _Thanks @DavidWhataGIT and daddydavid_
 
 # Releases
 
