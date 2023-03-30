@@ -45,8 +45,7 @@ namespace ScottPlot
                 .Where(x => !x.IsAbstract)
                 .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
                 .Select(x => new KeyValuePair<string, IStyle>(x.ToString().Split('.').Last(), (IStyle)FormatterServices.GetUninitializedObject(x)))
-                .ToDictionary(x=>x.Key, x=>x.Value);
+                .ToDictionary(x => x.Key, x => x.Value);
         }
     }
-
 }

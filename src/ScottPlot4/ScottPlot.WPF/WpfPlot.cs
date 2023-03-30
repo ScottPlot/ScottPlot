@@ -143,7 +143,7 @@ namespace ScottPlot
         public event RoutedEventHandler PlottableDragged
         {
             add { AddHandler(PlottableDroppedEvent, value); }
-            remove { RemoveHandler (PlottableDraggedEvent, value); }
+            remove { RemoveHandler(PlottableDraggedEvent, value); }
         }
         protected virtual void RaisePlottableDraggedEvent()
         {
@@ -283,12 +283,12 @@ namespace ScottPlot
             Backend.BitmapChanged += (o, e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
             Backend.BitmapUpdated += (o, e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
             Backend.CursorChanged += (o, e) => Cursor = Cursors[Backend.Cursor];
-            Backend.RightClicked +=  (o, e) => RaiseRightClickedEvent();
+            Backend.RightClicked += (o, e) => RaiseRightClickedEvent();
             Backend.LeftClicked += (o, e) => RaiseLeftClickedEvent();
             Backend.LeftClickedPlottable += (o, e) => RaiseLeftClickedPlottableEvent();
             Backend.AxesChanged += (o, e) => RaiseAxesChangedEvent();
-            Backend.PlottableDragged += (o ,e) => RaisePlottableDraggedEvent();
-            Backend.PlottableDropped += (o ,e) => RaisePlottableDroppedEvent();
+            Backend.PlottableDragged += (o, e) => RaisePlottableDraggedEvent();
+            Backend.PlottableDropped += (o, e) => RaisePlottableDroppedEvent();
             Backend.Configuration.ScaleChanged += (o, e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
 
             this.SizeChanged += (o, e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
@@ -300,7 +300,7 @@ namespace ScottPlot
             this.MouseEnter += (o, e) => base.OnMouseEnter(e);
             this.MouseLeave += (o, e) => base.OnMouseLeave(e);
 
-            Cursors = new ()
+            Cursors = new()
             {
                 [ScottPlot.Cursor.Arrow] = System.Windows.Input.Cursors.Arrow,
                 [ScottPlot.Cursor.WE] = System.Windows.Input.Cursors.SizeWE,
@@ -454,7 +454,7 @@ namespace ScottPlot
         public void ReplacePlotBitmap(System.Drawing.Bitmap bmp)
         {
             PlotBitmap = new WriteableBitmap(BmpImageFromBmp(bmp));
-            if(PlotImage != null) 
+            if (PlotImage != null)
                 PlotImage.Source = PlotBitmap;
         }
 
