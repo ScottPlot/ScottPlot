@@ -18,6 +18,7 @@
 * Axis: Expose tick, spine, and label configuration objects (#2512, #2513) _Thanks @cxjcqu_
 * Signal: Improved `FillDisable()` behavior (#2436) _Thanks @szescxz_
 * RadialGaugePlot: Improve alignment for plots with 1-3 gauges (#2448) _Thanks @DavidWhataGIT and daddydavid_
+* Pie: Added `LegendLabels` property so slices and legend items can have different labels (#2459) _Thanks @vietanhbui_
 
 # Releases
 
