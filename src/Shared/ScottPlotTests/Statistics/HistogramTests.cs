@@ -139,4 +139,28 @@ internal class HistogramTests
             hist1.Bins[i].Should().BeApproximately(expectedBins[i], 1e-10);
         }
     }
+
+    [Test]
+    public void Test_Histogram_MinMaxValidation()
+    {
+        FluentActions
+            .Invoking(() => ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 0, max: 1, binCount: 1))
+            .Should()
+            .NotThrow();
+
+        FluentActions
+            .Invoking(() => ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 1, max: 0, binCount: 10))
+            .Should()
+            .Throw<ArgumentException>();
+
+        FluentActions
+            .Invoking(() => ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 1, max: 1, binCount: 10))
+            .Should()
+            .Throw<ArgumentException>();
+
+        FluentActions
+            .Invoking(() => ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 0, max: 1, binCount: 0))
+            .Should()
+            .Throw<ArgumentException>();
+    }
 }
