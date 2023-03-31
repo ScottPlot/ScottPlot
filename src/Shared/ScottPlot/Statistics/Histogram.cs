@@ -82,13 +82,13 @@ public class Histogram
     /// </remarks>
     public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
     {
-        if (min > max)
+        if (min >= max)
             throw new ArgumentException($"{nameof(max)} must be greater than {nameof(min)}");
 
         if (binCount < 1)
             throw new ArgumentException($"must have at least 1 bin");
 
-        BinSize = Math.Max(1, (max - min) / binCount);
+        BinSize = (max - min) / binCount;
         AddOutliersToEdgeBins = addOutliersToEdgeBins;
 
         if (addFinalBin)
