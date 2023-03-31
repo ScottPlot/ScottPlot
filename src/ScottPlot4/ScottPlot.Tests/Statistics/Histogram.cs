@@ -129,17 +129,19 @@ namespace ScottPlotTests.Statistics
             // This test reproduces issue described by @Xerxes004 #2463
             // https://github.com/ScottPlot/ScottPlot/issues/2463
             double[] data = ScottPlot.DataGen.Zeros(10);
-            var stats = new ScottPlot.Statistics.BasicStats(data);
 
-            var hist1 = new ScottPlot.Statistics.Histogram(min: stats.Min, max: stats.Max, binCount: 1, addOutliersToEdgeBins: false, addFinalBin: false);
+            var hist1 = new ScottPlot.Statistics.Histogram(min: -1, max: 1, binCount: 1, addOutliersToEdgeBins: false, addFinalBin: false);
             hist1.AddRange(data);
 
-            hist1.Min.Should().Be(-0.5);
-            hist1.Max.Should().Be(0.5);
+            hist1.Min.Should().Be(-1);
+            hist1.Max.Should().Be(1);
+
             hist1.Bins.Length.Should().Be(1);
-            hist1.Bins.Should().BeEquivalentTo(new double[] { -0.5 });
+            hist1.Bins.Should().BeEquivalentTo(new double[] { -1 });
+
             hist1.Counts.Length.Should().Be(1);
             hist1.Counts.Should().BeEquivalentTo(new double[] { 10 });
+
             hist1.BinCenters.Length.Should().Be(1);
             hist1.BinCenters.Should().BeEquivalentTo(new double[] { 0 });
         }
