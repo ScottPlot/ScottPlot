@@ -5,6 +5,9 @@
 * Data: Added axis limit caching functionality for improved performance of large scatter plots (#2460) _Thanks @StendProg_
 * DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
 * Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
+* Solution: Fixed configuration error caused by invalid GUIDs (#2525) _Thanks @KroMignon_
+* Controls: Disabled context menu in non-interactive mode (#2475) _Thanks @KroMignon_
+* Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
 
 ## ScottPlot 4.1.62 (in development)
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
@@ -20,6 +23,7 @@
 * RadialGaugePlot: Improve alignment for plots with 1-3 gauges (#2448) _Thanks @DavidWhataGIT and daddydavid_
 * Pie: Added `LegendLabels` property so slices and legend items can have different labels (#2459) _Thanks @vietanhbui_
 * Controls: Improved `GetCoordinate()` behavior for empty plots (#2468) _Thanks @dusko23_
+* Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
 
 # Releases
 
