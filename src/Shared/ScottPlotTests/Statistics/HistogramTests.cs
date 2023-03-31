@@ -1,4 +1,6 @@
-﻿namespace SharedTests.Statistics;
+﻿using System;
+
+namespace SharedTests.Statistics;
 
 internal class HistogramTests
 {
@@ -120,5 +122,21 @@ internal class HistogramTests
 
         hist1.Add(10); // since bins are max-exclusive, this counts as an outlier
         hist1.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+    }
+
+    [Test]
+    public void Test_Histogram_FractionalBinSize()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/2490
+
+        var hist1 = ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 0, max: 1, binCount: 10);
+
+        hist1.BinSize.Should().Be(0.1);
+
+        double[] expectedBins = new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+        for (int i = 0; i < expectedBins.Length; i++)
+        {
+            hist1.Bins[i].Should().BeApproximately(expectedBins[i], 1e-10);
+        }
     }
 }
