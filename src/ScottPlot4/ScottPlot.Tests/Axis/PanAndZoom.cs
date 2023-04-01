@@ -82,6 +82,10 @@ internal class PanAndZoom
         // pan secondary without actually moving
         plt.AxisPanCenter(0, 0, xAxisIndex: 1, yAxisIndex: 1);
         plt.GetAxisLimits().Should().Be(primaryLimits);
+
+        // pan secondary
+        plt.AxisPanCenter(1, 1, xAxisIndex: 1, yAxisIndex: 1);
+        plt.GetAxisLimits().Should().Be(primaryLimits);
     }
 
     [Test]
