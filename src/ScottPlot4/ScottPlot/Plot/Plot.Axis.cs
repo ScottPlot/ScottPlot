@@ -730,7 +730,7 @@ namespace ScottPlot
 
             double dx = x - settings.GetXAxis(xAxisIndex).Dims.Center;
             double dy = y - settings.GetYAxis(yAxisIndex).Dims.Center;
-            AxisPan(dx, dy);
+            AxisPan(dx, dy, xAxisIndex, yAxisIndex);
         }
 
         #endregion
