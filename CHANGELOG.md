@@ -24,6 +24,7 @@
 * Pie: Added `LegendLabels` property so slices and legend items can have different labels (#2459) _Thanks @vietanhbui_
 * Controls: Improved `GetCoordinate()` behavior for empty plots (#2468) _Thanks @dusko23_
 * Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
+* Axis: Improved `Plot.AxisPanCenter()` support for multi-axis plots (#2483, #2544) _Thanks @dusko23_
 
 # Releases
 
