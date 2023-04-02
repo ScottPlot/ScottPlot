@@ -26,6 +26,7 @@
 * Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
 * Axis: Improved `Plot.AxisPanCenter()` support for multi-axis plots (#2483, #2544) _Thanks @dusko23_
 * Bubble Plot: Added `RadiusIsPixels` flag which when `falst` sizes bubbles using radius units instead of pixels (#2492) _Thanks @marcelpel_
+* Axis: Improved `Plot.MatchAxisLimits()` support for multi-axis plots (#2495) _Thanks @Margulieuxd_
 
 # Releases
 
