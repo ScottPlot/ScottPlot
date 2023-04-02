@@ -6,6 +6,6 @@ public class TopAxis : XAxisBase, IXAxis
 
     public TopAxis()
     {
-        TickGenerator = new TickGenerators.NumericAutomatic(false);
+        TickGenerator = new TickGenerators.NumericAutomatic();
     }
 }

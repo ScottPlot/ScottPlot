@@ -1,6 +1,4 @@
-﻿using ScottPlot.TickGenerators.TimeUnits;
-
-namespace ScottPlot.Axis.TimeUnits;
+﻿namespace ScottPlot.TickGenerators.TimeUnits;
 
 public class Month : ITimeUnit
 {

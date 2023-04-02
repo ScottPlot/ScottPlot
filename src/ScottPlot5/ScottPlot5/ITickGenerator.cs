@@ -16,5 +16,5 @@ public interface ITickGenerator
     /// Logic for generating ticks automatically.
     /// Generated ticks are stored in <see cref="Ticks"/>.
     /// </summary>
-    void Regenerate(CoordinateRange range, PixelLength size);
+    void Regenerate(CoordinateRange range, Edge edge, PixelLength size);
 }

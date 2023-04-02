@@ -1,10 +1,9 @@
-﻿using ScottPlot.Axis.TimeUnits;
-
-namespace ScottPlot.TickGenerators
+﻿namespace ScottPlot.TickGenerators
 {
     public class DateTimeFixedInterval : IDateTickGenerator
     {
         public ITimeUnit Interval { get; set; }
+
         public int IntervalsPerTick { get; set; } = 1;
 
         public DateTimeFixedInterval(ITimeUnit interval, int intervalsPerTick = 1)
@@ -14,6 +13,7 @@ namespace ScottPlot.TickGenerators
         }
 
         public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+
         public int MaxTickCount { get; set; } = 10_000;
 
         public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
@@ -21,7 +21,7 @@ namespace ScottPlot.TickGenerators
             return dates.Select(dt => dt.ToNumber());
         }
 
-        public void Regenerate(CoordinateRange range, PixelLength size)
+        public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
         {
             List<Tick> ticks = new();
 
