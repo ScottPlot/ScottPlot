@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Axis.TimeUnits;
+﻿namespace ScottPlot.TickGenerators;
 
 public interface ITimeUnit
 {
