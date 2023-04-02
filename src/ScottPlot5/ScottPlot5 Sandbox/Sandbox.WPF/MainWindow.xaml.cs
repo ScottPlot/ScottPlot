@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using ScottPlot;
 
 #pragma warning disable CA1416 // Validate platform compatibility
@@ -11,7 +12,15 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        WpfPlot.Plot.Add.Signal(Generate.Sin(51));
-        WpfPlot.Plot.Add.Signal(Generate.Cos(51));
+        int pointCount = 100_000;
+        double[] ys = Generate.NoisySin(Random.Shared, pointCount);
+        double[] xs = Generate.Consecutive(pointCount);
+
+        var sp = WpfPlot.Plot.Add.ScatterGLCustom(WpfPlot, xs, ys);
+        sp.LineStyle.Width = 5;
+        sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
+        sp.MarkerStyle.Outline.Width = 3;
+
+        WpfPlot.Refresh();
     }
 }
