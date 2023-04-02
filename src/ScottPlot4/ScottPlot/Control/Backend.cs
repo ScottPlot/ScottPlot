@@ -270,11 +270,6 @@ namespace ScottPlot.Control
         public void StartProcessingEvents()
         {
             EventsProcessor.Enable = true;
-
-            // initialize with a simulated click to clear NaNs and provide accurate coordinates
-            // https://github.com/ScottPlot/ScottPlot/issues/2468
-            MouseDown(InputState.Empty);
-            MouseUp(InputState.Empty);
         }
 
         /// <summary>
