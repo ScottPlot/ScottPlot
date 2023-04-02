@@ -1,37 +1,47 @@
-﻿using System.Globalization;
+﻿namespace ScottPlot.TickGenerators;
 
-namespace ScottPlot.TickGenerators;
-
-internal class NumericAutomatic : ITickGenerator
+public class NumericAutomatic : ITickGenerator
 {
-    private readonly bool IsVertical;
-
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
 
     public int MaxTickCount { get; set; } = 10_000;
 
-    public NumericAutomatic(bool isVertical)
+    public Func<double, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
+
+    public static string DefaultLabelFormatter(double value)
     {
-        IsVertical = isVertical;
+        CultureInfo culture = CultureInfo.InvariantCulture;
+
+        // if the number is round or large, use the numeric format
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-numeric-n-format-specifier
+        bool isRoundNumber = (int)value == value;
+        bool isLargeNumber = Math.Abs(value) > 1000;
+        if (isRoundNumber || isLargeNumber)
+            return value.ToString("N0", culture);
+
+        // otherwise the number is probably small or very precise to use the general format (with slight rounding)
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-general-g-format-specifier
+        string label = Math.Round(value, 10).ToString("G", culture);
+        return label == "-0" ? "0" : label;
     }
 
-    public void Regenerate(CoordinateRange range, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
     {
         PixelSize largestLabel = new(12, 12);
-        Ticks = GenerateTicks(range, size, largestLabel)
+        Ticks = GenerateTicks(range, edge, size, largestLabel)
             .Where(x => range.Contains(x.Position))
             .ToArray();
     }
 
-    private Tick[] GenerateTicks(CoordinateRange range, PixelLength size, PixelSize predictedTickSize, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength size, PixelSize predictedTickSize, int depth = 0)
     {
         if (depth > 3)
             Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
 
         // generate ticks and labels based on predicted maximum label size
-        float maxPredictedSize = IsVertical ? predictedTickSize.Height : predictedTickSize.Width;
+        float maxPredictedSize = edge.IsVertical() ? predictedTickSize.Height : predictedTickSize.Width;
         double[] majorTickPositions = GenerateTickPositions(range, size, maxPredictedSize);
-        string[] majorTickLabels = majorTickPositions.Select(position => GetPrettyTickLabel(position)).ToArray();
+        string[] majorTickLabels = majorTickPositions.Select(x => LabelFormatter(x)).ToArray();
 
         // determine if the actual tick labels are larger than predicted (suggesting density is too high and overlapping may occur)
         using SKPaint paint = new();
@@ -43,7 +53,7 @@ internal class NumericAutomatic : ITickGenerator
 
         // recursively recalculate tick density if necessary
         return tickExceedsPredictedSize
-            ? GenerateTicks(range, size, largestLabel, depth + 1)
+            ? GenerateTicks(range, edge, size, largestLabel, depth + 1)
             : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
     }
 
@@ -141,25 +151,5 @@ internal class NumericAutomatic : ITickGenerator
         }
 
         return minorTicks.ToArray();
-    }
-
-    private static string GetPrettyTickLabel(double position)
-    {
-        string label = FormatLocal(position, CultureInfo.CurrentCulture);
-        return label == "-0" ? "0" : label;
-    }
-
-    private static string FormatLocal(double value, CultureInfo culture)
-    {
-        // if the number is round or large, use the numeric format
-        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-numeric-n-format-specifier
-        bool isRoundNumber = (int)value == value;
-        bool isLargeNumber = Math.Abs(value) > 1000;
-        if (isRoundNumber || isLargeNumber)
-            return value.ToString("N0", culture);
-
-        // otherwise the number is probably small or very precise to use the general format (with slight rounding)
-        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-general-g-format-specifier
-        return Math.Round(value, 10).ToString("G", culture);
     }
 }

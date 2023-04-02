@@ -9,6 +9,7 @@
 * Controls: Disabled context menu in non-interactive mode (#2475) _Thanks @KroMignon_
 * Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
 * WpfPlot: Control now appears in the Visual Studio Toolbox (#2535, #1966) _Thanks Valkyre_
+* Axis: Improved tick label format customization (#2500) _Thanks @chhh_
 
 ## ScottPlot 4.1.62 (in development)
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
@@ -28,6 +29,7 @@
 * Axis: Improved `Plot.AxisPanCenter()` support for multi-axis plots (#2483, #2544) _Thanks @dusko23_
 * Bubble Plot: Added `RadiusIsPixels` flag which when `falst` sizes bubbles using radius units instead of pixels (#2492) _Thanks @marcelpel_
 * Axis: Improved `Plot.MatchAxisLimits()` support for multi-axis plots (#2495) _Thanks @Margulieuxd_
+* Plot: Improved `Plot.XLabel()` XML documentation (#2552) _Thanks @JulianusIV_
 
 # Releases
 
