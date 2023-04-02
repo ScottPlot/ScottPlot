@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using ScottPlot.TickGenerators.TimeUnits;
-
-namespace ScottPlot.Axis.TimeUnits;
+﻿namespace ScottPlot.TickGenerators.TimeUnits;
 
 public class Minute : ITimeUnit
 {

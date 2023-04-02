@@ -99,7 +99,7 @@ public class ColorBar : IPanel
         axis.Min = range.Min;
         axis.Max = range.Max;
 
-        axis.TickGenerator.Regenerate(axis.Range, length);
+        axis.TickGenerator.Regenerate(axis.Range, axis.Edge, length);
 
         return axis;
     }

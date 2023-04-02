@@ -1,29 +1,27 @@
-﻿using ScottPlot.Axis.TimeUnits;
-
-namespace ScottPlot.TickGenerators;
+﻿namespace ScottPlot.TickGenerators;
 
 public class DateTimeAutomatic : IDateTickGenerator
 {
-    private readonly static IReadOnlyList<ITimeUnit> defaultTimeUnits;
-
-    static DateTimeAutomatic()
+    private readonly static List<ITimeUnit> TheseTimeUnits = new()
     {
-        defaultTimeUnits = typeof(ITimeUnit).Assembly
-            .GetTypes()
-            .Where(t => t.IsClass && t.Namespace == "ScottPlot.Axis.TimeUnits" && t.GetInterfaces().Contains(typeof(ITimeUnit)))
-            .Select(t => (ITimeUnit)Activator.CreateInstance(t)!)
-            .OrderBy(t => t.MinSize)
-            .ToArray();
-    }
+        new TimeUnits.Millisecond(),
+        new TimeUnits.Centisecond(),
+        new TimeUnits.Decisecond(),
+        new TimeUnits.Second(),
+        new TimeUnits.Minute(),
+        new TimeUnits.Hour(),
+        new TimeUnits.Day(),
+        new TimeUnits.Month(),
+        new TimeUnits.Year(),
+    };
 
     public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
-    public int MaxTickCount { get; set; } = 10_000;
 
-    public IReadOnlyList<ITimeUnit> TimeUnits { get; set; } = defaultTimeUnits;
+    public int MaxTickCount { get; set; } = 10_000;
 
     private ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
-        foreach (var timeUnit in TimeUnits)
+        foreach (var timeUnit in TheseTimeUnits)
         {
             long estimatedUnitTicks = timeSpan.Ticks / timeUnit.MinSize.Ticks;
             foreach (var increment in timeUnit.Divisors)
@@ -34,20 +32,20 @@ public class DateTimeAutomatic : IDateTickGenerator
             }
         }
 
-        return TimeUnits.Last();
+        return TheseTimeUnits.Last();
     }
 
     private ITimeUnit GetLargerTimeUnit(ITimeUnit timeUnit)
     {
-        for (int i = 0; i < TimeUnits.Count - 1; i++)
+        for (int i = 0; i < TheseTimeUnits.Count - 1; i++)
         {
-            if (timeUnit.GetType() == TimeUnits[i].GetType())
+            if (timeUnit.GetType() == TheseTimeUnits[i].GetType())
             {
-                return TimeUnits[i + 1];
+                return TheseTimeUnits[i + 1];
             }
         }
 
-        return TimeUnits.Last();
+        return TheseTimeUnits.Last();
     }
 
     private int? LeastMemberGreaterThan(double value, IReadOnlyList<int> list)
@@ -58,7 +56,7 @@ public class DateTimeAutomatic : IDateTickGenerator
         return null;
     }
 
-    public void Regenerate(CoordinateRange range, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
     {
         if (range.Span >= TimeSpan.MaxValue.Days)
         {
@@ -83,10 +81,10 @@ public class DateTimeAutomatic : IDateTickGenerator
             int? niceIncrement = LeastMemberGreaterThan(increment, timeUnit.Divisors);
             if (niceIncrement is null)
             {
-                timeUnit = TimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
+                timeUnit = TheseTimeUnits.FirstOrDefault(t => t.MinSize > timeUnit.MinSize);
                 if (timeUnit is not null)
                     continue;
-                timeUnit = TimeUnits[TimeUnits.Count - 1];
+                timeUnit = TheseTimeUnits.Last();
                 niceIncrement = (int)Math.Ceiling(increment);
             }
 

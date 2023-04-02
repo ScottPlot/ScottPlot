@@ -16,8 +16,8 @@ public class StandardRenderer : IRenderer
         Layout layout = plot.Layout.GetLayout(figureRect, panels);
         PixelRect dataRect = layout.DataRect;
 
-        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, dataRect.Width);
-        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, dataRect.Height);
+        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, plot.XAxis.Edge, dataRect.Width);
+        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, plot.YAxis.Edge, dataRect.Height);
 
         Common.RenderBackground(surface, dataRect, plot);
         Common.RenderGridsBelowPlottables(surface, dataRect, plot);
