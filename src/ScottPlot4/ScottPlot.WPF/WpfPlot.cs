@@ -178,65 +178,11 @@ namespace ScottPlot
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
 
-        #region Show legend
-        public static readonly DependencyProperty ShowLegendProperty = DependencyProperty.Register("ShowLegend", typeof(bool), typeof(WpfPlot), new FrameworkPropertyMetadata(true, OnShowLegendChanged));
-        public bool ShowLegend
-        {
-            get => (bool)GetValue(ShowLegendProperty); set => SetValue(ShowLegendProperty, value);
-        }
-        private static void OnShowLegendChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
-        {
-            var ctrl = (WpfPlot)modifiedObject;
-            ctrl.Plot.Legend(ctrl.ShowLegend);
-        }
-        public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register("LegendPosition", typeof(ScottPlot.Alignment), typeof(WpfPlot), new FrameworkPropertyMetadata(Alignment.LowerRight, OnLegendPositionChanged));
-        public ScottPlot.Alignment LegendPosition
-        {
-            get => (ScottPlot.Alignment)GetValue(LegendPositionProperty); set => SetValue(LegendPositionProperty, value);
-        }
-        private static void OnLegendPositionChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
-        {
-            var ctrl = (WpfPlot)modifiedObject;
-            ctrl.Plot.Legend(location: ctrl.LegendPosition);
-        }
-        #endregion
-        #region Plot Style
-        public static readonly DependencyProperty PlotStyleProperty = DependencyProperty.Register("PlotStyle", typeof(ScottPlot.Style.StandardStyles), typeof(WpfPlot), new FrameworkPropertyMetadata(ScottPlot.Style.StandardStyles.Default, OnPlotStyleChanged));
-        public ScottPlot.Style.StandardStyles PlotStyle
-        {
-            get => (ScottPlot.Style.StandardStyles)GetValue(PlotStyleProperty); set => SetValue(PlotStyleProperty, value);
-        }
-        private static void OnPlotStyleChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
-        {
-            var ctrl = (WpfPlot)modifiedObject;
-            if (ScottPlot.Style.StyleDictionary.TryGetValue(ctrl.PlotStyle, out var style))
-            {
-                ctrl.Plot.Style(style);
-                ctrl.Refresh();
-            }
-        }
-        #endregion
-        #region Plot Palette
-        public static readonly DependencyProperty PlotPaletteProperty = DependencyProperty.Register("PlotPalette", typeof(ScottPlot.Palette.StandardPalettes), typeof(WpfPlot), new FrameworkPropertyMetadata(ScottPlot.Palette.StandardPalettes.Category10, OnPlotPaletteChanged));
-        public ScottPlot.Palette.StandardPalettes PlotPalette
-        {
-            get => (ScottPlot.Palette.StandardPalettes)GetValue(PlotPaletteProperty); set => SetValue(PlotPaletteProperty, value);
-        }
-        private static void OnPlotPaletteChanged(DependencyObject modifiedObject, DependencyPropertyChangedEventArgs e)
-        {
-            var ctrl = (WpfPlot)modifiedObject;
-            if (ScottPlot.Palette.PaletteDictionary.TryGetValue(ctrl.PlotPalette, out var palette))
-            {
-                ctrl.Plot.Palette = palette;
-                ctrl.Refresh();
-            }
-        }
-        #endregion
-
         static WpfPlot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WpfPlot), new FrameworkPropertyMetadata(typeof(WpfPlot)));
         }
+
         public WpfPlot()
         {
             Backend = new((float)ActualWidth, (float)ActualHeight, GetType().Name);
