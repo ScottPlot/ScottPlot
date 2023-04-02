@@ -1,8 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +15,7 @@ namespace ScottPlot.Plottable
         {
             public double X;
             public double Y;
-            public float Radius;
+            public double Radius;
             public Color FillColor;
             public float EdgeWidth;
             public Color EdgeColor;
@@ -31,6 +29,13 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"BubblePlot with {Bubbles.Count} bubbles";
 
         /// <summary>
+        /// Indicates whether the size of each bubble is in pixel units
+        /// or in axis units. If using axis units, users may want to enable
+        /// the axis scale lock feature to enforce bubble circularity.
+        /// </summary>
+        public bool RadiusIsPixels { get; set; } = true;
+
+        /// <summary>
         /// Clear all bubbles
         /// </summary>
         public void Clear() => Bubbles.Clear();
@@ -40,14 +45,13 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="x">horizontal position (in coordinate space)</param>
         /// <param name="y">horizontal vertical (in coordinate space)</param>
-        /// <param name="radius">size of the bubble (in pixels)</param>
-        /// <param name="fillColor"></param>
+        /// <param name="radius">size of the bubble (sized according to <see cref="RadiusIsPixels"/>)</param>
+        /// <param name="fillColor">color of the bubble center</param>
         /// <param name="edgeWidth">size of the outline (in pixels)</param>
-        /// <param name="edgeColor"></param>
+        /// <param name="edgeColor">color of the bubble outline</param>
         public void Add(double x, double y, double radius, Color fillColor, double edgeWidth, Color edgeColor)
         {
-            // TODO: inconsistent argumen tnames in overloads (radius vs size)
-            Bubbles.Add(new Bubble()
+            Bubble bubble = new()
             {
                 X = x,
                 Y = y,
@@ -55,13 +59,15 @@ namespace ScottPlot.Plottable
                 FillColor = fillColor,
                 EdgeWidth = (float)edgeWidth,
                 EdgeColor = edgeColor
-            });
+            };
+
+            Bubbles.Add(bubble);
         }
 
         /// <summary>
         /// Add many bubbles with the same size and style
         /// </summary>
-        public void Add(double[] xs, double[] ys, double size, Color fillColor, double edgeWidth, Color edgeColor)
+        public void Add(double[] xs, double[] ys, double radius, Color fillColor, double edgeWidth, Color edgeColor)
         {
             if (xs is null || ys is null)
                 throw new ArgumentException("xs and ys cannot be null");
@@ -71,15 +77,7 @@ namespace ScottPlot.Plottable
 
             for (int i = 0; i < xs.Length; i++)
             {
-                Bubbles.Add(new Bubble()
-                {
-                    X = xs[i],
-                    Y = ys[i],
-                    Radius = (float)size,
-                    FillColor = fillColor,
-                    EdgeWidth = (float)edgeWidth,
-                    EdgeColor = edgeColor
-                });
+                Add(xs[i], ys[i], radius, fillColor, edgeWidth, edgeColor);
             }
         }
 
@@ -88,9 +86,20 @@ namespace ScottPlot.Plottable
             if (Bubbles.Count == 0)
                 return AxisLimits.NoLimits;
 
-            var xs = Bubbles.Select(b => b.X);
-            var ys = Bubbles.Select(b => b.Y);
-            return new AxisLimits(xs.Min(), xs.Max(), ys.Min(), ys.Max());
+            if (RadiusIsPixels)
+            {
+                var xs = Bubbles.Select(b => b.X);
+                var ys = Bubbles.Select(b => b.Y);
+                return new AxisLimits(xs.Min(), xs.Max(), ys.Min(), ys.Max());
+            }
+            else
+            {
+                return new AxisLimits(
+                    xMin: Bubbles.Select(b => b.X - b.Radius).Min(),
+                    xMax: Bubbles.Select(b => b.X + b.Radius).Max(),
+                    yMin: Bubbles.Select(b => b.Y - b.Radius).Min(),
+                    yMax: Bubbles.Select(b => b.Y + b.Radius).Max());
+            }
         }
 
         public void ValidateData(bool deep = false)
@@ -121,13 +130,9 @@ namespace ScottPlot.Plottable
 
             foreach (Bubble bubble in Bubbles)
             {
-                float pixelX = dims.GetPixelX(bubble.X);
-                float pixelY = dims.GetPixelY(bubble.Y);
-                float radiusPx = (float)bubble.Radius;
-
-                PointF location = new(pixelX - radiusPx, pixelY - radiusPx);
-                SizeF size = new(radiusPx * 2, radiusPx * 2);
-                RectangleF rect = new(location, size);
+                RectangleF rect = RadiusIsPixels
+                    ? GetRectPixelRadius(dims, bubble)
+                    : GetCoordinateRadius(dims, bubble);
 
                 ((SolidBrush)brush).Color = bubble.FillColor;
                 gfx.FillEllipse(brush, rect);
@@ -136,6 +141,27 @@ namespace ScottPlot.Plottable
                 pen.Width = bubble.EdgeWidth;
                 gfx.DrawEllipse(pen, rect);
             }
+        }
+
+        private static RectangleF GetRectPixelRadius(PlotDimensions dims, Bubble bubble)
+        {
+            float pixelX = dims.GetPixelX(bubble.X);
+            float pixelY = dims.GetPixelY(bubble.Y);
+            float radiusPx = (float)bubble.Radius;
+            PointF location = new(pixelX - radiusPx, pixelY - radiusPx);
+            SizeF size = new(radiusPx * 2, radiusPx * 2);
+            return new RectangleF(location, size);
+        }
+
+        private static RectangleF GetCoordinateRadius(PlotDimensions dims, Bubble bubble)
+        {
+            float left = dims.GetPixelX(bubble.X - bubble.Radius);
+            float right = dims.GetPixelX(bubble.X + bubble.Radius);
+            float bottom = dims.GetPixelY(bubble.Y - bubble.Radius);
+            float top = dims.GetPixelY(bubble.Y + bubble.Radius);
+            float width = right - left;
+            float height = bottom - top;
+            return new RectangleF(left, top, width, height);
         }
 
         /// <summary>

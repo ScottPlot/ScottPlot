@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -156,6 +157,21 @@ namespace ScottPlotTests.Axis
             }
 
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_MultiAxis_MatchLimits()
+        {
+            ScottPlot.Plot plt1 = new();
+            plt1.SetAxisLimits(-1, 1, -2, 2);
+            plt1.SetAxisLimits(-11, 11, -22, 22, xAxisIndex: 1, yAxisIndex: 1);
+
+            ScottPlot.Plot plt2 = new();
+            plt2.MatchAxis(plt1);
+            plt2.MatchAxis(plt1, xAxisIndex: 1, yAxisIndex: 1);
+
+            plt1.GetAxisLimits().Should().Be(plt2.GetAxisLimits());
+            plt1.GetAxisLimits(1, 1).Should().Be(plt2.GetAxisLimits(1, 1));
         }
     }
 }
