@@ -22,6 +22,17 @@ public class FormsPlot : UserControl, IPlotControl
 
     public FormsPlot()
     {
+#if NETFRAMEWORK
+        if (DesignMode)
+        {
+            throw new PlatformNotSupportedException(
+                "SkiaSharp cannot be used insite the Visual Studio Designer " +
+                "for .NET Framework projects. This issue can be resolved by upgrading this " +
+                "project to .NET Core, or by adding the ScottPlot control to the Form programmatically."
+            );
+        }
+#endif
+
         Interaction = new(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
