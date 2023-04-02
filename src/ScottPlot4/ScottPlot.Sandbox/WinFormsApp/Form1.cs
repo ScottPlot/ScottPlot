@@ -9,6 +9,8 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
+            formsPlot1.Plot.SetAxisLimits(-10, 10, -10, 10);
+
             formsPlot1.MouseMove += FormsPlot1_MouseMove;
         }
 

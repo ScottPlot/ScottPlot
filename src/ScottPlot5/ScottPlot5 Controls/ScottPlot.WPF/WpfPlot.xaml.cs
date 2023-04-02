@@ -16,9 +16,8 @@ using SkiaSharp.Views.Desktop;
 
 namespace ScottPlot.WPF;
 
-/// <summary>
-/// Interaction logic for WpfPlot.xaml
-/// </summary>
+[System.ComponentModel.ToolboxItem(true)]
+[System.ComponentModel.DesignTimeVisible(true)]
 public partial class WpfPlot : UserControl, IPlotControl
 {
     public Plot Plot { get; } = new();
