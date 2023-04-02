@@ -1,75 +1,43 @@
 ﻿using Microsoft.Win32;
-using ScottPlot;
 using ScottPlot.Control;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 
 #pragma warning disable IDE1006 // lowercase public properties
 #pragma warning disable CS0067 // unused events
 
 namespace ScottPlot
 {
-    /// <summary>
-    /// Follow steps 1a or 1b and then 2 to use this control in a XAML file.
-    ///
-    /// Step 1a) Using this control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:ScottPlot="clr-namespace:ScottPlot"
-    ///
-    ///
-    /// Step 1b) Using this control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
-    ///
-    /// You will also need to add a project reference from the project where the XAML file lives
-    /// to this project and Rebuild to avoid compilation errors:
-    ///
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Browse to and select this project]
-    ///
-    ///
-    /// Step 2)
-    /// Go ahead and use this control in the XAML file.
-    ///
-    ///     <ScottPlot:WpfPlot/>
-    /// </summary>
-    [System.ComponentModel.ToolboxItem(true)]
-    [System.ComponentModel.DesignTimeVisible(true)]
+    [ToolboxItem(true)]
+    [DesignTimeVisible(true)]
     [TemplatePart(Name = PART_LABEL_NAME, Type = typeof(TextBlock))]
     [TemplatePart(Name = PART_IMAGE_NAME, Type = typeof(Image))]
-    public class WpfPlot : System.Windows.Controls.Control, ScottPlot.Control.IPlotControl
+    public class WpfPlot : System.Windows.Controls.Control, IPlotControl
     {
         private const string PART_LABEL_NAME = "PART_ErrorLabel";
         private const string PART_IMAGE_NAME = "PART_PlotImage";
-        private System.Windows.Controls.TextBlock ErrorLabel;
-        private System.Windows.Controls.Image PlotImage;
 
-        public static readonly RoutedEvent AxesChangedEvent = EventManager.RegisterRoutedEvent("AxesChanged",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
-        public static readonly RoutedEvent RightClickedEvent = EventManager.RegisterRoutedEvent("RightClicked",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
-        public static readonly RoutedEvent LeftClickedEvent = EventManager.RegisterRoutedEvent("LeftClicked",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
-        public static readonly RoutedEvent LeftClickedPlottableEvent = EventManager.RegisterRoutedEvent("LeftClickedPlottable",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
-        public static readonly RoutedEvent PlottableDraggedEvent = EventManager.RegisterRoutedEvent("PlottableDragged",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
-        public static readonly RoutedEvent PlottableDroppedEvent = EventManager.RegisterRoutedEvent("PlottableDropped",
-            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WpfPlot));
+        private TextBlock ErrorLabel;
+        private Image PlotImage;
+
+        public static readonly RoutedEvent AxesChangedEvent = MakeRoutedEvent("AxesChanged");
+        public static readonly RoutedEvent RightClickedEvent = MakeRoutedEvent("RightClicked");
+        public static readonly RoutedEvent LeftClickedEvent = MakeRoutedEvent("LeftClicked");
+        public static readonly RoutedEvent LeftClickedPlottableEvent = MakeRoutedEvent("LeftClickedPlottable");
+        public static readonly RoutedEvent PlottableDraggedEvent = MakeRoutedEvent("PlottableDragged");
+        public static readonly RoutedEvent PlottableDroppedEvent = MakeRoutedEvent("PlottableDropped");
+
+        private static RoutedEvent MakeRoutedEvent(string name) =>
+            EventManager.RegisterRoutedEvent(
+                name: name,
+                routingStrategy: RoutingStrategy.Bubble,
+                handlerType: typeof(RoutedEventHandler),
+                ownerType: typeof(WpfPlot));
 
         /// <summary>
         /// This is the plot displayed by the user control.
@@ -80,7 +48,7 @@ namespace ScottPlot
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
+        public Configuration Configuration => Backend.Configuration;
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
@@ -92,7 +60,7 @@ namespace ScottPlot
         }
         protected virtual void RaiseAxesChangedEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.AxesChangedEvent, this));
+            RaiseEvent(new RoutedEventArgs(AxesChangedEvent, this));
         }
 
         /// <summary>
@@ -106,7 +74,7 @@ namespace ScottPlot
         }
         protected virtual void RaiseRightClickedEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.RightClickedEvent, this));
+            RaiseEvent(new RoutedEventArgs(RightClickedEvent, this));
         }
 
         /// <summary>
@@ -120,7 +88,7 @@ namespace ScottPlot
         }
         protected virtual void RaiseLeftClickedEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.LeftClickedEvent, this));
+            RaiseEvent(new RoutedEventArgs(LeftClickedEvent, this));
         }
 
         /// <summary>
@@ -133,7 +101,7 @@ namespace ScottPlot
         }
         protected virtual void RaiseLeftClickedPlottableEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.LeftClickedPlottableEvent, this));
+            RaiseEvent(new RoutedEventArgs(LeftClickedPlottableEvent, this));
         }
 
         /// <summary>
@@ -147,7 +115,7 @@ namespace ScottPlot
         }
         protected virtual void RaisePlottableDraggedEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.PlottableDraggedEvent, this));
+            RaiseEvent(new RoutedEventArgs(PlottableDraggedEvent, this));
         }
 
         [Obsolete("use 'PlottableDragged' instead", error: true)]
@@ -164,19 +132,19 @@ namespace ScottPlot
         }
         protected virtual void RaisePlottableDroppedEvent()
         {
-            RaiseEvent(new RoutedEventArgs(WpfPlot.PlottableDroppedEvent, this));
+            RaiseEvent(new RoutedEventArgs(PlottableDroppedEvent, this));
         }
 
         [Obsolete("use 'PlottableDropped' instead", error: true)]
         public event EventHandler MouseDropPlottable;
 
-        private readonly ScottPlot.Control.ControlBackEnd Backend;
-        private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
+        private readonly ControlBackEnd Backend;
+        private readonly Dictionary<Cursor, System.Windows.Input.Cursor> Cursors;
         private float ScaledWidth => (float)(ActualWidth * Configuration.DpiStretchRatio);
         private float ScaledHeight => (float)(ActualHeight * Configuration.DpiStretchRatio);
 
         [Obsolete("Reference Plot instead of plt")]
-        public ScottPlot.Plot plt => Plot;
+        public Plot plt => Plot;
 
         static WpfPlot()
         {
@@ -226,11 +194,13 @@ namespace ScottPlot
         {
             ErrorLabel = Template.FindName(PART_LABEL_NAME, this) as TextBlock;
             PlotImage = Template.FindName(PART_IMAGE_NAME, this) as Image;
+
             if (PlotImage != null)
-                PlotImage.Visibility = System.Windows.Visibility.Visible;
+                PlotImage.Visibility = Visibility.Visible;
 
             if (ErrorLabel != null)
-                ErrorLabel.Visibility = System.Windows.Visibility.Hidden;
+                ErrorLabel.Visibility = Visibility.Hidden;
+
             if (DesignerProperties.GetIsInDesignMode(this))
             {
                 try
@@ -242,19 +212,21 @@ namespace ScottPlot
                 catch (Exception e)
                 {
                     if (PlotImage != null)
-                        PlotImage.Visibility = System.Windows.Visibility.Hidden;
+                        PlotImage.Visibility = Visibility.Hidden;
                     if (ErrorLabel != null)
                     {
                         ErrorLabel.Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
                             "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
                             "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
                             $"Exception details:\n{e}";
-                        ErrorLabel.Visibility = System.Windows.Visibility.Visible;
+                        ErrorLabel.Visibility = Visibility.Visible;
                     }
                 }
             }
+
             base.OnApplyTemplate();
         }
+
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
@@ -408,7 +380,7 @@ namespace ScottPlot
             cm.Items.Add(item);
 
             item = new() { Header = "Copy Image" };
-            item.Click += (o, e) => CopyToClipboard();
+            item.Click += (o, e) => Clipboard.SetImage(BmpImageFromBmp(Plot.Render()));
             cm.Items.Add(item);
 
             cm.Items.Add(new Separator());
@@ -443,11 +415,6 @@ namespace ScottPlot
 
             if (sfd.ShowDialog() is true)
                 Plot.SaveFig(sfd.FileName);
-        }
-
-        public void CopyToClipboard()
-        {
-            System.Windows.Clipboard.SetImage(BmpImageFromBmp(Plot.Render()));
         }
     }
 }
