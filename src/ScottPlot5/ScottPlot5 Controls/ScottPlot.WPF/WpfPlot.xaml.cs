@@ -16,7 +16,7 @@ using SkiaSharp.Views.Desktop;
 
 namespace ScottPlot.WPF;
 
-[System.ComponentModel.ToolboxItem(true)] 
+[System.ComponentModel.ToolboxItem(true)]
 [System.ComponentModel.DesignTimeVisible(true)]
 public partial class WpfPlot : UserControl, IPlotControl
 {
