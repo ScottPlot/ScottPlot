@@ -25,6 +25,11 @@ namespace ScottPlot.Plottable
         /// </summary>
         public float DotRadius { get; set; } = 5;
 
+        /// <summary>
+        /// Width of the stem (in pixels)
+        /// </summary>
+        public float LineWidth { get; set; } = 1;
+
         // TODO: don't expose these, instead put them behind an Update() method
         // that lets the user update one or both arrays. This can also perform length checking.
         public double[] Ys1
@@ -195,7 +200,7 @@ namespace ScottPlot.Plottable
                 ? rect.Y + rect.Height / 2
                 : rect.X + rect.Width / 2;
 
-            using var stemPen = new Pen(StemColor);
+            using var stemPen = new Pen(StemColor, LineWidth);
             using var dot1Brush = GDI.Brush(Color1);
             using var dot2Brush = GDI.Brush(Color2);
             PointF[] points = new PointF[2];
