@@ -5,6 +5,7 @@ _not yet published on NuGet_
 
 ## ScottPlot 4.1.63 (in development)
 * WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2509, #2526) _Thanks @KroMignon_
+* Lollipop and Cleveland plots: Added `LineWidth` property (#2556) _Thanks @benton-anderson_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
