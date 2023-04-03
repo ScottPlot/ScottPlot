@@ -88,6 +88,10 @@ namespace ScottPlot
         {
             double[] xs = DataGen.Consecutive(ys1.Length);
             var plottable = new ClevelandDotPlot(xs, ys1, ys2);
+            Color color = GetNextColor();
+            plottable.Point1Color = color;
+            plottable.Point2Color = color;
+            plottable.StemColor = color;
             Add(plottable);
             return plottable;
         }

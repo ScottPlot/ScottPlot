@@ -21,6 +21,16 @@ namespace ScottPlot.Plottable
         public Color StemColor { get; set; } = Color.Gray;
 
         /// <summary>
+        /// Color for markers placed at <see cref="Ys1"/>
+        /// </summary>
+        public Color Point1Color { get => Color1; set => Color1 = value; }
+
+        /// <summary>
+        /// Color for markers placed at <see cref="Ys2"/>
+        /// </summary>
+        public Color Point2Color { get => Color2; set => Color2 = value; }
+
+        /// <summary>
         /// Size of the markers at the ends of each line
         /// </summary>
         public float DotRadius { get; set; } = 5;
