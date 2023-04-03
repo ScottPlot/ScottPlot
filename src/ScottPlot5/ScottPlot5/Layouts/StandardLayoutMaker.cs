@@ -13,11 +13,11 @@ public class StandardLayoutMaker : ILayoutMaker
 
         panels.OfType<IXAxis>()
             .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, figureRect.Width));
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureRect.Width));
 
         panels.OfType<IYAxis>()
             .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, figureRect.Height));
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureRect.Height));
 
         Layout layout = MakeFinalLayout(figureRect, panels);
 

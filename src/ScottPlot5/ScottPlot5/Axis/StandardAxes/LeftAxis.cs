@@ -6,6 +6,6 @@ public class LeftAxis : YAxisBase, IYAxis
 
     public LeftAxis()
     {
-        TickGenerator = new TickGenerators.NumericAutomatic(true);
+        TickGenerator = new TickGenerators.NumericAutomatic();
     }
 }

@@ -1,6 +1,13 @@
 # ScottPlot Changelog
 
-## ScottPlot 5.0.3-beta (in development)
+## ScottPlot 5.0.4-beta (in development)
+_not yet published on NuGet_
+
+## ScottPlot 4.1.63 (in development)
+_not yet published on NuGet_
+
+## ScottPlot 5.0.4-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
 * OpenGL: Enhanced customization options for OpenGL-accelerated scatter plots (#2446) _Thanks @StendProg_
 * Data: Added axis limit caching functionality for improved performance of large scatter plots (#2460) _Thanks @StendProg_
 * DataOperations: New static class with helper methods for working with 1D and 2D data (#2497) _Thanks @bukkideme and @StendProg_
@@ -9,8 +16,11 @@
 * Controls: Disabled context menu in non-interactive mode (#2475) _Thanks @KroMignon_
 * Histogram: Improved constructor argument validation and support for small bins(#2490) _Thanks @Margulieuxd and @bukkideme_
 * WpfPlot: Control now appears in the Visual Studio Toolbox (#2535, #1966) _Thanks Valkyre_
+* Axis: Improved tick label format customization (#2500) _Thanks @chhh_
 
-## ScottPlot 4.1.62 (in development)
+## ScottPlot 4.1.62
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
+* WinForms Control: `Reset()` makes new plots transparent (#2445) _Thanks @Neopentane1_
 * Ellipse and Circle: New plot types demonstrated in the cookbook. (#2413, #2437) _Thanks @bukkideme_
 * Heatmap: Added `FlipVertically` to invert vertical axis of heatmap data (#2444, #2450) _Thanks @Neopentane1_
 * Histogram: Improved support for datasets with low variance (#2464, #2463) _Thanks @Xerxes004_
@@ -28,8 +38,7 @@
 * Axis: Improved `Plot.AxisPanCenter()` support for multi-axis plots (#2483, #2544) _Thanks @dusko23_
 * Bubble Plot: Added `RadiusIsPixels` flag which when `falst` sizes bubbles using radius units instead of pixels (#2492) _Thanks @marcelpel_
 * Axis: Improved `Plot.MatchAxisLimits()` support for multi-axis plots (#2495) _Thanks @Margulieuxd_
-
-# Releases
+* Plot: Improved `Plot.XLabel()` XML documentation (#2552) _Thanks @JulianusIV_
 
 ## ScottPlot 5.0.2-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
@@ -41,25 +50,6 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * WPF: Added OpenGL support to the WPF control (#2395) _Thanks @StendProg_
 * Palette: Refactored the palette system to allow ScottPlot 4 and 5 to share palette code (#2409)
 * Plot: Added `GetImageHTML()` for improved rendering in interactive notebooks (#2385, #1772) _Thanks @neilyoung2008_
-
-## ScottPlot 5.0.1-beta
-_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
-* Namespace: DataSource → DataSources
-* Error Bar: New plot type (#2346) _Thanks @bclehmann_
-* Plot: Added `Style` object to group functions that perform complex styling tasks
-* Controls: Added right-click context menus (#2350) _Thanks @bclehmann_
-* Rendering: Added support for saving bitmap files (#2350) _Thanks @bclehmann_
-* Axes: Added support for DateTime Axes (#2369) _Thanks @bclehmann_
-* Rendering: Added support for line styles (#2373) _Thanks @bclehmann_
-* WinUI3: Created a Uno WinUI3 control (#2374, #2039) _Thanks @rafntor_
-
-## ScottPlot 5.0.0-beta
-_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
-* ScottPlot 5: First version 5 release published to NuGet #2304
-
-## ScottPlot 4.1.62
-⚠️ In development / not yet published
-* WinForms Control: `Reset()` makes new plots transparent (#2445) _Thanks @Neopentane1_
 
 ## ScottPlot 4.1.61
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
@@ -79,6 +69,21 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-27_
 * Controls: Added `Configuration.AltLeftClickDragZoom` option to customize zooming behavior (#2391, #2392) _Thanks @DevJins_
 * Error Bar: Added `Label` property which allows error bars to appear independently in the legend (#2432, #2388) _Thanks @dongyi-cai-windsab_
 * Demo: Fixed bug preventing the cookbook from launching (#2443) _Thanks @FannyAtGitHub_
+
+## ScottPlot 5.0.1-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-02-09_
+* Namespace: DataSource → DataSources
+* Error Bar: New plot type (#2346) _Thanks @bclehmann_
+* Plot: Added `Style` object to group functions that perform complex styling tasks
+* Controls: Added right-click context menus (#2350) _Thanks @bclehmann_
+* Rendering: Added support for saving bitmap files (#2350) _Thanks @bclehmann_
+* Axes: Added support for DateTime Axes (#2369) _Thanks @bclehmann_
+* Rendering: Added support for line styles (#2373) _Thanks @bclehmann_
+* WinUI3: Created a Uno WinUI3 control (#2374, #2039) _Thanks @rafntor_
+
+## ScottPlot 5.0.0-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-01-01_
+* ScottPlot 5: First version 5 release published to NuGet #2304
 
 ## ScottPlot 4.1.60
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-12-23_

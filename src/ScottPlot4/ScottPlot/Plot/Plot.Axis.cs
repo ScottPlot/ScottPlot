@@ -46,7 +46,7 @@ namespace ScottPlot
         #region shortcuts: axis label, tick, and grid
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (XAxis)
+        /// Set the label for the horizontal axis below the plot (XAxis)
         /// </summary>
         /// <param name="label">new text</param>
         public void XLabel(string label) => XAxis.Label(label);
