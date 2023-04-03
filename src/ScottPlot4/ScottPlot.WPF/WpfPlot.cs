@@ -165,14 +165,6 @@ namespace ScottPlot
             Backend.PlottableDropped += (o, e) => RaisePlottableDroppedEvent();
             Backend.Configuration.ScaleChanged += (o, e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
 
-            this.SizeChanged += (o, e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
-            this.MouseDown += (o, e) => { CaptureMouse(); Backend.MouseDown(GetInputState(e)); };
-            this.MouseMove += (o, e) => { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); };
-            this.MouseUp += (o, e) => { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); };
-            this.MouseWheel += (o, e) => Backend.MouseWheel(GetInputState(e, e.Delta));
-            this.MouseDoubleClick += (o, e) => Backend.DoubleClick();
-            this.MouseEnter += (o, e) => base.OnMouseEnter(e);
-            this.MouseLeave += (o, e) => base.OnMouseLeave(e);
 
             Cursors = new()
             {
@@ -226,7 +218,38 @@ namespace ScottPlot
 
             base.OnApplyTemplate();
         }
-
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
+        }
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            CaptureMouse();
+            Backend.MouseDown(GetInputState(e));
+        }
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            Backend.MouseMove(GetInputState(e)); 
+        }
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+            Backend.MouseUp(GetInputState(e));
+            ReleaseMouseCapture();
+        }
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e); 
+            Backend.MouseWheel(GetInputState(e));
+        }
+        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+            Backend.DoubleClick();
+        }
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
