@@ -728,6 +728,9 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseWheel(InputState input)
         {
+            if (input.WheelScrolledDown == false && input.WheelScrolledUp == false)
+                throw new ArgumentException("mouse wheel was scrolled but neither direction is set");
+
             if (!Settings.AllAxesHaveBeenSet)
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
