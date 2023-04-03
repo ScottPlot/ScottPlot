@@ -68,11 +68,6 @@ namespace ScottPlot
         public void Add(IPlottable plottable)
         {
             settings.Plottables.Add(plottable);
-            //FIXME: force full scale for first plottable... is this a good idea?
-            if(settings.Plottables.Count == 1)
-            {
-                settings.AxisAutoAll();
-            }
         }
 
         /// <summary>

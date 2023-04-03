@@ -153,7 +153,7 @@ namespace ScottPlot
 
         public WpfPlot()
         {
-            Backend = new((float)ActualWidth, (float)ActualHeight, GetType().Name);
+            Backend = new(1, 1, GetType().Name);
             Backend.BitmapChanged += (o, e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
             Backend.BitmapUpdated += (o, e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
             Backend.CursorChanged += (o, e) => Cursor = Cursors[Backend.Cursor];
@@ -186,7 +186,6 @@ namespace ScottPlot
         {
             ErrorLabel = Template.FindName(PART_LABEL_NAME, this) as TextBlock;
             PlotImage = Template.FindName(PART_IMAGE_NAME, this) as Image;
-
             if (PlotImage != null)
                 PlotImage.Visibility = Visibility.Visible;
 
@@ -216,6 +215,7 @@ namespace ScottPlot
                 }
             }
 
+            Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
             base.OnApplyTemplate();
         }
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -232,7 +232,7 @@ namespace ScottPlot
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            Backend.MouseMove(GetInputState(e)); 
+            Backend.MouseMove(GetInputState(e));
         }
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
@@ -242,7 +242,7 @@ namespace ScottPlot
         }
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            base.OnMouseWheel(e); 
+            base.OnMouseWheel(e);
             Backend.MouseWheel(GetInputState(e));
         }
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
