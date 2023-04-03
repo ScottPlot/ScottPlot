@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
@@ -8,7 +8,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.OpenGL</PackageId>
-        <Version>5.0.2-beta</Version>
+        <Version>5.0.3-beta</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
