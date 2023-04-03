@@ -253,7 +253,7 @@ namespace ScottPlot
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
-            Backend.MouseWheel(GetInputState(e));
+            Backend.MouseWheel(GetInputState(e, e.Delta));
         }
 
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
