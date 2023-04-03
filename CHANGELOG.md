@@ -4,7 +4,7 @@
 _not yet published on NuGet_
 
 ## ScottPlot 4.1.63 (in development)
-_not yet published on NuGet_
+* WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2509, #2526) _Thanks @KroMignon_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_

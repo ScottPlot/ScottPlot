@@ -6,8 +6,16 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
-        Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
-    <DockPanel>
-        <ScottPlot:WpfPlot Name="WpfPlot1"/>
-    </DockPanel>
+        Title="ScottPlot Sandbox - WPF" 
+        WindowStartupLocation="CenterScreen"
+        Height="450"
+        Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="0"/>
+        <ScottPlot:WpfPlot Name="WpfPlot2" Grid.Row="1"/>
+    </Grid>
 </Window>

@@ -504,6 +504,10 @@ namespace ScottPlot.Control
             if (EventsProcessor is null)
                 return;
 
+            // avoid update loops
+            if (Bmp?.Width == (int)width && Bmp?.Height == (int)height)
+                return;
+
             // Disposing a Bitmap the GUI is displaying will cause an exception.
             // Keep track of old bitmaps so they can be disposed of later.
             OldBitmaps.Enqueue(Bmp);
@@ -724,6 +728,9 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseWheel(InputState input)
         {
+            if (input.WheelScrolledDown == false && input.WheelScrolledUp == false)
+                throw new ArgumentException("mouse wheel was scrolled but neither direction is set");
+
             if (!Settings.AllAxesHaveBeenSet)
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
