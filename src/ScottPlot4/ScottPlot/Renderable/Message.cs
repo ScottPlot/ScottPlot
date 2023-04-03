@@ -1,5 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;

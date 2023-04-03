@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ScottPlot.Styles
+﻿namespace ScottPlot.Styles
 {
     public class Monospace : Default
     {

@@ -1,8 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using System.Data;
-using System.Linq;
 
 namespace ScottPlot.Plottable
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Statistics
+﻿namespace ScottPlot.Statistics
 {
     /// <summary>
     /// A population series is a collection of similar PopulationStats objects.

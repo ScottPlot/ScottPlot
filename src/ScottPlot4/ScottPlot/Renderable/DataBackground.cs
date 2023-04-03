@@ -1,9 +1,5 @@
 ﻿using ScottPlot.Drawing;
-using ScottPlot.Drawing.Colormaps;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Renderable
 {

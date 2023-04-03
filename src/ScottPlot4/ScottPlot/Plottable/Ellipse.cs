@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Drawing;
-using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable

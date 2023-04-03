@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Control
+﻿namespace ScottPlot.Control
 {
     public class InputState
     {

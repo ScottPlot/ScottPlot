@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScottPlot.Plottable
+﻿namespace ScottPlot.Plottable
 {
     /// <summary>
     /// Shade the region between two Y values

@@ -1,7 +1,4 @@
-﻿using ScottPlot.MinMaxSearchStrategies;
-using System;
-
-namespace ScottPlot.Plottable
+﻿namespace ScottPlot.Plottable
 {
     /// <summary>
     /// A signal plot displays evenly-spaced data.

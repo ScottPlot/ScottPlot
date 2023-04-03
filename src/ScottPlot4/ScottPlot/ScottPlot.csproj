@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
@@ -30,13 +30,8 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-
-        <!-- obvlivious reference types -->
-        <!-- Missing XML comment -->
-        <!-- Optional parameter back compat -->
-        <!-- Multiple overloads back compat -->
-        <NoWarn>RS0041;CS1591;RS0027;RS0026</NoWarn>
-
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -54,7 +49,7 @@
         </PackageReference>
 
         <!-- Code analysis -->
-        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
 

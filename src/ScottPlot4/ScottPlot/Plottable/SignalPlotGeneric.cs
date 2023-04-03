@@ -1,5 +1,4 @@
-﻿using ScottPlot.MinMaxSearchStrategies;
-using System;
+﻿using System;
 
 namespace ScottPlot.Plottable
 {

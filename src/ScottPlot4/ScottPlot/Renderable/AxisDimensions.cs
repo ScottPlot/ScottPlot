@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ScottPlot.Renderable
+﻿namespace ScottPlot.Renderable
 {
     /// <summary>
     /// This class stores MUTABLE axis limits and pixel size information for a SINGLE AXIS. 

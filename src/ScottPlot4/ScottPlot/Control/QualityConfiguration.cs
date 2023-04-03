@@ -1,11 +1,4 @@
-﻿using ScottPlot.Control.EventProcess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScottPlot.Control
+﻿namespace ScottPlot.Control
 {
     /// <summary>
     /// This class defines the quality to use for renders after different interactive events occur.

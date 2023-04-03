@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 

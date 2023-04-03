@@ -1,13 +1,10 @@
 ﻿using ScottPlot.Drawing;
-using ScottPlot.Drawing.Colormaps;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ScottPlot.Plottable
 {
