@@ -31,6 +31,11 @@ namespace ScottPlot.Plottable
         public float LollipopRadius { get; set; } = 5;
 
         /// <summary>
+        /// Width of the lollipop stick (in pixels)
+        /// </summary>
+        public float LineWidth { get; set; } = 1;
+
+        /// <summary>
         /// Create a lollipop plot from arrays of positions and sizes
         /// </summary>
         /// <param name="positions">position of each lollipop</param>
@@ -83,7 +88,7 @@ namespace ScottPlot.Plottable
                 ? rect.Y + rect.Height / 2
                 : rect.X + rect.Width / 2;
 
-            using var fillPen = new Pen(LollipopColor);
+            using var fillPen = new Pen(LollipopColor, LineWidth);
             using var fillBrush = GDI.Brush(LollipopColor);
 
             if (Orientation == Orientation.Horizontal)
