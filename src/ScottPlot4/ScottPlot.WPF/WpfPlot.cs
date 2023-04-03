@@ -72,6 +72,7 @@ namespace ScottPlot
             add { AddHandler(RightClickedEvent, value); }
             remove { RemoveHandler(RightClickedEvent, value); }
         }
+
         protected virtual void RaiseRightClickedEvent()
         {
             RaiseEvent(new RoutedEventArgs(RightClickedEvent, this));
@@ -86,6 +87,7 @@ namespace ScottPlot
             add { AddHandler(LeftClickedEvent, value); }
             remove { RemoveHandler(LeftClickedEvent, value); }
         }
+
         protected virtual void RaiseLeftClickedEvent()
         {
             RaiseEvent(new RoutedEventArgs(LeftClickedEvent, this));
@@ -99,6 +101,7 @@ namespace ScottPlot
             add { AddHandler(LeftClickedPlottableEvent, value); }
             remove { RemoveHandler(LeftClickedPlottableEvent, value); }
         }
+
         protected virtual void RaiseLeftClickedPlottableEvent()
         {
             RaiseEvent(new RoutedEventArgs(LeftClickedPlottableEvent, this));
@@ -113,6 +116,7 @@ namespace ScottPlot
             add { AddHandler(PlottableDroppedEvent, value); }
             remove { RemoveHandler(PlottableDraggedEvent, value); }
         }
+
         protected virtual void RaisePlottableDraggedEvent()
         {
             RaiseEvent(new RoutedEventArgs(PlottableDraggedEvent, this));
@@ -130,6 +134,7 @@ namespace ScottPlot
             add { AddHandler(PlottableDroppedEvent, value); }
             remove { RemoveHandler(PlottableDroppedEvent, value); }
         }
+
         protected virtual void RaisePlottableDroppedEvent()
         {
             RaiseEvent(new RoutedEventArgs(PlottableDroppedEvent, this));
@@ -218,38 +223,45 @@ namespace ScottPlot
             Backend.Resize((float)ActualWidth, (float)ActualHeight, useDelayedRendering: false);
             base.OnApplyTemplate();
         }
+
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
             Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
         }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             CaptureMouse();
             Backend.MouseDown(GetInputState(e));
         }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
             Backend.MouseMove(GetInputState(e));
         }
+
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
             Backend.MouseUp(GetInputState(e));
             ReleaseMouseCapture();
         }
+
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
             Backend.MouseWheel(GetInputState(e));
         }
+
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
             base.OnMouseDoubleClick(e);
             Backend.DoubleClick();
         }
+
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>
@@ -318,6 +330,7 @@ namespace ScottPlot
         /// When new renders are requested (without resizing) they are drawn onto this existing bitmap.
         /// </summary>
         private WriteableBitmap PlotBitmap;
+
         private ScottPlot.Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new()
             {
