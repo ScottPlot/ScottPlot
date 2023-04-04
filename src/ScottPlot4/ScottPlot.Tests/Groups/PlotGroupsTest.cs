@@ -1,12 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using ScottPlot;
-using ScottPlot.Ticks;
-using ScottPlot.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ScottPlot.Plottable;
+using ScottPlot.Statistics;
 
 namespace ScottPlotTests.Groups
 {

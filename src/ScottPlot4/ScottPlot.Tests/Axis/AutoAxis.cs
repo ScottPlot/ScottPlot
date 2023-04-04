@@ -1,10 +1,6 @@
-﻿using Microsoft.VisualStudio.TestPlatform.Utilities;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System;
 using System.Linq;
-using System.Text;
+using NUnit.Framework;
 
 namespace ScottPlotTests.Axis
 {

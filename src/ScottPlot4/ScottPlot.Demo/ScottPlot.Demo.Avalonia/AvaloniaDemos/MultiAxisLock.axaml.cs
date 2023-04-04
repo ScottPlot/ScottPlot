@@ -1,10 +1,8 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
 using ScottPlot.Avalonia;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {

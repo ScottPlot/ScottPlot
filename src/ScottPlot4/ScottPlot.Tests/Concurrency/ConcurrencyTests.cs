@@ -7,10 +7,10 @@
  * See discussion in https://github.com/ScottPlot/ScottPlot/issues/609
  * 
  */
-using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using NUnit.Framework;
 
 namespace ScottPlotTests.Concurrency
 {

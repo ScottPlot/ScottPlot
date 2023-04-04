@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
+using NUnit.Framework;
 
 namespace ScottPlotTests.PlotTypes
 {

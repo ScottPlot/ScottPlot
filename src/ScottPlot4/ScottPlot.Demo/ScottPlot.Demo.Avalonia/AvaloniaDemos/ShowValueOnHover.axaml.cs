@@ -1,10 +1,10 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 using ScottPlot.Plottable;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {

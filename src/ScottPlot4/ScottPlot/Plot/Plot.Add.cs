@@ -12,12 +12,12 @@
  *   
  */
 
-using ScottPlot.Plottable;
-using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Plottable;
+using ScottPlot.Statistics;
 
 namespace ScottPlot
 {

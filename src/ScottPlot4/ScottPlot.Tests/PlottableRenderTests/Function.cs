@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Drawing;
+using NUnit.Framework;
 using ScottPlot;
 using ScottPlot.Plottable;
-using System;
-using System.Drawing;
 
 namespace ScottPlotTests.PlottableRenderTests
 {

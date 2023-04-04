@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Eto.Forms;
-using ScottPlot.Eto;
 using ScottPlot.Drawing;
+using ScottPlot.Eto;
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace ScottPlot.Demo.Eto.EtoFormsDemos

@@ -1,9 +1,9 @@
-﻿using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using ScottPlot.Ticks;
 using System.Linq;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Plottable
 {

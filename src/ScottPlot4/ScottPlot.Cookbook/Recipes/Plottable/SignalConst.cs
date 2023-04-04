@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Cookbook.Recipes.Plottable
+﻿namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     // TODO: need an example showing how to update data
     public class SignalConstQuickstart : IRecipe

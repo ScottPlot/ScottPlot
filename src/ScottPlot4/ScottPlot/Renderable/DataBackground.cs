@@ -1,9 +1,9 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.Drawing.Colormaps;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using ScottPlot.Drawing;
+using ScottPlot.Drawing.Colormaps;
 
 namespace ScottPlot.Renderable
 {

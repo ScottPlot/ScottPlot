@@ -1,10 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ScottPlot;
 using ScottPlot.Avalonia;
-using ScottPlot.Styles;
-using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {

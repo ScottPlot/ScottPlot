@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using ScottPlot.Plottable;
-using ScottPlotTests;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Linq;
+using NUnit.Framework;
+using ScottPlot.Plottable;
+using ScottPlotTests;
 
 namespace ScottPlot.Tests.PlotTypes;
 

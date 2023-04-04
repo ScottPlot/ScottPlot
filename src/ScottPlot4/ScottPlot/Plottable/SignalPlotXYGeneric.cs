@@ -1,10 +1,10 @@
-﻿using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {

@@ -1,11 +1,11 @@
-﻿using Avalonia;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using ScottPlot.Avalonia;
-using System;
-using System.Diagnostics;
-using System.Threading;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {

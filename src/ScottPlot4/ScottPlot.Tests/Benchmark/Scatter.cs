@@ -1,9 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
+using NUnit.Framework;
+using ScottPlot;
 
 namespace ScottPlotTests.Benchmark
 {

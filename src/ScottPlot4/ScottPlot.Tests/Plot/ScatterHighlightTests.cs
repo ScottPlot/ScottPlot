@@ -1,10 +1,5 @@
-﻿using NUnit.Framework;
-using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
+using NUnit.Framework;
 using ScottPlot.Plottable;
 
 namespace ScottPlotTests.Plot

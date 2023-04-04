@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using System.Diagnostics;
 
 namespace ScottPlot.Demo.Avalonia
 {

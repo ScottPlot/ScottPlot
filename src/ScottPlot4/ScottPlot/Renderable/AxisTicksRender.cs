@@ -1,8 +1,8 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.Ticks;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Renderable
 {

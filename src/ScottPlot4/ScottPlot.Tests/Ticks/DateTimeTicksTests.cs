@@ -1,13 +1,11 @@
-﻿using NUnit.Framework;
-using ScottPlot.Ticks;
-using ScottPlot.Ticks.DateTimeTickUnits;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using ScottPlot.Ticks;
+using ScottPlot.Ticks.DateTimeTickUnits;
 
 namespace ScottPlotTests.Ticks
 {

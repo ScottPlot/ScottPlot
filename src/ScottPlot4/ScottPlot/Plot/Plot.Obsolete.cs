@@ -3,14 +3,14 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
-using ScottPlot.Plottable;
-using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Plottable;
+using ScottPlot.Statistics;
 
 namespace ScottPlot
 {

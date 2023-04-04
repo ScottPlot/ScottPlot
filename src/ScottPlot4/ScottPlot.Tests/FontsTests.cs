@@ -1,8 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using NUnit.Framework;
+using ScottPlot.Drawing;
 
 namespace ScottPlotTests
 {

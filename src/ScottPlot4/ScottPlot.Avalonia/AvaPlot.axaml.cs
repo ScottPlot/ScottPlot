@@ -1,14 +1,14 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
 using Ava = Avalonia;
 
 #pragma warning disable IDE1006 // lowercase public properties

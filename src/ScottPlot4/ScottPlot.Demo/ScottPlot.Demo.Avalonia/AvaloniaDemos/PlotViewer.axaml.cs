@@ -1,9 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
-using System;
 using static ScottPlot.Demo.Avalonia.MessageBox;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos

@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using ScottPlot.MinMaxSearchStrategies;
-using System;
 
 namespace ScottPlotTests.MinMaxSearchStrategies
 {

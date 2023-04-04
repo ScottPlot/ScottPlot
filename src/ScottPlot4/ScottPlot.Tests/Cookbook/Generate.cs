@@ -1,13 +1,8 @@
-﻿using NUnit.Framework;
-using ScottPlot.Cookbook;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using NUnit.Framework;
+using ScottPlot.Cookbook;
 
 namespace ScottPlotTests.Cookbook
 {

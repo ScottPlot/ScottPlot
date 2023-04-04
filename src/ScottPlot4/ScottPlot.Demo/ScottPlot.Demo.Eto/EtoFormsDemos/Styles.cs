@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Eto.Forms;
 
 namespace ScottPlot.Demo.Eto.EtoFormsDemos

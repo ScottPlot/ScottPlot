@@ -1,12 +1,12 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.Plottable;
-using ScottPlot.Renderable;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Drawing;
+using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 
 namespace ScottPlot
 {

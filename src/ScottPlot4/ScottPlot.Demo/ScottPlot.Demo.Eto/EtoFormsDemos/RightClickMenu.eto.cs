@@ -1,5 +1,5 @@
-﻿using Eto.Forms;
-using Eto.Drawing;
+﻿using Eto.Drawing;
+using Eto.Forms;
 
 namespace ScottPlot.Demo.Eto.EtoFormsDemos
 {

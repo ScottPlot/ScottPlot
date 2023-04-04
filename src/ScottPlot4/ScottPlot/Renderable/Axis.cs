@@ -11,10 +11,10 @@
  * 
  */
 
-using ScottPlot.Drawing;
-using ScottPlot.Ticks;
 using System;
 using System.Drawing;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Renderable
 {

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 
 #pragma warning disable IDE0063 // Use simple 'using' statement
 

@@ -1,8 +1,8 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.SnapLogic;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using ScottPlot.Drawing;
+using ScottPlot.SnapLogic;
 
 namespace ScottPlot.Plottable
 {

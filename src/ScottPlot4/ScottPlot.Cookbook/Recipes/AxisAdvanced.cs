@@ -1,10 +1,7 @@
-﻿using ScottPlot.Control.EventProcess.Events;
-using ScottPlot.Statistics;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using ScottPlot.Statistics;
 
 namespace ScottPlot.Cookbook.Recipes
 {

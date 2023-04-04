@@ -1,10 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using ScottPlot.Plottable;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Tests.PlottableUnitTests
 {

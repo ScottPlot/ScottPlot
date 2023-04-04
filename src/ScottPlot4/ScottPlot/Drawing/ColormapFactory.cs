@@ -1,7 +1,7 @@
-﻿using ScottPlot.Drawing.Colormaps;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ScottPlot.Drawing.Colormaps;
 
 namespace ScottPlot.Drawing
 {

@@ -1,6 +1,5 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
-using ScottPlot.Eto;
 
 namespace ScottPlot.Demo.Eto
 {

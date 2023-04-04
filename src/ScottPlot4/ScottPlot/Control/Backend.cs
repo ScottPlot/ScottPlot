@@ -39,12 +39,12 @@
  *   
  */
 
-using ScottPlot.Control.EventProcess;
-using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ScottPlot.Control.EventProcess;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Control
 {

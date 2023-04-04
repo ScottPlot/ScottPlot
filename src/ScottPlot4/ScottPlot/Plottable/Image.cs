@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using ScottPlot.Drawing;
-using System;
 
 namespace ScottPlot.Plottable
 {

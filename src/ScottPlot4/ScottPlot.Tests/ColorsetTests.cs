@@ -1,10 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot;
-using ScottPlot.Drawing;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Text;
+using NUnit.Framework;
+using ScottPlot;
 
 namespace ScottPlotTests
 {

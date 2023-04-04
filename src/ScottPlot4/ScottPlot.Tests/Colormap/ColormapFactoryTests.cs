@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Linq;
+using NUnit.Framework;
+using ScottPlot.Drawing;
 
 namespace ScottPlotTests.Colormap
 {

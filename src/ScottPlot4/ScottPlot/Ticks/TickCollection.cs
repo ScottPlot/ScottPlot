@@ -1,9 +1,9 @@
-﻿using ScottPlot.Drawing;
-using ScottPlot.Ticks.DateTimeTickUnits;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks.DateTimeTickUnits;
 
 namespace ScottPlot.Ticks
 {

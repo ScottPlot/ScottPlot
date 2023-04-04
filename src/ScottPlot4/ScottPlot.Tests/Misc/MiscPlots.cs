@@ -1,9 +1,5 @@
-﻿using NUnit.Framework;
-using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
+using NUnit.Framework;
 
 namespace ScottPlotTests.Misc
 {

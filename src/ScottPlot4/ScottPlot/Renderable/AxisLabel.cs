@@ -1,6 +1,6 @@
-﻿using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Drawing;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Renderable
 {

@@ -1,9 +1,6 @@
-﻿using ScottPlot.Plottable;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {

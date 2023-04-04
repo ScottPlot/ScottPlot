@@ -1,9 +1,9 @@
-﻿using ScottPlot.Plottable;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {

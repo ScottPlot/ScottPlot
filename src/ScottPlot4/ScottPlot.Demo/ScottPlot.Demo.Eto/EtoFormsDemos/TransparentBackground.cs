@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using Eto.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Eto.Forms;
 
 namespace ScottPlot.Demo.Eto.EtoFormsDemos

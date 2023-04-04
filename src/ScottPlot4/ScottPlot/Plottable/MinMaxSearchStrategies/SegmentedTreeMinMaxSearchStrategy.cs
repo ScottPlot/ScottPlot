@@ -1,5 +1,5 @@
-﻿using ScottPlot.DataStructures;
-using System;
+﻿using System;
+using ScottPlot.DataStructures;
 
 namespace ScottPlot.MinMaxSearchStrategies
 {

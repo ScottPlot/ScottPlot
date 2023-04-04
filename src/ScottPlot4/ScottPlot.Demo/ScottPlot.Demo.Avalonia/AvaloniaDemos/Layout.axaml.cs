@@ -1,11 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
-using ScottPlot.Renderable;
-using System;
-using System.Linq;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {

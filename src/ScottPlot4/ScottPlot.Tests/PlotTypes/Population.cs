@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using ScottPlotTests;
-using System;
 
 namespace ScottPlot.Tests.PlotTypes;
 

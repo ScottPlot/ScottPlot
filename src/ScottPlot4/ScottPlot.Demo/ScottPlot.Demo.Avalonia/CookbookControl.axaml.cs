@@ -1,10 +1,8 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
-using System;
-using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia
 {

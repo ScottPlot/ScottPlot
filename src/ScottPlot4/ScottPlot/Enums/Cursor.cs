@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot
+﻿namespace ScottPlot
 {
     public enum Cursor
     {

@@ -1,9 +1,9 @@
-﻿using ScottPlot.Control;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using ScottPlot.Control;
 
 #pragma warning disable IDE1006 // lowercase public properties
 #pragma warning disable CS0067 // unused events

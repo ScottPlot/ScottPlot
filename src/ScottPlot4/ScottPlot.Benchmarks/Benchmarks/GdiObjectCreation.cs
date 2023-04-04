@@ -1,6 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
+using BenchmarkDotNet.Attributes;
 
 namespace ScottPlotTests.Performance
 {

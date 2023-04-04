@@ -35,3 +35,11 @@ csharp_space_between_method_call_empty_parameter_list_parentheses = false
 # Wrapping preferences
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
+
+# Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = error
+
+# Sort usings
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_diagnostic.IDE0055.severity = error

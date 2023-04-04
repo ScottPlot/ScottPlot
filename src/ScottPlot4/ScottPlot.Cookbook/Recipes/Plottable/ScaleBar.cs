@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Cookbook.Recipes.Plottable
+﻿namespace ScottPlot.Cookbook.Recipes.Plottable
 {
     public class ScaleBarQuickstart : IRecipe
     {

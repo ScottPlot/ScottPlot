@@ -1,10 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot.Drawing;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
+using ScottPlot.Drawing;
 
 namespace ScottPlotTests.ColormapTests
 {

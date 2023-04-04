@@ -1,11 +1,7 @@
-﻿using NUnit.Framework;
-using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
+using ScottPlot;
 
 namespace ScottPlotTests.Axis
 {

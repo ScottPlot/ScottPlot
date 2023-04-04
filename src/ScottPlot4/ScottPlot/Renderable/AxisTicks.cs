@@ -5,11 +5,11 @@
  *   - major/minor grid line styling
  */
 
-using ScottPlot.Ticks;
-using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Renderable
 {

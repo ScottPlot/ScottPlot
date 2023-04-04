@@ -1,8 +1,8 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Collections.Generic;
+using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Renderable
 {

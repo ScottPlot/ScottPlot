@@ -30,13 +30,6 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-
-        <!-- obvlivious reference types -->
-        <!-- Missing XML comment -->
-        <!-- Optional parameter back compat -->
-        <!-- Multiple overloads back compat -->
-        <NoWarn>RS0041;CS1591;RS0027;RS0026</NoWarn>
-
     </PropertyGroup>
 
     <ItemGroup>

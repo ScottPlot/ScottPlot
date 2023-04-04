@@ -1,8 +1,8 @@
-﻿using ScottPlot.Drawing;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
