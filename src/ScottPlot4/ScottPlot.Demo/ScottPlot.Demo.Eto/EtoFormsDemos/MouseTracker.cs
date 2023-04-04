@@ -2,60 +2,59 @@
 using Eto.Forms;
 using ScottPlot.Plottable;
 
-namespace ScottPlot.Demo.Eto.EtoFormsDemos
+namespace ScottPlot.Demo.Eto.EtoFormsDemos;
+
+public partial class MouseTracker : Form
 {
-    public partial class MouseTracker : Form
+    private readonly Crosshair Crosshair;
+
+    public MouseTracker()
     {
-        private readonly Crosshair Crosshair;
+        InitializeComponent();
+        formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+        Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
 
-        public MouseTracker()
-        {
-            InitializeComponent();
-            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
-            Crosshair = formsPlot1.Plot.AddCrosshair(0, 0);
+        formsPlot1.MouseEnter += formsPlot1_MouseEnter;
+        formsPlot1.MouseLeave += formsPlot1_MouseLeave;
+        this.Content.MouseMove += formsPlot1_MouseMoved_1;
+    }
 
-            formsPlot1.MouseEnter += formsPlot1_MouseEnter;
-            formsPlot1.MouseLeave += formsPlot1_MouseLeave;
-            this.Content.MouseMove += formsPlot1_MouseMoved_1;
-        }
+    private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
+    {
+        this.Content.SuspendLayout();
 
-        private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
-        {
-            this.Content.SuspendLayout();
+        (double coordinateX, double coordinateY) = formsPlot1.GetMouseCoordinates();
 
-            (double coordinateX, double coordinateY) = formsPlot1.GetMouseCoordinates();
+        XPixelLabel.Text = $"{e.Location.X:0.000}";
+        YPixelLabel.Text = $"{e.Location.Y:0.000}";
 
-            XPixelLabel.Text = $"{e.Location.X:0.000}";
-            YPixelLabel.Text = $"{e.Location.Y:0.000}";
+        XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
+        YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
 
-            XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
-            YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
+        Crosshair.X = coordinateX;
+        Crosshair.Y = coordinateY;
 
-            Crosshair.X = coordinateX;
-            Crosshair.Y = coordinateY;
+        formsPlot1.Refresh();
 
-            formsPlot1.Refresh();
+        this.Content.ResumeLayout();
+    }
 
-            this.Content.ResumeLayout();
-        }
+    private void formsPlot1_MouseEnter(object sender, EventArgs e)
+    {
+        lblMouse.Text = "Mouse ENTERED the plot";
+        Crosshair.IsVisible = true;
+    }
 
-        private void formsPlot1_MouseEnter(object sender, EventArgs e)
-        {
-            lblMouse.Text = "Mouse ENTERED the plot";
-            Crosshair.IsVisible = true;
-        }
+    private void formsPlot1_MouseLeave(object sender, EventArgs e)
+    {
+        lblMouse.Text = "Mouse LEFT the plot";
 
-        private void formsPlot1_MouseLeave(object sender, EventArgs e)
-        {
-            lblMouse.Text = "Mouse LEFT the plot";
+        XPixelLabel.Text = $"--";
+        YPixelLabel.Text = $"--";
+        XCoordinateLabel.Text = $"--";
+        YCoordinateLabel.Text = $"--";
 
-            XPixelLabel.Text = $"--";
-            YPixelLabel.Text = $"--";
-            XCoordinateLabel.Text = $"--";
-            YCoordinateLabel.Text = $"--";
-
-            Crosshair.IsVisible = false;
-            formsPlot1.Refresh();
-        }
+        Crosshair.IsVisible = false;
+        formsPlot1.Refresh();
     }
 }

@@ -1,36 +1,35 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.PlottableRenderTests
+namespace ScottPlotTests.PlottableRenderTests;
+
+internal class Signal
 {
-    internal class Signal
+    [Test]
+    public void Test_Signal_SinglePointShouldDrawMarker()
     {
-        [Test]
-        public void Test_Signal_SinglePointShouldDrawMarker()
-        {
-            double[] dataY = { 69 };
+        double[] dataY = { 69 };
 
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.AddSignal(dataY);
+        var plt = new ScottPlot.Plot(400, 300);
+        plt.AddSignal(dataY);
 
-            var meanPixel = new MeanPixel(plt);
-            Assert.That(meanPixel.IsNotGray());
+        var meanPixel = new MeanPixel(plt);
+        Assert.That(meanPixel.IsNotGray());
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
+    }
 
-        [Test]
-        public void Test_SignalXY_SinglePointShouldDrawMarker()
-        {
-            double[] dataX = { 42 };
-            double[] dataY = { 69 };
+    [Test]
+    public void Test_SignalXY_SinglePointShouldDrawMarker()
+    {
+        double[] dataX = { 42 };
+        double[] dataY = { 69 };
 
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.AddSignalXY(dataX, dataY);
+        var plt = new ScottPlot.Plot(400, 300);
+        plt.AddSignalXY(dataX, dataY);
 
-            var meanPixel = new MeanPixel(plt);
-            Assert.That(meanPixel.IsNotGray());
+        var meanPixel = new MeanPixel(plt);
+        Assert.That(meanPixel.IsNotGray());
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
     }
 }

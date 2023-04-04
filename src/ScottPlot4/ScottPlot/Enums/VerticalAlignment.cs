@@ -1,9 +1,8 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum VerticalAlignment
 {
-    public enum VerticalAlignment
-    {
-        Upper,
-        Lower,
-        Middle
-    }
+    Upper,
+    Lower,
+    Middle
 }

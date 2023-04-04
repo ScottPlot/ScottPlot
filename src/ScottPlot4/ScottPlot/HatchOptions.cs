@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot;
+
+public struct HatchOptions
 {
-    public struct HatchOptions
-    {
-        public HatchStyle Pattern { get; set; }
-        public Color Color { get; set; }
-    }
+    public HatchStyle Pattern { get; set; }
+    public Color Color { get; set; }
 }

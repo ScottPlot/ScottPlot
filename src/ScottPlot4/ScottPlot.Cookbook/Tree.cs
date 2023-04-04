@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
 
-namespace ScottPlot.Cookbook
+namespace ScottPlot.Cookbook;
+
+public static class Tree
 {
-    public static class Tree
+    public static List<TreeNode> GetRecipes()
     {
-        public static List<TreeNode> GetRecipes()
+        var categoryNodes = new List<TreeNode>();
+
+        foreach (var dict in Locate.GetCategorizedRecipes())
         {
-            var categoryNodes = new List<TreeNode>();
+            string category = dict.Key;
+            IRecipe[] recipes = dict.Value;
 
-            foreach (var dict in Locate.GetCategorizedRecipes())
-            {
-                string category = dict.Key;
-                IRecipe[] recipes = dict.Value;
+            var categoryNode = new TreeNode(category);
+            categoryNodes.Add(categoryNode);
 
-                var categoryNode = new TreeNode(category);
-                categoryNodes.Add(categoryNode);
-
-                foreach (IRecipe recipe in recipes)
-                    categoryNode.Items.Add(new TreeNode(recipe));
-            }
-
-            return categoryNodes;
+            foreach (IRecipe recipe in recipes)
+                categoryNode.Items.Add(new TreeNode(recipe));
         }
+
+        return categoryNodes;
     }
 }

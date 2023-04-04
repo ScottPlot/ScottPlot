@@ -1,28 +1,27 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 
-namespace ScottPlot.Demo.Eto.EtoFormsDemos
+namespace ScottPlot.Demo.Eto.EtoFormsDemos;
+
+partial class RightClickMenu : Form
 {
-    partial class RightClickMenu : Form
+    private void InitializeComponent()
     {
-        private void InitializeComponent()
-        {
-            this.formsPlot1 = new ScottPlot.Eto.PlotView();
-            this.SuspendLayout();
+        this.formsPlot1 = new ScottPlot.Eto.PlotView();
+        this.SuspendLayout();
 
-            this.Content = this.formsPlot1;
+        this.Content = this.formsPlot1;
 
-            // 
-            // formsPlot1
-            // 
-            this.formsPlot1.Size = new Size(800, 450);
-            // 
-            // RightClickMenu
-            // 
-            this.Title = "RightClickMenu";
-            this.ResumeLayout();
-        }
-
-        private ScottPlot.Eto.PlotView formsPlot1;
+        // 
+        // formsPlot1
+        // 
+        this.formsPlot1.Size = new Size(800, 450);
+        // 
+        // RightClickMenu
+        // 
+        this.Title = "RightClickMenu";
+        this.ResumeLayout();
     }
+
+    private ScottPlot.Eto.PlotView formsPlot1;
 }

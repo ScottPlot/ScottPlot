@@ -1,19 +1,18 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace ScottPlot.Demo.Avalonia
-{
-    public class AboutControl : UserControl
-    {
-        public AboutControl()
-        {
-            this.InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = $"version {Plot.Version}";
-        }
+namespace ScottPlot.Demo.Avalonia;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public class AboutControl : UserControl
+{
+    public AboutControl()
+    {
+        this.InitializeComponent();
+        this.Find<TextBlock>("VersionLabel").Text = $"version {Plot.Version}";
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

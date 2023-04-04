@@ -1,26 +1,25 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.PlotTypes
+namespace ScottPlotTests.PlotTypes;
+
+class Radar
 {
-    class Radar
+    [Test]
+    public void Test_Radar_ZeroNorm()
     {
-        [Test]
-        public void Test_Radar_ZeroNorm()
-        {
-            // https://github.com/ScottPlot/ScottPlot/issues/1139
+        // https://github.com/ScottPlot/ScottPlot/issues/1139
 
-            var plt = new ScottPlot.Plot(400, 300);
+        var plt = new ScottPlot.Plot(400, 300);
 
-            double[,] values = {
-                { 78,  83, 0, 76, 43 },
-                { 100, 50, 0, 60, 90 }
-            };
+        double[,] values = {
+            { 78,  83, 0, 76, 43 },
+            { 100, 50, 0, 60, 90 }
+        };
 
-            double[] maxValues = { 100, 100, 0, 100, 100 };
+        double[] maxValues = { 100, 100, 0, 100, 100 };
 
-            plt.AddRadar(values, independentAxes: true, maxValues: maxValues);
+        plt.AddRadar(values, independentAxes: true, maxValues: maxValues);
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
     }
 }

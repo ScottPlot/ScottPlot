@@ -1,17 +1,16 @@
 ﻿using System.Windows.Forms;
 
-namespace ScottPlot
+namespace ScottPlot;
+
+public partial class FormHelp : Form
 {
-    public partial class FormHelp : Form
+    public FormHelp()
     {
-        public FormHelp()
-        {
-            InitializeComponent();
-            Text = $"ScottPlot {Plot.Version} Help";
-            StartPosition = FormStartPosition.CenterScreen;
-            TopMost = true;
-            lblVersion.Text = $"ScottPlot.WinForms {Plot.Version}";
-            lblMessage.Text = Control.ControlBackEnd.GetHelpMessage();
-        }
+        InitializeComponent();
+        Text = $"ScottPlot {Plot.Version} Help";
+        StartPosition = FormStartPosition.CenterScreen;
+        TopMost = true;
+        lblVersion.Text = $"ScottPlot.WinForms {Plot.Version}";
+        lblMessage.Text = Control.ControlBackEnd.GetHelpMessage();
     }
 }

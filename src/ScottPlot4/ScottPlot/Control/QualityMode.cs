@@ -1,21 +1,20 @@
-﻿namespace ScottPlot.Control
+﻿namespace ScottPlot.Control;
+
+public enum QualityMode
 {
-    public enum QualityMode
-    {
-        /// <summary>
-        /// Anti-aliasing always off
-        /// </summary>
-        Low,
+    /// <summary>
+    /// Anti-aliasing always off
+    /// </summary>
+    Low,
 
 
-        /// <summary>
-        /// Anti-aliasing off while dragging (more responsive) but on otherwise
-        /// </summary>
-        LowWhileDragging,
+    /// <summary>
+    /// Anti-aliasing off while dragging (more responsive) but on otherwise
+    /// </summary>
+    LowWhileDragging,
 
-        /// <summary>
-        /// Anti-aliasing always on
-        /// </summary>
-        High,
-    }
+    /// <summary>
+    /// Anti-aliasing always on
+    /// </summary>
+    High,
 }

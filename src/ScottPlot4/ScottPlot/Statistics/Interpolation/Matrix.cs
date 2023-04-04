@@ -7,20 +7,19 @@
 
 using System;
 
-namespace ScottPlot.Statistics.Interpolation
-{
-    [Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
-    public class Matrix
-    {
-        public double[,] a;
-        public double[] y;
-        public double[] x;
+namespace ScottPlot.Statistics.Interpolation;
 
-        public Matrix(int size)
-        {
-            a = new double[size, size];
-            y = new double[size];
-            x = new double[size];
-        }
+[Obsolete("This class has been deprecated. Use ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY()")]
+public class Matrix
+{
+    public double[,] a;
+    public double[] y;
+    public double[] x;
+
+    public Matrix(int size)
+    {
+        a = new double[size, size];
+        y = new double[size];
+        x = new double[size];
     }
 }

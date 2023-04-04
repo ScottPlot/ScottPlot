@@ -1,32 +1,31 @@
 ﻿using System.Drawing;
 using NUnit.Framework;
 
-namespace ScottPlotTests.PlotTypes
+namespace ScottPlotTests.PlotTypes;
+
+public class Annotation
 {
-    public class Annotation
+    [Test]
+    public void Test_Annotation_Coordinates()
     {
-        [Test]
-        public void Test_Annotation_Coordinates()
-        {
-            var plt = new ScottPlot.Plot(400, 300);
+        var plt = new ScottPlot.Plot(400, 300);
 
-            // negative coordinates snap text to the lower or right edges
-            plt.AddAnnotation("Top Left", 10, 10);
-            plt.AddAnnotation("Lower Left", 10, -10);
-            plt.AddAnnotation("Top Right", -10, 10);
-            plt.AddAnnotation("Lower Right", -10, -10);
+        // negative coordinates snap text to the lower or right edges
+        plt.AddAnnotation("Top Left", 10, 10);
+        plt.AddAnnotation("Lower Left", 10, -10);
+        plt.AddAnnotation("Top Right", -10, 10);
+        plt.AddAnnotation("Lower Right", -10, -10);
 
-            // customization of style
-            var a = plt.AddAnnotation("Fancy Annotation", 10, 40);
-            a.Font.Size = 24;
-            a.Font.Name = "Impact";
-            a.Font.Color = Color.Red;
-            a.Shadow = true;
-            a.Background = true;
-            a.BackgroundColor = Color.White;
-            a.BorderWidth = 2;
+        // customization of style
+        var a = plt.AddAnnotation("Fancy Annotation", 10, 40);
+        a.Font.Size = 24;
+        a.Font.Name = "Impact";
+        a.Font.Color = Color.Red;
+        a.Shadow = true;
+        a.Background = true;
+        a.BackgroundColor = Color.White;
+        a.BorderWidth = 2;
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
     }
 }

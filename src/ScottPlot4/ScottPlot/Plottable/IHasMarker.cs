@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.Plottable
+namespace ScottPlot.Plottable;
+
+public interface IHasMarker
 {
-    public interface IHasMarker
-    {
-        float MarkerSize { get; set; }
-        float MarkerLineWidth { get; set; }
-        MarkerShape MarkerShape { get; set; }
-        Color MarkerColor { get; set; }
-    }
+    float MarkerSize { get; set; }
+    float MarkerLineWidth { get; set; }
+    MarkerShape MarkerShape { get; set; }
+    Color MarkerColor { get; set; }
 }

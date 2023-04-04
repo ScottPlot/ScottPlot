@@ -1,17 +1,16 @@
 ﻿using Eto.Forms;
 
-namespace ScottPlot.Demo.Eto.EtoFormsDemos
+namespace ScottPlot.Demo.Eto.EtoFormsDemos;
+
+public partial class AxisLimits : Form
 {
-    public partial class AxisLimits : Form
+    public AxisLimits()
     {
-        public AxisLimits()
-        {
-            InitializeComponent();
-            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
-            formsPlot1.Plot.AddSignal(DataGen.Cos(51));
-            formsPlot1.Plot.AxisAuto();
-            formsPlot1.Plot.SetOuterViewLimits(0, 50, -1, 1);
-            formsPlot1.Refresh();
-        }
+        InitializeComponent();
+        formsPlot1.Plot.AddSignal(DataGen.Sin(51));
+        formsPlot1.Plot.AddSignal(DataGen.Cos(51));
+        formsPlot1.Plot.AxisAuto();
+        formsPlot1.Plot.SetOuterViewLimits(0, 50, -1, 1);
+        formsPlot1.Refresh();
     }
 }

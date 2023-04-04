@@ -2,24 +2,23 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace ScottPlotTests.PlotTypes
+namespace ScottPlotTests.PlotTypes;
+
+class RadialGaugePlot
 {
-    class RadialGaugePlot
+    [Test]
+    public void Test_Different_Gauge_Counts()
     {
-        [Test]
-        public void Test_Different_Gauge_Counts()
+        for (int i = 1; i < 6; i++)
         {
-            for (int i = 1; i < 6; i++)
-            {
-                double[] data = Enumerable.Range(0, i)
-                    .Select(x => (double)Random.Shared.Next(10, 100))
-                    .ToArray();
+            double[] data = Enumerable.Range(0, i)
+                .Select(x => (double)Random.Shared.Next(10, 100))
+                .ToArray();
 
-                ScottPlot.Plot myPlot = new(200, 200);
-                myPlot.AddRadialGauge(data);
+            ScottPlot.Plot myPlot = new(200, 200);
+            myPlot.AddRadialGauge(data);
 
-                TestTools.SaveFig(myPlot, i.ToString());
-            }
+            TestTools.SaveFig(myPlot, i.ToString());
         }
     }
 }

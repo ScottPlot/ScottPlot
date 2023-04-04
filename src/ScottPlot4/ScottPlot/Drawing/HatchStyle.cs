@@ -1,16 +1,15 @@
-﻿namespace ScottPlot.Drawing
+﻿namespace ScottPlot.Drawing;
+
+public enum HatchStyle
 {
-    public enum HatchStyle
-    {
-        None,
-        StripedUpwardDiagonal,
-        StripedDownwardDiagonal,
-        StripedWideUpwardDiagonal,
-        StripedWideDownwardDiagonal,
-        LargeCheckerBoard,
-        SmallCheckerBoard,
-        LargeGrid,
-        SmallGrid,
-        DottedDiamond
-    }
+    None,
+    StripedUpwardDiagonal,
+    StripedDownwardDiagonal,
+    StripedWideUpwardDiagonal,
+    StripedWideDownwardDiagonal,
+    LargeCheckerBoard,
+    SmallCheckerBoard,
+    LargeGrid,
+    SmallGrid,
+    DottedDiamond
 }

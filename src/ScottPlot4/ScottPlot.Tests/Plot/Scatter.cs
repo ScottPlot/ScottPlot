@@ -1,19 +1,18 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.Plot
+namespace ScottPlotTests.Plot;
+
+class Scatter
 {
-    class Scatter
+    [Test]
+    public void Test_Scatter_AllZeros()
     {
-        [Test]
-        public void Test_Scatter_AllZeros()
-        {
-            double[] dataX = { 0, 0, 0, 0, 0 };
-            double[] dataY = { 0, 0, 0, 0, 0 };
+        double[] dataX = { 0, 0, 0, 0, 0 };
+        double[] dataY = { 0, 0, 0, 0, 0 };
 
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.AddScatter(dataX, dataY);
+        var plt = new ScottPlot.Plot(400, 300);
+        plt.AddScatter(dataX, dataY);
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
     }
 }

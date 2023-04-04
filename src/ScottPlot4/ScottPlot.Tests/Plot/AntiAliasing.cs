@@ -1,33 +1,32 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.Plot
+namespace ScottPlotTests.Plot;
+
+class AntiAliasing
 {
-    class AntiAliasing
+    [Test]
+    public void Test_AntiAliasing_Works()
     {
-        [Test]
-        public void Test_AntiAliasing_Works()
-        {
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.AddSignal(ScottPlot.DataGen.Sin(51), label: "sin");
-            plt.AddSignal(ScottPlot.DataGen.Cos(51), label: "cos");
-            plt.YLabel("Vertical Axis");
-            plt.XLabel("Horizontal Axis");
-            plt.Title("Plot Title");
-            plt.Legend();
+        var plt = new ScottPlot.Plot(400, 300);
+        plt.AddSignal(ScottPlot.DataGen.Sin(51), label: "sin");
+        plt.AddSignal(ScottPlot.DataGen.Cos(51), label: "cos");
+        plt.YLabel("Vertical Axis");
+        plt.XLabel("Horizontal Axis");
+        plt.Title("Plot Title");
+        plt.Legend();
 
-            // start with default settings
-            var bmp1 = plt.Render(lowQuality: true);
+        // start with default settings
+        var bmp1 = plt.Render(lowQuality: true);
 
-            // change the plottable
-            var bmp2 = plt.Render(lowQuality: false);
+        // change the plottable
+        var bmp2 = plt.Render(lowQuality: false);
 
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
+        // measure what changed
+        //TestTools.SaveFig(bmp1, "1");
+        //TestTools.SaveFig(bmp2, "2");
 
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Assert.That(after.IsDifferentThan(before));
-        }
+        var before = new MeanPixel(bmp1);
+        var after = new MeanPixel(bmp2);
+        Assert.That(after.IsDifferentThan(before));
     }
 }

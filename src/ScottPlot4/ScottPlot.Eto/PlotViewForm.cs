@@ -1,25 +1,24 @@
 ﻿using Eto.Forms;
 
-namespace ScottPlot.Eto
+namespace ScottPlot.Eto;
+
+public partial class PlotViewForm : Form
 {
-    public partial class PlotViewForm : Form
+    public PlotViewForm(Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
     {
-        public PlotViewForm(Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            Width = windowWidth;
-            Height = windowHeight;
+        Width = windowWidth;
+        Height = windowHeight;
 
-            Title = windowTitle;
+        Title = windowTitle;
 
-            PlotView = new PlotView();
-            PlotView.Reset(plot);
-            PlotView.Refresh();
+        PlotView = new PlotView();
+        PlotView.Reset(plot);
+        PlotView.Refresh();
 
-            Content = PlotView;
-        }
-
-        public PlotView? PlotView { get; set; }
+        Content = PlotView;
     }
+
+    public PlotView? PlotView { get; set; }
 }

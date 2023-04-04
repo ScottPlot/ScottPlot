@@ -43,3 +43,7 @@ dotnet_diagnostic.IDE0005.severity = error
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
 dotnet_diagnostic.IDE0055.severity = error
+
+# File scoped namespaces
+csharp_style_namespace_declarations=file_scoped
+dotnet_diagnostic.IDE0161.severity = error

@@ -4,60 +4,59 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 
-namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
+namespace ScottPlot.Demo.Avalonia.AvaloniaDemos;
+
+public class RightClickMenu : Window
 {
-    public class RightClickMenu : Window
+    private readonly AvaPlot avaPlot1;
+
+    public RightClickMenu()
     {
-        private readonly AvaPlot avaPlot1;
-
-        public RightClickMenu()
-        {
-            this.InitializeComponent();
+        this.InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
+        avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.Plot.AddSignal(DataGen.Sin(51));
-            avaPlot1.Plot.AddSignal(DataGen.Cos(51));
-            avaPlot1.Refresh();
+        avaPlot1.Plot.AddSignal(DataGen.Sin(51));
+        avaPlot1.Plot.AddSignal(DataGen.Cos(51));
+        avaPlot1.Refresh();
 
-            ContextMenu contextMenu = new ContextMenu
-            {
-                Items = new[] {
-                    MakeMenuItem("Add Sine Wave", AddSine),
-                    MakeMenuItem("Clear Plot", ClearPlot)
-                }
-            };
-
-            avaPlot1.ContextMenu = contextMenu;
-        }
-
-        public void InitializeComponent()
+        ContextMenu contextMenu = new ContextMenu
         {
-            AvaloniaXamlLoader.Load(this);
-        }
+            Items = new[] {
+                MakeMenuItem("Add Sine Wave", AddSine),
+                MakeMenuItem("Clear Plot", ClearPlot)
+            }
+        };
 
-        private MenuItem MakeMenuItem(string label, Action onClick)
-        {
-            MenuItem menuItem = new MenuItem() { Header = label };
-            menuItem.Click += (sender, e) => onClick();
-            return menuItem;
-        }
+        avaPlot1.ContextMenu = contextMenu;
+    }
 
-        private void AddSine()
-        {
-            Random rand = new Random();
-            avaPlot1.Plot.AddSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
-            avaPlot1.Plot.AxisAuto();
-            avaPlot1.Refresh();
-        }
+    public void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        private void ClearPlot()
-        {
-            avaPlot1.Plot.Clear();
-            avaPlot1.Plot.AxisAuto();
-            avaPlot1.Refresh();
-        }
+    private MenuItem MakeMenuItem(string label, Action onClick)
+    {
+        MenuItem menuItem = new MenuItem() { Header = label };
+        menuItem.Click += (sender, e) => onClick();
+        return menuItem;
+    }
+
+    private void AddSine()
+    {
+        Random rand = new Random();
+        avaPlot1.Plot.AddSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
+        avaPlot1.Plot.AxisAuto();
+        avaPlot1.Refresh();
+    }
+
+    private void ClearPlot()
+    {
+        avaPlot1.Plot.Clear();
+        avaPlot1.Plot.AxisAuto();
+        avaPlot1.Refresh();
     }
 }

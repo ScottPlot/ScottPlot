@@ -7,66 +7,65 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using ScottPlot.Avalonia;
 
-namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
+namespace ScottPlot.Demo.Avalonia.AvaloniaDemos;
+
+public class LiveDataFixed : Window
 {
-    public class LiveDataFixed : Window
+    AvaPlot avaPlot1;
+    Random rand = new Random();
+    double[] liveData = new double[400];
+    DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
+    Stopwatch sw = Stopwatch.StartNew();
+
+    private Timer _updateDataTimer;
+    private DispatcherTimer _renderTimer;
+
+    public LiveDataFixed()
     {
-        AvaPlot avaPlot1;
-        Random rand = new Random();
-        double[] liveData = new double[400];
-        DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
-        Stopwatch sw = Stopwatch.StartNew();
-
-        private Timer _updateDataTimer;
-        private DispatcherTimer _renderTimer;
-
-        public LiveDataFixed()
-        {
-            this.InitializeComponent();
+        this.InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
+        avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            // plot the data array only once
-            avaPlot1.Plot.AddSignal(liveData);
-            avaPlot1.Plot.AxisAutoX(margin: 0);
-            avaPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
+        // plot the data array only once
+        avaPlot1.Plot.AddSignal(liveData);
+        avaPlot1.Plot.AxisAutoX(margin: 0);
+        avaPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
-            // create a traditional timer to update the data
-            _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
+        // create a traditional timer to update the data
+        _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
 
-            // create a separate timer to update the GUI
-            _renderTimer = new DispatcherTimer();
-            _renderTimer.Interval = TimeSpan.FromMilliseconds(10);
-            _renderTimer.Tick += Render;
-            _renderTimer.Start();
+        // create a separate timer to update the GUI
+        _renderTimer = new DispatcherTimer();
+        _renderTimer.Interval = TimeSpan.FromMilliseconds(10);
+        _renderTimer.Tick += Render;
+        _renderTimer.Start();
 
-            Closed += (sender, args) =>
-            {
-                _updateDataTimer?.Dispose();
-                _renderTimer?.Stop();
-            };
-        }
-
-        private void InitializeComponent()
+        Closed += (sender, args) =>
         {
-            AvaloniaXamlLoader.Load(this);
-        }
+            _updateDataTimer?.Dispose();
+            _renderTimer?.Stop();
+        };
+    }
 
-        void UpdateData()
-        {
-            // "scroll" the whole chart to the left
-            Array.Copy(liveData, 1, liveData, 0, liveData.Length - 1);
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-            // place the newest data point at the end
-            double nextValue = ecg.GetVoltage(sw.Elapsed.TotalSeconds);
-            liveData[liveData.Length - 1] = nextValue;
-        }
+    void UpdateData()
+    {
+        // "scroll" the whole chart to the left
+        Array.Copy(liveData, 1, liveData, 0, liveData.Length - 1);
 
-        void Render(object sender, EventArgs e)
-        {
-            avaPlot1.Refresh();
-        }
+        // place the newest data point at the end
+        double nextValue = ecg.GetVoltage(sw.Elapsed.TotalSeconds);
+        liveData[liveData.Length - 1] = nextValue;
+    }
+
+    void Render(object sender, EventArgs e)
+    {
+        avaPlot1.Refresh();
     }
 }

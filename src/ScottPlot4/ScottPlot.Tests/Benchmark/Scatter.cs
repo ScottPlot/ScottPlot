@@ -3,37 +3,36 @@ using System.Linq;
 using NUnit.Framework;
 using ScottPlot;
 
-namespace ScottPlotTests.Benchmark
+namespace ScottPlotTests.Benchmark;
+
+class Scatter
 {
-    class Scatter
+    [Test]
+    public void Test_scatter_benchmark()
     {
-        [Test]
-        public void Test_scatter_benchmark()
+        int[] pointCounts = { 1000, 100, 10 };
+        const int REPS = 10;
+
+        Random rand = new(0);
+        for (int i = 0; i < pointCounts.Length; i++)
         {
-            int[] pointCounts = { 1000, 100, 10 };
-            const int REPS = 10;
+            int pointCount = pointCounts[i];
+            var plt = new ScottPlot.Plot();
+            double[] xs = DataGen.Random(rand, pointCount);
+            double[] ys = DataGen.RandomWalk(rand, pointCount);
+            plt.AddScatter(xs, ys);
+            plt.Render(lowQuality: true);
 
-            Random rand = new(0);
-            for (int i = 0; i < pointCounts.Length; i++)
+            for (int j = 0; j < REPS; j++)
             {
-                int pointCount = pointCounts[i];
-                var plt = new ScottPlot.Plot();
-                double[] xs = DataGen.Random(rand, pointCount);
-                double[] ys = DataGen.RandomWalk(rand, pointCount);
-                plt.AddScatter(xs, ys);
                 plt.Render(lowQuality: true);
-
-                for (int j = 0; j < REPS; j++)
-                {
-                    plt.Render(lowQuality: true);
-                }
-
-                double[] renderTimes = plt.BenchmarkTimes();
-                Assert.AreEqual(REPS + 1, renderTimes.Length);
-
-                double meanTime = renderTimes.Sum() / renderTimes.Length;
-                Console.WriteLine($"Rendered {pointCount} points in {meanTime:N2} ms (n={renderTimes.Length})");
             }
+
+            double[] renderTimes = plt.BenchmarkTimes();
+            Assert.AreEqual(REPS + 1, renderTimes.Length);
+
+            double meanTime = renderTimes.Sum() / renderTimes.Length;
+            Console.WriteLine($"Rendered {pointCount} points in {meanTime:N2} ms (n={renderTimes.Length})");
         }
     }
 }

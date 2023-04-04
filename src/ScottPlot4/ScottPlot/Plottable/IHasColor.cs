@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.Plottable
+namespace ScottPlot.Plottable;
+
+public interface IHasColor
 {
-    public interface IHasColor
-    {
-        Color Color { get; set; }
-    }
+    Color Color { get; set; }
 }

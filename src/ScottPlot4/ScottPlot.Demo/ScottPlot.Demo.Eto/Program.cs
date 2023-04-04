@@ -1,17 +1,16 @@
 ﻿using System;
 using Eto.Forms;
 
-namespace ScottPlot.Demo.Eto
+namespace ScottPlot.Demo.Eto;
+
+static class Program
 {
-    static class Program
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    static void Main(string[] args)
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            new Application(global::Eto.Platform.Detect).Run(new FormMain());
-        }
+        new Application(global::Eto.Platform.Detect).Run(new FormMain());
     }
 }

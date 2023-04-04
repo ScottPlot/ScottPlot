@@ -1,22 +1,21 @@
 ﻿using System.Windows;
 
-namespace ScottPlot
+namespace ScottPlot;
+
+/// <summary>
+/// Interaction logic for WpfPlotViewer.xaml
+/// </summary>
+public partial class WpfPlotViewer : Window
 {
-    /// <summary>
-    /// Interaction logic for WpfPlotViewer.xaml
-    /// </summary>
-    public partial class WpfPlotViewer : Window
+    public WpfPlotViewer(ScottPlot.Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
     {
-        public WpfPlotViewer(ScottPlot.Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            Width = windowWidth;
-            Height = windowHeight;
-            Title = windowTitle;
+        Width = windowWidth;
+        Height = windowHeight;
+        Title = windowTitle;
 
-            wpfPlot1.Reset(plot);
-            wpfPlot1.Refresh();
-        }
+        wpfPlot1.Reset(plot);
+        wpfPlot1.Refresh();
     }
 }

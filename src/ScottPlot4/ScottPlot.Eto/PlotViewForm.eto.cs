@@ -1,13 +1,12 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 
-namespace ScottPlot.Eto
+namespace ScottPlot.Eto;
+
+partial class PlotViewForm : Form
 {
-    partial class PlotViewForm : Form
+    void InitializeComponent()
     {
-        void InitializeComponent()
-        {
-            MinimumSize = new Size(200, 200);
-        }
+        MinimumSize = new Size(200, 200);
     }
 }

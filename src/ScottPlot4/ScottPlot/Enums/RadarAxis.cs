@@ -1,9 +1,8 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum RadarAxis
 {
-    public enum RadarAxis
-    {
-        Circle,
-        Polygon,
-        None
-    }
+    Circle,
+    Polygon,
+    None
 }

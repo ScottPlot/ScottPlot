@@ -1,40 +1,39 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.PlottableRenderTests
+namespace ScottPlotTests.PlottableRenderTests;
+
+class Colorbar
 {
-    class Colorbar
+    [Test]
+    public void Test_Colorbar_CanBeAdded()
     {
-        [Test]
-        public void Test_Colorbar_CanBeAdded()
-        {
-            var plt = new ScottPlot.Plot();
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+        var plt = new ScottPlot.Plot();
+        var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
-            plt.AddColorbar();
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+        plt.AddColorbar();
+        var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
-            //TestTools.SaveFig(plt);
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Assert.That(after.IsDarkerThan(before));
-        }
+        //TestTools.SaveFig(plt);
+        var before = new MeanPixel(bmp1);
+        var after = new MeanPixel(bmp2);
+        Assert.That(after.IsDarkerThan(before));
+    }
 
-        [Test]
-        public void Test_Colorbar_ColorCanBeChanged()
-        {
-            var plt = new ScottPlot.Plot();
-            var cb = plt.AddColorbar(ScottPlot.Drawing.Colormap.Grayscale);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+    [Test]
+    public void Test_Colorbar_ColorCanBeChanged()
+    {
+        var plt = new ScottPlot.Plot();
+        var cb = plt.AddColorbar(ScottPlot.Drawing.Colormap.Grayscale);
+        var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
-            cb.UpdateColormap(ScottPlot.Drawing.Colormap.Blues);
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+        cb.UpdateColormap(ScottPlot.Drawing.Colormap.Blues);
+        var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
-            //TestTools.SaveFig(plt);
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Assert.That(before.IsGray());
-            Assert.That(after.IsNotGray());
-            Assert.That(after.IsMoreBlueThan(before));
-        }
+        //TestTools.SaveFig(plt);
+        var before = new MeanPixel(bmp1);
+        var after = new MeanPixel(bmp2);
+        Assert.That(before.IsGray());
+        Assert.That(after.IsNotGray());
+        Assert.That(after.IsMoreBlueThan(before));
     }
 }

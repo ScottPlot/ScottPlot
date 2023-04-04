@@ -1,10 +1,9 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum FillType
 {
-    public enum FillType
-    {
-        NoFill,
-        FillAbove,
-        FillBelow,
-        FillAboveAndBelow
-    }
+    NoFill,
+    FillAbove,
+    FillBelow,
+    FillAboveAndBelow
 }

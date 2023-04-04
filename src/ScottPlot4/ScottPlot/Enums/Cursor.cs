@@ -1,13 +1,12 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum Cursor
 {
-    public enum Cursor
-    {
-        Arrow,
-        Crosshair,
-        Hand,
-        WE,
-        NS,
-        All,
-        Question
-    }
+    Arrow,
+    Crosshair,
+    Hand,
+    WE,
+    NS,
+    All,
+    Question
 }

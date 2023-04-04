@@ -1,14 +1,13 @@
 ﻿using NUnit.Framework;
 using ScottPlot.MinMaxSearchStrategies;
 
-namespace ScottPlotTests.MinMaxSearchStrategies
+namespace ScottPlotTests.MinMaxSearchStrategies;
+
+[TestFixture]
+public class LinearFastDoubleMinMaxSearchStrategyTests : SegmentedTreeMinMaxSearchStrategyTests
 {
-    [TestFixture]
-    public class LinearFastDoubleMinMaxSearchStrategyTests : SegmentedTreeMinMaxSearchStrategyTests
+    public override IMinMaxSearchStrategy<T> CreateStrategy<T>()
     {
-        public override IMinMaxSearchStrategy<T> CreateStrategy<T>()
-        {
-            return new LinearFastDoubleMinMaxSearchStrategy<T>();
-        }
+        return new LinearFastDoubleMinMaxSearchStrategy<T>();
     }
 }

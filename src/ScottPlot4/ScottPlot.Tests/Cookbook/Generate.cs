@@ -4,37 +4,36 @@ using System.IO;
 using NUnit.Framework;
 using ScottPlot.Cookbook;
 
-namespace ScottPlotTests.Cookbook
+namespace ScottPlotTests.Cookbook;
+
+[TestFixture]
+class Generate
 {
-    [TestFixture]
-    class Generate
+    string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook");
+
+    [Test]
+    public void Test_Json_IsValid()
     {
-        string COOKBOOK_PROJECT_FOLDER => Path.GetFullPath("../../../../ScottPlot.Cookbook");
+        string jsonFilePath = Path.GetFullPath("cookbook-valid-test.json");
 
-        [Test]
-        public void Test_Json_IsValid()
-        {
-            string jsonFilePath = Path.GetFullPath("cookbook-valid-test.json");
+        IRecipe[] recipes = Locate.GetRecipes();
 
-            IRecipe[] recipes = Locate.GetRecipes();
+        string json = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER);
+        File.WriteAllText(jsonFilePath, json);
 
-            string json = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER);
-            File.WriteAllText(jsonFilePath, json);
+        Dictionary<string, RecipeSource> readRecipes = RecipeJson.GetRecipes(jsonFilePath);
+        Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
 
-            Dictionary<string, RecipeSource> readRecipes = RecipeJson.GetRecipes(jsonFilePath);
-            Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
+        Assert.AreEqual(recipes.Length, readRecipes.Count);
+    }
 
-            Assert.AreEqual(recipes.Length, readRecipes.Count);
-        }
-
-        /// <summary>
-        /// Executes every cookbook recipe
-        /// </summary>
-        [Test]
-        public void Test_Recipes_GenerateWebsite()
-        {
-            Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
-            ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
-        }
+    /// <summary>
+    /// Executes every cookbook recipe
+    /// </summary>
+    [Test]
+    public void Test_Recipes_GenerateWebsite()
+    {
+        Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
+        ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
     }
 }

@@ -1,27 +1,26 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
 
-namespace ScottPlotTests.Plot
+namespace ScottPlotTests.Plot;
+
+class ScaleBar
 {
-    class ScaleBar
+    [Test]
+    public void Test_ScaleBar_Simple()
     {
-        [Test]
-        public void Test_ScaleBar_Simple()
-        {
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51, mult: 1.5));
+        var plt = new ScottPlot.Plot(400, 300);
+        plt.AddSignal(DataGen.Sin(51));
+        plt.AddSignal(DataGen.Cos(51, mult: 1.5));
 
-            plt.AddScaleBar(5, .25, "5 ms", "250 pA");
+        plt.AddScaleBar(5, .25, "5 ms", "250 pA");
 
-            plt.Grid(false);
-            plt.Frameless();
-            plt.XAxis.Ticks(false);
-            plt.YAxis.Ticks(false);
-            plt.AxisAuto(0);
-            plt.Frameless();
+        plt.Grid(false);
+        plt.Frameless();
+        plt.XAxis.Ticks(false);
+        plt.YAxis.Ticks(false);
+        plt.AxisAuto(0);
+        plt.Frameless();
 
-            TestTools.SaveFig(plt);
-        }
+        TestTools.SaveFig(plt);
     }
 }

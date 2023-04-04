@@ -3,64 +3,63 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 
-namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
+namespace ScottPlot.Demo.Avalonia.AvaloniaDemos;
+
+public partial class StyleBrowser : Window
 {
-    public partial class StyleBrowser : Window
+    private readonly AvaPlot avaPlot;
+    private readonly ListBox listBoxStyle;
+    private readonly ListBox listBoxPalette;
+    public StyleBrowser()
     {
-        private readonly AvaPlot avaPlot;
-        private readonly ListBox listBoxStyle;
-        private readonly ListBox listBoxPalette;
-        public StyleBrowser()
-        {
-            InitializeComponent();
+        InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
 
-            avaPlot = this.Find<AvaPlot>("AvaPlot1");
-            listBoxStyle = this.Find<ListBox>("ListBoxStyle");
-            listBoxPalette = this.Find<ListBox>("ListBoxPalette");
+        avaPlot = this.Find<AvaPlot>("AvaPlot1");
+        listBoxStyle = this.Find<ListBox>("ListBoxStyle");
+        listBoxPalette = this.Find<ListBox>("ListBoxPalette");
 
-            listBoxStyle.Items = ScottPlot.Style.GetStyles();
-            listBoxPalette.Items = ScottPlot.Palette.GetPalettes();
+        listBoxStyle.Items = ScottPlot.Style.GetStyles();
+        listBoxPalette.Items = ScottPlot.Palette.GetPalettes();
 
-            avaPlot.Plot.XLabel("Horizontal Axis");
-            avaPlot.Plot.YLabel("Vertical Axis");
+        avaPlot.Plot.XLabel("Horizontal Axis");
+        avaPlot.Plot.YLabel("Vertical Axis");
 
-            listBoxPalette.SelectedIndex = 0;
-            listBoxStyle.SelectedIndex = 0;
-        }
+        listBoxPalette.SelectedIndex = 0;
+        listBoxStyle.SelectedIndex = 0;
+    }
 
-        private void InitializeComponent()
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var style = (ScottPlot.Styles.IStyle)listBoxStyle.SelectedItem;
+        var palette = (ScottPlot.IPalette)listBoxPalette.SelectedItem;
+
+        if (style is null || palette is null)
+            return;
+
+        avaPlot.Plot.Style(style);
+        avaPlot.Plot.Palette = palette;
+        avaPlot.Plot.Title($"Style: {style}\nPalette: {palette}");
+        avaPlot.Plot.Clear();
+
+        for (int i = 0; i < palette.Count(); i++)
         {
-            AvaloniaXamlLoader.Load(this);
+            double offset = 1 + i * 1.1;
+            double mult = 10 + i;
+            double phase = i * .3 / palette.Count();
+            double[] ys = DataGen.Sin(51, 1, offset, mult, phase);
+            var sig = avaPlot.Plot.AddSignal(ys);
+            sig.LineWidth = 3;
+            sig.MarkerSize = 0;
         }
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var style = (ScottPlot.Styles.IStyle)listBoxStyle.SelectedItem;
-            var palette = (ScottPlot.IPalette)listBoxPalette.SelectedItem;
 
-            if (style is null || palette is null)
-                return;
-
-            avaPlot.Plot.Style(style);
-            avaPlot.Plot.Palette = palette;
-            avaPlot.Plot.Title($"Style: {style}\nPalette: {palette}");
-            avaPlot.Plot.Clear();
-
-            for (int i = 0; i < palette.Count(); i++)
-            {
-                double offset = 1 + i * 1.1;
-                double mult = 10 + i;
-                double phase = i * .3 / palette.Count();
-                double[] ys = DataGen.Sin(51, 1, offset, mult, phase);
-                var sig = avaPlot.Plot.AddSignal(ys);
-                sig.LineWidth = 3;
-                sig.MarkerSize = 0;
-            }
-
-            avaPlot.Plot.AxisAuto(horizontalMargin: 0);
-            avaPlot.Refresh();
-        }
+        avaPlot.Plot.AxisAuto(horizontalMargin: 0);
+        avaPlot.Refresh();
     }
 }

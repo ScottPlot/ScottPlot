@@ -1,6 +1,5 @@
-﻿namespace ScottPlot.Cookbook
+﻿namespace ScottPlot.Cookbook;
+
+public static class Source
 {
-    public static class Source
-    {
-    }
 }

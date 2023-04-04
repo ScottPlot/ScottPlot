@@ -1,29 +1,28 @@
 ﻿using NUnit.Framework;
 
-namespace ScottPlotTests.PlottableRenderTests
+namespace ScottPlotTests.PlottableRenderTests;
+
+class ScatterMutable
 {
-    class ScatterMutable
+    [Test]
+    public void Test_Scatter_Mutable()
     {
-        [Test]
-        public void Test_Scatter_Mutable()
-        {
-            var plt = new ScottPlot.Plot();
-            var scatter = new ScottPlot.Plottable.ScatterPlotList<double>();
-            plt.Add(scatter);
+        var plt = new ScottPlot.Plot();
+        var scatter = new ScottPlot.Plottable.ScatterPlotList<double>();
+        plt.Add(scatter);
 
-            TestTools.SaveFig(plt, "no_points");
+        TestTools.SaveFig(plt, "no_points");
 
-            scatter.Add(1, 1);
-            plt.AxisAuto();
-            TestTools.SaveFig(plt, "one_point");
+        scatter.Add(1, 1);
+        plt.AxisAuto();
+        TestTools.SaveFig(plt, "one_point");
 
-            scatter.Add(2, 2);
-            plt.AxisAuto();
-            TestTools.SaveFig(plt, "two_points");
+        scatter.Add(2, 2);
+        plt.AxisAuto();
+        TestTools.SaveFig(plt, "two_points");
 
-            scatter.AddRange(new double[] { 3, 4, 5 }, new double[] { 1, 6, 3 });
-            plt.AxisAuto();
-            TestTools.SaveFig(plt, "many_points");
-        }
+        scatter.AddRange(new double[] { 3, 4, 5 }, new double[] { 1, 6, 3 });
+        plt.AxisAuto();
+        TestTools.SaveFig(plt, "many_points");
     }
 }
