@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 
-namespace ScottPlot.Ticks.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits;
+
+class DateTimeTickSecond : DateTimeTickUnitBase
 {
-    class DateTimeTickSecond : DateTimeTickUnitBase
+    public DateTimeTickSecond(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
     {
-        public DateTimeTickSecond(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
-        {
-        }
     }
 }

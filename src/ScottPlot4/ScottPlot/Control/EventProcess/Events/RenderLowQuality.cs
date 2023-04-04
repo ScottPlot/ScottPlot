@@ -1,11 +1,10 @@
-﻿namespace ScottPlot.Control.EventProcess.Events
-{
-    class RenderLowQuality : IUIEvent
-    {
-        public RenderType RenderType => RenderType.LowQuality;
+﻿namespace ScottPlot.Control.EventProcess.Events;
 
-        public void ProcessEvent()
-        {
-        }
+class RenderLowQuality : IUIEvent
+{
+    public RenderType RenderType => RenderType.LowQuality;
+
+    public void ProcessEvent()
+    {
     }
 }

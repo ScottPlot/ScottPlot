@@ -1,12 +1,11 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum LineStyle
 {
-    public enum LineStyle
-    {
-        None,
-        Solid,
-        Dash,
-        DashDot,
-        DashDotDot,
-        Dot
-    }
+    None,
+    Solid,
+    Dash,
+    DashDot,
+    DashDotDot,
+    Dot
 }

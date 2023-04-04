@@ -1,9 +1,8 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum HorizontalAlignment
 {
-    public enum HorizontalAlignment
-    {
-        Left,
-        Right,
-        Center
-    }
+    Left,
+    Right,
+    Center
 }

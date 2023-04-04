@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.Styles
+namespace ScottPlot.Styles;
+
+internal class Control : Default
 {
-    internal class Control : Default
-    {
-        public override Color FigureBackgroundColor => SystemColors.Control;
-    }
+    public override Color FigureBackgroundColor => SystemColors.Control;
 }

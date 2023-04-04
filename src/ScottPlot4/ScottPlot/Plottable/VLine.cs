@@ -1,15 +1,14 @@
-﻿namespace ScottPlot.Plottable
+﻿namespace ScottPlot.Plottable;
+
+/// <summary>
+/// Vertical line at an X position
+/// </summary>
+public class VLine : AxisLine
 {
     /// <summary>
-    /// Vertical line at an X position
+    /// X position to render the line
     /// </summary>
-    public class VLine : AxisLine
-    {
-        /// <summary>
-        /// X position to render the line
-        /// </summary>
-        public double X { get => Position; set => Position = value; }
-        public override string ToString() => $"Vertical line at X={X}";
-        public VLine() : base(false) { }
-    }
+    public double X { get => Position; set => Position = value; }
+    public override string ToString() => $"Vertical line at X={X}";
+    public VLine() : base(false) { }
 }

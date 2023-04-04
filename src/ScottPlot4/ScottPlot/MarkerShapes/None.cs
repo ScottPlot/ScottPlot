@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
 
-namespace ScottPlot.MarkerShapes
+namespace ScottPlot.MarkerShapes;
+
+public struct None : IMarker
 {
-    public struct None : IMarker
+    public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
     {
-        public void Draw(Graphics gfx, PointF center, float size, Brush brush, Pen pen)
-        {
-        }
     }
 }

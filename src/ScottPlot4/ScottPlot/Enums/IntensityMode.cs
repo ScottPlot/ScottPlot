@@ -1,8 +1,7 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum IntensityMode
 {
-    public enum IntensityMode
-    {
-        Gaussian,
-        Density
-    }
+    Gaussian,
+    Density
 }

@@ -1,8 +1,7 @@
-﻿namespace ScottPlot.Control.EventProcess
+﻿namespace ScottPlot.Control.EventProcess;
+
+public interface IUIEvent
 {
-    public interface IUIEvent
-    {
-        public RenderType RenderType { get; }
-        void ProcessEvent();
-    }
+    public RenderType RenderType { get; }
+    void ProcessEvent();
 }

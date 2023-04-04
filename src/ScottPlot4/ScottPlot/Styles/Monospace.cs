@@ -1,9 +1,8 @@
-﻿namespace ScottPlot.Styles
+﻿namespace ScottPlot.Styles;
+
+public class Monospace : Default
 {
-    public class Monospace : Default
-    {
-        public override string TitleFontName => Drawing.InstalledFont.Monospace();
-        public override string AxisLabelFontName => Drawing.InstalledFont.Monospace();
-        public override string TickLabelFontName => Drawing.InstalledFont.Monospace();
-    }
+    public override string TitleFontName => Drawing.InstalledFont.Monospace();
+    public override string AxisLabelFontName => Drawing.InstalledFont.Monospace();
+    public override string TickLabelFontName => Drawing.InstalledFont.Monospace();
 }

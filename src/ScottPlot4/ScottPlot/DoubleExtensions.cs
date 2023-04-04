@@ -1,7 +1,6 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+internal static class DoubleExtensions
 {
-    internal static class DoubleExtensions
-    {
-        public static bool IsFinite(this double x) => !double.IsNaN(x) && !double.IsInfinity(x);
-    }
+    public static bool IsFinite(this double x) => !double.IsNaN(x) && !double.IsInfinity(x);
 }

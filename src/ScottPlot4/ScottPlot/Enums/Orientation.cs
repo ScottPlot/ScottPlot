@@ -1,8 +1,7 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot;
+
+public enum Orientation
 {
-    public enum Orientation
-    {
-        Horizontal,
-        Vertical
-    }
+    Horizontal,
+    Vertical
 }

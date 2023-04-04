@@ -1,11 +1,10 @@
 ﻿using ScottPlot.Drawing;
 using System.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot;
+
+public struct HatchOptions
 {
-    public struct HatchOptions
-    {
-        public HatchStyle Pattern { get; set; }
-        public Color Color { get; set; }
-    }
+    public HatchStyle Pattern { get; set; }
+    public Color Color { get; set; }
 }

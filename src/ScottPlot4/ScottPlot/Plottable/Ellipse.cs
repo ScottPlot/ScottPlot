@@ -1,140 +1,139 @@
 ﻿using ScottPlot.Drawing;
 using System.Drawing;
 
-namespace ScottPlot.Plottable
+namespace ScottPlot.Plottable;
+
+public class Ellipse : IPlottable, IHasColor, IHasArea
 {
-    public class Ellipse : IPlottable, IHasColor, IHasArea
+    /// <summary>
+    /// Horizontal center of the circle (axis units)
+    /// </summary>
+    double X { get; }
+
+    /// <summary>
+    /// Vertical center of the circle (axis units)
+    /// </summary>
+    double Y { get; }
+
+    /// <summary>
+    /// Horizontal radius (axis units)
+    /// </summary>
+    public double RadiusX { get; set; }
+
+    /// <summary>
+    /// Vertical radius (axis units)
+    /// </summary>
+    public double RadiusY { get; set; }
+
+    /// <summary>
+    /// Outline color
+    /// </summary>
+    public Color BorderColor { get; set; } = Color.Black;
+
+    /// <summary>
+    /// Outline thickness (pixel units)
+    /// </summary>
+    public float BorderLineWidth { get; set; } = 2;
+
+    private bool HasBorder => (BorderLineStyle != LineStyle.None) && (BorderColor != Color.Transparent);
+
+    /// <summary>
+    /// Outline line style
+    /// </summary>
+    public LineStyle BorderLineStyle { get; set; } = LineStyle.Solid;
+
+    /// <summary>
+    /// Fill color
+    /// </summary>
+    public Color Color { get; set; } = Color.Transparent;
+
+    /// <summary>
+    /// Fill pattern
+    /// </summary>
+    public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
+
+    /// <summary>
+    /// Alternate color for fill pattern
+    /// </summary>
+    public Color HatchColor { get; set; } = Color.Black;
+
+    /// <summary>
+    /// Text to appear in the legend
+    /// </summary>
+    public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Create an ellipse centered at (x, y) with the given horizontal and vertical radius
+    /// </summary>
+    public Ellipse(double x, double y, double xRadius, double yRadius)
     {
-        /// <summary>
-        /// Horizontal center of the circle (axis units)
-        /// </summary>
-        double X { get; }
+        X = x;
+        Y = y;
+        RadiusX = xRadius;
+        RadiusY = yRadius;
+    }
 
-        /// <summary>
-        /// Vertical center of the circle (axis units)
-        /// </summary>
-        double Y { get; }
+    // These default values are fine for most cases
+    public bool IsVisible { get; set; } = true;
+    public int XAxisIndex { get; set; } = 0;
+    public int YAxisIndex { get; set; } = 0;
 
-        /// <summary>
-        /// Horizontal radius (axis units)
-        /// </summary>
-        public double RadiusX { get; set; }
+    public void ValidateData(bool deep = false) { }
 
-        /// <summary>
-        /// Vertical radius (axis units)
-        /// </summary>
-        public double RadiusY { get; set; }
+    // Return an empty array for plottables that do not appear in the legend
+    public LegendItem[] GetLegendItems()
+    {
+        if (string.IsNullOrWhiteSpace(Label))
+            return LegendItem.None;
 
-        /// <summary>
-        /// Outline color
-        /// </summary>
-        public Color BorderColor { get; set; } = Color.Black;
-
-        /// <summary>
-        /// Outline thickness (pixel units)
-        /// </summary>
-        public float BorderLineWidth { get; set; } = 2;
-
-        private bool HasBorder => (BorderLineStyle != LineStyle.None) && (BorderColor != Color.Transparent);
-
-        /// <summary>
-        /// Outline line style
-        /// </summary>
-        public LineStyle BorderLineStyle { get; set; } = LineStyle.Solid;
-
-        /// <summary>
-        /// Fill color
-        /// </summary>
-        public Color Color { get; set; } = Color.Transparent;
-
-        /// <summary>
-        /// Fill pattern
-        /// </summary>
-        public HatchStyle HatchStyle { get; set; } = HatchStyle.None;
-
-        /// <summary>
-        /// Alternate color for fill pattern
-        /// </summary>
-        public Color HatchColor { get; set; } = Color.Black;
-
-        /// <summary>
-        /// Text to appear in the legend
-        /// </summary>
-        public string Label { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Create an ellipse centered at (x, y) with the given horizontal and vertical radius
-        /// </summary>
-        public Ellipse(double x, double y, double xRadius, double yRadius)
+        LegendItem item = new(this)
         {
-            X = x;
-            Y = y;
-            RadiusX = xRadius;
-            RadiusY = yRadius;
-        }
+            label = Label,
+            color = Color,
+            borderColor = BorderColor,
+            borderLineStyle = BorderLineStyle,
+            borderWith = BorderLineWidth,
+        };
 
-        // These default values are fine for most cases
-        public bool IsVisible { get; set; } = true;
-        public int XAxisIndex { get; set; } = 0;
-        public int YAxisIndex { get; set; } = 0;
+        return LegendItem.Single(item);
+    }
 
-        public void ValidateData(bool deep = false) { }
+    // This method returns the bounds of the data
+    public AxisLimits GetAxisLimits()
+    {
+        return new AxisLimits(
+            xMin: X - RadiusX,
+            xMax: X + RadiusX,
+            yMin: Y - RadiusY,
+            yMax: Y + RadiusY);
+    }
 
-        // Return an empty array for plottables that do not appear in the legend
-        public LegendItem[] GetLegendItems()
-        {
-            if (string.IsNullOrWhiteSpace(Label))
-                return LegendItem.None;
+    // This method describes how to plot the data on the cart.
+    public void Render(PlotDimensions dims, System.Drawing.Bitmap bmp, bool lowQuality = false)
+    {
+        // Use ScottPlot's GDI helper functions to create System.Drawing objects
+        using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
+        using var pen = ScottPlot.Drawing.GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle);
+        using var brush = ScottPlot.Drawing.GDI.Brush(Color, HatchColor, HatchStyle);
 
-            LegendItem item = new(this)
-            {
-                label = Label,
-                color = Color,
-                borderColor = BorderColor,
-                borderLineStyle = BorderLineStyle,
-                borderWith = BorderLineWidth,
-            };
+        // Use 'dims' methods to convert between axis coordinates and pixel positions
+        float xPixel = dims.GetPixelX(X);
+        float yPixel = dims.GetPixelY(Y);
 
-            return LegendItem.Single(item);
-        }
+        // Use 'dims' to determine how large the radius is in pixel units
+        float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
+        float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
-        // This method returns the bounds of the data
-        public AxisLimits GetAxisLimits()
-        {
-            return new AxisLimits(
-                xMin: X - RadiusX,
-                xMax: X + RadiusX,
-                yMin: Y - RadiusY,
-                yMax: Y + RadiusY);
-        }
+        RectangleF rect = new(
+            x: xPixel - xRadiusPixels,
+            y: yPixel - yRadiusPixels,
+            width: xRadiusPixels * 2,
+            height: yRadiusPixels * 2);
 
-        // This method describes how to plot the data on the cart.
-        public void Render(PlotDimensions dims, System.Drawing.Bitmap bmp, bool lowQuality = false)
-        {
-            // Use ScottPlot's GDI helper functions to create System.Drawing objects
-            using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-            using var pen = ScottPlot.Drawing.GDI.Pen(BorderColor, BorderLineWidth, BorderLineStyle);
-            using var brush = ScottPlot.Drawing.GDI.Brush(Color, HatchColor, HatchStyle);
+        // Render data by drawing on the Graphics object
+        if (Color != Color.Transparent)
+            gfx.FillEllipse(brush, rect);
 
-            // Use 'dims' methods to convert between axis coordinates and pixel positions
-            float xPixel = dims.GetPixelX(X);
-            float yPixel = dims.GetPixelY(Y);
-
-            // Use 'dims' to determine how large the radius is in pixel units
-            float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
-            float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
-
-            RectangleF rect = new(
-                x: xPixel - xRadiusPixels,
-                y: yPixel - yRadiusPixels,
-                width: xRadiusPixels * 2,
-                height: yRadiusPixels * 2);
-
-            // Render data by drawing on the Graphics object
-            if (Color != Color.Transparent)
-                gfx.FillEllipse(brush, rect);
-
-            gfx.DrawEllipse(pen, rect);
-        }
+        gfx.DrawEllipse(pen, rect);
     }
 }

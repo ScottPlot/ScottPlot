@@ -39,4 +39,11 @@ csharp_preserve_single_line_blocks = true
 # Remove unnecessary using directives
 dotnet_diagnostic.IDE0005.severity = error
 
-#<NoWarn>RS0041;CS1591;RS0027;RS0026</NoWarn>
+# Sort usings
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_diagnostic.IDE0055.severity = error
+
+# File scoped namespaces
+csharp_style_namespace_declarations=file_scoped
+dotnet_diagnostic.IDE0161.severity = error

@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace ScottPlot.Ticks.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits;
+
+public interface IDateTimeUnit
 {
-    public interface IDateTimeUnit
-    {
-        (double[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to, string format);
-    }
+    (double[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to, string format);
 }
