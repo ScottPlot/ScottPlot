@@ -16,7 +16,7 @@ public partial class MainWindow : Window
         Random rand = new(0);
         double[] ys = Generate.NoisySin(rand, pointCount);
         double[] xs = Generate.Consecutive(pointCount);
-         
+
         var sp = WpfPlot.Plot.Add.Scatter(xs, ys);
         sp.LineStyle.Width = 5;
         sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
