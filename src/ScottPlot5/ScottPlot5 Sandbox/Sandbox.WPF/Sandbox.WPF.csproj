@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj" />
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     </ItemGroup>
 </Project>
