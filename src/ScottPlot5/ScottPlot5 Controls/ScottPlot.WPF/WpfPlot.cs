@@ -66,7 +66,7 @@ namespace ScottPlot.WPF
                     Interaction.DoubleClick();
                 }
             };
-            SKElement.MouseUp += (sender, e) => 
+            SKElement.MouseUp += (sender, e) =>
             {
                 Interaction.MouseUp(e.Pixel(this), e.ToButton());
                 (sender as UIElement)?.ReleaseMouseCapture();
