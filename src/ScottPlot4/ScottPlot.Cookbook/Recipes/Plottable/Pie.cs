@@ -112,6 +112,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SliceLabelPosition : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Pie();
+        public string ID => "pie_sliceLabelPosition";
+        public string Title => "Slice Label Position";
+        public string Description =>
+            "Slice label position can be customized to place labels outside the pie. " +
+            "If labels are placed outside the pie, the pie size should be reduced to " +
+            "make room for them.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 778, 43, 283, 76, 184 };
+            var pie = plt.AddPie(values);
+            pie.ShowValues = true;
+            pie.SliceLabelPosition = 0.6;
+            pie.Size = .7;
+            pie.SliceLabelColors = pie.SliceFillColors;
+        }
+    }
+
     public class PieCustomColors : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Pie();
