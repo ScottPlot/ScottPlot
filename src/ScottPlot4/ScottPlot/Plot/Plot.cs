@@ -25,6 +25,11 @@ namespace ScottPlot
         public float Height { get => settings.Height; set => Resize(settings.Width, value); }
 
         /// <summary>
+        /// Platform-specific methods for launching this plot
+        /// </summary>
+        public Launcher Launch { get; }
+
+        /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
         /// </summary>
         /// <param name="width">default width (pixels) to use when rendering</param>
@@ -33,6 +38,8 @@ namespace ScottPlot
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
+
+            Launch = new Launcher(this);
 
             Style(ScottPlot.Style.Default);
             Resize(width, height);
