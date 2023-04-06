@@ -9,6 +9,7 @@
 * Pie: Added `SliceLabelPosition` property to allow slice labels to be placed outside the pie (#2515, #2510) _Thanks @nuelle16_
 * Axis: Made `Edge` and `AxisIndex` immutable to prevent accidental modification after construction (#2539, #2538) _Thanks @cxjcqu_
 * Plot: Created `LeftAxis`, `RightAxis`, `BottomAxis`, and `TopAxis` which alias `YAxis`, `YAxis2`, `XAxis`, and `XAxis2` but are more expressive (#2568)
+* Plot: `Launch` property has methods for launching the plot as a static image, refreshing web page, or interactive window (#2543, #2570)
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
