@@ -15,7 +15,7 @@ public static class Generate
     /// <summary>
     /// Return an array of evenly-spaced numbers
     /// </summary>
-    public static double[] Consecutive(int count, double delta = 1, double first = 0)
+    public static double[] Consecutive(int count = 51, double delta = 1, double first = 0)
     {
         double[] ys = new double[count];
         for (int i = 0; i < ys.Length; i++)
@@ -28,7 +28,7 @@ public static class Generate
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
     /// </summary>
-    public static double[] Sin(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    public static double[] Sin(int count = 51, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
         double sinScale = 2 * Math.PI * oscillations / (count - 1);
         double[] ys = new double[count];
@@ -42,7 +42,7 @@ public static class Generate
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
     /// </summary>
-    public static double[] Cos(int count, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    public static double[] Cos(int count = 51, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
     {
         double sinScale = 2 * Math.PI * oscillations / (count - 1);
         double[] ys = new double[count];
@@ -51,7 +51,7 @@ public static class Generate
         return ys;
     }
 
-    public static double[] NoisySin(Random rand, int count, double noiseLevel = 1)
+    public static double[] NoisySin(Random rand, int count = 51, double noiseLevel = 1)
     {
         double[] data = Sin(count);
         for (int i = 0; i < data.Length; i++)

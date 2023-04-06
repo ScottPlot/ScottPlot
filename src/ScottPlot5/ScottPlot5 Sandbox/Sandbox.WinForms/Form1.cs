@@ -8,14 +8,8 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        int pointCount = 100_000;
-        double[] ys = Generate.NoisySin(Random.Shared, pointCount);
-        double[] xs = Generate.Consecutive(pointCount);
-
-        var sp = formsPlot1.Plot.Add.ScatterGLCustom(formsPlot1, xs, ys);
-        sp.LineStyle.Width = 5;
-        sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
-        sp.MarkerStyle.Outline.Width = 3;
+        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
 
         formsPlot1.Refresh();
     }

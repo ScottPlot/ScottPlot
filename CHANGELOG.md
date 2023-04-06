@@ -2,6 +2,7 @@
 
 ## ScottPlot 5.0.4-beta (in development)
 * WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2565) _Thanks @KroMignon_
+* Controls: Improved ALT + left-click-drag zoom rectangle behavior (#2566)
 
 ## ScottPlot 4.1.63 (in development)
 * WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2509, #2526) _Thanks @KroMignon_

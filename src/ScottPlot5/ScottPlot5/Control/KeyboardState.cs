@@ -6,12 +6,11 @@ public class KeyboardState
 
     public IReadOnlyCollection<Key> PressedKeys => Pressed.ToArray();
 
-    public bool IsPressed(Key key) => Pressed.Contains(key);
-
     public void Down(Key key)
     {
         if (key == Key.Unknown)
             return;
+
         Pressed.Add(key);
     }
 
@@ -19,6 +18,7 @@ public class KeyboardState
     {
         if (key == Key.Unknown)
             return;
+
         Pressed.Remove(key);
     }
 }
