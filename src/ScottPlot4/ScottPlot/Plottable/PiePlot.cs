@@ -30,13 +30,45 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double Size { get; set; } = 0.9;
 
+        /// <summary>
+        /// Distance from the center of the pie to display labels.
+        /// Set this value greater to <see cref="Size"/> to place labels outside the pie.
+        /// </summary>
+        public double SliceLabelPosition { get; set; } = 0.35;
+
+        /// <summary>
+        /// Colors for each slice around the pie
+        /// </summary>
         public Color[] SliceFillColors { get; set; }
+
+        /// <summary>
+        /// Colors to fill the text placed at each slice
+        /// </summary>
         public Color[] SliceLabelColors { get; set; }
-        public Color BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Required by System.Drawing but does not influence output image
+        /// </summary>
+        private Color BackgroundColor { get; set; } = Color.Transparent;
+
+        /// <summary>
+        /// Fill style for each slice
+        /// </summary>
         public HatchOptions[] HatchOptions { get; set; }
 
+        /// <summary>
+        /// If enabled, slices will be offset from the center and have gaps between them
+        /// </summary>
         public bool Explode { get; set; }
+
+        /// <summary>
+        /// Display the value of slices using text aligned to each slice
+        /// </summary>
         public bool ShowValues { get; set; }
+
+        /// <summary>
+        /// Display the percentage of slices using text aligned to each slice
+        /// </summary>
         public bool ShowPercentages { get; set; }
 
         /// <summary>
@@ -44,9 +76,27 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool ShowLabels { get; set; }
 
+        /// <summary>
+        /// Size of the hollow region in the center of a donut plot.
+        /// Set to zero for a traditional pie plot.
+        /// </summary>
         public double DonutSize { get; set; }
+
+        /// <summary>
+        /// If populated, this text will be displayed in the center of the pie.
+        /// This option is useful for donut plots with a hollow center.
+        /// </summary>
         public string DonutLabel { get; set; }
+
+        /// <summary>
+        /// Font to use for the label displayed at the center of donut charts 
+        /// when <see cref="DonutLabel"/> is populated
+        /// </summary>
         public readonly Drawing.Font CenterFont = new();
+
+        /// <summary>
+        /// Font to use for text displayed over each slice.
+        /// </summary>
         public readonly Drawing.Font SliceFont = new();
 
         public float OutlineSize { get; set; } = 0;
@@ -171,7 +221,7 @@ namespace ScottPlot.Plottable
                     double yOffset = Explode ? 3 * Math.Sin(angle) : 0;
 
                     // record where and what to label the slice
-                    double sliceLabelR = 0.35 * diameterPixels;
+                    double sliceLabelR = SliceLabelPosition * diameterPixels;
                     labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
                     labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                     string sliceLabelValue = (ShowValues) ? $"{Values[i]}" : "";
