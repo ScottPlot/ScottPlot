@@ -34,7 +34,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.RightAxis.Ticks(true);
             plt.RightAxis.Color(sigBig.Color);
             plt.RightAxis.Label("Secondary Y Axis");
-            plt.TopAxis.Ticks(true); 
+            plt.TopAxis.Ticks(true);
             plt.TopAxis.Color(sigBig.Color);
             plt.TopAxis.Label("Secondary X Axis");
         }
