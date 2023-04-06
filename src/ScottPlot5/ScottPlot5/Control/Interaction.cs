@@ -104,7 +104,6 @@ public class Interaction
 
     public virtual void MouseUp(Pixel position, MouseButton button)
     {
-
         bool isDragging = Mouse.IsDragging(position);
 
         bool droppedZoomRectangle =
@@ -115,6 +114,7 @@ public class Interaction
         if (droppedZoomRectangle)
         {
             Actions.ZoomRectangleApply(Control);
+            Actions.ZoomRectangleClear(Control);
             IsZoomingRectangle = false;
         }
 
