@@ -49,12 +49,38 @@ public static class CodeReport
         sb.AppendLine($"<li>All: {Total(shared):N0} lines</li>");
         sb.AppendLine($"</ul>");
 
-        sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
+        List<string> todos = new();
+        foreach (string filePath in csFilePaths)
+        {
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Contains("TO" + "DO:"))
+                {
+                    string line = lines[i].Split("TO" + "DO:")[1].Trim();
 
-        /*
-        foreach ((string filePath, int lineCount) in linesByFile)
-            sb.AppendLine($"<div>{filePath} {lineCount}</div>");
-        */
+                    string relativeFilePath = filePath.Replace(repoRootPath, "");
+
+                    string fileUrl = "https://github.com/ScottPlot/ScottPlot/tree/main/"
+                        + relativeFilePath.Replace("\\", "/")
+                        + $"#L{i + 1}";
+
+                    todos.Add($"<a href='{fileUrl}' style='font-family: monospace;'>" +
+                        $"{Path.GetFileName(filePath)}:{i + 1}" +
+                        $"</a> " +
+                        $"<span style='color: green;'>{line}</a>");
+                }
+            }
+        }
+        sb.AppendLine($"<h2 style='margin-bottom: 0px;'>TODOs ({todos.Count})</h2>");
+        sb.AppendLine($"<ul>");
+        foreach (string todo in todos)
+        {
+            sb.AppendLine($"<li>{todo}</li>");
+        }
+        sb.AppendLine($"</ul>");
+
+        sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
 
         saveAs = Path.GetFullPath(saveAs);
         string html = HtmlTemplate.WrapInPico(sb.ToString());
