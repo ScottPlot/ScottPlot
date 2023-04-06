@@ -11,32 +11,32 @@ namespace ScottPlot.Cookbook.Recipes
         public string Title => "Primary Axes";
         public string Description =>
             "Plots always have 4 fundamental axes available to work with. " +
-            "Primary axes (XAxis and YAxis) are axis index 0. " +
-            "Secondary axes (XAxis2 and YAxis2) are axis index 1." +
             "By default primary axes are totally visible, and secondary axes have ticks hidden and no label. " +
-            "Sometimes the top axis (XAxis2) is given a label to simulate a plot title.";
+            "Sometimes the top axis is given a label to simulate a plot title.";
 
         public void ExecuteRecipe(Plot plt)
         {
             // plot one set of data using the primary Y axis
             var sigSmall = plt.AddSignal(DataGen.Sin(51, mult: 1), sampleRate: 1);
-            sigSmall.YAxisIndex = 0;
-            sigSmall.XAxisIndex = 0;
-            plt.XAxis.Label("Primary X Axis");
+            sigSmall.YAxisIndex = plt.LeftAxis.AxisIndex;
+            sigSmall.XAxisIndex = plt.BottomAxis.AxisIndex;
+            plt.BottomAxis.Label("Primary X Axis");
             plt.YAxis.Label("Primary Y Axis");
-            plt.XAxis.Color(sigSmall.Color);
+            plt.BottomAxis.Color(sigSmall.Color);
             plt.YAxis.Color(sigSmall.Color);
 
             // plot another set of data using the secondary axes
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100), sampleRate: 100);
-            sigBig.YAxisIndex = 1;
-            sigBig.XAxisIndex = 1;
-            plt.YAxis2.Ticks(true); // ticks weren't visible by default
-            plt.XAxis2.Ticks(true); // ticks weren't visible by default
-            plt.YAxis2.Color(sigBig.Color);
-            plt.XAxis2.Color(sigBig.Color);
-            plt.YAxis2.Label("Secondary Y Axis");
-            plt.XAxis2.Label("Secondary X Axis");
+            sigBig.YAxisIndex = plt.RightAxis.AxisIndex;
+            sigBig.XAxisIndex = plt.TopAxis.AxisIndex;
+
+            // show ticks and labels for axes where they are hidden by default
+            plt.RightAxis.Ticks(true);
+            plt.RightAxis.Color(sigBig.Color);
+            plt.RightAxis.Label("Secondary Y Axis");
+            plt.TopAxis.Ticks(true); 
+            plt.TopAxis.Color(sigBig.Color);
+            plt.TopAxis.Label("Secondary X Axis");
         }
     }
 
@@ -53,7 +53,7 @@ namespace ScottPlot.Cookbook.Recipes
         {
             // plot one set of data using the primary Y axis
             var sigSmall = plt.AddSignal(DataGen.Sin(51, mult: 1));
-            sigSmall.YAxisIndex = 0;
+            sigSmall.YAxisIndex = plt.LeftAxis.AxisIndex;
             plt.YAxis.Label("Primary Axis");
             plt.YAxis.Color(sigSmall.Color);
 
@@ -80,14 +80,14 @@ namespace ScottPlot.Cookbook.Recipes
         {
             double[] values = DataGen.RandomWalk(100);
             var sig = plt.AddSignal(values);
-            sig.YAxisIndex = 1;
+            sig.YAxisIndex = plt.RightAxis.AxisIndex;
 
             plt.YAxis.Ticks(false);
             plt.YAxis.Grid(false);
-            plt.YAxis2.Ticks(true);
-            plt.YAxis2.Grid(true);
-            plt.YAxis2.Label("Value");
-            plt.XAxis.Label("Sample Number");
+            plt.RightAxis.Ticks(true);
+            plt.RightAxis.Grid(true);
+            plt.RightAxis.Label("Value");
+            plt.BottomAxis.Label("Sample Number");
         }
     }
 
@@ -105,13 +105,13 @@ namespace ScottPlot.Cookbook.Recipes
         {
             double[] values = DataGen.RandomWalk(100);
             var sig = plt.AddSignal(values);
-            sig.XAxisIndex = 1;
+            sig.XAxisIndex = plt.TopAxis.AxisIndex;
 
-            plt.XAxis.Ticks(false);
-            plt.XAxis.Grid(false);
-            plt.XAxis2.Ticks(true);
-            plt.XAxis2.Grid(true);
-            plt.XAxis2.Label("Sample Number");
+            plt.BottomAxis.Ticks(false);
+            plt.BottomAxis.Grid(false);
+            plt.TopAxis.Ticks(true);
+            plt.TopAxis.Grid(true);
+            plt.TopAxis.Label("Sample Number");
             plt.YAxis.Label("Value");
         }
     }
@@ -130,14 +130,14 @@ namespace ScottPlot.Cookbook.Recipes
         {
             // plot one set of data using the primary Y axis
             var sigSmall = plt.AddSignal(DataGen.Sin(51, mult: 1));
-            sigSmall.YAxisIndex = 0;
+            sigSmall.YAxisIndex = plt.LeftAxis.AxisIndex;
             plt.YAxis.Label("Primary Axis");
             plt.YAxis.Color(sigSmall.Color);
 
             // plot another set of data using an additional axis
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100));
-            var yAxis3 = plt.AddAxis(Renderable.Edge.Left, axisIndex: 2);
-            sigBig.YAxisIndex = 2;
+            var yAxis3 = plt.AddAxis(Renderable.Edge.Left);
+            sigBig.YAxisIndex = yAxis3.AxisIndex;
             yAxis3.Label("Additional Axis");
             yAxis3.Color(sigBig.Color);
 
@@ -159,12 +159,12 @@ namespace ScottPlot.Cookbook.Recipes
         {
             // signal one on the primary Y axis
             var sig1 = plt.AddSignal(DataGen.Sin(51, mult: 1));
-            sig1.YAxisIndex = 0;
+            sig1.YAxisIndex = plt.LeftAxis.AxisIndex;
 
             // signal two on the secondary Y axis
             var sig2 = plt.AddSignal(DataGen.Cos(51, mult: 100));
-            sig2.YAxisIndex = 1;
-            plt.YAxis2.Ticks(true);
+            sig2.YAxisIndex = plt.RightAxis.AxisIndex;
+            plt.RightAxis.Ticks(true);
 
             // set axis limits for each axis individually
             plt.SetAxisLimits(yMin: -2, yMax: 2, yAxisIndex: 0);

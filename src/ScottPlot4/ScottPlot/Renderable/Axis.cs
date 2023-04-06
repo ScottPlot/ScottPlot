@@ -22,7 +22,7 @@ namespace ScottPlot.Renderable
     /// An Axis stores dimensions (axis limits and pixel/unit conversion methods) and can render
     /// itself including axis label, tick marks, tick labels, and grid lines
     /// </summary>
-    public class Axis : IRenderable, IAxis
+    public class Axis : IRenderable
     {
         /// <summary>
         /// Axis dimensions and methods for pixel/unit conversions

@@ -41,10 +41,10 @@ namespace ScottPlot
         /// </summary>
         public Renderable.Axis YAxis2 => settings.YAxis2;
 
-        public IAxis BottomAxis => XAxis;
-        public IAxis TopAxis => XAxis2;
-        public IAxis LeftAxis => YAxis;
-        public IAxis RightAxis => YAxis2;
+        public Renderable.Axis BottomAxis => XAxis;
+        public Renderable.Axis TopAxis => XAxis2;
+        public Renderable.Axis LeftAxis => YAxis;
+        public Renderable.Axis RightAxis => YAxis2;
 
         #endregion
 
