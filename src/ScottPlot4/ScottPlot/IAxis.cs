@@ -4,6 +4,6 @@ namespace ScottPlot;
 
 public interface IAxis
 {
-    int AxisIndex { get; set; }
-    Edge Edge { get; set; }
+    int AxisIndex { get; }
+    Edge Edge { get; }
 }

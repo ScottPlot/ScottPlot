@@ -32,7 +32,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Plottables with this axis index will use pixel/unit conversions from this axis
         /// </summary>
-        public int AxisIndex { get; set; } = 0;
+        public int AxisIndex { get; } = 0;
 
         public bool IsVisible { get; set; } = true;
 
@@ -40,15 +40,16 @@ namespace ScottPlot.Renderable
         public Edge Edge
         {
             get => _Edge;
-            set
+            private set
             {
                 _Edge = value;
                 AxisLine.Edge = value;
                 AxisLabel.Edge = value;
                 AxisTicks.Edge = value;
-                bool isVertical = (value == Edge.Left || value == Edge.Right);
-                AxisTicks.TickCollection.Orientation = isVertical ? AxisOrientation.Vertical : AxisOrientation.Horizontal;
-                Dims.IsInverted = isVertical;
+                AxisTicks.TickCollection.Orientation = value.IsVertical()
+                    ? AxisOrientation.Vertical
+                    : AxisOrientation.Horizontal;
+                Dims.IsInverted = value.IsVertical();
             }
         }
 
@@ -70,6 +71,12 @@ namespace ScottPlot.Renderable
         /// Customization options for the line between an axis and the data area
         /// </summary>
         public readonly AxisLine AxisLine = new();
+
+        public Axis(int index, Edge edge)
+        {
+            AxisIndex = index;
+            Edge = edge;
+        }
 
         /// <summary>
         /// Return configuration objects to allow deep customization of axis settings.
