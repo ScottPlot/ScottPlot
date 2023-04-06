@@ -3,9 +3,8 @@ using ScottPlot.Extensions;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -61,25 +60,10 @@ public class FormsPlot : UserControl, IPlotControl
         ContextMenuItem copyImage = new()
         {
             Label = "Copy to Clipboard",
-            OnInvoke = () => { CopyImageToClipboard(Width, Height); }
+            OnInvoke = CopyImageToClipboard
         };
 
         return new ContextMenuItem[] { saveImage, copyImage };
-    }
-
-    // ContextMenu isn't available on net6-windows, ContextMenuStrip is the more modern replacement
-    private ContextMenuStrip GetContextMenu()
-    {
-        ContextMenuStrip menu = new();
-        foreach (var curr in Interaction.ContextMenuItems)
-        {
-            var menuItem = new ToolStripMenuItem(curr.Label);
-            menuItem.Click += (s, e) => curr.OnInvoke();
-
-            menu.Items.Add(menuItem);
-        }
-
-        return menu;
     }
 
     // make it so changing the background color of the control changes background color of the plot too
@@ -125,7 +109,7 @@ public class FormsPlot : UserControl, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var menu = GetContextMenu();
+        ContextMenuStrip menu = Interaction.GetContextMenu();
         menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
     }
 
@@ -217,11 +201,9 @@ public class FormsPlot : UserControl, IPlotControl
         }
     }
 
-    private void CopyImageToClipboard(int width, int height)
+    private void CopyImageToClipboard()
     {
-        byte[] bytes = Plot.GetImage(width, height).GetImageBytes();
-        using MemoryStream ms = new(bytes);
-        using var bmp = new System.Drawing.Bitmap(ms);
+        Bitmap bmp = Plot.GetBitmap(Width, Height);
         Clipboard.SetImage(bmp);
     }
 }

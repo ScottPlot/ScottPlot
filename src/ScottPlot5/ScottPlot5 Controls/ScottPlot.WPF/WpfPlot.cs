@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
-using SkiaSharp.Views.Desktop;
-using SkiaSharp.Views.WPF;
 
 namespace ScottPlot.WPF
 {
@@ -33,7 +25,9 @@ namespace ScottPlot.WPF
 
         static WpfPlot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(WpfPlot), new FrameworkPropertyMetadata(typeof(WpfPlot)));
+            DefaultStyleKeyProperty.OverrideMetadata(
+                forType: typeof(WpfPlot),
+                typeMetadata: new FrameworkPropertyMetadata(typeof(WpfPlot)));
         }
 
         public WpfPlot()
@@ -42,6 +36,7 @@ namespace ScottPlot.WPF
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
             };
+
             Focusable = true;
         }
 
@@ -53,6 +48,7 @@ namespace ScottPlot.WPF
                 return;
 
             SKElement.PaintSurface += (sender, e) => Plot.Render(e.Surface);
+
             SKElement.MouseDown += (sender, e) =>
             {
                 Keyboard.Focus(this);
@@ -66,44 +62,36 @@ namespace ScottPlot.WPF
                     Interaction.DoubleClick();
                 }
             };
+
             SKElement.MouseUp += (sender, e) =>
             {
                 Interaction.MouseUp(e.Pixel(this), e.ToButton());
                 (sender as UIElement)?.ReleaseMouseCapture();
             };
+
             SKElement.MouseMove += (sender, e) => Interaction.OnMouseMove(e.Pixel(this));
+
             SKElement.MouseWheel += (sender, e) => Interaction.MouseWheelVertical(e.Pixel(this), e.Delta);
         }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
             Interaction.KeyDown(e.Key());
         }
+
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
             Interaction.KeyUp(e.Key());
         }
+
         private ContextMenuItem[] GetDefaultContextMenuItems()
         {
             ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
             ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
 
             return new ContextMenuItem[] { saveImage, copyImage };
-        }
-
-        private ContextMenu GetContextMenu()
-        {
-            ContextMenu menu = new();
-            foreach (var curr in Interaction.ContextMenuItems)
-            {
-                var menuItem = new MenuItem { Header = curr.Label };
-                menuItem.Click += (s, e) => curr.OnInvoke();
-
-                menu.Items.Add(menuItem);
-            }
-
-            return menu;
         }
 
         public void Replace(Interaction interaction)
@@ -118,11 +106,12 @@ namespace ScottPlot.WPF
 
         public void ShowContextMenu(Pixel position)
         {
-            var menu = GetContextMenu();
+            ContextMenu menu = Interaction.GetContextMenu();
             menu.PlacementTarget = this;
             menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
             menu.IsOpen = true;
         }
+
         public void OpenSaveImageDialog()
         {
             SaveFileDialog dialog = new()
@@ -142,16 +131,10 @@ namespace ScottPlot.WPF
                 Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
             }
         }
+
         public void CopyImageToClipboard()
         {
-            BitmapImage bmp = new();
-            bmp.BeginInit();
-            byte[] bytes = Plot.GetImage((int)ActualWidth, (int)ActualHeight).GetImageBytes();
-            using MemoryStream ms = new(bytes);
-            bmp.StreamSource = ms;
-            bmp.EndInit();
-            bmp.Freeze();
-
+            BitmapImage bmp = Plot.GetBitmapImage((int)ActualWidth, (int)ActualHeight);
             Clipboard.SetImage(bmp);
         }
     }
