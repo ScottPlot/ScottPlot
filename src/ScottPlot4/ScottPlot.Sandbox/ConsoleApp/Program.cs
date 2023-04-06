@@ -6,3 +6,4 @@ plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
 plt.Launch.FormsPlot();
 plt.Launch.WpfPlot();
+plt.Launch.Web();
