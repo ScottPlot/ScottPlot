@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace ScottPlot.Renderable;
 
-namespace ScottPlot.Renderable
+public enum Edge { Left, Right, Bottom, Top };
+
+public static class EdgeExtensions
 {
-    public enum Edge { Left, Right, Bottom, Top };
+    public static bool IsVertical(this Edge edge) => edge == Edge.Left || edge == Edge.Right;
+    public static bool IsHorizontal(this Edge edge) => edge == Edge.Bottom || edge == Edge.Top;
 }

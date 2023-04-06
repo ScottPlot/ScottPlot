@@ -14,6 +14,11 @@ public class Plot : IDisposable
 {
     public List<IXAxis> XAxes { get; } = new();
     public List<IYAxis> YAxes { get; } = new();
+    public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
+    public IXAxis BottomAxis => XAxes.First(x => x.Edge == Edge.Bottom);
+    public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
+    public IYAxis RightAxis => YAxes.First(x => x.Edge == Edge.Right);
+
     public List<IPanel> Panels { get; } = new();
     public Panels.TitlePanel Title { get; } = new();
     public List<IGrid> Grids { get; } = new();

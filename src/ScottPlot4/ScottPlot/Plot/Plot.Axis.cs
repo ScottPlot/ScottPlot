@@ -41,6 +41,11 @@ namespace ScottPlot
         /// </summary>
         public Renderable.Axis YAxis2 => settings.YAxis2;
 
+        public Renderable.Axis BottomAxis => XAxis;
+        public Renderable.Axis TopAxis => XAxis2;
+        public Renderable.Axis LeftAxis => YAxis;
+        public Renderable.Axis RightAxis => YAxis2;
+
         #endregion
 
         #region shortcuts: axis label, tick, and grid
