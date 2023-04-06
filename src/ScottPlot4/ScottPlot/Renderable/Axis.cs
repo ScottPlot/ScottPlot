@@ -51,8 +51,10 @@ namespace ScottPlot.Renderable
                 Dims.IsInverted = isVertical;
             }
         }
-        public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
-        public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+
+        public bool IsHorizontal => Edge.IsHorizontal();
+
+        public bool IsVertical => Edge.IsVertical();
 
         /// <summary>
         /// Customization options for the text label displayed on an axis
