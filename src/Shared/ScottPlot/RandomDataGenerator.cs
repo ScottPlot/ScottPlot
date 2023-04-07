@@ -25,6 +25,14 @@ public class RandomDataGenerator
         Rand = new Random(seed);
     }
 
+    public double[] Random(int count, double mult = 1, double offset = 0)
+    {
+        double[] values = new double[count];
+        for (int i = 0; i < count; i++)
+            values[i] = Rand.NextDouble() * mult + offset;
+        return values;
+    }
+
     public double[] RandomSin(int count)
     {
         double mult = Math.Pow(2, 1 + Rand.NextDouble() * 10);
@@ -40,9 +48,9 @@ public class RandomDataGenerator
         return min + Rand.NextDouble() * span;
     }
 
-    public double[] RandomWalk(int pointCount, double mult = 1, double offset = 0)
+    public double[] RandomWalk(int count, double mult = 1, double offset = 0)
     {
-        double[] data = new double[pointCount];
+        double[] data = new double[count];
         data[0] = offset;
         for (int i = 1; i < data.Length; i++)
             data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
