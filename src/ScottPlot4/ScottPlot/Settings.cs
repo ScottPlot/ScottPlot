@@ -273,6 +273,23 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Zoom all axes by the given pixel distance
+        /// </summary>
+        public void AxesZoomPxTo(float xPx, float yPx, float xPixel, float yPixel)
+        {
+            foreach (Axis axis in Axes)
+            {
+                double deltaPx = axis.IsHorizontal ? xPx : yPx;
+                double delta = deltaPx * axis.Dims.UnitsPerPx;
+                double deltaFrac = delta / (Math.Abs(delta) + axis.Dims.Span);
+                double frac = Math.Pow(10, deltaFrac);
+                float centerPixel = axis.IsHorizontal ? xPixel : yPixel;
+                double center = axis.Dims.GetUnit(centerPixel);
+                axis.Dims.Zoom(frac, center);
+            }
+        }
+
+        /// <summary>
         /// Zoom all axes by the given fraction
         /// </summary>
         public void AxesZoomTo(double xFrac, double yFrac, float xPixel, float yPixel)
@@ -512,7 +529,7 @@ namespace ScottPlot
         public void MouseZoom(float mouseNowX, float mouseNowY)
         {
             RecallAxisLimits();
-            AxesZoomPx(mouseNowX - MouseDownX, MouseDownY - mouseNowY);
+            AxesZoomPxTo(mouseNowX - MouseDownX, MouseDownY - mouseNowY, MouseDownX, MouseDownY);
         }
 
         public void MouseZoomRect(float mouseNowX, float mouseNowY, bool finalize = false)
