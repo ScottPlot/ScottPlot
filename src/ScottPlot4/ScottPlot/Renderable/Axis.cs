@@ -120,6 +120,38 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void SetSizeLimit(float px) => SetSizeLimit(px, px, 0);
 
+        /// <summary>
+        /// Limit the zoom so the span of this axis is never smaller than the given value
+        /// </summary>
+        public void SetZoomInLimit(double? minimumSpan = null)
+        {
+            Dims.SpanMinimum = minimumSpan.Value;
+        }
+
+        /// <summary>
+        /// Limit the zoom so the span of this axis is never greater than the given value
+        /// </summary>
+        public void SetZoomOutLimit(double? maximumSpan = null)
+        {
+            Dims.SpanMaximum = maximumSpan.Value;
+        }
+
+        /// <summary>
+        /// Disallow panning or zooming beyond the given limits
+        /// </summary>
+        public void SetBoundary(double min = double.NegativeInfinity, double max = double.PositiveInfinity)
+        {
+            Dims.SetBoundsOuter(min, max);
+        }
+
+        /// <summary>
+        /// Disallow panning outside or zooming in beyond the given limits
+        /// </summary>
+        public void SetInnerBoundary(double min = double.PositiveInfinity, double max = double.NegativeInfinity)
+        {
+            Dims.SetBoundsInner(min, max);
+        }
+
         // private styling variables
         private float PixelSize; // how large this axis is
         public float PixelOffset { get; private set; } // distance from the data area
