@@ -29,18 +29,24 @@ namespace ScottPlot.Control.EventProcess.Events
         {
             var originalLimits = Plot.GetAxisLimits();
 
+            float x = Input.ShiftDown ? Settings.MouseDownX : Input.X;
+            float y = Input.CtrlDown ? Settings.MouseDownY : Input.Y;
             if (Input.ShiftDown && Input.CtrlDown)
             {
                 float dx = Input.X - Settings.MouseDownX;
                 float dy = Settings.MouseDownY - Input.Y;
                 float delta = Math.Max(dx, dy);
-                Settings.MouseZoom(Settings.MouseDownX + delta, Settings.MouseDownY - delta);
+                x = Settings.MouseDownX + delta;
+                y = Settings.MouseDownY - delta;
+            }
+
+            if (Configuration.RightClickDragZoomFromMouseDown)
+            {
+                Settings.MouseZoomFromMouseDown(x, y);
             }
             else
             {
-                float x = Input.ShiftDown ? Settings.MouseDownX : Input.X;
-                float y = Input.CtrlDown ? Settings.MouseDownY : Input.Y;
-                Settings.MouseZoom(x, y);
+                Settings.MouseZoomCenter(x, y);
             }
 
             if (Configuration.LockHorizontalAxis)
