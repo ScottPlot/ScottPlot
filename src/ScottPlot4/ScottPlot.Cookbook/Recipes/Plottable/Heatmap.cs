@@ -405,6 +405,39 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapSemiTransparent : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_semitransparent";
+        public string Title => "Heatmap with Semitransparent Squares";
+        public string Description =>
+            "The intensities of heatmaps are mapped to color, " +
+            "but an optional 2D array of alpha values may be provided " +
+            "to separately control transparency of squares.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double?[,] values = {
+                { 1, 7, 4, 5 },
+                { 9, 3, 2, 4 },
+                { 1, 4, 5, 8 },
+                { 7, 2, 4, 2 }
+            };
+
+            double?[,] opacities = {
+                { 1, 1, 1, 1 },
+                { 1, 0, 1, 0 },
+                { 1, .75, .5, 0 },
+                { 1, .8, .6, .4 }
+            };
+
+            var hm = plt.AddHeatmap(values);
+            hm.Update(values, opacity: opacities);
+
+            plt.AddColorbar(hm);
+        }
+    }
+
     public class HeatmapPlacement : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();

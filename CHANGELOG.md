@@ -11,6 +11,7 @@
 * Axis: Made `Edge` and `AxisIndex` immutable to prevent accidental modification after construction (#2539, #2538) _Thanks @cxjcqu_
 * Plot: Created `LeftAxis`, `RightAxis`, `BottomAxis`, and `TopAxis` which alias `YAxis`, `YAxis2`, `XAxis`, and `XAxis2` but are more expressive (#2568)
 * Plot: `Launch` property has methods for launching the plot as a static image, refreshing web page, or interactive window (#2543, #2570)
+* Heatmap: Improved support for semitransparent cells (#2313, #2277, #2285, #2461, #2484) _Thanks @bukkideme_
 * Axis: Added `SetZoomInLimit()`, `SetZoomOutLimit()`, and `SetBoundary()` to control zoom and pan (#2250, #2291, #1997, #1873, #662) _Thanks @dusko23, @Gholamalih, and @bclehmann_
 
 ## ScottPlot 5.0.4-beta
