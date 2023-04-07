@@ -226,5 +226,11 @@ namespace ScottPlot.Control
         public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
 
         public void ClearLinkedControls() => Backend.ClearLinkedControls();
+
+        /// <summary>
+        /// If enabled, right-click-drag zooming will zoom in and out relative to the
+        /// mouse down cursor location instead of the center of the plot.
+        /// </summary>
+        public bool RightClickDragZoomFromMouseDown = false;
     }
 }

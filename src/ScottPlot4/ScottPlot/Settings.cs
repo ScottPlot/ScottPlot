@@ -525,8 +525,19 @@ namespace ScottPlot
 
         /// <summary>
         /// Zoom all axes based on the mouse position now vs that last given to MouseDown()
+        /// Relative to the center of the plot
         /// </summary>
-        public void MouseZoom(float mouseNowX, float mouseNowY)
+        public void MouseZoomCenter(float mouseNowX, float mouseNowY)
+        {
+            RecallAxisLimits();
+            AxesZoomPx(mouseNowX - MouseDownX, MouseDownY - mouseNowY);
+        }
+
+        /// <summary>
+        /// Zoom all axes based on the mouse position now vs that last given to MouseDown()
+        /// Relative to the location of the mouse when it was first pressed
+        /// </summary>
+        public void MouseZoomFromMouseDown(float mouseNowX, float mouseNowY)
         {
             RecallAxisLimits();
             AxesZoomPxTo(mouseNowX - MouseDownX, MouseDownY - mouseNowY, MouseDownX, MouseDownY);
