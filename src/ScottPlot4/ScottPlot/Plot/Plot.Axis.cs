@@ -521,7 +521,7 @@ namespace ScottPlot
         /// <summary>
         /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
         /// </summary>
-        [Obsolete("use SetOuterViewLimits() or SetInnerViewLimits()", true)]
+        [Obsolete("use XAxis.SetBoundary()")]
         public void SetViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity) =>
@@ -530,6 +530,7 @@ namespace ScottPlot
         /// <summary>
         /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
         /// </summary>
+        [Obsolete("use XAxis.SetBoundary()")]
         public void SetOuterViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
@@ -542,6 +543,7 @@ namespace ScottPlot
         /// <summary>
         /// Set minimum innter limits which will always be visible on the plot.
         /// </summary>
+        [Obsolete("use XAxis.SetInnerBoundary()")]
         public void SetInnerViewLimits(
             double xMin = double.PositiveInfinity, double xMax = double.NegativeInfinity,
             double yMin = double.PositiveInfinity, double yMax = double.NegativeInfinity,
