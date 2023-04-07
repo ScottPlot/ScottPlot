@@ -69,6 +69,16 @@ namespace ScottPlot.Renderable
         public double SpanBound => OuterBoundaryMax - OuterBoundaryMin;
 
         /// <summary>
+        /// Limit zooming so the span is never smaller than this value
+        /// </summary>
+        public double? SpanMinimum = null;
+
+        /// <summary>
+        /// Limit zooming so the span is never greater than this value
+        /// </summary>
+        public double? SpanMaximum = null;
+
+        /// <summary>
         /// False until axes are intentionally set.
         /// Unset axes default to NaN min/max limits.
         /// </summary>
@@ -222,6 +232,38 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// If the zoom is further in than the allowed span,
+        /// zoom out but keep the center position
+        /// </summary>
+        private void ApplyZoomInLimit(double minimumSpan)
+        {
+            if (Span < minimumSpan)
+            {
+                double halfSpan = minimumSpan / 2;
+                double min = Center - halfSpan;
+                double max = Center + halfSpan;
+                Min = min;
+                Max = max;
+            }
+        }
+
+        /// <summary>
+        /// If the zoom is further in than the allowed span,
+        /// zoom out but keep the center position
+        /// </summary>
+        private void ApplyZoomOutLimit(double maximumSpan)
+        {
+            if (Span > maximumSpan)
+            {
+                double halfSpan = maximumSpan / 2;
+                double min = Center - halfSpan;
+                double max = Center + halfSpan;
+                Min = min;
+                Max = max;
+            }
+        }
+
+        /// <summary>
         /// Set axis limits
         /// </summary>
         public void SetAxis(double? min, double? max)
@@ -276,6 +318,12 @@ namespace ScottPlot.Renderable
             Min = zoomTo.Value - spanLeft / frac;
             Max = zoomTo.Value + spanRight / frac;
             ApplyBounds();
+
+            if (SpanMinimum.HasValue)
+                ApplyZoomInLimit(SpanMinimum.Value);
+
+            if (SpanMaximum.HasValue)
+                ApplyZoomOutLimit(SpanMaximum.Value);
         }
 
         /// <summary>
