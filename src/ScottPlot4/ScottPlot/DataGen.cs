@@ -503,8 +503,10 @@ namespace ScottPlot
 
             OHLC[] ohlcs = new OHLC[pointCount];
             DateTime start = new(1985, 09, 24);
+            TimeSpan spacing = TimeSpan.FromDays(1);
             for (int i = 0; i < ohlcs.Length; i++)
             {
+                DateTime ohlcDate = start.AddDays(i);
                 double basePrice = basePrices[i];
                 double open = rand.NextDouble() * 10 + 50;
                 double close = rand.NextDouble() * 10 + 50;
@@ -516,7 +518,7 @@ namespace ScottPlot
                 high += basePrice;
                 low += basePrice;
 
-                ohlcs[i] = new OHLC(open, high, low, close, start, TimeSpan.FromDays(1));
+                ohlcs[i] = new OHLC(open, high, low, close, ohlcDate, spacing);
             }
 
             return ohlcs;
