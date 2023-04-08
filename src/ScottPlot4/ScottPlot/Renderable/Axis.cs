@@ -15,6 +15,7 @@ using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
 using System.Drawing;
+using System.Reflection.Emit;
 
 namespace ScottPlot.Renderable
 {
@@ -346,8 +347,7 @@ namespace ScottPlot.Renderable
             if (positions.Length != labels.Length)
                 throw new ArgumentException($"{nameof(positions)} must have the same length as {nameof(labels)}");
 
-            AxisTicks.TickCollection.manualTickPositions = positions;
-            AxisTicks.TickCollection.manualTickLabels = labels;
+            AxisTicks.TickCollection.UseManualTicks(positions, labels);
         }
 
         /// <summary>
@@ -355,10 +355,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void AutomaticTickPositions()
         {
-            AxisTicks.TickCollection.manualTickPositions = null;
-            AxisTicks.TickCollection.manualTickLabels = null;
-            AxisTicks.TickCollection.additionalTickPositions = null;
-            AxisTicks.TickCollection.additionalTickLabels = null;
+            AxisTicks.TickCollection.UseAutomaticTicks();
         }
 
         /// <summary>
@@ -376,10 +373,8 @@ namespace ScottPlot.Renderable
             if (additionalTickLabels.Length != additionalTickLabels.Length)
                 throw new ArgumentException("tick positions and labels must be equal length");
 
-            AxisTicks.TickCollection.manualTickPositions = null;
-            AxisTicks.TickCollection.manualTickLabels = null;
-            AxisTicks.TickCollection.additionalTickPositions = additionalTickPositions;
-            AxisTicks.TickCollection.additionalTickLabels = additionalTickLabels;
+            AxisTicks.TickCollection.UseAutomaticTicks();
+            AxisTicks.TickCollection.AddAdditionalTicks(additionalTickPositions, additionalTickLabels);
         }
 
         /// <summary>
@@ -514,13 +509,13 @@ namespace ScottPlot.Renderable
         {
             if (enable)
             {
-                AxisTicks.TickCollection.MinorTickDistribution = MinorTickDistribution.log;
+                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.LogDistributed();
                 AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
                 AxisTicks.TickCollection.LogScaleMinorTickCount = minorTickCount;
             }
             else
             {
-                AxisTicks.TickCollection.MinorTickDistribution = MinorTickDistribution.even;
+                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.EvenlySpaced();
                 AxisTicks.TickCollection.IntegerPositionsOnly = false;
             }
         }
@@ -574,10 +569,9 @@ namespace ScottPlot.Renderable
             AxisTicks.MinorGridColor = color ?? AxisTicks.MinorGridColor;
             AxisTicks.MinorGridWidth = lineWidth ?? AxisTicks.MinorGridWidth;
             AxisTicks.MinorGridStyle = lineStyle ?? AxisTicks.MinorGridStyle;
+
             if (logScale.HasValue)
-                AxisTicks.TickCollection.MinorTickDistribution = logScale.Value
-                    ? MinorTickDistribution.log
-                    : MinorTickDistribution.even;
+                MinorLogScale(logScale.Value);
         }
 
         /// <summary>
