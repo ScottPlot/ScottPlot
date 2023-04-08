@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ScottPlot.Ticks.MinorTickGenerators;
 
-internal class EvenlySpaced : IMinorTickGenerator
+public class EvenlySpaced : IMinorTickGenerator
 {
     public double[] GetMinorPositions(double[] majorTicks, double min, double max)
     {

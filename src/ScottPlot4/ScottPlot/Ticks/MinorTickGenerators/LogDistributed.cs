@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ScottPlot.Ticks.MinorTickGenerators;
 
-internal class LogDistributed : IMinorTickGenerator
+public class LogDistributed : IMinorTickGenerator
 {
     public double[] GetMinorPositions(double[] majorTickPositions, double min, double max)
     {
@@ -36,7 +36,7 @@ internal class LogDistributed : IMinorTickGenerator
     /// <param name="min">lowest value</param>
     /// <param name="max">highest value</param>
     /// <param name="inclusive">if true, returned values will contain the min/max values themselves</param>
-    private static double[] GetLogDistributedPoints(int count, double min, double max, bool inclusive)
+    public static double[] GetLogDistributedPoints(int count, double min, double max, bool inclusive)
     {
         double range = max - min;
         var values = DataGen.Range(1, 10, 10.0 / count)

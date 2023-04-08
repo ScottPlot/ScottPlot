@@ -142,7 +142,7 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_LogDistributedPoints_Inclusive()
         {
-            double[] xs = ScottPlot.Ticks.TickCollection.GetLogDistributedPoints(10, 123, 456, true);
+            double[] xs = ScottPlot.Ticks.MinorTickGenerators.LogDistributed.GetLogDistributedPoints(10, 123, 456, true);
 
             double[] expected =
             {
@@ -165,7 +165,7 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_LogDistributedPoints_Exclusive()
         {
-            double[] xs = ScottPlot.Ticks.TickCollection.GetLogDistributedPoints(10, 123, 456, false);
+            double[] xs = ScottPlot.Ticks.MinorTickGenerators.LogDistributed.GetLogDistributedPoints(10, 123, 456, false);
 
             double[] expected =
             {
