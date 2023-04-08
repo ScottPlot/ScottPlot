@@ -39,7 +39,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
 * Population: Added option for customizing horizontal errorbar alignment (#2502) _Thanks @benton-anderson_
 * Financial: Created `IOHLC` to allow users to inject their own pricing logic (#2404) _Thanks @mjpz_
 * OHLC: The `Volume` property and constructor overload initializing it have been deprecated (#2404)
-* Axis: Expose tick, spine, and label configuration objects (#2512, #2513) _Thanks @cxjcqu_
+* Axis: Expose tick, spine, and label configuration objects (#2512, #2513, #2353) _Thanks @cxjcqu and @SaltyTears_
 * Signal: Improved `FillDisable()` behavior (#2436) _Thanks @szescxz_
 * RadialGaugePlot: Improve alignment for plots with 1-3 gauges (#2448, #2128) _Thanks @DavidWhataGIT, @johndoh, and daddydavid_
 * Pie: Added `LegendLabels` property so slices and legend items can have different labels (#2459) _Thanks @vietanhbui_
