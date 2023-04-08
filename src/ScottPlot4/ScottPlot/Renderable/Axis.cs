@@ -47,9 +47,7 @@ namespace ScottPlot.Renderable
                 AxisLine.Edge = value;
                 AxisLabel.Edge = value;
                 AxisTicks.Edge = value;
-                AxisTicks.TickCollection.Orientation = value.IsVertical()
-                    ? AxisOrientation.Vertical
-                    : AxisOrientation.Horizontal;
+                AxisTicks.TickCollection.IsVertical = value.IsVertical();
                 Dims.IsInverted = value.IsVertical();
             }
         }
@@ -652,15 +650,6 @@ namespace ScottPlot.Renderable
         public Tick[] GetTicks(double min = double.NegativeInfinity, double max = double.PositiveInfinity)
         {
             return AxisTicks.TickCollection.GetTicks(min, max);
-        }
-
-        /// <summary>
-        /// Configure how tick label measurement is performed when calculating ideal tick density.
-        /// </summary>
-        /// <param name="manual"></param>
-        public void TickMeasurement(bool manual)
-        {
-            AxisTicks.TickCollection.MeasureStringManually = manual;
         }
     }
 }

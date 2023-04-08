@@ -8,13 +8,13 @@ using System.Linq;
 namespace ScottPlot.Ticks
 {
     public enum TickLabelFormat { Numeric, DateTime };
-    public enum AxisOrientation { Vertical, Horizontal };
 
     /// <summary>
     /// This class contains logic to generate ticks given plot size and axis dimensions. 
     /// </summary>
-    public class TickCollection
+    public class TickGenerator
     {
+        // Automatically calculated ticks
         private TickPositions TickPositions = TickPositions.Empty;
 
         // When populated, manual ticks are the ONLY ticks shown
@@ -52,7 +52,7 @@ namespace ScottPlot.Ticks
         /// If True, these ticks are placed along a vertical (Y) axis.
         /// This is used to determine whether tick density should be based on tick label width or height.
         /// </summary>
-        public AxisOrientation Orientation;
+        public bool IsVertical = true;
 
         /// <summary>
         /// If True, the sign of numeric tick labels will be inverted.
@@ -159,8 +159,8 @@ namespace ScottPlot.Ticks
 
         private void RecalculateManual(PlotDimensions dims, Drawing.Font tickFont)
         {
-            double min = Orientation == AxisOrientation.Vertical ? dims.YMin : dims.XMin;
-            double max = Orientation == AxisOrientation.Vertical ? dims.YMax : dims.XMax;
+            double min = IsVertical ? dims.YMin : dims.XMin;
+            double max = IsVertical ? dims.YMax : dims.XMax;
 
             var visibleIndexes = Enumerable.Range(0, ManualTickPositions.Major.Count())
                 .Where(i => ManualTickPositions.Major[i] >= min)
@@ -237,7 +237,7 @@ namespace ScottPlot.Ticks
             if (MinimumTickSpacing > 0)
                 throw new InvalidOperationException("minimum tick spacing does not support DateTime ticks");
 
-            if (Orientation == AxisOrientation.Vertical)
+            if (IsVertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -257,8 +257,8 @@ namespace ScottPlot.Ticks
                 low = Math.Max(low, new DateTime(0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
-                var dtManualUnits = (Orientation == AxisOrientation.Vertical) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
-                var dtManualSpacing = (Orientation == AxisOrientation.Vertical) ? manualSpacingY : manualSpacingX;
+                var dtManualUnits = (IsVertical) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
+                var dtManualSpacing = (IsVertical) ? manualSpacingY : manualSpacingX;
 
                 try
                 {
@@ -290,7 +290,7 @@ namespace ScottPlot.Ticks
             double low, high, tickSpacing;
             int maxTickCount;
 
-            if (Orientation == AxisOrientation.Vertical)
+            if (IsVertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -577,7 +577,7 @@ namespace ScottPlot.Ticks
         {
             double high, low;
 
-            if (Orientation == AxisOrientation.Vertical)
+            if (IsVertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -594,7 +594,7 @@ namespace ScottPlot.Ticks
         public Tick[] GetVisibleMinorTicks(PlotDimensions dims)
         {
             double high, low;
-            if (Orientation == AxisOrientation.Vertical)
+            if (IsVertical)
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
@@ -608,11 +608,6 @@ namespace ScottPlot.Ticks
             return GetMinorTicks()
                 .Where(t => t.Position >= low && t.Position <= high)
                 .ToArray();
-        }
-
-        public Tick[] GetVisibleTicks(PlotDimensions dims)
-        {
-            return GetVisibleMajorTicks(dims).Concat(GetVisibleMinorTicks(dims)).ToArray();
         }
     }
 }

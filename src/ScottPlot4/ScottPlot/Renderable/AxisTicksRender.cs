@@ -75,7 +75,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public static void RenderTickLabels(PlotDimensions dims, Graphics gfx, TickCollection tc, Drawing.Font tickFont, Edge edge, float rotation, bool rulerMode, float PixelOffset, float MajorTickLength, float MinorTickLength)
+        public static void RenderTickLabels(PlotDimensions dims, Graphics gfx, TickGenerator tc, Drawing.Font tickFont, Edge edge, float rotation, bool rulerMode, float PixelOffset, float MajorTickLength, float MinorTickLength)
         {
             using var font = GDI.Font(tickFont);
             using var brush = GDI.Brush(tickFont.Color);
