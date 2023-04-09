@@ -172,7 +172,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public ICategory Category => new Categories.PlotTypes.Colorbar();
         public string ID => "colorbar_label";
-        public string Title => "Colorbar";
+        public string Title => "Colorbar Label";
         public string Description => "Colorbars have a Label property similar to X and Y axes.";
 
         public void ExecuteRecipe(Plot plt)
