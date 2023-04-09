@@ -24,16 +24,55 @@ namespace ScottPlot.Plottable
         /// </summary>
         public string Label { get; set; }
 
+        /// <summary>
+        /// Distance (pixels) the shadow will be to the right of the box
+        /// </summary>
+        public float ShadowOffsetX { get; set; } = 5;
+
+        /// <summary>
+        /// Distance (pixels) the shadow will be below the box
+        /// </summary>
+        public float ShadowOffsetY { get; set; } = 5;
+
+        /// <summary>
+        /// Font for the annotation text
+        /// </summary>
         public readonly Drawing.Font Font = new();
 
+        /// <summary>
+        /// If true, the rectangle behind the text will be filled with <see cref="BackgroundColor"/>
+        /// </summary>
         public bool Background { get; set; } = true;
+
+        /// <summary>
+        /// Color of the rectangle drawn beneath the annotation if <see cref="Background"/> is true
+        /// </summary>
         public Color BackgroundColor { get; set; } = Color.Yellow;
 
+        /// <summary>
+        /// If true, a rectangular shadow will be drawn behind the background rectangle filled with <see cref="ShadowColor"/>
+        /// </summary>
         public bool Shadow { get; set; } = true;
+
+        /// <summary>
+        /// Color of the rectangle drawn beneath the annotation if <see cref="Shadow"/> is true.
+        /// Semitransparent colors are recommended for shadows.
+        /// </summary>
         public Color ShadowColor { get; set; } = Color.FromArgb(25, Color.Black);
 
+        /// <summary>
+        /// If true, the rectangle around the text will be drawn according to <see cref="BorderWidth"/> and <see cref="BorderColor"/>
+        /// </summary>
         public bool Border { get; set; } = true;
+
+        /// <summary>
+        /// Thickness (in pixels) of the rectangular outline to draw around the text using <see cref="BorderColor"/>
+        /// </summary>
         public float BorderWidth { get; set; } = 1;
+
+        /// <summary>
+        /// Color of the rectangular outline drawn around the text
+        /// </summary>
         public Color BorderColor { get; set; } = Color.Black;
 
         public bool IsVisible { get; set; } = true;
@@ -64,13 +103,12 @@ namespace ScottPlot.Plottable
             using var borderPen = new Pen(BorderColor, BorderWidth);
 
             SizeF size = GDI.MeasureString(gfx, Label, font);
-
             double x = (X >= 0) ? X : dims.DataWidth + X - size.Width;
             double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
-            PointF location = new PointF((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
+            PointF location = new((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
 
             if (Background && Shadow)
-                gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
+                gfx.FillRectangle(shadowBrush, location.X + ShadowOffsetX, location.Y + ShadowOffsetY, size.Width, size.Height);
 
             if (Background)
                 gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
