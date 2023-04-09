@@ -4,13 +4,13 @@ namespace ScottPlot.Ticks;
 
 #nullable enable
 
-public class TickPositions
+public class TickCollection
 {
     public double[] Major { get; }
     public double[] Minor { get; }
     public string[] Labels { get; }
 
-    public TickPositions(double[] major, double[] minor, string[] labels)
+    public TickCollection(double[] major, double[] minor, string[] labels)
     {
         if (major.Length != labels.Length)
             throw new InvalidOperationException($"{nameof(major)} must have the same length as {nameof(labels)}");
@@ -20,7 +20,7 @@ public class TickPositions
         Labels = labels ?? Array.Empty<string>();
     }
 
-    public static TickPositions Empty => new(
+    public static TickCollection Empty => new(
         major: Array.Empty<double>(),
         minor: Array.Empty<double>(),
         labels: Array.Empty<string>());

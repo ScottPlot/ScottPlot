@@ -265,8 +265,8 @@ namespace ScottPlot.Renderable
             AxisTicks.TickCollection.ManualTickFormatter = tickFormatter;
 
             // delete existing custom tick format strings
-            AxisTicks.TickCollection.numericFormatString = null;
-            AxisTicks.TickCollection.dateTimeFormatString = null;
+            AxisTicks.TickCollection.NumericFormatString = null;
+            AxisTicks.TickCollection.DateTimeFormatString = null;
             AxisTicks.TickCollection.LabelFormat = ScottPlot.Ticks.TickLabelFormat.Numeric;
         }
 
@@ -280,12 +280,12 @@ namespace ScottPlot.Renderable
 
             if (dateTimeFormat)
             {
-                AxisTicks.TickCollection.dateTimeFormatString = format;
+                AxisTicks.TickCollection.DateTimeFormatString = format;
                 DateTimeFormat(true);
             }
             else
             {
-                AxisTicks.TickCollection.numericFormatString = format;
+                AxisTicks.TickCollection.NumericFormatString = format;
                 DateTimeFormat(false);
             }
         }
@@ -310,9 +310,9 @@ namespace ScottPlot.Renderable
             int? radix = null,
             string prefix = null)
         {
-            AxisTicks.TickCollection.useMultiplierNotation = multiplier ?? AxisTicks.TickCollection.useMultiplierNotation;
-            AxisTicks.TickCollection.useOffsetNotation = offset ?? AxisTicks.TickCollection.useOffsetNotation;
-            AxisTicks.TickCollection.useExponentialNotation = exponential ?? AxisTicks.TickCollection.useExponentialNotation;
+            AxisTicks.TickCollection.UseMultiplierNotation = multiplier ?? AxisTicks.TickCollection.UseMultiplierNotation;
+            AxisTicks.TickCollection.UseOffsetNotation = offset ?? AxisTicks.TickCollection.UseOffsetNotation;
+            AxisTicks.TickCollection.UseExponentialNotation = exponential ?? AxisTicks.TickCollection.UseExponentialNotation;
             AxisTicks.TickCollection.LabelUsingInvertedSign = invertSign ?? AxisTicks.TickCollection.LabelUsingInvertedSign;
             AxisTicks.TickCollection.radix = radix ?? AxisTicks.TickCollection.radix;
             AxisTicks.TickCollection.prefix = prefix ?? AxisTicks.TickCollection.prefix;
@@ -324,8 +324,8 @@ namespace ScottPlot.Renderable
         public void ManualTickSpacing(double manualSpacing)
         {
             // TODO: cutt X and Y out of this
-            AxisTicks.TickCollection.manualSpacingX = manualSpacing;
-            AxisTicks.TickCollection.manualSpacingY = manualSpacing;
+            AxisTicks.TickCollection.ManualSpacingX = manualSpacing;
+            AxisTicks.TickCollection.ManualSpacingY = manualSpacing;
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace ScottPlot.Renderable
         public void ManualTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
         {
             ManualTickSpacing(manualSpacing);
-            AxisTicks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
+            AxisTicks.TickCollection.ManualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
         }
 
         /// <summary>

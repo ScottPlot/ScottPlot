@@ -10,18 +10,25 @@ namespace ScottPlot.Ticks
     public enum TickLabelFormat { Numeric, DateTime };
 
     /// <summary>
-    /// This class contains logic to generate ticks given plot size and axis dimensions. 
+    /// This class contains logic to generate ticks given plot size and axis dimensions
+    /// and many configuration settings to customize this behavior.
     /// </summary>
     public class TickGenerator
     {
-        // Automatically calculated ticks
-        private TickPositions TickPositions = TickPositions.Empty;
+        /// <summary>
+        /// Automatically calculated ticks
+        /// </summary>
+        private TickCollection Ticks = TickCollection.Empty;
 
-        // When populated, manual ticks are the ONLY ticks shown
-        private TickPositions ManualTickPositions = null;
+        /// <summary>
+        /// When populated, manual ticks are the ONLY ticks shown
+        /// </summary>
+        private TickCollection ManualTicks = null;
 
-        // When populated, additionalTicks are shown in addition to automatic ticks
-        private TickPositions AdditionalTickPositions = null;
+        /// <summary>
+        /// When populated, additionalTicks are shown in addition to automatic ticks
+        /// </summary>
+        private TickCollection AdditionalTicks = null;
 
         /// <summary>
         /// Controls how to translate exponential part of a number to strings
@@ -65,27 +72,25 @@ namespace ScottPlot.Ticks
         /// </summary>
         public IMinorTickGenerator MinorTickGenerator { get; set; } = new MinorTickGenerators.EvenlySpaced();
 
-        public string numericFormatString;
-        public string dateTimeFormatString;
+        /// <summary>
+        /// Format string for generating tick labels from numeric tick positions
+        /// </summary>
+        public string NumericFormatString;
+
+        /// <summary>
+        /// Format string for generating tick labels from DateTime tick positions
+        /// </summary>
+        public string DateTimeFormatString;
 
         /// <summary>
         /// If defined, this function will be used to generate tick labels from positions
         /// </summary>
         public Func<double, string> ManualTickFormatter = null;
 
-        public int radix = 10;
-        public string prefix = null;
-
-        public double manualSpacingX = 0;
-        public double manualSpacingY = 0;
-        public Ticks.DateTimeUnit? manualDateTimeSpacingUnitX = null;
-        public Ticks.DateTimeUnit? manualDateTimeSpacingUnitY = null;
-
-        public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
-
-        public bool useMultiplierNotation = false;
-        public bool useOffsetNotation = false;
-        public bool useExponentialNotation = true;
+        /// <summary>
+        /// Culture to use for generating tick labels
+        /// </summary>
+        public CultureInfo Culture { get; set; } = CultureInfo.DefaultThreadCurrentCulture;
 
         /// <summary>
         /// Optimally packed tick labels have a density 1.0 and lower densities space ticks farther apart.
@@ -114,11 +119,26 @@ namespace ScottPlot.Ticks
         /// </summary>
         public bool MeasureStringManually = false;
 
+        // legacy configuration options
+        public int radix = 10;
+        public string prefix = null;
+        public double ManualSpacingX = 0;
+        public double ManualSpacingY = 0;
+        public Ticks.DateTimeUnit? ManualDateTimeSpacingUnitX = null;
+        public Ticks.DateTimeUnit? ManualDateTimeSpacingUnitY = null;
+        public bool UseMultiplierNotation = false;
+        public bool UseOffsetNotation = false;
+        public bool UseExponentialNotation = true;
+
+        /// <summary>
+        /// Recalculate ticks based on the given plot information.
+        /// Access ticks later by calling <see cref="GetTicks(double, double)"/>
+        /// </summary>
         public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
-            if (ManualTickPositions is not null)
+            if (ManualTicks is not null)
             {
-                RecalculateManual(dims, tickFont);
+                RecalculateManualTicks(dims, tickFont);
                 return;
             }
 
@@ -127,49 +147,62 @@ namespace ScottPlot.Ticks
 
         public void UseManualTicks(double[] positions, string[] labels)
         {
-            ManualTickPositions = new(positions, null, labels);
+            ManualTicks = new(positions, null, labels);
         }
 
         public void AddAdditionalTicks(double[] positions, string[] labels)
         {
-            AdditionalTickPositions = new(positions, null, labels);
+            AdditionalTicks = new(positions, null, labels);
         }
 
         public void UseAutomaticTicks()
         {
-            ManualTickPositions = null;
-            AdditionalTickPositions = null;
+            ManualTicks = null;
+            AdditionalTicks = null;
         }
 
         private void RecalculateAutomatic(PlotDimensions dims, Drawing.Font tickFont)
         {
             // first pass uses forced density with manual label sizes to consistently approximate labels
+            int initialTickCount = (int)(10 * TickDensity);
             if (LabelFormat == TickLabelFormat.DateTime)
-                RecalculatePositionsAutomaticDatetime(dims, 20, 24, (int)(10 * TickDensity));
+            {
+                float labelWidth = 20;
+                float labelHeight = 24;
+                RecalculatePositionsAutomaticDatetime(dims, labelWidth, labelHeight, initialTickCount);
+            }
             else
-                RecalculatePositionsAutomaticNumeric(dims, 15, 12, (int)(10 * TickDensity));
+            {
+                float labelWidth = 15;
+                float labelHeight = 12;
+                RecalculatePositionsAutomaticNumeric(dims, labelWidth, labelHeight, initialTickCount);
+            }
 
             // second pass calculates density using measured labels produced by the first pass
             (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
             if (LabelFormat == TickLabelFormat.DateTime)
+            {
                 RecalculatePositionsAutomaticDatetime(dims, LargestLabelWidth, LargestLabelHeight, null);
+            }
             else
+            {
                 RecalculatePositionsAutomaticNumeric(dims, LargestLabelWidth, LargestLabelHeight, null);
+            }
         }
 
-        private void RecalculateManual(PlotDimensions dims, Drawing.Font tickFont)
+        private void RecalculateManualTicks(PlotDimensions dims, Drawing.Font tickFont)
         {
             double min = IsVertical ? dims.YMin : dims.XMin;
             double max = IsVertical ? dims.YMax : dims.XMax;
 
-            var visibleIndexes = Enumerable.Range(0, ManualTickPositions.Major.Count())
-                .Where(i => ManualTickPositions.Major[i] >= min)
-                .Where(i => ManualTickPositions.Major[i] <= max);
+            var visibleIndexes = Enumerable.Range(0, ManualTicks.Major.Count())
+                .Where(i => ManualTicks.Major[i] >= min)
+                .Where(i => ManualTicks.Major[i] <= max);
 
-            double[] tickPositionsMajor = visibleIndexes.Select(x => ManualTickPositions.Major[x]).ToArray();
+            double[] tickPositionsMajor = visibleIndexes.Select(x => ManualTicks.Major[x]).ToArray();
             double[] tickPositionsMinor = null;
-            string[] tickLabels = visibleIndexes.Select(x => ManualTickPositions.Labels[x]).ToArray();
-            TickPositions = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
+            string[] tickLabels = visibleIndexes.Select(x => ManualTicks.Labels[x]).ToArray();
+            Ticks = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
 
             CornerLabel = null;
             (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
@@ -186,7 +219,7 @@ namespace ScottPlot.Ticks
         {
             // Culture may be null if the thread culture is the same is the system culture.
             // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
-            Culture = Culture ?? (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            Culture ??= (CultureInfo)CultureInfo.CurrentCulture.Clone();
             Culture.DateTimeFormat.ShortDatePattern = shortDatePattern ?? Culture.DateTimeFormat.ShortDatePattern;
             Culture.NumberFormat.NumberDecimalDigits = decimalDigits ?? Culture.NumberFormat.NumberDecimalDigits;
             Culture.NumberFormat.NumberDecimalSeparator = decimalSeparator ?? Culture.NumberFormat.NumberDecimalSeparator;
@@ -195,13 +228,16 @@ namespace ScottPlot.Ticks
             Culture.NumberFormat.NumberNegativePattern = numberNegativePattern ?? Culture.NumberFormat.NumberNegativePattern;
         }
 
+        /// <summary>
+        /// Return the size of the largest expected tick label
+        /// </summary>
         private (float width, float height) MaxLabelSize(Drawing.Font tickFont)
         {
-            if (TickPositions.Labels is null || TickPositions.Labels.Length == 0)
+            if (Ticks.Labels is null || Ticks.Labels.Length == 0)
                 return (0, 0);
 
             string largestString = "";
-            foreach (string s in TickPositions.Labels.Where(x => string.IsNullOrEmpty(x) == false))
+            foreach (string s in Ticks.Labels.Where(x => string.IsNullOrEmpty(x) == false))
                 if (s.Length > largestString.Length)
                     largestString = s;
 
@@ -231,11 +267,14 @@ namespace ScottPlot.Ticks
 
         private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
         {
-            double low, high;
-            int tickCount;
-
             if (MinimumTickSpacing > 0)
                 throw new InvalidOperationException("minimum tick spacing does not support DateTime ticks");
+
+            CornerLabel = null; // should not be shown for DateTime ticks
+
+            double low;
+            double high;
+            int tickCount;
 
             if (IsVertical)
             {
@@ -254,35 +293,33 @@ namespace ScottPlot.Ticks
 
             if (low < high)
             {
-                low = Math.Max(low, new DateTime(0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
+                double minimumValidOADate = new DateTime(0100, 1, 1, 0, 0, 0).ToOADate();
+                low = Math.Max(low, minimumValidOADate);
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
-                var dtManualUnits = (IsVertical) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
-                var dtManualSpacing = (IsVertical) ? manualSpacingY : manualSpacingX;
+                Ticks.DateTimeUnit? dtManualUnits = IsVertical ? ManualDateTimeSpacingUnitY : ManualDateTimeSpacingUnitX;
+                double dtManualSpacing = IsVertical ? ManualSpacingY : ManualSpacingX;
 
                 try
                 {
                     DateTime from = DateTime.FromOADate(low);
                     DateTime to = DateTime.FromOADate(high);
-
-                    var unitFactory = new DateTimeUnitFactory();
+                    DateTimeUnitFactory unitFactory = new();
                     IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, Culture, tickCount, dtManualUnits, (int)dtManualSpacing);
-                    (double[] tickPositionsMajor, string[] tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
+                    (double[] tickPositionsMajor, string[] tickLabels) = tickUnit.GetTicksAndLabels(from, to, DateTimeFormatString);
                     tickLabels = tickLabels.Select(x => x.Trim()).ToArray();
-                    TickPositions = new TickPositions(tickPositionsMajor, null, tickLabels);
+                    Ticks = new TickCollection(tickPositionsMajor, null, tickLabels);
                 }
                 catch
                 {
                     // zooming too far can produce exceptions (numic or DateTime)
-                    TickPositions = TickPositions.Empty;
+                    Ticks = TickCollection.Empty;
                 }
             }
             else
             {
-                TickPositions = TickPositions.Empty;
+                Ticks = TickCollection.Empty;
             }
-
-            CornerLabel = null;
         }
 
         private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
@@ -296,7 +333,7 @@ namespace ScottPlot.Ticks
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(dims.DataHeight / labelHeight * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
-                tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                tickSpacing = (ManualSpacingY != 0) ? ManualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
                 tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }
             else
@@ -305,7 +342,7 @@ namespace ScottPlot.Ticks
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(dims.DataWidth / labelWidth * TickDensity);
                 maxTickCount = forcedTickCount ?? maxTickCount;
-                tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                tickSpacing = (ManualSpacingX != 0) ? ManualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
                 tickSpacing = Math.Max(tickSpacing, MinimumTickSpacing);
             }
 
@@ -336,25 +373,21 @@ namespace ScottPlot.Ticks
                     tickPositionsMajor = new double[] { firstTick - 1, firstTick, firstTick + 1 };
             }
 
-            (string[] tickLabels, CornerLabel) = GetPrettyTickLabels(
-                    tickPositionsMajor,
-                    useMultiplierNotation,
-                    useOffsetNotation,
-                    useExponentialNotation,
-                    invertSign: LabelUsingInvertedSign,
-                    culture: Culture
-                );
+            (string[] tickLabels, CornerLabel) = GetTickLabels(tickPositionsMajor);
 
             double[] tickPositionsMinor = MinorTickGenerator.GetMinorPositions(tickPositionsMajor, low, high);
 
-            TickPositions = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
+            Ticks = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
         }
 
+        /// <summary>
+        /// Return a round number that would make a good spacing between major ticks.
+        /// </summary>
         private static double GetIdealTickSpacing(double low, double high, int maxTickCount, int radix = 10)
         {
             double range = high - low;
             int exponent = (int)Math.Log(range, radix);
-            List<double> tickSpacings = new List<double>() { Math.Pow(radix, exponent) };
+            List<double> tickSpacings = new() { Math.Pow(radix, exponent) };
             tickSpacings.Add(tickSpacings.Last());
             tickSpacings.Add(tickSpacings.Last());
 
@@ -388,35 +421,11 @@ namespace ScottPlot.Ticks
             return idealSpacing;
         }
 
-        private string FormatLocal(double value, CultureInfo culture)
+        /// <summary>
+        /// Apply various scaling, inversion, and notation operations and return the labels to show on the plot
+        /// </summary>
+        public (string[] labels, string cornerLabel) GetTickLabels(double[] positions)
         {
-            // if a custom format string exists use it
-            if (numericFormatString != null)
-                return value.ToString(numericFormatString, culture);
-
-            // if the number is round or large, use the numeric format
-            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-numeric-n-format-specifier
-            bool isRoundNumber = ((int)value == value);
-            bool isLargeNumber = (Math.Abs(value) > 1000);
-            if (isRoundNumber || isLargeNumber)
-                return value.ToString("N0", culture);
-
-            // otherwise the number is probably small or very precise to use the general format (with slight rounding)
-            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-general-g-format-specifier
-            return Math.Round(value, 10).ToString("G", culture);
-        }
-
-        public (string[], string) GetPrettyTickLabels(
-                double[] positions,
-                bool useMultiplierNotation,
-                bool useOffsetNotation,
-                bool useExponentialNotation,
-                bool invertSign,
-                CultureInfo culture
-            )
-        {
-            // given positions returns nicely-formatted labels (with offset and multiplier)
-
             string[] labels = new string[positions.Length];
             string cornerLabel = "";
 
@@ -428,14 +437,14 @@ namespace ScottPlot.Ticks
             double exponent = (int)(Math.Log10(range));
 
             double multiplier = 1;
-            if (useMultiplierNotation)
+            if (UseMultiplierNotation)
             {
                 if (Math.Abs(exponent) > 2)
                     multiplier = Math.Pow(10, exponent);
             }
 
             double offset = 0;
-            if (useOffsetNotation)
+            if (UseOffsetNotation)
             {
                 offset = positions.First();
                 if (Math.Abs(offset / range) < 10)
@@ -445,101 +454,87 @@ namespace ScottPlot.Ticks
             for (int i = 0; i < positions.Length; i++)
             {
                 double adjustedPosition = (positions[i] - offset) / multiplier;
-                if (invertSign)
+
+                if (LabelUsingInvertedSign)
                     adjustedPosition *= -1;
-                labels[i] = ManualTickFormatter is null ? FormatLocal(adjustedPosition, culture) : ManualTickFormatter(adjustedPosition);
+
+                labels[i] = ManualTickFormatter is null
+                    ? GetNumericLabel(adjustedPosition)
+                    : ManualTickFormatter(adjustedPosition);
+
                 if (labels[i] == "-0")
                     labels[i] = "0";
             }
 
-            if (useExponentialNotation)
+            if (UseExponentialNotation)
             {
                 if (multiplier != 1)
-                    cornerLabel += String.Format(CornerLabelFormat, exponent);
+                    cornerLabel += string.Format(CornerLabelFormat, exponent);
                 if (offset != 0)
                     cornerLabel += Tools.ScientificNotation(offset);
             }
             else
             {
                 if (multiplier != 1)
-                    cornerLabel += FormatLocal(multiplier, culture);
+                    cornerLabel += GetNumericLabel(multiplier);
                 if (offset != 0)
-                    cornerLabel += " +" + FormatLocal(offset, culture);
+                    cornerLabel += " +" + GetNumericLabel(offset);
                 cornerLabel = cornerLabel.Replace("+-", "-");
             }
 
             return (labels, cornerLabel);
         }
 
-        public static string[] GetDateLabels(double[] ticksOADate, CultureInfo culture)
+        /// <summary>
+        /// Create a tick label for the given number according to <see cref="Culture"/>
+        /// </summary>
+        private string GetNumericLabel(double value)
         {
+            // if a custom format string exists use it
+            if (NumericFormatString is not null)
+                return value.ToString(NumericFormatString, Culture);
 
-            TimeSpan dtTickSep;
-            string dtFmt = null;
+            // if the number is round or large, use the numeric format
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-numeric-n-format-specifier
+            bool isRoundNumber = ((int)value == value);
+            bool isLargeNumber = (Math.Abs(value) > 1000);
+            if (isRoundNumber || isLargeNumber)
+                return value.ToString("N0", Culture);
 
-            try
-            {
-                // TODO: replace this with culture-aware format
-                dtTickSep = DateTime.FromOADate(ticksOADate[1]) - DateTime.FromOADate(ticksOADate[0]);
-                if (dtTickSep.TotalDays > 365 * 5)
-                    dtFmt = "{0:yyyy}";
-                else if (dtTickSep.TotalDays > 365)
-                    dtFmt = "{0:yyyy-MM}";
-                else if (dtTickSep.TotalDays > .5)
-                    dtFmt = "{0:yyyy-MM-dd}";
-                else if (dtTickSep.TotalMinutes > .5)
-                    dtFmt = "{0:yyyy-MM-dd\nH:mm}";
-                else
-                    dtFmt = "{0:yyyy-MM-dd\nH:mm:ss}";
-            }
-            catch
-            {
-            }
-
-            string[] labels = new string[ticksOADate.Length];
-            for (int i = 0; i < ticksOADate.Length; i++)
-            {
-                try
-                {
-                    DateTime dt = DateTime.FromOADate(ticksOADate[i]);
-                    string lbl = string.Format(culture, dtFmt, dt);
-                    labels[i] = lbl;
-                }
-                catch
-                {
-                    labels[i] = "?";
-                }
-            }
-            return labels;
+            // otherwise the number is probably small or very precise to use the general format (with slight rounding)
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-general-g-format-specifier
+            return Math.Round(value, 10).ToString("G", Culture);
         }
+
+        #region methods to create modern Ticks from the ticks stored in this class
 
         private Tick[] GetMajorTicks(double min, double max)
         {
-            if (TickPositions.Major is null || TickPositions.Major.Length == 0)
+            if (Ticks.Major is null || Ticks.Major.Length == 0)
                 return new Tick[] { };
 
             List<Tick> ticks = new();
 
-            for (int i = 0; i < TickPositions.Major.Length; i++)
+            for (int i = 0; i < Ticks.Major.Length; i++)
             {
                 Tick tick = new(
-                    position: TickPositions.Major[i],
-                    label: TickPositions.Labels[i],
+                    position: Ticks.Major[i],
+                    label: Ticks.Labels[i],
                     isMajor: true,
                     isDateTime: LabelFormat == TickLabelFormat.DateTime);
 
                 ticks.Add(tick);
             }
 
-            if (AdditionalTickPositions is not null)
+            if (AdditionalTicks is not null)
             {
                 double sign = LabelUsingInvertedSign ? -1 : 1;
 
-                for (int i = 0; i < AdditionalTickPositions.Major.Length; i++)
+                for (int i = 0; i < AdditionalTicks.Major.Length; i++)
                 {
                     var tick = new Tick(
-                        position: AdditionalTickPositions.Major[i] * sign,
-                        label: AdditionalTickPositions.Labels[i],
+                        position: AdditionalTicks.Major[i] * sign,
+                        label: AdditionalTicks.Labels[i],
                         isMajor: true,
                         isDateTime: LabelFormat == TickLabelFormat.DateTime);
 
@@ -552,14 +547,14 @@ namespace ScottPlot.Ticks
 
         private Tick[] GetMinorTicks()
         {
-            if (TickPositions.Minor is null || TickPositions.Minor.Length == 0)
+            if (Ticks.Minor is null || Ticks.Minor.Length == 0)
                 return new Tick[] { };
 
-            Tick[] ticks = new Tick[TickPositions.Minor.Length];
+            Tick[] ticks = new Tick[Ticks.Minor.Length];
             for (int i = 0; i < ticks.Length; i++)
             {
                 ticks[i] = new Tick(
-                    position: TickPositions.Minor[i],
+                    position: Ticks.Minor[i],
                     label: null,
                     isMajor: false,
                     isDateTime: LabelFormat == TickLabelFormat.DateTime);
@@ -609,5 +604,7 @@ namespace ScottPlot.Ticks
                 .Where(t => t.Position >= low && t.Position <= high)
                 .ToArray();
         }
+
+        #endregion
     }
 }
