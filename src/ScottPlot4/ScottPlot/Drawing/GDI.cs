@@ -444,6 +444,37 @@ namespace ScottPlot.Drawing
         }
 
         /// <summary>
+        /// Return the position of a small rectangle placed inside a larger rectangle according to the given alignment and margin.
+        /// </summary>
+        public static RectangleF GetAlignedRectangle(RectangleF outer, SizeF size, Alignment alignment, float paddingX, float paddingY)
+        {
+            float left = outer.Left + paddingX;
+            float right = outer.Right - paddingX;
+            float centerX = (outer.Left + outer.Right) / 2;
+
+            float top = outer.Top + paddingY;
+            float bottom = outer.Bottom - paddingY;
+            float centerY = (outer.Top + outer.Bottom) / 2;
+
+            float width = size.Width;
+            float height = size.Height;
+
+            return alignment switch
+            {
+                Alignment.UpperLeft => new RectangleF(left, top, width, height),
+                Alignment.UpperCenter => new RectangleF(centerX - width / 2, top, width, height),
+                Alignment.UpperRight => new RectangleF(right - width, top, width, height),
+                Alignment.MiddleLeft => new RectangleF(left, centerY - height / 2, width, height),
+                Alignment.MiddleCenter => new RectangleF(centerX - width / 2, centerY - height / 2, width, height),
+                Alignment.MiddleRight => new RectangleF(right - width, centerY - height / 2, width, height),
+                Alignment.LowerLeft => new RectangleF(left, bottom - height, width, height),
+                Alignment.LowerCenter => new RectangleF(centerX - width / 2, bottom - height, width, height),
+                Alignment.LowerRight => new RectangleF(right - width, bottom - height, width, height),
+                _ => throw new NotImplementedException(alignment.ToString()),
+            };
+        }
+
+        /// <summary>
         /// For some reason this overload is not present in System.Drawing.Common
         /// </summary>
         internal static void DrawRectangle(this Graphics gfx, Pen pen, RectangleF rect)
