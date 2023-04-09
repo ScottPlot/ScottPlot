@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get => 0; set { } }
 
         /// <summary>
-        /// Width of the colorbar rectangle
+        /// Width of the colored rectangle (pixels)
         /// </summary>
         public int Width { get; set; } = 20;
 
@@ -36,6 +36,19 @@ namespace ScottPlot.Plottable
         private bool AutomaticTickEnable { get; set; } = true;
         private int AutomaticTickMinimumSpacing { get; set; } = 40;
         private Func<double, string> AutomaticTickFormatter { get; set; } = position => $"{position:F2}";
+
+
+        /// <summary>
+        /// Optional text to display rotated outside the colormap
+        /// </summary>
+        public string Label { get; set; } = string.Empty;
+        public readonly Drawing.Font LabelFont = new() { Size = 16 };
+
+        /// <summary>
+        /// Distance (pixels) to offset the axis label from the edge of the colormap.
+        /// This edge is typically large enough to accommodate tick labels.
+        /// </summary>
+        public float LabelMargin { get; set; } = 40;
 
         public float DataAreaPadding { get; set; } = 10;
 
@@ -223,8 +236,8 @@ namespace ScottPlot.Plottable
                 UpdateBitmap();
 
             RectangleF colorbarRect = RenderColorbar(dims, bmp);
-
             RenderTicks(dims, bmp, lowQuality, colorbarRect);
+            RenderLabel(dims, bmp, lowQuality, colorbarRect);
         }
 
         /// <summary>
@@ -305,6 +318,25 @@ namespace ScottPlot.Plottable
                 gfx.DrawLine(tickMarkPen, tickLeftPx, y, tickRightPx, y);
                 gfx.DrawString(tick.Label, tickFont, tickLabelBrush, tickLabelPx, y, sf);
             }
+        }
+
+        private void RenderLabel(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
+        {
+            if (string.IsNullOrWhiteSpace(Label))
+                return;
+
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            using Brush brush = GDI.Brush(TickLabelFont.Color);
+            using System.Drawing.Font font = GDI.Font(LabelFont);
+            using StringFormat sf = new() { Alignment = StringAlignment.Center };
+
+            float x = colorbarRect.Right + LabelMargin;
+            float y = (colorbarRect.Top + colorbarRect.Bottom) / 2;
+
+            gfx.TranslateTransform(x, y);
+            gfx.RotateTransform(-90);
+            gfx.DrawString(Label, font, brush, 0, 0, sf);
+            GDI.ResetTransformPreservingScale(gfx, dims);
         }
     }
 }
