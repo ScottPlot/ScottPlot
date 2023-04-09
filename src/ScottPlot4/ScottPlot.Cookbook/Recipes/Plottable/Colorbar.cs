@@ -167,4 +167,24 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddColorbar(rightSide: false);
         }
     }
+
+    public class ColorbarLabel : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Colorbar();
+        public string ID => "colorbar_label";
+        public string Title => "Colorbar";
+        public string Description => "Colorbars have a Label property similar to X and Y axes.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddColorbar();
+
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+
+            var cmap = ScottPlot.Drawing.Colormap.Turbo;
+            var cb = plt.AddColorbar(cmap);
+            cb.Label = "Custom Colorbar Label";
+        }
+    }
 }
