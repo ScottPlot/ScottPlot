@@ -442,5 +442,13 @@ namespace ScottPlot.Drawing
             using LinearGradientBrush brush = new(gradientRectangle, color1, color2, LinearGradientMode.Vertical);
             gfx.FillPolygon(brush, points);
         }
+
+        /// <summary>
+        /// For some reason this overload is not present in System.Drawing.Common
+        /// </summary>
+        internal static void DrawRectangle(this Graphics gfx, Pen pen, RectangleF rect)
+        {
+            gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
     }
 }
