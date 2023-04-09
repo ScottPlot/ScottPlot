@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -270,6 +271,23 @@ namespace ScottPlotTests.PlotTypes
             sig.FillDisable();
 
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Scatter_Update()
+        {
+            // https://github.com/ScottPlot/ScottPlot/issues/2578
+
+            double[] ys1 = ScottPlot.Generate.Sin();
+            double[] ys2 = ScottPlot.Generate.Sin();
+
+            ScottPlot.Plot plt = new(400, 300);
+
+            var sig = plt.AddSignal(ys1);
+            sig.Ys.Should().BeEquivalentTo(ys1);
+
+            sig.Update(ys2);
+            sig.Ys.Should().BeEquivalentTo(ys2);
         }
     }
 }
