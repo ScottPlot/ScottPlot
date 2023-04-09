@@ -12,44 +12,93 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
         /// </summary>
+        [Obsolete("Instead of setting X and Y, set Alignment and Margin", true)]
         public double X { get; set; }
 
         /// <summary>
         /// Vertical position (in pixel units) relative to the data area
         /// </summary>
+        [Obsolete("Instead of setting X and Y, set Alignment and Margin", true)]
         public double Y { get; set; }
+
+        /// <summary>
+        /// Defines which edge of the plot area the annotation will be placed along.
+        /// Distance from this edge is defined by <see cref="Margin"/>
+        /// </summary>
+        public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }
+
+        /// <summary>
+        /// Distance (in pixels) from the edge of the plot area to place the annotation
+        /// </summary>
+        public float MarginX { get; set; } = 5;
+
+        /// <summary>
+        /// Distance (in pixels) from the edge of the plot area to place the annotation
+        /// </summary>
+        public float MarginY { get; set; } = 5;
 
         /// <summary>
         /// Text displayed in the annotation
         /// </summary>
         public string Label { get; set; }
 
+        /// <summary>
+        /// Distance (pixels) the shadow will be to the right of the box
+        /// </summary>
+        public float ShadowOffsetX { get; set; } = 5;
+
+        /// <summary>
+        /// Distance (pixels) the shadow will be below the box
+        /// </summary>
+        public float ShadowOffsetY { get; set; } = 5;
+
+        /// <summary>
+        /// Font for the annotation text
+        /// </summary>
         public readonly Drawing.Font Font = new();
 
+        /// <summary>
+        /// If true, the rectangle behind the text will be filled with <see cref="BackgroundColor"/>
+        /// </summary>
         public bool Background { get; set; } = true;
+
+        /// <summary>
+        /// Color of the rectangle drawn beneath the annotation if <see cref="Background"/> is true
+        /// </summary>
         public Color BackgroundColor { get; set; } = Color.Yellow;
 
+        /// <summary>
+        /// If true, a rectangular shadow will be drawn behind the background rectangle filled with <see cref="ShadowColor"/>
+        /// </summary>
         public bool Shadow { get; set; } = true;
+
+        /// <summary>
+        /// Color of the rectangle drawn beneath the annotation if <see cref="Shadow"/> is true.
+        /// Semitransparent colors are recommended for shadows.
+        /// </summary>
         public Color ShadowColor { get; set; } = Color.FromArgb(25, Color.Black);
 
+        /// <summary>
+        /// If true, the rectangle around the text will be drawn according to <see cref="BorderWidth"/> and <see cref="BorderColor"/>
+        /// </summary>
         public bool Border { get; set; } = true;
+
+        /// <summary>
+        /// Thickness (in pixels) of the rectangular outline to draw around the text using <see cref="BorderColor"/>
+        /// </summary>
         public float BorderWidth { get; set; } = 1;
+
+        /// <summary>
+        /// Color of the rectangular outline drawn around the text
+        /// </summary>
         public Color BorderColor { get; set; } = Color.Black;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-
-        public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
-
-        public void ValidateData(bool deep = false)
-        {
-            if (double.IsNaN(X) || double.IsInfinity(X))
-                throw new InvalidOperationException("xPixel must be a valid number");
-
-            if (double.IsNaN(Y) || double.IsInfinity(Y))
-                throw new InvalidOperationException("xPixel must be a valid number");
-        }
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+        public LegendItem[] GetLegendItems() => LegendItem.None;
+        public void ValidateData(bool deep = false) { }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -64,25 +113,21 @@ namespace ScottPlot.Plottable
             using var borderPen = new Pen(BorderColor, BorderWidth);
 
             SizeF size = GDI.MeasureString(gfx, Label, font);
-
-            double x = (X >= 0) ? X : dims.DataWidth + X - size.Width;
-            double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
-            PointF location = new PointF((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
+            RectangleF rect = GDI.GetAlignedRectangle(dims.GetDataRect(), size, Alignment, MarginX, MarginY);
 
             if (Background && Shadow)
-                gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
+            {
+                RectangleF shadowRect = new(rect.X + MarginX, rect.Y + MarginY, rect.Width, rect.Height);
+                gfx.FillRectangle(shadowBrush, shadowRect);
+            }
 
             if (Background)
-                gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
+                gfx.FillRectangle(backgroundBrush, rect);
 
             if (Border)
-                gfx.DrawRectangle(borderPen, location.X, location.Y, size.Width, size.Height);
+                gfx.DrawRectangle(borderPen, rect);
 
-            gfx.DrawString(Label, font, fontBrush, location);
+            gfx.DrawString(Label, font, fontBrush, rect.X, rect.Y);
         }
-
-        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
-
-        public LegendItem[] GetLegendItems() => LegendItem.None;
     }
 }
