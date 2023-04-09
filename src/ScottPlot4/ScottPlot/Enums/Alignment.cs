@@ -8,14 +8,14 @@ namespace ScottPlot
     public enum Alignment
     {
         UpperLeft,
-        UpperRight,
         UpperCenter,
+        UpperRight,
         MiddleLeft,
         MiddleCenter,
         MiddleRight,
         LowerLeft,
+        LowerCenter,
         LowerRight,
-        LowerCenter
     }
 
     [Obsolete("use Alignment", true)]
