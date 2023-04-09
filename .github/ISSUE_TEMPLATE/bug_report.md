@@ -9,6 +9,7 @@ assignees: ''
 ## Before submitting bug reports
 1. Check if your bug is already addressed in the FAQ: https://scottplot.net/faq
 2. Search the issues to see if the bug has already been addressed: https://github.com/ScottPlot/ScottPlot/issues
+3. Provide a reproducible code example if possible, described in: https://github.com/ScottPlot/ScottPlot/blob/main/.github/CONTRIBUTING.md
 
 _This header can be deleted before posting_
 
