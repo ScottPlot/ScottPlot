@@ -119,6 +119,11 @@ namespace ScottPlot.Ticks
         /// </summary>
         public bool MeasureStringManually = false;
 
+        /// <summary>
+        /// Only show a single tick if the axis has a very small pixel size
+        /// </summary>
+        public bool ShowSingleTickForSmallPlots = true;
+
         // legacy configuration options
         public int radix = 10;
         public string prefix = null;
@@ -134,7 +139,7 @@ namespace ScottPlot.Ticks
         /// Recalculate ticks based on the given plot information.
         /// Access ticks later by calling <see cref="GetTicks(double, double)"/>
         /// </summary>
-        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
+        public void Recalculate(PlotDimensions dims, Font tickFont)
         {
             if (ManualTicks is not null)
             {
@@ -142,7 +147,41 @@ namespace ScottPlot.Ticks
                 return;
             }
 
-            RecalculateAutomatic(dims, tickFont);
+            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
+            RecalculateAutomatic(dims);
+            LimitNumberOfTicksForSmallPlots(dims);
+        }
+
+        private void LimitNumberOfTicksForSmallPlots(PlotDimensions dims)
+        {
+            if (IsVertical)
+            {
+                if (dims.DataHeight < LargestLabelHeight && Ticks.Major.Length > 0)
+                {
+                    Ticks = TickCollection.First(Ticks);
+                    return;
+                }
+
+                if (dims.DataHeight < LargestLabelHeight * 3 && Ticks.Major.Length > 1)
+                {
+                    Ticks = TickCollection.Two(Ticks);
+                    return;
+                }
+            }
+            else
+            {
+                if (dims.DataWidth < LargestLabelWidth && Ticks.Major.Length > 0)
+                {
+                    Ticks = TickCollection.First(Ticks);
+                    return;
+                }
+
+                if (dims.DataWidth < LargestLabelWidth * 5 && Ticks.Major.Length > 1)
+                {
+                    Ticks = TickCollection.Two(Ticks);
+                    return;
+                }
+            }
         }
 
         public void UseManualTicks(double[] positions, string[] labels)
@@ -161,7 +200,7 @@ namespace ScottPlot.Ticks
             AdditionalTicks = null;
         }
 
-        private void RecalculateAutomatic(PlotDimensions dims, Drawing.Font tickFont)
+        private void RecalculateAutomatic(PlotDimensions dims)
         {
             // first pass uses forced density with manual label sizes to consistently approximate labels
             int initialTickCount = (int)(10 * TickDensity);
@@ -179,7 +218,6 @@ namespace ScottPlot.Ticks
             }
 
             // second pass calculates density using measured labels produced by the first pass
-            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
             if (LabelFormat == TickLabelFormat.DateTime)
             {
                 RecalculatePositionsAutomaticDatetime(dims, LargestLabelWidth, LargestLabelHeight, null);
@@ -205,7 +243,6 @@ namespace ScottPlot.Ticks
             Ticks = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
 
             CornerLabel = null;
-            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
         }
 
         public void SetCulture(

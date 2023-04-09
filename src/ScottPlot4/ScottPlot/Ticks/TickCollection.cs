@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ScottPlot.Ticks;
 
@@ -24,4 +25,19 @@ public class TickCollection
         major: Array.Empty<double>(),
         minor: Array.Empty<double>(),
         labels: Array.Empty<string>());
+
+    public static TickCollection First(TickCollection ticks) => new(
+        major: new double[] { ticks.Major.First() },
+        minor: Array.Empty<double>(),
+        labels: new string[] { ticks.Labels.First() });
+
+    public static TickCollection Last(TickCollection ticks) => new(
+        major: new double[] { ticks.Major.Last() },
+        minor: Array.Empty<double>(),
+        labels: new string[] { ticks.Labels.Last() });
+
+    public static TickCollection Two(TickCollection ticks) => new(
+        major: new double[] { ticks.Major.First(), ticks.Major.Last() },
+        minor: Array.Empty<double>(),
+        labels: new string[] { ticks.Labels.First(), ticks.Labels.Last() });
 }
