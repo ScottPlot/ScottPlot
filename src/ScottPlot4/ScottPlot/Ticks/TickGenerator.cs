@@ -143,12 +143,11 @@ namespace ScottPlot.Ticks
         {
             if (ManualTicks is not null)
             {
-                RecalculateManualTicks(dims, tickFont);
+                RecalculateManualTicks(dims);
                 return;
             }
 
-            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
-            RecalculateAutomatic(dims);
+            RecalculateAutomatic(dims, tickFont);
             LimitNumberOfTicksForSmallPlots(dims);
         }
 
@@ -200,7 +199,7 @@ namespace ScottPlot.Ticks
             AdditionalTicks = null;
         }
 
-        private void RecalculateAutomatic(PlotDimensions dims)
+        private void RecalculateAutomatic(PlotDimensions dims, Drawing.Font tickFont)
         {
             // first pass uses forced density with manual label sizes to consistently approximate labels
             int initialTickCount = (int)(10 * TickDensity);
@@ -217,6 +216,9 @@ namespace ScottPlot.Ticks
                 RecalculatePositionsAutomaticNumeric(dims, labelWidth, labelHeight, initialTickCount);
             }
 
+            // use the results of the first pass to estimate the size of the largest tick label
+            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
+
             // second pass calculates density using measured labels produced by the first pass
             if (LabelFormat == TickLabelFormat.DateTime)
             {
@@ -228,7 +230,7 @@ namespace ScottPlot.Ticks
             }
         }
 
-        private void RecalculateManualTicks(PlotDimensions dims, Drawing.Font tickFont)
+        private void RecalculateManualTicks(PlotDimensions dims)
         {
             double min = IsVertical ? dims.YMin : dims.XMin;
             double max = IsVertical ? dims.YMax : dims.XMax;
