@@ -26,9 +26,31 @@ namespace ScottPlot
         /// <summary>
         /// Display text in the data area at a pixel location (not a X/Y coordinates)
         /// </summary>
+        [Obsolete("This overload is deprecated.")]
         public Annotation AddAnnotation(string label, double x, double y)
         {
-            var plottable = new Annotation() { Label = label, X = x, Y = y };
+            var plottable = new Annotation() { Label = label };
+
+            // recreate old X/Y behavior using the new alignment property
+            if (x >= 0 && y >= 0)
+                plottable.Alignment = Alignment.UpperLeft;
+            else if (x < 0 && y >= 0)
+                plottable.Alignment = Alignment.UpperRight;
+            else if (x >= 0 && y < 0)
+                plottable.Alignment = Alignment.LowerLeft;
+            else if (x < 0 && y < 0)
+                plottable.Alignment = Alignment.LowerRight;
+
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display text in the data area at a pixel location (not a X/Y coordinates)
+        /// </summary>
+        public Annotation AddAnnotation(string label, Alignment alignment = Alignment.UpperLeft)
+        {
+            Annotation plottable = new() { Label = label, Alignment = alignment };
             Add(plottable);
             return plottable;
         }

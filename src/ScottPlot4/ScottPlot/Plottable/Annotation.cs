@@ -12,12 +12,30 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Horizontal location (in pixel units) relative to the data area
         /// </summary>
+        [Obsolete("Instead of setting X and Y, set Alignment and Margin", true)]
         public double X { get; set; }
 
         /// <summary>
         /// Vertical position (in pixel units) relative to the data area
         /// </summary>
+        [Obsolete("Instead of setting X and Y, set Alignment and Margin", true)]
         public double Y { get; set; }
+
+        /// <summary>
+        /// Defines which edge of the plot area the annotation will be placed along.
+        /// Distance from this edge is defined by <see cref="Margin"/>
+        /// </summary>
+        public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }
+
+        /// <summary>
+        /// Distance (in pixels) from the edge of the plot area to place the annotation
+        /// </summary>
+        public float MarginX { get; set; } = 5;
+
+        /// <summary>
+        /// Distance (in pixels) from the edge of the plot area to place the annotation
+        /// </summary>
+        public float MarginY { get; set; } = 5;
 
         /// <summary>
         /// Text displayed in the annotation
@@ -95,23 +113,21 @@ namespace ScottPlot.Plottable
             using var borderPen = new Pen(BorderColor, BorderWidth);
 
             SizeF size = GDI.MeasureString(gfx, Label, font);
-            double x = (X >= 0) ? X : dims.DataWidth + X - size.Width;
-            double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
-            PointF location = new((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
-
-            RectangleF backgroundRect = new(location.X, location.Y, size.Width, size.Height);
-            RectangleF shadowRect = new(location.X + ShadowOffsetX, location.Y + ShadowOffsetY, size.Width, size.Height);
+            RectangleF rect = GDI.GetAlignedRectangle(dims.GetDataRect(), size, Alignment, MarginX, MarginY);
 
             if (Background && Shadow)
+            {
+                RectangleF shadowRect = new(rect.X + MarginX, rect.Y + MarginY, rect.Width, rect.Height);
                 gfx.FillRectangle(shadowBrush, shadowRect);
+            }
 
             if (Background)
-                gfx.FillRectangle(backgroundBrush, backgroundRect);
+                gfx.FillRectangle(backgroundBrush, rect);
 
             if (Border)
-                gfx.DrawRectangle(borderPen, backgroundRect);
+                gfx.DrawRectangle(borderPen, rect);
 
-            gfx.DrawString(Label, font, fontBrush, location);
+            gfx.DrawString(Label, font, fontBrush, rect.X, rect.Y);
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlotTests.PlotTypes
 {
@@ -11,22 +10,28 @@ namespace ScottPlotTests.PlotTypes
         [Test]
         public void Test_Annotation_Coordinates()
         {
-            var plt = new ScottPlot.Plot(400, 300);
+            ScottPlot.Plot plt = new(400, 300);
 
-            // negative coordinates snap text to the lower or right edges
-            plt.AddAnnotation("Top Left", 10, 10);
-            plt.AddAnnotation("Lower Left", 10, -10);
-            plt.AddAnnotation("Top Right", -10, 10);
-            plt.AddAnnotation("Lower Right", -10, -10);
+            foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
+            {
+                plt.AddAnnotation(alignment.ToString(), alignment);
+            }
 
-            // customization of style
-            var a = plt.AddAnnotation("Fancy Annotation", 10, 40);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Annotation_Styling()
+        {
+            ScottPlot.Plot plt = new(400, 300);
+
+            var a = plt.AddAnnotation("Fancy Annotation");
             a.Font.Size = 24;
             a.Font.Name = "Impact";
             a.Font.Color = Color.Red;
             a.Shadow = true;
             a.Background = true;
-            a.BackgroundColor = Color.White;
+            a.BackgroundColor = Color.Orange;
             a.BorderWidth = 2;
 
             TestTools.SaveFig(plt);
