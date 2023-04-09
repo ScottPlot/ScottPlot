@@ -1,10 +1,16 @@
 # ScottPlot Changelog
 
-## ScottPlot 5.0.4-beta (in development)
+## ScottPlot 5.0.5-beta (in development)
+
+## ScottPlot 4.1.64 (in development)
+
+## ScottPlot 5.0.4-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
 * WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2565) _Thanks @KroMignon_
 * Controls: Improved ALT + left-click-drag zoom rectangle behavior (#2566)
 
-## ScottPlot 4.1.63 (in development)
+## ScottPlot 4.1.63
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
 * WpfPlot: Converted the `UserControl` to a `CustomControl` to facilitate inheritance and theming (#2509, #2526) _Thanks @KroMignon_
 * Lollipop and Cleveland plots: Added `LineWidth` property (#2556) _Thanks @benton-anderson_
 * Pie: Added `SliceLabelPosition` property to allow slice labels to be placed outside the pie (#2515, #2510, #2275) _Thanks @nuelle16 and @cpa-level-it_
