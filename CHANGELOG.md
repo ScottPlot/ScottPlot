@@ -18,6 +18,7 @@
 * Axis: Improve tick spacing for extremely small plots (#2289) _Thanks @Xerxes004_
 * Signal: Fixed bug causing `Update()` to throw an indexing error (#2578) _Thanks @Angeld10_
 * Annotation: Position is no longer defined as `X` and `Y` but instead `Alignment`, `MarginX`, and `MarginY` (#2302) _Thanks @EFeru_
+* Colorbar: Add `Label` property (#2341) _Thanks @bukkideme_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
