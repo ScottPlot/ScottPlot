@@ -78,17 +78,9 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-
-        public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
-
-        public void ValidateData(bool deep = false)
-        {
-            if (double.IsNaN(X) || double.IsInfinity(X))
-                throw new InvalidOperationException("xPixel must be a valid number");
-
-            if (double.IsNaN(Y) || double.IsInfinity(Y))
-                throw new InvalidOperationException("xPixel must be a valid number");
-        }
+        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+        public LegendItem[] GetLegendItems() => LegendItem.None;
+        public void ValidateData(bool deep = false) { }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -107,20 +99,19 @@ namespace ScottPlot.Plottable
             double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
             PointF location = new((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
 
+            RectangleF backgroundRect = new(location.X, location.Y, size.Width, size.Height);
+            RectangleF shadowRect = new(location.X + ShadowOffsetX, location.Y + ShadowOffsetY, size.Width, size.Height);
+
             if (Background && Shadow)
-                gfx.FillRectangle(shadowBrush, location.X + ShadowOffsetX, location.Y + ShadowOffsetY, size.Width, size.Height);
+                gfx.FillRectangle(shadowBrush, shadowRect);
 
             if (Background)
-                gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
+                gfx.FillRectangle(backgroundBrush, backgroundRect);
 
             if (Border)
-                gfx.DrawRectangle(borderPen, location.X, location.Y, size.Width, size.Height);
+                gfx.DrawRectangle(borderPen, backgroundRect);
 
             gfx.DrawString(Label, font, fontBrush, location);
         }
-
-        public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
-
-        public LegendItem[] GetLegendItems() => LegendItem.None;
     }
 }
