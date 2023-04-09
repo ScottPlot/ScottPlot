@@ -291,7 +291,7 @@ namespace ScottPlot.Plottable
         {
             if (newData.Length > Ys.Length)
                 throw new InvalidOperationException($"{nameof(newData)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
-            Update(0, newData.Length, newData);
+            Update(0, newData.Length - 1, newData);
         }
 
         public virtual AxisLimits GetAxisLimits()
