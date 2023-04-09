@@ -440,4 +440,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Title($"OnNaN = {sp2.OnNaN}");
         }
     }
+
+    public class ScatterWithLabels : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Scatter();
+        public string ID => "scatter_labels";
+        public string Title => "Scatter Plot Labels";
+        public string Description => "Individual points can be labeled.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = { 18.5, 20.6, 22.3, 24.5, 26.6, 15, 15 };
+            double[] ys = { 1.43, 1.48, 1.6, 1.59, 1.53, 1.52, 1.6 };
+            string[] labels = { "A", "B", "C", "D", "E", "F", "G" };
+
+            var sp = plt.AddScatter(xs, ys);
+            sp.DataPointLabels = labels;
+            sp.DataPointLabelFont.Size = 24;
+
+            plt.SetAxisLimits(12, 28, 1.3, 1.7);
+        }
+    }
 }
