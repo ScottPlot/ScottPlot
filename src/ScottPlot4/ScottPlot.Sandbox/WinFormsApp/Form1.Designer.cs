@@ -29,47 +29,32 @@
         private void InitializeComponent()
         {
             formsPlot1 = new ScottPlot.FormsPlot();
-            checkBox1 = new System.Windows.Forms.CheckBox();
             SuspendLayout();
             // 
             // formsPlot1
             // 
             formsPlot1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             formsPlot1.BackColor = System.Drawing.Color.Transparent;
-            formsPlot1.Location = new System.Drawing.Point(12, 37);
+            formsPlot1.Location = new System.Drawing.Point(12, 12);
             formsPlot1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new System.Drawing.Size(783, 368);
+            formsPlot1.Size = new System.Drawing.Size(783, 393);
             formsPlot1.TabIndex = 0;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new System.Drawing.Point(12, 12);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(123, 19);
-            checkBox1.TabIndex = 1;
-            checkBox1.Text = "Zoom from cursor";
-            checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(808, 417);
-            Controls.Add(checkBox1);
             Controls.Add(formsPlot1);
             Name = "Form1";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "FormsPlot Sandbox";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private ScottPlot.FormsPlot formsPlot1;
-        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

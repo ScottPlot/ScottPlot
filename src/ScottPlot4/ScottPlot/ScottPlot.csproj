@@ -54,7 +54,7 @@
         </PackageReference>
 
         <!-- Code analysis -->
-        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
 

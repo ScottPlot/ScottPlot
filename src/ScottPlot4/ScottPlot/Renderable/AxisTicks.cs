@@ -16,7 +16,7 @@ namespace ScottPlot.Renderable
     public class AxisTicks : IRenderable
     {
         // the tick collection determines where ticks should go and what tick labels should say
-        public readonly TickCollection TickCollection = new TickCollection();
+        public readonly TickGenerator TickCollection = new TickGenerator();
 
         // tick label styling
         public bool TickLabelVisible = true;

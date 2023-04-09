@@ -9,17 +9,10 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            ScottPlot.RandomDataGenerator gen = new();
-            double[] xs = gen.Random(100);
-            double[] ys = gen.Random(100);
-
-            formsPlot1.Plot.AddScatterPoints(xs, ys, markerSize: 20);
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Sin());
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Cos());
+            formsPlot1.Plot.SetAxisLimitsY(-2, 2);
             formsPlot1.Refresh();
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.Configuration.RightClickDragZoomFromMouseDown = checkBox1.Checked;
         }
     }
 }

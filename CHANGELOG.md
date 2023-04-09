@@ -15,6 +15,7 @@
 * Axis: Added `SetZoomInLimit()`, `SetZoomOutLimit()`, and `SetBoundary()` to control zoom and pan (#2250, #2291, #1997, #1873, #662) _Thanks @dusko23, @Gholamalih, and @bclehmann_
 * Controls: Added `Configuration.RightClickDragZoomFromMouseDown` flag to enable right-click-drag zoom to scale relative to the cursor (#2296, #2573) _@pavlexander_
 * Finance: Improved DateTime position of random stock price sample data (#2574)
+* Axis: Improve tick spacing for extremely small plots (#2289) _Thanks @Xerxes004_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-02_
