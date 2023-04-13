@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Axis;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -114,12 +115,17 @@ namespace ScottPlot.Plottables
                     double newPosition = group.Key - groupWidth / 2 + (i + 0.5) * boxWidthAndPadding;
 
                     DrawBox(surface, paint, t.Box, t.Series, newPosition, boxWidth);
+                    if (t.Box.WhiskerMin.HasValue)
+                        DrawWhisker(surface, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMin.Value);
+
+                    if (t.Box.WhiskerMax.HasValue)
+                        DrawWhisker(surface, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMax.Value);
                     i++;
                 }
             }
         }
 
-        public (SKRect, SKRect) GetRects(Box box, double x, double width)
+        public (PixelRect, PixelRect) GetRects(Box box, double x, double width)
         {
             if (Orientation == Orientation.Vertical)
             {
@@ -130,7 +136,7 @@ namespace ScottPlot.Plottables
                 var topRect = new PixelRect(topLeft, midRight);
                 var botRect = new PixelRect(midRight, botLeft);
 
-                return (topRect.ToSKRect(), botRect.ToSKRect());
+                return (topRect, botRect);
             }
             else
             {
@@ -141,21 +147,44 @@ namespace ScottPlot.Plottables
                 var topRect = new PixelRect(topLeft, midRight);
                 var botRect = new PixelRect(midRight, botLeft);
 
-                return (topRect.ToSKRect(), botRect.ToSKRect());
+                return (topRect, botRect);
             }
         }
 
         public void DrawBox(SKSurface surface, SKPaint paint, Box box, BoxSeries series, double x, double width)
         {
-            (SKRect topRect, SKRect botRect) = GetRects(box, x, width);
+            (PixelRect topRect, PixelRect botRect) = GetRects(box, x, width);
 
             series.Fill.ApplyToPaint(paint);
-            surface.Canvas.DrawRect(topRect, paint);
-            surface.Canvas.DrawRect(botRect, paint);
+            surface.Canvas.DrawRect(topRect.ToSKRect(), paint);
+            surface.Canvas.DrawRect(botRect.ToSKRect(), paint);
 
             series.Stroke.ApplyToPaint(paint);
-            surface.Canvas.DrawRect(topRect, paint);
-            surface.Canvas.DrawRect(botRect, paint);
+            // Done individually with DrawLine rather than with DrawRect to avoid double-stroking the middle line
+            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
+            surface.Canvas.DrawLine(topRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+            surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            
+            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
+            surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+        }
+
+        private void DrawWhisker(SKSurface surface, SKPaint paint, Box box, BoxSeries series, double x, double boxWidth, double value)
+        {
+            Coordinates whiskerBase = value > box.BoxMax ? new(x, box.BoxMax) : new(x, box.BoxMin);
+            Coordinates whiskerTip = new(x, value);
+
+            Pixel whiskerBasePx = Axes.GetPixel(whiskerBase);
+            Pixel whiskerTipPx = Axes.GetPixel(whiskerTip);
+
+            series.Stroke.ApplyToPaint(paint);
+            surface.Canvas.DrawLine(whiskerBasePx.ToSKPoint(), whiskerTipPx.ToSKPoint(), paint);
+
+            float whiskerWidth = Math.Max((float)Axes.XAxis.GetPixelDistance(boxWidth, surface.GetPixelRect()) / 5, 20);
+            Pixel whiskerLeft = whiskerTipPx + new Pixel(-whiskerWidth / 2, 0);
+            Pixel whiskerRight = whiskerTipPx + new Pixel(whiskerWidth / 2, 0);
+
+            surface.Canvas.DrawLine(whiskerLeft.ToSKPoint(), whiskerRight.ToSKPoint(), paint);
         }
     }
 }
