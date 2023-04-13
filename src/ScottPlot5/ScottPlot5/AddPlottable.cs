@@ -109,6 +109,32 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
+    public BoxPlot Box(IList<BoxSeries> series)
+    {
+        var boxPlot = new BoxPlot(series);
+        Plot.Plottables.Add(boxPlot);
+        return boxPlot;
+    }
+
+    public BoxPlot Box(IList<Box> boxes, Color? color = null, string? label = null)
+    {
+        var series = new BoxSeries()
+        {
+            Boxes = boxes,
+            Fill = new() { Color = color ?? NextColor },
+            Label = label
+        };
+
+        List<BoxSeries> seriesList = new() { series };
+
+        return Box(seriesList);
+    }
+
+    public BoxPlot Box(Box box, Color? color = null, string? label = null)
+    {
+        return Box(new Box[] { box }, color, label);
+    }
+
     public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
