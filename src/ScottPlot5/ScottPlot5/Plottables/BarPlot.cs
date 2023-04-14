@@ -85,7 +85,7 @@ namespace ScottPlot.Plottables
 
             int maxPerXCoordinate = GroupBarsWithSameXPosition ? barsByXCoordinate.Max(g => g.Count()) : 1;
             double widthPerGroup = 1 - (maxPerXCoordinate + 1) * Padding;
-            double barWidth = widthPerGroup / maxPerXCoordinate;
+            double barWidth = (1 - Padding) * widthPerGroup / (maxPerXCoordinate);
 
             foreach (IGrouping<double, (Bar Bar, BarSeries Series)>? group in barsByXCoordinate)
             {
