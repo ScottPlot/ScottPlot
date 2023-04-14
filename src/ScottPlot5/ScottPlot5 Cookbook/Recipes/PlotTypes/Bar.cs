@@ -51,13 +51,31 @@ internal class Bar : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            List<ScottPlot.Plottables.Bar> bars1 = new() { new() { Position = 1, Value = 5 }, new() { Position = 2, Value = 7 }, new() { Position = 3, Value = 9 }, };
-            List<ScottPlot.Plottables.Bar> bars2 = new() { new() { Position = 1, Value = 3 }, new() { Position = 2, Value = 8 }, new() { Position = 3, Value = 5 }, };
-            List<ScottPlot.Plottables.Bar> bars3 = new() { new() { Position = 1, Value = 7 }, new() { Position = 2, Value = 10 }, new() { Position = 3, Value = 7 }, };
+            // TODO: the bars API needs to be greatly simplified
+            List<ScottPlot.Plottables.Bar> bars1 = new() { new(1, 5), new(2, 7), new(3, 9) };
+            List<ScottPlot.Plottables.Bar> bars2 = new() { new(1, 3), new(2, 8), new(3, 5) };
+            List<ScottPlot.Plottables.Bar> bars3 = new() { new(1, 7), new(2, 10), new(3, 7) };
 
-            ScottPlot.Plottables.BarSeries series1 = new() { Bars = bars1, Label = "Series 1", Color = Colors.Red };
-            ScottPlot.Plottables.BarSeries series2 = new() { Bars = bars2, Label = "Series 2", Color = Colors.Green };
-            ScottPlot.Plottables.BarSeries series3 = new() { Bars = bars3, Label = "Series 3", Color = Colors.Blue };
+            ScottPlot.Plottables.BarSeries series1 = new()
+            {
+                Bars = bars1,
+                Label = "Series 1",
+                Color = Colors.Red
+            };
+
+            ScottPlot.Plottables.BarSeries series2 = new()
+            {
+                Bars = bars2,
+                Label = "Series 2",
+                Color = Colors.Green
+            };
+
+            ScottPlot.Plottables.BarSeries series3 = new()
+            {
+                Bars = bars3,
+                Label = "Series 3",
+                Color = Colors.Blue
+            };
 
             List<ScottPlot.Plottables.BarSeries> seriesList = new() { series1, series2, series3 };
 

@@ -8,6 +8,15 @@ namespace ScottPlot.Plottables
         public double Position { get; set; }
         public double Value { get; set; }
         public double ValueBase { get; set; }
+
+        public Bar() { }
+
+        public Bar(double position, double value, double valueBase = 0)
+        {
+            Position = position;
+            Value = value;
+            ValueBase = valueBase;
+        }
     }
 
     public class BarSeries
