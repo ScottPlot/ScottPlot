@@ -61,12 +61,12 @@ public class RandomDataGenerator
     {
         double u1;
         double u2;
-        
+
         // This is what too much C/C++ development does to you
-        while((u1 = Rand.NextDouble()) == 0) { }
-        while((u2 = Rand.NextDouble()) == 0) { }
-        
-        
+        while ((u1 = Rand.NextDouble()) == 0) { }
+        while ((u2 = Rand.NextDouble()) == 0) { }
+
+
         double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
         return mean + stdDev * randStdNormal;
     }

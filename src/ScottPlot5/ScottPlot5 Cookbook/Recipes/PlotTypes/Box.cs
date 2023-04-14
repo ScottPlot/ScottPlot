@@ -21,7 +21,7 @@ internal class Box : RecipePageBase
         public override void Recipe()
         {
             Random rand = new(0);
-            
+
             ScottPlot.Plottables.Box CreateBox()
             {
                 int N = 50;
@@ -138,7 +138,7 @@ internal class Box : RecipePageBase
                     Fill = new FillStyle { Color = colorPalette.GetColor(i) },
                     Boxes = new ScottPlot.Plottables.Box[numBoxesPerSeries],
                 };
-                
+
                 for (int j = 0; j < series[i].Boxes.Count; j++)
                 {
                     var box = CreateBox();
