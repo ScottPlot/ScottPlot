@@ -38,6 +38,8 @@ namespace ScottPlot.Plottables
         public double Padding { get; set; } = 0.05;
         private double MaxBoxWidth => 1 - Padding * 2;
 
+        public bool GroupBoxesWithSameXPosition = true;
+
         public BoxPlot(IList<BoxSeries> series)
         {
             Series = series;
@@ -101,18 +103,20 @@ namespace ScottPlot.Plottables
 
             int maxPerXCoordinate = boxesByXCoordinate.Max(g => g.Count());
             double widthPerGroup = 1 - (maxPerXCoordinate + 1) * Padding;
-            double boxWidth = widthPerGroup / maxPerXCoordinate;
+            double boxWidth = (1 - Padding) * widthPerGroup / maxPerXCoordinate;
 
             foreach (IGrouping<double, (Box Box, BoxSeries Series)>? group in boxesByXCoordinate)
             {
-                int barsInGroup = group.Count();
+                int boxesInGroup = group.Count();
                 int i = 0;
                 foreach (var t in group)
                 {
                     double boxWidthAndPadding = boxWidth + Padding;
-                    double groupWidth = boxWidthAndPadding * barsInGroup;
+                    double groupWidth = boxWidthAndPadding * boxesInGroup;
 
-                    double newPosition = group.Key - groupWidth / 2 + (i + 0.5) * boxWidthAndPadding;
+                    double newPosition = GroupBoxesWithSameXPosition ?
+                        group.Key - groupWidth / 2 + (i + 0.5) * boxWidthAndPadding :
+                        group.Key;
 
                     DrawBox(surface, paint, t.Box, t.Series, newPosition, boxWidth);
                     if (t.Box.WhiskerMin.HasValue)
