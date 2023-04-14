@@ -23,7 +23,7 @@ This project is developed using the latest free version of [Visual Studio Commun
 
 ## Testing and Cookbook
 
-* ScottPlot 5 has two text projects: unit tests and the cookbook
+* ScottPlot 5 has two test projects: unit tests and the cookbook
 * Running the cookbook tests generates the cookbook in `dev/www/cookbook/5.0/`
 * Open `index.local.html` to browse the cookbook website locally
 * I use [LivePictureViewer](https://github.com/swharden/LivePictureViewer) to observe test-generated images in real time
