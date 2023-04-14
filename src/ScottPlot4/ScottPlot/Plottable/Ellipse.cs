@@ -27,6 +27,11 @@ namespace ScottPlot.Plottable
         public double RadiusY { get; set; }
 
         /// <summary>
+        /// Rotation of the ellipse (degrees)
+        /// </summary>
+        public double Rotation { get; set; } = 0;
+
+        /// <summary>
         /// Outline color
         /// </summary>
         public Color BorderColor { get; set; } = Color.Black;
@@ -125,6 +130,10 @@ namespace ScottPlot.Plottable
             float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
             float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
+            gfx.TranslateTransform(xPixel, yPixel);
+            gfx.RotateTransform((float)Rotation);
+            gfx.TranslateTransform(-xPixel, -yPixel);
+            
             RectangleF rect = new(
                 x: xPixel - xRadiusPixels,
                 y: yPixel - yRadiusPixels,
