@@ -51,9 +51,9 @@ internal class Bar : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            List<ScottPlot.Plottables.Bar> bars1 = new() { new() { Value = 5 }, new() { Value = 7 }, new() { Value = 9 }, };
-            List<ScottPlot.Plottables.Bar> bars2 = new() { new() { Value = 3 }, new() { Value = 8 }, new() { Value = 5 }, };
-            List<ScottPlot.Plottables.Bar> bars3 = new() { new() { Value = 7 }, new() { Value = 10 }, new() { Value = 7 }, };
+            List<ScottPlot.Plottables.Bar> bars1 = new() { new() { Position = 1, Value = 5 }, new() { Position = 2, Value = 7 }, new() { Position = 3, Value = 9 }, };
+            List<ScottPlot.Plottables.Bar> bars2 = new() { new() { Position = 1, Value = 3 }, new() { Position = 2, Value = 8 }, new() { Position = 3, Value = 5 }, };
+            List<ScottPlot.Plottables.Bar> bars3 = new() { new() { Position = 1, Value = 7 }, new() { Position = 2, Value = 10 }, new() { Position = 3, Value = 7 }, };
 
             ScottPlot.Plottables.BarSeries series1 = new() { Bars = bars1, Label = "Series 1", Color = Colors.Red };
             ScottPlot.Plottables.BarSeries series2 = new() { Bars = bars2, Label = "Series 2", Color = Colors.Green };
