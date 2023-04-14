@@ -129,7 +129,7 @@ namespace ScottPlot.Plottables
             }
         }
 
-        public (PixelRect, PixelRect) GetRects(Box box, double x, double width)
+        private (PixelRect topRect, PixelRect bottomRect) GetRects(Box box, double x, double width)
         {
             if (Orientation == Orientation.Vertical)
             {
@@ -164,19 +164,42 @@ namespace ScottPlot.Plottables
             surface.Canvas.DrawRect(botRect.ToSKRect(), paint);
 
             series.Stroke.ApplyToPaint(paint);
-            // Done individually with DrawLine rather than with DrawRect to avoid double-stroking the middle line
-            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(topRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
 
-            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            // Done individually with DrawLine rather than with DrawRect to avoid double-stroking the middle line
+            if (Orientation == Orientation.Vertical)
+            {
+                surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(topRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+
+                surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            }
+            else
+            {
+                surface.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(botRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+
+                surface.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
+                surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+            }
+        }
+
+        private (Coordinates whiskerBase, Coordinates whiskerTip) GetWhiskerCoordinates(Box box, double x, double value)
+        {
+            Coordinates whiskerBase = value > box.BoxMax ? new(x, box.BoxMax) : new(x, box.BoxMin);
+            Coordinates whiskerTip = new(x, value);
+
+            if (Orientation == Orientation.Vertical)
+                return (whiskerBase, whiskerTip);
+            else
+                return (new(whiskerBase.Y, whiskerBase.X), new(whiskerTip.Y, whiskerTip.X));
         }
 
         private void DrawWhisker(SKSurface surface, SKPaint paint, Box box, BoxSeries series, double x, double boxWidth, double value)
         {
-            Coordinates whiskerBase = value > box.BoxMax ? new(x, box.BoxMax) : new(x, box.BoxMin);
-            Coordinates whiskerTip = new(x, value);
+            (var whiskerBase, var whiskerTip) = GetWhiskerCoordinates(box, x, value);
 
             Pixel whiskerBasePx = Axes.GetPixel(whiskerBase);
             Pixel whiskerTipPx = Axes.GetPixel(whiskerTip);
@@ -185,8 +208,10 @@ namespace ScottPlot.Plottables
             surface.Canvas.DrawLine(whiskerBasePx.ToSKPoint(), whiskerTipPx.ToSKPoint(), paint);
 
             float whiskerWidth = Math.Max((float)Axes.XAxis.GetPixelDistance(boxWidth, surface.GetPixelRect()) / 5, 20);
-            Pixel whiskerLeft = whiskerTipPx + new Pixel(-whiskerWidth / 2, 0);
-            Pixel whiskerRight = whiskerTipPx + new Pixel(whiskerWidth / 2, 0);
+            Pixel whiskerEarOffset = Orientation == Orientation.Vertical ? new Pixel(whiskerWidth / 2, 0) : new Pixel(0, whiskerWidth / 2);
+
+            Pixel whiskerLeft = whiskerTipPx - whiskerEarOffset;
+            Pixel whiskerRight = whiskerTipPx + whiskerEarOffset;
 
             surface.Canvas.DrawLine(whiskerLeft.ToSKPoint(), whiskerRight.ToSKPoint(), paint);
         }

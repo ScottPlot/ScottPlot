@@ -93,6 +93,45 @@ internal class Box : RecipePageBase
         }
     }
 
+    internal class HorizontalBox : RecipeTestBase
+    {
+        public override string Name => "Horizontal Box Plots";
+        public override string Description => "Box plots can be oriented horizontally, similarly to bar plots.";
+
+        [Test]
+        public override void Recipe()
+        {
+            Random rand = new(0);
+
+            ScottPlot.Plottables.Box CreateBox()
+            {
+                int N = 50;
+                double mean = rand.NextDouble() * 3;
+                double stdDev = rand.NextDouble() * 3;
+
+                double[] values = Generate.RandomNormal(N, mean, stdDev);
+                Array.Sort(values);
+                double min = values[0];
+                double q1 = values[N / 4];
+                double median = values[N / 2];
+                double q3 = values[3 * N / 4];
+                double max = values[N - 1];
+
+                return new ScottPlot.Plottables.Box
+                {
+                    WhiskerMin = min,
+                    BoxMin = q1,
+                    BoxMiddle = median,
+                    BoxMax = q3,
+                    WhiskerMax = max,
+                };
+            }
+
+            var boxPlot = myPlot.Add.Box(CreateBox());
+            boxPlot.Orientation = Orientation.Horizontal;
+        }
+    }
+
     internal class BoxSeries : RecipeTestBase
     {
         public override string Name => "Box Plot Series";
