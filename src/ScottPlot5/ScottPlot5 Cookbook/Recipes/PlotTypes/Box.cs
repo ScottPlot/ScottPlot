@@ -20,9 +20,9 @@ internal class Box : RecipePageBase
         [Test]
         public override void Recipe()
         {
+            // TODO: move this functionality to the RandomDataGenerator class
             Random rand = new(0);
-
-            ScottPlot.Plottables.Box CreateBox()
+            ScottPlot.Plottables.Box CreateRandomBox()
             {
                 int N = 50;
                 double mean = rand.NextDouble() * 3;
@@ -46,12 +46,12 @@ internal class Box : RecipePageBase
                 };
             }
 
-            int numBoxes = 5;
-            ScottPlot.Plottables.Box[] boxes = new ScottPlot.Plottables.Box[numBoxes];
-            for (int i = 0; i < boxes.Length; i++)
-                boxes[i] = CreateBox();
+            // TODO: construct 3 boxes manually with hard-coded numerical values for simplicity
+            ScottPlot.Plottables.Box[] boxes = Enumerable.Range(0, 5)
+                .Select(x => CreateRandomBox())
+                .ToArray();
 
-            var boxPlot = myPlot.Add.Box(boxes);
+            myPlot.Add.Box(boxes);
         }
     }
 
@@ -89,7 +89,7 @@ internal class Box : RecipePageBase
                 };
             }
 
-            var boxPlot = myPlot.Add.Box(CreateBox());
+            myPlot.Add.Box(CreateBox());
         }
     }
 
