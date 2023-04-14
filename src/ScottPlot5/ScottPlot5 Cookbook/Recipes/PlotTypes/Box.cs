@@ -58,7 +58,7 @@ internal class Box : RecipePageBase
     internal class IndividualBox : RecipeTestBase
     {
         public override string Name => "Individual Box Plots";
-        public override string Description => "One can easily create a box plot with only a single box";
+        public override string Description => "One can easily create a box plot with only a single box.";
 
         [Test]
         public override void Recipe()
