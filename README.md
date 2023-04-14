@@ -41,7 +41,7 @@
 
 * The [**ScottPlot Changelog**](https://scottplot.net/changelog/) details the most recent new features, bug fixes, and open-source contributors.
 
-* We welcome contributions from the community! We invite contributions from anyone, including developers who are new to contributing to open-source projects. See [CONTRIBUTING.md](.github/CONTRIBUTING.md) to get started.
+* We welcome contributions from the community! We invite contributions from anyone, including developers who are new to contributing to open-source projects. See [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
 * ScottPlot was created by [Scott W Harden](https://swharden.com/about/) and enhanced by [many contributions](https://scottplot.net/changelog/) from the [open-source community](https://scottplot.net/contributors/). It is provided under the permissive [MIT license](LICENSE) and is free to modify and use for any purpose.
 
