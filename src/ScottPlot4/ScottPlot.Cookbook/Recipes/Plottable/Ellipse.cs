@@ -95,4 +95,23 @@ public class Ellipse
             plt.SetAxisLimits(-10, 10, -10, 10);
         }
     }
+
+    public class EllipseRotation: IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Ellipse();
+        public string ID => "ellipse_rotation";
+        public string Title => "Ellipse Rotation";
+        public string Description => "Ellipses can also be rotated";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                var el = plt.AddEllipse(i * 10, 0, 3, 15);
+                el.Rotation = i * 15;
+            }
+
+            //plt.AxisScaleLock(true);
+        }
+    }
 }

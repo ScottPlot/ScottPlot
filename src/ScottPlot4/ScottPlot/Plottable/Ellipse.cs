@@ -29,7 +29,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Rotation of the ellipse (degrees)
         /// </summary>
-        public double Rotation { get; set; } = 0;
+        public float Rotation { get; set; } = 0;
 
         /// <summary>
         /// Outline color
@@ -131,18 +131,27 @@ namespace ScottPlot.Plottable
             float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
             gfx.TranslateTransform(xPixel, yPixel);
-            gfx.RotateTransform((float)Rotation);
-            gfx.TranslateTransform(-xPixel, -yPixel);
-            
+            gfx.RotateTransform(Rotation);
+
+            double rotationRads = Rotation * Math.PI / 180;
+            float xScale = (float)(xRadiusPixels * Math.Cos(rotationRads) + yRadiusPixels * Math.Sin(rotationRads));
+            float yScale = (float)(yRadiusPixels * Math.Cos(rotationRads) + xRadiusPixels * Math.Sin(rotationRads));
+            gfx.ScaleTransform(xScale, yScale);
+
             RectangleF rect = new(
-                x: xPixel - xRadiusPixels,
-                y: yPixel - yRadiusPixels,
-                width: xRadiusPixels * 2,
-                height: yRadiusPixels * 2);
+                x: -1,
+                y: -1f,
+                width: 2,
+                height: 2);
 
             // Render data by drawing on the Graphics object
             if (Color != Color.Transparent)
                 gfx.FillEllipse(brush, rect);
+
+            // Otherwise the pen width will be scaled as well
+            using System.Drawing.Drawing2D.Matrix invertScaleMatrix = new();
+            invertScaleMatrix.Scale(1 / xScale, 1 / yScale);
+            pen.Transform = invertScaleMatrix;
 
             gfx.DrawEllipse(pen, rect);
         }
