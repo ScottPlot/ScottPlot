@@ -134,9 +134,7 @@ namespace ScottPlot.Plottable
             gfx.RotateTransform(Rotation);
 
             double rotationRads = Rotation * Math.PI / 180;
-            float xScale = (float)(xRadiusPixels * Math.Cos(rotationRads) + yRadiusPixels * Math.Sin(rotationRads));
-            float yScale = (float)(yRadiusPixels * Math.Cos(rotationRads) + xRadiusPixels * Math.Sin(rotationRads));
-            gfx.ScaleTransform(xScale, yScale);
+            gfx.ScaleTransform(xRadiusPixels, yRadiusPixels);
 
             RectangleF rect = new(
                 x: -1,
@@ -150,7 +148,7 @@ namespace ScottPlot.Plottable
 
             // Otherwise the pen width will be scaled as well
             using System.Drawing.Drawing2D.Matrix invertScaleMatrix = new();
-            invertScaleMatrix.Scale(1 / xScale, 1 / yScale);
+            invertScaleMatrix.Scale(1 / xRadiusPixels, 1 / yRadiusPixels);
             pen.Transform = invertScaleMatrix;
 
             gfx.DrawEllipse(pen, rect);

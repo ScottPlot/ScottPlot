@@ -111,7 +111,7 @@ public class Ellipse
                 el.Rotation = i * 15;
             }
 
-            //plt.AxisScaleLock(true);
+            plt.AxisScaleLock(true);
         }
     }
 }
