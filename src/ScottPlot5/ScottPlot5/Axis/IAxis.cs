@@ -27,7 +27,7 @@ public interface IAxis : IPanel
     double GetCoordinate(float pixel, PixelRect dataArea);
 
     /// <summary>
-    /// Given a distance in coorrdinate space, converts to pixel space
+    /// Given a distance in coordinate space, converts to pixel space
     /// </summary>
     /// <param name="coordinateDistance">A distance in coordinate units</param>
     /// <param name="dataArea">The rectangle onto which the coordinates are mapped</param>
