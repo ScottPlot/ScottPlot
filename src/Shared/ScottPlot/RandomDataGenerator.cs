@@ -57,16 +57,18 @@ public class RandomDataGenerator
         return data;
     }
 
+    public double NonZeroRandomDouble()
+    {
+        double randomValue = Rand.NextDouble();
+        return randomValue != 0
+            ? randomValue
+            : NonZeroRandomDouble();
+    }
+
     public double RandomNormal(double mean = 0, double stdDev = 1)
     {
-        double u1;
-        double u2;
-
-        // This is what too much C/C++ development does to you
-        while ((u1 = Rand.NextDouble()) == 0) { }
-        while ((u2 = Rand.NextDouble()) == 0) { }
-
-
+        double u1 = NonZeroRandomDouble();
+        double u2 = NonZeroRandomDouble();
         double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
         return mean + stdDev * randStdNormal;
     }
