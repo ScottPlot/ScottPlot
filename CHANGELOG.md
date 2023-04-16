@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.5-beta (in development)
+* Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.64 (in development)
 
