@@ -47,9 +47,9 @@ internal class Box : RecipePageBase
             }
 
             // TODO: construct 3 boxes manually with hard-coded numerical values for simplicity
-            ScottPlot.Plottables.Box[] boxes = Enumerable.Range(0, 5)
+            List<ScottPlot.Plottables.Box> boxes = Enumerable.Range(0, 5)
                 .Select(x => CreateRandomBox())
-                .ToArray();
+                .ToList();
 
             myPlot.Add.Box(boxes);
         }
@@ -65,7 +65,7 @@ internal class Box : RecipePageBase
         {
             Random rand = new(0);
 
-            ScottPlot.Plottables.Box CreateBox()
+            ScottPlot.Plottables.Box CreateRandomBox()
             {
                 int N = 50;
                 double mean = rand.NextDouble() * 3;
@@ -89,7 +89,10 @@ internal class Box : RecipePageBase
                 };
             }
 
-            myPlot.Add.Box(CreateBox());
+            // TODO: construct 3 boxes manually with hard-coded numerical values for simplicity
+            List<ScottPlot.Plottables.Box> boxes = new() { CreateRandomBox() };
+
+            myPlot.Add.Box(boxes);
         }
     }
 
@@ -103,7 +106,7 @@ internal class Box : RecipePageBase
         {
             Random rand = new(0);
 
-            ScottPlot.Plottables.Box CreateBox()
+            ScottPlot.Plottables.Box CreateRandomBox()
             {
                 int N = 50;
                 double mean = rand.NextDouble() * 3;
@@ -127,8 +130,14 @@ internal class Box : RecipePageBase
                 };
             }
 
-            var boxPlot = myPlot.Add.Box(CreateBox());
-            boxPlot.Orientation = Orientation.Horizontal;
+            // TODO: construct 3 boxes manually with hard-coded numerical values for simplicity
+            List<ScottPlot.Plottables.Box> boxes = Enumerable.Range(0, 5)
+                .Select(x => CreateRandomBox())
+                .ToList();
+
+            var boxPlot = myPlot.Add.Box(boxes);
+
+            boxPlot.Groups.Orientation = Orientation.Horizontal;
         }
     }
 
@@ -168,11 +177,11 @@ internal class Box : RecipePageBase
 
             int numBoxesPerSeries = 3;
             int numSeries = 2;
-            ScottPlot.Plottables.BoxSeries[] series = new ScottPlot.Plottables.BoxSeries[numSeries];
+            ScottPlot.Plottables.BoxGroup[] series = new ScottPlot.Plottables.BoxGroup[numSeries];
             var colorPalette = new Category10();
             for (int i = 0; i < series.Length; i++)
             {
-                series[i] = new ScottPlot.Plottables.BoxSeries
+                series[i] = new ScottPlot.Plottables.BoxGroup
                 {
                     Fill = new FillStyle { Color = colorPalette.GetColor(i) },
                     Boxes = new ScottPlot.Plottables.Box[numBoxesPerSeries],

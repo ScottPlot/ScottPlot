@@ -109,30 +109,34 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
-    public BoxPlot Box(IList<BoxSeries> series)
+    public BoxPlot Box(IList<Box> boxes)
     {
-        var boxPlot = new BoxPlot(series);
-        Plot.Plottables.Add(boxPlot);
-        return boxPlot;
-    }
-
-    public BoxPlot Box(IList<Box> boxes, Color? color = null, string? label = null)
-    {
-        var series = new BoxSeries()
+        BoxGroup singleGroup = new()
         {
             Boxes = boxes,
-            Fill = new() { Color = color ?? NextColor },
-            Label = label
         };
 
-        List<BoxSeries> seriesList = new() { series };
+        singleGroup.Fill.Color = NextColor;
 
-        return Box(seriesList);
+        IList<BoxGroup> groups = new List<BoxGroup>() { singleGroup };
+
+        return Box(groups);
     }
 
-    public BoxPlot Box(Box box, Color? color = null, string? label = null)
+    public BoxPlot Box(IList<BoxGroup> groups)
     {
-        return Box(new Box[] { box }, color, label);
+        BoxGroups boxGroups = new()
+        {
+            Series = groups,
+        };
+
+        BoxPlot boxPlot = new()
+        {
+            Groups = boxGroups,
+        };
+
+        Plot.Plottables.Add(boxPlot);
+        return boxPlot;
     }
 
     public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
