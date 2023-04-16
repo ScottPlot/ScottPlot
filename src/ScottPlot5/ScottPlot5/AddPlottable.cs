@@ -109,6 +109,36 @@ public class AddPlottable
         return Bar(seriesList);
     }
 
+    public BoxPlot Box(IList<Box> boxes)
+    {
+        BoxGroup singleGroup = new()
+        {
+            Boxes = boxes,
+        };
+
+        singleGroup.Fill.Color = NextColor;
+
+        IList<BoxGroup> groups = new List<BoxGroup>() { singleGroup };
+
+        return Box(groups);
+    }
+
+    public BoxPlot Box(IList<BoxGroup> groups)
+    {
+        BoxGroups boxGroups = new()
+        {
+            Series = groups,
+        };
+
+        BoxPlot boxPlot = new()
+        {
+            Groups = boxGroups,
+        };
+
+        Plot.Plottables.Add(boxPlot);
+        return boxPlot;
+    }
+
     public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);

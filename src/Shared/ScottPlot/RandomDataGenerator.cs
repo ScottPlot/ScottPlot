@@ -56,4 +56,20 @@ public class RandomDataGenerator
             data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
         return data;
     }
+
+    public double NonZeroRandomDouble()
+    {
+        double randomValue = Rand.NextDouble();
+        return randomValue != 0
+            ? randomValue
+            : NonZeroRandomDouble();
+    }
+
+    public double RandomNormal(double mean = 0, double stdDev = 1)
+    {
+        double u1 = NonZeroRandomDouble();
+        double u2 = NonZeroRandomDouble();
+        double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+        return mean + stdDev * randStdNormal;
+    }
 }

@@ -26,8 +26,21 @@ public interface IAxis : IPanel
     /// </summary>
     double GetCoordinate(float pixel, PixelRect dataArea);
 
-    double GetPixelDistance(double distance, PixelRect dataArea);
-    double GetCoordinateDistance(double distance, PixelRect dataArea);
+    /// <summary>
+    /// Given a distance in coordinate space, converts to pixel space
+    /// </summary>
+    /// <param name="coordinateDistance">A distance in coordinate units</param>
+    /// <param name="dataArea">The rectangle onto which the coordinates are mapped</param>
+    /// <returns>The same distance in pixel units</returns>
+    double GetPixelDistance(double coordinateDistance, PixelRect dataArea);
+
+    /// <summary>
+    /// Given a distance in pixel space, converts to coordinate space
+    /// </summary>
+    /// <param name="coordinateDistance">A distance in pixel units</param>
+    /// <param name="dataArea">The rectangle onto which the coordinates are mapped</param>
+    /// <returns>The same distance in coordinate units</returns>
+    double GetCoordinateDistance(double pixelDistance, PixelRect dataArea);
 
     /// <summary>
     /// Logic for determining tick positions and formatting tick labels
