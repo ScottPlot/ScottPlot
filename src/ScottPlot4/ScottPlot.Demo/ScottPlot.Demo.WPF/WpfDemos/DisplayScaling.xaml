@@ -10,6 +10,6 @@
         <Viewbox Height="16" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="10">
             <CheckBox IsChecked="True" Content="DPI Stretch" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
         </Viewbox>
-        <WpfPlot Name="WpfPlot1" />
+        <WpfPlot x:Name="WpfPlot1" />
     </DockPanel>
 </Window>

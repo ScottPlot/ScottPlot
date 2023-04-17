@@ -26,7 +26,7 @@
             </Label.RenderTransform>
         </Label>
 
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
     </Grid>
         
 </Window>

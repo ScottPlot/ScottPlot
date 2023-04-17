@@ -15,7 +15,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="0"/>
-        <ScottPlot:WpfPlot Name="WpfPlot2" Grid.Row="1"/>
+        <ScottPlot:WpfPlot x:Name="WpfPlot1" Grid.Row="0"/>
+        <ScottPlot:WpfPlot x:Name="WpfPlot2" Grid.Row="1"/>
     </Grid>
 </Window>
