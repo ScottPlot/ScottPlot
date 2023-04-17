@@ -107,7 +107,7 @@ public class Ellipse
         {
             for (int i = 0; i < 5; i++)
             {
-                var el = plt.AddEllipse(i * 10, 0, 3, 15);
+                var el = plt.AddEllipse(x: 0, y: 0, xRadius: 1, yRadius: 5);
                 el.Rotation = i * 15;
             }
 
