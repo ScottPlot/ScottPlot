@@ -35,9 +35,9 @@
         
         <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <StackPanel>
-                <ScottPlot:WpfPlot Height="300" Name="wpfPlot1"/>
-                <ScottPlot:WpfPlot Height="300" Name="wpfPlot2"/>
-                <ScottPlot:WpfPlot Height="300" Name="wpfPlot3"/>
+                <ScottPlot:WpfPlot Height="300" x:Name="wpfPlot1"/>
+                <ScottPlot:WpfPlot Height="300" x:Name="wpfPlot2"/>
+                <ScottPlot:WpfPlot Height="300" x:Name="wpfPlot3"/>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

@@ -16,6 +16,6 @@
             <TextBox x:Name="LatestValueTextbox" IsEnabled="False" VerticalAlignment="Center" Width="60"/>
             <CheckBox x:Name="AutoAxisCheckbox" Content="Auto-axis on each update" IsChecked="True" VerticalAlignment="Center" Unchecked="DisableAutoAxis"/>
         </StackPanel>
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
     </DockPanel>
 </Window>

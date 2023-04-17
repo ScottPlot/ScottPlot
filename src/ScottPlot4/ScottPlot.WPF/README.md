@@ -5,7 +5,7 @@
 Add a `WpfPlot` to your window and give it a unique name:
 
 ```xml
-<WpfPlot Name="WpfPlot1" />
+<WpfPlot x:Name="WpfPlot1" />
 ```
 
 Add the following to your start-up sequence:

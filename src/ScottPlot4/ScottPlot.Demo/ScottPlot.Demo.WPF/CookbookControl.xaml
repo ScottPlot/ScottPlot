@@ -19,12 +19,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0">
-            <Label Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold"/>
+            <Label x:Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold"/>
             <TextBox Background="Transparent" x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2, -5, 2, 5"/>
         </StackPanel>
 
         <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="LightGray" Background="LightGray" >
-            <ScottPlot:WpfPlot Name="wpfPlot1"/>
+            <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
