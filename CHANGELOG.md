@@ -4,6 +4,7 @@
 * Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.64 (in development)
+* Ellipse: Added `Rotation` property (#2588, #2595) _Thanks @JohniMIEP and @bclehmann_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
