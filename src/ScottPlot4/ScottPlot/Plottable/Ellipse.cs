@@ -130,17 +130,11 @@ namespace ScottPlot.Plottable
             float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
             float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
+            // Center, rotate, and scale the canvas so the ellipse fits in a radius 1 rectangle at the origin
             gfx.TranslateTransform(xPixel, yPixel);
             gfx.RotateTransform(Rotation);
-
-            double rotationRads = Rotation * Math.PI / 180;
             gfx.ScaleTransform(xRadiusPixels, yRadiusPixels);
-
-            RectangleF rect = new(
-                x: -1,
-                y: -1f,
-                width: 2,
-                height: 2);
+            RectangleF rect = new(-1, -1, 2, 2);
 
             // Render data by drawing on the Graphics object
             if (Color != Color.Transparent)
