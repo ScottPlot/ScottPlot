@@ -27,6 +27,11 @@ namespace ScottPlot.Plottable
         public double RadiusY { get; set; }
 
         /// <summary>
+        /// Rotation of the ellipse (degrees)
+        /// </summary>
+        public float Rotation { get; set; } = 0;
+
+        /// <summary>
         /// Outline color
         /// </summary>
         public Color BorderColor { get; set; } = Color.Black;
@@ -125,15 +130,20 @@ namespace ScottPlot.Plottable
             float xRadiusPixels = dims.GetPixelX(X + RadiusX) - xPixel;
             float yRadiusPixels = dims.GetPixelY(Y + RadiusY) - yPixel;
 
-            RectangleF rect = new(
-                x: xPixel - xRadiusPixels,
-                y: yPixel - yRadiusPixels,
-                width: xRadiusPixels * 2,
-                height: yRadiusPixels * 2);
+            // Center, rotate, and scale the canvas so the ellipse fits in a radius 1 rectangle at the origin
+            gfx.TranslateTransform(xPixel, yPixel);
+            gfx.RotateTransform(Rotation);
+            gfx.ScaleTransform(xRadiusPixels, yRadiusPixels);
+            RectangleF rect = new(-1, -1, 2, 2);
 
             // Render data by drawing on the Graphics object
             if (Color != Color.Transparent)
                 gfx.FillEllipse(brush, rect);
+
+            // Otherwise the pen width will be scaled as well
+            using System.Drawing.Drawing2D.Matrix invertScaleMatrix = new();
+            invertScaleMatrix.Scale(1 / xRadiusPixels, 1 / yRadiusPixels);
+            pen.Transform = invertScaleMatrix;
 
             gfx.DrawEllipse(pen, rect);
         }
