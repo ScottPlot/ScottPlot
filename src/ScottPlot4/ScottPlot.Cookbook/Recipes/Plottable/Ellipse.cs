@@ -96,7 +96,7 @@ public class Ellipse
         }
     }
 
-    public class EllipseRotation: IRecipe
+    public class EllipseRotation : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Ellipse();
         public string ID => "ellipse_rotation";
@@ -105,7 +105,7 @@ public class Ellipse
 
         public void ExecuteRecipe(Plot plt)
         {
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var el = plt.AddEllipse(i * 10, 0, 3, 15);
                 el.Rotation = i * 15;
