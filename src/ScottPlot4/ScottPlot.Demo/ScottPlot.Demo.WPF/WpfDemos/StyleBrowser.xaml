@@ -9,10 +9,10 @@
         Title="ScottPlot Style Browser" Height="450" Width="900">
     <DockPanel Margin="10">
         <GroupBox Header="Styles" FontSize="16" DockPanel.Dock="Left" Width="200" >
-            <ListBox Name="ListBoxStyle" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
+            <ListBox x:Name="ListBoxStyle" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
         </GroupBox>
         <GroupBox Header="Palettes" FontSize="16" DockPanel.Dock="Left" Width="200" >
-            <ListBox Name="ListBoxPalette" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
+            <ListBox x:Name="ListBoxPalette" SelectionChanged="ListBox_SelectionChanged" FontSize="12" BorderThickness="0" />
         </GroupBox>
         <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="10"/>
     </DockPanel>

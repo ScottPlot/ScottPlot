@@ -9,6 +9,6 @@
         Title="Live Data (fixed array size)" Height="450" Width="800">
     <DockPanel>
         <Label Content="This example uses a fixed-size array and updates its values with time" DockPanel.Dock="Top"/>
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
     </DockPanel>
 </Window>
