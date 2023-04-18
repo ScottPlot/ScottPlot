@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos;
 
@@ -17,6 +18,11 @@ public partial class DataLogger : Form
     public DataLogger()
     {
         InitializeComponent();
+        comboBox1.Items.Add("Full");
+        comboBox1.Items.Add("Sweeps");
+        comboBox1.Items.Add("Latest");
+        comboBox1.SelectedIndex = 0;
+
         formsPlot1.Plot.Add(Logger);
 
         AddRandomWalkData(1000);
@@ -45,5 +51,19 @@ public partial class DataLogger : Form
         formsPlot1.Refresh();
 
         Text = $"DataLogger Demo ({Logger.Count:N0} points)";
+    }
+
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (comboBox1.SelectedIndex == 0)
+            Logger.SetViewModeFull();
+        else if (comboBox1.SelectedIndex == 1)
+            Logger.SetViewModeSweeps(1000, 1);
+        else if (comboBox1.SelectedIndex == 2)
+            Logger.SetViewModeLatest(1000);
+        else
+            throw new NotImplementedException(comboBox1.Text);
+
+        formsPlot1.Plot.AxisAuto();
     }
 }
