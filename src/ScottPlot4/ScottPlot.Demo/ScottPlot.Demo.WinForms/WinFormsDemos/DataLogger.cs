@@ -7,18 +7,18 @@ public partial class DataLogger : Form
 {
     readonly Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
-    readonly ScottPlot.Plottable.ScatterPlotList<double> Scatter;
+
+    readonly ScottPlot.Plottable.DataLogger Logger = new();
+
     readonly Random Rand = new();
 
     double LastPointValue = 0;
-    int PointsOnLastRefresh = 0;
 
     public DataLogger()
     {
         InitializeComponent();
+        formsPlot1.Plot.Add(Logger);
 
-        Scatter = formsPlot1.Plot.AddScatterList();
-        Scatter.MarkerSize = 0;
         AddRandomWalkData(1000);
         formsPlot1.Refresh();
 
@@ -31,17 +31,19 @@ public partial class DataLogger : Form
         for (int i = 0; i < count; i++)
         {
             LastPointValue = LastPointValue + Rand.NextDouble() - .5;
-            Scatter.Add(Scatter.Count, LastPointValue);
+            Logger.Add(LastPointValue);
         }
     }
 
     private void UpdatePlotTimer_Tick(object sender, EventArgs e)
     {
-        if (Scatter.Count == PointsOnLastRefresh)
+        if (!Logger.CountChangedSinceLastRender)
             return;
 
-        PointsOnLastRefresh = Scatter.Count;
-        formsPlot1.Plot.AxisAuto();
+        Logger.UpdateAxisLimits(formsPlot1.Plot);
+
         formsPlot1.Refresh();
+
+        Text = $"DataLogger Demo ({Logger.Count:N0} points)";
     }
 }
