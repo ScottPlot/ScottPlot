@@ -162,7 +162,8 @@ namespace ScottPlot.Avalonia
         private void OnMouseDown(object sender, PointerEventArgs e) { CaptureMouse(e.Pointer); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, PointerEventArgs e) { Backend.MouseUp(GetInputState(e)); UncaptureMouse(e.Pointer); }
         private void OnDoubleClick(object sender, RoutedEventArgs e) => Backend.DoubleClick();
-        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e)
+        {
             if (e.Delta.Y != 0)
                 Backend.MouseWheel(GetInputState(e, e.Delta.Y));
         }
