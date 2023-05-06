@@ -1,23 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using OpenTK.Graphics;
-using System.Windows.Media.Media3D;
 using SkiaSharp.Views.Desktop;
 using OpenTK.Wpf;
-using SkiaSharp;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Platform.Windows;
-using OpenTK;
-using System.Windows.Interop;
-using OpenTK.Platform;
 #if NETCOREAPP || NET
 using OpenTK.Mathematics;
 #endif
@@ -57,7 +45,7 @@ namespace SkiaSharp.Views.WPF
             RegisterToEventsDirectly = false;
             CanInvokeOnHandledEvents = false;
 #endif
-            var settings = new GLWpfControlSettings() { MajorVersion = 2, MinorVersion = 1, RenderContinuously = false};
+            var settings = new GLWpfControlSettings() { MajorVersion = 2, MinorVersion = 1, RenderContinuously = false };
 
             this.Render += OnPaint;
 
