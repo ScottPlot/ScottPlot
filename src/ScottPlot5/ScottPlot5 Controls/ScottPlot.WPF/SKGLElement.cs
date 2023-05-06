@@ -53,7 +53,11 @@ namespace SkiaSharp.Views.WPF
         private void Initialize()
         {
             designMode = DesignerProperties.GetIsInDesignMode(this);
-            var settings = new GLWpfControlSettings() { MajorVersion = 2, MinorVersion = 1, RenderContinuously = false };
+#if NETCOREAPP || NET
+            RegisterToEventsDirectly = false;
+            CanInvokeOnHandledEvents = false;
+#endif
+            var settings = new GLWpfControlSettings() { MajorVersion = 2, MinorVersion = 1, RenderContinuously = false};
 
             this.Render += OnPaint;
 
