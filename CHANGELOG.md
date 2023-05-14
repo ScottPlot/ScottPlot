@@ -2,6 +2,7 @@
 
 ## ScottPlot 5.0.5-beta (in development)
 * Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
+* OpenGL Control: Prevent exceptions on keyboard input (#2609, #2616) _Thanks @stendprog_
 
 ## ScottPlot 4.1.64 (in development)
 * Ellipse: Added `Rotation` property (#2588, #2595) _Thanks @JohniMIEP and @bclehmann_
