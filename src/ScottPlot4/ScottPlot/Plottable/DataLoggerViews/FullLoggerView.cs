@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottable.LoggerViews;
+﻿namespace ScottPlot.Plottable.DataLoggerViews;
 
 /// <summary>
 /// Show the entire range of data, changing the axis limits only

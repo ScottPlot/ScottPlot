@@ -131,9 +131,9 @@ namespace ScottPlot
         /// <summary>
         /// Add a data logging scatter plot
         /// </summary>
-        public ScatterLogger AddScatterLogger()
+        public ScatterDataLogger AddScatterLogger()
         {
-            ScatterLogger sl = new(this);
+            ScatterDataLogger sl = new(this);
             Add(sl);
             return sl;
         }
