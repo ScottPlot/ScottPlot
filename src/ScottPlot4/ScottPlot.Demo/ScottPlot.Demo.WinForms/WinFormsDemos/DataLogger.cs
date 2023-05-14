@@ -9,7 +9,7 @@ public partial class DataLogger : Form
     readonly Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottable.DataLogger Logger = new();
+    readonly ScottPlot.Plottable.ScatterLogger Logger = new();
 
     readonly Random Rand = new();
 
@@ -18,6 +18,7 @@ public partial class DataLogger : Form
     public DataLogger()
     {
         InitializeComponent();
+
         comboBox1.Items.Add("Full");
         comboBox1.Items.Add("Sweeps");
         comboBox1.Items.Add("Latest");
@@ -32,18 +33,23 @@ public partial class DataLogger : Form
         UpdatePlotTimer.Tick += UpdatePlotTimer_Tick;
     }
 
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //throw new NotImplementedException();
+    }
+
     private void AddRandomWalkData(int count)
     {
         for (int i = 0; i < count; i++)
         {
             LastPointValue = LastPointValue + Rand.NextDouble() - .5;
-            Logger.Add(LastPointValue);
+            Logger.Add(Logger.Count, LastPointValue);
         }
     }
 
     private void UpdatePlotTimer_Tick(object sender, EventArgs e)
     {
-        if (!Logger.CountChangedSinceLastRender)
+        if (Logger.Count == Logger.LastRenderCount)
             return;
 
         Logger.UpdateAxisLimits(formsPlot1.Plot);
@@ -51,19 +57,5 @@ public partial class DataLogger : Form
         formsPlot1.Refresh();
 
         Text = $"DataLogger Demo ({Logger.Count:N0} points)";
-    }
-
-    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (comboBox1.SelectedIndex == 0)
-            Logger.SetViewModeFull();
-        else if (comboBox1.SelectedIndex == 1)
-            Logger.SetViewModeSweeps(1000, 1);
-        else if (comboBox1.SelectedIndex == 2)
-            Logger.SetViewModeLatest(1000);
-        else
-            throw new NotImplementedException(comboBox1.Text);
-
-        formsPlot1.Plot.AxisAuto();
     }
 }
