@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
+#nullable enable
+
 namespace ScottPlot.Plottable;
 
 public class ScatterLogger : IPlottable
@@ -15,6 +17,16 @@ public class ScatterLogger : IPlottable
     public string Label { get; set; } = string.Empty;
     public Color Color { get; set; } = Color.Blue;
     public float LineWidth { get; set; } = 1;
+    public bool AutoAxis { get; set; } = true;
+    public ILoggerView LoggerView { get; set; }
+
+    private readonly Plot Plot;
+
+    public ScatterLogger(Plot plot)
+    {
+        Plot = plot;
+        LoggerView = new LoggerViews.FullLoggerView(Plot, this);
+    }
 
     // data management
     private readonly List<Coordinate> DataPoints = new();
@@ -41,41 +53,6 @@ public class ScatterLogger : IPlottable
         if (xs.Length != ys.Length) throw new ArgumentException("Xs and Ys must have same length");
         var coordinates = Enumerable.Range(0, xs.Length).Select(x => new Coordinate(xs[x].ToOADate(), ys[x]));
         AddRange(coordinates);
-    }
-
-    // axis limit management
-
-    public void UpdateAxisLimits(Plot plt)
-    {
-        AxisLimits currentLimits = plt.GetAxisLimits();
-        AxisLimits dataLimits = GetAxisLimits();
-        UpdateAxisLimitsX(plt, currentLimits, dataLimits);
-        UpdateAxisLimitsY(plt, currentLimits, dataLimits);
-    }
-
-    /// <summary>
-    /// If data extends off the page to the right, extend the view to the right only
-    /// </summary>
-    private void UpdateAxisLimitsX(Plot plt, AxisLimits currentLimits, AxisLimits dataLimits, double expandFrac = 1.25)
-    {
-        if (currentLimits.XMax < dataLimits.XMax)
-        {
-            plt.SetAxisLimitsX(dataLimits.XMin, dataLimits.XMax * expandFrac);
-        }
-    }
-
-    /// <summary>
-    /// If the data extends off the page vertically, zoom out vertically
-    /// </summary>
-    private void UpdateAxisLimitsY(Plot plt, AxisLimits currentLimits, AxisLimits dataLimits, double expandFrac = 1.25)
-    {
-        if (currentLimits.YMin > dataLimits.YMin || currentLimits.YMax < dataLimits.YMax)
-        {
-            double ySpanHalf = (dataLimits.YSpan / 2) * expandFrac;
-            double yMin = dataLimits.YCenter - ySpanHalf;
-            double yMax = dataLimits.YCenter + ySpanHalf;
-            plt.SetAxisLimitsY(yMin, yMax);
-        }
     }
 
     // plottable methods

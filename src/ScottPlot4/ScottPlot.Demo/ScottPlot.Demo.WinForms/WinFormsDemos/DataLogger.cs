@@ -9,7 +9,7 @@ public partial class DataLogger : Form
     readonly Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottable.ScatterLogger Logger = new();
+    readonly ScottPlot.Plottable.ScatterLogger Logger;
 
     readonly Random Rand = new();
 
@@ -24,7 +24,7 @@ public partial class DataLogger : Form
         comboBox1.Items.Add("Latest");
         comboBox1.SelectedIndex = 0;
 
-        formsPlot1.Plot.Add(Logger);
+        Logger = formsPlot1.Plot.AddScatterLogger();
 
         AddRandomWalkData(1000);
         formsPlot1.Refresh();
@@ -52,7 +52,7 @@ public partial class DataLogger : Form
         if (Logger.Count == Logger.LastRenderCount)
             return;
 
-        Logger.UpdateAxisLimits(formsPlot1.Plot);
+        Logger.LoggerView.UpdateAxisLimits();
 
         formsPlot1.Refresh();
 

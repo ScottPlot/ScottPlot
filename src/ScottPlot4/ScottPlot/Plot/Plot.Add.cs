@@ -129,6 +129,16 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a data logging scatter plot
+        /// </summary>
+        public ScatterLogger AddScatterLogger()
+        {
+            ScatterLogger sl = new(this);
+            Add(sl);
+            return sl;
+        }
+
+        /// <summary>
         /// Add a Lollipop plot for the given values. Lollipops will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public LollipopPlot AddLollipop(double[] values, Color? color = null)
