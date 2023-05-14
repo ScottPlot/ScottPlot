@@ -7,39 +7,57 @@ using System.Linq;
 
 namespace ScottPlot.Plottable;
 
-public class ScatterLogger : IPlottable
+/// <summary>
+/// Data logging scatter plot.
+/// This plot type stores 2D coordinates and has methods to add and remove points.
+/// </summary>
+public class ScatterLogger : IPlottable, IDataLogger
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public int Count => DataPoints.Count();
     public int LastRenderCount { get; private set; } = -1;
+    public AxisLimits DataLimits { get; private set; } = AxisLimits.NoLimits;
     public string Label { get; set; } = string.Empty;
     public Color Color { get; set; } = Color.Blue;
     public float LineWidth { get; set; } = 1;
-    public bool AutoAxis { get; set; } = true;
-    public ILoggerView LoggerView { get; set; }
 
-    private readonly Plot Plot;
+    public bool ManageAxisLimits { get; set; } = true;
+    public IDataLoggerView LoggerView { get; set; } = new LoggerViews.FullLoggerView();
+    public Plot Plot { get; private set; }
 
     public ScatterLogger(Plot plot)
     {
         Plot = plot;
-        LoggerView = new LoggerViews.FullLoggerView(Plot, this);
     }
 
     // data management
     private readonly List<Coordinate> DataPoints = new();
 
-    public void Clear() => DataPoints.Clear();
+    public void Clear()
+    {
+        DataPoints.Clear();
+        DataLimits = AxisLimits.NoLimits;
+    }
 
-    public void Add(Coordinate coordinate) => DataPoints.Add(coordinate);
+    public void Add(Coordinate coordinate)
+    {
+        DataPoints.Add(coordinate);
+        DataLimits = DataLimits.Expand(coordinate);
+    }
 
-    public void AddRange(IEnumerable<Coordinate> coordinates) => DataPoints.AddRange(coordinates);
+    public void AddRange(IEnumerable<Coordinate> coordinates)
+    {
+        foreach (Coordinate c in coordinates)
+        {
+            Add(c);
+        }
+    }
 
-    public void Add(double x, double y) => DataPoints.Add(new Coordinate(x, y));
+    public void Add(double x, double y) => Add(new Coordinate(x, y));
 
-    public void Add(DateTime x, double y) => DataPoints.Add(new Coordinate(x.ToOADate(), y));
+    public void Add(DateTime x, double y) => Add(new Coordinate(x.ToOADate(), y));
 
     public void AddRange(double[] xs, double[] ys)
     {
@@ -56,11 +74,14 @@ public class ScatterLogger : IPlottable
     }
 
     // plottable methods
-    public AxisLimits GetAxisLimits() => DataPoints.GetLimits();
+    public AxisLimits GetAxisLimits() => DataLimits;
     public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
     public void ValidateData(bool deep = false) { }
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
+        if (ManageAxisLimits)
+            LoggerView.SetAxisLimits(Plot, DataLimits);
+
         LastRenderCount = Count;
 
         PointF[] points = DataPoints

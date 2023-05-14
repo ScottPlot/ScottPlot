@@ -52,8 +52,6 @@ public partial class DataLogger : Form
         if (Logger.Count == Logger.LastRenderCount)
             return;
 
-        Logger.LoggerView.UpdateAxisLimits();
-
         formsPlot1.Refresh();
 
         Text = $"DataLogger Demo ({Logger.Count:N0} points)";
