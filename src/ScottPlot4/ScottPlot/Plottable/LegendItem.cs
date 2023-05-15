@@ -63,6 +63,11 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { item };
         }
 
+        public static LegendItem[] Single(IPlottable parent, string label, Color color)
+        {
+            return new LegendItem[] { new LegendItem(parent) { label = label, color = color } };
+        }
+
         public static LegendItem[] None => Array.Empty<LegendItem>();
 
         public void Render(Graphics gfx, float x, float y,

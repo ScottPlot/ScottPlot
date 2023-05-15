@@ -1,94 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos;
 
 public partial class DataLogger : Form
 {
-    readonly FakeDataGenerator Data = new(3);
+    readonly Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
+    readonly Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
+
+    readonly ScottPlot.Plottable.ScatterDataLogger Logger;
+
+    readonly Random Rand = new();
+
+    double LastPointValue = 0;
 
     public DataLogger()
     {
         InitializeComponent();
+
+        comboBox1.Items.Add("Full");
+        comboBox1.Items.Add("Sweeps");
+        comboBox1.Items.Add("Latest");
+        comboBox1.SelectedIndex = 0;
+
+        Logger = formsPlot1.Plot.AddScatterLogger();
+
+        AddRandomWalkData(1000);
+        formsPlot1.Refresh();
+
+        AddNewDataTimer.Tick += (s, e) => AddRandomWalkData(10);
+        UpdatePlotTimer.Tick += UpdatePlotTimer_Tick;
     }
 
-    private void newDataTimer_Tick(object sender, EventArgs e)
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (!cbRun.Checked)
+        if (Logger is null)
             return;
 
-        Data.AddData();
-        lblCh1.Text = $"{Data.GetLatest(0):N2}";
-        lblCh2.Text = $"{Data.GetLatest(1):N2}";
-        lblCh3.Text = $"{Data.GetLatest(2):N2}";
-        lblReads.Text = $"Reads: {Data.Reads:N0}";
-    }
-
-    private void plotUpdateTimer_Tick(object sender, EventArgs e)
-    {
-        double sampleRate = 100;
-        formsPlot1.Plot.Clear();
-        formsPlot1.Plot.AddSignal(Data.GetData(0), sampleRate, Color.Red);
-        formsPlot1.Plot.AddSignal(Data.GetData(1), sampleRate, Color.Green);
-        formsPlot1.Plot.AddSignal(Data.GetData(2), sampleRate, Color.Blue);
-
-        if (cbAutoscale.Checked)
+        Logger.LoggerView = comboBox1.Text switch
         {
-            formsPlot1.Plot.AxisAuto();
-        }
-
-        formsPlot1.Refresh();
-    }
-}
-
-public class FakeDataGenerator
-{
-    readonly List<double>[] DataChannels;
-
-    readonly Random Rand = new();
-
-    public int Reads { get; private set; } = 0;
-
-    public FakeDataGenerator(int channels)
-    {
-        double[] initialValues = Enumerable
-            .Range(0, channels)
-            .Select(x => Rand.NextDouble() * 100)
-            .ToArray();
-
-        DataChannels = initialValues
-            .Select(x => new List<double>() { x })
-            .ToArray();
+            "Full" => new ScottPlot.Plottable.DataLoggerViews.Full(),
+            "Sweeps" => new ScottPlot.Plottable.DataLoggerViews.Sweep(),
+            "Latest" => new ScottPlot.Plottable.DataLoggerViews.Latest(),
+            _ => throw new NotImplementedException(comboBox1.Text)
+        };
     }
 
-    public void AddData(int maxCount = 10)
+    private void AddRandomWalkData(int count)
     {
-        int count = (int)(Rand.NextDouble() * maxCount);
-
         for (int i = 0; i < count; i++)
         {
-            foreach (List<double> channel in DataChannels)
-            {
-                channel.Add(channel.Last() + Rand.NextDouble() - .5);
-            }
-            Reads += 1;
+            LastPointValue = LastPointValue + Rand.NextDouble() - .5;
+            Logger.Add(Logger.Count, LastPointValue);
         }
     }
 
-    public double GetLatest(int channel)
+    private void UpdatePlotTimer_Tick(object sender, EventArgs e)
     {
-        return DataChannels[channel].Last();
-    }
+        if (Logger.Count == Logger.LastRenderCount)
+            return;
 
-    public double[] GetData(int channel)
-    {
-        return DataChannels[channel].ToArray();
+        formsPlot1.Refresh();
+
+        Text = $"DataLogger Demo ({Logger.Count:N0} points)";
     }
 }
