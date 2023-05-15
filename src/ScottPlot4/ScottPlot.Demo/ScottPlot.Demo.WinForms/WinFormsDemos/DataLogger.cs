@@ -35,7 +35,16 @@ public partial class DataLogger : Form
 
     private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //throw new NotImplementedException();
+        if (Logger is null)
+            return;
+
+        Logger.LoggerView = comboBox1.Text switch
+        {
+            "Full" => new ScottPlot.Plottable.DataLoggerViews.Full(),
+            "Sweeps" => new ScottPlot.Plottable.DataLoggerViews.Sweep(),
+            "Latest" => new ScottPlot.Plottable.DataLoggerViews.Latest(),
+            _ => throw new NotImplementedException(comboBox1.Text)
+        };
     }
 
     private void AddRandomWalkData(int count)

@@ -22,7 +22,17 @@ public class ScatterDataLogger : IPlottable, IDataLogger
     public Color Color { get; set; } = Color.Blue;
     public float LineWidth { get; set; } = 1;
     public bool ManageAxisLimits { get; set; } = true;
-    public IDataLoggerView LoggerView { get; set; } = new DataLoggerViews.FullLoggerView();
+
+    private IDataLoggerView _LoggerView = new DataLoggerViews.Full();
+    public IDataLoggerView LoggerView
+    {
+        get => _LoggerView;
+        set
+        {
+            _LoggerView = value;
+            Plot.SetAxisLimits(DataLimits);
+        }
+    }
     public Plot Plot { get; private set; }
 
     public ScatterDataLogger(Plot plot) { Plot = plot; }
