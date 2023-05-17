@@ -143,12 +143,12 @@ namespace ScottPlot.Ticks
         {
             if (ManualTicks is not null)
             {
-                RecalculateManualTicks(dims);
-                return;
+                RecalculateManualTicks(dims, tickFont);
             }
-
-            RecalculateAutomatic(dims, tickFont);
-            LimitNumberOfTicksForSmallPlots(dims);
+            else
+            {
+                RecalculateAutomatic(dims, tickFont);
+            }
         }
 
         private void LimitNumberOfTicksForSmallPlots(PlotDimensions dims)
@@ -228,9 +228,11 @@ namespace ScottPlot.Ticks
             {
                 RecalculatePositionsAutomaticNumeric(dims, LargestLabelWidth, LargestLabelHeight, null);
             }
+
+            LimitNumberOfTicksForSmallPlots(dims);
         }
 
-        private void RecalculateManualTicks(PlotDimensions dims)
+        private void RecalculateManualTicks(PlotDimensions dims, Drawing.Font tickFont)
         {
             double min = IsVertical ? dims.YMin : dims.XMin;
             double max = IsVertical ? dims.YMax : dims.XMax;
@@ -245,6 +247,7 @@ namespace ScottPlot.Ticks
             Ticks = new(tickPositionsMajor, tickPositionsMinor, tickLabels);
 
             CornerLabel = null;
+            (LargestLabelWidth, LargestLabelHeight) = MaxLabelSize(tickFont);
         }
 
         public void SetCulture(
