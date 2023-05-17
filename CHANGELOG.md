@@ -9,6 +9,7 @@
 * Controls: Prevent horizontal scroll wheel events from throwing exceptions (#2600, #2626) _Thanks @bclehmann and @szescxz_
 * ScatterDataLogger: Experimental plot type for live incoming data (#2377, #2599)
 * Ticks: Improved automatic layout sizing when manual ticks are used (#2603, #2605) _Thanks @StefanBertels and @szescxz_
+* Ticks: Improved automatic layout sizing for short and empty tick labels (#2606) _Thanks @szescxz_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
