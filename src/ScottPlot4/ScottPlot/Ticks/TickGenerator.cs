@@ -279,7 +279,7 @@ namespace ScottPlot.Ticks
                 return (0, 0);
 
             string largestString = "";
-            foreach (string s in Ticks.Labels.Where(x => string.IsNullOrEmpty(x) == false))
+            foreach (string s in Ticks.Labels.Where(x => string.IsNullOrWhiteSpace(x) == false))
                 if (s.Length > largestString.Length)
                     largestString = s;
 
