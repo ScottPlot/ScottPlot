@@ -53,6 +53,7 @@
 
     <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.*" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.*" />
     </ItemGroup>
 
     <!-- API Tracking -->
