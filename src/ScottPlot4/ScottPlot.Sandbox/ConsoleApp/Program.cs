@@ -1,9 +1,7 @@
 ﻿using ScottPlot;
 
-var plt = new ScottPlot.Plot(600, 400);
-plt.AddSignal(ScottPlot.DataGen.Sin(51));
-plt.AddSignal(ScottPlot.DataGen.Cos(51));
+ScottPlot.Plot plt = new();
+plt.BottomAxis.MinimumTickSpacing(0.5);
+plt.BottomAxis.TickLabelFormat((d) => d % 1 == 0 ? d.ToString() : string.Empty);
 
 plt.Launch.FormsPlot();
-plt.Launch.WpfPlot();
-plt.Launch.Web();
