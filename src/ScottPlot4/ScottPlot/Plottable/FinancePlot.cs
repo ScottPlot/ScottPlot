@@ -281,15 +281,16 @@ namespace ScottPlot.Plottable
         /// The returned xs and ys arrays will be the length of the OHLC data minus N (points).
         /// </summary>
         /// <param name="N">each returned value represents the average of N points</param>
+        /// <param name="sdCoeff">standard deviation coefficient</param>
         /// <returns>times, averages, and both Bollinger bands for the OHLC closing prices</returns>
-        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int N)
+        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int N, double sdCoeff = 2)
         {
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
             List<IOHLC> sortedOHLCs = GetSortedOHLCs();
             double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
-            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N);
+            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N, sdCoeff);
             return (xs, sma, lower, upper);
         }
 

@@ -12,6 +12,7 @@
 * Ticks: Improved automatic layout sizing when manual ticks are used (#2603, #2605) _Thanks @StefanBertels and @szescxz_
 * Ticks: Improved automatic layout sizing for short and empty tick labels (#2606) _Thanks @szescxz_
 * Plot: Improved `AddVerticalLine()` XML docs (#2610) _Thanks @wfs1900_
+* FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
