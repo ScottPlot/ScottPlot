@@ -264,9 +264,9 @@ namespace ScottPlot.Plottable
         /// <param name="fromData">source data offset</param>
         public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0)
         {
-            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+            if (firstIndex < 0 || firstIndex > Ys.Length)
                 throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
-            if (lastIndex > Ys.Length - 1)
+            if (lastIndex > Ys.Length)
                 throw new InvalidOperationException($"{nameof(lastIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
         }
@@ -278,7 +278,7 @@ namespace ScottPlot.Plottable
         /// <param name="newData">new values</param>
         public void Update(int firstIndex, T[] newData)
         {
-            if (firstIndex < 0 || firstIndex > Ys.Length - 1)
+            if (firstIndex < 0 || firstIndex > Ys.Length)
                 throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
             Update(firstIndex, firstIndex + newData.Length, newData);
         }
@@ -291,7 +291,7 @@ namespace ScottPlot.Plottable
         {
             if (newData.Length > Ys.Length)
                 throw new InvalidOperationException($"{nameof(newData)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
-            Update(0, newData.Length - 1, newData);
+            Update(0, newData.Length, newData);
         }
 
         public virtual AxisLimits GetAxisLimits()
