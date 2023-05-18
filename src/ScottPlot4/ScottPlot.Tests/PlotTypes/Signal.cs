@@ -274,12 +274,13 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
-        public void Test_Scatter_Update()
+        public void Test_Signal_Update()
         {
             // https://github.com/ScottPlot/ScottPlot/issues/2578
+            // https://github.com/ScottPlot/ScottPlot/issues/2592
 
             double[] ys1 = ScottPlot.Generate.Sin();
-            double[] ys2 = ScottPlot.Generate.Sin();
+            double[] ys2 = ScottPlot.Generate.Cos();
 
             ScottPlot.Plot plt = new(400, 300);
 
