@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Plottable.DataLoggerViews;
 
 #nullable enable
 
@@ -23,8 +24,8 @@ public class ScatterDataLogger : IPlottable, IDataLogger
     public float LineWidth { get; set; } = 1;
     public bool ManageAxisLimits { get; set; } = true;
 
-    private IDataLoggerView _LoggerView = new DataLoggerViews.Full();
-    public IDataLoggerView LoggerView
+    private IScatterDataLoggerView _LoggerView = new DataLoggerViews.Full();
+    public IScatterDataLoggerView LoggerView
     {
         get => _LoggerView;
         set
