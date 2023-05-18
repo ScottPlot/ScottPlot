@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottable;
+﻿using ScottPlot.Plottable.DataLoggerViews;
+
+namespace ScottPlot.Plottable;
 
 /// <summary>
 /// Data logging plot types have methods for adding/removing
@@ -16,7 +18,7 @@ public interface IDataLogger
     /// <summary>
     /// Logic for automatically setting axis limits if <see cref="ManageAxisLimits"/> is enabled.
     /// </summary>
-    public IDataLoggerView LoggerView { get; set; }
+    public IScatterDataLoggerView LoggerView { get; set; }
 
     /// <summary>
     /// A reference to the plot containing this plottable.

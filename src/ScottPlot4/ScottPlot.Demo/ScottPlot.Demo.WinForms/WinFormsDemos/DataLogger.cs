@@ -20,8 +20,8 @@ public partial class DataLogger : Form
         InitializeComponent();
 
         comboBox1.Items.Add("Full");
-        comboBox1.Items.Add("Sweeps");
-        comboBox1.Items.Add("Latest");
+        comboBox1.Items.Add("Slide (smooth)");
+        comboBox1.Items.Add("Slide (jump)");
         comboBox1.SelectedIndex = 0;
 
         Logger = formsPlot1.Plot.AddScatterLogger();
@@ -41,8 +41,8 @@ public partial class DataLogger : Form
         Logger.LoggerView = comboBox1.Text switch
         {
             "Full" => new ScottPlot.Plottable.DataLoggerViews.Full(),
-            "Sweeps" => new ScottPlot.Plottable.DataLoggerViews.Sweep(),
-            "Latest" => new ScottPlot.Plottable.DataLoggerViews.Latest(),
+            "Slide (smooth)" => new ScottPlot.Plottable.DataLoggerViews.Slide(),
+            "Slide (jump)" => new ScottPlot.Plottable.DataLoggerViews.Slide() { PaddingFraction = .75 },
             _ => throw new NotImplementedException(comboBox1.Text)
         };
     }
@@ -64,5 +64,10 @@ public partial class DataLogger : Form
         formsPlot1.Refresh();
 
         Text = $"DataLogger Demo ({Logger.Count:N0} points)";
+    }
+
+    private void cbView_CheckedChanged(object sender, EventArgs e)
+    {
+        Logger.ManageAxisLimits = cbEnableViewManagement.Checked;
     }
 }
