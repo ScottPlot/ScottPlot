@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos;
 
@@ -22,6 +21,8 @@ public partial class DataLogger : Form
         comboBox1.Items.Add("Full");
         comboBox1.Items.Add("Slide (smooth)");
         comboBox1.Items.Add("Slide (jump)");
+        comboBox1.Items.Add("Fixed Width");
+        comboBox1.Items.Add("Wipe");
         comboBox1.SelectedIndex = 0;
 
         Logger = formsPlot1.Plot.AddScatterLogger();
@@ -38,13 +39,41 @@ public partial class DataLogger : Form
         if (Logger is null)
             return;
 
-        Logger.LoggerView = comboBox1.Text switch
+        // TODO: these flags are too complex. Make the view style an enum.
+        // Refactor the configuration system after the basic functionality is working.
+
+        if (comboBox1.Text == "Full")
         {
-            "Full" => new ScottPlot.Plottable.DataLoggerViews.Full(),
-            "Slide (smooth)" => new ScottPlot.Plottable.DataLoggerViews.Slide(),
-            "Slide (jump)" => new ScottPlot.Plottable.DataLoggerViews.Slide() { PaddingFraction = .75 },
-            _ => throw new NotImplementedException(comboBox1.Text)
-        };
+            Logger.LoggerView = new ScottPlot.Plottable.DataLoggerViews.Full();
+            Logger.FixedWidth = null;
+            Logger.SamplePeriod = null;
+        }
+        else if (comboBox1.Text == "Slide (smooth)")
+        {
+            Logger.LoggerView = new ScottPlot.Plottable.DataLoggerViews.Slide() { PaddingFraction = 0 };
+            Logger.FixedWidth = null;
+            Logger.SamplePeriod = null;
+        }
+        else if (comboBox1.Text == "Slide (jump)")
+        {
+            Logger.LoggerView = new ScottPlot.Plottable.DataLoggerViews.Slide() { PaddingFraction = .75 };
+            Logger.FixedWidth = null;
+            Logger.SamplePeriod = null;
+        }
+        else if (comboBox1.Text == "Fixed Width")
+        {
+            Logger.FixedWidth = 1000;
+            Logger.SamplePeriod = null;
+        }
+        else if (comboBox1.Text == "Wipe")
+        {
+            Logger.FixedWidth = null;
+            Logger.SamplePeriod = 1;
+        }
+        else
+        {
+            throw new NotImplementedException(comboBox1.Text);
+        }
     }
 
     private void AddRandomWalkData(int count)
