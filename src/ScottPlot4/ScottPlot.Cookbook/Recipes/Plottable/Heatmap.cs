@@ -482,4 +482,28 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
         }
     }
+
+    public class BinnedHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_binned";
+        public string Title => "Binned Heatmap";
+        public string Description =>
+            "Binned heatmaps are 2D histograms that use a colormap to display cell counts. " +
+            "Charts like this are commonly used in scientific and medical applications.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create the experimental plot type and add it to the plot
+            ScottPlot.Plottable.BinnedHistogram hist2d = new(100, 100);
+            plt.Add(hist2d);
+
+            // add sample data
+            Coordinate[] flowData = DataGen.FlowCytometry();
+            hist2d.AddRange(flowData);
+
+            // add a colorbar
+            plt.AddColorbar(hist2d.Colormap);
+        }
+    }
 }
