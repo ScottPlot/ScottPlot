@@ -8,7 +8,7 @@
 One of the most helpful things members of the open-source community can do is to lighten the burden on the core project developers by answering questions and providing feedback on open issues! Even if someone doesn't know how to resolve an open issue, engaging in conversation to more clearly define the issue and create a working code example that reproduces it is a big win. [Join the ScottPlot Discord](https://ScottPlot.NET/discord) to get started!
 
 ### Good First Issues
-Common first-time contributions include adding or fixing XML docs, creating new plot types, and adding new color palettes. See issues labeled [Good First Issue](https://github.com/ScottPlot/ScottPlot/issues?q=is%3Aissue+hacktoberfest) (especially the latest [Hacktoberfest issue](https://github.com/ScottPlot/ScottPlot/search?q=hacktoberfest&type=issues)) for code contribution ideas aimed at new contributors. 
+Common first-time contributions include adding or fixing XML docs, creating new plot types, and adding new color palettes. See issues labeled [Good First Issue]([https://github.com/ScottPlot/ScottPlot/issues?q=is%3Aissue+hacktoberfest](https://github.com/ScottPlot/ScottPlot/issues?q=label%3A%22Good+First+Issue%22) (including closed issues) and the latest [Hacktoberfest issue](https://github.com/ScottPlot/ScottPlot/search?q=hacktoberfest&type=issues) for code contribution ideas aimed at new contributors.
 
 ### How to Add a Cookbook Recipe
 
