@@ -1452,7 +1452,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a vertical axis line at a specific Y position
+        /// Add a vertical axis line at a specific X position
         /// </summary>
         public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {

@@ -1,13 +1,25 @@
 # ScottPlot Changelog
 
-## ScottPlot 5.0.5-beta (in development)
+## ScottPlot 5.0.6-beta (in development)
+
+## ScottPlot 4.1.65 (in development)
+
+## ScottPlot 5.0.5-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
 * OpenGL Control: Prevent exceptions on keyboard input (#2609, #2616) _Thanks @stendprog_
+* Platforms: Improved linux support by using SkiaSharp native assets without dependencies (#2607) _Thanks @chrisxfire
 
-## ScottPlot 4.1.64 (in development)
+## ScottPlot 4.1.64
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Ellipse: Added `Rotation` property (#2588, #2595) _Thanks @JohniMIEP and @bclehmann_
-* Controls: Prevent horizontal scroll wheel events from throwing exceptions (#2600, #2626) _Thanks @bclehmann and @szescxz_
+* Controls: Prevent horizontal scroll wheel events from throwing exceptions (#2600, #2626, #2630) _Thanks @bclehmann, @szescxz, and @Jordant190_
 * ScatterDataLogger: Experimental plot type for live incoming data (#2377, #2599)
+* Ticks: Improved automatic layout sizing when manual ticks are used (#2603, #2605) _Thanks @StefanBertels and @szescxz_
+* Ticks: Improved automatic layout sizing for short and empty tick labels (#2606) _Thanks @szescxz_
+* Plot: Improved `AddVerticalLine()` XML docs (#2610) _Thanks @wfs1900_
+* FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
+* SignalPlot: Fixed bug where `Update()` did not change the final point (#2592) _Thanks @Angeld10_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
