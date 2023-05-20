@@ -9,6 +9,7 @@ namespace ScottPlot.Ticks.MinorTickGenerators;
 public class LogDistributed : IMinorTickGenerator
 {
     private int _minorTickCount;
+    private int _temp;
 
     public LogDistributed(int minorTickCount = 10)
     {
