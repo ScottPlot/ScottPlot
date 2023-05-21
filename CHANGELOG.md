@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.6-beta (in development)
+* Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 
 ## ScottPlot 4.1.65 (in development)
 
