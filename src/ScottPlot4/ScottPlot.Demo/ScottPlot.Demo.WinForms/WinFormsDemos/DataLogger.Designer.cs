@@ -31,6 +31,7 @@ partial class DataLogger
         formsPlot1 = new FormsPlot();
         label1 = new System.Windows.Forms.Label();
         comboBox1 = new System.Windows.Forms.ComboBox();
+        cbEnableViewManagement = new System.Windows.Forms.CheckBox();
         SuspendLayout();
         // 
         // formsPlot1
@@ -60,11 +61,25 @@ partial class DataLogger
         comboBox1.TabIndex = 2;
         comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
         // 
+        // checkBox1
+        // 
+        cbEnableViewManagement.AutoSize = true;
+        cbEnableViewManagement.Checked = true;
+        cbEnableViewManagement.CheckState = System.Windows.Forms.CheckState.Checked;
+        cbEnableViewManagement.Location = new System.Drawing.Point(214, 14);
+        cbEnableViewManagement.Name = "checkBox1";
+        cbEnableViewManagement.Size = new System.Drawing.Size(110, 19);
+        cbEnableViewManagement.TabIndex = 3;
+        cbEnableViewManagement.Text = "Automatic View";
+        cbEnableViewManagement.UseVisualStyleBackColor = true;
+        cbEnableViewManagement.CheckedChanged += cbView_CheckedChanged;
+        // 
         // DataLogger
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(741, 436);
+        Controls.Add(cbEnableViewManagement);
         Controls.Add(comboBox1);
         Controls.Add(label1);
         Controls.Add(formsPlot1);
@@ -81,4 +96,5 @@ partial class DataLogger
     private FormsPlot formsPlot1;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.ComboBox comboBox1;
+    private System.Windows.Forms.CheckBox cbEnableViewManagement;
 }

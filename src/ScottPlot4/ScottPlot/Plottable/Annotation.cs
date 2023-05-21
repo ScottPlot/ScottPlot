@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
 
         /// <summary>
         /// Defines which edge of the plot area the annotation will be placed along.
-        /// Distance from this edge is defined by <see cref="Margin"/>
+        /// Distance from this edge is defined by <see cref="MarginX"/> and <see cref="MarginY"/>
         /// </summary>
         public Alignment Alignment { get => Font.Alignment; set => Font.Alignment = value; }
 
