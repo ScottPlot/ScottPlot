@@ -45,7 +45,7 @@ public class StandardLegend : ILegend
         float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
 
         PixelSize legendSize = new PixelSize(maxWidth, totalheight).Expand(Padding);
-        PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment.LowerRight, Margin);
+        PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
 
         // render the legend panel
