@@ -8,12 +8,11 @@ namespace ScottPlot.Ticks.MinorTickGenerators;
 
 public class LogDistributed : IMinorTickGenerator
 {
-    private int _minorTickCount;
-    private int _temp;
+    private int MinorTickCount;
 
     public LogDistributed(int minorTickCount = 10)
     {
-        _minorTickCount = minorTickCount;
+        MinorTickCount = minorTickCount;
     }
 
     public double[] GetMinorPositions(double[] majorTickPositions, double min, double max)
@@ -28,7 +27,7 @@ public class LogDistributed : IMinorTickGenerator
         List<double> minorTicks = new();
         for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
         {
-            double[] positions = GetLogDistributedPoints(_minorTickCount, majorTick, majorTick + majorTickSpacing, false);
+            double[] positions = GetLogDistributedPoints(MinorTickCount, majorTick, majorTick + majorTickSpacing, false);
             minorTicks.AddRange(positions);
         }
 
