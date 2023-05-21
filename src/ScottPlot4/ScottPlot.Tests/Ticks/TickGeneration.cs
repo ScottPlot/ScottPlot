@@ -148,5 +148,21 @@ namespace ScottPlotTests.Ticks
             Assert.DoesNotThrow(() => plt.XAxis.ManualTickPositions(positions, goodLabels));
 
         }
+
+        [Test]
+        public void Test_LogScale_TickCount()
+        {
+            ScottPlot.Plot plt = new(400, 300);
+
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+            plt.YAxis.MinorGrid(true);
+
+            plt.YAxis.MinorLogScale(true, minorTickCount: 5);
+            TestTools.SaveFig(plt, "tick-5");
+
+            plt.YAxis.MinorLogScale(true, minorTickCount: 10);
+            TestTools.SaveFig(plt, "tick-10");
+        }
     }
 }
