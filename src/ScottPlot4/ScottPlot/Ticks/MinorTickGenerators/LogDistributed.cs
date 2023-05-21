@@ -15,7 +15,7 @@ public class LogDistributed : IMinorTickGenerator
     {
         _minorTickCount = minorTickCount;
     }
-    
+
     public double[] GetMinorPositions(double[] majorTickPositions, double min, double max)
     {
         if (majorTickPositions is null || majorTickPositions.Length < 2)
