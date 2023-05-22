@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 using System.Linq;
 
@@ -487,24 +488,21 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
         public string ID => "heatmap_binned";
-        public string Title => "Binned Heatmap";
+        public string Title => "Binned Histogram";
         public string Description =>
-            "Binned heatmaps are 2D histograms that use a colormap to display cell counts. " +
+            "Binned histograms are 2D heatmaps that use a colormap to display cell counts. " +
             "Charts like this are commonly used in scientific and medical applications.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // create the experimental plot type and add it to the plot
-            ScottPlot.Plottable.BinnedHistogram hist2d = new(100, 100);
-            plt.Add(hist2d);
+            // create a binned histogram
+            var hist2d = plt.AddBinnedHistogram(100, 100);
 
-            // add sample data
+            // data is a collection of X/Y points
             Coordinate[] flowData = DataGen.FlowCytometry();
-            hist2d.AddRange(flowData);
 
-            // add a colorbar and tell the heatmap about it
-            var cbar = plt.AddColorbar(hist2d.Colormap);
-            hist2d.Colorbar = cbar;
+            // add X/Y points to the histogram
+            hist2d.AddRange(flowData);
         }
     }
 }

@@ -52,10 +52,23 @@ public class BinnedHistogram : IPlottable
     /// </summary>
     public CoordinateRect Rectangle => new(Origin, Size);
 
+    public ScottPlot.Drawing.Colormap _Colormap = Colormap.Turbo;
+
     /// <summary>
     /// Colormap used to color the histogram according to its count density
     /// </summary>
-    public ScottPlot.Drawing.Colormap Colormap = Colormap.Turbo;
+    public ScottPlot.Drawing.Colormap Colormap
+    {
+        get => _Colormap;
+        set
+        {
+            _Colormap = value;
+            if (Colorbar is not null)
+            {
+                Colorbar.UpdateColormap(value);
+            }
+        }
+    }
 
     /// <summary>
     /// If set, this colorbar's tick labels will be updated on every render.
