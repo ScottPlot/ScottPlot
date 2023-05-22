@@ -176,4 +176,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
         }
     }
+
+    public class ImageAntiAliasing : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Image();
+        public string ID => "images_smooth";
+        public string Title => "Image Anti-Aliasing";
+        public string Description =>
+            "Images have an option to enable or disable anti-aliasing";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Bitmap bmp = DataGen.SampleImage();
+            var imgTop = plt.AddImage(bmp, 0, 2.2);
+            imgTop.HeightInAxisUnits = 1;
+            imgTop.WidthInAxisUnits = 30;
+            imgTop.AntiAlias = true;
+
+            var imgBottom = plt.AddImage(bmp, 0, 1.0);
+            imgBottom.HeightInAxisUnits = 1;
+            imgBottom.WidthInAxisUnits = 30;
+            imgBottom.AntiAlias = false;
+        }
+    }
 }

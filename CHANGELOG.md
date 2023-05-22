@@ -5,6 +5,7 @@
 
 ## ScottPlot 4.1.65 (in development)
 * Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
+* Image: Added option to disable anti-aliasing for scaled images (#2649) _Thanks @mYcheng-95_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
