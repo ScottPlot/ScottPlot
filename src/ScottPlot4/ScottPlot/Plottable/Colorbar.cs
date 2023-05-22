@@ -35,7 +35,7 @@ namespace ScottPlot.Plottable
         private readonly List<Tick> ManualTicks = new();
         private bool AutomaticTickEnable { get; set; } = true;
         private int AutomaticTickMinimumSpacing { get; set; } = 40;
-        private Func<double, string> AutomaticTickFormatter { get; set; } = position => $"{position:F2}";
+        public Func<double, string> TickLabelFormatter { get; set; } = position => $"{position:F2}";
 
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace ScottPlot.Plottable
 
             AutomaticTickEnable = enable;
             AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
-            AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
+            TickLabelFormatter = formatter ?? TickLabelFormatter;
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace ScottPlot.Plottable
                 double colorbarFraction = tickSpacingFraction * i;
                 double tickPosition = MinValue + colorbarFraction * valueSpan;
 
-                string tickLabel = AutomaticTickFormatter(tickPosition);
+                string tickLabel = TickLabelFormatter(tickPosition);
                 if (MinIsClipped && i == 0)
                     tickLabel = "≤" + tickLabel;
                 if (MaxIsClipped && i == tickCount)

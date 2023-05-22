@@ -32,6 +32,11 @@ namespace ScottPlot
             return $"AxisLimits: x=[{XMin}, {XMax}] y=[{YMin}, {YMax}]";
         }
 
+        public static AxisLimits FromRect(CoordinateRect rect)
+        {
+            return new AxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
+        }
+
         public AxisLimits WithX(double xMin, double xMax)
         {
             return new AxisLimits(xMin, xMax, YMin, YMax);
