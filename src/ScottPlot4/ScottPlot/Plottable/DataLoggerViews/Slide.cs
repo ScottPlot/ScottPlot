@@ -1,16 +1,16 @@
 ﻿namespace ScottPlot.Plottable.DataLoggerViews;
 
 /// <summary>
-/// Continuously scroll the plot horizontally to continuously focus on the latest data.
+/// Slide the view to the right to keep the newest data points in view
 /// </summary>
-public class Latest : IDataLoggerView
+public class Slide : IScatterDataLoggerView
 {
     public int ViewWidth { get; set; } = 1000;
 
     /// <summary>
     /// Defines the amount of whitespace added to the right of the data when axis limits are set.
-    /// Setting to 0 results in a continuously scrolling plot.
-    /// Setting to 1 results in a "sweep" strip chart effect.
+    /// 0 for a view that slides every time new data is added
+    /// 1 for a view that only slides forward when new data runs off the screen
     /// </summary>
     public double PaddingFraction = 0;
 

@@ -1,8 +1,10 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.6-beta (in development)
+* Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 
 ## ScottPlot 4.1.65 (in development)
+* Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_

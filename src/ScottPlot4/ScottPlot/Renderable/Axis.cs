@@ -507,7 +507,7 @@ namespace ScottPlot.Renderable
         {
             if (enable)
             {
-                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.LogDistributed();
+                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.LogDistributed(minorTickCount);
                 AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
                 AxisTicks.TickCollection.LogScaleMinorTickCount = minorTickCount;
             }
