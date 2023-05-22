@@ -502,8 +502,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Coordinate[] flowData = DataGen.FlowCytometry();
             hist2d.AddRange(flowData);
 
-            // add a colorbar
-            plt.AddColorbar(hist2d.Colormap);
+            // add a colorbar and tell the heatmap about it
+            var cbar = plt.AddColorbar(hist2d.Colormap);
+            hist2d.Colorbar = cbar;
         }
     }
 }
