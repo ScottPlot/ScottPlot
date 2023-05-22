@@ -1,8 +1,12 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.6-beta (in development)
+* Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 
 ## ScottPlot 4.1.65 (in development)
+* Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
+* Image: Added option to disable anti-aliasing for scaled images (#2649) _Thanks @mYcheng-95_
+* Binned Histogram: New plot type that represents binned 2D histogram data as a heatmap (#2453)
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_

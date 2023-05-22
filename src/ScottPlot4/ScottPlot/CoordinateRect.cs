@@ -19,22 +19,35 @@ public class CoordinateRect
 
     public CoordinateRect(double x1, double x2, double y1, double y2)
     {
-        if (double.IsNaN(x1) || double.IsInfinity(x1))
-            throw new ArgumentOutOfRangeException(nameof(x1), "must be a real number");
-
-        if (double.IsNaN(x2) || double.IsInfinity(x2))
-            throw new ArgumentOutOfRangeException(nameof(x2), "must be a real number");
-
-        if (double.IsNaN(y1) || double.IsInfinity(y1))
-            throw new ArgumentOutOfRangeException(nameof(y1), "must be a real number");
-
-        if (double.IsNaN(y2) || double.IsInfinity(y2))
-            throw new ArgumentOutOfRangeException(nameof(y2), "must be a real number");
-
         XMin = Math.Min(x1, x2);
         XMax = Math.Max(x1, x2);
         YMin = Math.Min(y1, y2);
         YMax = Math.Max(y1, y2);
+        ThrowIfNanOrInfinity();
+    }
+
+    public CoordinateRect(Coordinate origin, CoordinateSize size)
+    {
+        XMin = origin.X;
+        XMax = origin.X + size.Width;
+        YMin = origin.Y;
+        YMax = origin.Y + size.Height;
+        ThrowIfNanOrInfinity();
+    }
+
+    private void ThrowIfNanOrInfinity()
+    {
+        if (double.IsNaN(XMin) || double.IsInfinity(XMin))
+            throw new ArgumentOutOfRangeException(nameof(XMin), "must be a real number");
+
+        if (double.IsNaN(XMax) || double.IsInfinity(XMax))
+            throw new ArgumentOutOfRangeException(nameof(XMax), "must be a real number");
+
+        if (double.IsNaN(YMin) || double.IsInfinity(YMin))
+            throw new ArgumentOutOfRangeException(nameof(YMin), "must be a real number");
+
+        if (double.IsNaN(YMax) || double.IsInfinity(YMax))
+            throw new ArgumentOutOfRangeException(nameof(YMax), "must be a real number");
     }
 
     public bool Contains(Coordinate coord)

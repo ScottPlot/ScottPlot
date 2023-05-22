@@ -12,6 +12,7 @@
  *   
  */
 
+using ScottPlot.Drawing;
 using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
@@ -279,6 +280,23 @@ namespace ScottPlot
             BarSeries barSeries = new(bars.ToList());
             Add(barSeries);
             return barSeries;
+        }
+
+        /// <summary>
+        /// Add a binned histogram that displays counts of each cell as a heatmap
+        /// </summary>
+        public BinnedHistogram AddBinnedHistogram(int columns, int rows, bool addColorbar = true)
+        {
+            BinnedHistogram hist2d = new(columns, rows);
+            Add(hist2d);
+
+            if (addColorbar)
+            {
+                var cbar = AddColorbar(hist2d.Colormap);
+                hist2d.Colorbar = cbar;
+            }
+
+            return hist2d;
         }
 
         /// <summary>

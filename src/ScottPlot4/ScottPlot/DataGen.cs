@@ -1191,5 +1191,31 @@ namespace ScottPlot
 
             return data;
         }
+
+        /// <summary>
+        /// Generate clusters of random coordinates designed to appear like flow cytometry data
+        /// </summary>
+        public static Coordinate[] FlowCytometry(int seed = 0)
+        {
+            Random rand = new(seed);
+
+            List<Coordinate> points = new();
+
+            for (int i = 0; i < 10_000; i++)
+            {
+                double x1 = RandomNormalValue(rand, 60, 10);
+                double y1 = RandomNormalValue(rand, 60, 10);
+                points.Add(new(x1, y1));
+            }
+
+            for (int i = 0; i < 10_000; i++)
+            {
+                double x2 = RandomNormalValue(rand, 20, 3);
+                double y2 = RandomNormalValue(rand, 30, 10);
+                points.Add(new(x2, y2));
+            }
+
+            return points.ToArray();
+        }
     }
 }
