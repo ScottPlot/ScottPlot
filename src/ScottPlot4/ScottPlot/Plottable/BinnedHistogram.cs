@@ -58,6 +58,11 @@ public class BinnedHistogram : IPlottable
     public ScottPlot.Drawing.Colormap Colormap = Colormap.Turbo;
 
     /// <summary>
+    /// If set, this colorbar's tick labels will be updated on every render.
+    /// </summary>
+    public Colorbar Colorbar = null;
+
+    /// <summary>
     /// If enabled, bins with no counts will be transparent.
     /// </summary>
     public bool TransparentZero { get; set; } = true;
@@ -127,6 +132,12 @@ public class BinnedHistogram : IPlottable
     public Bitmap GetHeatmapBitmap()
     {
         int maxCount = GetMaxCount();
+
+        if (Colorbar is not null)
+        {
+            Colorbar.MaxValue = maxCount;
+            Colorbar.TickLabelFormatter = position => $"{position:N0}";
+        }
 
         int bytesPerPixel = 4;
         int stride = (Columns % 4 == 0) ? Columns : Columns + 4 - Columns % 4;
