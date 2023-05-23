@@ -47,7 +47,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public static void RenderTickMarks(PlotDimensions dims, Graphics gfx, double[] positions, float tickLength, Color tickColor, Edge edge, float pixelOffset)
+        public static void RenderTickMarks(PlotDimensions dims, Graphics gfx, double[] positions, float tickLength, Color tickColor, Edge edge, float pixelOffset, float tickWidth)
         {
             if (positions is null || positions.Length == 0)
                 return;
@@ -58,7 +58,7 @@ namespace ScottPlot.Renderable
                 float tickDelta = (edge == Edge.Left) ? -tickLength : tickLength;
 
                 var ys = positions.Select(i => dims.GetPixelY(i));
-                using (var pen = GDI.Pen(tickColor))
+                using (var pen = GDI.Pen(tickColor, tickWidth))
                     foreach (float y in ys)
                         gfx.DrawLine(pen, x, y, x + tickDelta, y);
             }
@@ -69,7 +69,7 @@ namespace ScottPlot.Renderable
                 float tickDelta = (edge == Edge.Top) ? -tickLength : tickLength;
 
                 var xs = positions.Select(i => dims.GetPixelX(i));
-                using (var pen = GDI.Pen(tickColor))
+                using (var pen = GDI.Pen(tickColor, tickWidth))
                     foreach (float x in xs)
                         gfx.DrawLine(pen, x, y, x, y + tickDelta);
             }

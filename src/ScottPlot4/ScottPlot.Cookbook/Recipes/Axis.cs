@@ -195,6 +195,24 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
+    class TicksWidth : IRecipe
+    {
+        public ICategory Category => new Categories.Axis();
+        public string ID => "ticks_width";
+        public string Title => "X Ticks Width";
+        public string Description => "This example show how to change the width of the X axe ticks";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            //Plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+
+            //Change the width of the ticks
+            plt.XAxis.AxisTicks.MajorLineWidth = 5;
+            plt.XAxis.AxisTicks.MinorLineWidth = 2;
+        }
+    }
+
     class TicksDateTime : IRecipe
     {
         public ICategory Category => new Categories.Axis();

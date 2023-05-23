@@ -27,6 +27,7 @@ namespace ScottPlot.Renderable
         // major tick/grid styling
         public bool MajorTickVisible = true;
         public float MajorTickLength = 5;
+        public float MajorLineWidth = 1;
         public Color MajorTickColor = Color.Black;
         public bool MajorGridVisible = false;
         public LineStyle MajorGridStyle = LineStyle.Solid;
@@ -36,6 +37,7 @@ namespace ScottPlot.Renderable
         // minor tick/grid styling
         public bool MinorTickVisible = true;
         public float MinorTickLength = 2;
+        public float MinorLineWidth = 1;
         public Color MinorTickColor = Color.Black;
         public bool MinorGridVisible = false;
         public LineStyle MinorGridStyle = LineStyle.Solid;
@@ -92,7 +94,7 @@ namespace ScottPlot.Renderable
             if (MinorTickVisible)
             {
                 float tickLength = TicksExtendOutward ? MinorTickLength : -MinorTickLength;
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, tickLength, MinorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMinorTicks, tickLength, MinorTickColor, Edge, PixelOffset, MinorLineWidth);
             }
 
             if (MajorTickVisible)
@@ -104,7 +106,7 @@ namespace ScottPlot.Renderable
 
                 tickLength = TicksExtendOutward ? tickLength : -tickLength;
 
-                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset);
+                AxisTicksRender.RenderTickMarks(dims, gfx, visibleMajorTicks, tickLength, MajorTickColor, Edge, PixelOffset, MajorLineWidth);
             }
         }
 
