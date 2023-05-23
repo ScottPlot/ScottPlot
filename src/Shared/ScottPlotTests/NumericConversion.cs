@@ -42,6 +42,18 @@ internal class NumericConversion
     }
 
     [Test]
+    public void Test_TypeSpecificFunction_Multiply()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(ScottPlot.NumericConversion.CreateMultFunction<double>().Invoke(42, 69), Is.EqualTo(2898));
+            Assert.That(ScottPlot.NumericConversion.CreateMultFunction<float>().Invoke(42, 69), Is.EqualTo(2898));
+            Assert.That(ScottPlot.NumericConversion.CreateMultFunction<int>().Invoke(42, 69), Is.EqualTo(2898));
+            Assert.That(ScottPlot.NumericConversion.CreateMultFunction<byte>().Invoke(15, 2), Is.EqualTo(30));
+        });
+    }
+
+    [Test]
     public void Test_TypeSpecificFunction_Subtract()
     {
         Assert.Multiple(() =>

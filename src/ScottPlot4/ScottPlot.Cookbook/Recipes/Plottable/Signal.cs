@@ -70,6 +70,22 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SignalScale : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_scale";
+        public string Title => "Signal Scale";
+        public string Description =>
+            "Signal plots can have a Y scale that multiply all data by a defined amount.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.Sin(100_000);
+            var sig = plt.AddSignal(values);
+            sig.ScaleY = 2.5;
+        }
+    }
+
     public class SignalScatterComparison : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Signal();

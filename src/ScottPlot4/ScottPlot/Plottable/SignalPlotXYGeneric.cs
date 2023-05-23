@@ -105,12 +105,12 @@ namespace ScottPlot.Plottable
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(startIndex) + OffsetYAsDouble));
+            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY((Strategy.SourceElement(startIndex) * ScaleYAsDouble) + OffsetYAsDouble));
             if (pointsCount > 1)
             {
                 yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + OffsetYAsDouble));
                 yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + OffsetYAsDouble));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(endIndex - 1) + OffsetYAsDouble));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY((Strategy.SourceElement(endIndex - 1) * ScaleYAsDouble) + OffsetYAsDouble));
             }
         }
 
@@ -145,7 +145,7 @@ namespace ScottPlot.Plottable
                     PointBefore = new PointF[]
                     {
                         new PointF(dims.GetPixelX(NumericConversion.GenericToDouble(Xs, pointBeforeIndex - 1) + OffsetX),
-                                   dims.GetPixelY(Strategy.SourceElement(pointBeforeIndex - 1) + OffsetYAsDouble))
+                                   dims.GetPixelY((Strategy.SourceElement(pointBeforeIndex - 1) * ScaleYAsDouble) + OffsetYAsDouble))
                     };
                     searchFrom = pointBeforeIndex;
                 }
@@ -168,7 +168,7 @@ namespace ScottPlot.Plottable
                     PointAfter = new PointF[]
                     {
                         new PointF(dims.GetPixelX(NumericConversion.GenericToDouble(Xs, pointAfterIndex) + OffsetX),
-                                   dims.GetPixelY(Strategy.SourceElement(pointAfterIndex) + OffsetYAsDouble))
+                                   dims.GetPixelY((Strategy.SourceElement(pointAfterIndex) * ScaleYAsDouble)+ OffsetYAsDouble))
                     };
                     searchTo = pointAfterIndex;
                 }
