@@ -9,10 +9,9 @@ using ScottPlot.Plottable.DataLoggerViews;
 namespace ScottPlot.Plottable;
 
 /// <summary>
-/// Data logging scatter plot.
-/// This plot type stores 2D coordinates and has methods to add and remove points.
+/// Data logging scatter plot designed for growing datasets.
 /// </summary>
-public class ScatterDataLogger : IPlottable, IDataLogger
+public class DataLogger : IPlottable, IDataLogger
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
@@ -25,8 +24,8 @@ public class ScatterDataLogger : IPlottable, IDataLogger
     public float LineWidth { get; set; } = 1;
     public bool ManageAxisLimits { get; set; } = true;
 
-    private IScatterDataLoggerView _LoggerView = new DataLoggerViews.Full();
-    public IScatterDataLoggerView LoggerView
+    private IDataLoggerView _LoggerView = new DataLoggerViews.Full();
+    public IDataLoggerView LoggerView
     {
         get => _LoggerView;
         set
@@ -35,9 +34,13 @@ public class ScatterDataLogger : IPlottable, IDataLogger
             Plot.SetAxisLimits(DataLimits);
         }
     }
+
     public Plot Plot { get; private set; }
 
-    public ScatterDataLogger(Plot plot) { Plot = plot; }
+    public DataLogger(Plot plot)
+    {
+        Plot = plot;
+    }
 
     private readonly List<Coordinate> DataPoints = new();
 

@@ -4,7 +4,7 @@
 /// Show the entire range of data, changing the axis limits only
 /// when the data extends otuside the current view.
 /// </summary>
-public class Full : IScatterDataLoggerView
+public class Full : IDataLoggerView
 {
     public double ExpansionRatio = 1.25;
 

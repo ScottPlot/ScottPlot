@@ -8,7 +8,7 @@ public partial class DataLogger : Form
     readonly Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottable.ScatterDataLogger Logger;
+    readonly ScottPlot.Plottable.DataLogger Logger;
 
     readonly Random Rand = new();
 
@@ -25,7 +25,7 @@ public partial class DataLogger : Form
         comboBox1.Items.Add("Wipe");
         comboBox1.SelectedIndex = 0;
 
-        Logger = formsPlot1.Plot.AddScatterLogger();
+        Logger = formsPlot1.Plot.AddDataLogger();
 
         AddRandomWalkData(1000);
         formsPlot1.Refresh();

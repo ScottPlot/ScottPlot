@@ -3,7 +3,7 @@
 /// <summary>
 /// Slide the view to the right to keep the newest data points in view
 /// </summary>
-public class Slide : IScatterDataLoggerView
+public class Slide : IDataLoggerView
 {
     public int ViewWidth { get; set; } = 1000;
 

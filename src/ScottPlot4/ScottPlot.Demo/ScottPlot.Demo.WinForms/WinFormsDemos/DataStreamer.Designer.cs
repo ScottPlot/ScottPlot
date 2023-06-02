@@ -30,6 +30,7 @@ partial class DataStreamer
     {
         formsPlot1 = new FormsPlot();
         comboBox1 = new System.Windows.Forms.ComboBox();
+        label1 = new System.Windows.Forms.Label();
         SuspendLayout();
         // 
         // formsPlot1
@@ -44,25 +45,37 @@ partial class DataStreamer
         // comboBox1
         // 
         comboBox1.FormattingEnabled = true;
-        comboBox1.Location = new System.Drawing.Point(12, 12);
+        comboBox1.Location = new System.Drawing.Point(88, 12);
         comboBox1.Name = "comboBox1";
         comboBox1.Size = new System.Drawing.Size(121, 23);
         comboBox1.TabIndex = 1;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new System.Drawing.Point(13, 15);
+        label1.Name = "label1";
+        label1.Size = new System.Drawing.Size(69, 15);
+        label1.TabIndex = 2;
+        label1.Text = "View Mode:";
         // 
         // DataStreamer
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(label1);
         Controls.Add(comboBox1);
         Controls.Add(formsPlot1);
         Name = "DataStreamer";
-        Text = "DataStreamer";
+        Text = "DataStreamer Demo";
         ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
 
     private FormsPlot formsPlot1;
     private System.Windows.Forms.ComboBox comboBox1;
+    private System.Windows.Forms.Label label1;
 }

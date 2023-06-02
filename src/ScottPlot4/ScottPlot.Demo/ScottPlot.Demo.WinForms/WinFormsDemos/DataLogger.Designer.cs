@@ -61,16 +61,16 @@ partial class DataLogger
         comboBox1.TabIndex = 2;
         comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
         // 
-        // checkBox1
+        // cbEnableViewManagement
         // 
         cbEnableViewManagement.AutoSize = true;
         cbEnableViewManagement.Checked = true;
         cbEnableViewManagement.CheckState = System.Windows.Forms.CheckState.Checked;
         cbEnableViewManagement.Location = new System.Drawing.Point(214, 14);
-        cbEnableViewManagement.Name = "checkBox1";
-        cbEnableViewManagement.Size = new System.Drawing.Size(110, 19);
+        cbEnableViewManagement.Name = "cbEnableViewManagement";
+        cbEnableViewManagement.Size = new System.Drawing.Size(137, 19);
         cbEnableViewManagement.TabIndex = 3;
-        cbEnableViewManagement.Text = "Automatic View";
+        cbEnableViewManagement.Text = "Automatic axis limits";
         cbEnableViewManagement.UseVisualStyleBackColor = true;
         cbEnableViewManagement.CheckedChanged += cbView_CheckedChanged;
         // 
@@ -86,7 +86,7 @@ partial class DataLogger
         Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         Name = "DataLogger";
         StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-        Text = "ScottPlot Data Logger Demo";
+        Text = "DataLogger Demo";
         ResumeLayout(false);
         PerformLayout();
     }

@@ -18,7 +18,7 @@ public interface IDataLogger
     /// <summary>
     /// Logic for automatically setting axis limits if <see cref="ManageAxisLimits"/> is enabled.
     /// </summary>
-    public IScatterDataLoggerView LoggerView { get; set; }
+    public IDataLoggerView LoggerView { get; set; }
 
     /// <summary>
     /// A reference to the plot containing this plottable.
