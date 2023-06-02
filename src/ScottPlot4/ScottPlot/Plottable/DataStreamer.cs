@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable.DataStreamerViews;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -22,6 +23,7 @@ public class DataStreamer : IPlottable
     public int TotalPointsOnLastRender { get; private set; } = -1;
     public bool RenderNeeded => TotalPointsOnLastRender != TotalPoints;
     public bool AutomaticallyExpandAxisLimits { get; set; } = true;
+    public IDataStreamerView View { get; set; } = new Wipe(true);
 
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
@@ -92,72 +94,31 @@ public class DataStreamer : IPlottable
 
     public AxisLimits GetAxisLimits()
     {
-        double min = double.PositiveInfinity;
-        double max = double.NegativeInfinity;
+        double xMin = OffsetX;
+        double xMax = OffsetX + Data.Length * SamplePeriod;
+
+        double yMin = double.PositiveInfinity;
+        double yMax = double.NegativeInfinity;
 
         for (int i = 0; i < Data.Length; i++)
         {
-            min = Math.Min(min, Data[i]);
-            max = Math.Max(max, Data[i]);
+            yMin = Math.Min(yMin, Data[i]);
+            yMax = Math.Max(yMax, Data[i]);
         }
 
-        return new AxisLimits(
-            xMin: OffsetX,
-            xMax: OffsetX + Data.Length * SamplePeriod,
-            yMin: min,
-            yMax: max);
+        return new AxisLimits(xMin, xMax, yMin, yMax);
     }
 
     public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
 
-    private void RenderWipe(PlotDimensions dims, Graphics gfx, Pen pen)
+    public void Wipe(bool leftToRight = true)
     {
-        int newestCount = DataIndex;
-        int oldestCount = Data.Length - newestCount;
-
-        PointF[] newest = new PointF[newestCount];
-        PointF[] oldest = new PointF[oldestCount];
-
-        for (int i = 0; i < newest.Length; i++)
-        {
-            float x = dims.GetPixelX(i * SamplePeriod + OffsetX);
-            float y = dims.GetPixelY(Data[i] + OffsetY);
-            newest[i] = new(x, y);
-        }
-
-        for (int i = 0; i < oldest.Length; i++)
-        {
-            float x = dims.GetPixelX((i + DataIndex) * SamplePeriod + OffsetX);
-            float y = dims.GetPixelY(Data[i + DataIndex] + OffsetY);
-            oldest[i] = new(x, y);
-        }
-
-        if (oldest.Length > 0)
-            gfx.DrawLines(pen, oldest);
-
-        if (newest.Length > 0)
-            gfx.DrawLines(pen, newest);
+        View = new Wipe(leftToRight);
     }
 
-    private PointF[] RenderScroll(PlotDimensions dims, Graphics gfx, Pen pen, bool scrollLeft = false)
+    public void Scroll(bool newOnRight = true)
     {
-        PointF[] points = new PointF[Data.Length];
-
-        int oldPointCount = Data.Length - DataIndex;
-
-        for (int i = 0; i < Data.Length; i++)
-        {
-            bool isNewPoint = i < oldPointCount;
-            int sourceIndex = isNewPoint ? DataIndex + i : i - oldPointCount;
-            int targetIndex = scrollLeft ? i : Data.Length - 1 - i;
-            points[targetIndex] = new(
-                x: dims.GetPixelX(targetIndex * SamplePeriod + OffsetX),
-                y: dims.GetPixelY(Data[sourceIndex] + OffsetY));
-        }
-
-        gfx.DrawLines(pen, points);
-
-        return points;
+        View = new Scroll(newOnRight);
     }
 
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -167,7 +128,6 @@ public class DataStreamer : IPlottable
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
         using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
-        //RenderWipe(dims, gfx, pen);
-        RenderScroll(dims, gfx, pen);
+        View.Render(this, dims, gfx, pen);
     }
 }
