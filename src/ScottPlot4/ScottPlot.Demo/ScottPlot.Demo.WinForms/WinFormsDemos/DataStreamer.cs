@@ -40,7 +40,7 @@ public partial class DataStreamer : Form
         if (Streamer.RenderNeeded)
             formsPlot1.Refresh();
 
-        Text = $"DataStreamer Demo ({Streamer.TotalPoints:N0} points)";
+        Text = $"DataStreamer Demo ({Streamer.CountTotal:N0} points)";
     }
 
     private void btnWipeRight_Click(object sender, EventArgs e)

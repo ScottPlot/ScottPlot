@@ -1,39 +1,29 @@
-﻿using System;
+﻿using ScottPlot.Plottable.DataViewManagers;
 using System.Collections.Generic;
+using System;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Plottable.DataLoggerViews;
-
-#nullable enable
 
 namespace ScottPlot.Plottable;
 
-/// <summary>
-/// Data logging scatter plot designed for growing datasets.
-/// </summary>
-public class DataLogger : IPlottable, IDataLogger
+public class DataLogger : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
-    public int Count => DataPoints.Count;
-    public int LastRenderCount { get; private set; } = -1;
-    public AxisLimits DataLimits { get; private set; } = AxisLimits.NoLimits;
     public string Label { get; set; } = string.Empty;
     public Color Color { get; set; } = Color.Blue;
     public float LineWidth { get; set; } = 1;
     public bool ManageAxisLimits { get; set; } = true;
+    private IDataViewManager ViewManager { get; set; } = new Full();
 
-    private IDataLoggerView _LoggerView = new DataLoggerViews.Full();
-    public IDataLoggerView LoggerView
-    {
-        get => _LoggerView;
-        set
-        {
-            _LoggerView = value;
-            Plot.SetAxisLimits(DataLimits);
-        }
-    }
+    private readonly List<Coordinate> Data = new();
+    public int Count => Data.Count;
+    public int CountOnLastRender { get; private set; } = -1;
+    public double DataMinX { get; private set; } = double.PositiveInfinity;
+    public double DataMaxX { get; private set; } = double.NegativeInfinity;
+    public double DataMinY { get; private set; } = double.PositiveInfinity;
+    public double DataMaxY { get; private set; } = double.NegativeInfinity;
 
     public Plot Plot { get; private set; }
 
@@ -42,152 +32,104 @@ public class DataLogger : IPlottable, IDataLogger
         Plot = plot;
     }
 
-    private readonly List<Coordinate> DataPoints = new();
+    public void Add(Coordinate coordinate)
+    {
+        Add(coordinate.X, coordinate.Y);
+    }
 
-    /// <summary>
-    /// If set, ignore the X values
-    /// </summary>
-    public double? SamplePeriod { get; set; } = null;
+    public void Add(double x, double y)
+    {
+        Coordinate coord = new(x, y);
+        Data.Add(coord);
+        DataMinX = Math.Min(coord.X, DataMinX);
+        DataMaxX = Math.Max(coord.X, DataMaxX);
+        DataMinY = Math.Min(coord.Y, DataMinY);
+        DataMaxY = Math.Max(coord.Y, DataMaxY);
+    }
 
-    /// <summary>
-    /// If signal mode is enabled and SamplePeriod is set, display this many of the latest points
-    /// </summary>
-    public int SignalPointCount { get; set; } = 1000;
-
-    /// <summary>
-    /// If enabled, use a "wipe" display and only show data from the latest <see cref="FixedWidth"/>
-    /// </summary>
-    public double? FixedWidth { get; set; } = null;
+    public void AddRange(IEnumerable<Coordinate> coordinates)
+    {
+        foreach (Coordinate coordinate in coordinates)
+        {
+            Add(coordinate);
+        }
+    }
 
     public void Clear()
     {
-        DataPoints.Clear();
-        DataLimits = AxisLimits.NoLimits;
+        Data.Clear();
+        DataMinX = double.PositiveInfinity;
+        DataMaxX = double.NegativeInfinity;
+        DataMinY = double.PositiveInfinity;
+        DataMaxY = double.NegativeInfinity;
     }
 
-    public void Add(Coordinate coordinate)
+    public AxisLimits GetAxisLimits()
     {
-        DataPoints.Add(coordinate);
-        DataLimits = DataLimits.Expand(coordinate);
+        return Data.Any()
+            ? new AxisLimits(DataMinX, DataMaxX, DataMinY, DataMaxY)
+            : AxisLimits.NoLimits;
     }
-
-    public void Add(double x, double y) => Add(new Coordinate(x, y));
-
-    public AxisLimits GetAxisLimits() => DataLimits;
 
     public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
 
     public void ValidateData(bool deep = false) { }
 
+    public void ViewFull()
+    {
+        ViewManager = new Full();
+        UpdateAxisLimits(true);
+    }
+
+    public void ViewJump(double paddingFraction = .5)
+    {
+        ViewManager = new Slide()
+        {
+            PaddingFractionX = paddingFraction
+        };
+        UpdateAxisLimits(true);
+    }
+
+    public void ViewSlide()
+    {
+        ViewManager = new Slide()
+        {
+            PaddingFractionX = 0
+        };
+        UpdateAxisLimits(true);
+    }
+
+    public void ViewCustom(IDataViewManager viewManager)
+    {
+        ViewManager = viewManager;
+        UpdateAxisLimits(true);
+    }
+
+    private void UpdateAxisLimits(bool force = false)
+    {
+        AxisLimits viewLimits = force ? AxisLimits.NoLimits : Plot.GetAxisLimits(XAxisIndex, YAxisIndex);
+        AxisLimits dataLimits = GetAxisLimits();
+        AxisLimits newLimits = ViewManager.GetAxisLimits(viewLimits, dataLimits);
+        Plot.SetAxisLimits(newLimits);
+
+        if (force)
+            UpdateAxisLimits();
+    }
+
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
-        LastRenderCount = Count;
-
-        if (SamplePeriod.HasValue)
-        {
-            RenderSignal(dims, bmp, lowQuality);
-        }
-        else
-        {
-            RenderXY(dims, bmp, lowQuality);
-        }
-    }
-
-    private void RenderSignal(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-    {
-        if (DataPoints.Count < SignalPointCount)
-            return; // TODO: support partial rendering
-
-        double viewWidth = SignalPointCount * SamplePeriod!.Value * 1;
-        double[] ysInView = DataPoints.Skip(DataPoints.Count - SignalPointCount).Select(x => x.Y).ToArray();
-
-        if (ysInView.Length != SignalPointCount)
-            throw new InvalidOperationException();
+        CountOnLastRender = Count;
 
         if (ManageAxisLimits)
-            Plot.SetAxisLimits(0, viewWidth, ysInView.Min(), ysInView.Max());
-
-        int divIndex = DataPoints.Count % SignalPointCount;
-        double divOffset = divIndex * SamplePeriod!.Value;
-        int oldCount = ysInView.Length - divIndex;
-        int newCount = ysInView.Length - oldCount;
-
-        PointF[] oldest = Enumerable
-            .Range(0, oldCount)
-            .Select(x => new Coordinate(x * SamplePeriod!.Value + divOffset, ysInView[x]))
-            .Select(x => x.ToPixel(dims))
-            .Select(x => x.ToPointF())
-            .ToArray();
-
-        PointF[] newest = Enumerable
-            .Range(0, newCount)
-            .Select(x => new Coordinate(x * SamplePeriod!.Value, ysInView[ysInView.Length - divIndex + x - 1]))
-            .Select(x => x.ToPixel(dims))
-            .Select(x => x.ToPointF())
-            .ToArray();
+            UpdateAxisLimits();
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
         using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
 
-        if (oldest.Any())
-            gfx.DrawLines(pen, oldest);
-
-        if (newest.Any())
-            gfx.DrawLines(pen, newest);
-    }
-
-    public void RenderXY(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-    {
-        if (FixedWidth is null)
+        PointF[] points = Data.Select(x => dims.GetPixel(x).ToPointF()).ToArray();
+        if (points.Length > 0)
         {
-            if (ManageAxisLimits)
-                LoggerView.SetAxisLimits(Plot, DataLimits);
-
-            RenderXY_All(dims, bmp, lowQuality);
+            gfx.DrawLines(pen, points);
         }
-        else
-        {
-            double viewMinX = DataPoints.Last().X - FixedWidth.Value;
-            int firstViewIndex = 0;
-            while (DataPoints[firstViewIndex].X < viewMinX)
-                firstViewIndex += 1;
-
-            List<Coordinate> pointsInView = DataPoints
-                .Skip(firstViewIndex)
-                .Select(pt => new Coordinate(pt.X - viewMinX, pt.Y))
-                .ToList();
-
-            if (ManageAxisLimits)
-            {
-                AxisLimits pointsInViewLimits = pointsInView.GetLimits();
-                Plot.SetAxisLimits(0, FixedWidth, pointsInViewLimits.YMin, pointsInViewLimits.YMax);
-            }
-
-            RenderXY_Latest(dims, bmp, lowQuality, pointsInView);
-        }
-    }
-
-    public void RenderXY_All(PlotDimensions dims, Bitmap bmp, bool lowQuality)
-    {
-        PointF[] points = DataPoints
-            .Select(x => x.ToPixel(dims))
-            .Select(px => new PointF(px.X, px.Y))
-            .ToArray();
-
-        using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-        using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
-        gfx.DrawLines(pen, points);
-    }
-
-    public void RenderXY_Latest(PlotDimensions dims, Bitmap bmp, bool lowQuality, List<Coordinate> pointsInView)
-    {
-        PointF[] points = pointsInView
-            .Select(x => x.ToPixel(dims))
-            .Select(px => new PointF(px.X, px.Y))
-            .ToArray();
-
-        using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-        using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
-        gfx.DrawLines(pen, points);
     }
 }

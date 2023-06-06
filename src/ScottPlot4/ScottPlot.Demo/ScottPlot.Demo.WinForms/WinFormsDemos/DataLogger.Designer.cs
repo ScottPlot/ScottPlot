@@ -29,59 +29,98 @@ partial class DataLogger
     private void InitializeComponent()
     {
         formsPlot1 = new FormsPlot();
-        label1 = new System.Windows.Forms.Label();
-        comboBox1 = new System.Windows.Forms.ComboBox();
         cbEnableViewManagement = new System.Windows.Forms.CheckBox();
+        btnFull = new System.Windows.Forms.Button();
+        label1 = new System.Windows.Forms.Label();
+        btnClear = new System.Windows.Forms.Button();
+        btnJump = new System.Windows.Forms.Button();
+        btnSlide = new System.Windows.Forms.Button();
         SuspendLayout();
         // 
         // formsPlot1
         // 
         formsPlot1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-        formsPlot1.Location = new System.Drawing.Point(13, 41);
+        formsPlot1.Location = new System.Drawing.Point(13, 73);
         formsPlot1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new System.Drawing.Size(715, 383);
+        formsPlot1.Size = new System.Drawing.Size(715, 351);
         formsPlot1.TabIndex = 0;
+        // 
+        // cbEnableViewManagement
+        // 
+        cbEnableViewManagement.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        cbEnableViewManagement.AutoSize = true;
+        cbEnableViewManagement.Checked = true;
+        cbEnableViewManagement.CheckState = System.Windows.Forms.CheckState.Checked;
+        cbEnableViewManagement.Location = new System.Drawing.Point(599, 8);
+        cbEnableViewManagement.Name = "cbEnableViewManagement";
+        cbEnableViewManagement.Size = new System.Drawing.Size(129, 19);
+        cbEnableViewManagement.TabIndex = 3;
+        cbEnableViewManagement.Text = "Manage Axis Limits";
+        cbEnableViewManagement.UseVisualStyleBackColor = true;
+        cbEnableViewManagement.CheckedChanged += cbView_CheckedChanged;
+        // 
+        // btnFull
+        // 
+        btnFull.Location = new System.Drawing.Point(12, 27);
+        btnFull.Name = "btnFull";
+        btnFull.Size = new System.Drawing.Size(75, 40);
+        btnFull.TabIndex = 4;
+        btnFull.Text = "Full";
+        btnFull.UseVisualStyleBackColor = true;
+        btnFull.Click += btnFull_Click;
         // 
         // label1
         // 
         label1.AutoSize = true;
-        label1.Location = new System.Drawing.Point(12, 15);
+        label1.Location = new System.Drawing.Point(12, 9);
         label1.Name = "label1";
-        label1.Size = new System.Drawing.Size(69, 15);
-        label1.TabIndex = 1;
-        label1.Text = "View Mode:";
+        label1.Size = new System.Drawing.Size(334, 15);
+        label1.TabIndex = 5;
+        label1.Text = "The DataLogger stores and displays infinitely growing datasets";
         // 
-        // comboBox1
+        // btnClear
         // 
-        comboBox1.FormattingEnabled = true;
-        comboBox1.Location = new System.Drawing.Point(87, 12);
-        comboBox1.Name = "comboBox1";
-        comboBox1.Size = new System.Drawing.Size(121, 23);
-        comboBox1.TabIndex = 2;
-        comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+        btnClear.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        btnClear.Location = new System.Drawing.Point(653, 27);
+        btnClear.Name = "btnClear";
+        btnClear.Size = new System.Drawing.Size(75, 40);
+        btnClear.TabIndex = 6;
+        btnClear.Text = "Clear";
+        btnClear.UseVisualStyleBackColor = true;
+        btnClear.Click += btnClear_Click;
         // 
-        // cbEnableViewManagement
+        // btnJump
         // 
-        cbEnableViewManagement.AutoSize = true;
-        cbEnableViewManagement.Checked = true;
-        cbEnableViewManagement.CheckState = System.Windows.Forms.CheckState.Checked;
-        cbEnableViewManagement.Location = new System.Drawing.Point(214, 14);
-        cbEnableViewManagement.Name = "cbEnableViewManagement";
-        cbEnableViewManagement.Size = new System.Drawing.Size(137, 19);
-        cbEnableViewManagement.TabIndex = 3;
-        cbEnableViewManagement.Text = "Automatic axis limits";
-        cbEnableViewManagement.UseVisualStyleBackColor = true;
-        cbEnableViewManagement.CheckedChanged += cbView_CheckedChanged;
+        btnJump.Location = new System.Drawing.Point(93, 27);
+        btnJump.Name = "btnJump";
+        btnJump.Size = new System.Drawing.Size(75, 40);
+        btnJump.TabIndex = 7;
+        btnJump.Text = "Jump";
+        btnJump.UseVisualStyleBackColor = true;
+        btnJump.Click += btnJump_Click;
+        // 
+        // btnSlide
+        // 
+        btnSlide.Location = new System.Drawing.Point(174, 27);
+        btnSlide.Name = "btnSlide";
+        btnSlide.Size = new System.Drawing.Size(75, 40);
+        btnSlide.TabIndex = 8;
+        btnSlide.Text = "Slide";
+        btnSlide.UseVisualStyleBackColor = true;
+        btnSlide.Click += btnSlide_Click;
         // 
         // DataLogger
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(741, 436);
-        Controls.Add(cbEnableViewManagement);
-        Controls.Add(comboBox1);
+        Controls.Add(btnSlide);
+        Controls.Add(btnJump);
+        Controls.Add(btnClear);
         Controls.Add(label1);
+        Controls.Add(btnFull);
+        Controls.Add(cbEnableViewManagement);
         Controls.Add(formsPlot1);
         Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         Name = "DataLogger";
@@ -94,7 +133,10 @@ partial class DataLogger
     #endregion
 
     private FormsPlot formsPlot1;
-    private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.ComboBox comboBox1;
     private System.Windows.Forms.CheckBox cbEnableViewManagement;
+    private System.Windows.Forms.Button btnFull;
+    private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.Button btnClear;
+    private System.Windows.Forms.Button btnJump;
+    private System.Windows.Forms.Button btnSlide;
 }

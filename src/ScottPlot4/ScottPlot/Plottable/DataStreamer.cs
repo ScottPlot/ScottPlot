@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Plottable.DataStreamerViews;
+using ScottPlot.Plottable.DataViewManagers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,11 +20,12 @@ public class DataStreamer : IPlottable
     public double[] Data { get; }
     public int DataIndex { get; private set; } = 0;
     public int Count => Data.Length;
-    public int TotalPoints { get; private set; } = 0;
-    public int TotalPointsOnLastRender { get; private set; } = -1;
-    public bool RenderNeeded => TotalPointsOnLastRender != TotalPoints;
+    public int CountTotal { get; private set; } = 0;
+    public int CountTotalOnLastRender { get; private set; } = -1;
+    public bool RenderNeeded => CountTotalOnLastRender != CountTotal;
     public bool ManageAxisLimits { get; set; } = true;
     private IDataStreamerView View { get; set; } = new Wipe(true);
+    private IDataViewManager ViewManager { get; set; } = new FixedWidth();
 
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
@@ -55,10 +57,10 @@ public class DataStreamer : IPlottable
         DataMin = Math.Min(value, DataMin);
         DataMax = Math.Max(value, DataMax);
 
-        TotalPoints += 1;
+        CountTotal += 1;
     }
 
-    public void Add(IEnumerable<double> values)
+    public void AddRange(IEnumerable<double> values)
     {
         foreach (double value in values)
         {
@@ -75,50 +77,19 @@ public class DataStreamer : IPlottable
         DataMax = value;
 
         DataIndex = 0;
-        TotalPoints = 0;
-    }
-
-    public void ResetMinMax()
-    {
-        DataMin = double.PositiveInfinity;
-        DataMax = double.NegativeInfinity;
-    }
-
-    public void ExpandAxisLimits()
-    {
-        if (double.IsInfinity(DataMin) || double.IsInfinity(DataMax))
-            return;
-
-        AxisLimits limits = Plot.GetAxisLimits(XAxisIndex, YAxisIndex);
-
-        if (DataMin < limits.YMin)
-        {
-            Plot.SetAxisLimits(yMin: DataMin);
-        }
-
-        if (DataMax > limits.YMax)
-        {
-            Plot.SetAxisLimits(yMax: DataMax);
-        }
+        CountTotal = 0;
     }
 
     public void ValidateData(bool deep = false) => Validate.Pass();
 
     public AxisLimits GetAxisLimits()
     {
+        if (double.IsInfinity(DataMin) || double.IsInfinity(DataMax))
+            return AxisLimits.NoLimits;
+
         double xMin = OffsetX;
         double xMax = OffsetX + Data.Length * SamplePeriod;
-
-        double yMin = double.PositiveInfinity;
-        double yMax = double.NegativeInfinity;
-
-        for (int i = 0; i < Data.Length; i++)
-        {
-            yMin = Math.Min(yMin, Data[i]);
-            yMax = Math.Max(yMax, Data[i]);
-        }
-
-        return new AxisLimits(xMin, xMax, yMin, yMax);
+        return new AxisLimits(xMin, xMax, DataMin, DataMax);
     }
 
     public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
@@ -132,7 +103,12 @@ public class DataStreamer : IPlottable
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
         if (ManageAxisLimits)
-            ExpandAxisLimits();
+        {
+            AxisLimits limits = Plot.GetAxisLimits(XAxisIndex, YAxisIndex);
+            AxisLimits dataLimits = GetAxisLimits();
+            AxisLimits newLimits = ViewManager.GetAxisLimits(limits, dataLimits);
+            Plot.SetAxisLimits(newLimits);
+        }
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
         using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
