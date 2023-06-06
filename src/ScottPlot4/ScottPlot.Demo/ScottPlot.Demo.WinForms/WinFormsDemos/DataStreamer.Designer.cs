@@ -33,23 +33,23 @@ partial class DataStreamer
         btnWipeLeft = new System.Windows.Forms.Button();
         btnScrollRight = new System.Windows.Forms.Button();
         btnScrollLeft = new System.Windows.Forms.Button();
-        label1 = new System.Windows.Forms.Label();
         label2 = new System.Windows.Forms.Label();
+        btnReset = new System.Windows.Forms.Button();
+        cbManageLimits = new System.Windows.Forms.CheckBox();
         SuspendLayout();
         // 
         // formsPlot1
         // 
         formsPlot1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-        formsPlot1.Location = new System.Drawing.Point(13, 50);
+        formsPlot1.Location = new System.Drawing.Point(13, 70);
         formsPlot1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new System.Drawing.Size(774, 388);
+        formsPlot1.Size = new System.Drawing.Size(774, 368);
         formsPlot1.TabIndex = 0;
         // 
         // btnWipeRight
         // 
-        btnWipeRight.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-        btnWipeRight.Location = new System.Drawing.Point(470, 7);
+        btnWipeRight.Location = new System.Drawing.Point(13, 31);
         btnWipeRight.Name = "btnWipeRight";
         btnWipeRight.Size = new System.Drawing.Size(75, 37);
         btnWipeRight.TabIndex = 1;
@@ -59,8 +59,7 @@ partial class DataStreamer
         // 
         // btnWipeLeft
         // 
-        btnWipeLeft.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-        btnWipeLeft.Location = new System.Drawing.Point(551, 7);
+        btnWipeLeft.Location = new System.Drawing.Point(94, 31);
         btnWipeLeft.Name = "btnWipeLeft";
         btnWipeLeft.Size = new System.Drawing.Size(75, 37);
         btnWipeLeft.TabIndex = 2;
@@ -70,8 +69,7 @@ partial class DataStreamer
         // 
         // btnScrollRight
         // 
-        btnScrollRight.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-        btnScrollRight.Location = new System.Drawing.Point(632, 7);
+        btnScrollRight.Location = new System.Drawing.Point(175, 31);
         btnScrollRight.Name = "btnScrollRight";
         btnScrollRight.Size = new System.Drawing.Size(75, 37);
         btnScrollRight.TabIndex = 3;
@@ -81,8 +79,7 @@ partial class DataStreamer
         // 
         // btnScrollLeft
         // 
-        btnScrollLeft.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-        btnScrollLeft.Location = new System.Drawing.Point(713, 7);
+        btnScrollLeft.Location = new System.Drawing.Point(256, 31);
         btnScrollLeft.Name = "btnScrollLeft";
         btnScrollLeft.Size = new System.Drawing.Size(75, 37);
         btnScrollLeft.TabIndex = 4;
@@ -90,30 +87,48 @@ partial class DataStreamer
         btnScrollLeft.UseVisualStyleBackColor = true;
         btnScrollLeft.Click += btnScrollLeft_Click;
         // 
-        // label1
-        // 
-        label1.AutoSize = true;
-        label1.Location = new System.Drawing.Point(445, 29);
-        label1.Name = "label1";
-        label1.Size = new System.Drawing.Size(0, 15);
-        label1.TabIndex = 5;
-        // 
         // label2
         // 
         label2.AutoSize = true;
-        label2.Location = new System.Drawing.Point(13, 18);
+        label2.Location = new System.Drawing.Point(13, 9);
         label2.Name = "label2";
         label2.Size = new System.Drawing.Size(405, 15);
         label2.TabIndex = 8;
         label2.Text = "The DataStreamer plot type displays the latest N points of a live data source.";
+        // 
+        // btnReset
+        // 
+        btnReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        btnReset.Location = new System.Drawing.Point(712, 31);
+        btnReset.Name = "btnReset";
+        btnReset.Size = new System.Drawing.Size(75, 37);
+        btnReset.TabIndex = 9;
+        btnReset.Text = "Clear";
+        btnReset.UseVisualStyleBackColor = true;
+        btnReset.Click += btnReset_Click;
+        // 
+        // cbManageLimits
+        // 
+        cbManageLimits.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+        cbManageLimits.AutoSize = true;
+        cbManageLimits.Checked = true;
+        cbManageLimits.CheckState = System.Windows.Forms.CheckState.Checked;
+        cbManageLimits.Location = new System.Drawing.Point(659, 8);
+        cbManageLimits.Name = "cbManageLimits";
+        cbManageLimits.Size = new System.Drawing.Size(129, 19);
+        cbManageLimits.TabIndex = 10;
+        cbManageLimits.Text = "Manage Axis Limits";
+        cbManageLimits.UseVisualStyleBackColor = true;
+        cbManageLimits.CheckedChanged += cbManageLimits_CheckedChanged;
         // 
         // DataStreamer
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(800, 450);
+        Controls.Add(cbManageLimits);
+        Controls.Add(btnReset);
         Controls.Add(label2);
-        Controls.Add(label1);
         Controls.Add(btnScrollLeft);
         Controls.Add(btnScrollRight);
         Controls.Add(btnWipeLeft);
@@ -134,8 +149,9 @@ partial class DataStreamer
     private System.Windows.Forms.Button btnWipeLeft;
     private System.Windows.Forms.Button btnScrollRight;
     private System.Windows.Forms.Button btnScrollLeft;
-    private System.Windows.Forms.Label label1;
     private System.Windows.Forms.Label label2;
+    private System.Windows.Forms.Button btnReset;
+    private System.Windows.Forms.CheckBox cbManageLimits;
 
     /* Unmerged change from project 'WinForms Demo (net6.0-windows)'
     Before:

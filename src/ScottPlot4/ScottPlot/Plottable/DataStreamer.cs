@@ -22,7 +22,7 @@ public class DataStreamer : IPlottable
     public int TotalPoints { get; private set; } = 0;
     public int TotalPointsOnLastRender { get; private set; } = -1;
     public bool RenderNeeded => TotalPointsOnLastRender != TotalPoints;
-    public bool AutomaticallyExpandAxisLimits { get; set; } = true;
+    public bool ManageAxisLimits { get; set; } = true;
     private IDataStreamerView View { get; set; } = new Wipe(true);
 
     public double OffsetX { get; set; } = 0;
@@ -64,6 +64,18 @@ public class DataStreamer : IPlottable
         {
             Add(value);
         }
+    }
+
+    public void Clear(double value = 0)
+    {
+        for (int i = 0; i < Data.Length; i++)
+            Data[i] = 0;
+
+        DataMin = value;
+        DataMax = value;
+
+        DataIndex = 0;
+        TotalPoints = 0;
     }
 
     public void ResetMinMax()
@@ -119,7 +131,7 @@ public class DataStreamer : IPlottable
 
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
-        if (AutomaticallyExpandAxisLimits)
+        if (ManageAxisLimits)
             ExpandAxisLimits();
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);

@@ -18,9 +18,8 @@ public partial class DataStreamer : Form
         InitializeComponent();
 
         Streamer = formsPlot1.Plot.AddDataStreamer(1000);
-        Streamer.ViewScrollLeft();
 
-        formsPlot1.Refresh();
+        btnWipeRight_Click(null, EventArgs.Empty);
 
         AddNewDataTimer.Tick += (s, e) => AddRandomWalkData();
         UpdatePlotTimer.Tick += UpdatePlotTimer_Tick;
@@ -70,5 +69,16 @@ public partial class DataStreamer : Form
         formsPlot1.Plot.Title("Scroll Left");
         Streamer.ViewScrollLeft();
         formsPlot1.Refresh();
+    }
+
+    private void btnReset_Click(object sender, EventArgs e)
+    {
+        LastPointValue = 0;
+        Streamer.Clear();
+    }
+
+    private void cbManageLimits_CheckedChanged(object sender, EventArgs e)
+    {
+        Streamer.ManageAxisLimits = cbManageLimits.Checked;
     }
 }

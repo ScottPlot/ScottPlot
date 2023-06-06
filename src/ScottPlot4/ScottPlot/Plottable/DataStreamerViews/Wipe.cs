@@ -1,14 +1,17 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace ScottPlot.Plottable.DataStreamerViews;
 
 internal class Wipe : IDataStreamerView
 {
-    private readonly bool LeftToRight;
+    private readonly bool WipeRight;
 
-    public Wipe(bool leftToRight)
+    //TODO: Add a BlankFraction property that adds a gap between old and new data
+
+    public Wipe(bool wipeRight)
     {
-        LeftToRight = leftToRight;
+        WipeRight = wipeRight;
     }
 
     public void Render(DataStreamer streamer, PlotDimensions dims, Graphics gfx, Pen pen)
@@ -16,19 +19,23 @@ internal class Wipe : IDataStreamerView
         int newestCount = streamer.DataIndex;
         int oldestCount = streamer.Data.Length - newestCount;
 
+        double xMax = streamer.Data.Length * streamer.SamplePeriod + streamer.OffsetX;
+
         PointF[] newest = new PointF[newestCount];
         PointF[] oldest = new PointF[oldestCount];
 
         for (int i = 0; i < newest.Length; i++)
         {
-            float x = dims.GetPixelX(i * streamer.SamplePeriod + streamer.OffsetX);
+            double xPos = i * streamer.SamplePeriod + streamer.OffsetX;
+            float x = dims.GetPixelX(WipeRight ? xPos : xMax - xPos);
             float y = dims.GetPixelY(streamer.Data[i] + streamer.OffsetY);
             newest[i] = new(x, y);
         }
 
         for (int i = 0; i < oldest.Length; i++)
         {
-            float x = dims.GetPixelX((i + streamer.DataIndex) * streamer.SamplePeriod + streamer.OffsetX);
+            double xPos = (i + streamer.DataIndex) * streamer.SamplePeriod + streamer.OffsetX;
+            float x = dims.GetPixelX(WipeRight ? xPos : xMax - xPos);
             float y = dims.GetPixelY(streamer.Data[i + streamer.DataIndex] + streamer.OffsetY);
             oldest[i] = new(x, y);
         }
