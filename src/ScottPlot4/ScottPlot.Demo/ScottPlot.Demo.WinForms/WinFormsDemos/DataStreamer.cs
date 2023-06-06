@@ -18,6 +18,7 @@ public partial class DataStreamer : Form
         InitializeComponent();
 
         Streamer = formsPlot1.Plot.AddDataStreamer(1000);
+        Streamer.ViewScrollLeft();
 
         formsPlot1.Refresh();
 
@@ -41,5 +42,33 @@ public partial class DataStreamer : Form
             formsPlot1.Refresh();
 
         Text = $"DataStreamer Demo ({Streamer.TotalPoints:N0} points)";
+    }
+
+    private void btnWipeRight_Click(object sender, EventArgs e)
+    {
+        formsPlot1.Plot.Title("Wipe Right");
+        Streamer.ViewWipeRight();
+        formsPlot1.Refresh();
+    }
+
+    private void btnWipeLeft_Click(object sender, EventArgs e)
+    {
+        formsPlot1.Plot.Title("Wipe Left");
+        Streamer.ViewWipeLeft();
+        formsPlot1.Refresh();
+    }
+
+    private void btnScrollRight_Click(object sender, EventArgs e)
+    {
+        formsPlot1.Plot.Title("Scroll Right");
+        Streamer.ViewScrollRight();
+        formsPlot1.Refresh();
+    }
+
+    private void btnScrollLeft_Click(object sender, EventArgs e)
+    {
+        formsPlot1.Plot.Title("Scroll Left");
+        Streamer.ViewScrollLeft();
+        formsPlot1.Refresh();
     }
 }

@@ -23,7 +23,7 @@ public class DataStreamer : IPlottable
     public int TotalPointsOnLastRender { get; private set; } = -1;
     public bool RenderNeeded => TotalPointsOnLastRender != TotalPoints;
     public bool AutomaticallyExpandAxisLimits { get; set; } = true;
-    public IDataStreamerView View { get; set; } = new Wipe(true);
+    private IDataStreamerView View { get; set; } = new Wipe(true);
 
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
@@ -111,15 +111,11 @@ public class DataStreamer : IPlottable
 
     public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
 
-    public void Wipe(bool leftToRight = true)
-    {
-        View = new Wipe(leftToRight);
-    }
-
-    public void Scroll(bool newOnRight = true)
-    {
-        View = new Scroll(newOnRight);
-    }
+    public void ViewWipeRight() => View = new Wipe(true);
+    public void ViewWipeLeft() => View = new Wipe(false);
+    public void ViewScrollLeft() => View = new Scroll(true);
+    public void ViewScrollRight() => View = new Scroll(false);
+    public void ViewCustom(IDataStreamerView view) => View = view;
 
     public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
