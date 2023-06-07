@@ -22,6 +22,7 @@ public partial class DataLogger : Form
 
         AddRandomWalkData(1000);
         btnFull_Click(null, EventArgs.Empty);
+        cbView_CheckedChanged(null, EventArgs.Empty);
 
         AddNewDataTimer.Tick += (s, e) => AddRandomWalkData(10);
         UpdatePlotTimer.Tick += UpdatePlotTimer_Tick;
@@ -49,6 +50,10 @@ public partial class DataLogger : Form
     private void cbView_CheckedChanged(object sender, EventArgs e)
     {
         Logger.ManageAxisLimits = cbEnableViewManagement.Checked;
+
+        // disable mouse interaction if axis limits are managed automatically
+        formsPlot1.Configuration.Pan = !cbEnableViewManagement.Checked;
+        formsPlot1.Configuration.Zoom = !cbEnableViewManagement.Checked;
     }
 
     private void btnFull_Click(object sender, EventArgs e)

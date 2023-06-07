@@ -1,4 +1,4 @@
-﻿using ScottPlot.Plottable.DataViewManagers;
+﻿using ScottPlot.Plottable.AxisManagers;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace ScottPlot.Plottable;
 
+/// <summary>
+/// This plot type stores infinitely growing X/Y pairs and displays them as a scatter plot.
+/// </summary>
 public class DataLogger : IPlottable
 {
     public bool IsVisible { get; set; } = true;
@@ -14,29 +17,55 @@ public class DataLogger : IPlottable
     public string Label { get; set; } = string.Empty;
     public Color Color { get; set; } = Color.Blue;
     public float LineWidth { get; set; } = 1;
+
+    /// <summary>
+    /// Number of data points currently being tracked.
+    /// </summary>
+    public int Count => Data.Count;
+
+    /// <summary>
+    /// Number of data points displayed the last time this plottable was rendered.
+    /// This can be compared with <see cref="Count"/> to determine if a new render is required.
+    /// </summary>
+    public int CountOnLastRender { get; private set; } = -1;
+
+    /// <summary>
+    /// If true, the <see cref="AxisManager"/> will be used to update axis limits on every render.
+    /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
-    private IDataViewManager ViewManager { get; set; } = new Full();
+
+    /// <summary>
+    /// Holds logic used to update axis limits on every render if <see cref="ManageAxisLimits"/> is true.
+    /// </summary>
+    private IAxisManager AxisManager { get; set; } = new Full();
+
+    /// <summary>
+    /// Used to obtain the current axis limits so <see cref="AxisManager"/> can adjust them if needed.
+    /// </summary>
+    public Plot Plot { get; private set; }
 
     private readonly List<Coordinate> Data = new();
-    public int Count => Data.Count;
-    public int CountOnLastRender { get; private set; } = -1;
-    public double DataMinX { get; private set; } = double.PositiveInfinity;
-    public double DataMaxX { get; private set; } = double.NegativeInfinity;
-    public double DataMinY { get; private set; } = double.PositiveInfinity;
-    public double DataMaxY { get; private set; } = double.NegativeInfinity;
-
-    public Plot Plot { get; private set; }
+    private double DataMinX = double.PositiveInfinity;
+    private double DataMaxX = double.NegativeInfinity;
+    private double DataMinY = double.PositiveInfinity;
+    private double DataMaxY = double.NegativeInfinity;
 
     public DataLogger(Plot plot)
     {
         Plot = plot;
     }
 
+    /// <summary>
+    /// Add a point to the logger
+    /// </summary>
     public void Add(Coordinate coordinate)
     {
         Add(coordinate.X, coordinate.Y);
     }
 
+    /// <summary>
+    /// Add a point to the logger
+    /// </summary>
     public void Add(double x, double y)
     {
         Coordinate coord = new(x, y);
@@ -47,6 +76,9 @@ public class DataLogger : IPlottable
         DataMaxY = Math.Max(coord.Y, DataMaxY);
     }
 
+    /// <summary>
+    /// Add a collection of points to the logger
+    /// </summary>
     public void AddRange(IEnumerable<Coordinate> coordinates)
     {
         foreach (Coordinate coordinate in coordinates)
@@ -55,6 +87,9 @@ public class DataLogger : IPlottable
         }
     }
 
+    /// <summary>
+    /// Clear all logged data points
+    /// </summary>
     public void Clear()
     {
         Data.Clear();
@@ -75,33 +110,53 @@ public class DataLogger : IPlottable
 
     public void ValidateData(bool deep = false) { }
 
+    /// <summary>
+    /// Automatically expand the axis as needed to ensure the full dataset is visible before each render.
+    /// </summary>
     public void ViewFull()
     {
-        ViewManager = new Full();
+        ManageAxisLimits = true;
+        AxisManager = new Full();
         UpdateAxisLimits(true);
     }
 
-    public void ViewJump(double paddingFraction = .5)
+    /// <summary>
+    /// Automatically adjust the axis limits to track the newest data as it comes in.
+    /// The axis limits will appear to "jump" when new data runs off the screen.
+    /// </summary>
+    public void ViewJump(double width = 1000, double paddingFraction = .5)
     {
-        ViewManager = new Slide()
+        ManageAxisLimits = true;
+        AxisManager = new Slide()
         {
-            PaddingFractionX = paddingFraction
+            Width = width,
+            PaddingFractionX = paddingFraction,
         };
         UpdateAxisLimits(true);
     }
 
-    public void ViewSlide()
+    /// <summary>
+    /// Automatically adjust the axis limits to track the newest data as it comes in.
+    /// The axis limits will appear to "slide" continuously as new data is added.
+    /// </summary>
+    public void ViewSlide(double width = 1000)
     {
-        ViewManager = new Slide()
+        ManageAxisLimits = true;
+        AxisManager = new Slide()
         {
-            PaddingFractionX = 0
+            Width = width,
+            PaddingFractionX = 0,
         };
         UpdateAxisLimits(true);
     }
 
-    public void ViewCustom(IDataViewManager viewManager)
+    /// <summary>
+    /// Use a custom axis manager to update axis limits before each render.
+    /// </summary>
+    public void ViewCustom(IAxisManager axisManager)
     {
-        ViewManager = viewManager;
+        ManageAxisLimits = true;
+        AxisManager = axisManager;
         UpdateAxisLimits(true);
     }
 
@@ -109,7 +164,7 @@ public class DataLogger : IPlottable
     {
         AxisLimits viewLimits = force ? AxisLimits.NoLimits : Plot.GetAxisLimits(XAxisIndex, YAxisIndex);
         AxisLimits dataLimits = GetAxisLimits();
-        AxisLimits newLimits = ViewManager.GetAxisLimits(viewLimits, dataLimits);
+        AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
         Plot.SetAxisLimits(newLimits);
 
         if (force)

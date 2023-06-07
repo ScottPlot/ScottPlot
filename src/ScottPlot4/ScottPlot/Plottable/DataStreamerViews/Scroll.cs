@@ -4,29 +4,36 @@ namespace ScottPlot.Plottable.DataStreamerViews;
 
 internal class Scroll : IDataStreamerView
 {
-    private readonly bool newOnRight;
+    private readonly bool NewOnRight;
 
-    public Scroll(bool newOnRight)
+    public DataStreamer Streamer { get; }
+
+    public Scroll(DataStreamer streamer, bool newOnRight)
     {
-        this.newOnRight = newOnRight;
+        Streamer = streamer;
+        NewOnRight = newOnRight;
     }
 
-    public void Render(DataStreamer streamer, PlotDimensions dims, Graphics gfx, Pen pen)
+    public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
     {
-        PointF[] points = new PointF[streamer.Data.Length];
+        PointF[] points = new PointF[Streamer.Data.Length];
 
-        int oldPointCount = streamer.Data.Length - streamer.DataIndex;
+        int oldPointCount = Streamer.Data.Length - Streamer.NextIndex;
 
-        for (int i = 0; i < streamer.Data.Length; i++)
+        for (int i = 0; i < Streamer.Data.Length; i++)
         {
             bool isNewPoint = i < oldPointCount;
-            int sourceIndex = isNewPoint ? streamer.DataIndex + i : i - oldPointCount;
-            int targetIndex = newOnRight ? i : streamer.Data.Length - 1 - i;
+            int sourceIndex = isNewPoint ? Streamer.NextIndex + i : i - oldPointCount;
+            int targetIndex = NewOnRight ? i : Streamer.Data.Length - 1 - i;
             points[targetIndex] = new(
-                x: dims.GetPixelX(targetIndex * streamer.SamplePeriod + streamer.OffsetX),
-                y: dims.GetPixelY(streamer.Data[sourceIndex] + streamer.OffsetY));
+                x: dims.GetPixelX(targetIndex * Streamer.SamplePeriod + Streamer.OffsetX),
+                y: dims.GetPixelY(Streamer.Data[sourceIndex] + Streamer.OffsetY));
         }
 
-        gfx.DrawLines(pen, points);
+        using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
+        using var pen = ScottPlot.Drawing.GDI.Pen(Streamer.Color, Streamer.LineWidth, LineStyle.Solid);
+
+        if (points.Length > 1)
+            gfx.DrawLines(pen, points);
     }
 }

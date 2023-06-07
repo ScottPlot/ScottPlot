@@ -20,6 +20,7 @@ public partial class DataStreamer : Form
         Streamer = formsPlot1.Plot.AddDataStreamer(1000);
 
         btnWipeRight_Click(null, EventArgs.Empty);
+        cbManageLimits_CheckedChanged(null, EventArgs.Empty);
 
         AddNewDataTimer.Tick += (s, e) => AddRandomWalkData();
         UpdatePlotTimer.Tick += UpdatePlotTimer_Tick;
@@ -37,7 +38,7 @@ public partial class DataStreamer : Form
 
     private void UpdatePlotTimer_Tick(object sender, EventArgs e)
     {
-        if (Streamer.RenderNeeded)
+        if (Streamer.CountTotal != Streamer.CountTotalOnLastRender)
             formsPlot1.Refresh();
 
         Text = $"DataStreamer Demo ({Streamer.CountTotal:N0} points)";
@@ -80,5 +81,9 @@ public partial class DataStreamer : Form
     private void cbManageLimits_CheckedChanged(object sender, EventArgs e)
     {
         Streamer.ManageAxisLimits = cbManageLimits.Checked;
+
+        // disable mouse interaction if axis limits are managed automatically
+        formsPlot1.Configuration.Pan = !cbManageLimits.Checked;
+        formsPlot1.Configuration.Zoom = !cbManageLimits.Checked;
     }
 }

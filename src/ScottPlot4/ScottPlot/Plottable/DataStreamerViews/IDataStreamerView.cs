@@ -2,7 +2,11 @@
 
 namespace ScottPlot.Plottable.DataStreamerViews;
 
+/// <summary>
+/// Contains logic for rendering fixed-length data in a streaming data logger.
+/// </summary>
 public interface IDataStreamerView
 {
-    void Render(DataStreamer streamer, PlotDimensions dims, Graphics gfx, Pen pen);
+    DataStreamer Streamer { get; }
+    void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
 }

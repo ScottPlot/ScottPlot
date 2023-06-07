@@ -130,7 +130,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a data logging scatter plot designed for growing collections of X/Y points
+        /// Add a data logging scatter plot designed for growing collections of X/Y points.
         /// </summary>
         public DataLogger AddDataLogger()
         {
