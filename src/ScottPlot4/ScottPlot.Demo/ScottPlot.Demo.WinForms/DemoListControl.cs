@@ -36,6 +36,7 @@ namespace ScottPlot.Demo.WinForms
         private void FinanceDemoButton_Click(object sender, EventArgs e) => new WinFormsDemos.FinanceDemo().ShowDialog();
         private void HittableButton_Click(object sender, EventArgs e) => new WinFormsDemos.HittableDemo().ShowDialog();
         private void DataLoggerButton_Click(object sender, EventArgs e) => new WinFormsDemos.DataLogger().ShowDialog();
+        private void DataStreamerButton_Click(object sender, EventArgs e) => new WinFormsDemos.DataStreamer().ShowDialog();
         private void HistogramButton_Click(object sender, EventArgs e) => new WinFormsDemos.HistogramDemo().ShowDialog();
     }
 }
