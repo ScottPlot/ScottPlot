@@ -6,7 +6,7 @@ internal class Polygon : RecipePageBase
     {
         Chapter = Chapter.PlotTypes,
         PageName = "Polygon Plot",
-        PageDescription = "Polygon plots draws a polygon.",
+        PageDescription = "Polygon plots draws a polygon",
     };
 
     internal class Quickstart : RecipeTestBase
