@@ -14,7 +14,7 @@ namespace ScottPlot.Plottables
     public class Polygon : IPlottable
     {
         public static Polygon Empty => new Polygon();
-            public bool IsEmpty { get; private set; } = false;
+        public bool IsEmpty { get; private set; } = false;
         /// <summary>
         /// The axis dependant coordinates of every point.
         /// </summary>
@@ -76,7 +76,7 @@ namespace ScottPlot.Plottables
             double yMin = Coordinates[0].Y;
             double yMax = Coordinates[0].Y;
 
-            foreach(var coord in Coordinates)
+            foreach (var coord in Coordinates)
             {
                 if (coord.X > xMax) xMax = coord.X;
                 if (coord.X < xMin) xMax = coord.X;
@@ -97,7 +97,7 @@ namespace ScottPlot.Plottables
             if (IsEmpty) return;
 
             List<SKPoint> skPoints = new List<SKPoint>();
-            foreach(var coordinate in Coordinates)
+            foreach (var coordinate in Coordinates)
             {
                 skPoints.Add(Axes.GetPixel(coordinate).ToSKPoint());
             }
@@ -127,7 +127,7 @@ namespace ScottPlot.Plottables
                     LineStyle.ApplyToPaint(paint);
                     surface.Canvas.DrawPath(path, paint);
                 }
-                
+
                 if (MarkerStyle != null && MarkerStyle.IsVisible)
                 {
                     MarkerStyle.Render(surface.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));

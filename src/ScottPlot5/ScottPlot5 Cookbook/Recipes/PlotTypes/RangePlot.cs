@@ -34,7 +34,7 @@ internal class RangePlot : RecipePageBase
             myPlot.Add.RangePlot(scatter1, scatter2);
             myPlot.AutoScale();
         }
-      
+
     }
 
     internal class Styling : RecipeTestBase
