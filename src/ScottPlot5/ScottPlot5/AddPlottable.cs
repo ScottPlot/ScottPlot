@@ -177,4 +177,34 @@ public class AddPlottable
         Plot.Plottables.Add(poly);
         return poly;
     }
+
+    public RangePlot RangePlot(Scatter scatter1, Scatter scatter2)
+    {
+        var rangePlot = new RangePlot(scatter1, scatter2);
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
+    }
+
+    public RangePlot RangePlot(ICollection<(double X, double Top, double Bottom)> data)
+    {
+        var rangePlot = new RangePlot();
+        rangePlot.SetDataSource(data);
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
+    }
+
+    /// <summary>
+    /// Creates a RangePlot plot from the input collection <paramref name="data"/> and a function that solves coordinates from every item.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="coordinateSolver">A function that returns the X, and Y (top and bottom) values for each item in the <paramref name="data"/>.</param>
+    /// <returns></returns>
+    public RangePlot ScatterArea<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
+    {
+        var rangePlot = new RangePlot();
+        rangePlot.SetDataSource(data, coordinateSolver);
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
+    }
 }
