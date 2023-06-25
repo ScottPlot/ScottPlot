@@ -170,4 +170,11 @@ public class AddPlottable
         Plot.Plottables.Add(ohlc);
         return ohlc;
     }
+
+    public Polygon Polygon(Coordinates[] coordinates)
+    {
+        Polygon poly = new Polygon(coordinates);
+        Plot.Plottables.Add(poly);
+        return poly;
+    }
 }
