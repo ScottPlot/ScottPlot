@@ -200,7 +200,7 @@ public class AddPlottable
     /// <param name="data"></param>
     /// <param name="coordinateSolver">A function that returns the X, and Y (top and bottom) values for each item in the <paramref name="data"/>.</param>
     /// <returns></returns>
-    public RangePlot ScatterArea<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
+    public RangePlot RangePlot<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
     {
         var rangePlot = new RangePlot();
         rangePlot.SetDataSource(data, coordinateSolver);
