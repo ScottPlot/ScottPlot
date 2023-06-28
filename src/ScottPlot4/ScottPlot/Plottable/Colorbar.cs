@@ -19,6 +19,7 @@ namespace ScottPlot.Plottable
         private Bitmap BmpScale;
 
         public bool IsVisible { get; set; } = true;
+        public bool LabelIsVisible { get; set; } = true;
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
 
@@ -335,7 +336,7 @@ namespace ScottPlot.Plottable
 
         private void RenderLabel(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect, float ticksWidth)
         {
-            if (string.IsNullOrWhiteSpace(Label))
+            if (string.IsNullOrWhiteSpace(Label) || !LabelIsVisible)
                 return;
 
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
