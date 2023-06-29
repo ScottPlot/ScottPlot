@@ -2,6 +2,7 @@
 
 ## ScottPlot 5.0.6-beta (in development)
 * Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
+* OpenGL: Use CPU to render on devices without hardware acceleration (#2651) _Thanks @StendProg_
 
 ## ScottPlot 4.1.65 (in development)
 * Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
@@ -9,6 +10,7 @@
 * Binned Histogram: New plot type that represents binned 2D histogram data as a heatmap (#2453)
 * DataLogger: New type of scatter plot designed for infinitely growing X/Y datasets (#2377, #2641)
 * DataStreamer: New type of signal plot for displaying live data as it is shifted in (#2377, #2641)
+* WPF: Multi-target Framework 4.6.1 changed to 4.6.2 (#2685)
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
