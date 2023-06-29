@@ -1,30 +1,24 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Axis.StandardAxes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Plottables;
 
-public class RangePlot : IPlottable
+public class FillY : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    private Polygon poly = Polygon.Empty;
+    private Polygon Poly { get; set; } = Polygon.Empty;
 
-    public FillStyle? FillStyle { get => poly.FillStyle; set => poly.FillStyle = value; }
-    public LineStyle LineStyle { get => poly.LineStyle; set => poly.LineStyle = value; }
-    public MarkerStyle MarkerStyle { get => poly.MarkerStyle; set => poly.MarkerStyle = value; }
+    public FillStyle FillStyle { get => Poly.FillStyle; }
+    public LineStyle LineStyle { get => Poly.LineStyle; }
+    public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.
     /// </summary>
-    public RangePlot()
+    public FillY()
     {
 
     }
@@ -34,14 +28,14 @@ public class RangePlot : IPlottable
     /// </summary>
     /// <param name="scatter1"></param>
     /// <param name="scatter2"></param>
-    public RangePlot(Scatter scatter1, Scatter scatter2)
+    public FillY(Scatter scatter1, Scatter scatter2)
     {
         var data1 = scatter1.Data.GetScatterPoints();
         var data2 = scatter2.Data.GetScatterPoints();
 
         var data = data1.Concat(data2.Reverse()).ToArray();
 
-        poly = new Polygon(data);
+        Poly = new Polygon(data);
     }
 
     public void SetDataSource(ICollection<(double X, double Top, double Bottom)> items)
@@ -60,7 +54,7 @@ public class RangePlot : IPlottable
             i++;
         }
 
-        poly = new Polygon(all);
+        Poly = new Polygon(all);
     }
 
     public void SetDataSource<T>(ICollection<T> items, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
@@ -81,25 +75,20 @@ public class RangePlot : IPlottable
             i++;
         }
 
-        poly = new Polygon(all);
+        Poly = new Polygon(all);
     }
 
     public AxisLimits GetAxisLimits()
     {
-        if (poly is null) return AxisLimits.NoLimits;
-        return poly.GetAxisLimits();
+        if (Poly is null)
+            return AxisLimits.NoLimits;
+
+        return Poly.GetAxisLimits();
     }
 
     public void Render(SKSurface surface)
     {
-        if (poly != null)
-        {
-            poly.FillStyle = FillStyle;
-            poly.LineStyle = LineStyle;
-            poly.MarkerStyle = MarkerStyle;
-            poly.Axes = Axes;
-            poly.Render(surface);
-        }
+        Poly.Render(surface);
     }
 }
 

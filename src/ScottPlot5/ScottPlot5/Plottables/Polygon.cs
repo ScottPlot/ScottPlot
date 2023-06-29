@@ -13,19 +13,18 @@ namespace ScottPlot.Plottables
     /// </summary>
     public class Polygon : IPlottable
     {
-        public static Polygon Empty => new Polygon();
-        public bool IsEmpty { get; private set; } = false;
-        /// <summary>
-        /// The axis dependant coordinates of every point.
-        /// </summary>
-        public Coordinates[] Coordinates { get; private set; }
+        public static Polygon Empty => new();
 
-        // configuration
-        public string Label { get; set; }
+        public bool IsEmpty { get; private set; } = false;
+
+        public Coordinates[] Coordinates { get; private set; } = Array.Empty<Coordinates>();
+
+        public string Label { get; set; } = string.Empty;
+
         public bool IsVisible { get; set; } = true;
 
         public LineStyle LineStyle { get; set; } = LineStyle.NoLine;
-        public FillStyle? FillStyle { get; set; } = new FillStyle { Color = Colors.LightGray };
+        public FillStyle FillStyle { get; set; } = new() { Color = Colors.LightGray };
         public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.None;
 
         public int PointCount { get => Coordinates.Length; }
@@ -54,7 +53,7 @@ namespace ScottPlot.Plottables
         /// <param name="coords">The axis dependant vertex coordinates.</param>
         public Polygon(Coordinates[] coords)
         {
-            SetCoordinates(coords);
+            UpdateCoordinates(coords);
         }
 
         public override string ToString()
@@ -63,7 +62,7 @@ namespace ScottPlot.Plottables
             return $"PlottablePolygon{label} with {PointCount} points";
         }
 
-        public void SetCoordinates(Coordinates[] newCoordinates)
+        public void UpdateCoordinates(Coordinates[] newCoordinates)
         {
             Coordinates = newCoordinates;
 
@@ -112,26 +111,24 @@ namespace ScottPlot.Plottables
             // Connect last vertex to the initial vertex to close the shape.
             path.LineTo(skPoints[0]);
 
-            using (var paint = new SKPaint())
+            using var paint = new SKPaint();
+            if (FillStyle != null && FillStyle.HasValue)
             {
-                if (FillStyle != null && FillStyle.HasValue)
-                {
-                    FillStyle.ApplyToPaint(paint);
-                    paint.Style = SKPaintStyle.Fill;
-                    surface.Canvas.DrawPath(path, paint);
-                }
+                FillStyle.ApplyToPaint(paint);
+                paint.Style = SKPaintStyle.Fill;
+                surface.Canvas.DrawPath(path, paint);
+            }
 
-                if (LineStyle != null && LineStyle.IsVisible)
-                {
-                    paint.Style = SKPaintStyle.Stroke;
-                    LineStyle.ApplyToPaint(paint);
-                    surface.Canvas.DrawPath(path, paint);
-                }
+            if (LineStyle != null && LineStyle.IsVisible)
+            {
+                paint.Style = SKPaintStyle.Stroke;
+                LineStyle.ApplyToPaint(paint);
+                surface.Canvas.DrawPath(path, paint);
+            }
 
-                if (MarkerStyle != null && MarkerStyle.IsVisible)
-                {
-                    MarkerStyle.Render(surface.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));
-                }
+            if (MarkerStyle != null && MarkerStyle.IsVisible)
+            {
+                MarkerStyle.Render(surface.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));
             }
         }
     }

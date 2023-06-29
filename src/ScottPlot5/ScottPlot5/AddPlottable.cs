@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
+using System.Collections.ObjectModel;
 
 namespace ScottPlot;
 
@@ -178,32 +179,53 @@ public class AddPlottable
         return poly;
     }
 
-    public RangePlot RangePlot(Scatter scatter1, Scatter scatter2)
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(double[] xs, double[] ys1, double[] ys2)
     {
-        var rangePlot = new RangePlot(scatter1, scatter2);
+        List<(double, double, double)> data = new();
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            data.Add((xs[i], ys1[i], ys2[i]));
+        }
+
+        return FillY(data);
+    }
+
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(Scatter scatter1, Scatter scatter2)
+    {
+        FillY rangePlot = new(scatter1, scatter2);
+        rangePlot.FillStyle.Color = NextColor;
         Plot.Plottables.Add(rangePlot);
         return rangePlot;
     }
 
-    public RangePlot RangePlot(ICollection<(double X, double Top, double Bottom)> data)
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(ICollection<(double X, double Top, double Bottom)> data)
     {
-        var rangePlot = new RangePlot();
+        FillY rangePlot = new();
+        rangePlot.FillStyle.Color = NextColor;
         rangePlot.SetDataSource(data);
         Plot.Plottables.Add(rangePlot);
         return rangePlot;
     }
 
     /// <summary>
-    /// Creates a RangePlot plot from the input collection <paramref name="data"/> and a function that solves coordinates from every item.
+    /// Fill the vertical range between two Y points for each X point
+    /// This overload uses a custom function to calculate X, Y1, and Y2 values
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="coordinateSolver">A function that returns the X, and Y (top and bottom) values for each item in the <paramref name="data"/>.</param>
-    /// <returns></returns>
-    public RangePlot RangePlot<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
+    public FillY FillY<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> function)
     {
-        var rangePlot = new RangePlot();
-        rangePlot.SetDataSource(data, coordinateSolver);
+        var rangePlot = new FillY();
+        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.SetDataSource(data, function);
         Plot.Plottables.Add(rangePlot);
         return rangePlot;
     }
