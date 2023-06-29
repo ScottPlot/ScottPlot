@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
+using System.Collections.ObjectModel;
 
 namespace ScottPlot;
 
@@ -169,5 +170,63 @@ public class AddPlottable
         OhlcPlot ohlc = new(dataSource);
         Plot.Plottables.Add(ohlc);
         return ohlc;
+    }
+
+    public Polygon Polygon(Coordinates[] coordinates)
+    {
+        Polygon poly = new Polygon(coordinates);
+        Plot.Plottables.Add(poly);
+        return poly;
+    }
+
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(double[] xs, double[] ys1, double[] ys2)
+    {
+        List<(double, double, double)> data = new();
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            data.Add((xs[i], ys1[i], ys2[i]));
+        }
+
+        return FillY(data);
+    }
+
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(Scatter scatter1, Scatter scatter2)
+    {
+        FillY rangePlot = new(scatter1, scatter2);
+        rangePlot.FillStyle.Color = NextColor;
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
+    }
+
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// </summary>
+    public FillY FillY(ICollection<(double X, double Top, double Bottom)> data)
+    {
+        FillY rangePlot = new();
+        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.SetDataSource(data);
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
+    }
+
+    /// <summary>
+    /// Fill the vertical range between two Y points for each X point
+    /// This overload uses a custom function to calculate X, Y1, and Y2 values
+    /// </summary>
+    public FillY FillY<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> function)
+    {
+        var rangePlot = new FillY();
+        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.SetDataSource(data, function);
+        Plot.Plottables.Add(rangePlot);
+        return rangePlot;
     }
 }

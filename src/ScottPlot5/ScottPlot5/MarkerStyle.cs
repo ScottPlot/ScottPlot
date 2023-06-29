@@ -16,12 +16,27 @@ namespace ScottPlot;
 public class MarkerStyle
 {
     public bool IsVisible { get; set; }
-    public MarkerShape Shape { get; private set; }
-    public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
-    { }
 
-    public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
-    public static MarkerStyle None => new(MarkerShape.None, 0);
+    public MarkerShape Shape { get; set; }
+
+    /// <summary>
+    /// Diameter of the marker (in pixels)
+    /// </summary>
+    public float Size { get; set; }
+
+    public IMarker MarkerRenderer { get; set; }
+
+    public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
+
+    public LineStyle Outline { get; set; } = new() { Width = 0 };
+
+    public MarkerStyle() : this(MarkerShape.FilledCircle, 5, Colors.Gray)
+    {
+    }
+
+    public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
+    {
+    }
 
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {
@@ -43,16 +58,9 @@ public class MarkerStyle
         Size = size;
     }
 
-    /// <summary>
-    /// Diameter of the marker (in pixels)
-    /// </summary>
-    public float Size { get; set; }
+    public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
 
-    public IMarker MarkerRenderer { get; set; }
-
-    public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
-
-    public LineStyle Outline { get; set; } = new() { Width = 0 };
+    public static MarkerStyle None => new(MarkerShape.None, 0);
 
     public void Render(SKCanvas canvas, Pixel pixel)
     {

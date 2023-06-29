@@ -3,6 +3,8 @@
 ## ScottPlot 5.0.6-beta (in development)
 * Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 * OpenGL: Use CPU to render on devices without hardware acceleration (#2651) _Thanks @StendProg_
+* Polygon: New plot type for displaying closed shapes with arbitrary X/Y corners (#2696) _Thanks @Tilation_
+* FillY: New plot type for displaying a shaded area between two sets of Y points that share the same X points (#2696) _Thanks @Tilation_
 
 ## ScottPlot 4.1.65 (in development)
 * Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
