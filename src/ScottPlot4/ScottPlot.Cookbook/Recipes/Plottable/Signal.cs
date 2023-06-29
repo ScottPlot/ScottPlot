@@ -70,7 +70,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class SignalScale : IRecipe
+    public class SignalScaleY : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Signal();
         public string ID => "signal_scale";
