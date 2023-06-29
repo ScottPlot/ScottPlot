@@ -126,6 +126,7 @@ namespace ScottPlot
         }
 
         public static byte AddBytes(byte a, byte b) => (byte)(a + b);
+        public static byte Multiply(byte a, byte b) => (byte)(a * b);
         public static byte SubtractBytes(byte a, byte b) => (byte)(a - b);
         public static bool LessThanOrEqualBytes(byte a, byte b) => a <= b;
 
@@ -141,6 +142,21 @@ namespace ScottPlot
             };
 
             return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
+        }
+
+        public static Func<T, T, T> CreateMultFunction<T>()
+        {
+            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
+
+            BinaryExpression body = Type.GetTypeCode(typeof(T)) switch
+            {
+                TypeCode.Byte => Expression.Multiply(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.Multiply))),
+                _ => Expression.Multiply(paramA, paramB),
+            };
+
+            return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
+
         }
 
         public static Func<T, T, T> CreateSubtractFunction<T>()
