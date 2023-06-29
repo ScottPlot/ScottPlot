@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ScottPlot;
+namespace ScottPlot.WinForms;
 
 public static class LauncherExtensions
 {
