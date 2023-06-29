@@ -36,13 +36,27 @@ namespace ScottPlot.Plottable
 
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
+        public T ScaleY { get; set; } = default;
         public T OffsetY { get; set; } = default;
+
         public double OffsetYAsDouble
         {
             get
             {
                 var v = OffsetY;
                 return NumericConversion.GenericToDouble(ref v);
+            }
+        }
+
+        public double ScaleYAsDouble
+        {
+            get
+            {
+                double ret = 1.0;
+                var v = ScaleY;
+                if (v.Equals(default(T)) == false)
+                    ret = NumericConversion.GenericToDouble(ref v);
+                return ret;
             }
         }
 
@@ -230,6 +244,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         private readonly Func<T, T, T> AddYsGenericExpression = NumericConversion.CreateAddFunction<T>();
 
+        private readonly Func<T, T, T> MultiplyYsGenericExpression = NumericConversion.CreateMultFunction<T>();
+
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
@@ -237,6 +253,11 @@ namespace ScottPlot.Plottable
         {
             var v = AddYsGenericExpression(y1, y2);
             return NumericConversion.GenericToDouble(ref v);
+        }
+
+        private T ScaleYs(T y1, T y2)
+        {
+            return MultiplyYsGenericExpression(y1, y2);
         }
 
         /// <summary>
@@ -312,8 +333,8 @@ namespace ScottPlot.Plottable
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,
-                yMin: yMin + offsetY,
-                yMax: yMax + offsetY);
+                yMin: (yMin * ScaleYAsDouble) + offsetY,
+                yMax: (yMax * ScaleYAsDouble) + offsetY);
         }
 
         /// <summary>
@@ -324,8 +345,8 @@ namespace ScottPlot.Plottable
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
             double offsetY = OffsetYAsDouble;
-            PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
-            PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
+            PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY((yMin * ScaleYAsDouble) + offsetY));
+            PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY((yMax * ScaleYAsDouble) + offsetY));
             gfx.DrawLine(penHD, point1, point2);
         }
 
@@ -348,7 +369,10 @@ namespace ScottPlot.Plottable
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
             {
-                double yCoordinateWithOffset = AddYs(Ys[i], OffsetY);
+                T scaledCoordiante = Ys[i];
+                if (ScaleY.Equals(default(T)) == false)
+                    scaledCoordiante = ScaleYs(Ys[i], ScaleY);
+                double yCoordinateWithOffset = AddYs(scaledCoordiante, OffsetY);
                 float yPixel = dims.GetPixelY(yCoordinateWithOffset);
                 float xPixel = dims.GetPixelX(_SamplePeriod * i + OffsetX);
                 PointF linePoint = new(xPixel, yPixel);
@@ -447,8 +471,8 @@ namespace ScottPlot.Plottable
 
             // get the min and max value for this column                
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + OffsetYAsDouble);
-            float yPxLow = dims.GetPixelY(highestValue + OffsetYAsDouble);
+            float yPxHigh = dims.GetPixelY((lowestValue * ScaleYAsDouble) + OffsetYAsDouble);
+            float yPxLow = dims.GetPixelY((highestValue * ScaleYAsDouble) + OffsetYAsDouble);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 

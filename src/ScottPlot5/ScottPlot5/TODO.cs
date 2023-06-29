@@ -16,5 +16,6 @@ internal static class TODO
      * Need Plot.Remove to match Plot.Add and maybe even Plot.GetPlottables()
      * Use something like an ILegendItemGenerator for each plottable so users can inject their own logic for formatting legend items
      * A label class that can draw rotated text at a point respecting alignment would be great (https://github.com/ScottPlot/ScottPlot/issues/2202#issuecomment-1499708534)
+     * Add ScaleY to signal plot https://github.com/ScottPlot/ScottPlot/pull/2656
      */
 }
