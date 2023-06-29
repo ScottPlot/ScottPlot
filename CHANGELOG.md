@@ -11,6 +11,7 @@
 * DataLogger: New type of scatter plot designed for infinitely growing X/Y datasets (#2377, #2641)
 * DataStreamer: New type of signal plot for displaying live data as it is shifted in (#2377, #2641)
 * WPF: Multi-target Framework 4.6.1 changed to 4.6.2 (#2685)
+* Horizontal Span: Fixed `ToString()` message _Thanks @RachamimYaakobov_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
