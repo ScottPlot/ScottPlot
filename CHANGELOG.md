@@ -12,6 +12,7 @@
 * DataStreamer: New type of signal plot for displaying live data as it is shifted in (#2377, #2641)
 * WPF: Multi-target Framework 4.6.1 changed to 4.6.2 (#2685)
 * Axis: Added option to customize tick line width (#2643, #2654) _Thanks @Guillaume-Deville_
+* Horizontal Span: Fixed `ToString()` message _Thanks @RachamimYaakobov_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
