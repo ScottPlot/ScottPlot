@@ -8,49 +8,60 @@ public static class CodeReport
 {
     public static void Generate(string repoRootPath, string saveAs = "code-report.html")
     {
-        string[] csFilePaths = Directory.GetFiles(repoRootPath, "*.cs", SearchOption.AllDirectories)
-            .Where(x => !x.EndsWith("Designer.cs"))
-            .Where(x => !x.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar))
-            .Where(x => !x.EndsWith("AssemblyInfo.cs"))
-            .OrderBy(x => x)
-            .ToArray();
-
-        Dictionary<string, int> linesByFile = csFilePaths.ToDictionary(x => x, x => File.ReadAllLines(x).Length);
+        ProjectMetrics metrics = new(repoRootPath);
 
         StringBuilder sb = new();
 
         sb.AppendLine("<h1 align='center' style='margin-bottom: 0px;'>ScottPlot Code Metrics</h1>");
-        sb.AppendLine($"<div align='center'>Together, all projects contain {Total(linesByFile):N0} total lines of code</div>");
+        sb.AppendLine($"<div align='center'>This project contains {metrics.GetLines()}</div>");
         sb.AppendLine($"<hr style='margin: 50px;' />");
 
-        var sp4 = linesByFile.Where(x => x.Key.Contains(Path.DirectorySeparatorChar + "ScottPlot4" + Path.DirectorySeparatorChar));
-        sb.AppendLine("<h2 style='margin-bottom: 0px;'>ScottPlot 4</h2>");
+        AddLinesOfCodeSection(sb, metrics);
+        AddTodoSection(sb, metrics);
+
+        sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
+        sb.AppendLine("<div align='center' style='margin-top: 1em;'>" +
+            "<a href='https://github.com/ScottPlot/ScottPlot/tree/main/dev/CodeAnalysis'>" +
+            "https://github.com/ScottPlot/ScottPlot/tree/main/dev/CodeAnalysis</a></div>");
+
+        saveAs = Path.GetFullPath(saveAs);
+        string html = HtmlTemplate.WrapInPico(sb.ToString());
+        Directory.CreateDirectory(Path.GetDirectoryName(saveAs)!);
+        File.WriteAllText(saveAs, html);
+        Console.WriteLine($"Wrote: {saveAs}");
+    }
+
+    private static void AddLinesOfCodeSection(StringBuilder sb, ProjectMetrics metrics)
+    {
+        sb.AppendLine("<h2 style='margin-bottom: 0px;'>Lines of Code</h2>");
+
+        sb.AppendLine($"<ul style='margin-left: 1em;'>");
+
+        sb.AppendLine($"<li style='margin-top: 1em;'><b>ScottPlot 4: {metrics.GetLines("ScottPlot4")}</b></li>");
         sb.AppendLine($"<ul>");
-        sb.AppendLine($"<li>Core Library: {Total(sp4, "ScottPlot4"):N0} lines</li>");
-        sb.AppendLine($"<li>Tests: {Total(sp4, "ScottPlot.Tests"):N0} lines</li>");
-        sb.AppendLine($"<li>Cookbook: {Total(sp4, "ScottPlot.Cookbook"):N0} lines</li>");
-        sb.AppendLine($"<li>Demos: {Total(sp4, "ScottPlot.Demo"):N0} lines</li>");
-        sb.AppendLine($"<li>All: {Total(sp4):N0}</li>");
+        sb.AppendLine($"<li>Library: {metrics.GetLines("ScottPlot4", "ScottPlot")}</li>");
+        sb.AppendLine($"<li>Tests: {metrics.GetLines("ScottPlot4", "ScottPlot.Tests")}</li>");
+        sb.AppendLine($"<li>Cookbook: {metrics.GetLines("ScottPlot4", "ScottPlot.Cookbook")}</li>");
+        sb.AppendLine($"<li>Demos: {metrics.GetLines("ScottPlot4", "ScottPlot.Demo")}</li>");
         sb.AppendLine($"</ul>");
 
-        var sp5 = linesByFile.Where(x => x.Key.Contains(Path.DirectorySeparatorChar + "ScottPlot5" + Path.DirectorySeparatorChar));
-        sb.AppendLine("<h2 style='margin-bottom: 0px;'>ScottPlot 5</h2>");
+        sb.AppendLine($"<li style='margin-top: 1em;'><b>ScottPlot 5: {metrics.GetLines("ScottPlot5")}</b></li>");
         sb.AppendLine($"<ul>");
-        sb.AppendLine($"<li>Core Library: {Total(sp5, "ScottPlot5"):N0}</li>");
-        sb.AppendLine($"<li>Tests: {Total(sp5, "ScottPlot5 Tests"):N0} lines</li>");
-        sb.AppendLine($"<li>Cookbook: {Total(sp5, "ScottPlot5 Cookbook"):N0} lines</li>");
-        sb.AppendLine($"<li>Demos: {Total(sp5, "ScottPlot5 Demos"):N0} lines</li>");
-        sb.AppendLine($"<li>All: {Total(sp5):N0}</li>");
+        sb.AppendLine($"<li>Library: {metrics.GetLines("ScottPlot5", "ScottPlot5")}</li>");
+        sb.AppendLine($"<li>Tests: {metrics.GetLines("ScottPlot5", "ScottPlot5 Tests")}</li>");
+        sb.AppendLine($"<li>Cookbook: {metrics.GetLines("ScottPlot5", "ScottPlot5 Cookbook")}</li>");
+        sb.AppendLine($"<li>Demos: {metrics.GetLines("ScottPlot5", "ScottPlot5 Demos")}</li>");
         sb.AppendLine($"</ul>");
 
-        var shared = linesByFile.Where(x => x.Key.Contains(Path.DirectorySeparatorChar + "Shared" + Path.DirectorySeparatorChar));
-        sb.AppendLine("<h2 style='margin-bottom: 0px;'>Shared Code</h2>");
-        sb.AppendLine($"<ul>");
-        sb.AppendLine($"<li>All: {Total(shared):N0} lines</li>");
-        sb.AppendLine($"</ul>");
+        sb.AppendLine($"<li style='margin-top: 1em;'><b>Shared Code: {metrics.GetLines("Shared")}</b></li>");
 
+        sb.AppendLine($"</ul>");
+    }
+
+    private static void AddTodoSection(StringBuilder sb, ProjectMetrics metrics)
+    {
         List<string> todos = new();
-        foreach (string filePath in csFilePaths)
+        foreach (string filePath in metrics.Files.Select(x => x.FilePath))
         {
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
@@ -59,7 +70,7 @@ public static class CodeReport
                 {
                     string line = lines[i].Split("TO" + "DO:")[1].Trim();
 
-                    string relativeFilePath = filePath.Replace(repoRootPath, "");
+                    string relativeFilePath = filePath.Replace(metrics.FolderPath, "");
 
                     string fileUrl = "https://github.com/ScottPlot/ScottPlot/tree/main/"
                         + relativeFilePath.Replace("\\", "/")
@@ -72,21 +83,13 @@ public static class CodeReport
                 }
             }
         }
-        sb.AppendLine($"<h2 style='margin-bottom: 0px;'>TODOs ({todos.Count})</h2>");
-        sb.AppendLine($"<ul>");
+        sb.AppendLine($"<h2 style='margin-bottom: .5em;'>TODOs ({todos.Count})</h2>");
+        sb.AppendLine($"<ul style='margin-left: 1em;'>");
         foreach (string todo in todos)
         {
             sb.AppendLine($"<li>{todo}</li>");
         }
         sb.AppendLine($"</ul>");
-
-        sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
-
-        saveAs = Path.GetFullPath(saveAs);
-        string html = HtmlTemplate.WrapInPico(sb.ToString());
-        Directory.CreateDirectory(Path.GetDirectoryName(saveAs)!);
-        File.WriteAllText(saveAs, html);
-        Console.WriteLine($"Wrote: {saveAs}");
     }
 
     private static int Total(IEnumerable<KeyValuePair<string, int>> linesByFile, string? midFolderName = null)
@@ -99,4 +102,15 @@ public static class CodeReport
             .Select(x => x.Value)
             .Sum();
     }
+
+    static int GetLinesOfCOde(string s) => RemoveEmptyLines(StripComments(s)).Split("\n").Length;
+
+    static string StripComments(string s) =>
+        System.Text.RegularExpressions.Regex.Replace(
+            input: s,
+            pattern: @"(@(?:""[^""]*"")+|""(?:[^""\n\\]+|\\.)*""|'(?:[^'\n\\]+|\\.)*')|//.*|/\*(?s:.*?)\*/",
+            replacement: "$1");
+
+    static string RemoveEmptyLines(string s) =>
+        string.Join("\n", s.Split("\n").Where(x => x.Trim().Length > 0));
 }
