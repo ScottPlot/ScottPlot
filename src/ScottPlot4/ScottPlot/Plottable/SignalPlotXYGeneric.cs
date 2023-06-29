@@ -108,8 +108,8 @@ namespace ScottPlot.Plottable
             yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY((Strategy.SourceElement(startIndex) * ScaleYAsDouble) + OffsetYAsDouble));
             if (pointsCount > 1)
             {
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min + OffsetYAsDouble));
-                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max + OffsetYAsDouble));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min * ScaleYAsDouble + OffsetYAsDouble));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max * ScaleYAsDouble + OffsetYAsDouble));
                 yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY((Strategy.SourceElement(endIndex - 1) * ScaleYAsDouble) + OffsetYAsDouble));
             }
         }
