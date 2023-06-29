@@ -4,19 +4,26 @@ using System.IO;
 
 namespace ScottPlot;
 
+#nullable enable
+
+/// <summary>
+/// This class consumes a <see cref="Plot"/> and has 
+/// helper methods for displaying it in different ways.
+/// </summary>
 public class Launcher
 {
     public Plot Plot { get; }
 
-    public Launcher(Plot plot) { Plot = plot; }
+    public Launcher(Plot plot)
+    {
+        Plot = plot;
+    }
 
     /// <summary>
     /// Launch a file using the system default file handler
     /// </summary>
-    public void Launch(string filePath)
+    private void ExecuteFile(string filePath)
     {
-        filePath = Path.GetFullPath(filePath);
-        Console.WriteLine($"Launching: {filePath}");
         ProcessStartInfo psi = new(filePath) { UseShellExecute = true };
         Process.Start(psi);
     }
@@ -24,16 +31,17 @@ public class Launcher
     /// <summary>
     /// Save the plot as an image file and open it with the default file launcher
     /// </summary>
-    public void ImageFile(string saveAs = "plot.png", int width = 600, int height = 400)
+    public void ImageFile(int width = 600, int height = 400, string? filename = null)
     {
+        string saveAs = filename ?? $"plot-{DateTime.Now.Ticks}.png";
         Plot.SaveFig(saveAs, width, height);
-        Launch(saveAs);
+        ExecuteFile(saveAs);
     }
 
     /// <summary>
     /// Save the plot as an image embedded in a HTML file and launch it with the default web browser
     /// </summary>
-    public void Web(string saveAs = "plot.html", int width = 600, int height = 400)
+    public void ImageHTML(int width = 600, int height = 400, string saveAs = "plot.html")
     {
         Plot.Resize(width, height);
         string html = "<html>" +
@@ -43,6 +51,6 @@ public class Launcher
             "</body>" +
             "</html>";
         File.WriteAllText(saveAs, html);
-        Launch(saveAs);
+        ExecuteFile(saveAs);
     }
 }
