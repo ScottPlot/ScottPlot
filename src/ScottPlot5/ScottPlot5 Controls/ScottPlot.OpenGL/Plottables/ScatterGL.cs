@@ -75,7 +75,7 @@ public class ScatterGL : Scatter, IPlottableGL
 
     public new void Render(SKSurface surface)
     {
-        if (PlotControl.GRContext is not null)
+        if (PlotControl.GRContext is not null && surface.Context is not null)
         {
             RenderWithOpenGL(surface, PlotControl.GRContext);
             return;
