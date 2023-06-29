@@ -8,7 +8,7 @@ internal class FillY : RecipePageBase
     {
         Chapter = Chapter.PlotTypes,
         PageName = "FillY plot",
-        PageDescription = "FillY plots display the vertical range between two Y values at defined X positions.",
+        PageDescription = "FillY plots display the vertical range between two Y values at defined X positions",
     };
 
     internal class FillYFromArrays : RecipeTestBase
