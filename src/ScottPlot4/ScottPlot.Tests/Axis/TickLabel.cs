@@ -88,7 +88,8 @@ namespace ScottPlotTests.Axis
                 // custom NUMERIC format string
                 plt.XAxis.TickLabelFormat("F4", dateTimeFormat: false);
                 plt.Render();
-                Assert.AreEqual("0.0000", plt.XAxis.GetTicks().First().Label);
+                var expectedLabel = 0d.ToString("F4", plt.XAxis.AxisTicks.TickCollection.Culture);
+                Assert.AreEqual(expectedLabel, plt.XAxis.GetTicks().First().Label);
 
                 // custom DATETIME format string
                 plt.XAxis.TickLabelFormat("HH:mm:ss", dateTimeFormat: true);

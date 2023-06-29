@@ -304,5 +304,37 @@ namespace ScottPlot.Plottable
                 }
             }
         }
+
+        public (double x, double y) GetLabelPosition(int sliceIndex, PlotDimensions dims)
+        {
+            double[] proportions = Values.Select(x => x / Values.Sum()).ToArray();
+            double start = -90;
+
+            float diameterPixels = (float)Size * Math.Min(dims.DataWidth, dims.DataHeight);
+            double centreX = 0;
+            double centreY = 0;
+            RectangleF boundingRectangle = new RectangleF(
+                dims.GetPixelX(centreX) - diameterPixels / 2,
+                dims.GetPixelY(centreY) - diameterPixels / 2,
+                diameterPixels,
+                diameterPixels);
+
+            // determine where the slice is to be drawn
+            double sweep = proportions[sliceIndex] * 360;
+            double sweepOffset = Explode ? -1 : 0;
+            double angle = (Math.PI / 180) * ((sweep + 2 * start) / 2);
+            double xOffset = Explode ? 3 * Math.Cos(angle) : 0;
+            double yOffset = Explode ? 3 * Math.Sin(angle) : 0;
+
+            // record where and what to label the slice
+            double sliceLabelR = SliceLabelPosition * diameterPixels;
+            double labelXs = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
+            double labelYs = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
+            string sliceLabelValue = (ShowValues) ? $"{Values[sliceIndex]}" : "";
+            string sliceLabelPercentage = ShowPercentages ? $"{proportions[sliceIndex] * 100:f1}%" : "";
+            string sliceLabelName = (ShowLabels && SliceLabels != null) ? SliceLabels[sliceIndex] : "";
+
+            return (labelXs, labelYs);
+        }
     }
 }
