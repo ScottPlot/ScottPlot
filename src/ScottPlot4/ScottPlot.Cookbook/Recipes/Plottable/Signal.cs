@@ -76,13 +76,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "signal_scale";
         public string Title => "Signal Scale";
         public string Description =>
-            "Signal plots can have a Y scale that multiply all data by a defined amount.";
+            "Signal plots can have a Y scale that multiply all data by a defined amount. " +
+            "ScaleY is applied before OffsetX and OffsetY.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[] values = DataGen.Sin(100_000);
+            // display 100,000 values between -1 and +1
+            double[] values = DataGen.Sin(100_000, oscillations: 10);
             var sig = plt.AddSignal(values);
-            sig.ScaleY = 2.5;
+
+            // scale Y by 500 so values span -500 to +500
+            sig.ScaleY = 500;
         }
     }
 
