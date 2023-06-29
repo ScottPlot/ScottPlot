@@ -13,6 +13,7 @@
 * WPF: Multi-target Framework 4.6.1 changed to 4.6.2 (#2685)
 * Axis: Added option to customize tick line width (#2643, #2654) _Thanks @Guillaume-Deville_
 * Horizontal Span: Fixed `ToString()` message _Thanks @RachamimYaakobov_
+* Signal Plot: Added `ScaleY` property to compliment `OffsetY` (#2642, #2656) _Thanks @Guillaume-Deville_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
