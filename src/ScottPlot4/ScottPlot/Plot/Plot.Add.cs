@@ -130,13 +130,32 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a data logging scatter plot
+        /// Add a data logging scatter plot designed for growing collections of X/Y points.
         /// </summary>
-        public ScatterDataLogger AddScatterLogger()
+        public DataLogger AddDataLogger()
         {
-            ScatterDataLogger sl = new(this);
-            Add(sl);
-            return sl;
+            DataLogger dl = new(this);
+            Add(dl);
+            return dl;
+        }
+
+        /// <summary>
+        /// Add a data streamer to display a fixed number of evenly-spaced Y values
+        /// </summary>
+        public DataStreamer AddDataStreamer(double[] values)
+        {
+            DataStreamer ds = new(this, values);
+            Add(ds);
+            return ds;
+        }
+
+        /// <summary>
+        /// Add a data streamer to display a fixed number of evenly-spaced Y values
+        /// </summary>
+        public DataStreamer AddDataStreamer(int length)
+        {
+            double[] values = new double[length];
+            return AddDataStreamer(values);
         }
 
         /// <summary>

@@ -28,559 +28,562 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label17 = new System.Windows.Forms.Label();
-            this.StyleBrowserButton = new System.Windows.Forms.Button();
-            this.label16 = new System.Windows.Forms.Label();
-            this.MultiAxisLockButton = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnColormapViewer = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.AxisLimitsButton = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.ScrollViewerButton = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.RightClickMenuButton = new System.Windows.Forms.Button();
-            this.PlotViewerButton = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.btnShowOnHover = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.GrowingData = new System.Windows.Forms.Button();
-            this.LiveData = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.LinkedAxesButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.ConfigButton = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.ToggleVisibilityButton = new System.Windows.Forms.Button();
-            this.MouseTrackerButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.TransparentBackgroundButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SplineInterpolationButton = new System.Windows.Forms.Button();
-            this.FinanceDemoButton = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.HittableButton = new System.Windows.Forms.Button();
-            this.label18 = new System.Windows.Forms.Label();
-            this.DataLoggerButton = new System.Windows.Forms.Button();
-            this.label19 = new System.Windows.Forms.Label();
-            this.HistogramButton = new System.Windows.Forms.Button();
-            this.label20 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            label17 = new System.Windows.Forms.Label();
+            StyleBrowserButton = new System.Windows.Forms.Button();
+            label16 = new System.Windows.Forms.Label();
+            MultiAxisLockButton = new System.Windows.Forms.Button();
+            label15 = new System.Windows.Forms.Label();
+            btnColormapViewer = new System.Windows.Forms.Button();
+            label14 = new System.Windows.Forms.Label();
+            AxisLimitsButton = new System.Windows.Forms.Button();
+            label13 = new System.Windows.Forms.Label();
+            ScrollViewerButton = new System.Windows.Forms.Button();
+            label12 = new System.Windows.Forms.Label();
+            RightClickMenuButton = new System.Windows.Forms.Button();
+            PlotViewerButton = new System.Windows.Forms.Button();
+            label11 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            btnShowOnHover = new System.Windows.Forms.Button();
+            label9 = new System.Windows.Forms.Label();
+            label8 = new System.Windows.Forms.Label();
+            GrowingData = new System.Windows.Forms.Button();
+            LiveData = new System.Windows.Forms.Button();
+            label7 = new System.Windows.Forms.Label();
+            LinkedAxesButton = new System.Windows.Forms.Button();
+            label6 = new System.Windows.Forms.Label();
+            ConfigButton = new System.Windows.Forms.Button();
+            label5 = new System.Windows.Forms.Label();
+            ToggleVisibilityButton = new System.Windows.Forms.Button();
+            MouseTrackerButton = new System.Windows.Forms.Button();
+            label2 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            TransparentBackgroundButton = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            SplineInterpolationButton = new System.Windows.Forms.Button();
+            FinanceDemoButton = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
+            HittableButton = new System.Windows.Forms.Button();
+            label18 = new System.Windows.Forms.Label();
+            DataLoggerButton = new System.Windows.Forms.Button();
+            label19 = new System.Windows.Forms.Label();
+            HistogramButton = new System.Windows.Forms.Button();
+            label20 = new System.Windows.Forms.Label();
+            DataStreamerButton = new System.Windows.Forms.Button();
+            label21 = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // label17
             // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.Location = new System.Drawing.Point(100, 703);
-            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(271, 44);
-            this.label17.TabIndex = 64;
-            this.label17.Text = "View available predefined styles";
-            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label17.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label17.Location = new System.Drawing.Point(100, 703);
+            label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label17.Name = "label17";
+            label17.Size = new System.Drawing.Size(578, 44);
+            label17.TabIndex = 64;
+            label17.Text = "View available predefined styles";
+            label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StyleBrowserButton
             // 
-            this.StyleBrowserButton.Location = new System.Drawing.Point(4, 703);
-            this.StyleBrowserButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.StyleBrowserButton.Name = "StyleBrowserButton";
-            this.StyleBrowserButton.Size = new System.Drawing.Size(88, 44);
-            this.StyleBrowserButton.TabIndex = 63;
-            this.StyleBrowserButton.Text = "Style Browser";
-            this.StyleBrowserButton.UseVisualStyleBackColor = true;
-            this.StyleBrowserButton.Click += new System.EventHandler(this.StyleBrowserButton_Click);
+            StyleBrowserButton.Location = new System.Drawing.Point(4, 703);
+            StyleBrowserButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            StyleBrowserButton.Name = "StyleBrowserButton";
+            StyleBrowserButton.Size = new System.Drawing.Size(88, 44);
+            StyleBrowserButton.TabIndex = 63;
+            StyleBrowserButton.Text = "Style Browser";
+            StyleBrowserButton.UseVisualStyleBackColor = true;
+            StyleBrowserButton.Click += StyleBrowserButton_Click;
             // 
             // label16
             // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.Location = new System.Drawing.Point(100, 653);
-            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(271, 44);
-            this.label16.TabIndex = 62;
-            this.label16.Text = "Selectively pan/zoom individual axes in multi-axis plots";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label16.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label16.Location = new System.Drawing.Point(100, 653);
+            label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label16.Name = "label16";
+            label16.Size = new System.Drawing.Size(578, 44);
+            label16.TabIndex = 62;
+            label16.Text = "Selectively pan/zoom individual axes in multi-axis plots";
+            label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MultiAxisLockButton
             // 
-            this.MultiAxisLockButton.Location = new System.Drawing.Point(4, 653);
-            this.MultiAxisLockButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MultiAxisLockButton.Name = "MultiAxisLockButton";
-            this.MultiAxisLockButton.Size = new System.Drawing.Size(88, 44);
-            this.MultiAxisLockButton.TabIndex = 61;
-            this.MultiAxisLockButton.Text = "Multi-Axis Lock";
-            this.MultiAxisLockButton.UseVisualStyleBackColor = true;
-            this.MultiAxisLockButton.Click += new System.EventHandler(this.MultiAxisLockButton_Click);
+            MultiAxisLockButton.Location = new System.Drawing.Point(4, 653);
+            MultiAxisLockButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MultiAxisLockButton.Name = "MultiAxisLockButton";
+            MultiAxisLockButton.Size = new System.Drawing.Size(88, 44);
+            MultiAxisLockButton.TabIndex = 61;
+            MultiAxisLockButton.Text = "Multi-Axis Lock";
+            MultiAxisLockButton.UseVisualStyleBackColor = true;
+            MultiAxisLockButton.Click += MultiAxisLockButton_Click;
             // 
             // label15
             // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.Location = new System.Drawing.Point(100, 603);
-            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(271, 44);
-            this.label15.TabIndex = 60;
-            this.label15.Text = "Show available colormaps";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label15.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label15.Location = new System.Drawing.Point(100, 603);
+            label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label15.Name = "label15";
+            label15.Size = new System.Drawing.Size(578, 44);
+            label15.TabIndex = 60;
+            label15.Text = "Show available colormaps";
+            label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnColormapViewer
             // 
-            this.btnColormapViewer.Location = new System.Drawing.Point(4, 603);
-            this.btnColormapViewer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnColormapViewer.Name = "btnColormapViewer";
-            this.btnColormapViewer.Size = new System.Drawing.Size(88, 44);
-            this.btnColormapViewer.TabIndex = 59;
-            this.btnColormapViewer.Text = "Colormap Viewer";
-            this.btnColormapViewer.UseVisualStyleBackColor = true;
-            this.btnColormapViewer.Click += new System.EventHandler(this.btnColormapViewer_Click);
+            btnColormapViewer.Location = new System.Drawing.Point(4, 603);
+            btnColormapViewer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnColormapViewer.Name = "btnColormapViewer";
+            btnColormapViewer.Size = new System.Drawing.Size(88, 44);
+            btnColormapViewer.TabIndex = 59;
+            btnColormapViewer.Text = "Colormap Viewer";
+            btnColormapViewer.UseVisualStyleBackColor = true;
+            btnColormapViewer.Click += btnColormapViewer_Click;
             // 
             // label14
             // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.Location = new System.Drawing.Point(100, 553);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(271, 44);
-            this.label14.TabIndex = 58;
-            this.label14.Text = "Demonstrate how axis boundaries can be used to constrain axis limits in interacti" +
-    "ve plots";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label14.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label14.Location = new System.Drawing.Point(100, 553);
+            label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(578, 44);
+            label14.TabIndex = 58;
+            label14.Text = "Demonstrate how axis boundaries can be used to constrain axis limits in interactive plots";
+            label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AxisLimitsButton
             // 
-            this.AxisLimitsButton.Location = new System.Drawing.Point(4, 553);
-            this.AxisLimitsButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.AxisLimitsButton.Name = "AxisLimitsButton";
-            this.AxisLimitsButton.Size = new System.Drawing.Size(88, 44);
-            this.AxisLimitsButton.TabIndex = 57;
-            this.AxisLimitsButton.Text = "Axis Limits";
-            this.AxisLimitsButton.UseVisualStyleBackColor = true;
-            this.AxisLimitsButton.Click += new System.EventHandler(this.AxisLimitsButton_Click);
+            AxisLimitsButton.Location = new System.Drawing.Point(4, 553);
+            AxisLimitsButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            AxisLimitsButton.Name = "AxisLimitsButton";
+            AxisLimitsButton.Size = new System.Drawing.Size(88, 44);
+            AxisLimitsButton.TabIndex = 57;
+            AxisLimitsButton.Text = "Axis Limits";
+            AxisLimitsButton.UseVisualStyleBackColor = true;
+            AxisLimitsButton.Click += AxisLimitsButton_Click;
             // 
             // label13
             // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.Location = new System.Drawing.Point(100, 503);
-            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(271, 44);
-            this.label13.TabIndex = 56;
-            this.label13.Text = "Display multiple plots in a scrolling control";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label13.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label13.Location = new System.Drawing.Point(100, 503);
+            label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(578, 44);
+            label13.TabIndex = 56;
+            label13.Text = "Display multiple plots in a scrolling control";
+            label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ScrollViewerButton
             // 
-            this.ScrollViewerButton.Location = new System.Drawing.Point(4, 503);
-            this.ScrollViewerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ScrollViewerButton.Name = "ScrollViewerButton";
-            this.ScrollViewerButton.Size = new System.Drawing.Size(88, 44);
-            this.ScrollViewerButton.TabIndex = 55;
-            this.ScrollViewerButton.Text = "Plot in a Scroll Viewer";
-            this.ScrollViewerButton.UseVisualStyleBackColor = true;
-            this.ScrollViewerButton.Click += new System.EventHandler(this.ScrollViewerButton_Click);
+            ScrollViewerButton.Location = new System.Drawing.Point(4, 503);
+            ScrollViewerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ScrollViewerButton.Name = "ScrollViewerButton";
+            ScrollViewerButton.Size = new System.Drawing.Size(88, 44);
+            ScrollViewerButton.TabIndex = 55;
+            ScrollViewerButton.Text = "Plot in a Scroll Viewer";
+            ScrollViewerButton.UseVisualStyleBackColor = true;
+            ScrollViewerButton.Click += ScrollViewerButton_Click;
             // 
             // label12
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.Location = new System.Drawing.Point(100, 453);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(271, 44);
-            this.label12.TabIndex = 54;
-            this.label12.Text = "Display a custom menu (or perform a different action) when the control is right-c" +
-    "licked";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label12.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label12.Location = new System.Drawing.Point(100, 453);
+            label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(578, 44);
+            label12.TabIndex = 54;
+            label12.Text = "Display a custom menu (or perform a different action) when the control is right-clicked";
+            label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RightClickMenuButton
             // 
-            this.RightClickMenuButton.Location = new System.Drawing.Point(4, 453);
-            this.RightClickMenuButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.RightClickMenuButton.Name = "RightClickMenuButton";
-            this.RightClickMenuButton.Size = new System.Drawing.Size(88, 44);
-            this.RightClickMenuButton.TabIndex = 53;
-            this.RightClickMenuButton.Text = "Custom Right-Click Menu";
-            this.RightClickMenuButton.UseVisualStyleBackColor = true;
-            this.RightClickMenuButton.Click += new System.EventHandler(this.RightClickMenuButton_Click);
+            RightClickMenuButton.Location = new System.Drawing.Point(4, 453);
+            RightClickMenuButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            RightClickMenuButton.Name = "RightClickMenuButton";
+            RightClickMenuButton.Size = new System.Drawing.Size(88, 44);
+            RightClickMenuButton.TabIndex = 53;
+            RightClickMenuButton.Text = "Custom Right-Click Menu";
+            RightClickMenuButton.UseVisualStyleBackColor = true;
+            RightClickMenuButton.Click += RightClickMenuButton_Click;
             // 
             // PlotViewerButton
             // 
-            this.PlotViewerButton.Location = new System.Drawing.Point(4, 3);
-            this.PlotViewerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.PlotViewerButton.Name = "PlotViewerButton";
-            this.PlotViewerButton.Size = new System.Drawing.Size(88, 44);
-            this.PlotViewerButton.TabIndex = 51;
-            this.PlotViewerButton.Text = "Plot Viewer";
-            this.PlotViewerButton.UseVisualStyleBackColor = true;
-            this.PlotViewerButton.Click += new System.EventHandler(this.PlotViewerButton_Click);
+            PlotViewerButton.Location = new System.Drawing.Point(4, 3);
+            PlotViewerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            PlotViewerButton.Name = "PlotViewerButton";
+            PlotViewerButton.Size = new System.Drawing.Size(88, 44);
+            PlotViewerButton.TabIndex = 51;
+            PlotViewerButton.Text = "Plot Viewer";
+            PlotViewerButton.UseVisualStyleBackColor = true;
+            PlotViewerButton.Click += PlotViewerButton_Click;
             // 
             // label11
             // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.Location = new System.Drawing.Point(100, 3);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(271, 44);
-            this.label11.TabIndex = 52;
-            this.label11.Text = "Create a ScottPlot programmatically then display it in an interactive window";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label11.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label11.Location = new System.Drawing.Point(100, 3);
+            label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(578, 44);
+            label11.TabIndex = 52;
+            label11.Text = "Create a ScottPlot programmatically then display it in an interactive window";
+            label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label10
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.Location = new System.Drawing.Point(100, 353);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(271, 44);
-            this.label10.TabIndex = 50;
-            this.label10.Text = "Display the value of the data point nearest the cursor";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label10.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label10.Location = new System.Drawing.Point(100, 353);
+            label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(578, 44);
+            label10.TabIndex = 50;
+            label10.Text = "Display the value of the data point nearest the cursor";
+            label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnShowOnHover
             // 
-            this.btnShowOnHover.Location = new System.Drawing.Point(4, 353);
-            this.btnShowOnHover.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnShowOnHover.Name = "btnShowOnHover";
-            this.btnShowOnHover.Size = new System.Drawing.Size(88, 44);
-            this.btnShowOnHover.TabIndex = 49;
-            this.btnShowOnHover.Text = "Show Value on Hover";
-            this.btnShowOnHover.UseVisualStyleBackColor = true;
-            this.btnShowOnHover.Click += new System.EventHandler(this.btnShowOnHover_Click);
+            btnShowOnHover.Location = new System.Drawing.Point(4, 353);
+            btnShowOnHover.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnShowOnHover.Name = "btnShowOnHover";
+            btnShowOnHover.Size = new System.Drawing.Size(88, 44);
+            btnShowOnHover.TabIndex = 49;
+            btnShowOnHover.Text = "Show Value on Hover";
+            btnShowOnHover.UseVisualStyleBackColor = true;
+            btnShowOnHover.Click += btnShowOnHover_Click;
             // 
             // label9
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.Location = new System.Drawing.Point(100, 303);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(271, 44);
-            this.label9.TabIndex = 48;
-            this.label9.Text = "Display live data that grows with time";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label9.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label9.Location = new System.Drawing.Point(100, 303);
+            label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(578, 44);
+            label9.TabIndex = 48;
+            label9.Text = "Display live data that grows with time";
+            label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.Location = new System.Drawing.Point(100, 253);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(271, 44);
-            this.label8.TabIndex = 47;
-            this.label8.Text = "Display live data from a fixed-length array that continuously changes";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label8.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label8.Location = new System.Drawing.Point(100, 253);
+            label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(578, 44);
+            label8.TabIndex = 47;
+            label8.Text = "Display live data from a fixed-length array that continuously changes";
+            label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GrowingData
             // 
-            this.GrowingData.Location = new System.Drawing.Point(4, 303);
-            this.GrowingData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GrowingData.Name = "GrowingData";
-            this.GrowingData.Size = new System.Drawing.Size(88, 44);
-            this.GrowingData.TabIndex = 46;
-            this.GrowingData.Text = "Growing Data";
-            this.GrowingData.UseVisualStyleBackColor = true;
-            this.GrowingData.Click += new System.EventHandler(this.GrowingData_Click);
+            GrowingData.Location = new System.Drawing.Point(4, 303);
+            GrowingData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            GrowingData.Name = "GrowingData";
+            GrowingData.Size = new System.Drawing.Size(88, 44);
+            GrowingData.TabIndex = 46;
+            GrowingData.Text = "Growing Data";
+            GrowingData.UseVisualStyleBackColor = true;
+            GrowingData.Click += GrowingData_Click;
             // 
             // LiveData
             // 
-            this.LiveData.Location = new System.Drawing.Point(4, 253);
-            this.LiveData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.LiveData.Name = "LiveData";
-            this.LiveData.Size = new System.Drawing.Size(88, 44);
-            this.LiveData.TabIndex = 45;
-            this.LiveData.Text = "Live Data";
-            this.LiveData.UseVisualStyleBackColor = true;
-            this.LiveData.Click += new System.EventHandler(this.LiveData_Click);
+            LiveData.Location = new System.Drawing.Point(4, 253);
+            LiveData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            LiveData.Name = "LiveData";
+            LiveData.Size = new System.Drawing.Size(88, 44);
+            LiveData.TabIndex = 45;
+            LiveData.Text = "Live Data";
+            LiveData.UseVisualStyleBackColor = true;
+            LiveData.Click += LiveData_Click;
             // 
             // label7
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.Location = new System.Drawing.Point(100, 203);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(271, 44);
-            this.label7.TabIndex = 44;
-            this.label7.Text = "Link the axes of two plots together so adjusting one changes the other";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label7.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label7.Location = new System.Drawing.Point(100, 203);
+            label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(578, 44);
+            label7.TabIndex = 44;
+            label7.Text = "Link the axes of two plots together so adjusting one changes the other";
+            label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // LinkedAxesButton
             // 
-            this.LinkedAxesButton.Location = new System.Drawing.Point(4, 203);
-            this.LinkedAxesButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.LinkedAxesButton.Name = "LinkedAxesButton";
-            this.LinkedAxesButton.Size = new System.Drawing.Size(88, 44);
-            this.LinkedAxesButton.TabIndex = 43;
-            this.LinkedAxesButton.Text = "Linked Axes";
-            this.LinkedAxesButton.UseVisualStyleBackColor = true;
-            this.LinkedAxesButton.Click += new System.EventHandler(this.LinkedAxesButton_Click);
+            LinkedAxesButton.Location = new System.Drawing.Point(4, 203);
+            LinkedAxesButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            LinkedAxesButton.Name = "LinkedAxesButton";
+            LinkedAxesButton.Size = new System.Drawing.Size(88, 44);
+            LinkedAxesButton.TabIndex = 43;
+            LinkedAxesButton.Text = "Linked Axes";
+            LinkedAxesButton.UseVisualStyleBackColor = true;
+            LinkedAxesButton.Click += LinkedAxesButton_Click;
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.Location = new System.Drawing.Point(100, 153);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(271, 44);
-            this.label6.TabIndex = 42;
-            this.label6.Text = "Advanced styling and behavior customization";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label6.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label6.Location = new System.Drawing.Point(100, 153);
+            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(578, 44);
+            label6.TabIndex = 42;
+            label6.Text = "Advanced styling and behavior customization";
+            label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ConfigButton
             // 
-            this.ConfigButton.Location = new System.Drawing.Point(4, 153);
-            this.ConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ConfigButton.Name = "ConfigButton";
-            this.ConfigButton.Size = new System.Drawing.Size(88, 44);
-            this.ConfigButton.TabIndex = 41;
-            this.ConfigButton.Text = "FormsPlot Config";
-            this.ConfigButton.UseVisualStyleBackColor = true;
-            this.ConfigButton.Click += new System.EventHandler(this.ConfigButton_Click);
+            ConfigButton.Location = new System.Drawing.Point(4, 153);
+            ConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ConfigButton.Name = "ConfigButton";
+            ConfigButton.Size = new System.Drawing.Size(88, 44);
+            ConfigButton.TabIndex = 41;
+            ConfigButton.Text = "FormsPlot Config";
+            ConfigButton.UseVisualStyleBackColor = true;
+            ConfigButton.Click += ConfigButton_Click;
             // 
             // label5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(100, 103);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(271, 44);
-            this.label5.TabIndex = 40;
-            this.label5.Text = "Checkboxes control visibility of individual plot objects";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label5.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label5.Location = new System.Drawing.Point(100, 103);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(578, 44);
+            label5.TabIndex = 40;
+            label5.Text = "Checkboxes control visibility of individual plot objects";
+            label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ToggleVisibilityButton
             // 
-            this.ToggleVisibilityButton.Location = new System.Drawing.Point(4, 103);
-            this.ToggleVisibilityButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ToggleVisibilityButton.Name = "ToggleVisibilityButton";
-            this.ToggleVisibilityButton.Size = new System.Drawing.Size(88, 44);
-            this.ToggleVisibilityButton.TabIndex = 39;
-            this.ToggleVisibilityButton.Text = "Toggle Visibility";
-            this.ToggleVisibilityButton.UseVisualStyleBackColor = true;
-            this.ToggleVisibilityButton.Click += new System.EventHandler(this.ToggleVisibilityButton_Click);
+            ToggleVisibilityButton.Location = new System.Drawing.Point(4, 103);
+            ToggleVisibilityButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ToggleVisibilityButton.Name = "ToggleVisibilityButton";
+            ToggleVisibilityButton.Size = new System.Drawing.Size(88, 44);
+            ToggleVisibilityButton.TabIndex = 39;
+            ToggleVisibilityButton.Text = "Toggle Visibility";
+            ToggleVisibilityButton.UseVisualStyleBackColor = true;
+            ToggleVisibilityButton.Click += ToggleVisibilityButton_Click;
             // 
             // MouseTrackerButton
             // 
-            this.MouseTrackerButton.Location = new System.Drawing.Point(4, 53);
-            this.MouseTrackerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MouseTrackerButton.Name = "MouseTrackerButton";
-            this.MouseTrackerButton.Size = new System.Drawing.Size(88, 44);
-            this.MouseTrackerButton.TabIndex = 35;
-            this.MouseTrackerButton.Text = "Mouse Tracker";
-            this.MouseTrackerButton.UseVisualStyleBackColor = true;
-            this.MouseTrackerButton.Click += new System.EventHandler(this.MouseTrackerButton_Click);
+            MouseTrackerButton.Location = new System.Drawing.Point(4, 53);
+            MouseTrackerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MouseTrackerButton.Name = "MouseTrackerButton";
+            MouseTrackerButton.Size = new System.Drawing.Size(88, 44);
+            MouseTrackerButton.TabIndex = 35;
+            MouseTrackerButton.Text = "Mouse Tracker";
+            MouseTrackerButton.UseVisualStyleBackColor = true;
+            MouseTrackerButton.Click += MouseTrackerButton_Click;
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(100, 403);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(271, 44);
-            this.label2.TabIndex = 38;
-            this.label2.Text = "Demonstrate a control with a transparent background";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label2.Location = new System.Drawing.Point(100, 403);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(578, 44);
+            label2.TabIndex = 38;
+            label2.Text = "Demonstrate a control with a transparent background";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Location = new System.Drawing.Point(100, 53);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(271, 44);
-            this.label4.TabIndex = 36;
-            this.label4.Text = "Display the position under the mouse cursor";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label4.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label4.Location = new System.Drawing.Point(100, 53);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(578, 44);
+            label4.TabIndex = 36;
+            label4.Text = "Display the position under the mouse cursor";
+            label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TransparentBackgroundButton
             // 
-            this.TransparentBackgroundButton.Location = new System.Drawing.Point(4, 403);
-            this.TransparentBackgroundButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.TransparentBackgroundButton.Name = "TransparentBackgroundButton";
-            this.TransparentBackgroundButton.Size = new System.Drawing.Size(88, 44);
-            this.TransparentBackgroundButton.TabIndex = 37;
-            this.TransparentBackgroundButton.Text = "Transparent Background";
-            this.TransparentBackgroundButton.UseVisualStyleBackColor = true;
-            this.TransparentBackgroundButton.Click += new System.EventHandler(this.TransparentBackgroundButton_Click);
+            TransparentBackgroundButton.Location = new System.Drawing.Point(4, 403);
+            TransparentBackgroundButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            TransparentBackgroundButton.Name = "TransparentBackgroundButton";
+            TransparentBackgroundButton.Size = new System.Drawing.Size(88, 44);
+            TransparentBackgroundButton.TabIndex = 37;
+            TransparentBackgroundButton.Text = "Transparent Background";
+            TransparentBackgroundButton.UseVisualStyleBackColor = true;
+            TransparentBackgroundButton.Click += TransparentBackgroundButton_Click;
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(100, 753);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(271, 44);
-            this.label1.TabIndex = 67;
-            this.label1.Text = "Demonstrate different types of spline interpolation";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label1.Location = new System.Drawing.Point(100, 753);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(578, 44);
+            label1.TabIndex = 67;
+            label1.Text = "Demonstrate different types of spline interpolation";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SplineInterpolationButton
             // 
-            this.SplineInterpolationButton.Location = new System.Drawing.Point(4, 753);
-            this.SplineInterpolationButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.SplineInterpolationButton.Name = "SplineInterpolationButton";
-            this.SplineInterpolationButton.Size = new System.Drawing.Size(88, 44);
-            this.SplineInterpolationButton.TabIndex = 66;
-            this.SplineInterpolationButton.Text = "Spline Interpolation";
-            this.SplineInterpolationButton.UseVisualStyleBackColor = true;
-            this.SplineInterpolationButton.Click += new System.EventHandler(this.SplineInterpolationButton_Click);
+            SplineInterpolationButton.Location = new System.Drawing.Point(4, 753);
+            SplineInterpolationButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            SplineInterpolationButton.Name = "SplineInterpolationButton";
+            SplineInterpolationButton.Size = new System.Drawing.Size(88, 44);
+            SplineInterpolationButton.TabIndex = 66;
+            SplineInterpolationButton.Text = "Spline Interpolation";
+            SplineInterpolationButton.UseVisualStyleBackColor = true;
+            SplineInterpolationButton.Click += SplineInterpolationButton_Click;
             // 
             // FinanceDemoButton
             // 
-            this.FinanceDemoButton.Location = new System.Drawing.Point(4, 803);
-            this.FinanceDemoButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.FinanceDemoButton.Name = "FinanceDemoButton";
-            this.FinanceDemoButton.Size = new System.Drawing.Size(88, 44);
-            this.FinanceDemoButton.TabIndex = 68;
-            this.FinanceDemoButton.Text = "Finance Demo";
-            this.FinanceDemoButton.UseVisualStyleBackColor = true;
-            this.FinanceDemoButton.Click += new System.EventHandler(this.FinanceDemoButton_Click);
+            FinanceDemoButton.Location = new System.Drawing.Point(4, 803);
+            FinanceDemoButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            FinanceDemoButton.Name = "FinanceDemoButton";
+            FinanceDemoButton.Size = new System.Drawing.Size(88, 44);
+            FinanceDemoButton.TabIndex = 68;
+            FinanceDemoButton.Text = "Finance Demo";
+            FinanceDemoButton.UseVisualStyleBackColor = true;
+            FinanceDemoButton.Click += FinanceDemoButton_Click;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Location = new System.Drawing.Point(100, 803);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(271, 44);
-            this.label3.TabIndex = 69;
-            this.label3.Text = "Stock prices with volume indicators";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label3.Location = new System.Drawing.Point(100, 803);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(578, 44);
+            label3.TabIndex = 69;
+            label3.Text = "Stock prices with volume indicators";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // HittableButton
             // 
-            this.HittableButton.Location = new System.Drawing.Point(4, 854);
-            this.HittableButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.HittableButton.Name = "HittableButton";
-            this.HittableButton.Size = new System.Drawing.Size(88, 44);
-            this.HittableButton.TabIndex = 70;
-            this.HittableButton.Text = "Hittable Demo";
-            this.HittableButton.UseVisualStyleBackColor = true;
-            this.HittableButton.Click += new System.EventHandler(this.HittableButton_Click);
+            HittableButton.Location = new System.Drawing.Point(4, 854);
+            HittableButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            HittableButton.Name = "HittableButton";
+            HittableButton.Size = new System.Drawing.Size(88, 44);
+            HittableButton.TabIndex = 70;
+            HittableButton.Text = "Hittable Demo";
+            HittableButton.UseVisualStyleBackColor = true;
+            HittableButton.Click += HittableButton_Click;
             // 
             // label18
             // 
-            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label18.Location = new System.Drawing.Point(100, 854);
-            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(271, 44);
-            this.label18.TabIndex = 71;
-            this.label18.Text = "Example use of IHittable for mouse interactivity";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label18.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label18.Location = new System.Drawing.Point(100, 854);
+            label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label18.Name = "label18";
+            label18.Size = new System.Drawing.Size(578, 44);
+            label18.TabIndex = 71;
+            label18.Text = "Example use of IHittable for mouse interactivity";
+            label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DataLoggerButton
             // 
-            this.DataLoggerButton.Location = new System.Drawing.Point(4, 905);
-            this.DataLoggerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DataLoggerButton.Name = "DataLoggerButton";
-            this.DataLoggerButton.Size = new System.Drawing.Size(88, 44);
-            this.DataLoggerButton.TabIndex = 72;
-            this.DataLoggerButton.Text = "Data Logger";
-            this.DataLoggerButton.UseVisualStyleBackColor = true;
-            this.DataLoggerButton.Click += new System.EventHandler(this.DataLoggerButton_Click);
+            DataLoggerButton.Location = new System.Drawing.Point(4, 905);
+            DataLoggerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            DataLoggerButton.Name = "DataLoggerButton";
+            DataLoggerButton.Size = new System.Drawing.Size(88, 44);
+            DataLoggerButton.TabIndex = 72;
+            DataLoggerButton.Text = "Data Logger";
+            DataLoggerButton.UseVisualStyleBackColor = true;
+            DataLoggerButton.Click += DataLoggerButton_Click;
             // 
             // label19
             // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.Location = new System.Drawing.Point(98, 905);
-            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(271, 44);
-            this.label19.TabIndex = 73;
-            this.label19.Text = "Log and display streaming data";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label19.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label19.Location = new System.Drawing.Point(98, 905);
+            label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label19.Name = "label19";
+            label19.Size = new System.Drawing.Size(578, 44);
+            label19.TabIndex = 73;
+            label19.Text = "Log and display a growing dataset (X/Y pairs)";
+            label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // HistogramButton
             // 
-            this.HistogramButton.Location = new System.Drawing.Point(4, 955);
-            this.HistogramButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.HistogramButton.Name = "HistogramButton";
-            this.HistogramButton.Size = new System.Drawing.Size(88, 44);
-            this.HistogramButton.TabIndex = 74;
-            this.HistogramButton.Text = "Live Histogram";
-            this.HistogramButton.UseVisualStyleBackColor = true;
-            this.HistogramButton.Click += new System.EventHandler(this.HistogramButton_Click);
+            HistogramButton.Location = new System.Drawing.Point(4, 1005);
+            HistogramButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            HistogramButton.Name = "HistogramButton";
+            HistogramButton.Size = new System.Drawing.Size(88, 44);
+            HistogramButton.TabIndex = 74;
+            HistogramButton.Text = "Live Histogram";
+            HistogramButton.UseVisualStyleBackColor = true;
+            HistogramButton.Click += HistogramButton_Click;
             // 
             // label20
             // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.Location = new System.Drawing.Point(100, 955);
-            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(271, 44);
-            this.label20.TabIndex = 75;
-            this.label20.Text = "Histogram updating in real time from a streaming data source";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label20.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label20.Location = new System.Drawing.Point(100, 1005);
+            label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label20.Name = "label20";
+            label20.Size = new System.Drawing.Size(578, 44);
+            label20.TabIndex = 75;
+            label20.Text = "Histogram updating in real time from a streaming data source";
+            label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // DataStreamerButton
+            // 
+            DataStreamerButton.Location = new System.Drawing.Point(4, 955);
+            DataStreamerButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            DataStreamerButton.Name = "DataStreamerButton";
+            DataStreamerButton.Size = new System.Drawing.Size(88, 44);
+            DataStreamerButton.TabIndex = 76;
+            DataStreamerButton.Text = "Data Streamer";
+            DataStreamerButton.UseVisualStyleBackColor = true;
+            DataStreamerButton.Click += DataStreamerButton_Click;
+            // 
+            // label21
+            // 
+            label21.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label21.Location = new System.Drawing.Point(98, 955);
+            label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label21.Name = "label21";
+            label21.Size = new System.Drawing.Size(578, 44);
+            label21.TabIndex = 77;
+            label21.Text = "Display streaming data (Y values)";
+            label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DemoListControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label20);
-            this.Controls.Add(this.label19);
-            this.Controls.Add(this.label18);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.HistogramButton);
-            this.Controls.Add(this.HittableButton);
-            this.Controls.Add(this.FinanceDemoButton);
-            this.Controls.Add(this.DataLoggerButton);
-            this.Controls.Add(this.SplineInterpolationButton);
-            this.Controls.Add(this.PlotViewerButton);
-            this.Controls.Add(this.MouseTrackerButton);
-            this.Controls.Add(this.ToggleVisibilityButton);
-            this.Controls.Add(this.ConfigButton);
-            this.Controls.Add(this.StyleBrowserButton);
-            this.Controls.Add(this.LinkedAxesButton);
-            this.Controls.Add(this.LiveData);
-            this.Controls.Add(this.MultiAxisLockButton);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.GrowingData);
-            this.Controls.Add(this.btnShowOnHover);
-            this.Controls.Add(this.btnColormapViewer);
-            this.Controls.Add(this.TransparentBackgroundButton);
-            this.Controls.Add(this.RightClickMenuButton);
-            this.Controls.Add(this.AxisLimitsButton);
-            this.Controls.Add(this.ScrollViewerButton);
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "DemoListControl";
-            this.Size = new System.Drawing.Size(416, 1200);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(label21);
+            Controls.Add(label20);
+            Controls.Add(label19);
+            Controls.Add(label18);
+            Controls.Add(label3);
+            Controls.Add(label11);
+            Controls.Add(label14);
+            Controls.Add(label4);
+            Controls.Add(label1);
+            Controls.Add(label5);
+            Controls.Add(label17);
+            Controls.Add(label6);
+            Controls.Add(label7);
+            Controls.Add(label13);
+            Controls.Add(label8);
+            Controls.Add(label12);
+            Controls.Add(label9);
+            Controls.Add(label10);
+            Controls.Add(label2);
+            Controls.Add(HistogramButton);
+            Controls.Add(HittableButton);
+            Controls.Add(FinanceDemoButton);
+            Controls.Add(DataStreamerButton);
+            Controls.Add(DataLoggerButton);
+            Controls.Add(SplineInterpolationButton);
+            Controls.Add(PlotViewerButton);
+            Controls.Add(MouseTrackerButton);
+            Controls.Add(ToggleVisibilityButton);
+            Controls.Add(ConfigButton);
+            Controls.Add(StyleBrowserButton);
+            Controls.Add(LinkedAxesButton);
+            Controls.Add(LiveData);
+            Controls.Add(MultiAxisLockButton);
+            Controls.Add(label15);
+            Controls.Add(label16);
+            Controls.Add(GrowingData);
+            Controls.Add(btnShowOnHover);
+            Controls.Add(btnColormapViewer);
+            Controls.Add(TransparentBackgroundButton);
+            Controls.Add(RightClickMenuButton);
+            Controls.Add(AxisLimitsButton);
+            Controls.Add(ScrollViewerButton);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "DemoListControl";
+            Size = new System.Drawing.Size(723, 1200);
+            ResumeLayout(false);
         }
 
         #endregion
@@ -625,5 +628,7 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button HistogramButton;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button DataStreamerButton;
+        private System.Windows.Forms.Label label21;
     }
 }
