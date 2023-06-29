@@ -41,6 +41,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SignalScale : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
+        public string ID => "signalxy_scale";
+        public string Title => "SignalXY Scale";
+        public string Description =>
+            "SignalXY plots can have a Y scale that multiply all data by a defined amount. " +
+            "ScaleY is applied before OffsetX and OffsetY.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // display 100,000 values between -1 and +1
+            double[] values = DataGen.Sin(100_000, oscillations: 10);
+            double[] xs = ScottPlot.Generate.Consecutive(values.Length);
+            var sigxy = plt.AddSignalXY(xs, values);
+
+            // scale Y by 500 so values span -500 to +500
+            sigxy.ScaleY = 500;
+        }
+    }
+
     public class HasXGaps : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.SignalXY();
