@@ -18,6 +18,7 @@
 * Signal Plot: Added `ScaleY` property to compliment `OffsetY` (#2642, #2656) _Thanks @Guillaume-Deville_
 * Colorbar: Automatically adjust label position to prevent overlap with tick labels (#2684) _Thanks @bukkideme_
 * Launcher: Made `Plot.Launch` methods available without requiring using statements (#2627, #2657) _Thanks @Guillaume-Deville_
+* Population plot: Added `BoxBorderColor` and `ErrorStDevBarColor` properties to customize appearance (#2708) _Thanks @johndoh_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
