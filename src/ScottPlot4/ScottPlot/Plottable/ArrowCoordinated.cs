@@ -15,12 +15,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Location of the arrow base in coordinate space
         /// </summary>
-        public readonly Coordinate Base = new(0, 0);
+        public Coordinate Base = new(0, 0);
 
         /// <summary>
         /// Location of the arrow base in coordinate space
         /// </summary>
-        public readonly Coordinate Tip = new(0, 0);
+        public Coordinate Tip = new(0, 0);
 
         /// <summary>
         /// Color of the arrow and arrowhead
