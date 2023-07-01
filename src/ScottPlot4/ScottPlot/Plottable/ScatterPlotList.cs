@@ -134,6 +134,24 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
+        /// Returns the actual X positions of the list
+        /// </summary>
+        /// <returns></returns>
+        public List<T> GetListX()
+        {
+            return Xs;
+        }
+
+        /// <summary>
+        /// Returns the actual Y positions of the list
+        /// </summary>
+        /// <returns></returns>
+        public List<T> GetListY()
+        {
+            return Ys;
+        }
+
+        /// <summary>
         /// Return a new array containing pixel locations for each point of the scatter plot
         /// </summary>
         private PointF[] GetPoints(PlotDimensions dims)
