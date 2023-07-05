@@ -134,21 +134,19 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
-        /// Returns the actual X positions of the list
+        /// Returns a copy of all the X positions currently in use
         /// </summary>
-        /// <returns></returns>
-        public List<T> GetListX()
+        public T[] GetXs()
         {
-            return Xs;
+            return Xs.ToArray();
         }
 
         /// <summary>
-        /// Returns the actual Y positions of the list
+        /// Returns a copy of all the Y positions currently in use
         /// </summary>
-        /// <returns></returns>
-        public List<T> GetListY()
+        public T[] GetYs()
         {
-            return Ys;
+            return Ys.ToArray();
         }
 
         /// <summary>
