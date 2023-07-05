@@ -1,16 +1,14 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
+
 using ScottPlot.Plottable;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class ShowValueOnHover : Window
+    public partial class ShowValueOnHover : Window
     {
-        AvaPlot avaPlot1;
         private readonly ScatterPlot MyScatterPlot;
         private readonly MarkerPlot HighlightedPoint;
         private int LastHighlightedIndex = -1;
@@ -18,10 +16,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         public ShowValueOnHover()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
             // create a scatter plot from some random data and save it
             Random rand = new Random(0);
@@ -38,11 +32,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             HighlightedPoint.IsVisible = false;
 
             avaPlot1.PointerMoved += MouseMove;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private void MouseMove(object sender, PointerEventArgs e)
@@ -66,7 +55,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             // update the GUI to describe the highlighted point
             (double mouseX, double mouseY) = avaPlot1.GetMouseCoordinates();
-            this.Find<TextBlock>("label1").Text = $"Closest point to ({mouseX:N0}, {mouseY:N0}) " +
+            this.label1.Text = $"Closest point to ({mouseX:N0}, {mouseY:N0}) " +
                 $"is index {pointIndex} ({pointX:N2}, {pointY:N2})";
         }
     }

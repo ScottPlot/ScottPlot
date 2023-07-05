@@ -1,29 +1,21 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class ToggleVisibility : Window
+    public partial class ToggleVisibility : Window
     {
         Plottable.ScatterPlot sinPlot, cosPlot;
         Plottable.VLine vline1, vline2;
 
-        AvaPlot avaPlot1;
         public ToggleVisibility()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+
             int pointCount = 51;
             double[] dataXs = DataGen.Consecutive(pointCount);
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
-
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
             sinPlot = avaPlot1.Plot.AddScatter(dataXs, dataSin);
             cosPlot = avaPlot1.Plot.AddScatter(dataXs, dataCos);
@@ -32,19 +24,14 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1.Refresh();
 
-            this.Find<CheckBox>("sineCheckbox").Checked += SinShow;
-            this.Find<CheckBox>("sineCheckbox").Unchecked += SinHide;
+            this.sineCheckbox.Checked += SinShow;
+            this.sineCheckbox.Unchecked += SinHide;
 
-            this.Find<CheckBox>("cosineCheckbox").Checked += CosShow;
-            this.Find<CheckBox>("cosineCheckbox").Unchecked += CosHide;
+            this.cosineCheckbox.Checked += CosShow;
+            this.cosineCheckbox.Unchecked += CosHide;
 
-            this.Find<CheckBox>("linesCheckbox").Checked += LinesShow;
-            this.Find<CheckBox>("linesCheckbox").Unchecked += LinesHide;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.linesCheckbox.Checked += LinesShow;
+            this.linesCheckbox.Unchecked += LinesHide;
         }
 
         private void SinHide(object sender, RoutedEventArgs e)

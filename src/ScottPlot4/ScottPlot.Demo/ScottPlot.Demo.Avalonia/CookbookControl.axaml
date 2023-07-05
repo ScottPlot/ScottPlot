@@ -13,6 +13,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
@@ -30,7 +31,9 @@
 			</DockPanel>
 		</Border>
 
-		<Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
+        <TextBlock Name="BenchmarkLabel" Grid.Row="2" Margin="5,0,0,0" Text="Benchmark"/>
+
+		<Border Grid.Column="0" Grid.Row="3" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
 			<DockPanel>
 				<TextBlock x:Name="SourceCodeLabel" DockPanel.Dock="Top" Foreground="White" >file path</TextBlock>
 				<TextBox x:Name="SourceTextBox"

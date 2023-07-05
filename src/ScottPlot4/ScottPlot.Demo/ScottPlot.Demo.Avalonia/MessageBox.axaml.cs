@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
 /*
@@ -10,7 +10,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ScottPlot.Demo.Avalonia
 {
-    class MessageBox : Window
+    public partial class MessageBox : Window
     {
         public enum MessageBoxButtons
         {
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public MessageBox()
         {
-            AvaloniaXamlLoader.Load(this);
+            this.InitializeComponent();
         }
 
         public static Task<MessageBoxResult> Show(Window parent, string text, string title, MessageBoxButtons buttons)
@@ -39,7 +39,7 @@ namespace ScottPlot.Demo.Avalonia
             {
                 Title = title
             };
-            msgbox.FindControl<TextBlock>("Text").Text = text;
+            msgbox.Text.Text = text;
             var buttonPanel = msgbox.FindControl<StackPanel>("Buttons");
 
             var res = MessageBoxResult.Ok;

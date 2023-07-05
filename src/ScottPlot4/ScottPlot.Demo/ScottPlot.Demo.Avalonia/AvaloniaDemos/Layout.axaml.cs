@@ -1,29 +1,15 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
-using ScottPlot.Renderable;
-using System;
+﻿using System;
 using System.Linq;
+
+using Avalonia.Controls;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class Layout : Window
+    public partial class Layout : Window
     {
-        AvaPlot mainPlot;
-        AvaPlot rightPlot;
-        AvaPlot lowerPlot;
-
         public Layout()
         {
-            AvaloniaXamlLoader.Load(this);
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            mainPlot = this.Find<AvaPlot>("mainPlot");
-            rightPlot = this.Find<AvaPlot>("rightPlot");
-            lowerPlot = this.Find<AvaPlot>("lowerPlot");
+            InitializeComponent();
 
             // generate sample data
             Random rand = new Random(0);

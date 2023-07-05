@@ -1,18 +1,20 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
-using Avalonia.VisualTree;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
+
 using Ava = Avalonia;
 
 #pragma warning disable IDE1006 // lowercase public properties
 #pragma warning disable CS0067 // unused events
+#pragma warning disable CS0618 // TODO: Storage API
 
 namespace ScottPlot.Avalonia
 {
@@ -110,6 +112,17 @@ namespace ScottPlot.Avalonia
 
             ContextMenu = GetDefaultContextMenu();
 
+            this.Focusable = true;
+
+            PointerPressed += OnMouseDown;
+            PointerMoved += OnMouseMove;
+            // Note: PointerReleased is handled in OnPointerReleased override instead
+            PointerWheelChanged += OnMouseWheel;
+            PointerEntered += OnMouseEnter;
+            PointerExited += OnMouseLeave;
+            DoubleTapped += OnDoubleClick;
+            PropertyChanged += AvaPlot_PropertyChanged;
+
             InitializeLayout();
             Backend.StartProcessingEvents();
         }
@@ -164,8 +177,8 @@ namespace ScottPlot.Avalonia
         private void OnDoubleClick(object sender, RoutedEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta.Y));
         private void OnMouseMove(object sender, PointerEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnPointerMoved(e); }
-        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEnter(e);
-        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerLeave(e);
+        private void OnMouseEnter(object sender, PointerEventArgs e) => base.OnPointerEntered(e);
+        private void OnMouseLeave(object sender, PointerEventArgs e) => base.OnPointerExited(e);
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
@@ -184,25 +197,8 @@ namespace ScottPlot.Avalonia
                 WheelScrolledDown = delta.HasValue && delta < 0,
             };
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.Focusable = true;
-
-            PointerPressed += OnMouseDown;
-            PointerMoved += OnMouseMove;
-            // Note: PointerReleased is handled in OnPointerReleased override instead
-            PointerWheelChanged += OnMouseWheel;
-            PointerEnter += OnMouseEnter;
-            PointerLeave += OnMouseLeave;
-            DoubleTapped += OnDoubleClick;
-            PropertyChanged += AvaPlot_PropertyChanged;
-        }
-
         private void InitializeLayout()
         {
-            Grid mainGrid = this.Find<Grid>("MainGrid");
-
             bool isDesignerMode = Design.IsDesignMode;
             if (isDesignerMode)
             {
@@ -214,7 +210,7 @@ namespace ScottPlot.Avalonia
                 catch (Exception e)
                 {
                     InitializeComponent();
-                    this.Find<TextBlock>("ErrorLabel").Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
+                    this.ErrorLabel.Text = "ERROR: ScottPlot failed to render in design mode.\n\n" +
                         "This may be due to incompatible System.Drawing.Common versions or a 32-bit/64-bit mismatch.\n\n" +
                         "Although rendering failed at design time, it may still function normally at runtime.\n\n" +
                         $"Exception details:\n{e}";
@@ -222,10 +218,10 @@ namespace ScottPlot.Avalonia
                 }
             }
 
-            this.Find<TextBlock>("ErrorLabel").IsVisible = false;
+            this.ErrorLabel.IsVisible = false;
 
             Canvas canvas = new Canvas();
-            mainGrid.Children.Add(canvas);
+            this.MainGrid.Children.Add(canvas);
             canvas.Children.Add(PlotImage);
         }
 
@@ -268,7 +264,7 @@ namespace ScottPlot.Avalonia
                 HelpMenuItem,
                 OpenInNewWindowMenuItem
             };
-            cm.Items = cmItems;
+            cm.ItemsSource = cmItems;
             return cm;
         }
 
@@ -280,11 +276,11 @@ namespace ScottPlot.Avalonia
 
             if (e.OldValue is ContextMenu oldMenu)
             {
-                oldMenu.ContextMenuOpening -= InhibitContextMenuIfMouseDragged;
+                oldMenu.Opening -= InhibitContextMenuIfMouseDragged;
             }
             if (e.NewValue is ContextMenu newMenu)
             {
-                newMenu.ContextMenuOpening += InhibitContextMenuIfMouseDragged;
+                newMenu.Opening += InhibitContextMenuIfMouseDragged;
             }
         }
 

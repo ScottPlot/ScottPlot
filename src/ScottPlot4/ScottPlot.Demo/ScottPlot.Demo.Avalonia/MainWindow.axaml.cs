@@ -1,43 +1,33 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
-using System;
 
 namespace ScottPlot.Demo.Avalonia
 {
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = Plot.Version;
+            this.VersionLabel.Text = Plot.Version;
 
-            this.Find<Button>("WebsiteLabel").Click += WebsiteLabelClick;
-            this.Find<Button>("LaunchCookbookButton").Click += LaunchCookbook;
-            this.Find<Button>("LaunchPlotViewerButton").Click += LaunchPlotViewer;
-            this.Find<Button>("LaunchMouseTrackerButton").Click += LaunchMouseTracker;
-            this.Find<Button>("LaunchToggleVisibilityButton").Click += LaunchToggleVisibility;
-            this.Find<Button>("LaunchAvaPlotConfigButton").Click += LaunchAvaloniaConfig;
-            this.Find<Button>("LaunchLinkedAxesButton").Click += LaunchLinkedAxes;
-            this.Find<Button>("LaunchLiveDataFixedButton").Click += LaunchLiveDataFixed;
-            this.Find<Button>("LaunchLiveDataIncomingButton").Click += LaunchLiveDataIncoming;
-            this.Find<Button>("LaunchShowValueUnderMouseButton").Click += LaunchShowValueUnderMouse;
-            this.Find<Button>("LaunchTransparentBackgroundButton").Click += LaunchTransparentBackground;
-            this.Find<Button>("LaunchCustomRightClickButton").Click += LaunchCustomRightClick;
-            this.Find<Button>("LaunchPlotInAScrollViewerButton").Click += LaunchPlotInAScrollViewer;
-            this.Find<Button>("LaunchAxisLimitsButton").Click += LaunchAxisLimits;
-            this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
-            this.Find<Button>("LaunchMultiAxisLockButton").Click += LaunchMultiAxisLock;
-            this.Find<Button>("LaunchStyleBrowserButton").Click += LaunchStyleBrowser;
-            this.Find<Button>("LaunchDisplayScalingButton").Click += LaunchDisplayScaling;
-        }
-
-        public void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.WebsiteLabel.Click += WebsiteLabelClick;
+            this.LaunchCookbookButton.Click += LaunchCookbook;
+            this.LaunchPlotViewerButton.Click += LaunchPlotViewer;
+            this.LaunchMouseTrackerButton.Click += LaunchMouseTracker;
+            this.LaunchToggleVisibilityButton.Click += LaunchToggleVisibility;
+            this.LaunchAvaPlotConfigButton.Click += LaunchAvaloniaConfig;
+            this.LaunchLinkedAxesButton.Click += LaunchLinkedAxes;
+            this.LaunchLiveDataFixedButton.Click += LaunchLiveDataFixed;
+            this.LaunchLiveDataIncomingButton.Click += LaunchLiveDataIncoming;
+            this.LaunchShowValueUnderMouseButton.Click += LaunchShowValueUnderMouse;
+            this.LaunchTransparentBackgroundButton.Click += LaunchTransparentBackground;
+            this.LaunchCustomRightClickButton.Click += LaunchCustomRightClick;
+            this.LaunchPlotInAScrollViewerButton.Click += LaunchPlotInAScrollViewer;
+            this.LaunchAxisLimitsButton.Click += LaunchAxisLimits;
+            this.LaunchLayoutButton.Click += LaunchLayout;
+            this.LaunchMultiAxisLockButton.Click += LaunchMultiAxisLock;
+            this.LaunchStyleBrowserButton.Click += LaunchStyleBrowser;
+            this.LaunchDisplayScalingButton.Click += LaunchDisplayScaling;
         }
 
         public void LaunchCookbook(object sender, RoutedEventArgs e)

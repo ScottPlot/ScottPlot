@@ -1,24 +1,14 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
-using System;
-using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class RightClickMenu : Window
+    public partial class RightClickMenu : Window
     {
-        private readonly AvaPlot avaPlot1;
-
         public RightClickMenu()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
             avaPlot1.Plot.AddSignal(DataGen.Sin(51));
             avaPlot1.Plot.AddSignal(DataGen.Cos(51));
@@ -26,18 +16,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             ContextMenu contextMenu = new ContextMenu
             {
-                Items = new[] {
+                ItemsSource = new[] {
                     MakeMenuItem("Add Sine Wave", AddSine),
                     MakeMenuItem("Clear Plot", ClearPlot)
                 }
             };
 
             avaPlot1.ContextMenu = contextMenu;
-        }
-
-        public void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private MenuItem MakeMenuItem(string label, Action onClick)

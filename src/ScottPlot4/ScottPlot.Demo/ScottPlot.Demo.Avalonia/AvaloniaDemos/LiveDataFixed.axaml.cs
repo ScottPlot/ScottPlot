@@ -1,18 +1,14 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
-using ScottPlot.Avalonia;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 
+using Avalonia.Controls;
+using Avalonia.Threading;
+
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class LiveDataFixed : Window
+    public partial class LiveDataFixed : Window
     {
-        AvaPlot avaPlot1;
-        Random rand = new Random();
         double[] liveData = new double[400];
         DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
         Stopwatch sw = Stopwatch.StartNew();
@@ -22,11 +18,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         public LiveDataFixed()
         {
-            this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
+            InitializeComponent();
 
             // plot the data array only once
             avaPlot1.Plot.AddSignal(liveData);
@@ -47,11 +39,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
                 _updateDataTimer?.Dispose();
                 _renderTimer?.Stop();
             };
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         void UpdateData()
