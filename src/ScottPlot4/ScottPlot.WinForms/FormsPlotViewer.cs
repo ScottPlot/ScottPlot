@@ -13,18 +13,7 @@ public partial class FormsPlotViewer : Form
     /// </summary>
     public FormsPlotViewer(ScottPlot.Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
     {
-        public FormsPlotViewer(ScottPlot.Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
-        {
-            InitializeComponent();
-            Width = windowWidth;
-            Height = windowHeight;
-            Text = windowTitle;
-
-            formsPlot1.Reset(plot);
-            formsPlot1.Refresh();
-        }
         InitializeComponent();
-
         Width = windowWidth;
         Height = windowHeight;
         Text = windowTitle;
