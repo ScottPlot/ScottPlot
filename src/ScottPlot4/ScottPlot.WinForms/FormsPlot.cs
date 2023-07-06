@@ -29,6 +29,16 @@ namespace ScottPlot
         public event EventHandler AxesChanged;
 
         /// <summary>
+        /// This event is invoked in multi-control environments to alert other controls that they need to refresh.
+        /// </summary>
+        public event EventHandler Rendered;
+
+        /// <summary>
+        /// The <see cref="Rendered"/> event will be triggered on every render only if this is true.
+        /// </summary>
+        public bool EnableRenderedEvent = true;
+
+        /// <summary>
         /// This event is invoked any time the plot is right-clicked.
         /// By default it contains DefaultRightClickEvent(), but you can remove this and add your own method.
         /// </summary>
@@ -205,8 +215,18 @@ namespace ScottPlot
             RefreshRequest(renderType);
 
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
-        private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); }
-        private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
+        private void OnBitmapUpdated(object sender, EventArgs e)
+        {
+            pictureBox1.Refresh();
+            if (EnableRenderedEvent)
+                Rendered?.Invoke(this, e);
+        }
+        private void OnBitmapChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Backend.GetLatestBitmap();
+            if (EnableRenderedEvent)
+                Rendered?.Invoke(this, e);
+        }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
