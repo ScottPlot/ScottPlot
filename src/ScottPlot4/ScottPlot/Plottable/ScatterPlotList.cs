@@ -134,6 +134,22 @@ namespace ScottPlot.Plottable
         }
 
         /// <summary>
+        /// Returns a copy of all the X positions currently in use
+        /// </summary>
+        public T[] GetXs()
+        {
+            return Xs.ToArray();
+        }
+
+        /// <summary>
+        /// Returns a copy of all the Y positions currently in use
+        /// </summary>
+        public T[] GetYs()
+        {
+            return Ys.ToArray();
+        }
+
+        /// <summary>
         /// Return a new array containing pixel locations for each point of the scatter plot
         /// </summary>
         private PointF[] GetPoints(PlotDimensions dims)

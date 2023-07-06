@@ -28,27 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.formsPlot1 = new ScottPlot.FormsPlot();
-            this.SuspendLayout();
+            formsPlot1 = new FormsPlot();
+            SuspendLayout();
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.formsPlot1.Location = new System.Drawing.Point(0, 0);
-            this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(584, 361);
-            this.formsPlot1.TabIndex = 0;
+            formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            formsPlot1.Location = new System.Drawing.Point(0, 0);
+            formsPlot1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            formsPlot1.Name = "formsPlot1";
+            formsPlot1.Size = new System.Drawing.Size(681, 417);
+            formsPlot1.TabIndex = 0;
             // 
             // FormsPlotViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.formsPlot1);
-            this.Name = "FormsPlotViewer";
-            this.Text = "FormsPlotViewer";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(681, 417);
+            Controls.Add(formsPlot1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "FormsPlotViewer";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "FormsPlotViewer";
+            ResumeLayout(false);
         }
 
         #endregion
