@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.Avalonia
             {
                 selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
             }
-            if (selectedDemoItem?.ID != null)
+            if (selectedDemoItem?.ID is not null)
             {
                 DemoPlotControl1.IsVisible = true;
                 AboutControl1.IsVisible = false;
