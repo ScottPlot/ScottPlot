@@ -41,6 +41,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
 * SignalPlot: Fixed bug where `Update()` did not change the final point (#2592) _Thanks @Angeld10_
 * ScatterPlotDraggable: Expose IndexUnderMouse for access after drag events (#2682) _Thanks @mocakturk_
+* LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690) _Thanks @mocakturk_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
