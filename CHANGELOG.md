@@ -40,6 +40,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Plot: Improved `AddVerticalLine()` XML docs (#2610) _Thanks @wfs1900_
 * FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
 * SignalPlot: Fixed bug where `Update()` did not change the final point (#2592) _Thanks @Angeld10_
+* ScatterPlotDraggable: Expose IndexUnderMouse for access after drag events (#2682) _Thanks @mocakturk_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
