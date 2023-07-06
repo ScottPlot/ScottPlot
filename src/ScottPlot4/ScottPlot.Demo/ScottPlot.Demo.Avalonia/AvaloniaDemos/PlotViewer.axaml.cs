@@ -11,7 +11,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public partial class PlotViewer : Window
     {
-        Random rand = new Random();
+        private readonly Random rand = new Random();
         public PlotViewer()
         {
             this.InitializeComponent();

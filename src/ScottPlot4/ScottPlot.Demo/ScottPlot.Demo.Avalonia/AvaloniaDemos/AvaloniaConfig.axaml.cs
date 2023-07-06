@@ -1,8 +1,5 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-
-using ScottPlot.Avalonia;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
@@ -12,7 +9,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             this.InitializeComponent();
 
-            int pointCount = 51;
+            const int pointCount = 51;
             double[] dataXs = DataGen.Consecutive(pointCount);
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
@@ -20,7 +17,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.avaPlot1.Plot.AddScatter(dataXs, dataSin);
             this.avaPlot1.Plot.AddScatter(dataXs, dataCos);
             this.avaPlot1.Refresh();
-
         }
 
         private void PanEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LeftClickDragPan = true; }
@@ -45,17 +41,17 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         private void RightClickMenuDisable(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
 
         private void CustomRightClickEnable(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
 
         private void CustomRightClickDisable(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public partial class MouseTracker : Window
     {
-        Plottable.Crosshair Crosshair;
+        private readonly Plottable.Crosshair Crosshair;
 
         public MouseTracker()
         {

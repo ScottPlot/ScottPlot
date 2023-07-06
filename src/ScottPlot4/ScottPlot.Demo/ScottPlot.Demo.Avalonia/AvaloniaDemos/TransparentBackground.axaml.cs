@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             this.InitializeComponent();
 
-            int pointCount = 51;
+            const int pointCount = 51;
             double[] x = DataGen.Consecutive(pointCount);
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);

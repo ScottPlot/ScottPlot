@@ -33,7 +33,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             for (int i = 0; i < palette.Count(); i++)
             {
-                double offset = 1 + i * 1.1;
+                double offset = 1 + (i * 1.1);
                 double mult = 10 + i;
                 double phase = i * .3 / palette.Count();
                 double[] ys = DataGen.Sin(51, 1, offset, mult, phase);

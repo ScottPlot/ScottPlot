@@ -14,14 +14,14 @@ namespace ScottPlot.Demo.Avalonia
 
         private void DemoSelected(object sender, SelectionChangedEventArgs e)
         {
-            TreeView DemoTreeview = (TreeView)sender; ;
+            TreeView DemoTreeview = (TreeView)sender;
 
             Cookbook.TreeNode selectedDemoItem = null;
             if (DemoTreeview.SelectedItems.Count > 0)
             {
                 selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
             }
-            if (selectedDemoItem != null && selectedDemoItem.ID != null)
+            if (selectedDemoItem?.ID != null)
             {
                 DemoPlotControl1.IsVisible = true;
                 AboutControl1.IsVisible = false;

@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             rightPlot.Refresh();
         }
 
-        private double[] SumHorizontally(double[,] data)
+        private static double[] SumHorizontally(double[,] data)
         {
             double[] sums = new double[data.GetLength(0)];
             for (int y = 0; y < data.GetLength(0); y++)
@@ -71,12 +71,12 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
                 {
                     sum += data[y, x];
                 }
-                sums[y] = sum; ;
+                sums[y] = sum;
             }
             return sums;
         }
 
-        private double[] SumVertically(double[,] data)
+        private static double[] SumVertically(double[,] data)
         {
             double[] sums = new double[data.GetLength(1)];
             for (int x = 0; x < data.GetLength(1); x++)

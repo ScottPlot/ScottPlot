@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             // create a scatter plot from some random data and save it
             Random rand = new Random(0);
-            int pointCount = 20;
+            const int pointCount = 20;
             double[] xs = DataGen.Random(rand, pointCount);
             double[] ys = DataGen.Random(rand, pointCount, multiplier: 1_000);
             MyScatterPlot = avaPlot1.Plot.AddScatterPoints(xs, ys);

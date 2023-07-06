@@ -9,12 +9,12 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public partial class LiveDataFixed : Window
     {
-        double[] liveData = new double[400];
-        DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
-        Stopwatch sw = Stopwatch.StartNew();
+        private readonly double[] liveData = new double[400];
+        private readonly DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
+        private readonly Stopwatch sw = Stopwatch.StartNew();
 
-        private Timer _updateDataTimer;
-        private DispatcherTimer _renderTimer;
+        private readonly Timer _updateDataTimer;
+        private readonly DispatcherTimer _renderTimer;
 
         public LiveDataFixed()
         {
@@ -29,8 +29,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
 
             // create a separate timer to update the GUI
-            _renderTimer = new DispatcherTimer();
-            _renderTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _renderTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(10)
+            };
             _renderTimer.Tick += Render;
             _renderTimer.Start();
 

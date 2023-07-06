@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.ContextMenu = contextMenu;
         }
 
-        private MenuItem MakeMenuItem(string label, Action onClick)
+        private static MenuItem MakeMenuItem(string label, Action onClick)
         {
             MenuItem menuItem = new MenuItem() { Header = label };
             menuItem.Click += (sender, e) => onClick();

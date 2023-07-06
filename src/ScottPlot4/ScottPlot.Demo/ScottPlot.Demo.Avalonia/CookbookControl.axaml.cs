@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 
 using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 
 namespace ScottPlot.Demo.Avalonia
 {
     public partial class CookbookControl : UserControl
     {
-        readonly Dictionary<string, Cookbook.RecipeSource> Recipes;
+        private readonly Dictionary<string, Cookbook.RecipeSource> Recipes;
 
         public CookbookControl()
         {
@@ -23,19 +22,6 @@ namespace ScottPlot.Demo.Avalonia
                 this.BenchmarkLabel.Text = this.AvaPlot1.Plot.GetSettings(false).BenchmarkMessage.Message;
             else
                 this.BenchmarkLabel.Text = "This plot is a non-interactive Bitmap";
-        }
-
-        private Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
-        {
-            using (var memory = new System.IO.MemoryStream())
-            {
-                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new global::Avalonia.Media.Imaging.Bitmap(memory);
-
-                return bitmapImage;
-            }
         }
 
         public void LoadDemo(string id)

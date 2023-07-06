@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 /*
 	Courtesy of kekekeks, the Avalonia creator
@@ -68,7 +67,6 @@ namespace ScottPlot.Demo.Avalonia
             if (buttons == MessageBoxButtons.OkCancel || buttons == MessageBoxButtons.YesNoCancel)
                 AddButton("Cancel", MessageBoxResult.Cancel, true);
 
-
             var tcs = new TaskCompletionSource<MessageBoxResult>();
             msgbox.Closed += delegate { tcs.TrySetResult(res); };
             if (parent != null)
@@ -76,8 +74,5 @@ namespace ScottPlot.Demo.Avalonia
             else msgbox.Show();
             return tcs.Task;
         }
-
-
     }
-
 }

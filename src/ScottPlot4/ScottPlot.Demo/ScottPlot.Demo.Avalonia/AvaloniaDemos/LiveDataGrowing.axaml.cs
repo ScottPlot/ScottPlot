@@ -1,22 +1,20 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using ScottPlot.Avalonia;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public partial class LiveDataGrowing : Window
     {
         public double[] data = new double[100_000];
-        int nextDataIndex = 1;
-        Plottable.SignalPlot signalPlot;
-        Random rand = new Random(0);
+        private int nextDataIndex = 1;
+        private readonly Plottable.SignalPlot signalPlot;
+        private readonly Random rand = new Random(0);
 
-        private DispatcherTimer _updateDataTimer;
-        private DispatcherTimer _renderTimer;
+        private readonly DispatcherTimer _updateDataTimer;
+        private readonly DispatcherTimer _renderTimer;
 
         public LiveDataGrowing()
         {
@@ -65,7 +63,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             signalPlot.MaxRenderIndex = nextDataIndex;
             ReadingsTextbox.Text = $"{nextDataIndex + 1}";
             LatestValueTextbox.Text = $"{latestValue:0.000}";
-            nextDataIndex += 1;
+            nextDataIndex++;
         }
 
         void Render(object sender, EventArgs e)

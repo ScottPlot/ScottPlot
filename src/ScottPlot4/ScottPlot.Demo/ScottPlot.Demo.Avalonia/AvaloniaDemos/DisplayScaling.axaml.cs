@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class DisplayScalingViewModel
     {
-        private Action _onChange;
+        private readonly Action _onChange;
         public DisplayScalingViewModel(Action onChange)
         {
             _onChange = onChange;

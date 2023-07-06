@@ -7,21 +7,17 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 using Ava = Avalonia;
-
-#pragma warning disable IDE1006 // lowercase public properties
-#pragma warning disable CS0067 // unused events
-#pragma warning disable CS0618 // TODO: Storage API
 
 namespace ScottPlot.Avalonia
 {
     /// <summary>
     /// Interaction logic for AvaPlot.axaml
     /// </summary>
-
     [System.ComponentModel.ToolboxItem(true)]
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class AvaPlot : UserControl, ScottPlot.Control.IPlotControl
@@ -56,26 +52,17 @@ namespace ScottPlot.Avalonia
         /// </summary>
         public event EventHandler PlottableDragged;
 
-        [Obsolete("use 'PlottableDragged' instead", error: true)]
-        public event EventHandler MouseDragPlottable;
-
         /// <summary>
         /// This event is invoked right after a draggable plottable was dropped.
         /// The object passed is the plottable that was just dropped.
         /// </summary>
         public event EventHandler PlottableDropped;
 
-        [Obsolete("use 'PlottableDropped' instead", error: true)]
-        public event EventHandler MouseDropPlottable;
-
         private readonly Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Ava.Input.Cursor> Cursors;
         private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
         private float ScaledWidth => (float)(Bounds.Width * Configuration.DpiStretchRatio);
         private float ScaledHeight => (float)(Bounds.Height * Configuration.DpiStretchRatio);
-
-        [Obsolete("Reference Plot instead of plt")]
-        public ScottPlot.Plot plt => Plot;
 
         static AvaPlot()
         {
@@ -98,16 +85,16 @@ namespace ScottPlot.Avalonia
             };
 
             Backend = new ScottPlot.Control.ControlBackEnd((float)Bounds.Width, (float)Bounds.Height, GetType().Name);
-            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
-            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            Backend.CursorChanged += new EventHandler(OnCursorChanged);
-            Backend.RightClicked += new EventHandler(OnRightClicked);
-            Backend.LeftClicked += new EventHandler(OnLeftClicked);
-            Backend.LeftClickedPlottable += new EventHandler(OnLeftClickedPlottable);
-            Backend.AxesChanged += new EventHandler(OnAxesChanged);
-            Backend.PlottableDragged += new EventHandler(OnPlottableDragged);
-            Backend.PlottableDropped += new EventHandler(OnPlottableDropped);
-            Backend.Configuration.ScaleChanged += new EventHandler(OnScaleChanged);
+            Backend.BitmapChanged += OnBitmapChanged;
+            Backend.BitmapUpdated += OnBitmapUpdated;
+            Backend.CursorChanged += OnCursorChanged;
+            Backend.RightClicked += OnRightClicked;
+            Backend.LeftClicked += OnLeftClicked;
+            Backend.LeftClickedPlottable += OnLeftClickedPlottable;
+            Backend.AxesChanged += OnAxesChanged;
+            Backend.PlottableDragged += OnPlottableDragged;
+            Backend.PlottableDropped += OnPlottableDropped;
+            Backend.Configuration.ScaleChanged += OnScaleChanged;
             Configuration = Backend.Configuration;
 
             ContextMenu = GetDefaultContextMenu();
@@ -270,7 +257,7 @@ namespace ScottPlot.Avalonia
 
         private void ContextMenuChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            // Make sure that any context menus that get assigned do not 
+            // Make sure that any context menus that get assigned do not
             // display when the right mouse button is released if the mouse
             // was dragged while the button was down
 
@@ -303,8 +290,8 @@ namespace ScottPlot.Avalonia
         }
 
         /// <summary>
-        /// This default handler is no longer used to display a context menu, but is kept 
-        /// around for backwards compatibility with existing code that expects to remove 
+        /// This default handler is no longer used to display a context menu, but is kept
+        /// around for backwards compatibility with existing code that expects to remove
         /// this handler before adding custom right-click handling.
         /// </summary>
         [Obsolete("use 'ContextMenu' property instead to assign custom context menus")]
@@ -314,42 +301,39 @@ namespace ScottPlot.Avalonia
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Refresh(); }
         private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
-            SaveFileDialog savefile = new SaveFileDialog { InitialFileName = "ScottPlot.png" };
-
-            var filtersPNG = new FileDialogFilter { Name = "PNG Files" };
-            filtersPNG.Extensions.Add("png");
-
-            var filtersJPEG = new FileDialogFilter { Name = "JPG Files" };
-            filtersJPEG.Extensions.Add("jpg");
-            filtersJPEG.Extensions.Add("jpeg");
-
-            var filtersBMP = new FileDialogFilter { Name = "BMP Files" };
-            filtersBMP.Extensions.Add("bmp");
-
-            var filtersTIFF = new FileDialogFilter { Name = "TIF Files" };
-            filtersTIFF.Extensions.Add("tif");
-            filtersTIFF.Extensions.Add("tiff");
-
-            var filtersGeneric = new FileDialogFilter { Name = "All Files" };
-            filtersGeneric.Extensions.Add("*");
-
-            savefile.Filters.Add(filtersPNG);
-            savefile.Filters.Add(filtersJPEG);
-            savefile.Filters.Add(filtersBMP);
-            savefile.Filters.Add(filtersTIFF);
-            savefile.Filters.Add(filtersGeneric);
-
-
-            Task<string> filenameTask = savefile.ShowAsync((Window)this.GetVisualRoot());
-            await filenameTask;
-
-            if (filenameTask.Exception != null)
+            var window = (Window)this.GetVisualRoot() ?? throw new NullReferenceException("Visual root was null");
+            var saveFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
-                return;
-            }
+                SuggestedFileName = "ScottPlot.png",
+                FileTypeChoices = new[]{
+                    new FilePickerFileType("PNG Files")
+                {
+                    Patterns = new[]{"*.png"}
+                },
+                    new FilePickerFileType("JPG Files")
+                    {
+                        Patterns = new[]{"*.jpg", "*.jpeg"}
+                    },
+                    new FilePickerFileType("BMP Files")
+                    {
+                        Patterns = new[]{"*.bmp"}
+                    },
+                    new FilePickerFileType("TIF Files")
+                    {
+                        Patterns = new[]{"*.tif", "*.tiff"}
+                    },
+                    new FilePickerFileType("All Files")
+                    {
+                        Patterns = new[]{"*"}
+                    }
+                }
+            });
 
-            if ((filenameTask.Result ?? "") != "")
-                Plot.SaveFig(filenameTask.Result);
+            string path = saveFile?.TryGetLocalPath();
+            if (!string.IsNullOrEmpty(path))
+            {
+                Plot.SaveFig(path);
+            }
         }
         private void RightClickMenu_OpenInNewWindow_Click(object sender, EventArgs e) { new AvaPlotViewer(Plot).Show(); }
 

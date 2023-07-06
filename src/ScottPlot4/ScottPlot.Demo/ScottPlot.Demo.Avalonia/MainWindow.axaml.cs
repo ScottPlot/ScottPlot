@@ -123,6 +123,5 @@ namespace ScottPlot.Demo.Avalonia
         {
             new AvaloniaDemos.DisplayScaling().ShowDialog(this);
         }
-
     }
 }

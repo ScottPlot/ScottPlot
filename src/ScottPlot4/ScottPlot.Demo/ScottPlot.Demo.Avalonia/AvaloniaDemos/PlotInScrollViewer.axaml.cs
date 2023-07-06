@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public partial class PlotInScrollViewer : Window
     {
-        Random rand = new Random();
+        private readonly Random rand = new Random();
         public PlotInScrollViewer()
         {
             this.InitializeComponent();

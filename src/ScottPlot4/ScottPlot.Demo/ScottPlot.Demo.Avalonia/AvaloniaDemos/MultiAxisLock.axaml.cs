@@ -35,13 +35,12 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
                 _onChange();
             }
         }
-        private Action _onChange;
+        private readonly Action _onChange;
 
         public MultiAxisLockViewModel(Action onChange)
         {
             _onChange = onChange;
         }
-
     }
     /// <summary>
     /// Interaction logic for MultiAxisLock.axaml
