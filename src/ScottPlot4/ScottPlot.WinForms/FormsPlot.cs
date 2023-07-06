@@ -31,12 +31,12 @@ namespace ScottPlot
         /// <summary>
         /// This event is invoked in multi-control environments to alert other controls that they need to refresh.
         /// </summary>
-        public event EventHandler Rendered;
+        internal event EventHandler Rendered;
 
         /// <summary>
         /// The <see cref="Rendered"/> event will be triggered on every render only if this is true.
         /// </summary>
-        public bool EnableRenderedEvent = true;
+        internal bool EnableRenderedEvent = true;
 
         /// <summary>
         /// This event is invoked any time the plot is right-clicked.
