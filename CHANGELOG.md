@@ -20,6 +20,9 @@
 * Launcher: Made `Plot.Launch` methods available without requiring using statements (#2627, #2657) _Thanks @Guillaume-Deville_
 * Population plot: Added `BoxBorderColor` and `ErrorStDevBarColor` properties to customize appearance (#2708) _Thanks @johndoh_
 * Arrow: Made tip and base positions mutable (#2673) _Thanks @MyZQL_
+* ScatterPlotList: Add `GetXs()` and `GetYs()` to let users retrieve copies of data points (#2694, #2711) _Thanks @bukkideme and @Marc-Frank_
+* FormsPlotViewer: New constructor for synchronized plots with bidirectional updates (#2653, #2710, #2722) _Thanks @bukkideme_
+* Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183) _Thanks @Fruchtzwerg94 and @Xerxes004_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
