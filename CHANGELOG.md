@@ -28,6 +28,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
 * OpenGL Control: Prevent exceptions on keyboard input (#2609, #2616) _Thanks @stendprog_
 * Platforms: Improved linux support by using SkiaSharp native assets without dependencies (#2607) _Thanks @chrisxfire
+* Color: Improved support for alpha values in constructor (#2625) _Thanks Clay_
 
 ## ScottPlot 4.1.64
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
