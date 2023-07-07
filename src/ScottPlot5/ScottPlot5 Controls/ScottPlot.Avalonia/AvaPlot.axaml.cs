@@ -24,12 +24,14 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
-    private static readonly List<FilePickerFileType> filePickerFileTypes = new() {
+    private static readonly List<FilePickerFileType> filePickerFileTypes = new()
+    {
         new("PNG Files") { Patterns = new List<string> { "*.png" } },
         new("JPEG Files") { Patterns = new List<string> { "*.jpg", "*.jpeg" } },
         new("BMP Files") { Patterns = new List<string> { "*.bmp" } },
         new("WebP Files") { Patterns = new List<string> { "*.webp" } },
-        new("All Files") { Patterns = new List<string> { "*" } },    };
+        new("All Files") { Patterns = new List<string> { "*" } },
+    };
 
     public AvaPlot()
     {
