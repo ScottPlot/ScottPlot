@@ -53,7 +53,7 @@ public partial class AvaPlot : UserControl, IPlotControl
     private ContextMenu GetContextMenu()
     {
         List<MenuItem> items = new();
-        
+
         foreach (var curr in Interaction.ContextMenuItems)
         {
             var menuItem = new MenuItem { Header = curr.Label };
