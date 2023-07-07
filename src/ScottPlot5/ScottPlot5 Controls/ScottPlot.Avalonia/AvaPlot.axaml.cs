@@ -36,8 +36,10 @@ public partial class AvaPlot : UserControl, IPlotControl
     public AvaPlot()
     {
         InitializeComponent();
-        Interaction = new(this);
-        Interaction.ContextMenuItems = GetDefaultContextMenuItems();
+        Interaction = new(this)
+        {
+            ContextMenuItems = GetDefaultContextMenuItems()
+        };
 
         Refresh();
     }
