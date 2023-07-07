@@ -10,12 +10,13 @@ using AvaPixelSize = global::Avalonia.PixelSize;
 using ILockedFramebuffer = global::Avalonia.Platform.ILockedFramebuffer;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Avalonia;
 
 namespace ScottPlot.Avalonia;
 
 internal static class AvaPlotExtensions
 {
-    internal static Pixel ToPixel(this PointerEventArgs e, IVisual visual)
+    internal static Pixel ToPixel(this PointerEventArgs e, Visual visual)
     {
         float x = (float)e.GetPosition(visual).X;
         float y = (float)e.GetPosition(visual).Y;

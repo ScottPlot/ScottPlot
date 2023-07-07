@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
@@ -56,6 +53,7 @@ public partial class AvaPlot : UserControl, IPlotControl
     private ContextMenu GetContextMenu()
     {
         List<MenuItem> items = new();
+        
         foreach (var curr in Interaction.ContextMenuItems)
         {
             var menuItem = new MenuItem { Header = curr.Label };
@@ -123,7 +121,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
         Rect rect = new(0, 0, Bounds.Width, Bounds.Height);
 
-        context.DrawImage(bmp, rect, rect, BitmapInterpolationMode.HighQuality);
+        context.DrawImage(bmp, rect, rect);
     }
 
     public void Refresh()
