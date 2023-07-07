@@ -39,7 +39,6 @@ namespace ScottPlot.Demo.Avalonia
                 Title = title
             };
             msgbox.Text.Text = text;
-            var buttonPanel = msgbox.FindControl<StackPanel>("Buttons");
 
             var res = MessageBoxResult.Ok;
 
@@ -51,7 +50,7 @@ namespace ScottPlot.Demo.Avalonia
                     res = r;
                     msgbox.Close();
                 };
-                buttonPanel.Children.Add(btn);
+                msgbox.Buttons.Children.Add(btn);
                 if (def)
                     res = r;
             }

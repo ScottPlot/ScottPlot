@@ -6,6 +6,8 @@ namespace ScottPlot.Avalonia
 {
     public partial class AvaPlotViewer : Window
     {
+        public AvaPlot AvaPlot => avaPlot1;
+
         [Obsolete("The zero parameter constructor is not to be called")]
         public AvaPlotViewer()
         {

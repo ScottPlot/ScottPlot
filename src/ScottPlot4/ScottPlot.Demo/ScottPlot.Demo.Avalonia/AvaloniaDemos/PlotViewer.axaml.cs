@@ -3,8 +3,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-using ScottPlot.Avalonia;
-
 using static ScottPlot.Demo.Avalonia.MessageBox;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
@@ -33,7 +31,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Walk Data");
             plotViewer.SetWindowOwner(this); // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.High; // customize as desired
+            plotViewer.AvaPlot.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
 
@@ -55,7 +53,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Sine Wave Data");
             plotViewer.SetWindowOwner(this); // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.High; // customize as desired
+            plotViewer.AvaPlot.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
     }
