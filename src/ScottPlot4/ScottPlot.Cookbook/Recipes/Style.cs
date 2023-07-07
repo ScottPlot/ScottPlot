@@ -222,4 +222,25 @@ namespace ScottPlot.Cookbook.Recipes
                 figureBackgroundImage: monaLisaBmp);
         }
     }
+
+    class CustomLineStyle : IRecipe
+    {
+        public ICategory Category => new Categories.Style();
+        public string ID => "misc_custom_line_style";
+        public string Title => "Custom Line Style";
+        public string Description =>
+            "A customizable line style exists which allows users to define any pattern.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // All default line style patterns can be customized.
+            // Numbers are the length of lines and spaces.
+            ScottPlot.LineStylePatterns.Custom = new float[] { 1, 1, 2, 1, 3, 1, 4, 1 };
+
+            // Use line style patterns anywhere
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+            plt.AddScatter(xs, ys, markerSize: 0, lineStyle: LineStyle.Custom, lineWidth: 5);
+        }
+    }
 }
