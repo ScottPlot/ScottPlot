@@ -9,7 +9,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Visuals.Media.Imaging;
+using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -24,14 +24,12 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
-    private readonly List<FileDialogFilter> fileDialogFilters = new()
-    {
-        new() { Name = "PNG Files", Extensions = new List<string> { "png" } },
-        new() { Name = "JPEG Files", Extensions = new List<string> { "jpg", "jpeg" } },
-        new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } },
-        new() { Name = "WebP Files", Extensions = new List<string> { "webp" } },
-        new() { Name = "All Files", Extensions = new List<string> { "*" } },
-    };
+    private static readonly List<FilePickerFileType> filePickerFileTypes = new() {
+        new("PNG Files") { Patterns = new List<string> { "*.png" } },
+        new("JPEG Files") { Patterns = new List<string> { "*.jpg", "*.jpeg" } },
+        new("BMP Files") { Patterns = new List<string> { "*.bmp" } },
+        new("WebP Files") { Patterns = new List<string> { "*.webp" } },
+        new("All Files") { Patterns = new List<string> { "*" } },    };
 
     public AvaPlot()
     {
@@ -64,24 +62,24 @@ public partial class AvaPlot : UserControl, IPlotControl
             items.Add(menuItem);
         }
 
-
         return new()
         {
-            Items = items
+            ItemsSource = items
         };
     }
 
     private async void OpenSaveImageDialog()
     {
-        SaveFileDialog dialog = new() { InitialFileName = Interaction.DefaultSaveImageFilename, Filters = fileDialogFilters };
-        Task<string?> filenameTask = dialog.ShowAsync((Window)this.GetVisualRoot());
-        var filename = await filenameTask;
+        var window = (Window)this.GetVisualRoot() ?? throw new NullReferenceException("Could not find a visual root");
+        var destinationFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        {
+            SuggestedFileName = Interaction.DefaultSaveImageFilename,
+            FileTypeChoices = filePickerFileTypes
+        });
 
-        if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
-            return;
-
-        ImageFormat format = ImageFormatLookup.FromFilePath(filename!);
-        Plot.Save(filename!, (int)Width, (int)Height, format);
+        string? path = destinationFile?.TryGetLocalPath();
+        if (!string.IsNullOrWhiteSpace(path))
+            Plot.Save(path, (int)Bounds.Width, (int)Bounds.Height, ImageFormatLookup.FromFilePath(path));
     }
 
     public void Replace(Interaction interaction)
