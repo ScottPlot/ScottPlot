@@ -22,6 +22,7 @@
 * Arrow: Made tip and base positions mutable (#2673) _Thanks @MyZQL_
 * ScatterPlotList: Add `GetXs()` and `GetYs()` to let users retrieve copies of data points (#2694, #2711) _Thanks @bukkideme and @Marc-Frank_
 * FormsPlotViewer: New constructor for synchronized plots with bidirectional updates (#2653, #2710, #2722) _Thanks @bukkideme_
+* LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690, #2692) _Thanks @mocakturk, @Marc-Frank, and @bukkideme_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
@@ -41,7 +42,6 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
 * SignalPlot: Fixed bug where `Update()` did not change the final point (#2592) _Thanks @Angeld10_
 * ScatterPlotDraggable: Expose IndexUnderMouse for access after drag events (#2682) _Thanks @mocakturk_
-* LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690) _Thanks @mocakturk_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
