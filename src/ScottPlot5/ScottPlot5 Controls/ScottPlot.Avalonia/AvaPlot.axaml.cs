@@ -170,8 +170,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     private void OnMouseWheel(object sender, PointerWheelEventArgs e)
     {
-        // Avalonia flips the delta vector when shift is held. This is seemingly intentional: https://github.com/AvaloniaUI/Avalonia/pull/7520
-        float delta = (float)(e.KeyModifiers.HasFlag(KeyModifiers.Shift) ? e.Delta.X : e.Delta.Y);
+        float delta = (float)e.Delta.Y; // This is now the correct behaviour even if shift is held, see https://github.com/AvaloniaUI/Avalonia/pull/8628
 
         if (delta != 0)
         {
