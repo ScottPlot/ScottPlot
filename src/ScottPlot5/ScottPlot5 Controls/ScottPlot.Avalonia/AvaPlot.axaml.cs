@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
@@ -12,7 +9,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Visuals.Media.Imaging;
+using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -27,20 +24,22 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
-    private readonly List<FileDialogFilter> fileDialogFilters = new()
+    private static readonly List<FilePickerFileType> filePickerFileTypes = new()
     {
-        new() { Name = "PNG Files", Extensions = new List<string> { "png" } },
-        new() { Name = "JPEG Files", Extensions = new List<string> { "jpg", "jpeg" } },
-        new() { Name = "BMP Files", Extensions = new List<string> { "bmp" } },
-        new() { Name = "WebP Files", Extensions = new List<string> { "webp" } },
-        new() { Name = "All Files", Extensions = new List<string> { "*" } },
+        new("PNG Files") { Patterns = new List<string> { "*.png" } },
+        new("JPEG Files") { Patterns = new List<string> { "*.jpg", "*.jpeg" } },
+        new("BMP Files") { Patterns = new List<string> { "*.bmp" } },
+        new("WebP Files") { Patterns = new List<string> { "*.webp" } },
+        new("All Files") { Patterns = new List<string> { "*" } },
     };
 
     public AvaPlot()
     {
         InitializeComponent();
-        Interaction = new(this);
-        Interaction.ContextMenuItems = GetDefaultContextMenuItems();
+        Interaction = new(this)
+        {
+            ContextMenuItems = GetDefaultContextMenuItems()
+        };
 
         Refresh();
     }
@@ -56,6 +55,7 @@ public partial class AvaPlot : UserControl, IPlotControl
     private ContextMenu GetContextMenu()
     {
         List<MenuItem> items = new();
+
         foreach (var curr in Interaction.ContextMenuItems)
         {
             var menuItem = new MenuItem { Header = curr.Label };
@@ -64,24 +64,24 @@ public partial class AvaPlot : UserControl, IPlotControl
             items.Add(menuItem);
         }
 
-
         return new()
         {
-            Items = items
+            ItemsSource = items
         };
     }
 
     private async void OpenSaveImageDialog()
     {
-        SaveFileDialog dialog = new() { InitialFileName = Interaction.DefaultSaveImageFilename, Filters = fileDialogFilters };
-        Task<string?> filenameTask = dialog.ShowAsync((Window)this.GetVisualRoot());
-        var filename = await filenameTask;
+        var window = (Window)(this.GetVisualRoot() ?? throw new NullReferenceException("Could not find a visual root"));
+        var destinationFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        {
+            SuggestedFileName = Interaction.DefaultSaveImageFilename,
+            FileTypeChoices = filePickerFileTypes
+        });
 
-        if (filenameTask.IsFaulted || string.IsNullOrEmpty(filename))
-            return;
-
-        ImageFormat format = ImageFormatLookup.FromFilePath(filename!);
-        Plot.Save(filename!, (int)Width, (int)Height, format);
+        string? path = destinationFile?.TryGetLocalPath();
+        if (path is not null && !string.IsNullOrWhiteSpace(path))
+            Plot.Save(path, (int)Bounds.Width, (int)Bounds.Height, ImageFormatLookup.FromFilePath(path));
     }
 
     public void Replace(Interaction interaction)
@@ -123,7 +123,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
         Rect rect = new(0, 0, Bounds.Width, Bounds.Height);
 
-        context.DrawImage(bmp, rect, rect, BitmapInterpolationMode.HighQuality);
+        context.DrawImage(bmp, rect, rect);
     }
 
     public void Refresh()
@@ -170,8 +170,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     private void OnMouseWheel(object sender, PointerWheelEventArgs e)
     {
-        // Avalonia flips the delta vector when shift is held. This is seemingly intentional: https://github.com/AvaloniaUI/Avalonia/pull/7520
-        float delta = (float)(e.KeyModifiers.HasFlag(KeyModifiers.Shift) ? e.Delta.X : e.Delta.Y);
+        float delta = (float)e.Delta.Y; // This is now the correct behaviour even if shift is held, see https://github.com/AvaloniaUI/Avalonia/pull/8628
 
         if (delta != 0)
         {
