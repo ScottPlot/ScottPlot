@@ -5,6 +5,7 @@
 * OpenGL: Use CPU to render on devices without hardware acceleration (#2651) _Thanks @StendProg_
 * Polygon: New plot type for displaying closed shapes with arbitrary X/Y corners (#2696) _Thanks @Tilation_
 * FillY: New plot type for displaying a shaded area between two sets of Y points that share the same X points (#2696) _Thanks @Tilation_
+* Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183, #2725) _Thanks @Fruchtzwerg94, @Xerxes004, and @bclehmann_
 
 ## ScottPlot 4.1.65 (in development)
 * Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
@@ -24,7 +25,7 @@
 * FormsPlotViewer: New constructor for synchronized plots with bidirectional updates (#2653, #2710, #2722) _Thanks @bukkideme_
 * LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690, #2692) _Thanks @mocakturk, @Marc-Frank, and @bukkideme_
 * Radar Plots: Improve vertical spacing for all aspect ratios (#2702) _Thanks @pjt33_
-* Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183) _Thanks @Fruchtzwerg94, @Xerxes004, and @bclehmann_
+* Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183, #2725) _Thanks @Fruchtzwerg94, @Xerxes004, and @bclehmann_
 * Colorbar: Added a `ResizeLayout()` helper method for adjusting plot layouts to accommodate large tick labels (#2703)
 
 ## ScottPlot 5.0.5-beta
