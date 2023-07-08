@@ -25,6 +25,7 @@
 * LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690, #2692) _Thanks @mocakturk, @Marc-Frank, and @bukkideme_
 * Radar Plots: Improve vertical spacing for all aspect ratios (#2702) _Thanks @pjt33_
 * Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183) _Thanks @Fruchtzwerg94, @Xerxes004, and @bclehmann_
+* Colorbar: Added a `ResizeLayout()` helper method for adjusting plot layouts to accommodate large tick labels (#2703)
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_

@@ -9,24 +9,21 @@ namespace WinFormsApp
         {
             InitializeComponent();
 
-            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Sin());
-            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Cos());
-            formsPlot1.Refresh();
-        }
+            var cb = formsPlot1.Plot.AddColorbar();
+            double[] fractions = { 0, .5, 1 };
+            string[] labels = {
+                "Testing long message 1",
+                "Testing long message 2",
+                "Testing long message 3",
+            };
+            cb.SetTicks(fractions, labels);
+            cb.LabelIsVisible = true;
+            cb.Label = "Awesome Colorbar";
+            formsPlot1.Render();
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            new ScottPlot.FormsPlotViewer(formsPlot1, parentUpdatesChld: true).Show();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            new ScottPlot.FormsPlotViewer(formsPlot1, childUpdatesParent: true).Show();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            new ScottPlot.FormsPlotViewer(formsPlot1, parentUpdatesChld: true, childUpdatesParent: true).Show();
+            // automatic layout resizing must be called AFTER a render
+            cb.ResizeLayout(formsPlot1.Plot);
+            formsPlot1.Render();
         }
     }
 }
