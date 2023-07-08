@@ -31,6 +31,7 @@ public readonly struct Color
         Red = (byte)(red * 255);
         Green = (byte)(green * 255);
         Blue = (byte)(blue * 255);
+        Alpha = (byte)(alpha * 255);
     }
 
     public static bool operator ==(Color a, Color b)

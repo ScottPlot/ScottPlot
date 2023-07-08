@@ -191,16 +191,10 @@ namespace ScottPlot.Drawing
                  */
                 pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
             }
-            else if (lineStyle == LineStyle.Dash)
-                pen.DashPattern = new float[] { 8.0F, 4.0F };
-            else if (lineStyle == LineStyle.DashDot)
-                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
-            else if (lineStyle == LineStyle.DashDotDot)
-                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
-            else if (lineStyle == LineStyle.Dot)
-                pen.DashPattern = new float[] { 2.0F, 4.0F };
             else
-                throw new NotImplementedException("line style not supported");
+            {
+                pen.DashPattern = LineStylePatterns.GetDashPattern(lineStyle);
+            }
 
             if (rounded)
             {

@@ -6,7 +6,11 @@ namespace ScottPlot.Plottable
 {
     public class ScatterPlotListDraggable : ScatterPlotList<double>, IDraggable
     {
-        private int IndexUnderMouse { get; set; } = -1;
+        /// <summary>
+        /// Index of the data point most recently under the mouse.
+        /// Value is -1 is the mouse is not over a data point.
+        /// </summary>
+        public int IndexUnderMouse { get; set; } = -1;
         public bool DragEnabled { get; set; } = true;
 
         public Cursor DragCursor => Cursor.Hand;

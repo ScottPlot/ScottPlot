@@ -22,13 +22,15 @@
 * Arrow: Made tip and base positions mutable (#2673) _Thanks @MyZQL_
 * ScatterPlotList: Add `GetXs()` and `GetYs()` to let users retrieve copies of data points (#2694, #2711) _Thanks @bukkideme and @Marc-Frank_
 * FormsPlotViewer: New constructor for synchronized plots with bidirectional updates (#2653, #2710, #2722) _Thanks @bukkideme_
-* Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183) _Thanks @Fruchtzwerg94 and @Xerxes004_
+* LineStyle: Default patterns (and a new custom pattern) can be customized by assigning `ScottPlot.LineStylePatterns` (#2690, #2692) _Thanks @mocakturk, @Marc-Frank, and @bukkideme_
+* Radar Plots: Improve vertical spacing for all aspect ratios (#2702) _Thanks @pjt33_
 
 ## ScottPlot 5.0.5-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Box Plot: New plot type for displaying multiple collections of population data (#2589) _Thanks @bclehmann_
 * OpenGL Control: Prevent exceptions on keyboard input (#2609, #2616) _Thanks @stendprog_
 * Platforms: Improved linux support by using SkiaSharp native assets without dependencies (#2607) _Thanks @chrisxfire
+* Color: Improved support for alpha values in constructor (#2625) _Thanks Clay_
 
 ## ScottPlot 4.1.64
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
@@ -40,6 +42,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-05-17_
 * Plot: Improved `AddVerticalLine()` XML docs (#2610) _Thanks @wfs1900_
 * FinancePlot: `GetBollingerBands()` now accepts an optional standard deviation coefficient (#2594) _Thanks @Minu476_
 * SignalPlot: Fixed bug where `Update()` did not change the final point (#2592) _Thanks @Angeld10_
+* ScatterPlotDraggable: Expose IndexUnderMouse for access after drag events (#2682) _Thanks @mocakturk_
 
 ## ScottPlot 5.0.4-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_

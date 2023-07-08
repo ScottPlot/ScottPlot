@@ -250,8 +250,8 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             return (GroupLabels != null)
-                ? new AxisLimits(-3.5, 3.5, -3.5, 3.5)
-                : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+                ? new AxisLimits(-2.5, 2.5, -2.5, 2.5)
+                : new AxisLimits(-1.5, 1.5, -1.5, 1.5);
         }
 
         public int PointCount { get => Norm.Length; }
@@ -261,7 +261,7 @@ namespace ScottPlot.Plottable
             int numGroups = Norm.GetUpperBound(0) + 1;
             int numCategories = Norm.GetUpperBound(1) + 1;
             double sweepAngle = 2 * Math.PI / numCategories;
-            double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
+            double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))

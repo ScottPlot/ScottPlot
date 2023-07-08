@@ -98,7 +98,7 @@ namespace ScottPlot
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             double sweepAngle = 2 * Math.PI / NumberOfSpokes;
-            double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
+            double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             PointF origin = new(dims.GetPixelX(0), dims.GetPixelY(0));
 
             RenderRings(origin, minScale, sweepAngle);

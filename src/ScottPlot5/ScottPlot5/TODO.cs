@@ -26,6 +26,7 @@ internal static class TODO
     Signal: Add offset X and offset Y support to signal plots
     Signal: Add ScaleY to signal plot https://github.com/ScottPlot/ScottPlot/pull/2656
     Bar: Improve API https://github.com/ScottPlot/ScottPlot/issues/2596
+    Colormap: Support for user-defined interpolated color maps https://github.com/ScottPlot/ScottPlot/issues/2689
 
     ## PLOT ##
     Plot: Add XLabel(), YLabel(), and Title() shortcuts methods
