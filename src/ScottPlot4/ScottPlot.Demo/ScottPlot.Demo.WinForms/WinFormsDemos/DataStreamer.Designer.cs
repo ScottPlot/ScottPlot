@@ -144,7 +144,6 @@ partial class DataStreamer
     #endregion
 
     private FormsPlot formsPlot1;
-    private System.Windows.Forms.GroupBox groupBox1;
     private System.Windows.Forms.Button btnWipeRight;
     private System.Windows.Forms.Button btnWipeLeft;
     private System.Windows.Forms.Button btnScrollRight;
