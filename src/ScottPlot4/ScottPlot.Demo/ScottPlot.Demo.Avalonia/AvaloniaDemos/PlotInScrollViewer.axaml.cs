@@ -1,21 +1,19 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+
 using ScottPlot.Avalonia;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class PlotInScrollViewer : Window
+    public partial class PlotInScrollViewer : Window
     {
-        Random rand = new Random();
+        private readonly Random rand = new Random();
         public PlotInScrollViewer()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            AvaPlot[] avaPlots = { this.Find<AvaPlot>("avaPlot1"), this.Find<AvaPlot>("avaPlot2"), this.Find<AvaPlot>("avaPlot3") };
+
+            AvaPlot[] avaPlots = { this.avaPlot1, this.avaPlot2, this.avaPlot3 };
 
             foreach (AvaPlot avaPlot in avaPlots)
             {
@@ -26,13 +24,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
                 avaPlot.Refresh();
             }
-
         }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
     }
 }

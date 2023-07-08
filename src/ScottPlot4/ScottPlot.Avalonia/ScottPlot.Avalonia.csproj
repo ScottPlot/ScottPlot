@@ -11,9 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.*" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.*" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+        <PackageReference Include="Avalonia" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>

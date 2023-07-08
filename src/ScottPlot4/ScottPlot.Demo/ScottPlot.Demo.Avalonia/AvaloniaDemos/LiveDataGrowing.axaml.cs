@@ -1,39 +1,24 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using ScottPlot.Avalonia;
-using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class LiveDataGrowing : Window
+    public partial class LiveDataGrowing : Window
     {
-        AvaPlot avaPlot1;
         public double[] data = new double[100_000];
-        int nextDataIndex = 1;
-        Plottable.SignalPlot signalPlot;
-        Random rand = new Random(0);
+        private int nextDataIndex = 1;
+        private readonly Plottable.SignalPlot signalPlot;
+        private readonly Random rand = new Random(0);
 
-        TextBox ReadingsTextbox;
-        TextBox LatestValueTextbox;
-        CheckBox AutoAxisCheckbox;
-
-        private DispatcherTimer _updateDataTimer;
-        private DispatcherTimer _renderTimer;
+        private readonly DispatcherTimer _updateDataTimer;
+        private readonly DispatcherTimer _renderTimer;
 
         public LiveDataGrowing()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
-            ReadingsTextbox = this.Find<TextBox>("ReadingsTextbox");
-            LatestValueTextbox = this.Find<TextBox>("LatestValueTextbox");
-            AutoAxisCheckbox = this.Find<CheckBox>("AutoAxisCheckbox");
 
             // plot the data array only once
             signalPlot = avaPlot1.Plot.AddSignal(data);
@@ -59,11 +44,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             };
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         void UpdateData(object sender, EventArgs e)
         {
             if (nextDataIndex >= data.Length)
@@ -83,7 +63,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             signalPlot.MaxRenderIndex = nextDataIndex;
             ReadingsTextbox.Text = $"{nextDataIndex + 1}";
             LatestValueTextbox.Text = $"{latestValue:0.000}";
-            nextDataIndex += 1;
+            nextDataIndex++;
         }
 
         void Render(object sender, EventArgs e)
