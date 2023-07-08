@@ -13,6 +13,8 @@ using Avalonia.VisualTree;
 
 using Ava = Avalonia;
 
+#pragma warning disable CS0067 // don't warn about obsolete events that aren't used
+
 namespace ScottPlot.Avalonia
 {
     /// <summary>
