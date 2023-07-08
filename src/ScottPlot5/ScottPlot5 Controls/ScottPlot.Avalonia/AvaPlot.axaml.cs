@@ -72,7 +72,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     private async void OpenSaveImageDialog()
     {
-        var window = (Window)this.GetVisualRoot() ?? throw new NullReferenceException("Could not find a visual root");
+        var window = (Window)(this.GetVisualRoot() ?? throw new NullReferenceException("Could not find a visual root"));
         var destinationFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
         {
             SuggestedFileName = Interaction.DefaultSaveImageFilename,
@@ -80,7 +80,7 @@ public partial class AvaPlot : UserControl, IPlotControl
         });
 
         string? path = destinationFile?.TryGetLocalPath();
-        if (!string.IsNullOrWhiteSpace(path))
+        if (path is not null && !string.IsNullOrWhiteSpace(path))
             Plot.Save(path, (int)Bounds.Width, (int)Bounds.Height, ImageFormatLookup.FromFilePath(path));
     }
 
