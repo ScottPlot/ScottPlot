@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Demo.WinForms
+namespace ScottPlot.Demo.WinForms
 {
     partial class FormMain
     {
@@ -105,7 +105,7 @@
             richTextBox1.Location = new System.Drawing.Point(19, 194);
             richTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new System.Drawing.Size(240, 118);
+            richTextBox1.Size = new System.Drawing.Size(240, 240);
             richTextBox1.TabIndex = 30;
             richTextBox1.Text = "These examples demonstrate advanced capabilities of the Windows Forms ScottPlot control (FormsPlot)\n\nSource code for this application can be found on https://ScottPlot.NET/demo";
             richTextBox1.Click += WebsiteLink_Click;
