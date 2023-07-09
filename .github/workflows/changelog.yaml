@@ -1,0 +1,21 @@
+name: Changelog
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - CHANGELOG.md
+
+jobs:
+  check-format:
+    runs-on: windows-latest
+    name: Update Website
+    steps:
+      - name: 🚀 Trigger Remote Workflow
+        run: |
+          curl --request POST \
+          --url 'https://api.github.com/repos/ScottPlot/ScottPlot.NET/dispatches' \
+          --header 'authorization: token ${{ secrets.GH_TOKEN }}' \
+          --data '{"event_type": "changelog_file_modified"}'
