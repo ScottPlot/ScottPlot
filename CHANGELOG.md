@@ -70,7 +70,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-04-09_
 * Plot: `Launch` property has methods for launching the plot as a static image, refreshing web page, or interactive window (#2543, #2570)
 * Heatmap: Improved support for semitransparent cells (#2313, #2277, #2285, #2461, #2484) _Thanks @bukkideme_
 * Axis: Added `SetZoomInLimit()`, `SetZoomOutLimit()`, and `SetBoundary()` to control zoom and pan (#2250, #2291, #1997, #1873, #662) _Thanks @dusko23, @Gholamalih, and @bclehmann_
-* Controls: Added `Configuration.RightClickDragZoomFromMouseDown` flag to enable right-click-drag zoom to scale relative to the cursor (#2296, #2573) _@pavlexander_
+* Controls: Added `Configuration.RightClickDragZoomFromMouseDown` flag to enable right-click-drag zoom to scale relative to the cursor (#2296, #2573) _Thanks @pavlexander_
 * Finance: Improved DateTime position of random stock price sample data (#2574)
 * Axis: Improve tick spacing for extremely small plots (#2289) _Thanks @Xerxes004_
 * Signal: Fixed bug causing `Update()` to throw an indexing error (#2578) _Thanks @Angeld10_
@@ -708,37 +708,29 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-10-12_
 * Additional customizations for radar charts (#634, #628, #635) _Thanks @bclehmann and @SommerEngineering_
 
 ## ScottPlot 4.1.0
-
-In November, 2020 ScottPlot 4.0 branched into a permanent `stable` branch, and ScottPlot 4.1 began development as beta / pre-release in the main branch. ScottPlot 4.0 continues to be maintained, but modifications are aimed at small bugfixes rather than large refactoring or the addition of new features. ScottPlot 4.1 merged into the master branch in November, 2020 (#605). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation.
-
-* **Most plotting methods are unchanged so many users will not experience any breaking changes.**
-* **Axis Limits**
-  * Axis limits are described by a `AxisLimits` struct (previously `double[]` was used)
-  * Methods which modify axis limits do not return anything (previously they returned `double[]`)
-  * To get the latest axis limits call `Plot.AxisLimits()` which returns a `AxisLimits` object
-* **Multiple Axes**
-  * Multiple axes are now supported! There is no change to the traditional workflow if this feature is not used.
-  * Most axis methods accept a `xAxisIndex` and `yAxisIndex` arguments to specify which axes they will modify or return
-  * Most plottable objects have `xAxisIndex` and `yAxisIndex` fields which specify which axes they will render on
-  * You can enable a second Y and X axis by calling `YLabel2` and `XLabel2()`
-  * You can obtain an axis by calling `GetXAxis(xAxisIndex)` or `GetYAxis(yAxisIndex)`, then modify its public fields to customize its behavior
-  * The default axes (left and bottom) both use axis index `0`
-  * The secondary axes (right and top) both use axis index `1`
-  * You can create additional axes by calling `Plot.AddAxis()` and customize it by modifying fields of the `Axis` it returns.
-* **Layout**
-  * The layout is re-calculated on every render, so it automatically adjusts to accommodate axis labels and ticks.
-  * To achieve extra space around the data area, call `Layout()` to supply a minimum size for each axis.
-  * To achieve a frameless plot where the data area fills the full figure, call `LayoutFrameless()`
-* **Some namespaces and class names have changed**
-  * The `Plottable` base class has been replaced with an `IPlottable` interface
-  * Plottables have been renamed and moved into a `Plottable` namespace (e.g., `PlottableScatter` is  now `Plottable.ScatterPlot`)
-  * Several enums have been renamed
-* **The Settings module has been greatly refactored**
-  * It is still private, but you can request it with `Plot.GetSettings()`
-  * Many of its objects implement `IRenderable`, so their customization options are stored at the same level as their render methods.
-* **The Render system is now stateless**
-  * `Bitmap` objects are never stored. The `Render()` method will create and return a new `Bitmap` when called, or will render onto an existing `Bitmap` if it is supplied as an argument. This allows controls to manage their own performance optimization by optionally re-using a `Bitmap` for multiple renders.
-  * Drawing is achieved with `using` statements which respect all `IDisposable` drawing objects, improving thread safety and garbage collection performance.
+* In November, 2020 ScottPlot 4.0 branched into a permanent `stable` branch, and ScottPlot 4.1 began development as beta / pre-release in the main branch. ScottPlot 4.0 continues to be maintained, but modifications are aimed at small bugfixes rather than large refactoring or the addition of new features. ScottPlot 4.1 merged into the master branch in November, 2020 (#605). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation.
+* Most plotting methods are unchanged so many users will not experience any breaking changes.
+* Axis Limits: Axis limits are described by a `AxisLimits` struct (previously `double[]` was used)
+* Axis Limits: Methods which modify axis limits do not return anything (previously they returned `double[]`)
+* Axis Limits: To get the latest axis limits call `Plot.AxisLimits()` which returns a `AxisLimits` object
+* Multiple Axes: Multiple axes are now supported! There is no change to the traditional workflow if this feature is not used.
+* Multiple Axes: Most axis methods accept a `xAxisIndex` and `yAxisIndex` arguments to specify which axes they will modify or return
+* Multiple Axes: Most plottable objects have `xAxisIndex` and `yAxisIndex` fields which specify which axes they will render on
+* Multiple Axes: You can enable a second Y and X axis by calling `YLabel2` and `XLabel2()`
+* Multiple Axes: You can obtain an axis by calling `GetXAxis(xAxisIndex)` or `GetYAxis(yAxisIndex)`, then modify its public fields to customize its behavior
+* Multiple Axes: The default axes (left and bottom) both use axis index `0`
+* Multiple Axes: The secondary axes (right and top) both use axis index `1`
+* Multiple Axes: You can create additional axes by calling `Plot.AddAxis()` and customize it by modifying fields of the `Axis` it returns.
+* Layout: The layout is re-calculated on every render, so it automatically adjusts to accommodate axis labels and ticks.
+* Layout: To achieve extra space around the data area, call `Layout()` to supply a minimum size for each axis.
+* Layout: To achieve a frameless plot where the data area fills the full figure, call `LayoutFrameless()`
+* Naming: The `Plottable` base class has been replaced with an `IPlottable` interface
+* Naming: Plottables have been renamed and moved into a `Plottable` namespace (e.g., `PlottableScatter` is  now `Plottable.ScatterPlot`)
+* Naming: Several enums have been renamed
+* Settings: It is still private, but you can request it with `Plot.GetSettings()`
+* Settings: Many of its objects implement `IRenderable`, so their customization options are stored at the same level as their render methods.
+* Rendering: `Bitmap` objects are never stored. The `Render()` method will create and return a new `Bitmap` when called, or will render onto an existing `Bitmap` if it is supplied as an argument. This allows controls to manage their own performance optimization by optionally re-using a `Bitmap` for multiple renders.
+* Rendering: Drawing is achieved with `using` statements which respect all `IDisposable` drawing objects, improving thread safety and garbage collection performance.
 
 ## ScottPlot 4.0.46
 * Improved ticks for small plots (#724) _Thanks @Saklut_
@@ -983,7 +975,7 @@ In November, 2020 ScottPlot 4.0 branched into a permanent `stable` branch, and S
 
 ## ScottPlot 4.0.16
 * Improved support for MacOS and Linux (#211, #212, #216) _Thanks @hexxone and @StendProg_
-* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
+* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _Thanks @teejay-87_
 * Enabled `visible` argument in `Title()`, `XLabel()`, and `YLabel()` (#222) _Thanks @ckovamees_
 * AxisSpan: Edges are now optionally draggable (#228) _Thanks @StendProg_
 * AxisSpan: Can now be selectively removed with `Clear()` argument
