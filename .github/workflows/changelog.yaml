@@ -9,13 +9,14 @@ on:
       - CHANGELOG.md
 
 jobs:
-  check-format:
+  update:
     runs-on: windows-latest
-    name: Update Website
+    name: Update Changelog Webpage
     steps:
       - name: 🚀 Trigger Remote Workflow
         run: |
-          curl --request POST \
-          --url 'https://api.github.com/repos/ScottPlot/ScottPlot.NET/dispatches' \
-          --header 'authorization: token ${{ secrets.GH_TOKEN }}' \
-          --data '{"event_type": "changelog_file_modified"}'
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            "https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/Changelog/dispatches"
