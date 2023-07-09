@@ -15,9 +15,4 @@ jobs:
     steps:
       - name: 🚀 Trigger Remote Workflow
         run: |
-          curl -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
-            https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches \
-            -d '{"ref":"main"}'
+          curl -L -X POST https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches -d '{"ref":"main"}' -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
