@@ -118,8 +118,8 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                xs = xs.Where(x => double.IsNaN(x));
-                ys = ys.Where(y => double.IsNaN(y));
+                xs = xs.Where(x => !double.IsNaN(x));
+                ys = ys.Where(y => !double.IsNaN(y));
 
                 if (xs.Any() == false || ys.Any() == false)
                     return AxisLimits.NoLimits;
