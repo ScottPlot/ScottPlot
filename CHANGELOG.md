@@ -975,7 +975,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-10-12_
 
 ## ScottPlot 4.0.16
 * Improved support for MacOS and Linux (#211, #212, #216) _Thanks @hexxone and @StendProg_
-* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
+* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _Thanks @teejay-87_
 * Enabled `visible` argument in `Title()`, `XLabel()`, and `YLabel()` (#222) _Thanks @ckovamees_
 * AxisSpan: Edges are now optionally draggable (#228) _Thanks @StendProg_
 * AxisSpan: Can now be selectively removed with `Clear()` argument
