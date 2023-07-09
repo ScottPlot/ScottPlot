@@ -598,7 +598,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-10-12_
 ## ScottPlot 4.1.12-beta
 * Added "Open in New Window" option to right-click menu (#958, #969) _Thanks @ademkaya and @bclehmann_
 * User control `Configuration` module now has customizable scroll wheel zoom fraction (#940, #937) _Thanks @PassionateDeveloper86 and @StendProg_
-* Added options to `Plot.AxisScaleLock()` to let the user define scaling behavior when the plot is resized (#933, #857) _Thanks @ricecakebear and @StendProg_
+* Added options to `Plot.AxisScaleLock()` to let the user define scaling behavior when the plot is resized (#933, #857) _Thanks @boingo100p and @StendProg_
 * Improved XML documentation for `DataGen` module (#903, #902) _Thanks @bclehmann_
 * Fixed bug where tick labels would not render for axes with a single tick (#945, #828, #725, #925) _Thanks @saklanmazozgur and @audun_
 * Added option to manually refine tick density (#828) _Thanks @ChrisAtVault and @bclehmann_
