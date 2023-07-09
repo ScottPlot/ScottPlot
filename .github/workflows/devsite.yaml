@@ -5,6 +5,9 @@ on:
   push: # run on pushes to main (only happens when PRs are merged or admin commits directly to main)
     branches:
       - main
+    paths:
+      - src/**
+      - dev/**
 
 permissions:
   contents: read
