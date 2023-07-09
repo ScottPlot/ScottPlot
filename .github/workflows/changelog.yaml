@@ -11,8 +11,8 @@ on:
 jobs:
   update:
     runs-on: windows-latest
-    name: Update Changelog Webpage
+    name: Trigger Changelog Workflow
     steps:
       - name: 🚀 Trigger Remote Workflow
         run: |
-          curl -L -X POST -H "Accept: application/json" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches -d '{"ref":"main"}'
+          curl -L -X POST -H "Accept: application/json" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches -d "{\"ref\":\"main\"}"
