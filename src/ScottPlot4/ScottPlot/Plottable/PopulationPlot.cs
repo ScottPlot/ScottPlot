@@ -108,11 +108,18 @@ namespace ScottPlot.Plottable
             {
                 foreach (var population in series.populations)
                 {
+                    if (population.count == 0)
+                        continue;
                     minValue = Math.Min(minValue, population.min);
                     minValue = Math.Min(minValue, population.minus3stDev);
                     maxValue = Math.Max(maxValue, population.max);
                     maxValue = Math.Max(maxValue, population.plus3stDev);
                 }
+            }
+
+            if (minValue == double.PositiveInfinity)
+            {
+                return AxisLimits.NoLimits;
             }
 
             double positionMin = 0;
@@ -137,6 +144,10 @@ namespace ScottPlot.Plottable
                 {
                     var series = MultiSeries.multiSeries[seriesIndex];
                     var population = series.populations[groupIndex];
+
+                    if (population.count == 0)
+                        continue;
+
                     var groupLeft = groupIndex - groupWidth / 2;
                     var popLeft = groupLeft + popWidth * seriesIndex;
 

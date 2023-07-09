@@ -76,6 +76,29 @@ namespace ScottPlot.Statistics
             Array.Copy(values, 0, sortedValues, 0, count);
             Array.Sort(sortedValues);
 
+            if (!sortedValues.Any())
+            {
+                min = double.NaN;
+                max = double.NaN;
+                median = double.NaN;
+                Q1 = double.NaN;
+                Q3 = double.NaN;
+                IQR = double.NaN;
+                lowOutliers = Array.Empty<double>();
+                highOutliers = Array.Empty<double>();
+                minNonOutlier = double.NaN;
+                maxNonOutlier = double.NaN;
+                sum = double.NaN;
+                mean = double.NaN;
+                stDev = double.NaN;
+                plus2stDev = double.NaN;
+                minus2stDev = double.NaN;
+                plus3stDev = double.NaN;
+                minus3stDev = double.NaN;
+                stdErr = double.NaN;
+                return;
+            }
+
             min = sortedValues.First();
             max = sortedValues.Last();
 
