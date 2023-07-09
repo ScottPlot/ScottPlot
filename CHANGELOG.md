@@ -1,8 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 5.0.6-beta (in development)
+## ScottPlot 5.0.7-beta (in development)
+
 ## ScottPlot 4.1.66 (in development)
 
+## ScottPlot 5.0.6-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_
 * Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 * OpenGL: Use CPU to render on devices without hardware acceleration (#2651) _Thanks @StendProg_
 * Polygon: New plot type for displaying closed shapes with arbitrary X/Y corners (#2696) _Thanks @Tilation_

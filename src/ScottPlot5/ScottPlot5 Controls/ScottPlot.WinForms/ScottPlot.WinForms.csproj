@@ -10,7 +10,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>
-        <Version>5.0.5-beta</Version>
+        <Version>5.0.6-beta</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
