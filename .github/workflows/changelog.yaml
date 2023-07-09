@@ -19,4 +19,5 @@ jobs:
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            "https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/Changelog/dispatches"
+            https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
+            -d '{"ref":"main"}'
