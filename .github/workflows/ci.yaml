@@ -5,6 +5,8 @@ on:
   push: # run on pushes to main (only happens when PRs are merged or admin commits directly to main)
     branches:
       - main
+    paths:
+      - src/**
   pull_request: # run on all PR actions (push, open, reopen)
 
 env:
