@@ -1,13 +1,16 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.6-beta (in development)
+## ScottPlot 4.1.66 (in development)
+
 * Legend: Improve support for custom positioning (#2584, #2638) _Thanks @heartacker_
 * OpenGL: Use CPU to render on devices without hardware acceleration (#2651) _Thanks @StendProg_
 * Polygon: New plot type for displaying closed shapes with arbitrary X/Y corners (#2696) _Thanks @Tilation_
 * FillY: New plot type for displaying a shaded area between two sets of Y points that share the same X points (#2696) _Thanks @Tilation_
 * Avalonia: Added support for Avalonia 11 (#2720, #2184, #2664, #2507, #2321, #2184, #2183, #2725) _Thanks @Fruchtzwerg94, @Xerxes004, and @bclehmann_
 
-## ScottPlot 4.1.65 (in development)
+## ScottPlot 4.1.65
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_
 * Axis: Improved log-scaled axis minor tick density default value and customization (#2646) _Thanks @hellfo_
 * Image: Added option to disable anti-aliasing for scaled images (#2649) _Thanks @mYcheng-95_
 * Binned Histogram: New plot type that represents binned 2D histogram data as a heatmap (#2453)
