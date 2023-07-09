@@ -53,4 +53,26 @@ internal class Population
         pop.ErrorBarAlignment = HorizontalAlignment.Center;
         TestTools.SaveFig(plt);
     }
+
+    [Test]
+    public void Test_Population_Empty()
+    {
+        // reproduces issue where empty populations crash during render
+        // https://github.com/ScottPlot/ScottPlot/issues/2727
+
+        Random rand = new(0);
+        double[] valuesA = DataGen.RandomNormal(rand, 35, 85, 5);
+        double[] valuesB = { };
+        double[] valuesC = DataGen.RandomNormal(rand, 23, 92, 3);
+
+        var popA = new Statistics.Population(valuesA);
+        var popB = new Statistics.Population(valuesB);
+        var popC = new Statistics.Population(valuesC);
+
+        var poulations = new Statistics.Population[] { popA, popB, popC };
+
+        ScottPlot.Plot plt = new();
+        plt.AddPopulations(poulations);
+        Assert.DoesNotThrow(() => plt.Render());
+    }
 }
