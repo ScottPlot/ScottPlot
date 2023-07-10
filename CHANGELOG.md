@@ -3,6 +3,7 @@
 ## ScottPlot 5.0.7-beta (in development)
 
 ## ScottPlot 4.1.66 (in development)
+* DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
 
 ## ScottPlot 5.0.6-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_
