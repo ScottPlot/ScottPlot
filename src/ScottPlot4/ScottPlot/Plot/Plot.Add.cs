@@ -132,9 +132,14 @@ namespace ScottPlot
         /// <summary>
         /// Add a data logging scatter plot designed for growing collections of X/Y points.
         /// </summary>
-        public DataLogger AddDataLogger()
+        public DataLogger AddDataLogger(Color? color = null, float lineWidth = 1, string label = null)
         {
-            DataLogger dl = new(this);
+            DataLogger dl = new(this)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                Label = label
+            };
             Add(dl);
             return dl;
         }
@@ -142,9 +147,14 @@ namespace ScottPlot
         /// <summary>
         /// Add a data streamer to display a fixed number of evenly-spaced Y values
         /// </summary>
-        public DataStreamer AddDataStreamer(double[] values)
+        public DataStreamer AddDataStreamer(double[] values, Color? color = null, float lineWidth = 1, string label = null)
         {
-            DataStreamer ds = new(this, values);
+            DataStreamer ds = new(this, values)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                Label = label
+            };
             Add(ds);
             return ds;
         }
