@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot.Tests.PlottableUnitTests
+namespace ScottPlot.Tests.PlotTypes
 {
     class FinancePlotTests
     {
