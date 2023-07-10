@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlotTests.PlottableUnitTests
+namespace ScottPlot.Tests.PlotTypes
 {
     class AxisLineAndSpanTests
     {
@@ -15,7 +15,7 @@ namespace ScottPlotTests.PlottableUnitTests
         public void Test_AxisLine_AutoAxisRespected(bool ignore)
         {
             // plot with small data in the center
-            var plt = new ScottPlot.Plot();
+            var plt = new Plot();
             plt.AddPoint(-10, -10);
             plt.AddPoint(10, 10);
             plt.AxisAuto();
@@ -41,7 +41,7 @@ namespace ScottPlotTests.PlottableUnitTests
         public void Test_AxisSpan_AutoAxisRespected(bool ignore)
         {
             // plot with small data in the center
-            var plt = new ScottPlot.Plot();
+            var plt = new Plot();
             plt.AddPoint(-10, -10);
             plt.AddPoint(10, 10);
             plt.AxisAuto();
