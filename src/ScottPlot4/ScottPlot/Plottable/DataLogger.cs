@@ -182,7 +182,7 @@ public class DataLogger : IPlottable
         using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
 
         PointF[] points = Data.Select(x => dims.GetPixel(x).ToPointF()).ToArray();
-        if (points.Length > 0)
+        if (points.Length > 1)
         {
             gfx.DrawLines(pen, points);
         }
