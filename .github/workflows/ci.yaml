@@ -22,10 +22,10 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: ✨ Set up .NET 6.0
+      - name: ✨ Set up .NET 7.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "7.0.x"
       - name: ✒️ Set up dotnet-format
         run: dotnet tool install -g dotnet-format
       - name: 🧐 Check ScottPlot 4 code format
