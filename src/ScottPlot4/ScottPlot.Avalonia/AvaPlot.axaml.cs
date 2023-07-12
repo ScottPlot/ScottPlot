@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -14,6 +15,7 @@ using Avalonia.VisualTree;
 using Ava = Avalonia;
 
 #pragma warning disable CS0067 // don't warn about obsolete events that aren't used
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")] // don't show platform not supported warning
 
 namespace ScottPlot.Avalonia
 {
