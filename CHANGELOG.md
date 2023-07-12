@@ -1,4 +1,8 @@
 # ScottPlot Changelog
+* This document contains release notes for every version of ScottPlot
+* https://scottplot.net/versions/ describes the major versions of ScottPlot
+* https://scottplot.net/changelog/ is a formatted version of this document
+* https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.7-beta (in development)
 * Axis: Fixed issue where axes with zero span would cause renders to fail (#2714) _Thanks @ahmad-qamar_
