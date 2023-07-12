@@ -1,16 +1,63 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows;net462;</TargetFrameworks>
+        <TargetFrameworks>net6.0-windows;net461;net472;net48;netcoreapp3.1</TargetFrameworks>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <UseWPF>true</UseWPF>
         <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <Version>4.1.65</Version>
+        <AssemblyVersion>4.1.65.0</AssemblyVersion>
+        <FileVersion>4.1.65.0</FileVersion>
+
+        <AssemblyName>ScottPlot.WPF</AssemblyName>
+        <OutputType>Library</OutputType>
+        <RootNamespace>ScottPlot</RootNamespace>
+        <PackageIcon>icon.png</PackageIcon>
+        <Description>This package provides a WPF control to interactively display ScottPlot graphs in WPF applications. This package targets both .NET Framework and .NET Core.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive WPF</PackageTags>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+        <Authors>Scott W Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
+
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*" >
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- 
+        Logic here ensures .NET Framework apps get the older (4.6.1) package by default.
+        Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
+        is associated with assembly issues that break .NET Framework projects on Windows.
+        https://github.com/ScottPlot/ScottPlot/issues/1004
+        -->
+        <PackageVersion Condition="!$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.2" />
+        <PackageVersion Condition="$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="4.7.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
