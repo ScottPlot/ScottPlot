@@ -327,6 +327,14 @@ public class Plot : IDisposable
 
     #region Rendering and Image Creation
 
+    /// <summary>
+    /// Force the plot to render once by calling <see cref="GetImage(int, int)"/> but don't return what was rendered.
+    /// </summary>
+    public void Render(int width = 400, int height = 300)
+    {
+        GetImage(width, height);
+    }
+
     public void Render(SKSurface surface)
     {
         LastRenderInfo = Renderer.Render(surface, this);
