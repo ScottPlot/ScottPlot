@@ -5,17 +5,17 @@ on:
 
 jobs:
   windows:
+    name: 🚀 Publish ScottPlot4 Packages
     runs-on: windows-latest
-    name: Push to NuGet
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
-      - name: ✨ Setup .NET 6.0
+      - name: ✨ Setup .NET 7.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "7.0.x"
       - name: 🚚 Restore
         run: dotnet restore "src/ScottPlot5"
       - name: 🛠️ Build

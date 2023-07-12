@@ -1,9 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFrameworks>net462;net472;netcoreapp3.1;net6.0</TargetFrameworks>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <Version>4.1.65</Version>
+        <AssemblyVersion>4.1.65.0</AssemblyVersion>
+        <FileVersion>4.1.65.0</FileVersion>
+
+        <AssemblyName>ScottPlot.Avalonia</AssemblyName>
+        <RootNamespace>ScottPlot</RootNamespace>
+        <PackageIcon>icon.png</PackageIcon>
+        <Description>This package provides an Avalonia control to interactively display ScottPlot graphs in Avalonia applications. This package targets both .NET Framework and .NET Core.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive avalonia</PackageTags>
+        <SignAssembly>false</SignAssembly>
+        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+        <Authors>Scott W Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
+
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSource>true</IncludeSource>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,10 +38,27 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- 
+        Logic here ensures .NET Framework apps get the older (4.6.1) package by default.
+        Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
+        is associated with assembly issues that break .NET Framework projects on Windows.
+        https://github.com/ScottPlot/ScottPlot/issues/1004
+        -->
+        <PackageVersion Condition="!$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="5.0.2" />
+        <PackageVersion Condition="$(TargetFramework.StartsWith('net4'))" Include="System.Drawing.Common" Version="4.7.2" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.0.0" />
         <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="*">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 

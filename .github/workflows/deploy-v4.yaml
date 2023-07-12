@@ -5,16 +5,16 @@ on:
 
 jobs:
   deploy:
-    name: 🚀 Publish Packages
+    name: 🚀 Publish ScottPlot4 Packages
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
-      - name: ✨ Setup .NET 6
+      - name: ✨ Setup .NET 7
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "7.0.x"
 
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
@@ -29,27 +29,27 @@ jobs:
 
       - name: 📦 Package ScottPlot.WinForms
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj
-          dotnet build src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.WinForms
+          dotnet build src/ScottPlot4/ScottPlot.WinForms --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.WinForms --configuration Release
 
       - name: 📦 Package ScottPlot.WPF
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj
-          dotnet build src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.WPF
+          dotnet build src/ScottPlot4/ScottPlot.WPF --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.WPF --configuration Release
 
       - name: 📦 Package ScottPlot.Avalonia
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj
-          dotnet build src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.Avalonia
+          dotnet build src/ScottPlot4/ScottPlot.Avalonia --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.Avalonia --configuration Release
 
       - name: 📦 Package ScottPlot.Eto
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj
-          dotnet build src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.Eto/ScottPlot.Eto.NUGET.csproj --configuration Release
+          dotnet restore src/ScottPlot4/ScottPlot.Eto
+          dotnet build src/ScottPlot4/ScottPlot.Eto --configuration Release
+          dotnet pack src/ScottPlot4/ScottPlot.Eto --configuration Release
 
       - name: 💾 Store Packages
         uses: actions/upload-artifact@v3
