@@ -9,6 +9,7 @@ public class StandardRenderer : IRenderer
         plot.Benchmark.Restart();
         Common.ReplaceNullAxesWithDefaults(plot);
         Common.AutoAxisAnyUnsetAxes(plot);
+        Common.EnsureAxesHaveArea(plot);
 
         PixelRect figureRect = surface.GetPixelRect();
 

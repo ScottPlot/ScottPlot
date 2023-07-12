@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Rendering;
+﻿using ScottPlot.Axis;
+
+namespace ScottPlot.Rendering;
 
 /// <summary>
 /// Common rendering tasks
@@ -29,6 +31,15 @@ public static class Common
         if (!plot.XAxis.Range.HasBeenSet) // may occur when there are no plottables with data
         {
             plot.SetAxisLimits(AxisLimits.Default);
+        }
+    }
+
+    public static void EnsureAxesHaveArea(Plot plot)
+    {
+        foreach (CoordinateRange range in plot.GetAllAxes().Where(x => x.Range.Span == 0).Select(x => x.Range))
+        {
+            range.Min -= 1;
+            range.Max += 1;
         }
     }
 
