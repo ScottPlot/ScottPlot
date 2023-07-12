@@ -34,11 +34,17 @@ public class ScatterSourceXsYs : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
+        if (!Xs.Any())
+            return CoordinateRange.NotSet;
+
         return new CoordinateRange(Xs.Min(), Xs.Max());
     }
 
     public CoordinateRange GetLimitsY()
     {
+        if (!Ys.Any())
+            return CoordinateRange.NotSet;
+
         return new CoordinateRange(Ys.Min(), Ys.Max());
     }
 }

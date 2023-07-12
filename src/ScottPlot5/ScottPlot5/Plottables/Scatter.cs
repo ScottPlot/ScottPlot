@@ -34,6 +34,9 @@ public class Scatter : IPlottable
     {
         IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
 
+        if (!pixels.Any())
+            return;
+
         using SKPaint paint = new() { IsAntialias = true };
         LineStyle.ApplyToPaint(paint);
 

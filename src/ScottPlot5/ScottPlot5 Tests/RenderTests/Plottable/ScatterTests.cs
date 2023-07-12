@@ -5,13 +5,11 @@ internal class ScatterTests
     [Test]
     public void Test_Scatter_Empty_Render()
     {
-        // TODO: https://github.com/ScottPlot/ScottPlot/issues/2714
-
         ScottPlot.Plot plt = new();
         double[] xs = { };
         double[] ys = { };
         plt.Add.Scatter(xs, ys);
-        Assert.Throws<InvalidOperationException>(() => plt.Render());
+        Assert.DoesNotThrow(() => plt.Render());
     }
 
     [Test]
