@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 5.0.7-beta (in development)
+* Axis: Fixed issue where axes with zero span would cause renders to fail (#2714) _Thanks @ahmad-qamar_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
