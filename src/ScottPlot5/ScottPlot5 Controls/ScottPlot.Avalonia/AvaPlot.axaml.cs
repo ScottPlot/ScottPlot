@@ -72,8 +72,8 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     private async void OpenSaveImageDialog()
     {
-        var window = (Window)(this.GetVisualRoot() ?? throw new NullReferenceException("Could not find a visual root"));
-        var destinationFile = await window.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        var topLevel = TopLevel.GetTopLevel(this) ?? throw new NullReferenceException("Could not find a top level");
+        var destinationFile = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
         {
             SuggestedFileName = Interaction.DefaultSaveImageFilename,
             FileTypeChoices = filePickerFileTypes
