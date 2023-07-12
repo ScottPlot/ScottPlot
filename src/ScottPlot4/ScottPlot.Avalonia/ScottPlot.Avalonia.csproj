@@ -2,26 +2,28 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFrameworks>net462;net472;netcoreapp3.1;net6.0</TargetFrameworks>
-        <LangVersion>latest</LangVersion>
         <PlatformTarget>AnyCPU</PlatformTarget>
+        <LangVersion>latest</LangVersion>
+
+        <Version>4.1.65</Version>
+        <AssemblyVersion>4.1.65.0</AssemblyVersion>
+        <FileVersion>4.1.65.0</FileVersion>
+
         <AssemblyName>ScottPlot.Avalonia</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>
         <PackageIcon>icon.png</PackageIcon>
         <Description>This package provides an Avalonia control to interactively display ScottPlot graphs in Avalonia applications. This package targets both .NET Framework and .NET Core.</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
         <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive avalonia</PackageTags>
-        <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
-        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
-        <Version>4.1.65</Version>
-        <AssemblyVersion>4.1.65.0</AssemblyVersion>
-        <FileVersion>4.1.65.0</FileVersion>
         <SignAssembly>false</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
         <DelaySign>false</DelaySign>
         <Authors>Scott W Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
 
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
