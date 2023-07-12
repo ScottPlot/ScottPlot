@@ -76,8 +76,8 @@ jobs:
         run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
       - name: 🧪 ScottPlot4 Test
         run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 Pack
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release --no-build
+      - name: 📦 ScottPlot4 Package
+        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
 
       - name: 🚚 ScottPlot5 Restore
         run: dotnet restore ${{env.SLN_SP5_FULL}}
@@ -85,5 +85,5 @@ jobs:
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release --no-restore
       - name: 🧪 ScottPlot5 Test
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 Pack
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release --no-build
+      - name: 📦 ScottPlot4 Package
+        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
