@@ -36,10 +36,10 @@ namespace ScottPlot
             return Color.FromArgb(r, g, b);
         }
 
-        [Obsolete("use ScottPlot.Plot.Version", true)]
+        [Obsolete("use ScottPlot.Version", true)]
         public static string GetVersionString(bool justThreeDigits = true)
         {
-            Version ver = typeof(Plot).Assembly.GetName().Version;
+            var ver = typeof(Plot).Assembly.GetName().Version;
             if (justThreeDigits)
                 return $"{ver.Major}.{ver.Minor}.{ver.Build}";
             else

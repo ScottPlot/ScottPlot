@@ -54,17 +54,10 @@ namespace ScottPlot
             $"with {settings.Plottables.Count:n0} plottables";
 
         /// <summary>
-        /// ScottPlot version in the format "1.2.3" (or "1.2.3-beta" for pre-releases)
+        /// ScottPlot version in the format "1.2.3"
         /// </summary>
-        public static string Version
-        {
-            get
-            {
-                Version v = typeof(Plot).Assembly.GetName().Version;
-                string versionString = $"{v.Major}.{v.Minor}.{v.Build}";
-                return versionString;
-            }
-        }
+        //[Obsolete("use ScottPlot.Version.ShortString")] // TODO: obsolete this
+        public static string Version => ScottPlot.Version.ShortString;
 
         #region add, clear, and remove plottables
 
