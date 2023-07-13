@@ -739,7 +739,8 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2020-12-27_
 * Improved fill above and below for scatter plots (#676) _Thanks @MithrilMan_
 * Additional customizations for radar charts (#634, #628, #635) _Thanks @bclehmann and @SommerEngineering_
 
-## ScottPlot 4.1.0
+## ScottPlot 4.1.0-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2020-11-29_
 * In November, 2020 ScottPlot 4.0 branched into a permanent `stable` branch, and ScottPlot 4.1 began development as beta / pre-release in the main branch. ScottPlot 4.0 continues to be maintained, but modifications are aimed at small bugfixes rather than large refactoring or the addition of new features. ScottPlot 4.1 merged into the master branch in November, 2020 (#605). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation.
 * Most plotting methods are unchanged so many users will not experience any breaking changes.
 * Axis Limits: Axis limits are described by a `AxisLimits` struct (previously `double[]` was used)
@@ -784,8 +785,6 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2020-11-22_
 * Fixed `AxisAuto()` bug affecting signal plots using min/max render indexes with a custom sample rate (#621) _Thanks @LB767_
 * Fixed a bug affecting histogram normalization (#624) _Thanks @LB767_
 * WPF and Windows Forms user controls now also target .NET 5
-
-## ScottPlot 4.0.43
 * Improved appearance of semi-transparent legend items (#567)
 * Improved tick labels for ticks smaller than 1E-5 (#568) _Thanks @ozgur640_
 * Improved support for Avalonia 0.10 (#571) _Thanks @bclehmann and @apkrymov_
