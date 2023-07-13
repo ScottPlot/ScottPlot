@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-internal    static     class      TODO
+internal static class TODO
 {
     /*  
 
