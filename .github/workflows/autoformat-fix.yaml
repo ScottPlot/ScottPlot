@@ -21,8 +21,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: 🔎 Check .NET Version
-        run: dotnet --list-sdks
       - name: ✨ Set up .NET 7
         uses: actions/setup-dotnet@v3
         with:

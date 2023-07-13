@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: 🔎 Check .NET Version
-        run: dotnet --list-sdks
       - name: ✨ Set up .NET 7
         uses: actions/setup-dotnet@v3
         with:
