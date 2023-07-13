@@ -27,7 +27,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7"
-          cache: true
       - name: ✍️ Fix ScottPlot4 formatting
         run: dotnet format "src/ScottPlot4/ScottPlot4.sln"
       - name: ✍️ Fix ScottPlot5 formatting
