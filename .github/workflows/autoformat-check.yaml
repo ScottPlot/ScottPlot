@@ -15,8 +15,8 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: ✨ Set up .NET
-        uses: actions/setup-dotnet@v3
+      - name: ✨ Check .NET Version
+        run: dotnet --version
       - name: ✒️ Check ScottPlot4 formatting
         run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
       - name: ✒️ Check ScottPlot5 formatting
