@@ -18,9 +18,10 @@ env:
 
 jobs:
   check-format:
+    # note: dotnet format at the solution level requires Windows - maybe because it has .NET framework projects?
     name: ✒️ dotnet format (check)
     if: github.event_name == 'pull_request' # Run on all PRs
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -34,9 +35,9 @@ jobs:
         run: dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
 
   apply-format:
-    name: ✒️ dotnet format
+    name: ✒️ dotnet format (push)
     if: github.event_name != 'pull_request' # Run on push to main
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
