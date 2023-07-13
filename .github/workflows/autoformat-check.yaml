@@ -15,12 +15,12 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: ✨ Check .NET Version
+      - name: 🔎 Check .NET Version
         run: dotnet --version
-      - name: ✨ Set up .NET
+      - name: ✨ Set up .NET 7
         uses: actions/setup-dotnet@v3
         with:
-          global-json-file: ".github/workflows/global.json"
+          dotnet-version: "7"
       - name: ✒️ Check ScottPlot4 formatting
         run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
       - name: ✒️ Check ScottPlot5 formatting
