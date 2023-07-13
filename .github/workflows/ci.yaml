@@ -18,7 +18,8 @@ env:
 
 jobs:
   check-format:
-    name: Check Formatting
+    name: ✒️ dotnet format (check)
+    if: github.event_name == 'pull_request' # Run on all PRs
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -27,10 +28,34 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
-      - name: 🧐 dotnet format ScottPlot4.sln
+      - name: ✒️ dotnet format ScottPlot4.sln
         run: dotnet format --verify-no-changes ${{env.SLN_SP4_FULL}}
-      - name: 🧐 dotnet format ScottPlot5.sln
+      - name: ✒️ dotnet format ScottPlot5.sln
         run: dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
+
+  apply-format:
+    name: ✒️ dotnet format
+    if: github.event_name != 'pull_request' # Run on push to main
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Set up .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: ✒️ dotnet format ScottPlot4.sln
+        run: dotnet format ${{env.SLN_SP4_FULL}}
+      - name: ✒️ dotnet format ScottPlot5.sln
+        run: dotnet format ${{env.SLN_SP5_FULL}}
+      - name: ✅ Commit Changes
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git commit -am "CI: autoformat"
+          git status
 
   test-linux:
     runs-on: ubuntu-latest
