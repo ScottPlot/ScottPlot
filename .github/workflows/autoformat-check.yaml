@@ -16,11 +16,12 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
       - name: 🔎 Check .NET Version
-        run: dotnet --version
+        run: dotnet --list-sdks
       - name: ✨ Set up .NET 7
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7"
+          cache: true
       - name: ✒️ Check ScottPlot4 formatting
         run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
       - name: ✒️ Check ScottPlot5 formatting
