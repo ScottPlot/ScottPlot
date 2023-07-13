@@ -1,13 +1,13 @@
 name: CI
 
 on:
-  workflow_dispatch:
-  push: # run on pushes to main (only happens when PRs are merged or admin commits directly to main)
+  workflow_dispatch: # allow running manually
+  pull_request: # run on all PR actions (push, open, reopen)
+  push: # run whenever the main branch is modified (via a PR merge or direct committing)
     branches:
       - main
     paths:
       - src/**
-  pull_request: # run on all PR actions (push, open, reopen)
 
 env:
   SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
@@ -17,49 +17,7 @@ env:
   DOTNET_VERSION: "7.0.x"
 
 jobs:
-  check-format:
-    # note: dotnet format at the solution level requires Windows - maybe because it has .NET framework projects?
-    name: ✒️ dotnet format (check)
-    if: github.event_name == 'pull_request' # Run on all PRs
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Set up .NET ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
-      - name: ✒️ dotnet format ScottPlot4.sln
-        run: dotnet format --verify-no-changes ${{env.SLN_SP4_FULL}}
-      - name: ✒️ dotnet format ScottPlot5.sln
-        run: dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
-
-  apply-format:
-    name: ✒️ dotnet format (push)
-    if: github.event_name != 'pull_request' # Run on push to main
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-      - name: ✨ Set up .NET ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
-      - name: ✒️ dotnet format ScottPlot4.sln
-        run: dotnet format ${{env.SLN_SP4_FULL}}
-      - name: ✒️ dotnet format ScottPlot5.sln
-        run: dotnet format ${{env.SLN_SP5_FULL}}
-      - name: ✅ Commit Changes
-        run: |
-          git config --global user.name 'Scott W Harden (via GitHub Actions)'
-          git config --global user.email 'swharden@gmail.com'
-          git commit -am "CI: autoformat"
-          git push
-
   test-linux:
-    if: false # DISABLES THIS JOB
     name: Test on Linux
     runs-on: ubuntu-latest
     steps:
@@ -85,7 +43,6 @@ jobs:
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
 
   test-windows:
-    if: false # DISABLES THIS JOB
     name: Test on Windows
     runs-on: windows-latest
     steps:
