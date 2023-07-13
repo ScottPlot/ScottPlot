@@ -37,7 +37,8 @@ public class Scatter : IPlottable
         if (!pixels.Any())
             return;
 
-        if(LineStyle.IsVisible) {
+        if (LineStyle.IsVisible)
+        {
             using SKPaint paint = new() { IsAntialias = true };
             LineStyle.ApplyToPaint(paint);
 
@@ -49,7 +50,7 @@ public class Scatter : IPlottable
             }
             surface.Canvas.DrawPath(path, paint);
         }
-        
+
         MarkerStyle.Render(surface.Canvas, pixels);
     }
 }
