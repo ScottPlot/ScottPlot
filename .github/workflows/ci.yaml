@@ -18,8 +18,8 @@ env:
 
 jobs:
   check-format:
-    runs-on: windows-latest
     name: Check Formatting
+    runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
