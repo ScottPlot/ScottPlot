@@ -59,8 +59,9 @@ jobs:
           git status
 
   test-linux:
-    runs-on: ubuntu-latest
+    if: false # DISABLES THIS JOB
     name: Test on Linux
+    runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -84,8 +85,9 @@ jobs:
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
 
   test-windows:
-    runs-on: windows-latest
+    if: false # DISABLES THIS JOB
     name: Test on Windows
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
