@@ -56,7 +56,7 @@ jobs:
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
           git config --global user.email 'swharden@gmail.com'
           git commit -am "CI: autoformat"
-          git status
+          git push
 
   test-linux:
     if: false # DISABLES THIS JOB
