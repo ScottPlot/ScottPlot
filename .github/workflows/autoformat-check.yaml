@@ -1,0 +1,23 @@
+# This action uses 'dotnet format' and FAILS if the code is not already formatted.
+# Run 'dotnet format' in a project or solution folder to autoformat the code.
+# The 'dotnet format' command requires Windows because ScottPlot 4 requires MSBuild.
+
+name: Check Formatting
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  check-format:
+    name: Autoformat
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Set up .NET
+        uses: actions/setup-dotnet@v3
+      - name: ✒️ Check ScottPlot4 formatting
+        run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
+      - name: ✒️ Check ScottPlot5 formatting
+        run: dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
