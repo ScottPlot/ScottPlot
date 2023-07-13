@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public static class Version
+public    static    class    Version
 {
     public static readonly System.Version AssemblyVersion = GetVersion();
 
