@@ -29,10 +29,16 @@ jobs:
     name: Autoformat
     runs-on: windows-latest
     steps:
-      - name: 🛒 Checkout
+      - name: 🛒 Checkout (PR)
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v3
+
+      - name: 🛒 Checkout (main)
+        if: github.event_name != 'pull_request'
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
+
       - name: ✨ Set up .NET ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v3
         with:
