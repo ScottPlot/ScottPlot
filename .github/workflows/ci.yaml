@@ -30,9 +30,9 @@ jobs:
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
       - name: ✒️ dotnet format ScottPlot4.sln
-        run: dotnet format --verify-no-changes ${{env.SLN_SP4_FULL}}
+        run: dotnet format --verify-no-changes --no-restore ${{env.SLN_SP4_FULL}}
       - name: ✒️ dotnet format ScottPlot5.sln
-        run: dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
+        run: dotnet format --verify-no-changes --no-restore ${{env.SLN_SP5_FULL}}
 
   apply-format:
     name: ✒️ dotnet format (push)
@@ -48,9 +48,9 @@ jobs:
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
       - name: ✒️ dotnet format ScottPlot4.sln
-        run: dotnet format ${{env.SLN_SP4_FULL}}
+        run: dotnet format --no-restore ${{env.SLN_SP4_FULL}}
       - name: ✒️ dotnet format ScottPlot5.sln
-        run: dotnet format ${{env.SLN_SP5_FULL}}
+        run: dotnet format --no-restore ${{env.SLN_SP5_FULL}}
       - name: ✅ Commit Changes
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
