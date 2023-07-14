@@ -22,21 +22,10 @@ jobs:
         with:
           dotnet-version: "7"
       - name: ✒️ Check ScottPlot4 formatting
-        run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
+        run: |
+          dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
+          echo "::warning::Run 'dotnet format' in the solution folder to fix code format errors"
       - name: ✒️ Check ScottPlot5 formatting
-        run: dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
-
-      - name: 💡 How to fix formatting errors
-        #if: ${{ failure() }}
-        shell: bash
-        run: echo "::notice::Run 'dotnet format' in the solution folder"
-        
-      - name: 💡 How to fix formatting errors
-        #if: ${{ failure() }}
-        shell: bash
-        run: echo "::error::Run 'dotnet format' in the solution folder"
-        
-      - name: 💡 How to fix formatting errors
-        #if: ${{ failure() }}
-        shell: bash
-        run: echo "::warning::Run 'dotnet format' in the solution folder"
+        run: |
+          dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
+          echo "::warning::Run 'dotnet format' in the solution folder to fix code format errors"
