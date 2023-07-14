@@ -25,7 +25,18 @@ jobs:
         run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
       - name: ✒️ Check ScottPlot5 formatting
         run: dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
-      - name: 💡 Display Additional Information
-        if: ${{ failure() }}
+
+      - name: 💡 How to fix formatting errors
+        #if: ${{ failure() }}
         shell: bash
-        run: cat .github/workflows/autoformat-message.md >> $GITHUB_STEP_SUMMARY
+        run: echo "::notice::Run 'dotnet format' in the solution folder"
+        
+      - name: 💡 How to fix formatting errors
+        #if: ${{ failure() }}
+        shell: bash
+        run: echo "::error::Run 'dotnet format' in the solution folder"
+        
+      - name: 💡 How to fix formatting errors
+        #if: ${{ failure() }}
+        shell: bash
+        run: echo "::warning::Run 'dotnet format' in the solution folder"
