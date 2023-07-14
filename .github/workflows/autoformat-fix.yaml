@@ -2,7 +2,7 @@
 # Run 'dotnet format' in a project or solution folder to autoformat the code.
 # The 'dotnet format' command requires Windows because ScottPlot 4 requires MSBuild.
 
-name: Autoformat Fix
+name: Autoformat
 
 on:
   workflow_dispatch:
