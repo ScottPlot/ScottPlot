@@ -1,6 +1,8 @@
 # This action uses 'dotnet format' and FAILS if the code is not already formatted.
 # Run 'dotnet format' in a project or solution folder to autoformat the code.
 # The 'dotnet format' command requires Windows because ScottPlot 4 requires MSBuild.
+# A job summary is included which describes how to correct this issue.
+# https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary
 
 name: PR Autoformat
 
@@ -23,15 +25,7 @@ jobs:
         run: dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
       - name: ✒️ Check ScottPlot5 formatting
         run: dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
-      - name: 💡 Post 'dotnet format' message
+      - name: 💡 Display Additional Information
         if: ${{ failure() }}
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GH_TOKEN}}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '💡 This automated message is to remind contributors that the `dotnet format` command should be run to ensure the code modified by pull requests is formatted consistently with the rest of the code base. See `CONTRIBUTING.md` for additional information.'
-            })
+        shell: bash
+        run: cat .github/workflows/autoformat-message.md >> $GITHUB_STEP_SUMMARY
