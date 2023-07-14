@@ -24,8 +24,8 @@ jobs:
       - name: ✒️ Check ScottPlot4 formatting
         run: |
           dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
-          echo "::warning::Run 'dotnet format' in the solution folder to fix code format errors"
+          echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
       - name: ✒️ Check ScottPlot5 formatting
         run: |
           dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
-          echo "::warning::Run 'dotnet format' in the solution folder to fix code format errors"
+          echo "::warning::Run 'dotnet format ScottPlot5.sln' to fix code format errors"
