@@ -34,10 +34,15 @@ public static class Fonts
     /// Return the name of the font which will best display the given character.
     /// This method helps identify the best fonts for displaying Chinese, Japanese, and Korean (CJK) characters.
     /// </summary>
-    public static string Detect(char c)
+    public static string? Detect(char c)
     {
         // https://github.com/ScottPlot/ScottPlot/issues/2746
-        return SKFontManager.Default.MatchCharacter(c).FamilyName;
+        var tf = SKFontManager.Default.MatchCharacter(c);
+
+        if (tf is null)
+            return null;
+
+        return tf.FamilyName;
     }
 
     /// <summary>
