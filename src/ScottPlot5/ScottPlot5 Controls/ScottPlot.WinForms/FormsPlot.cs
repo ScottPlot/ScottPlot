@@ -44,9 +44,7 @@ public class FormsPlot : UserControl, IPlotControl
 
         // TODO: replace this with an annotation instead of title
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
-        Plot.Title.Label.Text = isDesignMode
-            ? $"ScottPlot {Version.VersionString}"
-            : string.Empty;
+        Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
     }
 
     private ContextMenuItem[] GetDefaultContextMenuItems()

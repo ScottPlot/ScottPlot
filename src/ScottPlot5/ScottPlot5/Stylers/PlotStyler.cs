@@ -37,7 +37,7 @@ public class PlotStyler
             axis.MinorTickColor = color;
         }
 
-        Plot.Title.Label.Font.Color = color;
+        Plot.TitlePanel.Label.Font.Color = color;
     }
 
     /// <summary>

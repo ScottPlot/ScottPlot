@@ -68,7 +68,7 @@ internal class Quickstart : RecipePageBase
         {
             double[] data = Generate.RandomWalk(1_000_000);
             myPlot.Add.Signal(data);
-            myPlot.Title.Label.Text = $"Signal plot with one million points.";
+            myPlot.Title("Signal plot with one million points");
         }
     }
 
@@ -85,7 +85,7 @@ internal class Quickstart : RecipePageBase
 
             myPlot.XAxis.Label.Text = "Horizonal Axis";
             myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.Title.Label.Text = "Plot Title";
+            myPlot.TitlePanel.Label.Text = "Plot Title";
         }
     }
 

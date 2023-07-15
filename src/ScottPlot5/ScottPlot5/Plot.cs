@@ -6,7 +6,6 @@ using ScottPlot.Legends;
 using ScottPlot.Benchmarking;
 using ScottPlot.Control;
 using ScottPlot.Stylers;
-using SkiaSharp;
 
 namespace ScottPlot;
 
@@ -19,8 +18,17 @@ public class Plot : IDisposable
     public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
     public IYAxis RightAxis => YAxes.First(x => x.Edge == Edge.Right);
 
+    /// <summary>
+    /// Panels are rectangular regions on the 4 edges outside the data area.
+    /// Axes, colorbars, title, etc.
+    /// </summary>
     public List<IPanel> Panels { get; } = new();
-    public Panels.TitlePanel Title { get; } = new();
+
+    /// <summary>
+    /// This panel displays a label above the plot.
+    /// </summary>
+    public Panels.TitlePanel TitlePanel { get; } = new();
+
     public List<IGrid> Grids { get; } = new();
     public List<ILegend> Legends { get; } = new();
     public List<IPlottable> Plottables { get; } = new();
@@ -135,7 +143,7 @@ public class Plot : IDisposable
     internal IPanel[] GetAllPanels() => XAxes.Select(x => (IPanel)x)
         .Concat(YAxes)
         .Concat(Panels)
-        .Concat(new[] { Title })
+        .Concat(new[] { TitlePanel })
         .ToArray();
 
     //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
@@ -399,12 +407,40 @@ public class Plot : IDisposable
 
     #endregion
 
-    #region Shortcuts
+    #region Helper Methods
 
     /// <summary>
     /// Clears the <see cref="Plottables"/> list
     /// </summary>
     public void Clear() => Plottables.Clear();
+
+    /// <summary>
+    /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
+    /// Assign properties of <see cref="TitlePanel"/> Label to customize size, color, font, etc.
+    /// </summary>
+    public void Title(string text)
+    {
+        TitlePanel.Label.Text = text;
+        TitlePanel.IsVisible = !string.IsNullOrWhiteSpace(text);
+    }
+
+    /// <summary>
+    /// Shortcut to set text of the <see cref="BottomAxis"/> Label
+    /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
+    /// </summary>
+    public void XLabel(string label)
+    {
+        BottomAxis.Label.Text = label;
+    }
+
+    /// <summary>
+    /// Shortcut to set text of the <see cref="BottomAxis"/> Label
+    /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
+    /// </summary>
+    public void YLabel(string label)
+    {
+        LeftAxis.Label.Text = label;
+    }
 
     /// <summary>
     /// Return the first default grid in use.

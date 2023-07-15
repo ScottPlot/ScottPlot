@@ -106,7 +106,7 @@ internal class Axis : RecipePageBase
 
             myPlot.XAxes.ForEach(x => x.IsVisible = false);
             myPlot.YAxes.ForEach(x => x.IsVisible = false);
-            myPlot.Title.IsVisible = false;
+            myPlot.TitlePanel.IsVisible = false;
         }
     }
 }

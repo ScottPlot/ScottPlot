@@ -25,7 +25,7 @@ internal class Styling : RecipePageBase
             // visible items have public properties that can be customized
             myPlot.XAxis.Label.Text = "Horizontal Axis";
             myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.Title.Label.Text = "Plot Title";
+            myPlot.TitlePanel.Label.Text = "Plot Title";
 
             // the Style object contains helper methods to easily style many items at once
             myPlot.Style.Background(figure: Color.FromHex("#07263b"), data: Color.FromHex("#0b3049"));
@@ -45,12 +45,12 @@ internal class Styling : RecipePageBase
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.Title.Label.Text = "Plot Title";
-            myPlot.Title.Label.Font.Color = Colors.RebeccaPurple;
-            myPlot.Title.Label.Font.Size = 32;
-            myPlot.Title.Label.Font.Name = Fonts.Serif;
-            myPlot.Title.Label.Rotation = -5;
-            myPlot.Title.Label.Font.Bold = false;
+            myPlot.TitlePanel.Label.Text = "Plot Title";
+            myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
+            myPlot.TitlePanel.Label.Font.Size = 32;
+            myPlot.TitlePanel.Label.Font.Name = FontService.SerifFontName;
+            myPlot.TitlePanel.Label.Rotation = -5;
+            myPlot.TitlePanel.Label.Font.Bold = false;
 
             myPlot.YAxis.Label.Text = "Vertical Axis";
             myPlot.YAxis.Label.Font.Color = Colors.Magenta;

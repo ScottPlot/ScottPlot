@@ -57,5 +57,6 @@ public interface IAxis : IPanel
     float MinorTickLength { get; set; }
     float MinorTickWidth { get; set; }
     Color MinorTickColor { get; set; }
+    FontStyle TickFont { get; }
     LineStyle FrameLineStyle { get; }
 }
