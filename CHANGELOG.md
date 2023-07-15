@@ -14,6 +14,7 @@
 * Axis: Exposed `TickFont` to allow tick label size and style customization (#2747) _Thanks @heartacker_
 * Plot: Added `Title()`, `XLabel()`, and `YLabel()` helper methods
 * Fonts: Favor the system default font to achieve better support international characters (#2746) _Thanks @heartacker_
+* Plot: Added `ScaleFactor` property to manage scaling of all plot components (#2747) _Thanks @heartacker_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_

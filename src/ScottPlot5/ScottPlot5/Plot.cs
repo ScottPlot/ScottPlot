@@ -42,6 +42,7 @@ public class Plot : IDisposable
     public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
+    public float ScaleFactor = 1.0f;
 
     public AxisStyler Axes { get; }
 
@@ -345,6 +346,7 @@ public class Plot : IDisposable
 
     public void Render(SKSurface surface)
     {
+        surface.Canvas.Scale(ScaleFactor);
         LastRenderInfo = Renderer.Render(surface, this);
     }
 
