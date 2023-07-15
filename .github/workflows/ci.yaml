@@ -1,0 +1,64 @@
+# This workflow tests all code after any change to the main branch
+
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+
+env:
+  DOTNET_VERSION: "7.0.x"
+
+jobs:
+  test-linux:
+    name: Test all versions on Linux
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        solution:
+          [
+            "src/ScottPlot4/ScottPlot4-tests.slnf",
+            "src/ScottPlot5/ScottPlot5-tests.slnf",
+          ]
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{ matrix.solution }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ matrix.solution }} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
+
+  test-windows:
+    name: Test all versions on Windows
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        solution:
+          ["src/ScottPlot4/ScottPlot4.sln", "src/ScottPlot5/ScottPlot5.sln"]
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{ matrix.solution }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ matrix.solution }} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{ matrix.solution }} --configuration Release
