@@ -1,4 +1,4 @@
-name: PR CI
+name: SP4 PR CI
 
 on:
   workflow_dispatch:

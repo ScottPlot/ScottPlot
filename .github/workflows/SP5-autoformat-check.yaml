@@ -4,7 +4,7 @@
 # A job summary is included which describes how to correct this issue.
 # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary
 
-name: PR Autoformat
+name: SP5 PR Autoformat
 
 on:
   workflow_dispatch:
