@@ -1,8 +1,7 @@
-name: SP5 CI
+name: PR CI
 
 on:
   workflow_dispatch:
-  pull_request:
   push:
     branches:
       - main
