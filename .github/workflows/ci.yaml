@@ -18,33 +18,32 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        solution:
-          [
-            "src/ScottPlot4/ScottPlot4-tests.slnf",
-            "src/ScottPlot5/ScottPlot5-tests.slnf",
-          ]
-    name: Test ${{ matrix.solution }} on ${{ matrix.os }}
+        version: ["ScottPlot4", "ScottPlot5"]
+    env:
+      SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
+    name: Test ${{ env.SOLUTION }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ matrix.solution }}
+        run: dotnet restore ${{ env.SOLUTION }}
       - name: 🛠️ Build
-        run: dotnet build ${{ matrix.solution }} --configuration Release --no-restore
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
 
   full-build:
     strategy:
       matrix:
-        solution:
-          ["src/ScottPlot4/ScottPlot4.sln", "src/ScottPlot5/ScottPlot5.sln"]
-    name: Full Build
+        version: ["ScottPlot4", "ScottPlot5"]
+    env:
+      SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}.sln"
+    name: Build ${{ matrix.version }} Solution
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -54,8 +53,44 @@ jobs:
       - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
+          dotnet-version: ${{env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ matrix.solution }}
+        run: dotnet restore ${{ env.SOLUTION }}
       - name: 🛠️ Build
-        run: dotnet build ${{ matrix.solution }} --configuration Release
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release
+
+  fix-formatting:
+    name: Fix Code Formatting
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION }}
+      - name: ✍️ Fix ScottPlot4 formatting
+        run: dotnet format "src/ScottPlot4/ScottPlot4.sln"
+      - name: ✍️ Fix ScottPlot5 formatting
+        run: dotnet format "src/ScottPlot5/ScottPlot5.sln"
+      - name: 🚀 Push Changes
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git commit -am "CI: autoformat"
+          git push
+
+  changelog:
+    runs-on: ubuntu-latest
+    name: Update Changelog Webpage
+    steps:
+      - name: 🚀 Trigger Remote Workflow
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
+            -d "{\"ref\":\"main\"}" \
+            https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
