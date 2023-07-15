@@ -26,6 +26,11 @@ public static class Fonts
     public static string Monospace { get; set; } = GetMonospace().FamilyName;
 
     /// <summary>
+    /// The default font on the system
+    /// </summary>
+    public static string System { get; } = SKTypeface.Default.FamilyName;
+
+    /// <summary>
     /// Return the name of the font which will best display the given character.
     /// This method helps identify the best fonts for displaying Chinese, Japanese, and Korean (CJK) characters.
     /// </summary>
