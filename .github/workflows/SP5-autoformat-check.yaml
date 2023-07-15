@@ -8,7 +8,7 @@ name: PR Autoformat
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     paths:
       - src/ScottPlot5/**
 
