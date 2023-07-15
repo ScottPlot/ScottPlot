@@ -32,20 +32,20 @@ public partial class SignalPerformance : Form, IDemoWindow
         if (rbSignal.Checked)
         {
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.Title.Label.Text = $"Signal Plot with {ys.Length:N0} Points";
+            formsPlot1.Plot.TitlePanel.Label.Text = $"Signal Plot with {ys.Length:N0} Points";
             label1.Text = "Signal plots are very performant for large datasets";
         }
         else if (rbScatter.Checked)
         {
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
-            formsPlot1.Plot.Title.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
+            formsPlot1.Plot.TitlePanel.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
             sp.MarkerStyle = MarkerStyle.None;
             label1.Text = "Traditional Scatter plots are not performant for large datasets";
         }
         else if (rbScatterGL.Checked)
         {
             var spGL = formsPlot1.Plot.Add.ScatterGL(formsPlot1, xs, ys);
-            formsPlot1.Plot.Title.Label.Text = $"OpenGL Scatter Plot with {ys.Length:N0} Points";
+            formsPlot1.Plot.TitlePanel.Label.Text = $"OpenGL Scatter Plot with {ys.Length:N0} Points";
             spGL.MarkerStyle = MarkerStyle.None;
             label1.Text = "OpenGL accelerated scatter plots are very performant even for large datasets";
         }
