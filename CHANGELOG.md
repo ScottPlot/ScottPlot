@@ -9,7 +9,8 @@
 * Avalonia: Improve support for cross-platform and non-desktop applications (#2748) _Thanks @PremekTill_
 * Scatter Plot: Improve support for empty datasets (#2740)
 * Scatter Plot: Improve support for user-defined line widths (#2739, #2750) _Thanks @dayo05_
-* Fonts: Added `FontService.SetDefaultFont()` with support for international character sets (#2746) _Thanks @heartacker_
+* Fonts: Users can now assign `Fonts.Default` to set the font for all labels (#2753)
+* Fonts: Added `Fonts.Detect()` to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
