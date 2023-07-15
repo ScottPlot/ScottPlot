@@ -48,4 +48,19 @@ jobs:
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
       - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
+        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
+
+  check-format:
+    name: Ensure 'dotnet format' was run
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Set up .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: ✒️ Check Code formatting
+        run: |
+          dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
+          echo "::warning::Run 'dotnet format ScottPlot5.sln' to fix code format errors"
