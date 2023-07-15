@@ -30,7 +30,7 @@ internal class Legend : RecipePageBase
             legend.BackgroundFill.Color = Colors.LightBlue;
             legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
             legend.Font.Size = 16;
-            legend.Font.Name = FontService.SerifFontName;
+            legend.Font.Name = Fonts.Serif;
             legend.Alignment = Alignment.UpperCenter;
         }
     }

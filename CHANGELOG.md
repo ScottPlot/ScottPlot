@@ -9,6 +9,8 @@
 * Avalonia: Improve support for cross-platform and non-desktop applications (#2748) _Thanks @PremekTill_
 * Scatter Plot: Improve support for empty datasets (#2740)
 * Scatter Plot: Improve support for user-defined line widths (#2739, #2750) _Thanks @dayo05_
+* Fonts: Users can now assign `Fonts.Default` to set the font for all labels (#2753)
+* Fonts: Added `Fonts.Detect()` to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
 * Axis: Exposed `TickFont` to allow tick label size and style customization (#2747) _Thanks @heartacker_
 * Plot: Added `Title()`, `XLabel()`, and `YLabel()` helper methods
 

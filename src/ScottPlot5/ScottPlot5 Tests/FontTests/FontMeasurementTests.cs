@@ -34,19 +34,4 @@ internal class FontMeasurementTests
         bmp.SaveTestImage();
         Assert.Pass();
     }
-
-    [Test]
-    public void Test_DefaultFonts_AreFound()
-    {
-        string[] installedFonts = ScottPlot.FontService.GetInstalledFonts();
-        installedFonts.Should().NotBeEmpty();
-
-        ScottPlot.FontService.SansTypeface.Should().NotBeNull();
-        ScottPlot.FontService.MonospaceTypeface.Should().NotBeNull();
-        ScottPlot.FontService.SerifTypeface.Should().NotBeNull();
-
-        ScottPlot.FontService.SansFontName.Should().NotBeNullOrWhiteSpace();
-        ScottPlot.FontService.MonospaceFontName.Should().NotBeNullOrWhiteSpace();
-        ScottPlot.FontService.SerifFontName.Should().NotBeNullOrWhiteSpace();
-    }
 }

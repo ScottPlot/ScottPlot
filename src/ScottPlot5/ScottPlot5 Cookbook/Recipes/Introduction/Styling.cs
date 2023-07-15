@@ -48,7 +48,7 @@ internal class Styling : RecipePageBase
             myPlot.TitlePanel.Label.Text = "Plot Title";
             myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
             myPlot.TitlePanel.Label.Font.Size = 32;
-            myPlot.TitlePanel.Label.Font.Name = FontService.SerifFontName;
+            myPlot.TitlePanel.Label.Font.Name = Fonts.Serif;
             myPlot.TitlePanel.Label.Rotation = -5;
             myPlot.TitlePanel.Label.Font.Bold = false;
 
@@ -58,7 +58,7 @@ internal class Styling : RecipePageBase
 
             myPlot.XAxis.Label.Text = "Horizontal Axis";
             myPlot.XAxis.Label.Font.Bold = false;
-            myPlot.XAxis.Label.Font.Name = FontService.MonospaceFontName;
+            myPlot.XAxis.Label.Font.Name = Fonts.Monospace;
 
             myPlot.XAxis.MajorTickLength = 10;
             myPlot.XAxis.MajorTickWidth = 3;

@@ -6,7 +6,7 @@
 /// </summary>
 public class FontStyle
 {
-    public string Name { get; set; } = FontService.SansFontName;
+    public string Name { get; set; } = Fonts.Default;
     public float Size { get; set; } = 12;
     public Color Color { get; set; } = Colors.Black;
     public bool Bold { get; set; } = false;

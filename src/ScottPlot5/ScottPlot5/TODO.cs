@@ -10,6 +10,10 @@ internal static class TODO
     ## Items are grouped by topic (not ordered by priority).               ##
     #########################################################################
 
+    Cookbook: See if using statements effectively segretate SP4 and SP5 examples
+    Tests: Use only fluent assertations
+    Tests: Evaluate xUnit vs nUnit
+
     ## SYSTEM ##
     Fonts: Cache typefaces to improve performance https://github.com/ScottPlot/ScottPlot/issues/2419
     Markers: add new shapes
