@@ -1,14 +1,14 @@
-name: SP4 PR CI
+name: ScottPlot5 CI
 
 on:
   workflow_dispatch:
   pull_request:
     paths:
-      - src/ScottPlot4/**
+      - src/ScottPlot5/**
 
 env:
-  SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
-  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
+  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5-tests.slnf"
+  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "7.0.x"
 
 jobs:
@@ -23,11 +23,11 @@ jobs:
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
       - name: 🚚 Restore
-        run: dotnet restore ${{env.SLN_SP4_TEST}}
+        run: dotnet restore ${{env.SLN_SP5_TEST}}
       - name: 🛠️ Build
-        run: dotnet build ${{env.SLN_SP4_TEST}} --configuration Release --no-restore
+        run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
 
   test-windows:
     name: Test on Windows
@@ -42,13 +42,13 @@ jobs:
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
       - name: 🚚 Restore
-        run: dotnet restore ${{env.SLN_SP4_FULL}}
+        run: dotnet restore ${{env.SLN_SP5_FULL}}
       - name: 🛠️ Build
-        run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
+        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
       - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP4_FULL}} --configuration Release
+        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   check-format:
     name: Ensure 'dotnet format' was run
@@ -62,5 +62,5 @@ jobs:
           dotnet-version: ${{env.DOTNET_VERSION}}
       - name: ✒️ Check Code formatting
         run: |
-          dotnet format --verify-no-changes ${{env.SLN_SP4_FULL}}
-          echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
+          dotnet format --verify-no-changes ${{env.SLN_SP5_FULL}}
+          echo "::warning::Run 'dotnet format ScottPlot5.sln' to fix code format errors"
