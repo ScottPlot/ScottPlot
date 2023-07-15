@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
@@ -86,7 +86,11 @@
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 
-    <!-- Shared project code -->
-    <Import Project="..\..\Shared\ScottPlot\ScottPlotShared.projitems" Label="ScottPlotShared" />
+    <!-- Get a few source files from ScottPlot5 -->
+    <ItemGroup>
+        <Compile Include="..\..\ScottPlot5\ScottPlot5\Generate.cs" />
+        <Compile Include="..\..\ScottPlot5\ScottPlot5\RandomDataGenerator.cs" />
+        <Compile Include="..\..\ScottPlot5\ScottPlot5\Palettes\*.cs" LinkBase="Palettes" />
+    </ItemGroup>
 
 </Project>

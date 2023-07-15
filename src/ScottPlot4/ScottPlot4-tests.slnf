@@ -2,8 +2,6 @@
   "solution": {
     "path": "ScottPlot4.sln",
     "projects": [
-      "..\\Shared\\ScottPlotTests\\ScottPlotSharedTests.csproj",
-      "..\\Shared\\ScottPlot\\ScottPlotShared.shproj",
       "ScottPlot.Cookbook\\ScottPlot.Cookbook.csproj",
       "ScottPlot.Tests\\ScottPlot.Tests.csproj",
       "ScottPlot\\ScottPlot.csproj"

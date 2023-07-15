@@ -1,25 +1,30 @@
+# This workflow tests all code after any change to the main branch
+
 name: CI
 
 on:
-  workflow_dispatch: # allow running manually
-  pull_request: # run on all PR actions (push, open, reopen)
-  push: # run whenever the main branch is modified (via a PR merge or direct committing)
+  workflow_dispatch:
+  push:
     branches:
       - main
     paths:
       - src/**
 
 env:
-  SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
-  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
-  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5-tests.slnf"
-  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "7.0.x"
 
 jobs:
-  test-linux:
-    name: Test on Linux
-    runs-on: ubuntu-latest
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        solution:
+          [
+            "src/ScottPlot4/ScottPlot4-tests.slnf",
+            "src/ScottPlot5/ScottPlot5-tests.slnf",
+          ]
+    name: Test ${{ matrix.solution }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -27,23 +32,19 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{ matrix.solution }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ matrix.solution }} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
 
-      - name: 🚚 ScottPlot4 Restore
-        run: dotnet restore ${{env.SLN_SP4_TEST}}
-      - name: 🛠️ ScottPlot4 Build
-        run: dotnet build ${{env.SLN_SP4_TEST}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot4 Test
-        run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --no-restore --verbosity minimal
-
-      - name: 🚚 ScottPlot5 Restore
-        run: dotnet restore ${{env.SLN_SP5_TEST}}
-      - name: 🛠️ ScottPlot5 Build
-        run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot5 Test
-        run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
-
-  test-windows:
-    name: Test on Windows
+  full-build:
+    strategy:
+      matrix:
+        solution:
+          ["src/ScottPlot4/ScottPlot4.sln", "src/ScottPlot5/ScottPlot5.sln"]
+    name: Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -54,21 +55,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
-
-      - name: 🚚 ScottPlot4 Restore
-        run: dotnet restore ${{env.SLN_SP4_FULL}}
-      - name: 🛠️ ScottPlot4 Build
-        run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot4 Test
-        run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 ScottPlot4 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
-
-      - name: 🚚 ScottPlot5 Restore
-        run: dotnet restore ${{env.SLN_SP5_FULL}}
-      - name: 🛠️ ScottPlot5 Build
-        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot5 Test
-        run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 ScottPlot4 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
+      - name: 🚚 Restore
+        run: dotnet restore ${{ matrix.solution }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ matrix.solution }} --configuration Release
