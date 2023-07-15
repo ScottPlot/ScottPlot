@@ -6,7 +6,7 @@ namespace ScottPlotTests;
 
 internal static class Extensions
 {
-    internal static void SaveTestImage(this Plot plt, string subName = "", int width = 600, int height = 400)
+    internal static void SaveTestImage(this Plot plt, int width = 600, int height = 400, string subName = "")
     {
         // determine filename based on name of calling function
         StackTrace stackTrace = new();
