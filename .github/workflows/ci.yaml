@@ -14,16 +14,17 @@ env:
   DOTNET_VERSION: "7.0.x"
 
 jobs:
-  test-linux:
-    name: Test all versions on Linux
-    runs-on: ubuntu-latest
+  test:
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         solution:
           [
             "src/ScottPlot4/ScottPlot4-tests.slnf",
             "src/ScottPlot5/ScottPlot5-tests.slnf",
           ]
+    name: Test ${{ matrix.solution }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -38,13 +39,13 @@ jobs:
       - name: 🧪 Test
         run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
 
-  test-windows:
-    name: Test all versions on Windows
-    runs-on: windows-latest
+  full-build:
     strategy:
       matrix:
         solution:
           ["src/ScottPlot4/ScottPlot4.sln", "src/ScottPlot5/ScottPlot5.sln"]
+    name: Full Build
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -57,8 +58,4 @@ jobs:
       - name: 🚚 Restore
         run: dotnet restore ${{ matrix.solution }}
       - name: 🛠️ Build
-        run: dotnet build ${{ matrix.solution }} --configuration Release --no-restore
-      - name: 🧪 Test
-        run: dotnet test ${{ matrix.solution }} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 Package
-        run: dotnet pack ${{ matrix.solution }} --configuration Release
+        run: dotnet build ${{ matrix.solution }} --configuration Release
