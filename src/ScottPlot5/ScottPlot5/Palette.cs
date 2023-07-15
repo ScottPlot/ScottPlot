@@ -21,7 +21,7 @@ public static class Palette
     /// <summary>
     /// Return an array containing every available palette
     /// </summary>
-    public static IPalette[] GetAllPalettes()
+    public static IPalette[] GetPalettes()
     {
         return System.Reflection.Assembly.GetExecutingAssembly()
             .GetTypes()

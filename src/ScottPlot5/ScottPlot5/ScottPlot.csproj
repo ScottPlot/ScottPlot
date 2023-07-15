@@ -49,7 +49,4 @@
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.*" />
     </ItemGroup>
 
-    <!-- Include shared source files -->
-    <Import Project="..\..\Shared\ScottPlot\ScottPlotShared.projitems" Label="ScottPlotShared" />
-
 </Project>

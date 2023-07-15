@@ -1,5 +1,4 @@
-﻿using ScottPlot.Extensions;
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace ScottPlotTests.DrawingTests;
 
@@ -47,9 +46,9 @@ internal class LabelTests
         for (int i = 0; i < 360; i += 45)
         {
             float radius = 100;
-            float x = (float)Math.Cos(i.ToRadians()) * radius;
-            float y = (float)Math.Sin(i.ToRadians()) * radius;
-            Pixel center = bmp.CenterPixel().WithDelta(x, y);
+            float x = (float)Math.Cos(i * Math.PI / 180) * radius;
+            float y = (float)Math.Sin(i * Math.PI / 180) * radius;
+            Pixel center = new(bmp.Width / 2 + x, bmp.Height / 2 + y);
 
             Label lbl = new()
             {

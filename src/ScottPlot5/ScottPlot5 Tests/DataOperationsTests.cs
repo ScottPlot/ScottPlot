@@ -1,6 +1,4 @@
-﻿using ScottPlot;
-
-namespace SharedTests;
+﻿namespace ScottPlotTests;
 
 internal class DataOperationsTests
 {

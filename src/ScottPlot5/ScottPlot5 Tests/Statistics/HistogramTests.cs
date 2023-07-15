@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SharedTests.Statistics;
+﻿namespace ScottPlotTests.Statistics;
 
 internal class HistogramTests
 {
