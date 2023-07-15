@@ -1,4 +1,4 @@
-name: ScottPlot5 CI
+name: PR
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-linux:
-    name: Test on Linux
+    name: ScottPlot5 Test on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -32,7 +32,7 @@ jobs:
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --verbosity minimal
 
   test-windows:
-    name: Test on Windows
+    name: ScottPlot5 Test on Windows
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -53,7 +53,7 @@ jobs:
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --verbosity minimal
 
   full-build:
-    name: Full Build
+    name: ScottPlot5 Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
