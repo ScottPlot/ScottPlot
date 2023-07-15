@@ -1,4 +1,4 @@
-namespace SharedTests.Statistics;
+﻿namespace ScottPlotTests.Statistics;
 
 public class Tests
 {

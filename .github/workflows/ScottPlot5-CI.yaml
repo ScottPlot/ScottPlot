@@ -1,4 +1,4 @@
-name: ScottPlot5 CI
+name: PR
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-linux:
-    name: Test on Linux
+    name: ScottPlot5 Test on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -26,13 +26,34 @@ jobs:
         run: dotnet restore ${{env.SLN_SP5_TEST}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
 
   test-windows:
-    name: Test on Windows
+    name: ScottPlot5 Test on Windows
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{env.SLN_SP5_FULL}}
+      - name: 🛠️ Build
+        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
+      - name: 🧪 Test
+        run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
+
+  full-build:
+    name: ScottPlot5 Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -49,25 +70,6 @@ jobs:
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
       - name: 📦 Package
         run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
-      - name: 🧪 Test
-        run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --verbosity minimal
-
-  full-build:
-    name: Full Build
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: 🐢 Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
-      - name: 🚚 Restore
-        run: dotnet restore ${{env.SLN_SP5_FULL}}
-      - name: 🛠️ Build
-        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
 
   check-format:
     name: Ensure 'dotnet format' was run

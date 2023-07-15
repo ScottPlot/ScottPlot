@@ -1,5 +1,7 @@
-﻿using ScottPlot;
+﻿using NUnit.Framework;
+using ScottPlot;
 using System;
+using System.Linq;
 
 namespace SharedTests;
 
