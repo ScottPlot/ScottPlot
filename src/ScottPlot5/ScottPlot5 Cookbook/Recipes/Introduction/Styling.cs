@@ -48,7 +48,7 @@ internal class Styling : RecipePageBase
             myPlot.TitlePanel.Label.Text = "Plot Title";
             myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
             myPlot.TitlePanel.Label.Font.Size = 32;
-            myPlot.TitlePanel.Label.Font.Name = FontService.SerifFontName;
+            myPlot.TitlePanel.Label.Font.Name = Fonts.Serif;
             myPlot.TitlePanel.Label.Rotation = -5;
             myPlot.TitlePanel.Label.Font.Bold = false;
 
