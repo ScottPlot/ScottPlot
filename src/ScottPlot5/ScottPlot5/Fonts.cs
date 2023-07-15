@@ -35,6 +35,14 @@ public static class Fonts
         return SKFontManager.Default.MatchCharacter(c).FamilyName;
     }
 
+    /// <summary>
+    /// Returns true if the given font is present on the system
+    /// </summary>
+    public static bool Exists(string fontName)
+    {
+        return GetInstalledFonts().Contains(fontName);
+    }
+
     #region PRIVATE
 
     private static HashSet<string> GetInstalledFonts()
