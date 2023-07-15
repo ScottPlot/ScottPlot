@@ -78,9 +78,14 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Plot Reset()
     {
+        using Graphics gfx = CreateGraphics();
+        const int DEFAULT_DPI = 96;
+        float scaleFactor = gfx.DpiX / DEFAULT_DPI;
+
         Plot newPlot = new()
         {
             FigureBackground = this.BackColor.ToColor(),
+            ScaleFactor = scaleFactor
         };
 
         return Reset(newPlot);
