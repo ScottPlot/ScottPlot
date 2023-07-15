@@ -1,0 +1,58 @@
+name: SP4 CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - src/ScottPlot4/**
+
+env:
+  SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
+  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
+  DOTNET_VERSION: "7.0.x"
+
+jobs:
+  test-linux:
+    name: Test on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{env.SLN_SP4_TEST}}
+      - name: 🛠️ Build
+        run: dotnet build ${{env.SLN_SP4_TEST}} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --no-restore --verbosity minimal
+
+  test-windows:
+    name: Test on Windows
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: 🐢 Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: 🚚 Restore
+        run: dotnet restore ${{env.SLN_SP4_FULL}}
+      - name: 🛠️ Build
+        run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
+      - name: ✒️ Check Code Format
+        run: |
+          dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
+          echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"

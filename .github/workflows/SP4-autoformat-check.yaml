@@ -9,6 +9,9 @@ name: PR Autoformat
 on:
   workflow_dispatch:
   pull_request:
+  push:
+    paths:
+      - src/ScottPlot4/**
 
 jobs:
   check-format:
@@ -25,7 +28,3 @@ jobs:
         run: |
           dotnet format --verify-no-changes "src/ScottPlot4/ScottPlot4.sln"
           echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
-      - name: ✒️ Check ScottPlot5 formatting
-        run: |
-          dotnet format --verify-no-changes "src/ScottPlot5/ScottPlot5.sln"
-          echo "::warning::Run 'dotnet format ScottPlot5.sln' to fix code format errors"

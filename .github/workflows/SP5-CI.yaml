@@ -1,17 +1,15 @@
-name: CI
+name: SP5 CI
 
 on:
-  workflow_dispatch: # allow running manually
-  pull_request: # run on all PR actions (push, open, reopen)
-  push: # run whenever the main branch is modified (via a PR merge or direct committing)
+  workflow_dispatch:
+  pull_request:
+  push:
     branches:
       - main
     paths:
-      - src/**
+      - src/ScottPlot5/**
 
 env:
-  SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
-  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
   SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5-tests.slnf"
   SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "7.0.x"
@@ -27,19 +25,11 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
-
-      - name: 🚚 ScottPlot4 Restore
-        run: dotnet restore ${{env.SLN_SP4_TEST}}
-      - name: 🛠️ ScottPlot4 Build
-        run: dotnet build ${{env.SLN_SP4_TEST}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot4 Test
-        run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --no-restore --verbosity minimal
-
-      - name: 🚚 ScottPlot5 Restore
+      - name: 🚚 Restore
         run: dotnet restore ${{env.SLN_SP5_TEST}}
-      - name: 🛠️ ScottPlot5 Build
+      - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot5 Test
+      - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --no-restore --verbosity minimal
 
   test-windows:
@@ -54,21 +44,11 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{env.DOTNET_VERSION}}
-
-      - name: 🚚 ScottPlot4 Restore
-        run: dotnet restore ${{env.SLN_SP4_FULL}}
-      - name: 🛠️ ScottPlot4 Build
-        run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot4 Test
-        run: dotnet test ${{env.SLN_SP4_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 ScottPlot4 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
-
-      - name: 🚚 ScottPlot5 Restore
+      - name: 🚚 Restore
         run: dotnet restore ${{env.SLN_SP5_FULL}}
-      - name: 🛠️ ScottPlot5 Build
+      - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release --no-restore
-      - name: 🧪 ScottPlot5 Test
+      - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 ScottPlot4 Package
+      - name: 📦 Package
         run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
