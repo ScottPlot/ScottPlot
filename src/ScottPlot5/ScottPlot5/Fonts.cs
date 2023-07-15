@@ -8,22 +8,22 @@ public static class Fonts
     /// <summary>
     /// This font is used for almost all text rendering.
     /// </summary>
-    public static string Default { get; set; } = GetSans().FamilyName;
+    public static string Default { get; set; } = InstalledSansFont();
 
     /// <summary>
     /// Name of a sans-serif font present on the system
     /// </summary>
-    public static string Sans { get; set; } = GetSans().FamilyName;
+    public static string Sans { get; set; } = InstalledSansFont();
 
     /// <summary>
     /// Name of a serif font present on the system
     /// </summary>
-    public static string Serif { get; set; } = GetSerif().FamilyName;
+    public static string Serif { get; set; } = InstalledSerifFont();
 
     /// <summary>
     /// Name of a monospace font present on the system
     /// </summary>
-    public static string Monospace { get; set; } = GetMonospace().FamilyName;
+    public static string Monospace { get; set; } = InstalledMonospaceFont();
 
     /// <summary>
     /// The default font on the system
@@ -60,23 +60,23 @@ public static class Fonts
         return new(SKFontManager.Default.FontFamilies, StringComparer.InvariantCultureIgnoreCase);
     }
 
-    private static SKTypeface GetSans()
+    private static string InstalledSansFont()
     {
-        var installedFonts = GetInstalledFonts();
+        // Prefer the the system default because it is probably the best for international users
+        // https://github.com/ScottPlot/ScottPlot/issues/2746
+        string font = SKTypeface.Default.FamilyName;
 
-        string[] preferredFonts = { "Open Sans", "Segoe UI", "Lato", "DejaVu Sans", "Helvetica" };
-        foreach (string preferredFont in preferredFonts)
+        // Favor "Open Sans" over "Segoe UI" because better anti-aliasing
+        var installedFonts = GetInstalledFonts();
+        if (font == "Segoe UI" && installedFonts.Contains("Open Sans"))
         {
-            if (installedFonts.Contains(preferredFont))
-            {
-                return SKTypeface.FromFamilyName(preferredFont);
-            }
+            font = "Open Sans";
         }
 
-        return SKTypeface.Default;
+        return font;
     }
 
-    private static SKTypeface GetMonospace()
+    private static string InstalledMonospaceFont()
     {
         var installedFonts = GetInstalledFonts();
 
@@ -85,14 +85,14 @@ public static class Fonts
         {
             if (installedFonts.Contains(preferredFont))
             {
-                return SKTypeface.FromFamilyName(preferredFont);
+                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
             }
         }
 
-        return SKTypeface.Default;
+        return SKTypeface.Default.FamilyName;
     }
 
-    private static SKTypeface GetSerif()
+    private static string InstalledSerifFont()
     {
         var installedFonts = GetInstalledFonts();
 
@@ -101,11 +101,11 @@ public static class Fonts
         {
             if (installedFonts.Contains(preferredFont))
             {
-                return SKTypeface.FromFamilyName(preferredFont);
+                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
             }
         }
 
-        return SKTypeface.Default;
+        return SKTypeface.Default.FamilyName;
     }
 
     #endregion
