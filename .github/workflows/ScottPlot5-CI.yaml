@@ -26,10 +26,10 @@ jobs:
         run: dotnet restore ${{env.SLN_SP5_TEST}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
 
   test-windows:
     name: ScottPlot5 Test on Windows
@@ -47,10 +47,10 @@ jobs:
         run: dotnet restore ${{env.SLN_SP5_FULL}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   full-build:
     name: ScottPlot5 Full Build
@@ -68,6 +68,8 @@ jobs:
         run: dotnet restore ${{env.SLN_SP5_FULL}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
+      - name: 📦 Package
+        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   check-format:
     name: Ensure 'dotnet format' was run

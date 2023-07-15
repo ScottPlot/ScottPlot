@@ -3,6 +3,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
         <NoWarn>NU1701;Uno0001</NoWarn>
     </PropertyGroup>
 
