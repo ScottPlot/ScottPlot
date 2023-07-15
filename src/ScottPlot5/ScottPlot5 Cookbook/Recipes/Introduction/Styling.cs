@@ -188,4 +188,20 @@ internal class Styling : RecipePageBase
             }
         }
     }
+
+    internal class Scaling : RecipeTestBase
+    {
+        public override string Name => "Scaling";
+        public override string Description => "All components of an image can be scaled up or down in size " +
+            "by adjusting the ScaleFactor property. This is very useful for creating images that look nice " +
+            "on high DPI displays with display scaling enabled.";
+
+        [Test]
+        public override void Recipe()
+        {
+            myPlot.ScaleFactor = 2;
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+        }
+    }
 }
