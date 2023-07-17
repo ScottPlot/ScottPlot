@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +19,7 @@ namespace ScottPlot.WPF
         private const string PART_SKElement = "PART_SKElement";
 
         private SkiaSharp.Views.WPF.SKGLElement? SKElement;
-        public Plot Plot { get; } = new();
+        public Plot Plot { get; }
 
         public Interaction Interaction { get; private set; }
 
@@ -32,6 +34,8 @@ namespace ScottPlot.WPF
 
         public WpfPlot()
         {
+            Plot = Reset();
+
             Interaction = new(this)
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
@@ -92,6 +96,18 @@ namespace ScottPlot.WPF
             ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
 
             return new ContextMenuItem[] { saveImage, copyImage };
+        }
+
+        public Plot Reset()
+        {
+            using Graphics gfx = Graphics.FromHwnd(IntPtr.Zero);
+            const int DEFAULT_DPI = 96;
+            float scaleFactor = gfx.DpiX / DEFAULT_DPI;
+
+            return new Plot()
+            {
+                ScaleFactor = scaleFactor
+            };
         }
 
         public void Replace(Interaction interaction)
