@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-linux:
-    name: ScottPlot5 Test on Linux
+    name: Test on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -32,7 +32,7 @@ jobs:
         run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
 
   test-windows:
-    name: ScottPlot5 Test on Windows
+    name: Test on Windows
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -53,7 +53,7 @@ jobs:
         run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   full-build:
-    name: ScottPlot5 Full Build
+    name: Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
