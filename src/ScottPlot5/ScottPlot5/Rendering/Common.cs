@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Axis;
+using System.Data;
 
 namespace ScottPlot.Rendering;
 
@@ -7,123 +8,158 @@ namespace ScottPlot.Rendering;
 /// </summary>
 public static class Common
 {
-    public static void ReplaceNullAxesWithDefaults(Plot plot)
+    public static void ReplaceNullAxesWithDefaults(RenderPack rp)
     {
-        foreach (var plottable in plot.Plottables)
-        {
-            if (plottable.Axes.XAxis is null)
-                plottable.Axes.XAxis = plot.XAxis;
-            if (plottable.Axes.YAxis is null)
-                plottable.Axes.YAxis = plot.YAxis;
-        }
+        rp.Plot.ReplaceNullAxesWithDefaults();
     }
 
-    public static void AutoAxisAnyUnsetAxes(Plot plot)
+    public static void AutoAxisAnyUnsetAxes(RenderPack rp)
     {
-        foreach (IPlottable plottable in plot.Plottables)
+        foreach (IPlottable plottable in rp.Plot.Plottables)
         {
             if (!plottable.Axes.XAxis.Range.HasBeenSet || !plottable.Axes.YAxis.Range.HasBeenSet)
             {
-                plot.AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
+                rp.Plot.AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
             }
         }
 
-        if (!plot.XAxis.Range.HasBeenSet) // may occur when there are no plottables with data
+        if (!rp.Plot.XAxis.Range.HasBeenSet) // may occur when there are no plottables with data
         {
-            plot.SetAxisLimits(AxisLimits.Default);
+            rp.Plot.SetAxisLimits(AxisLimits.Default);
         }
     }
 
-    public static void EnsureAxesHaveArea(Plot plot)
+    public static void RecalculateDataRect(RenderPack rp)
     {
-        foreach (CoordinateRange range in plot.GetAllAxes().Where(x => x.Range.Span == 0).Select(x => x.Range))
+        rp.CalculateLayout();
+    }
+
+    public static void RegnerateTicks(RenderPack rp)
+    {
+        rp.Plot.XAxis.TickGenerator.Regenerate(rp.Plot.XAxis.Range, rp.Plot.XAxis.Edge, rp.DataRect.Width);
+        rp.Plot.YAxis.TickGenerator.Regenerate(rp.Plot.YAxis.Range, rp.Plot.YAxis.Edge, rp.DataRect.Height);
+    }
+
+    public static void EnsureAxesHaveArea(RenderPack rp)
+    {
+        foreach (CoordinateRange range in rp.Plot.GetAllAxes().Where(x => x.Range.Span == 0).Select(x => x.Range))
         {
             range.Min -= 1;
             range.Max += 1;
         }
     }
 
-    public static void RenderBackground(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderBackground(RenderPack rp)
     {
-        surface.Canvas.Clear(plot.FigureBackground.ToSKColor());
+        rp.Canvas.Clear(rp.Plot.FigureBackground.ToSKColor());
 
-        using SKPaint paint = new() { Color = plot.DataBackground.ToSKColor() };
-        surface.Canvas.DrawRect(dataRect.ToSKRect(), paint);
+        using SKPaint paint = new() { Color = rp.Plot.DataBackground.ToSKColor() };
+        rp.Canvas.DrawRect(rp.DataRect.ToSKRect(), paint);
     }
 
-    public static void RenderGridsBelowPlottables(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderGridsBelowPlottables(RenderPack rp)
     {
-        foreach (IGrid grid in plot.Grids.Where(x => x.IsBeneathPlottables))
+        foreach (IGrid grid in rp.Plot.Grids.Where(x => x.IsBeneathPlottables))
         {
-            grid.Render(surface, dataRect);
+            grid.Render(rp);
         }
     }
 
-    public static void RenderGridsAbovePlottables(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderGridsAbovePlottables(RenderPack rp)
     {
-        foreach (IGrid grid in plot.Grids.Where(x => !x.IsBeneathPlottables))
+        foreach (IGrid grid in rp.Plot.Grids.Where(x => !x.IsBeneathPlottables))
         {
-            grid.Render(surface, dataRect);
+            grid.Render(rp);
         }
     }
 
-    public static void RenderPlottables(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderPlottables(RenderPack rp)
     {
-        foreach (var plottable in plot.Plottables.Where(x => x.IsVisible))
+        foreach (var plottable in rp.Plot.Plottables.Where(x => x.IsVisible))
         {
-            plottable.Axes.DataRect = dataRect;
-            surface.Canvas.Save();
+            plottable.Axes.DataRect = rp.DataRect;
+            rp.Canvas.Save();
 
             if (plottable is IPlottableGL plottableGL)
             {
-                plottableGL.Render(surface);
+                plottableGL.Render(rp);
             }
             else
             {
-                surface.Canvas.ClipRect(dataRect.ToSKRect());
-                plottable.Render(surface);
+                rp.Canvas.ClipRect(rp.DataRect.ToSKRect());
+                plottable.Render(rp);
             }
 
-            surface.Canvas.Restore();
+            rp.Canvas.Restore();
         }
     }
 
-    public static void RenderLegends(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderLegends(RenderPack rp)
     {
-        LegendItem[] items = plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
+        LegendItem[] items = rp.Plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
 
-        foreach (ILegend legend in plot.Legends)
+        foreach (ILegend legend in rp.Plot.Legends)
         {
-            legend.Render(surface.Canvas, dataRect, items);
+            legend.Render(rp);
         }
     }
 
-    public static void RenderPanels(SKSurface surface, PixelRect dataRect, IPanel[] panels, Layouts.Layout layout)
+    public static void RenderPanels(RenderPack rp)
     {
-        foreach (IPanel panel in panels)
+        foreach (IPanel panel in rp.Plot.GetAllPanels())
         {
-            float size = layout.PanelSizes[panel];
-            float offset = layout.PanelOffsets[panel];
-            panel.Render(surface, dataRect, size, offset);
+            float size = rp.Layout.PanelSizes[panel];
+            float offset = rp.Layout.PanelOffsets[panel];
+            panel.Render(rp, size, offset);
         }
     }
 
-    public static void RenderZoomRectangle(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderZoomRectangle(RenderPack rp)
     {
-        if (plot.ZoomRectangle.IsVisible)
+        if (rp.Plot.ZoomRectangle.IsVisible)
         {
-            plot.ZoomRectangle.Render(surface.Canvas, dataRect);
+            rp.Plot.ZoomRectangle.Render(rp);
         }
     }
 
-    public static void RenderBenchmark(SKSurface surface, PixelRect dataRect, Plot plot)
+    public static void RenderBenchmark(RenderPack rp)
     {
-        plot.Benchmark.Render(surface.Canvas, dataRect);
+        string message = $"Rendered in {rp.Elapsed.TotalMilliseconds:0.000} ms ({1e3 / rp.Elapsed.TotalMilliseconds:N0} FPS)";
+
+        using SKPaint paint = new()
+        {
+            IsAntialias = true,
+            Typeface = SKTypeface.FromFamilyName("consolas")
+        };
+
+        PixelSize textSize = Drawing.MeasureString(message, paint);
+        float margin = 5;
+        SKRect textRect = new(
+            left: rp.DataRect.Left + margin,
+            top: rp.DataRect.Bottom - paint.TextSize * .9f - 5 - margin,
+            right: rp.DataRect.Left + 5 * 2 + textSize.Width + margin,
+            bottom: rp.DataRect.Bottom - margin);
+
+        paint.Color = SKColors.Yellow;
+        paint.IsStroke = false;
+        rp.Canvas.DrawRect(textRect, paint);
+
+        paint.Color = SKColors.Black;
+        paint.IsStroke = true;
+        rp.Canvas.DrawRect(textRect, paint);
+
+        paint.Color = SKColors.Black;
+        paint.IsStroke = false;
+        rp.Canvas.DrawText(
+            text: message,
+            x: rp.DataRect.Left + 4 + margin,
+            y: rp.DataRect.Bottom - 4 - margin,
+            paint: paint);
     }
 
-    public static void SyncGLPlottables(Plot plot)
+    public static void SyncGLPlottables(RenderPack rp)
     {
-        var glPlottables = plot.Plottables.OfType<IPlottableGL>();
+        var glPlottables = rp.Plot.Plottables.OfType<IPlottableGL>();
         if (glPlottables.Any())
             glPlottables.First().GLFinish();
     }

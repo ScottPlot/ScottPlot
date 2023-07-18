@@ -5,5 +5,5 @@
 /// </summary>
 public interface IRenderer
 {
-    RenderDetails Render(SkiaSharp.SKSurface surface, Plot plot);
+    RenderDetails Render(RenderPack rp);
 }

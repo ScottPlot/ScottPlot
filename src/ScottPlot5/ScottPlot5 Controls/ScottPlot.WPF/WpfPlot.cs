@@ -47,7 +47,7 @@ namespace ScottPlot.WPF
             if (SKElement == null)
                 return;
 
-            SKElement.PaintSurface += (sender, e) => Plot.Render(e.Surface);
+            SKElement.PaintSurface += (sender, e) => Plot.Render(e.Surface.Canvas, (int)SKElement.Width, (int)SKElement.Height);
 
             SKElement.MouseDown += (sender, e) =>
             {

@@ -74,15 +74,15 @@ public class Signal : IPlottable
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;
     }
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         if (PointsPerPixel() < 1)
         {
-            RenderLowDensity(surface);
+            RenderLowDensity(rp);
         }
         else
         {
-            RenderHighDensity(surface);
+            RenderHighDensity(rp);
         }
     }
 
@@ -90,7 +90,7 @@ public class Signal : IPlottable
     /// Renders each point connected by a single line, like a scatter plot.
     /// Call this when zoomed in enough that no pixel could contain two points.
     /// </summary>
-    private void RenderLowDensity(SKSurface surface)
+    private void RenderLowDensity(RenderPack rp)
     {
         CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect);
         int i1 = Data.GetIndex(visibleXRange.Min, true);
@@ -115,7 +115,7 @@ public class Signal : IPlottable
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        surface.Canvas.DrawPath(path, paint);
+        rp.Canvas.DrawPath(path, paint);
 
         double pointsPerPx = PointsPerPixel();
 
@@ -124,7 +124,7 @@ public class Signal : IPlottable
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), 4);
             Marker.Size = radius;
-            Marker.Render(surface.Canvas, points);
+            Marker.Render(rp.Canvas, points);
         }
     }
 
@@ -132,7 +132,7 @@ public class Signal : IPlottable
     /// Renders the plot by filling-in pixel columns according the extremes of Y data ranges.
     /// Call this when zoomed out enough that one X pixel column may contain two or more points.
     /// </summary>
-    private void RenderHighDensity(SKSurface surface)
+    private void RenderHighDensity(RenderPack rp)
     {
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
@@ -141,7 +141,7 @@ public class Signal : IPlottable
         for (int i = 0; i < verticalBars.Length; i++)
         {
             float x = Axes.DataRect.Left + i;
-            surface.Canvas.DrawLine(x, verticalBars[i].Bottom, x, verticalBars[i].Top, paint);
+            rp.Canvas.DrawLine(x, verticalBars[i].Bottom, x, verticalBars[i].Top, paint);
         }
     }
 }

@@ -2,5 +2,5 @@
 
 public interface ILegend
 {
-    void Render(SKCanvas canvas, PixelRect dataRect, LegendItem[] items);
+    void Render(RenderPack rp);
 }

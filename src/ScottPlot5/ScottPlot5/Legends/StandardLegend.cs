@@ -26,8 +26,10 @@ public class StandardLegend : ILegend
     /// </summary>
     public IEnumerable<LegendItem>? ManualLegendItems { get; set; } = null;
 
-    public void Render(SKCanvas canvas, PixelRect dataRect, LegendItem[] items)
+    public void Render(RenderPack rp)
     {
+        LegendItem[] items = rp.Plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
+
         if (ManualLegendItems is not null)
             items = ManualLegendItems.ToArray();
 
@@ -44,21 +46,21 @@ public class StandardLegend : ILegend
         float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
         float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
 
-        PixelSize legendSize = new PixelSize(maxWidth, totalheight).Expand(Padding);
-        PixelRect legendRect = legendSize.AlignedInside(dataRect, Alignment, Margin);
+        PixelSize legendSize = new(maxWidth + Padding.Left + Padding.Right, totalheight + Padding.Top + Padding.Bottom);
+        PixelRect legendRect = legendSize.AlignedInside(rp.DataRect, Alignment, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
 
         // render the legend panel
-        Drawing.Fillectangle(canvas, legendShadowRect, ShadowFill.Color);
-        Drawing.Fillectangle(canvas, legendRect, BackgroundFill.Color);
-        Drawing.DrawRectangle(canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
+        Drawing.Fillectangle(rp.Canvas, legendShadowRect, ShadowFill.Color);
+        Drawing.Fillectangle(rp.Canvas, legendRect, BackgroundFill.Color);
+        Drawing.DrawRectangle(rp.Canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
 
         // render all items inside the legend
         float yOffset = legendRect.Top + Padding.Top;
         for (int i = 0; i < sizedItems.Length; i++)
         {
             Common.RenderItem(
-                canvas: canvas,
+                canvas: rp.Canvas,
                 paint: paint,
                 sizedItem: sizedItems[i],
                 x: legendRect.Left + Padding.Left,

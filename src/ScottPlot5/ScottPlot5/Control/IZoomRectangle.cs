@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 public interface IZoomRectangle
 {
@@ -13,5 +11,5 @@ public interface IZoomRectangle
     void Update(Pixel mouseDown, Pixel mouseUp);
     void Clear();
 
-    void Render(SKCanvas canvas, PixelRect dataRect);
+    void Render(RenderPack rp);
 }

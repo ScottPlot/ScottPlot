@@ -1,37 +1,23 @@
-﻿using ScottPlot.Layouts;
-
-namespace ScottPlot.Rendering;
+﻿namespace ScottPlot.Rendering;
 
 public class StandardRenderer : IRenderer
 {
-    public RenderDetails Render(SKSurface surface, Plot plot)
+    public RenderDetails Render(RenderPack rp)
     {
-        plot.Benchmark.Restart();
-        Common.ReplaceNullAxesWithDefaults(plot);
-        Common.AutoAxisAnyUnsetAxes(plot);
-        Common.EnsureAxesHaveArea(plot);
-
-        PixelRect figureRect = surface.GetPixelRect();
-
-        IPanel[] panels = plot.GetAllPanels(); // includes axis and non-axis panels
-        Layout layout = plot.Layout.GetLayout(figureRect, panels);
-        PixelRect dataRect = layout.DataRect;
-
-        plot.XAxis.TickGenerator.Regenerate(plot.XAxis.Range, plot.XAxis.Edge, dataRect.Width);
-        plot.YAxis.TickGenerator.Regenerate(plot.YAxis.Range, plot.YAxis.Edge, dataRect.Height);
-
-        Common.RenderBackground(surface, dataRect, plot);
-        Common.RenderGridsBelowPlottables(surface, dataRect, plot);
-        Common.RenderPlottables(surface, dataRect, plot);
-        Common.RenderGridsAbovePlottables(surface, dataRect, plot);
-        Common.RenderLegends(surface, dataRect, plot);
-        Common.RenderPanels(surface, dataRect, panels, layout);
-        Common.RenderZoomRectangle(surface, dataRect, plot);
-        Common.SyncGLPlottables(plot);
-        plot.Benchmark.Stop();
-
-        Common.RenderBenchmark(surface, dataRect, plot);
-
-        return new RenderDetails(figureRect, dataRect, plot.Benchmark.Elapsed);
+        Common.ReplaceNullAxesWithDefaults(rp);
+        Common.AutoAxisAnyUnsetAxes(rp);
+        Common.EnsureAxesHaveArea(rp);
+        Common.RecalculateDataRect(rp);
+        Common.RegnerateTicks(rp);
+        Common.RenderBackground(rp);
+        Common.RenderGridsBelowPlottables(rp);
+        Common.RenderPlottables(rp);
+        Common.RenderGridsAbovePlottables(rp);
+        Common.RenderLegends(rp);
+        Common.RenderPanels(rp);
+        Common.RenderZoomRectangle(rp);
+        Common.SyncGLPlottables(rp);
+        Common.RenderBenchmark(rp);
+        return new RenderDetails(rp);
     }
 }

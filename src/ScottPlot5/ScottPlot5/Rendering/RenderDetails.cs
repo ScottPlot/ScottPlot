@@ -10,11 +10,11 @@ public struct RenderDetails
     public readonly TimeSpan Elapsed;
     public readonly DateTime Timestamp;
 
-    public RenderDetails(PixelRect figureArea, PixelRect dataArea, TimeSpan elapsed)
+    public RenderDetails(RenderPack rp)
     {
-        FigureRect = figureArea;
-        DataRect = dataArea;
-        Elapsed = elapsed;
+        FigureRect = new PixelRect(0, 0, rp.FigureSize.Width, rp.FigureSize.Height);
+        DataRect = rp.DataRect;
+        Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
     }
 }

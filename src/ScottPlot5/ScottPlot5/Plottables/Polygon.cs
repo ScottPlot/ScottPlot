@@ -91,17 +91,18 @@ namespace ScottPlot.Plottables
             return limits;
         }
 
-        public void Render(SKSurface surface)
+        public void Render(RenderPack rp)
         {
-            if (IsEmpty) return;
+            if (IsEmpty)
+                return;
 
-            List<SKPoint> skPoints = new List<SKPoint>();
+            List<SKPoint> skPoints = new();
             foreach (var coordinate in Coordinates)
             {
                 skPoints.Add(Axes.GetPixel(coordinate).ToSKPoint());
             }
 
-            SKPath path = new SKPath();
+            using SKPath path = new();
             path.MoveTo(skPoints[0]);
             foreach (var p in skPoints.Skip(1))
             {
@@ -116,19 +117,19 @@ namespace ScottPlot.Plottables
             {
                 FillStyle.ApplyToPaint(paint);
                 paint.Style = SKPaintStyle.Fill;
-                surface.Canvas.DrawPath(path, paint);
+                rp.Canvas.DrawPath(path, paint);
             }
 
             if (LineStyle != null && LineStyle.IsVisible)
             {
                 paint.Style = SKPaintStyle.Stroke;
                 LineStyle.ApplyToPaint(paint);
-                surface.Canvas.DrawPath(path, paint);
+                rp.Canvas.DrawPath(path, paint);
             }
 
             if (MarkerStyle != null && MarkerStyle.IsVisible)
             {
-                MarkerStyle.Render(surface.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));
+                MarkerStyle.Render(rp.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));
             }
         }
     }

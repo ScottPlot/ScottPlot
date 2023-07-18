@@ -103,7 +103,7 @@ public class DateTimeAutomatic : IDateTickGenerator
             if (largestTickLabelSize is not null)
             {
                 tickLabelBounds = tickLabelBounds.Max(largestTickLabelSize.Value);
-                tickLabelBounds.Expand(new PixelPadding(10, 10, 0, 0));
+                tickLabelBounds = new PixelSize(tickLabelBounds.Width + 10, tickLabelBounds.Height + 10);
                 continue;
             }
 

@@ -3,7 +3,6 @@ using ScottPlot.Rendering;
 using ScottPlot.Layouts;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
-using ScottPlot.Benchmarking;
 using ScottPlot.Control;
 using ScottPlot.Stylers;
 
@@ -39,7 +38,6 @@ public class Plot : IDisposable
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
-    public IBenchmark Benchmark { get; set; } = new StandardBenchmark();
     public IZoomRectangle ZoomRectangle { get; set; }
     internal RenderDetails LastRenderInfo { get; set; } = new();
     public float ScaleFactor = 1.0f;
@@ -47,6 +45,7 @@ public class Plot : IDisposable
     public AxisStyler Axes { get; }
 
     public PlotStyler Style { get; }
+    public bool ShowBenchmark { get; set; } = false;
 
     /// <summary>
     /// This property provides access to the primary horizontal axis below the plot.
@@ -202,12 +201,27 @@ public class Plot : IDisposable
         YAxes.ForEach(yAxis => yAxis.Range.Reset());
 
         // assign default axes to plottables without axes
-        Rendering.Common.ReplaceNullAxesWithDefaults(this);
+        ReplaceNullAxesWithDefaults();
 
         // expand all axes by the limits of each plot
         foreach (IPlottable plottable in Plottables)
         {
             AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, tight);
+        }
+    }
+
+    /// <summary>
+    /// Adds the default X and Y axes to all plottables with unset axes
+    /// </summary>
+    internal void ReplaceNullAxesWithDefaults()
+    {
+        foreach (var plottable in Plottables)
+        {
+            if (plottable.Axes.XAxis is null)
+                plottable.Axes.XAxis = XAxis;
+
+            if (plottable.Axes.YAxis is null)
+                plottable.Axes.YAxis = YAxis;
         }
     }
 
@@ -221,7 +235,7 @@ public class Plot : IDisposable
         yAxis.Range.Reset();
 
         // assign default axes to plottables without axes
-        Rendering.Common.ReplaceNullAxesWithDefaults(this);
+        ReplaceNullAxesWithDefaults();
 
         // expand all axes by the limits of each plot
         foreach (IPlottable plottable in Plottables)
@@ -341,13 +355,24 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(int width = 400, int height = 300)
     {
+        if (width < 1)
+            throw new ArgumentException($"{nameof(width)} must be greater than 0");
+
+        if (height < 1)
+            throw new ArgumentException($"{nameof(height)} must be greater than 0");
+
         GetImage(width, height);
     }
 
-    public void Render(SKSurface surface)
+    /// <summary>
+    /// Render onto an existing canvas
+    /// </summary>
+    public void Render(SKCanvas canvas, int width, int height)
     {
-        surface.Canvas.Scale(ScaleFactor);
-        LastRenderInfo = Renderer.Render(surface, this);
+        canvas.Scale(ScaleFactor);
+        PixelSize figureSize = new(width, height);
+        RenderPack rp = new(this, figureSize, canvas);
+        LastRenderInfo = Renderer.Render(rp);
     }
 
     public Image GetImage(int width, int height)
@@ -363,7 +388,7 @@ public class Plot : IDisposable
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
 
-        Render(surface);
+        Render(surface.Canvas, width, height);
         return new(surface.Snapshot());
     }
 

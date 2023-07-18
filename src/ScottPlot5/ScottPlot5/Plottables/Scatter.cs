@@ -30,7 +30,7 @@ public class Scatter : IPlottable
         Data = data;
     }
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
 
@@ -48,9 +48,9 @@ public class Scatter : IPlottable
             {
                 path.LineTo(pixel.X, pixel.Y);
             }
-            surface.Canvas.DrawPath(path, paint);
+            rp.Canvas.DrawPath(path, paint);
         }
 
-        MarkerStyle.Render(surface.Canvas, pixels);
+        MarkerStyle.Render(rp.Canvas, pixels);
     }
 }

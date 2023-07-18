@@ -123,7 +123,7 @@ public static class StandardActions
 
     public static void ToggleBenchmark(IPlotControl control)
     {
-        control.Plot.Benchmark.IsVisible = !control.Plot.Benchmark.IsVisible;
+        control.Plot.ShowBenchmark = !control.Plot.ShowBenchmark;
         control.Refresh();
     }
 

@@ -4,7 +4,7 @@ namespace ScottPlot.Layouts;
 
 public class StandardLayoutMaker : ILayoutMaker
 {
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
     {
         // Regenerate ticks using the figure area (not the data area)
         // to create a first-pass estimate of the space needed for axis panels.
@@ -13,13 +13,13 @@ public class StandardLayoutMaker : ILayoutMaker
 
         panels.OfType<IXAxis>()
             .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureRect.Width));
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureSize.Width));
 
         panels.OfType<IYAxis>()
             .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureRect.Height));
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureSize.Height));
 
-        Layout layout = MakeFinalLayout(figureRect, panels);
+        Layout layout = MakeFinalLayout(figureSize, panels);
 
         return layout;
     }
@@ -37,7 +37,7 @@ public class StandardLayoutMaker : ILayoutMaker
         }
     }
 
-    private Layout MakeFinalLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
+    private Layout MakeFinalLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
     {
         // Plot edges with visible axes require padding between the figure rectangle and data rectangle.
         // Panels have size and increase the amount of padding needed.
@@ -65,8 +65,12 @@ public class StandardLayoutMaker : ILayoutMaker
             bottom: bottomPanels.Select(x => panelSizes[x]).Sum(),
             top: topPanels.Select(x => panelSizes[x]).Sum());
 
-        PixelRect dataArea = figureRect.Contract(paddingNeededForPanels);
+        PixelRect dataRect = new(
+            left: paddingNeededForPanels.Left,
+            right: figureSize.Width - paddingNeededForPanels.Right,
+            bottom: figureSize.Height - paddingNeededForPanels.Bottom,
+            top: paddingNeededForPanels.Top);
 
-        return new Layout(figureRect, dataArea, panelSizes, panelOffsets);
+        return new Layout(figureSize, dataRect, panelSizes, panelOffsets);
     }
 }

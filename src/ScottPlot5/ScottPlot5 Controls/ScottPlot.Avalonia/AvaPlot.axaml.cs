@@ -104,7 +104,7 @@ public partial class AvaPlot : UserControl, IPlotControl
         if (surface is null)
             return;
 
-        Plot.Render(surface);
+        Plot.Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
 
         SKImage img = surface.Snapshot();
         SKPixmap pixels = img.ToRasterImage().PeekPixels();
