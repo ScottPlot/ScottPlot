@@ -18,6 +18,7 @@
 * WinForms: Automatically adjust plot scaling to match display scaling (#2747) _Thanks @heartacker_
 * Plot: Added a `RenderManager` which has a `List<RenderAction>` the user can modify to customize the render sequence (#2767)
 * Plot: Refactored rendering system for all plottables, axes, etc. so canvases (not surfaces) are passed (#2767)
+* WPF: Improved support for display scaling (#2760, #2766) _Thanks @DmitryKotenev_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_

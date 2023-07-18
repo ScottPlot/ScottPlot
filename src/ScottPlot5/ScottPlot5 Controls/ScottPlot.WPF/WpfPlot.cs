@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
+using System.Windows.Media;
 
 namespace ScottPlot.WPF
 {
@@ -17,7 +17,7 @@ namespace ScottPlot.WPF
         private const string PART_SKElement = "PART_SKElement";
 
         private SkiaSharp.Views.WPF.SKGLElement? SKElement;
-        public Plot Plot { get; } = new();
+        public Plot Plot { get; }
 
         public Interaction Interaction { get; private set; }
 
@@ -32,6 +32,8 @@ namespace ScottPlot.WPF
 
         public WpfPlot()
         {
+            Plot = Reset();
+
             Interaction = new(this)
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
@@ -92,6 +94,14 @@ namespace ScottPlot.WPF
             ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
 
             return new ContextMenuItem[] { saveImage, copyImage };
+        }
+
+        public Plot Reset()
+        {
+            return new Plot()
+            {
+                ScaleFactor = (float)VisualTreeHelper.GetDpi(this).DpiScaleX
+            };
         }
 
         public void Replace(Interaction interaction)
