@@ -98,7 +98,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
+        Plot.Render(e.Surface);
     }
 
     private void OnPointerPressed(object sender, PointerRoutedEventArgs e)

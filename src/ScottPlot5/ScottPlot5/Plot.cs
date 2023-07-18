@@ -1,10 +1,10 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Rendering;
 using ScottPlot.Layouts;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Control;
 using ScottPlot.Stylers;
+using ScottPlot.Rendering;
 
 namespace ScottPlot;
 
@@ -33,13 +33,12 @@ public class Plot : IDisposable
     public List<IPlottable> Plottables { get; } = new();
     public AddPlottable Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
-    public IRenderer Renderer { get; set; } = new StandardRenderer();
+    public RenderManager RenderManager { get; }
     public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
     public IZoomRectangle ZoomRectangle { get; set; }
-    internal RenderDetails LastRenderInfo { get; set; } = new();
     public float ScaleFactor = 1.0f;
 
     public AxisStyler Axes { get; }
@@ -107,12 +106,11 @@ public class Plot : IDisposable
         ILegend legend = new StandardLegend();
         Legends.Add(legend);
 
-        // setup the helper class that creates and adds plottables to this plot
+        // setup classes which must be aware of the plot
         Add = new(this);
-
-        // add styling helper classes
         Axes = new(this);
         Style = new(this);
+        RenderManager = new(this);
     }
 
     public void Dispose()
@@ -270,8 +268,8 @@ public class Plot : IDisposable
         YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
         // pan in the direction opposite of the mouse movement
-        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(pixelDeltaX, LastRenderInfo.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(pixelDeltaY, LastRenderInfo.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(pixelDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(pixelDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
     }
 
     /// <summary>
@@ -287,8 +285,8 @@ public class Plot : IDisposable
         YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
         // apply zoom for each axis
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, LastRenderInfo.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, LastRenderInfo.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
     }
 
     /// <summary>
@@ -305,8 +303,8 @@ public class Plot : IDisposable
         YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
         // apply zoom for each axis
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, LastRenderInfo.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, LastRenderInfo.DataRect)));
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, RenderManager.LastRenderInfo.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, RenderManager.LastRenderInfo.DataRect)));
     }
 
     /// <summary>
@@ -328,7 +326,7 @@ public class Plot : IDisposable
     /// </summary>
     public Pixel GetPixel(Coordinates coord)
     {
-        PixelRect dataRect = LastRenderInfo.DataRect;
+        PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
         float x = XAxis.GetPixel(coord.X, dataRect);
         float y = YAxis.GetPixel(coord.Y, dataRect);
         return new Pixel(x, y);
@@ -340,7 +338,7 @@ public class Plot : IDisposable
     public Coordinates GetCoordinate(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         // TODO: multi-axis support
-        PixelRect dataRect = LastRenderInfo.DataRect;
+        PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
         double x = XAxis.GetCoordinate(pixel.X, dataRect);
         double y = YAxis.GetCoordinate(pixel.Y, dataRect);
         return new Coordinates(x, y);
@@ -369,10 +367,15 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
-        canvas.Scale(ScaleFactor);
-        PixelSize figureSize = new(width, height);
-        RenderPack rp = new(this, figureSize, canvas);
-        LastRenderInfo = Renderer.Render(rp);
+        RenderManager.Render(canvas, width, height);
+    }
+
+    /// <summary>
+    /// Render onto an existing surface using the local clip to determine dimensions
+    /// </summary>
+    public void Render(SKSurface surface)
+    {
+        RenderManager.Render(surface);
     }
 
     public Image GetImage(int width, int height)
@@ -388,7 +391,7 @@ public class Plot : IDisposable
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
 
-        Render(surface.Canvas, width, height);
+        Render(surface);
         return new(surface.Snapshot());
     }
 
@@ -430,6 +433,13 @@ public class Plot : IDisposable
     {
         using Image image = GetImage(width, height);
         image.Save(filePath, format, quality);
+    }
+
+    public byte[] GetImageBytes(int width, int height, ImageFormat format = ImageFormat.Bmp)
+    {
+        using Image image = GetImage(width, height);
+        byte[] bytes = image.GetImageBytes(format);
+        return bytes;
     }
 
     #endregion
