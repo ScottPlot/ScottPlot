@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🧪 Run Code Analysis
-        run: dotnet run dev/CodeAnalysis
+        run: dotnet run dotnet run --project dev/CodeAnalysis
       - name: 🔐 Create Key File
         run: install -m 600 -D /dev/null ~/.ssh/id_rsa
       - name: 🔑 Populate Key
