@@ -41,5 +41,15 @@ namespace ScottPlotTests.Cookbook
             Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
             ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
         }
+
+        [Test]
+        public void Test_Html_GenerateTestFile()
+        {
+            IRecipe[] recipes = Locate.GetRecipes();
+            string html = ScottPlot.Cookbook.Experimental.MenuBuilder.GetHtml(recipes);
+            string saveAs = Path.GetFullPath("test-menu.html");
+            Console.WriteLine(saveAs);
+            File.WriteAllText(saveAs, html);
+        }
     }
 }
