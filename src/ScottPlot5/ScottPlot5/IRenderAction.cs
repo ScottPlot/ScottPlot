@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public interface ILegend
+public interface IRenderAction
 {
     void Render(RenderPack rp);
 }

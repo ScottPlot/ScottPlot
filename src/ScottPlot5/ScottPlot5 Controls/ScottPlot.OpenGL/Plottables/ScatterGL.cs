@@ -73,7 +73,13 @@ public class ScatterGL : Scatter, IPlottableGL
         return translate * scale;
     }
 
-    public new void Render(SKSurface surface)
+    public new void Render(RenderPack rp)
+    {
+        System.Diagnostics.Debug.WriteLine("WARNING: Software rendering (not OpenGL) is being used");
+        base.Render(rp);
+    }
+
+    public void Render(SKSurface surface)
     {
         if (PlotControl.GRContext is not null && surface.Context is not null)
         {
@@ -84,7 +90,9 @@ public class ScatterGL : Scatter, IPlottableGL
         if (Fallback == GLFallbackRenderStrategy.Software)
         {
             surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
-            base.Render(surface);
+            PixelSize figureSize = new(surface.Canvas.LocalClipBounds.Width, surface.Canvas.LocalClipBounds.Height);
+            RenderPack rp = new(PlotControl.Plot, figureSize, surface.Canvas);
+            Render(rp);
         }
     }
 

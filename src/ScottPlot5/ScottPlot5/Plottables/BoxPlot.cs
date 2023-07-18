@@ -93,7 +93,7 @@ public class BoxPlot : IPlottable
     public IEnumerable<LegendItem> LegendItems => Groups.LegendItems;
     public AxisLimits GetAxisLimits() => Groups.GetAxisLimits();
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         using var paint = new SKPaint();
         var boxesByXCoordinate = Groups.Series
@@ -117,13 +117,13 @@ public class BoxPlot : IPlottable
                     group.Key - groupWidth / 2 + (i + 0.5) * boxWidthAndPadding :
                     group.Key;
 
-                DrawBox(surface, paint, t.Box, t.Series, newPosition, boxWidth);
+                DrawBox(rp, paint, t.Box, t.Series, newPosition, boxWidth);
 
                 if (t.Box.WhiskerMin.HasValue)
-                    DrawWhisker(surface, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMin.Value);
+                    DrawWhisker(rp, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMin.Value);
 
                 if (t.Box.WhiskerMax.HasValue)
-                    DrawWhisker(surface, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMax.Value);
+                    DrawWhisker(rp, paint, t.Box, t.Series, newPosition, boxWidth, t.Box.WhiskerMax.Value);
 
                 i++;
             }
@@ -164,39 +164,39 @@ public class BoxPlot : IPlottable
     /// Render a single box of a series centered at the given X and with the given width.
     /// The series is passed in to reference styling information from.
     /// </summary>
-    public void DrawBox(SKSurface surface, SKPaint paint, Box box, BoxGroup series, double x, double width)
+    public void DrawBox(RenderPack rp, SKPaint paint, Box box, BoxGroup series, double x, double width)
     {
         (PixelRect topRect, PixelRect botRect) = GetRects(box, x, width);
 
         series.Fill.ApplyToPaint(paint);
-        surface.Canvas.DrawRect(topRect.ToSKRect(), paint);
-        surface.Canvas.DrawRect(botRect.ToSKRect(), paint);
+        rp.Canvas.DrawRect(topRect.ToSKRect(), paint);
+        rp.Canvas.DrawRect(botRect.ToSKRect(), paint);
 
         series.Stroke.ApplyToPaint(paint);
 
         // Done individually with DrawLine rather than with DrawRect to avoid double-stroking the middle line
         if (Groups.Orientation == Orientation.Vertical)
         {
-            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(topRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(topRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
 
-            surface.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(topRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
         }
         else
         {
             // TODO: outlining doesn't look quite right
-            surface.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(botRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), botRect.BottomLeft.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(botRect.TopRight.ToSKPoint(), botRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(topRect.TopRight.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
 
-            surface.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
-            surface.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(botRect.TopLeft.ToSKPoint(), topRect.TopRight.ToSKPoint(), paint);
+            rp.Canvas.DrawLine(botRect.BottomLeft.ToSKPoint(), topRect.BottomRight.ToSKPoint(), paint);
         }
     }
 
-    private void DrawWhisker(SKSurface surface, SKPaint paint, Box box, BoxGroup series, double x, double boxWidth, double value)
+    private void DrawWhisker(RenderPack rp, SKPaint paint, Box box, BoxGroup series, double x, double boxWidth, double value)
     {
         Coordinates whiskerBase = value > box.BoxMax ? new(x, box.BoxMax) : new(x, box.BoxMin);
         Coordinates whiskerTip = new(x, value);
@@ -208,9 +208,9 @@ public class BoxPlot : IPlottable
         Pixel whiskerTipPx = Axes.GetPixel(whiskerTip);
 
         series.Stroke.ApplyToPaint(paint);
-        surface.Canvas.DrawLine(whiskerBasePx.ToSKPoint(), whiskerTipPx.ToSKPoint(), paint);
+        rp.Canvas.DrawLine(whiskerBasePx.ToSKPoint(), whiskerTipPx.ToSKPoint(), paint);
 
-        float whiskerWidth = Math.Max((float)Axes.XAxis.GetPixelDistance(boxWidth, surface.GetPixelRect()) / 5, 20);
+        float whiskerWidth = Math.Max((float)Axes.XAxis.GetPixelDistance(boxWidth, rp.DataRect) / 5, 20);
         Pixel whiskerEarOffset = Groups.Orientation == Orientation.Vertical
             ? new Pixel(whiskerWidth / 2, 0)
             : new Pixel(0, whiskerWidth / 2);
@@ -218,6 +218,6 @@ public class BoxPlot : IPlottable
         Pixel whiskerLeft = whiskerTipPx - whiskerEarOffset;
         Pixel whiskerRight = whiskerTipPx + whiskerEarOffset;
 
-        surface.Canvas.DrawLine(whiskerLeft.ToSKPoint(), whiskerRight.ToSKPoint(), paint);
+        rp.Canvas.DrawLine(whiskerLeft.ToSKPoint(), whiskerRight.ToSKPoint(), paint);
     }
 }

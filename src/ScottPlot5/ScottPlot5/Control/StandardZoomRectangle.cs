@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Axis;
+using System.Data;
 
 namespace ScottPlot.Control;
 
@@ -34,8 +35,11 @@ public class StandardZoomRectangle : IZoomRectangle
         IsVisible = false;
     }
 
-    public void Render(SKCanvas canvas, PixelRect dataRect)
+    public void Render(RenderPack rp)
     {
+        SKCanvas canvas = rp.Canvas;
+        PixelRect dataRect = rp.DataRect;
+
         SKRect rect = new(MouseDown.X, MouseDown.Y, MouseUp.X, MouseUp.Y);
 
         canvas.Save();

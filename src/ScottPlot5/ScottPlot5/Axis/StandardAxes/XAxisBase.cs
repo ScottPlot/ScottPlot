@@ -72,30 +72,30 @@ public abstract class XAxisBase : AxisBase, IAxis
             : GetPanelRectangleTop(dataRect, size, offset);
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    public void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
 
-        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         float textDistanceFromEdge = 10;
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Font.Color);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
         Label.Alignment = Alignment.LowerCenter;
         Label.Rotation = 0;
-        Label.Draw(surface.Canvas, labelPoint);
+        Label.Draw(rp.Canvas, labelPoint);
 
 
         IEnumerable<Tick> ticks = TickGenerator.Ticks;
 
-        AxisRendering.DrawTicks(surface, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
-        AxisRendering.DrawFrame(surface, panelRect, Edge, FrameLineStyle);
+        AxisRendering.DrawTicks(rp, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        AxisRendering.DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

@@ -5,7 +5,7 @@ public struct Layout
     /// <summary>
     /// Size of the figure this layout represents
     /// </summary>
-    public readonly PixelRect FigureRect { get; }
+    public readonly PixelSize FigureSize { get; }
 
     /// <summary>
     /// Final size of the data area
@@ -22,9 +22,9 @@ public struct Layout
     /// </summary>
     public readonly Dictionary<IPanel, float> PanelSizes { get; }
 
-    public Layout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
+    public Layout(PixelSize figureSize, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
     {
-        FigureRect = figureRect;
+        FigureSize = figureSize;
         DataRect = dataRect;
         PanelSizes = sizes;
         PanelOffsets = offsets;

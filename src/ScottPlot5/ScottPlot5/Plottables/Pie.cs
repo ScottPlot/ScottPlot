@@ -53,7 +53,7 @@ namespace ScottPlot.Plottables
                 })
             });
 
-        public void Render(SKSurface surface)
+        public void Render(RenderPack rp)
         {
             double total = Slices.Sum(s => s.Value);
             float[] sweeps = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
@@ -72,12 +72,12 @@ namespace ScottPlot.Plottables
             float sweepStart = 0;
             for (int i = 0; i < Slices.Count(); i++)
             {
-                using var _ = new SKAutoCanvasRestore(surface.Canvas);
+                using var _ = new SKAutoCanvasRestore(rp.Canvas);
 
                 float rotation = sweepStart + sweeps[i] / 2;
-                surface.Canvas.Translate(origin.X, origin.Y);
-                surface.Canvas.RotateDegrees(rotation);
-                surface.Canvas.Translate(explosionRadius, 0);
+                rp.Canvas.Translate(origin.X, origin.Y);
+                rp.Canvas.RotateDegrees(rotation);
+                rp.Canvas.Translate(explosionRadius, 0);
 
                 if (sweeps[i] != 360)
                 {
@@ -92,10 +92,10 @@ namespace ScottPlot.Plottables
 
                 Slices[i].Fill.ApplyToPaint(paint);
                 paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
-                surface.Canvas.DrawPath(path, paint);
+                rp.Canvas.DrawPath(path, paint);
 
                 LineStyle.ApplyToPaint(paint);
-                surface.Canvas.DrawPath(path, paint);
+                rp.Canvas.DrawPath(path, paint);
 
                 path.Reset();
                 sweepStart += sweeps[i];

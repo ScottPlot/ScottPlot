@@ -30,12 +30,12 @@ public class BoxPanel : IPanel
         };
     }
 
-    public void Render(SKSurface surface, PixelRect rect, float size, float offset)
+    public void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
 
-        PixelRect panelRect = GetPanelRect(rect, size, offset);
-        Drawing.DrawRectangle(surface.Canvas, panelRect, Colors.LightGray);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+        Drawing.DrawRectangle(rp.Canvas, panelRect, Colors.LightGray);
     }
 }

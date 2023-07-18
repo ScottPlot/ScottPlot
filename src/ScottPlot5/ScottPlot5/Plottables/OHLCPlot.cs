@@ -36,7 +36,7 @@ public class OhlcPlot : IPlottable
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         using SKPath risingPath = new();
@@ -74,9 +74,9 @@ public class OhlcPlot : IPlottable
         }
 
         RisingStyle.ApplyToPaint(paint);
-        surface.Canvas.DrawPath(risingPath, paint);
+        rp.Canvas.DrawPath(risingPath, paint);
 
         FallingStyle.ApplyToPaint(paint);
-        surface.Canvas.DrawPath(fallingPath, paint);
+        rp.Canvas.DrawPath(fallingPath, paint);
     }
 }

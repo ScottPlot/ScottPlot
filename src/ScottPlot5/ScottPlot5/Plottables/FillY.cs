@@ -86,9 +86,9 @@ public class FillY : IPlottable
         return Poly.GetAxisLimits();
     }
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
-        Poly.Render(surface);
+        Poly.Render(rp);
     }
 }
 

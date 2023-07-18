@@ -39,16 +39,6 @@ public struct PixelSize
         return rect;
     }
 
-    public PixelSize Expand(PixelPadding padding)
-    {
-        return new PixelSize(Width + padding.TotalHorizontal, Height + padding.TotalVertical);
-    }
-
-    public PixelSize Contract(PixelPadding padding)
-    {
-        return new PixelSize(Width - padding.TotalHorizontal, Height - padding.TotalVertical);
-    }
-
     public bool Contains(PixelSize size)
     {
         return Width >= size.Width && Height >= size.Height;
