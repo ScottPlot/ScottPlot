@@ -1,13 +1,11 @@
-﻿using System.Drawing;
-using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
+using System.Windows.Media;
 
 namespace ScottPlot.WPF
 {
@@ -100,13 +98,9 @@ namespace ScottPlot.WPF
 
         public Plot Reset()
         {
-            using Graphics gfx = Graphics.FromHwnd(IntPtr.Zero);
-            const int DEFAULT_DPI = 96;
-            float scaleFactor = gfx.DpiX / DEFAULT_DPI;
-
             return new Plot()
             {
-                ScaleFactor = scaleFactor
+                ScaleFactor = (float)VisualTreeHelper.GetDpi(this).DpiScaleX
             };
         }
 
