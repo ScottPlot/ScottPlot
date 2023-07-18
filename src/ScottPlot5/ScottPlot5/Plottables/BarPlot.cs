@@ -85,7 +85,7 @@ namespace ScottPlot.Plottables
             return limits;
         }
 
-        public void Render(SKSurface surface)
+        public void Render(RenderPack rp)
         {
             using var paint = new SKPaint();
             var barsByXCoordinate = Series
@@ -110,8 +110,8 @@ namespace ScottPlot.Plottables
                         group.Key;
 
                     PixelRect rect = GetRect(t.Bar, newPosition, barWidth).ToPixelRect();
-                    Drawing.Fillectangle(surface.Canvas, rect, t.Series.Color);
-                    Drawing.DrawRectangle(surface.Canvas, rect, LineStyle.Color, LineStyle.Width);
+                    Drawing.Fillectangle(rp.Canvas, rect, t.Series.Color);
+                    Drawing.DrawRectangle(rp.Canvas, rect, LineStyle.Color, LineStyle.Width);
 
                     i++;
                 }

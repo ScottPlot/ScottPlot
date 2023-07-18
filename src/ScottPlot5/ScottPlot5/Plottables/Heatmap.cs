@@ -153,7 +153,7 @@ namespace ScottPlot.Plottables
 
         public Range GetRange() => Range.GetRange(Intensities);
 
-        public void Render(SKSurface surface)
+        public void Render(RenderPack rp)
         {
             if (Bitmap is null)
                 Update(); // automatically generate the bitmap on first render if it was not generated manually
@@ -165,7 +165,7 @@ namespace ScottPlot.Plottables
 
             SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
 
-            surface.Canvas.DrawBitmap(Bitmap, rect, paint);
+            rp.Canvas.DrawBitmap(Bitmap, rect, paint);
         }
     }
 }

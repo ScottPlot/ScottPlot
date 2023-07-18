@@ -29,7 +29,7 @@ public interface IPlottable
     /// Draw the data from this plottable into the data area defined in the <see cref="Axes"/>.
     /// By default the surface is already clipped to the data area, but this can be cleared inside the plottable.
     /// </summary>
-    void Render(SKSurface surface); // TODO: pass a canvas and FinalLayout instead. Consider passing datarect too (currently inside IAxes).
+    void Render(RenderPack rp);
 
     /// <summary>
     /// Items which will appear in the legend

@@ -17,7 +17,8 @@ public static class CodeReport
         sb.AppendLine($"<hr style='margin: 50px;' />");
 
         AddLinesOfCodeSection(sb, metrics);
-        AddTodoSection(sb, metrics);
+        AddTodoSection(sb, metrics, "ScottPlot4");
+        AddTodoSection(sb, metrics, "ScottPlot5");
 
         sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
         sb.AppendLine("<div align='center' style='margin-top: 1em;'>" +
@@ -25,7 +26,7 @@ public static class CodeReport
             "https://github.com/ScottPlot/ScottPlot/tree/main/dev/CodeAnalysis</a></div>");
 
         saveAs = Path.GetFullPath(saveAs);
-        string html = HtmlTemplate.WrapInPico(sb.ToString());
+        string html = HtmlTemplate.WrapInBootstrap(sb.ToString(), "ScottPlot Code Metrics");
         Directory.CreateDirectory(Path.GetDirectoryName(saveAs)!);
         File.WriteAllText(saveAs, html);
         Console.WriteLine($"Wrote: {saveAs}");
@@ -53,15 +54,13 @@ public static class CodeReport
         sb.AppendLine($"<li>Demos: {metrics.GetLines("ScottPlot5", "ScottPlot5 Demos")}</li>");
         sb.AppendLine($"</ul>");
 
-        sb.AppendLine($"<li style='margin-top: 1em;'><b>Shared Code: {metrics.GetLines("Shared")}</b></li>");
-
         sb.AppendLine($"</ul>");
     }
 
-    private static void AddTodoSection(StringBuilder sb, ProjectMetrics metrics)
+    private static void AddTodoSection(StringBuilder sb, ProjectMetrics metrics, string folderFilter)
     {
         List<string> todos = new();
-        foreach (string filePath in metrics.Files.Select(x => x.FilePath))
+        foreach (string filePath in metrics.Files.Select(x => x.FilePath).Where(x => x.Contains(folderFilter)))
         {
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
@@ -83,7 +82,7 @@ public static class CodeReport
                 }
             }
         }
-        sb.AppendLine($"<h2 style='margin-bottom: .5em;'>TODOs ({todos.Count})</h2>");
+        sb.AppendLine($"<h2 style='margin-bottom: .5em;'>{folderFilter} TODOs ({todos.Count})</h2>");
         sb.AppendLine($"<ul style='margin-left: 1em;'>");
         foreach (string todo in todos)
         {

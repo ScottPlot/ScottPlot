@@ -7,5 +7,5 @@
 /// </summary>
 public interface ILayoutMaker
 {
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels);
+    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels);
 }

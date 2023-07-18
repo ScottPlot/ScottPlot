@@ -39,28 +39,28 @@ public class ColorBar : IPanel
         };
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    public void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
 
-        using var _ = new SKAutoCanvasRestore(surface.Canvas);
+        using var _ = new SKAutoCanvasRestore(rp.Canvas);
 
-        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         SKPoint marginTranslation = GetTranslation(Margin);
         SKPoint axisTranslation = GetTranslation(Width);
 
         using var bmp = GetBitmap();
 
-        surface.Canvas.Translate(marginTranslation);
-        surface.Canvas.DrawBitmap(bmp, panelRect.ToSKRect());
+        rp.Canvas.Translate(marginTranslation);
+        rp.Canvas.DrawBitmap(bmp, panelRect.ToSKRect());
 
-        var colorbarLength = Edge.IsVertical() ? dataRect.Height : dataRect.Width;
+        var colorbarLength = Edge.IsVertical() ? rp.DataRect.Height : rp.DataRect.Width;
         var axis = GetAxis(colorbarLength);
 
-        surface.Canvas.Translate(axisTranslation);
-        axis.Render(surface, dataRect, size, offset);
+        rp.Canvas.Translate(axisTranslation);
+        axis.Render(rp, size, offset);
     }
 
     private SKPoint GetTranslation(float magnitude) => Edge switch

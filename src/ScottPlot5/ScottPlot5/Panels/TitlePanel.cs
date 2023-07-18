@@ -40,20 +40,20 @@ public class TitlePanel : IPanel
         return Label.Measure().Height + VerticalPadding;
     }
 
-    public void Render(SKSurface surface, PixelRect dataRect, float size, float offset)
+    public void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
 
-        PixelRect panelRect = GetPanelRect(dataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom);
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(surface.Canvas, panelRect, labelPoint, Label.Font.Color);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
-        Label.Draw(surface.Canvas, labelPoint);
+        Label.Draw(rp.Canvas, labelPoint);
     }
 }

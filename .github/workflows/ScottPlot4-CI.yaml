@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-linux:
-    name: ScottPlot4 Test on Linux
+    name: Test on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -32,7 +32,7 @@ jobs:
         run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --verbosity minimal
 
   test-windows:
-    name: ScottPlot4 Test on Windows
+    name: Test on Windows
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -53,7 +53,7 @@ jobs:
         run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --verbosity minimal
 
   full-build:
-    name: ScottPlot4 Full Build
+    name: Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout

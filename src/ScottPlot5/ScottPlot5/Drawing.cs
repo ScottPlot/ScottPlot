@@ -40,7 +40,7 @@ public static class Drawing
         return new PixelSize(maxWidth, maxHeight);
     }
 
-    public static void DrawLines(SKSurface surface, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true)
+    public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true)
     {
         if (starts.Length != ends.Length)
             throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have same length");
@@ -61,7 +61,7 @@ public static class Drawing
             path.LineTo(ends[i].X, ends[i].Y);
         }
 
-        surface.Canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint);
     }
 
     public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)

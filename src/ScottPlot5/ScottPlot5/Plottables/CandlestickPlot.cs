@@ -46,7 +46,7 @@ public class CandlestickPlot : IPlottable
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 
@@ -75,12 +75,12 @@ public class CandlestickPlot : IPlottable
             path.LineTo(center, bottom);
 
             lineStyle.ApplyToPaint(paint);
-            surface.Canvas.DrawPath(path, paint);
+            rp.Canvas.DrawPath(path, paint);
 
             // rectangle
             SKRect rect = new(left, Math.Max(open, close), right, Math.Min(open, close));
             fillStlye.ApplyToPaint(paint);
-            surface.Canvas.DrawRect(rect, paint);
+            rp.Canvas.DrawRect(rect, paint);
         }
     }
 }

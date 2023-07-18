@@ -10,7 +10,7 @@ public static class AxisRendering
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
-    public static void DrawFrame(SKSurface surface, PixelRect panelRect, Edge edge, LineStyle lineStyle)
+    public static void DrawFrame(RenderPack rp, PixelRect panelRect, Edge edge, LineStyle lineStyle)
     {
         using SKPaint framePaint = new()
         {
@@ -21,7 +21,7 @@ public static class AxisRendering
 
         if (edge == Edge.Left)
         {
-            surface.Canvas.DrawLine(
+            rp.Canvas.DrawLine(
                 x0: panelRect.Right,
                 y0: panelRect.Bottom,
                 x1: panelRect.Right,
@@ -30,7 +30,7 @@ public static class AxisRendering
         }
         else if (edge == Edge.Right)
         {
-            surface.Canvas.DrawLine(
+            rp.Canvas.DrawLine(
                 x0: panelRect.Left,
                 y0: panelRect.Bottom,
                 x1: panelRect.Left,
@@ -39,7 +39,7 @@ public static class AxisRendering
         }
         else if (edge == Edge.Bottom)
         {
-            surface.Canvas.DrawLine(
+            rp.Canvas.DrawLine(
                 x0: panelRect.Left,
                 y0: panelRect.Top,
                 x1: panelRect.Right,
@@ -48,7 +48,7 @@ public static class AxisRendering
         }
         else if (edge == Edge.Top)
         {
-            surface.Canvas.DrawLine(
+            rp.Canvas.DrawLine(
                 x0: panelRect.Left,
                 y0: panelRect.Bottom,
                 x1: panelRect.Right,
@@ -61,7 +61,7 @@ public static class AxisRendering
         }
     }
 
-    private static void DrawTicksHorizontalAxis(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksHorizontalAxis(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -84,20 +84,20 @@ public static class AxisRendering
             float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
 
-            surface.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
+            rp.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
 
             if (!string.IsNullOrWhiteSpace(tick.Label))
             {
                 foreach (string line in tick.Label.Split('\n'))
                 {
-                    surface.Canvas.DrawText(line, xPx, yEdge + fontSpacing, paint);
+                    rp.Canvas.DrawText(line, xPx, yEdge + fontSpacing, paint);
                     fontSpacing += paint.TextSize;
                 }
             }
         }
     }
 
-    private static void DrawTicksVerticalAxis(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksVerticalAxis(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -118,20 +118,20 @@ public static class AxisRendering
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float y = axis.GetPixel(tick.Position, panelRect);
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
-            surface.Canvas.DrawLine(x, y, xEdge, y, paint);
+            rp.Canvas.DrawLine(x, y, xEdge, y, paint);
 
             float majorTickLabelPadding = 7;
             float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                surface.Canvas.DrawText(tick.Label, labelPos, y + paint.TextSize * .4f, paint);
+                rp.Canvas.DrawText(tick.Label, labelPos, y + paint.TextSize * .4f, paint);
         }
     }
 
-    public static void DrawTicks(SKSurface surface, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    public static void DrawTicks(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
     {
         if (axis.Edge.IsVertical())
-            DrawTicksVerticalAxis(surface, font, panelRect, ticks, axis, majorStyle, minorStyle);
+            DrawTicksVerticalAxis(rp, font, panelRect, ticks, axis, majorStyle, minorStyle);
         else
-            DrawTicksHorizontalAxis(surface, font, panelRect, ticks, axis, majorStyle, minorStyle);
+            DrawTicksHorizontalAxis(rp, font, panelRect, ticks, axis, majorStyle, minorStyle);
     }
 }

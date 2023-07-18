@@ -1,9 +1,4 @@
 ﻿using ScottPlot.Axis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Plottables
 {
@@ -53,10 +48,10 @@ namespace ScottPlot.Plottables
             return limits;
         }
 
-        public void Render(SKSurface surface)
+        public void Render(RenderPack rp)
         {
-            RenderErrorBars(surface.Canvas, Xs, Ys, YErrorsPositive, YErrorsNegative);
-            RenderErrorBars(surface.Canvas, Ys, Xs, XErrorsPositive, XErrorsNegative, true);
+            RenderErrorBars(rp.Canvas, Xs, Ys, YErrorsPositive, YErrorsNegative);
+            RenderErrorBars(rp.Canvas, Ys, Xs, XErrorsPositive, XErrorsNegative, true);
         }
 
         private void RenderErrorBars(SKCanvas canvas, IReadOnlyList<double> positions, IReadOnlyList<double> vals, IReadOnlyList<double>? errorPositive, IReadOnlyList<double>? errorNegative, bool horizontal = false)

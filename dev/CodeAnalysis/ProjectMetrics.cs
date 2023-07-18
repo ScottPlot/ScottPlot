@@ -66,6 +66,6 @@ public class ProjectMetrics
         int coding = files.Select(x => x.LinesOfCode).Sum();
         return $"{lines:N0} lines " +
             $"({coding:N0} coding) " +
-            $"across {files.Length:N0} source files";
+            $"across {files.Length:N0} files";
     }
 }
