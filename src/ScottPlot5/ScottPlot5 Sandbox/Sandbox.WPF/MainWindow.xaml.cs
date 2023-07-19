@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using ScottPlot;
+using ScottPlot.WPF;
 
 #nullable enable
 
@@ -18,6 +19,7 @@ public partial class MainWindow : Window
         double[] xs = Generate.Consecutive(pointCount);
 
         var sp = WpfPlot.Plot.Add.Scatter(xs, ys);
+        WpfPlot.Plot.TopAxis.Label.Text = "CJKE/测试/試験/테스트/Test";
         sp.LineStyle.Width = 5;
         sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
         sp.MarkerStyle.Outline.Width = 3;
