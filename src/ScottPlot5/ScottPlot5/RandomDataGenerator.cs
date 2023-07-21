@@ -32,6 +32,11 @@ public class RandomDataGenerator
             values[i] = Rand.NextDouble() * mult + offset;
         return values;
     }
+    
+      public static double Random(double mult = 1, double offset = 0)
+    {
+        return Rand.NextDouble() * mult + offset;
+    }
 
     public double[] RandomSin(int count)
     {
