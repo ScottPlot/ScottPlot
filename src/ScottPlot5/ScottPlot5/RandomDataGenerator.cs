@@ -33,7 +33,7 @@ public class RandomDataGenerator
         return values;
     }
     
-      public double Random(double mult = 1, double offset = 0)
+    public double Random(double mult = 1, double offset = 0)
     {
         return Rand.NextDouble() * mult + offset;
     }
