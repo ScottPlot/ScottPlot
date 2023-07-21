@@ -10,7 +10,11 @@ public struct Pixel
         X = x;
         Y = y;
     }
-
+    public Pixel(double x, double y)
+    {
+        X = (float)x;
+        Y = (float)y;
+    }
     public static Pixel NaN => new(float.NaN, float.NaN);
 
     public SkiaSharp.SKPoint ToSKPoint()
