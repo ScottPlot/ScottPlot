@@ -10,7 +10,7 @@ public struct Pixel
         X = x;
         Y = y;
     }
-    public void Pixel(double x, double y)
+    public Pixel(double x, double y)
     {
         X=(float)x;
         Y=(float)y;
