@@ -16,15 +16,15 @@ public struct Coordinates
 
     public double DistanceSquared(Coordinates pt)
     {
-        double dX = Math.abs(X - pt.X);
-        double dY = Math.abs(Y - pt.Y);
+        double dX = Math.Abs(X - pt.X);
+        double dY = Math.Abs(Y - pt.Y);
 
         return dX * dX + dY + dY;
     }
 
     public double Distance(Coordinates pt)
     {
-        return Math.sqrt(DistanceSquared(pt));
+        return Math.Sqrt(DistanceSquared(pt));
     }
 
     public override string ToString()
