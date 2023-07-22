@@ -14,6 +14,19 @@ public struct Coordinates
         Y = y;
     }
 
+    public double DistanceSquared(Coordinates pt)
+    {
+        double dX = Math.abs(X - pt.X);
+        double dY = Math.abs(Y - pt.Y);
+
+        return dX * dX + dY + dY;
+    }
+
+    public double Distance(Coordinates pt)
+    {
+        return Math.sqrt(DistanceSquared(pt));
+    }
+
     public override string ToString()
     {
         return $"Coordinates: X={X}, Y={Y}";
