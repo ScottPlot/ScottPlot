@@ -28,6 +28,9 @@ public class StandardLegend : ILegend
 
     public void Render(RenderPack rp)
     {
+        if (!IsVisible)
+            return;
+
         LegendItem[] items = rp.Plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
 
         if (ManualLegendItems is not null)
