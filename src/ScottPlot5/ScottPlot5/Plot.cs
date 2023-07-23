@@ -429,10 +429,29 @@ public class Plot : IDisposable
         image.SaveWebp(filePath, quality);
     }
 
+    public void SaveSvg(string filePath, int width, int height)
+    {
+        using FileStream fs = new(filePath, FileMode.Create);
+        using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
+        Render(canvas, width, height);
+    }
+
     public void Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
     {
-        using Image image = GetImage(width, height);
-        image.Save(filePath, format, quality);
+        if (format == ImageFormat.Svg)
+        {
+            SaveSvg(filePath, width, height);
+            return;
+        }
+
+        if (format.IsRasterFormat())
+        {
+            using Image image = GetImage(width, height);
+            image.Save(filePath, format, quality);
+            return;
+        }
+
+        throw new NotImplementedException(format.ToString());
     }
 
     public byte[] GetImageBytes(int width, int height, ImageFormat format = ImageFormat.Bmp)
