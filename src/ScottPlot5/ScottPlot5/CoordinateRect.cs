@@ -57,12 +57,12 @@ public struct CoordinateRect
 
     public bool Contains(Coordinates point)
     {
-        return point.X >= XMin && point.X <= XMax && point.Y >= YMin && point.Y <= YMax
+        return point.X >= XMin && point.X <= XMax && point.Y >= YMin && point.Y <= YMax;
     }
 
     public bool Contains(double x, double y)
     {
-        return x >= XMin && x <= XMax && y >= YMin && y <= YMax
+        return x >= XMin && x <= XMax && y >= YMin && y <= YMax;
     }
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
