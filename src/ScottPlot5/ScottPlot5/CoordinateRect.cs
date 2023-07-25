@@ -55,10 +55,7 @@ public struct CoordinateRect
         YMax = Math.Max(point.Y, pt2.Y);
     }
 
-    public bool Contains(Coordinates point)
-    {
-        return point.X >= XMin && point.X <= XMax && point.Y >= YMin && point.Y <= YMax;
-    }
+    public bool Contains(Coordinates point) => Contains(point.X, point.Y);
 
     public bool Contains(double x, double y)
     {
