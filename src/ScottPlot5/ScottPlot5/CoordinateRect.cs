@@ -14,6 +14,7 @@ public struct CoordinateRect
 
     public double XCenter => (XMax + XMin) / 2;
     public double YCenter => (YMax + YMin) / 2;
+    public Coordinates Center => new(XCenter, YCenter);
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
     public double Area => Width * Height;
@@ -52,6 +53,12 @@ public struct CoordinateRect
         XMax = Math.Max(point.X, pt2.X);
         YMin = Math.Min(point.Y, pt2.Y);
         YMax = Math.Max(point.Y, pt2.Y);
+    }
+    public bool Contains(Coordinates point) => Contains(point.X, point.Y);
+
+    public bool Contains(double x, double y)
+    {
+        return x >= XMin && x <= XMax && y >= YMin && y <= YMax;
     }
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
