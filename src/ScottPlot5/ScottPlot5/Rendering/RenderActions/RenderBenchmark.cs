@@ -4,6 +4,9 @@ public class RenderBenchmark : IRenderAction
 {
     public void Render(RenderPack rp)
     {
+        if (rp.Plot.ShowBenchmark == false)
+            return;
+
         string message = $"Rendered in {rp.Elapsed.TotalMilliseconds:0.000} ms ({1e3 / rp.Elapsed.TotalMilliseconds:N0} FPS)";
 
         using SKPaint paint = new()

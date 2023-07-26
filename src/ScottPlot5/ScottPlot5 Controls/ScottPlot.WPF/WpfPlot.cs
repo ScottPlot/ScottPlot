@@ -100,7 +100,7 @@ namespace ScottPlot.WPF
         {
             return new Plot()
             {
-                ScaleFactor = (float)VisualTreeHelper.GetDpi(this).DpiScaleX
+                //ScaleFactor = (float)VisualTreeHelper.GetDpi(this).DpiScaleX
             };
         }
 

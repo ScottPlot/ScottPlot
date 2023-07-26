@@ -18,6 +18,9 @@
 * Plot: Added a `RenderManager` which has a `List<RenderAction>` the user can modify to customize the render sequence (#2767)
 * Plot: Refactored rendering system for all plottables, axes, etc. so canvases (not surfaces) are passed (#2767)
 * WPF: Improved support for display scaling (#2760, #2766) _Thanks @DmitryKotenev_
+* Plot: Added support for SVG export (#2704, #717)
+* Legend: Respect `IsVisible` property (#2805)
+* Ticks: Added `NumericManual` tick generator for manually-defined tick positions and labels
 * Plot: `Title()`, `XLabel()`, and `YLabel()` have optional arguments for `size`
 * Plot: Added `Plot.Style.SetFont()` to apply the given font to all titles, axis labels, and tick labels
 * Plot: Added `Plot.Style.SetFontFromText()` to apply system font that best supports the language of the provided text (#2746) _Thanks @heartacker_
