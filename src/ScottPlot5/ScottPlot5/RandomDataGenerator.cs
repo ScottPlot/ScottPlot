@@ -7,15 +7,16 @@ namespace ScottPlot;
 public class RandomDataGenerator
 {
     private Random Rand { get; }
+    private RandomNumberGenerator RNG { get; }
 
     /// <summary>
     /// Use a random seed so each generator returns different data.
     /// </summary>
     public RandomDataGenerator()
     {
-        RNGCryptoServiceProvider csp = new();
+        RNG = RandomNumberGenerator.Create();
         byte[] data = new byte[sizeof(int)];
-        csp.GetBytes(data);
+        RNG.GetBytes(data);
         int randomValue = BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
         Rand = new Random(randomValue);
     }
@@ -26,6 +27,7 @@ public class RandomDataGenerator
     public RandomDataGenerator(int seed = 0)
     {
         Rand = new(seed);
+        RNG = RandomNumberGenerator.Create();
     }
 
     #region Methods that return single numbers
