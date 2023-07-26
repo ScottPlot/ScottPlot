@@ -21,39 +21,58 @@ public struct PixelRect
     public Pixel BottomCenter => new(HorizontalCenter, Bottom);
     public Pixel TopCenter => new(HorizontalCenter, Top);
 
-    public override string ToString()
+    public static PixelRect Zero => new(0, 0, 0, 0);
+    public static PixelRect NaN => new(Pixel.NaN, PixelSize.NaN);
+
+    /// <summary>
+    /// Create a rectangle from the bounding box of a circle centered at <paramref name="center"/> with radius <paramref name="radius"/>
+    /// </summary>
+    public PixelRect(Pixel center, float radius)
     {
-        return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
+        Left = center.X - radius;
+        Right = center.X + radius;
+        Bottom = center.Y + radius;
+        Top = center.Y - radius;
     }
 
-    public static PixelRect Zero => new();
-
-    public static PixelRect Centered(Pixel center, float radius)
+    /// <summary>
+    /// Create a rectangle with edges at the given pixel positions.
+    /// This constructor will rectify the points so rectangles will always have positive area.
+    /// </summary>
+    public PixelRect(Pixel corner1, Pixel corner2)
     {
-        return new PixelRect(
-            left: center.X - radius,
-            right: center.X + radius,
-            bottom: center.Y + radius,
-            top: center.Y - radius);
+        Left = Math.Min(corner1.X, corner2.X);
+        Right = Math.Max(corner1.X, corner2.X);
+        Bottom = Math.Max(corner1.Y, corner2.Y);
+        Top = Math.Min(corner1.Y, corner2.Y);
     }
 
-    [Obsolete("use PixelSize")]
-    public PixelRect(float width, float height)
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(Pixel topLeftCorner, PixelSize size)
     {
-        Left = 0;
-        Right = width;
-        Bottom = height;
-        Top = 0;
+        Left = Math.Min(topLeftCorner.X, topLeftCorner.X);
+        Right = Math.Max(topLeftCorner.X, topLeftCorner.X + size.Width);
+        Bottom = Math.Max(topLeftCorner.Y, topLeftCorner.Y);
+        Top = Math.Min(topLeftCorner.Y, topLeftCorner.Y + size.Height);
     }
 
-    public PixelRect(Pixel px1, Pixel px2)
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(Pixel topLeftCorner, float width, float height)
     {
-        Left = Math.Min(px1.X, px2.X);
-        Right = Math.Max(px1.X, px2.X);
-        Bottom = Math.Max(px1.Y, px2.Y);
-        Top = Math.Min(px1.Y, px2.Y);
+        Left = Math.Min(topLeftCorner.X, topLeftCorner.X);
+        Right = Math.Max(topLeftCorner.X, topLeftCorner.X + width);
+        Bottom = Math.Max(topLeftCorner.Y, topLeftCorner.Y);
+        Top = Math.Min(topLeftCorner.Y, topLeftCorner.Y + height);
     }
 
+    /// <summary>
+    /// Create a rectangle from the given edges.
+    /// This constructor permits inverted rectangles with negative area.
+    /// </summary>
     public PixelRect(float left, float right, float bottom, float top)
     {
         Left = left;
@@ -62,14 +81,14 @@ public struct PixelRect
         Top = top;
     }
 
-    public static PixelRect FromSKRect(SkiaSharp.SKRect rect)
+    public override string ToString()
     {
-        return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
+        return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
     }
 
     public SkiaSharp.SKRect ToSKRect()
     {
-        return new SkiaSharp.SKRect(Left, Top, Right, Bottom);
+        return new SKRect(Left, Top, Right, Bottom);
     }
 
     public PixelRect Contract(float delta)
@@ -81,11 +100,6 @@ public struct PixelRect
         return new PixelRect(left, right, bottom, top);
     }
 
-    public PixelRect Expand(float delta)
-    {
-        return Contract(-delta);
-    }
-
     public PixelRect Contract(PixelPadding padding)
     {
         float left = Math.Min(Left + padding.Left, HorizontalCenter);
@@ -95,11 +109,12 @@ public struct PixelRect
         return new PixelRect(left, right, bottom, top);
     }
 
-    public PixelRect WithDelta(PixelSize size)
+    public PixelRect Expand(float delta)
     {
-        return new PixelRect(Left + size.Width, Right + size.Width, Bottom + size.Height, Top + size.Height);
+        return Contract(-delta);
     }
 
+    // TODO: use operator logic?
     public PixelRect WithDelta(float x, float y)
     {
         return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);

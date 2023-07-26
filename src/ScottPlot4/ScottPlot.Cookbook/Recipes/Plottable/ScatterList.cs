@@ -11,7 +11,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "scatterList_quickstart";
         public string Title => "Scatter List Quickstart";
         public string Description =>
-            "This experimental plot type has add/remove/clear methods like typical lists.";
+            "This plot type has add/remove/clear methods like typical lists.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -49,7 +49,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "scatterList_draggable";
         public string Title => "Scatter List Draggable";
         public string Description =>
-            "There exists an experimental Scatter Plot List with draggable points.";
+            "There exists a Scatter Plot List with draggable points.";
 
         public void ExecuteRecipe(Plot plt)
         {

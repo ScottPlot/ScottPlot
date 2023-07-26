@@ -64,6 +64,7 @@ public readonly struct Color
     public readonly Color WithGreen(byte green) => new(Red, green, Blue, Alpha);
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
     public readonly Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
+    public readonly Color WithAlpha(double alpha) => new(Red, Green, Blue, (byte)(alpha * 255));
 
     public readonly Color WithOpacity(double opacity = .5) => new(Red, Green, Blue, (byte)(opacity * 255));
 
