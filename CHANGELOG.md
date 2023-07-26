@@ -24,6 +24,7 @@
 * Plot: `Title()`, `XLabel()`, and `YLabel()` have optional arguments for `size`
 * Plot: Added `Plot.Style.SetFont()` to apply the given font to all titles, axis labels, and tick labels
 * Plot: Added `Plot.Style.SetFontFromText()` to apply system font that best supports the language of the provided text (#2746) _Thanks @heartacker_
+* RandomDataGenerator: Improved XML docs and added methods for returning single numbers (#2774, #2787) _Thanks @Silent0Wings_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
