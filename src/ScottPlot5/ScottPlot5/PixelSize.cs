@@ -5,8 +5,7 @@ public struct PixelSize
     public readonly float Width;
     public readonly float Height;
     public float Area => Width * Height;
-
-    public static PixelSize Zero => new(0, 0);
+    public float Diagonal => (float)Math.Sqrt(Width * Width + Height * Height);
 
     public PixelSize(float width, float height)
     {
@@ -14,10 +13,20 @@ public struct PixelSize
         Height = height;
     }
 
+    public PixelSize(double width, double height)
+    {
+        Width = (float)width;
+        Height = (float)height;
+    }
+
     public override string ToString()
     {
         return $"PixelSize: Width={Width}, Height={Height}";
     }
+
+    public static PixelSize Zero => new(0, 0);
+
+    public static PixelSize NaN => new(float.NaN, float.NaN);
 
     public PixelRect ToPixelRect()
     {
@@ -43,14 +52,11 @@ public struct PixelSize
     {
         return Width >= size.Width && Height >= size.Height;
     }
-}
 
-public static class PixelSizeExtensions
-{
-    public static PixelSize Max(this PixelSize rect1, PixelSize rect2)
+    public PixelSize Max(PixelSize rect2)
     {
         return new PixelSize(
-            width: Math.Max(rect1.Width, rect2.Width),
-            height: Math.Max(rect1.Height, rect2.Height));
+            width: Math.Max(Width, rect2.Width),
+            height: Math.Max(Height, rect2.Height));
     }
 }

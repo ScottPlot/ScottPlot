@@ -53,7 +53,10 @@ public class MouseState
         if (float.IsNaN(MouseDownPosition.X))
             return false;
 
-        float dragDistance = (MouseDownPosition - position).Hypotenuse;
+        Pixel pixelDifference = MouseDownPosition - position;
+        PixelSize ps = new(pixelDifference.X, pixelDifference.Y);
+
+        float dragDistance = ps.Diagonal;
         if (dragDistance > MinimumDragDistance)
             return true;
 
