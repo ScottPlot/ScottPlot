@@ -27,6 +27,7 @@
 * RandomDataGenerator: Improved XML docs and added methods for returning single numbers (#2774, #2787) _Thanks @Silent0Wings_
 * Pixel: Added constructor overload that accepts `double` values (#2780) _Thanks @Silent0Wings_
 * Primitives: Refactored and added XML docs to `Pixel`, `PixelSize`, and `PixelRect` (#2784)
+* Color: Added `WithAlpha()` method that accepts a fraction (#2794, #2776) _Thanks @mjpz_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
