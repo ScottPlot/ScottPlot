@@ -61,7 +61,7 @@ public class RenderManager
         {
             sw.Restart();
             action.Render(rp);
-            actionTimes.Add((action.ToString(), sw.Elapsed));
+            actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
         LastRenderInfo = new(rp, actionTimes.ToArray());
