@@ -1,4 +1,5 @@
-﻿using ScottPlot.Axis.StandardAxes;
+﻿using ScottPlot.Axis;
+using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Grids;
 
 namespace ScottPlot.Stylers;
@@ -73,5 +74,39 @@ public class PlotStyler
         axes[1].FrameLineStyle.Width = right;
         axes[2].FrameLineStyle.Width = bottom;
         axes[3].FrameLineStyle.Width = top;
+    }
+
+    /// <summary>
+    /// Apply the given font name to all existing plot objects.
+    /// Also sets the default font name so this font will be used for plot objects added in the future.
+    /// </summary>
+    public void SetFont(string fontName)
+    {
+        fontName = Fonts.Exists(fontName) ? fontName : Fonts.Default;
+
+        // set default font so future added objects will use it
+        Fonts.Default = fontName;
+
+        // title
+        Plot.TitlePanel.Label.Font.Name = fontName;
+
+        // axis labels and ticks
+        foreach (IAxis axis in Plot.GetAllAxes())
+        {
+            axis.Label.Font.Name = fontName;
+            axis.TickFont.Name = fontName;
+        }
+    }
+
+    /// <summary>
+    /// Calls <see cref="SetFont(string)"/> using the system font best suited
+    /// to display the first character in the given string.
+    /// </summary>
+    public bool SetFontFromText(string text)
+    {
+        string? fontName = Fonts.Detect(text);
+        bool success = !string.IsNullOrEmpty(fontName);
+        SetFont(fontName ?? Fonts.Default);
+        return success;
     }
 }

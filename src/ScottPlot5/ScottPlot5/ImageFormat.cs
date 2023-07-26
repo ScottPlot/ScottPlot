@@ -1,4 +1,7 @@
-﻿namespace ScottPlot;
+﻿using System.ComponentModel;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace ScottPlot;
 
 public enum ImageFormat
 {
@@ -6,6 +9,23 @@ public enum ImageFormat
     Jpeg,
     Png,
     Webp,
+    Svg,
+}
+
+public static class ImageFormatExtensions
+{
+    public static bool IsRasterFormat(this ImageFormat format)
+    {
+        return format switch
+        {
+            ImageFormat.Bmp => true,
+            ImageFormat.Jpeg => true,
+            ImageFormat.Png => true,
+            ImageFormat.Webp => true,
+            ImageFormat.Svg => false,
+            _ => throw new ArgumentException($"unknown image format: '{format}'")
+        };
+    }
 }
 
 public static class ImageFormatLookup

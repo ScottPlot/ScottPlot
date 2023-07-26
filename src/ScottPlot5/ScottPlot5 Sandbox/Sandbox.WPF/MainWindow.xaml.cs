@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using ScottPlot;
 
 #nullable enable
@@ -12,16 +11,26 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        int pointCount = 1000;
-        Random rand = new(0);
-        double[] ys = Generate.NoisySin(rand, pointCount);
-        double[] xs = Generate.Consecutive(pointCount);
-
-        var sp = WpfPlot.Plot.Add.Scatter(xs, ys);
-        sp.LineStyle.Width = 5;
-        sp.MarkerStyle = new MarkerStyle(MarkerShape.OpenSquare, 9, Colors.Red);
-        sp.MarkerStyle.Outline.Width = 3;
+        WpfPlot.Plot.Add.Signal(Generate.Sin());
+        WpfPlot.Plot.Add.Signal(Generate.Cos());
 
         WpfPlot.Refresh();
     }
+
+    private void SetLabelText(string text)
+    {
+        WpfPlot.Plot.Style.SetFontFromText(text);
+        WpfPlot.Plot.Title(text, 24);
+        WpfPlot.Plot.YLabel(text, 24);
+        WpfPlot.Plot.XLabel(text, 24);
+        WpfPlot.Refresh();
+    }
+
+    private void English_Click(object sender, RoutedEventArgs e) => SetLabelText("Test");
+
+    private void Chinese_Click(object sender, RoutedEventArgs e) => SetLabelText("测试");
+
+    private void Japanese_Click(object sender, RoutedEventArgs e) => SetLabelText("試験");
+
+    private void Korean_Click(object sender, RoutedEventArgs e) => SetLabelText("테스트");
 }

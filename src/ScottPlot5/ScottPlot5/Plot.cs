@@ -429,10 +429,29 @@ public class Plot : IDisposable
         image.SaveWebp(filePath, quality);
     }
 
+    public void SaveSvg(string filePath, int width, int height)
+    {
+        using FileStream fs = new(filePath, FileMode.Create);
+        using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
+        Render(canvas, width, height);
+    }
+
     public void Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
     {
-        using Image image = GetImage(width, height);
-        image.Save(filePath, format, quality);
+        if (format == ImageFormat.Svg)
+        {
+            SaveSvg(filePath, width, height);
+            return;
+        }
+
+        if (format.IsRasterFormat())
+        {
+            using Image image = GetImage(width, height);
+            image.Save(filePath, format, quality);
+            return;
+        }
+
+        throw new NotImplementedException(format.ToString());
     }
 
     public byte[] GetImageBytes(int width, int height, ImageFormat format = ImageFormat.Bmp)
@@ -455,28 +474,34 @@ public class Plot : IDisposable
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
     /// Assign properties of <see cref="TitlePanel"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void Title(string text)
+    public void Title(string text, float? size = null)
     {
         TitlePanel.Label.Text = text;
         TitlePanel.IsVisible = !string.IsNullOrWhiteSpace(text);
+        if (size.HasValue)
+            TitlePanel.Label.Font.Size = size.Value;
     }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="BottomAxis"/> Label
     /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void XLabel(string label)
+    public void XLabel(string label, float? size = null)
     {
         BottomAxis.Label.Text = label;
+        if (size.HasValue)
+            BottomAxis.Label.Font.Size = size.Value;
     }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="BottomAxis"/> Label
     /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void YLabel(string label)
+    public void YLabel(string label, float? size = null)
     {
         LeftAxis.Label.Text = label;
+        if (size.HasValue)
+            LeftAxis.Label.Font.Size = size.Value;
     }
 
     /// <summary>

@@ -7,6 +7,16 @@
         xmlns:local="clr-namespace:Sandbox.WPF"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ScottPlot 5 - WPF Sandbox" Height="450" Width="800">
-    <ScottPlot:WpfPlot x:Name="WpfPlot" />
+        Title="ScottPlot 5 - WPF Sandbox" Height="300" Width="500">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="English" Click="English_Click" Margin="5" Padding="5" />
+                <Button Content="Chinese" Click="Chinese_Click" Margin="5" Padding="5" />
+                <Button Content="Japanese" Click="Japanese_Click" Margin="5" Padding="5" />
+                <Button Content="Korean" Click="Korean_Click" Margin="5" Padding="5" />
+            </StackPanel>
+        </StackPanel>
+        <ScottPlot:WpfPlot x:Name="WpfPlot" />
+    </DockPanel>
 </Window>
