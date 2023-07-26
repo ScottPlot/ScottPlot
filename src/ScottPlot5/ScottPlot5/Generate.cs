@@ -168,7 +168,7 @@ public static class Generate
     {
         RandomDataGenerator gen = new(seed);
         return Enumerable.Range(0, count)
-            .Select(_ => gen.RandomNumber(min, max))
+            .Select(_ => gen.RandomNumberInRange(min, max))
             .ToArray();
     }
 
@@ -176,7 +176,7 @@ public static class Generate
     {
         RandomDataGenerator gen = new(seed);
         return Enumerable.Range(0, count)
-            .Select(_ => gen.RandomNormal(mean, stdDev))
+            .Select(_ => gen.RandomNormalNumber(mean, stdDev))
             .ToArray();
     }
 
