@@ -9,8 +9,7 @@
 * Avalonia: Improve support for cross-platform and non-desktop applications (#2748) _Thanks @PremekTill_
 * Scatter Plot: Improve support for empty datasets (#2740)
 * Scatter Plot: Improve support for user-defined line widths (#2739, #2750) _Thanks @dayo05_
-* Fonts: Users can now assign `Fonts.Default` to set the font for all labels (#2753)
-* Fonts: Added `Fonts.Detect()` to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
+* Fonts: New static class to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
 * Axis: Exposed `TickFont` to allow tick label size and style customization (#2747) _Thanks @heartacker_
 * Plot: Added `Title()`, `XLabel()`, and `YLabel()` helper methods
 * Fonts: Favor the system default font to achieve better support international characters (#2746) _Thanks @heartacker_
@@ -22,6 +21,9 @@
 * Plot: Added support for SVG export (#2704, #717)
 * Legend: Respect `IsVisible` property (#2805)
 * Ticks: Added `NumericManual` tick generator for manually-defined tick positions and labels
+* Plot: `Title()`, `XLabel()`, and `YLabel()` have optional arguments for `size`
+* Plot: Added `Plot.Style.SetFont()` to apply the given font to all titles, axis labels, and tick labels
+* Plot: Added `Plot.Style.SetFontFromText()` to apply system font that best supports the language of the provided text (#2746) _Thanks @heartacker_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
