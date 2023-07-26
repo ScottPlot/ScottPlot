@@ -55,6 +55,13 @@ public struct CoordinateRect
         YMax = Math.Max(point.Y, pt2.Y);
     }
 
+    public bool Contains(double x, double y)
+    {
+        return x >= XMin && x <= XMax && y >= YMin && y <= YMax;
+    }
+
+    public bool Contains(Coordinates point) => Contains(point.X, point.Y);
+
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
     public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
