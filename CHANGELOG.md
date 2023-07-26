@@ -9,8 +9,7 @@
 * Avalonia: Improve support for cross-platform and non-desktop applications (#2748) _Thanks @PremekTill_
 * Scatter Plot: Improve support for empty datasets (#2740)
 * Scatter Plot: Improve support for user-defined line widths (#2739, #2750) _Thanks @dayo05_
-* Fonts: Users can now assign `Fonts.Default` to set the font for all labels (#2753)
-* Fonts: Added `Fonts.Detect()` to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
+* Fonts: New static class to facilitate selecting fonts that support international characters (#2746) _Thanks @heartacker_
 * Axis: Exposed `TickFont` to allow tick label size and style customization (#2747) _Thanks @heartacker_
 * Plot: Added `Title()`, `XLabel()`, and `YLabel()` helper methods
 * Fonts: Favor the system default font to achieve better support international characters (#2746) _Thanks @heartacker_
@@ -19,12 +18,22 @@
 * Plot: Added a `RenderManager` which has a `List<RenderAction>` the user can modify to customize the render sequence (#2767)
 * Plot: Refactored rendering system for all plottables, axes, etc. so canvases (not surfaces) are passed (#2767)
 * WPF: Improved support for display scaling (#2760, #2766) _Thanks @DmitryKotenev_
+* Plot: Added support for SVG export (#2704, #717)
+* Legend: Respect `IsVisible` property (#2805)
+* Ticks: Added `NumericManual` tick generator for manually-defined tick positions and labels
+* Plot: `Title()`, `XLabel()`, and `YLabel()` have optional arguments for `size`
+* Plot: Added `Plot.Style.SetFont()` to apply the given font to all titles, axis labels, and tick labels
+* Plot: Added `Plot.Style.SetFontFromText()` to apply system font that best supports the language of the provided text (#2746) _Thanks @heartacker_
+* RandomDataGenerator: Improved XML docs and added methods for returning single numbers (#2774, #2787) _Thanks @Silent0Wings_
+* Pixel: Added constructor overload that accepts `double` values (#2780) _Thanks @Silent0Wings_
+* Primitives: Refactored and added XML docs to `Pixel`, `PixelSize`, and `PixelRect` (#2784)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
 * Plot: Added optional arguments to `AddDataLogger()` and `AddDataStreamer()` for customizing style (#2733) _Thanks @KroMignon_
 * Version: Build information can now be accessed from the static `ScottPlot.Version` class
 * Avalonia: Removed dependency on `Avalonia.Desktop` package (#2752, #2748) _Thanks @Fruchtzwerg94_
+* Cookbook: Remove "experimental" designator from ScatterPlotList (#2782) _Thanks @prime167_
 
 ## ScottPlot 5.0.6-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_

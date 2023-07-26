@@ -63,7 +63,7 @@ internal static class WpfPlotExtensions
 
     internal static BitmapImage GetBitmapImage(this Plot plot, int width, int height)
     {
-        byte[] bytes = plot.GetImage(width, height).GetImageBytes();
+        byte[] bytes = plot.GetImageBytes(width, height);
         using MemoryStream ms = new(bytes);
 
         BitmapImage bmp = new();
