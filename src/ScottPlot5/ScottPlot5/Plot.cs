@@ -455,28 +455,34 @@ public class Plot : IDisposable
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
     /// Assign properties of <see cref="TitlePanel"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void Title(string text)
+    public void Title(string text, float? size = null)
     {
         TitlePanel.Label.Text = text;
         TitlePanel.IsVisible = !string.IsNullOrWhiteSpace(text);
+        if (size.HasValue)
+            TitlePanel.Label.Font.Size = size.Value;
     }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="BottomAxis"/> Label
     /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void XLabel(string label)
+    public void XLabel(string label, float? size = null)
     {
         BottomAxis.Label.Text = label;
+        if (size.HasValue)
+            BottomAxis.Label.Font.Size = size.Value;
     }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="BottomAxis"/> Label
     /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
     /// </summary>
-    public void YLabel(string label)
+    public void YLabel(string label, float? size = null)
     {
         LeftAxis.Label.Text = label;
+        if (size.HasValue)
+            LeftAxis.Label.Font.Size = size.Value;
     }
 
     /// <summary>
