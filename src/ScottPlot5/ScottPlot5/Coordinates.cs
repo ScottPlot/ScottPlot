@@ -14,6 +14,18 @@ public struct Coordinates
         Y = y;
     }
 
+    public double DistanceSquared(Coordinates pt)
+    {
+        double dX = Math.Abs(X - pt.X);
+        double dY = Math.Abs(Y - pt.Y);
+        return dX * dX + dY * dY;
+    }
+
+    public double Distance(Coordinates pt)
+    {
+        return Math.Sqrt(DistanceSquared(pt));
+    }
+
     public override string ToString()
     {
         return $"Coordinates: X={X}, Y={Y}";
