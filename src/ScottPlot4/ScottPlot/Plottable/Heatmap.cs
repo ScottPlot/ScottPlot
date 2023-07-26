@@ -180,6 +180,12 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool FlipHorizontally { get; set; } = false;
 
+        /// <summary>        
+        /// Specifies the degree to rotate the image clockwise from its top left corner.
+        /// The rotation is applied after any flip operations.
+        /// </summary>
+        public double Rotation { get; set; }
+
         public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
 
         public LegendItem[] GetLegendItems() => LegendItem.None;
@@ -483,6 +489,8 @@ namespace ScottPlot.Plottable
         {
             if (BmpHeatmap is null)
                 throw new InvalidOperationException("Update() was not called prior to rendering");
+            if (double.IsNaN(Rotation) || double.IsInfinity(Rotation))
+                throw new InvalidOperationException("rotation must be a real value");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -517,6 +525,8 @@ namespace ScottPlot.Plottable
                 y: FlipVertically ? -height : 0,
                 width: width,
                 height: height);
+
+            gfx.RotateTransform((float)Rotation);
 
             ColorMatrix cm = new() { Matrix33 = (float)Opacity };
             ImageAttributes att = new();
