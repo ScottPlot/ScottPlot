@@ -459,6 +459,30 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapRotation : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_rotation";
+        public string Title => "Heatmap Rotation";
+        public string Description =>
+            "A Heatmap can be rotated clockwise around its top-left corner. " +
+            "Locking axis scales to enforce square pixels is recommended. " +
+            "Rotation occurs after any flipping operations.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+
+            // add a heatmap and rotate it
+            var hm = plt.AddHeatmap(imageData, lockScales: true);
+            hm.Rotation = 45;
+
+            // mark the axis of rotation (the top left point)
+            PointF pt = new(x: 0, y: imageData.GetLength(0));
+            plt.AddMarker(pt.X, pt.Y, size: 20, color: Color.Magenta);
+        }
+    }
+
     public class HeatmapClipping : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
