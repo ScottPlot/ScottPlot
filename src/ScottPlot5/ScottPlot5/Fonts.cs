@@ -46,6 +46,16 @@ public static class Fonts
     }
 
     /// <summary>
+    /// Return the name of the font which will best display the given the first character of the given string.
+    /// This method helps identify the best fonts for displaying Chinese, Japanese, and Korean (CJK) characters.
+    /// </summary>
+    public static string? Detect(string s)
+    {
+        ReadOnlySpan<char> chars = s.AsSpan();
+        return Detect(chars[0]);
+    }
+
+    /// <summary>
     /// Returns true if the given font is present on the system
     /// </summary>
     public static bool Exists(string fontName)

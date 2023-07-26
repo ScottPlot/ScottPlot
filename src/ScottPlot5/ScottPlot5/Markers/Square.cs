@@ -4,7 +4,7 @@ internal class Square : IMarker
 {
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
-        PixelRect rect = PixelRect.Centered(center, radius: size / 2);
+        PixelRect rect = new(center: center, radius: size / 2);
 
         fill.ApplyToPaint(paint);
         canvas.DrawRect(rect.ToSKRect(), paint);
