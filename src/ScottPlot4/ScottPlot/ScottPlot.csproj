@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
         <TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
+        <LangVersion>11</LangVersion>
+
+        <OutputType>Library</OutputType>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <PackageIcon>icon.png</PackageIcon>
@@ -15,7 +17,6 @@
         <Version>4.1.65</Version>
         <AssemblyVersion>4.1.65.0</AssemblyVersion>
         <FileVersion>4.1.65.0</FileVersion>
-        <LangVersion>latest</LangVersion>
         <SignAssembly>true</SignAssembly>
         <DelaySign>false</DelaySign>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>

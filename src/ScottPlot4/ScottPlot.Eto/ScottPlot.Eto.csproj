@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
 
         <Version>4.1.65</Version>
         <AssemblyVersion>4.1.65.0</AssemblyVersion>

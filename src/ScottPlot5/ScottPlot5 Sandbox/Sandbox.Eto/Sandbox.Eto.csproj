@@ -5,7 +5,7 @@
         <TargetFramework>net462</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 

@@ -3,7 +3,7 @@
         <OutputType>Library</OutputType>
         <TargetFrameworks>net462;net472;netcoreapp3.1;net6.0</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
 
         <Version>4.1.65</Version>
         <AssemblyVersion>4.1.65.0</AssemblyVersion>
