@@ -10,7 +10,7 @@
         <StartupObject>ScottPlot.Demo.WinForms.Program</StartupObject>
         <PackageIcon></PackageIcon>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
         <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     </PropertyGroup>
 

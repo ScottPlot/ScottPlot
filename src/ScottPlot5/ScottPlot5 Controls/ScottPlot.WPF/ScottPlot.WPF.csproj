@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <ImplicitUsings>disable</ImplicitUsings>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>

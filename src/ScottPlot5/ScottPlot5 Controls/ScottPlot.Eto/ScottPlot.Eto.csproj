@@ -4,7 +4,7 @@
         <TargetFrameworks>net462;net6.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <!-- NuGet info -->

@@ -5,7 +5,7 @@
         <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 

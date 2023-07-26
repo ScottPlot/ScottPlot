@@ -4,7 +4,7 @@
         <TargetFrameworks>net461;net472;net48;netcoreapp3.1;net6.0-windows;</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <UseWindowsForms>true</UseWindowsForms>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
 
         <Version>4.1.65</Version>
         <AssemblyVersion>4.1.65.0</AssemblyVersion>

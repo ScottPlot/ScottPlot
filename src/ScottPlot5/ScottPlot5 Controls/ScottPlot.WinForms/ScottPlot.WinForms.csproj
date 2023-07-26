@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>11</LangVersion>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>
