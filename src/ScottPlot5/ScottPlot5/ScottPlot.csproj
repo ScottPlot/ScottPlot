@@ -51,7 +51,6 @@
 
     <ItemGroup>
       <Folder Include="Interfaces\" />
-      <Folder Include="Primitives\" />
     </ItemGroup>
 
 </Project>

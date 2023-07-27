@@ -9,7 +9,7 @@ public class LightOcean : IPalette
 
     public string Description { get; } = "A 9-color palette by Arthurits created by a mixture of light greens, blues, and purples";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

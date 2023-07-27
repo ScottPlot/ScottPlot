@@ -10,7 +10,7 @@ public class Amber : IPalette
 
     public string Description { get; } = string.Empty;
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(hexColors);
+    public Color[] Colors { get; } = Color.FromHex(hexColors);
 
     private static readonly string[] hexColors =
     {

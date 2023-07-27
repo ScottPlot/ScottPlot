@@ -183,7 +183,10 @@ internal class Box : RecipePageBase
             {
                 series[i] = new ScottPlot.Plottables.BoxGroup
                 {
-                    Fill = new FillStyle { Color = colorPalette.GetColor(i) },
+                    Fill = new FillStyle
+                    {
+                        Color = colorPalette.Colors[i % colorPalette.Colors.Length]
+                    },
                     Boxes = new ScottPlot.Plottables.Box[numBoxesPerSeries],
                 };
 

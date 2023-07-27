@@ -10,7 +10,7 @@ public class OneHalfDark : IPalette
 
     public string Description { get; } = "A Sublime color scheme by Son A. Pham: https://github.com/sonph/onehalf";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
+using System;
 
 namespace ScottPlot;
 
@@ -13,7 +14,7 @@ public class PlottableAdder
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color NextColor => Palette.GetColor(Plot.PlottableList.Count);
+    public Color NextColor => Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
 
     public PlottableAdder(Plot plot)
     {

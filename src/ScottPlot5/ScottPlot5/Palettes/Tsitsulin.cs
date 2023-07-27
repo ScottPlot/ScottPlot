@@ -13,7 +13,7 @@ public class Tsitsulin : IPalette
     public string Description { get; } = "A 25-color palette by Arthurits " +
         "adapted from Tsitsulin's 12-color xgfs palette: http://tsitsul.in/blog/coloropt";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

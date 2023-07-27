@@ -12,7 +12,7 @@ public class Penumbra : IPalette
     public string Description => "A perceptually uniform color palette " +
         "by Neal McKee: https://github.com/nealmckee/penumbra";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

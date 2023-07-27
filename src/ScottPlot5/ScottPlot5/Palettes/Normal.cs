@@ -12,7 +12,7 @@ public class Normal : IPalette
     public string Description { get; } = "A color palette adapted from " +
         "Tsitsulin's 6-color normal xgfs palette: http://tsitsul.in/blog/coloropt";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

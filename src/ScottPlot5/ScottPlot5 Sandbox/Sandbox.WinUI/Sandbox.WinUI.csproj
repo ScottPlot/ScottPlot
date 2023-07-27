@@ -8,7 +8,7 @@
         <IsPackable>false</IsPackable>
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
-        <nowarn>Uno0001</nowarn>
+        <nowarn>Uno0001, CS0436</nowarn>
     </PropertyGroup>
 
     <ItemGroup>

@@ -11,7 +11,7 @@ public class Redness : IPalette
 
     public string Description { get; } = string.Empty;
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

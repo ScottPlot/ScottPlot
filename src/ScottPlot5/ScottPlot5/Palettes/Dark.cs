@@ -11,7 +11,7 @@ public class Dark : IPalette
 
     public string Description { get; } = "A qualitative 8-color palette generated using colorbrewer2.org";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

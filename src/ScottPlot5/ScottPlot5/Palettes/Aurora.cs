@@ -12,7 +12,7 @@ public class Aurora : IPalette
     public string Description { get; } = "From the Nord " +
         "collection of palettes: https://github.com/arcticicestudio/nord";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

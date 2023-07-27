@@ -56,7 +56,7 @@ public class Category10 : IPalette
     public string Description { get; } = "A set of 10 unque colors used in " +
         "many data visualization libraries such as Matplotlib, Vega, and Tableau";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

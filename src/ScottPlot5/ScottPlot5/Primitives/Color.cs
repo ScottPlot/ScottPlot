@@ -7,6 +7,12 @@ public readonly struct Color
     public readonly byte Blue;
     public readonly byte Alpha;
 
+    // TODO: benchmark if referencing these is slower
+    public byte R => Red;
+    public byte G => Green;
+    public byte B => Blue;
+    public byte A => Alpha;
+
     public uint ARGB
     {
         get
@@ -18,7 +24,8 @@ public readonly struct Color
         }
     }
 
-    public Color(byte red, byte green, byte blue, byte alpha = 255)
+    public Color
+        (byte red, byte green, byte blue, byte alpha = 255)
     {
         Red = red;
         Green = green;

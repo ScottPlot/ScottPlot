@@ -13,7 +13,7 @@ public class Nord : IPalette
     public string Description => "From the Nord " +
         "ConEmu color scheme: https://github.com/arcticicestudio/nord-conemu";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

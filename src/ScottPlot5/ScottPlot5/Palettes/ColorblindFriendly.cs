@@ -13,7 +13,7 @@ public class ColorblindFriendly : IPalette
     public string Description { get; } = "A set of 8 colorblind-friendly colors " +
         "from Bang Wong's Nature Methods paper https://www.nature.com/articles/nmeth.1618.pdf";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {

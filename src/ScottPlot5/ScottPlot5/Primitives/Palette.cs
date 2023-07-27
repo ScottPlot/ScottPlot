@@ -15,7 +15,7 @@ public static class Palette
     /// </summary>
     public static IPalette FromColors(Color[] colors)
     {
-        return new Palettes.Custom(colors.Convert(), string.Empty, string.Empty);
+        return new Palettes.Custom(colors, string.Empty, string.Empty);
     }
 
     /// <summary>

@@ -5,7 +5,7 @@ public interface IPalette
     /// <summary>
     /// All colors in this palette
     /// </summary>
-    public SharedColor[] Colors { get; }
+    public Color[] Colors { get; }
 
     /// <summary>
     /// Display name
@@ -17,5 +17,6 @@ public interface IPalette
     /// </summary>
     public string Description { get; }
 
-    // NOTE: Implementing platforms should create their own GetColor() extension method
+    // TODO: THIS
+    //public Color GetColor(int index);
 }

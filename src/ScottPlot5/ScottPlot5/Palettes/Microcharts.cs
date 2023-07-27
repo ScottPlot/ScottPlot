@@ -14,7 +14,7 @@ public class Microcharts : IPalette
     public string Description { get; } = "Soft color palette sourced from " +
         "the Microcharts project: https://github.com/microcharts-dotnet/Microcharts";
 
-    public SharedColor[] Colors { get; } = SharedColor.FromHex(HexColors);
+    public Color[] Colors { get; } = Color.FromHex(HexColors);
 
     private static readonly string[] HexColors =
     {
