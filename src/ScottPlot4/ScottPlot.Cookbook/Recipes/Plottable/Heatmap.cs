@@ -473,17 +473,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[,] imageData = DataGen.SampleImageData();
 
-            for (int i=0; i<5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var hm = plt.AddHeatmap(imageData, lockScales: true);
                 hm.XMin = 0;
                 hm.XMax = 1;
                 hm.YMin = 0;
                 hm.YMax = 1;
-                hm.Rotation = i*10;
+                hm.Rotation = i * 10;
             }
 
-            for (int i=0; i<5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var hm = plt.AddHeatmap(imageData, lockScales: true);
                 hm.XMin = 2;
