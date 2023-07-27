@@ -3,6 +3,7 @@
  */
 
 using System.Runtime.InteropServices;
+using ScottPlot.IO;
 
 namespace ScottPlot;
 

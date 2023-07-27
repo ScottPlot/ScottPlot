@@ -11,7 +11,7 @@ public static class AddPlottableExtensions
     /// <summary>
     /// Add an OpenGL-accelerated scatter plot
     /// </summary>
-    public static Plottables.ScatterGL ScatterGL(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
+    public static Plottables.ScatterGL ScatterGL(this PlottableAdder add, IPlotControl control, double[] xs, double[] ys)
     {
         ScatterSourceXsYs source = new(xs, ys);
         IScatterSource sourceWithCaching = new CacheScatterLimitsDecorator(source);
@@ -26,7 +26,7 @@ public static class AddPlottableExtensions
     /// <summary>
     /// Add an OpenGL-accelerated scatter plot with customizable line width
     /// </summary>
-    public static Plottables.ScatterGLCustom ScatterGLCustom(this AddPlottable add, IPlotControl control, double[] xs, double[] ys)
+    public static Plottables.ScatterGLCustom ScatterGLCustom(this PlottableAdder add, IPlotControl control, double[] xs, double[] ys)
     {
         DataSources.ScatterSourceXsYs data = new(xs, ys);
         Plottables.ScatterGLCustom sp = new(data, control);

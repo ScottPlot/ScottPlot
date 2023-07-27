@@ -31,7 +31,7 @@ public class Plot : IDisposable
     public List<IGrid> Grids { get; } = new();
     public List<ILegend> Legends { get; } = new();
     public List<IPlottable> PlottableList { get; } = new();
-    public AddPlottable Add { get; }
+    public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();

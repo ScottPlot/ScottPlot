@@ -7,7 +7,7 @@ namespace ScottPlot;
 /// <summary>
 /// Helper methods to create plottable objects and add them to the plot
 /// </summary>
-public class AddPlottable
+public class PlottableAdder
 {
     private readonly Plot Plot;
 
@@ -15,7 +15,7 @@ public class AddPlottable
 
     public Color NextColor => Palette.GetColor(Plot.PlottableList.Count);
 
-    public AddPlottable(Plot plot)
+    public PlottableAdder(Plot plot)
     {
         Plot = plot;
     }

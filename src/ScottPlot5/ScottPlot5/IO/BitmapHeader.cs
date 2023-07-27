@@ -5,7 +5,7 @@
  */
 using System.Runtime.InteropServices;
 
-namespace ScottPlot;
+namespace ScottPlot.IO;
 
 /// <summary>
 /// This struct holds values that define the first several bytes of a bitmap file.
