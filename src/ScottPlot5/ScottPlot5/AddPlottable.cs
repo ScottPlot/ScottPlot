@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
-using System.Collections.ObjectModel;
 
 namespace ScottPlot;
 
@@ -19,6 +18,17 @@ public class AddPlottable
     public AddPlottable(Plot plot)
     {
         Plot = plot;
+    }
+
+    public Crosshair Crosshair(double x, double y)
+    {
+        Crosshair ch = new()
+        {
+            Position = new(x, y)
+        };
+        ch.LineStyle.Color = NextColor;
+        Plot.Plottables.Add(ch);
+        return ch;
     }
 
     public Heatmap Heatmap(double[,] intensities)
