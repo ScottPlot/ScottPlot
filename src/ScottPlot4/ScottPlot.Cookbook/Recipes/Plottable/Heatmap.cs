@@ -465,7 +465,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_rotation";
         public string Title => "Heatmap Rotation";
         public string Description =>
-            "A Heatmap can be rotated clockwise around its top-left corner. " +
+            "A Heatmap can be rotated clockwise around around a user-specified center of rotation. " +
             "Locking axis scales to enforce square pixels is recommended. " +
             "Rotation occurs after any flipping operations.";
 
@@ -473,13 +473,30 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[,] imageData = DataGen.SampleImageData();
 
-            // add a heatmap and rotate it
-            var hm = plt.AddHeatmap(imageData, lockScales: true);
-            hm.Rotation = 45;
+            for (int i=0; i<5; i++)
+            {
+                var hm = plt.AddHeatmap(imageData, lockScales: true);
+                hm.XMin = 0;
+                hm.XMax = 1;
+                hm.YMin = 0;
+                hm.YMax = 1;
+                hm.Rotation = i*10;
+            }
 
-            // mark the axis of rotation (the top left point)
-            PointF pt = new(x: 0, y: imageData.GetLength(0));
-            plt.AddMarker(pt.X, pt.Y, size: 20, color: Color.Magenta);
+            for (int i=0; i<5; i++)
+            {
+                var hm = plt.AddHeatmap(imageData, lockScales: true);
+                hm.XMin = 2;
+                hm.XMax = 3;
+                hm.YMin = 0;
+                hm.YMax = 1;
+
+                hm.CenterOfRotation = Alignment.MiddleCenter;
+
+                hm.Rotation = i * 10;
+            }
+
+            plt.SetAxisLimits(-1, 4, -1, 2);
         }
     }
 

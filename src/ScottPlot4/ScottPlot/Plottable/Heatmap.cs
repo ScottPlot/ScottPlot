@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -181,10 +182,14 @@ namespace ScottPlot.Plottable
         public bool FlipHorizontally { get; set; } = false;
 
         /// <summary>        
-        /// Specifies the degree to rotate the image clockwise from its top left corner.
-        /// The rotation is applied after any flip operations.
+        /// Amount of rotation (degrees) clockwise around the point described by <see cref="CenterOfRotation"/>
         /// </summary>
         public double Rotation { get; set; }
+
+        /// <summary>
+        /// Indicates which corner will be the axis of Rotation.
+        /// </summary>
+        public Alignment CenterOfRotation { get; set; }
 
         public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
 
@@ -493,6 +498,23 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("rotation must be a real value");
         }
 
+        private PointF ImageLocationOffset(float width, float height)
+        {
+            return CenterOfRotation switch
+            {
+                Alignment.LowerCenter => new PointF(-width / 2, -height),
+                Alignment.LowerLeft => new PointF(0, -height),
+                Alignment.LowerRight => new PointF(-width, -height),
+                Alignment.MiddleLeft => new PointF(0, -height / 2),
+                Alignment.MiddleRight => new PointF(-width, -height / 2),
+                Alignment.UpperCenter => new PointF(-width / 2, 0),
+                Alignment.UpperLeft => new PointF(0, 0),
+                Alignment.UpperRight => new PointF(-width, 0),
+                Alignment.MiddleCenter => new PointF(-width / 2, -height / 2),
+                _ => throw new InvalidEnumArgumentException(),
+            };
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
@@ -526,7 +548,14 @@ namespace ScottPlot.Plottable
                 width: width,
                 height: height);
 
-            gfx.RotateTransform((float)Rotation);
+            if (Rotation != 0)
+            {
+                // Translate to center of image (relative to its position), rotate, translate back
+                var offsetPoint = ImageLocationOffset(width, height);
+                gfx.TranslateTransform(-offsetPoint.X, -offsetPoint.Y);
+                gfx.RotateTransform((float)Rotation);
+                gfx.TranslateTransform(offsetPoint.X, offsetPoint.Y);
+            }
 
             ColorMatrix cm = new() { Matrix33 = (float)Opacity };
             ImageAttributes att = new();
