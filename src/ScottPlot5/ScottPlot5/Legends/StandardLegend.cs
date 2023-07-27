@@ -31,7 +31,7 @@ public class StandardLegend : ILegend
         if (!IsVisible)
             return;
 
-        LegendItem[] items = rp.Plot.Plottables.SelectMany(x => x.LegendItems).ToArray();
+        LegendItem[] items = rp.Plot.PlottableList.SelectMany(x => x.LegendItems).ToArray();
 
         if (ManualLegendItems is not null)
             items = ManualLegendItems.ToArray();

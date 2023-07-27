@@ -4,7 +4,7 @@ public class RenderPlottables : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        foreach (var plottable in rp.Plot.Plottables.Where(x => x.IsVisible))
+        foreach (var plottable in rp.Plot.PlottableList.Where(x => x.IsVisible))
         {
             plottable.Axes.DataRect = rp.DataRect;
             rp.Canvas.Save();

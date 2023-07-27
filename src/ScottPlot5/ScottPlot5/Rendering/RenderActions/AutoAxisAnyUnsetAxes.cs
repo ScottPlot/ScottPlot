@@ -4,7 +4,7 @@ public class AutoAxisAnyUnsetAxes : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        foreach (IPlottable plottable in rp.Plot.Plottables)
+        foreach (IPlottable plottable in rp.Plot.PlottableList)
         {
             if (!plottable.Axes.XAxis.Range.HasBeenSet || !plottable.Axes.YAxis.Range.HasBeenSet)
             {

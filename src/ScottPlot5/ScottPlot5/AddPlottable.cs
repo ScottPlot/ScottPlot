@@ -13,7 +13,7 @@ public class AddPlottable
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color NextColor => Palette.GetColor(Plot.Plottables.Count);
+    public Color NextColor => Palette.GetColor(Plot.PlottableList.Count);
 
     public AddPlottable(Plot plot)
     {
@@ -27,21 +27,21 @@ public class AddPlottable
             Position = new(x, y)
         };
         ch.LineStyle.Color = NextColor;
-        Plot.Plottables.Add(ch);
+        Plot.PlottableList.Add(ch);
         return ch;
     }
 
     public Heatmap Heatmap(double[,] intensities)
     {
         Heatmap heatmap = new(intensities);
-        Plot.Plottables.Add(heatmap);
+        Plot.PlottableList.Add(heatmap);
         return heatmap;
     }
 
     public Pie Pie(IList<PieSlice> slices)
     {
         Pie pie = new(slices);
-        Plot.Plottables.Add(pie);
+        Plot.PlottableList.Add(pie);
         return pie;
     }
 
@@ -53,13 +53,13 @@ public class AddPlottable
             Fill = new() { Color = NextColor },
         }).ToList();
         var pie = Pie(slices);
-        Plot.Plottables.Add(pie);
+        Plot.PlottableList.Add(pie);
         return pie;
     }
 
     public void Plottable(IPlottable plottable)
     {
-        Plot.Plottables.Add(plottable);
+        Plot.PlottableList.Add(plottable);
     }
 
     public Scatter Scatter(IScatterSource data, Color? color = null)
@@ -68,7 +68,7 @@ public class AddPlottable
         Scatter scatter = new(data);
         scatter.LineStyle.Color = nextColor;
         scatter.MarkerStyle.Fill.Color = nextColor;
-        Plot.Plottables.Add(scatter);
+        Plot.PlottableList.Add(scatter);
         return scatter;
     }
 
@@ -89,7 +89,7 @@ public class AddPlottable
         var sig = new Signal(data);
         sig.LineStyle.Color = nextColor;
         sig.Marker.Fill.Color = nextColor;
-        Plot.Plottables.Add(sig);
+        Plot.PlottableList.Add(sig);
         return sig;
     }
 
@@ -102,7 +102,7 @@ public class AddPlottable
     public BarPlot Bar(IList<BarSeries> series)
     {
         var barPlot = new BarPlot(series);
-        Plot.Plottables.Add(barPlot);
+        Plot.PlottableList.Add(barPlot);
         return barPlot;
     }
 
@@ -146,7 +146,7 @@ public class AddPlottable
             Groups = boxGroups,
         };
 
-        Plot.Plottables.Add(boxPlot);
+        Plot.PlottableList.Add(boxPlot);
         return boxPlot;
     }
 
@@ -154,7 +154,7 @@ public class AddPlottable
     {
         OHLCSource dataSource = new(ohlcs);
         CandlestickPlot candlestickPlot = new(dataSource);
-        Plot.Plottables.Add(candlestickPlot);
+        Plot.PlottableList.Add(candlestickPlot);
         return candlestickPlot;
     }
 
@@ -170,7 +170,7 @@ public class AddPlottable
     {
         color ??= NextColor;
         ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
-        Plot.Plottables.Add(errorBar);
+        Plot.PlottableList.Add(errorBar);
         return errorBar;
     }
 
@@ -178,14 +178,14 @@ public class AddPlottable
     {
         OHLCSource dataSource = new(ohlcs);
         OhlcPlot ohlc = new(dataSource);
-        Plot.Plottables.Add(ohlc);
+        Plot.PlottableList.Add(ohlc);
         return ohlc;
     }
 
     public Polygon Polygon(Coordinates[] coordinates)
     {
         Polygon poly = new Polygon(coordinates);
-        Plot.Plottables.Add(poly);
+        Plot.PlottableList.Add(poly);
         return poly;
     }
 
@@ -211,7 +211,7 @@ public class AddPlottable
     {
         FillY rangePlot = new(scatter1, scatter2);
         rangePlot.FillStyle.Color = NextColor;
-        Plot.Plottables.Add(rangePlot);
+        Plot.PlottableList.Add(rangePlot);
         return rangePlot;
     }
 
@@ -223,7 +223,7 @@ public class AddPlottable
         FillY rangePlot = new();
         rangePlot.FillStyle.Color = NextColor;
         rangePlot.SetDataSource(data);
-        Plot.Plottables.Add(rangePlot);
+        Plot.PlottableList.Add(rangePlot);
         return rangePlot;
     }
 
@@ -236,7 +236,7 @@ public class AddPlottable
         var rangePlot = new FillY();
         rangePlot.FillStyle.Color = NextColor;
         rangePlot.SetDataSource(data, function);
-        Plot.Plottables.Add(rangePlot);
+        Plot.PlottableList.Add(rangePlot);
         return rangePlot;
     }
 }

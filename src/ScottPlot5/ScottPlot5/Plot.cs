@@ -30,7 +30,7 @@ public class Plot : IDisposable
 
     public List<IGrid> Grids { get; } = new();
     public List<ILegend> Legends { get; } = new();
-    public List<IPlottable> Plottables { get; } = new();
+    public List<IPlottable> PlottableList { get; } = new();
     public AddPlottable Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
@@ -115,7 +115,7 @@ public class Plot : IDisposable
 
     public void Dispose()
     {
-        Plottables.Clear();
+        PlottableList.Clear();
         Grids.Clear();
         Panels.Clear();
         YAxes.Clear();
@@ -202,7 +202,7 @@ public class Plot : IDisposable
         ReplaceNullAxesWithDefaults();
 
         // expand all axes by the limits of each plot
-        foreach (IPlottable plottable in Plottables)
+        foreach (IPlottable plottable in PlottableList)
         {
             AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, tight);
         }
@@ -213,7 +213,7 @@ public class Plot : IDisposable
     /// </summary>
     internal void ReplaceNullAxesWithDefaults()
     {
-        foreach (var plottable in Plottables)
+        foreach (var plottable in PlottableList)
         {
             if (plottable.Axes.XAxis is null)
                 plottable.Axes.XAxis = XAxis;
@@ -236,7 +236,7 @@ public class Plot : IDisposable
         ReplaceNullAxesWithDefaults();
 
         // expand all axes by the limits of each plot
-        foreach (IPlottable plottable in Plottables)
+        foreach (IPlottable plottable in PlottableList)
         {
             AxisLimits limits = plottable.GetAxisLimits();
             plottable.Axes.YAxis.Range.Expand(limits.Rect.YRange);
@@ -474,9 +474,9 @@ public class Plot : IDisposable
     #region Helper Methods
 
     /// <summary>
-    /// Clears the <see cref="Plottables"/> list
+    /// Clears the <see cref="PlottableList"/> list
     /// </summary>
-    public void Clear() => Plottables.Clear();
+    public void Clear() => PlottableList.Clear();
 
     /// <summary>
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
