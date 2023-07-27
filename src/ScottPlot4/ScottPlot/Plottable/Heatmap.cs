@@ -182,8 +182,7 @@ namespace ScottPlot.Plottable
         public bool FlipHorizontally { get; set; } = false;
 
         /// <summary>        
-        /// Specifies the degree to rotate the image clockwise from its top left corner.
-        /// The rotation is applied after any flip operations.
+        /// Amount of rotation (degrees) clockwise around the point described by <see cref="CenterOfRotation"/>
         /// </summary>
         public double Rotation { get; set; }
 
@@ -549,12 +548,14 @@ namespace ScottPlot.Plottable
                 width: width,
                 height: height);
 
-            // Translate to center of image (relative to its position), rotate, translate back
-            var offsetPoint = ImageLocationOffset(width, height);
-
-            gfx.TranslateTransform(-offsetPoint.X, -offsetPoint.Y);
-            gfx.RotateTransform((float)Rotation);
-            gfx.TranslateTransform(offsetPoint.X, offsetPoint.Y);
+            if (Rotation != 0)
+            {
+                // Translate to center of image (relative to its position), rotate, translate back
+                var offsetPoint = ImageLocationOffset(width, height);
+                gfx.TranslateTransform(-offsetPoint.X, -offsetPoint.Y);
+                gfx.RotateTransform((float)Rotation);
+                gfx.TranslateTransform(offsetPoint.X, offsetPoint.Y);
+            }
 
             ColorMatrix cm = new() { Matrix33 = (float)Opacity };
             ImageAttributes att = new();
