@@ -1,19 +1,14 @@
-﻿/* WARNING: DO NOT MODIFY THIS API! IT IS USED BY SCOTTPLOT 4 AND SCOTTPLOT 5 
- *
- */
-
-using System; // DO NOT REMOVE - required for .NET Framework
-using System.Collections.Generic; // DO NOT REMOVE - required for .NET Framework
-using System.Linq.Expressions; // DO NOT REMOVE - required for .NET Framework
-using System.Runtime.CompilerServices; // DO NOT REMOVE - required for .NET Framework
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace ScottPlot
 {
-    /* See discussion in https://github.com/ScottPlot/ScottPlot/pull/1927 */
-
     /// <summary>
     /// This class contains type-specific methods to convert between generic values and doubles
     /// optimized for performance using platform-specific features.
+    /// See discussion in https://github.com/ScottPlot/ScottPlot/pull/1927
     /// </summary>
     public static class NumericConversion
     {
