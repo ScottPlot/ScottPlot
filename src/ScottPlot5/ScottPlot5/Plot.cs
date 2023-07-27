@@ -295,7 +295,7 @@ public class Plot : IDisposable
     /// </summary>
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
-        Coordinates mouseCoordinate = GetCoordinate(pixel);
+        Coordinates mouseCoordinate = GetCoordinates(pixel);
         MultiAxisLimits originalLimits = GetMultiAxisLimits();
 
         // restore mousedown limits
@@ -335,13 +335,21 @@ public class Plot : IDisposable
     /// <summary>
     /// Return the coordinate for a specific pixel using measurements from the most recent render.
     /// </summary>
-    public Coordinates GetCoordinate(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    public Coordinates GetCoordinates(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        // TODO: multi-axis support
         PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
-        double x = XAxis.GetCoordinate(pixel.X, dataRect);
-        double y = YAxis.GetCoordinate(pixel.Y, dataRect);
+        double x = (xAxis ?? XAxis).GetCoordinate(pixel.X, dataRect);
+        double y = (yAxis ?? YAxis).GetCoordinate(pixel.Y, dataRect);
         return new Coordinates(x, y);
+    }
+
+    /// <summary>
+    /// Return the coordinate for a specific pixel using measurements from the most recent render.
+    /// </summary>
+    public Coordinates GetCoordinates(float x, float y, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        Pixel px = new(x, y);
+        return GetCoordinates(px, xAxis, yAxis);
     }
 
     #endregion

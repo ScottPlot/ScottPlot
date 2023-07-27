@@ -45,7 +45,7 @@ public class Interaction
     /// </summary>
     public Coordinates GetMouseCoordinates(IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return Control.Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
+        return Control.Plot.GetCoordinates(Mouse.LastPosition, xAxis, yAxis);
     }
 
     public virtual void OnMouseMove(Pixel newPosition)
