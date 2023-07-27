@@ -39,7 +39,7 @@ public struct Pixel
 
     public override string ToString()
     {
-        return $"Pixel: X={X}, Y={Y}";
+        return $"Pixel {{ X = {X}, Y = {Y} }}";
     }
 
     /// <summary>

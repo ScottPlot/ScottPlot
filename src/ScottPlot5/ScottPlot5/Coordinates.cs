@@ -28,7 +28,7 @@ public struct Coordinates
 
     public override string ToString()
     {
-        return $"Coordinates: X={X}, Y={Y}";
+        return $"Coordinates {{ X = {X}, Y = {Y} }}";
     }
 
     public static Coordinates NaN => new(double.NaN, double.NaN);
