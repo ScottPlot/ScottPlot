@@ -70,6 +70,7 @@ jobs:
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
           git config --global user.email 'swharden@gmail.com'
+          git pull
           git commit -am "CI: autoformat"
           git push
 
