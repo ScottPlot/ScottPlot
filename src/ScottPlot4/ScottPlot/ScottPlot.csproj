@@ -87,10 +87,4 @@
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 
-    <!-- Get a few source files from ScottPlot5 -->
-    <ItemGroup>
-        <Compile Include="..\..\ScottPlot5\ScottPlot5\Generate.cs" />
-        <Compile Include="..\..\ScottPlot5\ScottPlot5\RandomDataGenerator.cs" />
-    </ItemGroup>
-
 </Project>
