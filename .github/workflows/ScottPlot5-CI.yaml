@@ -53,6 +53,7 @@ jobs:
         run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   full-build:
+    needs: [test-linux, test-windows]
     name: Full Build
     runs-on: windows-latest
     steps:
@@ -72,6 +73,7 @@ jobs:
         run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   check-format:
+    needs: [test-linux, test-windows, full-build]
     name: Ensure 'dotnet format' was run
     runs-on: windows-latest
     steps:
