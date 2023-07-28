@@ -5,7 +5,7 @@ public interface IPalette
     /// <summary>
     /// All colors in this palette
     /// </summary>
-    public SharedColor[] Colors { get; }
+    public System.Drawing.Color[] Colors { get; }
 
     /// <summary>
     /// Display name

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using System.Reflection;
 
 namespace ScottPlot;
@@ -42,7 +40,7 @@ public static class Palette
     /// </summary>
     public static IPalette FromColors(Color[] colors, string name = "", string description = "")
     {
-        return new Palettes.Custom(colors.Convert(), name, description);
+        return new Palettes.Custom(colors, name, description);
     }
 
     /// <summary>

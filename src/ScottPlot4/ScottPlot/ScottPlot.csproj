@@ -91,7 +91,6 @@
     <ItemGroup>
         <Compile Include="..\..\ScottPlot5\ScottPlot5\Generate.cs" />
         <Compile Include="..\..\ScottPlot5\ScottPlot5\RandomDataGenerator.cs" />
-        <Compile Include="..\..\ScottPlot5\ScottPlot5\Palettes\*.cs" LinkBase="Palettes" />
     </ItemGroup>
 
 </Project>

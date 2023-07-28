@@ -28,14 +28,14 @@ public static class SharedExtensions
     public static Color GetColor(this IPalette pal, int index)
     {
         int colorIndex = index % pal.Colors.Length;
-        SharedColor color = pal.Colors[colorIndex];
-        return color.Convert();
+        Color color = pal.Colors[colorIndex];
+        return color;
     }
 
     public static Color GetColor(this IPalette pal, int index, double alpha)
     {
         int colorIndex = index % pal.Colors.Length;
-        SharedColor color = pal.Colors[colorIndex];
+        Color color = pal.Colors[colorIndex];
         return Color.FromArgb((byte)(alpha * 255), color.R, color.G, color.B);
     }
 
