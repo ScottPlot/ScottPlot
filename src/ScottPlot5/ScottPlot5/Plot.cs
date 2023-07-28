@@ -39,7 +39,7 @@ public class Plot : IDisposable
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
     public IZoomRectangle ZoomRectangle { get; set; }
-    public float ScaleFactor = 1.0f;
+    public float ScaleFactor { get; set; } = 1.0f;
 
     public AxisStyler Axes { get; }
 
