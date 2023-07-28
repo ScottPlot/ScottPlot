@@ -28,8 +28,6 @@ jobs:
         run: dotnet build ${{env.SLN_SP5_TEST}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_TEST}} --configuration Release --verbosity minimal
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
 
   test-windows:
     needs: [test-linux]
@@ -50,8 +48,6 @@ jobs:
         run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP5_FULL}} --configuration Release --verbosity minimal
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
   check-format:
     needs: [test-linux, test-windows]

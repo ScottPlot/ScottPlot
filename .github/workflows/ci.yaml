@@ -62,8 +62,6 @@ jobs:
         run: dotnet build ${{ env.SOLUTION }} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
-      - name: 📦 Package
-        run: dotnet pack ${{ env.SOLUTION }} --configuration Release
       - name: ✍️ Autoformat
         run: dotnet format ${{ env.SOLUTION }}
       - name: 🚀 Push Formatting Changes

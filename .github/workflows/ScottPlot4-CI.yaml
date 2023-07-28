@@ -26,8 +26,6 @@ jobs:
         run: dotnet restore ${{env.SLN_SP4_TEST}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP4_TEST}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --verbosity minimal
 
@@ -48,8 +46,6 @@ jobs:
         run: dotnet restore ${{env.SLN_SP4_FULL}}
       - name: 🛠️ Build
         run: dotnet build ${{env.SLN_SP4_FULL}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP4_TEST}} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{env.SLN_SP4_TEST}} --configuration Release --verbosity minimal
 
