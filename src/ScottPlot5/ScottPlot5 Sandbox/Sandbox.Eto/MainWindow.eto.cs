@@ -1,25 +1,16 @@
 ﻿using Eto.Forms;
 using ScottPlot.Eto;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sandbox.Eto
+namespace Sandbox.Eto;
+
+public partial class MainWindow : Form
 {
-    public partial class MainWindow : Form
+    private readonly EtoPlot EtoPlot1 = new();
+
+    private void InitializeComponent()
     {
-        private EtoPlot etoPlot = null!;
-
-        private void InitializeComponent()
-        {
-            etoPlot = new();
-            this.Content = etoPlot;
-
-            this.Width = 800;
-            this.Height = 600;
-        }
+        Content = EtoPlot1;
+        Width = 800;
+        Height = 600;
     }
 }

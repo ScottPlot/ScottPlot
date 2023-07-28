@@ -8,8 +8,15 @@ partial class MainWindow : Form
     public MainWindow()
     {
         InitializeComponent();
-        etoPlot.Plot.Add.Signal(Generate.Sin(51));
-        etoPlot.Plot.Add.Signal(Generate.Cos(51));
-        etoPlot.Refresh();
+
+        var crosshair = EtoPlot1.Plot.Add.Crosshair(0, 0);
+
+        EtoPlot1.MouseMove += (s, e) =>
+        {
+            Pixel mousePixel = new(e.Location.X, e.Location.Y);
+            Coordinates mouseCoordinates = EtoPlot1.GetCoordinates(mousePixel);
+            crosshair.Position = mouseCoordinates;
+            EtoPlot1.Refresh();
+        };
     }
 }

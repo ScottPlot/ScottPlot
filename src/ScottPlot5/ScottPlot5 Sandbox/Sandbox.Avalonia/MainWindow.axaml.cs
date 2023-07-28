@@ -2,20 +2,24 @@
 using Avalonia.Controls;
 using ScottPlot.Avalonia;
 using ScottPlot;
-using Avalonia.Markup.Xaml;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace Sandbox.Avalonia;
 
 public partial class MainWindow : Window
 {
-
     public MainWindow()
     {
         InitializeComponent();
 
-        AvaPlot.Plot.Add.Signal(Generate.Sin(51));
-        AvaPlot.Plot.Add.Signal(Generate.Cos(51));
+        var crosshair = AvaPlot.Plot.Add.Crosshair(0, 0);
+
+        AvaPlot.PointerMoved += (s, e) =>
+        {
+            Point mousePoint = e.GetPosition(this);
+            Pixel mousePixel = new(mousePoint.X, mousePoint.Y);
+            Coordinates mouseCoordinates = AvaPlot.GetCoordinates(mousePixel);
+            crosshair.Position = mouseCoordinates;
+            AvaPlot.Refresh();
+        };
     }
 }

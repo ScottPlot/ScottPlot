@@ -1,24 +1,25 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Windows.Foundation;
 using ScottPlot;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+namespace Sandbox.WinUI;
 
-namespace Sandbox.WinUI
+public sealed partial class MainPage : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public MainPage()
     {
-        public MainPage()
+        InitializeComponent();
+        WinUIPlot.AppWindow = App.MainWindow;
+
+        var crosshair = WinUIPlot.Plot.Add.Crosshair(0, 0);
+
+        WinUIPlot.PointerMoved += (s, e) =>
         {
-            this.InitializeComponent();
-
-            App.MainWindow.Title = "ScottPlot 5 - WinUI Sandbox";
-            WinUIPlot.AppWindow = App.MainWindow;
-
-            WinUIPlot.Plot.Add.Signal(Generate.Sin(51));
-            WinUIPlot.Plot.Add.Signal(Generate.Cos(51));
-        }
+            Point mousePoint = e.GetCurrentPoint(this).Position;
+            Pixel mousePixel = new(mousePoint.X, mousePoint.Y);
+            Coordinates mouseCoordinates = WinUIPlot.GetCoordinates(mousePixel);
+            crosshair.Position = mouseCoordinates;
+            WinUIPlot.Refresh();
+        };
     }
 }
