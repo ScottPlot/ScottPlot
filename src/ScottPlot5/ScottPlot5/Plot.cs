@@ -263,13 +263,16 @@ public class Plot : IDisposable
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
 
+        float scaledDeltaX = pixelDeltaX / ScaleFactor;
+        float scaledDeltaY = pixelDeltaY / ScaleFactor;
+
         // restore mousedown limits
-        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
-        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
+        XAxes.ForEach(originalLimits.RestoreLimits);
+        YAxes.ForEach(originalLimits.RestoreLimits);
 
         // pan in the direction opposite of the mouse movement
-        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(pixelDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(pixelDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
     }
 
     /// <summary>
@@ -303,8 +306,9 @@ public class Plot : IDisposable
         YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
 
         // apply zoom for each axis
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, RenderManager.LastRenderInfo.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, RenderManager.LastRenderInfo.DataRect)));
+        Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRenderInfo.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRenderInfo.DataRect)));
     }
 
     /// <summary>
@@ -316,7 +320,9 @@ public class Plot : IDisposable
     /// <param name="hSpan">If true, shade the full region between two Y positions</param>
     public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
     {
-        ZoomRectangle.Update(mouseDown, mouseNow);
+        Pixel scaledMouseDown = new(mouseDown.X / ScaleFactor, mouseDown.Y / ScaleFactor);
+        Pixel scaledMouseNow = new(mouseNow.X / ScaleFactor, mouseNow.Y / ScaleFactor);
+        ZoomRectangle.Update(scaledMouseDown, scaledMouseNow);
         ZoomRectangle.VerticalSpan = vSpan;
         ZoomRectangle.HorizontalSpan = hSpan;
     }
@@ -324,11 +330,12 @@ public class Plot : IDisposable
     /// <summary>
     /// Return the pixel for a specific coordinate using measurements from the most recent render.
     /// </summary>
-    public Pixel GetPixel(Coordinates coord)
+    public Pixel GetPixel(Coordinates coordinates)
     {
+        Coordinates scaledCoordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
         PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
-        float x = XAxis.GetPixel(coord.X, dataRect);
-        float y = YAxis.GetPixel(coord.Y, dataRect);
+        float x = XAxis.GetPixel(scaledCoordinates.X, dataRect);
+        float y = YAxis.GetPixel(scaledCoordinates.Y, dataRect);
         return new Pixel(x, y);
     }
 
@@ -337,9 +344,10 @@ public class Plot : IDisposable
     /// </summary>
     public Coordinates GetCoordinates(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
+        Pixel scaledPx = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
         PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
-        double x = (xAxis ?? XAxis).GetCoordinate(pixel.X, dataRect);
-        double y = (yAxis ?? YAxis).GetCoordinate(pixel.Y, dataRect);
+        double x = (xAxis ?? XAxis).GetCoordinate(scaledPx.X, dataRect);
+        double y = (yAxis ?? YAxis).GetCoordinate(scaledPx.Y, dataRect);
         return new Coordinates(x, y);
     }
 
