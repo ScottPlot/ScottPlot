@@ -40,6 +40,7 @@
 * Avalonia: Removed dependency on `Avalonia.Desktop` package (#2752, #2748) _Thanks @Fruchtzwerg94_
 * Cookbook: Remove "experimental" designator from ScatterPlotList (#2782) _Thanks @prime167_
 * Heatmap: Added `Rotation` and `CenterOfRotation` properties (#2814, #2815) _Thanks @bukkideme_
+* WPF: Improved the `PlottableDragged` event (#2820) _Thanks @tadmccorkle_
 
 ## ScottPlot 5.0.6-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_
