@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
 using System.Windows.Media;
+using ScottPlot.Axis;
 
 namespace ScottPlot.WPF
 {
@@ -23,6 +24,8 @@ namespace ScottPlot.WPF
 
         public GRContext GRContext => SKElement?.GRContext ?? GRContext.CreateGl();
 
+        public float DisplayScale { get; set; }
+
         static WpfPlot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -32,6 +35,8 @@ namespace ScottPlot.WPF
 
         public WpfPlot()
         {
+            DisplayScale = DetectDisplayScale();
+
             Plot = Reset();
 
             Interaction = new(this)
@@ -98,10 +103,7 @@ namespace ScottPlot.WPF
 
         public Plot Reset()
         {
-            return new Plot()
-            {
-                //ScaleFactor = (float)VisualTreeHelper.GetDpi(this).DpiScaleX
-            };
+            return new Plot();
         }
 
         public void Replace(Interaction interaction)
@@ -146,6 +148,18 @@ namespace ScottPlot.WPF
         {
             BitmapImage bmp = Plot.GetBitmapImage((int)ActualWidth, (int)ActualHeight);
             Clipboard.SetImage(bmp);
+        }
+
+        public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
+        {
+            float x = px.X * DisplayScale;
+            float y = px.Y * DisplayScale;
+            return Plot.GetCoordinates(x, y, xAxis, yAxis);
+        }
+
+        public float DetectDisplayScale()
+        {
+            return (float)VisualTreeHelper.GetDpi(this).DpiScaleX;
         }
     }
 }

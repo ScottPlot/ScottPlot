@@ -20,17 +20,18 @@ public partial class MouseTracker : Form, IDemoWindow
         formsPlot1.MouseMove += (s, e) =>
         {
             // demonstrate pixel-to-coordinates
-            Coordinates coordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
+            Pixel px = new(e.X, e.Y);
+            Coordinates coordinates = formsPlot1.GetCoordinates(px);
 
             // demonstrate coordinates-to-pixel
-            Pixel px = formsPlot1.Plot.GetPixel(coordinates);
+            Pixel px2 = formsPlot1.Plot.GetPixel(coordinates);
 
             // place the crosshair where the mouse is
             CH.Position = coordinates;
             formsPlot1.Refresh();
 
             // display where the mouse is in the titlebar
-            Text = $"{px} {coordinates}";
+            Text = $"{px2} {coordinates}";
         };
     }
 }

@@ -7,6 +7,7 @@ using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
 using System.IO;
+using ScottPlot.Axis;
 
 namespace ScottPlot.Eto;
 
@@ -17,6 +18,7 @@ public class EtoPlot : Drawable, IPlotControl
     public GRContext? GRContext => null;
 
     public Interaction Interaction { get; private set; }
+    public float DisplayScale { get; set; }
 
     private readonly List<FileFilter> fileDialogFilters = new()
     {
@@ -29,6 +31,8 @@ public class EtoPlot : Drawable, IPlotControl
 
     public EtoPlot()
     {
+        DisplayScale = DetectDisplayScale();
+
         Interaction = new(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
@@ -179,5 +183,17 @@ public class EtoPlot : Drawable, IPlotControl
         MemoryStream ms = new(bytes);
         using Bitmap bmp = new(ms);
         Clipboard.Instance.Image = bmp;
+    }
+
+    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        return Plot.GetCoordinates(px, xAxis, yAxis);
+    }
+
+    public float DetectDisplayScale()
+    {
+        // TODO: improve support for DPI scale detection
+        // https://github.com/ScottPlot/ScottPlot/issues/2760
+        return 1.0f;
     }
 }

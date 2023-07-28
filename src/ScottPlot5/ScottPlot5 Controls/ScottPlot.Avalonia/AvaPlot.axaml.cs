@@ -11,6 +11,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
+using ScottPlot.Axis;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -24,6 +25,8 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
+    public float DisplayScale { get ; set; }
+
     private static readonly List<FilePickerFileType> filePickerFileTypes = new()
     {
         new("PNG Files") { Patterns = new List<string> { "*.png" } },
@@ -35,7 +38,10 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public AvaPlot()
     {
+        DisplayScale = DetectDisplayScale();
+
         InitializeComponent();
+
         Interaction = new(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
@@ -186,5 +192,17 @@ public partial class AvaPlot : UserControl, IPlotControl
     private void OnKeyUp(object sender, KeyEventArgs e)
     {
         Interaction.KeyUp(e.ToKey());
+    }
+
+    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        return Plot.GetCoordinates(px, xAxis, yAxis);
+    }
+
+    public float DetectDisplayScale()
+    {
+        // TODO: improve support for DPI scale detection
+        // https://github.com/ScottPlot/ScottPlot/issues/2760
+        return 1.0f;
     }
 }

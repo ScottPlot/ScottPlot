@@ -31,4 +31,23 @@ public interface IPlotControl
     /// Context for hardware-accelerated graphics (or null if not available)
     /// </summary>
     GRContext? GRContext { get; }
+
+    /// <summary>
+    /// Logic for translating screen position (pixels) to coordinates in (axis units).
+    /// Implementers must add logic to compensate for DPI scaling.
+    /// </summary>
+    Coordinates GetCoordinates(Pixel px, Axis.IXAxis? xAxis = null, Axis.IYAxis? yAxis = null);
+
+    /// <summary>
+    /// Determine the DPI scaling ratio of the present display.
+    /// A value of 1.0 means no scaling, and 1.5 means 150% scaling.
+    /// This operation may be costly so do not call it frequently.
+    /// </summary>
+    float DetectDisplayScale();
+
+    /// <summary>
+    /// The value of the present display scaling.
+    /// Mouse positions are multiplied by this value for pixel/coordinate conversions.
+    /// </summary>
+    float DisplayScale { get; set; }
 }

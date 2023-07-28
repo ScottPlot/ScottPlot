@@ -1,12 +1,16 @@
 ﻿using ScottPlot;
+using ScottPlot.WinForms;
+using System.Windows.Forms;
 
-namespace Sandbox.WinForms;
+namespace Sandbox.WinFormsFramework;
 
 public partial class Form1 : Form
 {
     public Form1()
     {
         InitializeComponent();
+        FormsPlot formsPlot1 = new() { Dock = DockStyle.Fill };
+        Controls.Add(formsPlot1);
 
         var crosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
 
