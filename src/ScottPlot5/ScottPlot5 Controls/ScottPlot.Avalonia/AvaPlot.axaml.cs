@@ -25,7 +25,7 @@ public partial class AvaPlot : UserControl, IPlotControl
 
     public GRContext? GRContext => null;
 
-    public float DisplayScale { get ; set; }
+    public float DisplayScale { get; set; }
 
     private static readonly List<FilePickerFileType> filePickerFileTypes = new()
     {
