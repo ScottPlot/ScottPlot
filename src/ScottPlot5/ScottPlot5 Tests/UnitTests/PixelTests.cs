@@ -25,6 +25,6 @@ internal class PixelTests
     [Test]
     public void Test_Pixel_CustomToString()
     {
-        new Pixel().ToString().Should().Contain("X=");
+        new Pixel().ToString().Should().Contain("X =");
     }
 }

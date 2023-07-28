@@ -26,6 +26,6 @@ internal class CoordinateTests
     [Test]
     public void Test_Coordinate_CustomToString()
     {
-        new Coordinates().ToString().Should().Contain("X=");
+        new Coordinates().ToString().Should().Contain("X =");
     }
 }
