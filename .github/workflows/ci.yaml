@@ -48,6 +48,8 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
@@ -62,25 +64,9 @@ jobs:
         run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
       - name: 📦 Package
         run: dotnet pack ${{ env.SOLUTION }} --configuration Release
-
-  fix-formatting:
-    needs: [test, full-build]
-    name: Fix Code Formatting
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✍️ Fix ScottPlot4 formatting
-        run: dotnet format "src/ScottPlot4/ScottPlot4.sln"
-      - name: ✍️ Fix ScottPlot5 formatting
-        run: dotnet format "src/ScottPlot5/ScottPlot5.sln"
-      - name: 🚀 Push Changes
+      - name: ✍️ Autoformat
+        run: dotnet format ${{ env.SOLUTION }}
+      - name: 🚀 Push Formatting Changes
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
           git config --global user.email 'swharden@gmail.com'
