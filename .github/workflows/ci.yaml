@@ -20,7 +20,7 @@ jobs:
         version: ["ScottPlot4", "ScottPlot5"]
     env:
       SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
-    name: Test ${{ matrix.version }}
+    name: Test ${{ matrix.version }} on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

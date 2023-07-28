@@ -32,6 +32,7 @@ jobs:
         run: dotnet pack ${{env.SLN_SP5_TEST}} --configuration Release
 
   test-windows:
+    needs: [test-linux]
     name: Test on Windows
     runs-on: windows-latest
     steps:
@@ -52,28 +53,8 @@ jobs:
       - name: 📦 Package
         run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
 
-  full-build:
-    needs: [test-linux, test-windows]
-    name: Full Build
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: 🐢 Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-      - name: ✨ Setup .NET ${{env.DOTNET_VERSION}}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
-      - name: 🚚 Restore
-        run: dotnet restore ${{env.SLN_SP5_FULL}}
-      - name: 🛠️ Build
-        run: dotnet build ${{env.SLN_SP5_FULL}} --configuration Release
-      - name: 📦 Package
-        run: dotnet pack ${{env.SLN_SP5_FULL}} --configuration Release
-
   check-format:
-    needs: [test-linux, test-windows, full-build]
+    needs: [test-linux, test-windows]
     name: Ensure 'dotnet format' was run
     runs-on: windows-latest
     steps:
