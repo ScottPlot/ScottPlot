@@ -38,6 +38,7 @@ jobs:
         run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
 
   full-build:
+    needs: [test]
     strategy:
       matrix:
         version: ["ScottPlot4", "ScottPlot5"]
@@ -60,6 +61,7 @@ jobs:
         run: dotnet build ${{ env.SOLUTION }} --configuration Release
 
   fix-formatting:
+    needs: [test, full-build]
     name: Fix Code Formatting
     runs-on: windows-latest
     steps:
@@ -83,6 +85,7 @@ jobs:
           git push
 
   changelog:
+    needs: [test, full-build]
     runs-on: ubuntu-latest
     name: Update Changelog Webpage
     steps:
@@ -96,6 +99,7 @@ jobs:
             https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
 
   code-analysis:
+    needs: [test, full-build]
     runs-on: ubuntu-latest
     name: Code Metrics
     steps:
