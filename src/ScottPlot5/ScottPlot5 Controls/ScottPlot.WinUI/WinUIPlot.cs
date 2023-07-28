@@ -198,9 +198,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        /* DISPLAY SCALING NOTE: 
-         * If display scaling causes tracking issues, multiply X and Y by DisplayScale here.
-         */
         return Plot.GetCoordinates(px, xAxis, yAxis);
     }
 
