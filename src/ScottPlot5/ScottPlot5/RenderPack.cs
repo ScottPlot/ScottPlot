@@ -27,7 +27,11 @@ public class RenderPack
         if (DataRect.HasArea)
             throw new InvalidOperationException("DataRect must only be calculated once per render");
 
-        Layout = Plot.Layout.GetLayout(FigureSize, Plot.GetAllPanels());
+        PixelSize figSize = new(
+            width: FigureSize.Width / Plot.ScaleFactor, 
+            height: FigureSize.Height / Plot.ScaleFactor);
+
+        Layout = Plot.Layout.GetLayout(figSize, Plot.GetAllPanels());
         DataRect = Layout.DataRect;
     }
 
