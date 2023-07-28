@@ -23,5 +23,7 @@ public partial class MainWindow : Window
             crosshair.Position = mouseCoordinates;
             WpfPlot1.Refresh();
         };
+
+        WpfPlot1.Plot.ScaleFactor = 1.5f;
     }
 }
