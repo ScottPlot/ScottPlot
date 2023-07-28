@@ -19,8 +19,12 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Interaction Interaction { get; private set; }
 
+    public float DisplayScale { get; set; }
+
     public FormsPlot()
     {
+        DisplayScale = DetectDisplayScale();
+
         Interaction = new(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
@@ -78,14 +82,9 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Plot Reset()
     {
-        using Graphics gfx = CreateGraphics();
-        const int DEFAULT_DPI = 96;
-        float scaleFactor = gfx.DpiX / DEFAULT_DPI;
-
         Plot newPlot = new()
         {
             FigureBackground = this.BackColor.ToColor(),
-            ScaleFactor = scaleFactor
         };
 
         return Reset(newPlot);
@@ -208,5 +207,21 @@ public class FormsPlot : UserControl, IPlotControl
     {
         Bitmap bmp = Plot.GetBitmap(Width, Height);
         Clipboard.SetImage(bmp);
+    }
+
+    public Coordinates GetCoordinates(Pixel px, Axis.IXAxis? xAxis = null, Axis.IYAxis? yAxis = null)
+    {
+        /* DISPLAY SCALING NOTE: 
+         * If display scaling causes tracking issues, multiply X and Y by the DisplayScale here.
+         */
+        return Plot.GetCoordinates(px.X, px.Y, xAxis, yAxis);
+    }
+
+    public float DetectDisplayScale()
+    {
+        using Graphics gfx = CreateGraphics();
+        const int DEFAULT_DPI = 96;
+        float ratio = gfx.DpiX / DEFAULT_DPI;
+        return ratio;
     }
 }

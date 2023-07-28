@@ -10,6 +10,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
 using ScottPlot.Control;
+using ScottPlot.Axis;
+using Windows.Devices.Display.Core;
 
 namespace ScottPlot.WinUI;
 
@@ -24,9 +26,12 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public Interaction Interaction { get; private set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
+    public float DisplayScale { get; set; }
 
     public WinUIPlot()
     {
+        DisplayScale = DetectDisplayScale();
+
         Interaction = new(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
@@ -189,5 +194,20 @@ public partial class WinUIPlot : UserControl, IPlotControl
         content.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
         Clipboard.SetContent(content);
+    }
+
+    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        /* DISPLAY SCALING NOTE: 
+         * If display scaling causes tracking issues, multiply X and Y by DisplayScale here.
+         */
+        return Plot.GetCoordinates(px, xAxis, yAxis);
+    }
+
+    public float DetectDisplayScale()
+    {
+        // TODO: improve support for DPI scale detection
+        // https://github.com/ScottPlot/ScottPlot/issues/2760
+        return 1.0f;
     }
 }
