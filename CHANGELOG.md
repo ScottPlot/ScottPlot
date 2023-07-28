@@ -33,6 +33,7 @@
 * CoordinateRect: Added a `Contains()` method to evaluate whether given `Coordinates` are inside the rectangle (#2790, #2813) _Thanks @tijin-abe-thomas_
 * Crosshair: New plot type that draws a cross centered at a given position in X/Y space
 * Avalonia: Support Avalonia version 11.0.1 (#2822) _Thanks @oktrue_
+* Controls: Now have `GetCoordinates()` with built-in logic for display scaling compensation (#2760)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
