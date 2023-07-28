@@ -32,6 +32,7 @@
 * CoordinateRect: Added a `Center` property that returns a `Coordinates` value in axis space (#2789, #2812) _Thanks @tijin-abe-thomas_
 * CoordinateRect: Added a `Contains()` method to evaluate whether given `Coordinates` are inside the rectangle (#2790, #2813) _Thanks @tijin-abe-thomas_
 * Crosshair: New plot type that draws a cross centered at a given position in X/Y space
+* Avalonia: Support Avalonia version 11.0.1 (#2822) _Thanks @oktrue_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
@@ -41,6 +42,7 @@
 * Cookbook: Remove "experimental" designator from ScatterPlotList (#2782) _Thanks @prime167_
 * Heatmap: Added `Rotation` and `CenterOfRotation` properties (#2814, #2815) _Thanks @bukkideme_
 * WPF: Improved the `PlottableDragged` event (#2820) _Thanks @tadmccorkle_
+* Avalonia: Support Avalonia version 11.0.1 (#2822) _Thanks @oktrue_
 
 ## ScottPlot 5.0.6-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-07-09_
