@@ -17,12 +17,11 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         version: ["ScottPlot4", "ScottPlot5"]
     env:
       SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
-    name: Test ${{ matrix.version }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Test ${{ matrix.version }}
+    runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -59,6 +58,10 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION }}
       - name: 🛠️ Build
         run: dotnet build ${{ env.SOLUTION }} --configuration Release
+      - name: 🧪 Test
+        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
+      - name: 📦 Package
+        run: dotnet pack ${{ env.SOLUTION }} --configuration Release
 
   fix-formatting:
     needs: [test, full-build]
