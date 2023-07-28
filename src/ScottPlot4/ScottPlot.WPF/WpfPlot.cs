@@ -113,7 +113,7 @@ namespace ScottPlot
         /// </summary>
         public event RoutedEventHandler PlottableDragged
         {
-            add { AddHandler(PlottableDroppedEvent, value); }
+            add { AddHandler(PlottableDraggedEvent, value); }
             remove { RemoveHandler(PlottableDraggedEvent, value); }
         }
 
