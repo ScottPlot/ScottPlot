@@ -14,12 +14,12 @@ env:
   DOTNET_VERSION: "7.0.x"
 
 jobs:
-  test:
+  test-linux:
     strategy:
       matrix:
         version: ["ScottPlot4", "ScottPlot5"]
     env:
-      SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
+      TEST_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
     name: Test ${{ matrix.version }} on Linux
     runs-on: ubuntu-latest
     steps:
@@ -30,19 +30,20 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.SOLUTION }}
+        run: dotnet restore ${{ env.TEST_SOLUTION }}
       - name: 🛠️ Build
-        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+        run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
 
-  full-build:
-    needs: [test]
+  test-windows:
+    needs: [test-linux]
     strategy:
       matrix:
         version: ["ScottPlot4", "ScottPlot5"]
     env:
-      SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}.sln"
+      FULL_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}.sln"
+      TEST_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
     name: ${{ matrix.version }} Full Build
     runs-on: windows-latest
     steps:
@@ -57,13 +58,17 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.SOLUTION }}
+        run: dotnet restore ${{ env.TEST_SOLUTION }}
       - name: 🛠️ Build
-        run: dotnet build ${{ env.SOLUTION }} --configuration Release
+        run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release
       - name: 🧪 Test
-        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
+      - name: 🚚 Full Restore
+        run: dotnet restore ${{ env.FULL_SOLUTION }}
+      - name: 🛠️ Full Build
+        run: dotnet build ${{ env.FULL_SOLUTION }} --configuration Release
       - name: ✍️ Autoformat
-        run: dotnet format ${{ env.SOLUTION }}
+        run: dotnet format ${{ env.FULL_SOLUTION }}
       - name: 🚀 Push Formatting Changes
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
@@ -73,7 +78,7 @@ jobs:
           git push
 
   changelog:
-    needs: [test, full-build]
+    needs: [test-linux, test-windows]
     runs-on: ubuntu-latest
     name: Update Changelog Webpage
     steps:
@@ -87,7 +92,7 @@ jobs:
             https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
 
   code-analysis:
-    needs: [test, full-build]
+    needs: [test-linux, test-windows]
     runs-on: ubuntu-latest
     name: Code Metrics
     steps:
