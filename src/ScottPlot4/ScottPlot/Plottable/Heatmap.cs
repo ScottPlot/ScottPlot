@@ -57,7 +57,7 @@ namespace ScottPlot.Plottable
         public double CellWidth { get; set; } = 1;
 
         /// <summary>
-        /// Width of each cell composing the heatmap
+        /// Height of each cell composing the heatmap
         /// </summary>
         public double CellHeight { get; set; } = 1;
 
