@@ -124,7 +124,7 @@ public readonly struct Color
 
     public SkiaSharp.SKColor ToSKColor()
     {
-        return new SkiaSharp.SKColor(ARGB);
+        return new SKColor(Red, Green, Blue, Alpha);
     }
 
     public (float h, float s, float l) ToHSL()
