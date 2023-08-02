@@ -35,6 +35,7 @@
 * Avalonia: Support Avalonia version 11.0.1 (#2822) _Thanks @oktrue_
 * Controls: Now have `GetCoordinates()` with built-in logic for display scaling compensation (#2760)
 * Rendering: Improve multi-platform color support (#2818) _Thanks @KroMignon and @oktrue_
+* Random Data Generation: Added an optional `slope` argument to `RandomWalk()` (#2763, #2826) _Thanks @JasonC0x0D_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_

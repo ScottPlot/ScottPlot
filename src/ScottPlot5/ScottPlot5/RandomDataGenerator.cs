@@ -129,14 +129,21 @@ public class RandomDataGenerator
 
     /// <summary>
     /// A sequence of numbers that starts at <paramref name="offset"/> 
-    /// and "walks" randomly from one point to the next, scaled by <paramref name="mult"/>.
+    /// and "walks" randomly from one point to the next, scaled by <paramref name="mult"/>
+    /// with an approximate slope of <paramref name="slope"/>.
     /// </summary>
-    public double[] RandomWalk(int count, double mult = 1, double offset = 0)
+    public double[] RandomWalk(int count, double mult = 1, double offset = 0, double slope = 0)
     {
         double[] data = new double[count];
         data[0] = offset;
         for (int i = 1; i < data.Length; i++)
-            data[i] = data[i - 1] + (Rand.NextDouble() * 2 - 1) * mult;
+        {
+            // Random number between -1 and 1;
+            double randomStep = Rand.NextDouble() * 2 - 1;
+            // Using linear equation y_2 = m * x + y_1 where x = 1,
+            // then adding a scaled random step simplifies to:
+            data[i] = slope + data[i - 1] + randomStep * mult;
+        }
         return data;
     }
 
