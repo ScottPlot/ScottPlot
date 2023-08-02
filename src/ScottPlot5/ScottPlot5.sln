@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinFormsFramework",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia.Browser", "ScottPlot5 Sandbox\Sandbox.Avalonia.Browser\Sandbox.Avalonia.Browser.csproj", "{501EC564-5AFE-4992-A985-9D4A5E5C54A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Avalonia.Desktop", "ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\Sandbox.Avalonia.Desktop.csproj", "{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia.Desktop", "ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\Sandbox.Avalonia.Desktop.csproj", "{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia.Android", "ScottPlot5 Sandbox\Sandbox.Avalonia.Android\Sandbox.Avalonia.Android.csproj", "{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,12 @@ Global
 		{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +165,7 @@ Global
 		{303848EC-00E7-4E82-BB37-736A7987976C} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{501EC564-5AFE-4992-A985-9D4A5E5C54A2} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{4DF526D7-0AD5-4FD0-8298-73ED3F69F45C} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
+		{D8F096D9-CE36-46CA-AC3D-AC0EA77198BE} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
