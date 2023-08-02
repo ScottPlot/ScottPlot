@@ -138,11 +138,11 @@ public class RandomDataGenerator
         data[0] = offset;
         for (int i = 1; i < data.Length; i++)
         {
-           // Random number between -1 and 1;
+            // Random number between -1 and 1;
             double randomStep = Rand.NextDouble() * 2 - 1;
             // Using linear equation y_2 = m * x + y_1 where x = 1,
             // then adding a scaled random step simplifies to:
-            data[i] = slope + data[i -1] + randomStep * mult;
+            data[i] = slope + data[i - 1] + randomStep * mult;
         }
         return data;
     }
