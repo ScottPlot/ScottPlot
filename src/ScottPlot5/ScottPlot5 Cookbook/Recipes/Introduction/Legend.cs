@@ -24,6 +24,10 @@ internal class Legend : RecipePageBase
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.Label = "Cos";
 
+            // enable the legend
+            myPlot.Legend();
+
+            // get the legend so it can be further customized
             var legend = myPlot.GetLegend();
             legend.OutlineStyle.Color = Colors.Navy;
             legend.OutlineStyle.Width = 2;
@@ -56,6 +60,10 @@ internal class Legend : RecipePageBase
             item2.Line.Width = 4;
             item2.Label = "Beta";
 
+            // enable the legend
+            myPlot.Legend();
+
+            // get the legend so it can be further customized
             var legend = myPlot.GetLegend();
             legend.ManualLegendItems = new[] { item1, item2 };
         }
@@ -76,6 +84,10 @@ internal class Legend : RecipePageBase
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.Label = "Cos";
 
+            // enable the legend
+            myPlot.Legend();
+
+            // get the legend so it can be further customized
             var legend = myPlot.GetLegend();
             legend.ManualLegendItems = sig1.LegendItems;
         }

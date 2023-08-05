@@ -546,6 +546,14 @@ public class Plot : IDisposable
             throw new InvalidOperationException("The plot has no standard legends");
     }
 
+    /// <summary>
+    /// Set visibility of all legends.
+    /// </summary>
+    public void Legend(bool enable = true)
+    {
+        Legends.ForEach(x => x.IsVisible = enable);
+    }
+
     #endregion
 
     #region Developer Tools
