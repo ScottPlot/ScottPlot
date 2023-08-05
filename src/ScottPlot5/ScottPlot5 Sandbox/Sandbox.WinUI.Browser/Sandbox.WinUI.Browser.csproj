@@ -26,8 +26,8 @@
         <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\Sandbox.WinUI\App.xaml.cs" Link="App.xaml.cs" />
-        <Compile Include="..\Sandbox.WinUI\MainPage.xaml.cs" Link="MainPage.xaml.cs" />
+        <Compile Include="..\Sandbox.WinUI.Desktop\App.xaml.cs" Link="App.xaml.cs" />
+        <Compile Include="..\Sandbox.WinUI.Desktop\MainPage.xaml.cs" Link="MainPage.xaml.cs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Assets\SplashScreen.png" />
@@ -66,10 +66,10 @@
         <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="3.*" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="..\Sandbox.WinUI\App.xaml" Link="App.xaml">
+        <Page Include="..\Sandbox.WinUI.Desktop\App.xaml" Link="App.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Include="..\Sandbox.WinUI\MainPage.xaml" Link="MainPage.xaml">
+        <Page Include="..\Sandbox.WinUI.Desktop\MainPage.xaml" Link="MainPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>
     </ItemGroup>
