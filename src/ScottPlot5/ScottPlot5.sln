@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Cookbook", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E3534AA4-E834-4648-83EF-94D667D17AEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI", "ScottPlot5 Sandbox\Sandbox.WinUI\Sandbox.WinUI.csproj", "{09961DF4-5E0E-4779-B85E-0FD304267750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI.Desktop", "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\Sandbox.WinUI.Desktop.csproj", "{09961DF4-5E0E-4779-B85E-0FD304267750}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinUI", "ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj", "{F2C622DE-1D3D-4027-9009-5FB02428856E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Wasm", "ScottPlot5 Sandbox\Sandbox.Wasm\Sandbox.Wasm.csproj", "{CBF0C2BD-B5FB-47F5-95F0-B917DA97CA9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI.Browser", "ScottPlot5 Sandbox\Sandbox.WinUI.Browser\Sandbox.WinUI.Browser.csproj", "{CBF0C2BD-B5FB-47F5-95F0-B917DA97CA9E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.OpenGL", "ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj", "{F0DE5518-62CD-4E20-A5E6-670AE7B17AF9}"
 EndProject
