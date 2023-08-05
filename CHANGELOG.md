@@ -36,6 +36,8 @@
 * Controls: Now have `GetCoordinates()` with built-in logic for display scaling compensation (#2760)
 * Rendering: Improve multi-platform color support (#2818) _Thanks @KroMignon and @oktrue_
 * Random Data Generation: Added an optional `slope` argument to `RandomWalk()` (#2763, #2826) _Thanks @JasonC0x0D_
+* Browser: Improved support and documentation for running ScottPlot in the browser with Avalonia and WinUI (#2830) _Thanks @oktrue_
+* Android: Improved support and documentation for running ScottPlot in Avalonia Android projects (#2830) _Thanks @oktrue_
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
