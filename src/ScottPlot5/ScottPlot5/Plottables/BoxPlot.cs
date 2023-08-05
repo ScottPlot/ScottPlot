@@ -48,7 +48,7 @@ public class BoxGroups
 
     public AxisLimits GetAxisLimits()
     {
-        AxisLimits limits = new(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity);
+        ExpandingAxisLimits limits = new();
 
         foreach (var s in Series)
         {
@@ -60,8 +60,8 @@ public class BoxGroups
                     limits.ExpandY(b.BoxMin);
                     limits.ExpandY(b.BoxMiddle);
                     limits.ExpandY(b.BoxMax);
-                    limits.ExpandY(b.WhiskerMin ?? limits.Rect.YMin);
-                    limits.ExpandY(b.WhiskerMax ?? limits.Rect.YMin);
+                    limits.ExpandY(b.WhiskerMin ?? limits.YMin);
+                    limits.ExpandY(b.WhiskerMax ?? limits.YMin);
                 }
                 else
                 {
@@ -69,19 +69,18 @@ public class BoxGroups
                     limits.ExpandX(b.BoxMin);
                     limits.ExpandX(b.BoxMiddle);
                     limits.ExpandX(b.BoxMax);
-                    limits.ExpandX(b.WhiskerMin ?? limits.Rect.YMin);
-                    limits.ExpandX(b.WhiskerMax ?? limits.Rect.YMin);
+                    limits.ExpandX(b.WhiskerMin ?? limits.YMin);
+                    limits.ExpandX(b.WhiskerMax ?? limits.YMin);
                 }
             }
         }
 
-        limits.Rect.XMin -= MaxBoxWidth / 2;
-        limits.Rect.XMax += MaxBoxWidth / 2;
-        limits.Rect.YMin -= MaxBoxWidth / 2;
-        limits.Rect.YMax += MaxBoxWidth / 2;
+        limits.XMin -= MaxBoxWidth / 2;
+        limits.XMax += MaxBoxWidth / 2;
+        limits.YMin -= MaxBoxWidth / 2;
+        limits.YMax += MaxBoxWidth / 2;
 
-
-        return limits;
+        return limits.AxisLimits;
     }
 }
 

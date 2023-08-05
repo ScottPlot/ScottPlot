@@ -32,7 +32,7 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            AxisLimits limits = AxisLimits.NoLimits;
+            ExpandingAxisLimits limits = new();
 
             for (int i = 0; i < Xs.Count; i++)
             {
@@ -45,7 +45,7 @@ namespace ScottPlot.Plottables
                 limits.ExpandY(y + YErrorsPositive?[i] ?? 0);
             }
 
-            return limits;
+            return limits.AxisLimits;
         }
 
         public void Render(RenderPack rp)

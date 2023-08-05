@@ -19,10 +19,9 @@ public class ScatterSourceCoordinates : IScatterSource
 
     public AxisLimits GetLimits()
     {
-        AxisLimits rect = AxisLimits.NoLimits;
-        foreach (Coordinates coordinate in Coordinates)
-            rect.Expand(coordinate);
-        return rect;
+        ExpandingAxisLimits limits = new();
+        limits.Expand(Coordinates);
+        return limits.AxisLimits;
     }
 
     public CoordinateRange GetLimitsX()

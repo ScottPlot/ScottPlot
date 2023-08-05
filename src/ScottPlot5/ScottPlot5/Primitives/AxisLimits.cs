@@ -4,26 +4,45 @@
 /// This object represents the rectangular visible area on a 2D coordinate system.
 /// It simply stores a <see cref="CoordinateRect"/> but has axis-related methods to act upon it.
 /// </summary>
-public struct AxisLimits
+public readonly struct AxisLimits
 {
-    public CoordinateRect Rect;
-    public bool XHasBeenSet => !double.IsNaN(Rect.Width);
-    public bool YHasBeenSet => !double.IsNaN(Rect.Height);
+    public double XMin { get; }
+    public double XMax { get; }
+    public double YMin { get; }
+    public double YMax { get; }
+
+    public double Left => XMin;
+    public double Right => XMax;
+    public double Bottom => YMin;
+    public double Top => YMax;
+
+    // TODO: make sure callers aren't using this when they dont have to
+    public CoordinateRect Rect => new(XMin, XMax, YMin, YMax);
+
     public static CoordinateRect Default { get; } = new(-10, 10, -10, 10);
 
     public AxisLimits(CoordinateRect rect)
     {
-        Rect = rect;
+        XMin = rect.XMin;
+        XMax = rect.XMax;
+        YMin = rect.YMin;
+        YMax = rect.YMax;
     }
 
     public AxisLimits(double xMin, double xMax, double yMin, double yMax)
     {
-        Rect = new(xMin, xMax, yMin, yMax);
+        XMin = xMin;
+        XMax = xMax;
+        YMin = yMin;
+        YMax = yMax;
     }
 
     public AxisLimits(CoordinateRange xRange, CoordinateRange yRange)
     {
-        Rect = new(xRange.Min, xRange.Max, yRange.Min, yRange.Max);
+        XMin = xRange.Min;
+        XMax = xRange.Max;
+        YMin = yRange.Min;
+        YMax = yRange.Max;
     }
 
     public override string ToString()
@@ -33,73 +52,32 @@ public struct AxisLimits
 
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
-    public void Expand(AxisLimits newLimits)
+    /// <summary>
+    /// Return a new <see cref="AxisLimits"/> expanded to include the given <paramref name="x"/> and <paramref name="y"/>.
+    /// </summary>
+    public AxisLimits Expanded(double x, double y)
     {
-        if (!XHasBeenSet)
-        {
-            Rect.XMin = newLimits.Rect.XMin;
-            Rect.XMax = newLimits.Rect.XMax;
-        }
-
-        if (!YHasBeenSet)
-        {
-            Rect.YMin = newLimits.Rect.YMin;
-            Rect.YMax = newLimits.Rect.YMax;
-        }
-
-        if (XHasBeenSet && newLimits.XHasBeenSet)
-        {
-            Rect.XMin = Math.Min(Rect.XMin, newLimits.Rect.XMin);
-            Rect.XMax = Math.Max(Rect.XMax, newLimits.Rect.XMax);
-        }
-
-        if (YHasBeenSet & newLimits.YHasBeenSet)
-        {
-            Rect.YMin = Math.Min(Rect.YMin, newLimits.Rect.YMin);
-            Rect.YMax = Math.Max(Rect.YMax, newLimits.Rect.YMax);
-        }
+        double xMin2 = !double.IsNaN(XMin) ? Math.Min(XMin, x) : x;
+        double xMax2 = !double.IsNaN(XMax) ? Math.Max(XMax, x) : x;
+        double yMin2 = !double.IsNaN(YMin) ? Math.Min(YMin, y) : y;
+        double yMax2 = !double.IsNaN(YMax) ? Math.Max(YMax, y) : y;
+        return new AxisLimits(xMin2, xMax2, yMin2, yMax2);
     }
 
-    public void ExpandX(double x)
+    /// <summary>
+    /// Return a new <see cref="AxisLimits"/> expanded to include the given <paramref name="coordinates"/>.
+    /// </summary>
+    public AxisLimits Expanded(Coordinates coordinates)
     {
-        if (!XHasBeenSet)
-        {
-            Rect.XMin = x;
-            Rect.XMax = x;
-        }
-
-        if (XHasBeenSet && !double.IsNaN(x))
-        {
-            Rect.XMin = Math.Min(Rect.XMin, x);
-            Rect.XMax = Math.Max(Rect.XMax, x);
-        }
+        return Expanded(coordinates.X, coordinates.Y);
     }
 
-    public void ExpandY(double y)
+    /// <summary>
+    /// Return a new <see cref="AxisLimits"/> expanded to include all corners of the given <paramref name="rect"/>.
+    /// </summary>
+    public AxisLimits Expanded(CoordinateRect rect)
     {
-        if (!YHasBeenSet)
-        {
-            Rect.YMin = y;
-            Rect.YMax = y;
-        }
-
-        if (YHasBeenSet && !double.IsNaN(y))
-        {
-            Rect.YMin = Math.Min(Rect.YMin, y);
-            Rect.YMax = Math.Max(Rect.YMax, y);
-        }
-    }
-
-    public void Expand(Coordinates point)
-    {
-        ExpandX(point.X);
-        ExpandY(point.Y);
-    }
-
-    public void Expand(double x, double y)
-    {
-        ExpandX(x);
-        ExpandY(y);
+        return Expanded(rect.TopLeft).Expanded(rect.BottomRight);
     }
 
     public CoordinateRect WithPan(double deltaX, double deltaY)

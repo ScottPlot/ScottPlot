@@ -58,7 +58,7 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits()
         {
-            AxisLimits limits = new(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity);
+            ExpandingAxisLimits limits = new();
 
             foreach (var s in Series)
             {
@@ -77,12 +77,12 @@ namespace ScottPlot.Plottables
                 }
             }
 
-            limits.Rect.XMin -= MaxBarWidth / 2;
-            limits.Rect.XMax += MaxBarWidth / 2;
-            limits.Rect.YMin -= MaxBarWidth / 2;
-            limits.Rect.YMax += MaxBarWidth / 2;
+            limits.XMin -= MaxBarWidth / 2;
+            limits.XMax += MaxBarWidth / 2;
+            limits.YMin -= MaxBarWidth / 2;
+            limits.YMax += MaxBarWidth / 2;
 
-            return limits;
+            return limits.AxisLimits;
         }
 
         public void Render(RenderPack rp)
