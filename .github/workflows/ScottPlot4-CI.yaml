@@ -22,11 +22,11 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: 🚚 Restore
+      - name: 🚚 Restore ScottPlot4
         run: dotnet restore ${{ env.SLN_SP4_TEST }}
-      - name: 🛠️ Build
+      - name: 🛠️ Build ScottPlot4
         run: dotnet build ${{ env.SLN_SP4_TEST }} --configuration Release
-      - name: 🧪 Test
+      - name: 🧪 Test ScottPlot4
         run: dotnet test ${{ env.SLN_SP4_TEST }} --configuration Release --verbosity minimal
 
   test-windows:
@@ -42,15 +42,15 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: 🚚 Restore
+      - name: 🚚 Restore ScottPlot4
         run: dotnet restore ${{ env.SLN_SP4_TEST }}
-      - name: 🛠️ Build
+      - name: 🛠️ Build ScottPlot4
         run: dotnet build ${{ env.SLN_SP4_TEST }} --configuration Release
-      - name: 🧪 Test
+      - name: 🧪 Test ScottPlot4
         run: dotnet test ${{ env.SLN_SP4_TEST }} --configuration Release --verbosity minimal
-      - name: 🚚 Full Restore
+      - name: 🚚 Full Restore ScottPlot4
         run: dotnet restore ${{ env.SLN_SP4_FULL }}
-      - name: 🛠️ Full Build
+      - name: 🛠️ Full Build ScottPlot4
         run: dotnet build ${{ env.SLN_SP4_FULL }} --configuration Release
 
   check-format:
@@ -64,7 +64,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✒️ Check Code formatting
+      - name: ✒️ Check ScottPlot4 Code formatting
         run: |
           dotnet format --verify-no-changes ${{ env.SLN_SP4_FULL }}
           echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
