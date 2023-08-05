@@ -21,7 +21,7 @@ internal class Finance : RecipePageBase
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);
             myPlot.Add.OHLC(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.AxisStyler.DateTimeTicks(Edge.Bottom);
         }
     }
 
@@ -39,7 +39,7 @@ internal class Finance : RecipePageBase
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);
             myPlot.Add.Candlestick(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.AxisStyler.DateTimeTicks(Edge.Bottom);
         }
     }
 }

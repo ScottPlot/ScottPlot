@@ -38,6 +38,7 @@
 * Random Data Generation: Added an optional `slope` argument to `RandomWalk()` (#2763, #2826) _Thanks @JasonC0x0D_
 * Browser: Improved support and documentation for running ScottPlot in the browser with Avalonia and WinUI (#2830) _Thanks @oktrue_
 * Android: Improved support and documentation for running ScottPlot in Avalonia Android projects (#2830) _Thanks @oktrue_
+* Style: `Plot.Axes` has been renamed to `Plot.AxisStyler` to better communicate its purpose (#2778)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_

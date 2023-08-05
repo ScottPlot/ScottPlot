@@ -1,8 +1,11 @@
 ﻿using ScottPlot.Axis;
-using System.Linq;
 
 namespace ScottPlot.Stylers;
 
+/// <summary>
+/// This class contains helper methods which make it easier 
+/// to perform common operations on axes of the Plot
+/// </summary>
 public class AxisStyler
 {
     readonly Plot Plot;
@@ -25,6 +28,9 @@ public class AxisStyler
     public IYAxis[] GetLeftAxes() => GetAxes(Edge.Left).Cast<IYAxis>().ToArray();
     public IYAxis[] GetRightAxes() => GetAxes(Edge.Right).Cast<IYAxis>().ToArray();
 
+    /// <summary>
+    /// Remove all axes that lie on the given edge.
+    /// </summary>
     public void ClearAxes(Edge edge)
     {
         foreach (IAxis axis in GetAxes(edge).ToArray())
@@ -37,14 +43,16 @@ public class AxisStyler
         }
     }
 
+    /// <summary>
+    /// Remove all axes on the given edge and add a new one that displays DateTime ticks
+    /// </summary>
     public void DateTimeTicks(Edge edge)
     {
-        // replace the old axis with a new DateTime axis
         ClearAxes(edge);
 
         IXAxis dateAxis = edge switch
         {
-            Edge.Left => throw new NotImplementedException(),
+            Edge.Left => throw new NotImplementedException(), // TODO: support vertical DateTime axes
             Edge.Right => throw new NotImplementedException(),
             Edge.Bottom => new Axis.DateTimeAxes.DateTimeXAxis(),
             Edge.Top => throw new NotImplementedException(),

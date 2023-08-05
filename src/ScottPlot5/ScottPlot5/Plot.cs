@@ -41,7 +41,7 @@ public class Plot : IDisposable
     public IZoomRectangle ZoomRectangle { get; set; }
     public float ScaleFactor { get; set; } = 1.0f;
 
-    public AxisStyler Axes { get; }
+    public AxisStyler AxisStyler { get; }
 
     public PlotStyler Style { get; }
     public bool ShowBenchmark { get; set; } = false;
@@ -108,7 +108,7 @@ public class Plot : IDisposable
 
         // setup classes which must be aware of the plot
         Add = new(this);
-        Axes = new(this);
+        AxisStyler = new(this);
         Style = new(this);
         RenderManager = new(this);
     }
