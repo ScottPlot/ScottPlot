@@ -4,7 +4,7 @@ namespace ScottPlot.Legends;
 
 public class StandardLegend : ILegend
 {
-    public bool IsVisible { get; set; } = true;
+    public bool IsVisible { get; set; } = false;
     public Alignment Alignment { get; set; } = Alignment.LowerRight;
     public PixelPadding Margin { get; set; } = new PixelPadding(8);
     public PixelPadding Padding { get; set; } = new PixelPadding(3);
