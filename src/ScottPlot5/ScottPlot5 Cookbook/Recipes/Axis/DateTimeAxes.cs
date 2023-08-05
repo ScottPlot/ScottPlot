@@ -26,7 +26,7 @@ internal class DateTimeAxes : RecipePageBase
             myPlot.Add.Scatter(xs, ys);
 
             // tell the plot to display dates on the bottom axis
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.AxisStyler.DateTimeTicks(Edge.Bottom);
         }
     }
 }

@@ -39,6 +39,7 @@
 * Browser: Improved support and documentation for running ScottPlot in the browser with Avalonia and WinUI (#2830) _Thanks @oktrue_
 * Android: Improved support and documentation for running ScottPlot in Avalonia Android projects (#2830) _Thanks @oktrue_
 * Legend: Now hidden by default with opt-in visibility by calling `Plot.Legend()` (#2764)
+* Style: `Plot.Axes` has been renamed to `Plot.AxisStyler` to better communicate its purpose (#2778)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
