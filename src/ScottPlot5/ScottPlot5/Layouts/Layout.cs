@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Layouts;
 
-public struct Layout
+public struct Layout : IEquatable<Layout>
 {
     /// <summary>
     /// Size of the figure this layout represents
@@ -28,5 +28,16 @@ public struct Layout
         DataRect = dataRect;
         PanelSizes = sizes;
         PanelOffsets = offsets;
+    }
+
+    public bool Equals(Layout other)
+    {
+        if (!FigureSize.Equals(other.FigureSize))
+            return false;
+
+        if (!DataRect.Equals(other.DataRect))
+            return false;
+
+        return true;
     }
 }
