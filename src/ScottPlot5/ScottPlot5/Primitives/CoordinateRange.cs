@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>
-public class CoordinateRange
+public class CoordinateRange : IEquatable<CoordinateRange>
 {
     public double Min { get; set; }
     public double Max { get; set; }
@@ -113,5 +113,10 @@ public class CoordinateRange
         double spanRightX = Max - zoomTo;
         Min = zoomTo - spanLeftX / frac;
         Max = zoomTo + spanRightX / frac;
+    }
+
+    public bool Equals(CoordinateRange other)
+    {
+        return Min == other.Min && Max == other.Max;
     }
 }

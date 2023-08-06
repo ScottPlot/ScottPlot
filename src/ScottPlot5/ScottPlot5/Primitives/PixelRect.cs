@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct PixelRect
+public struct PixelRect : IEquatable<PixelRect>
 {
     public readonly float Left;
     public readonly float Right;
@@ -123,6 +123,15 @@ public struct PixelRect
     public PixelRect WithDelta(float x, float y, Alignment alignment)
     {
         return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
+    }
+
+    public bool Equals(PixelRect other)
+    {
+        return
+            Left == other.Left &&
+            Right == other.Right &&
+            Bottom == other.Bottom &&
+            Top == other.Top;
     }
 }
 

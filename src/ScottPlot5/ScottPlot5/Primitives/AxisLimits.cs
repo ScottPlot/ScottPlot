@@ -4,7 +4,7 @@
 /// This object represents the rectangular visible area on a 2D coordinate system.
 /// It simply stores a <see cref="CoordinateRect"/> but has axis-related methods to act upon it.
 /// </summary>
-public readonly struct AxisLimits
+public readonly struct AxisLimits : IEquatable<AxisLimits>
 {
     public double XMin { get; }
     public double XMax { get; }
@@ -17,6 +17,8 @@ public readonly struct AxisLimits
     public double Top => YMax;
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
+    public CoordinateRange XRange => new(XMin, XMax);
+    public CoordinateRange YRange => new(YMin, YMax);
 
     // TODO: make sure callers aren't using this when they dont have to
     public CoordinateRect Rect => new(XMin, XMax, YMin, YMax);
@@ -101,5 +103,14 @@ public readonly struct AxisLimits
         yRange.ZoomFrac(fracY, zoomToY);
 
         return new(xRange, yRange);
+    }
+
+    public bool Equals(AxisLimits other)
+    {
+        return
+            XMin == other.XMin &&
+            XMax == other.XMax &&
+            YMin == other.YMin &&
+            YMax == other.YMax;
     }
 }

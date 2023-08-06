@@ -5,7 +5,7 @@ public class RenderPack
     public SKCanvas Canvas { get; }
     public PixelSize FigureSize { get; }
     public PixelRect DataRect { get; private set; }
-    public Layouts.Layout Layout { get; private set; }
+    public Layout Layout { get; private set; }
     public Plot Plot { get; }
     private Stopwatch Stopwatch { get; }
     public TimeSpan Elapsed => Stopwatch.Elapsed;
@@ -31,7 +31,7 @@ public class RenderPack
             width: FigureSize.Width / Plot.ScaleFactor,
             height: FigureSize.Height / Plot.ScaleFactor);
 
-        Layout = Plot.Layout.GetLayout(figSize, Plot.GetAllPanels());
+        Layout = Plot.LayoutEngine.GetLayout(figSize, Plot.GetAllPanels());
         DataRect = Layout.DataRect;
     }
 

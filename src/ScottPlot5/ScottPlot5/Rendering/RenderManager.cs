@@ -18,6 +18,16 @@ public class RenderManager
     /// </summary>
     public int RenderCount { get; private set; } = 0;
 
+    /// <summary>
+    /// This event is invoked after each render
+    /// </summary>
+    public event EventHandler<RenderDetails> RenderFinished = delegate { };
+
+    /// <summary>
+    /// Indicates whether this plot is in the process of executing a render
+    /// </summary>
+    public bool IsRendering { get; private set; } = false;
+
     private Plot Plot { get; }
 
     public RenderManager(Plot plot)
@@ -49,6 +59,7 @@ public class RenderManager
 
     public void Render(SKCanvas canvas, int width, int height)
     {
+        IsRendering = true;
         canvas.Scale(Plot.ScaleFactor);
 
         List<(string, TimeSpan)> actionTimes = new();
@@ -67,6 +78,8 @@ public class RenderManager
         LastRenderInfo = new(rp, actionTimes.ToArray());
 
         RenderCount += 1;
+        RenderFinished.Invoke(Plot, LastRenderInfo);
+        IsRendering = false;
     }
 
     public void Render(SKSurface surface)
