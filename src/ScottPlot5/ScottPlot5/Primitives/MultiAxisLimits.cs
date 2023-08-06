@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ScottPlot.Axis;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This object stores the axis limits for multiple axes.

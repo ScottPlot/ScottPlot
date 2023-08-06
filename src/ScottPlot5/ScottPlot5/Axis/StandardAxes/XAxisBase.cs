@@ -94,8 +94,8 @@ public abstract class XAxisBase : AxisBase, IAxis
 
         IEnumerable<Tick> ticks = TickGenerator.Ticks;
 
-        AxisRendering.DrawTicks(rp, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
-        AxisRendering.DrawFrame(rp, panelRect, Edge, FrameLineStyle);
+        DrawTicks(rp, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)
