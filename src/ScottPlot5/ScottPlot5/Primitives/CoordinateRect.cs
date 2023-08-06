@@ -12,9 +12,17 @@ public struct CoordinateRect
     public double XMax { get; set; }
     public double YMax { get; set; }
 
+    public double Left => Math.Min(XMin, XMax);
+    public double Right => Math.Max(XMin, XMax);
+    public double Bottom => Math.Min(YMin, YMax);
+    public double Top => Math.Max(YMin, YMax);
     public double XCenter => (XMax + XMin) / 2;
     public double YCenter => (YMax + YMin) / 2;
     public Coordinates Center => new(XCenter, YCenter);
+    public Coordinates TopLeft => new(Left, Top);
+    public Coordinates TopRight => new(Right, Top);
+    public Coordinates BottomLeft => new(Left, Bottom);
+    public Coordinates BottomRight => new(Bottom, Right);
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
     public double Area => Width * Height;
