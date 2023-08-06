@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class FillY : IPlottable
 {

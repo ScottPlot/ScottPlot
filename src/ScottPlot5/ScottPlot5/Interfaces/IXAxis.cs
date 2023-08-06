@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Axis;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Horizontal axis

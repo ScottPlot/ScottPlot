@@ -2,14 +2,12 @@
  * !! Avoid temptation to use generics or generic math at this early stage of development
  */
 
-using ScottPlot.Axis;
-
 namespace ScottPlot.Plottables;
 
 public class Signal : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
 
     public readonly DataSources.ISignalSource Data;
 
