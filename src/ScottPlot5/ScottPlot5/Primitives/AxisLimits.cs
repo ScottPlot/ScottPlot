@@ -17,6 +17,8 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     public double Top => YMax;
     public double Width => XMax - XMin;
     public double Height => YMax - YMin;
+    public CoordinateRange XRange => new(XMin, XMax);
+    public CoordinateRange YRange => new(YMin, YMax);
 
     // TODO: make sure callers aren't using this when they dont have to
     public CoordinateRect Rect => new(XMin, XMax, YMin, YMax);
