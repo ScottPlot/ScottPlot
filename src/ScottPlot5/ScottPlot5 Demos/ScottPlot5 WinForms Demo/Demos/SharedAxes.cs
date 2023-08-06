@@ -1,4 +1,6 @@
-﻿namespace WinForms_Demo.Demos;
+﻿using ScottPlot;
+
+namespace WinForms_Demo.Demos;
 
 public partial class SharedAxes : Form, IDemoWindow
 {
@@ -6,33 +8,36 @@ public partial class SharedAxes : Form, IDemoWindow
     {
         InitializeComponent();
 
+        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin(mult: 100_000));
+
+        formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Cos());
+
         // TODO: to ILayoutMaker add a method for getting the layout with a user defined data area
 
-        formsPlot1.Plot.RenderManager.RenderFinished += (object? sender, ScottPlot.Rendering.RenderDetails plot1Info) =>
+        formsPlot1.Plot.RenderManager.RenderFinished += (s, e) =>
         {
-            bool differentLayout = !plot1Info.Layout.Equals(formsPlot2.Plot.RenderManager.LastRenderInfo.Layout);
-            bool differentAxisLimits = !plot1Info.AxisLimits.Equals(formsPlot2.Plot.RenderManager.LastRenderInfo.AxisLimits);
+            CoordinateRange newX = formsPlot1.Plot.GetAxisLimits().XRange;
+            CoordinateRange currentX = formsPlot2.Plot.GetAxisLimits().XRange;
+            CoordinateRange currentY = formsPlot2.Plot.GetAxisLimits().YRange;
 
-            // TODO: figure out why layouts always appear different
-            // TODO: figure out why renders happen so often and remove duplicates if possible
-
-            if (differentAxisLimits)
+            if (!newX.Equals(currentX))
             {
-                formsPlot2.Plot.SetAxisLimits(formsPlot1.Plot);
-                formsPlot1.RefreshQueue(formsPlot2);
+                formsPlot2.Plot.SetAxisLimits(newX, currentY);
+                formsPlot1.RefreshQueue(formsPlot2); // update plot 2 next time plot 1 draws
             }
         };
 
         formsPlot2.Plot.RenderManager.RenderFinished += (object? sender, ScottPlot.Rendering.RenderDetails plot2Info) =>
         {
-            bool differentLayout = !plot2Info.Layout.Equals(formsPlot1.Plot.RenderManager.LastRenderInfo.Layout);
-            bool differentAxisLimits = !plot2Info.AxisLimits.Equals(formsPlot1.Plot.RenderManager.LastRenderInfo.AxisLimits);
+            CoordinateRange newX = formsPlot2.Plot.GetAxisLimits().XRange;
+            CoordinateRange currentX = formsPlot1.Plot.GetAxisLimits().XRange;
+            CoordinateRange currentY = formsPlot1.Plot.GetAxisLimits().YRange;
 
-            if (differentAxisLimits)
+            if (!newX.Equals(currentX))
             {
-                formsPlot1.Plot.SetAxisLimits(formsPlot2.Plot);
-                formsPlot2.RefreshQueue(formsPlot1);
-            };
+                formsPlot1.Plot.SetAxisLimits(newX, currentY);
+                formsPlot2.RefreshQueue(formsPlot1); // update plot 1 next time plot 2 draws
+            }
         };
     }
 
