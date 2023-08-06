@@ -6,8 +6,9 @@ namespace ScottPlot;
 
 public class RandomDataGenerator
 {
-    private Random Rand { get; }
-    private RandomNumberGenerator RNG { get; }
+    private Random Rand;
+    private readonly RandomNumberGenerator RNG;
+    public static RandomDataGenerator Generate { get; private set; } = new(0);
 
     /// <summary>
     /// Use a random seed so each generator returns different data.
@@ -28,6 +29,12 @@ public class RandomDataGenerator
     {
         Rand = new(seed);
         RNG = RandomNumberGenerator.Create();
+    }
+
+    public void RandomizeSeed()
+    {
+        Rand = new();
+        Generate = new();
     }
 
     #region Methods that return single numbers
@@ -124,7 +131,7 @@ public class RandomDataGenerator
         double offset = mult * (Rand.NextDouble() - .5);
         double oscillations = 1 + Rand.NextDouble() * 5;
         double phase = Rand.NextDouble() * Math.PI * 2;
-        return Generate.Sin(count, mult, offset, oscillations, phase);
+        return ScottPlot.Generate.Sin(count, mult, offset, oscillations, phase);
     }
 
     /// <summary>
@@ -152,7 +159,7 @@ public class RandomDataGenerator
     /// </summary>
     public List<IOHLC> RandomOHLCs(int count)
     {
-        DateTime[] dates = Generate.DateTime.Weekdays(count);
+        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;
