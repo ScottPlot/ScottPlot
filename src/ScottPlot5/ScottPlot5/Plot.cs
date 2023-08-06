@@ -144,7 +144,6 @@ public class Plot : IDisposable
         .Concat(new[] { TitlePanel })
         .ToArray();
 
-    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
         XAxis.Min = left;
@@ -153,7 +152,6 @@ public class Plot : IDisposable
         YAxis.Max = top;
     }
 
-    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
     {
         XAxis.Min = left ?? XAxis.Min;
@@ -162,13 +160,11 @@ public class Plot : IDisposable
         YAxis.Max = top ?? YAxis.Max;
     }
 
-    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(CoordinateRect rect)
     {
         SetAxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
     }
 
-    //[Obsolete("WARNING: NOT ALL LIMITS ARE AFFECTED")]
     public void SetAxisLimits(AxisLimits rect)
     {
         SetAxisLimits(rect.Rect);
@@ -249,6 +245,37 @@ public class Plot : IDisposable
             XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(Margins.ZoomFracX));
             YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(Margins.ZoomFracY));
         }
+    }
+
+    /// <summary>
+    /// Adjust limits all axes to pan by the given distance in coordinate space
+    /// </summary>
+    public void Pan(CoordinateSize distance)
+    {
+        XAxes.ForEach(x => x.Range.Pan(distance.Width));
+        YAxes.ForEach(x => x.Range.Pan(distance.Height));
+    }
+
+    /// <summary>
+    /// Adjust limits all axes to pan by the given distance in pixel space
+    /// </summary>
+    public void Pan(PixelSize distance)
+    {
+        if (RenderManager.RenderCount == 0)
+            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
+
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRenderInfo.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, RenderManager.LastRenderInfo.DataRect)));
+    }
+
+    /// <summary>
+    /// Modify limits of all axes to apply the given zoom.
+    /// Fractional values >1 zoom in and <1 zoom out.
+    /// </summary>
+    public void Zoom(double fracX = 1.0, double fracY = 1.0)
+    {
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
     }
 
     #endregion
