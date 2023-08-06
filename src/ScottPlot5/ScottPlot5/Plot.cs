@@ -34,7 +34,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
-    public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();
+    public ILayoutMaker LayoutManager { get; set; } = new StandardLayoutMaker();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
@@ -168,6 +168,11 @@ public class Plot : IDisposable
     public void SetAxisLimits(AxisLimits rect)
     {
         SetAxisLimits(rect.Rect);
+    }
+
+    public void SetAxisLimits(Plot other)
+    {
+        SetAxisLimits(other.GetAxisLimits());
     }
 
     public AxisLimits GetAxisLimits()
@@ -579,6 +584,11 @@ public class Plot : IDisposable
     public void Legend(bool enable = true)
     {
         Legends.ForEach(x => x.IsVisible = enable);
+    }
+
+    public void SetLayout(Layout other)
+    {
+        // TODO: apply a fixed layout from another plot
     }
 
     #endregion

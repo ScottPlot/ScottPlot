@@ -8,7 +8,7 @@ public readonly struct RenderDetails
     /// <summary>
     /// Size of the plot image in pixel units
     /// </summary>
-    public readonly PixelRect FigureRect;
+    public readonly PixelSize FigureSize;
 
     /// <summary>
     /// Size of the data area of the plot in pixel units
@@ -47,24 +47,28 @@ public readonly struct RenderDetails
     /// </summary>
     public readonly bool LayoutChanged;
 
+    /// <summary>
+    /// Arrangement of all panels
+    /// </summary>
+    public readonly Layouts.Layout Layout;
+
     public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes)
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
 
-        FigureRect = new PixelRect(0, 0, rp.FigureSize.Width, rp.FigureSize.Height);
+        FigureSize = rp.FigureSize;
         DataRect = rp.DataRect;
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.GetAxisLimits();
+        Layout = rp.Layout;
 
         RenderDetails previous = rp.Plot.RenderManager.LastRenderInfo;
 
         // TODO: evaluate multi-axis limits (not just the primary axes)
         AxisLimitsChanged = !AxisLimits.Equals(previous.AxisLimits);
 
-        bool figureRectChanged = !FigureRect.Equals(previous.FigureRect);
-        bool dataRectChanged = !DataRect.Equals(previous.DataRect);
-        LayoutChanged = figureRectChanged || dataRectChanged;
+        LayoutChanged = !Layout.Equals(previous.Layout);
     }
 }

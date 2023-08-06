@@ -31,7 +31,7 @@ public class RenderPack
             width: FigureSize.Width / Plot.ScaleFactor,
             height: FigureSize.Height / Plot.ScaleFactor);
 
-        Layout = Plot.Layout.GetLayout(figSize, Plot.GetAllPanels());
+        Layout = Plot.LayoutManager.GetLayout(figSize, Plot.GetAllPanels());
         DataRect = Layout.DataRect;
     }
 
