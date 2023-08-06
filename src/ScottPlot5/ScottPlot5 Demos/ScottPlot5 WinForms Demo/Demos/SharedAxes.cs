@@ -16,27 +16,25 @@ public partial class SharedAxes : Form, IDemoWindow
 
         formsPlot1.Plot.RenderManager.RenderFinished += (s, e) =>
         {
-            CoordinateRange newX = formsPlot1.Plot.GetAxisLimits().XRange;
-            CoordinateRange currentX = formsPlot2.Plot.GetAxisLimits().XRange;
-            CoordinateRange currentY = formsPlot2.Plot.GetAxisLimits().YRange;
+            AxisLimits originalLimits = formsPlot2.Plot.GetAxisLimits();
+            formsPlot2.Plot.MatchAxisLimits(formsPlot1.Plot, x: true, y: false);
+            bool limitsChanged = !formsPlot2.Plot.GetAxisLimits().Equals(originalLimits);
 
-            if (!newX.Equals(currentX))
+            if (limitsChanged)
             {
-                formsPlot2.Plot.SetAxisLimits(newX, currentY);
                 formsPlot1.RefreshQueue(formsPlot2); // update plot 2 next time plot 1 draws
             }
         };
 
         formsPlot2.Plot.RenderManager.RenderFinished += (object? sender, ScottPlot.Rendering.RenderDetails plot2Info) =>
         {
-            CoordinateRange newX = formsPlot2.Plot.GetAxisLimits().XRange;
-            CoordinateRange currentX = formsPlot1.Plot.GetAxisLimits().XRange;
-            CoordinateRange currentY = formsPlot1.Plot.GetAxisLimits().YRange;
+            AxisLimits originalLimits = formsPlot1.Plot.GetAxisLimits();
+            formsPlot1.Plot.MatchAxisLimits(formsPlot2.Plot, x: true, y: false);
+            bool limitsChanged = !formsPlot1.Plot.GetAxisLimits().Equals(originalLimits);
 
-            if (!newX.Equals(currentX))
+            if (limitsChanged)
             {
-                formsPlot1.Plot.SetAxisLimits(newX, currentY);
-                formsPlot2.RefreshQueue(formsPlot1); // update plot 1 next time plot 2 draws
+                formsPlot2.RefreshQueue(formsPlot1); // update plot 2 next time plot 1 draws
             }
         };
     }

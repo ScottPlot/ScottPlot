@@ -587,7 +587,22 @@ public class Plot : IDisposable
         Legends.ForEach(x => x.IsVisible = enable);
     }
 
-    public void SetLayout(Layout other)
+    /// <summary>
+    /// Set axis limits of this plots to match those of a given plot
+    /// </summary>
+    public void MatchAxisLimits(Plot other, bool x = true, bool y = true)
+    {
+        AxisLimits theseLimits = GetAxisLimits();
+        AxisLimits otherLimits = other.GetAxisLimits();
+        CoordinateRange xRange = x ? otherLimits.XRange : theseLimits.XRange;
+        CoordinateRange yRange = y ? otherLimits.YRange : theseLimits.YRange;
+        SetAxisLimits(xRange, yRange);
+    }
+
+    /// <summary>
+    /// Set the layout of this plot to match that of a given plot
+    /// </summary>
+    public void MatchLayout(Plot other, bool x = true, bool y = true)
     {
         // TODO: apply a fixed layout from another plot
     }

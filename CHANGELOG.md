@@ -44,6 +44,7 @@
 * Plot: Added `Pan()` and `Zoom()` methods that do not require passing state like `MousePan()` and `MouseZoom()` do (#2800)
 * Plot: Added `Plot.RenderManager.RenderFinished` event that provides a `RenderDetails` indicating whether axes or layout changed (#2801)
 * FormsPlot: Added `RefreshQueue()` to allow facilitate event-driven refreshing of multiple controls in single-thread applications (#2801, #2802)
+* Plot: Added `MatchAxisLimits()` to simplify applying limits from one plot to another in multi-control applications (#2802)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
