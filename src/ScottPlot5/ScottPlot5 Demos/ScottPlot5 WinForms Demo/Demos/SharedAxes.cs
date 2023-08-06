@@ -12,6 +12,9 @@ public partial class SharedAxes : Form, IDemoWindow
 
         formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Cos());
 
+        // configure the second control to always use the same layout as the first control
+        formsPlot2.Plot.MatchLayout(formsPlot1.Plot);
+
         // TODO: to ILayoutMaker add a method for getting the layout with a user defined data area
 
         formsPlot1.Plot.RenderManager.RenderFinished += (s, e) =>

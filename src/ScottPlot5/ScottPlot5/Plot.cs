@@ -34,7 +34,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
-    public ILayoutMaker LayoutManager { get; set; } = new StandardLayoutMaker();
+    public ILayoutMaker LayoutManager { get; set; } = new AutomaticLayoutMaker();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
@@ -600,11 +600,36 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Set the layout of this plot to match that of a given plot
+    /// Set the layout of this plot to always match that of a given plot
     /// </summary>
-    public void MatchLayout(Plot other, bool x = true, bool y = true)
+    public void MatchLayout(Plot other)
     {
-        // TODO: apply a fixed layout from another plot
+        LayoutManager = new MatchedLayoutMaker(other);
+    }
+
+    /// <summary>
+    /// Apply a fixed layout using the given rectangle to define the data area
+    /// </summary>
+    public void FixedLayout(PixelRect dataRect)
+    {
+        LayoutManager = new FixedDataAreaLayoutMaker(dataRect);
+    }
+
+    /// <summary>
+    /// Apply a fixed layout using the given padding to define space between the
+    /// data area and the edge of the figure
+    /// </summary>
+    public void FixedLayout(PixelPadding padding)
+    {
+        LayoutManager = new FixedPaddingLayoutMaker(padding);
+    }
+
+    /// <summary>
+    /// Use the automatic layout system (default)
+    /// </summary>
+    public void AutomaticLayout()
+    {
+        LayoutManager = new AutomaticLayoutMaker();
     }
 
     #endregion
