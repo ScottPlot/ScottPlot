@@ -170,9 +170,10 @@ public class Plot : IDisposable
         SetAxisLimits(rect.Rect);
     }
 
-    public void SetAxisLimits(Plot other)
+    public void SetAxisLimits(CoordinateRange xRange, CoordinateRange yRange)
     {
-        SetAxisLimits(other.GetAxisLimits());
+        AxisLimits limits = new(xRange.Min, xRange.Max, yRange.Min, yRange.Max);
+        SetAxisLimits(limits);
     }
 
     public AxisLimits GetAxisLimits()
