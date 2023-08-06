@@ -18,6 +18,11 @@ public class RenderManager
     /// </summary>
     public int RenderCount { get; private set; } = 0;
 
+    /// <summary>
+    /// This event is invoked after each render
+    /// </summary>
+    public event EventHandler<RenderDetails> RenderFinished = delegate { };
+
     private Plot Plot { get; }
 
     public RenderManager(Plot plot)
@@ -67,6 +72,7 @@ public class RenderManager
         LastRenderInfo = new(rp, actionTimes.ToArray());
 
         RenderCount += 1;
+        RenderFinished.Invoke(this, LastRenderInfo);
     }
 
     public void Render(SKSurface surface)
