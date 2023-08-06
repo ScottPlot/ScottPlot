@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.TickGenerators
 {
-    public class DateTimeFixedInterval : IDateTickGenerator
+    public class DateTimeFixedInterval : IDateTimeTickGenerator
     {
         public ITimeUnit Interval { get; set; }
 
