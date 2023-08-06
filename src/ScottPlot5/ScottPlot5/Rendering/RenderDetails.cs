@@ -50,7 +50,7 @@ public readonly struct RenderDetails
     /// <summary>
     /// Arrangement of all panels
     /// </summary>
-    public readonly Layouts.Layout Layout;
+    public readonly Layout Layout;
 
     public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes)
     {

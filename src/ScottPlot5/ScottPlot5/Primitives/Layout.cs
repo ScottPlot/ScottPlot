@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Layouts;
+﻿namespace ScottPlot;
 
 public struct Layout : IEquatable<Layout>
 {

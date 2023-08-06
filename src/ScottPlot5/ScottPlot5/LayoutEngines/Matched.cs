@@ -1,13 +1,13 @@
-﻿namespace ScottPlot.Layouts;
+﻿namespace ScottPlot.LayoutEngines;
 
 /// <summary>
-/// Generate a layout using another control as a reference
+/// Generate layouts that match layouts of another control
 /// </summary>
-internal class MatchedLayoutMaker : ILayoutMaker
+internal class Matched : ILayoutEngine
 {
     private Plot ReferencePlot { get; }
 
-    public MatchedLayoutMaker(Plot referencePlot)
+    public Matched(Plot referencePlot)
     {
         ReferencePlot = referencePlot;
     }

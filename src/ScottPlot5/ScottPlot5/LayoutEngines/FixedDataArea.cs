@@ -1,13 +1,13 @@
-﻿namespace ScottPlot.Layouts;
+﻿namespace ScottPlot.LayoutEngines;
 
 /// <summary>
 /// Generate a layout using a fixed rectangle for the data area
 /// </summary>
-public class FixedDataAreaLayoutMaker : ILayoutMaker
+public class FixedDataArea : ILayoutEngine
 {
     private PixelRect DataRect { get; }
 
-    public FixedDataAreaLayoutMaker(PixelRect dataRect)
+    public FixedDataArea(PixelRect dataRect)
     {
         DataRect = dataRect;
     }

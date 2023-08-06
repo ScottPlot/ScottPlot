@@ -1,29 +1,13 @@
 ﻿using ScottPlot.Axis;
 
-namespace ScottPlot.Layouts;
+namespace ScottPlot.LayoutEngines;
 
-public class AutomaticLayoutMaker : ILayoutMaker
+/// <summary>
+/// Generate the layout by measuring all panels and adding
+/// enough padding around the data area to fit them all exactly.
+/// </summary>
+public class Automatic : ILayoutEngine
 {
-    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
-    {
-        // Regenerate ticks using the figure area (not the data area)
-        // to create a first-pass estimate of the space needed for axis panels.
-        // Ticks require recalculation once more after the axes are repositioned
-        // according to the layout determined by this function.
-
-        panels.OfType<IXAxis>()
-            .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureSize.Width));
-
-        panels.OfType<IYAxis>()
-            .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureSize.Height));
-
-        Layout layout = MakeFinalLayout(figureSize, panels);
-
-        return layout;
-    }
-
     private void CalculateOffsets(IEnumerable<IPanel> panels, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
     {
         float offset = 0;
@@ -49,8 +33,27 @@ public class AutomaticLayoutMaker : ILayoutMaker
         return panelOffsets;
     }
 
-    private Layout MakeFinalLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
     {
+        /* PROBLEM: There is a chicken-or-egg situation
+         * where the ideal layout depends on the ticks,
+         * but the ticks depend on the layout.
+         * 
+         * SOLUTION: Regenerate ticks using the figure area (not the data area)
+         * to create a first-pass estimate of the space needed for axis panels.
+         * Ticks require recalculation once more after the axes are repositioned
+         * according to the layout determined by this function.
+         * 
+         */
+
+        panels.OfType<IXAxis>()
+            .ToList()
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureSize.Width));
+
+        panels.OfType<IYAxis>()
+            .ToList()
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureSize.Height));
+
         Dictionary<IPanel, float> panelSizes = MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 

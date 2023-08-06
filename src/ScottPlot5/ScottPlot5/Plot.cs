@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Layouts;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Control;
@@ -34,7 +33,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
-    public ILayoutMaker LayoutManager { get; set; } = new AutomaticLayoutMaker();
+    public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
@@ -604,7 +603,7 @@ public class Plot : IDisposable
     /// </summary>
     public void MatchLayout(Plot other)
     {
-        LayoutManager = new MatchedLayoutMaker(other);
+        LayoutEngine = new LayoutEngines.Matched(other);
     }
 
     /// <summary>
@@ -612,7 +611,7 @@ public class Plot : IDisposable
     /// </summary>
     public void FixedLayout(PixelRect dataRect)
     {
-        LayoutManager = new FixedDataAreaLayoutMaker(dataRect);
+        LayoutEngine = new LayoutEngines.FixedDataArea(dataRect);
     }
 
     /// <summary>
@@ -621,7 +620,7 @@ public class Plot : IDisposable
     /// </summary>
     public void FixedLayout(PixelPadding padding)
     {
-        LayoutManager = new FixedPaddingLayoutMaker(padding);
+        LayoutEngine = new LayoutEngines.FixedPadding(padding);
     }
 
     /// <summary>
@@ -629,7 +628,7 @@ public class Plot : IDisposable
     /// </summary>
     public void AutomaticLayout()
     {
-        LayoutManager = new AutomaticLayoutMaker();
+        LayoutEngine = new LayoutEngines.Automatic();
     }
 
     #endregion

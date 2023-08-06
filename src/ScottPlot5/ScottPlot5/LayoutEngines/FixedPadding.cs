@@ -1,10 +1,13 @@
-﻿namespace ScottPlot.Layouts;
+﻿namespace ScottPlot.LayoutEngines;
 
-public class FixedPaddingLayoutMaker : ILayoutMaker
+/// <summary>
+/// Generate layouts where the data area has a fixed padding from the edge of the figure
+/// </summary>
+public class FixedPadding : ILayoutEngine
 {
     private PixelPadding Padding { get; }
 
-    public FixedPaddingLayoutMaker(PixelPadding padding)
+    public FixedPadding(PixelPadding padding)
     {
         Padding = padding;
     }
