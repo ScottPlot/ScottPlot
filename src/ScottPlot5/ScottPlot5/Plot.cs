@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Axis;
-using ScottPlot.Layouts;
 using ScottPlot.Axis.StandardAxes;
 using ScottPlot.Legends;
 using ScottPlot.Control;
@@ -34,7 +33,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
-    public ILayoutMaker Layout { get; set; } = new Layouts.StandardLayoutMaker();
+    public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
     public AutoScaleMargins Margins { get; } = new();
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
@@ -168,6 +167,12 @@ public class Plot : IDisposable
     public void SetAxisLimits(AxisLimits rect)
     {
         SetAxisLimits(rect.Rect);
+    }
+
+    public void SetAxisLimits(CoordinateRange xRange, CoordinateRange yRange)
+    {
+        AxisLimits limits = new(xRange.Min, xRange.Max, yRange.Min, yRange.Max);
+        SetAxisLimits(limits);
     }
 
     public AxisLimits GetAxisLimits()
@@ -579,6 +584,51 @@ public class Plot : IDisposable
     public void Legend(bool enable = true)
     {
         Legends.ForEach(x => x.IsVisible = enable);
+    }
+
+    /// <summary>
+    /// Set axis limits of this plots to match those of a given plot
+    /// </summary>
+    public void MatchAxisLimits(Plot other, bool x = true, bool y = true)
+    {
+        AxisLimits theseLimits = GetAxisLimits();
+        AxisLimits otherLimits = other.GetAxisLimits();
+        CoordinateRange xRange = x ? otherLimits.XRange : theseLimits.XRange;
+        CoordinateRange yRange = y ? otherLimits.YRange : theseLimits.YRange;
+        SetAxisLimits(xRange, yRange);
+    }
+
+    /// <summary>
+    /// Set the layout of this plot to always match that of a given plot
+    /// </summary>
+    public void MatchLayout(Plot other)
+    {
+        LayoutEngine = new LayoutEngines.Matched(other);
+    }
+
+    /// <summary>
+    /// Apply a fixed layout using the given rectangle to define the data area
+    /// </summary>
+    public void FixedLayout(PixelRect dataRect)
+    {
+        LayoutEngine = new LayoutEngines.FixedDataArea(dataRect);
+    }
+
+    /// <summary>
+    /// Apply a fixed layout using the given padding to define space between the
+    /// data area and the edge of the figure
+    /// </summary>
+    public void FixedLayout(PixelPadding padding)
+    {
+        LayoutEngine = new LayoutEngines.FixedPadding(padding);
+    }
+
+    /// <summary>
+    /// Use the automatic layout system (default)
+    /// </summary>
+    public void AutomaticLayout()
+    {
+        LayoutEngine = new LayoutEngines.Automatic();
     }
 
     #endregion
