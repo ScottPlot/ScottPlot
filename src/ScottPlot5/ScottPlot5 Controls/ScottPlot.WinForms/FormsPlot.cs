@@ -3,8 +3,11 @@ using ScottPlot.Extensions;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -20,6 +23,8 @@ public class FormsPlot : UserControl, IPlotControl
     public Interaction Interaction { get; private set; }
 
     public float DisplayScale { get; set; }
+
+    private readonly Queue<IPlotControl> ControlsNeedingRefresh = new();
 
     public FormsPlot()
     {
@@ -107,6 +112,23 @@ public class FormsPlot : UserControl, IPlotControl
     {
         SKElement.Invalidate();
         base.Refresh();
+
+        while (ControlsNeedingRefresh.Any())
+        {
+            ControlsNeedingRefresh.Dequeue().Refresh();
+        }
+    }
+
+    /// <summary>
+    /// The next time this control is refreshed, 
+    /// also refresh the given control.
+    /// </summary>
+    public void RefreshQueue(IPlotControl other)
+    {
+        if (!ControlsNeedingRefresh.Contains(other))
+        {
+            ControlsNeedingRefresh.Enqueue(other);
+        }
     }
 
     public void ShowContextMenu(Pixel position)

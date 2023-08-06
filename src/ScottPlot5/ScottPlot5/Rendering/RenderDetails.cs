@@ -45,7 +45,7 @@ public readonly struct RenderDetails
     /// Indicates whether the pixel dimensions of this render are different
     /// from those of the previous render.
     /// </summary>
-    public readonly bool LayoutChanged;
+    public readonly bool LayoutChanged; // TODO: delete this???
 
     /// <summary>
     /// Arrangement of all panels
