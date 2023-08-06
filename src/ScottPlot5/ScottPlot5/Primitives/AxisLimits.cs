@@ -15,6 +15,8 @@ public readonly struct AxisLimits
     public double Right => XMax;
     public double Bottom => YMin;
     public double Top => YMax;
+    public double Width => XMax - XMin;
+    public double Height => YMax - YMin;
 
     // TODO: make sure callers aren't using this when they dont have to
     public CoordinateRect Rect => new(XMin, XMax, YMin, YMax);

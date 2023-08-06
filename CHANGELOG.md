@@ -41,6 +41,7 @@
 * Legend: Now hidden by default with opt-in visibility by calling `Plot.Legend()` (#2764)
 * Style: `Plot.Axes` has been renamed to `Plot.AxisStyler` to better communicate its purpose (#2778)
 * Primitives: Created `ExpandingAxisLimits` helper class for creating `AxisLimits` inside plottables (#2799)
+* Plot: Added `Pan()` and `Zoom()` methods that do not require passing state like `MousePan()` and `MouseZoom()` do (#2800)
 
 ## ScottPlot 4.1.66 (in development)
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_

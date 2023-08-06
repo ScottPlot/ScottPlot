@@ -9,6 +9,8 @@ public struct RenderDetails
     public readonly PixelRect DataRect;
     public readonly TimeSpan Elapsed;
     public readonly DateTime Timestamp;
+    public readonly AxisLimits AxisLimits;
+
     public readonly (string, TimeSpan)[] TimedActions; // TODO: make this report individual plottables, axes, etc.
 
     public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes)
@@ -18,5 +20,6 @@ public struct RenderDetails
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
+        AxisLimits = rp.Plot.GetAxisLimits();
     }
 }
