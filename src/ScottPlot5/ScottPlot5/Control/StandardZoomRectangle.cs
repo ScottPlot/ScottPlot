@@ -1,7 +1,4 @@
-﻿using ScottPlot.Axis;
-using System.Data;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 /// <summary>
 /// Logic for drawing the shaded region on the plot when the user middle-click-drags to zoom

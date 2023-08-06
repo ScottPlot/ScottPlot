@@ -1,8 +1,4 @@
-﻿using ScottPlot.Axis;
-using ScottPlot.Axis.StandardAxes;
-using SkiaSharp;
-
-namespace ScottPlot.Panels;
+﻿namespace ScottPlot.Panels;
 
 public class ColorBar : IPanel
 {
@@ -86,10 +82,10 @@ public class ColorBar : IPanel
     {
         IAxis axis = Edge switch
         {
-            Edge.Left => new LeftAxis(),
-            Edge.Right => new RightAxis(),
-            Edge.Bottom => new BottomAxis(),
-            Edge.Top => new TopAxis(),
+            Edge.Left => new AxisPanels.LeftAxis(),
+            Edge.Right => new AxisPanels.RightAxis(),
+            Edge.Bottom => new AxisPanels.BottomAxis(),
+            Edge.Top => new AxisPanels.TopAxis(),
             _ => throw new ArgumentOutOfRangeException(nameof(Edge))
         };
 

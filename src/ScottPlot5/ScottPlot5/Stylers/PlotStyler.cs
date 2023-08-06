@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-using ScottPlot.Axis.StandardAxes;
-using ScottPlot.Grids;
+﻿using ScottPlot.Grids;
 
 namespace ScottPlot.Stylers;
 
@@ -30,7 +28,7 @@ public class PlotStyler
     /// </summary>
     public void ColorAxes(Color color)
     {
-        foreach (AxisBase axis in Plot.GetStandardAxes())
+        foreach (AxisPanels.AxisBase axis in Plot.GetStandardAxes())
         {
             axis.Label.Font.Color = color;
             axis.FrameLineStyle.Color = color;
@@ -69,7 +67,7 @@ public class PlotStyler
     /// </summary>
     public void AxisFrame(float left, float right, float bottom, float top)
     {
-        AxisBase[] axes = Plot.GetStandardAxes();
+        AxisPanels.AxisBase[] axes = Plot.GetStandardAxes();
         axes[0].FrameLineStyle.Width = left;
         axes[1].FrameLineStyle.Width = right;
         axes[2].FrameLineStyle.Width = bottom;

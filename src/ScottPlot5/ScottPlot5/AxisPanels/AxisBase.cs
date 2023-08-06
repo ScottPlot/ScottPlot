@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.AxisPanels;
 
 public abstract class AxisBase
 {
@@ -127,7 +125,7 @@ public abstract class AxisBase
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
-            throw new InvalidEnumArgumentException(axis.Edge.ToString());
+            throw new InvalidOperationException();
         }
 
         using SKPaint paint = new();
@@ -163,7 +161,7 @@ public abstract class AxisBase
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
-            throw new InvalidEnumArgumentException();
+            throw new InvalidOperationException();
         }
 
         using SKPaint paint = new();

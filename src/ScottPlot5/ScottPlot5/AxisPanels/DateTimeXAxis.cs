@@ -1,7 +1,6 @@
-﻿using ScottPlot.Axis.StandardAxes;
-using ScottPlot.TickGenerators;
+﻿using ScottPlot.TickGenerators;
 
-namespace ScottPlot.Axis.DateTimeAxes;
+namespace ScottPlot.AxisPanels;
 
 public class DateTimeXAxis : XAxisBase, IXAxis
 {

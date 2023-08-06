@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// This object performs 2D coordinate/pixel conversions based on the data area and two axes it contains.
+/// This object holds an X axis and Y axis and performs 2D coordinate/pixel conversions
 /// </summary>
 public class Axes : IAxes
 {

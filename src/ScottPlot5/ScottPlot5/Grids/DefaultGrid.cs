@@ -1,7 +1,4 @@
-﻿using ScottPlot.Axis;
-using System.Data;
-
-namespace ScottPlot.Grids;
+﻿namespace ScottPlot.Grids;
 
 public class DefaultGrid : IGrid
 {

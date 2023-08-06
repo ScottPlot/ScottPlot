@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-using ScottPlot.Axis.StandardAxes;
-using ScottPlot.Legends;
+﻿using ScottPlot.Legends;
 using ScottPlot.Control;
 using ScottPlot.Stylers;
 using ScottPlot.Rendering;
@@ -83,14 +81,14 @@ public class Plot : IDisposable
     public Plot()
     {
         // setup the default primary X and Y axes
-        IXAxis xAxisPrimary = new BottomAxis();
-        IYAxis yAxisPrimary = new LeftAxis();
+        IXAxis xAxisPrimary = new AxisPanels.BottomAxis();
+        IYAxis yAxisPrimary = new AxisPanels.LeftAxis();
         XAxes.Add(xAxisPrimary);
         YAxes.Add(yAxisPrimary);
 
         // add labeless secondary axes to get right side ticks and padding
-        IXAxis xAxisSecondary = new TopAxis();
-        IYAxis yAxisSecondary = new RightAxis();
+        IXAxis xAxisSecondary = new AxisPanels.TopAxis();
+        IYAxis yAxisSecondary = new AxisPanels.RightAxis();
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
@@ -123,15 +121,15 @@ public class Plot : IDisposable
 
     #region Axis Management
 
-    internal AxisBase[] GetStandardAxes()
+    internal AxisPanels.AxisBase[] GetStandardAxes()
     {
         // TODO: throw if custom axes in use
-        return new AxisBase[]
+        return new AxisPanels.AxisBase[]
         {
-            (AxisBase)XAxes[0],
-            (AxisBase)XAxes[1],
-            (AxisBase)YAxes[0],
-            (AxisBase)YAxes[1],
+            (AxisPanels.AxisBase)XAxes[0],
+            (AxisPanels.AxisBase)XAxes[1],
+            (AxisPanels.AxisBase)YAxes[0],
+            (AxisPanels.AxisBase)YAxes[1],
         };
     }
 
