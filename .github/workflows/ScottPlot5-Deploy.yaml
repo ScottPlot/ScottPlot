@@ -5,7 +5,7 @@ on:
 
 jobs:
   windows:
-    name: 🚀 Publish ScottPlot4 Packages
+    name: 🚀 Publish ScottPlot5 Packages
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
