@@ -3,18 +3,40 @@ name: ScottPlot 5 Deploy
 on:
   workflow_dispatch:
 
+env:
+  DOTNET_VERSION: "7.0.x"
+  TEST_PROJECT: "src/ScottPlot5/ScottPlot5 Tests/"
+
 jobs:
+  test:
+    name: 🧪 Test ScottPlot5
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Restore
+        run: dotnet restore ${{ env.TEST_PROJECT }}
+      - name: 🛠️ Build
+        run: dotnet build ${{ env.TEST_PROJECT }} --configuration Release
+      - name: 🧪 Test
+        run: dotnet test ${{ env.TEST_PROJECT }} --configuration Release --verbosity minimal
+
   windows:
     name: 🚀 Publish ScottPlot5 Packages
+    needs: [test]
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
-      - name: ✨ Setup .NET 7.0
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "7.0.x"
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
