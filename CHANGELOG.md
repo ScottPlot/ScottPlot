@@ -4,7 +4,12 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
-## ScottPlot 5.0.7-beta (in development)
+## ScottPlot 5.0.8-beta (in development)
+
+## ScottPlot 4.1.67 (in development)
+
+## ScottPlot 5.0.7-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-06_
 * Axis: Fixed issue where axes with zero span would cause renders to fail (#2714) _Thanks @ahmad-qamar_
 * Avalonia: Improve support for cross-platform and non-desktop applications (#2748) _Thanks @PremekTill_
 * Scatter Plot: Improve support for empty datasets (#2740)
@@ -47,7 +52,8 @@
 * Plot: Added `MatchAxisLimits()` to simplify applying limits from one plot to another in multi-control applications (#2802)
 * Layout: Added `MatchLayout()` and `FixedLayout()` as an alternative to the default `AutomaticLayout()` engine (#2802)
 
-## ScottPlot 4.1.66 (in development)
+## ScottPlot 4.1.66
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-06_
 * DataLogger: Improved support for single-point datasets (#2733) _Thanks @KroMignon_
 * Plot: Added optional arguments to `AddDataLogger()` and `AddDataStreamer()` for customizing style (#2733) _Thanks @KroMignon_
 * Version: Build information can now be accessed from the static `ScottPlot.Version` class
