@@ -10,47 +10,61 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: 🐢 Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
+
       - name: ✨ Setup .NET 7.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7.0.x"
-      - name: 🚚 Restore
-        run: dotnet restore "src/ScottPlot5"
-      - name: 🛠️ Build
-        run: dotnet build "src/ScottPlot5" --configuration Release --no-restore
-      - name: 🧪 Test
-        run: dotnet test "src/ScottPlot5" --no-restore --verbosity minimal
-      - name: 📦 Pack
-        run: |
-          dotnet pack "src/ScottPlot5/ScottPlot5" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto" --configuration Release
-          dotnet pack "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI" --configuration Release
-      - name: 💾 Store Packages
-        uses: actions/upload-artifact@v3
-        with:
-          name: ScottPlot-Packages
-          retention-days: 1
-          path: |
-            src/ScottPlot5/ScottPlot5/bin/Release/*.nupkg
-            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms/bin/Release/*.nupkg
-            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF/bin/Release/*.nupkg
-            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia/bin/Release/*.nupkg
-            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto/bin/Release/*.nupkg
-            src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI/bin/Release/*.nupkg
+
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-      - name: 🚀 Publish Packages
-        run: | # WARNING: forward slashes are not supported
-          nuget push "src\ScottPlot5\ScottPlot5\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-          nuget push "src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot
+        working-directory: "src/ScottPlot5/ScottPlot5"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot.WinForms
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot.WPF
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot.Avalonia
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot.Eto
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 📦 Package ScottPlot.WinUI
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
