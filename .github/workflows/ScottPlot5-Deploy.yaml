@@ -5,7 +5,7 @@ on:
 
 env:
   DOTNET_VERSION: "7.0.x"
-  TEST_PROJECT: "src/ScottPlot5/ScottPlot5 Tests/"
+  TEST_PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Tests/"
 
 jobs:
   test:
@@ -19,11 +19,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.TEST_PROJECT }}
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet restore 
       - name: 🛠️ Build
-        run: dotnet build ${{ env.TEST_PROJECT }} --configuration Release
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet build --configuration Release
       - name: 🧪 Test
-        run: dotnet test ${{ env.TEST_PROJECT }} --configuration Release --verbosity minimal
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet test --configuration Release --verbosity minimal
 
   windows:
     name: 🚀 Publish ScottPlot5 Packages
