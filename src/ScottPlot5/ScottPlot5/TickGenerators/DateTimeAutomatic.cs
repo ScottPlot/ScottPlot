@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.TickGenerators;
 
-public class DateTimeAutomatic : IDateTickGenerator
+public class DateTimeAutomatic : IDateTimeTickGenerator
 {
     private readonly static List<ITimeUnit> TheseTimeUnits = new()
     {

@@ -26,7 +26,7 @@ internal class MultiAxis : RecipePageBase
             myPlot.YAxis.Label.Text = "Primary Y Axis";
 
             // create a second axis and add it to the plot
-            ScottPlot.Axis.StandardAxes.LeftAxis yAxis2 = new();
+            ScottPlot.AxisPanels.LeftAxis yAxis2 = new();
             myPlot.YAxes.Add(yAxis2);
 
             // add a new plottable and tell it to use the custom Y axis

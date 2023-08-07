@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.AxisPanels;
 
 public abstract class YAxisBase : AxisBase, IAxis
 {
@@ -91,8 +91,8 @@ public abstract class YAxisBase : AxisBase, IAxis
         Label.Rotation = Edge == Edge.Left ? -90 : 90;
         Label.Draw(rp.Canvas, labelPoint);
 
-        AxisRendering.DrawTicks(rp, TickFont, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
-        AxisRendering.DrawFrame(rp, panelRect, Edge, FrameLineStyle);
+        DrawTicks(rp, TickFont, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
+        DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 
     public double GetPixelDistance(double distance, PixelRect dataArea)

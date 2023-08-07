@@ -231,7 +231,7 @@ public class FormsPlot : UserControl, IPlotControl
         Clipboard.SetImage(bmp);
     }
 
-    public Coordinates GetCoordinates(Pixel px, Axis.IXAxis? xAxis = null, Axis.IYAxis? yAxis = null)
+    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         /* DISPLAY SCALING NOTE: 
          * If display scaling causes tracking issues, multiply X and Y by the DisplayScale here.

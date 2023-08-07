@@ -36,7 +36,7 @@ public interface IPlotControl
     /// Logic for translating screen position (pixels) to coordinates in (axis units).
     /// Implementers must add logic to compensate for DPI scaling.
     /// </summary>
-    Coordinates GetCoordinates(Pixel px, Axis.IXAxis? xAxis = null, Axis.IYAxis? yAxis = null);
+    Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null);
 
     /// <summary>
     /// Determine the DPI scaling ratio of the present display.

@@ -1,13 +1,10 @@
-﻿using ScottPlot;
-using ScottPlot.Axis;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Crosshair : IPlottable
 {
     public bool IsVisible { get; set; } = true;
 
-    public IAxes Axes { get; set; } = ScottPlot.Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
 
     public IEnumerable<LegendItem> LegendItems { get; } = Array.Empty<LegendItem>();
 

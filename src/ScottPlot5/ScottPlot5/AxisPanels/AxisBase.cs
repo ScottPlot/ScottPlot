@@ -1,12 +1,72 @@
-﻿using System.ComponentModel;
+﻿namespace ScottPlot.AxisPanels;
 
-namespace ScottPlot.Axis;
-
-/// <summary>
-/// Helper methods for rendering common components
-/// </summary>
-public static class AxisRendering
+public abstract class AxisBase
 {
+    public bool IsVisible { get; set; } = true;
+
+    public abstract Edge Edge { get; }
+
+    public virtual CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
+
+    public double Min
+    {
+        get => Range.Min;
+        set => Range.Min = value;
+    }
+
+    public double Max
+    {
+        get => Range.Max;
+        set => Range.Max = value;
+    }
+
+    public virtual ITickGenerator TickGenerator { get; set; } = null!;
+
+    public Label Label { get; private set; } = new()
+    {
+        Text = string.Empty,
+        Font = new() { Size = 16, Bold = true },
+        Rotation = -90,
+    };
+    public bool ShowDebugInformation { get; set; } = false;
+
+    public LineStyle FrameLineStyle { get; } = new();
+
+    public FontStyle TickFont { get; set; } = new();
+
+    public float MajorTickLength { get; set; } = 4;
+    public float MajorTickWidth { get; set; } = 1;
+    public Color MajorTickColor { get; set; } = Colors.Black;
+    public TickStyle MajorTickStyle => new()
+    {
+        Length = MajorTickLength,
+        Width = MajorTickWidth,
+        Color = MajorTickColor
+    };
+
+    public float MinorTickLength { get; set; } = 2;
+    public float MinorTickWidth { get; set; } = 1;
+    public Color MinorTickColor { get; set; } = Colors.Black;
+    public TickStyle MinorTickStyle => new()
+    {
+        Length = MinorTickLength,
+        Width = MinorTickWidth,
+        Color = MinorTickColor
+    };
+
+    /// <summary>
+    /// Apply a single color to all axis components: label, tick labels, tick marks, and frame
+    /// </summary>
+    /// <param name="color"></param>
+    public void Color(Color color)
+    {
+        Label.Font.Color = color;
+        TickFont.Color = color;
+        MajorTickColor = color;
+        MinorTickColor = color;
+        FrameLineStyle.Color = color;
+    }
+
     /// <summary>
     /// Draw a line along the edge of an axis on the side of the data area
     /// </summary>
@@ -65,7 +125,7 @@ public static class AxisRendering
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
-            throw new InvalidEnumArgumentException();
+            throw new InvalidOperationException();
         }
 
         using SKPaint paint = new();
@@ -101,7 +161,7 @@ public static class AxisRendering
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
-            throw new InvalidEnumArgumentException();
+            throw new InvalidOperationException();
         }
 
         using SKPaint paint = new();

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Axis.StandardAxes;
+﻿namespace ScottPlot.AxisPanels;
 
 public class TopAxis : XAxisBase, IXAxis
 {

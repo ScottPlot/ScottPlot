@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Any object that renders shapes on the canvas using scale information from the axes must implement this interface.

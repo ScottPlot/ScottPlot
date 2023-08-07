@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 /// <summary>
 /// Holds values (not styling information) for a single box
@@ -87,7 +85,7 @@ public class BoxGroups
 public class BoxPlot : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
     public BoxGroups Groups { get; set; } = new();
     public IEnumerable<LegendItem> LegendItems => Groups.LegendItems;
     public AxisLimits GetAxisLimits() => Groups.GetAxisLimits();

@@ -1,12 +1,10 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class OhlcPlot : IPlottable
 {
     public bool IsVisible { get; set; } = true;
 
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
 
     private readonly DataSources.IOHLCSource Data;
 

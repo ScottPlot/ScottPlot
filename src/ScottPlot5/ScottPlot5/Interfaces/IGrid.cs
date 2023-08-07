@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Implement this interface to create a custom grid

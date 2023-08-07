@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 public class MouseState
 {

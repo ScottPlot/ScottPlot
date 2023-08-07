@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Stylers;
+﻿namespace ScottPlot.Stylers;
 
 /// <summary>
 /// This class contains helper methods which make it easier 
@@ -54,7 +52,7 @@ public class AxisStyler
         {
             Edge.Left => throw new NotImplementedException(), // TODO: support vertical DateTime axes
             Edge.Right => throw new NotImplementedException(),
-            Edge.Bottom => new Axis.DateTimeAxes.DateTimeXAxis(),
+            Edge.Bottom => new AxisPanels.DateTimeXAxis(),
             Edge.Top => throw new NotImplementedException(),
             _ => throw new NotImplementedException(),
         };

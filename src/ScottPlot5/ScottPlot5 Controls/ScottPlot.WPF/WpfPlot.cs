@@ -6,7 +6,6 @@ using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
 using System.Windows.Media;
-using ScottPlot.Axis;
 
 namespace ScottPlot.WPF
 {

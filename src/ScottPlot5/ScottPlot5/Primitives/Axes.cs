@@ -1,18 +1,13 @@
-﻿namespace ScottPlot.Axis;
+﻿namespace ScottPlot;
 
 /// <summary>
-/// This object performs 2D coordinate/pixel conversions based on the data area and two axes it contains.
+/// This object holds an X axis and Y axis and performs 2D coordinate/pixel conversions
 /// </summary>
 public class Axes : IAxes
 {
     public IXAxis XAxis { get; set; } = null!;
     public IYAxis YAxis { get; set; } = null!;
     public PixelRect DataRect { get; set; }
-
-    /// <summary>
-    /// <see cref="Axes"/> with null axes which will be set to defaults axes at render time.
-    /// </summary>
-    public static Axes Default => new();
 
     public Coordinates GetCoordinates(Pixel pixel)
     {

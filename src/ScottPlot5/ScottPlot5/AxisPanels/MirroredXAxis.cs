@@ -1,13 +1,13 @@
-﻿
-namespace ScottPlot.Axis.StandardAxes;
-public sealed class MirroredYAxis : YAxisBase, IYAxis
+﻿namespace ScottPlot.AxisPanels;
+
+public sealed class MirroredXAxis : XAxisBase, IXAxis
 {
     private readonly Edge _edge;
-    private readonly IYAxis _axis;
+    private readonly IXAxis _axis;
     public override Edge Edge => _edge;
     public override CoordinateRange Range => new(_axis.Min, _axis.Max);
 
-    public MirroredYAxis(IYAxis axis, Edge? edge)
+    public MirroredXAxis(IXAxis axis, Edge? edge)
     {
         _axis = axis;
         _edge = edge ?? axis.Edge;

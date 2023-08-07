@@ -2,15 +2,13 @@
  * Avoid temptation to use generics or generic math at this early stage of development!
  */
 
-using ScottPlot.Axis;
-
 namespace ScottPlot.Plottables;
 
 public class Scatter : IPlottable
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSources.IScatterSource Data { get; }

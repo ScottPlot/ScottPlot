@@ -1,11 +1,9 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Plottables
+﻿namespace ScottPlot.Plottables
 {
     public class ErrorBar : IPlottable
     {
         public bool IsVisible { get; set; } = true;
-        public IAxes Axes { get; set; } = Axis.Axes.Default;
+        public IAxes Axes { get; set; } = new Axes();
 
         public IReadOnlyList<double> Xs { get; set; }
         public IReadOnlyList<double> Ys { get; set; }

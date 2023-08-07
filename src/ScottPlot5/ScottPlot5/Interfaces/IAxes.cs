@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Axis;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This interface describes a pair of 1D axes.

@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 /// <summary>
 /// This class contains logic to perform plot manipulations in response to UI actions.
