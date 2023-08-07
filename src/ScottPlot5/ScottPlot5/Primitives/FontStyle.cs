@@ -10,7 +10,12 @@ public class FontStyle
 {
     protected bool SetField<T>(ref T fieldValue, T value)
     {
-        if (Equals(fieldValue, value))
+        if (value is string)
+        {
+            if (string.Compare(fieldValue as string, value as string) == 0)
+                return false;
+        }
+        else if (Equals(fieldValue, value))
             return false;
         fieldValue = value;
         _typeface = null;
