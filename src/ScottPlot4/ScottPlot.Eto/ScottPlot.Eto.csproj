@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,9 +6,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.65</Version>
-        <AssemblyVersion>4.1.65.0</AssemblyVersion>
-        <FileVersion>4.1.65.0</FileVersion>
+        <Version>4.1.66</Version>
+        <AssemblyVersion>4.1.66.0</AssemblyVersion>
+        <FileVersion>4.1.66.0</FileVersion>
 
         <AssemblyName>ScottPlot.Eto</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>

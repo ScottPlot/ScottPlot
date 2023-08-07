@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
         <TargetFrameworks>net461;net472;net48;netcoreapp3.1;net6.0-windows;</TargetFrameworks>
@@ -6,9 +6,9 @@
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.65</Version>
-        <AssemblyVersion>4.1.65.0</AssemblyVersion>
-        <FileVersion>4.1.65.0</FileVersion>
+        <Version>4.1.66</Version>
+        <AssemblyVersion>4.1.66.0</AssemblyVersion>
+        <FileVersion>4.1.66.0</FileVersion>
 
         <AssemblyName>ScottPlot.WinForms</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>
