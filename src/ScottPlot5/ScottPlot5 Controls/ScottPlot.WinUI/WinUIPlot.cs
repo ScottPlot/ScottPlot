@@ -10,8 +10,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
 using ScottPlot.Control;
-using ScottPlot.Axis;
-using Windows.Devices.Display.Core;
 
 namespace ScottPlot.WinUI;
 

@@ -1,13 +1,11 @@
 ﻿using Eto.Forms;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
 using System.IO;
-using ScottPlot.Axis;
 
 namespace ScottPlot.Eto;
 
