@@ -98,7 +98,8 @@ public class RandomDataGenerator
     #endregion
 
     /// <summary>
-    /// Uniformly distributed random numbers
+    /// Uniformly distributed random numbers between 0 and 1
+    /// (multiplied by <paramref name="mult"/> then added to <paramref name="offset"/>).
     /// </summary>
     public double[] RandomSample(int count, double mult = 1, double offset = 0)
     {

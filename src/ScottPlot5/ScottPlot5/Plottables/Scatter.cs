@@ -12,6 +12,16 @@ public class Scatter : IPlottable
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSources.IScatterSource Data { get; }
+    public Color Color
+    {
+        get => LineStyle.Color;
+        set
+        {
+            LineStyle.Color = value; 
+            MarkerStyle.Fill.Color = value; 
+            MarkerStyle.Outline.Color = value;
+        }
+    }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 

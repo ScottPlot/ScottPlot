@@ -167,12 +167,15 @@ public class PlottableAdder
         return colorBar;
     }
 
-    public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorPositive = null, IReadOnlyList<double>? xErrorNegative = null, IReadOnlyList<double>? yErrorPositive = null, IReadOnlyList<double>? yErrorNegative = null, Color? color = null)
+    public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double> yErrors)
     {
-        color ??= NextColor;
-        ErrorBar errorBar = new(xs, ys, xErrorPositive, xErrorNegative, yErrorPositive, yErrorNegative, color.Value);
-        Plot.PlottableList.Add(errorBar);
-        return errorBar;
+        ErrorBar eb = new(xs, ys, null, null, yErrors, yErrors)
+        {
+            Color = NextColor,
+        };
+
+        Plot.PlottableList.Add(eb);
+        return eb;
     }
 
     public OhlcPlot OHLC(IList<IOHLC> ohlcs)

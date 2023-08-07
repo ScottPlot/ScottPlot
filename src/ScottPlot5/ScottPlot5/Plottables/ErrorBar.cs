@@ -14,8 +14,13 @@
 
         public LineStyle LineStyle { get; set; } = new();
         public float CapSize { get; set; } = 3;
+        public Color Color
+        {
+            get => LineStyle.Color;
+            set => LineStyle.Color = value;
+        }
 
-        public ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorsPositive, IReadOnlyList<double>? xErrorsNegative, IReadOnlyList<double>? yErrorsPositive, IReadOnlyList<double>? yErrorsNegative, Color color)
+        public ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double>? xErrorsPositive, IReadOnlyList<double>? xErrorsNegative, IReadOnlyList<double>? yErrorsPositive, IReadOnlyList<double>? yErrorsNegative)
         {
             Xs = xs;
             Ys = ys;
@@ -23,7 +28,6 @@
             XErrorsNegative = xErrorsNegative;
             YErrorsPositive = yErrorsPositive;
             YErrorsNegative = yErrorsNegative;
-            LineStyle.Color = color;
         }
 
         public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();

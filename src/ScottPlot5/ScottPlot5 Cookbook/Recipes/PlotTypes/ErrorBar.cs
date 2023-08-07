@@ -17,39 +17,46 @@ internal class ErrorBar : RecipePageBase
         [Test]
         public override void Recipe()
         {
-            int N = 50;
+            int points = 30;
 
-            double[] xs = Generate.Consecutive(N);
-            double[] ys = Generate.RandomWalk(N);
-
-            double[] yErrPositive = Generate.Random(N, 0.1, 0.25);
-            double[] yErrNegative = Generate.Random(N, 0.1, 0.25);
+            double[] xs = Generate.Consecutive(points);
+            double[] ys = Generate.RandomWalk(points);
+            double[] err = Generate.Random(points, 0.1, 1);
 
             var scatter = myPlot.Add.Scatter(xs, ys);
-            var errorBars = myPlot.Add.ErrorBar(xs, ys, yErrorPositive: yErrPositive, yErrorNegative: yErrNegative, color: scatter.LineStyle.Color);
+            var errorbars = myPlot.Add.ErrorBar(xs, ys, err);
+            errorbars.Color = scatter.Color;
         }
     }
 
-    internal class MultiDimensionalErrorBars : RecipeTestBase
+    internal class CustomErrors : RecipeTestBase
     {
-        public override string Name => "MultiDimensional ErrorBars";
-        public override string Description => "You can mix and match x and y error bars.";
+        public override string Name => "ErrorBar Values";
+        public override string Description => "Error size can be set for all dimensions.";
 
         [Test]
         public override void Recipe()
         {
-            int N = 50;
+            int points = 10;
 
-            double[] xs = Generate.Consecutive(N);
-            double[] ys = Generate.RandomWalk(N);
+            ScottPlot.RandomDataGenerator gen = new();
 
-            double[] xErrPositive = Generate.Random(N, 0.1, 0.25);
-            double[] xErrNegative = Generate.Random(N, 0.1, 0.25);
-            double[] yErrPositive = Generate.Random(N, 0.1, 0.25);
-            double[] yErrNegative = Generate.Random(N, 0.1, 0.25);
-
+            double[] xs = Generate.Consecutive(points);
+            double[] ys = Generate.RandomWalk(points);
             var scatter = myPlot.Add.Scatter(xs, ys);
-            var errorBars = myPlot.Add.ErrorBar(xs, ys, xErrPositive, xErrNegative, yErrPositive, yErrNegative, scatter.LineStyle.Color);
+            scatter.LineStyle.Width = 0;
+
+            ScottPlot.Plottables.ErrorBar eb = new(
+                xs: xs,
+                ys: ys,
+                xErrorsNegative: gen.RandomSample(points, .5),
+                xErrorsPositive: gen.RandomSample(points, .5),
+                yErrorsNegative: gen.RandomSample(points),
+                yErrorsPositive: gen.RandomSample(points));
+
+            eb.Color = scatter.Color;
+
+            myPlot.Add.Plottable(eb);
         }
     }
 }
