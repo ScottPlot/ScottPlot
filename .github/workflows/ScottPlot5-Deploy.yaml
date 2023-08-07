@@ -27,7 +27,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.WinForms
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms"
@@ -35,7 +35,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.WPF
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF"
@@ -43,7 +43,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.Avalonia
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
@@ -51,7 +51,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.Eto
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
@@ -59,7 +59,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.WinUI
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
@@ -67,4 +67,4 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release
-          nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
