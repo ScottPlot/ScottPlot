@@ -17,8 +17,8 @@ public class Scatter : IPlottable
         get => LineStyle.Color;
         set
         {
-            LineStyle.Color = value; 
-            MarkerStyle.Fill.Color = value; 
+            LineStyle.Color = value;
+            MarkerStyle.Fill.Color = value;
             MarkerStyle.Outline.Color = value;
         }
     }
