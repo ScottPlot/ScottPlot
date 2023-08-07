@@ -18,7 +18,7 @@ public partial class DataLogger : Form
     {
         InitializeComponent();
 
-        Logger = formsPlot1.Plot.AddDataLogger();
+        Logger = formsPlot1.Plot.AddDataLogger(label: "trace");
 
         AddRandomWalkData(1000);
         btnFull_Click(null, EventArgs.Empty);
@@ -80,6 +80,12 @@ public partial class DataLogger : Form
     private void btnClear_Click(object sender, EventArgs e)
     {
         Logger.Clear();
+        formsPlot1.Refresh();
+    }
+
+    private void chk_showLegend_CheckedChanged(object sender, EventArgs e)
+    {
+        formsPlot1.Plot.Legend(chk_showLegend.Checked);
         formsPlot1.Refresh();
     }
 }
