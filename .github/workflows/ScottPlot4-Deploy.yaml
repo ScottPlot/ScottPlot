@@ -22,36 +22,41 @@ jobs:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
       - name: 🚀 Deploy ScottPlot
+        working-directory: "src/ScottPlot4/ScottPlot/"
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot/ScottPlot.csproj
-          dotnet build src/ScottPlot4/ScottPlot/ScottPlot.csproj --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot/ScottPlot.csproj --configuration Release
-          nuget push "src\ScottPlot4\ScottPlot\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.WinForms
+        working-directory: "src/ScottPlot4/ScottPlot.WinForms"
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.WinForms
-          dotnet build src/ScottPlot4/ScottPlot.WinForms --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.WinForms --configuration Release
-          nuget push "src\ScottPlot4\ScottPlot.WinForms\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.WPF
+        working-directory: "src/ScottPlot4/ScottPlot.WPF"
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.WPF
-          dotnet build src/ScottPlot4/ScottPlot.WPF --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.WPF --configuration Release
-          nuget push "src\ScottPlot4\ScottPlot.WPF\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.Avalonia
+        working-directory: "src/ScottPlot4/ScottPlot.Avalonia"
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.Avalonia
-          dotnet build src/ScottPlot4/ScottPlot.Avalonia --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.Avalonia --configuration Release
-          nuget push "src\ScottPlot4\ScottPlot.Avalonia\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
       - name: 🚀 Deploy ScottPlot.Eto
+        working-directory: "src/ScottPlot4/ScottPlot.Eto"
         run: |
-          dotnet restore src/ScottPlot4/ScottPlot.Eto
-          dotnet build src/ScottPlot4/ScottPlot.Eto --configuration Release
-          dotnet pack src/ScottPlot4/ScottPlot.Eto --configuration Release
-          nuget push "src\ScottPlot4\ScottPlot.Eto\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
