@@ -21,7 +21,7 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
-      - name: 📦 Package ScottPlot
+      - name: 🚀 Deploy ScottPlot
         working-directory: "src/ScottPlot5/ScottPlot5"
         run: |
           dotnet restore
@@ -29,7 +29,7 @@ jobs:
           dotnet pack --configuration Release
           nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
-      - name: 📦 Package ScottPlot.WinForms
+      - name: 🚀 Deploy ScottPlot.WinForms
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms"
         run: |
           dotnet restore
@@ -37,7 +37,7 @@ jobs:
           dotnet pack --configuration Release
           nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
-      - name: 📦 Package ScottPlot.WPF
+      - name: 🚀 Deploy ScottPlot.WPF
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF"
         run: |
           dotnet restore
@@ -45,7 +45,7 @@ jobs:
           dotnet pack --configuration Release
           nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
-      - name: 📦 Package ScottPlot.Avalonia
+      - name: 🚀 Deploy ScottPlot.Avalonia
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
         run: |
           dotnet restore
@@ -53,7 +53,7 @@ jobs:
           dotnet pack --configuration Release
           nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
-      - name: 📦 Package ScottPlot.Eto
+      - name: 🚀 Deploy ScottPlot.Eto
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
         run: |
           dotnet restore
@@ -61,7 +61,7 @@ jobs:
           dotnet pack --configuration Release
           nuget push \bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
-      - name: 📦 Package ScottPlot.WinUI
+      - name: 🚀 Deploy ScottPlot.WinUI
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
         run: |
           dotnet restore
