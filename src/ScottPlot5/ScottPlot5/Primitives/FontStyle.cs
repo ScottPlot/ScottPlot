@@ -8,20 +8,70 @@ namespace ScottPlot;
 /// </summary>
 public class FontStyle
 {
-    protected bool SetField<T>(ref T fieldValue, T value)
+    /* Typefaces are cached to improve performance.
+     * https://github.com/ScottPlot/ScottPlot/issues/2833
+     * https://github.com/ScottPlot/ScottPlot/pull/2848
+     */
+
+    private SKTypeface? _typeface = null;
+
+    public SKTypeface Typeface => _typeface ??= GetTypeFace();
+
+    private string _name = Fonts.Default;
+    public string Name
     {
-        if (value is string)
+        get => _name;
+        set
         {
-            if (string.Compare(fieldValue as string, value as string) == 0)
-                return false;
+            bool fieldChanged = string.Compare(_name, value, StringComparison.InvariantCultureIgnoreCase) != 0;
+
+            if (fieldChanged)
+                ClearCachedTypeface();
+
+            _name = value;
         }
-        else if (Equals(fieldValue, value))
-            return false;
-        fieldValue = value;
-        _typeface = null;
-        return true;
     }
-    protected SKTypeface GetTypeFace()
+
+    private bool _bold = false;
+    public bool Bold
+    {
+        get => _bold;
+        set
+        {
+            bool fieldChanged = _bold != value;
+
+            if (fieldChanged)
+                ClearCachedTypeface();
+
+            _bold = value;
+        }
+    }
+
+    private bool _italic = false;
+    public bool Italic
+    {
+        get => _italic;
+        set
+        {
+            bool fieldChanged = (_italic != value);
+
+            if (fieldChanged)
+                ClearCachedTypeface();
+
+            _italic = value;
+        }
+    }
+
+    public Color Color { get; set; } = Colors.Black;
+    public float Size { get; set; } = 12;
+    public bool AntiAlias { get; set; } = true;
+
+    private void ClearCachedTypeface()
+    {
+        _typeface = null;
+    }
+
+    private SKTypeface GetTypeFace()
     {
         SKFontStyleWeight weight = Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         SKFontStyleSlant slant = Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
@@ -29,29 +79,4 @@ public class FontStyle
         SKFontStyle skfs = new(weight, width, slant);
         return SKTypeface.FromFamilyName(Name, skfs);
     }
-
-    public SKTypeface Typeface => _typeface ??= GetTypeFace();
-    protected SKTypeface? _typeface = null;
-    public string Name
-    {
-        get => _name;
-        set => SetField(ref _name, value);
-    }
-    private string _name = Fonts.Default;
-    public Color Color { get; set; } = Colors.Black;
-    public bool Bold
-    {
-        get => _bold;
-        set => SetField(ref _bold, value);
-    }
-    private bool _bold = false;
-    public bool Italic
-    {
-        get => _italic;
-        set => SetField(ref _italic, value);
-    }
-    private bool _italic = false;
-
-    public float Size { get; set; } = 12;
-    public bool AntiAlias { get; set; } = true;
 }
