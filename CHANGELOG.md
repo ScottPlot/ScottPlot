@@ -7,6 +7,7 @@
 ## ScottPlot 5.0.8-beta (in development)
 
 ## ScottPlot 4.1.67 (in development)
+* DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_
 
 ## ScottPlot 5.0.7-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-06_
