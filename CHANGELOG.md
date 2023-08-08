@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.8-beta (in development)
+* Rendering: Improved performance by caching typefaces (#2833, #2848) _Thanks @KroMignon and @taya92413_
 
 ## ScottPlot 4.1.67 (in development)
 
