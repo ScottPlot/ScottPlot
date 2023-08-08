@@ -9,14 +9,16 @@ namespace ScottPlot.Plottable;
 /// <summary>
 /// This plot type stores infinitely growing X/Y pairs and displays them as a scatter plot.
 /// </summary>
-public class DataLogger : IPlottable
+public class DataLogger : IPlottable, IHasColor, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public string Label { get; set; } = string.Empty;
-    public Color Color { get; set; } = Color.Blue;
-    public float LineWidth { get; set; } = 1;
+    public Color Color { get => LineColor; set { LineColor = value; } }
+    public Color LineColor { get; set; } = Color.Blue;
+    public double LineWidth { get; set; } = 1;
+    public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
     /// <summary>
     /// Number of data points currently being tracked.
@@ -106,7 +108,17 @@ public class DataLogger : IPlottable
             : AxisLimits.NoLimits;
     }
 
-    public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
+    public LegendItem[] GetLegendItems()
+    {
+        var singleItem = new LegendItem(this)
+        {
+            label = Label,
+            color = LineColor,
+            lineStyle = LineStyle,
+            lineWidth = LineWidth,
+        };
+        return LegendItem.Single(singleItem);
+    }
 
     public void ValidateData(bool deep = false) { }
 

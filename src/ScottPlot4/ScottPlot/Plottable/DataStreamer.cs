@@ -8,14 +8,16 @@ namespace ScottPlot.Plottable;
 
 #nullable enable
 
-public class DataStreamer : IPlottable
+public class DataStreamer : IPlottable, IHasLine, IHasColor
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public string Label { get; set; } = string.Empty;
-    public Color Color { get; set; } = Color.Blue;
-    public float LineWidth { get; set; } = 1;
+    public Color Color { get => LineColor; set { LineColor = value; } }
+    public Color LineColor { get; set; } = Color.Blue;
+    public double LineWidth { get; set; } = 1;
+    public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
     /// <summary>
     /// Fixed-length array used as a circular buffer to shift data in at the position defined by <see cref="NextIndex"/>.
@@ -146,7 +148,17 @@ public class DataStreamer : IPlottable
         return new AxisLimits(xMin, xMax, DataMin, DataMax);
     }
 
-    public LegendItem[] GetLegendItems() => LegendItem.Single(this, Label, Color);
+    public LegendItem[] GetLegendItems()
+    {
+        var singleItem = new LegendItem(this)
+        {
+            label = Label,
+            color = LineColor,
+            lineStyle = LineStyle,
+            lineWidth = LineWidth,
+        };
+        return LegendItem.Single(singleItem);
+    }
 
     /// <summary>
     /// Display the data using a view where new data overlapps old data from left to right.
