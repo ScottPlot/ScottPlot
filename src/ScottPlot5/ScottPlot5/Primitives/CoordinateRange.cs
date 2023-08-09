@@ -115,8 +115,8 @@ public class CoordinateRange : IEquatable<CoordinateRange>
         Max = zoomTo + spanRightX / frac;
     }
 
-    public bool Equals(CoordinateRange other)
+    public bool Equals(CoordinateRange? other)
     {
-        return Min == other.Min && Max == other.Max;
+        return Min == other?.Min && Max == other.Max;
     }
 }

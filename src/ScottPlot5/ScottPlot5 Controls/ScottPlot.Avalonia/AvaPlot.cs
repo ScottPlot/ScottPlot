@@ -97,7 +97,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
         public Rect Bounds { get; }
         public bool HitTest(Point p) => true;
-        public bool Equals(ICustomDrawOperation other) => false;
+        public bool Equals(ICustomDrawOperation? other) => false;
 
         public CustomDrawOp(Rect bounds, Plot plot)
         {
