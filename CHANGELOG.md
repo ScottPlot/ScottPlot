@@ -12,6 +12,7 @@
 ## ScottPlot 4.1.67 (in development)
 * DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_
 * Radial Gauge Plot: Improved layout for plots with a large number of gauges (#2722) _Thanks @tinuskotze_
+* DataLogger: Added support for markers (#2862) _Thanks @KroMignon_
 
 ## ScottPlot 5.0.7-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-06_

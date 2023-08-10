@@ -9,16 +9,20 @@ namespace ScottPlot.Plottable;
 /// <summary>
 /// This plot type stores infinitely growing X/Y pairs and displays them as a scatter plot.
 /// </summary>
-public class DataLogger : IPlottable, IHasColor, IHasLine
+public class DataLogger : IPlottable, IHasColor, IHasLine, IHasMarker
 {
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public string Label { get; set; } = string.Empty;
-    public Color Color { get => LineColor; set { LineColor = value; } }
+    public Color Color { get => LineColor; set { LineColor = value; MarkerColor = value; } }
     public Color LineColor { get; set; } = Color.Blue;
+    public Color MarkerColor { get; set; } = Color.Blue;
     public double LineWidth { get; set; } = 1;
     public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+    public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+    public float MarkerSize { get; set; } = 0;
+    public float MarkerLineWidth { get; set; } = 1;
 
     /// <summary>
     /// Number of data points currently being tracked.
@@ -116,6 +120,8 @@ public class DataLogger : IPlottable, IHasColor, IHasLine
             color = LineColor,
             lineStyle = LineStyle,
             lineWidth = LineWidth,
+            markerShape = MarkerShape,
+            markerSize = MarkerSize,
         };
         return LegendItem.Single(singleItem);
     }
@@ -197,6 +203,11 @@ public class DataLogger : IPlottable, IHasColor, IHasLine
         if (points.Length > 1)
         {
             gfx.DrawLines(pen, points);
+            // draw a marker at each point
+            if ((MarkerSize > 0) && (MarkerShape != MarkerShape.none))
+            {
+                MarkerTools.DrawMarkers(gfx, points, MarkerShape, MarkerSize, MarkerColor, MarkerLineWidth);
+            }
         }
     }
 }
