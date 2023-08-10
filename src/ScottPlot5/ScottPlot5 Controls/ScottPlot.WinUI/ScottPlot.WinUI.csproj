@@ -1,7 +1,7 @@
 <Project Sdk="MSBuild.Sdk.Extras/3.0.23">
     <!-- ref ; https://github.com/unoplatform/uno/discussions/10977 -->
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net6.0-ios;net6.0-maccatalyst;net6.0-android</TargetFrameworks>
+        <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net7.0-ios;net7.0-maccatalyst;net6.0-android</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
