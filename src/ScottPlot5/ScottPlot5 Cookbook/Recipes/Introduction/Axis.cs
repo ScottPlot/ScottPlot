@@ -65,8 +65,8 @@ internal class Axis : RecipePageBase
 
             // Call a helper function
             AxisLimits limits = myPlot.GetAxisLimits();
-            double left = limits.Rect.XMin;
-            double center = limits.Rect.XCenter;
+            double left = limits.Rect.Left;
+            double center = limits.Rect.HorizontalCenter;
         }
     }
 

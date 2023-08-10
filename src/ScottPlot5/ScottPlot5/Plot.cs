@@ -159,7 +159,7 @@ public class Plot : IDisposable
 
     public void SetAxisLimits(CoordinateRect rect)
     {
-        SetAxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
+        SetAxisLimits(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
     public void SetAxisLimits(AxisLimits rect)

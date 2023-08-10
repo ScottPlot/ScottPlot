@@ -34,9 +34,9 @@ public class Axes : IAxes
     public PixelRect GetPixelRect(CoordinateRect rect)
     {
         return new PixelRect(
-            left: GetPixelX(rect.XMin),
-            right: GetPixelX(rect.XMax),
-            bottom: GetPixelY(rect.YMin),
-            top: GetPixelY(rect.YMax));
+            left: GetPixelX(rect.Left),
+            right: GetPixelX(rect.Right),
+            bottom: GetPixelY(rect.Bottom),
+            top: GetPixelY(rect.Top));
     }
 }

@@ -58,10 +58,10 @@ public class Heatmap : IPlottable, IHasColorAxis
                 return Extent.Value;
 
             return new CoordinateRect(
-                xMin: 0,
-                xMax: Intensities.GetLength(1),
-                yMin: 0,
-                yMax: Intensities.GetLength(0));
+                left: 0,
+                right: Intensities.GetLength(1),
+                bottom: 0,
+                top: Intensities.GetLength(0));
         }
     }
 

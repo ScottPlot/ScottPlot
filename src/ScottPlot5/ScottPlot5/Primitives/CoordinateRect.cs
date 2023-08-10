@@ -7,75 +7,74 @@ namespace ScottPlot;
 /// </summary>
 public struct CoordinateRect
 {
-    public double XMin { get; set; }
-    public double YMin { get; set; }
-    public double XMax { get; set; }
-    public double YMax { get; set; }
+    public double Left { get; set; }
+    public double Right { get; set; }
+    public double Bottom { get; set; }
+    public double Top { get; set; }
 
-    public double Left => Math.Min(XMin, XMax);
-    public double Right => Math.Max(XMin, XMax);
-    public double Bottom => Math.Min(YMin, YMax);
-    public double Top => Math.Max(YMin, YMax);
-    public double XCenter => (XMax + XMin) / 2;
-    public double YCenter => (YMax + YMin) / 2;
-    public Coordinates Center => new(XCenter, YCenter);
+    public double HorizontalCenter => (Right + Left) / 2;
+    public double VerticalCenter => (Top + Bottom) / 2;
+
+    public Coordinates Center => new(HorizontalCenter, VerticalCenter);
     public Coordinates TopLeft => new(Left, Top);
     public Coordinates TopRight => new(Right, Top);
     public Coordinates BottomLeft => new(Left, Bottom);
     public Coordinates BottomRight => new(Bottom, Right);
-    public double Width => XMax - XMin;
-    public double Height => YMax - YMin;
+
+    public CoordinateRange XRange => new(Left, Right);
+    public CoordinateRange YRange => new(Bottom, Top);
+
+    public double Width => Right - Left;
+    public double Height => Top - Bottom;
     public double Area => Width * Height;
     public bool HasArea => (Area != 0 && !double.IsNaN(Area) && !double.IsInfinity(Area));
-    public CoordinateRange XRange => new(XMin, XMax);
-    public CoordinateRange YRange => new(YMin, YMax);
 
     public CoordinateRect(CoordinateRange xRange, CoordinateRange yRange)
     {
-        XMin = xRange.Min;
-        XMax = xRange.Max;
-        YMin = yRange.Min;
-        YMax = yRange.Max;
+        Left = xRange.Min;
+        Right = xRange.Max;
+        Bottom = yRange.Min;
+        Top = yRange.Max;
     }
 
     public CoordinateRect(Coordinates pt1, Coordinates pt2)
     {
-        XMin = Math.Min(pt1.X, pt2.X);
-        XMax = Math.Max(pt1.X, pt2.X);
-        YMin = Math.Min(pt1.Y, pt2.Y);
-        YMax = Math.Max(pt1.Y, pt2.Y);
+        Left = Math.Min(pt1.X, pt2.X);
+        Right = Math.Max(pt1.X, pt2.X);
+        Bottom = Math.Min(pt1.Y, pt2.Y);
+        Top = Math.Max(pt1.Y, pt2.Y);
     }
 
-    public CoordinateRect(double xMin, double xMax, double yMin, double yMax)
+    public CoordinateRect(double left, double right, double bottom, double top)
     {
-        XMin = xMin;
-        XMax = xMax;
-        YMin = yMin;
-        YMax = yMax;
+        Left = left;
+        Right = right;
+        Bottom = bottom;
+        Top = top;
     }
 
     public CoordinateRect(Coordinates point, CoordinateSize size)
     {
         Coordinates pt2 = new(point.X + size.Width, point.Y + size.Height);
-        XMin = Math.Min(point.X, pt2.X);
-        XMax = Math.Max(point.X, pt2.X);
-        YMin = Math.Min(point.Y, pt2.Y);
-        YMax = Math.Max(point.Y, pt2.Y);
+        Left = Math.Min(point.X, pt2.X);
+        Right = Math.Max(point.X, pt2.X);
+        Bottom = Math.Min(point.Y, pt2.Y);
+        Top = Math.Max(point.Y, pt2.Y);
     }
 
     public bool Contains(double x, double y)
     {
-        return x >= XMin && x <= XMax && y >= YMin && y <= YMax;
+        return x >= Left && x <= Right && y >= Bottom && y <= Top;
     }
 
     public bool Contains(Coordinates point) => Contains(point.X, point.Y);
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
-    public CoordinateRect WithTranslation(Coordinates p) => new(XMin + p.X, XMax + p.X, YMin + p.Y, YMax + p.Y);
+    public CoordinateRect WithTranslation(Coordinates p) => new(Left + p.X, Right + p.X, Bottom + p.Y, Top + p.Y);
 
     public override string ToString()
     {
-        return $"PixelRect: XMin={XMin} XMax={XMax} YMin={YMin} YMax={YMax}";
+        return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
     }
 }

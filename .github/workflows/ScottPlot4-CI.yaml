@@ -6,6 +6,10 @@ on:
     paths:
       - src/ScottPlot4/**
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   SLN_SP4_TEST: "src/ScottPlot4/ScottPlot4-tests.slnf"
   SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"

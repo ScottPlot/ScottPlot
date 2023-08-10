@@ -34,10 +34,10 @@ public class Pie : IPlottable
     {
         double padding = .03;
         return new AxisLimits(
-            xMin: -1 - ExplodeFraction - padding,
-            xMax: 1 + ExplodeFraction + padding,
-            yMin: -1 - ExplodeFraction - padding,
-            yMax: 1 + ExplodeFraction + padding);
+            left: -1 - ExplodeFraction - padding,
+            right: 1 + ExplodeFraction + padding,
+            bottom: -1 - ExplodeFraction - padding,
+            top: 1 + ExplodeFraction + padding);
     }
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem

@@ -69,12 +69,12 @@ public class SignalSource : ISignalSource
     public CoordinateRange GetLimitsX()
     {
         CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.XMin, rect.XMin);
+        return new CoordinateRange(rect.Left, rect.Left);
     }
 
     public CoordinateRange GetLimitsY()
     {
         CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.YMin, rect.YMin);
+        return new CoordinateRange(rect.Bottom, rect.Bottom);
     }
 }
