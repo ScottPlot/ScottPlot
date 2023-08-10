@@ -58,8 +58,8 @@ public class BoxGroups
                     limits.ExpandY(b.BoxMin);
                     limits.ExpandY(b.BoxMiddle);
                     limits.ExpandY(b.BoxMax);
-                    limits.ExpandY(b.WhiskerMin ?? limits.YMin);
-                    limits.ExpandY(b.WhiskerMax ?? limits.YMin);
+                    limits.ExpandY(b.WhiskerMin ?? limits.Bottom);
+                    limits.ExpandY(b.WhiskerMax ?? limits.Bottom);
                 }
                 else
                 {
@@ -67,16 +67,16 @@ public class BoxGroups
                     limits.ExpandX(b.BoxMin);
                     limits.ExpandX(b.BoxMiddle);
                     limits.ExpandX(b.BoxMax);
-                    limits.ExpandX(b.WhiskerMin ?? limits.YMin);
-                    limits.ExpandX(b.WhiskerMax ?? limits.YMin);
+                    limits.ExpandX(b.WhiskerMin ?? limits.Bottom);
+                    limits.ExpandX(b.WhiskerMax ?? limits.Bottom);
                 }
             }
         }
 
-        limits.XMin -= MaxBoxWidth / 2;
-        limits.XMax += MaxBoxWidth / 2;
-        limits.YMin -= MaxBoxWidth / 2;
-        limits.YMax += MaxBoxWidth / 2;
+        limits.Left -= MaxBoxWidth / 2;
+        limits.Right += MaxBoxWidth / 2;
+        limits.Bottom -= MaxBoxWidth / 2;
+        limits.Top += MaxBoxWidth / 2;
 
         return limits.AxisLimits;
     }

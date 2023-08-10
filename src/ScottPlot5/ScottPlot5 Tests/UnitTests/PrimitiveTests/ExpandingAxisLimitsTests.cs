@@ -7,10 +7,10 @@ internal class ExpandingAxisLimitsTests
     {
         ExpandingAxisLimits limits = new();
 
-        limits.XMin.Should().Be(double.NaN);
-        limits.XMax.Should().Be(double.NaN);
-        limits.YMin.Should().Be(double.NaN);
-        limits.YMax.Should().Be(double.NaN);
+        limits.Left.Should().Be(double.NaN);
+        limits.Right.Should().Be(double.NaN);
+        limits.Bottom.Should().Be(double.NaN);
+        limits.Top.Should().Be(double.NaN);
 
         limits.AxisLimits.Should().Be(AxisLimits.NoLimits);
     }
@@ -29,16 +29,16 @@ internal class ExpandingAxisLimitsTests
         ExpandingAxisLimits limits = new();
 
         limits.Expand(-7, 13);
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(-7);
-        limits.YMin.Should().Be(13);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(-7);
+        limits.Bottom.Should().Be(13);
+        limits.Top.Should().Be(13);
 
         limits.Expand(42, -69);
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 
     [Test]
@@ -47,12 +47,12 @@ internal class ExpandingAxisLimitsTests
         ExpandingAxisLimits limits = new();
 
         limits.ExpandX(-7);
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(-7);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(-7);
 
         limits.ExpandX(42);
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
     }
 
     [Test]
@@ -61,12 +61,12 @@ internal class ExpandingAxisLimitsTests
         ExpandingAxisLimits limits = new();
 
         limits.ExpandY(13);
-        limits.YMin.Should().Be(13);
-        limits.YMax.Should().Be(13);
+        limits.Bottom.Should().Be(13);
+        limits.Top.Should().Be(13);
 
         limits.ExpandY(-69);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 
     [Test]
@@ -75,16 +75,16 @@ internal class ExpandingAxisLimitsTests
         ExpandingAxisLimits limits = new();
 
         limits.Expand(new Coordinates(-7, 13));
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(-7);
-        limits.YMin.Should().Be(13);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(-7);
+        limits.Bottom.Should().Be(13);
+        limits.Top.Should().Be(13);
 
         limits.Expand(new Coordinates(42, -69));
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 
     [Test]
@@ -100,10 +100,10 @@ internal class ExpandingAxisLimitsTests
 
         limits.Expand(coordinates);
 
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 
     [Test]
@@ -115,10 +115,10 @@ internal class ExpandingAxisLimitsTests
 
         limits.Expand(rect);
 
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 
     [Test]
@@ -130,9 +130,9 @@ internal class ExpandingAxisLimitsTests
 
         limits.Expand(axisLimits);
 
-        limits.XMin.Should().Be(-7);
-        limits.XMax.Should().Be(42);
-        limits.YMin.Should().Be(-69);
-        limits.YMax.Should().Be(13);
+        limits.Left.Should().Be(-7);
+        limits.Right.Should().Be(42);
+        limits.Bottom.Should().Be(-69);
+        limits.Top.Should().Be(13);
     }
 }

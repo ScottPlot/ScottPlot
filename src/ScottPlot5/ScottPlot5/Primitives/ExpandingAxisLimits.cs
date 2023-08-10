@@ -5,11 +5,12 @@
 /// </summary>
 public class ExpandingAxisLimits
 {
-    public double XMin { get; set; } = double.NaN;
-    public double XMax { get; set; } = double.NaN;
-    public double YMin { get; set; } = double.NaN;
-    public double YMax { get; set; } = double.NaN;
-    public AxisLimits AxisLimits => new(XMin, XMax, YMin, YMax);
+    public double Left { get; set; } = double.NaN;
+    public double Right { get; set; } = double.NaN;
+    public double Bottom { get; set; } = double.NaN;
+    public double Top { get; set; } = double.NaN;
+
+    public AxisLimits AxisLimits => new(Left, Right, Bottom, Top);
 
     /// <summary>
     /// Create a new set of expanding axis limits with no leimits set initially
@@ -40,8 +41,8 @@ public class ExpandingAxisLimits
     /// </summary>
     public void ExpandX(double x)
     {
-        XMin = !double.IsNaN(XMin) ? Math.Min(XMin, x) : x;
-        XMax = !double.IsNaN(XMax) ? Math.Max(XMax, x) : x;
+        Left = !double.IsNaN(Left) ? Math.Min(Left, x) : x;
+        Right = !double.IsNaN(Right) ? Math.Max(Right, x) : x;
     }
 
     /// <summary>
@@ -49,8 +50,8 @@ public class ExpandingAxisLimits
     /// </summary>
     public void ExpandY(double y)
     {
-        YMin = !double.IsNaN(YMin) ? Math.Min(YMin, y) : y;
-        YMax = !double.IsNaN(YMax) ? Math.Max(YMax, y) : y;
+        Bottom = !double.IsNaN(Bottom) ? Math.Min(Bottom, y) : y;
+        Top = !double.IsNaN(Top) ? Math.Max(Top, y) : y;
     }
 
     /// <summary>

@@ -74,10 +74,10 @@ public class BarPlot : IPlottable
             }
         }
 
-        limits.XMin -= MaxBarWidth / 2;
-        limits.XMax += MaxBarWidth / 2;
-        limits.YMin -= MaxBarWidth / 2;
-        limits.YMax += MaxBarWidth / 2;
+        limits.Left -= MaxBarWidth / 2;
+        limits.Right += MaxBarWidth / 2;
+        limits.Bottom -= MaxBarWidth / 2;
+        limits.Top += MaxBarWidth / 2;
 
         return limits.AxisLimits;
     }
