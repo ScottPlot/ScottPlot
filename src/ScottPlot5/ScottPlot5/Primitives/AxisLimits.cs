@@ -6,47 +6,44 @@
 /// </summary>
 public readonly struct AxisLimits : IEquatable<AxisLimits>
 {
-    public double XMin { get; }
-    public double XMax { get; }
-    public double YMin { get; }
-    public double YMax { get; }
+    public double Left { get; }
+    public double Right { get; }
+    public double Bottom { get; }
+    public double Top { get; }
 
-    public double Left => XMin;
-    public double Right => XMax;
-    public double Bottom => YMin;
-    public double Top => YMax;
-    public double Width => XMax - XMin;
-    public double Height => YMax - YMin;
-    public CoordinateRange XRange => new(XMin, XMax);
-    public CoordinateRange YRange => new(YMin, YMax);
+    public double Width => Right - Left;
+    public double Height => Top - Bottom;
+
+    public CoordinateRange XRange => new(Left, Right);
+    public CoordinateRange YRange => new(Bottom, Top);
 
     // TODO: make sure callers aren't using this when they dont have to
-    public CoordinateRect Rect => new(XMin, XMax, YMin, YMax);
+    public CoordinateRect Rect => new(Left, Right, Bottom, Top);
 
     public static CoordinateRect Default { get; } = new(-10, 10, -10, 10);
 
     public AxisLimits(CoordinateRect rect)
     {
-        XMin = rect.XMin;
-        XMax = rect.XMax;
-        YMin = rect.YMin;
-        YMax = rect.YMax;
+        Left = rect.XMin;
+        Right = rect.XMax;
+        Bottom = rect.YMin;
+        Top = rect.YMax;
     }
 
-    public AxisLimits(double xMin, double xMax, double yMin, double yMax)
+    public AxisLimits(double left, double right, double bottom, double top)
     {
-        XMin = xMin;
-        XMax = xMax;
-        YMin = yMin;
-        YMax = yMax;
+        Left = left;
+        Right = right;
+        Bottom = bottom;
+        Top = top;
     }
 
     public AxisLimits(CoordinateRange xRange, CoordinateRange yRange)
     {
-        XMin = xRange.Min;
-        XMax = xRange.Max;
-        YMin = yRange.Min;
-        YMax = yRange.Max;
+        Left = xRange.Min;
+        Right = xRange.Max;
+        Bottom = yRange.Min;
+        Top = yRange.Max;
     }
 
     public override string ToString()
@@ -61,10 +58,10 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     /// </summary>
     public AxisLimits Expanded(double x, double y)
     {
-        double xMin2 = !double.IsNaN(XMin) ? Math.Min(XMin, x) : x;
-        double xMax2 = !double.IsNaN(XMax) ? Math.Max(XMax, x) : x;
-        double yMin2 = !double.IsNaN(YMin) ? Math.Min(YMin, y) : y;
-        double yMax2 = !double.IsNaN(YMax) ? Math.Max(YMax, y) : y;
+        double xMin2 = !double.IsNaN(Left) ? Math.Min(Left, x) : x;
+        double xMax2 = !double.IsNaN(Right) ? Math.Max(Right, x) : x;
+        double yMin2 = !double.IsNaN(Bottom) ? Math.Min(Bottom, y) : y;
+        double yMax2 = !double.IsNaN(Top) ? Math.Max(Top, y) : y;
         return new AxisLimits(xMin2, xMax2, yMin2, yMax2);
     }
 
@@ -108,9 +105,9 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     public bool Equals(AxisLimits other)
     {
         return
-            XMin == other.XMin &&
-            XMax == other.XMax &&
-            YMin == other.YMin &&
-            YMax == other.YMax;
+            Left == other.Left &&
+            Right == other.Right &&
+            Bottom == other.Bottom &&
+            Top == other.Top;
     }
 }
