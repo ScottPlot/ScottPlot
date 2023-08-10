@@ -158,6 +158,8 @@ internal class Styling : RecipePageBase
                     size: 10,
                     color: scatter.LineStyle.Color);
             }
+
+            myPlot.Legend();
         }
     }
 
@@ -186,6 +188,8 @@ internal class Styling : RecipePageBase
                 scatter.LineStyle.Pattern = linePatterns[i];
                 scatter.MarkerStyle = MarkerStyle.None;
             }
+
+            myPlot.Legend();
         }
     }
 
