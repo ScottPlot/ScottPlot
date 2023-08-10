@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Skia;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
+using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
+using Avalonia.Rendering.SceneGraph;
 using ScottPlot.Control;
 using SkiaSharp;
 
+using Controls = Avalonia.Controls;
+
 namespace ScottPlot.Avalonia;
 
-public partial class AvaPlot : UserControl, IPlotControl
+public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; } = new();
 
@@ -36,8 +37,6 @@ public partial class AvaPlot : UserControl, IPlotControl
     public AvaPlot()
     {
         DisplayScale = DetectDisplayScale();
-
-        InitializeComponent();
 
         Interaction = new(this)
         {
@@ -92,41 +91,42 @@ public partial class AvaPlot : UserControl, IPlotControl
         Interaction = interaction;
     }
 
-    private void InitializeComponent()
+    private class CustomDrawOp : ICustomDrawOperation
     {
-        AvaloniaXamlLoader.Load(this);
+        private readonly Plot _plot;
+
+        public Rect Bounds { get; }
+        public bool HitTest(Point p) => true;
+        public bool Equals(ICustomDrawOperation? other) => false;
+
+        public CustomDrawOp(Rect bounds, Plot plot)
+        {
+            _plot = plot;
+            Bounds = bounds;
+        }
+
+        public void Dispose()
+        {
+            // No-op
+        }
+
+        public void Render(ImmediateDrawingContext context)
+        {
+            var leaseFeature = context.TryGetFeature<ISkiaSharpApiLeaseFeature>();
+            if (leaseFeature is null) return;
+
+            using var lease = leaseFeature.Lease();
+
+            var surface = lease.SkSurface;
+            if (surface is null) return;
+
+            _plot.Render(surface);
+        }
     }
 
     public override void Render(DrawingContext context)
     {
-        base.Render(context);
-
-        SKImageInfo imageInfo = new((int)Bounds.Width, (int)Bounds.Height);
-
-        using var surface = SKSurface.Create(imageInfo);
-        if (surface is null)
-            return;
-
-        Plot.Render(surface);
-
-        SKImage img = surface.Snapshot();
-        SKPixmap pixels = img.ToRasterImage().PeekPixels();
-        byte[] bytes = pixels.GetPixelSpan().ToArray();
-
-        using WriteableBitmap bmp = new(
-            size: new global::Avalonia.PixelSize((int)Bounds.Width, (int)Bounds.Height),
-            dpi: new Vector(1, 1),
-            format: PixelFormat.Bgra8888,
-            alphaFormat: AlphaFormat.Unpremul);
-
-        using ILockedFramebuffer buf = bmp.Lock();
-        {
-            Marshal.Copy(bytes, 0, buf.Address, pixels.BytesSize);
-        }
-
-        Rect rect = new(0, 0, Bounds.Width, Bounds.Height);
-
-        context.DrawImage(bmp, rect, rect);
+        context.Custom(new CustomDrawOp(Bounds, Plot));
     }
 
     public void Refresh()
@@ -143,7 +143,7 @@ public partial class AvaPlot : UserControl, IPlotControl
         manualContextMenu.Open(this);
     }
 
-    private void OnMouseDown(object sender, PointerPressedEventArgs e)
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         Interaction.MouseDown(
             position: e.ToPixel(this),
@@ -157,7 +157,7 @@ public partial class AvaPlot : UserControl, IPlotControl
         }
     }
 
-    private void OnMouseUp(object sender, PointerReleasedEventArgs e)
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         Interaction.MouseUp(
             position: e.ToPixel(this),
@@ -166,14 +166,14 @@ public partial class AvaPlot : UserControl, IPlotControl
         e.Pointer.Capture(null);
     }
 
-    private void OnMouseMove(object sender, PointerEventArgs e)
+    protected override void OnPointerMoved(PointerEventArgs e)
     {
         Interaction.OnMouseMove(e.ToPixel(this));
     }
 
-    private void OnMouseWheel(object sender, PointerWheelEventArgs e)
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
     {
-        float delta = (float)e.Delta.Y; // This is now the correct behaviour even if shift is held, see https://github.com/AvaloniaUI/Avalonia/pull/8628
+        float delta = (float)e.Delta.Y; // This is now the correct behavior even if shift is held, see https://github.com/AvaloniaUI/Avalonia/pull/8628
 
         if (delta != 0)
         {
@@ -181,12 +181,12 @@ public partial class AvaPlot : UserControl, IPlotControl
         }
     }
 
-    private void OnKeyDown(object sender, KeyEventArgs e)
+    protected override void OnKeyDown(KeyEventArgs e)
     {
         Interaction.KeyDown(e.ToKey());
     }
 
-    private void OnKeyUp(object sender, KeyEventArgs e)
+    protected override void OnKeyUp(KeyEventArgs e)
     {
         Interaction.KeyUp(e.ToKey());
     }
