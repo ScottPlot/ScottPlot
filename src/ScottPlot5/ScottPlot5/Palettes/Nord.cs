@@ -19,4 +19,9 @@ public class Nord : IPalette
     {
         "#bf616a", "#a3be8c", "#ebcb8b", "#81a1c1", "#b48ead", "#88c0d0", "#e5e9f0"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

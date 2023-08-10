@@ -18,4 +18,9 @@ public class Penumbra : IPalette
     {
         "#CB7459", "#A38F2D", "#46A473", "#00A0BE", "#7E87D6", "#BD72A8"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

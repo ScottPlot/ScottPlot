@@ -18,4 +18,9 @@ public class Dark : IPalette
         "#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e",
         "#e6ab02","#a6761d","#666666",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

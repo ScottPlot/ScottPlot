@@ -20,4 +20,9 @@ public class ColorblindFriendly : IPalette
         "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
         "#0072B2", "#D55E00", "#CC79A7",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

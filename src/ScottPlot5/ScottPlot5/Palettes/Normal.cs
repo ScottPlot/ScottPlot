@@ -19,4 +19,9 @@ public class Normal : IPalette
         "#4053d3", "#ddb310", "#b51d14",
         "#00beff", "#fb49b0", "#00b25d", "#cacaca",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

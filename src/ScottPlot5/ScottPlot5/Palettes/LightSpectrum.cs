@@ -17,4 +17,9 @@ public class LightSpectrum : IPalette
         "#eff5e4", "#e7f2e6", "#ddf0f5",
         "#e6f2fc", "#e6eaf7", "#eee0f0"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

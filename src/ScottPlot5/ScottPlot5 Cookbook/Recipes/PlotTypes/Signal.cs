@@ -26,6 +26,8 @@ internal class Signal : RecipePageBase
             sig2.Data.XOffset = 10;
             sig2.Data.YOffset = .25;
             sig2.Label = "Offset";
+
+            myPlot.Legend();
         }
     }
 }

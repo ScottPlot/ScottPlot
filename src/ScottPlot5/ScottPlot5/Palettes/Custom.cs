@@ -21,4 +21,9 @@ internal class Custom : IPalette
         Name = name;
         Description = description;
     }
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

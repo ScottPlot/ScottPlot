@@ -40,31 +40,38 @@ public class RandomDataGenerator
     #region Methods that return single numbers
 
     /// <summary>
-    /// Return a uniformly random number between 0 (inclusive) and the given maximum (exclusive)
+    /// Return a uniformly random number between 0 (inclusive) and 1 (exclusive)
     /// </summary>
-    public double RandomNumber(double maxValue = 1)
+    public double RandomNumber()
     {
-        return Rand.NextDouble() * maxValue;
+        return Rand.NextDouble();
+    }
+
+    /// <summary>
+    /// Return a uniformly random number between 0 (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public double RandomNumber(double max)
+    {
+        return Rand.NextDouble() * max;
+    }
+
+    /// <summary>
+    /// Return a uniformly random number between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public double RandomNumber(double min, double max)
+    {
+        return Rand.NextDouble() * (max - min) + min;
     }
 
     /// <summary>
     /// Return a random number guaranteed not to be zero
     /// </summary>
-    public double RandomNonZeroNumber(double maxValue = 1)
+    public double RandomNonZeroNumber(double max = 1)
     {
-        double randomValue = RandomNumber(maxValue);
+        double randomValue = RandomNumber(max);
         return randomValue != 0
             ? randomValue
             : RandomNonZeroNumber();
-    }
-
-    /// <summary>
-    /// Return a uniformly random number between the given values
-    /// </summary>
-    public double RandomNumberInRange(double minValue, double maxValue)
-    {
-        double span = maxValue - minValue;
-        return minValue + Rand.NextDouble() * span;
     }
 
     /// <summary>
@@ -76,11 +83,19 @@ public class RandomDataGenerator
     }
 
     /// <summary>
-    /// Return a random integer between zero (inclusive) and the given value (exclusive)
+    /// Return a random integer between zero (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
-    public double RandomInteger(int maxValue)
+    public double RandomInteger(int max)
     {
-        return Rand.Next(maxValue);
+        return Rand.Next(max);
+    }
+
+    /// <summary>
+    /// Return a random integer between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public double RandomInteger(int min, int max)
+    {
+        return Rand.Next(min, max);
     }
 
     /// <summary>
@@ -166,15 +181,15 @@ public class RandomDataGenerator
         double mult = 1;
 
         List<IOHLC> ohlcs = new();
-        double open = RandomNumberInRange(150, 250);
+        double open = RandomNumber(150, 250);
         for (int i = 0; i < count; i++)
         {
-            double close = open + RandomNumberInRange(-mult, mult);
-            double high = Math.Max(open, close) + RandomNumberInRange(0, mult);
-            double low = Math.Min(open, close) - RandomNumberInRange(0, mult);
+            double close = open + RandomNumber(-mult, mult);
+            double high = Math.Max(open, close) + RandomNumber(0, mult);
+            double low = Math.Min(open, close) - RandomNumber(0, mult);
             OHLC ohlc = new(open, high, low, close, dates[i], span);
             ohlcs.Add(ohlc);
-            open = close + RandomNumberInRange(-mult / 2, mult / 2);
+            open = close + RandomNumber(-mult / 2, mult / 2);
         }
 
         return ohlcs;
