@@ -132,12 +132,14 @@ namespace ScottPlot
         /// <summary>
         /// Add a data logging scatter plot designed for growing collections of X/Y points.
         /// </summary>
-        public DataLogger AddDataLogger(Color? color = null, float lineWidth = 1, string label = null)
+        public DataLogger AddDataLogger(Color? color = null, float lineWidth = 1, float markerSize = 5, MarkerShape markerShape = MarkerShape.none, string label = null)
         {
             DataLogger dl = new(this)
             {
                 Color = color ?? GetNextColor(),
                 LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                MarkerShape = markerShape,
                 Label = label
             };
             Add(dl);
