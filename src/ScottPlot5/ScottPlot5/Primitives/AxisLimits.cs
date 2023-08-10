@@ -24,10 +24,10 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public AxisLimits(CoordinateRect rect)
     {
-        Left = rect.XMin;
-        Right = rect.XMax;
-        Bottom = rect.YMin;
-        Top = rect.YMax;
+        Left = rect.Left;
+        Right = rect.Right;
+        Bottom = rect.Bottom;
+        Top = rect.Top;
     }
 
     public AxisLimits(double left, double right, double bottom, double top)
@@ -48,7 +48,7 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public override string ToString()
     {
-        return $"AxisLimits: X=[{Rect.XMin}, {Rect.XMax}], Y=[{Rect.YMin}, {Rect.YMax}]";
+        return $"AxisLimits: X=[{Rect.Left}, {Rect.Right}], Y=[{Rect.Bottom}, {Rect.Top}]";
     }
 
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
@@ -83,20 +83,20 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public CoordinateRect WithPan(double deltaX, double deltaY)
     {
-        return new CoordinateRect(Rect.XMin + deltaX, Rect.XMax + deltaX, Rect.YMin + deltaY, Rect.YMax + deltaY);
+        return new CoordinateRect(Rect.Left + deltaX, Rect.Right + deltaX, Rect.Bottom + deltaY, Rect.Top + deltaY);
     }
 
     public CoordinateRect WithZoom(double fracX, double fracY)
     {
-        return WithZoom(fracX, fracY, Rect.XCenter, Rect.YCenter);
+        return WithZoom(fracX, fracY, Rect.HorizontalCenter, Rect.VerticalCenter);
     }
 
     public CoordinateRect WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
-        CoordinateRange xRange = new(Rect.XMin, Rect.XMax);
+        CoordinateRange xRange = new(Rect.Left, Rect.Right);
         xRange.ZoomFrac(fracX, zoomToX);
 
-        CoordinateRange yRange = new(Rect.YMin, Rect.YMax);
+        CoordinateRange yRange = new(Rect.Bottom, Rect.Top);
         yRange.ZoomFrac(fracY, zoomToY);
 
         return new(xRange, yRange);
