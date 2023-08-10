@@ -20,8 +20,8 @@ public class DataLogger : IPlottable, IHasColor, IHasLine, IHasMarker
     public Color MarkerColor { get; set; } = Color.Blue;
     public double LineWidth { get; set; } = 1;
     public LineStyle LineStyle { get; set; } = LineStyle.Solid;
-    public MarkerShape MarkerShape { get; set; } = MarkerShape.none;
-    public float MarkerSize { get; set; } = 5;
+    public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
+    public float MarkerSize { get; set; } = 0;
     public float MarkerLineWidth { get; set; } = 1;
 
     /// <summary>
