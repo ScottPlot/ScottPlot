@@ -2,11 +2,11 @@
 
 public struct MouseDrag
 {
-    public readonly MultiAxisLimits InitialLimits;
+    public readonly MultiAxisLimitManager InitialLimits;
     public readonly Pixel From;
     public readonly Pixel To;
 
-    public MouseDrag(MultiAxisLimits limits, Pixel from, Pixel to)
+    public MouseDrag(MultiAxisLimitManager limits, Pixel from, Pixel to)
     {
         InitialLimits = limits;
         From = from;

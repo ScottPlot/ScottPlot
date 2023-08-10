@@ -19,7 +19,7 @@ public class MouseState
 
     public Pixel MouseDownPosition { get; private set; }
 
-    public readonly MultiAxisLimits MouseDownAxisLimits = new();
+    public MultiAxisLimitManager MouseDownAxisLimits = new();
 
     public void Up(MouseButton button)
     {
@@ -27,23 +27,21 @@ public class MouseState
         Pressed.Remove(button);
     }
 
-    public void Down(Pixel position, MouseButton button, MultiAxisLimits limits)
+    public void Down(Pixel position, MouseButton button, MultiAxisLimitManager limits)
     {
         RememberMouseDown(position, limits);
         Down(button);
     }
 
-    private void RememberMouseDown(Pixel position, MultiAxisLimits limits)
+    private void RememberMouseDown(Pixel position, MultiAxisLimitManager limits)
     {
         MouseDownPosition = position;
-        MouseDownAxisLimits.ForgetAllLimits();
-        MouseDownAxisLimits.RememberLimits(limits);
+        MouseDownAxisLimits.Remember(limits);
     }
 
     private void ForgetMouseDown()
     {
         MouseDownPosition = Pixel.NaN;
-        MouseDownAxisLimits.ForgetAllLimits();
     }
 
     public bool IsDragging(Pixel position)

@@ -173,17 +173,20 @@ public class Plot : IDisposable
         SetAxisLimits(limits);
     }
 
+    /// <summary>
+    /// Return the 2D axis limits for the default axes
+    /// </summary>
     public AxisLimits GetAxisLimits()
     {
         return new AxisLimits(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
     }
 
-    public MultiAxisLimits GetMultiAxisLimits()
+    /// <summary>
+    /// Return the 2D axis limits for the given X/Y axis pair
+    /// </summary>
+    public AxisLimits GetAxisLimits(IXAxis xAxis, IYAxis yAxis)
     {
-        MultiAxisLimits limits = new();
-        XAxes.ForEach(xAxis => limits.RememberLimits(xAxis, xAxis.Min, xAxis.Max));
-        YAxes.ForEach(yAxis => limits.RememberLimits(yAxis, yAxis.Min, yAxis.Max));
-        return limits;
+        return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
 
     /// <summary>
@@ -288,7 +291,7 @@ public class Plot : IDisposable
     /// <summary>
     /// Apply a click-drag pan operation to the plot
     /// </summary>
-    public void MousePan(MultiAxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void MousePan(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
@@ -297,8 +300,7 @@ public class Plot : IDisposable
         float scaledDeltaY = pixelDeltaY / ScaleFactor;
 
         // restore mousedown limits
-        XAxes.ForEach(originalLimits.RestoreLimits);
-        YAxes.ForEach(originalLimits.RestoreLimits);
+        originalLimits.Apply(this);
 
         // pan in the direction opposite of the mouse movement
         XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
@@ -308,14 +310,13 @@ public class Plot : IDisposable
     /// <summary>
     /// Apply a click-drag zoom operation to the plot
     /// </summary>
-    public void MouseZoom(MultiAxisLimits originalLimits, Pixel mouseDown, Pixel mouseNow)
+    public void MouseZoom(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
     {
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
 
         // restore mousedown limits
-        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
-        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
+        originalLimits.Apply(this);
 
         // apply zoom for each axis
         XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
@@ -329,11 +330,11 @@ public class Plot : IDisposable
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
         Coordinates mouseCoordinate = GetCoordinates(pixel);
-        MultiAxisLimits originalLimits = GetMultiAxisLimits();
+
+        MultiAxisLimitManager originalLimits = new(this);
 
         // restore mousedown limits
-        XAxes.ForEach(xAxis => originalLimits.RestoreLimits(xAxis));
-        YAxes.ForEach(yAxis => originalLimits.RestoreLimits(yAxis));
+        originalLimits.Apply(this);
 
         // apply zoom for each axis
         Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);

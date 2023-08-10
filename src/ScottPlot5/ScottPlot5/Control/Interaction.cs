@@ -61,7 +61,7 @@ public class Interaction
         }
     }
 
-    protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimits start)
+    protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimitManager start)
     {
         bool lockY = Inputs.ShouldLockY(keys);
         bool lockX = Inputs.ShouldLockX(keys);
@@ -97,7 +97,7 @@ public class Interaction
 
     public virtual void MouseDown(Pixel position, MouseButton button)
     {
-        Mouse.Down(position, button, Control.Plot.GetMultiAxisLimits());
+        Mouse.Down(position, button, new MultiAxisLimitManager(Control));
     }
 
     public virtual void MouseUp(Pixel position, MouseButton button)
