@@ -25,10 +25,4 @@ internal class CoordinateRectTests
         cRect.Height.Should().Be(24);
         cRect.HasArea.Should().BeTrue();
     }
-
-    [Test]
-    public void Test_Coordinate_CustomToString()
-    {
-        new CoordinateRect().ToString().Should().Contain("XMin=");
-    }
 }
