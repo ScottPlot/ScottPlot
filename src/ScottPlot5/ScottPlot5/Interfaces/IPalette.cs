@@ -17,6 +17,8 @@ public interface IPalette
     /// </summary>
     public string Description { get; }
 
-    // TODO: THIS
-    //public Color GetColor(int index);
+    /// <summary>
+    /// Return the Nth color (wrapping around if N is larger than the number of colors)
+    /// </summary>
+    public Color GetColor(int index);
 }

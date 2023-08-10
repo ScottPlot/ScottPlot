@@ -17,5 +17,10 @@ public class Redness : IPalette
     {
         "#FF0000", "#FF4F00", "#FFA900", "#900303", "#FF8181"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }
 

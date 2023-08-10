@@ -18,4 +18,9 @@ public class Frost : IPalette
     {
         "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

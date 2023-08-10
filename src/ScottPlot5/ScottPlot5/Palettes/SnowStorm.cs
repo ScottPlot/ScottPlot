@@ -18,4 +18,9 @@ public class SnowStorm : IPalette
     {
         "#D8DEE9", "#E5E9F0", "#ECEFF4"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

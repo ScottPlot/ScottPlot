@@ -14,4 +14,9 @@ public class Nero : IPalette
     {
         "#013A20","#478C5C","#94C973","#BACC81","#CDD193"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

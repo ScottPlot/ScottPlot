@@ -22,4 +22,9 @@ public class Microcharts : IPalette
         "#424856", "#8F97A4", "#DAC096", "#76846E", "#DABFAF",
         "#A65B69", "#97A69D",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

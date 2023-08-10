@@ -18,4 +18,9 @@ public class SummerSplash : IPalette
     {
         "#05445E", "#189AB4", "#75E6DA" , "#D4F1F4"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

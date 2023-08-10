@@ -18,4 +18,9 @@ public class Aurora : IPalette
     {
         "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

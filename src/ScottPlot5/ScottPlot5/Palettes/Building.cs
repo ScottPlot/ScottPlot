@@ -16,4 +16,9 @@ public class Building : IPalette
     {
         "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

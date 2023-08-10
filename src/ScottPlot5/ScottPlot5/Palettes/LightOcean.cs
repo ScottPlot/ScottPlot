@@ -17,4 +17,9 @@ public class LightOcean : IPalette
         "#daeeec", "#daeef3", "#dae6f2",
         "#dadef1", "#dedaee", "#e5daed"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

@@ -18,4 +18,9 @@ public class PolarNight : IPalette
     {
         "#2E3440", "#3B4252", "#434C5E", "#4C566A",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

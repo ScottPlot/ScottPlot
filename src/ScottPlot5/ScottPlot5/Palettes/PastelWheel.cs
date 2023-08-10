@@ -18,4 +18,9 @@ public class PastelWheel : IPalette
         "#d9eef3", "#cadbed", "#c7d2e6",
         "#d4d1e5", "#e8d3e6", "#f8c7de"
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

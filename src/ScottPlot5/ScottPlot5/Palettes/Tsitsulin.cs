@@ -25,4 +25,9 @@ public class Tsitsulin : IPalette
         "#fffc43", "#65ffc8",
         "#aaaaaa",
     };
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }
