@@ -258,11 +258,8 @@ public class Plot : IDisposable
         }
 
         // apply margins
-        if (!tight)
-        {
-            XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(1 - AutoScaleMargins.Horizontal));
-            YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(1 - AutoScaleMargins.Vertical));
-        }
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(1 - AutoScaleMargins.Horizontal));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(1 - AutoScaleMargins.Vertical));
     }
 
     /// <summary>
