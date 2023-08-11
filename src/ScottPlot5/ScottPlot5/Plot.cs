@@ -32,7 +32,7 @@ public class Plot : IDisposable
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
-    public AutoScaleMargins Margins { get; } = new();
+    public AutoScaleMargins AutoScaleMargins { get; private set; } = new(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
     public IZoomRectangle ZoomRectangle { get; set; }
@@ -192,9 +192,9 @@ public class Plot : IDisposable
     /// <summary>
     /// Automatically scale the axis limits to fit the data.
     /// Note: This used to be AxisAuto().
-    /// Note: Margin size can be customized by editing properties of <see cref="Margins"/>
+    /// Note: Margin size can be customized by editing properties of <see cref="AutoScaleMargins"/>
     /// </summary>
-    public void AutoScale(bool tight = false)
+    public void AutoScale()
     {
         // reset limits for all axes
         XAxes.ForEach(xAxis => xAxis.Range.Reset());
@@ -206,8 +206,20 @@ public class Plot : IDisposable
         // expand all axes by the limits of each plot
         foreach (IPlottable plottable in PlottableList)
         {
-            AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, tight);
+            AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
         }
+    }
+
+    /// <summary>
+    /// Define the amount of whitespace to include around the data when calling <see cref="AutoScale()"/>.
+    /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
+    /// </summary>
+    public void Margins(double horizontal = 0.1, double vertical = .15, bool apply = true)
+    {
+        AutoScaleMargins = new(horizontal, vertical);
+
+        if (apply)
+            AutoScale();
     }
 
     /// <summary>
@@ -228,7 +240,7 @@ public class Plot : IDisposable
     /// <summary>
     /// Automatically scale the given axes to fit the data in plottables which use them
     /// </summary>
-    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool tight = false)
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis)
     {
         // reset limits only for these axes
         xAxis.Range.Reset();
@@ -248,8 +260,8 @@ public class Plot : IDisposable
         // apply margins
         if (!tight)
         {
-            XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(Margins.ZoomFracX));
-            YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(Margins.ZoomFracY));
+            XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(1 - AutoScaleMargins.Horizontal));
+            YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(1 - AutoScaleMargins.Vertical));
         }
     }
 

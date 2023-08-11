@@ -1,50 +1,23 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// Controls the fraction of empty space added to the data area when calling AutoScale()
+/// Controls the fraction of empty space added to the data area when calling AutoScale().
+/// Margins of 0 produce "tight" axes which fit the data exactly.
 /// </summary>
-public class AutoScaleMargins
+public readonly struct AutoScaleMargins
 {
-    private double X = .1;
-    private double Y = .15;
+    public readonly double Horizontal;
+    public readonly double Vertical;
 
-    /// <summary>
-    /// Zoom out using this fraction to apply the current margin
-    /// </summary>
-    public double ZoomFracX => 1 - Horizontal;
-
-    /// <summary>
-    /// Zoom out using this fraction to apply the current margin
-    /// </summary>
-    public double ZoomFracY => 1 - Vertical;
-
-    /// <summary>
-    /// This fraction of empty space is added to the data area when calling AutoScale()
-    /// </summary>
-    public double Horizontal
+    public AutoScaleMargins(double horizontal = 0.1, double vertical = 0.15)
     {
-        get => X;
-        set
-        {
-            if (value >= 0 && value <= 1)
-                X = value;
-            else
-                throw new ArgumentException($"Margins must be within the range [0, 1]");
-        }
-    }
+        if (horizontal < 0 || horizontal > 1)
+            throw new ArgumentException($"Margins must be within the range [0, 1]");
 
-    /// <summary>
-    /// This fraction of empty space is added to the data area when calling AutoScale()
-    /// </summary>
-    public double Vertical
-    {
-        get => Y;
-        set
-        {
-            if (value >= 0 && value <= 1)
-                Y = value;
-            else
-                throw new ArgumentException($"Margins must be within the range [0, 1]");
-        }
+        if (vertical < 0 || vertical > 1)
+            throw new ArgumentException($"Margins must be within the range [0, 1]");
+
+        Horizontal = horizontal;
+        Vertical = vertical;
     }
 }
