@@ -5,7 +5,7 @@
 /// Pixels in screen units are distinct from <see cref="Coordinates"/> with axis units.
 /// Pixels use <see cref="float"/> precision, whereas <see cref="Coordinates"/> use <see cref="double"/> precision.
 /// </summary>
-public struct Pixel
+public struct Pixel : IEquatable<Pixel>
 {
     /// <summary>
     /// Horizontal position on the screen in pixel units.
@@ -53,6 +53,37 @@ public struct Pixel
     public SKPoint ToSKPoint()
     {
         return new SKPoint(X, Y);
+    }
+
+    public bool Equals(Pixel other)
+    {
+        return Equals(X, other.X) && Equals(Y, other.Y);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is Pixel other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(Pixel a, Pixel b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(Pixel a, Pixel b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return X.GetHashCode() ^ Y.GetHashCode();
     }
 
     public static Pixel operator +(Pixel a, Pixel b)

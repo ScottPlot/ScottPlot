@@ -3,7 +3,7 @@
 /// <summary>
 /// A stateful analog to <see cref="AxisLimits"/> deisgned to expand to include given data
 /// </summary>
-public class ExpandingAxisLimits
+public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
 {
     public double Left { get; set; } = double.NaN;
     public double Right { get; set; } = double.NaN;
@@ -89,5 +89,66 @@ public class ExpandingAxisLimits
     {
         Expand(limits.Left, limits.Top);
         Expand(limits.Right, limits.Bottom);
+    }
+
+    public bool Equals(ExpandingAxisLimits? other)
+    {
+        if (other is null)
+            return false;
+
+        return
+            Equals(Left, other.Left) &&
+            Equals(Right, other.Right) &&
+            Equals(Top, other.Top) &&
+            Equals(Bottom, other.Bottom);
+    }
+
+    public bool Equals(AxisLimits other)
+    {
+        return
+            Equals(Left, other.Left) &&
+            Equals(Right, other.Right) &&
+            Equals(Top, other.Top) &&
+            Equals(Bottom, other.Bottom);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is ExpandingAxisLimits other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(ExpandingAxisLimits a, ExpandingAxisLimits b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(ExpandingAxisLimits a, ExpandingAxisLimits b)
+    {
+        return !a.Equals(b);
+    }
+
+    public static bool operator ==(ExpandingAxisLimits a, AxisLimits b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(ExpandingAxisLimits a, AxisLimits b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return
+            Left.GetHashCode() ^
+            Right.GetHashCode() ^
+            Bottom.GetHashCode() ^
+            Top.GetHashCode();
     }
 }

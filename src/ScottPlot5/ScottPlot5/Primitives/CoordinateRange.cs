@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>
-public class CoordinateRange : IEquatable<CoordinateRange>
+public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to MutableCoordinateRange or something
 {
     public double Min { get; set; }
     public double Max { get; set; }
@@ -117,6 +117,35 @@ public class CoordinateRange : IEquatable<CoordinateRange>
 
     public bool Equals(CoordinateRange? other)
     {
-        return Min == other?.Min && Max == other.Max;
+        if (other is null)
+            return false;
+
+        return Equals(Min, other.Min) && Equals(Min, other.Min);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is CoordinateRange other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(CoordinateRange a, CoordinateRange b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(CoordinateRange a, CoordinateRange b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return Min.GetHashCode() ^ Max.GetHashCode();
     }
 }

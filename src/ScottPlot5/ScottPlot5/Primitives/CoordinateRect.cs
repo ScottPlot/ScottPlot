@@ -5,7 +5,7 @@ namespace ScottPlot;
 /// <summary>
 /// Describes a rectangle in 2D coordinate space.
 /// </summary>
-public struct CoordinateRect
+public struct CoordinateRect : IEquatable<CoordinateRect>
 {
     public double Left { get; set; }
     public double Right { get; set; }
@@ -76,5 +76,44 @@ public struct CoordinateRect
     public override string ToString()
     {
         return $"PixelRect: Left={Left} Right={Right} Bottom={Bottom} Top={Top}";
+    }
+
+    public bool Equals(CoordinateRect other)
+    {
+        return
+            Equals(Left, other.Left) &&
+            Equals(Right, other.Right) &&
+            Equals(Top, other.Top) &&
+            Equals(Bottom, other.Bottom);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is CoordinateRect other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(CoordinateRect a, CoordinateRect b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(CoordinateRect a, CoordinateRect b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return
+            Left.GetHashCode() ^
+            Right.GetHashCode() ^
+            Bottom.GetHashCode() ^
+            Top.GetHashCode();
     }
 }

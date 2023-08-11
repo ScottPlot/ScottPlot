@@ -9,6 +9,7 @@
 * Avalonia: Improved performance, DPI awareness, and color rendering (#2818, #2859) _Thanks @oktrue_
 * Rename: `XMin`, `XMax`, `YMin`, and `YMax` properties are now `Left`, `Right`, `Bottom`, `Top` for all coordinate primitives (#2840)
 * Plot: Improve `AutoScale()` customization using `Margins()` to define whitespace area (#2857)
+* Primitives: Improved equality checks (#2855)
 
 ## ScottPlot 4.1.67 (in development)
 * DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_

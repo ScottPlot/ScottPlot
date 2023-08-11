@@ -3,12 +3,8 @@
 ///<summary>
 ///Represents a range between any two finite values (inclusive)
 ///</summary>
-public struct Range
+public readonly struct Range // TODO: evaluate if this can be replaced with more task-specific primitives
 {
-    /// <summary>
-    /// A range representing the closed interval [0, 1]
-    /// </summary>
-    public static readonly Range UnitRange = new(0, 1);
     public double Min { get; }
     public double Max { get; }
 
@@ -44,7 +40,8 @@ public struct Range
 
         double normalized = (value - Min) / (Max - Min);
 
-        return clamp ? UnitRange.Clamp(normalized) : normalized;
+        Range unitRange = new(0, 1);
+        return clamp ? unitRange.Clamp(normalized) : normalized;
     }
 
     ///<summary>

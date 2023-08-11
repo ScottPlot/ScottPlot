@@ -105,9 +105,39 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     public bool Equals(AxisLimits other)
     {
         return
-            Left == other.Left &&
-            Right == other.Right &&
-            Bottom == other.Bottom &&
-            Top == other.Top;
+            Equals(Left, other.Left) &&
+            Equals(Right, other.Right) &&
+            Equals(Top, other.Top) &&
+            Equals(Bottom, other.Bottom);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is AxisLimits other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(AxisLimits a, AxisLimits b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(AxisLimits a, AxisLimits b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return
+            Left.GetHashCode() ^
+            Right.GetHashCode() ^
+            Bottom.GetHashCode() ^
+            Top.GetHashCode();
     }
 }

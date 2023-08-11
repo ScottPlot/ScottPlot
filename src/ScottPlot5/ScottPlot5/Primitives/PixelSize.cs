@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct PixelSize
+public struct PixelSize : IEquatable<PixelSize>
 {
     public readonly float Width;
     public readonly float Height;
@@ -58,5 +58,36 @@ public struct PixelSize
         return new PixelSize(
             width: Math.Max(Width, rect2.Width),
             height: Math.Max(Height, rect2.Height));
+    }
+
+    public bool Equals(PixelSize other)
+    {
+        return Equals(Width, other.Width) && Equals(Height, other.Height);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+            return false;
+
+        if (obj is PixelSize other)
+            return Equals(other);
+
+        return false;
+    }
+
+    public static bool operator ==(PixelSize a, PixelSize b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(PixelSize a, PixelSize b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override int GetHashCode()
+    {
+        return Width.GetHashCode() ^ Height.GetHashCode();
     }
 }
