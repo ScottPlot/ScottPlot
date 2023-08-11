@@ -48,6 +48,24 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Return a new set of axis limits panned by the given distance (in axis / coordinate units).
+        /// </summary>
+        public AxisLimits WithPan(double dX, double dY)
+        {
+            return new AxisLimits(XMin + dX, XMax + dX, YMin + dY, YMax + dY);
+        }
+
+        /// <summary>
+        /// Return a new set of axis limits panned by the given fraction.
+        /// If <paramref name="xFrac"/> is 0.1 then the returned limits will be shifted 10% to the right.
+        /// If <paramref name="yFrac"/> is 0.1 then the returned limits will be shifted 10% upward.
+        /// </summary>
+        public AxisLimits WithPanFraction(double xFrac, double yFrac)
+        {
+            return WithPan(XSpan * xFrac, YSpan * yFrac);
+        }
+
+        /// <summary>
         /// AxisLimits representing uninitialized or "no data" limits (all limits are NaN)
         /// </summary>
         public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
