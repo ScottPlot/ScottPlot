@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Control;
+
+namespace ScottPlot;
 
 public interface IPlotControl
 {
