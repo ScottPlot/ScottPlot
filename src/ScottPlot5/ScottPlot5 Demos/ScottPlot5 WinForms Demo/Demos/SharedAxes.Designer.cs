@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class SharedAxes
+partial class SharedAxesForm
 {
     /// <summary>
     /// Required designer variable.
