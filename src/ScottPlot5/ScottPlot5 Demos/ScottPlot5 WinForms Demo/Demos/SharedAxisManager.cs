@@ -36,7 +36,7 @@ public class SharedAxisManager
 
             if (childLimitsChanged)
             {
-                parentControl.RefreshQueue(childControl);
+                parentControl.RenderQueue.Enqueue(childControl);
             }
         }
     }

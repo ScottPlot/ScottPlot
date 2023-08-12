@@ -25,6 +25,8 @@ namespace ScottPlot.WPF
 
         public float DisplayScale { get; set; }
 
+        public RenderQueue RenderQueue { get; } = new();
+
         static WpfPlot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -113,6 +115,7 @@ namespace ScottPlot.WPF
         public void Refresh()
         {
             SKElement?.InvalidateVisual();
+            RenderQueue.RefreshAll();
         }
 
         public void ShowContextMenu(Pixel position)

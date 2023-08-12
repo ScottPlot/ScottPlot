@@ -16,7 +16,11 @@ public class EtoPlot : Drawable, IPlotControl
     public GRContext? GRContext => null;
 
     public Interaction Interaction { get; private set; }
+
     public float DisplayScale { get; set; }
+
+    public RenderQueue RenderQueue { get; } = new();
+
 
     private readonly List<FileFilter> fileDialogFilters = new()
     {
@@ -75,6 +79,7 @@ public class EtoPlot : Drawable, IPlotControl
     public void Refresh()
     {
         Invalidate();
+        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)
