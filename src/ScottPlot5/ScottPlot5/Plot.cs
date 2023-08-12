@@ -607,14 +607,6 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Set the layout of this plot to always match that of a given plot
-    /// </summary>
-    public void MatchLayout(Plot other)
-    {
-        LayoutEngine = new LayoutEngines.Matched(other);
-    }
-
-    /// <summary>
     /// Apply a fixed layout using the given rectangle to define the data area
     /// </summary>
     public void FixedLayout(PixelRect dataRect)
