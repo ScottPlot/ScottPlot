@@ -158,4 +158,28 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.MajorGrid(lineWidth: 2);
         }
     }
+
+    class AddRectangle : IRecipe
+    {
+        public ICategory Category => new Categories.Misc();
+        public string ID => "misc_addRectangle";
+        public string Title => "Rectangle";
+        public string Description => "Rectangles can be added to plots.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // add a rectangle to the plot
+            plt.AddRectangle(xMin: 5, xMax: 15, yMin: .1, yMax: .7);
+
+            // customize its appearance
+            var rp = plt.AddRectangle(xMin: 20, xMax: 30, yMin: -.5, yMax: .5);
+            rp.BorderColor = Color.Blue;
+            rp.BorderLineWidth = 3;
+            rp.BorderLineStyle = LineStyle.Dot;
+            rp.Color = Color.FromArgb(100, Color.Yellow);
+        }
+    }
 }

@@ -1112,6 +1112,14 @@ namespace ScottPlot
             return plottable;
         }
 
+        public RectanglePlot AddRectangle(double xMin, double xMax, double yMin, double yMax)
+        {
+            CoordinateRect rect = new(xMin, xMax, yMin, yMax);
+            RectanglePlot rp = new(rect);
+            Add(rp);
+            return rp;
+        }
+
         /// <summary>
         /// A Pie chart where the angle of slices is constant but the radii are not.
         /// </summary>
