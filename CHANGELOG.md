@@ -18,6 +18,7 @@
 * Radial Gauge Plot: Improved layout for plots with a large number of gauges (#2722) _Thanks @tinuskotze_
 * DataLogger: Added support for markers (#2862) _Thanks @KroMignon_
 * AxisLimits: Added `WithPan()` overloads to facilitate panning in interactive applications (#2863) _Thanks @LapinFou_
+* Rectangle: Plots now have an `AddRectangle()` for placing rectangular shapes on plots (#2866) _Thanks @dpieve_
 
 ## ScottPlot 5.0.7-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-06_
