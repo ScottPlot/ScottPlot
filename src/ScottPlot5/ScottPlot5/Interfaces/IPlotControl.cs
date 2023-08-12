@@ -10,9 +10,16 @@ public interface IPlotControl
     Plot Plot { get; }
 
     /// <summary>
-    /// Request a re-render of the <see cref="Plot"/>
+    /// Render the plot and update the image
     /// </summary>
     void Refresh();
+
+    /// <summary>
+    /// This object contains methods which allow plots to be rendered in sequence.
+    /// This avoids render artifacts caused by two plots rendering at the same time 
+    /// or infinite loops caused by renderes being requested from in-render events.
+    /// </summary>
+    RenderQueue RenderQueue { get; }
 
     /// <summary>
     /// Advanced options for configuring how user inputs manipulate the plot

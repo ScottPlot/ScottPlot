@@ -2,44 +2,23 @@
 
 namespace WinForms_Demo.Demos;
 
-public partial class SharedAxes : Form, IDemoWindow
+public partial class SharedAxesForm : Form, IDemoWindow
 {
-    public SharedAxes()
+    SharedAxisManager SharedAxes = new(shareX: true, shareY: false);
+    SharedLayoutManager SharedLayout = new(shareX: true, shareY: false);
+
+    public SharedAxesForm()
     {
         InitializeComponent();
 
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin(mult: 100_000));
-
         formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Cos());
 
-        // configure the second control to always use the same layout as the first control
-        formsPlot2.Plot.MatchLayout(formsPlot1.Plot);
+        SharedAxes.Add(formsPlot1);
+        SharedAxes.Add(formsPlot2);
 
-        // TODO: to ILayoutMaker add a method for getting the layout with a user defined data area
-
-        formsPlot1.Plot.RenderManager.RenderFinished += (s, e) =>
-        {
-            AxisLimits originalLimits = formsPlot2.Plot.GetAxisLimits();
-            formsPlot2.Plot.MatchAxisLimits(formsPlot1.Plot, x: true, y: false);
-            bool limitsChanged = !formsPlot2.Plot.GetAxisLimits().Equals(originalLimits);
-
-            if (limitsChanged)
-            {
-                formsPlot1.RefreshQueue(formsPlot2); // update plot 2 next time plot 1 draws
-            }
-        };
-
-        formsPlot2.Plot.RenderManager.RenderFinished += (object? sender, ScottPlot.Rendering.RenderDetails plot2Info) =>
-        {
-            AxisLimits originalLimits = formsPlot1.Plot.GetAxisLimits();
-            formsPlot1.Plot.MatchAxisLimits(formsPlot2.Plot, x: true, y: false);
-            bool limitsChanged = !formsPlot1.Plot.GetAxisLimits().Equals(originalLimits);
-
-            if (limitsChanged)
-            {
-                formsPlot2.RefreshQueue(formsPlot1); // update plot 2 next time plot 1 draws
-            }
-        };
+        SharedLayout.Add(formsPlot1);
+        SharedLayout.Add(formsPlot2);
     }
 
     public string Title => "Shared Axes";

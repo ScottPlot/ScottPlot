@@ -24,7 +24,10 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public Interaction Interaction { get; private set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
+
     public float DisplayScale { get; set; }
+
+    public RenderQueue RenderQueue { get; } = new();
 
     public WinUIPlot()
     {
@@ -90,6 +93,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public void Refresh()
     {
         _canvas.Invalidate();
+        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)
