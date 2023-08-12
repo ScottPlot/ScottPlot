@@ -10,6 +10,8 @@
 * Rename: `XMin`, `XMax`, `YMin`, and `YMax` properties are now `Left`, `Right`, `Bottom`, `Top` for all coordinate primitives (#2840)
 * Plot: Improve `AutoScale()` customization using `Margins()` to define whitespace area (#2857)
 * Primitives: Improved equality checks (#2855)
+* Controls: Added a `RenderQueue` to allow cross-control render requests that would otherwise cause render artifacts or infinite loops
+* Controls: Created `SharedAxisManager` and `SharedLayoutManager` to facilitate pairing controls together
 
 ## ScottPlot 4.1.67 (in development)
 * DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_
