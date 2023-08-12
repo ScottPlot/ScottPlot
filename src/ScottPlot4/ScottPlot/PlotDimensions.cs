@@ -43,6 +43,16 @@ namespace ScottPlot
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
         public double GetCoordinateY(float pixel) => YMax - (pixel - DataOffsetY) / PxPerUnitY;
         public RectangleF GetDataRect() => new(DataOffsetX, DataOffsetY, DataWidth, DataHeight);
+        public RectangleF GetRect(CoordinateRect rect)
+        {
+            float left = GetPixelX(rect.XMin);
+            float right = GetPixelX(rect.XMax);
+            float top = GetPixelY(rect.YMax);
+            float bottom = GetPixelY(rect.YMin);
+            float width = right - left;
+            float height = bottom - top;
+            return new RectangleF(left, top, width, height);
+        }
 
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits axisLimits, double scaleFactor)
         {
