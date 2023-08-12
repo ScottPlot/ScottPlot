@@ -41,8 +41,6 @@ namespace ScottPlot.Plottable
         /// </summary>
         public float BorderLineWidth { get; set; } = 2;
 
-        private bool HasBorder => (BorderLineStyle != LineStyle.None) && (BorderColor != Color.Transparent);
-
         /// <summary>
         /// Outline line style
         /// </summary>
