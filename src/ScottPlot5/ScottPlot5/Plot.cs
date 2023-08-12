@@ -279,8 +279,8 @@ public class Plot : IDisposable
         if (RenderManager.RenderCount == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRenderInfo.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, RenderManager.LastRenderInfo.DataRect)));
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -312,8 +312,8 @@ public class Plot : IDisposable
         originalLimits.Apply(this);
 
         // pan in the direction opposite of the mouse movement
-        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
     }
 
     /// <summary>
@@ -328,8 +328,8 @@ public class Plot : IDisposable
         originalLimits.Apply(this);
 
         // apply zoom for each axis
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRenderInfo.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRenderInfo.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
     }
 
     /// <summary>
@@ -347,8 +347,8 @@ public class Plot : IDisposable
 
         // apply zoom for each axis
         Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRenderInfo.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRenderInfo.DataRect)));
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -373,7 +373,7 @@ public class Plot : IDisposable
     public Pixel GetPixel(Coordinates coordinates)
     {
         Coordinates scaledCoordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
-        PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
         float x = XAxis.GetPixel(scaledCoordinates.X, dataRect);
         float y = YAxis.GetPixel(scaledCoordinates.Y, dataRect);
         return new Pixel(x, y);
@@ -385,7 +385,7 @@ public class Plot : IDisposable
     public Coordinates GetCoordinates(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         Pixel scaledPx = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        PixelRect dataRect = RenderManager.LastRenderInfo.DataRect;
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
         double x = (xAxis ?? XAxis).GetCoordinate(scaledPx.X, dataRect);
         double y = (yAxis ?? YAxis).GetCoordinate(scaledPx.Y, dataRect);
         return new Coordinates(x, y);

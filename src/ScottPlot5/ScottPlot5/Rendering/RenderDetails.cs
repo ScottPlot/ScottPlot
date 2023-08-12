@@ -64,7 +64,7 @@ public readonly struct RenderDetails
         AxisLimits = rp.Plot.GetAxisLimits();
         Layout = rp.Layout;
 
-        RenderDetails previous = rp.Plot.RenderManager.LastRenderInfo;
+        RenderDetails previous = rp.Plot.RenderManager.LastRender;
 
         // TODO: evaluate multi-axis limits (not just the primary axes)
         AxisLimitsChanged = !AxisLimits.Equals(previous.AxisLimits);

@@ -10,7 +10,7 @@ internal class RenderManagerTests
         plt.Add.Signal(Generate.Cos(51));
         _ = plt.GetImageBytes(400, 300);
 
-        var timedActions = plt.RenderManager.LastRenderInfo.TimedActions;
+        var timedActions = plt.RenderManager.LastRender.TimedActions;
         timedActions.Should().NotBeNull();
         timedActions.Should().NotBeEmpty();
 
@@ -20,6 +20,6 @@ internal class RenderManagerTests
             Console.WriteLine($"{elapsed.TotalMilliseconds} ms \t {action.Split(".").Last()}");
         }
 
-        Console.WriteLine($"{plt.RenderManager.LastRenderInfo.Elapsed.TotalMilliseconds} ms \t TOTAL");
+        Console.WriteLine($"{plt.RenderManager.LastRender.Elapsed.TotalMilliseconds} ms \t TOTAL");
     }
 }

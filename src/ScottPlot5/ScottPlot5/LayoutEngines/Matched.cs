@@ -48,7 +48,7 @@ internal class Matched : ILayoutEngine
         Dictionary<IPanel, float> panelSizes = MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
-        PixelRect dataRect = ReferencePlot.RenderManager.LastRenderInfo.DataRect;
+        PixelRect dataRect = ReferencePlot.RenderManager.LastRender.DataRect;
         return new Layout(figureSize, dataRect, panelSizes, panelOffsets);
     }
 }

@@ -11,7 +11,7 @@ public class RenderManager
     /// <summary>
     /// Information about the previous render
     /// </summary>
-    public RenderDetails LastRenderInfo { get; private set; }
+    public RenderDetails LastRender { get; private set; }
 
     /// <summary>
     /// Total number of renders
@@ -75,10 +75,10 @@ public class RenderManager
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        LastRenderInfo = new(rp, actionTimes.ToArray());
+        LastRender = new(rp, actionTimes.ToArray());
 
         RenderCount += 1;
-        RenderFinished.Invoke(Plot, LastRenderInfo);
+        RenderFinished.Invoke(Plot, LastRender);
         IsRendering = false;
     }
 

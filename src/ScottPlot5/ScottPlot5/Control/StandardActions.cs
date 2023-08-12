@@ -90,7 +90,7 @@ public static class StandardActions
     {
         Pixel px1 = control.Plot.ZoomRectangle.MouseDown;
         Pixel px2 = control.Plot.ZoomRectangle.MouseUp;
-        PixelRect dataRect = control.Plot.RenderManager.LastRenderInfo.DataRect;
+        PixelRect dataRect = control.Plot.RenderManager.LastRender.DataRect;
 
         foreach (IXAxis xAxis in control.Plot.XAxes)
         {
