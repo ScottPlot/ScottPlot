@@ -14,9 +14,9 @@
         <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
         <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
         <PackageReleaseNotes>https://ScottPlot.NET/changelog</PackageReleaseNotes>
-        <Version>4.1.66</Version>
-        <AssemblyVersion>4.1.66.0</AssemblyVersion>
-        <FileVersion>4.1.66.0</FileVersion>
+        <Version>4.1.67</Version>
+        <AssemblyVersion>4.1.67.0</AssemblyVersion>
+        <FileVersion>4.1.67.0</FileVersion>
         <SignAssembly>true</SignAssembly>
         <DelaySign>false</DelaySign>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>

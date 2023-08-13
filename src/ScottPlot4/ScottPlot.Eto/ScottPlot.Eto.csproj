@@ -6,9 +6,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.66</Version>
-        <AssemblyVersion>4.1.66.0</AssemblyVersion>
-        <FileVersion>4.1.66.0</FileVersion>
+        <Version>4.1.67</Version>
+        <AssemblyVersion>4.1.67.0</AssemblyVersion>
+        <FileVersion>4.1.67.0</FileVersion>
 
         <AssemblyName>ScottPlot.Eto</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>
