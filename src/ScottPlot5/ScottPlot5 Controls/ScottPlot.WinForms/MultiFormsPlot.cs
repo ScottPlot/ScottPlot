@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
-public class MultiFormsPlot : UserControl
+public class MultiFormsPlot : UserControl, IMultiplotControl
 {
     private readonly SKGLControl SKElement;
 
-    public readonly Multiplot Multiplot = new();
+    public Multiplot Multiplot { get; } = new();
 
     public MultiFormsPlot()
     {
