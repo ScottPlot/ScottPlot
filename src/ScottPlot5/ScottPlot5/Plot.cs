@@ -9,6 +9,8 @@ public class Plot : IDisposable
 {
     public List<IXAxis> XAxes { get; } = new();
     public List<IYAxis> YAxes { get; } = new();
+    public List<IAxis> Axes => Enumerable.Concat<IAxis>(XAxes, YAxes).ToList();
+
     public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
     public IXAxis BottomAxis => XAxes.First(x => x.Edge == Edge.Bottom);
     public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
