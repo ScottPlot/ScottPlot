@@ -1,11 +1,8 @@
-﻿using ScottPlot;
-using ScottPlot.WinForms;
-
-namespace WinForms_Demo.Demos;
+﻿namespace ScottPlot;
 
 public class SharedAxisManager
 {
-    private readonly List<FormsPlot> PlotControls = new();
+    private readonly List<IPlotControl> PlotControls = new();
     public readonly bool ShareX;
     public readonly bool ShareY;
 
@@ -15,7 +12,7 @@ public class SharedAxisManager
         ShareY = shareY;
     }
 
-    public void Add(FormsPlot plotControl)
+    public void Add(IPlotControl plotControl)
     {
         PlotControls.Add(plotControl);
 
@@ -25,7 +22,7 @@ public class SharedAxisManager
         };
     }
 
-    public void UpdateOtherControls(FormsPlot parentControl)
+    public void UpdateOtherControls(IPlotControl parentControl)
     {
         foreach (var childControl in PlotControls)
         {
