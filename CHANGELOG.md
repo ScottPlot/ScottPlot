@@ -4,7 +4,12 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
-## ScottPlot 5.0.8-beta (in development)
+## ScottPlot 5.0.9-beta (in development)
+
+## ScottPlot 4.1.68 (in development)
+
+## ScottPlot 5.0.8-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-13_
 * Rendering: Improved performance by caching typefaces (#2833, #2848) _Thanks @KroMignon and @taya92413_
 * Avalonia: Improved performance, DPI awareness, and color rendering (#2818, #2859) _Thanks @oktrue_
 * Rename: `XMin`, `XMax`, `YMin`, and `YMax` properties are now `Left`, `Right`, `Bottom`, `Top` for all coordinate primitives (#2840)
@@ -14,7 +19,8 @@
 * Controls: Created `SharedAxisManager` and `SharedLayoutManager` to facilitate pairing controls together
 * Multiplot: Added methods for creating creating static multi-plot figures (#2868, #2869)
 
-## ScottPlot 4.1.67 (in development)
+## ScottPlot 4.1.67
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-13_
 * DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_
 * Radial Gauge Plot: Improved layout for plots with a large number of gauges (#2722) _Thanks @tinuskotze_
 * DataLogger: Added support for markers (#2862) _Thanks @KroMignon_
