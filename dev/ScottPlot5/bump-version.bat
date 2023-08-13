@@ -1,5 +1,5 @@
 @echo off
-cd ../../BumpVersion
+cd ../BumpVersion
 dotnet run "../../src/ScottPlot5/ScottPlot5"
 dotnet run "../../src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
 dotnet run "../../src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
