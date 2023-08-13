@@ -9,7 +9,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Eto</PackageId>
-        <Version>5.0.7-beta</Version>
+        <Version>5.0.8-beta</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
