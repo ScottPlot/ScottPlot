@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows;
 using ScottPlot;
 
 #nullable enable
@@ -12,18 +12,25 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        var crosshair = WpfPlot1.Plot.Add.Crosshair(0, 0);
-
-        WpfPlot1.Refresh();
-        WpfPlot1.MouseMove += (s, e) =>
+        Loaded += (s, e) =>
         {
-            Point mousePoint = Mouse.GetPosition(WpfPlot1);
-            Pixel mousePixel = new(mousePoint.X, mousePoint.Y);
-            Coordinates mouseCoordinates = WpfPlot1.GetCoordinates(mousePixel);
-            crosshair.Position = mouseCoordinates;
-            WpfPlot1.Refresh();
-        };
+            // customize the layout
+            MultiWpfPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 3);
 
-        WpfPlot1.Plot.ScaleFactor = 1.5f;
+            // create plots and add them to the multiplot
+            RandomDataGenerator gen = new();
+            for (int i = 0; i < 6; i++)
+            {
+                Plot plot = new();
+                plot.Add.Signal(gen.RandomWalk(100));
+                plot.Title($"Plot {i + 1}");
+                MultiWpfPlot1.Multiplot.Add(plot);
+            }
+
+            // apply the layout from the first plot to all subplots
+            MultiWpfPlot1.Multiplot.SharedLayoutSourcePlot = MultiWpfPlot1.Multiplot.Plots.First();
+
+            MultiWpfPlot1.Refresh();
+        };
     }
 }

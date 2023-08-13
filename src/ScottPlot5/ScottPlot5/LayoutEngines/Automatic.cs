@@ -31,7 +31,7 @@ public class Automatic : ILayoutEngine
         return panelOffsets;
     }
 
-    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         /* PROBLEM: There is a chicken-or-egg situation
          * where the ideal layout depends on the ticks,
@@ -43,6 +43,8 @@ public class Automatic : ILayoutEngine
          * according to the layout determined by this function.
          * 
          */
+
+        PixelSize figureSize = figureRect.Size;
 
         panels.OfType<IXAxis>()
             .ToList()
@@ -67,6 +69,8 @@ public class Automatic : ILayoutEngine
             bottom: figureSize.Height - paddingNeededForPanels.Bottom,
             top: paddingNeededForPanels.Top);
 
-        return new Layout(figureSize, dataRect, panelSizes, panelOffsets);
+        dataRect = dataRect.WithPan(figureRect.Left, figureRect.Top);
+
+        return new Layout(figureRect, dataRect, panelSizes, panelOffsets);
     }
 }

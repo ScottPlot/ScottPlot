@@ -37,17 +37,17 @@ public class FixedPadding : ILayoutEngine
         return panelOffsets;
     }
 
-    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         Dictionary<IPanel, float> panelSizes = MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
         PixelRect dataRect = new(
-            left: Padding.Left,
-            right: figureSize.Width - Padding.Right,
-            bottom: figureSize.Height - Padding.Bottom,
-            top: Padding.Top);
+            left: figureRect.Left + Padding.Left,
+            right: figureRect.Left + figureRect.Width - Padding.Right,
+            bottom: figureRect.Top + figureRect.Height - Padding.Bottom,
+            top: figureRect.Top + Padding.Top);
 
-        return new Layout(figureSize, dataRect, panelSizes, panelOffsets);
+        return new Layout(figureRect, dataRect, panelSizes, panelOffsets);
     }
 }

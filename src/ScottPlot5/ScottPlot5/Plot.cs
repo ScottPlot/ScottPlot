@@ -9,6 +9,8 @@ public class Plot : IDisposable
 {
     public List<IXAxis> XAxes { get; } = new();
     public List<IYAxis> YAxes { get; } = new();
+    public List<IAxis> Axes => Enumerable.Concat<IAxis>(XAxes, YAxes).ToList();
+
     public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
     public IXAxis BottomAxis => XAxes.First(x => x.Edge == Edge.Bottom);
     public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
@@ -423,15 +425,17 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
-        RenderManager.Render(canvas, width, height);
+        // TODO: obsolete this
+        PixelRect rect = new(0, width, height, 0);
+        RenderManager.Render(canvas, rect);
     }
 
     /// <summary>
-    /// Render onto an existing surface using the local clip to determine dimensions
+    /// Render onto an existing canvas inside the given rectangle
     /// </summary>
-    public void Render(SKSurface surface)
+    public void Render(SKCanvas canvas, PixelRect rect)
     {
-        RenderManager.Render(surface);
+        RenderManager.Render(canvas, rect);
     }
 
     public Image GetImage(int width, int height)
@@ -447,7 +451,7 @@ public class Plot : IDisposable
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
 
-        Render(surface);
+        Render(surface.Canvas, width, height);
         return new(surface.Snapshot());
     }
 

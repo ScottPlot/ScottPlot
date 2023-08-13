@@ -123,7 +123,7 @@ public class AvaPlot : Controls.Control, IPlotControl
             var surface = lease.SkSurface;
             if (surface is null) return;
 
-            _plot.Render(surface);
+            _plot.Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
         }
     }
 

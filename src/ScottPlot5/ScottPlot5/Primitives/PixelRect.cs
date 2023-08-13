@@ -20,6 +20,7 @@ public struct PixelRect : IEquatable<PixelRect>
     public Pixel RightCenter => new(Right, VerticalCenter);
     public Pixel BottomCenter => new(HorizontalCenter, Bottom);
     public Pixel TopCenter => new(HorizontalCenter, Top);
+    public PixelSize Size => new(Width, Height);
 
     public static PixelRect Zero => new(0, 0, 0, 0);
     public static PixelRect NaN => new(Pixel.NaN, PixelSize.NaN);
@@ -79,6 +80,11 @@ public struct PixelRect : IEquatable<PixelRect>
         Right = right;
         Bottom = bottom;
         Top = top;
+    }
+
+    public PixelRect WithPan(float x, float y)
+    {
+        return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
     }
 
     public override string ToString()

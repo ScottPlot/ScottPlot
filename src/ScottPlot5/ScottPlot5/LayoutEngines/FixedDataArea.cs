@@ -37,10 +37,10 @@ public class FixedDataArea : ILayoutEngine
         return panelOffsets;
     }
 
-    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         Dictionary<IPanel, float> panelSizes = MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
-        return new Layout(figureSize, DataRect, panelSizes, panelOffsets);
+        return new Layout(figureRect, DataRect, panelSizes, panelOffsets);
     }
 }

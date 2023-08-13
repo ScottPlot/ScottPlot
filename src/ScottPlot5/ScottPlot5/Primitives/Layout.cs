@@ -5,7 +5,7 @@ public struct Layout : IEquatable<Layout>
     /// <summary>
     /// Size of the figure this layout represents
     /// </summary>
-    public readonly PixelSize FigureSize { get; }
+    public readonly PixelRect FigureRect { get; }
 
     /// <summary>
     /// Final size of the data area
@@ -22,9 +22,9 @@ public struct Layout : IEquatable<Layout>
     /// </summary>
     public readonly Dictionary<IPanel, float> PanelSizes { get; }
 
-    public Layout(PixelSize figureSize, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
+    public Layout(PixelRect figureRect, PixelRect dataRect, Dictionary<IPanel, float> sizes, Dictionary<IPanel, float> offsets)
     {
-        FigureSize = figureSize;
+        FigureRect = figureRect;
         DataRect = dataRect;
         PanelSizes = sizes;
         PanelOffsets = offsets;
@@ -32,7 +32,7 @@ public struct Layout : IEquatable<Layout>
 
     public bool Equals(Layout other)
     {
-        if (!FigureSize.Equals(other.FigureSize))
+        if (!FigureRect.Equals(other.FigureRect))
             return false;
 
         if (!DataRect.Equals(other.DataRect))

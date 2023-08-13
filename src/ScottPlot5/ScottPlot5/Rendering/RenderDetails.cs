@@ -8,12 +8,17 @@ public readonly struct RenderDetails
     /// <summary>
     /// Size of the plot image in pixel units
     /// </summary>
-    public readonly PixelSize FigureSize;
+    public readonly PixelRect FigureRect;
 
     /// <summary>
     /// Size of the data area of the plot in pixel units
     /// </summary>
     public readonly PixelRect DataRect;
+
+    /// <summary>
+    /// Distance between the data area and the edge of the figure
+    /// </summary>
+    public readonly PixelPadding Padding;
 
     /// <summary>
     /// Total time required to render this image
@@ -56,8 +61,9 @@ public readonly struct RenderDetails
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
 
-        FigureSize = rp.FigureSize;
+        FigureRect = rp.FigureRect;
         DataRect = rp.DataRect;
+        Padding = new PixelPadding(rp.FigureRect.Size, rp.DataRect);
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;

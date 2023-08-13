@@ -29,6 +29,14 @@ public struct PixelPadding
         Top = top;
     }
 
+    public PixelPadding(PixelSize figureSize, PixelRect dataArea)
+    {
+        Left = dataArea.Left;
+        Right = figureSize.Width - dataArea.Right;
+        Top = dataArea.Top;
+        Bottom = figureSize.Height - dataArea.Bottom;
+    }
+
     public void Expand(float amount)
     {
         Left += amount;

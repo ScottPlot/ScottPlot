@@ -91,7 +91,8 @@ public class ScatterGL : Scatter, IPlottableGL
         {
             surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
             PixelSize figureSize = new(surface.Canvas.LocalClipBounds.Width, surface.Canvas.LocalClipBounds.Height);
-            RenderPack rp = new(PlotControl.Plot, figureSize, surface.Canvas);
+            PixelRect rect = new(0, figureSize.Width, figureSize.Height, 0);
+            RenderPack rp = new(PlotControl.Plot, rect, surface.Canvas);
             Render(rp);
         }
     }

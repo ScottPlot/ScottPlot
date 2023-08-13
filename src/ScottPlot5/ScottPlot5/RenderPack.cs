@@ -3,7 +3,7 @@
 public class RenderPack
 {
     public SKCanvas Canvas { get; }
-    public PixelSize FigureSize { get; }
+    public PixelRect FigureRect { get; }
     public PixelRect DataRect { get; private set; }
     public Layout Layout { get; private set; }
     public Plot Plot { get; }
@@ -14,10 +14,10 @@ public class RenderPack
     /// This object is passed through the render system.
     /// The plot will be drawn on the canvas to create a figure of the given size.
     /// </summary>
-    public RenderPack(Plot plot, PixelSize figureSize, SKCanvas canvas)
+    public RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas)
     {
         Canvas = canvas;
-        FigureSize = figureSize;
+        FigureRect = figureRect;
         Plot = plot;
         Stopwatch = Stopwatch.StartNew();
     }
@@ -27,16 +27,21 @@ public class RenderPack
         if (DataRect.HasArea)
             throw new InvalidOperationException("DataRect must only be calculated once per render");
 
-        PixelSize figSize = new(
-            width: FigureSize.Width / Plot.ScaleFactor,
-            height: FigureSize.Height / Plot.ScaleFactor);
 
-        Layout = Plot.LayoutEngine.GetLayout(figSize, Plot.GetAllPanels());
+        //TODO: modify figure rectangle to support nonstandard scale factors
+
+        /*
+        PixelSize figSize = new(
+            width: FigureRect.Width / Plot.ScaleFactor,
+            height: FigureRect.Height / Plot.ScaleFactor);
+        */
+
+        Layout = Plot.LayoutEngine.GetLayout(FigureRect, Plot.GetAllPanels());
         DataRect = Layout.DataRect;
     }
 
     public override string ToString()
     {
-        return $"RenderPack FigureSize={FigureSize} DataRect={DataRect}";
+        return $"RenderPack FigureRect={FigureRect} DataRect={DataRect}";
     }
 }

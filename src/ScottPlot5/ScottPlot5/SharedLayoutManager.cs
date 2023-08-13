@@ -1,12 +1,9 @@
-﻿using ScottPlot;
-using ScottPlot.WinForms;
-
-namespace WinForms_Demo.Demos;
+﻿namespace ScottPlot;
 
 public class SharedLayoutManager
 {
-    private readonly List<FormsPlot> ChildControls = new();
-    private FormsPlot? ParentControl = null;
+    private readonly List<IPlotControl> ChildControls = new();
+    private IPlotControl? ParentControl = null;
     public readonly bool ShareX;
     public readonly bool ShareY;
 
@@ -16,7 +13,7 @@ public class SharedLayoutManager
         ShareY = shareY;
     }
 
-    public void Add(FormsPlot plotControl)
+    public void Add(IPlotControl plotControl)
     {
         if (ParentControl is null)
         {
@@ -39,7 +36,7 @@ public class SharedLayoutManager
 
         PixelRect dataRect = ParentControl.Plot.RenderManager.LastRender.DataRect;
 
-        foreach (var childControl in ChildControls)
+        foreach (IPlotControl childControl in ChildControls)
         {
             childControl.Plot.FixedLayout(dataRect);
         }

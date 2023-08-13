@@ -28,6 +28,11 @@ public class RenderManager
     /// </summary>
     public bool IsRendering { get; private set; } = false;
 
+    /// <summary>
+    /// Disable this in multiplot environments
+    /// </summary>
+    public bool ClearCanvasBeforeRendering { get; set; } = true;
+
     private Plot Plot { get; }
 
     public RenderManager(Plot plot)
@@ -40,6 +45,7 @@ public class RenderManager
     {
         return new IRenderAction[]
         {
+            new RenderActions.ClearCanvas(),
             new RenderActions.ReplaceNullAxesWithDefaults(),
             new RenderActions.AutoAxisAnyUnsetAxes(),
             new RenderActions.EnsureAxesHaveArea(),
@@ -57,19 +63,23 @@ public class RenderManager
         };
     }
 
-    public void Render(SKCanvas canvas, int width, int height)
+    public void Render(SKCanvas canvas, PixelRect rect)
     {
         IsRendering = true;
         canvas.Scale(Plot.ScaleFactor);
 
         List<(string, TimeSpan)> actionTimes = new();
 
-        PixelSize figureSize = new(width, height);
-        RenderPack rp = new(Plot, figureSize, canvas);
+        RenderPack rp = new(Plot, rect, canvas);
 
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
         {
+            if ((action is RenderActions.ClearCanvas) && (!ClearCanvasBeforeRendering))
+            {
+                continue;
+            }
+
             sw.Restart();
             action.Render(rp);
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
@@ -80,10 +90,5 @@ public class RenderManager
         RenderCount += 1;
         RenderFinished.Invoke(Plot, LastRender);
         IsRendering = false;
-    }
-
-    public void Render(SKSurface surface)
-    {
-        Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
     }
 }
