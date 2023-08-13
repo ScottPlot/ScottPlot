@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Control;
+﻿namespace ScottPlot;
 
 public interface IZoomRectangle
 {
