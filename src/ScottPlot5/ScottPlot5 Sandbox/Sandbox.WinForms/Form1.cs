@@ -19,5 +19,8 @@ public partial class Form1 : Form
             plot.Title($"Plot {i + 1}");
             multiFormsPlot1.Multiplot.Add(plot);
         }
+
+        // make all plots match layout of the first
+        multiFormsPlot1.Multiplot.SharedLayoutSourcePlot = multiFormsPlot1.Multiplot.GetPlots().First();
     }
 }

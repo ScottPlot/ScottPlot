@@ -16,6 +16,11 @@ public readonly struct RenderDetails
     public readonly PixelRect DataRect;
 
     /// <summary>
+    /// Distance between the data area and the edge of the figure
+    /// </summary>
+    public readonly PixelPadding Padding;
+
+    /// <summary>
     /// Total time required to render this image
     /// </summary>
     public readonly TimeSpan Elapsed;
@@ -58,6 +63,7 @@ public readonly struct RenderDetails
 
         FigureRect = rp.FigureRect;
         DataRect = rp.DataRect;
+        Padding = new PixelPadding(rp.FigureRect.Size, rp.DataRect);
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
