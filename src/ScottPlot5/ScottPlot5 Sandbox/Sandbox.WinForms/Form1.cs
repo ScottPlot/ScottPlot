@@ -21,6 +21,6 @@ public partial class Form1 : Form
         }
 
         // make all plots match layout of the first
-        multiFormsPlot1.Multiplot.SharedLayoutSourcePlot = multiFormsPlot1.Multiplot.GetPlots().First();
+        multiFormsPlot1.Multiplot.SharedLayoutSourcePlot = multiFormsPlot1.Multiplot.Plots.First();
     }
 }

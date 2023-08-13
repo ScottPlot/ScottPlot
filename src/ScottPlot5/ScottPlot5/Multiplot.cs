@@ -5,9 +5,8 @@
 /// </summary>
 public class Multiplot
 {
-    private readonly List<Plot> Plots = new();
+    public List<Plot> Plots { get; } = new();
     public int PlotCount => Plots.Count;
-    public Plot[] GetPlots() => Plots.ToArray();
     public Color BackgroundColor { get; set; } = Colors.White;
 
     /// <summary>
@@ -64,5 +63,19 @@ public class Multiplot
         canvas.Clear(BackgroundColor.ToSKColor());
 
         positionedPlots.ForEach(x => x.Render(canvas));
+    }
+
+    public void Save(string path, int width, int height, ImageFormat format = ImageFormat.Png)
+    {
+        // TODO: collapse this logic with similar logic in the Plot module
+        SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+        using SKSurface surface = SKSurface.Create(info);
+        if (surface is null)
+            throw new NullReferenceException($"invalid SKImageInfo");
+
+        PixelRect rect = new(0, width, height, 0);
+        Render(surface.Canvas, rect);
+        Image img = new(surface.Snapshot());
+        img.Save(path, format);
     }
 }
