@@ -426,14 +426,6 @@ public class Plot : IDisposable
         RenderManager.Render(canvas, width, height);
     }
 
-    /// <summary>
-    /// Render onto an existing surface using the local clip to determine dimensions
-    /// </summary>
-    public void Render(SKSurface surface)
-    {
-        RenderManager.Render(surface);
-    }
-
     public Image GetImage(int width, int height)
     {
         if (width < 1)
@@ -447,7 +439,7 @@ public class Plot : IDisposable
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
 
-        Render(surface);
+        Render(surface.Canvas, width, height);
         return new(surface.Snapshot());
     }
 

@@ -81,9 +81,4 @@ public class RenderManager
         RenderFinished.Invoke(Plot, LastRender);
         IsRendering = false;
     }
-
-    public void Render(SKSurface surface)
-    {
-        Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
-    }
 }
