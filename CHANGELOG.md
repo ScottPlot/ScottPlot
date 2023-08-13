@@ -12,6 +12,7 @@
 * Primitives: Improved equality checks (#2855)
 * Controls: Added a `RenderQueue` to allow cross-control render requests that would otherwise cause render artifacts or infinite loops
 * Controls: Created `SharedAxisManager` and `SharedLayoutManager` to facilitate pairing controls together
+* Multiplot: Added methods for creating creating static multi-plot figures (#2868, #2869)
 
 ## ScottPlot 4.1.67 (in development)
 * DataLogger: Improved appearance of legend items (#2829, #2850) _Thanks @KroMignon and @p4pravin_
