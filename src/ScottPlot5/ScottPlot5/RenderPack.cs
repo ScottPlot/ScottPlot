@@ -27,16 +27,13 @@ public class RenderPack
         if (DataRect.HasArea)
             throw new InvalidOperationException("DataRect must only be calculated once per render");
 
+        PixelRect scaledRect = new(
+            left: FigureRect.Left / Plot.ScaleFactor,
+            right: FigureRect.Right / Plot.ScaleFactor,
+            bottom: FigureRect.Bottom / Plot.ScaleFactor,
+            top: FigureRect.Top / Plot.ScaleFactor);
 
-        //TODO: modify figure rectangle to support nonstandard scale factors
-
-        /*
-        PixelSize figSize = new(
-            width: FigureRect.Width / Plot.ScaleFactor,
-            height: FigureRect.Height / Plot.ScaleFactor);
-        */
-
-        Layout = Plot.LayoutEngine.GetLayout(FigureRect, Plot.GetAllPanels());
+        Layout = Plot.LayoutEngine.GetLayout(scaledRect, Plot.GetAllPanels());
         DataRect = Layout.DataRect;
     }
 
