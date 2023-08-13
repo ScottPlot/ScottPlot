@@ -6,7 +6,8 @@ namespace ScottPlot.WinForms;
 public class MultiFormsPlot : UserControl
 {
     private readonly SKGLControl SKElement;
-    public readonly Control.SubPlotCollection SubPlots = new();
+
+    public readonly Multiplot Multiplot = new();
 
     public MultiFormsPlot()
     {
@@ -24,6 +25,6 @@ public class MultiFormsPlot : UserControl
     private void SKElement_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
     {
         PixelRect rect = new(left: 0, right: SKElement.Width, bottom: SKElement.Height, top: 0);
-        SubPlots.Render(e.Surface.Canvas, rect);
+        Multiplot.Render(e.Surface.Canvas, rect);
     }
 }

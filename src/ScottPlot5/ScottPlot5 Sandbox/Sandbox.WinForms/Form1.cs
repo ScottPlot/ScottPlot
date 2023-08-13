@@ -8,12 +8,16 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        Plot plot1 = multiFormsPlot1.SubPlots.Add();
-        plot1.Add.Signal(Generate.Sin());
-        plot1.Title("Plot 1");
+        multiFormsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 3);
 
-        Plot plot2 = multiFormsPlot1.SubPlots.Add();
-        plot2.Add.Signal(Generate.Cos());
-        plot2.Title("Plot 2");
+        RandomDataGenerator gen = new();
+
+        for (int i = 0; i < 6; i++)
+        {
+            Plot plot = new();
+            plot.Add.Signal(gen.RandomWalk(100));
+            plot.Title($"Plot {i + 1}");
+            multiFormsPlot1.Multiplot.Add(plot);
+        }
     }
 }
