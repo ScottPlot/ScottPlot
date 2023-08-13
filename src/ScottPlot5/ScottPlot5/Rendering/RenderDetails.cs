@@ -8,7 +8,7 @@ public readonly struct RenderDetails
     /// <summary>
     /// Size of the plot image in pixel units
     /// </summary>
-    public readonly PixelSize FigureSize;
+    public readonly PixelRect FigureRect;
 
     /// <summary>
     /// Size of the data area of the plot in pixel units
@@ -56,7 +56,7 @@ public readonly struct RenderDetails
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
 
-        FigureSize = rp.FigureSize;
+        FigureRect = rp.FigureRect;
         DataRect = rp.DataRect;
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;

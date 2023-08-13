@@ -43,12 +43,12 @@ internal class Matched : ILayoutEngine
         return panelOffsets;
     }
 
-    public Layout GetLayout(PixelSize figureSize, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
     {
         Dictionary<IPanel, float> panelSizes = MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
         PixelRect dataRect = ReferencePlot.RenderManager.LastRender.DataRect;
-        return new Layout(figureSize, dataRect, panelSizes, panelOffsets);
+        return new Layout(figureRect, dataRect, panelSizes, panelOffsets);
     }
 }

@@ -423,7 +423,17 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
-        RenderManager.Render(canvas, width, height);
+        // TODO: obsolete this
+        PixelRect rect = new(0, width, height, 0);
+        RenderManager.Render(canvas, rect);
+    }
+
+    /// <summary>
+    /// Render onto an existing canvas inside the given rectangle
+    /// </summary>
+    public void Render(SKCanvas canvas, PixelRect rect)
+    {
+        RenderManager.Render(canvas, rect);
     }
 
     public Image GetImage(int width, int height)
