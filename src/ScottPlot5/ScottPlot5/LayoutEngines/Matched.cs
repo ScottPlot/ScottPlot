@@ -3,7 +3,7 @@
 /// <summary>
 /// Generate layouts that match layouts of another control
 /// </summary>
-internal class Matched : ILayoutEngine
+public class Matched : ILayoutEngine
 {
     private Plot ReferencePlot { get; }
 
