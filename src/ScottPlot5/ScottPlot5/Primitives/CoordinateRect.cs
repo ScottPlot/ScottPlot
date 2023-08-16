@@ -67,6 +67,23 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         return x >= Left && x <= Right && y >= Bottom && y <= Top;
     }
 
+    public CoordinateRect Expanded(Coordinates point) {
+        double exLeft = Left;
+        double exRight = Right;
+        double exBottom = Bottom;
+        double exTop = Top;
+
+        if (!Contains(point))
+        {
+            if (point.X < Left) exLeft = point.X;
+            if (point.X > Right) exRight = point.X;
+            if (point.Y < Bottom) exBottom = point.Y;
+            if (point.Y > Top) exTop = point.Y;
+        }
+
+        return new CoordinateRect(exLeft, exRight, exBottom, exTop);
+    }
+
     public bool Contains(Coordinates point) => Contains(point.X, point.Y);
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
