@@ -25,4 +25,17 @@ internal class CoordinateRectTests
         cRect.Height.Should().Be(24);
         cRect.HasArea.Should().BeTrue();
     }
+
+
+    [Test]
+    public void Test_CoordinateRect_Expanded()
+    {
+        Coordinates coord = new(13, 42);
+
+        CoordinateRect cRect = new(-10, 10, -10, 10);
+        cRect.Contains(coord).Should().BeFalse();
+
+        CoordinateRect cRect2 = cRect.Expanded(coord);
+        cRect2.Contains(coord).Should().BeTrue();
+    }
 }
