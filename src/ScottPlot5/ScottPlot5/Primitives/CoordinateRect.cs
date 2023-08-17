@@ -67,7 +67,8 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         return x >= Left && x <= Right && y >= Bottom && y <= Top;
     }
 
-    public CoordinateRect Expanded(Coordinates point) {
+    public CoordinateRect Expanded(Coordinates point)
+    {
         double exLeft = Left;
         double exRight = Right;
         double exBottom = Bottom;
@@ -75,7 +76,7 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
 
         if (!Contains(point))
         {
-            exLeft= Math.Min(exLeft, point.X);
+            exLeft = Math.Min(exLeft, point.X);
             exRight = Math.Max(exRight, point.X);
             exBottom = Math.Min(exBottom, point.Y);
             exTop = Math.Max(exTop, point.Y);
