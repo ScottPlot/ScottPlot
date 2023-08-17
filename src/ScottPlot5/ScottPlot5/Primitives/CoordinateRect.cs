@@ -75,10 +75,10 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
 
         if (!Contains(point))
         {
-            if (point.X < Left) exLeft = point.X;
-            if (point.X > Right) exRight = point.X;
-            if (point.Y < Bottom) exBottom = point.Y;
-            if (point.Y > Top) exTop = point.Y;
+            exLeft= Math.Min(exLeft, point.X);
+            exRight = Math.Max(exRight, point.X);
+            exBottom = Math.Min(exBottom, point.Y);
+            exTop = Math.Max(exTop, point.Y);
         }
 
         return new CoordinateRect(exLeft, exRight, exBottom, exTop);
