@@ -234,7 +234,7 @@ namespace ScottPlot.Plottable
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
-            }            
+            }
 
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
@@ -284,7 +284,7 @@ namespace ScottPlot.Plottable
 
                 if (curr.HasValue && curr.Value > Max)
                     Max = curr.Value;
-            }            
+            }
 
             ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
             ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
@@ -380,7 +380,7 @@ namespace ScottPlot.Plottable
                             finalOpacity[i, j] = opacity[i, j];
                         }
                     }
-                } 
+                }
             }
 
             Update(finalIntensity, colormap, min, max, finalOpacity, parallel);
