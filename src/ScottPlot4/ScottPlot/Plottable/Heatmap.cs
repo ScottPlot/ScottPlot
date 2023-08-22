@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
@@ -211,12 +212,16 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null, bool parallel = false)
         {
+            DataWidth = intensities.GetLength(1);
+            DataHeight = intensities.GetLength(0);
+
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
             int maxEdgeLength = 1 << 15;
-            if (intensities.GetLength(1) > maxEdgeLength || intensities.GetLength(0) > maxEdgeLength)
+            if (DataWidth > maxEdgeLength || DataHeight > maxEdgeLength)
             {
                 throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
                     $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
@@ -225,22 +230,47 @@ namespace ScottPlot.Plottable
             // limit total size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/772
             int maxTotalValues = 10_000_000;
-            if (intensities.GetLength(1) * intensities.GetLength(0) > maxTotalValues)
+            if (DataWidth * DataHeight > maxTotalValues)
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
-            }
-
-            DataWidth = intensities.GetLength(1);
-            DataHeight = intensities.GetLength(0);
+            }            
 
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
 
-            double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
+            double?[] intensitiesFlattened;
+            if (parallel)
+            {
+                intensitiesFlattened = new double?[DataHeight * DataWidth];
+                Parallel.For(0, DataHeight, i =>
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        intensitiesFlattened[i * DataWidth + j] = intensities[i, j];
+                    }
+                });
+            }
+            else intensitiesFlattened = intensities.Cast<double?>().ToArray();
+
             double?[] opacityFlattened = null;
-            if (opacity != null) opacityFlattened = opacity.Cast<double?>().ToArray();
+            if (opacity != null)
+            {
+                if (parallel)
+                {
+                    opacityFlattened = new double?[DataHeight * DataWidth];
+                    Parallel.For(0, DataHeight, i =>
+                    {
+                        for (int j = 0; j < DataWidth; j++)
+                        {
+                            opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                        }
+                    });
+                }
+                else opacityFlattened = opacity.Cast<double?>().ToArray();
+            }
+
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
 
@@ -254,7 +284,7 @@ namespace ScottPlot.Plottable
 
                 if (curr.HasValue && curr.Value > Max)
                     Max = curr.Value;
-            }
+            }            
 
             ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
             ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
@@ -287,10 +317,6 @@ namespace ScottPlot.Plottable
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
             }
 
-            // TODO: are these calculated and never used?
-            double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
-            double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
-
             UpdateBitmap(flatARGB);
         }
 
@@ -305,7 +331,8 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null, bool parallel = false)
         {
             double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             double?[,] finalOpacity = null;
@@ -315,20 +342,48 @@ namespace ScottPlot.Plottable
                 finalOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
             }
 
-            for (int i = 0; i < intensities.GetLength(0); i++)
-            {
-                for (int j = 0; j < intensities.GetLength(1); j++)
-                {
-                    finalIntensity[i, j] = intensities[i, j];
+            int length0 = intensities.GetLength(0);
+            int length1 = intensities.GetLength(1);
 
-                    if (opacity is not null)
+            if (parallel)
+            {
+                Parallel.For(0, length0, i =>
+                {
+                    for (int j = 0; j < length1; j++)
                     {
-                        finalOpacity[i, j] = opacity[i, j];
+                        finalIntensity[i, j] = intensities[i, j];
                     }
+                });
+
+                if (opacity is not null)
+                {
+                    Parallel.For(0, length0, i =>
+                    {
+                        for (int j = 0; j < length1; j++)
+                        {
+                            finalOpacity[i, j] = opacity[i, j];
+                        }
+                    });
                 }
             }
 
-            Update(finalIntensity, colormap, min, max);
+            else
+            {
+                for (int i = 0; i < length0; i++)
+                {
+                    for (int j = 0; j < length1; j++)
+                    {
+                        finalIntensity[i, j] = intensities[i, j];
+
+                        if (opacity is not null)
+                        {
+                            finalOpacity[i, j] = opacity[i, j];
+                        }
+                    }
+                } 
+            }
+
+            Update(finalIntensity, colormap, min, max, finalOpacity, parallel);
         }
 
         /// <summary>
