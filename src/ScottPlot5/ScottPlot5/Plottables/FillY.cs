@@ -11,7 +11,7 @@ public class FillY : IPlottable
         {
             Label = Label,
             Marker = MarkerStyle,
-            Line = LineStyle,
+            Line = new LineStyle() { Width=10, Color = FillStyle.Color},
         });
 
     private Polygon Poly { get; set; } = Polygon.Empty;
