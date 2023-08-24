@@ -240,10 +240,9 @@ namespace ScottPlot.Plottable
             ScaleMin = min;
             ScaleMax = max;
 
-            double?[] intensitiesFlattened;
+            double?[] intensitiesFlattened = new double?[DataHeight * DataWidth];
             if (parallel)
             {
-                intensitiesFlattened = new double?[DataHeight * DataWidth];
                 Parallel.For(0, DataHeight, i =>
                 {
                     for (int j = 0; j < DataWidth; j++)
@@ -252,14 +251,22 @@ namespace ScottPlot.Plottable
                     }
                 });
             }
-            else intensitiesFlattened = intensities.Cast<double?>().ToArray();
+            else
+            {
+                for (int i = 0; i < DataHeight; i++)
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        intensitiesFlattened[i * DataWidth + j] = intensities[i, j];
+                    }
+                }
+            }
 
-            double?[] opacityFlattened = null;
+            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
             if (opacity != null)
             {
                 if (parallel)
                 {
-                    opacityFlattened = new double?[DataHeight * DataWidth];
                     Parallel.For(0, DataHeight, i =>
                     {
                         for (int j = 0; j < DataWidth; j++)
@@ -268,7 +275,16 @@ namespace ScottPlot.Plottable
                         }
                     });
                 }
-                else opacityFlattened = opacity.Cast<double?>().ToArray();
+                else
+                {
+                    for (int i = 0; i < DataHeight; i++)
+                    {
+                        for (int j = 0; j < DataWidth; j++)
+                        {
+                            opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                        }
+                    }
+                }
             }
 
             Min = double.PositiveInfinity;
@@ -391,7 +407,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="color">Single color used for all cells</param>
         /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
-        public void Update(Color color, double?[,] opacity)
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
+        public void Update(Color color, double?[,] opacity, bool parallel = false)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -413,7 +430,29 @@ namespace ScottPlot.Plottable
 
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
-            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+
+            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
+            if (parallel)
+            {
+                Parallel.For(0, DataHeight, i =>
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < DataHeight; i++)
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                    }
+                }
+            }
+
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
         }
@@ -423,7 +462,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="color">Single color used for all cells</param>
         /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
-        public void Update(Color color, double[,] opacity)
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
+        public void Update(Color color, double[,] opacity, bool parallel = false)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -445,7 +485,29 @@ namespace ScottPlot.Plottable
 
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
-            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+
+            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
+            if (parallel)
+            {
+                Parallel.For(0, DataHeight, i =>
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < DataHeight; i++)
+                {
+                    for (int j = 0; j < DataWidth; j++)
+                    {
+                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
+                    }
+                }
+            }
+
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
         }
