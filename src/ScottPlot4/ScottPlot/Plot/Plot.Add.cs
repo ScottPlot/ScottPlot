@@ -592,14 +592,20 @@ namespace ScottPlot
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
         /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
+        /// <param name="min">minimum intensity (according to the colormap)</param>
+        /// <param name="max">maximum intensity (according to the colormap)</param>
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = true)
+        public Heatmap AddHeatmap(double?[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = true,
+                                  double? min = null, double? max = null, double?[,] opacity = null, bool parallel = false)
         {
             var plottable = new Heatmap();
-            plottable.Update(intensities, colormap);
+            plottable.Update(intensities, colormap, min, max, opacity, parallel);
             Add(plottable);
 
             if (lockScales.HasValue && lockScales.Value == true)
@@ -618,14 +624,20 @@ namespace ScottPlot
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
         /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
+        /// <param name="min">minimum intensity (according to the colormap)</param>
+        /// <param name="max">maximum intensity (according to the colormap)</param>
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
+        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
         /// </returns>
-        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = null)
+        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool? lockScales = null,
+                                  double? min = null, double? max = null, double[,] opacity = null, bool parallel = false)
         {
             var plottable = new Heatmap();
-            plottable.Update(intensities, colormap);
+            plottable.Update(intensities, colormap, min, max, opacity, parallel);
             Add(plottable);
 
             if (lockScales.HasValue && lockScales.Value == true)
