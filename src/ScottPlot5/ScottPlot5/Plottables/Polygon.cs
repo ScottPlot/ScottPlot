@@ -16,7 +16,7 @@ public class Polygon : IPlottable
 
     public bool IsVisible { get; set; } = true;
 
-    public LineStyle LineStyle { get; set; } = LineStyle.NoLine;
+    public LineStyle LineStyle { get; set; } = LineStyle.None;
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.LightGray };
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.None;
 
