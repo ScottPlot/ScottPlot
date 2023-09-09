@@ -11,7 +11,7 @@ public struct PixelPadding
     public float Top;
 
     public float Horizontal => Left + Right;
-    public float TotalVertical => Top + Bottom;
+    public float Vertical => Top + Bottom;
 
     public PixelPadding(float padding)
     {
