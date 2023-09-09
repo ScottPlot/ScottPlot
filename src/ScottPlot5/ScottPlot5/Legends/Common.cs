@@ -30,7 +30,7 @@ public static class Common
                 item: item,
                 x: x,
                 y: y + itemPadding.Bottom,
-                height: ownHeight - itemPadding.TotalVertical,
+                height: ownHeight - itemPadding.Vertical,
                 symbolWidth: symbolWidth);
 
             textPoint.X += symbolWidth + symbolPadRight;
@@ -104,8 +104,8 @@ public static class Common
             : new(0, 0);
 
         float width2 = item.HasSymbol ? symbolWidth : 0;
-        float width = width2 + symbolPadRight + labelRect.Width + ItemPadding.TotalHorizontal;
-        float height = paint.TextSize + Padding.TotalVertical;
+        float width = width2 + symbolPadRight + labelRect.Width + ItemPadding.Horizontal;
+        float height = paint.TextSize + Padding.Vertical;
 
         PixelSize ownSize = new(width, height);
 
