@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.9-beta (in development)
+* ScottPlot5 PixelPadding: `TotalHorizontal` and `TotalVertical` renamed to `Horizontal` and `Vertical` (#2874, #2878) _Thanks @viktoriussuwandi_
 
 ## ScottPlot 4.1.68 (in development)
 
