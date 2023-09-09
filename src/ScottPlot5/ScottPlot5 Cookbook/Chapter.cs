@@ -7,6 +7,7 @@ public enum Chapter
     Customization,
     PlotTypes,
     ChangingData,
+    Statistics,
     Misc,
     UNDEFINED,
 }
