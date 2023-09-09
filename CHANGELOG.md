@@ -8,6 +8,8 @@
 * PixelPadding: `TotalHorizontal` and `TotalVertical` renamed to `Horizontal` and `Vertical` (#2874, #2878) _Thanks @viktoriussuwandi_
 * CoordinateRect: Added `Expanded()` method for creating a copy of the rectangle expanded to include a given point (#2871, #2890) _Thanks @aespitia_
 * FillY: Added legend support (#2886, #2896) _Thanks @msroest_
+* Plot: Created `Add.Line(x1, x2, y1, y2)` and related overloads for adding straight lines to plots (#2901, #2915)
+* LinearRegression: Added `Statistics.Regression` (see cookbook) for fitting lines to collections of X/Y data points (#2901) _Thanks @anewton_
 
 ## ScottPlot 4.1.68 (in development)
 
