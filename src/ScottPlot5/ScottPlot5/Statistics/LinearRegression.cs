@@ -1,52 +1,64 @@
 namespace ScottPlot.Statistics;
 
-public class LinearRegression
+public readonly struct LinearRegression
 {
     public readonly double Slope;
     public readonly double Offset;
     public readonly double Rsquared;
 
-    private readonly int pointCount;
-    private readonly double[] Xs;
-    private readonly double[] Ys;
+    /// <summary>
+    /// Calculate the linear regression from a collection of X/Y coordinates
+    /// </summary>
+    public LinearRegression(Coordinates[] coordinates)
+    {
+        if (coordinates.Length < 2)
+        {
+            throw new ArgumentException($"{nameof(coordinates)} must have at least 2 points");
+        }
 
+        double[] xs = coordinates.Select(x => x.X).ToArray();
+        double[] ys = coordinates.Select(x => x.Y).ToArray();
+        (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
+    }
+
+    /// <summary>
+    /// Calculate the linear regression a paired collection of X and Y points
+    /// </summary>
     public LinearRegression(double[] xs, double[] ys)
     {
         if (xs.Length != ys.Length)
         {
-            throw new ArgumentException("xs and ys must be the same length");
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must be the same length");
         }
 
         if (ys.Length < 2)
         {
-            throw new ArgumentException("xs and ys must have at least 2 points");
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have at least 2 points");
         }
 
-        pointCount = ys.Length;
-        Xs = xs;
-        Ys = ys;
         (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
     }
 
-    public LinearRegression(double[] ys, double firstX, double xSpacing)
+    /// <summary>
+    /// Calculate the linear regression from a collection of evenly-spaced Y values
+    /// </summary>
+    public LinearRegression(double[] ys, double firstX = 0, double xSpacing = 1)
     {
-        if (ys.Length < 2)
+        if (xSpacing == 0)
         {
-            throw new ArgumentException("xs and ys must have at least 2 points");
+            throw new ArgumentException($"{nameof(xSpacing)} cannot be zero");
         }
 
-        pointCount = ys.Length;
-        double[] xs = new double[pointCount];
-        for (int i = 0; i < pointCount; i++)
+        if (ys.Length < 2)
         {
-            xs[i] = firstX + xSpacing * i;
+            throw new ArgumentException($"{nameof(ys)} must have at least 2 points");
         }
-        Xs = xs;
-        Ys = ys;
+
+        double[] xs = Generate.Consecutive(count: ys.Length, delta: xSpacing, first: firstX);
         (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
     }
 
-    public static (double slope, double offset, double rSquared) GetCoefficients(double[] xs, double[] ys)
+    private static (double slope, double offset, double rSquared) GetCoefficients(double[] xs, double[] ys)
     {
         double sumXYResidual = 0;
         double sumXSquareResidual = 0;
@@ -83,33 +95,26 @@ public class LinearRegression
         return (slope, offset, rSquared);
     }
 
-    public double GetValueAt(double x)
+    /// <summary>
+    /// Return the Y point of the regression line for the given X position
+    /// </summary>
+    public double GetValue(double x)
     {
         return Offset + Slope * x;
     }
 
-    public double[] GetValues()
-    {
-        double[] values = new double[pointCount];
-        for (int i = 0; i < pointCount; i++)
-        {
-            values[i] = GetValueAt(Xs[i]);
-        }
-        return values;
-    }
-
     /// <summary>
-    /// Residual is the difference between the actual and predicted value
+    /// Return the Y points of the regression line for the given X positions
     /// </summary>
-    public double[] GetResiduals()
+    public double[] GetValues(double[] xs)
     {
-        double[] residuals = new double[Ys.Length];
+        double[] ys = new double[xs.Length];
 
-        for (int i = 0; i < Ys.Length; i++)
+        for (int i = 0; i < ys.Length; i++)
         {
-            residuals[i] = Ys[i] - GetValueAt(Xs[i]);
+            ys[i] = GetValue(xs[i]);
         }
 
-        return residuals;
+        return ys;
     }
 }
