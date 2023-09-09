@@ -1,48 +1,52 @@
 namespace ScottPlot.Statistics;
 
-public class LinearRegressionLine
+public class LinearRegression
 {
-    public readonly double slope;
-    public readonly double offset;
-    public readonly double rSquared;
+    public readonly double Slope;
+    public readonly double Offset;
+    public readonly double Rsquared;
 
     private readonly int pointCount;
-    private readonly double[] xs;
-    private readonly double[] ys;
+    private readonly double[] Xs;
+    private readonly double[] Ys;
 
-    public LinearRegressionLine(double[] xs, double[] ys)
+    public LinearRegression(double[] xs, double[] ys)
     {
-        if ((xs.Length != ys.Length) || (xs.Length < 2))
+        if (xs.Length != ys.Length)
         {
-            throw new ArgumentException("xs and ys must be the same length and have at least 2 points");
+            throw new ArgumentException("xs and ys must be the same length");
+        }
+
+        if (ys.Length < 2)
+        {
+            throw new ArgumentException("xs and ys must have at least 2 points");
         }
 
         pointCount = ys.Length;
-        this.xs = xs;
-        this.ys = ys;
-        (slope, offset, rSquared) = GetCoefficients(xs, ys);
+        Xs = xs;
+        Ys = ys;
+        (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
     }
 
-    public LinearRegressionLine(double[] ys, double firstX, double xSpacing)
+    public LinearRegression(double[] ys, double firstX, double xSpacing)
     {
-        // this constructor doesn't require an X array to be passed in at all
+        if (ys.Length < 2)
+        {
+            throw new ArgumentException("xs and ys must have at least 2 points");
+        }
+
         pointCount = ys.Length;
         double[] xs = new double[pointCount];
         for (int i = 0; i < pointCount; i++)
         {
             xs[i] = firstX + xSpacing * i;
         }
-        this.xs = xs;
-        this.ys = ys;
-        (slope, offset, rSquared) = GetCoefficients(xs, ys);
+        Xs = xs;
+        Ys = ys;
+        (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
     }
 
-    public override string ToString()
-    {
-        return $"Linear fit for {pointCount} points: Y = {slope}x + {offset} (R² = {rSquared})";
-    }
-
-    private static (double, double, double) GetCoefficients(double[] xs, double[] ys)
+    public static (double slope, double offset, double rSquared) GetCoefficients(double[] xs, double[] ys)
     {
         double sumXYResidual = 0;
         double sumXSquareResidual = 0;
@@ -56,7 +60,7 @@ public class LinearRegressionLine
             sumXSquareResidual += (xs[i] - meanX) * (xs[i] - meanX);
         }
 
-        // Note: least-squares regression line always passes through (x̅,y̅)
+        // Note: least-squares regression line always passes through (x̄, ȳ)
         double slope = sumXYResidual / sumXSquareResidual;
         double offset = meanY - (slope * meanX);
 
@@ -81,7 +85,7 @@ public class LinearRegressionLine
 
     public double GetValueAt(double x)
     {
-        return offset + slope * x;
+        return Offset + Slope * x;
     }
 
     public double[] GetValues()
@@ -89,20 +93,21 @@ public class LinearRegressionLine
         double[] values = new double[pointCount];
         for (int i = 0; i < pointCount; i++)
         {
-            values[i] = GetValueAt(xs[i]);
+            values[i] = GetValueAt(Xs[i]);
         }
         return values;
     }
 
+    /// <summary>
+    /// Residual is the difference between the actual and predicted value
+    /// </summary>
     public double[] GetResiduals()
     {
-        // the residual is the difference between the actual and predicted value
+        double[] residuals = new double[Ys.Length];
 
-        double[] residuals = new double[ys.Length];
-
-        for (int i = 0; i < ys.Length; i++)
+        for (int i = 0; i < Ys.Length; i++)
         {
-            residuals[i] = ys[i] - GetValueAt(xs[i]);
+            residuals[i] = Ys[i] - GetValueAt(Xs[i]);
         }
 
         return residuals;
