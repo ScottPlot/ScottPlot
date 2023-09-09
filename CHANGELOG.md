@@ -5,6 +5,9 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.9-beta (in development)
+* PixelPadding: `TotalHorizontal` and `TotalVertical` renamed to `Horizontal` and `Vertical` (#2874, #2878) _Thanks @viktoriussuwandi_
+* CoordinateRect: Added `Expanded()` method for creating a copy of the rectangle expanded to include a given point (#2871, #2890) _Thanks @aespitia_
+* FillY: Added legend support (#2886, #2896) _Thanks @msroest_
 
 ## ScottPlot 4.1.68 (in development)
 
