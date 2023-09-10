@@ -571,47 +571,12 @@ namespace ScottPlot.Plottable
         /// Return values of a 2D array flattened as a 1D array.
         /// Multi-threaded parallel processing may improve performance for large datasets.
         /// </summary>
-        private static double?[] Flatten(double?[,] values, bool parallel)
+        private static T[] Flatten<T>(T[,] values, bool parallel)
         {
             int width = values.GetLength(1);
             int height = values.GetLength(0);
 
-            double?[] flat = new double?[height * width];
-
-            if (parallel)
-            {
-                Parallel.For(0, height, i =>
-                {
-                    for (int j = 0; j < width; j++)
-                    {
-                        flat[i * width + j] = values[i, j];
-                    }
-                });
-            }
-            else
-            {
-                for (int i = 0; i < height; i++)
-                {
-                    for (int j = 0; j < width; j++)
-                    {
-                        flat[i * width + j] = values[i, j];
-                    }
-                }
-            }
-
-            return flat;
-        }
-
-        /// <summary>
-        /// Return values of a 2D array flattened as a 1D array.
-        /// Multi-threaded parallel processing may improve performance for large datasets.
-        /// </summary>
-        private static double[] Flatten(double[,] values, bool parallel)
-        {
-            int width = values.GetLength(1);
-            int height = values.GetLength(0);
-
-            double[] flat = new double[height * width];
+            T[] flat = new T[height * width];
 
             if (parallel)
             {
