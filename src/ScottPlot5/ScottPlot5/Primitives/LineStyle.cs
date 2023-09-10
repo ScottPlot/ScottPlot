@@ -10,6 +10,6 @@ public class LineStyle
     public Color Color { get; set; } = Colors.Black;
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
     public bool IsVisible { get; set; } = true;
-    public static LineStyle NoLine => new() { Width = 0 };
+    public static LineStyle None => new() { IsVisible = false, Color = Colors.Transparent, Width = 0 };
     public bool AntiAlias { get; set; } = true;
 }

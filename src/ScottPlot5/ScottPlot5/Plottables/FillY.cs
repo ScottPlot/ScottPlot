@@ -2,10 +2,17 @@
 
 public class FillY : IPlottable
 {
+    public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
+    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
+        new LegendItem
+        {
+            Label = Label,
+            Marker = MarkerStyle,
+            Line = new LineStyle() { Width = 10, Color = FillStyle.Color },
+        });
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 

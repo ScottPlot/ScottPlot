@@ -39,6 +39,18 @@ public class PlottableAdder
         return heatmap;
     }
 
+    public Scatter Line(double x1, double y1, double x2, double y2)
+    {
+        Coordinates[] coordinates = { new(x1, y1), new(x2, y2) };
+        return Scatter(coordinates);
+    }
+
+    public Scatter Line(Coordinates pt1, Coordinates pt2)
+    {
+        Coordinates[] coordinates = { pt1, pt2 };
+        return Scatter(coordinates);
+    }
+
     public Pie Pie(IList<PieSlice> slices)
     {
         Pie pie = new(slices);

@@ -1,7 +1,4 @@
-﻿
-using ScottPlot.Palettes;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 internal class Box : RecipePageBase
 {
@@ -178,7 +175,7 @@ internal class Box : RecipePageBase
             int numBoxesPerSeries = 3;
             int numSeries = 2;
             ScottPlot.Plottables.BoxGroup[] series = new ScottPlot.Plottables.BoxGroup[numSeries];
-            var colorPalette = new Category10();
+            var colorPalette = new ScottPlot.Palettes.Category10();
             for (int i = 0; i < series.Length; i++)
             {
                 series[i] = new ScottPlot.Plottables.BoxGroup
