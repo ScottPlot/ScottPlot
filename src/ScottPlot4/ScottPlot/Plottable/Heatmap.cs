@@ -156,6 +156,11 @@ namespace ScottPlot.Plottable
         public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
+        /// Enable multi-threaded parallel processing which may improve performance for large datasets.
+        /// </summary>
+        public bool UseParallel { get; set; } = false;
+
+        /// <summary>
         /// If true, heatmap squares will be smoothed using high quality bicubic interpolation.
         /// If false, heatmap squares will look like sharp rectangles (nearest neighbor interpolation).
         /// </summary>
@@ -212,8 +217,7 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
-        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null, bool parallel = false)
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
         {
             DataWidth = intensities.GetLength(1);
             DataHeight = intensities.GetLength(0);
@@ -240,52 +244,9 @@ namespace ScottPlot.Plottable
             ScaleMin = min;
             ScaleMax = max;
 
-            double?[] intensitiesFlattened = new double?[DataHeight * DataWidth];
-            if (parallel)
-            {
-                Parallel.For(0, DataHeight, i =>
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        intensitiesFlattened[i * DataWidth + j] = intensities[i, j];
-                    }
-                });
-            }
-            else
-            {
-                for (int i = 0; i < DataHeight; i++)
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        intensitiesFlattened[i * DataWidth + j] = intensities[i, j];
-                    }
-                }
-            }
+            double?[] intensitiesFlattened = Flatten(intensities, UseParallel);
 
-            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
-            if (opacity != null)
-            {
-                if (parallel)
-                {
-                    Parallel.For(0, DataHeight, i =>
-                    {
-                        for (int j = 0; j < DataWidth; j++)
-                        {
-                            opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                        }
-                    });
-                }
-                else
-                {
-                    for (int i = 0; i < DataHeight; i++)
-                    {
-                        for (int j = 0; j < DataWidth; j++)
-                        {
-                            opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                        }
-                    }
-                }
-            }
+            double?[] opacityFlattened = opacity is null ? null : Flatten(opacity, UseParallel);
 
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
@@ -304,9 +265,6 @@ namespace ScottPlot.Plottable
 
             ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
             ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
-
-            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
-            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
             double minimumIntensity = ScaleMin ?? Min;
             double maximumIntensity = ScaleMax ?? Max;
@@ -347,59 +305,19 @@ namespace ScottPlot.Plottable
         /// <param name="max">maximum intensity (according to the colormap)</param>
         /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
         /// If defined, this array must have the same dimensions as the heatmap array.</param>
-        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null, bool parallel = false)
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
             double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            double?[,] finalOpacity = null;
+            double?[,] finalOpacity = opacity is null ? null : new double?[opacity.GetLength(0), opacity.GetLength(1)];
+
+            Copy2D(intensities, finalIntensity, UseParallel);
 
             if (opacity is not null)
             {
-                finalOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
+                Copy2D(opacity, finalOpacity, UseParallel);
             }
 
-            int length0 = intensities.GetLength(0);
-            int length1 = intensities.GetLength(1);
-
-            if (parallel)
-            {
-                Parallel.For(0, length0, i =>
-                {
-                    for (int j = 0; j < length1; j++)
-                    {
-                        finalIntensity[i, j] = intensities[i, j];
-                    }
-                });
-
-                if (opacity is not null)
-                {
-                    Parallel.For(0, length0, i =>
-                    {
-                        for (int j = 0; j < length1; j++)
-                        {
-                            finalOpacity[i, j] = opacity[i, j];
-                        }
-                    });
-                }
-            }
-
-            else
-            {
-                for (int i = 0; i < length0; i++)
-                {
-                    for (int j = 0; j < length1; j++)
-                    {
-                        finalIntensity[i, j] = intensities[i, j];
-
-                        if (opacity is not null)
-                        {
-                            finalOpacity[i, j] = opacity[i, j];
-                        }
-                    }
-                }
-            }
-
-            Update(finalIntensity, colormap, min, max, finalOpacity, parallel);
+            Update(finalIntensity, colormap, min, max, finalOpacity);
         }
 
         /// <summary>
@@ -690,5 +608,71 @@ namespace ScottPlot.Plottable
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
+
+        /// <summary>
+        /// Return values of a 2D array flattened as a 1D array.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static double?[] Flatten(double?[,] values, bool parallel)
+        {
+            int width = values.GetLength(1);
+            int height = values.GetLength(0);
+
+            double?[] flat = new double?[height * width];
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                }
+            }
+
+            return flat;
+        }
+
+        /// <summary>
+        /// Copy values from <paramref name="source"/> into <paramref name="destination"/>.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static void Copy2D(double[,] source, double?[,] destination, bool parallel)
+        {
+            int height = source.GetLength(0);
+            int width = source.GetLength(1);
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                }
+            }
+        }
     }
 }
