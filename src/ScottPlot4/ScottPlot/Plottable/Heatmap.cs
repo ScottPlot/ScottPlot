@@ -325,8 +325,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="color">Single color used for all cells</param>
         /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
-        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
-        public void Update(Color color, double?[,] opacity, bool parallel = false)
+        public void Update(Color color, double?[,] opacity)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -349,27 +348,7 @@ namespace ScottPlot.Plottable
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
 
-            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
-            if (parallel)
-            {
-                Parallel.For(0, DataHeight, i =>
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                    }
-                });
-            }
-            else
-            {
-                for (int i = 0; i < DataHeight; i++)
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                    }
-                }
-            }
+            double?[] opacityFlattened = Flatten(opacity, UseParallel);
 
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
@@ -380,8 +359,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         /// <param name="color">Single color used for all cells</param>
         /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
-        /// <param name="parallel">Use it for parallel array optimization in case of large arrays</param>
-        public void Update(Color color, double[,] opacity, bool parallel = false)
+        public void Update(Color color, double[,] opacity)
         {
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
@@ -404,27 +382,7 @@ namespace ScottPlot.Plottable
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
 
-            double?[] opacityFlattened = new double?[DataHeight * DataWidth];
-            if (parallel)
-            {
-                Parallel.For(0, DataHeight, i =>
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                    }
-                });
-            }
-            else
-            {
-                for (int i = 0; i < DataHeight; i++)
-                {
-                    for (int j = 0; j < DataWidth; j++)
-                    {
-                        opacityFlattened[i * DataWidth + j] = opacity[i, j];
-                    }
-                }
-            }
+            double[] opacityFlattened = Flatten(opacity, UseParallel);
 
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
@@ -619,6 +577,41 @@ namespace ScottPlot.Plottable
             int height = values.GetLength(0);
 
             double?[] flat = new double?[height * width];
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                }
+            }
+
+            return flat;
+        }
+
+        /// <summary>
+        /// Return values of a 2D array flattened as a 1D array.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static double[] Flatten(double[,] values, bool parallel)
+        {
+            int width = values.GetLength(1);
+            int height = values.GetLength(0);
+
+            double[] flat = new double[height * width];
 
             if (parallel)
             {
