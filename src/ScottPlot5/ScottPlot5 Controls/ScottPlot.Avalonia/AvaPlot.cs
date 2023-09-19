@@ -37,6 +37,11 @@ public class AvaPlot : Controls.Control, IPlotControl
         new("All Files") { Patterns = new List<string> { "*" } },
     };
 
+    static AvaPlot()
+    {
+        ClipToBoundsProperty.OverrideDefaultValue<AvaPlot>(true);
+    }
+
     public AvaPlot()
     {
         DisplayScale = DetectDisplayScale();
@@ -123,13 +128,15 @@ public class AvaPlot : Controls.Control, IPlotControl
             var surface = lease.SkSurface;
             if (surface is null) return;
 
-            _plot.Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
+            ScottPlot.PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
+            _plot.Render(lease.SkCanvas, rect);
         }
     }
 
     public override void Render(DrawingContext context)
     {
-        context.Custom(new CustomDrawOp(Bounds, Plot));
+        Rect bounds = new(Bounds.Size);
+        context.Custom(new CustomDrawOp(bounds, Plot));
     }
 
     public void Refresh()
