@@ -39,6 +39,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public AvaPlot()
     {
+        ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
 
         Interaction = new(this)
@@ -119,11 +120,8 @@ public class AvaPlot : Controls.Control, IPlotControl
             if (leaseFeature is null) return;
 
             using var lease = leaseFeature.Lease();
-
-            var surface = lease.SkSurface;
-            if (surface is null) return;
-
-            _plot.Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
+            ScottPlot.PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
+            _plot.Render(lease.SkCanvas, rect);
         }
     }
 
