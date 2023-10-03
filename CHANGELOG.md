@@ -12,6 +12,7 @@
 * LinearRegression: Added `Statistics.Regression` (see cookbook) for fitting lines to collections of X/Y data points (#2901) _Thanks @anewton_
 
 ## ScottPlot 4.1.68 (in development)
+* Heatmap: Added a `UseParallel` option which can improve `Update()` performance for large datasets (#2897) _Thanks @bukkideme_
 
 ## ScottPlot 5.0.8-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-08-13_
