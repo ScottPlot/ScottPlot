@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
@@ -155,6 +156,11 @@ namespace ScottPlot.Plottable
         public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
+        /// Enable multi-threaded parallel processing which may improve performance for large datasets.
+        /// </summary>
+        public bool UseParallel { get; set; } = false;
+
+        /// <summary>
         /// If true, heatmap squares will be smoothed using high quality bicubic interpolation.
         /// If false, heatmap squares will look like sharp rectangles (nearest neighbor interpolation).
         /// </summary>
@@ -213,10 +219,13 @@ namespace ScottPlot.Plottable
         /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
         {
+            DataWidth = intensities.GetLength(1);
+            DataHeight = intensities.GetLength(0);
+
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
             int maxEdgeLength = 1 << 15;
-            if (intensities.GetLength(1) > maxEdgeLength || intensities.GetLength(0) > maxEdgeLength)
+            if (DataWidth > maxEdgeLength || DataHeight > maxEdgeLength)
             {
                 throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
                     $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
@@ -225,22 +234,20 @@ namespace ScottPlot.Plottable
             // limit total size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/772
             int maxTotalValues = 10_000_000;
-            if (intensities.GetLength(1) * intensities.GetLength(0) > maxTotalValues)
+            if (DataWidth * DataHeight > maxTotalValues)
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
             }
 
-            DataWidth = intensities.GetLength(1);
-            DataHeight = intensities.GetLength(0);
-
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
 
-            double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
-            double?[] opacityFlattened = null;
-            if (opacity != null) opacityFlattened = opacity.Cast<double?>().ToArray();
+            double?[] intensitiesFlattened = Flatten(intensities, UseParallel);
+
+            double?[] opacityFlattened = opacity is null ? null : Flatten(opacity, UseParallel);
+
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
 
@@ -258,9 +265,6 @@ namespace ScottPlot.Plottable
 
             ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
             ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
-
-            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
-            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
             double minimumIntensity = ScaleMin ?? Min;
             double maximumIntensity = ScaleMax ?? Max;
@@ -287,10 +291,6 @@ namespace ScottPlot.Plottable
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
             }
 
-            // TODO: are these calculated and never used?
-            double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
-            double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
-
             UpdateBitmap(flatARGB);
         }
 
@@ -308,27 +308,16 @@ namespace ScottPlot.Plottable
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
             double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            double?[,] finalOpacity = null;
+            double?[,] finalOpacity = opacity is null ? null : new double?[opacity.GetLength(0), opacity.GetLength(1)];
+
+            Copy2D(intensities, finalIntensity, UseParallel);
 
             if (opacity is not null)
             {
-                finalOpacity = new double?[opacity.GetLength(0), opacity.GetLength(1)];
+                Copy2D(opacity, finalOpacity, UseParallel);
             }
 
-            for (int i = 0; i < intensities.GetLength(0); i++)
-            {
-                for (int j = 0; j < intensities.GetLength(1); j++)
-                {
-                    finalIntensity[i, j] = intensities[i, j];
-
-                    if (opacity is not null)
-                    {
-                        finalOpacity[i, j] = opacity[i, j];
-                    }
-                }
-            }
-
-            Update(finalIntensity, colormap, min, max);
+            Update(finalIntensity, colormap, min, max, finalOpacity);
         }
 
         /// <summary>
@@ -358,7 +347,9 @@ namespace ScottPlot.Plottable
 
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
-            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+
+            double?[] opacityFlattened = Flatten(opacity, UseParallel);
+
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
         }
@@ -390,7 +381,9 @@ namespace ScottPlot.Plottable
 
             DataWidth = opacity.GetLength(1);
             DataHeight = opacity.GetLength(0);
-            double?[] opacityFlattened = opacity.Cast<double?>().ToArray();
+
+            double[] opacityFlattened = Flatten(opacity, UseParallel);
+
             int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
             UpdateBitmap(flatARGB);
         }
@@ -573,5 +566,71 @@ namespace ScottPlot.Plottable
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
+
+        /// <summary>
+        /// Return values of a 2D array flattened as a 1D array.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static T[] Flatten<T>(T[,] values, bool parallel)
+        {
+            int width = values.GetLength(1);
+            int height = values.GetLength(0);
+
+            T[] flat = new T[height * width];
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                }
+            }
+
+            return flat;
+        }
+
+        /// <summary>
+        /// Copy values from <paramref name="source"/> into <paramref name="destination"/>.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static void Copy2D(double[,] source, double?[,] destination, bool parallel)
+        {
+            int height = source.GetLength(0);
+            int width = source.GetLength(1);
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                }
+            }
+        }
     }
 }

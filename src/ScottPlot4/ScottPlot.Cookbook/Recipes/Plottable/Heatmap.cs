@@ -546,4 +546,22 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hist2d.AddRange(flowData);
         }
     }
+
+    public class HeatmapParallel : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_parallel";
+        public string Title => "Parallel Processing";
+        public string Description =>
+            "Heatmaps have opt-in parallel processing which may improve performance when calling Update() for large datasets.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = Generate.Sin2D(width: 1_000, height: 1_000);
+            var hm = plt.AddHeatmap(data, lockScales: false);
+
+            // opt into parallel processing
+            hm.UseParallel = true;
+        }
+    }
 }
