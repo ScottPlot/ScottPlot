@@ -10,6 +10,7 @@
 * FillY: Added legend support (#2886, #2896) _Thanks @msroest_
 * Plot: Created `Add.Line(x1, x2, y1, y2)` and related overloads for adding straight lines to plots (#2901, #2915)
 * LinearRegression: Added `Statistics.Regression` (see cookbook) for fitting lines to collections of X/Y data points (#2901) _Thanks @anewton_
+* Avalonia: Improve rendering in multi-control windows (#2920) _Thanks @nightfog-git_
 
 ## ScottPlot 4.1.68 (in development)
 * Heatmap: Added a `UseParallel` option which can improve `Update()` performance for large datasets (#2897) _Thanks @bukkideme_
