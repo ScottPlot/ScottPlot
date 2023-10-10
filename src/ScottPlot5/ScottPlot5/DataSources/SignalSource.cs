@@ -18,6 +18,13 @@ public class SignalSource : ISignalSource
 
     public CoordinateRange GetYRange(CoordinateRange xRange)
     {
+        int i1Test = GetIndex(xRange.Min, false);
+        int i2Test = GetIndex(xRange.Max, false);
+
+        // if xRange are not overlapped with signal at all
+        if (i2Test < 0 || i1Test > Ys.Count-1)
+            return CoordinateRange.NotSet;
+
         int i1 = GetIndex(xRange.Min, true);
         int i2 = GetIndex(xRange.Max, true);
 
