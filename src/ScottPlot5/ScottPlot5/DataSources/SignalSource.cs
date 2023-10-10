@@ -22,7 +22,7 @@ public class SignalSource : ISignalSource
         int i2Test = GetIndex(xRange.Max, false);
 
         // if xRange are not overlapped with signal at all
-        if (i2Test < 0 || i1Test > Ys.Count-1)
+        if (i2Test < 0 || i1Test > Ys.Count - 1)
             return CoordinateRange.NotSet;
 
         int i1 = GetIndex(xRange.Min, true);
