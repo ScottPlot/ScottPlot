@@ -1,0 +1,21 @@
+name: Inactive Issue
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  close-inactive-issue:
+    runs-on: ubuntu-latest
+    env:
+      message: |
+        This issue has been identified as inactive and is being closed 
+        to allow development work to focus on higher priority open issues.
+        Users are welcome to add comments to this issue or re-open it in the future.
+    steps:
+      - if: github.event.label.name == 'inactive'
+        name: Close
+        run: gh issue close --comment "$message" ${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
