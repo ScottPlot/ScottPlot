@@ -2,6 +2,8 @@
  * !! Avoid temptation to use generics or generic math at this early stage of development
  */
 
+using System.IO;
+
 namespace ScottPlot.Plottables;
 
 public class Signal : IPlottable
@@ -36,11 +38,11 @@ public class Signal : IPlottable
     /// Pixel columns not overlapping with the signal are filtered,
     /// column indices in DataArea space are preserved.
     /// </summary>
-    private (PixelRangeY yRange, int index)[] GetVerticalBars()
+    private PixelColumn[] GetVerticalBars()
     {
         double xUnitsPerPixel = Axes.XAxis.Width / Axes.DataRect.Width;
 
-        var verticalBarsIndexed = Enumerable.Range(0, (int)Axes.DataRect.Width)
+        var verticalBars = Enumerable.Range(0, (int)Axes.DataRect.Width)
             .Select(i =>
             {
                 // determine how wide this column of pixels is in coordinate units
@@ -48,7 +50,6 @@ public class Signal : IPlottable
                 double colX1 = Axes.GetCoordinateX(xPixel);
                 double colX2 = colX1 + xUnitsPerPixel;
                 CoordinateRange xRange = new(colX1, colX2);
-
                 CoordinateRange yRange = Data.GetYRange(xRange);
                 return (yRange, i);
             })
@@ -62,7 +63,11 @@ public class Signal : IPlottable
             })
             .ToArray();
 
-        return verticalBarsIndexed;
+        PixelColumn[] cols = verticalBars
+            .Select(vb => new PixelColumn(Axes.DataRect.Left + vb.i, vb.Item1.Bottom, vb.Item1.Top))
+            .ToArray();
+
+        return cols;
     }
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
@@ -141,19 +146,19 @@ public class Signal : IPlottable
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        (PixelRangeY yRange, int index)[] verticalBars = GetVerticalBars();
-
-        if (verticalBars.Length == 0)
+        PixelColumn[] cols = GetVerticalBars();
+        if (cols.Length == 0)
             return;
 
         using SKPath path = new();
-        path.MoveTo(Axes.DataRect.Left + verticalBars[0].index, verticalBars[0].yRange.Bottom);
-        for (int i = 0; i < verticalBars.Length; i++)
+        path.MoveTo(cols[0].X, cols[0].YBottom);
+
+        foreach (PixelColumn col in cols)
         {
-            float x = Axes.DataRect.Left + verticalBars[i].index;
-            path.LineTo(x, verticalBars[i].yRange.Bottom);
-            path.LineTo(x, verticalBars[i].yRange.Top);
+            path.LineTo(col.X, col.YBottom);
+            path.LineTo(col.X, col.YTop);
         }
+
         rp.Canvas.DrawPath(path, paint);
     }
 }
