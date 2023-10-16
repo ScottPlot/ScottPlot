@@ -18,11 +18,7 @@ public class SignalSource : ISignalSource
 
     public CoordinateRange GetYRange(CoordinateRange xRange)
     {
-        int i1Test = GetIndex(xRange.Min, false);
-        int i2Test = GetIndex(xRange.Max, false);
-
-        // if xRange are not overlapped with signal at all
-        if (i2Test < 0 || i1Test > Ys.Count - 1)
+        if (RangeContainsSignal(xRange) == false)
             return CoordinateRange.NotSet;
 
         int i1 = GetIndex(xRange.Min, true);
@@ -50,6 +46,13 @@ public class SignalSource : ISignalSource
             i = Math.Min(i, Ys.Count - 1);
         }
         return i;
+    }
+
+    private bool RangeContainsSignal(CoordinateRange xRange)
+    {
+        int firstIndex = GetIndex(xRange.Min, false);
+        int lastIndex = GetIndex(xRange.Max, false);
+        return (lastIndex >= 0) && (firstIndex <= Ys.Count - 1);
     }
 
     public double GetX(int index)
