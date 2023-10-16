@@ -42,32 +42,25 @@ public class Signal : IPlottable
     {
         double xUnitsPerPixel = Axes.XAxis.Width / Axes.DataRect.Width;
 
-        var verticalBars = Enumerable.Range(0, (int)Axes.DataRect.Width)
+        return Enumerable.Range(0, (int)Axes.DataRect.Width)
             .Select(i =>
             {
-                // determine how wide this column of pixels is in coordinate units
                 float xPixel = i + Axes.DataRect.Left;
-                double colX1 = Axes.GetCoordinateX(xPixel);
-                double colX2 = colX1 + xUnitsPerPixel;
-                CoordinateRange xRange = new(colX1, colX2);
+                double xRangeMin = Axes.GetCoordinateX(xPixel);
+                double xRangeMax = xRangeMin + xUnitsPerPixel;
+                CoordinateRange xRange = new(xRangeMin, xRangeMax);
                 CoordinateRange yRange = Data.GetYRange(xRange);
                 return (yRange, i);
             })
             .Where(vb => vb.yRange.HasBeenSet)
             .Select(vb =>
             {
-                // determine how much vertical space the data of this pixel column occupies
-                float yMin = Axes.GetPixelY(vb.yRange.Min);
-                float yMax = Axes.GetPixelY(vb.yRange.Max);
-                return (new PixelRangeY(yMin, yMax), vb.i);
+                float x = vb.i + Axes.DataRect.Left;
+                float yBottom = Axes.GetPixelY(vb.yRange.Min);
+                float yTop = Axes.GetPixelY(vb.yRange.Max);
+                return new PixelColumn(x, yBottom, yTop);
             })
             .ToArray();
-
-        PixelColumn[] cols = verticalBars
-            .Select(vb => new PixelColumn(Axes.DataRect.Left + vb.i, vb.Item1.Bottom, vb.Item1.Top))
-            .ToArray();
-
-        return cols;
     }
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
