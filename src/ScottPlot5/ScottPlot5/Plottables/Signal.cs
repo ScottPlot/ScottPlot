@@ -155,8 +155,17 @@ public class Signal : IPlottable
 
         foreach (PixelColumn col in cols)
         {
-            path.LineTo(col.X, col.YBottom);
-            path.LineTo(col.X, col.YTop);
+            if (col.YBottom == col.YTop)
+            {
+                // draw a single pixel
+                path.LineTo(col.X, col.YBottom);
+            }
+            else
+            {
+                // draw a vertical line from bottom to top
+                path.MoveTo(col.X, col.YBottom);
+                path.LineTo(col.X, col.YTop);
+            }
         }
 
         rp.Canvas.DrawPath(path, paint);
