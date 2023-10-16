@@ -14,7 +14,8 @@ internal class SignalTests
         Array.Copy(sin, 0, data, data.Length - sin.Length, sin.Length);
 
         ScottPlot.Plot plt = new();
-        plt.Add.Signal(data);
+        var sig = plt.Add.Signal(data);
+        sig.LineStyle.AntiAlias = false;
         plt.Grids.Clear();
         plt.SaveTestImage();
     }
