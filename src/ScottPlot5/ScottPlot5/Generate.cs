@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 #nullable enable
 
@@ -10,6 +7,8 @@ namespace ScottPlot;
 /// </summary>
 public static class Generate
 {
+    public static RandomDataGenerator RandomData { get; } = new(0);
+
     #region numerical 1D
 
     /// <summary>
@@ -178,6 +177,28 @@ public static class Generate
         return Enumerable.Range(0, count)
             .Select(_ => gen.RandomNormalNumber(mean, stdDev))
             .ToArray();
+    }
+
+    /// <summary>
+    /// Return a copy of the given array with random values added to each point
+    /// </summary>
+    public static double[] AddNoise(double[] input, double magnitude = 1)
+    {
+        double[] output = new double[input.Length];
+        Array.Copy(input, 0, output, 0, input.Length);
+        AddNoiseInPlace(output, magnitude);
+        return output;
+    }
+
+    /// <summary>
+    /// Mutate the given array by adding a random value to each point
+    /// </summary>
+    public static void AddNoiseInPlace(double[] values, double magnitude = 1)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
+            values[i] = values[i] + RandomData.RandomNumber(-magnitude / 2, magnitude / 2);
+        }
     }
 
     #endregion
