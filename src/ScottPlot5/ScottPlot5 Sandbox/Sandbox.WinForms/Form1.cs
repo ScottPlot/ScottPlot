@@ -8,19 +8,13 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        List<double> values = new();
+        double[] clean = Generate.SquareWave(low: 0, high: 5);
+        formsPlot1.Plot.Add.Signal(clean);
 
-        int pointsPerStep = 1_000;
-        int stepCount = 50;
+        double[] noisy = Generate.SquareWave(low: 10, high: 15);
+        Generate.AddNoiseInPlace(noisy);
+        formsPlot1.Plot.Add.Signal(noisy);
 
-        for (int i = 0; i < stepCount; i++)
-        {
-            for (int j = 0; j < pointsPerStep; j++)
-            {
-                values.Add(i % 2);
-            }
-        }
-
-        formsPlot1.Plot.Add.Signal(values);
+        formsPlot1.Plot.Grids.Clear();
     }
 }

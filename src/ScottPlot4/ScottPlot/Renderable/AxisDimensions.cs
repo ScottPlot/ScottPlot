@@ -285,9 +285,13 @@ namespace ScottPlot.Renderable
             if (LockedLimits)
                 return;
 
-            Min += units;
-            Max += units;
-            ApplyBounds();
+            if (IsInverted)
+            {
+                units = -units;
+			}
+			Min += units;
+			Max += units;
+			ApplyBounds();
         }
 
         /// <summary>

@@ -127,7 +127,35 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
-    class TicksDescending : IRecipe
+	class ReverseAxisDirection : IRecipe
+	{
+		public ICategory Category => new Categories.AdvancedAxis();
+		public string ID => "reverse_axis_direction";
+		public string Title => "Reverse Axis Direction";
+        public string Description =>
+            "Plot data on reversed axis. And all points plotted match the reverse coordinate axis.";
+
+		public void ExecuteRecipe(Plot plt)
+		{
+			// plot the positive data in the negative space
+			double[] values = DataGen.Sin(50);
+			plt.AddSignal(values);
+
+			double[] xs1 = { 2, 8, 6, 4 };
+			double[] ys1 = { 3, 4, 0.5, 1 };
+			plt.AddPolygon(xs1, ys1);
+
+			double[] xs2 = { 3, 2.5, 5 };
+			double[] ys2 = { 4.5, 1.5, 2.5 };
+			plt.AddPolygon(xs2, ys2, plt.GetNextColor(.5), lineWidth: 2);
+
+			// then reverse x-axis and y-axis
+			plt.XAxis.IsReverse = true;
+			plt.YAxis.IsReverse = true;
+		}
+	}
+
+	class TicksDescending : IRecipe
     {
         public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_descending";

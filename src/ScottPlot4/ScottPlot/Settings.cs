@@ -188,7 +188,7 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             AxisLimits limits = new(xMin, xMax, yMin, yMax);
 
-            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
+            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor, xAxis.IsReverse, yAxis.IsReverse);
         }
 
         /// <summary>
@@ -520,7 +520,7 @@ namespace ScottPlot
         public void MousePan(float mouseNowX, float mouseNowY)
         {
             RecallAxisLimits();
-            AxesPanPx(MouseDownX - mouseNowX, mouseNowY - MouseDownY);
+            AxesPanPx(MouseDownX - mouseNowX, MouseDownY - mouseNowY);
         }
 
         /// <summary>

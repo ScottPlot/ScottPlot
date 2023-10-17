@@ -37,6 +37,17 @@ namespace ScottPlot.Renderable
 
         public bool IsVisible { get; set; } = true;
 
+        private bool _isReverse = false;
+        public bool IsReverse
+        {
+			get => _isReverse;
+			set
+			{
+				_isReverse = value;
+				Dims.IsInverted = value ^ _Edge.IsVertical();
+			}
+		}
+
         private Edge _Edge;
         public Edge Edge
         {
@@ -48,8 +59,8 @@ namespace ScottPlot.Renderable
                 AxisLabel.Edge = value;
                 AxisTicks.Edge = value;
                 AxisTicks.TickCollection.IsVertical = value.IsVertical();
-                Dims.IsInverted = value.IsVertical();
-            }
+                Dims.IsInverted = _isReverse ^ value.IsVertical();
+			}
         }
 
         public bool IsHorizontal => Edge.IsHorizontal();
