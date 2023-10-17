@@ -60,6 +60,31 @@ public static class Generate
         return data;
     }
 
+    public static double[] SquareWave(uint cycles = 20, uint pointsPerCycle = 1_000, double duty = .5, double low = 0, double high = 1)
+    {
+        if (duty < 0 || duty > 1)
+            throw new ArgumentException($"{nameof(duty)} must be in the range [0, 1]");
+
+        uint points = cycles * pointsPerCycle;
+        uint cyclePointsHigh = (uint)(pointsPerCycle * duty);
+        uint cyclePointsLow = pointsPerCycle - cyclePointsHigh;
+
+        double[] values = new double[points];
+
+        uint i = 0;
+
+        for (int c = 0; c < cycles; c++)
+        {
+            for (int p = 0; p < cyclePointsLow; p++)
+                values[i++] = low;
+
+            for (int p = 0; p < cyclePointsHigh; p++)
+                values[i++] = high;
+        }
+
+        return values;
+    }
+
     #endregion
 
     #region numerical 2D
