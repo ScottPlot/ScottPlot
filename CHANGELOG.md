@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.9-beta (in development)
+* Signal: Improved support for datasets with repeating values (#2933, #2935) _Thanks @StendProg_
 
 ## ScottPlot 4.1.68 (in development)
 

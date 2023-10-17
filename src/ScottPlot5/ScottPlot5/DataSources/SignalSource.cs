@@ -18,6 +18,9 @@ public class SignalSource : ISignalSource
 
     public CoordinateRange GetYRange(CoordinateRange xRange)
     {
+        if (RangeContainsSignal(xRange) == false)
+            return CoordinateRange.NotSet;
+
         int i1 = GetIndex(xRange.Min, true);
         int i2 = GetIndex(xRange.Max, true);
 
@@ -43,6 +46,13 @@ public class SignalSource : ISignalSource
             i = Math.Min(i, Ys.Count - 1);
         }
         return i;
+    }
+
+    private bool RangeContainsSignal(CoordinateRange xRange)
+    {
+        int firstIndex = GetIndex(xRange.Min, false);
+        int lastIndex = GetIndex(xRange.Max, false);
+        return (lastIndex >= 0) && (firstIndex <= Ys.Count - 1);
     }
 
     public double GetX(int index)

@@ -2,6 +2,8 @@
  * !! Avoid temptation to use generics or generic math at this early stage of development
  */
 
+using System.IO;
+
 namespace ScottPlot.Plottables;
 
 public class Signal : IPlottable
@@ -32,31 +34,33 @@ public class Signal : IPlottable
         });
 
     /// <summary>
-    /// Return Y data limits for each pixel column in the data area
+    /// Return Y data limits for pixel columns in the data area
+    /// Pixel columns not overlapping with the signal are filtered,
+    /// column indices in DataArea space are preserved.
     /// </summary>
-    private PixelRangeY[] GetVerticalBars()
+    private PixelColumn[] GetVerticalBars()
     {
-        PixelRangeY[] verticalBars = new PixelRangeY[(int)Axes.DataRect.Width];
-
         double xUnitsPerPixel = Axes.XAxis.Width / Axes.DataRect.Width;
 
-        // for each vertical column of pixels in the data area
-        for (int i = 0; i < verticalBars.Length; i++)
-        {
-            // determine how wide this column of pixels is in coordinate units
-            float xPixel = i + Axes.DataRect.Left;
-            double colX1 = Axes.GetCoordinateX(xPixel);
-            double colX2 = colX1 + xUnitsPerPixel;
-            CoordinateRange xRange = new(colX1, colX2);
-
-            // determine how much vertical space the data of this pixel column occupies
-            CoordinateRange yRange = Data.GetYRange(xRange);
-            float yMin = Axes.GetPixelY(yRange.Min);
-            float yMax = Axes.GetPixelY(yRange.Max);
-            verticalBars[i] = new PixelRangeY(yMin, yMax);
-        }
-
-        return verticalBars;
+        return Enumerable.Range(0, (int)Axes.DataRect.Width)
+            .Select(i =>
+            {
+                float xPixel = i + Axes.DataRect.Left;
+                double xRangeMin = Axes.GetCoordinateX(xPixel);
+                double xRangeMax = xRangeMin + xUnitsPerPixel;
+                CoordinateRange xRange = new(xRangeMin, xRangeMax);
+                CoordinateRange yRange = Data.GetYRange(xRange);
+                return (yRange, i);
+            })
+            .Where(vb => vb.yRange.HasBeenSet)
+            .Select(vb =>
+            {
+                float x = vb.i + Axes.DataRect.Left;
+                float yBottom = Axes.GetPixelY(vb.yRange.Min);
+                float yTop = Axes.GetPixelY(vb.yRange.Max);
+                return new PixelColumn(x, yBottom, yTop);
+            })
+            .ToArray();
     }
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
@@ -135,11 +139,28 @@ public class Signal : IPlottable
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        PixelRangeY[] verticalBars = GetVerticalBars();
-        for (int i = 0; i < verticalBars.Length; i++)
+        PixelColumn[] cols = GetVerticalBars();
+        if (cols.Length == 0)
+            return;
+
+        using SKPath path = new();
+        path.MoveTo(cols[0].X, cols[0].YBottom);
+
+        foreach (PixelColumn col in cols)
         {
-            float x = Axes.DataRect.Left + i;
-            rp.Canvas.DrawLine(x, verticalBars[i].Bottom, x, verticalBars[i].Top, paint);
+            if (col.YBottom == col.YTop)
+            {
+                // draw a single pixel
+                path.LineTo(col.X, col.YBottom);
+            }
+            else
+            {
+                // draw a vertical line from bottom to top
+                path.MoveTo(col.X, col.YBottom);
+                path.LineTo(col.X, col.YTop);
+            }
         }
+
+        rp.Canvas.DrawPath(path, paint);
     }
 }
