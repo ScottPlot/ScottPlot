@@ -8,19 +8,19 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        multiFormsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 3);
+        List<double> values = new();
 
-        RandomDataGenerator gen = new();
+        int pointsPerStep = 1_000;
+        int stepCount = 50;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < stepCount; i++)
         {
-            Plot plot = new();
-            plot.Add.Signal(gen.RandomWalk(100));
-            plot.Title($"Plot {i + 1}");
-            multiFormsPlot1.Multiplot.Add(plot);
+            for (int j = 0; j < pointsPerStep; j++)
+            {
+                values.Add(i % 2);
+            }
         }
 
-        // make all plots match layout of the first
-        multiFormsPlot1.Multiplot.SharedLayoutSourcePlot = multiFormsPlot1.Multiplot.Plots.First();
+        formsPlot1.Plot.Add.Signal(values);
     }
 }
