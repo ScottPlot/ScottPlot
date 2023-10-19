@@ -25,12 +25,10 @@ internal class SignalTests
     {
         // https://github.com/ScottPlot/ScottPlot/issues/2933
         // https://github.com/ScottPlot/ScottPlot/pull/2935
+        // https://github.com/ScottPlot/ScottPlot/issues/2949
 
-        double[] data = Generate.Sin(10_000, oscillations: 100);
-        for (int i = (int)(data.Length * .3); i < (int)(data.Length * .7); i++)
-        {
-            data[i] = data[i] + 10;
-        }
+        double[] data = Generate.SquareWave(low: 10, high: 15);
+        Generate.AddNoiseInPlace(data, magnitude: .001);
 
         ScottPlot.Plot plt = new();
         var sig = plt.Add.Signal(data);
