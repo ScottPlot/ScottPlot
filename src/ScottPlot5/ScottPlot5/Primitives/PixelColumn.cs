@@ -1,16 +1,28 @@
 ﻿/// <summary>
-/// Represents a vertical range of pixels at a specific horizontal pixel location
+/// This data structure describes a single vertical column of pixels
+/// that represents the Y span of an X range of data points.
 /// </summary>
 public readonly struct PixelColumn
 {
-    public readonly float YBottom;
-    public readonly float YTop;
     public readonly float X;
+    public readonly float Enter;
+    public readonly float Exit;
+    public readonly float Bottom;
+    public readonly float Top;
 
-    public PixelColumn(float x, float yBottom, float yTop)
+    public bool HasData => !float.IsNaN(Enter);
+
+    public PixelColumn(float x, float enter, float exit, float bottom, float top)
     {
         X = x;
-        YBottom = yBottom;
-        YTop = yTop;
+        Enter = enter;
+        Exit = exit;
+        Bottom = bottom;
+        Top = top;
+    }
+
+    public static PixelColumn WithoutData(float x)
+    {
+        return new PixelColumn(x, float.NaN, float.NaN, float.NaN, float.NaN);
     }
 }
