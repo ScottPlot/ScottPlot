@@ -16,27 +16,6 @@ public class SignalSource : ISignalSource
         Period = period;
     }
 
-    public CoordinateRange GetYRange(CoordinateRange xRange)
-    {
-        if (RangeContainsSignal(xRange) == false)
-            return CoordinateRange.NotSet;
-
-        int i1 = GetIndex(xRange.Min, true);
-        int i2 = GetIndex(xRange.Max, true);
-
-        CoordinateRange yRange = new(Ys[i1], Ys[i1]);
-
-        for (int i = i1; i <= i2; i++)
-        {
-            yRange.Expand(Ys[i]);
-        }
-
-        if (YOffset != 0)
-            yRange.Pan(YOffset);
-
-        return yRange;
-    }
-
     public int GetIndex(double x, bool clamp)
     {
         int i = (int)((x - XOffset) / Period);
@@ -48,10 +27,10 @@ public class SignalSource : ISignalSource
         return i;
     }
 
-    private bool RangeContainsSignal(CoordinateRange xRange)
+    private bool RangeContainsSignal(double xMin, double xMax)
     {
-        int firstIndex = GetIndex(xRange.Min, false);
-        int lastIndex = GetIndex(xRange.Max, false);
+        int firstIndex = GetIndex(xMin, false);
+        int lastIndex = GetIndex(xMax, false);
         return (lastIndex >= 0) && (firstIndex <= Ys.Count - 1);
     }
 
@@ -67,13 +46,11 @@ public class SignalSource : ISignalSource
 
     public AxisLimits GetLimits()
     {
-        CoordinateRange xRange = new(0, Ys.Count * Period);
-        CoordinateRange yRange = GetYRange(xRange);
-
-        xRange.Pan(XOffset);
-        yRange.Pan(YOffset);
-
-        return new AxisLimits(xRange, yRange);
+        return new AxisLimits(
+            left: XOffset,
+            right: Ys.Count * Period + XOffset,
+            bottom: Ys.Min() + YOffset,
+            top: Ys.Max() + YOffset);
     }
 
     public CoordinateRange GetLimitsX()
@@ -86,5 +63,38 @@ public class SignalSource : ISignalSource
     {
         CoordinateRect rect = GetLimits().Rect;
         return new CoordinateRange(rect.Bottom, rect.Bottom);
+    }
+
+    public PixelColumn GetPixelColumn(IAxes axes, int xPixelIndex)
+    {
+        float xPixel = axes.DataRect.Left + xPixelIndex;
+        double xRangeMin = axes.GetCoordinateX(xPixel);
+        float xUnitsPerPixel = (float)(axes.XAxis.Width / axes.DataRect.Width);
+        double xRangeMax = xRangeMin + xUnitsPerPixel;
+
+        if (RangeContainsSignal(xRangeMin, xRangeMax) == false)
+            return PixelColumn.WithoutData(xPixel);
+
+        // determine column limits horizontally
+        int i1 = GetIndex(xRangeMin, true);
+        int i2 = GetIndex(xRangeMax, true);
+        float yEnter = axes.GetPixelY(Ys[i1]);
+        float yExit = axes.GetPixelY(Ys[i2]);
+
+        // determine column span vertically
+        double yMin = double.PositiveInfinity;
+        double yMax = double.NegativeInfinity;
+        for (int i = i1; i <= i2; i++)
+        {
+            yMin = Math.Min(yMin, Ys[i]);
+            yMax = Math.Max(yMax, Ys[i]);
+        }
+        yMin += YOffset;
+        yMax += YOffset;
+
+        float yBottom = axes.GetPixelY(yMin);
+        float yTop = axes.GetPixelY(yMax);
+
+        return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
     }
 }

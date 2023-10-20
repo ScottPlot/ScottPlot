@@ -22,9 +22,9 @@ public interface ISignalSource : IHasAxisLimits
     double YOffset { get; set; }
 
     /// <summary>
-    /// Returns the min/max Y values between a range of Xs (inclusive)
+    /// Returns range information about the data at a specific pixel location
     /// </summary>
-    CoordinateRange GetYRange(CoordinateRange xRange);
+    PixelColumn GetPixelColumn(IAxes axes, int xPixelIndex);
 
     /// <summary>
     /// Returns the predicted index for the data point nearest a given X position.
