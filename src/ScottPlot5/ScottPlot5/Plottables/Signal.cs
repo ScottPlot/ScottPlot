@@ -2,8 +2,6 @@
  * !! Avoid temptation to use generics or generic math at this early stage of development
  */
 
-using System.IO;
-
 namespace ScottPlot.Plottables;
 
 public class Signal : IPlottable
@@ -32,36 +30,6 @@ public class Signal : IPlottable
             Marker = Marker,
             Line = LineStyle,
         });
-
-    /// <summary>
-    /// Return Y data limits for pixel columns in the data area
-    /// Pixel columns not overlapping with the signal are filtered,
-    /// column indices in DataArea space are preserved.
-    /// </summary>
-    private PixelColumn[] GetVerticalBars()
-    {
-        double xUnitsPerPixel = Axes.XAxis.Width / Axes.DataRect.Width;
-
-        return Enumerable.Range(0, (int)Axes.DataRect.Width)
-            .Select(i =>
-            {
-                float xPixel = i + Axes.DataRect.Left;
-                double xRangeMin = Axes.GetCoordinateX(xPixel);
-                double xRangeMax = xRangeMin + xUnitsPerPixel;
-                CoordinateRange xRange = new(xRangeMin, xRangeMax);
-                CoordinateRange yRange = Data.GetYRange(xRange);
-                return (yRange, i);
-            })
-            .Where(vb => vb.yRange.HasBeenSet)
-            .Select(vb =>
-            {
-                float x = vb.i + Axes.DataRect.Left;
-                float yBottom = Axes.GetPixelY(vb.yRange.Min);
-                float yTop = Axes.GetPixelY(vb.yRange.Max);
-                return new PixelColumn(x, yBottom, yTop);
-            })
-            .ToArray();
-    }
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {
@@ -139,26 +107,22 @@ public class Signal : IPlottable
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        PixelColumn[] cols = GetVerticalBars();
-        if (cols.Length == 0)
+        IEnumerable<PixelColumn> cols = Enumerable.Range(0, (int)Axes.DataRect.Width)
+            .Select(x => Data.GetPixelColumn(Axes, x))
+            .Where(x => x.HasData);
+
+        if (!cols.Any())
             return;
 
         using SKPath path = new();
-        path.MoveTo(cols[0].X, cols[0].YBottom);
+        path.MoveTo(cols.First().X, cols.First().Enter);
 
         foreach (PixelColumn col in cols)
         {
-            if (col.YBottom == col.YTop)
-            {
-                // draw a single pixel
-                path.LineTo(col.X, col.YBottom);
-            }
-            else
-            {
-                // draw a vertical line from bottom to top
-                path.MoveTo(col.X, col.YBottom);
-                path.LineTo(col.X, col.YTop);
-            }
+            path.LineTo(col.X, col.Enter);
+            path.MoveTo(col.X, col.Bottom);
+            path.LineTo(col.X, col.Top);
+            path.MoveTo(col.X, col.Exit);
         }
 
         rp.Canvas.DrawPath(path, paint);

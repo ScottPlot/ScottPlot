@@ -36,4 +36,14 @@ internal class SignalTests
         plt.Grids.Clear();
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Signal_Offsets()
+    {
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.Signal(ScottPlot.Generate.Sin());
+        sig.Data.XOffset = 100;
+        sig.Data.YOffset = 10;
+        plt.SaveTestImage();
+    }
 }
