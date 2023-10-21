@@ -1,0 +1,43 @@
+﻿@page "/"
+@using ScottPlot;
+@using ScottPlot.Plottables;
+@using ScottPlot.Blazor;
+
+
+<h1>Raster (Bitmap) Canvas</h1>
+
+<p>The canvas below is using pixels in memory.</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col border rounded p-2 canvas-container">
+
+            <BlazorPlotSkia @ref="MyChart" Style="width:400px;height:300px;" />
+
+        </div>
+    </div>
+</div>
+
+
+@code {
+    BlazorPlotSkia MyChart = new BlazorPlotSkia();
+
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            var crosshair = MyChart.Plot.Add.Crosshair(0, 0);
+            MyChart.HandlerPointerMoved += (s, e) =>
+            {
+
+                crosshair.Position = MyChart.GetCoordinates(MyChart.CoordinateToPixel(e));
+                MyChart.Refresh();
+            };
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+}
