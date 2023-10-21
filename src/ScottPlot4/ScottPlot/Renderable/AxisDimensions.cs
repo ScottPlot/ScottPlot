@@ -285,13 +285,9 @@ namespace ScottPlot.Renderable
             if (LockedLimits)
                 return;
 
-            if (IsInverted)
-            {
-                units = -units;
-			}
-			Min += units;
-			Max += units;
-			ApplyBounds();
+            Min += units;
+            Max += units;
+            ApplyBounds();
         }
 
         /// <summary>
@@ -301,7 +297,10 @@ namespace ScottPlot.Renderable
         {
             if (LockedLimits)
                 return;
-
+            if (IsInverted)
+            {
+                pixels = -pixels;
+            }
             Pan(pixels * UnitsPerPx);
         }
 
