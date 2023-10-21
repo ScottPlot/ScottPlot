@@ -805,9 +805,9 @@ namespace ScottPlot.Plottable
             double firstPointX = dims.GetPixelX(OffsetX);
             double lastPointX = dims.GetPixelX(_SamplePeriod * (_Ys.Length - 1) + OffsetX);
             double dataWidthPx = lastPointX - firstPointX;
-			if (dims.IsReverseX) 
+            if (dims.IsReverseX)
                 dataWidthPx = -dataWidthPx;
-			double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
+            double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
             if (columnsWithData < 1 && Ys.Length > 1)
             {
