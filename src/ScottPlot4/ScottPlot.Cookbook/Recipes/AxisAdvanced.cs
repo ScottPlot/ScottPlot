@@ -136,21 +136,10 @@ namespace ScottPlot.Cookbook.Recipes
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot the positive data in the reverse direction space
-            double[] values = DataGen.Sin(50);
-            plt.AddSignal(values);
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
 
-            // plot the positive data in the reverse direction space
-            double[] xs1 = { 2, 8, 6, 4 };
-            double[] ys1 = { 3, 4, 0.5, 1 };
-            plt.AddPolygon(xs1, ys1);
-
-            // plot the positive data in the reverse direction space
-            double[] xs2 = { 3, 2.5, 5 };
-            double[] ys2 = { 4.5, 1.5, 2.5 };
-            plt.AddPolygon(xs2, ys2, plt.GetNextColor(.5), lineWidth: 2);
-
-            // then reverse x-axis and y-axis
             plt.XAxis.IsReverse = true;
             plt.YAxis.IsReverse = true;
         }
