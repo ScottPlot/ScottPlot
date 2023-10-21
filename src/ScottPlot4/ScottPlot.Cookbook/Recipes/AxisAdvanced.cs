@@ -127,24 +127,38 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class ReverseAxisDirection : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "reverse_axisDirection";
+        public string Title => "Reverse Axis Direction";
+        public string Description => "Plot data on reversed axis. And all points plotted match the reverse coordinate axis.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
+
+            plt.XAxis.IsReverse = true;
+            plt.YAxis.IsReverse = true;
+        }
+    }
+
     class TicksDescending : IRecipe
     {
         public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_descending";
         public string Title => "Descending Ticks";
         public string Description =>
-            "ScottPlot will always display data where X values ascend from left to right. " +
-            "To simulate an inverted axis (where numbers decrease from left to right) plot " +
-            "data in the negative space, then invert the sign of tick labels.";
+            "Axis tick labels can be inverted in sign to give the apperance of a reversed axis.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot the positive data in the negative space
-            double[] values = DataGen.Sin(50);
-            var sig = plt.AddSignal(values);
-            sig.OffsetX = -50;
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
 
-            // then invert the sign of the axis tick labels
             plt.XAxis.TickLabelNotation(invertSign: true);
             plt.YAxis.TickLabelNotation(invertSign: true);
         }

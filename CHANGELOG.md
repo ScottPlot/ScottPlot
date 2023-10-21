@@ -8,6 +8,7 @@
 * Signal: Improved support for datasets with repeating values (#2933, #2935) _Thanks @StendProg_
 
 ## ScottPlot 4.1.68 (in development)
+* Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_
