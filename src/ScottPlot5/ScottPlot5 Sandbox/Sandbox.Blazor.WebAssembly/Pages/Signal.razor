@@ -1,22 +1,48 @@
 ﻿@page "/signal"
+@inject NavigationManager NavManager
 @using ScottPlot;
 @using ScottPlot.Blazor;
 
-<BlazorPlotGL @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
+<h1 class="text-center">Signal Plot with One Million Points</h1>
+
+<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000)">1k</button>
+<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(10_000)">10k</button>
+<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(100_000)">100k</button>
+<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000_000)">1M</button>
+
+<h3 class="my-5">Standard Plot:</h3>
+<BlazorPlot @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
+
+<h3 class="my-5">WebGL Plot:</h3>
+<BlazorPlotGL @ref="BlazorPlotGL" Style="width: min(100%, 800px); height: 600px;" />
 
 @code {
-    BlazorPlotGL BlazorPlot = new();
+    BlazorPlot BlazorPlot = new();
+    BlazorPlotGL BlazorPlotGL = new();
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            BlazorPlot.Plot.Title("One Million Points");
-            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(1_000_000));
-            BlazorPlot.Refresh();
+            SetupPlots(10_000);
         }
 
         base.OnAfterRender(firstRender);
     }
-}
 
+    private void SetupPlots(int count)
+    {
+        SetupPlot(BlazorPlot, count);
+        SetupPlot(BlazorPlotGL, count);
+    }
+
+    private void SetupPlot(IPlotControl plotControl, int count)
+    {
+        plotControl.Plot.ShowBenchmark = true;
+        plotControl.Plot.Clear();
+        plotControl.Plot.Title($"Signal with {count:N0} points");
+        plotControl.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));
+        plotControl.Plot.AutoScale();
+        plotControl.Refresh();
+    }
+}

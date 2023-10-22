@@ -1,9 +1,24 @@
 ﻿@page "/"
+@using ScottPlot;
+@using ScottPlot.Blazor;
 
-<h3>
-    ScottPlot @ScottPlot.Version.VersionString Blazor Demo
-</h3>
+<h3>ScottPlot Blazor Control</h3>
+
+<BlazorPlot @ref="BlazorPlot" Style="width: 100%; height: 600px;" />
 
 @code {
+    BlazorPlot BlazorPlot = new();
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.Sin());
+            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.Cos());
+            BlazorPlot.Refresh();
+        }
+
+        base.OnAfterRender(firstRender);
+    }
 }
+
