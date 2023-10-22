@@ -1,0 +1,22 @@
+﻿@page "/signal"
+@using ScottPlot;
+@using ScottPlot.Blazor;
+
+<BlazorPlotGL @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
+
+@code {
+    BlazorPlotGL BlazorPlot = new();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazorPlot.Plot.Title("One Million Points");
+            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(1_000_000));
+            BlazorPlot.Refresh();
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+}
+

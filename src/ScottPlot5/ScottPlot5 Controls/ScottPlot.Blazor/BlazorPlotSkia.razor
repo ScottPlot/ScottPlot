@@ -2,32 +2,32 @@
 @using SkiaSharp;
 @inherits BlazorPlot
 
-
 <div>
-    <SKCanvasView @ref="SkiaView" OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
+    <SKCanvasView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
     @onpointerdown="OnPointerPressed"
     @onpointermove="OnPointerMoved"
     @onpointerup="OnPointerReleased"
     @ondblclick="OnDoubleTapped"
     @onwheel="OnPointerWheelChanged"
     @onkeydown="OnKeyDown"
-    @onkeyup="OnKeyUp"
-                  style=@Style />
+    @onkeyup="OnKeyUp" />
 </div>
-@code {
-    private SKCanvasView SkiaView { get; set; } = new();
 
+@code {
+
+    private SKCanvasView SKView { get; set; } = new();
 
     public void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
+        Plot.Render(
+            canvas: e.Surface.Canvas,
+            width: (int)e.Surface.Canvas.LocalClipBounds.Width,
+            height: (int)e.Surface.Canvas.LocalClipBounds.Height);
     }
-
 
     public override void Refresh()
     {
-        SkiaView.Invalidate();
+        SKView.Invalidate();
         RenderQueue.RefreshAll();
     }
-
 }

@@ -1,0 +1,22 @@
+﻿@page "/quickstart"
+@using ScottPlot;
+@using ScottPlot.Blazor;
+
+<BlazorPlotGL @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
+
+@code {
+    BlazorPlotGL BlazorPlot = new();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.Sin());
+            BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.Cos());
+            BlazorPlot.Refresh();
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+}
+

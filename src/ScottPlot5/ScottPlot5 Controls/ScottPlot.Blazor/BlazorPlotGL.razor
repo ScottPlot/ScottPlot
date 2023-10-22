@@ -3,31 +3,31 @@
 @inherits BlazorPlot
 
 <div>
-    <SKGLView @ref="SKGLView" OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
+    <SKGLView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
     @onpointerdown="OnPointerPressed"
     @onpointermove="OnPointerMoved"
     @onpointerup="OnPointerReleased"
     @ondblclick="OnDoubleTapped"
     @onwheel="OnPointerWheelChanged"
     @onkeydown="OnKeyDown"
-    @onkeyup="OnKeyUp"
-              style=@Style />
+    @onkeyup="OnKeyUp" />
 </div>
+
 @code {
 
-    private SKGLView SKGLView { get; set; } = new();
-
+    private SKGLView SKView { get; set; } = new();
 
     public void OnPaintSurface(SKPaintGLSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
+        Plot.Render(
+            canvas: e.Surface.Canvas,
+            width: (int)e.Surface.Canvas.LocalClipBounds.Width,
+            height: (int)e.Surface.Canvas.LocalClipBounds.Height);
     }
-
 
     public override void Refresh()
     {
-        SKGLView.Invalidate();
+        SKView.Invalidate();
         RenderQueue.RefreshAll();
     }
-
 }
