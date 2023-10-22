@@ -297,7 +297,10 @@ namespace ScottPlot.Renderable
         {
             if (LockedLimits)
                 return;
-
+            if (IsInverted)
+            {
+                pixels = -pixels;
+            }
             Pan(pixels * UnitsPerPx);
         }
 
