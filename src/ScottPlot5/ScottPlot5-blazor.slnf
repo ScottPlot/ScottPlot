@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "ScottPlot5.sln",
+    "projects": [
+      "ScottPlot5 Sandbox\\Sandbox.Blazor.WebAssembly\\Sandbox.Blazor.WebAssembly.csproj",
+      "ScottPlot5 Controls\\ScottPlot.Blazor\\ScottPlot.Blazor.csproj",
+      "ScottPlot5\\ScottPlot.csproj"
+    ]
+  }
+}
