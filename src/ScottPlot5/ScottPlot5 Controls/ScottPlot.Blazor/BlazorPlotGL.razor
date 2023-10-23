@@ -2,7 +2,8 @@
 @using SkiaSharp;
 @inherits BlazorPlotBase
 
-<div>
+
+<div oncontextmenu="return false;">
     <SKGLView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
     @onpointerdown="OnPointerPressed"
     @onpointermove="OnPointerMoved"
