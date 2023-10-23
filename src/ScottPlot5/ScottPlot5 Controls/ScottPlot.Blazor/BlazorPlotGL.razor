@@ -3,7 +3,7 @@
 @inherits BlazorPlotBase
 
 
-<div oncontextmenu="return false;">
+<div oncontextmenu="return false;" onmousewheel="return false;">
     <SKGLView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
     @onpointerdown="OnPointerPressed"
     @onpointermove="OnPointerMoved"
