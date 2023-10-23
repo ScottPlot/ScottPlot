@@ -1,0 +1,33 @@
+﻿@using SkiaSharp.Views.Blazor;
+@using SkiaSharp;
+@inherits BlazorPlotBase
+
+<div>
+    <SKGLView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
+    @onpointerdown="OnPointerPressed"
+    @onpointermove="OnPointerMoved"
+    @onpointerup="OnPointerReleased"
+    @ondblclick="OnDoubleTapped"
+    @onwheel="OnPointerWheelChanged"
+    @onkeydown="OnKeyDown"
+    @onkeyup="OnKeyUp" />
+</div>
+
+@code {
+
+    private SKGLView SKView { get; set; } = new();
+
+    public void OnPaintSurface(SKPaintGLSurfaceEventArgs e)
+    {
+        Plot.Render(
+            canvas: e.Surface.Canvas,
+            width: (int)e.Surface.Canvas.LocalClipBounds.Width,
+            height: (int)e.Surface.Canvas.LocalClipBounds.Height);
+    }
+
+    public override void Refresh()
+    {
+        SKView.Invalidate();
+        RenderQueue.RefreshAll();
+    }
+}
