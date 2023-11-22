@@ -52,7 +52,9 @@ jobs:
         run: dotnet build ${{ env.SLN_SP5_TEST }} --configuration Release
       - name: 🧪 Test ScottPlot5
         run: dotnet test ${{ env.SLN_SP5_TEST }} --configuration Release --verbosity minimal
-      - name: 🚚 Full Restore ScottPlot5
+      - name: 🚚 Workload Restore ScottPlot5
+        run: dotnet workload restore ${{ env.SLN_SP5_FULL }}
+      - name: 🚚 Solution Restore ScottPlot5
         run: dotnet restore ${{ env.SLN_SP5_FULL }}
       - name: 🛠️ Full Build ScottPlot5
         run: dotnet build ${{ env.SLN_SP5_FULL }} --configuration Release

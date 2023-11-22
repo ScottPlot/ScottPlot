@@ -63,6 +63,8 @@ jobs:
         run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
+      - name: 🚚 Workload Restore
+        run: dotnet workload restore ${{ env.FULL_SOLUTION }}
       - name: 🚚 Full Restore
         run: dotnet restore ${{ env.FULL_SOLUTION }}
       - name: 🛠️ Full Build
