@@ -16,7 +16,7 @@ namespace ScottPlot.Blazor
         public ExampleJsInterop(IJSRuntime jsRuntime)
         {
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/ScottPlot.Blazorr/exampleJsInterop.js").AsTask());
+                "import", "./_content/ScottPlot.Blazor/exampleJsInterop.js").AsTask());
         }
 
         public async ValueTask<string> Prompt(string message)

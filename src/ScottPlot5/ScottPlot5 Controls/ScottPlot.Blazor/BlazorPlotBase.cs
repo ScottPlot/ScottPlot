@@ -10,6 +10,9 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     [Parameter]
     public string Style { get; set; } = string.Empty;
 
+    [Parameter]
+    public bool EnableRenderLoop { get; set; } = false;
+
     public Plot Plot { get; } = new();
 
     public BlazorPlotBase()

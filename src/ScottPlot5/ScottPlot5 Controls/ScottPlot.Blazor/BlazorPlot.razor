@@ -2,8 +2,10 @@
 @using SkiaSharp;
 @inherits BlazorPlotBase
 
-<div>
-    <SKCanvasView @ref="SKView" style=@Style OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true"
+
+
+<div oncontextmenu="return false;" onmousewheel="return false;" onmousedown="return false;" style=@Style>
+    <SKCanvasView @ref="SKView" style="width:inherit; height:inherit;" OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true" EnableRenderLoop="EnableRenderLoop"
     @onpointerdown="OnPointerPressed"
     @onpointermove="OnPointerMoved"
     @onpointerup="OnPointerReleased"
@@ -25,9 +27,11 @@
             height: (int)e.Surface.Canvas.LocalClipBounds.Height);
     }
 
+
     public override void Refresh()
     {
         SKView.Invalidate();
         RenderQueue.RefreshAll();
     }
+
 }
