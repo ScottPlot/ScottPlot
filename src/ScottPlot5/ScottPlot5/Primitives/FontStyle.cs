@@ -13,9 +13,9 @@ public class FontStyle
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
 
-    private SKTypeface? _typeface = null;
+    private SKTypeface? CachedTypeface = null;
 
-    public SKTypeface Typeface => _typeface ??= GetTypeFace();
+    public SKTypeface Typeface => CachedTypeface ?? CreateTypeface(Name, Bold, Italic);
 
     private string _name = Fonts.Default;
     public string Name
@@ -62,21 +62,22 @@ public class FontStyle
         }
     }
 
+    // TODO: consider whether color really belongs here...
     public Color Color { get; set; } = Colors.Black;
     public float Size { get; set; } = 12;
     public bool AntiAlias { get; set; } = true;
 
     private void ClearCachedTypeface()
     {
-        _typeface = null;
+        CachedTypeface = null;
     }
 
-    private SKTypeface GetTypeFace()
+    public static SKTypeface CreateTypeface(string font, bool bold, bool italic)
     {
-        SKFontStyleWeight weight = Bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
         SKFontStyle skfs = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(Name, skfs);
+        return SKTypeface.FromFamilyName(font, skfs);
     }
 }
