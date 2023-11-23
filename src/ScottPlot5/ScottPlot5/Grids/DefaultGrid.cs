@@ -2,6 +2,7 @@
 
 public class DefaultGrid : IGrid
 {
+    public bool IsVisible { get; set; } = true;
     public LineStyle MajorLineStyle = new() { Width = 1, Color = Colors.Black.WithOpacity(.1) };
     public LineStyle MinorLineStyle = new() { Width = 0, Color = Colors.Black.WithOpacity(.05) };
 
@@ -30,6 +31,8 @@ public class DefaultGrid : IGrid
 
     public void Render(RenderPack rp)
     {
+        if (!IsVisible)
+            return;
 
         if (MinorLineStyle.Width > 0)
         {
