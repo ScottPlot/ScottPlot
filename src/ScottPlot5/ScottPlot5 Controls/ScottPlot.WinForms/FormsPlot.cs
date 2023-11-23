@@ -214,9 +214,6 @@ public class FormsPlot : UserControl, IPlotControl
 
     public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        /* DISPLAY SCALING NOTE: 
-         * If display scaling causes tracking issues, multiply X and Y by the DisplayScale here.
-         */
         return Plot.GetCoordinates(px.X, px.Y, xAxis, yAxis);
     }
 

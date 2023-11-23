@@ -169,6 +169,26 @@ public struct PixelRect : IEquatable<PixelRect>
             Bottom.GetHashCode() ^
             Top.GetHashCode();
     }
+
+    public bool Contains(Pixel px)
+    {
+        return Contains(px.X, px.Y);
+    }
+
+    public bool Contains(float x, float y)
+    {
+        return Left <= x && x <= Right && Top <= y && y <= Bottom;
+    }
+
+    public bool ContainsX(float x)
+    {
+        return Left <= x && x <= Right;
+    }
+
+    public bool ContainsY(float y)
+    {
+        return Top <= y && y <= Bottom;
+    }
 }
 
 public static class PixelRectExtensions

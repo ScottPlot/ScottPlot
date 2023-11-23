@@ -21,26 +21,36 @@ public class VerticalLine : AxisLine
         if (!IsVisible)
             return;
 
-        rp.DisableClipping();
-
-        using SKPaint paint = new();
-
         // determine location
         float y1 = rp.DataRect.Bottom;
         float y2 = rp.DataRect.Top;
         float x = Axes.GetPixelX(X);
+        if (!rp.DataRect.ContainsX(x))
+            return;
 
         // draw line
+        using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
         rp.Canvas.DrawLine(x, y1, x, y2, paint);
 
+    }
+
+    public override void RenderLast(RenderPack rp)
+    {
+        // determine location
+        float x = Axes.GetPixelX(X);
+        if (!rp.DataRect.ContainsX(x))
+            return;
+
         // draw label
+        rp.DisableClipping();
+        using SKPaint paint = new();
         Label.Alignment = Alignment.UpperCenter;
         Label.BackgroundColor = LineStyle.Color;
         Label.Font.Size = 14;
         Label.Font.Bold = true;
         Label.Font.Color = Colors.White;
         Label.Padding = 5;
-        Label.Draw(rp.Canvas, x, y1, paint);
+        Label.Draw(rp.Canvas, x, rp.DataRect.Bottom, paint);
     }
 }

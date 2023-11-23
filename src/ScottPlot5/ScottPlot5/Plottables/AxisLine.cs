@@ -3,7 +3,7 @@
 /// <summary>
 /// An axis line is a straight vertical or horizontal line that spans the data area.
 /// </summary>
-public abstract class AxisLine : IPlottable
+public abstract class AxisLine : IPlottable, IRenderLast
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -28,4 +28,6 @@ public abstract class AxisLine : IPlottable
     public abstract AxisLimits GetAxisLimits();
 
     public abstract void Render(RenderPack rp);
+
+    public abstract void RenderLast(RenderPack rp);
 }
