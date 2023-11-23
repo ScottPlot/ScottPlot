@@ -12,7 +12,6 @@ public abstract class AxisLine : IPlottable
     public LineStyle LineStyle { get; set; } = new();
 
     public double Position { get; set; } = 0;
-    public abstract PixelLine GetPixelLine(RenderPack rp);
 
     public IEnumerable<LegendItem> LegendItems
     {
@@ -28,15 +27,5 @@ public abstract class AxisLine : IPlottable
 
     public abstract AxisLimits GetAxisLimits();
 
-    public void Render(RenderPack rp)
-    {
-        if (!IsVisible)
-            return;
-
-        using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-
-        PixelLine line = GetPixelLine(rp);
-        line.Draw(rp.Canvas, paint);
-    }
+    public abstract void Render(RenderPack rp);
 }

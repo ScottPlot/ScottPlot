@@ -17,6 +17,7 @@ public class Label
     public float Rotation { get; set; } = 0;
     public float PointSize { get; set; } = 0;
     public Color PointColor { get; set; } = Colors.Magenta;
+    public float Padding { get; set; } = 0;
 
     private SKPaint MakeBackgroundPaint()
     {
@@ -75,9 +76,19 @@ public class Label
         return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
     }
 
-    public void Draw(SKCanvas canvas, Pixel pixel)
+    public void Draw(SKCanvas canvas, Pixel px)
+    {
+        Draw(canvas, px.X, px.Y);
+    }
+
+    public void Draw(SKCanvas canvas, float x, float y)
     {
         using SKPaint paint = new();
+        Draw(canvas, x, y, paint);
+    }
+
+    public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
+    {
         Font.ApplyToPaint(paint);
 
         paint.TextAlign = Alignment.ToSKTextAlign();
@@ -87,9 +98,31 @@ public class Label
         float yOffset = textBounds.Height * Alignment.VerticalFraction();
         PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - textBounds.Height);
+        textRect = textRect.Expand(Padding);
+
+        if (Alignment.IsUpperEdge())
+        {
+            y += Padding;
+        }
+        else if (Alignment.IsLowerEdge())
+        {
+            y -= Padding;
+        }
+
+        if (Alignment.IsLeftEdge())
+        {
+            x += Padding;
+        }
+        else if (Alignment.IsRightEdge())
+        {
+            x -= Padding;
+        }
+
+        // NOTE: translation to adjust for padding is incorrect when rotation is enabled
+        // https://github.com/ScottPlot/ScottPlot/issues/2993
 
         canvas.Save();
-        canvas.Translate(pixel.ToSKPoint());
+        canvas.Translate(x, y);
         canvas.RotateDegrees(Rotation);
 
         if (BackgroundColor.Alpha > 0)

@@ -18,4 +18,19 @@ internal class AxisLineTests
 
         plot.SaveTestImage();
     }
+
+    [Test]
+    public void Test_AxisLine_Label()
+    {
+        ScottPlot.Plot plot = new();
+        plot.DisableGrid();
+
+        var vert = plot.Add.VerticalLine(123.45);
+        vert.Label.Text = "Vertical";
+
+        var horiz = plot.Add.HorizontalLine(456.78);
+        horiz.Label.Text = "Horizontal";
+
+        plot.SaveTestImage();
+    }
 }
