@@ -402,6 +402,19 @@ public class Plot : IDisposable
         return GetCoordinates(px, xAxis, yAxis);
     }
 
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
+    {
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
+        double left = XAxis.GetCoordinate(x - radius, dataRect);
+        double right = XAxis.GetCoordinate(x + radius, dataRect);
+        double top = YAxis.GetCoordinate(y - radius, dataRect);
+        double bottom = YAxis.GetCoordinate(y + radius, dataRect);
+        return new CoordinateRect(left, right, bottom, top);
+    }
+
     #endregion
 
     #region Rendering and Image Creation

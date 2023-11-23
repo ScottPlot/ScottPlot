@@ -39,6 +39,30 @@ public class Interaction
     }
 
     /// <summary>
+    /// Disable all mouse interactivity
+    /// </summary>
+    public void Disable()
+    {
+        Actions = PlotActions.NonInteractive();
+    }
+
+    /// <summary>
+    /// Enable mouse interactivity using the default mouse actions
+    /// </summary>
+    public void Enable()
+    {
+        Actions = PlotActions.Standard();
+    }
+
+    /// <summary>
+    /// Enable mouse interactivity using custom mouse actions
+    /// </summary>
+    public void Enable(PlotActions customActions)
+    {
+        Actions = customActions;
+    }
+
+    /// <summary>
     /// Return the last observed location of the mouse in coordinate units
     /// </summary>
     public Coordinates GetMouseCoordinates(IXAxis? xAxis = null, IYAxis? yAxis = null)
