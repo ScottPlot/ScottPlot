@@ -9,6 +9,8 @@
 * Blazor: Added a Blazor control (#2959) _Thanks @sulivanganter_
 * Layout: Expose `Matched` layout engine (#2881) _Thanks @proplunger_
 * Plot: Added `DisableGrid()` and `EnableGrid()` helper methods (#2947)
+* Render: Created `IRenderLast` plottables can implement to draw above axes (#2998, #2993)
+* Controls: Added `Interaction.Disable()` and `Interaction.Enable()` methods for easy control of mouse interactivity
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
