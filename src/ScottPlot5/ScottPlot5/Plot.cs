@@ -1,7 +1,7 @@
-﻿using ScottPlot.Legends;
-using ScottPlot.Control;
-using ScottPlot.Stylers;
+﻿using ScottPlot.Control;
+using ScottPlot.Legends;
 using ScottPlot.Rendering;
+using ScottPlot.Stylers;
 
 namespace ScottPlot;
 
@@ -524,6 +524,16 @@ public class Plot : IDisposable
     #endregion
 
     #region Helper Methods
+
+    public void DisableGrid()
+    {
+        Grids.ForEach(x => x.IsVisible = false);
+    }
+
+    public void EnableGrid()
+    {
+        Grids.ForEach(x => x.IsVisible = true);
+    }
 
     /// <summary>
     /// Clears the <see cref="PlottableList"/> list

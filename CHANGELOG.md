@@ -8,6 +8,7 @@
 * Signal: Improved support for datasets with repeating values (#2933, #2935) _Thanks @StendProg_
 * Blazor: Added a Blazor control (#2959) _Thanks @sulivanganter_
 * Layout: Expose `Matched` layout engine (#2881) _Thanks @proplunger_
+* Plot: Added `DisableGrid()` and `EnableGrid()` helper methods (#2947)
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
