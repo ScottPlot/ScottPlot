@@ -12,6 +12,7 @@
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
+* Text: Exposed `LastRenderRectangleCoordinates` to improve mouse interactivity (#2994) _Thanks @DaveMartel_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_

@@ -32,7 +32,7 @@ namespace ScottPlot.Plottable
         public Color BorderColor { get; set; } = Color.Black;
         public float PixelOffsetX { get; set; } = 0;
         public float PixelOffsetY { get; set; } = 0;
-        RectangleF LastRenderRectangleCoordinates { get; set; }
+        public RectangleF LastRenderRectangleCoordinates { get; set; }
         private double DeltaCX { get; set; } = 0;
         private double DeltaCY { get; set; } = 0;
         public LegendItem[] GetLegendItems() => LegendItem.None;
