@@ -15,11 +15,11 @@ public class RenderPlottables : IRenderAction
             }
             else
             {
-                rp.Canvas.ClipRect(rp.DataRect.ToSKRect());
+                rp.ClipToDataArea();
                 plottable.Render(rp);
             }
 
-            rp.Canvas.Restore();
+            rp.DisableClipping();
         }
     }
 }

@@ -32,5 +32,5 @@ public interface IPlottable
     /// <summary>
     /// Items which will appear in the legend
     /// </summary>
-    IEnumerable<LegendItem> LegendItems { get; }
+    IEnumerable<LegendItem> LegendItems { get; } // TODO: this should be a method GetLegendItems()
 }

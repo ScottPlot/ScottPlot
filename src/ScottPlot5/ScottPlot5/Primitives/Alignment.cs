@@ -52,4 +52,24 @@ public static class AlignmentExtensions
             _ => throw new NotImplementedException(),
         };
     }
+
+    public static bool IsUpperEdge(this Alignment a)
+    {
+        return a == Alignment.UpperLeft || a == Alignment.UpperCenter || a == Alignment.UpperRight;
+    }
+
+    public static bool IsLowerEdge(this Alignment a)
+    {
+        return a == Alignment.LowerLeft || a == Alignment.LowerCenter || a == Alignment.LowerRight;
+    }
+
+    public static bool IsLeftEdge(this Alignment a)
+    {
+        return a == Alignment.UpperLeft || a == Alignment.MiddleLeft || a == Alignment.LowerLeft;
+    }
+
+    public static bool IsRightEdge(this Alignment a)
+    {
+        return a == Alignment.UpperRight || a == Alignment.MiddleRight || a == Alignment.LowerRight;
+    }
 }

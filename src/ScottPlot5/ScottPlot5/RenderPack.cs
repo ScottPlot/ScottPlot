@@ -41,4 +41,14 @@ public class RenderPack
     {
         return $"RenderPack FigureRect={FigureRect} DataRect={DataRect}";
     }
+
+    public void ClipToDataArea()
+    {
+        Canvas.ClipRect(DataRect.ToSKRect());
+    }
+
+    public void DisableClipping()
+    {
+        Canvas.Restore();
+    }
 }

@@ -90,10 +90,12 @@ public static class SkiaSharpExtensions
 
     public static void ApplyToPaint(this FontStyle fontStyle, SKPaint paint)
     {
+        paint.IsStroke = false;
         paint.Typeface = fontStyle.Typeface;
         paint.TextSize = fontStyle.Size;
         paint.Color = fontStyle.Color.ToSKColor();
         paint.IsAntialias = fontStyle.AntiAlias;
+        paint.FakeBoldText = fontStyle.Bold;
     }
 
     public static SKPathEffect? GetPathEffect(this LinePattern pattern)

@@ -14,7 +14,10 @@ public class PlottableAdder
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color NextColor => Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
+    public Color GetNextColor()
+    {
+        return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
+    }
 
     public PlottableAdder(Plot plot)
     {
@@ -27,7 +30,7 @@ public class PlottableAdder
         {
             Position = new(x, y)
         };
-        ch.LineStyle.Color = NextColor;
+        ch.LineStyle.Color = GetNextColor();
         Plot.PlottableList.Add(ch);
         return ch;
     }
@@ -63,7 +66,7 @@ public class PlottableAdder
         var slices = values.Select(v => new PieSlice
         {
             Value = v,
-            Fill = new() { Color = NextColor },
+            Fill = new() { Color = GetNextColor() },
         }).ToList();
         var pie = Pie(slices);
         Plot.PlottableList.Add(pie);
@@ -77,7 +80,7 @@ public class PlottableAdder
 
     public Scatter Scatter(IScatterSource data, Color? color = null)
     {
-        Color nextColor = color ?? NextColor;
+        Color nextColor = color ?? GetNextColor();
         Scatter scatter = new(data);
         scatter.LineStyle.Color = nextColor;
         scatter.MarkerStyle.Fill.Color = nextColor;
@@ -97,7 +100,7 @@ public class PlottableAdder
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        Color nextColor = color ?? NextColor;
+        Color nextColor = color ?? GetNextColor();
         SignalSource data = new(ys, period);
         var sig = new Signal(data);
         sig.LineStyle.Color = nextColor;
@@ -124,7 +127,7 @@ public class PlottableAdder
         var series = new BarSeries()
         {
             Bars = bars,
-            Color = color ?? NextColor,
+            Color = color ?? GetNextColor(),
             Label = label
         };
 
@@ -140,7 +143,7 @@ public class PlottableAdder
             Boxes = boxes,
         };
 
-        singleGroup.Fill.Color = NextColor;
+        singleGroup.Fill.Color = GetNextColor();
 
         IList<BoxGroup> groups = new List<BoxGroup>() { singleGroup };
 
@@ -183,11 +186,22 @@ public class PlottableAdder
     {
         ErrorBar eb = new(xs, ys, null, null, yErrors, yErrors)
         {
-            Color = NextColor,
+            Color = GetNextColor(),
         };
 
         Plot.PlottableList.Add(eb);
         return eb;
+    }
+
+    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    {
+        HorizontalLine line = new();
+        line.LineStyle.Width = width;
+        line.LineStyle.Color = color ?? GetNextColor();
+        line.LineStyle.Pattern = pattern;
+        line.Y = y;
+        Plot.PlottableList.Add(line);
+        return line;
     }
 
     public OhlcPlot OHLC(IList<IOHLC> ohlcs)
@@ -200,7 +214,7 @@ public class PlottableAdder
 
     public Polygon Polygon(Coordinates[] coordinates)
     {
-        Polygon poly = new Polygon(coordinates);
+        Polygon poly = new(coordinates);
         Plot.PlottableList.Add(poly);
         return poly;
     }
@@ -226,7 +240,7 @@ public class PlottableAdder
     public FillY FillY(Scatter scatter1, Scatter scatter2)
     {
         FillY rangePlot = new(scatter1, scatter2);
-        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.FillStyle.Color = GetNextColor();
         Plot.PlottableList.Add(rangePlot);
         return rangePlot;
     }
@@ -237,7 +251,7 @@ public class PlottableAdder
     public FillY FillY(ICollection<(double X, double Top, double Bottom)> data)
     {
         FillY rangePlot = new();
-        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.FillStyle.Color = GetNextColor();
         rangePlot.SetDataSource(data);
         Plot.PlottableList.Add(rangePlot);
         return rangePlot;
@@ -250,9 +264,20 @@ public class PlottableAdder
     public FillY FillY<T>(ICollection<T> data, Func<T, (double X, double Top, double Bottom)> function)
     {
         var rangePlot = new FillY();
-        rangePlot.FillStyle.Color = NextColor;
+        rangePlot.FillStyle.Color = GetNextColor();
         rangePlot.SetDataSource(data, function);
         Plot.PlottableList.Add(rangePlot);
         return rangePlot;
+    }
+
+    public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    {
+        VerticalLine line = new();
+        line.LineStyle.Width = width;
+        line.LineStyle.Color = color ?? GetNextColor();
+        line.LineStyle.Pattern = pattern;
+        line.X = x;
+        Plot.PlottableList.Add(line);
+        return line;
     }
 }

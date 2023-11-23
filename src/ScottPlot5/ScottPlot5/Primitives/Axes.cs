@@ -5,9 +5,14 @@
 /// </summary>
 public class Axes : IAxes
 {
+    // TODO: these should probably be readonly and passed into the constructor
     public IXAxis XAxis { get; set; } = null!;
     public IYAxis YAxis { get; set; } = null!;
     public PixelRect DataRect { get; set; }
+
+    public Axes()
+    {
+    }
 
     public Coordinates GetCoordinates(Pixel pixel)
     {

@@ -53,6 +53,10 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
+    public static AxisLimits VerticalOnly(double yMin, double yMax) => new(double.NaN, double.NaN, yMin, yMax);
+
+    public static AxisLimits HorizontalOnly(double xMin, double xMax) => new(xMin, xMax, double.NaN, double.NaN);
+
     /// <summary>
     /// Return a new <see cref="AxisLimits"/> expanded to include the given <paramref name="x"/> and <paramref name="y"/>.
     /// </summary>
