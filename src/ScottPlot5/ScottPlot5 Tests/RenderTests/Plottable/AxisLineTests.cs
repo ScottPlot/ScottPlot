@@ -12,6 +12,10 @@ internal class AxisLineTests
         plot.Add.VerticalLine(123.55, width: 2, pattern: LinePattern.Dot);
         plot.Add.VerticalLine(123.75, width: 10);
 
+        plot.Add.HorizontalLine(123.45, width: 1, pattern: LinePattern.Dash);
+        plot.Add.HorizontalLine(123.55, width: 2, pattern: LinePattern.Dot);
+        plot.Add.HorizontalLine(123.75, width: 10);
+
         plot.SaveTestImage();
     }
 }

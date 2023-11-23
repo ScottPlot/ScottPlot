@@ -193,6 +193,17 @@ public class PlottableAdder
         return eb;
     }
 
+    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    {
+        HorizontalLine line = new();
+        line.LineStyle.Width = width;
+        line.LineStyle.Color = color ?? GetNextColor();
+        line.LineStyle.Pattern = pattern;
+        line.Y = y;
+        Plot.PlottableList.Add(line);
+        return line;
+    }
+
     public OhlcPlot OHLC(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);

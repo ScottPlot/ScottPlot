@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Primitives;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Describes a straight line in pixel space
