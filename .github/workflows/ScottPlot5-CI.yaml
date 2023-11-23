@@ -75,6 +75,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Workload Restore
+        run: dotnet workload restore ${{ env.SLN_SP5_FULL }}
       - name: 🚚 Restore ScottPlot5
         run: dotnet restore ${{ env.SLN_SP5_FULL }}
       - name: ✒️ Check ScottPlot5 Code formatting
