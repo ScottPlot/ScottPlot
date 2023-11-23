@@ -41,7 +41,7 @@ public class HorizontalLine : AxisLine
         Label.Font.Size = 14;
         Label.Font.Bold = true;
         Label.Font.Color = Colors.White;
-        Label.Padding = 0; // TODO: improve rotated rendering with padding (#2993)
+        Label.Padding = 5;
         Label.Draw(rp.Canvas, x1, y, paint);
     }
 }

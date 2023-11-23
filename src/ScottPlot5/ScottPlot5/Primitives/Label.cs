@@ -98,28 +98,22 @@ public class Label
         float yOffset = textBounds.Height * Alignment.VerticalFraction();
         PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - textBounds.Height);
-        textRect = textRect.Expand(Padding);
-
-        if (Alignment.IsUpperEdge())
-        {
-            y += Padding;
-        }
-        else if (Alignment.IsLowerEdge())
-        {
-            y -= Padding;
-        }
-
-        if (Alignment.IsLeftEdge())
-        {
-            x += Padding;
-        }
-        else if (Alignment.IsRightEdge())
-        {
-            x -= Padding;
-        }
+        PixelRect backgroundRect = textRect.Expand(Padding);
 
         // NOTE: translation to adjust for padding is incorrect when rotation is enabled
         // https://github.com/ScottPlot/ScottPlot/issues/2993
+
+        // TODO: use better logic that covers all cases
+        if (Rotation == 0 && Alignment.IsUpperEdge())
+        {
+            y += Padding;
+        }
+
+        // TODO: use better logic that covers all cases
+        if (Rotation == -90 && Alignment.IsLowerEdge())
+        {
+            x -= Padding;
+        }
 
         canvas.Save();
         canvas.Translate(x, y);
@@ -128,7 +122,7 @@ public class Label
         if (BackgroundColor.Alpha > 0)
         {
             using SKPaint backgroundPaint = MakeBackgroundPaint();
-            canvas.DrawRect(textRect.ToSKRect(), backgroundPaint);
+            canvas.DrawRect(backgroundRect.ToSKRect(), backgroundPaint);
         }
 
         canvas.DrawText(Text, new(0, yOffset), paint);
@@ -136,7 +130,7 @@ public class Label
         if (Border.Width > 0)
         {
             using SKPaint borderPaint = MakeBorderPaint();
-            canvas.DrawRect(textRect.ToSKRect(), borderPaint);
+            canvas.DrawRect(backgroundRect.ToSKRect(), borderPaint);
         }
 
         if (PointSize > 0)
