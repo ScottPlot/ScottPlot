@@ -26,6 +26,7 @@ internal static class TODO
     Axis: AutoScale() is called in the first render if SetAxisLimits() was used to set only a single axis value
 
     ## PLOTTABLES ##
+    Plottables namespace may need to be Plottable instead (then PlottableList can be Plottables)
     Signal: Fix issue where several repeated values produce a vertical height of zero
     Signal: Add offset X and offset Y support to signal plots
     Signal: Add ScaleY to signal plot https://github.com/ScottPlot/ScottPlot/pull/2656
