@@ -10,4 +10,5 @@ public class LegendItem
     public bool HasSymbol => Line.Width > 0 || Marker.IsVisible || Fill.HasValue;
     public bool IsVisible => !string.IsNullOrEmpty(Label);
     public static IEnumerable<LegendItem> None => Array.Empty<LegendItem>();
+    public static IEnumerable<LegendItem> Single(LegendItem item) => new LegendItem[] { item };
 }
