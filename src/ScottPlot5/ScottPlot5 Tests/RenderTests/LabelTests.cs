@@ -25,7 +25,7 @@ internal class LabelTests
         float[] rotations = { 0, 90, 180, 270 };
         Alignment[] alignments = Enum.GetValues<Alignment>();
 
-        for (int i=0; i<alignments.Length; i++)
+        for (int i = 0; i < alignments.Length; i++)
         {
             lbl.Alignment = alignments[i];
             for (int j = 0; j < rotations.Length; j++)
