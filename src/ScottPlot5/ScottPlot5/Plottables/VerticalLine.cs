@@ -30,6 +30,9 @@ public class VerticalLine : AxisLine
         float y2 = rp.DataRect.Top;
         float x = Axes.GetPixelX(X);
 
+        if (!rp.DataRect.ContainsX(x))
+            return;
+
         // draw line
         LineStyle.ApplyToPaint(paint);
         rp.Canvas.DrawLine(x, y1, x, y2, paint);

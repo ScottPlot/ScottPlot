@@ -30,6 +30,9 @@ public class HorizontalLine : AxisLine
         float x2 = rp.DataRect.Right;
         float y = Axes.GetPixelY(Y);
 
+        if (!rp.DataRect.ContainsY(y))
+            return;
+
         // draw line
         LineStyle.ApplyToPaint(paint);
         rp.Canvas.DrawLine(x1, y, x2, y, paint);
