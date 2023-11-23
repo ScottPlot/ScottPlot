@@ -59,6 +59,7 @@ public class RenderManager
             new RenderActions.RenderPanels(),
             new RenderActions.RenderZoomRectangle(),
             new RenderActions.SyncGLPlottables(),
+            new RenderActions.RenderPlottablesLast(),
             new RenderActions.RenderBenchmark(),
         };
     }
