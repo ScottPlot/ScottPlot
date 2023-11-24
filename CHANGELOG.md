@@ -19,6 +19,7 @@
 * Arrow: Fixed bug in constructor overload (#2976, #3001) _Thanks @Gray-lab_
 * Controls: Resizing will now invoke `OnAxesChanged` event (#3000, #3002) _Thanks @dhgigisoave_
 * Plot: Added `LastRenderDimensions` for easy access to the latest figure dimensions (#3000, #3002) _Thanks @dhgigisoave_
+* DataLogger and DataStreamer: Added support for custom line styles (#2972, #2972) _Thanks @Gray-lab_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_
