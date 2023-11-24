@@ -81,7 +81,7 @@ namespace ScottPlot.Plottable
         public ArrowCoordinated(Coordinate arrowBase, Coordinate arrowTip)
         {
             Base.X = arrowBase.X;
-            Base.Y = arrowTip.Y;
+            Base.Y = arrowBase.Y;
             Tip.X = arrowTip.X;
             Tip.Y = arrowTip.Y;
         }
