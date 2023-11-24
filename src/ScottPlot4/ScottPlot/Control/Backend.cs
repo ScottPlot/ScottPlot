@@ -518,6 +518,9 @@ namespace ScottPlot.Control
                 RenderRequest(RenderType.HighQualityDelayed);
             else
                 Render();
+
+            // axes changed if the size changed
+            AxesChanged.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
