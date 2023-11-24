@@ -30,8 +30,8 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp2 = plt.Render(lowQuality: true);
 
             // measure what changed
-            TestTools.SaveFig(bmp1, "1");
-            TestTools.SaveFig(bmp2, "2");
+            // TestTools.SaveFig(bmp1, "1");
+            // TestTools.SaveFig(bmp2, "2");
 
             var before = new MeanPixel(bmp1);
             var after = new MeanPixel(bmp2);
