@@ -43,7 +43,7 @@ internal class Wipe : IDataStreamerView
         }
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-        using var pen = ScottPlot.Drawing.GDI.Pen(Streamer.Color, Streamer.LineWidth, LineStyle.Solid);
+        using var pen = ScottPlot.Drawing.GDI.Pen(Streamer.Color, Streamer.LineWidth, Streamer.LineStyle);
 
         if (oldest.Length > 1)
             gfx.DrawLines(pen, oldest);

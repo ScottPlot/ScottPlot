@@ -31,7 +31,7 @@ internal class Scroll : IDataStreamerView
         }
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-        using var pen = ScottPlot.Drawing.GDI.Pen(Streamer.Color, Streamer.LineWidth, LineStyle.Solid);
+        using var pen = ScottPlot.Drawing.GDI.Pen(Streamer.Color, Streamer.LineWidth, Streamer.LineStyle);
 
         if (points.Length > 1)
             gfx.DrawLines(pen, points);
