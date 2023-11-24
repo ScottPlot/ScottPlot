@@ -77,6 +77,7 @@ public abstract class AxisBase
             Color = lineStyle.Color.ToSKColor(),
             IsAntialias = true,
             StrokeWidth = lineStyle.Width,
+            IsStroke = true,
         };
 
         if (edge == Edge.Left)
@@ -143,13 +144,14 @@ public abstract class AxisBase
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
             float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
             float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
-
+            paint.IsStroke = true;
             rp.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
 
             if (!string.IsNullOrWhiteSpace(tick.Label))
             {
                 foreach (string line in tick.Label.Split('\n'))
                 {
+                    paint.IsStroke = false;
                     rp.Canvas.DrawText(line, xPx, yEdge + fontSpacing, paint);
                     fontSpacing += paint.TextSize;
                 }
@@ -178,10 +180,12 @@ public abstract class AxisBase
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float y = axis.GetPixel(tick.Position, panelRect);
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
+            paint.IsStroke = true;
             rp.Canvas.DrawLine(x, y, xEdge, y, paint);
 
             float majorTickLabelPadding = 7;
             float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
+            paint.IsStroke = false;
             if (!string.IsNullOrWhiteSpace(tick.Label))
                 rp.Canvas.DrawText(tick.Label, labelPos, y + paint.TextSize * .4f, paint);
         }
