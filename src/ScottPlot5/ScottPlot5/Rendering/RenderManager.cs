@@ -82,7 +82,9 @@ public class RenderManager
             }
 
             sw.Restart();
+            rp.Canvas.Save();
             action.Render(rp);
+            rp.Canvas.Restore();
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
