@@ -45,6 +45,7 @@ namespace ScottPlot.Plottable
         public Color ScatterOutlineColor { get; set; } = Color.Black;
         public Color BoxBorderColor { get; set; } = Color.Black;
         public Color ErrorStDevBarColor { get; set; } = Color.Black;
+        public byte MarkerAlpha { get; set; } = 128;
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
         public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
@@ -183,7 +184,7 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, MarkerAlpha, scatterPos);
 
                     if (DistributionCurve)
                         Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
