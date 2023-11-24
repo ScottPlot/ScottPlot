@@ -5,11 +5,15 @@ namespace ScottPlot
     /// <summary>
     /// PlotDimensions supplies figure dimensions and pixel/coordinate lookup methods for a single 2D plane
     /// </summary>
-    public class PlotDimensions
+    public readonly struct PlotDimensions
     {
-        // plot dimensions
+        // figure dimensions (pixel units)
         public readonly float Width;
         public readonly float Height;
+        public readonly float FigureWidth => Width;
+        public readonly float FigureHeight => Height;
+
+        // data area dimensions (pixel units)
         public readonly float DataWidth;
         public readonly float DataHeight;
         public readonly float DataOffsetX;
@@ -18,7 +22,7 @@ namespace ScottPlot
         // rendering options
         public readonly double ScaleFactor;
 
-        // axis limits
+        // axis limits (coordinate units)
         public readonly double XMin;
         public readonly double XMax;
         public readonly double YMin;
@@ -77,6 +81,11 @@ namespace ScottPlot
             float width = right - left;
             float height = bottom - top;
             return new RectangleF(left, top, width, height);
+        }
+
+        public PlotDimensions()
+        {
+
         }
 
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits axisLimits, double scaleFactor, bool is_reverse_x = false, bool is_reverse_y = false)

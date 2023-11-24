@@ -12,6 +12,8 @@ namespace ScottPlot
     {
         #region primary render system
 
+        public PlotDimensions LastRenderDimensions { get; private set; } = new();
+
         /// <summary>
         /// Render the plot onto an existing bitmap
         /// </summary>
@@ -43,6 +45,8 @@ namespace ScottPlot
                     RenderPlottables(bmp, lowQuality, scale);
                     RenderAfterPlottables(bmp, lowQuality, primaryDims);
                 }
+
+                LastRenderDimensions = primaryDims;
 
                 return bmp;
             }
