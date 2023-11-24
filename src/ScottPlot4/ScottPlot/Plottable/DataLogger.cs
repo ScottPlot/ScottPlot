@@ -197,7 +197,7 @@ public class DataLogger : IPlottable, IHasColor, IHasLine, IHasMarker
             UpdateAxisLimits();
 
         using var gfx = ScottPlot.Drawing.GDI.Graphics(bmp, dims, lowQuality);
-        using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle.Solid);
+        using var pen = ScottPlot.Drawing.GDI.Pen(Color, LineWidth, LineStyle);
 
         PointF[] points = Data.Select(x => dims.GetPixel(x).ToPointF()).ToArray();
         if (points.Length > 1)
