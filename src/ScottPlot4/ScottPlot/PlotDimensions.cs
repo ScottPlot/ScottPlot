@@ -7,9 +7,13 @@ namespace ScottPlot
     /// </summary>
     public readonly struct PlotDimensions
     {
-        // plot dimensions
+        // figure dimensions (pixel units)
         public readonly float Width;
         public readonly float Height;
+        public readonly float FigureWidth => Width;
+        public readonly float FigureHeight => Height;
+
+        // data area dimensions (pixel units)
         public readonly float DataWidth;
         public readonly float DataHeight;
         public readonly float DataOffsetX;
@@ -18,7 +22,7 @@ namespace ScottPlot
         // rendering options
         public readonly double ScaleFactor;
 
-        // axis limits
+        // axis limits (coordinate units)
         public readonly double XMin;
         public readonly double XMax;
         public readonly double YMin;
