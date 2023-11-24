@@ -14,9 +14,9 @@ namespace WpfApp
             WpfPlot1.Refresh();
             WpfPlot1.Refresh();
 
-            WpfPlot1.SizeChanged += (s, e) =>
+            WpfPlot1.AxesChanged += (s, e) =>
             {
-                Title = $"Actual={WpfPlot1.ActualWidth}, Reported={WpfPlot1.Plot.XAxis.Dims.FigureSizePx}";
+                Title = $"{WpfPlot1.Plot.LastRenderDimensions.FigureWidth}";
             };
         }
     }
