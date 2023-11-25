@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class MatchedLayout
+partial class SharedAxes
 {
     /// <summary>
     /// Required designer variable.

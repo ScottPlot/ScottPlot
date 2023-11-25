@@ -3,13 +3,13 @@ using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
 
-public partial class MatchedLayout : Form, IDemoWindow
+public partial class SharedAxes : Form, IDemoWindow
 {
-    public string Title => "Matched Axes and Layouts";
+    public string Title => "Shared Axes";
 
     public string Description => "Connect two controls together so they share an axis and have aligned layouts";
 
-    public MatchedLayout()
+    public SharedAxes()
     {
         InitializeComponent();
 
@@ -17,8 +17,14 @@ public partial class MatchedLayout : Form, IDemoWindow
         formsPlot1.Plot.Add.Signal(Generate.Sin(51, mult: 1));
         formsPlot2.Plot.Add.Signal(Generate.Sin(51, mult: 100_000));
 
+        // add labels
+        formsPlot1.Plot.LeftAxis.Label.Text = "Vertical Axis";
+        formsPlot2.Plot.LeftAxis.Label.Text = "Vertical Axis";
+        formsPlot1.Plot.BottomAxis.Label.Text = "Horizontal Axis";
+        formsPlot2.Plot.BottomAxis.Label.Text = "Horizontal Axis";
+
         // use a fixed size for the left axis panel to ensure it's always aligned
-        float leftAxisSize = 70;
+        float leftAxisSize = 90;
         formsPlot1.Plot.LeftAxis.MinimumSize = leftAxisSize;
         formsPlot1.Plot.LeftAxis.MaximumSize = leftAxisSize;
         formsPlot2.Plot.LeftAxis.MinimumSize = leftAxisSize;
