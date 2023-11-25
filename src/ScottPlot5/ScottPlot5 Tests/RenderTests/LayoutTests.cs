@@ -30,7 +30,7 @@ internal class LayoutTests
         plt.Add.Signal(ScottPlot.Generate.Sin());
         plt.Add.Signal(ScottPlot.Generate.Cos());
 
-        foreach(IPanel panel in plt.Axes)
+        foreach (IPanel panel in plt.Axes)
         {
             panel.MinimumSize = 100;
             panel.ShowDebugInformation = true;
