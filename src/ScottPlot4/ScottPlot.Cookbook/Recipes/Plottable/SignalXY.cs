@@ -12,7 +12,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "signalxy_quickstart";
         public string Title => "SignalXY Quickstart";
         public string Description =>
-            "SignalXY is a speed-optimized plot for displaying vaues (Ys) with unevenly-spaced positions (Xs) " +
+            "SignalXY is a speed-optimized plot for displaying values (Ys) with unevenly-spaced positions (Xs) " +
             "that are in ascending order. If your data is evenly-spaced, Signal and SignalConst is faster.";
 
         public void ExecuteRecipe(Plot plt)
