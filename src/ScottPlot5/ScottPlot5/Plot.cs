@@ -143,20 +143,38 @@ public class Plot : IDisposable
         .Concat(new[] { TitlePanel })
         .ToArray();
 
-    public void SetAxisLimits(double left, double right, double bottom, double top)
+    public void SetAxisLimitsX(double left, double right)
     {
         XAxis.Min = left;
         XAxis.Max = right;
+    }
+
+    public void SetAxisLimitsY(double bottom, double top)
+    {
         YAxis.Min = bottom;
         YAxis.Max = top;
     }
 
+    public void SetAxisLimitsX(AxisLimits limits)
+    {
+        SetAxisLimitsX(limits.Left, limits.Right);
+    }
+
+    public void SetAxisLimitsY(AxisLimits limits)
+    {
+        SetAxisLimitsY(limits.Bottom, limits.Top);
+    }
+
+    public void SetAxisLimits(double left, double right, double bottom, double top)
+    {
+        SetAxisLimitsX(left, right);
+        SetAxisLimitsY(bottom, top);
+    }
+
     public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
     {
-        XAxis.Min = left ?? XAxis.Min;
-        XAxis.Max = right ?? XAxis.Max;
-        YAxis.Min = bottom ?? YAxis.Min;
-        YAxis.Max = top ?? YAxis.Max;
+        SetAxisLimitsX(left ?? XAxis.Min, right ?? XAxis.Max);
+        SetAxisLimitsY(bottom ?? YAxis.Min, top ?? YAxis.Max);
     }
 
     public void SetAxisLimits(CoordinateRect rect)
