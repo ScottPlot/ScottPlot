@@ -10,6 +10,8 @@ public class ColorBar : IPanel
     public float Width { get; set; } = 50;
     public float Margin { get; set; } = 15;
     public bool ShowDebugInformation { get; set; } = false;
+    public float MinimumSize { get; set; } = 0;
+    public float MaximumSize { get; set; } = float.MaxValue;
 
     public ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
     {
