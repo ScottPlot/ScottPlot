@@ -7,8 +7,8 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public List<IXAxis> XAxes { get; } = new();
-    public List<IYAxis> YAxes { get; } = new();
+    public List<IXAxis> XAxes { get; } = new(); // TODO: axes should be inside the Panels list
+    public List<IYAxis> YAxes { get; } = new(); // TODO: axes should be inside the Panels list
     public List<IAxis> Axes => Enumerable.Concat<IAxis>(XAxes, YAxes).ToList();
 
     public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
