@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using ScottPlot;
 
 #nullable enable
@@ -14,6 +13,8 @@ public partial class MainWindow : Window
 
         Loaded += (s, e) =>
         {
+            WpfPlot1.Plot.Add.Signal(Generate.Sin());
+            WpfPlot1.Plot.Add.Signal(Generate.Cos());
             WpfPlot1.Refresh();
         };
     }

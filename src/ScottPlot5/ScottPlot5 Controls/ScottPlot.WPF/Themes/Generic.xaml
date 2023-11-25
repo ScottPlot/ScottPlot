@@ -5,10 +5,10 @@
     xmlns:skiaPreview="clr-namespace:SkiaSharp.Views.WPF"
     >
 
-    <Style TargetType="{x:Type local:WpfPlot}">
+    <Style TargetType="{x:Type local:WpfPlotGL}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:WpfPlot}">
+                <ControlTemplate TargetType="{x:Type local:WpfPlotGL}">
                     <skiaPreview:SKGLElement x:Name="PART_SKElement" />
                 </ControlTemplate>
             </Setter.Value>
