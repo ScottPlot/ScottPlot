@@ -12,6 +12,7 @@
 * Render: Created `IRenderLast` plottables can implement to draw above axes (#2998, #2993)
 * Controls: Added `Interaction.Disable()` and `Interaction.Enable()` methods for easy control of mouse interactivity
 * Render: Improve axis frame and tick mark rendering for SVG export (#2944) _Thanks @Crown0815_
+* Controls: Created OpenGL controls `FormsPlotGL` and `WpfPlotGL` distinct from `FormsPlot` and `WpfPlot` (#3008, #3007, #2950, #2395, #2565)
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
