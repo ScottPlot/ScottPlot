@@ -296,7 +296,7 @@ public class Plot : IDisposable
     /// </summary>
     public void Pan(PixelSize distance)
     {
-        if (RenderManager.RenderCount == 0)
+        if (RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
         XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRender.DataRect)));
