@@ -4,7 +4,7 @@ namespace WinForms_Demo.Demos;
 
 public partial class SignalPerformance : Form, IDemoWindow
 {
-    public string Title => "ScottPlot Performance";
+    public string Title => "Scatter Plot vs. Signal Plot";
 
     public string Description => "Demonstrates how Signal plots and " +
         "OpenGL-accelerated Scatter plots can display " +

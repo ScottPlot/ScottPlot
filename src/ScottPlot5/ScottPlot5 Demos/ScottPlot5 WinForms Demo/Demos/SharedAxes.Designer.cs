@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class SharedAxesForm
+partial class SharedAxes
 {
     /// <summary>
     /// Required designer variable.
@@ -67,14 +67,14 @@ partial class SharedAxesForm
         formsPlot2.Size = new Size(794, 219);
         formsPlot2.TabIndex = 1;
         // 
-        // SharedAxes
+        // MatchedLayout
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(800, 450);
         Controls.Add(tableLayoutPanel1);
-        Name = "SharedAxes";
-        Text = "SharedAxes";
+        Name = "MatchedLayout";
+        Text = "MatchedLayout";
         tableLayoutPanel1.ResumeLayout(false);
         ResumeLayout(false);
     }
