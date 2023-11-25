@@ -7,6 +7,8 @@ public class TitlePanel : IPanel
     public Edge Edge => Edge.Top;
 
     public bool ShowDebugInformation { get; set; } = false;
+    public float MinimumSize { get; set; } = 0;
+    public float MaximumSize { get; set; } = float.MaxValue;
 
     public Label Label { get; } = new()
     {

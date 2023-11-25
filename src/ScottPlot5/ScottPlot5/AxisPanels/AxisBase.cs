@@ -7,6 +7,8 @@ public abstract class AxisBase
     public abstract Edge Edge { get; }
 
     public virtual CoordinateRange Range { get; private set; } = CoordinateRange.NotSet;
+    public float MinimumSize { get; set; } = 0;
+    public float MaximumSize { get; set; } = float.MaxValue;
 
     public double Min
     {

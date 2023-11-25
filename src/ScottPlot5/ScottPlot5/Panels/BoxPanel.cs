@@ -6,6 +6,8 @@ public class BoxPanel : IPanel
     public Edge Edge { get; set; }
     public float Size { get; set; }
     public bool ShowDebugInformation { get; set; } = false;
+    public float MinimumSize { get; set; } = 0;
+    public float MaximumSize { get; set; } = float.MaxValue;
 
     public float Measure() => IsVisible ? Size : 0;
 

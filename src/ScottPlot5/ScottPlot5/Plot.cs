@@ -7,8 +7,8 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public List<IXAxis> XAxes { get; } = new();
-    public List<IYAxis> YAxes { get; } = new();
+    public List<IXAxis> XAxes { get; } = new(); // TODO: axes should be inside the Panels list
+    public List<IYAxis> YAxes { get; } = new(); // TODO: axes should be inside the Panels list
     public List<IAxis> Axes => Enumerable.Concat<IAxis>(XAxes, YAxes).ToList();
 
     public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
@@ -143,20 +143,38 @@ public class Plot : IDisposable
         .Concat(new[] { TitlePanel })
         .ToArray();
 
-    public void SetAxisLimits(double left, double right, double bottom, double top)
+    public void SetAxisLimitsX(double left, double right)
     {
         XAxis.Min = left;
         XAxis.Max = right;
+    }
+
+    public void SetAxisLimitsY(double bottom, double top)
+    {
         YAxis.Min = bottom;
         YAxis.Max = top;
     }
 
+    public void SetAxisLimitsX(AxisLimits limits)
+    {
+        SetAxisLimitsX(limits.Left, limits.Right);
+    }
+
+    public void SetAxisLimitsY(AxisLimits limits)
+    {
+        SetAxisLimitsY(limits.Bottom, limits.Top);
+    }
+
+    public void SetAxisLimits(double left, double right, double bottom, double top)
+    {
+        SetAxisLimitsX(left, right);
+        SetAxisLimitsY(bottom, top);
+    }
+
     public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
     {
-        XAxis.Min = left ?? XAxis.Min;
-        XAxis.Max = right ?? XAxis.Max;
-        YAxis.Min = bottom ?? YAxis.Min;
-        YAxis.Max = top ?? YAxis.Max;
+        SetAxisLimitsX(left ?? XAxis.Min, right ?? XAxis.Max);
+        SetAxisLimitsY(bottom ?? YAxis.Min, top ?? YAxis.Max);
     }
 
     public void SetAxisLimits(CoordinateRect rect)
@@ -278,7 +296,7 @@ public class Plot : IDisposable
     /// </summary>
     public void Pan(PixelSize distance)
     {
-        if (RenderManager.RenderCount == 0)
+        if (RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
         XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRender.DataRect)));
