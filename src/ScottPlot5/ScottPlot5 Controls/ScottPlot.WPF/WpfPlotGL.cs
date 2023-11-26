@@ -25,8 +25,6 @@ public class WpfPlotGL : System.Windows.Controls.Control, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    public RenderQueue RenderQueue { get; } = new();
-
     static WpfPlotGL()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
@@ -121,7 +119,6 @@ public class WpfPlotGL : System.Windows.Controls.Control, IPlotControl
     public void Refresh()
     {
         SKElement?.InvalidateVisual();
-        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)

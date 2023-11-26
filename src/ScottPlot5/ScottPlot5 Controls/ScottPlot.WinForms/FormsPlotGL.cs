@@ -37,6 +37,5 @@ public class FormsPlotGL : FormsPlotBase
     {
         SKElement.Invalidate();
         base.Refresh();
-        RenderQueue.RefreshAll();
     }
 }

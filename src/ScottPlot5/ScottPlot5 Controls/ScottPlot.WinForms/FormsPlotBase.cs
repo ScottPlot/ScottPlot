@@ -18,8 +18,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    public RenderQueue RenderQueue { get; } = new();
-
     public FormsPlotBase()
     {
         DisplayScale = DetectDisplayScale();
