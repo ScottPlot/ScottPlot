@@ -19,9 +19,6 @@ public class EtoPlot : Drawable, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    public RenderQueue RenderQueue { get; } = new();
-
-
     private readonly List<FileFilter> fileDialogFilters = new()
     {
         new() { Name = "PNG Files", Extensions = new string[] { "png" } },
@@ -79,7 +76,6 @@ public class EtoPlot : Drawable, IPlotControl
     public void Refresh()
     {
         Invalidate();
-        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)

@@ -26,8 +26,6 @@ public partial class WpfPlot : UserControl, IPlotControl
 
     public GRContext GRContext => null!;
 
-    public RenderQueue RenderQueue { get; } = new();
-
     public float DisplayScale { get; set; }
 
     public WpfPlot()
