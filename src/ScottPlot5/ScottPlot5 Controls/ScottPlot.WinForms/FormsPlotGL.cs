@@ -5,16 +5,16 @@ using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
-public class FormsPlot : FormsPlotBase
+public class FormsPlotGL : FormsPlotBase
 {
-    readonly SKControl SKElement;
+    readonly SKGLControl SKElement;
 
-    public override GRContext GRContext => null!;
+    public override GRContext GRContext => SKElement.GRContext;
 
-    public FormsPlot()
+    public FormsPlotGL()
     {
-        SKElement = new() { Dock = DockStyle.Fill };
-        SKElement.PaintSurface += SKElement_PaintSurface; ;
+        SKElement = new() { Dock = DockStyle.Fill, VSync = true };
+        SKElement.PaintSurface += SKControl_PaintSurface;
         SKElement.MouseDown += SKElement_MouseDown;
         SKElement.MouseUp += SKElement_MouseUp;
         SKElement.MouseMove += SKElement_MouseMove;
@@ -28,7 +28,7 @@ public class FormsPlot : FormsPlotBase
         HandleDestroyed += (s, e) => SKElement.Dispose();
     }
 
-    private void SKElement_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
+    private void SKControl_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
     {
         Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
     }

@@ -1,27 +1,58 @@
 ﻿using ScottPlot;
+using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
 
-public partial class SharedAxesForm : Form, IDemoWindow
+public partial class SharedAxes : Form, IDemoWindow
 {
-    SharedAxisManager SharedAxes = new(shareX: true, shareY: false);
-    SharedLayoutManager SharedLayout = new(shareX: true, shareY: false);
+    public string Title => "Shared Axes";
 
-    public SharedAxesForm()
+    public string Description => "Connect two controls together so they share an axis and have aligned layouts";
+
+    public SharedAxes()
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin(mult: 100_000));
-        formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Cos());
+        // plot sample data
+        formsPlot1.Plot.Add.Signal(Generate.Sin(51, mult: 1));
+        formsPlot2.Plot.Add.Signal(Generate.Sin(51, mult: 100_000));
 
-        SharedAxes.Add(formsPlot1);
-        SharedAxes.Add(formsPlot2);
+        // add labels
+        formsPlot1.Plot.LeftAxis.Label.Text = "Vertical Axis";
+        formsPlot2.Plot.LeftAxis.Label.Text = "Vertical Axis";
+        formsPlot1.Plot.BottomAxis.Label.Text = "Horizontal Axis";
+        formsPlot2.Plot.BottomAxis.Label.Text = "Horizontal Axis";
 
-        SharedLayout.Add(formsPlot1);
-        SharedLayout.Add(formsPlot2);
+        // use a fixed size for the left axis panel to ensure it's always aligned
+        float leftAxisSize = 90;
+        formsPlot1.Plot.LeftAxis.MinimumSize = leftAxisSize;
+        formsPlot1.Plot.LeftAxis.MaximumSize = leftAxisSize;
+        formsPlot2.Plot.LeftAxis.MinimumSize = leftAxisSize;
+        formsPlot2.Plot.LeftAxis.MaximumSize = leftAxisSize;
+
+        // when one plot changes update the other plot
+        formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
+        {
+            ApplyLayoutToOtherPlot(formsPlot1, formsPlot2);
+        };
+        formsPlot2.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
+        {
+            ApplyLayoutToOtherPlot(formsPlot2, formsPlot1);
+        };
+
+        // initial render
+        formsPlot1.Refresh();
+        formsPlot2.Refresh();
     }
 
-    public string Title => "Shared Axes";
-
-    public string Description => "Two plot controls that share axis limits so one when changes the other updates automatically";
+    private void ApplyLayoutToOtherPlot(IPlotControl source, IPlotControl dest)
+    {
+        AxisLimits axesBefore = dest.Plot.GetAxisLimits();
+        dest.Plot.SetAxisLimitsX(source.Plot.GetAxisLimits());
+        AxisLimits axesAfter = dest.Plot.GetAxisLimits();
+        if (axesBefore != axesAfter)
+        {
+            dest.Refresh();
+        }
+    }
 }

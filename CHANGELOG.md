@@ -12,6 +12,7 @@
 * Render: Created `IRenderLast` plottables can implement to draw above axes (#2998, #2993)
 * Controls: Added `Interaction.Disable()` and `Interaction.Enable()` methods for easy control of mouse interactivity
 * Render: Improve axis frame and tick mark rendering for SVG export (#2944) _Thanks @Crown0815_
+* Controls: Created OpenGL controls `FormsPlotGL` and `WpfPlotGL` distinct from `FormsPlot` and `WpfPlot` (#3008, #3007, #2950, #2395, #2565)
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
@@ -19,6 +20,7 @@
 * Arrow: Fixed bug in constructor overload (#2976, #3001) _Thanks @Gray-lab_
 * Controls: Resizing will now invoke `OnAxesChanged` event (#3000, #3002) _Thanks @dhgigisoave_
 * Plot: Added `LastRenderDimensions` for easy access to the latest figure dimensions (#3000, #3002) _Thanks @dhgigisoave_
+* DataLogger and DataStreamer: Added support for custom line styles (#2972, #2972) _Thanks @Gray-lab_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_

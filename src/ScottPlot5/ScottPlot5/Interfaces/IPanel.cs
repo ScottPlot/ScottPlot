@@ -12,6 +12,16 @@ public interface IPanel
     public bool IsVisible { get; set; }
 
     /// <summary>
+    /// Disallow the panel to be smaller than this
+    /// </summary>
+    public float MinimumSize { get; set; }
+
+    /// <summary>
+    /// Disallow the panel to be larger than this
+    /// </summary>
+    public float MaximumSize { get; set; }
+
+    /// <summary>
     /// Return the size (in pixels) of the panel in the dimension perpendicular to the edge it lays on
     /// </summary>
     /// <returns></returns>

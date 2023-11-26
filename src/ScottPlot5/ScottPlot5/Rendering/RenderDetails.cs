@@ -41,26 +41,28 @@ public readonly struct RenderDetails
     public readonly AxisLimits AxisLimits;
 
     /// <summary>
-    /// Indicates whether the axis limits of this render are different
-    /// from those of the previous render.
+    /// Indicates whether the axis view (coordinate units) of this render differs from the previous
     /// </summary>
-    public readonly bool AxisLimitsChanged;
+    public readonly bool AxisLimitsChanged { get; }
 
     /// <summary>
-    /// Indicates whether the pixel dimensions of this render are different
-    /// from those of the previous render.
+    /// Indicates whether the size (pixels) of this render differs from the previous
     /// </summary>
-    public readonly bool LayoutChanged; // TODO: delete this???
+    public readonly bool SizeChanged { get; }
 
     /// <summary>
     /// Arrangement of all panels
     /// </summary>
     public readonly Layout Layout;
 
-    public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes)
+    /// <summary>
+    /// The number of total renders including this one
+    /// </summary>
+    public readonly int Count;
+
+    public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes, RenderDetails lastRender)
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
-
         FigureRect = rp.FigureRect;
         DataRect = rp.DataRect;
         Padding = new PixelPadding(rp.FigureRect.Size, rp.DataRect);
@@ -69,12 +71,10 @@ public readonly struct RenderDetails
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.GetAxisLimits();
         Layout = rp.Layout;
-
-        RenderDetails previous = rp.Plot.RenderManager.LastRender;
+        Count = lastRender.Count + 1;
 
         // TODO: evaluate multi-axis limits (not just the primary axes)
-        AxisLimitsChanged = !AxisLimits.Equals(previous.AxisLimits);
-
-        LayoutChanged = !Layout.Equals(previous.Layout);
+        AxisLimitsChanged = !AxisLimits.Equals(lastRender.AxisLimits);
+        SizeChanged = !DataRect.Equals(lastRender.DataRect);
     }
 }

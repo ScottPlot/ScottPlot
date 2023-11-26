@@ -10,6 +10,14 @@ namespace ScottPlot.WPF;
 
 internal static class WpfPlotExtensions
 {
+    internal static Pixel Pixel(this MouseEventArgs e, WpfPlotGL plot)
+    {
+        DpiScale dpiScale = VisualTreeHelper.GetDpi(plot);
+        double x = e.GetPosition(plot).X * dpiScale.DpiScaleX;
+        double y = e.GetPosition(plot).Y * dpiScale.DpiScaleY;
+        return new Pixel((float)x, (float)y);
+    }
+
     internal static Pixel Pixel(this MouseEventArgs e, WpfPlot plot)
     {
         DpiScale dpiScale = VisualTreeHelper.GetDpi(plot);

@@ -14,14 +14,19 @@ public class RenderManager
     public RenderDetails LastRender { get; private set; }
 
     /// <summary>
-    /// Total number of renders
-    /// </summary>
-    public int RenderCount { get; private set; } = 0;
-
-    /// <summary>
     /// This event is invoked after each render
     /// </summary>
-    public event EventHandler<RenderDetails> RenderFinished = delegate { };
+    public EventHandler<RenderDetails> RenderFinished { get; set; } = delegate { };
+
+    /// <summary>
+    /// This event a render where the figure size (in pixels) changed from the previous render
+    /// </summary>
+    public EventHandler<RenderDetails> SizeChanged { get; set; } = delegate { };
+
+    /// <summary>
+    /// This event a render where the axis limits (in coordinate units) changed from the previous render
+    /// </summary>
+    public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
     /// <summary>
     /// Indicates whether this plot is in the process of executing a render
@@ -33,36 +38,35 @@ public class RenderManager
     /// </summary>
     public bool ClearCanvasBeforeRendering { get; set; } = true;
 
+    public bool EnableEvents { get; set; } = true;
+
     private Plot Plot { get; }
 
     public RenderManager(Plot plot)
     {
         Plot = plot;
-        RenderActions = new(DefaultRenderActions());
+        RenderActions = new(RenderManager.DefaultRenderActions);
     }
 
-    public IRenderAction[] DefaultRenderActions()
+    public static IRenderAction[] DefaultRenderActions => new IRenderAction[]
     {
-        return new IRenderAction[]
-        {
-            new RenderActions.ClearCanvas(),
-            new RenderActions.ReplaceNullAxesWithDefaults(),
-            new RenderActions.AutoAxisAnyUnsetAxes(),
-            new RenderActions.EnsureAxesHaveArea(),
-            new RenderActions.CalculateLayout(),
-            new RenderActions.RegenerateTicks(),
-            new RenderActions.RenderBackground(),
-            new RenderActions.RenderGridsBelowPlottables(),
-            new RenderActions.RenderPlottables(),
-            new RenderActions.RenderGridsAbovePlottables(),
-            new RenderActions.RenderLegends(),
-            new RenderActions.RenderPanels(),
-            new RenderActions.RenderZoomRectangle(),
-            new RenderActions.SyncGLPlottables(),
-            new RenderActions.RenderPlottablesLast(),
-            new RenderActions.RenderBenchmark(),
-        };
-    }
+        new RenderActions.ClearCanvas(),
+        new RenderActions.ReplaceNullAxesWithDefaults(),
+        new RenderActions.AutoAxisAnyUnsetAxes(),
+        new RenderActions.EnsureAxesHaveArea(),
+        new RenderActions.CalculateLayout(),
+        new RenderActions.RegenerateTicks(),
+        new RenderActions.RenderBackground(),
+        new RenderActions.RenderGridsBelowPlottables(),
+        new RenderActions.RenderPlottables(),
+        new RenderActions.RenderGridsAbovePlottables(),
+        new RenderActions.RenderLegends(),
+        new RenderActions.RenderPanels(),
+        new RenderActions.RenderZoomRectangle(),
+        new RenderActions.SyncGLPlottables(),
+        new RenderActions.RenderPlottablesLast(),
+        new RenderActions.RenderBenchmark(),
+    };
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
@@ -88,10 +92,25 @@ public class RenderManager
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        LastRender = new(rp, actionTimes.ToArray());
+        LastRender = new(rp, actionTimes.ToArray(), LastRender);
 
-        RenderCount += 1;
-        RenderFinished.Invoke(Plot, LastRender);
+        if (EnableEvents)
+        {
+            RenderFinished.Invoke(Plot, LastRender);
+
+            if (LastRender.SizeChanged)
+            {
+                SizeChanged.Invoke(Plot, LastRender);
+            }
+
+            if (LastRender.AxisLimitsChanged)
+            {
+                AxisLimitsChanged.Invoke(Plot, LastRender);
+            }
+        }
+
+        // TODO: event for when layout changes
+
         IsRendering = false;
     }
 }
