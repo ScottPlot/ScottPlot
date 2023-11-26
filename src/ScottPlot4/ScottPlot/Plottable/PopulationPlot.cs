@@ -56,6 +56,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Transparency (alpha) of boxes depends on the <see cref="DataFormat"/> by default.
         /// If this value is defined, all box plots will be rendered using this alpha value.
+        /// Values range from 0 (transparent) to 255 (opaque).
         /// </summary>
         public byte? BoxAlphaOverride { get; set; } = null;
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
