@@ -27,8 +27,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    public RenderQueue RenderQueue { get; } = new();
-
     public WinUIPlot()
     {
         DisplayScale = DetectDisplayScale();
@@ -93,7 +91,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public void Refresh()
     {
         _canvas.Invalidate();
-        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)

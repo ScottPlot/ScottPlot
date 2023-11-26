@@ -29,8 +29,6 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Interaction = new(this);
     }
 
-    public RenderQueue RenderQueue { get; } = new();
-
     public Interaction Interaction { get; private set; }
 
     public GRContext? GRContext => null;

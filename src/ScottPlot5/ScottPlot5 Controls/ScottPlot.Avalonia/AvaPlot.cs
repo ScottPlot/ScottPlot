@@ -25,9 +25,6 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    public RenderQueue RenderQueue { get; } = new();
-
-
     private static readonly List<FilePickerFileType> filePickerFileTypes = new()
     {
         new("PNG Files") { Patterns = new List<string> { "*.png" } },
@@ -133,7 +130,6 @@ public class AvaPlot : Controls.Control, IPlotControl
     public void Refresh()
     {
         InvalidateVisual();
-        RenderQueue.RefreshAll();
     }
 
     public void ShowContextMenu(Pixel position)
