@@ -96,7 +96,7 @@ internal class Population
 
         ScottPlot.Plot plt = new(600, 400);
         var pplt = plt.AddPopulations(populations);
-    
+
         // plot with default semitransparency
         var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -135,7 +135,7 @@ internal class Population
 
         ScottPlot.Plot plt = new(600, 400);
         var pplt = plt.AddPopulations(populations);
-        
+
         // plot with default semitransparency
         var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
