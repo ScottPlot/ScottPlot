@@ -85,6 +85,28 @@ public static class Generate
         return values;
     }
 
+    public static double[] Zeros(int count)
+    {
+        return Repeating(count, 0);
+    }
+
+    public static double[] Ones(int count)
+    {
+        return Repeating(count, 1);
+    }
+
+    public static double[] Repeating(int count, double value)
+    {
+        double[] values = new double[count];
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            values[i] = value;
+        }
+
+        return values;
+    }
+
     #endregion
 
     #region numerical 2D

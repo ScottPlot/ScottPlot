@@ -34,7 +34,7 @@ public class Plot : IDisposable
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
-    public AutoScaleMargins AutoScaleMargins { get; private set; } = new(.1, .15);
+    public IAutoScaler AutoScaler { get; set; } = new AutoScalers.FractionalAutoScaler(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
     public IZoomRectangle ZoomRectangle { get; set; }
@@ -143,26 +143,26 @@ public class Plot : IDisposable
         .Concat(new[] { TitlePanel })
         .ToArray();
 
+    public void SetAxisLimitsX(double left, double right, IXAxis xAxis)
+    {
+        xAxis.Min = left;
+        xAxis.Max = right;
+    }
+
+    public void SetAxisLimitsY(double bottom, double top, IYAxis yAxis)
+    {
+        yAxis.Min = bottom;
+        yAxis.Max = top;
+    }
+
     public void SetAxisLimitsX(double left, double right)
     {
-        XAxis.Min = left;
-        XAxis.Max = right;
+        SetAxisLimitsX(left, right, XAxis);
     }
 
     public void SetAxisLimitsY(double bottom, double top)
     {
-        YAxis.Min = bottom;
-        YAxis.Max = top;
-    }
-
-    public void SetAxisLimitsX(AxisLimits limits)
-    {
-        SetAxisLimitsX(limits.Left, limits.Right);
-    }
-
-    public void SetAxisLimitsY(AxisLimits limits)
-    {
-        SetAxisLimitsY(limits.Bottom, limits.Top);
+        SetAxisLimitsY(bottom, top, YAxis);
     }
 
     public void SetAxisLimits(double left, double right, double bottom, double top)
@@ -182,9 +182,35 @@ public class Plot : IDisposable
         SetAxisLimits(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
-    public void SetAxisLimits(AxisLimits rect)
+    public void SetAxisLimitsX(AxisLimits limits)
     {
-        SetAxisLimits(rect.Rect);
+        SetAxisLimitsX(limits.Left, limits.Right);
+    }
+
+    public void SetAxisLimitsX(AxisLimits limits, IXAxis xAxis)
+    {
+        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
+    }
+
+    public void SetAxisLimitsY(AxisLimits limits)
+    {
+        SetAxisLimitsY(limits.Bottom, limits.Top);
+    }
+
+    public void SetAxisLimitsY(AxisLimits limits, IYAxis yAxis)
+    {
+        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
+    }
+
+    public void SetAxisLimits(AxisLimits limits)
+    {
+        SetAxisLimits(limits, XAxis, YAxis);
+    }
+
+    public void SetAxisLimits(AxisLimits limits, IXAxis xAxis, IYAxis yAxis)
+    {
+        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
+        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
     }
 
     public void SetAxisLimits(CoordinateRange xRange, CoordinateRange yRange)
@@ -210,36 +236,23 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Automatically scale the axis limits to fit the data.
-    /// Note: This used to be AxisAuto().
-    /// Note: Margin size can be customized by editing properties of <see cref="AutoScaleMargins"/>
+    /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
+    /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
     /// </summary>
-    public void AutoScale()
+    public void Margins(double horizontal = 0.1, double vertical = .15)
     {
-        // reset limits for all axes
-        XAxes.ForEach(xAxis => xAxis.Range.Reset());
-        YAxes.ForEach(yAxis => yAxis.Range.Reset());
-
-        // assign default axes to plottables without axes
-        ReplaceNullAxesWithDefaults();
-
-        // expand all axes by the limits of each plot
-        foreach (IPlottable plottable in PlottableList)
-        {
-            AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis);
-        }
+        AutoScaler = new AutoScalers.FractionalAutoScaler(horizontal, vertical);
+        AutoScale();
     }
 
     /// <summary>
-    /// Define the amount of whitespace to include around the data when calling <see cref="AutoScale()"/>.
+    /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
     /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
     /// </summary>
-    public void Margins(double horizontal = 0.1, double vertical = .15, bool apply = true)
+    public void Margins(double left, double right, double bottom, double top)
     {
-        AutoScaleMargins = new(horizontal, vertical);
-
-        if (apply)
-            AutoScale();
+        AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
+        AutoScale();
     }
 
     /// <summary>
@@ -258,28 +271,22 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Automatically scale the axis limits to fit the data.
+    /// Call <see cref="Margins(double, double, bool)"/> to change data padding settings.
+    /// </summary>
+    public void AutoScale()
+    {
+        AutoScale(XAxis, YAxis);
+    }
+
+    /// <summary>
     /// Automatically scale the given axes to fit the data in plottables which use them
     /// </summary>
     public void AutoScale(IXAxis xAxis, IYAxis yAxis)
     {
-        // reset limits only for these axes
-        xAxis.Range.Reset();
-        yAxis.Range.Reset();
-
-        // assign default axes to plottables without axes
         ReplaceNullAxesWithDefaults();
-
-        // expand all axes by the limits of each plot
-        foreach (IPlottable plottable in PlottableList)
-        {
-            AxisLimits limits = plottable.GetAxisLimits();
-            plottable.Axes.YAxis.Range.Expand(limits.Rect.YRange);
-            plottable.Axes.XAxis.Range.Expand(limits.Rect.XRange);
-        }
-
-        // apply margins
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(1 - AutoScaleMargins.Horizontal));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(1 - AutoScaleMargins.Vertical));
+        AxisLimits limits = AutoScaler.GetAxisLimits(PlottableList, xAxis, yAxis);
+        SetAxisLimits(limits, xAxis, yAxis);
     }
 
     /// <summary>

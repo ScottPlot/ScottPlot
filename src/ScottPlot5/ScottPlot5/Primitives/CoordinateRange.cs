@@ -30,6 +30,7 @@ public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to Mu
         return position >= Min && position <= Max;
     }
 
+    // TODO: deprecate
     /// <summary>
     /// Expand the range if needed to include the given point
     /// </summary>
@@ -45,6 +46,7 @@ public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to Mu
             Max = value;
     }
 
+    // TODO: deprecate
     /// <summary>
     /// Expand this range if needed to ensure the given range is included
     /// </summary>
@@ -59,6 +61,7 @@ public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to Mu
     /// </summary>
     public static CoordinateRange NotSet => new(double.PositiveInfinity, double.NegativeInfinity);
 
+    // TODO: deprecate
     /// <summary>
     /// Reset this range to inverted infinite values to indicate the range has not yet been set
     /// </summary>

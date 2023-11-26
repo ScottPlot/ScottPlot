@@ -57,6 +57,8 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public static AxisLimits HorizontalOnly(double xMin, double xMax) => new(xMin, xMax, double.NaN, double.NaN);
 
+    // TODO: obsolete all Expanded() methods and replace functionality with ExpandingAxisLimits
+
     /// <summary>
     /// Return a new <see cref="AxisLimits"/> expanded to include the given <paramref name="x"/> and <paramref name="y"/>.
     /// </summary>
@@ -83,6 +85,16 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     public AxisLimits Expanded(CoordinateRect rect)
     {
         return Expanded(rect.TopLeft).Expanded(rect.BottomRight);
+    }
+
+    /// <summary>
+    /// Return a new <see cref="AxisLimits"/> expanded to include the area defined by <paramref name="limits"/>.
+    /// </summary>
+    public AxisLimits Expanded(AxisLimits limits)
+    {
+        limits = limits.Expanded(Left, Bottom);
+        limits = limits.Expanded(Right, Top);
+        return limits;
     }
 
     public CoordinateRect WithPan(double deltaX, double deltaY)

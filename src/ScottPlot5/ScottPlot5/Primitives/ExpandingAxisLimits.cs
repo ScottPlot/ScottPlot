@@ -9,6 +9,8 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     public double Right { get; set; } = double.NaN;
     public double Bottom { get; set; } = double.NaN;
     public double Top { get; set; } = double.NaN;
+    public double HorizontalSpan => Right - Left;
+    public double VerticalSpan => Top - Bottom;
 
     public AxisLimits AxisLimits => new(Left, Right, Bottom, Top);
 
