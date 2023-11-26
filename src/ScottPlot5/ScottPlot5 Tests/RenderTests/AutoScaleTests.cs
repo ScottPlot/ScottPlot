@@ -32,4 +32,14 @@ internal class AutoScaleTests
         limits.Bottom.Should().Be(-1);
         limits.Top.Should().Be(1);
     }
+
+    [Test]
+    public void Test_Autoscale_Custom()
+    {
+        Plot plot = new();
+        plot.Add.Signal(Generate.Sin());
+        plot.Add.Signal(Generate.Cos());
+        plot.Margins(0, .1, 1, 2);
+        plot.SaveTestImage();
+    }
 }
