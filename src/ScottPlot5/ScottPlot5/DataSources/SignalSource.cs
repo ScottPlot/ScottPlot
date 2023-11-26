@@ -48,7 +48,7 @@ public class SignalSource : ISignalSource
     {
         return new AxisLimits(
             left: XOffset,
-            right: Ys.Count * Period + XOffset,
+            right: (Ys.Count - 1) * Period + XOffset,
             bottom: Ys.Min() + YOffset,
             top: Ys.Max() + YOffset);
     }
