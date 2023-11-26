@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
+using ScottPlot.MarkerShapes;
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
@@ -45,6 +46,19 @@ namespace ScottPlot.Plottable
         public Color ScatterOutlineColor { get; set; } = Color.Black;
         public Color BoxBorderColor { get; set; } = Color.Black;
         public Color ErrorStDevBarColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// Alpha value of scatter plot markers.
+        /// By default MarkerAlpha = 128 (semi-transparent)
+        /// </summary>
+        public byte MarkerAlpha { get; set; } = 128;
+
+        /// <summary>
+        /// Transparency (alpha) of boxes depends on the <see cref="DataFormat"/> by default.
+        /// If this value is defined, all box plots will be rendered using this alpha value.
+        /// Values range from 0 (transparent) to 255 (opaque).
+        /// </summary>
+        public byte? BoxAlphaOverride { get; set; } = null;
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
         public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
@@ -96,7 +110,12 @@ namespace ScottPlot.Plottable
         }
 
         public LegendItem[] GetLegendItems() => MultiSeries.multiSeries
-                .Select(x => new LegendItem(this) { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                .Select(x => new LegendItem(this)
+                {
+                    label = x.seriesLabel,
+                    color = BoxAlphaOverride.HasValue ? Color.FromArgb(BoxAlphaOverride.Value, x.color) : x.color,
+                    lineWidth = 10
+                })
                 .ToArray();
 
         public AxisLimits GetAxisLimits()
@@ -183,7 +202,11 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
+                    // Overide boxAlpha with public field BoxAlphaOverride if the field has been set
+                    if (BoxAlphaOverride.HasValue)
+                        boxAlpha = BoxAlphaOverride.Value;
+
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, MarkerAlpha, scatterPos);
 
                     if (DistributionCurve)
                         Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
