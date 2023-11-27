@@ -59,6 +59,19 @@ namespace ScottPlot.Plottable
         /// Values range from 0 (transparent) to 255 (opaque).
         /// </summary>
         public byte? BoxAlphaOverride { get; set; } = null;
+
+        /// <summary>
+        /// If true, marker and box transparency (alpha) is set to defaults (marker aplha = 128, box alpha depending on <see cref="DataFormat"/>.
+        /// If false, alpha values from the series argb color will be used instead.
+        /// </summary>
+        public bool AutomaticOpacity { get; set; } = true;
+
+        /// <summary>
+        /// Sets the ratio of marker to box opacity when <see cref="AutomaticOpacity"/> is false. Default is 1.0, or box and marker having equal opacity. 
+        /// With a value of 0.5, markers will be half as opaque as boxes. A value of 0 will make markers completely transparent (invisible).
+        /// </summary>
+        public double MarkerOpacityRatio { get; set; } = 1.0;
+
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
         public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
@@ -202,9 +215,12 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    // Overide boxAlpha with public field BoxAlphaOverride if the field has been set
-                    if (BoxAlphaOverride.HasValue)
-                        boxAlpha = BoxAlphaOverride.Value;
+                    // Override default opacity values with alpha from series argb
+                    if (!AutomaticOpacity)
+                    {
+                        MarkerAlpha = (byte)Math.Max(series.color.A * MarkerOpacityRatio, byte.MaxValue);
+                        boxAlpha = series.color.A;
+                    }
 
                     Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, MarkerAlpha, scatterPos);
 
