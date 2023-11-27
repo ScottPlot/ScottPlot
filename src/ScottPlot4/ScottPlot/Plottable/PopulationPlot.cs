@@ -48,27 +48,14 @@ namespace ScottPlot.Plottable
         public Color ErrorStDevBarColor { get; set; } = Color.Black;
 
         /// <summary>
-        /// Alpha value of scatter plot markers.
-        /// By default MarkerAlpha = 128 (semi-transparent)
-        /// </summary>
-        public byte MarkerAlpha { get; set; } = 128;
-
-        /// <summary>
-        /// Transparency (alpha) of boxes depends on the <see cref="DataFormat"/> by default.
-        /// If this value is defined, all box plots will be rendered using this alpha value.
-        /// Values range from 0 (transparent) to 255 (opaque).
-        /// </summary>
-        public byte? BoxAlphaOverride { get; set; } = null;
-
-        /// <summary>
-        /// If true, marker and box transparency (alpha) is set to defaults (marker aplha = 128, box alpha depending on <see cref="DataFormat"/>.
+        /// If true, marker and box transparency (alpha) is set to defaults (marker alpha = 128, box alpha depending on <see cref="DataFormat"/>.
         /// If false, alpha values from the series argb color will be used instead.
         /// </summary>
         public bool AutomaticOpacity { get; set; } = true;
 
         /// <summary>
-        /// Sets the ratio of marker to box opacity when <see cref="AutomaticOpacity"/> is false. Default is 1.0, or box and marker having equal opacity. 
-        /// With a value of 0.5, markers will be half as opaque as boxes. A value of 0 will make markers completely transparent (invisible).
+        /// Sets the ratio of marker to box opacity when <see cref="AutomaticOpacity"/> is false. Default is 1.0 which sets the box and marker to have equal opacity. 
+        /// With a value of 0.5 markers will be half as opaque as boxes. A value of 0 will make markers completely transparent.
         /// </summary>
         public double MarkerOpacityRatio { get; set; } = 1.0;
 
@@ -126,7 +113,7 @@ namespace ScottPlot.Plottable
                 .Select(x => new LegendItem(this)
                 {
                     label = x.seriesLabel,
-                    color = BoxAlphaOverride.HasValue ? Color.FromArgb(BoxAlphaOverride.Value, x.color) : x.color,
+                    color = x.color,
                     lineWidth = 10
                 })
                 .ToArray();
@@ -185,6 +172,7 @@ namespace ScottPlot.Plottable
 
                     Position scatterPos, boxPos;
                     byte boxAlpha = 0;
+                    byte markerAlpha = 128;
                     switch (DataFormat)
                     {
                         case DisplayItems.BoxAndScatter:
@@ -218,11 +206,11 @@ namespace ScottPlot.Plottable
                     // Override default opacity values with alpha from series argb
                     if (!AutomaticOpacity)
                     {
-                        MarkerAlpha = (byte)Math.Max(series.color.A * MarkerOpacityRatio, byte.MaxValue);
+                        markerAlpha = (byte)Math.Min(series.color.A * MarkerOpacityRatio, byte.MaxValue);
                         boxAlpha = series.color.A;
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, MarkerAlpha, scatterPos);
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, markerAlpha, scatterPos);
 
                     if (DistributionCurve)
                         Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
