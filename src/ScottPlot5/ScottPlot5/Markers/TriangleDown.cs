@@ -11,7 +11,7 @@ internal class TriangleDown : IMarker
 
         fill.ApplyToPaint(paint);
 
-        // Top, right, and left vertices
+        // Bottom, right, and left vertices
         SKPoint[] pointsList = new SKPoint[]
         {
             new SKPoint(center.X, center.Y + radius),
