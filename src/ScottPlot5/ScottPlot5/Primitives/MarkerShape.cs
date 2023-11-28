@@ -11,6 +11,8 @@ public enum MarkerShape
     OpenTriangleUp,
     FilledTriangleDown,
     OpenTriangleDown,
+    FilledDiamond,
+    OpenDiamond
 }
 
 public static class MarkerShapeExtensions
@@ -23,6 +25,7 @@ public static class MarkerShapeExtensions
             MarkerShape.FilledSquare or MarkerShape.OpenSquare => new Markers.Square(),
             MarkerShape.FilledTriangleUp or MarkerShape.OpenTriangleUp => new Markers.TriangleUp(),
             MarkerShape.FilledTriangleDown or MarkerShape.OpenTriangleDown => new Markers.TriangleDown(),
+            MarkerShape.FilledDiamond or MarkerShape.OpenDiamond => new Markers.Diamond(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
@@ -31,7 +34,7 @@ public static class MarkerShapeExtensions
     {
         return shape switch
         {
-            MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or MarkerShape.OpenTriangleDown => true,
+            MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond => true,
             _ => false,
         };
     }
