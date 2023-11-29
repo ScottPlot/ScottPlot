@@ -14,7 +14,6 @@
 * Render: Improve axis frame and tick mark rendering for SVG export (#2944) _Thanks @Crown0815_
 * Controls: Created OpenGL controls `FormsPlotGL` and `WpfPlotGL` distinct from `FormsPlot` and `WpfPlot` (#3008, #3007, #2950, #2395, #2565)
 * Markers: Added numerous additional marker types (#2999, #3019) _Thanks @Gray-lab_
-* Generate: Use a global Random number generator when seed is null to enforce values randomness (#2893) _Thanks @KroMignon_
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
@@ -24,7 +23,7 @@
 * Plot: Added `LastRenderDimensions` for easy access to the latest figure dimensions (#3000, #3002) _Thanks @dhgigisoave_
 * DataLogger and DataStreamer: Added support for custom line styles (#2972, #2972) _Thanks @Gray-lab_
 * Population: Defining `BoxAlphaOverride` and `MarkerAlpha` allows for exact color representation (#2967, #3013) _Thanks @Gray-lab and @Em3a-c_
-* Generate: Use a global Random number generator when seed is null to enforce values randomness (#2893) _Thanks @KroMignon_
+* Generate: Use a global Random number generator for improved randomness and thread safety (#2893) _Thanks @KroMignon_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_
