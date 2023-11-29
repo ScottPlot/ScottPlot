@@ -13,6 +13,7 @@
 * Controls: Added `Interaction.Disable()` and `Interaction.Enable()` methods for easy control of mouse interactivity
 * Render: Improve axis frame and tick mark rendering for SVG export (#2944) _Thanks @Crown0815_
 * Controls: Created OpenGL controls `FormsPlotGL` and `WpfPlotGL` distinct from `FormsPlot` and `WpfPlot` (#3008, #3007, #2950, #2395, #2565)
+* Markers: Added numerous additional marker types (#2999, #3019) _Thanks @Gray-lab_
 * Generate: Use a global Random number generator when seed is null to enforce values randomness (#2893) _Thanks @KroMignon_
 
 ## ScottPlot 4.1.68 (in development)

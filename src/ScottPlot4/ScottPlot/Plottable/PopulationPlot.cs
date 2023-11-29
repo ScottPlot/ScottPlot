@@ -48,17 +48,17 @@ namespace ScottPlot.Plottable
         public Color ErrorStDevBarColor { get; set; } = Color.Black;
 
         /// <summary>
-        /// Alpha value of scatter plot markers.
-        /// By default MarkerAlpha = 128 (semi-transparent)
+        /// If true, marker and box transparency (alpha) is set to defaults (marker alpha = 128, box alpha depending on <see cref="DataFormat"/>.
+        /// If false, alpha values from the series argb color will be used instead.
         /// </summary>
-        public byte MarkerAlpha { get; set; } = 128;
+        public bool AutomaticOpacity { get; set; } = true;
 
         /// <summary>
-        /// Transparency (alpha) of boxes depends on the <see cref="DataFormat"/> by default.
-        /// If this value is defined, all box plots will be rendered using this alpha value.
-        /// Values range from 0 (transparent) to 255 (opaque).
+        /// Sets the ratio of marker to box opacity when <see cref="AutomaticOpacity"/> is false. Default is 1.0 which sets the box and marker to have equal opacity. 
+        /// With a value of 0.5 markers will be half as opaque as boxes. A value of 0 will make markers completely transparent.
         /// </summary>
-        public byte? BoxAlphaOverride { get; set; } = null;
+        public double MarkerOpacityRatio { get; set; } = 1.0;
+
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
         public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
@@ -113,7 +113,7 @@ namespace ScottPlot.Plottable
                 .Select(x => new LegendItem(this)
                 {
                     label = x.seriesLabel,
-                    color = BoxAlphaOverride.HasValue ? Color.FromArgb(BoxAlphaOverride.Value, x.color) : x.color,
+                    color = x.color,
                     lineWidth = 10
                 })
                 .ToArray();
@@ -172,6 +172,7 @@ namespace ScottPlot.Plottable
 
                     Position scatterPos, boxPos;
                     byte boxAlpha = 0;
+                    byte markerAlpha = 128;
                     switch (DataFormat)
                     {
                         case DisplayItems.BoxAndScatter:
@@ -202,11 +203,14 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    // Overide boxAlpha with public field BoxAlphaOverride if the field has been set
-                    if (BoxAlphaOverride.HasValue)
-                        boxAlpha = BoxAlphaOverride.Value;
+                    // Override default opacity values with alpha from series argb
+                    if (!AutomaticOpacity)
+                    {
+                        markerAlpha = (byte)Math.Min(series.color.A * MarkerOpacityRatio, byte.MaxValue);
+                        boxAlpha = series.color.A;
+                    }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, MarkerAlpha, scatterPos);
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, markerAlpha, scatterPos);
 
                     if (DistributionCurve)
                         Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);

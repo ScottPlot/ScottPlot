@@ -263,9 +263,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             populationSeries[0].color = Color.FromArgb(alpha: 100, red: 255, green: 0, blue: 0);
             populationSeries[1].color = Color.FromArgb(alpha: 255, red: 0, green: 0, blue: 255);
 
-            // Manually define transparency for boxes and markers
-            populationPlot.BoxAlphaOverride = 150;
-            populationPlot.MarkerAlpha = 75;
+            // Manually define transparency for boxes and markers - alpha values will now be set using the series colors
+            populationPlot.AutomaticOpacity = false;
+
+            // Make scatter markers 75% as opaque as box plots
+            populationPlot.MarkerOpacityRatio = 0.75;
         }
     }
 }
