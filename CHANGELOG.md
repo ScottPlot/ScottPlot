@@ -24,6 +24,7 @@
 * Plot: Added `LastRenderDimensions` for easy access to the latest figure dimensions (#3000, #3002) _Thanks @dhgigisoave_
 * DataLogger and DataStreamer: Added support for custom line styles (#2972, #2972) _Thanks @Gray-lab_
 * Population: Defining `BoxAlphaOverride` and `MarkerAlpha` allows for exact color representation (#2967, #3013) _Thanks @Gray-lab and @Em3a-c_
+* Generate: Use a global Random number generator when seed is null to enforce values randomness (#2893) _Thanks @KroMignon_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_

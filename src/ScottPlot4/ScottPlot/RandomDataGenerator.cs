@@ -11,15 +11,17 @@ public class RandomDataGenerator
     /// Global random number generator, to ensure each generator will returns different data.
     /// Using ThreadLocal, because Random is not thread safe.
     /// </summary>
-    private static readonly ThreadLocal<Random> _tlRng = new ThreadLocal<Random>(() => new Random());
+    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random());
+
     /// <summary>
     /// Local random number generator to be able to return the same data.
     /// </summary>
-    private Random? _localRand = null;
+    private readonly Random? SeededRandom = null;
+
     /// <summary>
     /// To select right random number generator
     /// </summary>
-    private Random Rand => _localRand ?? _tlRng.Value;
+    private Random Rand => SeededRandom ?? GlobalRandomThread.Value!;
 
     /// <summary>
     /// Create a random number generator.
@@ -28,7 +30,7 @@ public class RandomDataGenerator
     public RandomDataGenerator(int? seed = null)
     {
         if (seed.HasValue)
-            _localRand = new(seed.Value);
+            SeededRandom = new(seed.Value);
     }
 
     #region Methods that return single numbers
