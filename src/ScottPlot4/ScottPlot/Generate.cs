@@ -151,9 +151,9 @@ public static class Generate
     /// <summary>
     /// Return a series of values starting with <paramref name="offset"/> and
     /// each randomly deviating from the previous by at most <paramref name="mult"/>.
-    /// Random values are deterministic based on the value of <paramref name="seed"/>.
+    /// Random values can be deterministic if the value of <paramref name="seed"/> is not null.
     /// </summary>
-    public static double[] RandomWalk(int count, double mult = 1, double offset = 0, int seed = 0)
+    public static double[] RandomWalk(int count, double mult = 1, double offset = 0, int? seed = null)
     {
         RandomDataGenerator gen = new(seed);
         return gen.RandomWalk(count, mult, offset);
@@ -161,18 +161,23 @@ public static class Generate
 
     /// <summary>
     /// Return an array of <paramref name="count"/> random values 
-    /// from <paramref name="min"/> to <paramref name="max"/>
-    /// according to the random seed defined by <paramref name="seed"/>
+    /// from <paramref name="min"/> to <paramref name="max"/>.
+    /// Random values can be deterministic if the value of <paramref name="seed"/> is not null.
     /// </summary>
-    public static double[] Random(int count, double min = 0, double max = 1, int seed = 0)
+    public static double[] Random(int count, double min = 0, double max = 1, int? seed = null)
     {
         RandomDataGenerator gen = new(seed);
         return Enumerable.Range(0, count)
             .Select(_ => gen.RandomNumberInRange(min, max))
             .ToArray();
     }
-
-    public static double[] RandomNormal(int count, double mean = 0, double stdDev = 1, int seed = 0)
+    /// <summary>
+    /// Return an array of <paramref name="count"/> random number normally
+    /// distributed around the given <paramref name="mean"/> according to 
+    /// the <paramref name="stdDev"/> standard deviation.
+    /// Random values can be deterministic if the value of <paramref name="seed"/> is not null.
+    /// </summary>
+    public static double[] RandomNormal(int count, double mean = 0, double stdDev = 1, int? seed = null)
     {
         RandomDataGenerator gen = new(seed);
         return Enumerable.Range(0, count)
