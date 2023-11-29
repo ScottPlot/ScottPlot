@@ -96,6 +96,12 @@ namespace ScottPlot.Eto
             Backend.StartProcessingEvents();
         }
 
+        protected override void OnUnLoad(EventArgs e)
+        {
+            Backend?.Dispose();
+            base.OnUnLoad(e);
+        }
+
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
         /// </summary>

@@ -11,8 +11,8 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     public double Bottom { get; }
     public double Top { get; }
 
-    public double Width => Right - Left;
-    public double Height => Top - Bottom;
+    public double HorizontalSpan => Right - Left;
+    public double VerticalSpan => Top - Bottom;
 
     public CoordinateRange XRange => new(Left, Right);
     public CoordinateRange YRange => new(Bottom, Top);
