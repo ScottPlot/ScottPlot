@@ -10,17 +10,12 @@ public class RandomDataGenerator
     /// Global random number generator, to ensure each generator will returns different data.
     /// Using ThreadLocal, because Random is not thread safe.
     /// </summary>
-    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random());
-
-    /// <summary>
-    /// Local random number generator to be able to return the same data.
-    /// </summary>
-    private readonly Random? SeededRandom = null;
+    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random(GetCryptoRandomInt()));
 
     /// <summary>
     /// To select right random number generator
     /// </summary>
-    private Random Rand => SeededRandom ?? GlobalRandomThread.Value!;
+    private readonly Random Rand;
 
     /// <summary>
     /// Create a random number generator.
@@ -28,9 +23,9 @@ public class RandomDataGenerator
     /// </summary>
     public RandomDataGenerator(int? seed = null)
     {
-        SeededRandom = seed.HasValue
+        Rand = seed.HasValue
             ? new Random(seed.Value)
-            : new Random(GetCryptoRandomInt());
+            : GlobalRandomThread.Value;
     }
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);
