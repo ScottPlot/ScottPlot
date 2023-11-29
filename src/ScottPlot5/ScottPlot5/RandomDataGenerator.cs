@@ -1,40 +1,30 @@
-﻿using System.Security.Cryptography;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 #nullable enable
 
 public class RandomDataGenerator
 {
-    private Random Rand;
-    private readonly RandomNumberGenerator RNG;
+    private readonly Random Rand;
+
+    /// <summary>
+    /// Create a random number generator.
+    /// The seed is random by deafult, but could be fixed to the defined value
+    /// </summary>
+    public RandomDataGenerator(int? seed = null)
+    {
+        Rand = seed.HasValue
+            ? new Random(seed.Value)
+            : new Random(GetCryptoRandomInt());
+    }
+
     public static RandomDataGenerator Generate { get; private set; } = new(0);
 
-    /// <summary>
-    /// Use a random seed so each generator returns different data.
-    /// </summary>
-    public RandomDataGenerator()
+    private static int GetCryptoRandomInt()
     {
-        RNG = RandomNumberGenerator.Create();
+        var RNG = System.Security.Cryptography.RandomNumberGenerator.Create();
         byte[] data = new byte[sizeof(int)];
         RNG.GetBytes(data);
-        int randomValue = BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
-        Rand = new Random(randomValue);
-    }
-
-    /// <summary>
-    /// Use a fixed seed so each generator returns the same data.
-    /// </summary>
-    public RandomDataGenerator(int seed = 0)
-    {
-        Rand = new(seed);
-        RNG = RandomNumberGenerator.Create();
-    }
-
-    public void RandomizeSeed()
-    {
-        Rand = new();
-        Generate = new();
+        return BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
     }
 
     #region Methods that return single numbers
