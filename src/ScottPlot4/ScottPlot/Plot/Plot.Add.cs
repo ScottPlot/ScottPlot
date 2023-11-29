@@ -196,6 +196,25 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a single bar to the plot.
+        /// </summary>
+        public BarPlot AddBar(double x, double y, double yError = 0, Color? color = null, double width = 0.8)
+        {
+            double[] xs = { x };
+            double[] ys = { y };
+            double[] yErrs = { yError };
+
+            BarPlot bar = new(xs, ys, yErrs, null)
+            {
+                FillColor = color ?? GetNextColor(),
+                BarWidth = width,
+            };
+
+            Add(bar);
+            return bar;
+        }
+
+        /// <summary>
         /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public BarPlot AddBar(double[] values, Color? color = null)
