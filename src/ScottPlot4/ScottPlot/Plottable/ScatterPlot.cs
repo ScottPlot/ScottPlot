@@ -49,7 +49,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public double OffsetY { get; set; } = 0;
 
-        public int PointCount => Ys.Length;
+        public int PointCount => Ys?.Length ?? 0;
 
         // customization
         public bool IsVisible { get; set; } = true;
