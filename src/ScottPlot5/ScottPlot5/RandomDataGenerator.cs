@@ -1,10 +1,26 @@
-﻿namespace ScottPlot;
+﻿using System.Threading;
+
+namespace ScottPlot;
 
 #nullable enable
 
 public class RandomDataGenerator
 {
-    private readonly Random Rand;
+    /// <summary>
+    /// Global random number generator, to ensure each generator will returns different data.
+    /// Using ThreadLocal, because Random is not thread safe.
+    /// </summary>
+    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random());
+
+    /// <summary>
+    /// Local random number generator to be able to return the same data.
+    /// </summary>
+    private readonly Random? SeededRandom = null;
+
+    /// <summary>
+    /// To select right random number generator
+    /// </summary>
+    private Random Rand => SeededRandom ?? GlobalRandomThread.Value!;
 
     /// <summary>
     /// Create a random number generator.
@@ -12,7 +28,7 @@ public class RandomDataGenerator
     /// </summary>
     public RandomDataGenerator(int? seed = null)
     {
-        Rand = seed.HasValue
+        SeededRandom = seed.HasValue
             ? new Random(seed.Value)
             : new Random(GetCryptoRandomInt());
     }
