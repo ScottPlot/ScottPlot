@@ -26,6 +26,7 @@
 * Generate: Use a global Random number generator for improved randomness and thread safety (#2893) _Thanks @KroMignon_
 * Controls: Improve `Bitmap` disposal as controls are unloaded (#3023, #2902) _Thanks @KroMignon and @mocakturk_
 * ScatterPlotDraggable: Fixed bug affecting `IsUnderMouse()` after `Update()` is called (#2870, #2969, #3025) _Thanks @KroMignon, @SasKayDE, and @onur-akaydin_
+* Bar: New `AddBar()` overload for creating a single highly customized bar graph bar (#3024, #3033) _Thanks @melhashash_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_
