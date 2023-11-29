@@ -101,6 +101,9 @@ namespace ScottPlot
 
         private void GetLegendItemUnderMouse(System.Drawing.Point e)
         {
+            if (!Legend.HasItems)
+                return;
+
             // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
             double legendItemHeight = (double)PictureBoxLegend.Image.Height / Legend.Count;
             int clickedindex = (int)Math.Floor(e.Y / legendItemHeight);
