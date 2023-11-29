@@ -14,6 +14,7 @@
 * Render: Improve axis frame and tick mark rendering for SVG export (#2944) _Thanks @Crown0815_
 * Controls: Created OpenGL controls `FormsPlotGL` and `WpfPlotGL` distinct from `FormsPlot` and `WpfPlot` (#3008, #3007, #2950, #2395, #2565)
 * Markers: Added numerous additional marker types (#2999, #3019) _Thanks @Gray-lab_
+* Plot: Improved support for multiple axes and automatic scaling (#3027)
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_

@@ -157,18 +157,24 @@ public class Plot : IDisposable
 
     public void SetAxisLimitsX(double left, double right)
     {
-        SetAxisLimitsX(left, right, XAxis);
+        SetAxisLimitsX(left, right, BottomAxis);
     }
 
     public void SetAxisLimitsY(double bottom, double top)
     {
-        SetAxisLimitsY(bottom, top, YAxis);
+        SetAxisLimitsY(bottom, top, LeftAxis);
     }
 
     public void SetAxisLimits(double left, double right, double bottom, double top)
     {
-        SetAxisLimitsX(left, right);
-        SetAxisLimitsY(bottom, top);
+        SetAxisLimitsX(left, right, BottomAxis);
+        SetAxisLimitsY(bottom, top, LeftAxis);
+    }
+
+    public void SetAxisLimits(double left, double right, double bottom, double top, IXAxis xAxis, IYAxis yAxis)
+    {
+        SetAxisLimitsX(left, right, xAxis);
+        SetAxisLimitsY(bottom, top, yAxis);
     }
 
     public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
@@ -236,6 +242,15 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Reset plot data margins to their default value.
+    /// </summary>
+    public void Margins()
+    {
+        AutoScaler = new AutoScalers.FractionalAutoScaler();
+        AutoScale();
+    }
+
+    /// <summary>
     /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
     /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
     /// </summary>
@@ -271,21 +286,22 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Automatically scale the axis limits to fit the data.
-    /// Call <see cref="Margins(double, double, bool)"/> to change data padding settings.
+    /// Automatically scale all axes to fit the data in all plottables
     /// </summary>
     public void AutoScale()
     {
-        AutoScale(XAxis, YAxis);
+        ReplaceNullAxesWithDefaults();
+        AutoScaler.AutoScaleAll(PlottableList);
     }
 
     /// <summary>
-    /// Automatically scale the given axes to fit the data in plottables which use them
+    /// Autoscale the given axes to accommodate the data from all plottables that use them
     /// </summary>
     public void AutoScale(IXAxis xAxis, IYAxis yAxis)
     {
+        // TODO: is there a better way to do this???
         ReplaceNullAxesWithDefaults();
-        AxisLimits limits = AutoScaler.GetAxisLimits(PlottableList, xAxis, yAxis);
+        AxisLimits limits = AutoScaler.GetAxisLimits(this, xAxis, yAxis);
         SetAxisLimits(limits, xAxis, yAxis);
     }
 

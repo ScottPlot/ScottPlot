@@ -8,21 +8,10 @@ internal class FractionalAutoScaler : IAutoScaler
     public readonly double TopFraction;
 
     /// <summary>
-    /// Tightly fit the data with no padding
-    /// </summary>
-    public FractionalAutoScaler()
-    {
-        LeftFraction = 0;
-        RightFraction = 0;
-        BottomFraction = 0;
-        TopFraction = 0;
-    }
-
-    /// <summary>
     /// Pad the data area with the given fractions of whitespace.
     /// A value of 0.1 means 10% padding (5% on each side of the data area).
     /// </summary>
-    public FractionalAutoScaler(double horizontal, double vertical)
+    public FractionalAutoScaler(double horizontal = .1, double vertical = .15)
     {
         LeftFraction = horizontal / 2;
         RightFraction = horizontal / 2;
@@ -42,10 +31,41 @@ internal class FractionalAutoScaler : IAutoScaler
         TopFraction = top;
     }
 
-    public AxisLimits GetAxisLimits(IEnumerable<IPlottable> plottables, IXAxis xAxis, IYAxis yAxis)
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables)
+    {
+        IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
+        IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
+
+        xAxes.ToList().ForEach(x => x.Range.Reset());
+        yAxes.ToList().ForEach(x => x.Range.Reset());
+
+        foreach (IPlottable plottable in plottables)
+        {
+            AxisLimits limits = plottable.GetAxisLimits();
+            plottable.Axes.XAxis.Range.Expand(limits.XRange);
+            plottable.Axes.YAxis.Range.Expand(limits.YRange);
+        }
+
+        foreach (IAxis xAxis in xAxes)
+        {
+            double left = xAxis.Range.Min - (xAxis.Range.Span * LeftFraction);
+            double right = xAxis.Range.Max + (xAxis.Range.Span * RightFraction);
+            xAxis.Range.Set(left, right);
+        }
+
+        foreach (IYAxis yAxis in yAxes)
+        {
+            double bottom = yAxis.Range.Min - (yAxis.Range.Span * BottomFraction);
+            double top = yAxis.Range.Max + (yAxis.Range.Span * TopFraction);
+            yAxis.Range.Set(bottom, top);
+        }
+    }
+
+    public AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis)
     {
         ExpandingAxisLimits limits = new();
-        foreach (IPlottable plottable in plottables.Where(x => x.Axes.XAxis == xAxis && x.Axes.YAxis == yAxis))
+
+        foreach (IPlottable plottable in plot.PlottableList.Where(x => x.Axes.XAxis == xAxis && x.Axes.YAxis == yAxis))
         {
             limits.Expand(plottable.GetAxisLimits());
         }
