@@ -15,6 +15,8 @@ public enum MarkerShape
     OpenDiamond,
     Eks,
     Cross,
+    VerticalBar,
+    HorizontalBar,
 }
 
 public static class MarkerShapeExtensions
@@ -30,6 +32,8 @@ public static class MarkerShapeExtensions
             MarkerShape.FilledDiamond or MarkerShape.OpenDiamond => new Markers.Diamond(),
             MarkerShape.Eks => new Markers.Eks(),
             MarkerShape.Cross => new Markers.Cross(),
+            MarkerShape.VerticalBar => new Markers.VerticalBar(),
+            MarkerShape.HorizontalBar => new Markers.HorizontalBar(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
@@ -39,7 +43,8 @@ public static class MarkerShapeExtensions
         return shape switch
         {
             (MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or 
-            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or MarkerShape.Cross) => true,
+            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or MarkerShape.Cross or
+            MarkerShape.VerticalBar or MarkerShape.HorizontalBar) => true,
             _ => false,
         };
     }
