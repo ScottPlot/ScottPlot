@@ -138,6 +138,11 @@ namespace ScottPlot
 
             Backend.StartProcessingEvents();
         }
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            Backend?.Dispose();
+            base.OnHandleDestroyed(e);
+        }
 
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates

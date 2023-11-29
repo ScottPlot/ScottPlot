@@ -224,6 +224,13 @@ namespace ScottPlot
             base.OnApplyTemplate();
         }
 
+        protected override void OnVisualParentChanged(DependencyObject oldParent)
+        {
+            if (Parent is null)
+                Backend?.Dispose();
+            base.OnVisualParentChanged(oldParent);
+        }
+
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
