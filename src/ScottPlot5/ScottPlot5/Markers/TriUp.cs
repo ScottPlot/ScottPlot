@@ -1,6 +1,4 @@
-﻿using ScottPlot.AxisPanels;
-
-namespace ScottPlot.Markers;
+﻿namespace ScottPlot.Markers;
 
 internal class TriUp : IMarker
 {
@@ -11,17 +9,8 @@ internal class TriUp : IMarker
         float xOffset = (float)(radius * 0.866); // r * sqrt(3)/2
         float yOffset = radius / 2;
 
-        fill.ApplyToPaint(paint);
-
-        // Top, right, and left vertices
-        SKPoint[] pointsList = new SKPoint[]
-        {
-            new SKPoint(center.X, center.Y - radius),
-            new SKPoint(center.X + xOffset, center.Y + yOffset),
-            new SKPoint(center.X - xOffset, center.Y + yOffset),
-        };
-
         var path = new SKPath();
+
         // Top line
         path.MoveTo(center.X, center.Y);
         path.LineTo(center.X, center.Y + radius);

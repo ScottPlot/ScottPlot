@@ -17,6 +17,8 @@ public enum MarkerShape
     Cross,
     VerticalBar,
     HorizontalBar,
+    TriUp,
+    TriDown,
 }
 
 public static class MarkerShapeExtensions
@@ -34,6 +36,8 @@ public static class MarkerShapeExtensions
             MarkerShape.Cross => new Markers.Cross(),
             MarkerShape.VerticalBar => new Markers.VerticalBar(),
             MarkerShape.HorizontalBar => new Markers.HorizontalBar(),
+            MarkerShape.TriUp => new Markers.TriUp(),
+            MarkerShape.TriDown => new Markers.TriDown(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
@@ -44,7 +48,7 @@ public static class MarkerShapeExtensions
         {
             (MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or
             MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or MarkerShape.Cross or
-            MarkerShape.VerticalBar or MarkerShape.HorizontalBar) => true,
+            MarkerShape.VerticalBar or MarkerShape.HorizontalBar or MarkerShape.TriUp or MarkerShape.TriDown) => true,
             _ => false,
         };
     }
