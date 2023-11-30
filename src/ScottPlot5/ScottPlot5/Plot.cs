@@ -33,6 +33,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
+    public RenderDetails LastRender => RenderManager.LastRender;
     public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
     public IAutoScaler AutoScaler { get; set; } = new AutoScalers.FractionalAutoScaler(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
