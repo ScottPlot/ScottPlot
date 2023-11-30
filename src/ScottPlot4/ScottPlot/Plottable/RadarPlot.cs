@@ -85,7 +85,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Font used for labeling values on the plot
         /// </summary>
-        public readonly Drawing.Font Font = new();
+        public Drawing.Font Font { get; set; } = new();
 
         /// <summary>
         /// If true, each value will be written in text on the plot.
@@ -96,6 +96,22 @@ namespace ScottPlot.Plottable
         /// If true, each category name will be written in text at every corner of the radar
         /// </summary>
         public bool ShowCategoryLabels { get; set; } = true;
+
+        /// <summary>
+        /// Format used to generate values ​​on the axis
+        /// </summary>
+        public Func<double, string> AxisLabelStringFormatter { get; set; } = new Func<double, string>((x) => x.ToString("f1"));
+
+        /// <summary>
+        /// The tick Locations expressed as ratios. { 0.25, 0.5, 1 } by default
+        /// </summary>
+        public double[] TickLocations { get; private set; } = { 0.25, 0.5, 1 };
+
+        /// <summary>
+        /// When <see cref="IndependentAxes"/> is false, TickValues ​​is able to display circular ticks 
+        /// based on these concrete values instead of the ratios defined by <see cref="TickLocations"/>
+        /// </summary>
+        public double[] TickValues { get; set; } = null;
 
         /// <summary>
         /// Controls rendering style of the concentric circles (ticks) of the web
@@ -305,8 +321,12 @@ namespace ScottPlot.Plottable
 
         private void RenderAxis(Graphics gfx, PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            double[] tickLocations = new[] { 0.25, 0.5, 1 };
-            StarAxisTick[] ticks = tickLocations.Select(x => GetTick(x)).ToArray();
+            if (!IndependentAxes && TickValues != null)
+            {
+                TickLocations = TickValues.Select(x => x / NormMax).ToArray();
+            }
+
+            StarAxisTick[] ticks = TickLocations.Select(x => GetTick(x)).ToArray();
 
             StarAxis axis = new()
             {
@@ -321,7 +341,9 @@ namespace ScottPlot.Plottable
                 LabelEachSpoke = IndependentAxes,
                 ShowAxisValues = ShowAxisValues,
                 Graphics = gfx,
-                ImagePlacement = ImagePlacement.Outside
+                ImagePlacement = ImagePlacement.Outside,
+                Font = Font,
+                AxisLabelStringFormatter = AxisLabelStringFormatter,
             };
 
             axis.Render(dims, bmp, lowQuality);

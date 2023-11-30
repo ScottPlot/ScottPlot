@@ -15,6 +15,7 @@ double[] dataX = new double[] { 1, 2, 3, 4, 5 };
 double[] dataY = new double[] { 1, 4, 9, 16, 25 };
 
 AvaPlot1.Plot.AddScatter(dataX, dataY);
+AvaPlot1.Refresh();
 ```
 
 Additional quickstart information can be found at https://scottplot.net/quickstart/avalonia/
