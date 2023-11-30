@@ -456,6 +456,25 @@ public class Plot : IDisposable
         return new CoordinateRect(left, right, bottom, top);
     }
 
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
+    {
+        return GetCoordinateRect(pixel.X, pixel.Y, radius);
+    }
+
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
+    {
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
+        double radiusX = XAxis.GetCoordinateDistance(radius, dataRect);
+        double radiusY = YAxis.GetCoordinateDistance(radius, dataRect);
+        return coordinates.ToRect(radiusX, radiusY);
+    }
+
     #endregion
 
     #region Rendering and Image Creation
