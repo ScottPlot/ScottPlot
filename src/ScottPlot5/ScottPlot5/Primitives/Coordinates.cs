@@ -35,6 +35,8 @@ public struct Coordinates : IEquatable<Coordinates>
 
     public static Coordinates Origin => new(0, 0);
 
+    public static Coordinates Infinity => new(double.PositiveInfinity, double.PositiveInfinity);
+
     public bool Equals(Coordinates other)
     {
         return Equals(X, other.X) && Equals(Y, other.Y);
