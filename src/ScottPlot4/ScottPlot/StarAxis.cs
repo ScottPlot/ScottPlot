@@ -90,7 +90,7 @@ namespace ScottPlot
         /// <summary>
         /// Format used to generate values ​​on the axis
         /// </summary>
-        public string AxisLabelStringFormat { get; set; } = "f1";
+        public Func<double, string> AxisLabelStringFormatter { get; set; } = new Func<double, string>((x) => x.ToString("f1"));
 
         /// <summary>
         /// Determines the width of each spoke and the axis lines.
@@ -179,12 +179,12 @@ namespace ScottPlot
                             sf.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
                             double val = Ticks[j].Labels[i];
-                            Graphics.DrawString(val.ToString(AxisLabelStringFormat), font, fontBrush, x, y, sf);
+                            Graphics.DrawString(AxisLabelStringFormatter.Invoke(val), font, fontBrush, x, y, sf);
                         }
                         else if (i == 0)
                         {
                             double val = Ticks[j].Labels[0];
-                            Graphics.DrawString(val.ToString(AxisLabelStringFormat), font, fontBrush, origin.X, (float)(-tickDistancePx + origin.Y), sf);
+                            Graphics.DrawString(AxisLabelStringFormatter.Invoke(val), font, fontBrush, origin.X, (float)(-tickDistancePx + origin.Y), sf);
                         }
                     }
                 }

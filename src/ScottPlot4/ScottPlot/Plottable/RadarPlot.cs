@@ -100,7 +100,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Format used to generate values ​​on the axis
         /// </summary>
-        public string AxisLabelStringFormat { get; set; } = "f1";
+        public Func<double, string> AxisLabelStringFormatter { get; set; } = new Func<double, string>((x) => x.ToString("f1"));
 
         /// <summary>
         /// The tick Locations expressed as ratios. { 0.25, 0.5, 1 } by default
@@ -108,7 +108,8 @@ namespace ScottPlot.Plottable
         public double[] TickLocations { get; private set; } = { 0.25, 0.5, 1 };
 
         /// <summary>
-        /// When IndependentAxes is false, TickValues ​​is able to display ticks based on concrete values ​​on the axis instead of ticks expressed as a ratio by default
+        /// When <see cref="IndependentAxes"/> is false, TickValues ​​is able to display circular ticks 
+        /// based on these concrete values instead of the ratios defined by <see cref="TickLocations"/>
         /// </summary>
         public double[] TickValues { get; set; } = null;
 
@@ -342,7 +343,7 @@ namespace ScottPlot.Plottable
                 Graphics = gfx,
                 ImagePlacement = ImagePlacement.Outside,
                 Font = Font,
-                AxisLabelStringFormat = AxisLabelStringFormat,
+                AxisLabelStringFormatter = AxisLabelStringFormatter,
             };
 
             axis.Render(dims, bmp, lowQuality);
