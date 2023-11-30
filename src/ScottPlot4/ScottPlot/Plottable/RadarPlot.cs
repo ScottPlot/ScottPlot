@@ -344,7 +344,7 @@ namespace ScottPlot.Plottable
                 Font = Font,
                 AxisLabelStringFormat = AxisLabelStringFormat,
             };
-            
+
             axis.Render(dims, bmp, lowQuality);
         }
     }
