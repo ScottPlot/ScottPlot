@@ -88,6 +88,11 @@ namespace ScottPlot
         public Drawing.Font Font = new();
 
         /// <summary>
+        /// Format used to generate values ​​on the axis
+        /// </summary>
+        public string AxisLabelStringFormat { get; set; } = "f1";
+
+        /// <summary>
         /// Determines the width of each spoke and the axis lines.
         /// </summary>
         public int LineWidth { get; set; } = 1;
@@ -174,12 +179,12 @@ namespace ScottPlot
                             sf.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
                             double val = Ticks[j].Labels[i];
-                            Graphics.DrawString($"{val:f1}", font, fontBrush, x, y, sf);
+                            Graphics.DrawString(val.ToString(AxisLabelStringFormat), font, fontBrush, x, y, sf);
                         }
                         else if (i == 0)
                         {
                             double val = Ticks[j].Labels[0];
-                            Graphics.DrawString($"{val:f1}", font, fontBrush, origin.X, (float)(-tickDistancePx + origin.Y), sf);
+                            Graphics.DrawString(val.ToString(AxisLabelStringFormat), font, fontBrush, origin.X, (float)(-tickDistancePx + origin.Y), sf);
                         }
                     }
                 }
