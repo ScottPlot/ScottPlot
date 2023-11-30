@@ -8,6 +8,7 @@ Drop a `FormsPlot` from the toolbox onto your form and add the following to your
 double[] xs = new double[] {1, 2, 3, 4, 5};
 double[] ys = new double[] {1, 4, 9, 16, 25};
 formsPlot1.Plot.AddScatter(xs, ys);
+formsPlot1.Refresh();
 ```
 
 ![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/winforms-quickstart.png)
