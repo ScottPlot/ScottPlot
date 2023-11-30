@@ -65,4 +65,14 @@ public struct Coordinates : IEquatable<Coordinates>
     {
         return X.GetHashCode() ^ Y.GetHashCode();
     }
+
+    public CoordinateRect ToRect(double radiusX, double radiusY)
+    {
+        return new CoordinateRect(X - radiusX, X + radiusX, Y - radiusY, Y + radiusY);
+    }
+
+    public CoordinateRect ToRect(double radius)
+    {
+        return ToRect(radius, radius);
+    }
 }
