@@ -9,8 +9,6 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class ScatterPlotDraggable : ScatterPlot, IDraggable
     {
-        public new double[] Xs { get; private set; }
-        public new double[] Ys { get; private set; }
         public int CurrentIndex { get; set; } = 0;
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace ScottPlot.Plottable
         /// <param name="fixedSize">This argument is ignored</param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
-            if (!DragEnabled)
+            if (!DragEnabled || CurrentIndex >= PointCount)
                 return;
 
             Coordinate original = new(coordinateX, coordinateY);
@@ -115,10 +113,6 @@ namespace ScottPlot.Plottable
 
         public ScatterPlotDraggable(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null) : base(xs, ys, errorX, errorY)
         {
-            this.Xs = xs;
-            this.Ys = ys;
-            this.XError = errorX;
-            this.YError = errorY;
         }
     }
 }

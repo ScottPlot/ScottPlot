@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+﻿using System.Threading;
 
 namespace ScottPlot;
 
@@ -6,35 +6,36 @@ namespace ScottPlot;
 
 public class RandomDataGenerator
 {
-    private Random Rand;
-    private readonly RandomNumberGenerator RNG;
+    /// <summary>
+    /// Global random number generator, to ensure each generator will returns different data.
+    /// Using ThreadLocal, because Random is not thread safe.
+    /// </summary>
+    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random(GetCryptoRandomInt()));
+
+    /// <summary>
+    /// To select right random number generator
+    /// </summary>
+    private readonly Random Rand;
+
+    /// <summary>
+    /// Create a random number generator.
+    /// The seed is random by deafult, but could be fixed to the defined value
+    /// </summary>
+    public RandomDataGenerator(int? seed = null)
+    {
+        Rand = seed.HasValue
+            ? new Random(seed.Value)
+            : GlobalRandomThread.Value;
+    }
+
     public static RandomDataGenerator Generate { get; private set; } = new(0);
 
-    /// <summary>
-    /// Use a random seed so each generator returns different data.
-    /// </summary>
-    public RandomDataGenerator()
+    private static int GetCryptoRandomInt()
     {
-        RNG = RandomNumberGenerator.Create();
+        var RNG = System.Security.Cryptography.RandomNumberGenerator.Create();
         byte[] data = new byte[sizeof(int)];
         RNG.GetBytes(data);
-        int randomValue = BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
-        Rand = new Random(randomValue);
-    }
-
-    /// <summary>
-    /// Use a fixed seed so each generator returns the same data.
-    /// </summary>
-    public RandomDataGenerator(int seed = 0)
-    {
-        Rand = new(seed);
-        RNG = RandomNumberGenerator.Create();
-    }
-
-    public void RandomizeSeed()
-    {
-        Rand = new();
-        Generate = new();
+        return BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
     }
 
     #region Methods that return single numbers

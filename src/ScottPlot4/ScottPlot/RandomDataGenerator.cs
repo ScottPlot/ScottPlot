@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Threading;
 
 namespace ScottPlot;
 
@@ -6,28 +7,30 @@ namespace ScottPlot;
 
 public class RandomDataGenerator
 {
-    private Random Rand { get; }
-    private RandomNumberGenerator RNG { get; }
+    /// <summary>
+    /// Global random number generator, to ensure each generator will returns different data.
+    /// Using ThreadLocal, because Random is not thread safe.
+    /// </summary>
+    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random());
 
     /// <summary>
-    /// Use a random seed so each generator returns different data.
+    /// Local random number generator to be able to return the same data.
     /// </summary>
-    public RandomDataGenerator()
-    {
-        RNG = RandomNumberGenerator.Create();
-        byte[] data = new byte[sizeof(int)];
-        RNG.GetBytes(data);
-        int randomValue = BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
-        Rand = new Random(randomValue);
-    }
+    private readonly Random? SeededRandom = null;
 
     /// <summary>
-    /// Use a fixed seed so each generator returns the same data.
+    /// To select right random number generator
     /// </summary>
-    public RandomDataGenerator(int seed = 0)
+    private Random Rand => SeededRandom ?? GlobalRandomThread.Value!;
+
+    /// <summary>
+    /// Create a random number generator.
+    /// Random values can be deterministic if the value of <paramref name="seed"/> is not null.
+    /// </summary>
+    public RandomDataGenerator(int? seed = null)
     {
-        Rand = new(seed);
-        RNG = RandomNumberGenerator.Create();
+        if (seed.HasValue)
+            SeededRandom = new(seed.Value);
     }
 
     #region Methods that return single numbers

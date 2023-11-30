@@ -54,8 +54,12 @@ namespace ScottPlot.Control
     /// User controls can instantiate this object, pass mouse and resize event information in, and have
     /// renders triggered using events.
     /// </summary>
-    public class ControlBackEnd
+    public class ControlBackEnd : IDisposable
     {
+        /// <summary>
+        /// Track whether Dispose has been called.
+        /// </summary>
+        private bool disposedValue;
         /// <summary>
         /// This event is invoked when an existing Bitmap is redrawn.
         /// e.g., after rendering following a click-drag-pan mouse event.
@@ -789,6 +793,36 @@ namespace ScottPlot.Control
 
                 linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                while (OldBitmaps.Count > 0)
+                    OldBitmaps.Dequeue()?.Dispose();
+                Bmp?.Dispose();
+                Bmp = null;
+                disposedValue = true;
+            }
+        }
+
+        ~ControlBackEnd()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

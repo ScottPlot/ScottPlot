@@ -8,5 +8,7 @@ public interface IAutoScaler
     /// <summary>
     /// Return the recommended axis limits for the plottables that use the given axes
     /// </summary>
-    AxisLimits GetAxisLimits(IEnumerable<IPlottable> plottables, IXAxis xAxis, IYAxis yAxis);
+    AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis);
+
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables);
 }

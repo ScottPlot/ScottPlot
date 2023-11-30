@@ -127,6 +127,11 @@ namespace ScottPlot.Avalonia
             Backend.StartProcessingEvents();
         }
 
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            Backend?.Dispose();
+            base.OnUnloaded(e);
+        }
         public (double x, double y) GetMouseCoordinates(int xAxisIndex = 0, int yAxisIndex = 0) => Backend.GetMouseCoordinates(xAxisIndex, yAxisIndex);
 
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
