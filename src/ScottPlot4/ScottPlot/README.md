@@ -25,6 +25,7 @@ Drop a `FormsPlot` from the toolbox onto your form and add the following to your
 double[] xs = new double[] {1, 2, 3, 4, 5};
 double[] ys = new double[] {1, 4, 9, 16, 25};
 formsPlot1.Plot.AddScatter(xs, ys);
+formsPlot1.Refresh();
 ```
 
 ![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/winforms-quickstart.png)
@@ -52,6 +53,7 @@ The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/4.1/) demonstrates h
 ## Supported Platforms
 
 ### .NET Versions
+
 * .NET Standard 2.0
 * .NET Framework 4.6.2 and newer
 * .NET (Core) 6 and newer ([compatibility notes](https://scottplot.net/faq/dependencies/))
