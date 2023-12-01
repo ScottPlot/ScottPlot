@@ -35,6 +35,8 @@ public struct Coordinates : IEquatable<Coordinates>
 
     public static Coordinates Origin => new(0, 0);
 
+    public static Coordinates Infinity => new(double.PositiveInfinity, double.PositiveInfinity);
+
     public bool Equals(Coordinates other)
     {
         return Equals(X, other.X) && Equals(Y, other.Y);
@@ -64,5 +66,15 @@ public struct Coordinates : IEquatable<Coordinates>
     public override int GetHashCode()
     {
         return X.GetHashCode() ^ Y.GetHashCode();
+    }
+
+    public CoordinateRect ToRect(double radiusX, double radiusY)
+    {
+        return new CoordinateRect(X - radiusX, X + radiusX, Y - radiusY, Y + radiusY);
+    }
+
+    public CoordinateRect ToRect(double radius)
+    {
+        return ToRect(radius, radius);
     }
 }

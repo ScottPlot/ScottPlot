@@ -60,6 +60,11 @@ public readonly struct RenderDetails
     /// </summary>
     public readonly int Count;
 
+    public double PxPerUnitX => DataRect.Width / AxisLimits.HorizontalSpan;
+    public double PxPerUnitY => DataRect.Height / AxisLimits.VerticalSpan;
+    public double UnitsPerPxX => AxisLimits.HorizontalSpan / DataRect.Width;
+    public double UnitsPerPxY => AxisLimits.VerticalSpan / DataRect.Height;
+
     public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes, RenderDetails lastRender)
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
