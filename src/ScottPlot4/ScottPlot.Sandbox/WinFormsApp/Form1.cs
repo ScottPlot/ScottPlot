@@ -8,21 +8,9 @@ namespace WinFormsApp
         public Form1()
         {
             InitializeComponent();
-
-            var cb = formsPlot1.Plot.AddColorbar();
-            double[] fractions = { 0, .5, 1 };
-            string[] labels = {
-                "Testing long message 1",
-                "Testing long message 2",
-                "Testing long message 3",
-            };
-            cb.SetTicks(fractions, labels);
-            cb.LabelIsVisible = true;
-            cb.Label = "Awesome Colorbar";
-            formsPlot1.Render();
-
-            // automatic layout resizing must be called AFTER a render
-            cb.ResizeLayout(formsPlot1.Plot);
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Sin(), label: "sin");
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Cos(), label: "cos");
+            formsPlot1.Plot.Legend();
             formsPlot1.Render();
         }
     }

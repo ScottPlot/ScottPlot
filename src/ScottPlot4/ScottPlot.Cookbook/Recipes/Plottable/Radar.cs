@@ -322,17 +322,30 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "radar_customization";
         public string Title => "Customization";
         public string Description =>
-            "Radar charts support customization of the line color and width.";
+            "Radar charts support extensive customization options.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[,] values = {
-                { 78,  83, 84, 76, 43 },
-                { 100, 50, 70, 60, 90 }
-            };
+            double[,] values = { { 2, 4, 3 }, { 3, 3, 4 } };
+            double[] maxValues = { 5, 5, 5 };
 
-            var radar = plt.AddRadar(values);
-            radar.WebColor = System.Drawing.Color.Red;
+            var radar = plt.AddRadar(
+                values: values,
+                independentAxes: false,
+                maxValues: maxValues,
+                alphafill: 20);
+
+            static string CustomLabelFormatter(double position)
+            {
+                return position.ToString("f1");
+            }
+
+            radar.CategoryLabels = new string[] { "Speed", "Velocity", "Strength" };
+            radar.GroupLabels = new[] { "First try", "Second try" };
+            radar.Font.Size = 10;
+            radar.TickValues = new double[] { 1, 2, 3, 4, 5 };
+            radar.AxisLabelStringFormatter = CustomLabelFormatter;
+            radar.WebColor = System.Drawing.Color.WhiteSmoke;
             radar.LineWidth = 3;
         }
     }
