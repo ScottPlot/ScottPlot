@@ -51,9 +51,9 @@ public static class MarkerShapeExtensions
         return shape switch
         {
             (MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or
-            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or 
-            MarkerShape.Cross or MarkerShape.VerticalBar or MarkerShape.HorizontalBar or 
-            MarkerShape.TriUp or MarkerShape.TriDown or MarkerShape.Asterisk or 
+            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or
+            MarkerShape.Cross or MarkerShape.VerticalBar or MarkerShape.HorizontalBar or
+            MarkerShape.TriUp or MarkerShape.TriDown or MarkerShape.Asterisk or
             MarkerShape.HashTag) => true,
             _ => false,
         };
