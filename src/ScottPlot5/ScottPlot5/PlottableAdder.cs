@@ -10,6 +10,8 @@ namespace ScottPlot;
 /// </summary>
 public class PlottableAdder
 {
+    // TODO: add a test to force methods to be alphabetized
+
     private readonly Plot Plot;
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
@@ -88,9 +90,22 @@ public class PlottableAdder
         return scatter;
     }
 
+    public Scatter Scatter(double x, double y, Color? color = null)
+    {
+        double[] xs = { x };
+        double[] ys = { y };
+        return Scatter(new ScatterSourceXsYs(xs, ys), color);
+    }
+
     public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
     {
         return Scatter(new ScatterSourceXsYs(xs, ys), color);
+    }
+
+    public Scatter Scatter(Coordinates point, Color? color = null)
+    {
+        Coordinates[] coordinates = { point };
+        return Scatter(new ScatterSourceCoordinates(coordinates), color);
     }
 
     public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
@@ -217,6 +232,22 @@ public class PlottableAdder
         Polygon poly = new(coordinates);
         Plot.PlottableList.Add(poly);
         return poly;
+    }
+
+    public Text Text(string text, Coordinates location)
+    {
+        return Text(text, location.X, location.Y);
+    }
+
+    public Text Text(string text, double x, double y)
+    {
+        Text txt = new();
+        txt.Label.Text = text;
+        txt.Label.BackColor = Colors.Transparent;
+        txt.Label.BorderColor = Colors.Transparent;
+        txt.Location = new(x, y);
+        Plot.PlottableList.Add(txt);
+        return txt;
     }
 
     /// <summary>
