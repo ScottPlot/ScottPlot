@@ -16,6 +16,8 @@
 * Markers: Added numerous additional marker types (#2999, #3019) _Thanks @Gray-lab_
 * Plot: Improved support for multiple axes and automatic scaling (#3027)
 * RandomDataGenerator: Use a global Random number generator for improved randomness and thread safety (#2893, #3022) _Thanks @KroMignon_
+* Plot: Simplified methods for determining points nearest the cursor (#3026) _Thanks @JurasskPark_
+* Plottable: Added a new `Text` plot type for displaying a label at a location in coordinate space (#2939)
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_

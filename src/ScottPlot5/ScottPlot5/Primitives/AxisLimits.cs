@@ -22,6 +22,14 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public static CoordinateRect Default { get; } = new(-10, 10, -10, 10);
 
+    public AxisLimits(Coordinates coordinates)
+    {
+        Left = coordinates.X;
+        Right = coordinates.X;
+        Bottom = coordinates.Y;
+        Top = coordinates.Y;
+    }
+
     public AxisLimits(CoordinateRect rect)
     {
         Left = rect.Left;

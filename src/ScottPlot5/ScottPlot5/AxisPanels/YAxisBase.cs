@@ -100,7 +100,7 @@ public abstract class YAxisBase : AxisBase, IAxis
         return distance * dataArea.Height / Height;
     }
 
-    public double GetCoordinateDistance(double distance, PixelRect dataArea)
+    public double GetCoordinateDistance(float distance, PixelRect dataArea)
     {
         return distance / (dataArea.Height / Height);
     }

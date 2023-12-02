@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
-using System;
 
 namespace ScottPlot;
 
@@ -22,91 +21,6 @@ public class PlottableAdder
     public PlottableAdder(Plot plot)
     {
         Plot = plot;
-    }
-
-    public Crosshair Crosshair(double x, double y)
-    {
-        Crosshair ch = new()
-        {
-            Position = new(x, y)
-        };
-        ch.LineStyle.Color = GetNextColor();
-        Plot.PlottableList.Add(ch);
-        return ch;
-    }
-
-    public Heatmap Heatmap(double[,] intensities)
-    {
-        Heatmap heatmap = new(intensities);
-        Plot.PlottableList.Add(heatmap);
-        return heatmap;
-    }
-
-    public Scatter Line(double x1, double y1, double x2, double y2)
-    {
-        Coordinates[] coordinates = { new(x1, y1), new(x2, y2) };
-        return Scatter(coordinates);
-    }
-
-    public Scatter Line(Coordinates pt1, Coordinates pt2)
-    {
-        Coordinates[] coordinates = { pt1, pt2 };
-        return Scatter(coordinates);
-    }
-
-    public Pie Pie(IList<PieSlice> slices)
-    {
-        Pie pie = new(slices);
-        Plot.PlottableList.Add(pie);
-        return pie;
-    }
-
-    public Pie Pie(IEnumerable<double> values)
-    {
-        var slices = values.Select(v => new PieSlice
-        {
-            Value = v,
-            Fill = new() { Color = GetNextColor() },
-        }).ToList();
-        var pie = Pie(slices);
-        Plot.PlottableList.Add(pie);
-        return pie;
-    }
-
-    public void Plottable(IPlottable plottable)
-    {
-        Plot.PlottableList.Add(plottable);
-    }
-
-    public Scatter Scatter(IScatterSource data, Color? color = null)
-    {
-        Color nextColor = color ?? GetNextColor();
-        Scatter scatter = new(data);
-        scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
-        Plot.PlottableList.Add(scatter);
-        return scatter;
-    }
-
-    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
-    {
-        return Scatter(new ScatterSourceXsYs(xs, ys), color);
-    }
-
-    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
-    {
-        return Scatter(new ScatterSourceCoordinates(coordinates), color);
-    }
-
-    public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
-    {
-        Color nextColor = color ?? GetNextColor();
-        SignalSource data = new(ys, period);
-        var sig = new Signal(data);
-        sig.LineStyle.Color = nextColor;
-        sig.Marker.Fill.Color = nextColor;
-        Plot.PlottableList.Add(sig);
-        return sig;
     }
 
     public BarPlot Bar(double[] values)
@@ -174,6 +88,17 @@ public class PlottableAdder
         return candlestickPlot;
     }
 
+    public Crosshair Crosshair(double x, double y)
+    {
+        Crosshair ch = new()
+        {
+            Position = new(x, y)
+        };
+        ch.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(ch);
+        return ch;
+    }
+
     public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
     {
         ColorBar colorBar = new(source, edge);
@@ -191,32 +116,6 @@ public class PlottableAdder
 
         Plot.PlottableList.Add(eb);
         return eb;
-    }
-
-    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
-    {
-        HorizontalLine line = new();
-        line.LineStyle.Width = width;
-        line.LineStyle.Color = color ?? GetNextColor();
-        line.LineStyle.Pattern = pattern;
-        line.Y = y;
-        Plot.PlottableList.Add(line);
-        return line;
-    }
-
-    public OhlcPlot OHLC(IList<IOHLC> ohlcs)
-    {
-        OHLCSource dataSource = new(ohlcs);
-        OhlcPlot ohlc = new(dataSource);
-        Plot.PlottableList.Add(ohlc);
-        return ohlc;
-    }
-
-    public Polygon Polygon(Coordinates[] coordinates)
-    {
-        Polygon poly = new(coordinates);
-        Plot.PlottableList.Add(poly);
-        return poly;
     }
 
     /// <summary>
@@ -268,6 +167,136 @@ public class PlottableAdder
         rangePlot.SetDataSource(data, function);
         Plot.PlottableList.Add(rangePlot);
         return rangePlot;
+    }
+
+    public Heatmap Heatmap(double[,] intensities)
+    {
+        Heatmap heatmap = new(intensities);
+        Plot.PlottableList.Add(heatmap);
+        return heatmap;
+    }
+
+    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    {
+        HorizontalLine line = new();
+        line.LineStyle.Width = width;
+        line.LineStyle.Color = color ?? GetNextColor();
+        line.LineStyle.Pattern = pattern;
+        line.Y = y;
+        Plot.PlottableList.Add(line);
+        return line;
+    }
+
+    public Scatter Line(double x1, double y1, double x2, double y2)
+    {
+        Coordinates[] coordinates = { new(x1, y1), new(x2, y2) };
+        return Scatter(coordinates);
+    }
+
+    public Scatter Line(Coordinates pt1, Coordinates pt2)
+    {
+        Coordinates[] coordinates = { pt1, pt2 };
+        return Scatter(coordinates);
+    }
+
+    public OhlcPlot OHLC(IList<IOHLC> ohlcs)
+    {
+        OHLCSource dataSource = new(ohlcs);
+        OhlcPlot ohlc = new(dataSource);
+        Plot.PlottableList.Add(ohlc);
+        return ohlc;
+    }
+
+    public Pie Pie(IList<PieSlice> slices)
+    {
+        Pie pie = new(slices);
+        Plot.PlottableList.Add(pie);
+        return pie;
+    }
+
+    public Pie Pie(IEnumerable<double> values)
+    {
+        var slices = values.Select(v => new PieSlice
+        {
+            Value = v,
+            Fill = new() { Color = GetNextColor() },
+        }).ToList();
+        var pie = Pie(slices);
+        Plot.PlottableList.Add(pie);
+        return pie;
+    }
+
+    public Polygon Polygon(Coordinates[] coordinates)
+    {
+        Polygon poly = new(coordinates);
+        Plot.PlottableList.Add(poly);
+        return poly;
+    }
+
+    public IPlottable Plottable(IPlottable plottable)
+    {
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public Scatter Scatter(IScatterSource data, Color? color = null)
+    {
+        Color nextColor = color ?? GetNextColor();
+        Scatter scatter = new(data);
+        scatter.LineStyle.Color = nextColor;
+        scatter.MarkerStyle.Fill.Color = nextColor;
+        Plot.PlottableList.Add(scatter);
+        return scatter;
+    }
+
+    public Scatter Scatter(double x, double y, Color? color = null)
+    {
+        double[] xs = { x };
+        double[] ys = { y };
+        return Scatter(new ScatterSourceXsYs(xs, ys), color);
+    }
+
+    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
+    {
+        return Scatter(new ScatterSourceXsYs(xs, ys), color);
+    }
+
+    public Scatter Scatter(Coordinates point, Color? color = null)
+    {
+        Coordinates[] coordinates = { point };
+        return Scatter(new ScatterSourceCoordinates(coordinates), color);
+    }
+
+    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
+    {
+        return Scatter(new ScatterSourceCoordinates(coordinates), color);
+    }
+
+    public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
+    {
+        Color nextColor = color ?? GetNextColor();
+        SignalSource data = new(ys, period);
+        var sig = new Signal(data);
+        sig.LineStyle.Color = nextColor;
+        sig.Marker.Fill.Color = nextColor;
+        Plot.PlottableList.Add(sig);
+        return sig;
+    }
+
+    public Text Text(string text, Coordinates location)
+    {
+        return Text(text, location.X, location.Y);
+    }
+
+    public Text Text(string text, double x, double y)
+    {
+        Text txt = new();
+        txt.Label.Text = text;
+        txt.Label.BackColor = Colors.Transparent;
+        txt.Label.BorderColor = Colors.Transparent;
+        txt.Location = new(x, y);
+        Plot.PlottableList.Add(txt);
+        return txt;
     }
 
     public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)

@@ -12,9 +12,11 @@ static class Program
         // use this to quickly launch a test Form while developing
         if (Environment.MachineName == "DESKTOP-L7MMAB7")
         {
-            Application.Run(new Demos.MultiAxis());
+            Application.Run(new Demos.ShowValueOnHover());
         }
-
-        Application.Run(new MainMenuForm());
+        else
+        {
+            Application.Run(new MainMenuForm());
+        }
     }
 }

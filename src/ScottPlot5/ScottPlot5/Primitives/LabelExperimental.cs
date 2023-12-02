@@ -67,6 +67,11 @@ public class LabelExperimental
         paint.IsAntialias = AntiAlias;
     }
 
+    public void Render(SKCanvas canvas, Pixel pixel)
+    {
+        Render(canvas, pixel.X, pixel.Y);
+    }
+
     public void Render(SKCanvas canvas, float x, float y)
     {
         using SKPaint paint = new();

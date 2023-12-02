@@ -33,6 +33,7 @@ public class Plot : IDisposable
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
+    public RenderDetails LastRender => RenderManager.LastRender;
     public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
     public IAutoScaler AutoScaler { get; set; } = new AutoScalers.FractionalAutoScaler(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
@@ -454,6 +455,25 @@ public class Plot : IDisposable
         double top = YAxis.GetCoordinate(y - radius, dataRect);
         double bottom = YAxis.GetCoordinate(y + radius, dataRect);
         return new CoordinateRect(left, right, bottom, top);
+    }
+
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
+    {
+        return GetCoordinateRect(pixel.X, pixel.Y, radius);
+    }
+
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
+    {
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
+        double radiusX = XAxis.GetCoordinateDistance(radius, dataRect);
+        double radiusY = YAxis.GetCoordinateDistance(radius, dataRect);
+        return coordinates.ToRect(radiusX, radiusY);
     }
 
     #endregion
