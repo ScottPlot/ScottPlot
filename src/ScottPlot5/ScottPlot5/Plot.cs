@@ -44,7 +44,8 @@ public class Plot : IDisposable
     public AxisStyler AxisStyler { get; }
 
     public PlotStyler Style { get; }
-    public bool ShowBenchmark { get; set; } = false; // TODO: move inside RenderManager
+
+    public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
     /// <summary>
     /// This property provides access to the primary horizontal axis below the plot.

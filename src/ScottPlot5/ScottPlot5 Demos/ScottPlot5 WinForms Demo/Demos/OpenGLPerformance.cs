@@ -31,10 +31,10 @@ public partial class OpenGLPerformance : Form, IDemoWindow
         cbPlotType.SelectedIndexChanged += (s, e) => UpdatePlots();
 
         formsPlot1.Plot.Title("FormsPlot");
-        formsPlot1.Plot.ShowBenchmark = true;
+        formsPlot1.Plot.Benchmark.IsVisible = true;
 
         formsPlotgl1.Plot.Title("FormsPlotGL");
-        formsPlotgl1.Plot.ShowBenchmark = true;
+        formsPlot1.Plot.Benchmark.IsVisible = true;
 
         UpdatePlots();
     }
