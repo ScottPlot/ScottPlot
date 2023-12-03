@@ -185,4 +185,16 @@ public static class NumericConversion
         if (input.CompareTo(max) > 0) return max;
         return input;
     }
+
+    public static bool IsReal(double x)
+    {
+        // implemented here because older versions of .NET do not support double.IsReal()
+        return !double.IsNaN(x) && !double.IsInfinity(x);
+    }
+
+    public static bool IsReal(float x)
+    {
+        // implemented here because older versions of .NET do not support double.IsReal()
+        return !float.IsNaN(x) && !float.IsInfinity(x);
+    }
 }
