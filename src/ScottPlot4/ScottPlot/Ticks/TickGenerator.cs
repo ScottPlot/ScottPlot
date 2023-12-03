@@ -589,6 +589,11 @@ namespace ScottPlot.Ticks
 
         private Tick[] GetMinorTicks()
         {
+            if (ManualTicks is not null)
+            {
+                return ManualTicks.Minor.Select(x => new Tick(x, string.Empty, false, false)).ToArray();
+            }
+
             if (Ticks.Minor is null || Ticks.Minor.Length == 0)
                 return new Tick[] { };
 
@@ -608,6 +613,11 @@ namespace ScottPlot.Ticks
         public Tick[] GetTicks(double min, double max)
         {
             return GetMajorTicks(min, max).Concat(GetMinorTicks()).ToArray();
+        }
+
+        public void SetTicks(Tick[] ticks)
+        {
+            ManualTicks = new TickCollection(ticks);
         }
 
         public Tick[] GetVisibleMajorTicks(PlotDimensions dims)
