@@ -124,7 +124,9 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public override void Render(DrawingContext context)
     {
-        context.Custom(new CustomDrawOp(Bounds, Plot));
+        Rect controlBounds = new(Bounds.Size);
+        CustomDrawOp customDrawOp = new(controlBounds, Plot);
+        context.Custom(customDrawOp);
     }
 
     public void Refresh()

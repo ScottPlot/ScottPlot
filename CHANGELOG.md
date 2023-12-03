@@ -22,6 +22,7 @@
 * Grid: Improve support for custom line styles (#2904) _Thanks @minjjKang_
 * Pie: Improve appearance of slice labels in the legend (#2894, #2852) _Thanks @zy1075984_
 * Legend: Replaced `List<ILegend>` with a simple `Legend` object with an `IsVisible` property (#2792)
+* Avalonia: Improved sizing of plot controls inside containers (#2923) _Thanks @JohnSmith20211124 and @Developer-Alexander_
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
