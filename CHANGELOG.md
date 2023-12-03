@@ -16,7 +16,7 @@
 * Markers: Added numerous additional marker types (#2999, #3019) _Thanks @Gray-lab_
 * Plot: Improved support for multiple axes and automatic scaling (#3027)
 * RandomDataGenerator: Use a global Random number generator for improved randomness and thread safety (#2893, #3022) _Thanks @KroMignon_
-* Plot: Simplified methods for determining points nearest the cursor (#3026) _Thanks @JurasskPark_
+* Scatter: Added `Data.GetNearest()` to simplify locating the point nearest the cursor (#3026, #3048) _Thanks @JurasskPark and @CBrauer_
 * Plottable: Added a new `Text` plot type for displaying a label at a location in coordinate space (#2939)
 * Plot: Benchmark is now a user-customizable plottable and `Plot.ShowBenchmark` is now `Plot.Benchmark.IsVisible` (#2961)
 * Grid: Improve support for custom line styles (#2904) _Thanks @minjjKang_
