@@ -112,6 +112,11 @@ public readonly struct Color
         return hex.Select(x => FromHex(x)).ToArray();
     }
 
+    public static Color FromSKColor(SKColor skcolor)
+    {
+        return new Color(skcolor.Red, skcolor.Green, skcolor.Blue, skcolor.Alpha);
+    }
+
     public string ToStringRGB()
     {
         return "#" + Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
