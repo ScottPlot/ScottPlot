@@ -20,6 +20,7 @@
 * Plottable: Added a new `Text` plot type for displaying a label at a location in coordinate space (#2939)
 * Plot: Benchmark is now a user-customizable plottable and `Plot.ShowBenchmark` is now `Plot.Benchmark.IsVisible` (#2961)
 * Grid: Improve support for custom line styles (#2904) _Thanks @minjjKang_
+* Pie: Improve appearance of slice labels in the legend (#2894, #2852) _Thanks @zy1075984_
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_

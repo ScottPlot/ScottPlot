@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable;
+﻿using ScottPlot.Plottables;
+
+namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class PieTests
 {
@@ -20,6 +22,26 @@ internal class PieTests
 
         pie.Slices.Should().HaveCount(4);
 
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Pie_Legend()
+    {
+        Plot plt = new();
+
+        // start with all data the same size
+        List<PieSlice> slices = new()
+        {
+            new PieSlice(5, Colors.Red, "Alarm"),
+            new PieSlice(5, Colors.Green, "Run"),
+            new PieSlice(5, Colors.Blue, "Chill"),
+        };
+
+        var pie = plt.Add.Pie(slices);
+        pie.LineStyle.Color = ScottPlot.Colors.Transparent;
+
+        plt.Legend();
         plt.SaveTestImage();
     }
 }

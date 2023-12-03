@@ -11,13 +11,22 @@ public class PieSlice
     public PieSlice(double value, Color color)
     {
         Value = value;
-        Fill = new() { Color = color };
+        Fill.Color = color;
+    }
+
+    public PieSlice(double value, Color color, string label)
+    {
+        Value = value;
+        Label = label;
+        Fill.Color = color;
     }
 }
 
 public class Pie : IPlottable
 {
+    [Obsolete("Pie charts cannot be assigned a label. Instead, assign labels to the Slices.", true)]
     public string? Label { get; set; }
+
     public IList<PieSlice> Slices { get; set; }
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;
@@ -42,7 +51,6 @@ public class Pie : IPlottable
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
-            Label = Label,
             Children = Slices.Select(slice => new LegendItem
             {
                 Label = slice.Label,
