@@ -600,6 +600,15 @@ public class Plot : IDisposable
 
     #region Helper Methods
 
+    /// <summary>
+    /// Remove a specific object from the plot.
+    /// This removes the given object from <see cref="PlottableList"/>.
+    /// </summary>
+    public void Remove(IPlottable plottable)
+    {
+        PlottableList.Remove(plottable);
+    }
+
     public void DisableGrid()
     {
         Grids.ForEach(x => x.IsVisible = false);
