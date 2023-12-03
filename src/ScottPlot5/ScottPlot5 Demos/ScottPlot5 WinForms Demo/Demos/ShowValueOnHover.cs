@@ -26,31 +26,31 @@ public partial class ShowValueOnHover : Form, IDemoWindow
 
         formsPlot1.MouseMove += (s, e) =>
         {
+            // determine where the mouse is
             Pixel mousePixel = new(e.Location.X, e.Location.Y);
             Coordinates mouseLocation = formsPlot1.Plot.GetCoordinates(mousePixel);
-            Coordinates nearestPoint = GetNearestCoordinates(mouseLocation);
-            MyCrosshair.Position = nearestPoint;
-            Text = nearestPoint.ToString();
-            formsPlot1.Refresh();
-        };
-    }
 
-    Coordinates GetNearestCoordinates(Coordinates mouseLocation)
-    {
-        double closestDistance = double.PositiveInfinity;
-        Coordinates closestPoint = Coordinates.Infinity;
-        foreach (Coordinates pointCoordinates in MyScatter.Data.GetScatterPoints())
-        {
-            double dX = (pointCoordinates.X - mouseLocation.X) * formsPlot1.Plot.LastRender.PxPerUnitX;
-            double dY = (pointCoordinates.Y - mouseLocation.Y) * formsPlot1.Plot.LastRender.PxPerUnitY;
-            double distance = dX * dX + dY * dY;
+            // get the point closest to the mouse
+            int? nearestIndex = MyScatter.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
 
-            if (distance <= closestDistance)
+            // place the crosshair over the highlighted point
+            if (nearestIndex.HasValue)
             {
-                closestPoint = pointCoordinates;
-                closestDistance = distance;
+                IReadOnlyList<Coordinates> points = MyScatter.Data.GetScatterPoints();
+                Coordinates c = points[nearestIndex.Value];
+                MyCrosshair.IsVisible = true;
+                MyCrosshair.Position = c;
+                formsPlot1.Refresh();
+                Text = $"Selected Index={nearestIndex}, X={c.X:0.##}, Y={c.Y:0.##}";
             }
-        }
-        return closestPoint;
+
+            // hide the crosshair when no point is selected
+            if (!nearestIndex.HasValue && MyCrosshair.IsVisible)
+            {
+                MyCrosshair.IsVisible = false;
+                formsPlot1.Refresh();
+                Text = $"No point selected";
+            }
+        };
     }
 }

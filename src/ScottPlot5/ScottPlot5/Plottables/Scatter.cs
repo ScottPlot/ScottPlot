@@ -61,4 +61,29 @@ public class Scatter : IPlottable
 
         MarkerStyle.Render(rp.Canvas, pixels);
     }
+
+    public int? GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        double maxDistanceSquared = maxDistance * maxDistance;
+        double closestDistanceSquared = double.PositiveInfinity;
+
+        int closestIndex = 0;
+
+        IReadOnlyList<Coordinates> points = Data.GetScatterPoints();
+
+        for (int i = 0; i < points.Count; i++)
+        {
+            double dX = (points[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dY = (points[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            double distanceSquared = dX * dX + dY * dY;
+
+            if (distanceSquared <= closestDistanceSquared)
+            {
+                closestDistanceSquared = distanceSquared;
+                closestIndex = i;
+            }
+        }
+
+        return closestDistanceSquared <= maxDistanceSquared ? closestIndex : null;
+    }
 }
