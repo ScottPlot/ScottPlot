@@ -19,6 +19,8 @@ public enum MarkerShape
     HorizontalBar,
     TriUp,
     TriDown,
+    Asterisk,
+    HashTag,
 }
 
 public static class MarkerShapeExtensions
@@ -38,6 +40,8 @@ public static class MarkerShapeExtensions
             MarkerShape.HorizontalBar => new Markers.HorizontalBar(),
             MarkerShape.TriUp => new Markers.TriUp(),
             MarkerShape.TriDown => new Markers.TriDown(),
+            MarkerShape.Asterisk => new Markers.Asterisk(),
+            MarkerShape.HashTag => new Markers.HashTag(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
@@ -47,8 +51,10 @@ public static class MarkerShapeExtensions
         return shape switch
         {
             (MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or
-            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or MarkerShape.Cross or
-            MarkerShape.VerticalBar or MarkerShape.HorizontalBar or MarkerShape.TriUp or MarkerShape.TriDown) => true,
+            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or
+            MarkerShape.Cross or MarkerShape.VerticalBar or MarkerShape.HorizontalBar or
+            MarkerShape.TriUp or MarkerShape.TriDown or MarkerShape.Asterisk or
+            MarkerShape.HashTag) => true,
             _ => false,
         };
     }
