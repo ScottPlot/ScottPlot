@@ -12,6 +12,8 @@ public class Scatter : IPlottable
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSources.IScatterSource Data { get; }
+    public IReadOnlyList<Coordinates> DataPoints => Data.GetScatterPoints();
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -40,7 +42,7 @@ public class Scatter : IPlottable
 
     public void Render(RenderPack rp)
     {
-        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
+        IEnumerable<Pixel> pixels = DataPoints.Select(x => Axes.GetPixel(x));
 
         if (!pixels.Any())
             return;
@@ -69,12 +71,10 @@ public class Scatter : IPlottable
 
         int closestIndex = 0;
 
-        IReadOnlyList<Coordinates> points = Data.GetScatterPoints();
-
-        for (int i = 0; i < points.Count; i++)
+        for (int i = 0; i < DataPoints.Count; i++)
         {
-            double dX = (points[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (points[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            double dX = (DataPoints[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dY = (DataPoints[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)

@@ -36,12 +36,11 @@ public partial class ShowValueOnHover : Form, IDemoWindow
             // place the crosshair over the highlighted point
             if (nearestIndex.HasValue)
             {
-                IReadOnlyList<Coordinates> points = MyScatter.Data.GetScatterPoints();
-                Coordinates c = points[nearestIndex.Value];
+                Coordinates point = MyScatter.DataPoints[nearestIndex.Value];
                 MyCrosshair.IsVisible = true;
-                MyCrosshair.Position = c;
+                MyCrosshair.Position = point;
                 formsPlot1.Refresh();
-                Text = $"Selected Index={nearestIndex}, X={c.X:0.##}, Y={c.Y:0.##}";
+                Text = $"Selected Index={nearestIndex}, X={point.X:0.##}, Y={point.Y:0.##}";
             }
 
             // hide the crosshair when no point is selected
