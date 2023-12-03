@@ -38,6 +38,7 @@
 * FormsPlot: Fix bug affecting mouse interaction on plots with all items hidden (#2895) _Thanks @LapinFou_
 * RadarPlot: Added customization options for axis label string formatting, manual tick positions, and transparency (#3041) _Thanks @JbmOnGitHub_
 * Axis: Added `Axis.SetTicks()` to allow full customization of major and minor ticks (#2957) _Thanks @FannyAtGitHub_
+* Plot: `GetImageHTML()` has been renamed to `GetImageHtml()` (#2974) _Thanks @b4shful_
 
 ## ScottPlot 5.0.9-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-10-03_
