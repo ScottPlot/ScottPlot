@@ -164,5 +164,31 @@ namespace ScottPlotTests.Ticks
             plt.YAxis.MinorLogScale(true, minorTickCount: 10);
             TestTools.SaveFig(plt, "tick-10");
         }
+
+        [Test]
+        public void Test_Tick_Manual()
+        {
+            ScottPlot.Plot plt = new(400, 300);
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // use a helper class to build a colelction of major and minor ticks
+            ScottPlot.Ticks.ManualTickCollection tc = new();
+            tc.AddMajor(0, "zero");
+            tc.AddMajor(20, "twenty");
+            tc.AddMajor(50, "fifty");
+            tc.AddMinor(22);
+            tc.AddMinor(25);
+            tc.AddMinor(32);
+            tc.AddMinor(35);
+            tc.AddMinor(42);
+            tc.AddMinor(45);
+
+            // get the tick array and apply it to the axis
+            ScottPlot.Ticks.Tick[] ticks = tc.GetTicks();
+            plt.BottomAxis.SetTicks(ticks);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

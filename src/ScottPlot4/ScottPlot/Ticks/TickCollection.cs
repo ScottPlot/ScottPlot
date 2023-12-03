@@ -21,6 +21,13 @@ public class TickCollection
         Labels = labels ?? Array.Empty<string>();
     }
 
+    public TickCollection(Tick[] ticks)
+    {
+        Major = ticks.Where(x => x.IsMajor).Select(x => x.Position).ToArray();
+        Minor = ticks.Where(x => !x.IsMajor).Select(x => x.Position).ToArray();
+        Labels = ticks.Where(x => x.IsMajor).Select(x => x.Label).ToArray();
+    }
+
     public static TickCollection Empty => new(
         major: Array.Empty<double>(),
         minor: Array.Empty<double>(),
@@ -40,4 +47,9 @@ public class TickCollection
         major: new double[] { ticks.Major.First(), ticks.Major.Last() },
         minor: Array.Empty<double>(),
         labels: new string[] { ticks.Labels.First(), ticks.Labels.Last() });
+
+    public static TickCollection Manual(Tick[] ticks) => new(
+        major: ticks.Where(x => x.IsMajor).Select(x => x.Position).ToArray(),
+        minor: ticks.Where(x => !x.IsMajor).Select(x => x.Position).ToArray(),
+        labels: ticks.Where(x => x.IsMajor).Select(x => x.Label).ToArray());
 }
