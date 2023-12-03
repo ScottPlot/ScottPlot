@@ -41,7 +41,7 @@ internal class PieTests
         var pie = plt.Add.Pie(slices);
         pie.LineStyle.Color = ScottPlot.Colors.Transparent;
 
-        plt.Legend();
+        plt.Legend.IsVisible = true;
         plt.SaveTestImage();
     }
 }

@@ -104,7 +104,7 @@ internal class Quickstart : RecipePageBase
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.Label = "Cos";
 
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
         }
     }
 }
