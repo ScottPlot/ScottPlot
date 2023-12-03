@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Legends;
 
-public class StandardLegend
+public class Legend
 {
     public bool IsVisible { get; set; } = false;
     public Alignment Alignment { get; set; } = Alignment.LowerRight;

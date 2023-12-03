@@ -28,7 +28,7 @@ public class Plot : IDisposable
     public Panels.TitlePanel TitlePanel { get; } = new();
 
     public List<IGrid> Grids { get; } = new();
-    public StandardLegend Legend { get; } = new();
+    public Legend Legend { get; } = new();
     public List<IPlottable> PlottableList { get; } = new();
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
