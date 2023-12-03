@@ -105,18 +105,20 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         return limits;
     }
 
-    public CoordinateRect WithPan(double deltaX, double deltaY)
+    public AxisLimits WithPan(double deltaX, double deltaY)
     {
-        return new CoordinateRect(Rect.Left + deltaX, Rect.Right + deltaX, Rect.Bottom + deltaY, Rect.Top + deltaY);
+        return new(Left + deltaX, Right + deltaX, Bottom + deltaY, Top + deltaY);
     }
 
-    public CoordinateRect WithZoom(double fracX, double fracY)
+    public AxisLimits WithZoom(double fracX, double fracY)
     {
         return WithZoom(fracX, fracY, Rect.HorizontalCenter, Rect.VerticalCenter);
     }
 
-    public CoordinateRect WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
+    public AxisLimits WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
+        // TODO: do this without heap allocations
+
         CoordinateRange xRange = new(Rect.Left, Rect.Right);
         xRange.ZoomFrac(fracX, zoomToX);
 
