@@ -28,7 +28,7 @@ public class Plot : IDisposable
     public Panels.TitlePanel TitlePanel { get; } = new();
 
     public List<IGrid> Grids { get; } = new();
-    public List<ILegend> Legends { get; } = new();
+    public StandardLegend Legend { get; } = new();
     public List<IPlottable> PlottableList { get; } = new();
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
@@ -102,10 +102,6 @@ public class Plot : IDisposable
         // add a default grid using the primary axes
         IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
         Grids.Add(grid);
-
-        // add a standard legend
-        ILegend legend = new StandardLegend();
-        Legends.Add(legend);
 
         // setup classes which must be aware of the plot
         Add = new(this);
@@ -669,27 +665,6 @@ public class Plot : IDisposable
             return defaultGrids.First();
         else
             throw new InvalidOperationException("The plot has no default grids");
-    }
-
-    /// <summary>
-    /// Return the first default legend in use.
-    /// Throws an exception if no default legends exist.
-    /// </summary>
-    public Legends.StandardLegend GetLegend()
-    {
-        IEnumerable<Legends.StandardLegend> standardLegends = Legends.OfType<Legends.StandardLegend>();
-        if (standardLegends.Any())
-            return standardLegends.First();
-        else
-            throw new InvalidOperationException("The plot has no standard legends");
-    }
-
-    /// <summary>
-    /// Set visibility of all legends.
-    /// </summary>
-    public void Legend(bool enable = true)
-    {
-        Legends.ForEach(x => x.IsVisible = enable);
     }
 
     /// <summary>

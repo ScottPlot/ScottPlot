@@ -4,11 +4,6 @@ public class RenderLegends : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        LegendItem[] items = rp.Plot.PlottableList.SelectMany(x => x.LegendItems).ToArray();
-
-        foreach (ILegend legend in rp.Plot.Legends)
-        {
-            legend.Render(rp);
-        }
+        rp.Plot.Legend.Render(rp);
     }
 }

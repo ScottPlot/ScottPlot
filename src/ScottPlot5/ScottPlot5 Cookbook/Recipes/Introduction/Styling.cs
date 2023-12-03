@@ -159,7 +159,7 @@ internal class Styling : RecipePageBase
                     color: scatter.LineStyle.Color);
             }
 
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
         }
     }
 
@@ -189,7 +189,7 @@ internal class Styling : RecipePageBase
                 scatter.MarkerStyle = MarkerStyle.None;
             }
 
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
         }
     }
 
