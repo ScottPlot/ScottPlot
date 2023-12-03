@@ -26,25 +26,22 @@ public partial class ShowValueOnHover : Form, IDemoWindow
 
         formsPlot1.MouseMove += (s, e) =>
         {
-            // determine where the mouse is
+            // determine where the mouse is and get the nearest point
             Pixel mousePixel = new(e.Location.X, e.Location.Y);
             Coordinates mouseLocation = formsPlot1.Plot.GetCoordinates(mousePixel);
-
-            // get the point closest to the mouse
-            int? nearestIndex = MyScatter.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
+            DataPoint nearest = MyScatter.Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
 
             // place the crosshair over the highlighted point
-            if (nearestIndex.HasValue)
+            if (nearest.IsReal)
             {
-                Coordinates point = MyScatter.DataPoints[nearestIndex.Value];
                 MyCrosshair.IsVisible = true;
-                MyCrosshair.Position = point;
+                MyCrosshair.Position = nearest.Coordinates;
                 formsPlot1.Refresh();
-                Text = $"Selected Index={nearestIndex}, X={point.X:0.##}, Y={point.Y:0.##}";
+                Text = $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
             }
 
             // hide the crosshair when no point is selected
-            if (!nearestIndex.HasValue && MyCrosshair.IsVisible)
+            if (!nearest.IsReal && MyCrosshair.IsVisible)
             {
                 MyCrosshair.IsVisible = false;
                 formsPlot1.Refresh();

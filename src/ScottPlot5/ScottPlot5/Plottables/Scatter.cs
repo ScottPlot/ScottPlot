@@ -12,7 +12,6 @@ public class Scatter : IPlottable
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSources.IScatterSource Data { get; }
-    public IReadOnlyList<Coordinates> DataPoints => Data.GetScatterPoints();
 
     public Color Color
     {
@@ -42,7 +41,8 @@ public class Scatter : IPlottable
 
     public void Render(RenderPack rp)
     {
-        IEnumerable<Pixel> pixels = DataPoints.Select(x => Axes.GetPixel(x));
+        // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
+        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(Axes.GetPixel);
 
         if (!pixels.Any())
             return;
@@ -62,28 +62,5 @@ public class Scatter : IPlottable
         }
 
         MarkerStyle.Render(rp.Canvas, pixels);
-    }
-
-    public int? GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
-
-        int closestIndex = 0;
-
-        for (int i = 0; i < DataPoints.Count; i++)
-        {
-            double dX = (DataPoints[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (DataPoints[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared ? closestIndex : null;
     }
 }
