@@ -19,6 +19,7 @@
 * Plot: Simplified methods for determining points nearest the cursor (#3026) _Thanks @JurasskPark_
 * Plottable: Added a new `Text` plot type for displaying a label at a location in coordinate space (#2939)
 * Plot: Benchmark is now a user-customizable plottable and `Plot.ShowBenchmark` is now `Plot.Benchmark.IsVisible` (#2961)
+* Grid: Improve support for custom line styles (#2904) _Thanks @minjjKang_
 
 ## ScottPlot 4.1.68 (in development)
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
