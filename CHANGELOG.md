@@ -4,7 +4,12 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
-## ScottPlot 5.0.9-beta (in development)
+## ScottPlot 5.0.11-beta (in development)
+
+## ScottPlot 4.1.70 (in development)
+
+## ScottPlot 5.0.10-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_
 * Signal: Improved support for datasets with repeating values (#2933, #2935) _Thanks @StendProg_
 * Blazor: Added a Blazor control (#2959) _Thanks @sulivanganter_
 * Layout: Expose `Matched` layout engine (#2881) _Thanks @proplunger_
@@ -24,7 +29,8 @@
 * Legend: Replaced `List<ILegend>` with a simple `Legend` object with an `IsVisible` property (#2792)
 * Avalonia: Improved sizing of plot controls inside containers (#2923) _Thanks @JohnSmith20211124 and @Developer-Alexander_
 
-## ScottPlot 4.1.68 (in development)
+## ScottPlot 4.1.69
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_
 * Axis: Added `IsReverse` property to let users invert the orientation of an axis (#2958) _Thanks @HandsomeGoldenKnight_
 * Text: Exposed `LastRenderRectangleCoordinates` to improve mouse interactivity (#2994) _Thanks @DaveMartel_
 * Arrow: Fixed bug in constructor overload (#2976, #3001) _Thanks @Gray-lab_
