@@ -662,5 +662,13 @@ namespace ScottPlot.Renderable
         {
             return AxisTicks.TickCollection.GetTicks(min, max);
         }
+
+        /// <summary>
+        /// Disble automatic tick generation and use the provided ticks
+        /// </summary>
+        public void SetTicks(Tick[] ticks)
+        {
+            AxisTicks.TickCollection.SetTicks(ticks);
+        }
     }
 }

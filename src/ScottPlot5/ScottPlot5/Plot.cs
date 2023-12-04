@@ -28,7 +28,7 @@ public class Plot : IDisposable
     public Panels.TitlePanel TitlePanel { get; } = new();
 
     public List<IGrid> Grids { get; } = new();
-    public List<ILegend> Legends { get; } = new();
+    public Legend Legend { get; } = new();
     public List<IPlottable> PlottableList { get; } = new();
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
@@ -44,7 +44,8 @@ public class Plot : IDisposable
     public AxisStyler AxisStyler { get; }
 
     public PlotStyler Style { get; }
-    public bool ShowBenchmark { get; set; } = false; // TODO: move inside RenderManager
+
+    public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
     /// <summary>
     /// This property provides access to the primary horizontal axis below the plot.
@@ -101,10 +102,6 @@ public class Plot : IDisposable
         // add a default grid using the primary axes
         IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
         Grids.Add(grid);
-
-        // add a standard legend
-        ILegend legend = new StandardLegend();
-        Legends.Add(legend);
 
         // setup classes which must be aware of the plot
         Add = new(this);
@@ -599,6 +596,15 @@ public class Plot : IDisposable
 
     #region Helper Methods
 
+    /// <summary>
+    /// Remove a specific object from the plot.
+    /// This removes the given object from <see cref="PlottableList"/>.
+    /// </summary>
+    public void Remove(IPlottable plottable)
+    {
+        PlottableList.Remove(plottable);
+    }
+
     public void DisableGrid()
     {
         Grids.ForEach(x => x.IsVisible = false);
@@ -659,27 +665,6 @@ public class Plot : IDisposable
             return defaultGrids.First();
         else
             throw new InvalidOperationException("The plot has no default grids");
-    }
-
-    /// <summary>
-    /// Return the first default legend in use.
-    /// Throws an exception if no default legends exist.
-    /// </summary>
-    public Legends.StandardLegend GetLegend()
-    {
-        IEnumerable<Legends.StandardLegend> standardLegends = Legends.OfType<Legends.StandardLegend>();
-        if (standardLegends.Any())
-            return standardLegends.First();
-        else
-            throw new InvalidOperationException("The plot has no standard legends");
-    }
-
-    /// <summary>
-    /// Set visibility of all legends.
-    /// </summary>
-    public void Legend(bool enable = true)
-    {
-        Legends.ForEach(x => x.IsVisible = enable);
     }
 
     /// <summary>

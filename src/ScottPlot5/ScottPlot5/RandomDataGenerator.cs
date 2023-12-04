@@ -25,7 +25,7 @@ public class RandomDataGenerator
     {
         Rand = seed.HasValue
             ? new Random(seed.Value)
-            : GlobalRandomThread.Value;
+            : GlobalRandomThread.Value!;
     }
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);

@@ -63,6 +63,6 @@ public class DefaultGrid : IGrid
             ends[i] = edge.IsHorizontal() ? new Pixel(px, rp.DataRect.Top) : new Pixel(rp.DataRect.Right, px);
         }
 
-        Drawing.DrawLines(rp.Canvas, starts, ends, lineStyle.Color, lineStyle.Width);
+        Drawing.DrawLines(rp.Canvas, starts, ends, lineStyle.Color, lineStyle.Width, antiAlias: true, lineStyle.Pattern);
     }
 }

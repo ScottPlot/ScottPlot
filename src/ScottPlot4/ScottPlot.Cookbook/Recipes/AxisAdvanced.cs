@@ -127,6 +127,40 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class ManualTicks : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "ticks_manual";
+        public string Title => "Manual Ticks";
+        public string Description => "Full customization of ticks can be achieved using the ManualTickCollection helper class.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // use a helper class to build a colelction of major and minor ticks
+            ScottPlot.Ticks.ManualTickCollection tc = new();
+
+            // add major ticks with their labels
+            tc.AddMajor(0, "zero");
+            tc.AddMajor(20, "twenty");
+            tc.AddMajor(50, "fifty");
+
+            // add minor ticks
+            tc.AddMinor(22);
+            tc.AddMinor(25);
+            tc.AddMinor(32);
+            tc.AddMinor(35);
+            tc.AddMinor(42);
+            tc.AddMinor(45);
+
+            // get the tick array and apply it to the axis
+            ScottPlot.Ticks.Tick[] ticks = tc.GetTicks();
+            plt.BottomAxis.SetTicks(ticks);
+        }
+    }
+
     class ReverseAxisDirection : IRecipe
     {
         public ICategory Category => new Categories.AdvancedAxis();

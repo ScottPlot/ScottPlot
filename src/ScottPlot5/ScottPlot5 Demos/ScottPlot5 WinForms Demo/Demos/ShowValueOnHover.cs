@@ -26,31 +26,27 @@ public partial class ShowValueOnHover : Form, IDemoWindow
 
         formsPlot1.MouseMove += (s, e) =>
         {
+            // determine where the mouse is and get the nearest point
             Pixel mousePixel = new(e.Location.X, e.Location.Y);
             Coordinates mouseLocation = formsPlot1.Plot.GetCoordinates(mousePixel);
-            Coordinates nearestPoint = GetNearestCoordinates(mouseLocation);
-            MyCrosshair.Position = nearestPoint;
-            Text = nearestPoint.ToString();
-            formsPlot1.Refresh();
-        };
-    }
+            DataPoint nearest = MyScatter.Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
 
-    Coordinates GetNearestCoordinates(Coordinates mouseLocation)
-    {
-        double closestDistance = double.PositiveInfinity;
-        Coordinates closestPoint = Coordinates.Infinity;
-        foreach (Coordinates pointCoordinates in MyScatter.Data.GetScatterPoints())
-        {
-            double dX = (pointCoordinates.X - mouseLocation.X) * formsPlot1.Plot.LastRender.PxPerUnitX;
-            double dY = (pointCoordinates.Y - mouseLocation.Y) * formsPlot1.Plot.LastRender.PxPerUnitY;
-            double distance = dX * dX + dY * dY;
-
-            if (distance <= closestDistance)
+            // place the crosshair over the highlighted point
+            if (nearest.IsReal)
             {
-                closestPoint = pointCoordinates;
-                closestDistance = distance;
+                MyCrosshair.IsVisible = true;
+                MyCrosshair.Position = nearest.Coordinates;
+                formsPlot1.Refresh();
+                Text = $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
             }
-        }
-        return closestPoint;
+
+            // hide the crosshair when no point is selected
+            if (!nearest.IsReal && MyCrosshair.IsVisible)
+            {
+                MyCrosshair.IsVisible = false;
+                formsPlot1.Refresh();
+                Text = $"No point selected";
+            }
+        };
     }
 }

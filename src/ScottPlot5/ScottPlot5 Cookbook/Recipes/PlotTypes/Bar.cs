@@ -81,7 +81,7 @@ internal class Bar : RecipePageBase
 
             myPlot.Add.Bar(seriesList);
 
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
 
             myPlot.AutoScale();
             myPlot.SetAxisLimits(bottom: 0);

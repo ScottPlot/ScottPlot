@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Rendering;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Details about a completed render

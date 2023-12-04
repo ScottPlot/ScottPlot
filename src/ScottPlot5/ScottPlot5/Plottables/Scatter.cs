@@ -12,6 +12,7 @@ public class Scatter : IPlottable
     public LineStyle LineStyle { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public DataSources.IScatterSource Data { get; }
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -40,7 +41,8 @@ public class Scatter : IPlottable
 
     public void Render(RenderPack rp)
     {
-        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
+        // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
+        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(Axes.GetPixel);
 
         if (!pixels.Any())
             return;

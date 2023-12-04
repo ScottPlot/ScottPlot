@@ -24,18 +24,14 @@ internal class Legend : RecipePageBase
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.Label = "Cos";
 
-            // enable the legend
-            myPlot.Legend();
-
-            // get the legend so it can be further customized
-            var legend = myPlot.GetLegend();
-            legend.OutlineStyle.Color = Colors.Navy;
-            legend.OutlineStyle.Width = 2;
-            legend.BackgroundFill.Color = Colors.LightBlue;
-            legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
-            legend.Font.Size = 16;
-            legend.Font.Name = Fonts.Serif;
-            legend.Alignment = Alignment.UpperCenter;
+            myPlot.Legend.IsVisible = true;
+            myPlot.Legend.OutlineStyle.Color = Colors.Navy;
+            myPlot.Legend.OutlineStyle.Width = 2;
+            myPlot.Legend.BackgroundFill.Color = Colors.LightBlue;
+            myPlot.Legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
+            myPlot.Legend.Font.Size = 16;
+            myPlot.Legend.Font.Name = Fonts.Serif;
+            myPlot.Legend.Alignment = Alignment.UpperCenter;
         }
     }
 
@@ -61,11 +57,10 @@ internal class Legend : RecipePageBase
             item2.Label = "Beta";
 
             // enable the legend
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
 
-            // get the legend so it can be further customized
-            var legend = myPlot.GetLegend();
-            legend.ManualLegendItems = new[] { item1, item2 };
+            // configure the legend to use the custom items
+            myPlot.Legend.ManualLegendItems = new[] { item1, item2 };
         }
     }
 
@@ -85,11 +80,10 @@ internal class Legend : RecipePageBase
             sig2.Label = "Cos";
 
             // enable the legend
-            myPlot.Legend();
+            myPlot.Legend.IsVisible = true;
 
-            // get the legend so it can be further customized
-            var legend = myPlot.GetLegend();
-            legend.ManualLegendItems = sig1.LegendItems;
+            // configure the legend to use the custom items
+            myPlot.Legend.ManualLegendItems = sig1.LegendItems;
         }
     }
 }

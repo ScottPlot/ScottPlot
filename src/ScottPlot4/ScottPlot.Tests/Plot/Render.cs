@@ -32,7 +32,7 @@ namespace ScottPlotTests.Plot
             string b64 = plt.GetImageBase64();
             Assert.Greater(b64.Length, 1000);
 
-            string img = plt.GetImageHTML();
+            string img = plt.GetImageHtml();
             Assert.Greater(img.Length, b64.Length);
 
             TestTools.SaveHtml(img);

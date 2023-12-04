@@ -38,7 +38,7 @@
 
     private void SetupPlot(IPlotControl plotControl, int count)
     {
-        plotControl.Plot.ShowBenchmark = true;
+        plotControl.Plot.Benchmark.IsVisible = true;
         plotControl.Plot.Clear();
         plotControl.Plot.Title($"Signal with {count:N0} points");
         plotControl.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));

@@ -108,7 +108,8 @@ internal class FillY : RecipePageBase
             xyy.LineStyle.Pattern = LinePattern.Dot;
             xyy.LineStyle.Width = 2;
             xyy.Label = "xyy";
-            myPlot.Legend(true);
+
+            myPlot.Legend.IsVisible = true;
         }
     }
 }

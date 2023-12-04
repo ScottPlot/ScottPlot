@@ -40,7 +40,7 @@ public static class Drawing
         return new PixelSize(maxWidth, maxHeight);
     }
 
-    public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true)
+    public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         if (starts.Length != ends.Length)
             throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have same length");
@@ -51,6 +51,7 @@ public static class Drawing
             IsStroke = true,
             IsAntialias = antiAlias,
             StrokeWidth = width,
+            PathEffect = pattern.GetPathEffect(),
         };
 
         using SKPath path = new();
