@@ -6,9 +6,9 @@
         <UseWPF>true</UseWPF>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.68</Version>
-        <AssemblyVersion>4.1.68.0</AssemblyVersion>
-        <FileVersion>4.1.68.0</FileVersion>
+        <Version>4.1.69</Version>
+        <AssemblyVersion>4.1.69.0</AssemblyVersion>
+        <FileVersion>4.1.69.0</FileVersion>
 
         <AssemblyName>ScottPlot.WPF</AssemblyName>
         <OutputType>Library</OutputType>
