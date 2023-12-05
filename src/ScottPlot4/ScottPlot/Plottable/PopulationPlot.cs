@@ -286,7 +286,8 @@ namespace ScottPlot.Plottable
             popLeft += popWidth * edgePaddingFrac;
             popWidth -= (popWidth * edgePaddingFrac) * 2;
 
-            double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, dims.UnitsPerPxY);
+            // draw the distribution curve for the visible part of the plot, to avoid performance issues
+            double[] ys = DataGen.Range(Math.Max(pop.minus3stDev, dims.YMin), Math.Min(pop.plus3stDev, dims.YMax), dims.UnitsPerPxY);
             if (ys.Length == 0)
                 return;
             double[] ysFrac = pop.GetDistribution(ys, normalize: false);
