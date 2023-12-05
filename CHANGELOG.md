@@ -7,6 +7,7 @@
 ## ScottPlot 5.0.11-beta (in development)
 
 ## ScottPlot 4.1.70 (in development)
+* Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
 
 ## ScottPlot 5.0.10-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_
