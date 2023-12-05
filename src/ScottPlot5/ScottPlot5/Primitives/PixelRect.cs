@@ -28,46 +28,30 @@ public struct PixelRect : IEquatable<PixelRect>
     /// <summary>
     /// Create a rectangle from the bounding box of a circle centered at <paramref name="center"/> with radius <paramref name="radius"/>
     /// </summary>
-    public PixelRect(Pixel center, float radius)
+    public PixelRect(Pixel center, float radius) : this(center.X - radius, center.X + radius, center.Y + radius, center.Y - radius)
     {
-        Left = center.X - radius;
-        Right = center.X + radius;
-        Bottom = center.Y + radius;
-        Top = center.Y - radius;
     }
 
     /// <summary>
     /// Create a rectangle with edges at the given pixel positions.
     /// This constructor will rectify the points so rectangles will always have positive area.
     /// </summary>
-    public PixelRect(Pixel corner1, Pixel corner2)
+    public PixelRect(Pixel corner1, Pixel corner2) : this(corner1.X, corner2.X, corner1.Y, corner2.Y)
     {
-        Left = Math.Min(corner1.X, corner2.X);
-        Right = Math.Max(corner1.X, corner2.X);
-        Bottom = Math.Max(corner1.Y, corner2.Y);
-        Top = Math.Min(corner1.Y, corner2.Y);
     }
 
     /// <summary>
     /// Create a rectangle representing pixels on a screen
     /// </summary>
-    public PixelRect(Pixel topLeftCorner, PixelSize size)
+    public PixelRect(Pixel topLeftCorner, PixelSize size) : this(topLeftCorner.X, topLeftCorner.X + size.Width, topLeftCorner.Y, topLeftCorner.Y + size.Height)
     {
-        Left = Math.Min(topLeftCorner.X, topLeftCorner.X);
-        Right = Math.Max(topLeftCorner.X, topLeftCorner.X + size.Width);
-        Bottom = Math.Max(topLeftCorner.Y, topLeftCorner.Y);
-        Top = Math.Min(topLeftCorner.Y, topLeftCorner.Y + size.Height);
     }
 
     /// <summary>
     /// Create a rectangle representing pixels on a screen
     /// </summary>
-    public PixelRect(Pixel topLeftCorner, float width, float height)
+    public PixelRect(Pixel topLeftCorner, float width, float height) : this(topLeftCorner.X, topLeftCorner.X + width, topLeftCorner.Y, topLeftCorner.Y + height)
     {
-        Left = Math.Min(topLeftCorner.X, topLeftCorner.X);
-        Right = Math.Max(topLeftCorner.X, topLeftCorner.X + width);
-        Bottom = Math.Max(topLeftCorner.Y, topLeftCorner.Y);
-        Top = Math.Min(topLeftCorner.Y, topLeftCorner.Y + height);
     }
 
     /// <summary>
@@ -76,10 +60,10 @@ public struct PixelRect : IEquatable<PixelRect>
     /// </summary>
     public PixelRect(float left, float right, float bottom, float top)
     {
-        Left = left;
-        Right = right;
-        Bottom = bottom;
-        Top = top;
+        Left = Math.Min(left, right);
+        Right = Math.Max(left, right);
+        Bottom = Math.Max(top, bottom);
+        Top = Math.Min(top, bottom);
     }
 
     public PixelRect WithPan(float x, float y)

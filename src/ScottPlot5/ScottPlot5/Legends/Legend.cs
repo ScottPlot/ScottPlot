@@ -66,6 +66,59 @@ public class Legend
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
+    public Image GetImage(ScottPlot.Plot plot)
+    {
+        LegendItem[] items = plot.PlottableList.SelectMany(x => x.LegendItems).ToArray();
+
+        if (ManualLegendItems is not null)
+            items = ManualLegendItems.ToArray();
+
+        items = GetAllLegendItems(items).Where(x => x.IsVisible).ToArray();
+        if (!items.Any())
+            throw new InvalidOperationException($"empty legend items");
+
+        // measure all items to determine dimensions of the legend
+        using SKPaint paint = new();
+        Font.ApplyToPaint(paint);
+
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
+
+        float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
+
+        PixelSize legendSize = new(maxWidth + Padding.Left + Padding.Right + ShadowOffset, totalheight + Padding.Top + Padding.Bottom + ShadowOffset);
+        PixelRect legendRect = new(new Pixel(0, 0), legendSize);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+
+        SKImageInfo info = new((int)Math.Ceiling(legendSize.Width), (int)Math.Ceiling(legendSize.Height), SKColorType.Rgba8888, SKAlphaType.Premul);
+        using SKSurface surface = SKSurface.Create(info);
+        if (surface is null)
+            throw new NullReferenceException($"invalid SKImageInfo");
+
+
+        // render the legend panel
+        Drawing.Fillectangle(surface.Canvas, legendShadowRect, ShadowFill.Color);
+        Drawing.Fillectangle(surface.Canvas, legendRect, BackgroundFill.Color);
+        Drawing.DrawRectangle(surface.Canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
+
+        // render all items inside the legend
+        float yOffset = legendRect.Top + Padding.Top;
+        for (int i = 0; i < sizedItems.Length; i++)
+        {
+            Common.RenderItem(
+                canvas: surface.Canvas,
+                paint: paint,
+                sizedItem: sizedItems[i],
+                x: legendRect.Left + Padding.Left,
+                y: yOffset,
+                symbolWidth: SymbolWidth,
+                symbolPadRight: SymbolLabelSeparation,
+                itemPadding: ItemPadding);
+
+            yOffset += sizedItems[i].Size.WithChildren.Height;
+        }
+        return new(surface.Snapshot());
+    }
 
     /// <summary>
     /// Recursively walk through children and return a flat array with all legend items

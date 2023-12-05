@@ -611,6 +611,7 @@ public class Plot : IDisposable
         return bytes;
     }
 
+    public Image GetLegendImage() => Legend.GetImage(this);
     #endregion
 
     #region Helper Methods
