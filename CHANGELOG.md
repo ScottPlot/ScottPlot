@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.11-beta (in development)
+* Plot: `AutoScaler` can now be assigned a `FractionalAutoScaler` with custom properties (#3069, #3067) _Thanks @arthurits_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
