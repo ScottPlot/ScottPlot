@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.AutoScalers;
 
-internal class FractionalAutoScaler : IAutoScaler
+public class FractionalAutoScaler : IAutoScaler
 {
     public readonly double LeftFraction;
     public readonly double RightFraction;
