@@ -9,6 +9,7 @@
 * Controls: add SVG to recommended save formats in the right-click menu (#3068)
 * Bar: Refactored bar plots to simplify individual bar customization (#3070, #3066)
 * Legend: Added `ManualItems` to allow building custom legend content
+* Render: Prevent the pre-render auto-scaler from resetting manually defined axis limits (#3058)
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_

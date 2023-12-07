@@ -52,7 +52,7 @@ public class RenderManager
     {
         new RenderActions.ClearCanvas(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
-        new RenderActions.AutoAxisAnyUnsetAxes(),
+        new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.EnsureAxesHaveArea(),
         new RenderActions.CalculateLayout(),
         new RenderActions.RegenerateTicks(),

@@ -186,6 +186,16 @@ public class Plot : IDisposable
         SetAxisLimits(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
+    public void SetAxisLimitsX(CoordinateRect limits)
+    {
+        SetAxisLimitsX(limits.Left, limits.Right, BottomAxis);
+    }
+
+    public void SetAxisLimitsY(CoordinateRect limits)
+    {
+        SetAxisLimitsY(limits.Bottom, limits.Top, LeftAxis);
+    }
+
     public void SetAxisLimitsX(AxisLimits limits)
     {
         SetAxisLimitsX(limits.Left, limits.Right);
@@ -295,12 +305,21 @@ public class Plot : IDisposable
     /// <summary>
     /// Autoscale the given axes to accommodate the data from all plottables that use them
     /// </summary>
-    public void AutoScale(IXAxis xAxis, IYAxis yAxis)
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
     {
-        // TODO: is there a better way to do this???
         ReplaceNullAxesWithDefaults();
+
         AxisLimits limits = AutoScaler.GetAxisLimits(this, xAxis, yAxis);
-        SetAxisLimits(limits, xAxis, yAxis);
+
+        if (horizontal)
+        {
+            SetAxisLimitsX(limits.Left, limits.Right, xAxis);
+        }
+
+        if (vertical)
+        {
+            SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
+        }
     }
 
     /// <summary>
