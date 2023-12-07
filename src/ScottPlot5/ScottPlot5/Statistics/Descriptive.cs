@@ -13,12 +13,12 @@ public static class Descriptive
         return data.Average();
     }
 
-    public static double StDev<T>(IEnumerable<T> values, bool asSample = false)
+    public static double StdDev<T>(IEnumerable<T> values, bool asSample = false)
     {
-        return StDev(values, Mean(values), asSample);
+        return StdDev(values, Mean(values), asSample);
     }
 
-    public static double StDev<T>(IEnumerable<T> values, double mean, bool asSample = false)
+    public static double StdDev<T>(IEnumerable<T> values, double mean, bool asSample = false)
     {
         double[] data = values.Select(value => Convert.ToDouble(value)).ToArray();
         double sumVariancesSquared = data.Sum(x => (x - mean) * (x - mean));
@@ -35,15 +35,26 @@ public static class Descriptive
         //double stDev = Math.Sqrt(meanVarianceSquared);
         //return stDev;
     }
-    
-    public static double StdErr<T>(IEnumerable<T> values, bool asSample = false)
+
+    /// <summary>
+    /// The standard error of the mean (not the standard deviation of sample nor the population).
+    /// </summary>
+    /// <param name="values">Data values</param>
+    /// <returns>The standard error</returns>
+    public static double StdErr<T>(IEnumerable<T> values)
     {
-        return StdErr(values, Mean(values), asSample);
+        return StdErr(values, Mean(values));
     }
 
-    public static double StdErr<T>(IEnumerable<T> values, double mean, bool asSample = false)
+    /// <summary>
+    /// The standard error of the mean (not the standard deviation of sample nor the population).
+    /// </summary>
+    /// <param name="values">Data values</param>
+    /// <param name="mean">Mean value of the data</param>
+    /// <returns>The standard error</returns>
+    public static double StdErr<T>(IEnumerable<T> values, double mean)
     {
-        double denominator = values.Count() - (asSample ? 1 : 0);
-        return denominator > 0.0 ? StDev(values, mean, asSample) / Math.Sqrt(denominator) : -1.0;
+        double denominator = values.Count();
+        return denominator > 0.0 ? StdDev(values, mean, false) / Math.Sqrt(denominator) : -1.0;
     }
 }
