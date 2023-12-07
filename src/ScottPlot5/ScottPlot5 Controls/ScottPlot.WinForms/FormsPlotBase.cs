@@ -143,6 +143,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
                      "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                      "|BMP Files (*.bmp)|*.bmp" +
                      "|WebP Files (*.webp)|*.webp" +
+                     "|SVG Files (*.svg)|*.svg" +
                      "|All files (*.*)|*.*"
         };
 

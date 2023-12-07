@@ -25,6 +25,7 @@ public class EtoPlot : Drawable, IPlotControl
         new() { Name = "JPEG Files", Extensions = new string[] { "jpg", "jpeg" } },
         new() { Name = "BMP Files", Extensions = new string[] { "bmp" } },
         new() { Name = "WebP Files", Extensions = new string[] { "webp" } },
+        new() { Name = "SVG Files", Extensions = new string[] { "svg" } },
         new() { Name = "All Files", Extensions = new string[] { "*" } },
     };
 
