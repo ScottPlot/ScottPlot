@@ -20,7 +20,7 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     // TODO: make sure callers aren't using this when they dont have to
     public CoordinateRect Rect => new(Left, Right, Bottom, Top);
 
-    public static CoordinateRect Default { get; } = new(-10, 10, -10, 10);
+    public static AxisLimits Default { get; } = new(-10, 10, -10, 10);
 
     public AxisLimits(Coordinates coordinates)
     {
