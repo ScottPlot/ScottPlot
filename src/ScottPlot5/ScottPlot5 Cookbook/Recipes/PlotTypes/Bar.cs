@@ -87,4 +87,43 @@ internal class Bar : RecipePageBase
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
         }
     }
+
+    internal class BarStackVertically : RecipeTestBase
+    {
+        public override string Name => "Bars StackedVertically";
+        public override string Description => "Bars can be labeled by manually specifying axis tick mark positions and labels.";
+
+        [Test]
+        public override void Recipe()
+        {
+            Color[] colors = {
+                myPlot.Palette.GetColor(0),
+                myPlot.Palette.GetColor(1),
+                myPlot.Palette.GetColor(2),
+            };
+
+            ScottPlot.Bar[] bars =
+            {
+                // first set of stacked bars
+                new() { Position = 1, ValueBase = 0, Value = 2, FillColor = colors[0] },
+                new() { Position = 1, ValueBase = 2, Value = 5, FillColor = colors[1] },
+                new() { Position = 1, ValueBase = 5, Value = 10, FillColor = colors[2] },
+
+                // second set of stacked bars
+                new() { Position = 2, ValueBase = 0, Value = 4, FillColor = colors[0] },
+                new() { Position = 2, ValueBase = 4, Value = 7, FillColor = colors[1] },
+                new() { Position = 2, ValueBase = 7, Value = 10, FillColor = colors[2] },
+            };
+
+            myPlot.Add.Bars(bars);
+
+            Tick[] ticks =
+            {
+                new(1, "Spring"),
+                new(2, "Summer"),
+            };
+
+            myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+        }
+    }
 }
