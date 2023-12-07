@@ -46,44 +46,21 @@ internal class Legend : RecipePageBase
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            LegendItem item1 = new();
-            item1.Line.Color = Colors.Magenta;
-            item1.Line.Width = 2;
-            item1.Label = "Alpha";
-
-            LegendItem item2 = new();
-            item2.Line.Color = Colors.Green;
-            item2.Line.Width = 4;
-            item2.Label = "Beta";
-
-            // enable the legend
             myPlot.Legend.IsVisible = true;
 
-            // configure the legend to use the custom items
-            myPlot.Legend.ManualLegendItems = new[] { item1, item2 };
-        }
-    }
+            myPlot.Legend.ManualItems.Add(new LegendItem()
+            {
+                LineColor = Colors.Magenta,
+                LineWidth = 2,
+                Label = "Alpha"
+            });
 
-    internal class SomePlottablesInLegend : RecipeTestBase
-    {
-        public override string Name => "Limit Plottables in Legend";
-        public override string Description => "Legends typically show all plot items with populated Label fields. " +
-            "However, users can use the manual legend property to only show legend items from specific plottables.";
-
-        [Test]
-        public override void Recipe()
-        {
-            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.Label = "Sin";
-
-            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.Label = "Cos";
-
-            // enable the legend
-            myPlot.Legend.IsVisible = true;
-
-            // configure the legend to use the custom items
-            myPlot.Legend.ManualLegendItems = sig1.LegendItems;
+            myPlot.Legend.ManualItems.Add(new LegendItem()
+            {
+                LineColor = Colors.Green,
+                LineWidth = 4,
+                Label = "Beta"
+            });
         }
     }
 }

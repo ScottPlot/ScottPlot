@@ -8,6 +8,7 @@
 * Plot: `AutoScaler` can now be assigned a `FractionalAutoScaler` with custom properties (#3069, #3067) _Thanks @arthurits_
 * Controls: add SVG to recommended save formats in the right-click menu (#3068)
 * Bar: Refactored bar plots to simplify individual bar customization (#3070, #3066)
+* Legend: Added `ManualItems` to allow building custom legend content
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_

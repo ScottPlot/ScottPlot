@@ -85,13 +85,15 @@ internal class Bar : RecipePageBase
             };
 
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.DisableGrid();
         }
     }
 
     internal class BarStackVertically : RecipeTestBase
     {
-        public override string Name => "Bars StackedVertically";
-        public override string Description => "Bars can be labeled by manually specifying axis tick mark positions and labels.";
+        public override string Name => "Stacked Bar Plot";
+        public override string Description => "Bars can be positioned on top of each other.";
 
         [Test]
         public override void Recipe()
@@ -124,6 +126,62 @@ internal class Bar : RecipePageBase
             };
 
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.DisableGrid();
+        }
+    }
+
+    internal class GroupedBarPlot : RecipeTestBase
+    {
+        public override string Name => "Grouped Bar Plot";
+        public override string Description => "Bars can be grouped by position and color.";
+
+        [Test]
+        public override void Recipe()
+        {
+            Color[] colors = {
+                myPlot.Palette.GetColor(0),
+                myPlot.Palette.GetColor(1),
+                myPlot.Palette.GetColor(2),
+            };
+
+            ScottPlot.Bar[] bars =
+            {
+                // first group
+                new() { Position = 1, Value = 2, FillColor = colors[0], Error = 1 },
+                new() { Position = 2, Value = 5, FillColor = colors[1], Error = 2 },
+                new() { Position = 3, Value = 7, FillColor = colors[2], Error = 1 },
+
+                // second group
+                new() { Position = 5, Value = 4, FillColor = colors[0], Error = 2 },
+                new() { Position = 6, Value = 7, FillColor = colors[1], Error = 1 },
+                new() { Position = 7, Value = 13, FillColor = colors[2], Error = 3 },
+                
+                // third group
+                new() { Position = 9, Value = 5, FillColor = colors[0], Error = 1 },
+                new() { Position = 10, Value = 6, FillColor = colors[1], Error = 3 },
+                new() { Position = 11, Value = 11, FillColor = colors[2], Error = 2 },
+            };
+
+            myPlot.Add.Bars(bars);
+
+            // build the legend manually
+            myPlot.Legend.IsVisible = true;
+            myPlot.Legend.Alignment = Alignment.UpperLeft;
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Monday", FillColor = colors[0] });
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Tuesday", FillColor = colors[1] });
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Wednesday", FillColor = colors[2] });
+
+            // show group labels on the bottom axis
+            Tick[] ticks =
+            {
+                new(2, "Group 1"),
+                new(6, "Group 2"),
+                new(10, "Group 3"),
+            };
+            myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.DisableGrid();
         }
     }
 }

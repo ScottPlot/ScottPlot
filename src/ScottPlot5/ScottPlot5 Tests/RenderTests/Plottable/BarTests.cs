@@ -15,7 +15,7 @@ internal class BarTests
             new Bar() { Position = 5, Value = 5, Error = 1, FillColor = Colors.Orange, ErrorNegative = false },
         };
 
-        plt.Add.Bar(bars);
+        plt.Add.Bars(bars);
         plt.Render();
         plt.SetAxisLimits(bottom: 0);
 

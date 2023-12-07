@@ -18,23 +18,16 @@ public class Legend
 
     private const float SymbolWidth = 20;
     private const float SymbolLabelSeparation = 5;
-
-    /// <summary>
-    /// If populated, only these items will be displayed in the legend
-    /// </summary>
-    public IEnumerable<LegendItem>? ManualLegendItems { get; set; } = null;
+    public List<LegendItem> ManualItems { get; set; } = new();
 
     public void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
 
-        LegendItem[] items = rp.Plot.PlottableList.SelectMany(x => x.LegendItems).ToArray();
+        IEnumerable<LegendItem> allItems = rp.Plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
 
-        if (ManualLegendItems is not null)
-            items = ManualLegendItems.ToArray();
-
-        items = GetAllLegendItems(items).Where(x => x.IsVisible).ToArray();
+        LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
         if (!items.Any())
             return;
 
