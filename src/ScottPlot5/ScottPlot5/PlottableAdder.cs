@@ -23,31 +23,59 @@ public class PlottableAdder
         Plot = plot;
     }
 
-    public BarPlot Bar(double[] values)
+    public BarPlot Bar(Bar bar)
     {
-        IList<Bar> bars = values.Select(x => new Bar() { Value = x }).ToList();
-        return Bar(bars);
+        BarPlot bp = new(bar);
+        Plottable(bp);
+        return bp;
     }
 
-    public BarPlot Bar(IList<BarSeries> series)
+    public BarPlot Bar(double position, double value, double error = 0)
     {
-        var barPlot = new BarPlot(series);
-        Plot.PlottableList.Add(barPlot);
-        return barPlot;
-    }
-
-    public BarPlot Bar(IList<Bar> bars, Color? color = null, string? label = null)
-    {
-        var series = new BarSeries()
+        Bar bar = new()
         {
-            Bars = bars,
-            Color = color ?? GetNextColor(),
-            Label = label
+            Position = position,
+            Value = value,
+            Error = error,
+            FillColor = GetNextColor(),
         };
+        return Bar(bar);
+    }
 
-        List<BarSeries> seriesList = new() { series };
+    public BarPlot Bars(IEnumerable<Bar> bars)
+    {
+        BarPlot bp = new(bars);
+        Plottable(bp);
+        return bp;
+    }
 
-        return Bar(seriesList);
+    public BarPlot Bars(double[] values)
+    {
+        var positions = Enumerable.Range(0, values.Length).Select(x => (double)x);
+        return Bars(positions, values);
+    }
+
+    public BarPlot Bars(IEnumerable<double> positions, IEnumerable<double> values)
+    {
+        if (positions.Count() != values.Count())
+        {
+            throw new ArgumentException($"{nameof(positions)} and {nameof(positions)} have different lengths");
+        }
+
+        Color color = GetNextColor();
+
+        List<Bar> bars = new();
+        foreach (var item in positions.Zip(values, (a, b) => new { a, b }))
+        {
+            bars.Add(new Bar()
+            {
+                Position = item.a,
+                Value = item.b,
+                FillColor = color
+            });
+        }
+
+        return Bars(bars);
     }
 
     public BoxPlot Box(IList<Box> boxes)

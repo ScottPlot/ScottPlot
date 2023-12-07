@@ -14,13 +14,11 @@ public class NumericManual : ITickGenerator
     public NumericManual(double[] positions, string[] labels)
     {
         if (positions.Length != labels.Length)
-        {
-            throw new ArgumentException("length mismatch");
-        }
+            throw new ArgumentException($"{nameof(positions)} must have same length as {nameof(labels)}");
 
         Ticks = Enumerable
             .Range(0, positions.Length)
-            .Select(x => new Tick(positions[x], labels[x], true))
+            .Select(x => new Tick(positions[x], labels[x]))
             .ToArray();
     }
 

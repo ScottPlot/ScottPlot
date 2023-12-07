@@ -10,6 +10,9 @@ public readonly struct CoordinateLine
     public readonly double Y1;
     public readonly double Y2;
 
+    public Coordinates Start => new(X1, Y1);
+    public Coordinates End => new(X2, Y2);
+
     public CoordinateLine(double x1, double y1, double x2, double y2)
     {
         X1 = x1;

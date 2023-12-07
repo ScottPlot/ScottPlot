@@ -6,6 +6,13 @@ public struct Tick
     public readonly string Label;
     public readonly bool IsMajor;
 
+    public Tick(double position, string label)
+    {
+        Position = position;
+        Label = label;
+        IsMajor = true;
+    }
+
     public Tick(double position, string label, bool isMajor)
     {
         Position = position;
