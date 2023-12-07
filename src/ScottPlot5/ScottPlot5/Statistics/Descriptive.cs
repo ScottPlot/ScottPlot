@@ -21,7 +21,7 @@ public static class Descriptive
     public static double StdDev<T>(IEnumerable<T> values, double mean, bool asSample = false)
     {
         double[] data = values.Select(value => Convert.ToDouble(value)).ToArray();
-        double sumVariancesSquared = data.Sum(x => (x - mean) * (x - mean));
+        double sumVariancesSquared = data.AsParallel().Sum(x => (x - mean) * (x - mean));
         double denominator = data.Length - (asSample ? 1 : 0);
         return denominator > 0.0 ? Math.Sqrt(sumVariancesSquared / denominator) : -1.0;
 
