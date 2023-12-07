@@ -40,6 +40,17 @@ public static class Drawing
         return new PixelSize(maxWidth, maxHeight);
     }
 
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    {
+        paint.Color = color.ToSKColor();
+        paint.IsStroke = true;
+        paint.IsAntialias = antiAlias;
+        paint.StrokeWidth = width;
+        paint.PathEffect = pattern.GetPathEffect();
+
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+    }
+
     public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         if (starts.Length != ends.Length)
@@ -77,26 +88,26 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float thickness = 1)
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
     {
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
             IsStroke = true,
-            StrokeWidth = thickness,
+            StrokeWidth = lineWidth,
             IsAntialias = true,
         };
 
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float thickness = 1)
+    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float lineWidth = 1)
     {
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
             IsStroke = true,
-            StrokeWidth = thickness,
+            StrokeWidth = lineWidth,
             IsAntialias = true,
         };
 

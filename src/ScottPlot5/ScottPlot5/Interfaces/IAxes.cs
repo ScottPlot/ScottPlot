@@ -19,6 +19,7 @@ public interface IAxes
     IYAxis YAxis { get; set; }
 
     PixelRect GetPixelRect(CoordinateRect rect);
+    PixelLine GetPixelLine(CoordinateLine rect);
 
     Pixel GetPixel(Coordinates coordinates);
     float GetPixelX(double xCoordinate);
