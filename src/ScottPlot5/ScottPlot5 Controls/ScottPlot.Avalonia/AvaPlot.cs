@@ -31,6 +31,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         new("JPEG Files") { Patterns = new List<string> { "*.jpg", "*.jpeg" } },
         new("BMP Files") { Patterns = new List<string> { "*.bmp" } },
         new("WebP Files") { Patterns = new List<string> { "*.webp" } },
+        new("SVG Files") { Patterns = new List<string> { "*.svg" } },
         new("All Files") { Patterns = new List<string> { "*" } },
     };
 

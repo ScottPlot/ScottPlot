@@ -165,6 +165,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
         dialog.FileTypeChoices.Add("JPEG Files", new List<string>() { ".jpg", ".jpeg" });
         dialog.FileTypeChoices.Add("BMP Files", new List<string>() { ".bmp" });
         dialog.FileTypeChoices.Add("WebP Files", new List<string>() { ".webp" });
+        dialog.FileTypeChoices.Add("SVG Files", new List<string>() { ".svg" });
 
 #if NET6_0_WINDOWS10_0_18362 // https://github.com/microsoft/CsWinRT/blob/master/docs/interop.md#windows-sdk
         // TODO: launch a pop-up window or otherwise inform if AppWindow is not set before using save-dialog

@@ -32,6 +32,13 @@ public class Axes : IAxes
         return new Pixel(x, y);
     }
 
+    public PixelLine GetPixelLine(CoordinateLine line)
+    {
+        Pixel pt1 = GetPixel(line.Start);
+        Pixel pt2 = GetPixel(line.End);
+        return new PixelLine(pt1, pt2);
+    }
+
     public float GetPixelX(double xCoordinate) => XAxis.GetPixel(xCoordinate, DataRect);
 
     public float GetPixelY(double yCoordinate) => YAxis.GetPixel(yCoordinate, DataRect);

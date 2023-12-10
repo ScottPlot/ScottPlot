@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public enum ImageFormat
 {
@@ -41,6 +38,7 @@ public static class ImageFormatLookup
             ".png" => ImageFormat.Png,
             ".bmp" => ImageFormat.Bmp,
             ".webp" => ImageFormat.Webp,
+            ".svg" => ImageFormat.Svg,
             _ => throw new ArgumentException($"unknown image format: '{ext}'")
         };
     }

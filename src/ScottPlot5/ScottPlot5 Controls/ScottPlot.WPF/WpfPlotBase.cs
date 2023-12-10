@@ -145,6 +145,7 @@ namespace ScottPlot.WPF
                          "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                          "|BMP Files (*.bmp)|*.bmp" +
                          "|WebP Files (*.webp)|*.webp" +
+                         "|SVG Files (*.svg)|*.svg" +
                          "|All files (*.*)|*.*"
             };
 
