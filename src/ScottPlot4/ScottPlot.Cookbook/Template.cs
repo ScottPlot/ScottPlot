@@ -35,7 +35,7 @@ namespace ScottPlot.Cookbook
             File.WriteAllText(filePath, html);
         }
 
-        public static void CreateMarkdownPage(string mdFilePath, string body, string title, string description, string url = "")
+        public static void CreateMarkdownPage(string mdFilePath, string body, string title, string description, string url = "", string[] frontmatter = null)
         {
             StringBuilder sb = new();
             sb.AppendLine("---");
@@ -44,6 +44,13 @@ namespace ScottPlot.Cookbook
             sb.AppendLine($"date: {DateTime.Now}");
             if (!string.IsNullOrEmpty(url))
                 sb.AppendLine($"url: {url}");
+            if (frontmatter is not null)
+            {
+                foreach (string s in frontmatter)
+                {
+                    sb.AppendLine(s);
+                }
+            }
             sb.AppendLine("---");
             sb.AppendLine("");
             sb.AppendLine(body);
