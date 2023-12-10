@@ -244,7 +244,7 @@ public class PlottableAdder
         Coordinates location = new(x, y);
         return Marker(location, markerStyle);
     }
-    
+
     public Marker Marker(Coordinates location, MarkerStyle markerStyle)
     {
         Marker marker = new();
