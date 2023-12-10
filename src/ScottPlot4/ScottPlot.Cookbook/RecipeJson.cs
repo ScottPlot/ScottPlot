@@ -33,7 +33,18 @@ namespace ScottPlot.Cookbook
                 writer.WriteString("categoryFolder", recipe.CategoryFolder);
                 writer.WriteString("title", recipe.Title);
                 writer.WriteString("description", recipe.Description);
+
+                string categoryUrl = $"https://scottplot.net/cookbook/4.1/category/{recipe.CategoryFolder}/";
+                writer.WriteString("categoryUrl", categoryUrl);
+
+                string recipeUrl = $"{categoryUrl}#{recipe.ID.ToLower()}";
+                writer.WriteString("recipeUrl", recipeUrl);
+
+                string imageUrl = $"https://scottplot.net/cookbook/4.1/images/{recipe.ID.ToLower()}.png";
+                writer.WriteString("imageUrl", imageUrl);
+
                 writer.WriteString("code", recipe.Code.Replace("\r", ""));
+
                 writer.WriteEndObject();
             }
             writer.WriteEndArray();

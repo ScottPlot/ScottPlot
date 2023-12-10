@@ -25,6 +25,7 @@ namespace ScottPlotTests.Cookbook
 
             string json = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER);
             File.WriteAllText(jsonFilePath, json);
+            Console.WriteLine(jsonFilePath);
 
             Dictionary<string, RecipeSource> readRecipes = RecipeJson.GetRecipes(jsonFilePath);
             Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
