@@ -313,7 +313,7 @@ public static class Website
         }
 
         string bcName1 = "ScottPlot 4.1 Cookbook";
-        string bcUrl1 = "https://scottplot.net/cookbook/4.1/";
+        string bcUrl1 = "/cookbook/4.1/";
         string searchUrl = "/cookbook/4.1/search/";
 
         string[] fm = new string[]
