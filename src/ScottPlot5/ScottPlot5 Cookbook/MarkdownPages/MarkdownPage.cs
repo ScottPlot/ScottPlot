@@ -24,12 +24,26 @@ internal abstract class MarkdownPage
         SB.AppendLine(alertHtml);
     }
 
-    public void Save(string folder, string title, string description, string filename, string url)
+    public void Save(string folder, string title, string description, string filename, string url, string[]? frontmatter)
     {
-        // TODO: add version details
+        StringBuilder sbfm = new();
+        sbfm.AppendLine("---");
+        sbfm.AppendLine($"Title: {title}");
+        sbfm.AppendLine($"Description: {description}");
+        sbfm.AppendLine($"URL: {url}");
+        if (frontmatter is not null)
+        {
+            foreach (string line in frontmatter)
+            {
+                SB.AppendLine(line);
+            }
+        }
+        sbfm.AppendLine($"Date: {DateTime.UtcNow}");
+        sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
+        sbfm.AppendLine("---");
+        sbfm.AppendLine();
 
-        string frontMatter = $"---\ntitle: {title}\ndescription: {description}\nurl: {url}\ndate: {DateTime.UtcNow}\n---\n\n";
-        string md = frontMatter + SB.ToString();
+        string md = sbfm.ToString() + SB.ToString();
 
         string saveAs = Path.Combine(folder, filename);
         File.WriteAllText(saveAs, md);
