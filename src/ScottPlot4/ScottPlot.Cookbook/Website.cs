@@ -183,16 +183,18 @@ public static class Website
             markdown.AppendLine(GetRecipeMarkdown(recipe));
 
         string bcName1 = "ScottPlot 4.1 Cookbook";
-        string bcUrl1 = $"https://scottplot.net/cookbook/4.1/";
+        string bcUrl1 = $"/cookbook/4.1/";
 
         string bcName2 = category.Name;
-        string bcUrl2 = $"https://scottplot.net/cookbook/4.1/category/{category.Folder}/";
+        string bcUrl2 = $"/cookbook/4.1/category/{category.Folder}/";
+
+        string searchUrl = "/cookbook/4.1/search/";
 
         string[] fm = new string[]
         {
             $"BreadcrumbNames: [\"{bcName1}\", \"{bcName2}\"]",
             $"BreadcrumbUrls: [\"{bcUrl1}\", \"{bcUrl2}\"]",
-            $"SearchUrl: \"https://scottplot.net/cookbook/4.1/search//\"",
+            $"SearchUrl: \"{searchUrl}\"",
         };
 
         Template.CreateMarkdownPage(
@@ -309,12 +311,24 @@ public static class Website
             }
         }
 
+        string bcName1 = "ScottPlot 4.1 Cookbook";
+        string bcUrl1 = "https://scottplot.net/cookbook/4.1/";
+        string searchUrl = "/cookbook/4.1/search/";
+
+        string[] fm = new string[]
+        {
+            $"BreadcrumbNames: [\"{bcName1}\"]",
+            $"BreadcrumbUrls: [\"{bcUrl1}\"]",
+            $"SearchUrl: \"{searchUrl}\"",
+        };
+
         Template.CreateMarkdownPage(
             mdFilePath: Path.Combine(OutputFolderPath, "index_.md"),
             body: sb.ToString(),
             title: "ScottPlot 4.1 Cookbook",
             description: "Example plots shown next to the code used to create them",
-            url: "/cookbook/4.1/");
+            url: "/cookbook/4.1/",
+            frontmatter: fm);
 
         Template.CreateHtmlPage(
             filePath: Path.Combine(OutputFolderPath, "index.dev.html"),
