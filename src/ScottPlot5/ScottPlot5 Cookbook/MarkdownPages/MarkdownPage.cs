@@ -35,7 +35,7 @@ internal abstract class MarkdownPage
         {
             foreach (string line in frontmatter)
             {
-                SB.AppendLine(line);
+                sbfm.AppendLine(line);
             }
         }
         sbfm.AppendLine($"Date: {DateTime.UtcNow}");
