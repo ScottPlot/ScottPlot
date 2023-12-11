@@ -37,7 +37,7 @@ namespace ScottPlot.Cookbook
                 string categoryUrl = $"/cookbook/4.1/category/{recipe.CategoryFolder}/";
                 writer.WriteString("categoryUrl", categoryUrl);
 
-                string recipeUrl = $"{categoryUrl}#{recipe.ID.ToLower()}";
+                string recipeUrl = $"{categoryUrl}#{recipe.AnchorID}";
                 writer.WriteString("recipeUrl", recipeUrl);
 
                 string imageUrl = $"/cookbook/4.1/images/{recipe.ID.ToLower()}.png";
