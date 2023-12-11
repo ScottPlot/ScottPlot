@@ -6,6 +6,9 @@ internal class MarkdownFrontPage : MarkdownPage
 {
     public void Generate()
     {
+        SB.AppendLine($"# ScottPlot 5.0 Cookbook");
+        SB.AppendLine();
+
         AddVersionInformation();
 
         foreach (ChapterInfo chapter in Query.GetChapters())

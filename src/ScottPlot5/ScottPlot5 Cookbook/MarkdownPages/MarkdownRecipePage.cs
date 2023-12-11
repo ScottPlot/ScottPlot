@@ -12,12 +12,13 @@ internal class MarkdownRecipePage : MarkdownPage
 
         foreach (RecipeInfo recipe in Page.Recipes)
             recipe.AddSource(sources);
-
-        SB.AppendLine("This page is part of the [ScottPlot 5.0 Cookbook](../)");
     }
 
     public void Generate()
     {
+        SB.AppendLine($"# {Page.Name}");
+        SB.AppendLine();
+
         AddVersionInformation();
 
         foreach (RecipeInfo recipe in Page.Recipes)
