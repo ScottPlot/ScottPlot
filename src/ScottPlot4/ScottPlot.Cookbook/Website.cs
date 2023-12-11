@@ -190,8 +190,9 @@ public static class Website
 
         string[] fm = new string[]
         {
-            $"breadcrumb-names: [\"{bcName1}\", \"{bcName2}\"]",
-            $"breadcrumb-urls: [\"{bcUrl1}\", \"{bcUrl2}\"]",
+            $"BreadcrumbNames: [\"{bcName1}\", \"{bcName2}\"]",
+            $"BreadcrumbUrls: [\"{bcUrl1}\", \"{bcUrl2}\"]",
+            $"SearchUrl: \"https://scottplot.net/cookbook/4.1/search//\"",
         };
 
         Template.CreateMarkdownPage(
