@@ -13,6 +13,11 @@ public static class Version
     /// </summary>
     public static string VersionString { get; private set; } = GetVersionString();
 
+    /// <summary>
+    /// Version formatted like "ScottPlot 5.0.0-beta"
+    /// </summary>
+    public static string LongString { get; private set; } = "ScottPlot " + GetVersionString();
+
     private static string GetVersionString()
     {
         string v = Assembly.GetAssembly(typeof(Plot))!
