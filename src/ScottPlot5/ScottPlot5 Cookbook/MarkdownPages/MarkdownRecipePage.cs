@@ -35,11 +35,24 @@ internal class MarkdownRecipePage : MarkdownPage
             SB.AppendLine();
         }
 
+        string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
+        string breadcrumbUrl1 = "/cookbook/5.0/";
+
+        string breadcrumbName2 = Page.Name;
+        string breadcrumbUrl2 = $"/cookbook/5.0/{Page.FolderUrl}/";
+
+        string[] fm =
+        {
+            $"BreadcrumbNames: [\"{breadcrumbName1}\", \"{breadcrumbName2}\"]",
+            $"BreadcrumbUrls: [\"{breadcrumbUrl1}\", \"{breadcrumbUrl2}\"]",
+        };
+
         string outputFolder = Path.Combine(Cookbook.OutputFolder, Page.FolderUrl);
         Save(outputFolder,
             title: Page.Name + " - ScottPlot 5.0 Cookbook",
             description: Page.Description,
             filename: "index.md",
-            url: $"/cookbook/5.0/{Page.FolderUrl}/");
+            url: $"/cookbook/5.0/{Page.FolderUrl}/",
+            fm);
     }
 }

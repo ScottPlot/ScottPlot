@@ -17,11 +17,21 @@ internal class MarkdownFrontPage : MarkdownPage
             SB.AppendLine($"<hr class='my-5' />");
         }
 
+        string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
+        string breadcrumbUrl1 = "/cookbook/5.0/";
+
+        string[] fm =
+        {
+            $"BreadcrumbNames: [\"{breadcrumbName1}\"]",
+            $"BreadcrumbUrls: [\"{breadcrumbUrl1}\"]",
+        };
+
         Save(Cookbook.OutputFolder,
             title: "ScottPlot 5.0 Cookbook",
             description: "Example plots shown next to the code used to create them",
             filename: "cookbook-5.0.md",
-            url: "/cookbook/5.0/");
+            url: "/cookbook/5.0/",
+            frontmatter: fm);
     }
 
     private void AddPage(PageInfo page)
