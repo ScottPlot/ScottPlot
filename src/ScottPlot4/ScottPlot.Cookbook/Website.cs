@@ -223,7 +223,7 @@ public static class Website
 
         string categoryHeaderTemplate =
             "<div class='fs-1 mt-4' style='font-weight: 500;' id='{{ANCHOR}}'>" +
-            "  <a href='#{{ANCHOR}}' class='text-dark'>{{TITLE}}</a>" +
+            "  <a href='{{CATEGORY_URL}}' class='text-dark'>{{TITLE}}</a>" +
             "</div>" +
             "<div class='mb-3'>{{SUBTITLE}}</div>";
 
@@ -283,7 +283,7 @@ public static class Website
 
         sb.AppendLine("<h4>Colors</h4>");
         sb.AppendLine("<ul>");
-        sb.AppendLine("<li><a href='colors/'>Color</a> - Lists of colors in each color palette for representing categorical data</li>");
+        sb.AppendLine("<li><a href='colors/'>Palettes</a> - Lists of colors in each color palette for representing categorical data</li>");
         sb.AppendLine("<li><a href='colormaps/'>Colormaps</a> - Color gradients available to represent continuous data</li>");
         sb.AppendLine("</ul>");
 
@@ -299,7 +299,8 @@ public static class Website
             sb.AppendLine(categoryHeaderTemplate
                 .Replace("{{ANCHOR}}", category.Folder)
                 .Replace("{{TITLE}}", category.Name)
-                .Replace("{{SUBTITLE}}", category.Description));
+                .Replace("{{SUBTITLE}}", category.Description))
+                .Replace("{{CATEGORY_URL}}", categoryUrl);
 
             foreach (var recipe in Recipes.Where(x => x.CategoryFolder == category.Folder))
             {
