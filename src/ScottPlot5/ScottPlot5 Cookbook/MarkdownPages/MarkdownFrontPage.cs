@@ -15,7 +15,7 @@ internal class MarkdownFrontPage : MarkdownPage
         {
             if (!chapter.Pages.Any())
                 continue;
-            SB.AppendLine($"## {chapter.Name}");
+            SB.AppendLine($"<div class='fs-2 mt-4'>{chapter.Name}</div>");
             chapter.Pages.ForEach(x => AddPage(x));
             SB.AppendLine($"<hr class='my-5' />");
         }
@@ -39,7 +39,7 @@ internal class MarkdownFrontPage : MarkdownPage
 
     private void AddPage(PageInfo page)
     {
-        SB.AppendLine($"<div class='fs-4 mt-4'>{page.Name}</div>");
+        SB.AppendLine($"<h2 class=''><a href='{page.Url}' class='text-dark'>{page.Name}</a></h2>");
         SB.AppendLine($"<div>{page.Description}</div>");
         page.Recipes.ForEach(x => AddRecipeImage(x, page));
     }
