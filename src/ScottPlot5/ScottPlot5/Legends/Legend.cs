@@ -66,14 +66,11 @@ public class Legend
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
-    public Image GetImage(ScottPlot.Plot plot)
+    public Image GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
     {
-        LegendItem[] items = plot.PlottableList.SelectMany(x => x.LegendItems).ToArray();
+        IEnumerable<LegendItem> allItems = plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
 
-        if (ManualLegendItems is not null)
-            items = ManualLegendItems.ToArray();
-
-        items = GetAllLegendItems(items).Where(x => x.IsVisible).ToArray();
+        LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
         if (!items.Any())
             throw new InvalidOperationException($"empty legend items");
 
@@ -83,18 +80,22 @@ public class Legend
 
         SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
 
-        float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
-        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
+        float maxItemWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max() + Padding.Left + Padding.Right + ShadowOffset;
+        if (maxWidth > 0)
+            maxItemWidth = Math.Min(maxItemWidth, maxWidth);
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum() + Padding.Top + Padding.Bottom + ShadowOffset;
+        if (maxHeight > 0)
+            totalheight = Math.Min(totalheight, maxHeight);
 
-        PixelSize legendSize = new(maxWidth + Padding.Left + Padding.Right + ShadowOffset, totalheight + Padding.Top + Padding.Bottom + ShadowOffset);
-        PixelRect legendRect = new(new Pixel(0, 0), legendSize);
-        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        PixelSize legendSize = new(maxItemWidth, totalheight);
+        PixelRect legendRect = new(new Pixel(0, 0), legendSize.Width - ShadowOffset, legendSize.Height - ShadowOffset);
+        //FIXME: perhaps no shadow is the best option in this case?
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment.LowerLeft);
 
         SKImageInfo info = new((int)Math.Ceiling(legendSize.Width), (int)Math.Ceiling(legendSize.Height), SKColorType.Rgba8888, SKAlphaType.Premul);
         using SKSurface surface = SKSurface.Create(info);
         if (surface is null)
             throw new NullReferenceException($"invalid SKImageInfo");
-
 
         // render the legend panel
         Drawing.Fillectangle(surface.Canvas, legendShadowRect, ShadowFill.Color);
