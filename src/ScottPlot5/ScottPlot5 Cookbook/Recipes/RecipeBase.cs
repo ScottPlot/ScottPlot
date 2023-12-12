@@ -5,31 +5,28 @@ namespace ScottPlotCookbook.Recipes;
 #pragma warning disable IDE1006 // Ignore lowercase public variable names
 
 /// <summary>
-/// Individual recipes can inherit this so they double as <see cref="IRecipe"/> and
+/// Individual recipes can inherit this so they double as <see cref="ScottPlotCookbook.Recipe"/> and
 /// test cases that have a function decorated with the <see cref="Test"/> attribute.
 /// </summary>
-public abstract class RecipeBase : IRecipe
+public abstract class RecipeBase : Recipe
 {
     // keep this lowercase because it should be lowercase in recipe source code
     public Plot myPlot { get; private set; } = new();
 
-    public abstract string Name { get; }
-    public abstract string Description { get; }
-
     /// <summary>
-    /// This function is called by code interacting with <see cref="IRecipe"/>
+    /// This function is called by code interacting with <see cref="ScottPlotCookbook.Recipe"/>
     /// </summary>
-    public void Recipe(Plot plot)
+    public override void Execute(Plot plot)
     {
         myPlot = plot;
-        Recipe();
+        Execute();
     }
 
     /// <summary>
     /// This function is called from within the test system
     /// </summary>
     [Test]
-    public abstract void Recipe();
+    public abstract void Execute();
 
     // TODO: create test to assert true for all tests
     public bool RecipeHasTestAttribute => GetType().IsDefined(typeof(Test), false);

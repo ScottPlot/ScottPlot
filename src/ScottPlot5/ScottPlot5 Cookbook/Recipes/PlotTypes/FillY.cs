@@ -17,7 +17,7 @@ internal class FillY : RecipePageBase
         public override string Description => "FillY plots can be created from X, Y1, and Y2 arrays.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             RandomDataGenerator dataGen = new(0);
 
@@ -37,7 +37,7 @@ internal class FillY : RecipePageBase
         public override string Description => "FillY plots can be created from two scatter plots that share the same X values.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             RandomDataGenerator dataGen = new(0);
 
@@ -60,7 +60,7 @@ internal class FillY : RecipePageBase
         public override string Description => "FillY plots can be created from data of any type if a conversion function is supplied.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             // create source data in a nonstandard data type
             List<(int, int, int)> data = new();
@@ -87,7 +87,7 @@ internal class FillY : RecipePageBase
         public override string Description => "FillY plots can be customized using public properties.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             RandomDataGenerator dataGen = new(0);
 

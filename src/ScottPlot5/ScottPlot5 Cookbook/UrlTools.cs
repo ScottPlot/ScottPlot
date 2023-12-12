@@ -24,7 +24,7 @@ internal static class UrlTools
         return UrlTools.UrlSafe(page.PageDetails.PageName);
     }
 
-    internal static string GetImageUrl(RecipePageBase page, IRecipe recipe, string extension = ".png")
+    internal static string GetImageUrl(RecipePageBase page, Recipe recipe, string extension = ".png")
     {
         string folder = GetPageUrl(page);
         string filename = UrlTools.UrlSafe(recipe.Name) + extension;

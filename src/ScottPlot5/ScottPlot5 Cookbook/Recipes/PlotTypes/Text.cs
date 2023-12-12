@@ -15,7 +15,7 @@ internal class Text : RecipePageBase
         public override string Description => "Text can be placed anywhere in coordinate space.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
@@ -29,7 +29,7 @@ internal class Text : RecipePageBase
         public override string Description => "Text formatting can be extensively customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             var text = myPlot.Add.Text("Hello, World", 42, 69);
             text.Label.FontSize = 26;

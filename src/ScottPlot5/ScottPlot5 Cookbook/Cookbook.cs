@@ -56,7 +56,7 @@ public static class Cookbook
         .Where(x => x.PageDetails.Chapter == chapter)
         .ToList();
 
-    public static List<IRecipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
+    public static List<Recipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
 
     private static List<T> GetInstantiated<T>()
     {

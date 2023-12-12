@@ -17,7 +17,7 @@ internal class MultiAxis : RecipePageBase
             "but any plottable can be displayed using any X and Y axis.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             // plottables use the standard X and Y axes by default
             var sig1 = myPlot.Add.Signal(Generate.Sin(51, mult: 0.01));

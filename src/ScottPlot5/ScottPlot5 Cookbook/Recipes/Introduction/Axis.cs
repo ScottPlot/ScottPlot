@@ -16,7 +16,7 @@ internal class Axis : RecipePageBase
             "The text inside these labels can be changed, and the style of the text can be extensively customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -32,7 +32,7 @@ internal class Axis : RecipePageBase
         public override string Description => "Axis Limits can be set manually in different ways.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -54,7 +54,7 @@ internal class Axis : RecipePageBase
         public override string Description => "The current axis limits can be read in multiple ways.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -77,7 +77,7 @@ internal class Axis : RecipePageBase
             "Optional arguments allow users to define the amount of whitespace around the edges of the data.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -96,7 +96,7 @@ internal class Axis : RecipePageBase
         public override string Description => "How to create a plot containig only the data area and no axes.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.FigureBackground = Colors.Magenta; // should not be seen
             myPlot.DataBackground = Colors.WhiteSmoke;

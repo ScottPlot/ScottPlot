@@ -16,7 +16,7 @@ internal class CustomizingTicks : RecipePageBase
             "tick labels from tick positions.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] xs = Generate.Consecutive(100, 1, -50);
             myPlot.Add.Scatter(xs, Generate.Sin(100));
@@ -55,7 +55,7 @@ internal class CustomizingTicks : RecipePageBase
             "and users also have the option create their own.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));

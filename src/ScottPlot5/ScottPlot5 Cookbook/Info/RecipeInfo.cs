@@ -11,9 +11,9 @@ public class RecipeInfo
     public string ImageFilename { get; }
     public string AnchorName { get; }
     public string SourceCode { get; private set; } = string.Empty;
-    public IRecipe Recipe { get; }
+    public Recipe Recipe { get; }
 
-    internal RecipeInfo(IRecipe recipe, PageInfo page)
+    internal RecipeInfo(Recipe recipe, PageInfo page)
     {
         Name = recipe.Name;
         Description = recipe.Description;

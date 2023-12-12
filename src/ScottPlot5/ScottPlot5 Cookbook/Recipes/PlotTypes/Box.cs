@@ -15,7 +15,7 @@ internal class Box : RecipePageBase
         public override string Description => "Box plots can be added from a series of values.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             // TODO: move this functionality to the RandomDataGenerator class
             Random rand = new(0);
@@ -58,7 +58,7 @@ internal class Box : RecipePageBase
         public override string Description => "One can easily create a box plot with only a single box.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Random rand = new(0);
 
@@ -99,7 +99,7 @@ internal class Box : RecipePageBase
         public override string Description => "Box plots can be oriented horizontally, similarly to bar plots.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Random rand = new(0);
 
@@ -144,7 +144,7 @@ internal class Box : RecipePageBase
         public override string Description => "Similarly to bar charts, box plots can be compared across multiple categories.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Random rand = new(0);
 

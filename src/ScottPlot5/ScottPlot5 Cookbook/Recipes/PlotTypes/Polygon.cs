@@ -15,7 +15,7 @@ internal class Polygon : RecipePageBase
         public override string Description => "Polygon plots can be added from a series of vertices, and must be in clockwise order.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Coordinates[] vertices = new Coordinates[]
             {
@@ -36,7 +36,7 @@ internal class Polygon : RecipePageBase
         public override string Description => "Polygon plots can be fully customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Coordinates[] vertices = new Coordinates[]
             {

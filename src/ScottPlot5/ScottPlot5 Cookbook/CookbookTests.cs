@@ -8,7 +8,7 @@ internal class CookbookTests
     [Test]
     public void Test_Recipes_Found()
     {
-        List<IRecipe> recipes = Cookbook.GetRecipes();
+        List<Recipe> recipes = Cookbook.GetRecipes();
         recipes.Should().NotBeNull();
         recipes.Should().NotBeEmpty();
         recipes.ForEach(x => TestContext.WriteLine(x));
@@ -35,7 +35,7 @@ internal class CookbookTests
     [Test]
     public void Test_RecipeDescriptions_ShouldEndWithPeriod()
     {
-        foreach (IRecipe recipe in Cookbook.GetRecipes())
+        foreach (Recipe recipe in Cookbook.GetRecipes())
         {
             try
             {

@@ -15,7 +15,7 @@ internal class Signal : RecipePageBase
         public override string Description => "Signal plots can be offset by a given X and Y value.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] values = Generate.Sin(51);
 

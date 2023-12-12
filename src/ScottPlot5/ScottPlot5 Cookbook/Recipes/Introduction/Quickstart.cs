@@ -15,7 +15,7 @@ internal class Quickstart : RecipePageBase
         public override string Description => "Display paired X/Y data as a scatter plot.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
             double[] dataY = { 1, 4, 9, 16, 25 };
@@ -30,7 +30,7 @@ internal class Quickstart : RecipePageBase
             "Interact with the properties of plottables to customize their styling and behavior.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
             double[] dataY = { 1, 4, 9, 16, 25 };
@@ -48,7 +48,7 @@ internal class Quickstart : RecipePageBase
         public override string Description => "Signal plots are optimized for displaying evenly spaced data.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] sin = Generate.Sin(51);
             double[] cos = Generate.Cos(51);
@@ -64,7 +64,7 @@ internal class Quickstart : RecipePageBase
             "Double-click the plot to display performance benchmarks.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] data = Generate.RandomWalk(1_000_000);
             myPlot.Add.Signal(data);
@@ -78,7 +78,7 @@ internal class Quickstart : RecipePageBase
         public override string Description => "Axis labels can be extensively customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -96,7 +96,7 @@ internal class Quickstart : RecipePageBase
             "Most plottables have a Label property which configures what text appears in the legend.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.Label = "Sin";

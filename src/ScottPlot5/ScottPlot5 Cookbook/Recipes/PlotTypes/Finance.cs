@@ -16,7 +16,7 @@ internal class Finance : RecipePageBase
             "(open, high, low, and close) for specific time ranges.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);
@@ -34,7 +34,7 @@ internal class Finance : RecipePageBase
             "between open and close.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);

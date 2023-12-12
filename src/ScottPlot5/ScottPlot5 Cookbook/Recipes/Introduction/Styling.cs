@@ -17,7 +17,7 @@ internal class Styling : RecipePageBase
             "that make it easier to customzie many items at once using a simpler API.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -40,7 +40,7 @@ internal class Styling : RecipePageBase
         public override string Description => "Axis labels, tick marks, and frame can all be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -78,7 +78,7 @@ internal class Styling : RecipePageBase
             "but the default grid can be interacted with to customize its appearance.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
@@ -98,7 +98,7 @@ internal class Styling : RecipePageBase
             "data, but grids can be configured to render on top of plottables too.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             var sig = myPlot.Add.Signal(Generate.Sin(51));
             sig.LineStyle.Width = 10;
@@ -118,7 +118,7 @@ internal class Styling : RecipePageBase
             "standard palettes, but users may also create their own.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Palette = new ScottPlot.Palettes.Nord();
 
@@ -137,7 +137,7 @@ internal class Styling : RecipePageBase
         public override string Description => "Many plot types have a MarkerStyle which can be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int count = 21;
             double[] xs = Generate.Consecutive(count);
@@ -169,7 +169,7 @@ internal class Styling : RecipePageBase
         public override string Description => "Many plot types have a LineStyle which can be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int count = 21;
             double[] xs = Generate.Consecutive(count);
@@ -201,7 +201,7 @@ internal class Styling : RecipePageBase
             "on high DPI displays with display scaling enabled.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.ScaleFactor = 2;
             myPlot.Add.Signal(Generate.Sin());

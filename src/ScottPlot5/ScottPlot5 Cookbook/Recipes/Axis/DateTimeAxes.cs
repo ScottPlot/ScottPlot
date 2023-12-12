@@ -15,7 +15,7 @@ internal class DateTimeAxes : RecipePageBase
         public override string Description => ".";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             // begin with an array of DateTime values
             DateTime[] dates = Generate.DateTime.Days(100);

@@ -15,7 +15,7 @@ internal class ErrorBar : RecipePageBase
         public override string Description => "Error Bars go well with scatter plots.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int points = 30;
 
@@ -35,7 +35,7 @@ internal class ErrorBar : RecipePageBase
         public override string Description => "Error size can be set for all dimensions.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int points = 10;
 

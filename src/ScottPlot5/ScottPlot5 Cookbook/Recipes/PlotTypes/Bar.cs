@@ -15,7 +15,7 @@ internal class Bar : RecipePageBase
         public override string Description => "Bar plots can be added from a series of values.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] values = { 5, 10, 7, 13 };
             myPlot.Add.Bars(values);
@@ -30,7 +30,7 @@ internal class Bar : RecipePageBase
         public override string Description => "The exact position and size of each bar may be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             List<ScottPlot.Bar> bars = new()
             {
@@ -49,7 +49,7 @@ internal class Bar : RecipePageBase
         public override string Description => "Bars can have errorbars.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             List<ScottPlot.Bar> bars = new()
             {
@@ -69,7 +69,7 @@ internal class Bar : RecipePageBase
         public override string Description => "Bars can be labeled by manually specifying axis tick mark positions and labels.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Bar(position: 1, value: 5, error: 1);
             myPlot.Add.Bar(position: 2, value: 7, error: 2);
@@ -96,7 +96,7 @@ internal class Bar : RecipePageBase
         public override string Description => "Bars can be positioned on top of each other.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Color[] colors = {
                 myPlot.Palette.GetColor(0),
@@ -137,7 +137,7 @@ internal class Bar : RecipePageBase
         public override string Description => "Bars can be grouped by position and color.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Color[] colors = {
                 myPlot.Palette.GetColor(0),

@@ -16,7 +16,7 @@ internal class Legend : RecipePageBase
             "It is possible to add multiple legends, including custom ones implementing ILegend.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.Label = "Sin";
@@ -41,7 +41,7 @@ internal class Legend : RecipePageBase
         public override string Description => "Legends may be constructed manually.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
