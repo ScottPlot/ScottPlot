@@ -1,7 +1,7 @@
 ﻿namespace ScottPlotCookbook;
 
 /// <summary>
-/// Helper functions for obtaining cookbook recipes and sections
+/// Public-facing functions for obtaining cookbook recipes and sections
 /// </summary>
 public static class Query
 {

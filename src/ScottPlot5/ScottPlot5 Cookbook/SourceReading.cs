@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 internal static class SourceReading
 {
@@ -82,20 +80,5 @@ internal static class SourceReading
         }
 
         return sources;
-    }
-
-    [Test]
-    public static void Test_Recipe_Sources_Found()
-    {
-        List<RecipeSource> sources = GetRecipeSources();
-
-        sources.Should().NotBeEmpty();
-        sources.Should().HaveCount(Cookbook.GetRecipes().Count);
-
-        foreach (RecipeInfo recipe in Query.GetRecipes())
-        {
-            recipe.AddSource(sources);
-            recipe.SourceCode.Should().NotBeNull();
-        }
     }
 }

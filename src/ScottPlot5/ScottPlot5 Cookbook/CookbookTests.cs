@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using ScottPlotCookbook.Recipes;
+﻿using ScottPlotCookbook.Recipes;
 
 namespace ScottPlotCookbook;
 

@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 internal class QueryTests
 {
