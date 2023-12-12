@@ -1,6 +1,4 @@
-﻿using ScottPlotCookbook.Info;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 /// <summary>
 /// Helper functions for obtaining cookbook recipes and sections
@@ -19,6 +17,6 @@ public static class Query
 
     public static List<RecipeInfo> GetRecipes() =>
         GetPages()
-        .SelectMany(x => x.Recipes)
+        .SelectMany(x => x.RecipeInfos)
         .ToList();
 }

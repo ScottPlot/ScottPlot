@@ -1,5 +1,7 @@
 ﻿namespace ScottPlotCookbook;
 
+// TODO: collapse this datatype with Recipe???
+
 /// <summary>
 /// Information about a cookbook recipe read from a JSON file
 /// </summary>

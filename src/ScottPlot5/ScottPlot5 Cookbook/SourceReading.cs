@@ -1,6 +1,4 @@
 ﻿using FluentAssertions;
-using ScottPlotCookbook.Info;
-using System.Text;
 
 namespace ScottPlotCookbook;
 

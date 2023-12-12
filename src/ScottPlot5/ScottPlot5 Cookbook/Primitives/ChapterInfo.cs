@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Info;
+﻿namespace ScottPlotCookbook;
+
+// TODO: collapse this datatype with Chapter
 
 /// <summary>
 /// A cookbook chapter is a group of pages.

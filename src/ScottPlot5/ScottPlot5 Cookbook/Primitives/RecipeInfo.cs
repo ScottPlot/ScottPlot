@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Info;
+﻿namespace ScottPlotCookbook;
+
+// TODO: collapse this datatype with Recipe???
 
 /// <summary>
 /// Contains extensive information about a single cookbook recipe

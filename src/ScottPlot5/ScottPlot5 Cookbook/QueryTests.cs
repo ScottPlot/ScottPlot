@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
-using ScottPlotCookbook.Info;
 
 namespace ScottPlotCookbook;
 
 internal class QueryTests
 {
     [Test]
-    public void Test_Chapters_Are_Valid()
+    public void Test_Chapters_HaveNames()
     {
         List<ChapterInfo> chapters = Query.GetChapters();
         chapters.Should().NotBeEmpty();
@@ -14,7 +13,6 @@ internal class QueryTests
         foreach (ChapterInfo chapter in chapters)
         {
             chapter.Name.Should().NotBeNullOrEmpty();
-            //chapter.Pages.Should().NotBeEmpty();
         }
     }
 
@@ -27,7 +25,7 @@ internal class QueryTests
         {
             page.Name.Should().NotBeNullOrEmpty();
             page.Description.Should().NotBeNullOrEmpty();
-            page.Recipes.Should().NotBeEmpty();
+            page.RecipeInfos.Should().NotBeEmpty();
         }
     }
 

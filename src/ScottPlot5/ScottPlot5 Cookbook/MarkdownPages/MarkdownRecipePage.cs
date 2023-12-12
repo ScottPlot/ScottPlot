@@ -1,6 +1,4 @@
-﻿using ScottPlotCookbook.Info;
-
-namespace ScottPlotCookbook.MarkdownPages;
+﻿namespace ScottPlotCookbook.MarkdownPages;
 
 internal class MarkdownRecipePage : MarkdownPage
 {
@@ -10,7 +8,7 @@ internal class MarkdownRecipePage : MarkdownPage
     {
         Page = page;
 
-        foreach (RecipeInfo recipe in Page.Recipes)
+        foreach (RecipeInfo recipe in Page.RecipeInfos)
             recipe.AddSource(sources);
     }
 
@@ -21,7 +19,7 @@ internal class MarkdownRecipePage : MarkdownPage
 
         AddVersionInformation();
 
-        foreach (RecipeInfo recipe in Page.Recipes)
+        foreach (RecipeInfo recipe in Page.RecipeInfos)
         {
             SB.AppendLine();
             SB.AppendLine($"## {recipe.Name}");

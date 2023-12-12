@@ -1,6 +1,6 @@
-﻿using ScottPlotCookbook.Recipes;
+﻿namespace ScottPlotCookbook;
 
-namespace ScottPlotCookbook.Info;
+// TODO: collapse this datatype with Page???
 
 /// <summary>
 /// A cookbook page is a group of recipes.
@@ -10,16 +10,15 @@ public class PageInfo
 {
     public string Name { get; }
     public string Description { get; }
-    public List<RecipeInfo> Recipes { get; }
-    public string FolderUrl { get; }
-    public string Url => $"/cookbook/5.0/{UrlTools.UrlSafe(Name)}/";
+    public List<RecipeInfo> RecipeInfos { get; }
+    public string FolderUrl => UrlTools.UrlSafe(Name);
+    public string Url => $"/cookbook/5.0/{FolderUrl}/";
 
-    internal PageInfo(RecipePageBase page)
+    internal PageInfo(Recipes.RecipePageBase page)
     {
         Name = page.PageDetails.PageName;
         Description = page.PageDetails.PageDescription;
-        FolderUrl = UrlTools.UrlSafe(Name);
-        Recipes = page.GetRecipes()
+        RecipeInfos = page.GetRecipes()
             .Select(x => new RecipeInfo(x, this))
             .ToList();
     }

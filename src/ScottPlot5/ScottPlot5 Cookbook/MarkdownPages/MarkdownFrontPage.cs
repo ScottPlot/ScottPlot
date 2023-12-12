@@ -1,6 +1,4 @@
-﻿using ScottPlotCookbook.Info;
-
-namespace ScottPlotCookbook.MarkdownPages;
+﻿namespace ScottPlotCookbook.MarkdownPages;
 
 internal class MarkdownFrontPage : MarkdownPage
 {
@@ -41,7 +39,7 @@ internal class MarkdownFrontPage : MarkdownPage
     {
         SB.AppendLine($"<h2 class=''><a href='{page.Url}' class='text-dark'>{page.Name}</a></h2>");
         SB.AppendLine($"<div>{page.Description}</div>");
-        page.Recipes.ForEach(x => AddRecipeImage(x, page));
+        page.RecipeInfos.ForEach(x => AddRecipeImage(x, page));
     }
 
     private void AddRecipeImage(RecipeInfo recipe, PageInfo page)
