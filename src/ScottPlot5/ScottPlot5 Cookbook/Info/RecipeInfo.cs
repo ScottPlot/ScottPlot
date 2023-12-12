@@ -1,5 +1,8 @@
 ﻿namespace ScottPlotCookbook.Info;
 
+/// <summary>
+/// Contains extensive information about a single cookbook recipe
+/// </summary>
 public class RecipeInfo
 {
     public string Name { get; }
@@ -20,15 +23,16 @@ public class RecipeInfo
         PageName = page.Name;
     }
 
-    internal void AddSource(List<RecipeSource> sources)
+    /// <summary>
+    /// Scan a collection of recipe sources and populate this recipe's source code from the matching one
+    /// </summary>
+    internal void AddSource(IEnumerable<RecipeSource> sources)
     {
-        foreach (RecipeSource source in sources)
+        var matchingSources = sources.Where(x => x.PageName == PageName && x.RecipeName == Name);
+
+        if (matchingSources.Any())
         {
-            if (source.PageName == PageName && source.RecipeName == Name)
-            {
-                SourceCode = source.SourceCode;
-                break;
-            }
+            SourceCode = matchingSources.First().SourceCode;
         }
     }
 }

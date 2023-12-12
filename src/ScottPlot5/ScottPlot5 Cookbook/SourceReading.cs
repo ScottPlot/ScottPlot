@@ -66,13 +66,12 @@ internal static class SourceReading
 
                 if (InRecipe && line.StartsWith(recipeOverSignal))
                 {
-                    string source = string.Join(Environment.NewLine, sourceBeingExtended).Trim();
-
                     string prefix = "ScottPlot.Plot myPlot = new();";
                     string suffix = $"myPlot.SavePng(\"{UrlTools.UrlSafe(recipeNameSafe)}.png\");";
-                    source = $"{prefix}\n\n{source}\n\n{suffix}";
-
-                    sources.Add(new RecipeSource(pageNameSafe, recipeNameSafe, source));
+                    string sourceLines = string.Join(Environment.NewLine, sourceBeingExtended).Trim();
+                    string source = $"{prefix}\n\n{sourceLines}\n\n{suffix}";
+                    RecipeSource rs = new(pageNameSafe, recipeNameSafe, source);
+                    sources.Add(rs);
                     InRecipe = false;
                     sourceBeingExtended.Clear();
                     continue;

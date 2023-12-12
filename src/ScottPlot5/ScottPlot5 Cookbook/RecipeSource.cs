@@ -1,10 +1,13 @@
 ﻿namespace ScottPlotCookbook;
 
-internal struct RecipeSource
+/// <summary>
+/// Information about a cookbook recipe read from a JSON file
+/// </summary>
+internal readonly struct RecipeSource
 {
-    public string PageName { get; set; }
-    public string RecipeName { get; set; }
-    public string SourceCode { get; set; }
+    public string PageName { get; }
+    public string RecipeName { get; }
+    public string SourceCode { get; }
 
     public RecipeSource(string page, string recipe, string source)
     {
