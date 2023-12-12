@@ -39,11 +39,12 @@ namespace ScottPlot.Cookbook
         {
             StringBuilder sb = new();
             sb.AppendLine("---");
-            sb.AppendLine($"title: \"{title}\"");
-            sb.AppendLine($"description: \"{description}\"");
-            sb.AppendLine($"date: {DateTime.Now}");
+            sb.AppendLine($"Title: \"{title}\"");
+            sb.AppendLine($"Description: \"{description}\"");
+            sb.AppendLine($"Date: {DateTime.Now}");
+            sb.AppendLine($"Version: {ScottPlot.Version.LongString}");
             if (!string.IsNullOrEmpty(url))
-                sb.AppendLine($"url: {url}");
+                sb.AppendLine($"URL: {url}");
             if (frontmatter is not null)
             {
                 foreach (string s in frontmatter)
