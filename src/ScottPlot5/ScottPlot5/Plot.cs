@@ -611,7 +611,14 @@ public class Plot : IDisposable
         return bytes;
     }
 
-    public Image GetLegendImage(int maxWidth = 0, int maxHeight = 0) => Legend.GetImage(this);
+    /// <summary>
+    /// Returns the content of the legend as standalone <code>SKImage</code>. 
+    /// Image size can be limited with optional parameters <paramref name="maxHeight"/>
+    /// and <paramref name="maxWidth"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
+    /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
+    public SKImage GetLegendImage(int maxWidth = 0, int maxHeight = 0) => Legend.GetImage(this);
     #endregion
 
     #region Helper Methods

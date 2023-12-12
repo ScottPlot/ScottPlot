@@ -66,7 +66,15 @@ public class Legend
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
-    public Image GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
+    /// <summary>
+    /// Returns the content of the legend as standalone <code>SKImage</code>.
+    /// 
+    /// Size of the image can be limited with optional parameters <paramref name="maxHeight"/>
+    /// and <paramref name="maxWidth"/>
+    /// </summary>
+    /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
+    /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
+    public SKImage GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
     {
         IEnumerable<LegendItem> allItems = plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
 
@@ -118,7 +126,7 @@ public class Legend
 
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
-        return new(surface.Snapshot());
+        return surface.Snapshot();
     }
 
     /// <summary>

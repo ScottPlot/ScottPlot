@@ -33,7 +33,9 @@ public partial class MainWindow : Window
             */
             WpfPlot1.Plot.AutoScale();
             WpfPlot1.Plot.Legend.IsVisible = true;
-            WpfPlot1.Plot.GetLegendImage().SavePng("test.png");
+            var legenImage = new Image(WpfPlot1.Plot.GetLegendImage());
+            legenImage.SavePng("test.png");
+            legenImage.Dispose();
             WpfPlot1.Refresh();
 
             WpfPlot2.Plot.Add.Signal(Generate.Sin());
