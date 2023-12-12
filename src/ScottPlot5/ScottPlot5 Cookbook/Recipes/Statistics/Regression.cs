@@ -2,7 +2,7 @@
 
 internal class Regression : RecipePageBase
 {
-    public override RecipePageDetails PageDetails => new()
+    public override CategoryInfo2 PageDetails => new()
     {
         Chapter = Chapter.Statistics,
         PageName = "Regression",

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook;
 
-public struct RecipePageDetails
+public struct CategoryInfo2
 {
     public Chapter Chapter;
     public string PageName;

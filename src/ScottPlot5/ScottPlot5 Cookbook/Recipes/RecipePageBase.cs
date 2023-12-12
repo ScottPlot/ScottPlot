@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Recipes;
 
 public abstract class RecipePageBase
 {
-    public abstract RecipePageDetails PageDetails { get; }
+    public abstract CategoryInfo2 PageDetails { get; }
 
     public List<Recipe> GetRecipes() => GetType()
         .GetNestedTypes(BindingFlags.NonPublic)

@@ -16,7 +16,6 @@ internal class FrontPage : PageBase
 
         AddVersionInformation();
 
-        Dictionary<string, Chapter> kvp = Cookbook.GetCategoryChapterKVP();
         IEnumerable<Chapter> chapters = Enum.GetValues<Chapter>().ToList();
 
         foreach (Chapter chapter in chapters)

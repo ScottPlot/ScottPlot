@@ -2,7 +2,7 @@
 
 internal class Signal : RecipePageBase
 {
-    public override RecipePageDetails PageDetails => new()
+    public override CategoryInfo2 PageDetails => new()
     {
         Chapter = Chapter.PlotTypes,
         PageName = "Signal Plot",

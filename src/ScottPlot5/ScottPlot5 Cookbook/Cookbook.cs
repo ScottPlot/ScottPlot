@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using ScottPlotCookbook.Recipes;
 
 namespace ScottPlotCookbook;
@@ -59,21 +60,6 @@ public static class Cookbook
     public static List<RecipePageBase> GetRecipePages() =>
         GetInstantiated<RecipePageBase>()
         .ToList();
-
-    /// <summary>
-    /// get chapter info for each category name
-    /// </summary>
-    public static Dictionary<string, Chapter> GetCategoryChapterKVP()
-    {
-        Dictionary<string, Chapter> kvp = new();
-
-        foreach (RecipePageBase page in GetCategoryPages())
-        {
-            kvp[page.PageDetails.PageName] = page.PageDetails.Chapter;
-        }
-
-        return kvp;
-    }
 
     public static List<Recipe> GetRecipes() => GetCategoryPages().SelectMany(x => x.GetRecipes()).ToList();
 

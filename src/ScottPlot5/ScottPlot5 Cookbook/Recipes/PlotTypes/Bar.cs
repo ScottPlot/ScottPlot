@@ -2,7 +2,7 @@
 
 internal class Bar : RecipePageBase
 {
-    public override RecipePageDetails PageDetails => new()
+    public override CategoryInfo2 PageDetails => new()
     {
         Chapter = Chapter.PlotTypes,
         PageName = "Bar Plot",

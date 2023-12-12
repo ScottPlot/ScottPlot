@@ -29,8 +29,6 @@ internal static class SourceReading
     {
         const int indentationCharacters = 12;
 
-        Dictionary<string, Chapter> categoryChapters = Cookbook.GetCategoryChapterKVP();
-
         List<RecipeInfo> recipes = Query.GetRecipes();
 
         string recipeStartSignal = "        {";
@@ -89,6 +87,24 @@ internal static class SourceReading
                 if (InRecipe)
                     sourceBeingExtended.AppendLine(lineIsWhitespace ? "" : line.Substring(indentationCharacters));
             }
+        }
+
+        return recipes;
+    }
+
+    // TODO: refactor toward this
+    public static List<WebRecipe> GetWebRecipes()
+    {
+        List<WebRecipe> recipes = new();
+
+        Dictionary<string, Chapter> categoryChapters = Cookbook.GetCategoryPages()
+            .ToDictionary(k => k.PageDetails.PageName, x => x.PageDetails.Chapter);
+
+        foreach (RecipeInfo ri in GetRecipeSources())
+        {
+            string chapter = categoryChapters[ri.Category].ToString();
+            WebRecipe wr = new(chapter, ri.Category, ri.Name, ri.Description, ri.SourceCode);
+            recipes.Add(wr);
         }
 
         return recipes;

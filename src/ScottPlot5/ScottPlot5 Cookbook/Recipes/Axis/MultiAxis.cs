@@ -2,7 +2,7 @@
 
 internal class MultiAxis : RecipePageBase
 {
-    public override RecipePageDetails PageDetails => new()
+    public override CategoryInfo2 PageDetails => new()
     {
         Chapter = Chapter.Customization,
         PageName = "Advanced Axis Features",
