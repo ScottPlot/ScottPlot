@@ -66,14 +66,6 @@ public class Legend
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
     }
-    /// <summary>
-    /// Returns the content of the legend as standalone <code>SKImage</code>.
-    /// 
-    /// Size of the image can be limited with optional parameters <paramref name="maxHeight"/>
-    /// and <paramref name="maxWidth"/>
-    /// </summary>
-    /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
-    /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
     public SKImage GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
     {
         IEnumerable<LegendItem> allItems = plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
@@ -88,17 +80,17 @@ public class Legend
 
         SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
 
-        float maxItemWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max() + Padding.Left + Padding.Right + ShadowOffset;
+        float maxItemWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max() + Padding.Left + Padding.Right + 2 * ShadowOffset;
         if (maxWidth > 0)
             maxItemWidth = Math.Min(maxItemWidth, maxWidth);
-        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum() + Padding.Top + Padding.Bottom + ShadowOffset;
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum() + Padding.Top + Padding.Bottom + 2 * ShadowOffset;
         if (maxHeight > 0)
             totalheight = Math.Min(totalheight, maxHeight);
 
         PixelSize legendSize = new(maxItemWidth, totalheight);
-        PixelRect legendRect = new(new Pixel(0, 0), legendSize.Width - ShadowOffset, legendSize.Height - ShadowOffset);
+        PixelRect legendRect = new(new Pixel(ShadowOffset, ShadowOffset), legendSize.Width - 2 * ShadowOffset, legendSize.Height - 2 * ShadowOffset);
         //FIXME: perhaps no shadow is the best option in this case?
-        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment.LowerLeft);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
 
         SKImageInfo info = new((int)Math.Ceiling(legendSize.Width), (int)Math.Ceiling(legendSize.Height), SKColorType.Rgba8888, SKAlphaType.Premul);
         using SKSurface surface = SKSurface.Create(info);
@@ -111,14 +103,14 @@ public class Legend
         Drawing.DrawRectangle(surface.Canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
 
         // render all items inside the legend
-        float yOffset = legendRect.Top + Padding.Top;
+        float yOffset = legendRect.Top + Padding.Top + ShadowOffset;
         for (int i = 0; i < sizedItems.Length; i++)
         {
             Common.RenderItem(
                 canvas: surface.Canvas,
                 paint: paint,
                 sizedItem: sizedItems[i],
-                x: legendRect.Left + Padding.Left,
+                x: legendRect.Left + Padding.Left + ShadowOffset,
                 y: yOffset,
                 symbolWidth: SymbolWidth,
                 symbolPadRight: SymbolLabelSeparation,
