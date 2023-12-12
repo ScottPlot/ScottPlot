@@ -1,6 +1,4 @@
-﻿using ScottPlotCookbook.HtmlPages;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 [SetUpFixture]
 internal class SetupAndTeardown
