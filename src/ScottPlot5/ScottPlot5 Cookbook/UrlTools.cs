@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ScottPlotCookbook.Recipes;
 
 namespace ScottPlotCookbook;
 

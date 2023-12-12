@@ -9,7 +9,7 @@ internal class Styling : RecipePageBase
         PageDescription = "How to customize plots",
     };
 
-    internal class StyleClass : RecipeTestBase
+    internal class StyleClass : RecipeBase
     {
         public override string Name => "Style Helper Functions";
         public override string Description => "Plots contain many objects which can be customized individually " +
@@ -34,7 +34,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class AxisCustom : RecipeTestBase
+    internal class AxisCustom : RecipeBase
     {
         public override string Name => "Axis Customization";
         public override string Description => "Axis labels, tick marks, and frame can all be customized.";
@@ -70,7 +70,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class GridCustom : RecipeTestBase
+    internal class GridCustom : RecipeBase
     {
         public override string Name => "Grid Customization";
         public override string Description => "Grid lines can be customized. " +
@@ -91,7 +91,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class GridAbove : RecipeTestBase
+    internal class GridAbove : RecipeBase
     {
         public override string Name => "Grid Above Data";
         public override string Description => "Grid lines are typically drawn beneath " +
@@ -110,7 +110,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class Palette : RecipeTestBase
+    internal class Palette : RecipeBase
     {
         public override string Name => "Palettes";
         public override string Description => "A palette is a set of colors, and the Plot's palette " +
@@ -131,7 +131,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class Markers : RecipeTestBase
+    internal class Markers : RecipeBase
     {
         public override string Name => "Markers";
         public override string Description => "Many plot types have a MarkerStyle which can be customized.";
@@ -163,7 +163,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class LineStyles : RecipeTestBase
+    internal class LineStyles : RecipeBase
     {
         public override string Name => "Line Styles";
         public override string Description => "Many plot types have a LineStyle which can be customized.";
@@ -193,7 +193,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class Scaling : RecipeTestBase
+    internal class Scaling : RecipeBase
     {
         public override string Name => "Scaling";
         public override string Description => "All components of an image can be scaled up or down in size " +

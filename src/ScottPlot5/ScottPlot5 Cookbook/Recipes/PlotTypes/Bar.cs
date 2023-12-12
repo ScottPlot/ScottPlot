@@ -9,7 +9,7 @@ internal class Bar : RecipePageBase
         PageDescription = "Bar plots represent values as horizontal or vertical rectangles",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "Bar Plot Quickstart";
         public override string Description => "Bar plots can be added from a series of values.";
@@ -24,7 +24,7 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarPosition : RecipeTestBase
+    internal class BarPosition : RecipeBase
     {
         public override string Name => "Bar Positioning";
         public override string Description => "The exact position and size of each bar may be customized.";
@@ -43,7 +43,7 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarWithError : RecipeTestBase
+    internal class BarWithError : RecipeBase
     {
         public override string Name => "Bars with Error";
         public override string Description => "Bars can have errorbars.";
@@ -63,7 +63,7 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarTickLabels : RecipeTestBase
+    internal class BarTickLabels : RecipeBase
     {
         public override string Name => "Bars with Labeled Ticks";
         public override string Description => "Bars can be labeled by manually specifying axis tick mark positions and labels.";
@@ -90,7 +90,7 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarStackVertically : RecipeTestBase
+    internal class BarStackVertically : RecipeBase
     {
         public override string Name => "Stacked Bar Plot";
         public override string Description => "Bars can be positioned on top of each other.";
@@ -131,7 +131,7 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class GroupedBarPlot : RecipeTestBase
+    internal class GroupedBarPlot : RecipeBase
     {
         public override string Name => "Grouped Bar Plot";
         public override string Description => "Bars can be grouped by position and color.";

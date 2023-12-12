@@ -9,7 +9,7 @@ internal class ErrorBar : RecipePageBase
         PageDescription = "Error Bars communicate the range of possible values for a measurement",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "Error Bar Quickstart";
         public override string Description => "Error Bars go well with scatter plots.";
@@ -29,7 +29,7 @@ internal class ErrorBar : RecipePageBase
         }
     }
 
-    internal class CustomErrors : RecipeTestBase
+    internal class CustomErrors : RecipeBase
     {
         public override string Name => "ErrorBar Values";
         public override string Description => "Error size can be set for all dimensions.";

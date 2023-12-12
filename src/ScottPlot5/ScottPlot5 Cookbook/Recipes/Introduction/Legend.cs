@@ -9,7 +9,7 @@ internal class Legend : RecipePageBase
         PageDescription = "A legend is a key typically displayed in the corner of a plot",
     };
 
-    internal class LegendStyle : RecipeTestBase
+    internal class LegendStyle : RecipeBase
     {
         public override string Name => "Legend Customization";
         public override string Description => "The default legend can be easily accessed and customized. " +
@@ -35,7 +35,7 @@ internal class Legend : RecipePageBase
         }
     }
 
-    internal class ManualLegend : RecipeTestBase
+    internal class ManualLegend : RecipeBase
     {
         public override string Name => "Manual Legend";
         public override string Description => "Legends may be constructed manually.";

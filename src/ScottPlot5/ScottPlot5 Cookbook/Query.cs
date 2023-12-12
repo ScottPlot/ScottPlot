@@ -2,6 +2,9 @@
 
 namespace ScottPlotCookbook;
 
+/// <summary>
+/// Helper functions for obtaining cookbook recipes and sections
+/// </summary>
 public static class Query
 {
     public static List<ChapterInfo> GetChapters() =>

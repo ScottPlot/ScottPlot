@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework.Internal;
 
-namespace ScottPlotCookbook;
+namespace ScottPlotCookbook.Recipes;
 
 #pragma warning disable IDE1006 // Ignore lowercase public variable names
 
@@ -8,7 +8,7 @@ namespace ScottPlotCookbook;
 /// Individual recipes can inherit this so they double as <see cref="IRecipe"/> and
 /// test cases that have a function decorated with the <see cref="Test"/> attribute.
 /// </summary>
-public abstract class RecipeTestBase : IRecipe
+public abstract class RecipeBase : IRecipe
 {
     // keep this lowercase because it should be lowercase in recipe source code
     public Plot myPlot { get; private set; } = new();

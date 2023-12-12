@@ -9,7 +9,7 @@ internal class Box : RecipePageBase
         PageDescription = "Box plots show a distribution at a glance",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "Box Plot Quickstart";
         public override string Description => "Box plots can be added from a series of values.";
@@ -52,7 +52,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class IndividualBox : RecipeTestBase
+    internal class IndividualBox : RecipeBase
     {
         public override string Name => "Individual Box Plots";
         public override string Description => "One can easily create a box plot with only a single box.";
@@ -93,7 +93,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class HorizontalBox : RecipeTestBase
+    internal class HorizontalBox : RecipeBase
     {
         public override string Name => "Horizontal Box Plots";
         public override string Description => "Box plots can be oriented horizontally, similarly to bar plots.";
@@ -138,7 +138,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class BoxSeries : RecipeTestBase
+    internal class BoxSeries : RecipeBase
     {
         public override string Name => "Box Plot Series";
         public override string Description => "Similarly to bar charts, box plots can be compared across multiple categories.";

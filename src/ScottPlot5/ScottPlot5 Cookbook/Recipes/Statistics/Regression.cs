@@ -9,7 +9,7 @@ internal class Regression : RecipePageBase
         PageDescription = "Statistical operations to fit lines to data",
     };
 
-    internal class Linear : RecipeTestBase
+    internal class Linear : RecipeBase
     {
         public override string Name => "LinearRegression";
         public override string Description => "Fit a line to a collection of X/Y data points.";

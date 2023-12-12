@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Info;
+﻿using ScottPlotCookbook.Recipes;
+
+namespace ScottPlotCookbook.Info;
 
 /// <summary>
 /// A cookbook page is a group of recipes.

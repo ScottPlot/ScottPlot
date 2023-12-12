@@ -9,7 +9,7 @@ internal class DateTimeAxes : RecipePageBase
         PageDescription = "Plot data values on a DataTime axes",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "DateTime Axis Quickstart";
         public override string Description => ".";

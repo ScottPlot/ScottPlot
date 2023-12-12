@@ -9,7 +9,7 @@ internal class Axis : RecipePageBase
         PageDescription = "Examples of common customizations for axis labels and ticks",
     };
 
-    internal class AxisLabels : RecipeTestBase
+    internal class AxisLabels : RecipeBase
     {
         public override string Name => "Axis Labels";
         public override string Description => "Axis labels are the text labels centered on each axis. " +
@@ -26,7 +26,7 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class SetAxisLimits : RecipeTestBase
+    internal class SetAxisLimits : RecipeBase
     {
         public override string Name => "Manually Set Axis Limits";
         public override string Description => "Axis Limits can be set manually in different ways.";
@@ -48,7 +48,7 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class GetAxisLimits : RecipeTestBase
+    internal class GetAxisLimits : RecipeBase
     {
         public override string Name => "Read Axis Limits";
         public override string Description => "The current axis limits can be read in multiple ways.";
@@ -70,7 +70,7 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class AutoScale : RecipeTestBase
+    internal class AutoScale : RecipeBase
     {
         public override string Name => "Zoom to Fit Data";
         public override string Description => "The axis limits can be automatically adjusted to fit the data. " +
@@ -90,7 +90,7 @@ internal class Axis : RecipePageBase
         }
     }
 
-    internal class Frameless : RecipeTestBase
+    internal class Frameless : RecipeBase
     {
         public override string Name => "Frameless Plot";
         public override string Description => "How to create a plot containig only the data area and no axes.";

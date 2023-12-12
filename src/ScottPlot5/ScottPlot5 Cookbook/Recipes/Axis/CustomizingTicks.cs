@@ -9,7 +9,7 @@ internal class CustomizingTicks : RecipePageBase
         PageDescription = "Advanced customization of tick marks and tick labels",
     };
 
-    internal class CustomTickFormatter : RecipeTestBase
+    internal class CustomTickFormatter : RecipeBase
     {
         public override string Name => "Custom Tick Formatters";
         public override string Description => "Users can customize the logic used to create " +
@@ -44,7 +44,7 @@ internal class CustomizingTicks : RecipePageBase
         }
     }
 
-    internal class AltTickGen : RecipeTestBase
+    internal class AltTickGen : RecipeBase
     {
         public override string Name => "Custom Tick Generators";
         public override string Description =>

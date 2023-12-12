@@ -9,7 +9,7 @@ internal class Signal : RecipePageBase
         PageDescription = "Signal plots display evenly-spaced data",
     };
 
-    internal class Offset : RecipeTestBase
+    internal class Offset : RecipeBase
     {
         public override string Name => "Offset";
         public override string Description => "Signal plots can be offset by a given X and Y value.";

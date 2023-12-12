@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ScottPlotCookbook;
+namespace ScottPlotCookbook.Recipes;
 
 public abstract class RecipePageBase
 {

@@ -9,7 +9,7 @@ internal class Polygon : RecipePageBase
         PageDescription = "Polygon plots draws a polygon",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "Polygon Plot Quickstart";
         public override string Description => "Polygon plots can be added from a series of vertices, and must be in clockwise order.";
@@ -30,7 +30,7 @@ internal class Polygon : RecipePageBase
         }
     }
 
-    internal class Styling : RecipeTestBase
+    internal class Styling : RecipeBase
     {
         public override string Name => "Polygon Plot Styling";
         public override string Description => "Polygon plots can be fully customized.";

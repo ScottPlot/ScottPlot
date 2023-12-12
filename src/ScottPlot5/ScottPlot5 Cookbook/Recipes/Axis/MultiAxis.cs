@@ -9,7 +9,7 @@ internal class MultiAxis : RecipePageBase
         PageDescription = "Tick mark customization and creation of multi-Axis plots",
     };
 
-    internal class MultiAxisQuickstart : RecipeTestBase
+    internal class MultiAxisQuickstart : RecipeBase
     {
         public override string Name => "Multi-Axis";
         public override string Description => "Additional axes may be added to plots. " +

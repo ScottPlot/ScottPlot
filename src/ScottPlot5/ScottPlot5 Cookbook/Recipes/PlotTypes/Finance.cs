@@ -9,7 +9,7 @@ internal class Finance : RecipePageBase
         PageDescription = "Finance plots display price data binned into time ranges",
     };
 
-    internal class OHLC : RecipeTestBase
+    internal class OHLC : RecipeBase
     {
         public override string Name => "OHLC Chart";
         public override string Description => "OHLC charts use symbols to display price data " +
@@ -25,7 +25,7 @@ internal class Finance : RecipePageBase
         }
     }
 
-    internal class Candlestick : RecipeTestBase
+    internal class Candlestick : RecipeBase
     {
         public override string Name => "Candlestick Chart";
         public override string Description => "Candlestick charts use symbols to display price data. " +

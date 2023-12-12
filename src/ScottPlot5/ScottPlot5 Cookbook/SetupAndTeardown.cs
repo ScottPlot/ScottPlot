@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+
+namespace ScottPlotCookbook;
 
 [SetUpFixture]
 internal class SetupAndTeardown

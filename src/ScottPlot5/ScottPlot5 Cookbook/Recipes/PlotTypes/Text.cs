@@ -9,7 +9,7 @@ internal class Text : RecipePageBase
         PageDescription = "Text lables placed on the plot in coordinate space",
     };
 
-    internal class Quickstart : RecipeTestBase
+    internal class Quickstart : RecipeBase
     {
         public override string Name => "Text Quickstart";
         public override string Description => "Text can be placed anywhere in coordinate space.";
@@ -23,7 +23,7 @@ internal class Text : RecipePageBase
         }
     }
 
-    internal class Formatting : RecipeTestBase
+    internal class Formatting : RecipeBase
     {
         public override string Name => "Text Formatting";
         public override string Description => "Text formatting can be extensively customized.";
