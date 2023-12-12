@@ -1,10 +1,10 @@
 ﻿namespace ScottPlotCookbook.MarkdownPages;
 
-internal class MarkdownRecipePage : MarkdownPage
+internal class CategoryPage : PageBase
 {
     private readonly PageInfo Page;
 
-    internal MarkdownRecipePage(PageInfo page, List<RecipeSource> sources)
+    internal CategoryPage(PageInfo page, IEnumerable<RecipeSource> sources)
     {
         Page = page;
 
@@ -38,7 +38,7 @@ internal class MarkdownRecipePage : MarkdownPage
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
         string breadcrumbName2 = Page.Name;
-        string breadcrumbUrl2 = $"/cookbook/5.0/{Page.FolderUrl}/";
+        string breadcrumbUrl2 = $"/cookbook/5.0/{Page.FolderName}/";
 
         string[] fm =
         {
@@ -46,12 +46,13 @@ internal class MarkdownRecipePage : MarkdownPage
             $"BreadcrumbUrls: [\"{breadcrumbUrl1}\", \"{breadcrumbUrl2}\"]",
         };
 
-        string outputFolder = Path.Combine(Cookbook.OutputFolder, Page.FolderUrl);
+        string outputFolder = Path.Combine(Cookbook.OutputFolder, "category");
+
         Save(outputFolder,
             title: Page.Name + " - ScottPlot 5.0 Cookbook",
             description: Page.Description,
-            filename: "index.md",
-            url: $"/cookbook/5.0/{Page.FolderUrl}/",
+            filename: $"{Page.FolderName}.md",
+            url: $"/cookbook/5.0/{Page.FolderName}/",
             fm);
     }
 }

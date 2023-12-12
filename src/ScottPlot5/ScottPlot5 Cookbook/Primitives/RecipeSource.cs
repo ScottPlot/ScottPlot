@@ -7,13 +7,13 @@
 /// </summary>
 internal readonly struct RecipeSource
 {
-    public string PageName { get; }
+    public string Category { get; }
     public string RecipeName { get; }
     public string SourceCode { get; }
 
     public RecipeSource(string page, string recipe, string source)
     {
-        PageName = page;
+        Category = page;
         RecipeName = recipe;
         SourceCode = source;
     }

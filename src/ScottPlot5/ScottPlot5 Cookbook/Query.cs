@@ -10,13 +10,13 @@ public static class Query
         .Select(x => new ChapterInfo(x))
         .ToList();
 
-    public static List<PageInfo> GetPages() =>
+    public static List<PageInfo> GetCategoryPages() =>
         GetChapters()
         .SelectMany(x => x.Pages)
         .ToList();
 
     public static List<RecipeInfo> GetRecipes() =>
-        GetPages()
+        GetCategoryPages()
         .SelectMany(x => x.RecipeInfos)
         .ToList();
 }

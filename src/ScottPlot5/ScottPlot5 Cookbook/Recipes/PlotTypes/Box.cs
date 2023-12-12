@@ -25,7 +25,7 @@ internal class Box : RecipePageBase
                 double mean = rand.NextDouble() * 3;
                 double stdDev = rand.NextDouble() * 3;
 
-                double[] values = Generate.RandomNormal(N, mean, stdDev);
+                double[] values = ScottPlot.Generate.RandomNormal(N, mean, stdDev);
                 Array.Sort(values);
                 double min = values[0];
                 double q1 = values[N / 4];
@@ -68,7 +68,7 @@ internal class Box : RecipePageBase
                 double mean = rand.NextDouble() * 3;
                 double stdDev = rand.NextDouble() * 3;
 
-                double[] values = Generate.RandomNormal(N, mean, stdDev);
+                double[] values = ScottPlot.Generate.RandomNormal(N, mean, stdDev);
                 Array.Sort(values);
                 double min = values[0];
                 double q1 = values[N / 4];
@@ -109,7 +109,7 @@ internal class Box : RecipePageBase
                 double mean = rand.NextDouble() * 3;
                 double stdDev = rand.NextDouble() * 3;
 
-                double[] values = Generate.RandomNormal(N, mean, stdDev);
+                double[] values = ScottPlot.Generate.RandomNormal(N, mean, stdDev);
                 Array.Sort(values);
                 double min = values[0];
                 double q1 = values[N / 4];
@@ -154,7 +154,7 @@ internal class Box : RecipePageBase
                 double mean = rand.NextDouble() * 3;
                 double stdDev = rand.NextDouble() * 3;
 
-                double[] values = Generate.RandomNormal(N, mean, stdDev);
+                double[] values = ScottPlot.Generate.RandomNormal(N, mean, stdDev);
                 Array.Sort(values);
                 double min = values[0];
                 double q1 = values[N / 4];

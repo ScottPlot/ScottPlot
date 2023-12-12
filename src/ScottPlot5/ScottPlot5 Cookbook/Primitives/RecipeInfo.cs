@@ -8,12 +8,16 @@
 public class RecipeInfo
 {
     public string Name { get; }
-    public string PageName { get; }
+    public string Category { get; }
+    public string CategoryUrl => $"/cookbook/5.0/category/{UrlTools.UrlSafe(Category)}/";
     public string Description { get; }
     public string ImageFilename { get; }
     public string AnchorName { get; }
     public string SourceCode { get; private set; } = string.Empty;
     public Recipe Recipe { get; }
+    public string ImageUrl => $"/cookbook/5.0/images/{ImageFilename}";
+    public string FolderName => UrlTools.UrlSafe(Name);
+    public string Url => $"/cookbook/5.0/recipes/{FolderName}/";
 
     internal RecipeInfo(Recipe recipe, PageInfo page)
     {
@@ -22,7 +26,7 @@ public class RecipeInfo
         ImageFilename = $"{UrlTools.UrlSafe(Name)}.png";
         AnchorName = UrlTools.UrlSafe(Name);
         Recipe = recipe;
-        PageName = page.Name;
+        Category = page.Name;
     }
 
     /// <summary>
@@ -30,7 +34,7 @@ public class RecipeInfo
     /// </summary>
     internal void AddSource(IEnumerable<RecipeSource> sources)
     {
-        var matchingSources = sources.Where(x => x.PageName == PageName && x.RecipeName == Name);
+        var matchingSources = sources.Where(x => x.Category == Category && x.RecipeName == Name);
 
         if (matchingSources.Any())
         {

@@ -17,7 +17,7 @@ internal class QueryTests
     [Test]
     public void Test_Pages_Are_Valid()
     {
-        List<PageInfo> pages = Query.GetPages();
+        List<PageInfo> pages = Query.GetCategoryPages();
 
         foreach (PageInfo page in pages)
         {
@@ -38,6 +38,21 @@ internal class QueryTests
             recipe.Description.Should().NotBeNullOrEmpty();
             //recipe.SourceCode.Should().NotBeNullOrEmpty();
             recipe.Recipe.Should().NotBeNull();
+        }
+    }
+
+    [Test]
+    public void Test_ImageFileNames_AreUnique()
+    {
+        HashSet<string> seen = new();
+        foreach (RecipeInfo recipe in Query.GetRecipes())
+        {
+            if (seen.Contains(recipe.ImageFilename))
+            {
+                throw new InvalidOperationException($"duplicate recipe name: {recipe.Category} - {recipe.Name}");
+            }
+
+            seen.Add(recipe.ImageFilename);
         }
     }
 }

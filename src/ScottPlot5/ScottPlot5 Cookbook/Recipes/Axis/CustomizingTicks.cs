@@ -18,9 +18,9 @@ internal class CustomizingTicks : RecipePageBase
         [Test]
         public override void Execute()
         {
-            double[] xs = Generate.Consecutive(100, 1, -50);
-            myPlot.Add.Scatter(xs, Generate.Sin(100));
-            myPlot.Add.Scatter(xs, Generate.Cos(100));
+            double[] xs = ScottPlot.Generate.Consecutive(100, 1, -50);
+            myPlot.Add.Scatter(xs, ScottPlot.Generate.Sin(100));
+            myPlot.Add.Scatter(xs, ScottPlot.Generate.Cos(100));
 
             // create a static function containing the string formatting logic
             static string CustomFormatter(double position)
@@ -57,8 +57,8 @@ internal class CustomizingTicks : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.XAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
         }

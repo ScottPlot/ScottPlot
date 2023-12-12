@@ -18,11 +18,11 @@ internal class DateTimeAxes : RecipePageBase
         public override void Execute()
         {
             // begin with an array of DateTime values
-            DateTime[] dates = Generate.DateTime.Days(100);
+            DateTime[] dates = ScottPlot.Generate.DateTime.Days(100);
 
             // convert DateTime to OLE Automation (OADate) format
             double[] xs = dates.Select(x => x.ToOADate()).ToArray();
-            double[] ys = Generate.RandomWalk(xs.Length);
+            double[] ys = ScottPlot.Generate.RandomWalk(xs.Length);
             myPlot.Add.Scatter(xs, ys);
 
             // tell the plot to display dates on the bottom axis

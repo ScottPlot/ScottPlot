@@ -45,9 +45,9 @@ public abstract class RecipeBase : Recipe
     [TearDown]
     public void SaveRecipeImage()
     {
-        string fileUrl = UrlTools.GetImageUrl(GetPage(), this);
-        string saveAs = Path.Combine(Cookbook.OutputFolder, fileUrl);
-        saveAs = saveAs.Replace('/', Path.DirectorySeparatorChar);
+        string outputFolder = Path.Combine(Cookbook.OutputFolder, "images");
+        string saveAs = Path.Combine(outputFolder, ImageFilename); // TODO: filename should contain category name
+        Directory.CreateDirectory(outputFolder);
         myPlot.SavePng(saveAs, Cookbook.ImageWidth, Cookbook.ImageHeight);
         TestContext.WriteLine($"{saveAs}");
     }

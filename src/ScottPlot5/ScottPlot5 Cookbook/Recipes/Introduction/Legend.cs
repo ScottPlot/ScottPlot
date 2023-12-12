@@ -18,10 +18,10 @@ internal class Legend : RecipePageBase
         [Test]
         public override void Execute()
         {
-            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            var sig1 = myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             sig1.Label = "Sin";
 
-            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            var sig2 = myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
             sig2.Label = "Cos";
 
             myPlot.Legend.IsVisible = true;
@@ -43,8 +43,8 @@ internal class Legend : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.Legend.IsVisible = true;
 

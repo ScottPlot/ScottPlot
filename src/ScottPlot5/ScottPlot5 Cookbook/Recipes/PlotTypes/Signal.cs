@@ -17,7 +17,7 @@ internal class Signal : RecipePageBase
         [Test]
         public override void Execute()
         {
-            double[] values = Generate.Sin(51);
+            double[] values = ScottPlot.Generate.Sin(51);
 
             var sig1 = myPlot.Add.Signal(values);
             sig1.Label = "Default";

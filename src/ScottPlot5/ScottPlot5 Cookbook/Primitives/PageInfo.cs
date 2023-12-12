@@ -11,8 +11,8 @@ public class PageInfo
     public string Name { get; }
     public string Description { get; }
     public List<RecipeInfo> RecipeInfos { get; }
-    public string FolderUrl => UrlTools.UrlSafe(Name);
-    public string Url => $"/cookbook/5.0/{FolderUrl}/";
+    public string FolderName => UrlTools.UrlSafe(Name);
+    public string Url => $"/cookbook/5.0/{FolderName}/";
 
     internal PageInfo(Recipes.RecipePageBase page)
     {

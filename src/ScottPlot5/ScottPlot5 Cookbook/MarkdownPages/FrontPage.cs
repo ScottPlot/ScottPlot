@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.MarkdownPages;
 
-internal class MarkdownFrontPage : MarkdownPage
+internal class FrontPage : PageBase
 {
     public void Generate()
     {
@@ -47,11 +47,11 @@ internal class MarkdownFrontPage : MarkdownPage
         SB.AppendLine("<div class='row my-4'>");
 
         SB.AppendLine("<div class='col'>");
-        SB.AppendLine($"<a href='{page.FolderUrl}/#{recipe.AnchorName}'><img class='img-fluid' src='{page.FolderUrl}/{recipe.ImageFilename}' /></a>");
+        SB.AppendLine($"<a href='{page.FolderName}/#{recipe.AnchorName}'><img class='img-fluid' src='{page.FolderName}/{recipe.ImageFilename}' /></a>");
         SB.AppendLine("</div>");
 
         SB.AppendLine("<div class='col'>");
-        SB.AppendLine($"<div><a href='{page.FolderUrl}/#{recipe.AnchorName}'><b>{recipe.Name}</b></a></div>");
+        SB.AppendLine($"<div><a href='{page.FolderName}/#{recipe.AnchorName}'><b>{recipe.Name}</b></a></div>");
         SB.AppendLine($"<div>{recipe.Description}</div>");
         SB.AppendLine("</div>");
 

@@ -17,8 +17,8 @@ internal class Text : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin());
-            myPlot.Add.Signal(Generate.Cos());
+            myPlot.Add.Signal(ScottPlot.Generate.Sin());
+            myPlot.Add.Signal(ScottPlot.Generate.Cos());
             myPlot.Add.Text("Hello, World", 25, 0.5);
         }
     }

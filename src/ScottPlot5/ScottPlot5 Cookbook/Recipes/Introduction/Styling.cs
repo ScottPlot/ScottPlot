@@ -19,8 +19,8 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             // visible items have public properties that can be customized
             myPlot.XAxis.Label.Text = "Horizontal Axis";
@@ -42,8 +42,8 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.TitlePanel.Label.Text = "Plot Title";
             myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
@@ -80,8 +80,8 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
 
@@ -100,7 +100,7 @@ internal class Styling : RecipePageBase
         [Test]
         public override void Execute()
         {
-            var sig = myPlot.Add.Signal(Generate.Sin(51));
+            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             sig.LineStyle.Width = 10;
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
@@ -124,7 +124,7 @@ internal class Styling : RecipePageBase
 
             for (int i = 0; i < 5; i++)
             {
-                double[] data = Generate.Sin(100, phase: -i / 20.0f);
+                double[] data = ScottPlot.Generate.Sin(100, phase: -i / 20.0f);
                 var sig = myPlot.Add.Signal(data);
                 sig.LineStyle.Width = 3;
             }
@@ -140,8 +140,8 @@ internal class Styling : RecipePageBase
         public override void Execute()
         {
             int count = 21;
-            double[] xs = Generate.Consecutive(count);
-            double[] ys = Generate.Sin(count);
+            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] ys = ScottPlot.Generate.Sin(count);
 
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
 
@@ -172,8 +172,8 @@ internal class Styling : RecipePageBase
         public override void Execute()
         {
             int count = 21;
-            double[] xs = Generate.Consecutive(count);
-            double[] ys = Generate.Sin(count);
+            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] ys = ScottPlot.Generate.Sin(count);
 
             LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
 
@@ -204,8 +204,8 @@ internal class Styling : RecipePageBase
         public override void Execute()
         {
             myPlot.ScaleFactor = 2;
-            myPlot.Add.Signal(Generate.Sin());
-            myPlot.Add.Signal(Generate.Cos());
+            myPlot.Add.Signal(ScottPlot.Generate.Sin());
+            myPlot.Add.Signal(ScottPlot.Generate.Cos());
         }
     }
 }

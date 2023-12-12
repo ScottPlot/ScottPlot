@@ -1,6 +1,4 @@
-﻿using ScottPlotCookbook.Recipes;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 [SetUpFixture]
 internal class SetupAndTeardown
@@ -14,13 +12,6 @@ internal class SetupAndTeardown
 
         // create a fresh cookbook folder
         Directory.CreateDirectory(Cookbook.OutputFolder);
-
-        // create subfolders for every page
-        foreach (RecipePageBase page in Cookbook.GetPages())
-        {
-            string pageFolder = Path.Combine(Cookbook.OutputFolder, UrlTools.GetPageUrl(page));
-            Directory.CreateDirectory(pageFolder);
-        }
     }
 
     [OneTimeTearDown]

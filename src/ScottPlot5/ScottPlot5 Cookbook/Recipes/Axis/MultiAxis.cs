@@ -20,7 +20,7 @@ internal class MultiAxis : RecipePageBase
         public override void Execute()
         {
             // plottables use the standard X and Y axes by default
-            var sig1 = myPlot.Add.Signal(Generate.Sin(51, mult: 0.01));
+            var sig1 = myPlot.Add.Signal(ScottPlot.Generate.Sin(51, mult: 0.01));
             sig1.Axes.XAxis = myPlot.XAxis; // standard X axis
             sig1.Axes.YAxis = myPlot.YAxis; // standard Y axis
             myPlot.YAxis.Label.Text = "Primary Y Axis";
@@ -30,7 +30,7 @@ internal class MultiAxis : RecipePageBase
             myPlot.YAxes.Add(yAxis2);
 
             // add a new plottable and tell it to use the custom Y axis
-            var sig2 = myPlot.Add.Signal(Generate.Cos(51, mult: 100));
+            var sig2 = myPlot.Add.Signal(ScottPlot.Generate.Cos(51, mult: 100));
             sig2.Axes.XAxis = myPlot.XAxis; // standard X axis
             sig2.Axes.YAxis = yAxis2; // custom Y axis
             yAxis2.Label.Text = "Secondary Y Axis";

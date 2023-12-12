@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.MarkdownPages;
 
-internal abstract class MarkdownPage
+internal abstract class PageBase
 {
     protected StringBuilder SB = new();
 
@@ -26,6 +26,8 @@ internal abstract class MarkdownPage
 
     public void Save(string folder, string title, string description, string filename, string url, string[]? frontmatter)
     {
+        Directory.CreateDirectory(folder);
+
         StringBuilder sbfm = new();
         sbfm.AppendLine("---");
         sbfm.AppendLine($"Title: {title}");
@@ -47,6 +49,7 @@ internal abstract class MarkdownPage
 
         string saveAs = Path.Combine(folder, filename);
         File.WriteAllText(saveAs, md);
-        TestContext.WriteLine(saveAs);
+
+        Console.WriteLine(saveAs);
     }
 }

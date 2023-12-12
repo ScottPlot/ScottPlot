@@ -18,8 +18,8 @@ internal class Axis : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.XAxis.Label.Text = "Horizontal Axis";
             myPlot.YAxis.Label.Text = "Vertical Axis";
@@ -34,8 +34,8 @@ internal class Axis : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             // Interact with a specific axis
             myPlot.XAxis.Min = -100;
@@ -56,8 +56,8 @@ internal class Axis : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             // Interact with a specific axis
             double top = myPlot.YAxis.Max;
@@ -79,8 +79,8 @@ internal class Axis : RecipePageBase
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             // set limits that do not fit the data
             myPlot.SetAxisLimits(-100, 150, -5, 5);
@@ -101,8 +101,8 @@ internal class Axis : RecipePageBase
             myPlot.FigureBackground = Colors.Magenta; // should not be seen
             myPlot.DataBackground = Colors.WhiteSmoke;
 
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.XAxes.ForEach(x => x.IsVisible = false);
             myPlot.YAxes.ForEach(x => x.IsVisible = false);
