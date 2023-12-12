@@ -2,24 +2,26 @@
 
 internal class CategoryPage : PageBase
 {
-    private readonly PageInfo Page;
+    private readonly IEnumerable<RecipeInfo> Recipes;
+    private readonly CategoryInfo Category;
 
-    internal CategoryPage(PageInfo page, IEnumerable<RecipeSource> sources)
+    internal CategoryPage(IEnumerable<RecipeInfo> allRecipes, CategoryInfo category)
     {
-        Page = page;
+        Recipes = allRecipes.Where(x => x.Category == category.Name);
+        if (!allRecipes.Any())
+            throw new InvalidOperationException("no recipes match category");
 
-        foreach (RecipeInfo recipe in Page.RecipeInfos)
-            recipe.AddSource(sources);
+        Category = category;
     }
 
     public void Generate()
     {
-        SB.AppendLine($"# {Page.Name}");
+        SB.AppendLine($"# {Category.Name}");
         SB.AppendLine();
 
         AddVersionInformation();
 
-        foreach (RecipeInfo recipe in Page.RecipeInfos)
+        foreach (RecipeInfo recipe in Recipes)
         {
             SB.AppendLine();
             SB.AppendLine($"## {recipe.Name}");
@@ -37,8 +39,8 @@ internal class CategoryPage : PageBase
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
-        string breadcrumbName2 = Page.Name;
-        string breadcrumbUrl2 = $"/cookbook/5.0/{Page.FolderName}/";
+        string breadcrumbName2 = Category.Name;
+        string breadcrumbUrl2 = $"/cookbook/5.0/{Category.FolderName}/";
 
         string[] fm =
         {
@@ -49,10 +51,10 @@ internal class CategoryPage : PageBase
         string outputFolder = Path.Combine(Cookbook.OutputFolder, "category");
 
         Save(outputFolder,
-            title: Page.Name + " - ScottPlot 5.0 Cookbook",
-            description: Page.Description,
-            filename: $"{Page.FolderName}.md",
-            url: $"/cookbook/5.0/{Page.FolderName}/",
+            title: Category.Name + " - ScottPlot 5.0 Cookbook",
+            description: Category.Description,
+            filename: $"{Category.FolderName}.md",
+            url: $"/cookbook/5.0/{Category.FolderName}/",
             fm);
     }
 }

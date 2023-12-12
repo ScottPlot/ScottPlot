@@ -1,4 +1,5 @@
 ﻿using ScottPlotCookbook;
+using ScottPlotCookbook.Recipes;
 
 namespace WinForms_Demo.Demos;
 
@@ -31,7 +32,7 @@ public partial class CookbookViewer : Form, IDemoWindow
 
                 listView1.Groups.Add(group);
 
-                foreach (IRecipe recipe in recipePage.GetRecipes())
+                foreach (RecipeBase recipe in recipePage.GetRecipes())
                 {
 
                     ListViewItem item = new()
@@ -54,9 +55,9 @@ public partial class CookbookViewer : Form, IDemoWindow
         if (listView1.SelectedItems.Count == 0)
             return;
 
-        IRecipe recipe = (IRecipe)listView1.SelectedItems[0].Tag;
+        RecipeBase recipe = (RecipeBase)listView1.SelectedItems[0].Tag;
         formsPlot1.Reset();
-        recipe.Recipe(formsPlot1.Plot);
+        recipe.Execute(formsPlot1.Plot);
         formsPlot1.Refresh();
     }
 }

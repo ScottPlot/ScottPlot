@@ -2,6 +2,8 @@
 
 internal static class SourceReading
 {
+    // TODO: this should be a source database that is built and queried 
+
     private static List<string> GetRecipeSourceFilePaths()
     {
         List<string> paths = new();
@@ -23,11 +25,13 @@ internal static class SourceReading
         return paths;
     }
 
-    public static List<RecipeSource> GetRecipeSources()
+    public static List<RecipeInfo> GetRecipeSources()
     {
         const int indentationCharacters = 12;
 
-        List<RecipeSource> sources = new();
+        Dictionary<string, Chapter> categoryChapters = Cookbook.GetCategoryChapterKVP();
+
+        List<RecipeInfo> recipes = Query.GetRecipes();
 
         string recipeStartSignal = "        {";
         string recipeOverSignal = "        }";
@@ -35,7 +39,7 @@ internal static class SourceReading
         foreach (string path in GetRecipeSourceFilePaths())
         {
             string[] rawLines = File.ReadAllLines(path);
-            string pageNameSafe = string.Empty;
+            string cagegoryNameSafe = string.Empty;
             string recipeNameSafe = string.Empty;
             StringBuilder sourceBeingExtended = new();
             bool InRecipe = false;
@@ -44,7 +48,8 @@ internal static class SourceReading
             {
                 if (line.StartsWith("        PageName = "))
                 {
-                    pageNameSafe = line.Split('"')[1];
+                    cagegoryNameSafe = line.Split('"')[1];
+                    cagegoryNameSafe = UrlTools.UrlSafe(cagegoryNameSafe);
                     continue;
                 }
 
@@ -62,12 +67,19 @@ internal static class SourceReading
 
                 if (InRecipe && line.StartsWith(recipeOverSignal))
                 {
+                    string imageFilename = $"{UrlTools.UrlSafe(recipeNameSafe)}.png";
                     string prefix = "ScottPlot.Plot myPlot = new();";
-                    string suffix = $"myPlot.SavePng(\"{UrlTools.UrlSafe(recipeNameSafe)}.png\");";
+                    string suffix = $"myPlot.SavePng(\"{imageFilename}\");";
                     string sourceLines = string.Join(Environment.NewLine, sourceBeingExtended).Trim();
                     string source = $"{prefix}\n\n{sourceLines}\n\n{suffix}";
-                    RecipeSource rs = new(pageNameSafe, recipeNameSafe, source);
-                    sources.Add(rs);
+
+                    RecipeInfo ri = recipes
+                        .Where(x => x.CategoryFolderName == cagegoryNameSafe)
+                        .Where(x => x.ImageFilename == imageFilename)
+                        .Single();
+
+                    ri.AddSource(source);
+
                     InRecipe = false;
                     sourceBeingExtended.Clear();
                     continue;
@@ -79,6 +91,6 @@ internal static class SourceReading
             }
         }
 
-        return sources;
+        return recipes;
     }
 }

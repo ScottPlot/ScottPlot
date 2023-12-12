@@ -17,9 +17,9 @@ internal class QueryTests
     [Test]
     public void Test_Pages_Are_Valid()
     {
-        List<PageInfo> pages = Query.GetCategoryPages();
+        List<CategoryInfo> pages = Query.GetCategories();
 
-        foreach (PageInfo page in pages)
+        foreach (CategoryInfo page in pages)
         {
             page.Name.Should().NotBeNullOrEmpty();
             page.Description.Should().NotBeNullOrEmpty();
@@ -49,7 +49,7 @@ internal class QueryTests
         {
             if (seen.Contains(recipe.ImageFilename))
             {
-                throw new InvalidOperationException($"duplicate recipe name: {recipe.Category} - {recipe.Name}");
+                throw new InvalidOperationException($"duplicate image filename: {recipe.Category} - {recipe.Name}");
             }
 
             seen.Add(recipe.ImageFilename);

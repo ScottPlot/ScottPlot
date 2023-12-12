@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook;
+﻿using System.Linq;
+
+namespace ScottPlotCookbook;
 
 // TODO: collapse this datatype with Chapter
 
@@ -9,13 +11,21 @@
 public class ChapterInfo
 {
     public string Name { get; }
-    public List<PageInfo> Pages { get; }
+    public List<CategoryInfo> Categories { get; }
 
     internal ChapterInfo(Chapter chapter)
     {
         Name = chapter.ToString();
-        Pages = Cookbook.GetPagesInChapter(chapter)
-            .Select(x => new PageInfo(x))
+        Categories = Cookbook.GetPagesInChapter(chapter)
+            .Select(x => new CategoryInfo(x))
+            .ToList();
+    }
+
+    internal ChapterInfo(Chapter chapter, List<RecipeInfo> recipes)
+    {
+        Name = chapter.ToString();
+        Categories = Cookbook.GetPagesInChapter(chapter)
+            .Select(x => new CategoryInfo(x, recipes))
             .ToList();
     }
 }

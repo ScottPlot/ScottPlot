@@ -1,20 +1,18 @@
 ﻿namespace ScottPlotCookbook;
 
-// TODO: collapse this datatype with Recipe???
-
 /// <summary>
 /// Information about a cookbook recipe read from a JSON file
 /// </summary>
-internal readonly struct RecipeSource
+public readonly struct RecipeSource
 {
     public string Category { get; }
-    public string RecipeName { get; }
     public string SourceCode { get; }
+    public Recipe Recipe { get; }
 
-    public RecipeSource(string page, string recipe, string source)
+    public RecipeSource(Recipe recipe, string category, string source)
     {
-        Category = page;
-        RecipeName = recipe;
+        Category = category;
+        Recipe = recipe;
         SourceCode = source;
     }
 }

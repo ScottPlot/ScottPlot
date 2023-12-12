@@ -7,7 +7,7 @@ namespace ScottPlotCookbook;
 /// These functions are used to locate components internally.
 /// Consumers of the cookbook will interact with the <see cref="Query"/> class to get this information.
 /// </summary>
-internal static class Cookbook
+public static class Cookbook
 {
     public static readonly string OutputFolder = Path.Combine(GetRepoFolder(), "dev/www/cookbook/5.0");
 
@@ -46,7 +46,7 @@ internal static class Cookbook
     /// Return a list of all pages (each page has many recipes) not grouped by chapter.
     /// This function should only be used for running tests on all pages.
     /// </summary>
-    internal static List<RecipePageBase> GetPages() => GetInstantiated<RecipePageBase>();
+    internal static List<RecipePageBase> GetCategoryPages() => GetInstantiated<RecipePageBase>();
 
     /// <summary>
     /// Return all pages for the given chapter.
@@ -56,7 +56,26 @@ internal static class Cookbook
         .Where(x => x.PageDetails.Chapter == chapter)
         .ToList();
 
-    public static List<Recipe> GetRecipes() => GetPages().SelectMany(x => x.GetRecipes()).ToList();
+    public static List<RecipePageBase> GetRecipePages() =>
+        GetInstantiated<RecipePageBase>()
+        .ToList();
+
+    /// <summary>
+    /// get chapter info for each category name
+    /// </summary>
+    public static Dictionary<string, Chapter> GetCategoryChapterKVP()
+    {
+        Dictionary<string, Chapter> kvp = new();
+
+        foreach (RecipePageBase page in GetCategoryPages())
+        {
+            kvp[page.PageDetails.PageName] = page.PageDetails.Chapter;
+        }
+
+        return kvp;
+    }
+
+    public static List<Recipe> GetRecipes() => GetCategoryPages().SelectMany(x => x.GetRecipes()).ToList();
 
     private static List<T> GetInstantiated<T>()
     {

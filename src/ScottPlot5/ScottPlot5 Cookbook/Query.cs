@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+
+namespace ScottPlotCookbook;
 
 /// <summary>
 /// Public-facing functions for obtaining cookbook recipes and sections
@@ -10,13 +12,13 @@ public static class Query
         .Select(x => new ChapterInfo(x))
         .ToList();
 
-    public static List<PageInfo> GetCategoryPages() =>
+    public static List<CategoryInfo> GetCategories() =>
         GetChapters()
-        .SelectMany(x => x.Pages)
+        .SelectMany(x => x.Categories)
         .ToList();
 
     public static List<RecipeInfo> GetRecipes() =>
-        GetCategoryPages()
+        GetCategories()
         .SelectMany(x => x.RecipeInfos)
         .ToList();
 }

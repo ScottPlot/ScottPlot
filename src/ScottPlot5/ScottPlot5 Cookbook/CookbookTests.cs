@@ -16,7 +16,7 @@ internal class CookbookTests
     [Test]
     public void Test_Pages_Found()
     {
-        List<RecipePageBase> pages = Cookbook.GetPages();
+        List<RecipePageBase> pages = Cookbook.GetCategoryPages();
         pages.Should().NotBeNull();
         pages.Should().NotBeEmpty();
         pages.ForEach(x => TestContext.WriteLine(x));
@@ -51,7 +51,7 @@ internal class CookbookTests
     [Test]
     public void Test_ChapterDescription_ShouldNotEndWithPeriod()
     {
-        foreach (RecipePageBase page in Cookbook.GetPages())
+        foreach (RecipePageBase page in Cookbook.GetCategoryPages())
         {
             try
             {
@@ -68,7 +68,7 @@ internal class CookbookTests
     [Test]
     public void Test_PageNames_AreUnique()
     {
-        string[] pageNames = Cookbook.GetPages().Select(x => x.PageDetails.PageName).ToArray();
+        string[] pageNames = Cookbook.GetCategoryPages().Select(x => x.PageDetails.PageName).ToArray();
         HashSet<string> uniqueNames = new(pageNames);
 
         pageNames.Length.Should().Be(uniqueNames.Count, "Cookbook page names must be universally unique");
@@ -77,7 +77,7 @@ internal class CookbookTests
     [Test]
     public void Test_RecipeNames_AreUniqueWithinPages()
     {
-        foreach (RecipePageBase page in Cookbook.GetPages())
+        foreach (RecipePageBase page in Cookbook.GetCategoryPages())
         {
             string[] recipeNames = page.GetRecipes().Select(x => x.Name).ToArray();
             HashSet<string> uniqueNames = new(recipeNames);

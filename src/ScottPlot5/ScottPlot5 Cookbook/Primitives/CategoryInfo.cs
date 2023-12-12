@@ -6,7 +6,7 @@
 /// A cookbook page is a group of recipes.
 /// Example: Signal Plots (contains a collection of recipes)
 /// </summary>
-public class PageInfo
+public class CategoryInfo
 {
     public string Name { get; }
     public string Description { get; }
@@ -14,12 +14,24 @@ public class PageInfo
     public string FolderName => UrlTools.UrlSafe(Name);
     public string Url => $"/cookbook/5.0/{FolderName}/";
 
-    internal PageInfo(Recipes.RecipePageBase page)
+    internal CategoryInfo(Recipes.RecipePageBase page)
     {
         Name = page.PageDetails.PageName;
         Description = page.PageDetails.PageDescription;
         RecipeInfos = page.GetRecipes()
             .Select(x => new RecipeInfo(x, this))
             .ToList();
+    }
+
+    internal CategoryInfo(Recipes.RecipePageBase page, List<RecipeInfo> recipeInfos)
+    {
+        Name = page.PageDetails.PageName;
+        Description = page.PageDetails.PageDescription;
+        RecipeInfos = recipeInfos;
+    }
+
+    public override string ToString()
+    {
+        return $"Category '{Name}' with {RecipeInfos.Count()} recipes";
     }
 }

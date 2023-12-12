@@ -2,6 +2,13 @@
 
 internal class FrontPage : PageBase
 {
+    readonly List<RecipeInfo> Sources;
+
+    public FrontPage(List<RecipeInfo> sources)
+    {
+        Sources = sources;
+    }
+
     public void Generate()
     {
         SB.AppendLine($"# ScottPlot 5.0 Cookbook");
@@ -9,12 +16,15 @@ internal class FrontPage : PageBase
 
         AddVersionInformation();
 
-        foreach (ChapterInfo chapter in Query.GetChapters())
+        Dictionary<string, Chapter> kvp = Cookbook.GetCategoryChapterKVP();
+        IEnumerable<Chapter> chapters = Enum.GetValues<Chapter>().ToList();
+
+        foreach (Chapter chapter in chapters)
         {
-            if (!chapter.Pages.Any())
-                continue;
-            SB.AppendLine($"<div class='fs-2 mt-4'>{chapter.Name}</div>");
-            chapter.Pages.ForEach(x => AddPage(x));
+            ChapterInfo ci = new(chapter, Sources);
+
+            SB.AppendLine($"<div class='fs-2 mt-4'>{ci.Name}</div>");
+            ci.Categories.ForEach(x => AddPage(x));
             SB.AppendLine($"<hr class='my-5' />");
         }
 
@@ -35,14 +45,14 @@ internal class FrontPage : PageBase
             frontmatter: fm);
     }
 
-    private void AddPage(PageInfo page)
+    private void AddPage(CategoryInfo page)
     {
         SB.AppendLine($"<h2 class=''><a href='{page.Url}' class='text-dark'>{page.Name}</a></h2>");
         SB.AppendLine($"<div>{page.Description}</div>");
         page.RecipeInfos.ForEach(x => AddRecipeImage(x, page));
     }
 
-    private void AddRecipeImage(RecipeInfo recipe, PageInfo page)
+    private void AddRecipeImage(RecipeInfo recipe, CategoryInfo page)
     {
         SB.AppendLine("<div class='row my-4'>");
 

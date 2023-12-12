@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Axis : RecipePageBase
+internal class AxisAndTicks : RecipePageBase
 {
     public override RecipePageDetails PageDetails => new()
     {
@@ -11,7 +11,7 @@ internal class Axis : RecipePageBase
 
     internal class AxisLabels : RecipeBase
     {
-        public override string Name => "Axis Labels";
+        public override string Name => "Adding Axis Labels";
         public override string Description => "Axis labels are the text labels centered on each axis. " +
             "The text inside these labels can be changed, and the style of the text can be extensively customized.";
 

@@ -4,10 +4,9 @@ internal class RecipePage : PageBase
 {
     private readonly RecipeInfo Recipe;
 
-    internal RecipePage(RecipeInfo recipe, IEnumerable<RecipeSource> sources)
+    internal RecipePage(RecipeInfo recipe)
     {
         Recipe = recipe;
-        recipe.AddSource(sources);
     }
 
     public void Generate()
