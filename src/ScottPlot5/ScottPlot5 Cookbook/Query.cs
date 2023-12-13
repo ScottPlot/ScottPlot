@@ -5,6 +5,15 @@
 /// </summary>
 public static class Query
 {
+    public static string[] GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    {
+        // todo
+        return new string[]
+        {
+            "CH1", "CH2", "CH3"
+        };
+    }
+
     public static IEnumerable<ICategory> GetCategoryClasses()
     {
         return AppDomain.CurrentDomain
