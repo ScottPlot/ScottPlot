@@ -1,10 +1,12 @@
-﻿namespace ScottPlotCookbook.Website;
+﻿using ScottPlotCookbook.Recipes;
+
+namespace ScottPlotCookbook.Website;
 
 /// <summary>
 /// This data structure contains information about a single recipe
 /// and should be the only source of truth for generating filenames and URLs
 /// </summary>
-internal struct RecipeInfo
+public struct RecipeInfo
 {
     public string Chapter { get; }
     public string Category { get; }

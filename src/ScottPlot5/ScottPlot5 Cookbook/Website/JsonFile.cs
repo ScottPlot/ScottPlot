@@ -24,7 +24,7 @@ internal static class JsonFile
 
         // chapters
         writer.WriteStartArray("chapters");
-        foreach (string chatper in Query.GetChapterNamesInOrder(rbc))
+        foreach (string chatper in Query.GetChapterNamesInOrder())
         {
             writer.WriteStringValue(chatper);
         }

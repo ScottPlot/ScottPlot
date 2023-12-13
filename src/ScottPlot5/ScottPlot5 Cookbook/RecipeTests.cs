@@ -89,4 +89,15 @@ internal class RecipeTests
             names.Add(recipe.Name);
         }
     }
+
+    [Test]
+    public static void Test_ChapterNames_ArePresentForAllRecipes()
+    {
+        string[] chapterNames = Query.GetChapterNamesInOrder();
+
+        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
+        {
+            chapterNames.Should().Contain(recipe.Chapter);
+        }
+    }
 }

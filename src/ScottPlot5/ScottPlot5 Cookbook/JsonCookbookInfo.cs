@@ -40,11 +40,6 @@ public class JsonCookbookInfo
         Recipes = document.RootElement.GetProperty("recipes").EnumerateArray().Select(x => GetRecipeInfo(x))!.ToArray()!;
     }
 
-    public IEnumerable<IRecipe> GetInstantiatedRecipes()
-    {
-        return Query.GetRecipesByCategory().Values.SelectMany(x => x);
-    }
-
     private static JsonCategoryInfo GetCategoryInfo(JsonElement el)
     {
         return new JsonCategoryInfo()

@@ -3,12 +3,22 @@ using ScottPlotCookbook.Website;
 
 namespace ScottPlotCookbook;
 
-internal static class Query
+public static class Query
 {
-    public static IEnumerable<string> GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<RecipeInfo>> rbc)
+    public static IEnumerable<IRecipe> GetInstantiatedRecipes()
     {
-        // todo: add logic for good order
-        return rbc.Values.SelectMany(x => x).Select(x => x.Chapter).Distinct();
+        return GetRecipesByCategory().Values.SelectMany(x => x);
+    }
+
+    public static string[] GetChapterNamesInOrder()
+    {
+        return new string[]
+        {
+            "Introduction",
+            "Axis",
+            "Plot Types",
+            "Statistics",
+        };
     }
 
     public static IEnumerable<ICategory> GetCategoryClasses()
