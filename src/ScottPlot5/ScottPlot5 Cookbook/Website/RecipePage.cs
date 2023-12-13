@@ -2,9 +2,9 @@
 
 internal class RecipePage : PageBase
 {
-    private readonly WebRecipe Recipe;
+    readonly JsonCookbookInfo.JsonRecipeInfo Recipe;
 
-    internal RecipePage(WebRecipe recipe)
+    public RecipePage(JsonCookbookInfo.JsonRecipeInfo recipe)
     {
         Recipe = recipe;
     }
@@ -30,7 +30,7 @@ internal class RecipePage : PageBase
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
         string breadcrumbName2 = Recipe.Category;
-        string breadcrumbUrl2 = Recipe.CategoryUrl;
+        string breadcrumbUrl2 = Recipe.AnchorUrl.Split("#")[0];
 
         string breadcrumbName3 = Recipe.Name;
         string breadcrumbUrl3 = Recipe.RecipeUrl;
@@ -41,10 +41,13 @@ internal class RecipePage : PageBase
             $"BreadcrumbUrls: [\"{breadcrumbUrl1}\", \"{breadcrumbUrl2}\", \"{breadcrumbUrl3}\"]",
         };
 
+        string recipeBaseName = Path.GetFileName(Recipe.RecipeUrl);
+        string categoryBaseName = Path.GetFileName(Path.GetDirectoryName(Recipe.RecipeUrl)!);
+
         Save(outputFolder,
             title: Recipe.Name + " - ScottPlot 5.0 Cookbook",
             description: Recipe.Description,
-            filename: Recipe.MarkdownFilename,
+            filename: $"{categoryBaseName}.{recipeBaseName}.md",
             url: Recipe.RecipeUrl,
             fm);
     }

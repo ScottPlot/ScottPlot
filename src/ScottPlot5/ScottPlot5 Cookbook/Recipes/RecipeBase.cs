@@ -5,7 +5,7 @@ namespace ScottPlotCookbook.Recipes;
 #pragma warning disable IDE1006 // Ignore lowercase public variable names
 
 /// <summary>
-/// Individual recipes can inherit this so they double as <see cref="ScottPlotCookbook.IRecipe"/> and
+/// Individual recipes can inherit this so they double as <see cref="Recipes.IRecipe"/> and
 /// test cases that have a function decorated with the <see cref="Test"/> attribute.
 /// </summary>
 public abstract class RecipeBase : IRecipe
@@ -22,7 +22,7 @@ public abstract class RecipeBase : IRecipe
     public Plot myPlot { get; private set; } = new();
 
     /// <summary>
-    /// This function is called by code interacting with <see cref="ScottPlotCookbook.IRecipe"/>
+    /// This function is called by code interacting with <see cref="Recipes.IRecipe"/>
     /// </summary>
     public void Execute(Plot plot)
     {

@@ -1,11 +1,11 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Website;
 
-/// <summary>
-/// Public-facing functions for obtaining cookbook recipes and sections
-/// </summary>
-public static class Query
+namespace ScottPlotCookbook;
+
+internal static class Query
 {
-    public static IEnumerable<string> GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    public static IEnumerable<string> GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<RecipeInfo>> rbc)
     {
         // todo: add logic for good order
         return rbc.Values.SelectMany(x => x).Select(x => x.Chapter).Distinct();
@@ -39,11 +39,11 @@ public static class Query
         return recipesByCategory;
     }
 
-    public static Dictionary<ICategory, IEnumerable<WebRecipe>> GetWebRecipesByCategory()
+    public static Dictionary<ICategory, IEnumerable<RecipeInfo>> GetWebRecipesByCategory()
     {
         SourceDatabase sb = new();
 
-        Dictionary<ICategory, IEnumerable<WebRecipe>> recipesByCategory = new();
+        Dictionary<ICategory, IEnumerable<RecipeInfo>> recipesByCategory = new();
 
         foreach (ICategory categoryClass in GetCategoryClasses())
         {

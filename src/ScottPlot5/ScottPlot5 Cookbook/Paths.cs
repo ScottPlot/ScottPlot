@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook;
 
-public static class Paths
+internal static class Paths
 {
     public static readonly string RepoFolder = GetRepoFolder();
     public static readonly string OutputFolder = Path.Combine(GetRepoFolder(), "dev/www/cookbook/5.0");

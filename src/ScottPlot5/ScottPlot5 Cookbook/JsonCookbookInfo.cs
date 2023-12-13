@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using ScottPlotCookbook.Recipes;
+using System.Text.Json;
 
 namespace ScottPlotCookbook;
 
@@ -37,6 +38,11 @@ public class JsonCookbookInfo
         Chapters = document.RootElement.GetProperty("chapters").EnumerateArray().Select(x => x.GetString())!.ToArray()!;
         Categories = document.RootElement.GetProperty("categories").EnumerateArray().Select(x => GetCategoryInfo(x))!.ToArray()!;
         Recipes = document.RootElement.GetProperty("recipes").EnumerateArray().Select(x => GetRecipeInfo(x))!.ToArray()!;
+    }
+
+    public IEnumerable<IRecipe> GetInstantiatedRecipes()
+    {
+        return Query.GetRecipesByCategory().Values.SelectMany(x => x);
     }
 
     private static JsonCategoryInfo GetCategoryInfo(JsonElement el)

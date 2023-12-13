@@ -2,25 +2,23 @@
 
 internal class CategoryPage : PageBase
 {
-    private readonly Dictionary<ICategory, IEnumerable<WebRecipe>> RecipesByCategory;
-    private readonly ICategory Category;
+    readonly JsonCookbookInfo CB;
+    readonly JsonCookbookInfo.JsonCategoryInfo Category;
 
-    internal CategoryPage(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc, ICategory category)
+    public CategoryPage(JsonCookbookInfo cb, JsonCookbookInfo.JsonCategoryInfo category)
     {
-        RecipesByCategory = rbc;
+        CB = cb;
         Category = category;
     }
 
     public void Generate(string outputFolder)
     {
-        SB.AppendLine($"# {Category.CategoryName}");
+        SB.AppendLine($"# {Category.Name}");
         SB.AppendLine();
 
         AddVersionInformation();
 
-        WebRecipe firstRecipe = RecipesByCategory[Category].First();
-
-        foreach (WebRecipe recipe in RecipesByCategory[Category])
+        foreach (var recipe in CB.Recipes.Where(x => x.Category == Category.Name))
         {
             SB.AppendLine();
             SB.AppendLine($"## {recipe.Name}");
@@ -38,8 +36,8 @@ internal class CategoryPage : PageBase
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
-        string breadcrumbName2 = Category.CategoryName;
-        string breadcrumbUrl2 = $"/cookbook/5.0/{firstRecipe.CategoryUrl}/";
+        string breadcrumbName2 = Category.Name;
+        string breadcrumbUrl2 = Category.Url;
 
         string[] fm =
         {
@@ -48,10 +46,10 @@ internal class CategoryPage : PageBase
         };
 
         Save(outputFolder,
-            title: Category.CategoryName + " - ScottPlot 5.0 Cookbook",
-            description: Category.CategoryDescription,
-            filename: $"{firstRecipe.CategoryClassName}.md",
-            url: firstRecipe.CategoryUrl,
+            title: Category.Name + " - ScottPlot 5.0 Cookbook",
+            description: Category.Description,
+            filename: $"{Path.GetFileName(Category.Url)}.md",
+            url: Category.Url,
             fm);
     }
 }

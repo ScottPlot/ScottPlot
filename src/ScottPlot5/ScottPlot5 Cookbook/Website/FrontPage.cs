@@ -2,11 +2,11 @@
 
 internal class FrontPage : PageBase
 {
-    Dictionary<ICategory, IEnumerable<WebRecipe>> RecipesByCategory;
+    readonly JsonCookbookInfo CB;
 
-    public FrontPage(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    public FrontPage(JsonCookbookInfo cb)
     {
-        RecipesByCategory = rbc;
+        CB = cb;
     }
 
     public void Generate(string outputFolder)
@@ -18,7 +18,7 @@ internal class FrontPage : PageBase
 
         // TODO: SORT BY CHAPTER
 
-        foreach (ICategory category in RecipesByCategory.Keys)
+        foreach (var category in CB.Categories)
         {
             AddCategory(category);
         }
@@ -40,21 +40,21 @@ internal class FrontPage : PageBase
             frontmatter: fm);
     }
 
-    private void AddCategory(ICategory category)
+    private void AddCategory(JsonCookbookInfo.JsonCategoryInfo category)
     {
-        IEnumerable<WebRecipe> recipes = RecipesByCategory[category];
-        string categoryUrl = recipes.First().CategoryUrl;
+        //IEnumerable<WebRecipe> recipes = RecipesByCategory[category];
+        //string categoryUrl = recipes.First().CategoryUrl;
 
-        SB.AppendLine($"<h2 class=''><a href='{categoryUrl}' class='text-dark'>{category.CategoryName}</a></h2>");
-        SB.AppendLine($"<div>{category.CategoryDescription}</div>");
+        SB.AppendLine($"<h2 class=''><a href='{category.Url}' class='text-dark'>{category.Name}</a></h2>");
+        SB.AppendLine($"<div>{category.Description}</div>");
 
-        foreach (WebRecipe recipe in RecipesByCategory[category])
+        foreach (JsonCookbookInfo.JsonRecipeInfo recipe in CB.Recipes.Where(x => x.Category == category.Name))
         {
             AddRecipe(recipe);
         }
     }
 
-    private void AddRecipe(WebRecipe recipe)
+    private void AddRecipe(JsonCookbookInfo.JsonRecipeInfo recipe)
     {
         SB.AppendLine("<div class='row my-4'>");
 

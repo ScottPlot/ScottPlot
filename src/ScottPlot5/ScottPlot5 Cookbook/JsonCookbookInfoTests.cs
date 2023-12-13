@@ -1,12 +1,14 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Website;
+
+namespace ScottPlotCookbook;
 
 internal class JsonCookbookInfoTests
 {
     [Test]
     public void Test_JsonCookbook_Loads()
     {
-        Dictionary<ICategory, IEnumerable<WebRecipe>> rbc = Query.GetWebRecipesByCategory();
-        string json = JsonIO.Generate(rbc);
+        string json = JsonFile.Generate();
 
         JsonCookbookInfo cb = new(json);
         cb.Version.Should().NotBeNullOrWhiteSpace();

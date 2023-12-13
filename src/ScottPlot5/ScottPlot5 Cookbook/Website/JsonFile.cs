@@ -1,18 +1,18 @@
 ﻿using System.Text.Json;
 
-namespace ScottPlotCookbook;
+namespace ScottPlotCookbook.Website;
 
-public static class JsonIO
+internal static class JsonFile
 {
-    // TODO: build website from JSON, not by using reflection and passing fancy objects around
-
-    public static string Generate(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    public static string Generate()
     {
+        Dictionary<ICategory, IEnumerable<RecipeInfo>> rbc = Query.GetWebRecipesByCategory();
+
         using MemoryStream stream = new();
         JsonWriterOptions options = new() { Indented = true };
         using Utf8JsonWriter writer = new(stream, options);
 
-        IEnumerable<WebRecipe> allRecipes = rbc.Values.SelectMany(x => x);
+        IEnumerable<RecipeInfo> allRecipes = rbc.Values.SelectMany(x => x);
 
         writer.WriteStartObject();
 
@@ -45,7 +45,7 @@ public static class JsonIO
 
         // recipes
         writer.WriteStartArray("recipes");
-        foreach (WebRecipe recipe in rbc.Values.SelectMany(x => x))
+        foreach (RecipeInfo recipe in rbc.Values.SelectMany(x => x))
         {
             writer.WriteStartObject();
             writer.WriteString("categoryClassName", recipe.CategoryClassName);

@@ -9,7 +9,7 @@ public class DateTimeAxes : ICategory
     public class DateTimeAxisQuickstart : RecipeBase
     {
         public override string Name => "DateTime Axis Quickstart";
-        public override string Description => ".";
+        public override string Description => "Axis tick labels can be displayed using a time format.";
 
         [Test]
         public override void Execute()

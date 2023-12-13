@@ -1,11 +1,14 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Website;
+
+namespace ScottPlotCookbook;
 
 /// <summary>
 /// This class contains logic to pair recipes located using reflection with the source code parsed from .cs files.
 /// </summary>
 internal class SourceDatabase
 {
-    public readonly List<WebRecipe> Recipes = new();
+    public readonly List<RecipeInfo> Recipes = new();
 
     private readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = Query.GetRecipesByCategory();
 
@@ -13,7 +16,7 @@ internal class SourceDatabase
     {
         foreach (string sourceFilePath in GetRecipeSourceFilePaths())
         {
-            IEnumerable<WebRecipe> recipes = GetRecipeSources(sourceFilePath);
+            IEnumerable<RecipeInfo> recipes = GetRecipeSources(sourceFilePath);
             Recipes.AddRange(recipes);
         }
     }
@@ -52,7 +55,7 @@ internal class SourceDatabase
         throw new InvalidOperationException($"unable to locate recipe named {recipeName}");
     }
 
-    private IEnumerable<WebRecipe> GetRecipeSources(string sourceFilePath)
+    private IEnumerable<RecipeInfo> GetRecipeSources(string sourceFilePath)
     {
         string[] rawLines = File.ReadAllLines(sourceFilePath);
         sourceFilePath = sourceFilePath
@@ -61,7 +64,7 @@ internal class SourceDatabase
             .Trim('/')
             .Replace(" ", "%20");
 
-        List<WebRecipe> recipes = new();
+        List<RecipeInfo> recipes = new();
 
         string recipeClassName = string.Empty;
         string categoryClassName = string.Empty;
@@ -126,7 +129,7 @@ internal class SourceDatabase
                 sb.AppendLine($"myPlot.SavePng(\"demo.png\");");
 
                 string description = GetDescription(recipeName);
-                WebRecipe thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), categoryClassName, recipeClassName, sourceFilePath);
+                RecipeInfo thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), categoryClassName, recipeClassName, sourceFilePath);
                 recipes.Add(thisRecipe);
 
                 InRecipe = false;

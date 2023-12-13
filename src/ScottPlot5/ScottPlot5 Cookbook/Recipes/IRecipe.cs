@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook.Recipes;
 
 // a recipe does not know about its category, chapter, or source code
 public interface IRecipe

@@ -1,52 +1,49 @@
-﻿using System.Text.Json;
-
-namespace ScottPlotCookbook.Website;
+﻿namespace ScottPlotCookbook.Website;
 
 internal class Generate
 {
     [Test]
     public void Generate_Website()
     {
-        // TODO: build website from JSON, not by using reflection and passing fancy objects around
+        string json = GenerateJsonFile();
+        JsonCookbookInfo cb = new(json);
 
-        Dictionary<ICategory, IEnumerable<WebRecipe>> rbc = Query.GetWebRecipesByCategory();
-        GenerateHomePage(rbc);
-        GenerateCategoryPages(rbc);
-        GenerateRecipePages(rbc);
-        GenerateJson(rbc);
+        GenerateHomePage(cb);
+        GenerateCategoryPages(cb);
+        GenerateRecipePages(cb);
+
         Console.WriteLine(Paths.OutputFolder);
     }
 
-    private static void GenerateHomePage(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    private static string GenerateJsonFile()
     {
-        new FrontPage(rbc).Generate(Paths.OutputFolder);
-    }
-
-    private static void GenerateCategoryPages(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
-    {
-        string categoryOutputFolder = Path.Combine(Paths.OutputFolder, "category");
-        foreach (ICategory category in rbc.Keys)
-        {
-            new CategoryPage(rbc, category).Generate(categoryOutputFolder);
-        }
-    }
-
-    private static void GenerateRecipePages(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
-    {
-        string recipeOutputFolder = Path.Combine(Paths.OutputFolder, "recipe");
-        foreach (ICategory category in rbc.Keys)
-        {
-            foreach (WebRecipe recipe in rbc[category])
-            {
-                new RecipePage(recipe).Generate(recipeOutputFolder);
-            }
-        }
-    }
-
-    private static void GenerateJson(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
-    {
-        string json = JsonIO.Generate(rbc);
+        string json = JsonFile.Generate();
         string jsonFile = Path.Combine(Paths.OutputFolder, "recipes.json");
         File.WriteAllText(jsonFile, json);
+        return json;
+    }
+
+    private static void GenerateHomePage(JsonCookbookInfo cb)
+    {
+        new FrontPage(cb).Generate(Paths.OutputFolder);
+    }
+
+    private static void GenerateCategoryPages(JsonCookbookInfo cb)
+    {
+        foreach (var category in cb.Categories)
+        {
+            new CategoryPage(cb, category).Generate(Paths.OutputFolder);
+        }
+    }
+
+    private static void GenerateRecipePages(JsonCookbookInfo cb)
+    {
+        foreach (string category in cb.Categories.Select(x => x.Name))
+        {
+            foreach (var recipe in cb.Recipes)
+            {
+                new RecipePage(recipe).Generate(Paths.OutputFolder);
+            }
+        }
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook.Website;
 
 /// <summary>
 /// This data structure contains information about a single recipe
 /// and should be the only source of truth for generating filenames and URLs
 /// </summary>
-public struct WebRecipe
+internal struct RecipeInfo
 {
     public string Chapter { get; }
     public string Category { get; }
@@ -23,7 +23,7 @@ public struct WebRecipe
     public readonly string ImageUrl => $"{CookbookUrl}/images/{RecipeClassName}.png";
     public readonly string Sourceurl => $"https://github.com/ScottPlot/ScottPlot/blob/main/{SourceFilePath}";
 
-    public WebRecipe(string chapter, string category, string name, string description, string source, string categoryClassName, string recipeClassName, string sourceFilePath)
+    public RecipeInfo(string chapter, string category, string name, string description, string source, string categoryClassName, string recipeClassName, string sourceFilePath)
     {
         Chapter = chapter;
         Category = category;

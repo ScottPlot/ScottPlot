@@ -1,4 +1,7 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Website;
+
+namespace ScottPlotCookbook;
 
 internal class RecipeTests
 {
@@ -36,11 +39,11 @@ internal class RecipeTests
     [Test]
     public static void Test_RecipeSources_FoundAndValid()
     {
-        IEnumerable<WebRecipe> recipes = Query.GetWebRecipesByCategory().SelectMany(x => x.Value);
+        IEnumerable<RecipeInfo> recipes = Query.GetWebRecipesByCategory().SelectMany(x => x.Value);
 
         recipes.Should().NotBeNullOrEmpty();
 
-        foreach (WebRecipe recipe in recipes)
+        foreach (RecipeInfo recipe in recipes)
         {
             recipe.Chapter.Should().NotBeNullOrEmpty();
             recipe.Category.Should().NotBeNullOrEmpty();
@@ -58,16 +61,32 @@ internal class RecipeTests
     [Test]
     public static void Test_Recipes_HaveUniqueClassNames()
     {
-        HashSet<string> classNames = new();
+        HashSet<string> names = new();
 
-        foreach (WebRecipe recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
+        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
         {
-            if (classNames.Contains(recipe.RecipeClassName))
+            if (names.Contains(recipe.RecipeClassName))
             {
                 Assert.Fail($"The '{recipe.Category}' class '{recipe.RecipeClassName}' must be renamed to something unique.");
             }
 
-            classNames.Add(recipe.RecipeClassName);
+            names.Add(recipe.RecipeClassName);
+        }
+    }
+
+    [Test]
+    public static void Test_Recipes_HaveUniqueNames()
+    {
+        HashSet<string> names = new();
+
+        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
+        {
+            if (names.Contains(recipe.Name))
+            {
+                Assert.Fail($"The '{recipe.Category}' class has a recipe '{recipe.Name}' which must be renamed to something unique.");
+            }
+
+            names.Add(recipe.Name);
         }
     }
 }
