@@ -5,13 +5,10 @@
 /// </summary>
 public static class Query
 {
-    public static string[] GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
+    public static IEnumerable<string> GetChapterNamesInOrder(Dictionary<ICategory, IEnumerable<WebRecipe>> rbc)
     {
-        // todo
-        return new string[]
-        {
-            "CH1", "CH2", "CH3"
-        };
+        // todo: add logic for good order
+        return rbc.Values.SelectMany(x => x).Select(x => x.Chapter).Distinct();
     }
 
     public static IEnumerable<ICategory> GetCategoryClasses()

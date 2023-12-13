@@ -47,7 +47,8 @@ internal class RecipeTests
             recipe.Name.Should().NotBeNullOrEmpty();
             recipe.Description.Should().NotBeNullOrEmpty();
             recipe.Source.Should().NotBeNullOrEmpty();
-            recipe.ClassName.Should().NotBeNullOrEmpty();
+            recipe.RecipeClassName.Should().NotBeNullOrEmpty();
+            recipe.CategoryClassName.Should().NotBeNullOrEmpty();
         }
 
         recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
@@ -61,12 +62,12 @@ internal class RecipeTests
 
         foreach (WebRecipe recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
         {
-            if (classNames.Contains(recipe.ClassName))
+            if (classNames.Contains(recipe.RecipeClassName))
             {
-                Assert.Fail($"The '{recipe.Category}' class '{recipe.ClassName}' must be renamed to something unique.");
+                Assert.Fail($"The '{recipe.Category}' class '{recipe.RecipeClassName}' must be renamed to something unique.");
             }
 
-            classNames.Add(recipe.ClassName);
+            classNames.Add(recipe.RecipeClassName);
         }
     }
 }

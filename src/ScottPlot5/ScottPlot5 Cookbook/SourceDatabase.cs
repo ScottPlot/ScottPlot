@@ -13,8 +13,7 @@ internal class SourceDatabase
     {
         foreach (string sourceFilePath in GetRecipeSourceFilePaths())
         {
-            string[] sourceLines = File.ReadAllLines(sourceFilePath);
-            IEnumerable<WebRecipe> recipes = GetRecipeSources(sourceLines);
+            IEnumerable<WebRecipe> recipes = GetRecipeSources(sourceFilePath);
             Recipes.AddRange(recipes);
         }
     }
@@ -53,11 +52,19 @@ internal class SourceDatabase
         throw new InvalidOperationException($"unable to locate recipe named {recipeName}");
     }
 
-    private IEnumerable<WebRecipe> GetRecipeSources(string[] rawLines)
+    private IEnumerable<WebRecipe> GetRecipeSources(string sourceFilePath)
     {
+        string[] rawLines = File.ReadAllLines(sourceFilePath);
+        sourceFilePath = sourceFilePath
+            .Replace(Paths.RepoFolder, "")
+            .Replace("\\", "/")
+            .Trim('/')
+            .Replace(" ", "%20");
+
         List<WebRecipe> recipes = new();
 
-        string className = string.Empty;
+        string recipeClassName = string.Empty;
+        string categoryClassName = string.Empty;
         string chapter = string.Empty;
         string category = string.Empty;
         string recipeName = string.Empty;
@@ -68,9 +75,15 @@ internal class SourceDatabase
         {
             string trimmedLine = line.Trim();
 
+            if (trimmedLine.StartsWith("public class") && trimmedLine.EndsWith(": ICategory"))
+            {
+                categoryClassName = trimmedLine.Split(" ")[2];
+                continue;
+            }
+
             if (trimmedLine.StartsWith("public class") && trimmedLine.EndsWith(": RecipeBase"))
             {
-                className = trimmedLine.Split(" ")[2];
+                recipeClassName = trimmedLine.Split(" ")[2];
                 continue;
             }
 
@@ -113,7 +126,7 @@ internal class SourceDatabase
                 sb.AppendLine($"myPlot.SavePng(\"demo.png\");");
 
                 string description = GetDescription(recipeName);
-                WebRecipe thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), className);
+                WebRecipe thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), categoryClassName, recipeClassName, sourceFilePath);
                 recipes.Add(thisRecipe);
 
                 InRecipe = false;

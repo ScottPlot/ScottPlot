@@ -50,7 +50,7 @@ internal class CategoryPage : PageBase
         Save(outputFolder,
             title: Category.CategoryName + " - ScottPlot 5.0 Cookbook",
             description: Category.CategoryDescription,
-            filename: $"{firstRecipe.CategoryFolderName}.md",
+            filename: $"{firstRecipe.CategoryClassName}.md",
             url: firstRecipe.CategoryUrl,
             fm);
     }

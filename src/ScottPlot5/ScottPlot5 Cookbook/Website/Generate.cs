@@ -7,10 +7,12 @@ internal class Generate
     [Test]
     public void Generate_Website()
     {
+        // TODO: build website from JSON, not by using reflection and passing fancy objects around
+
         Dictionary<ICategory, IEnumerable<WebRecipe>> rbc = Query.GetWebRecipesByCategory();
-        //GenerateHomePage(rbc);
-        //GenerateCategoryPages(rbc);
-        //GenerateRecipePages(rbc);
+        GenerateHomePage(rbc);
+        GenerateCategoryPages(rbc);
+        GenerateRecipePages(rbc);
         GenerateJson(rbc);
         Console.WriteLine(Paths.OutputFolder);
     }
