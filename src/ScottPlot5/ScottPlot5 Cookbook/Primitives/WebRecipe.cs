@@ -2,6 +2,8 @@
 
 public struct WebRecipe
 {
+    // TODO: class names may be useful for searching source code
+
     public string Chapter { get; set; }
     public string Category { get; set; }
     public string Name { get; set; }
@@ -9,9 +11,9 @@ public struct WebRecipe
     public string Source { get; set; }
 
     public readonly string CookbookUrl = "/cookbook/5.0";
-    public string CategoryUrl => $"{CookbookUrl}/{UrlTools.UrlSafe(CategoryUrl)}";
-    public string RecipeUrl => $"{CookbookUrl}/{UrlTools.UrlSafe(CategoryUrl)}/{UrlTools.UrlSafe(Name)}";
-    public string ImageUrl => $"{CookbookUrl}/images/{CategoryUrl}-{UrlTools.UrlSafe(Name)}.png";
+    public readonly string CategoryUrl => $"{CookbookUrl}/{UrlSafe(Category)}";
+    public readonly string RecipeUrl => $"{CookbookUrl}/{UrlSafe(Category)}/{UrlSafe(Name)}";
+    public readonly string ImageUrl => $"{CookbookUrl}/images/{Category}-{UrlSafe(Name)}.png";
 
     public WebRecipe(string chapter, string category, string name, string description, string source)
     {
@@ -25,5 +27,29 @@ public struct WebRecipe
     public override string ToString()
     {
         return $"[{Chapter}] [{Category}] {Name}";
+    }
+
+    /// <summary>
+    /// convert to lowercase characters, numbers, and dashes
+    /// </summary>
+    private static string UrlSafe(string text)
+    {
+        StringBuilder sb = new();
+
+        string charsToReplaceWithDash = " _-+:";
+
+        foreach (char c in text.ToLower().ToCharArray())
+        {
+            if (charsToReplaceWithDash.Contains(c))
+            {
+                sb.Append('-');
+            }
+            else if (char.IsLetterOrDigit(c))
+            {
+                sb.Append(c);
+            }
+        }
+
+        return sb.ToString();
     }
 }

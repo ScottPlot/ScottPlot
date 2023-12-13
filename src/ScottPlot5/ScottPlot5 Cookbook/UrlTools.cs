@@ -1,10 +1,8 @@
-﻿using System.Text;
-using ScottPlotCookbook.Recipes;
-
-namespace ScottPlotCookbook;
+﻿namespace ScottPlotCookbook;
 
 internal static class UrlTools
 {
+    [Obsolete]
     internal static string UrlSafe(string text)
     {
         StringBuilder sb = new();
@@ -17,17 +15,5 @@ internal static class UrlTools
                 sb.Append(c);
         }
         return sb.ToString();
-    }
-
-    internal static string GetPageUrl(RecipePageBase page)
-    {
-        return UrlTools.UrlSafe(page.PageDetails.PageName);
-    }
-
-    internal static string GetImageUrl(RecipePageBase page, Recipe recipe, string extension = ".png")
-    {
-        string folder = GetPageUrl(page);
-        string filename = UrlTools.UrlSafe(recipe.Name) + extension;
-        return Path.Combine(folder, filename).Replace("\\", "/");
     }
 }

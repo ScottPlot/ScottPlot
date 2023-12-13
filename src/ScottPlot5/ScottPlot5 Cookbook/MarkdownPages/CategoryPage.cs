@@ -2,20 +2,22 @@
 
 internal class CategoryPage : PageBase
 {
-    private readonly IEnumerable<RecipeInfo> Recipes;
-    private readonly CategoryInfo Category;
+    private readonly List<WebRecipe> Recipes;
 
-    internal CategoryPage(IEnumerable<RecipeInfo> allRecipes, CategoryInfo category)
+    internal CategoryPage(List<WebRecipe> allRecipes, string category)
     {
+        /*
         Recipes = allRecipes.Where(x => x.Category == category.Name);
         if (!allRecipes.Any())
             throw new InvalidOperationException("no recipes match category");
 
         Category = category;
+        */
     }
 
     public void Generate()
     {
+        /*
         SB.AppendLine($"# {Category.Name}");
         SB.AppendLine();
 
@@ -56,5 +58,6 @@ internal class CategoryPage : PageBase
             filename: $"{Category.FolderName}.md",
             url: $"/cookbook/5.0/{Category.FolderName}/",
             fm);
+        */
     }
 }

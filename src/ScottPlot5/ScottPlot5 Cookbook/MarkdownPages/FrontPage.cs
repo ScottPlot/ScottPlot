@@ -2,15 +2,16 @@
 
 internal class FrontPage : PageBase
 {
-    readonly List<RecipeInfo> Sources;
+    readonly List<WebRecipe> Recipes;
 
-    public FrontPage(List<RecipeInfo> sources)
+    public FrontPage(List<WebRecipe> recipes)
     {
-        Sources = sources;
+        Recipes = recipes;
     }
 
     public void Generate()
     {
+        /*
         SB.AppendLine($"# ScottPlot 5.0 Cookbook");
         SB.AppendLine();
 
@@ -20,7 +21,7 @@ internal class FrontPage : PageBase
 
         foreach (Chapter chapter in chapters)
         {
-            ChapterInfo ci = new(chapter, Sources);
+            ChapterInfo ci = new(chapter, Recipes);
 
             SB.AppendLine($"<div class='fs-2 mt-4'>{ci.Name}</div>");
             ci.Categories.ForEach(x => AddPage(x));
@@ -42,6 +43,7 @@ internal class FrontPage : PageBase
             filename: "cookbook-5.0.md",
             url: "/cookbook/5.0/",
             frontmatter: fm);
+        */
     }
 
     private void AddPage(CategoryInfo page)

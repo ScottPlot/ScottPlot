@@ -25,7 +25,7 @@ internal static class SourceReading
         return paths;
     }
 
-    public static List<RecipeInfo> GetRecipeSources()
+    private static List<RecipeInfo> GetRecipeSources()
     {
         const int indentationCharacters = 12;
 

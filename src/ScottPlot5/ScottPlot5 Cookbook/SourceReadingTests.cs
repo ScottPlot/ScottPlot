@@ -2,29 +2,32 @@
 
 internal class SourceReadingTests
 {
+    readonly static List<WebRecipe> Recipes = SourceReading.GetWebRecipes();
+
     [Test]
     public static void Test_Recipe_Sources_Found()
     {
-        List<RecipeInfo> sources = SourceReading.GetRecipeSources();
-        sources.Should().NotBeEmpty();
-        sources.Should().HaveCount(Cookbook.GetRecipes().Count);
-
-        foreach (RecipeInfo recipe in sources)
-        {
-            recipe.SourceCode.Should().NotBeNull();
-        }
+        Recipes.Should().NotBeEmpty();
+        Recipes.Should().HaveCount(Cookbook.GetRecipes().Count);
     }
 
     [Test]
     public static void Test_WebRecipes_HaveAllData()
     {
-        List<WebRecipe> recipes = SourceReading.GetWebRecipes();
-        recipes.Should().NotBeEmpty();
-        recipes.Should().HaveCount(Cookbook.GetRecipes().Count);
-
-        foreach (WebRecipe recipe in recipes)
+        foreach (WebRecipe recipe in Recipes)
         {
-            Console.WriteLine(recipe);
+            recipe.Chapter.Should().NotBeNullOrWhiteSpace();
+            recipe.Category.Should().NotBeNullOrWhiteSpace();
+            recipe.Name.Should().NotBeNullOrWhiteSpace();
+            recipe.Description.Should().NotBeNullOrWhiteSpace();
+            recipe.Source.Should().NotBeNullOrWhiteSpace();
         }
+    }
+
+    [Test]
+    public static void Test_WebRecipes_HaveUniqueUrls()
+    {
+        Recipes.Select(x => x.RecipeUrl).Should().OnlyHaveUniqueItems();
+        Recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
     }
 }
