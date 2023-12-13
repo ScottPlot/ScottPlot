@@ -1,15 +1,15 @@
-﻿namespace ScottPlotCookbook.MarkdownPages;
+﻿namespace ScottPlotCookbook.Website;
 
 internal class RecipePage : PageBase
 {
-    private readonly RecipeInfo Recipe;
+    private readonly WebRecipe Recipe;
 
-    internal RecipePage(RecipeInfo recipe)
+    internal RecipePage(WebRecipe recipe)
     {
         Recipe = recipe;
     }
 
-    public void Generate()
+    public void Generate(string outputFolder)
     {
         SB.AppendLine($"# {Recipe.Name}");
         SB.AppendLine();
@@ -22,7 +22,7 @@ internal class RecipePage : PageBase
         SB.AppendLine($"[![]({Recipe.ImageUrl})]({Recipe.ImageUrl})");
         SB.AppendLine();
         SB.AppendLine("```cs");
-        SB.AppendLine(Recipe.SourceCode);
+        SB.AppendLine(Recipe.Source);
         SB.AppendLine("```");
         SB.AppendLine();
 
@@ -33,7 +33,7 @@ internal class RecipePage : PageBase
         string breadcrumbUrl2 = Recipe.CategoryUrl;
 
         string breadcrumbName3 = Recipe.Name;
-        string breadcrumbUrl3 = Recipe.Url;
+        string breadcrumbUrl3 = Recipe.RecipeUrl;
 
         string[] fm =
         {
@@ -41,13 +41,11 @@ internal class RecipePage : PageBase
             $"BreadcrumbUrls: [\"{breadcrumbUrl1}\", \"{breadcrumbUrl2}\", \"{breadcrumbUrl3}\"]",
         };
 
-        string outputFolder = Path.Combine(Cookbook.OutputFolder, "recipes");
-
         Save(outputFolder,
             title: Recipe.Name + " - ScottPlot 5.0 Cookbook",
             description: Recipe.Description,
-            filename: $"{Recipe.FolderName}.md",
-            url: Recipe.Url,
+            filename: Recipe.MarkdownFilename,
+            url: Recipe.RecipeUrl,
             fm);
     }
 }

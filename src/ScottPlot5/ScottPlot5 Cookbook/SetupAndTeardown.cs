@@ -7,11 +7,11 @@ internal class SetupAndTeardown
     public void RunBeforeAnyTests()
     {
         // delete all old cookbook content
-        if (Directory.Exists(Cookbook.OutputFolder))
-            Directory.Delete(Cookbook.OutputFolder, true);
+        if (Directory.Exists(Paths.OutputFolder))
+            Directory.Delete(Paths.OutputFolder, true);
 
         // create a fresh cookbook folder
-        Directory.CreateDirectory(Cookbook.OutputFolder);
+        Directory.CreateDirectory(Paths.OutputFolder);
     }
 
     [OneTimeTearDown]

@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Axis;
 
-internal class DateTimeAxes : RecipePageBase
+public class DateTimeAxes : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Customization,
-        PageName = "DateTime Axes",
-        PageDescription = "Plot data values on a DataTime axes",
-    };
+    public string Chapter => "Axis";
+    public string CategoryName => "DateTime Axes";
+    public string CategoryDescription => "Plot data values on a DataTime axes";
 
-    internal class Quickstart : RecipeBase
+    public class DateTimeAxisQuickstart : RecipeBase
     {
         public override string Name => "DateTime Axis Quickstart";
         public override string Description => ".";

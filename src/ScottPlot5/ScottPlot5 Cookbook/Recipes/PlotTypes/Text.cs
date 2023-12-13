@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Text : RecipePageBase
+public class Text : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Text",
-        PageDescription = "Text lables placed on the plot in coordinate space",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Text";
+    public string CategoryDescription => "Text lables placed on the plot in coordinate space";
 
-    internal class Quickstart : RecipeBase
+    public class TextQuickstart : RecipeBase
     {
         public override string Name => "Text Quickstart";
         public override string Description => "Text can be placed anywhere in coordinate space.";
@@ -23,7 +20,7 @@ internal class Text : RecipePageBase
         }
     }
 
-    internal class Formatting : RecipeBase
+    public class Formatting : RecipeBase
     {
         public override string Name => "Text Formatting";
         public override string Description => "Text formatting can be extensively customized.";

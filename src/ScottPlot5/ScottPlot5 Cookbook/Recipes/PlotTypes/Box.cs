@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Box : RecipePageBase
+public class Box : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Box Plot",
-        PageDescription = "Box plots show a distribution at a glance",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Box Plot";
+    public string CategoryDescription => "Box plots show a distribution at a glance";
 
-    internal class Quickstart : RecipeBase
+    public class BoxPlotQuickstart : RecipeBase
     {
         public override string Name => "Box Plot Quickstart";
         public override string Description => "Box plots can be added from a series of values.";
@@ -52,7 +49,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class IndividualBox : RecipeBase
+    public class IndividualBox : RecipeBase
     {
         public override string Name => "Individual Box Plots";
         public override string Description => "One can easily create a box plot with only a single box.";
@@ -93,7 +90,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class HorizontalBox : RecipeBase
+    public class HorizontalBox : RecipeBase
     {
         public override string Name => "Horizontal Box Plots";
         public override string Description => "Box plots can be oriented horizontally, similarly to bar plots.";
@@ -138,7 +135,7 @@ internal class Box : RecipePageBase
         }
     }
 
-    internal class BoxSeries : RecipeBase
+    public class BoxSeries : RecipeBase
     {
         public override string Name => "Box Plot Series";
         public override string Description => "Similarly to bar charts, box plots can be compared across multiple categories.";

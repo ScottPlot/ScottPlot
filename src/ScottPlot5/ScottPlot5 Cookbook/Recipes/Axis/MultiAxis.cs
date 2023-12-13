@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Axis;
 
-internal class MultiAxis : RecipePageBase
+public class MultiAxis : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Customization,
-        PageName = "Advanced Axis Features",
-        PageDescription = "Tick mark customization and creation of multi-Axis plots",
-    };
+    public string Chapter => "Axis";
+    public string CategoryName => "Advanced Axis Features";
+    public string CategoryDescription => "Tick mark customization and creation of multi-Axis plots";
 
-    internal class MultiAxisQuickstart : RecipeBase
+    public class MultiAxisQuickstart : RecipeBase
     {
         public override string Name => "Multi-Axis";
         public override string Description => "Additional axes may be added to plots. " +

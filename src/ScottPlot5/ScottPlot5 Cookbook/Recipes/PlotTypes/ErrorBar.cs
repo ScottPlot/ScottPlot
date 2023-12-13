@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class ErrorBar : RecipePageBase
+public class ErrorBar : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Error Bars",
-        PageDescription = "Error Bars communicate the range of possible values for a measurement",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Error Bars";
+    public string CategoryDescription => "Error Bars communicate the range of possible values for a measurement";
 
-    internal class Quickstart : RecipeBase
+    public class ErrorBarQuickstart : RecipeBase
     {
         public override string Name => "Error Bar Quickstart";
         public override string Description => "Error Bars go well with scatter plots.";
@@ -29,7 +26,7 @@ internal class ErrorBar : RecipePageBase
         }
     }
 
-    internal class CustomErrors : RecipeBase
+    public class CustomErrors : RecipeBase
     {
         public override string Name => "ErrorBar Values";
         public override string Description => "Error size can be set for all dimensions.";

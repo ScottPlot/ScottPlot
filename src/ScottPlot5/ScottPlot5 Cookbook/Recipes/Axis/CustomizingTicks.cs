@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Axis;
 
-internal class CustomizingTicks : RecipePageBase
+public class CustomizingTicks : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Customization,
-        PageName = "Customizing Ticks",
-        PageDescription = "Advanced customization of tick marks and tick labels",
-    };
+    public string Chapter => "Axis";
+    public string CategoryName => "Customizing Ticks";
+    public string CategoryDescription => "Advanced customization of tick marks and tick labels";
 
-    internal class CustomTickFormatter : RecipeBase
+    public class CustomTickFormatter : RecipeBase
     {
         public override string Name => "Custom Tick Formatters";
         public override string Description => "Users can customize the logic used to create " +
@@ -44,7 +41,7 @@ internal class CustomizingTicks : RecipePageBase
         }
     }
 
-    internal class AltTickGen : RecipeBase
+    public class AltTickGen : RecipeBase
     {
         public override string Name => "Custom Tick Generators";
         public override string Description =>

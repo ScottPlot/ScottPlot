@@ -1,17 +1,12 @@
-﻿using System.Drawing;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-namespace ScottPlotCookbook.Recipes.PlotTypes;
-
-internal class FillY : RecipePageBase
+public class FillY : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "FillY plot",
-        PageDescription = "FillY plots display the vertical range between two Y values at defined X positions",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "FillY plot";
+    public string CategoryDescription => "FillY plots display the vertical range between two Y values at defined X positions";
 
-    internal class FillYFromArrays : RecipeBase
+    public class FillYFromArrays : RecipeBase
     {
         public override string Name => "FillY From Array Data";
         public override string Description => "FillY plots can be created from X, Y1, and Y2 arrays.";
@@ -31,7 +26,7 @@ internal class FillY : RecipePageBase
         }
     }
 
-    internal class FillYFromScatters : RecipeBase
+    public class FillYFromScatters : RecipeBase
     {
         public override string Name => "FillY From Scatter Plots";
         public override string Description => "FillY plots can be created from two scatter plots that share the same X values.";
@@ -54,7 +49,7 @@ internal class FillY : RecipePageBase
         }
     }
 
-    internal class Function : RecipeBase
+    public class Function : RecipeBase
     {
         public override string Name => "FillY with Custom Type";
         public override string Description => "FillY plots can be created from data of any type if a conversion function is supplied.";
@@ -81,7 +76,7 @@ internal class FillY : RecipePageBase
         }
     }
 
-    internal class Styling : RecipeBase
+    public class Styling : RecipeBase
     {
         public override string Name => "FillY Plot Styling";
         public override string Description => "FillY plots can be customized using public properties.";

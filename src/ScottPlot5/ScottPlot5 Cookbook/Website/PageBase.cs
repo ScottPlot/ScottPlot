@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.MarkdownPages;
+﻿namespace ScottPlotCookbook.Website;
 
 internal abstract class PageBase
 {
@@ -49,7 +49,5 @@ internal abstract class PageBase
 
         string saveAs = Path.Combine(folder, filename);
         File.WriteAllText(saveAs, md);
-
-        Console.WriteLine(saveAs);
     }
 }

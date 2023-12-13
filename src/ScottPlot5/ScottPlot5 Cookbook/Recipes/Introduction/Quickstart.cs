@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Quickstart : RecipePageBase
+public class Quickstart : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Introduction,
-        PageName = "ScottPlot 5 Quickstart",
-        PageDescription = "A survey of basic functionality in ScottPlot 5",
-    };
+    public string Chapter => "Introduction";
+    public string CategoryName => "ScottPlot 5 Quickstart";
+    public string CategoryDescription => "A survey of basic functionality in ScottPlot 5";
 
-    internal class Scatter : RecipeBase
+    public class QuickstartScatter : RecipeBase
     {
         public override string Name => "Scatter Plot";
         public override string Description => "Display paired X/Y data as a scatter plot.";
@@ -23,7 +20,7 @@ internal class Quickstart : RecipePageBase
         }
     }
 
-    internal class CustomizingPlottables : RecipeBase
+    public class CustomizingPlottables : RecipeBase
     {
         public override string Name => "Customizing Plottables";
         public override string Description => "Functions that add things to plots return the plottables they create. " +
@@ -42,7 +39,7 @@ internal class Quickstart : RecipePageBase
         }
     }
 
-    internal class Signal : RecipeBase
+    public class QuickstartSignal : RecipeBase
     {
         public override string Name => "Signal Plot";
         public override string Description => "Signal plots are optimized for displaying evenly spaced data.";
@@ -57,7 +54,7 @@ internal class Quickstart : RecipePageBase
         }
     }
 
-    internal class SignalPerformance : RecipeBase
+    public class SignalPerformance : RecipeBase
     {
         public override string Name => "Signal Plot Performance";
         public override string Description => "Signal plots can interactively display millions of data points in real time. " +
@@ -72,7 +69,7 @@ internal class Quickstart : RecipePageBase
         }
     }
 
-    internal class AxisLabels : RecipeBase
+    public class QuickstartAxisLabels : RecipeBase
     {
         public override string Name => "Axis Labels";
         public override string Description => "Axis labels can be extensively customized.";
@@ -89,7 +86,7 @@ internal class Quickstart : RecipePageBase
         }
     }
 
-    internal class Legend : RecipeBase
+    public class Legend : RecipeBase
     {
         public override string Name => "Legend";
         public override string Description => "A legend displays plottables in a key along the edge of a plot. " +

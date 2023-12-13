@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class AxisAndTicks : RecipePageBase
+public class AxisAndTicks : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Customization,
-        PageName = "Axis and Ticks",
-        PageDescription = "Examples of common customizations for axis labels and ticks",
-    };
+    public string Chapter => "Introduction";
+    public string CategoryName => "Axis and Ticks";
+    public string CategoryDescription => "Examples of common customizations for axis labels and ticks";
 
-    internal class AxisLabels : RecipeBase
+    public class AxisLabels : RecipeBase
     {
         public override string Name => "Adding Axis Labels";
         public override string Description => "Axis labels are the text labels centered on each axis. " +
@@ -26,7 +23,7 @@ internal class AxisAndTicks : RecipePageBase
         }
     }
 
-    internal class SetAxisLimits : RecipeBase
+    public class SetAxisLimits : RecipeBase
     {
         public override string Name => "Manually Set Axis Limits";
         public override string Description => "Axis Limits can be set manually in different ways.";
@@ -48,7 +45,7 @@ internal class AxisAndTicks : RecipePageBase
         }
     }
 
-    internal class GetAxisLimits : RecipeBase
+    public class GetAxisLimits : RecipeBase
     {
         public override string Name => "Read Axis Limits";
         public override string Description => "The current axis limits can be read in multiple ways.";
@@ -70,7 +67,7 @@ internal class AxisAndTicks : RecipePageBase
         }
     }
 
-    internal class AutoScale : RecipeBase
+    public class AutoScale : RecipeBase
     {
         public override string Name => "Zoom to Fit Data";
         public override string Description => "The axis limits can be automatically adjusted to fit the data. " +
@@ -90,7 +87,7 @@ internal class AxisAndTicks : RecipePageBase
         }
     }
 
-    internal class Frameless : RecipeBase
+    public class Frameless : RecipeBase
     {
         public override string Name => "Frameless Plot";
         public override string Description => "How to create a plot containig only the data area and no axes.";

@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Legend : RecipePageBase
+public class Legend : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Customization,
-        PageName = "Configuring Legends",
-        PageDescription = "A legend is a key typically displayed in the corner of a plot",
-    };
+    public string Chapter => "Introduction";
+    public string CategoryName => "Configuring Legends";
+    public string CategoryDescription => "A legend is a key typically displayed in the corner of a plot";
 
-    internal class LegendStyle : RecipeBase
+    public class LegendStyle : RecipeBase
     {
         public override string Name => "Legend Customization";
         public override string Description => "The default legend can be easily accessed and customized. " +
@@ -35,7 +32,7 @@ internal class Legend : RecipePageBase
         }
     }
 
-    internal class ManualLegend : RecipeBase
+    public class ManualLegend : RecipeBase
     {
         public override string Name => "Manual Legend";
         public override string Description => "Legends may be constructed manually.";

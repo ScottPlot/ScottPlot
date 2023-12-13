@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Regression : RecipePageBase
+public class Regression : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.Statistics,
-        PageName = "Regression",
-        PageDescription = "Statistical operations to fit lines to data",
-    };
+    public string Chapter => "Statistics";
+    public string CategoryName => "Regression";
+    public string CategoryDescription => "Statistical operations to fit lines to data";
 
-    internal class Linear : RecipeBase
+    public class Linear : RecipeBase
     {
         public override string Name => "LinearRegression";
         public override string Description => "Fit a line to a collection of X/Y data points.";

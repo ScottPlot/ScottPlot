@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Signal : RecipePageBase
+public class Signal : ICategory
 {
-    public override CategoryInfo2 PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Signal Plot",
-        PageDescription = "Signal plots display evenly-spaced data",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Signal Plot";
+    public string CategoryDescription => "Signal plots display evenly-spaced data";
 
-    internal class Offset : RecipeBase
+    public class Offset : RecipeBase
     {
         public override string Name => "Offset";
         public override string Description => "Signal plots can be offset by a given X and Y value.";
