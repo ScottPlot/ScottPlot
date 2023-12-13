@@ -1,8 +1,8 @@
-﻿namespace ScottPlotCookbook.Recipes.Introduction;
+﻿namespace ScottPlotCookbook.Recipes.Quickstart;
 
 public class Quickstart : ICategory
 {
-    public string Chapter => "Introduction";
+    public string Chapter => "Quickstart";
     public string CategoryName => "ScottPlot 5 Quickstart";
     public string CategoryDescription => "A survey of basic functionality in ScottPlot 5";
 
@@ -47,8 +47,8 @@ public class Quickstart : ICategory
         [Test]
         public override void Execute()
         {
-            double[] sin = ScottPlot.Generate.Sin(51);
-            double[] cos = ScottPlot.Generate.Cos(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
             myPlot.Add.Signal(sin);
             myPlot.Add.Signal(cos);
         }
@@ -63,7 +63,7 @@ public class Quickstart : ICategory
         [Test]
         public override void Execute()
         {
-            double[] data = ScottPlot.Generate.RandomWalk(1_000_000);
+            double[] data = Generate.RandomWalk(1_000_000);
             myPlot.Add.Signal(data);
             myPlot.Title("Signal plot with one million points");
         }
@@ -77,8 +77,8 @@ public class Quickstart : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             myPlot.XAxis.Label.Text = "Horizonal Axis";
             myPlot.YAxis.Label.Text = "Vertical Axis";
@@ -95,10 +95,10 @@ public class Quickstart : ICategory
         [Test]
         public override void Execute()
         {
-            var sig1 = myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.Label = "Sin";
 
-            var sig2 = myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.Label = "Cos";
 
             myPlot.Legend.IsVisible = true;

@@ -14,6 +14,7 @@ public static class Query
     {
         return new string[]
         {
+            "Quickstart",
             "Introduction",
             "Axis",
             "Plot Types",
