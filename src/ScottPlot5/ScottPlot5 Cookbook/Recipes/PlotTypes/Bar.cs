@@ -1,21 +1,18 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Bar : RecipePageBase
+public class Bar : ICategory
 {
-    public override RecipePageDetails PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Bar Plot",
-        PageDescription = "Bar plots represent values as horizontal or vertical rectangles",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Bar Plot";
+    public string CategoryDescription => "Bar plots represent values as horizontal or vertical rectangles";
 
-    internal class Quickstart : RecipeTestBase
+    public class Quickstart : RecipeBase
     {
         public override string Name => "Bar Plot Quickstart";
         public override string Description => "Bar plots can be added from a series of values.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             double[] values = { 5, 10, 7, 13 };
             myPlot.Add.Bars(values);
@@ -24,13 +21,13 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarPosition : RecipeTestBase
+    public class BarPosition : RecipeBase
     {
         public override string Name => "Bar Positioning";
         public override string Description => "The exact position and size of each bar may be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             List<ScottPlot.Bar> bars = new()
             {
@@ -43,13 +40,13 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarWithError : RecipeTestBase
+    public class BarWithError : RecipeBase
     {
         public override string Name => "Bars with Error";
         public override string Description => "Bars can have errorbars.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             List<ScottPlot.Bar> bars = new()
             {
@@ -63,13 +60,13 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarTickLabels : RecipeTestBase
+    public class BarTickLabels : RecipeBase
     {
         public override string Name => "Bars with Labeled Ticks";
         public override string Description => "Bars can be labeled by manually specifying axis tick mark positions and labels.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Add.Bar(position: 1, value: 5, error: 1);
             myPlot.Add.Bar(position: 2, value: 7, error: 2);
@@ -90,13 +87,13 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class BarStackVertically : RecipeTestBase
+    public class BarStackVertically : RecipeBase
     {
         public override string Name => "Stacked Bar Plot";
         public override string Description => "Bars can be positioned on top of each other.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Color[] colors = {
                 myPlot.Palette.GetColor(0),
@@ -131,13 +128,13 @@ internal class Bar : RecipePageBase
         }
     }
 
-    internal class GroupedBarPlot : RecipeTestBase
+    public class GroupedBarPlot : RecipeBase
     {
         public override string Name => "Grouped Bar Plot";
         public override string Description => "Bars can be grouped by position and color.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Color[] colors = {
                 myPlot.Palette.GetColor(0),

@@ -10,6 +10,7 @@
 * Bar: Refactored bar plots to simplify individual bar customization (#3070, #3066)
 * Legend: Added `ManualItems` to allow building custom legend content
 * Render: Prevent the pre-render auto-scaler from resetting manually defined axis limits (#3058)
+* Cookbook: Rewrote reflection and source file parsing for simplified querying (#3081, #3080, #3079, #2962, #2755)
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
