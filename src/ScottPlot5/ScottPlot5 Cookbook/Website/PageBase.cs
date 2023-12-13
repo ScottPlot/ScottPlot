@@ -40,7 +40,7 @@ internal abstract class PageBase
                 sbfm.AppendLine(line);
             }
         }
-        sbfm.AppendLine($"Date: {DateTime.UtcNow}");
+        sbfm.AppendLine($"Date: {DateTime.UtcNow:yyyy-MM-dd}");
         sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
         sbfm.AppendLine("---");
         sbfm.AppendLine();
