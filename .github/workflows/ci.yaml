@@ -68,10 +68,10 @@ jobs:
         run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release
       - name: 🧪 Test
         run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
+      - name: 🚚 Install Additional Workloads
+        run: dotnet workload install maui-android maui-ios maccatalyst
       - name: 🚚 Workload Restore
         run: dotnet workload restore ${{ env.FULL_SOLUTION }}
-      - name: 🚚 Get Mobile Workloads
-        run: dotnet workload install maui-android maui-ios
       - name: 🚚 Full Restore
         run: dotnet restore ${{ env.FULL_SOLUTION }}
       - name: 🛠️ Full Build
