@@ -1,15 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
-internal class Styling : RecipePageBase
+public class Styling : ICategory
 {
-    public override RecipePageDetails PageDetails => new()
-    {
-        Chapter = Chapter.Introduction,
-        PageName = "Styling Plots",
-        PageDescription = "How to customize plots",
-    };
+    public string Chapter => "Introduction";
+    public string CategoryName => "Styling Plots";
+    public string CategoryDescription => "How to customize plots";
 
-    internal class StyleClass : RecipeTestBase
+    public class StyleClass : RecipeBase
     {
         public override string Name => "Style Helper Functions";
         public override string Description => "Plots contain many objects which can be customized individually " +
@@ -17,10 +14,10 @@ internal class Styling : RecipePageBase
             "that make it easier to customzie many items at once using a simpler API.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             // visible items have public properties that can be customized
             myPlot.XAxis.Label.Text = "Horizontal Axis";
@@ -34,16 +31,16 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class AxisCustom : RecipeTestBase
+    public class AxisCustom : RecipeBase
     {
         public override string Name => "Axis Customization";
         public override string Description => "Axis labels, tick marks, and frame can all be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             myPlot.TitlePanel.Label.Text = "Plot Title";
             myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
@@ -70,7 +67,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class GridCustom : RecipeTestBase
+    public class GridCustom : RecipeBase
     {
         public override string Name => "Grid Customization";
         public override string Description => "Grid lines can be customized. " +
@@ -78,10 +75,10 @@ internal class Styling : RecipePageBase
             "but the default grid can be interacted with to customize its appearance.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
 
@@ -91,16 +88,16 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class GridAbove : RecipeTestBase
+    public class GridAbove : RecipeBase
     {
         public override string Name => "Grid Above Data";
         public override string Description => "Grid lines are typically drawn beneath " +
             "data, but grids can be configured to render on top of plottables too.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
-            var sig = myPlot.Add.Signal(Generate.Sin(51));
+            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             sig.LineStyle.Width = 10;
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
@@ -110,7 +107,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class Palette : RecipeTestBase
+    public class Palette : RecipeBase
     {
         public override string Name => "Palettes";
         public override string Description => "A palette is a set of colors, and the Plot's palette " +
@@ -118,30 +115,30 @@ internal class Styling : RecipePageBase
             "standard palettes, but users may also create their own.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.Palette = new ScottPlot.Palettes.Nord();
 
             for (int i = 0; i < 5; i++)
             {
-                double[] data = Generate.Sin(100, phase: -i / 20.0f);
+                double[] data = ScottPlot.Generate.Sin(100, phase: -i / 20.0f);
                 var sig = myPlot.Add.Signal(data);
                 sig.LineStyle.Width = 3;
             }
         }
     }
 
-    internal class Markers : RecipeTestBase
+    public class Markers : RecipeBase
     {
         public override string Name => "Markers";
         public override string Description => "Many plot types have a MarkerStyle which can be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int count = 21;
-            double[] xs = Generate.Consecutive(count);
-            double[] ys = Generate.Sin(count);
+            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] ys = ScottPlot.Generate.Sin(count);
 
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
 
@@ -163,17 +160,17 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class LineStyles : RecipeTestBase
+    public class LineStyles : RecipeBase
     {
         public override string Name => "Line Styles";
         public override string Description => "Many plot types have a LineStyle which can be customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             int count = 21;
-            double[] xs = Generate.Consecutive(count);
-            double[] ys = Generate.Sin(count);
+            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] ys = ScottPlot.Generate.Sin(count);
 
             LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
 
@@ -193,7 +190,7 @@ internal class Styling : RecipePageBase
         }
     }
 
-    internal class Scaling : RecipeTestBase
+    public class Scaling : RecipeBase
     {
         public override string Name => "Scaling";
         public override string Description => "All components of an image can be scaled up or down in size " +
@@ -201,11 +198,11 @@ internal class Styling : RecipePageBase
             "on high DPI displays with display scaling enabled.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             myPlot.ScaleFactor = 2;
-            myPlot.Add.Signal(Generate.Sin());
-            myPlot.Add.Signal(Generate.Cos());
+            myPlot.Add.Signal(ScottPlot.Generate.Sin());
+            myPlot.Add.Signal(ScottPlot.Generate.Cos());
         }
     }
 }

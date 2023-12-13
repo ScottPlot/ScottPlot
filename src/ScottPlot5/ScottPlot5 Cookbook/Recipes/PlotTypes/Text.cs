@@ -1,35 +1,32 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Text : RecipePageBase
+public class Text : ICategory
 {
-    public override RecipePageDetails PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Text",
-        PageDescription = "Text lables placed on the plot in coordinate space",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Text";
+    public string CategoryDescription => "Text lables placed on the plot in coordinate space";
 
-    internal class Quickstart : RecipeTestBase
+    public class TextQuickstart : RecipeBase
     {
         public override string Name => "Text Quickstart";
         public override string Description => "Text can be placed anywhere in coordinate space.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin());
-            myPlot.Add.Signal(Generate.Cos());
+            myPlot.Add.Signal(ScottPlot.Generate.Sin());
+            myPlot.Add.Signal(ScottPlot.Generate.Cos());
             myPlot.Add.Text("Hello, World", 25, 0.5);
         }
     }
 
-    internal class Formatting : RecipeTestBase
+    public class Formatting : RecipeBase
     {
         public override string Name => "Text Formatting";
         public override string Description => "Text formatting can be extensively customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             var text = myPlot.Add.Text("Hello, World", 42, 69);
             text.Label.FontSize = 26;

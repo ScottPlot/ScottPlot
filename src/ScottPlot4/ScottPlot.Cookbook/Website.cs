@@ -12,6 +12,7 @@ public static class Website
     {
         MakeIndexPage(OutputFolderPath, Recipes);
         MakeCategoryPages(OutputFolderPath, Recipes);
+        MakeIndividualRecipePages(OutputFolderPath, Recipes);
         MakeColorsPage(OutputFolderPath);
         MakeColormapsPage(OutputFolderPath);
     }
@@ -118,6 +119,8 @@ public static class Website
 
     private static void MakeCategoryPages(string OutputFolderPath, RecipeSource[] Recipes)
     {
+        Console.WriteLine($"Creating category pages...");
+
         string categoryFolderPath = Path.Combine(OutputFolderPath, "category");
         if (!Directory.Exists(categoryFolderPath))
             Directory.CreateDirectory(categoryFolderPath);
@@ -136,10 +139,48 @@ public static class Website
         }
     }
 
+    private static void MakeIndividualRecipePages(string OutputFolderPath, RecipeSource[] Recipes)
+    {
+        string recipeFolder = Path.Combine(OutputFolderPath, "recipes");
+        Directory.CreateDirectory(recipeFolder);
+
+        foreach (RecipeSource recipe in Recipes)
+        {
+            string bcName1 = "ScottPlot 4.1 Cookbook";
+            string bcUrl1 = $"/cookbook/4.1/";
+
+            string bcName2 = recipe.Category;
+            string bcUrl2 = recipe.CategoryUrl;
+
+            string bcName3 = recipe.Title;
+            string bcUrl3 = recipe.Url;
+
+            string searchUrl = "/cookbook/4.1/search/";
+
+            string[] fm = new string[]
+            {
+                $"BreadcrumbNames: [\"{bcName1}\", \"{bcName2}\", \"{bcName3}\"]",
+                $"BreadcrumbUrls: [\"{bcUrl1}\", \"{bcUrl2}\", \"{bcUrl3}\"]",
+                $"SearchUrl: \"{searchUrl}\"",
+                $"OgImage: \"{recipe.ImageUrl}\"",
+            };
+
+            string saveAs = Path.Combine(recipeFolder, $"{recipe.ID.ToLower()}.md");
+
+            Template.CreateMarkdownPage(
+                mdFilePath: saveAs,
+                body: GetRecipeMarkdown(recipe),
+                title: $"{recipe.Title} - ScottPlot 4.1 Cookbook",
+                description: recipe.Description,
+                url: recipe.Url,
+                frontmatter: fm);
+        }
+    }
+
     private static string GetRecipeMarkdown(RecipeSource recipe)
     {
         StringBuilder sb = new();
-        sb.AppendLine($"## {recipe.Title}");
+        sb.AppendLine($"<h2><a id='{recipe.AnchorID}' href='{recipe.Url}'>{recipe.Title}</a></h2>");
         sb.AppendLine("");
         sb.AppendLine(recipe.Description);
         sb.AppendLine("");
@@ -171,8 +212,6 @@ public static class Website
 
         ICategory category = Category.GetCategories().Where(x => x.Folder == categoryFolderName).First();
         string categoryName = category.ToString()!.Contains("PlotType") ? "Plot Type: " + category.Name : category.Name;
-
-        Console.WriteLine($"Creating category page: {category.Name} ...");
 
         StringBuilder markdown = new();
         markdown.AppendLine($"# {categoryName}");
@@ -324,7 +363,7 @@ public static class Website
         };
 
         Template.CreateMarkdownPage(
-            mdFilePath: Path.Combine(OutputFolderPath, "index_.md"),
+            mdFilePath: Path.Combine(OutputFolderPath, "index_.md"), // NOTE: must end with an underscore because subpages exist
             body: sb.ToString(),
             title: "ScottPlot 4.1 Cookbook",
             description: "Example plots shown next to the code used to create them",
