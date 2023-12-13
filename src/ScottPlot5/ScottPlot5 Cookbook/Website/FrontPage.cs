@@ -16,11 +16,14 @@ internal class FrontPage : PageBase
 
         AddVersionInformation();
 
-        // TODO: SORT BY CHAPTER
-
-        foreach (var category in CB.Categories)
+        foreach (string chapter in CB.Chapters)
         {
-            AddCategory(category);
+            SB.AppendLine($"<h1>{chapter}</h1>");
+
+            foreach (var category in CB.Categories.Where(x => x.Chapter == chapter))
+            {
+                AddCategory(category);
+            }
         }
 
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
