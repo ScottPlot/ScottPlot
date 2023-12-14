@@ -39,8 +39,8 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_Recipes_GenerateWebsite()
         {
-            Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
-            ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
+            Generator.GenerateImagesAndJson(COOKBOOK_PROJECT_FOLDER);
+            Generator.GenerateWebsite(COOKBOOK_PROJECT_FOLDER);
         }
 
         [Test]
