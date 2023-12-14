@@ -9,7 +9,7 @@ namespace ScottPlot.DataSources
     public interface IFunctionSource
     {
         CoordinateRange RangeX { get; }
-        CoordinateRange GetYRange(CoordinateRange rangeX);
+        CoordinateRange GetRangeY(CoordinateRange rangeX);
         double Get(double x);
     }
 }

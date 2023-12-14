@@ -10,7 +10,7 @@ namespace ScottPlot.DataSources
     {
         public CoordinateRange RangeX { get; set; } = new(double.NegativeInfinity, double.PositiveInfinity);
         public Func<double, double> EvaluateFunc { get; set; }
-        public Func<CoordinateRange, CoordinateRange> GetYRangeFunc { get; set; } = null;
+        public Func<CoordinateRange, CoordinateRange> GetRangeYFunc { get; set; } = null;
 
         public FunctionSource(Func<double, double> evaluateFunc)
         {
@@ -18,9 +18,9 @@ namespace ScottPlot.DataSources
         }
 
         public double Get(double x) => EvaluateFunc(x);
-        public CoordinateRange GetYRange(CoordinateRange xs) =>
-            GetYRangeFunc is not null
-            ? GetYRangeFunc(xs)
+        public CoordinateRange GetRangeY(CoordinateRange xs) =>
+            GetRangeYFunc is not null
+            ? GetRangeYFunc(xs)
             : new CoordinateRange(double.NaN, double.NaN);
 
     }

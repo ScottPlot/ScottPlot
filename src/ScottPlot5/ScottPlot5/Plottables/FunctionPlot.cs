@@ -38,7 +38,7 @@ namespace ScottPlot.Plottables
 
             if (!double.IsNaN(xMin) && !double.IsNaN(xMax))
             {
-                var yRange = Source.GetYRange(new(xMin, xMax));
+                var yRange = Source.GetRangeY(new(xMin, xMax));
                 return new AxisLimits(xMin, xMax, yRange.Min, yRange.Max);
             }
 
