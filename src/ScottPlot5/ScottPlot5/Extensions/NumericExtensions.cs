@@ -37,4 +37,12 @@ public static class NumericExtensions
     {
         return (float)(degrees / 180.0 * Math.PI);
     }
+
+    public static double FiniteCoallesce(this double value, double fallback)
+    {
+        if (double.IsInfinity(value) || double.IsNaN(value))
+            return fallback;
+        else
+            return value;
+    }
 }
