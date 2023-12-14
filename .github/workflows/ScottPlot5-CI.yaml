@@ -57,6 +57,8 @@ jobs:
         run: dotnet build ${{ env.SLN_SP5_TEST }} --configuration Release
       - name: 🧪 Test ScottPlot5
         run: dotnet test ${{ env.SLN_SP5_TEST }} --configuration Release --verbosity minimal
+      - name: 🚚 Install Additional Workloads
+        run: dotnet workload install maui-android maui-ios maccatalyst
       - name: 🚚 Workload Restore ScottPlot5
         run: dotnet workload restore ${{ env.SLN_SP5_FULL }}
       - name: 🚚 Solution Restore ScottPlot5
