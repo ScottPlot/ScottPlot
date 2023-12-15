@@ -41,7 +41,7 @@ namespace ScottPlot.Cookbook
             sb.AppendLine("---");
             sb.AppendLine($"Title: \"{title}\"");
             sb.AppendLine($"Description: \"{description}\"");
-            sb.AppendLine($"Date: {DateTime.Now}");
+            sb.AppendLine($"Date: {DateTime.Now:yyyy-MM-dd}");
             sb.AppendLine($"Version: {ScottPlot.Version.LongString}");
             if (!string.IsNullOrEmpty(url))
                 sb.AppendLine($"URL: {url}");

@@ -32,7 +32,7 @@ internal abstract class PageBase
         sbfm.AppendLine("---");
         sbfm.AppendLine($"Title: {title}");
         sbfm.AppendLine($"Description: {description}");
-        sbfm.AppendLine($"URL: {url}");
+        sbfm.AppendLine($"URL: {url}/index.html");
         if (frontmatter is not null)
         {
             foreach (string line in frontmatter)
@@ -40,8 +40,10 @@ internal abstract class PageBase
                 sbfm.AppendLine(line);
             }
         }
-        sbfm.AppendLine($"Date: {DateTime.UtcNow}");
+        sbfm.AppendLine($"Date: {DateTime.UtcNow:yyyy-MM-dd}");
         sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
+        sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
+        sbfm.AppendLine($"SearchUrl: \"/cookbook/5.0/search/\"");
         sbfm.AppendLine("---");
         sbfm.AppendLine();
 

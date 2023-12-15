@@ -48,17 +48,25 @@ internal static class JsonFile
         foreach (RecipeInfo recipe in rbc.Values.SelectMany(x => x))
         {
             writer.WriteStartObject();
-            writer.WriteString("categoryClassName", recipe.CategoryClassName);
-            writer.WriteString("recipeClassName", recipe.RecipeClassName);
+
+            // human readable
             writer.WriteString("chapter", recipe.Chapter);
             writer.WriteString("category", recipe.Category);
             writer.WriteString("name", recipe.Name);
             writer.WriteString("description", recipe.Description);
+            writer.WriteString("source", recipe.Source.Replace("\r", ""));
+
+            // organization
+            writer.WriteString("categoryClassName", recipe.CategoryClassName);
+            writer.WriteString("recipeClassName", recipe.RecipeClassName);
+
+            // web links
             writer.WriteString("anchorUrl", recipe.AnchoredCategoryUrl);
+            writer.WriteString("categoryUrl", recipe.CategoryUrl);
             writer.WriteString("recipeUrl", recipe.RecipeUrl);
             writer.WriteString("imageUrl", recipe.ImageUrl);
             writer.WriteString("sourceUrl", recipe.Sourceurl);
-            writer.WriteString("source", recipe.Source);
+
             writer.WriteEndObject();
         }
         writer.WriteEndArray();
