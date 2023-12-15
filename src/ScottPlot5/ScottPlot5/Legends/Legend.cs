@@ -51,7 +51,7 @@ public class Legend
         if (svgStream is null)
             throw new NullReferenceException($"invalid Stream");
 
-        var canvas = RenderToObject(plot, svgStream:svgStream, maxWidth: maxWidth, maxHeight: maxHeight) as SKCanvas;
+        var canvas = RenderToObject(plot, svgStream: svgStream, maxWidth: maxWidth, maxHeight: maxHeight) as SKCanvas;
         canvas?.Dispose();
     }
     public SKImage? GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
