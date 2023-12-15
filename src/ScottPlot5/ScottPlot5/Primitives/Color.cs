@@ -27,18 +27,26 @@ public readonly struct Color
     public Color
         (byte red, byte green, byte blue, byte alpha = 255)
     {
-        Red = red;
-        Green = green;
-        Blue = blue;
+        //INFO: alpha do NOT work with SVG when color is black
+        // this is dirty a workaround for bug #3063
+        if (red == 0 && green == 0 && blue == 0 && alpha < 255)
+        {
+            Red = 1;
+            Green = 1;
+            Blue = 1;
+        }
+        else
+        {
+            Red = red;
+            Green = green;
+            Blue = blue;
+        }
         Alpha = alpha;
     }
 
     public Color(float red, float green, float blue, float alpha = 1)
+        : this((byte)(red * 255), (byte)(green * 255), (byte)(blue * 255), (byte)(alpha * 255))
     {
-        Red = (byte)(red * 255);
-        Green = (byte)(green * 255);
-        Blue = (byte)(blue * 255);
-        Alpha = (byte)(alpha * 255);
     }
 
     public static bool operator ==(Color a, Color b)
