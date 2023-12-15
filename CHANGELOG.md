@@ -11,6 +11,7 @@
 * Legend: Added `ManualItems` to allow building custom legend content
 * Render: Prevent the pre-render auto-scaler from resetting manually defined axis limits (#3058)
 * Cookbook: Rewrote reflection and source file parsing for simplified querying (#3081, #3080, #3079, #2962, #2755)
+* Function: Added a new line plot type where Y position is a user defined function (#3094) _@bclehmann_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
