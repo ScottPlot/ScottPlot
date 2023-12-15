@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System.Net.Security;
 
 namespace ScottPlot.Legends;
 
@@ -45,7 +46,22 @@ public class Legend
         // render the legend panel
         RenderLegend(sizedItems, rp.Canvas, paint, offset, legendRect, legendShadowRect);
     }
-    public SKImage GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
+    public void AsSvg(ScottPlot.Plot plot, Stream svgStream, int maxWidth = 0, int maxHeight = 0)
+    {
+        if (svgStream is null)
+            throw new NullReferenceException($"invalid Stream");
+
+        var canvas = RenderToObject(plot, svgStream:svgStream, maxWidth: maxWidth, maxHeight: maxHeight) as SKCanvas;
+        canvas?.Dispose();
+    }
+    public SKImage? GetImage(ScottPlot.Plot plot, int maxWidth = 0, int maxHeight = 0)
+    {
+        var surface = RenderToObject(plot, maxWidth: maxWidth, maxHeight: maxHeight) as SKSurface;
+        var image = surface?.Snapshot();
+        surface?.Dispose();
+        return image;
+    }
+    private SKObject RenderToObject(ScottPlot.Plot plot, Stream svgStream = null, int maxWidth = 0, int maxHeight = 0)
     {
         // measure all items to determine dimensions of the legend
         using SKPaint paint = new();
@@ -66,13 +82,19 @@ public class Legend
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
         Pixel offset = new(legendRect.Left + Padding.Left + ShadowOffset, legendRect.Top + Padding.Top + ShadowOffset);
 
-        SKImageInfo info = new((int)Math.Ceiling(legendSize.Width), (int)Math.Ceiling(legendSize.Height), SKColorType.Rgba8888, SKAlphaType.Premul);
-        using SKSurface surface = SKSurface.Create(info);
-        if (surface is null)
-            throw new NullReferenceException($"invalid SKImageInfo");
+        if (svgStream is null)
+        {
+            SKImageInfo info = new((int)Math.Ceiling(legendSize.Width), (int)Math.Ceiling(legendSize.Height), SKColorType.Rgba8888, SKAlphaType.Premul);
+            var surface = SKSurface.Create(info);
+            if (surface is null)
+                throw new NullReferenceException($"invalid SKImageInfo");
 
-        RenderLegend(sizedItems, surface.Canvas, paint, offset, legendRect, legendShadowRect);
-        return surface.Snapshot();
+            RenderLegend(sizedItems, surface.Canvas, paint, offset, legendRect, legendShadowRect);
+            return surface;
+        }
+        SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, legendSize.Width, legendSize.Height), svgStream);
+        RenderLegend(sizedItems, canvas, paint, offset, legendRect, legendShadowRect);
+        return canvas;
     }
     /// <summary>
     /// Recursively walk through children and return a flat array with all legend items

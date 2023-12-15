@@ -618,7 +618,27 @@ public class Plot : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
     /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
-    public SKImage GetLegendImage(int maxWidth = 0, int maxHeight = 0) => Legend.GetImage(this);
+    public SKImage? GetLegendImage(int maxWidth = 0, int maxHeight = 0) => Legend.GetImage(this, maxWidth, maxHeight);
+    /// <summary>
+    /// Saves the content of the legend into a <code>Stream</code> in SVG format. 
+    /// Image size can be limited with optional parameters <paramref name="maxHeight"/>
+    /// and <paramref name="maxWidth"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
+    /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
+    public void SaveLegendAsSvg(Stream svgStream, int maxWidth = 0, int maxHeight = 0) => Legend.AsSvg(this, svgStream, maxWidth, maxHeight);
+    /// <summary>
+    /// Saves the content of the legend as SVG into a file. 
+    /// Image size can be limited with optional parameters <paramref name="maxHeight"/>
+    /// and <paramref name="maxWidth"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">thrown if legend is empty</exception>
+    /// <exception cref="NullReferenceException">thrown is memory could not be allocated</exception>
+    public void SaveLegendAsSvg(string filePath, int maxWidth = 0, int maxHeight = 0)
+    {
+        using FileStream svgStream = new(filePath, FileMode.Create);
+        Legend.AsSvg(this, svgStream, maxWidth, maxHeight);
+    }
     #endregion
 
     #region Helper Methods
