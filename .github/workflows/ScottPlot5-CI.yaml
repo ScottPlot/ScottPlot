@@ -77,6 +77,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Install Additional Workloads
+        run: dotnet workload install maui-android maui-ios maccatalyst
       - name: 🚚 Workload Restore
         run: dotnet workload restore ${{ env.SLN_SP5_FULL }}
       - name: 🚚 Restore ScottPlot5
