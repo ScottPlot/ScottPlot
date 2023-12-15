@@ -197,6 +197,21 @@ public class PlottableAdder
         return rangePlot;
     }
 
+    public FunctionPlot Function(IFunctionSource functionSource)
+    {
+        FunctionPlot functionPlot = new(functionSource);
+        functionPlot.LineStyle.Color = GetNextColor();
+
+        Plot.PlottableList.Add(functionPlot);
+        return functionPlot;
+    }
+
+    public FunctionPlot Function(Func<double, double> func)
+    {
+        var functionSource = new FunctionSource(func);
+        return Function(functionSource);
+    }
+
     public Heatmap Heatmap(double[,] intensities)
     {
         Heatmap heatmap = new(intensities);
