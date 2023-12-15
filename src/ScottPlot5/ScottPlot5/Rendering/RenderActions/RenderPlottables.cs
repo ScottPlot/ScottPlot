@@ -7,7 +7,7 @@ public class RenderPlottables : IRenderAction
         foreach (IPlottable plottable in rp.Plot.PlottableList)
         {
             if (!plottable.IsVisible)
-                return;
+                continue;
 
             plottable.Axes.DataRect = rp.DataRect;
             rp.Canvas.Save();
