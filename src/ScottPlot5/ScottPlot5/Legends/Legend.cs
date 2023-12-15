@@ -89,7 +89,7 @@ public class Legend
     }
     private SizedLegendItem[] GetSizedLegendItems(ScottPlot.Plot plot, SKPaint paint)
     {
-        IEnumerable<LegendItem> allItems = plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
+        IEnumerable<LegendItem> allItems = plot.PlottableList.Where(x => x.IsVisible).SelectMany(x => x.LegendItems).Concat(ManualItems);
 
         LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
         if (!items.Any())

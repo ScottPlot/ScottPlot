@@ -19,6 +19,7 @@ public partial class MainWindow : Window
             sig1.Axes.YAxis = WpfPlot1.Plot.LeftAxis;
             sig1.Axes.YAxis.Label.Text = "YAxis1";
             sig1.Axes.YAxis.Label.Font.Color = sig1.LineStyle.Color;
+            sig1.IsVisible = false;
 
             double[] data2 = ScottPlot.RandomDataGenerator.Generate.RandomWalk(count: 51, mult: 1000);
             var sig2 = WpfPlot1.Plot.Add.Signal(data2);
