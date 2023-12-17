@@ -29,7 +29,7 @@ public static class MarkerShapeExtensions
     {
         return shape switch
         {
-            MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.None => new Markers.Circle(),
+            MarkerShape.FilledCircle or MarkerShape.OpenCircle => new Markers.Circle(),
             MarkerShape.FilledSquare or MarkerShape.OpenSquare => new Markers.Square(),
             MarkerShape.FilledTriangleUp or MarkerShape.OpenTriangleUp => new Markers.TriangleUp(),
             MarkerShape.FilledTriangleDown or MarkerShape.OpenTriangleDown => new Markers.TriangleDown(),
@@ -42,6 +42,7 @@ public static class MarkerShapeExtensions
             MarkerShape.TriDown => new Markers.TriDown(),
             MarkerShape.Asterisk => new Markers.Asterisk(),
             MarkerShape.HashTag => new Markers.HashTag(),
+            MarkerShape.None => new Markers.None(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
