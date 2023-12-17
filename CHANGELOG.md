@@ -15,6 +15,10 @@
 * Axes: Improved axis label alignment for secondary axes (#3030) _Thanks @albyoo_
 * Statistics: Added generic overloads to `Statistics.Descriptive` class, renamed `StDev()` to `StandardDeviation()`, and added methods for calculating both sample and population statistics (#3071 and #3055) _Thanks @arthurits_
 * Markers: Added a `None` marker (#3075, #3057) _Thanks @Gray-lab_
+* Generate: Added methods for generating random marker shapes and colors
+* Generate: `Random()` is deprecated in favor of `RandomSample()`
+* Plot: Added `ShowLegend()` and `HideLegend()` helper methods which set `Plot.Legend.IsVisible`
+* Marker Plot: `Plot.AddMarker()` can now be used to place a single marker on the plot (#3076, #2806) _Thanks @Gray-lab_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_

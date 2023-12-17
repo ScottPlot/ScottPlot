@@ -16,8 +16,8 @@ public partial class ShowValueOnHover : Form, IDemoWindow
     {
         InitializeComponent();
 
-        double[] xs = Generate.Random(100);
-        double[] ys = Generate.Random(100);
+        double[] xs = Generate.RandomSample(100);
+        double[] ys = Generate.RandomSample(100);
         MyScatter = formsPlot1.Plot.Add.Scatter(xs, ys);
         MyScatter.LineStyle = LineStyle.None;
         MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
