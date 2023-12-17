@@ -56,6 +56,9 @@ namespace ScottPlot.Plottable
             double value2 = Math.Max(ValueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
+            bool withinFieldOfView = (dims.XMin <= position + BarWidth) && (position - BarWidth <= dims.XMax);
+            if (withinFieldOfView == false) return;
+
             var rect = new RectangleF(
                 x: dims.GetPixelX(edge1),
                 y: dims.GetPixelY(value2),

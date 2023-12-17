@@ -14,10 +14,10 @@ public partial class SignalPerformance : Form, IDemoWindow
     {
         InitializeComponent();
         Replot();
-    }
 
-    private void rbSignal_CheckedChanged(object sender, EventArgs e) => Replot();
-    private void rbScatter_CheckedChanged(object sender, EventArgs e) => Replot();
+        rbSignal.CheckedChanged += (s, e) => Replot();
+        rbScatter.CheckedChanged += (s, e) => Replot();
+    }
 
     private void Replot()
     {
@@ -41,13 +41,6 @@ public partial class SignalPerformance : Form, IDemoWindow
             formsPlot1.Plot.TitlePanel.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
             sp.MarkerStyle = MarkerStyle.None;
             label1.Text = "Traditional Scatter plots are not performant for large datasets";
-        }
-        else if (rbScatterGL.Checked)
-        {
-            var spGL = formsPlot1.Plot.Add.ScatterGL(formsPlot1, xs, ys);
-            formsPlot1.Plot.TitlePanel.Label.Text = $"OpenGL Scatter Plot with {ys.Length:N0} Points";
-            spGL.MarkerStyle = MarkerStyle.None;
-            label1.Text = "OpenGL accelerated scatter plots are very performant even for large datasets";
         }
 
         formsPlot1.Plot.AutoScale();
