@@ -640,7 +640,7 @@ public class Plot : IDisposable
     /// </summary>
     public void ShowLegend()
     {
-        Legend.IsVisible = false;
+        Legend.IsVisible = true;
     }
 
     /// <summary>
