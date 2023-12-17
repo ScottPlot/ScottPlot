@@ -8,7 +8,11 @@
         public readonly string Title;
         public readonly string Description;
         public readonly string Code;
-        public readonly string AnchorID;
+        public string AnchorID => GetAnchor(Title);
+        public string CategoryUrl => $"/cookbook/4.1/category/{CategoryFolder}";
+        public string AnchorUrl => $"{CategoryUrl}#{AnchorID}";
+        public string Url => $"/cookbook/4.1/recipes/{ID.ToLower()}/";
+        public string ImageUrl => $"/cookbook/4.1/images/{ID.ToLower()}.png";
 
         public RecipeSource(IRecipe recipe, string source)
         {
@@ -18,7 +22,6 @@
             Title = recipe.Title;
             Description = recipe.Description;
             Code = source;
-            AnchorID = GetAnchor(recipe.Title);
         }
 
         public RecipeSource(string id, string category, string categoryFolder, string title, string description, string code)
@@ -29,7 +32,6 @@
             Title = title;
             Description = description;
             Code = code;
-            AnchorID = GetAnchor(title);
         }
 
         private static string GetAnchor(string s)

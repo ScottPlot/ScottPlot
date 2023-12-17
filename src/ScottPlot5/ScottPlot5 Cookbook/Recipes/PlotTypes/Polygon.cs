@@ -1,21 +1,18 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Polygon : RecipePageBase
+public class Polygon : ICategory
 {
-    public override RecipePageDetails PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Polygon Plot",
-        PageDescription = "Polygon plots draws a polygon",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Polygon Plot";
+    public string CategoryDescription => "Polygon plots draws a polygon";
 
-    internal class Quickstart : RecipeTestBase
+    public class PolygonQuickstart : RecipeBase
     {
         public override string Name => "Polygon Plot Quickstart";
         public override string Description => "Polygon plots can be added from a series of vertices, and must be in clockwise order.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Coordinates[] vertices = new Coordinates[]
             {
@@ -30,13 +27,13 @@ internal class Polygon : RecipePageBase
         }
     }
 
-    internal class Styling : RecipeTestBase
+    public class PolygonStyling : RecipeBase
     {
         public override string Name => "Polygon Plot Styling";
         public override string Description => "Polygon plots can be fully customized.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             Coordinates[] vertices = new Coordinates[]
             {
