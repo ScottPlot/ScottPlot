@@ -26,6 +26,7 @@ public class LegendItem
         {
             Label = label,
             Marker = markerStyle,
+            Line = LineStyle.None,
         };
 
         return Single(item);
@@ -36,6 +37,7 @@ public class LegendItem
         LegendItem item = new()
         {
             Label = label,
+            Marker = MarkerStyle.None,
             Line = lineStyle,
         };
 
