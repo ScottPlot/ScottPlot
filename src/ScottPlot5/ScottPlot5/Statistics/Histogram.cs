@@ -141,7 +141,7 @@ public class Histogram
     public Func<double, double?> GetProbabilityCurve(double[] values, bool scaleToBinnedProbability = false)
     {
         double mean = Statistics.Descriptive.Mean(values);
-        double stDev = Statistics.Descriptive.StDev(values, mean);
+        double stDev = Statistics.Descriptive.StandardDeviation(values);
 
         double? unscaled(double x) => Math.Exp(-.5 * Math.Pow((x - mean) / stDev, 2));
         if (!scaleToBinnedProbability)
