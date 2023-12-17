@@ -635,6 +635,22 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Helper method for setting visibility of the <see cref="Legend"/>
+    /// </summary>
+    public void ShowLegend()
+    {
+        Legend.IsVisible = false;
+    }
+
+    /// <summary>
+    /// Helper method for setting visibility of the <see cref="Legend"/>
+    /// </summary>
+    public void HideLegend()
+    {
+        Legend.IsVisible = false;
+    }
+
+    /// <summary>
     /// Clears the <see cref="PlottableList"/> list
     /// </summary>
     public void Clear() => PlottableList.Clear();
