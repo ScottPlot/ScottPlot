@@ -1,12 +1,12 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Marker : ICategory
+public class Marker : ICategory
 {
     public string Chapter => "Plot Types";
     public string CategoryName => "Marker";
     public string CategoryDescription => "Markers can be placed on the plot in coordinate space.";
 
-    internal class MarkerQuickstart : RecipeBase
+    public class MarkerQuickstart : RecipeBase
     {
         public override string Name => "Marker Quickstart";
         public override string Description => "Markers are symbols placed at a " +
@@ -24,7 +24,7 @@ internal class Marker : ICategory
         }
     }
 
-    internal class MarkerShapes : RecipeBase
+    public class MarkerShapes : RecipeBase
     {
         public override string Name => "Marker Shapes";
         public override string Description => "Many marker shapes are available.";
@@ -46,7 +46,7 @@ internal class Marker : ICategory
         }
     }
 
-    internal class MarkerLegend : RecipeBase
+    public class MarkerLegend : RecipeBase
     {
         public override string Name => "Marker Legend";
         public override string Description => "Markers with labels appear in the legend.";
