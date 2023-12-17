@@ -20,12 +20,19 @@ public class Legend
     private const float SymbolLabelSeparation = 5;
     public List<LegendItem> ManualItems { get; set; } = new();
 
+    private readonly Plot Plot;
+
+    public Legend(Plot plot)
+    {
+        Plot = plot;
+    }
+
     public void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
 
-        IEnumerable<LegendItem> allItems = rp.Plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
+        IEnumerable<LegendItem> allItems = GetItems();
 
         LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
         if (!items.Any())
@@ -65,6 +72,11 @@ public class Legend
 
             yOffset += sizedItems[i].Size.WithChildren.Height;
         }
+    }
+
+    public IEnumerable<LegendItem> GetItems()
+    {
+        return Plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
     }
 
     /// <summary>

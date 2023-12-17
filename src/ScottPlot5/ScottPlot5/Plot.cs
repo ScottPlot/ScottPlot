@@ -28,7 +28,7 @@ public class Plot : IDisposable
     public Panels.TitlePanel TitlePanel { get; } = new();
 
     public List<IGrid> Grids { get; } = new();
-    public Legend Legend { get; } = new();
+    public Legend Legend { get; set; }
     public List<IPlottable> PlottableList { get; } = new();
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
@@ -108,6 +108,7 @@ public class Plot : IDisposable
         AxisStyler = new(this);
         Style = new(this);
         RenderManager = new(this);
+        Legend = new(this);
     }
 
     public void Dispose()
