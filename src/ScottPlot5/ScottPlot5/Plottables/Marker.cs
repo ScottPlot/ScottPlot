@@ -1,5 +1,4 @@
-﻿
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Marker : IPlottable
 {
@@ -8,17 +7,8 @@ public class Marker : IPlottable
     public bool IsVisible { get; set; } = true;
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public override string ToString()
-    {
-        string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
-        return $"PlottableMarker{label} of shape {MarkerStyle}";
-    }
-
-    public AxisLimits GetAxisLimits()
-    {
-        return new AxisLimits(Location);
-    }
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle);
+    public AxisLimits GetAxisLimits() => new(Location);
 
     public void Render(RenderPack rp)
     {
