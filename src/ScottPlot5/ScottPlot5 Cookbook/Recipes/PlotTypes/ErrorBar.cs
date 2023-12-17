@@ -18,7 +18,7 @@ public class ErrorBar : ICategory
 
             double[] xs = ScottPlot.Generate.Consecutive(points);
             double[] ys = ScottPlot.Generate.RandomWalk(points);
-            double[] err = ScottPlot.Generate.Random(points, 0.1, 1);
+            double[] err = ScottPlot.Generate.RandomSample(points, 0.1, 1);
 
             var scatter = myPlot.Add.Scatter(xs, ys);
             var errorbars = myPlot.Add.ErrorBar(xs, ys, err);

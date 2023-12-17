@@ -13,9 +13,16 @@
 * Cookbook: Rewrote reflection and source file parsing for simplified querying (#3081, #3080, #3079, #2962, #2755)
 * Function: Added a new line plot type where Y position is a user defined function (#3094) _Thanks @bclehmann_
 * Axes: Improved axis label alignment for secondary axes (#3030) _Thanks @albyoo_
+* Statistics: Added generic overloads to `Statistics.Descriptive` class, renamed `StDev()` to `StandardDeviation()`, and added methods for calculating both sample and population statistics (#3071 and #3055) _Thanks @arthurits_
+* Markers: Added a `None` marker (#3075, #3057) _Thanks @Gray-lab_
+* Generate: Added methods for generating random marker shapes and colors
+* Generate: `Random()` is deprecated in favor of `RandomSample()`
+* Plot: Added `ShowLegend()` and `HideLegend()` helper methods which set `Plot.Legend.IsVisible`
+* Marker Plot: `Plot.AddMarker()` can now be used to place a single marker on the plot (#3076, #2806) _Thanks @Gray-lab_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
+* Performance: Improved performance of Bar and Finance plots by not drawing shapes outside the data area (#3053, #3078) _Thanks @AndreyPalyutin_
 
 ## ScottPlot 5.0.10-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_

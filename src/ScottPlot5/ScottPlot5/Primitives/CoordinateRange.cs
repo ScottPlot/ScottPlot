@@ -17,6 +17,8 @@ public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to Mu
         Max = max;
     }
 
+    public static CoordinateRange Infinity => new(double.NegativeInfinity, double.PositiveInfinity);
+
     public override string ToString()
     {
         return $"Min={Min}, Max={Max}, Span={Span}";

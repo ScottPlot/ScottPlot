@@ -78,7 +78,7 @@ public class RandomDataGenerator
     /// <summary>
     /// Return a random integer up to the maximum integer size
     /// </summary>
-    public double RandomInteger()
+    public int RandomInteger()
     {
         return Rand.Next();
     }
@@ -86,7 +86,7 @@ public class RandomDataGenerator
     /// <summary>
     /// Return a random integer between zero (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
-    public double RandomInteger(int max)
+    public int RandomInteger(int max)
     {
         return Rand.Next(max);
     }
@@ -94,7 +94,7 @@ public class RandomDataGenerator
     /// <summary>
     /// Return a random integer between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
-    public double RandomInteger(int min, int max)
+    public int RandomInteger(int min, int max)
     {
         return Rand.Next(min, max);
     }
@@ -162,7 +162,7 @@ public class RandomDataGenerator
         data[0] = offset;
         for (int i = 1; i < data.Length; i++)
         {
-            // Random number between -1 and 1;
+            // RandomSample number between -1 and 1;
             double randomStep = Rand.NextDouble() * 2 - 1;
             // Using linear equation y_2 = m * x + y_1 where x = 1,
             // then adding a scaled random step simplifies to:
