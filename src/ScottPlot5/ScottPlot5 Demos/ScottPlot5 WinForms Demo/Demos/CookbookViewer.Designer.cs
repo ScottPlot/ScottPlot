@@ -28,125 +28,113 @@ partial class CookbookViewer
     /// </summary>
     private void InitializeComponent()
     {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Group1", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Group2", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Group3", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("item1");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("item2");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("item3");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("asdf");
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("qwer");
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("zxcv");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("dfgh");
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.listView1.FullRowSelect = true;
-            listViewGroup1.Header = "Group1";
-            listViewGroup1.Name = "listViewGroup1";
-            listViewGroup1.Subtitle = "asdf";
-            listViewGroup2.Footer = "qwerqwer";
-            listViewGroup2.Header = "Group2";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "listViewGroup2";
-            listViewGroup2.Subtitle = "asdfasdf";
-            listViewGroup3.Header = "Group3";
-            listViewGroup3.Name = "listViewGroup3";
-            listViewGroup3.Subtitle = "asdf";
-            this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3});
-            listViewItem1.Group = listViewGroup2;
-            listViewItem5.Group = listViewGroup3;
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5,
-            listViewItem6,
-            listViewItem7});
-            this.listView1.Location = new System.Drawing.Point(12, 12);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(192, 426);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.SmallIcon;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.formsPlot1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(210, 12);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(578, 426);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.richTextBox1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 301);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(572, 122);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Source Code";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 19);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(566, 100);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
-            // formsPlot1
-            // 
-            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.formsPlot1.Location = new System.Drawing.Point(3, 3);
-            this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(572, 292);
-            this.formsPlot1.TabIndex = 1;
-            // 
-            // CookbookViewer
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.listView1);
-            this.Name = "CookbookViewer";
-            this.Text = "ScottPlot Cookbook - Windows Forms";
-            this.Load += new System.EventHandler(this.CookbookViewer_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+        ListViewGroup listViewGroup1 = new ListViewGroup("Group1", HorizontalAlignment.Left);
+        ListViewGroup listViewGroup2 = new ListViewGroup("Group2", HorizontalAlignment.Center);
+        ListViewGroup listViewGroup3 = new ListViewGroup("Group3", HorizontalAlignment.Left);
+        ListViewItem listViewItem1 = new ListViewItem("item1");
+        ListViewItem listViewItem2 = new ListViewItem("item2");
+        ListViewItem listViewItem3 = new ListViewItem("item3");
+        ListViewItem listViewItem4 = new ListViewItem("asdf");
+        ListViewItem listViewItem5 = new ListViewItem("qwer");
+        ListViewItem listViewItem6 = new ListViewItem("zxcv");
+        ListViewItem listViewItem7 = new ListViewItem("dfgh");
+        listView1 = new ListView();
+        tableLayoutPanel1 = new TableLayoutPanel();
+        groupBox1 = new GroupBox();
+        richTextBox1 = new RichTextBox();
+        formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        tableLayoutPanel1.SuspendLayout();
+        groupBox1.SuspendLayout();
+        SuspendLayout();
+        // 
+        // listView1
+        // 
+        listView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+        listView1.FullRowSelect = true;
+        listViewGroup1.Header = "Group1";
+        listViewGroup1.Name = "listViewGroup1";
+        listViewGroup1.Subtitle = "asdf";
+        listViewGroup2.Footer = "qwerqwer";
+        listViewGroup2.Header = "Group2";
+        listViewGroup2.HeaderAlignment = HorizontalAlignment.Center;
+        listViewGroup2.Name = "listViewGroup2";
+        listViewGroup2.Subtitle = "asdfasdf";
+        listViewGroup3.Header = "Group3";
+        listViewGroup3.Name = "listViewGroup3";
+        listViewGroup3.Subtitle = "asdf";
+        listView1.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3 });
+        listViewItem1.Group = listViewGroup2;
+        listViewItem5.Group = listViewGroup3;
+        listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7 });
+        listView1.Location = new Point(12, 12);
+        listView1.MultiSelect = false;
+        listView1.Name = "listView1";
+        listView1.Size = new Size(192, 426);
+        listView1.TabIndex = 1;
+        listView1.UseCompatibleStateImageBehavior = false;
+        listView1.View = View.SmallIcon;
+        listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+        // 
+        // tableLayoutPanel1
+        // 
+        tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        tableLayoutPanel1.ColumnCount = 1;
+        tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        tableLayoutPanel1.Controls.Add(groupBox1, 0, 1);
+        tableLayoutPanel1.Controls.Add(formsPlot1, 0, 0);
+        tableLayoutPanel1.Location = new Point(210, 12);
+        tableLayoutPanel1.Name = "tableLayoutPanel1";
+        tableLayoutPanel1.RowCount = 2;
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+        tableLayoutPanel1.Size = new Size(578, 426);
+        tableLayoutPanel1.TabIndex = 2;
+        // 
+        // groupBox1
+        // 
+        groupBox1.Controls.Add(richTextBox1);
+        groupBox1.Dock = DockStyle.Fill;
+        groupBox1.Location = new Point(3, 301);
+        groupBox1.Name = "groupBox1";
+        groupBox1.Size = new Size(572, 122);
+        groupBox1.TabIndex = 0;
+        groupBox1.TabStop = false;
+        groupBox1.Text = "Source Code";
+        // 
+        // richTextBox1
+        // 
+        richTextBox1.BackColor = SystemColors.Control;
+        richTextBox1.BorderStyle = BorderStyle.None;
+        richTextBox1.Dock = DockStyle.Fill;
+        richTextBox1.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
+        richTextBox1.Location = new Point(3, 19);
+        richTextBox1.Name = "richTextBox1";
+        richTextBox1.Size = new Size(566, 100);
+        richTextBox1.TabIndex = 0;
+        richTextBox1.Text = "ScottPlot.Plot = new();";
+        // 
+        // formsPlot1
+        // 
+        formsPlot1.DisplayScale = 1F;
+        formsPlot1.Dock = DockStyle.Fill;
+        formsPlot1.Location = new Point(3, 3);
+        formsPlot1.Name = "formsPlot1";
+        formsPlot1.Size = new Size(572, 292);
+        formsPlot1.TabIndex = 1;
+        // 
+        // CookbookViewer
+        // 
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(800, 450);
+        Controls.Add(tableLayoutPanel1);
+        Controls.Add(listView1);
+        Name = "CookbookViewer";
+        Text = "ScottPlot Cookbook - Windows Forms";
+        Load += CookbookViewer_Load;
+        tableLayoutPanel1.ResumeLayout(false);
+        groupBox1.ResumeLayout(false);
+        ResumeLayout(false);
     }
 
     #endregion

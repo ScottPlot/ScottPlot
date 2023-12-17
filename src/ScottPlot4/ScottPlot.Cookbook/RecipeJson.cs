@@ -33,6 +33,9 @@ namespace ScottPlot.Cookbook
                 writer.WriteString("categoryFolder", recipe.CategoryFolder);
                 writer.WriteString("title", recipe.Title);
                 writer.WriteString("description", recipe.Description);
+                writer.WriteString("categoryUrl", recipe.CategoryUrl);
+                writer.WriteString("recipeUrl", recipe.Url);
+                writer.WriteString("imageUrl", recipe.ImageUrl);
                 writer.WriteString("code", recipe.Code.Replace("\r", ""));
                 writer.WriteEndObject();
             }

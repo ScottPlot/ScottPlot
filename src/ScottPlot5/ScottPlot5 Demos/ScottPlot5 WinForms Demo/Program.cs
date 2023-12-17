@@ -10,7 +10,8 @@ static class Program
         Application.EnableVisualStyles();
 
         // use this to quickly launch a test Form while developing
-        if (Environment.MachineName == "DESKTOP-L7MMAB7")
+        bool launchDemoFirst = false;
+        if (launchDemoFirst && Environment.MachineName == "DESKTOP-L7MMAB7")
         {
             Application.Run(new Demos.ShowValueOnHover());
         }
