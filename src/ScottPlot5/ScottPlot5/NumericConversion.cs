@@ -15,6 +15,12 @@ public static class NumericConversion
 #endif
         MethodImplOptions.AggressiveInlining;
 
+    [MethodImpl(ImplOptions)]
+    public static double[] GenericToDoubleArray<T>(IEnumerable<T> values)
+    {
+        return values.Select(value => GenericToDouble(ref value)).ToArray();
+    }
+
     /// <summary>
     /// Returns the double value of a <typeparamref name="T"/> 
     /// using a conversion technique optimized for the platform.

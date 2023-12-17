@@ -80,14 +80,15 @@ public abstract class YAxisBase : AxisBase, IAxis
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         float textDistanceFromEdge = 10;
-        Pixel labelPoint = new(panelRect.Left + textDistanceFromEdge, rp.DataRect.VerticalCenter);
+        float labelX = Edge == Edge.Left ? panelRect.Left + textDistanceFromEdge : panelRect.Right - textDistanceFromEdge;
+        Pixel labelPoint = new(labelX, rp.DataRect.VerticalCenter);
 
         if (ShowDebugInformation)
         {
             Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
         }
 
-        Label.Alignment = Edge == Edge.Left ? Alignment.UpperCenter : Alignment.LowerCenter;
+        Label.Alignment = Alignment.UpperCenter;
         Label.Rotation = Edge == Edge.Left ? -90 : 90;
         Label.Draw(rp.Canvas, labelPoint);
 

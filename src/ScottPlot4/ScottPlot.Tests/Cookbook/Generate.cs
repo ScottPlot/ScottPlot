@@ -25,6 +25,7 @@ namespace ScottPlotTests.Cookbook
 
             string json = RecipeJson.Generate(COOKBOOK_PROJECT_FOLDER);
             File.WriteAllText(jsonFilePath, json);
+            Console.WriteLine(jsonFilePath);
 
             Dictionary<string, RecipeSource> readRecipes = RecipeJson.GetRecipes(jsonFilePath);
             Console.WriteLine($"Read {readRecipes.Count} recipes from JSON");
@@ -38,8 +39,8 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_Recipes_GenerateWebsite()
         {
-            Console.WriteLine($"Genearting ScottPlot Cookbook website in: {COOKBOOK_PROJECT_FOLDER}");
-            ScottPlot.Cookbook.Generator.ExecuteAllRecipesAndGenerateWebsite(COOKBOOK_PROJECT_FOLDER);
+            Generator.GenerateImagesAndJson(COOKBOOK_PROJECT_FOLDER);
+            Generator.GenerateWebsite(COOKBOOK_PROJECT_FOLDER);
         }
 
         [Test]

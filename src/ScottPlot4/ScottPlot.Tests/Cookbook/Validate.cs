@@ -145,5 +145,33 @@ namespace ScottPlotTests.Cookbook
                 }
             }
         }
+
+        [Test]
+        public void Test_RecipePage_UrlsAreUnique()
+        {
+            HashSet<string> seenImages = new();
+            HashSet<string> seenAnchors = new();
+            HashSet<string> seenPages = new();
+
+            var sources = ScottPlot.Cookbook.SourceParsing.GetRecipeSources(SourceFolder, 333, 222);
+
+            foreach (var recipe in sources)
+            {
+                if (seenImages.Contains(recipe.ImageUrl))
+                    throw new InvalidOperationException($"duplicate recipe URL: {recipe.Category} - {recipe.Title}");
+
+                if (seenAnchors.Contains(recipe.AnchorUrl))
+                    throw new InvalidOperationException($"duplicate recipe URL: {recipe.Category} - {recipe.Title}");
+
+                if (seenPages.Contains(recipe.Url))
+                    throw new InvalidOperationException($"duplicate recipe URL: {recipe.Category} - {recipe.Title}");
+
+                seenImages.Add(recipe.ImageUrl);
+                seenAnchors.Add(recipe.AnchorUrl);
+                seenPages.Add(recipe.Url);
+            }
+
+            Console.WriteLine($"recipes contain {seenPages.Count} unique URLs");
+        }
     }
 }
