@@ -33,6 +33,17 @@ public static class Query
             .Cast<ICategory>();
     }
 
+    public static IEnumerable<IRecipe> GetRecipeClasses()
+    {
+        return AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(x => x.GetTypes())
+            .Where(type => type.IsClass && !type.IsAbstract)
+            .Where(type => typeof(IRecipe).IsAssignableFrom(type))
+            .Select(type => Activator.CreateInstance(type))
+            .Cast<IRecipe>();
+    }
+
     public static Dictionary<ICategory, IEnumerable<IRecipe>> GetRecipesByCategory()
     {
         Dictionary<ICategory, IEnumerable<IRecipe>> recipesByCategory = new();
@@ -52,15 +63,25 @@ public static class Query
 
     public static Dictionary<ICategory, IEnumerable<RecipeInfo>> GetWebRecipesByCategory()
     {
-        SourceDatabase sb = new();
-
         Dictionary<ICategory, IEnumerable<RecipeInfo>> recipesByCategory = new();
 
         foreach (ICategory categoryClass in GetCategoryClasses())
         {
-            recipesByCategory[categoryClass] = sb.Recipes
-                .Where(x => x.Category == categoryClass.CategoryName)
-                .ToList();
+            recipesByCategory[categoryClass] = categoryClass
+                .GetType()
+                .GetNestedTypes()
+                .Where(type => typeof(IRecipe).IsAssignableFrom(type))
+                .Select(type => Activator.CreateInstance(type))
+                .Cast<IRecipe>()
+                .Select(recipe => new RecipeInfo(
+                    chapter: categoryClass.Chapter,
+                    category: categoryClass.CategoryName,
+                    name: recipe.Name,
+                    description: recipe.Description,
+                    source: string.Empty,
+                    categoryClassName: string.Empty,
+                    recipeClassName: string.Empty,
+                    sourceFilePath: string.Empty));
         }
 
         return recipesByCategory;
