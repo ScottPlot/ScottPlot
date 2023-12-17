@@ -1,5 +1,4 @@
-﻿using ScottPlotCookbook.Recipes;
-using ScottPlotCookbook.Website;
+﻿using ScottPlotCookbook.Website;
 
 namespace ScottPlotCookbook;
 
@@ -8,7 +7,7 @@ internal class RecipeTests
     [Test]
     public void Test_Query_Categories()
     {
-        IEnumerable<ICategory> categories = Query.GetCategoryClasses();
+        IEnumerable<ICategory> categories = Query.GetCategories();
         categories.Should().NotBeNullOrEmpty();
 
         categories.Select(x => x.CategoryName).Should().OnlyHaveUniqueItems();
@@ -23,27 +22,13 @@ internal class RecipeTests
     }
 
     [Test]
-    public void Test_Query_RecipesByCategory()
-    {
-        foreach (var kv in Query.GetRecipesByCategory())
-        {
-            ICategory category = kv.Key;
-
-            foreach (IRecipe recipe in kv.Value)
-            {
-                Console.WriteLine($"[{category.CategoryName}] {recipe.Name}");
-            }
-        }
-    }
-
-    [Test]
     public static void Test_RecipeSources_FoundAndValid()
     {
-        IEnumerable<RecipeInfo> recipes = Query.GetWebRecipesByCategory().SelectMany(x => x.Value);
+        SourceDatabase db = new();
 
-        recipes.Should().NotBeNullOrEmpty();
+        db.Recipes.Should().NotBeNullOrEmpty();
 
-        foreach (RecipeInfo recipe in recipes)
+        foreach (RecipeInfo recipe in db.Recipes)
         {
             recipe.Chapter.Should().NotBeNullOrEmpty();
             recipe.Category.Should().NotBeNullOrEmpty();
@@ -54,50 +39,10 @@ internal class RecipeTests
             recipe.CategoryClassName.Should().NotBeNullOrEmpty();
         }
 
-        recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
-        recipes.Select(x => x.RecipeUrl).Should().OnlyHaveUniqueItems();
-    }
-
-    [Test]
-    public static void Test_Recipes_HaveUniqueClassNames()
-    {
-        HashSet<string> names = new();
-
-        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
-        {
-            if (names.Contains(recipe.RecipeClassName))
-            {
-                Assert.Fail($"The '{recipe.Category}' class '{recipe.RecipeClassName}' must be renamed to something unique.");
-            }
-
-            names.Add(recipe.RecipeClassName);
-        }
-    }
-
-    [Test]
-    public static void Test_Recipes_HaveUniqueNames()
-    {
-        HashSet<string> names = new();
-
-        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
-        {
-            if (names.Contains(recipe.Name))
-            {
-                Assert.Fail($"The '{recipe.Category}' class has a recipe '{recipe.Name}' which must be renamed to something unique.");
-            }
-
-            names.Add(recipe.Name);
-        }
-    }
-
-    [Test]
-    public static void Test_ChapterNames_ArePresentForAllRecipes()
-    {
-        string[] chapterNames = Query.GetChapterNamesInOrder();
-
-        foreach (RecipeInfo recipe in Query.GetWebRecipesByCategory().SelectMany(x => x.Value))
-        {
-            chapterNames.Should().Contain(recipe.Chapter);
-        }
+        db.Recipes.Select(x => x.RecipeClassName).Should().OnlyHaveUniqueItems();
+        db.Recipes.Select(x => x.Name).Should().OnlyHaveUniqueItems();
+        db.Recipes.Select(x => x.Description).Should().OnlyHaveUniqueItems();
+        db.Recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
+        db.Recipes.Select(x => x.RecipeUrl).Should().OnlyHaveUniqueItems();
     }
 }
