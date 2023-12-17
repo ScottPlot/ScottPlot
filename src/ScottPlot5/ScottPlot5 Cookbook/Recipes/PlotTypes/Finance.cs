@@ -1,22 +1,19 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Finance : RecipePageBase
+public class Finance : ICategory
 {
-    public override RecipePageDetails PageDetails => new()
-    {
-        Chapter = Chapter.PlotTypes,
-        PageName = "Financial Plot",
-        PageDescription = "Finance plots display price data binned into time ranges",
-    };
+    public string Chapter => "Plot Types";
+    public string CategoryName => "Financial Plot";
+    public string CategoryDescription => "Finance plots display price data binned into time ranges";
 
-    internal class OHLC : RecipeTestBase
+    public class OHLC : RecipeBase
     {
         public override string Name => "OHLC Chart";
         public override string Description => "OHLC charts use symbols to display price data " +
             "(open, high, low, and close) for specific time ranges.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);
@@ -25,7 +22,7 @@ internal class Finance : RecipePageBase
         }
     }
 
-    internal class Candlestick : RecipeTestBase
+    public class Candlestick : RecipeBase
     {
         public override string Name => "Candlestick Chart";
         public override string Description => "Candlestick charts use symbols to display price data. " +
@@ -34,7 +31,7 @@ internal class Finance : RecipePageBase
             "between open and close.";
 
         [Test]
-        public override void Recipe()
+        public override void Execute()
         {
             ScottPlot.RandomDataGenerator gen = new(0);
             var prices = gen.RandomOHLCs(30);
