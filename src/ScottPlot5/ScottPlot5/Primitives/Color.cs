@@ -24,29 +24,20 @@ public readonly struct Color
         }
     }
 
-    public Color
-        (byte red, byte green, byte blue, byte alpha = 255)
+    public Color(byte red, byte green, byte blue, byte alpha = 255)
     {
-        //INFO: alpha do NOT work with SVG when color is black
-        // this is dirty a workaround for bug #3063
-        if (red == 0 && green == 0 && blue == 0 && alpha < 255)
-        {
-            Red = 1;
-            Green = 1;
-            Blue = 1;
-        }
-        else
-        {
-            Red = red;
-            Green = green;
-            Blue = blue;
-        }
+        Red = red;
+        Green = green;
+        Blue = blue;
         Alpha = alpha;
     }
 
     public Color(float red, float green, float blue, float alpha = 1)
-        : this((byte)(red * 255), (byte)(green * 255), (byte)(blue * 255), (byte)(alpha * 255))
     {
+        Red = (byte)(red * 255);
+        Green = (byte)(green * 255);
+        Blue = (byte)(blue * 255);
+        Alpha = (byte)(alpha * 255);
     }
 
     public static bool operator ==(Color a, Color b)
@@ -78,10 +69,23 @@ public readonly struct Color
     public readonly Color WithRed(byte red) => new(red, Green, Blue, Alpha);
     public readonly Color WithGreen(byte green) => new(Red, green, Blue, Alpha);
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
-    public readonly Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
-    public readonly Color WithAlpha(double alpha) => new(Red, Green, Blue, (byte)(alpha * 255));
 
-    public readonly Color WithOpacity(double opacity = .5) => new(Red, Green, Blue, (byte)(opacity * 255));
+    public readonly Color WithAlpha(byte alpha)
+    {
+        // If requesting a semitransparent black, make it slightly non-black
+        // to prevent SVG export from rendering the color as opaque.
+        // https://github.com/ScottPlot/ScottPlot/issues/3063
+        if (Red == 0 && Green == 0 && Blue == 0 && alpha < 255)
+        {
+            return new Color(1, 1, 1, alpha);
+        }
+
+        return new(Red, Green, Blue, alpha);
+    }
+
+    public readonly Color WithAlpha(double alpha) => WithAlpha((byte)(alpha * 255));
+
+    public readonly Color WithOpacity(double opacity = .5) => WithAlpha((byte)(opacity * 255));
 
     public static Color Gray(byte value) => new(value, value, value);
 
