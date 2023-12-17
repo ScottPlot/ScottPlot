@@ -15,7 +15,7 @@ public static class Query
             "Statistics",
         };
     }
-    
+
     // TODO: private
     public static IEnumerable<ICategory> GetCategories()
     {
