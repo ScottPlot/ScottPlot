@@ -21,6 +21,7 @@
 * Marker Plot: `Plot.AddMarker()` can now be used to place a single marker on the plot (#3076, #2806) _Thanks @Gray-lab_
 * Rendering: Fixed issue where disabling a plottable's visibility prevented rendering of subsequent plottables (#3097, #3089) _Thanks @KroMignon_
 * SVG: Improved rendering of shadows by adding slight color to semitransparent black (#3098, #3063) _Thanks @KroMignon_
+* Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
