@@ -51,6 +51,7 @@ namespace ScottPlot
                 MarkerShape.filledTriangleDown => new MarkerShapes.FilledTriangleDown(),
                 MarkerShape.openTriangleUp => new MarkerShapes.OpenTriangleUp(),
                 MarkerShape.openTriangleDown => new MarkerShapes.OpenTriangleDown(),
+                MarkerShape.horizontalBar => new MarkerShapes.HorizontalBar(),
                 _ => throw new NotImplementedException($"unsupported {shape.GetType()}: {shape}"),
             };
         }
