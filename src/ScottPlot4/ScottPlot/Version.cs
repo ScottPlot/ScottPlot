@@ -29,4 +29,37 @@ public static class Version
     {
         return $"ScottPlot " + GetShortVersionString();
     }
+
+    /// <summary>
+    /// Throws an exception if this version of ScottPlot does not match the expected major version
+    /// </summary>
+    public static void ShouldBe(int major)
+    {
+        if (major != AssemblyVersion.Major)
+        {
+            throw new InvalidOperationException($"ScottPlot was expected to be {major}.x.x but is actually {ShortString}");
+        }
+    }
+
+    /// <summary>
+    /// Throws an exception if this version of ScottPlot does not match the expected major and minor versions
+    /// </summary>
+    public static void ShouldBe(int major, int minor)
+    {
+        if ((major != AssemblyVersion.Major) || (minor != AssemblyVersion.Minor))
+        {
+            throw new InvalidOperationException($"ScottPlot was expected to be {major}.{minor}.x but is actually {ShortString}");
+        }
+    }
+
+    /// <summary>
+    /// Throws an exception if this version of ScottPlot does not match the exact one given
+    /// </summary>
+    public static void ShouldBe(int major, int minor, int build)
+    {
+        if ((major != AssemblyVersion.Major) || (minor != AssemblyVersion.Minor) || (build != AssemblyVersion.Build))
+        {
+            throw new InvalidOperationException($"ScottPlot was expected to be {major}.{minor}.{build} but is actually {ShortString}");
+        }
+    }
 }
