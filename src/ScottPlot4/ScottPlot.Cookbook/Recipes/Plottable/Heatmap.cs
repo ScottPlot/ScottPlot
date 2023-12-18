@@ -564,4 +564,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hm.UseParallel = true;
         }
     }
+
+    public class HeatmapInverted : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_inverted";
+        public string Title => "Inverted Heatmap";
+        public string Description =>
+            "An inverted heatmap can be created by reversing the colors in the colormap.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            var hm1 = plt.AddHeatmap(data, lockScales: false);
+            hm1.Update(data, ScottPlot.Drawing.Colormap.Turbo);
+
+            var hm2 = plt.AddHeatmap(data, lockScales: false);
+            hm2.XMin = 75;
+            hm2.Update(data, ScottPlot.Drawing.Colormap.Turbo.Reversed());
+        }
+    }
 }

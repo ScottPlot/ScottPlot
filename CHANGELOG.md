@@ -25,6 +25,7 @@
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
 * Performance: Improved performance of Bar and Finance plots by not drawing shapes outside the data area (#3053, #3078) _Thanks @AndreyPalyutin_
+* Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
 
 ## ScottPlot 5.0.10-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_
