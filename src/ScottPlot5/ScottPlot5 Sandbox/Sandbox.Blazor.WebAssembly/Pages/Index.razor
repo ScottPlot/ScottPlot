@@ -1,10 +1,16 @@
 ﻿@page "/"
 @using ScottPlot;
 @using ScottPlot.Blazor;
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
 
-<h3>ScottPlot Blazor Control</h3>
+<h1>ScottPlot in Blazor</h1>
 
 <BlazorPlot @ref="BlazorPlot" Style="width: 100%; height: 600px;" />
+
+<div class="mt-5 text-muted text-center">
+    @ScottPlot.Version.LongString Running on .NET @Environment.Version
+</div>
 
 @code {
     BlazorPlot BlazorPlot = new();

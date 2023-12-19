@@ -3,18 +3,17 @@
 @using ScottPlot;
 @using ScottPlot.Blazor;
 
-<h1 class="text-center">Signal Plot with One Million Points</h1>
+<h1>Signal Plot</h1>
 
-<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000)">1k</button>
-<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(10_000)">10k</button>
-<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(100_000)">100k</button>
-<button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000_000)">1M</button>
+<div class="my-4">
+    <div class="fs-5">Number of data points:</div>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000)">1k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(10_000)">10k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(100_000)">100k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000_000)">1M</button>
+</div>
 
-<h3 class="my-5">Standard Plot:</h3>
 <BlazorPlot @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
-
-<h3 class="my-5">WebGL Plot:</h3>
-<BlazorPlotGL @ref="BlazorPlotGL" Style="width: min(100%, 800px); height: 600px;" />
 
 @code {
     BlazorPlot BlazorPlot = new();
@@ -32,17 +31,10 @@
 
     private void SetupPlots(int count)
     {
-        SetupPlot(BlazorPlot, count);
-        SetupPlot(BlazorPlotGL, count);
-    }
-
-    private void SetupPlot(IPlotControl plotControl, int count)
-    {
-        plotControl.Plot.Benchmark.IsVisible = true;
-        plotControl.Plot.Clear();
-        plotControl.Plot.Title($"Signal with {count:N0} points");
-        plotControl.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));
-        plotControl.Plot.AutoScale();
-        plotControl.Refresh();
+        BlazorPlot.Plot.Clear();
+        BlazorPlot.Plot.Title($"Signal with {count:N0} points");
+        BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));
+        BlazorPlot.Plot.AutoScale();
+        BlazorPlot.Refresh();
     }
 }
