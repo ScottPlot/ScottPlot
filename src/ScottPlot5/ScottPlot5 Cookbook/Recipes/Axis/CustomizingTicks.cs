@@ -60,4 +60,37 @@ public class CustomizingTicks : ICategory
             myPlot.XAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
         }
     }
+
+    public class CustomTicks : RecipeBase
+    {
+        public override string Name => "Custom Tick Positions";
+        public override string Description => "Users can define ticks to be placed at specific locations.";
+
+        [Test]
+        public override void Execute()
+        {
+            // display sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // create a manual tick generator and add ticks
+            ScottPlot.TickGenerators.NumericManual ticks = new();
+
+            // add major ticks with their labels
+            ticks.AddMajor(0, "zero");
+            ticks.AddMajor(20, "twenty");
+            ticks.AddMajor(50, "fifty");
+
+            // add minor ticks
+            ticks.AddMinor(22);
+            ticks.AddMinor(25);
+            ticks.AddMinor(32);
+            ticks.AddMinor(35);
+            ticks.AddMinor(42);
+            ticks.AddMinor(45);
+
+            // tell the horizontal axis to use the custom tick genrator
+            myPlot.BottomAxis.TickGenerator = ticks;
+        }
+    }
 }

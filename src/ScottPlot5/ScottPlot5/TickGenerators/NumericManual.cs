@@ -2,13 +2,23 @@
 
 public class NumericManual : ITickGenerator
 {
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Tick[] Ticks
+    {
+        get => TickList.ToArray();
+        set => throw new InvalidOperationException();
+    }
+
+    private readonly List<Tick> TickList = new();
 
     public int MaxTickCount { get; set; } = 50;
 
+    public NumericManual()
+    {
+    }
+
     public NumericManual(Tick[] ticks)
     {
-        Ticks = ticks;
+        TickList.AddRange(ticks);
     }
 
     public NumericManual(double[] positions, string[] labels)
@@ -16,13 +26,26 @@ public class NumericManual : ITickGenerator
         if (positions.Length != labels.Length)
             throw new ArgumentException($"{nameof(positions)} must have same length as {nameof(labels)}");
 
-        Ticks = Enumerable
-            .Range(0, positions.Length)
-            .Select(x => new Tick(positions[x], labels[x]))
-            .ToArray();
+        for (int i = 0; i < positions.Length; i++)
+        {
+            AddMajor(positions[i], labels[i]);
+        }
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size) { }
+
+    public void Add(Tick tick)
     {
+        TickList.Add(tick);
+    }
+
+    public void AddMajor(double position, string label)
+    {
+        Add(Tick.Major(position, label));
+    }
+
+    public void AddMinor(double position)
+    {
+        Add(Tick.Minor(position));
     }
 }
