@@ -8,19 +8,19 @@ using ScottPlot.IO;
 namespace ScottPlot;
 
 /// <summary>
-/// Bitmap representation of a <seealso cref="SKImage"/>
+/// Bitmap representation of a <seealso cref="SkiaSharp.SKImage"/>
 /// </summary>
 public class Image : IDisposable
 {
-    private bool disposed;
+    private bool IsDisposed = false;
 
-    protected readonly SKImage skiaImage;
-    public int Width => skiaImage.Width;
-    public int Height => skiaImage.Height;
+    protected readonly SKImage SKImage;
+    public int Width => SKImage.Width;
+    public int Height => SKImage.Height;
 
     public Image(SKImage skiaImage)
     {
-        this.skiaImage = skiaImage;
+        this.SKImage = skiaImage;
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class Image : IDisposable
     /// </summary>
     private byte[] GetBitmapBytes()
     {
-        using SKBitmap skBitmap = SKBitmap.FromImage(skiaImage);
+        using SKBitmap skBitmap = SKBitmap.FromImage(SKImage);
 
         BitmapHeader header = new(Width, Height);
 
@@ -66,7 +66,7 @@ public class Image : IDisposable
             return GetBitmapBytes();
         }
 
-        using var skData = skiaImage.Encode(skFormat, quality);
+        using var skData = SKImage.Encode(skFormat, quality);
         return skData.ToArray();
     }
 
@@ -112,11 +112,11 @@ public class Image : IDisposable
 
     public void Dispose()
     {
-        if (disposed)
+        if (IsDisposed)
             return;
 
-        skiaImage.Dispose();
-        disposed = true;
+        SKImage.Dispose();
+        IsDisposed = true;
 
         GC.SuppressFinalize(this);
     }
