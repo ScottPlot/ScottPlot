@@ -1,4 +1,7 @@
-﻿namespace ScottPlot.Legends;
+﻿using SkiaSharp;
+using System.Net.Security;
+
+namespace ScottPlot.Legends;
 
 public class Legend
 {
@@ -40,9 +43,10 @@ public class Legend
 
         // measure all items to determine dimensions of the legend
         using SKPaint paint = new();
-        Font.ApplyToPaint(paint);
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(rp.Plot, paint);
 
-        SizedLegendItem[] sizedItems = GetSizedLegendItems(items, paint);
+        if (sizedItems?.Any() != true)
+            return;
 
         float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
         float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
@@ -50,28 +54,86 @@ public class Legend
         PixelSize legendSize = new(maxWidth + Padding.Left + Padding.Right, totalheight + Padding.Top + Padding.Bottom);
         PixelRect legendRect = legendSize.AlignedInside(rp.DataRect, Alignment, Margin);
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        Pixel offset = new(legendRect.Left + Padding.Left, legendRect.Top + Padding.Top);
 
         // render the legend panel
-        Drawing.Fillectangle(rp.Canvas, legendShadowRect, ShadowFill.Color);
-        Drawing.Fillectangle(rp.Canvas, legendRect, BackgroundFill.Color);
-        Drawing.DrawRectangle(rp.Canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
+        RenderLegend(sizedItems, rp.Canvas, paint, offset, legendRect, legendShadowRect);
+    }
 
-        // render all items inside the legend
-        float yOffset = legendRect.Top + Padding.Top;
-        for (int i = 0; i < sizedItems.Length; i++)
+    public void AsSvg(ScottPlot.Plot plot, Stream svgStream, int maxWidth = 0, int maxHeight = 0)
+    {
+        if (svgStream is null)
+            throw new NullReferenceException($"invalid Stream");
+
+        var canvas = RenderToObject(plot, svgStream: svgStream, maxWidth: maxWidth, maxHeight: maxHeight) as SKCanvas;
+        canvas?.Dispose();
+    }
+
+    public Image GetImage(Plot plot, int maxWidth = 0, int maxHeight = 0)
+    {
+        SKSurface? surface = RenderToObject(plot, maxWidth: maxWidth, maxHeight: maxHeight) as SKSurface
+            ?? throw new NullReferenceException();
+        SKImage skimg = surface.Snapshot();
+        surface.Dispose();
+        return new Image(skimg);
+    }
+
+    public SvgImage GetSvgImage(Plot plot)
+    {
+        using SKPaint paint = new();
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(plot, paint);
+        float maxWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max() + Padding.Left + Padding.Right + 2 * ShadowOffset;
+        float totalHeight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum() + Padding.Top + Padding.Bottom + 2 * ShadowOffset;
+        int width = (int)Math.Ceiling(maxWidth);
+        int height = (int)Math.Ceiling(totalHeight);
+
+        PixelRect legendRect = new(0, width, 0, height);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        Pixel offset = new(legendRect.Left + Padding.Left, legendRect.Top + Padding.Top);
+
+        SvgImage svg = new(width, height);
+        RenderLegend(sizedItems, svg.Canvas, paint, offset, legendRect, legendShadowRect);
+        return svg;
+    }
+
+    private SKObject RenderToObject(ScottPlot.Plot plot, Stream? svgStream = null, int maxWidth = 0, int maxHeight = 0)
+    {
+        // measure all items to determine dimensions of the legend
+        using SKPaint paint = new();
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(plot, paint);
+
+        if (sizedItems.Any() != true)
+            throw new InvalidOperationException($"empty legend items");
+
+        float maxItemWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max() + Padding.Left + Padding.Right + 2 * ShadowOffset;
+        if (maxWidth > 0)
+            maxItemWidth = Math.Min(maxItemWidth, maxWidth);
+        float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum() + Padding.Top + Padding.Bottom + 2 * ShadowOffset;
+        if (maxHeight > 0)
+            totalheight = Math.Min(totalheight, maxHeight);
+
+        PixelSize legendSize = new(maxItemWidth, totalheight);
+        PixelRect legendRect = new(new Pixel(ShadowOffset, ShadowOffset), legendSize.Width - 2 * ShadowOffset, legendSize.Height - 2 * ShadowOffset);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        Pixel offset = new(legendRect.Left + Padding.Left + ShadowOffset, legendRect.Top + Padding.Top + ShadowOffset);
+
+        if (svgStream is null)
         {
-            Common.RenderItem(
-                canvas: rp.Canvas,
-                paint: paint,
-                sizedItem: sizedItems[i],
-                x: legendRect.Left + Padding.Left,
-                y: yOffset,
-                symbolWidth: SymbolWidth,
-                symbolPadRight: SymbolLabelSeparation,
-                itemPadding: ItemPadding);
+            SKImageInfo info = new(
+                width: (int)Math.Ceiling(legendSize.Width),
+                height: (int)Math.Ceiling(legendSize.Height),
+                colorType: SKColorType.Rgba8888,
+                alphaType: SKAlphaType.Premul);
 
-            yOffset += sizedItems[i].Size.WithChildren.Height;
+            SKSurface surface = SKSurface.Create(info) ?? throw new NullReferenceException($"invalid SKImageInfo");
+
+            RenderLegend(sizedItems, surface.Canvas, paint, offset, legendRect, legendShadowRect);
+            return surface;
         }
+
+        SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, legendSize.Width, legendSize.Height), svgStream);
+        RenderLegend(sizedItems, canvas, paint, offset, legendRect, legendShadowRect);
+        return canvas;
     }
 
     public IEnumerable<LegendItem> GetItems()
@@ -93,6 +155,19 @@ public class Legend
         return allItems.ToArray();
     }
 
+    private SizedLegendItem[] GetSizedLegendItems(ScottPlot.Plot plot, SKPaint paint)
+    {
+        IEnumerable<LegendItem> allItems = plot.PlottableList.Where(x => x.IsVisible).SelectMany(x => x.LegendItems).Concat(ManualItems);
+
+        LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
+        if (!items.Any())
+            return Array.Empty<SizedLegendItem>();
+
+        // measure all items to determine dimensions of the legend
+        Font.ApplyToPaint(paint);
+        return GetSizedLegendItems(items, paint);
+    }
+
     private SizedLegendItem[] GetSizedLegendItems(IEnumerable<LegendItem> items, SKPaint paint)
     {
         List<SizedLegendItem> sizedItems = new();
@@ -107,5 +182,30 @@ public class Legend
         }
 
         return sizedItems.ToArray();
+    }
+
+    private void RenderLegend(SizedLegendItem[] sizedItems, SKCanvas canvas, SKPaint paint, Pixel offset, PixelRect legendRect, PixelRect legendShadowRect)
+    {
+        // render the legend panel
+        Drawing.Fillectangle(canvas, legendShadowRect, ShadowFill.Color);
+        Drawing.Fillectangle(canvas, legendRect, BackgroundFill.Color);
+        Drawing.DrawRectangle(canvas, legendRect, OutlineStyle.Color, OutlineStyle.Width);
+
+        // render all items inside the legend
+        float yOffset = offset.Y;
+        foreach (SizedLegendItem item in sizedItems)
+        {
+            Common.RenderItem(
+                canvas: canvas,
+                paint: paint,
+                sizedItem: item,
+                x: offset.X,
+                y: yOffset,
+                symbolWidth: SymbolWidth,
+                symbolPadRight: SymbolLabelSeparation,
+                itemPadding: ItemPadding);
+
+            yOffset += item.Size.WithChildren.Height;
+        }
     }
 }

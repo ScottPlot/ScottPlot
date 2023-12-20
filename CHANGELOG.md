@@ -24,6 +24,7 @@
 * Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
 * Version: Added `ShouldBe()` method to assert the version of ScottPlot matches the expected one (#3093)
 * Ticks: `TickGenerators.NumericManual` now has `AddMajor()` and `AddMinor()` to simplify manual tick placement (#3105, #2957) _Thanks Lake_
+* Legend: Added `Plot.GetLegendImage()` and `Plot.GetLegendSvg()` for displaying legends outside plots (#3062, #2934) _Thanks @KroMignon, @lichen95, and @bclehmann_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_

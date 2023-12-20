@@ -38,4 +38,36 @@ internal class LegendTests
 
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Legend_Image()
+    {
+        Plot plt = new();
+
+        var sig1 = plt.Add.Signal(Generate.Sin());
+        var sig2 = plt.Add.Signal(Generate.Cos());
+
+        sig1.Label = "Sine";
+        sig2.Label = "Cosine";
+
+        Image img = plt.GetLegendImage();
+        img.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Legend_SvgImage()
+    {
+        Plot plt = new();
+
+        var sig1 = plt.Add.Signal(Generate.Sin());
+        var sig2 = plt.Add.Signal(Generate.Cos());
+
+        sig1.Label = "Sine";
+        sig2.Label = "Cosine";
+
+        plt.Legend.IsVisible = true;
+
+        SvgImage svg = plt.GetLegendSvg();
+        svg.SaveTestImage();
+    }
 }

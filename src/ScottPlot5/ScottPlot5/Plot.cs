@@ -612,6 +612,16 @@ public class Plot : IDisposable
         return bytes;
     }
 
+    /// <summary>
+    /// Returns the content of the legend as a raster image
+    /// </summary>
+    public Image GetLegendImage() => Legend.GetImage(this);
+
+    /// <summary>
+    /// Returns the content of the legend as SVG (vector) image
+    /// </summary>
+    public SvgImage GetLegendSvg() => Legend.GetSvgImage(this);
+
     #endregion
 
     #region Helper Methods
