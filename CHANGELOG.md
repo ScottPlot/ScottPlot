@@ -13,9 +13,24 @@
 * Cookbook: Rewrote reflection and source file parsing for simplified querying (#3081, #3080, #3079, #2962, #2755)
 * Function: Added a new line plot type where Y position is a user defined function (#3094) _Thanks @bclehmann_
 * Axes: Improved axis label alignment for secondary axes (#3030) _Thanks @albyoo_
+* Statistics: Added generic overloads to `Statistics.Descriptive` class, renamed `StDev()` to `StandardDeviation()`, and added methods for calculating both sample and population statistics (#3071 and #3055) _Thanks @arthurits_
+* Markers: Added a `None` marker (#3075, #3057) _Thanks @Gray-lab_
+* Generate: Added methods for generating random marker shapes and colors
+* Generate: `Random()` is deprecated in favor of `RandomSample()`
+* Plot: Added `ShowLegend()` and `HideLegend()` helper methods which set `Plot.Legend.IsVisible`
+* Marker Plot: `Plot.AddMarker()` can now be used to place a single marker on the plot (#3076, #2806) _Thanks @Gray-lab_
+* Rendering: Fixed issue where disabling a plottable's visibility prevented rendering of subsequent plottables (#3097, #3089) _Thanks @KroMignon_
+* SVG: Improved rendering of shadows by adding slight color to semitransparent black (#3098, #3063) _Thanks @KroMignon_
+* Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
+* Version: Added `ShouldBe()` method to assert the version of ScottPlot matches the expected one (#3093)
+* Ticks: `TickGenerators.NumericManual` now has `AddMajor()` and `AddMinor()` to simplify manual tick placement (#3105, #2957) _Thanks Lake_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
+* Performance: Improved performance of Bar and Finance plots by not drawing shapes outside the data area (#3053, #3078) _Thanks @AndreyPalyutin_
+* Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
+* Version: Added `ShouldBe()` method to assert the version of ScottPlot matches the expected one (#3093)
+* Marker: Added support for `Marker.horizontalBar` to compliment `verticalBar` (#3101) _Thanks @SerhiiMahera_
 
 ## ScottPlot 5.0.10-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_

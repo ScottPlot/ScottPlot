@@ -11,12 +11,14 @@ public partial class CookbookViewer : Form, IDemoWindow
     public string Description => "Common ScottPlot features demonstrated " +
         "as interactive graphs displayed next to the code used to create them";
 
-    IEnumerable<IRecipe> InstantiatedRecipes = Query.GetInstantiatedRecipes();
-    Dictionary<ICategory, IEnumerable<RecipeInfo>> RecipeInfoByCategory = Query.GetWebRecipesByCategory();
+    readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = Query.GetRecipesByCategory();
+
+    readonly SourceDatabase SB;
 
     public CookbookViewer()
     {
         InitializeComponent();
+        SB = new();
     }
 
     private void CookbookViewer_Load(object sender, EventArgs e)
@@ -26,8 +28,8 @@ public partial class CookbookViewer : Form, IDemoWindow
 
         foreach (string chapter in Query.GetChapterNamesInOrder())
         {
-            IEnumerable<ICategory> categories = RecipeInfoByCategory.Keys.Where(x => x.Chapter == chapter);
-            foreach (ICategory category in categories)
+            IEnumerable<ICategory> categoriesInChapter = RecipesByCategory.Keys.Where(x => x.Chapter == chapter);
+            foreach (ICategory category in categoriesInChapter)
             {
                 ListViewGroup group = new()
                 {
@@ -37,7 +39,7 @@ public partial class CookbookViewer : Form, IDemoWindow
 
                 listView1.Groups.Add(group);
 
-                foreach (RecipeInfo recipe in RecipeInfoByCategory[category])
+                foreach (IRecipe recipe in RecipesByCategory[category])
                 {
                     ListViewItem item = new()
                     {
@@ -58,13 +60,24 @@ public partial class CookbookViewer : Form, IDemoWindow
         if (listView1.SelectedItems.Count == 0)
             return;
 
-        IRecipe recipe = InstantiatedRecipes.Where(x => x.Name == listView1.SelectedItems[0].Text).Single();
+        IRecipe selectedRecipe = RecipesByCategory
+            .SelectMany(x => x.Value)
+            .Where(x => x.Name == listView1.SelectedItems[0].Text)
+            .Single();
 
         formsPlot1.Reset();
-        recipe.Execute(formsPlot1.Plot);
+        selectedRecipe.Execute(formsPlot1.Plot);
         formsPlot1.Refresh();
 
-        RecipeInfo recipeInfo = RecipeInfoByCategory.Values.SelectMany(x => x).Where(x => x.Name == recipe.Name).Single();
-        richTextBox1.Text = recipeInfo.Source;
+        RecipeInfo? recipeInfo = SB.GetInfo(selectedRecipe);
+
+        if (recipeInfo is null)
+        {
+            richTextBox1.Text = "Source code not found.\nRun test suite to generate JSON file.";
+        }
+        else
+        {
+            richTextBox1.Text = recipeInfo.Value.Source;
+        }
     }
 }

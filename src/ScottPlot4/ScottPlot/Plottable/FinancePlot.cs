@@ -168,12 +168,17 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < OHLCs.Count; i++)
             {
                 var ohlc = OHLCs[i];
+
+                var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
+                var ohlcTime = Sequential ? i : ohlc.DateTime.ToOADate();
+
+                bool withinFieldOfView = (dims.XMin <= ohlcTime + ohlcSpan) && (ohlcTime - ohlcSpan <= dims.XMax);
+                if (withinFieldOfView == false) continue;
+
                 bool closedHigher = ohlc.Close >= ohlc.Open;
                 double highestOpenClose = Math.Max(ohlc.Open, ohlc.Close);
                 double lowestOpenClose = Math.Min(ohlc.Open, ohlc.Close);
 
-                var ohlcTime = Sequential ? i : ohlc.DateTime.ToOADate();
-                var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
                 float pixelX = dims.GetPixelX(ohlcTime);
 
                 float boxWidth = (float)(ohlcSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
@@ -231,10 +236,15 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < OHLCs.Count; i++)
             {
                 IOHLC ohlc = OHLCs[i];
-                bool closedHigher = ohlc.Close >= ohlc.Open;
 
                 var ohlcTime = (Sequential) ? i : ohlc.DateTime.ToOADate();
                 var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
+
+                bool withinFieldOfView = (dims.XMin <= ohlcTime + ohlcSpan) && (ohlcTime - ohlcSpan <= dims.XMax);
+                if (withinFieldOfView == false) continue;
+
+                bool closedHigher = ohlc.Close >= ohlc.Open;
+
                 float pixelX = dims.GetPixelX(ohlcTime);
 
                 float boxWidth = (float)(ohlcSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);

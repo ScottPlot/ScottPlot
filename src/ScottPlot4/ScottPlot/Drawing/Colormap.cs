@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 
 namespace ScottPlot.Drawing
@@ -366,6 +367,20 @@ namespace ScottPlot.Drawing
             }
 
             return bmp;
+        }
+
+        public Color[] GetColors()
+        {
+            return Enumerable
+                .Range(0, 255)
+                .Select(x => GetColor(x / 255.0))
+                .ToArray();
+        }
+
+        public Colormap Reversed()
+        {
+            Color[] colors = GetColors().Reverse().ToArray();
+            return new Colormap(colors);
         }
     }
 }

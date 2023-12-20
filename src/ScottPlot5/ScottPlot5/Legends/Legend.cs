@@ -23,9 +23,22 @@ public class Legend
     private const float SymbolLabelSeparation = 5;
     public List<LegendItem> ManualItems { get; set; } = new();
 
+    private readonly Plot Plot;
+
+    public Legend(Plot plot)
+    {
+        Plot = plot;
+    }
+
     public void Render(RenderPack rp)
     {
         if (!IsVisible)
+            return;
+
+        IEnumerable<LegendItem> allItems = GetItems();
+
+        LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
+        if (!items.Any())
             return;
 
         // measure all items to determine dimensions of the legend
@@ -121,6 +134,11 @@ public class Legend
         SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, legendSize.Width, legendSize.Height), svgStream);
         RenderLegend(sizedItems, canvas, paint, offset, legendRect, legendShadowRect);
         return canvas;
+    }
+
+    public IEnumerable<LegendItem> GetItems()
+    {
+        return Plot.PlottableList.SelectMany(x => x.LegendItems).Concat(ManualItems);
     }
 
     /// <summary>

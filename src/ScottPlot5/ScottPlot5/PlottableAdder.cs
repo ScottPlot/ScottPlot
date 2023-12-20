@@ -242,6 +242,24 @@ public class PlottableAdder
         return Scatter(coordinates);
     }
 
+    public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        Plottables.Marker mp = new()
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            Location = new Coordinates(x, y),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Marker Marker(Coordinates location, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        return Marker(location.X, location.Y, shape, size, color);
+    }
+
     public OhlcPlot OHLC(IList<IOHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);

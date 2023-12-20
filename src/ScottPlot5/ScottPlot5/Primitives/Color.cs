@@ -24,8 +24,7 @@ public readonly struct Color
         }
     }
 
-    public Color
-        (byte red, byte green, byte blue, byte alpha = 255)
+    public Color(byte red, byte green, byte blue, byte alpha = 255)
     {
         Red = red;
         Green = green;
@@ -70,10 +69,23 @@ public readonly struct Color
     public readonly Color WithRed(byte red) => new(red, Green, Blue, Alpha);
     public readonly Color WithGreen(byte green) => new(Red, green, Blue, Alpha);
     public readonly Color WithBlue(byte blue) => new(Red, Green, blue, Alpha);
-    public readonly Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
-    public readonly Color WithAlpha(double alpha) => new(Red, Green, Blue, (byte)(alpha * 255));
 
-    public readonly Color WithOpacity(double opacity = .5) => new(Red, Green, Blue, (byte)(opacity * 255));
+    public readonly Color WithAlpha(byte alpha)
+    {
+        // If requesting a semitransparent black, make it slightly non-black
+        // to prevent SVG export from rendering the color as opaque.
+        // https://github.com/ScottPlot/ScottPlot/issues/3063
+        if (Red == 0 && Green == 0 && Blue == 0 && alpha < 255)
+        {
+            return new Color(1, 1, 1, alpha);
+        }
+
+        return new(Red, Green, Blue, alpha);
+    }
+
+    public readonly Color WithAlpha(double alpha) => WithAlpha((byte)(alpha * 255));
+
+    public readonly Color WithOpacity(double opacity = .5) => WithAlpha((byte)(opacity * 255));
 
     public static Color Gray(byte value) => new(value, value, value);
 

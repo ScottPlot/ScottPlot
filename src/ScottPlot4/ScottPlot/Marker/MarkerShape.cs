@@ -20,5 +20,6 @@
         filledTriangleDown,
         openTriangleUp,
         openTriangleDown,
+        horizontalBar
     }
 }
