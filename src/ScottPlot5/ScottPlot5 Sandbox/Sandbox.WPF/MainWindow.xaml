@@ -8,13 +8,5 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="ScottPlot 5 - WPF Sandbox" Height="300" Width="500">
-    <TabControl>
-        <TabItem Header="WpfPlot">
-            <ScottPlot:WpfPlot x:Name="WpfPlot1"/>
-        </TabItem>
-        <TabItem Header="WpfPlotGL">
-            <ScottPlot:WpfPlotGL x:Name="WpfPlot2"/>
-        </TabItem>
-    </TabControl>
-
+    <ScottPlot:WpfPlot x:Name="WpfPlot1"/>
 </Window>
