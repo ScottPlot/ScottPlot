@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
         <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.6" />
     </ItemGroup>
 
