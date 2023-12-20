@@ -411,5 +411,16 @@ public static class Generate
         return markerShapes[i];
     }
 
+    public static LinePattern RandomLinePattern()
+    {
+        LinePattern[] linePatterns = Enum
+            .GetValues(typeof(LinePattern))
+            .Cast<LinePattern>()
+            .ToArray();
+
+        int i = RandomInteger(linePatterns.Length);
+        return linePatterns[i];
+    }
+
     #endregion
 }
