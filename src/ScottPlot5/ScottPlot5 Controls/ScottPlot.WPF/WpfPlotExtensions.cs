@@ -47,7 +47,7 @@ internal static class WpfPlotExtensions
         };
     }
 
-    internal static ContextMenu GetContextMenu(this Interaction interaction)
+    internal static ContextMenu GetContextMenu(this IPlotInteraction interaction)
     {
         ContextMenu menu = new();
 

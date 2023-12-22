@@ -34,7 +34,7 @@ internal static class FormsPlotExtensions
         };
     }
 
-    internal static ContextMenuStrip GetContextMenu(this Interaction interaction)
+    internal static ContextMenuStrip GetContextMenu(this IPlotInteraction interaction)
     {
         ContextMenuStrip menu = new();
 

@@ -15,7 +15,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public GRContext? GRContext => null;
 
-    public Interaction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; private set; }
 
     public float DisplayScale { get; set; }
 
@@ -33,7 +33,7 @@ public class EtoPlot : Drawable, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
 
-        Interaction = new(this)
+        Interaction = new Interaction(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
         };
@@ -69,7 +69,7 @@ public class EtoPlot : Drawable, IPlotControl
         return menu;
     }
 
-    public void Replace(Interaction interaction)
+    public void Replace(IPlotInteraction interaction)
     {
         Interaction = interaction;
     }

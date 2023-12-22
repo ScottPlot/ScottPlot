@@ -17,12 +17,12 @@ public interface IPlotControl
     /// <summary>
     /// Advanced options for configuring how user inputs manipulate the plot
     /// </summary>
-    Interaction Interaction { get; }
+    IPlotInteraction Interaction { get; }
 
     /// <summary>
     /// Replace the interaction back-end with a custom one
     /// </summary>
-    void Replace(Interaction interaction);
+    void Replace(IPlotInteraction interaction);
 
     /// <summary>
     /// Launch the default pop-up menu (typically in response to a right-click) at the given position in the control

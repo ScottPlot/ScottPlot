@@ -21,7 +21,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public SkiaSharp.GRContext? GRContext => null;
 
-    public Interaction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; private set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
@@ -31,7 +31,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
 
-        Interaction = new(this)
+        Interaction = new Interaction(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
         };
@@ -83,7 +83,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
         return menu;
     }
 
-    public void Replace(Interaction interaction)
+    public void Replace(IPlotInteraction interaction)
     {
         Interaction = interaction;
     }

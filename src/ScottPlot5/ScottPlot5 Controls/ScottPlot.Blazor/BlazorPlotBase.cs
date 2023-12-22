@@ -26,10 +26,10 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         HandlerKeyUp += OnKeyUp;
 
         DisplayScale = DetectDisplayScale();
-        Interaction = new(this);
+        Interaction = new Interaction(this);
     }
 
-    public Interaction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; private set; }
 
     public GRContext? GRContext => null;
 
@@ -49,7 +49,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public virtual void Refresh() { }
 
-    public void Replace(Interaction interaction)
+    public void Replace(IPlotInteraction interaction)
     {
         Interaction = interaction;
     }
