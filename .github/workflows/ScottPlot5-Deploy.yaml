@@ -41,12 +41,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: ✨ Setup Java 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'microsoft'
-          java-version: '17'
-
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
         with:
@@ -94,6 +88,14 @@ jobs:
 
       - name: 🚀 Deploy ScottPlot.WinUI
         working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 🚀 Deploy ScottPlot.Blazor
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Blazor"
         run: |
           dotnet restore
           dotnet build --configuration Release
