@@ -16,7 +16,6 @@ public class LineStyle
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
     {
         if (IsVisible == false) return;
-        if (Pattern == LinePattern.None) return;
         if (Width == 0) return;
 
         this.ApplyToPaint(paint);
