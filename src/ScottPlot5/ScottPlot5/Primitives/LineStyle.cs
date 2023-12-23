@@ -10,6 +10,16 @@ public class LineStyle
     public Color Color { get; set; } = Colors.Black;
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
     public bool IsVisible { get; set; } = true;
-    public static LineStyle None => new() { IsVisible = false, Color = Colors.Transparent, Width = 0 };
+    public static LineStyle None => new() { IsVisible = false };
     public bool AntiAlias { get; set; } = true;
+
+    public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
+    {
+        if (IsVisible == false) return;
+        if (Pattern == LinePattern.None) return;
+        if (Width == 0) return;
+
+        this.ApplyToPaint(paint);
+        canvas.DrawLine(line.X1, line.Y1, line.X2, line.Y2, paint);
+    }
 }

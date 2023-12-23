@@ -19,9 +19,9 @@ public partial class DraggableAxisLines : Form, IDemoWindow
         formsPlot1.Plot.Add.Signal(Generate.Sin());
         formsPlot1.Plot.Add.Signal(Generate.Cos());
         VLine = formsPlot1.Plot.Add.VerticalLine(23);
-        VLine.Label.Text = "VLine";
+        VLine.Text = "VLine";
         HLine = formsPlot1.Plot.Add.HorizontalLine(0.42);
-        HLine.Label.Text = "HLine";
+        HLine.Text = "HLine";
         formsPlot1.Refresh();
 
         // use events for custom mouse interactivity
@@ -82,12 +82,12 @@ public partial class DraggableAxisLines : Form, IDemoWindow
         else if (PlottableBeingDragged == VLine)
         {
             VLine.X = rect.HorizontalCenter;
-            VLine.Label.Text = $"{VLine.X:0.00}";
+            VLine.Text = $"{VLine.X:0.00}";
         }
         else if (PlottableBeingDragged == HLine)
         {
             HLine.Y = rect.VerticalCenter;
-            HLine.Label.Text = $"{HLine.Y:0.00}";
+            HLine.Text = $"{HLine.Y:0.00}";
         }
 
         // if something is being dragged, force a render

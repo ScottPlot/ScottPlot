@@ -39,10 +39,9 @@ public class HorizontalLine : AxisLine
             return;
 
         // draw line inside the data area
+        PixelLine line = new(x1, y, x2, y);
         using SKPaint paint = new();
-        Pixel px1 = new(x1, y);
-        Pixel px2 = new(x2, y);
-        Drawing.DrawLine(rp.Canvas, paint, px1, px2, LineStyle);
+        LineStyle.Render(rp.Canvas, paint, line);
     }
 
     public override void RenderLast(RenderPack rp)

@@ -36,11 +36,10 @@ public class VerticalLine : AxisLine
         if (!rp.DataRect.ContainsX(x))
             return;
 
-        // draw line
+        // draw line inside the data area
+        PixelLine line = new(x, y1, x, y2);
         using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawLine(x, y1, x, y2, paint);
-
+        LineStyle.Render(rp.Canvas, paint, line);
     }
 
     public override void RenderLast(RenderPack rp)
