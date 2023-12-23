@@ -51,12 +51,6 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '17'
-      - name: 🚚 Restore ScottPlot5
-        run: dotnet restore ${{ env.SLN_SP5_TEST }}
-      - name: 🛠️ Build ScottPlot5
-        run: dotnet build ${{ env.SLN_SP5_TEST }} --configuration Release
-      - name: 🧪 Test ScottPlot5
-        run: dotnet test ${{ env.SLN_SP5_TEST }} --configuration Release --verbosity minimal
       - name: 🚚 Install Additional Workloads
         run: dotnet workload install maui-android maui-ios maccatalyst
       - name: 🚚 Workload Restore ScottPlot5

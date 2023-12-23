@@ -62,12 +62,6 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '17'
-      - name: 🚚 Restore
-        run: dotnet restore ${{ env.TEST_SOLUTION }}
-      - name: 🛠️ Build
-        run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release
-      - name: 🧪 Test
-        run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
       - name: 🚚 Install Additional Workloads
         run: dotnet workload install maui-android maui-ios maccatalyst
       - name: 🚚 Workload Restore
