@@ -37,13 +37,13 @@ public partial class MultiAxis : Form, IDemoWindow
         var sig1 = formsPlot1.Plot.Add.Signal(data1);
         sig1.Axes.YAxis = YAxis1;
         sig1.Axes.YAxis.Label.Text = "YAxis1";
-        sig1.Axes.YAxis.Label.Font.Color = sig1.LineStyle.Color;
+        sig1.Axes.YAxis.Label.ForeColor = sig1.LineStyle.Color;
 
         double[] data2 = ScottPlot.RandomDataGenerator.Generate.RandomWalk(count: 51, mult: 1000);
         var sig2 = formsPlot1.Plot.Add.Signal(data2);
         sig2.Axes.YAxis = YAxis2;
         sig2.Axes.YAxis.Label.Text = "YAxis2";
-        sig2.Axes.YAxis.Label.Font.Color = sig2.LineStyle.Color;
+        sig2.Axes.YAxis.Label.ForeColor = sig2.LineStyle.Color;
 
         formsPlot1.Plot.AutoScale();
         formsPlot1.Plot.Zoom(.8, .7); // zoom out slightly

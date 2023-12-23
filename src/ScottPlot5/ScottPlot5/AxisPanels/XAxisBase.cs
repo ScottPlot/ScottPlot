@@ -84,13 +84,11 @@ public abstract class XAxisBase : AxisBase, IAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
         Label.Alignment = Alignment.LowerCenter;
-        Label.Rotation = 0;
-        Label.Draw(rp.Canvas, labelPoint);
-
+        Label.Render(rp.Canvas, labelPoint);
 
         IEnumerable<Tick> ticks = TickGenerator.Ticks;
 

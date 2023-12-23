@@ -30,7 +30,7 @@ public class PlotStyler
     {
         foreach (AxisPanels.AxisBase axis in Plot.GetStandardAxes())
         {
-            axis.Label.Font.Color = color;
+            axis.Label.ForeColor = color;
             axis.FrameLineStyle.Color = color;
             axis.MajorTickColor = color;
             axis.MinorTickColor = color;
@@ -91,7 +91,7 @@ public class PlotStyler
         // axis labels and ticks
         foreach (IAxis axis in Plot.GetAllAxes())
         {
-            axis.Label.Font.Name = fontName;
+            axis.Label.FontName = fontName;
             axis.TickFont.Name = fontName;
         }
     }

@@ -7,5 +7,6 @@ public class BottomAxis : XAxisBase, IXAxis
     public BottomAxis()
     {
         TickGenerator = new TickGenerators.NumericAutomatic();
+        Label.Rotation = 0;
     }
 }
