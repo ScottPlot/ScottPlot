@@ -33,21 +33,20 @@
             @foreach (IRecipe recipe in RecipesByCategory[category])
             {
                 <div class="menulink">
-                    <a style="font-size: 1em; padding-left: 1em;" @onclick="() => LoadRecipe(recipe)">@recipe.Name</a>
+                    <a style="font-size: 1em; padding-left: 1em;" @onclick="() => ShowRecipe(recipe)">@recipe.Name</a>
                 </div>
             }
         }
     </nav>
     <main>
-        @if (LoadedRecipe is not null)
+        @if (Recipe is not null)
         {
-            <div>
-                @LoadedRecipe.Name
+            <div class="p-3">
+                <div class="fs-3">@Recipe.Name</div>
+                <div>@Recipe.Description</div>
             </div>
+            <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
         }
-        <div>
-            <BlazorPlot @ref="BlazorPlot" Style="width: 100%; height: 600px;" />
-        </div>
         <div class="mt-5 text-muted text-center">
             @ScottPlot.Version.LongString Running on .NET @Environment.Version
         </div>
@@ -57,12 +56,14 @@
 @code {
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 
-    BlazorPlot BlazorPlot = new();
-    IRecipe? LoadedRecipe = null;
+    BlazorPlot BlazorPlot { get; set; } = new();
 
-    void LoadRecipe(IRecipe recipe)
+    IRecipe? Recipe;
+
+    void ShowRecipe(IRecipe recipe)
     {
-        LoadedRecipe = recipe;
+        Recipe = recipe;
+        BlazorPlot.Reset();
         recipe.Execute(BlazorPlot.Plot);
         BlazorPlot.Refresh();
     }
