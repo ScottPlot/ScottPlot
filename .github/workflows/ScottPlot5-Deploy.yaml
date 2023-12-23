@@ -99,3 +99,11 @@ jobs:
           dotnet build --configuration Release
           dotnet pack --configuration Release
           nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+      - name: 🚀 Deploy ScottPlot.Blazor
+        working-directory: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Blazor"
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release
+          nuget push .\bin\Release\*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json

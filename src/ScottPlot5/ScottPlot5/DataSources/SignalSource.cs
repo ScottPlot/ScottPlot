@@ -78,8 +78,8 @@ public class SignalSource : ISignalSource
         // determine column limits horizontally
         int i1 = GetIndex(xRangeMin, true);
         int i2 = GetIndex(xRangeMax, true);
-        float yEnter = axes.GetPixelY(Ys[i1]);
-        float yExit = axes.GetPixelY(Ys[i2]);
+        float yEnter = axes.GetPixelY(Ys[i1] + YOffset);
+        float yExit = axes.GetPixelY(Ys[i2] + YOffset);
 
         // determine column span vertically
         double yMin = double.PositiveInfinity;
