@@ -13,7 +13,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     [Parameter]
     public bool EnableRenderLoop { get; set; } = false;
 
-    public Plot Plot { get; } = new();
+    public Plot Plot { get; private set; } = new();
 
     public BlazorPlotBase()
     {
@@ -48,6 +48,15 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     }
 
     public virtual void Refresh() { }
+
+    public Plot Reset()
+    {
+        Plot newPlot = new();
+        Plot oldPlot = Plot;
+        Plot = newPlot;
+        oldPlot?.Dispose();
+        return newPlot;
+    }
 
     public void Replace(IPlotInteraction interaction)
     {
