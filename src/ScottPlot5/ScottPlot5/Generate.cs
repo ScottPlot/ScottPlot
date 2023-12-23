@@ -291,7 +291,7 @@ public static class Generate
 
     #region Axes
 
-    public static Coordinates RandomLocation()
+    public static Coordinates RandomCoordinates()
     {
         double x = RandomData.RandomNumber();
         double y = RandomData.RandomNumber();
@@ -309,7 +309,7 @@ public static class Generate
     {
         return Enumerable
             .Range(0, count)
-            .Select(x => RandomLocation())
+            .Select(x => RandomCoordinates())
             .ToArray();
     }
 
