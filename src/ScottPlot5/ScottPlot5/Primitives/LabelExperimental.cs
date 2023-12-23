@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class LabelExperimental
 {
@@ -9,13 +7,17 @@ public class LabelExperimental
 
     public Alignment Alignment { get; set; } = 0;
 
+    /// <summary>
+    /// Rotation in degrees clockwise from 0 (horizontal text)
+    /// </summary>
     public float Rotation { get; set; } = 0;
 
     public Color ForeColor { get; set; } = Colors.Black;
 
-    public Color BackColor { get; set; } = Colors.Gray;
+    public Color BackColor { get; set; } = Colors.Transparent;
 
-    public Color BorderColor { get; set; } = Colors.Black;
+    public Color BorderColor { get; set; } = Colors.Transparent;
+
     public float BorderWidth { get; set; } = 1;
 
     private SKTypeface? CachedTypeface = null;
@@ -78,16 +80,28 @@ public class LabelExperimental
         Render(canvas, x, y, paint);
     }
 
-    public void Render(SKCanvas canvas, float x, float y, SKPaint paint)
+    public PixelSize Measure()
+    {
+        using SKPaint paint = new();
+        return Measure(paint);
+    }
+
+    public PixelSize Measure(SKPaint paint)
     {
         ApplyTextPaint(paint);
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
+        return new PixelSize(textBounds.Width, textBounds.Height);
+    }
 
-        float xOffset = textBounds.Width * Alignment.HorizontalFraction();
-        float yOffset = textBounds.Height * Alignment.VerticalFraction();
-        PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
-        textRect = textRect.WithDelta(-xOffset, yOffset - textBounds.Height);
+    public void Render(SKCanvas canvas, float x, float y, SKPaint paint)
+    {
+        PixelSize size = Measure(paint);
+
+        float xOffset = size.Width * Alignment.HorizontalFraction();
+        float yOffset = size.Height * Alignment.VerticalFraction();
+        PixelRect textRect = new(0, size.Width, size.Height, 0);
+        textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
 
         canvas.Save();

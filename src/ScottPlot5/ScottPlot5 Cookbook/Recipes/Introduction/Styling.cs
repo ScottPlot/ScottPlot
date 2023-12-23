@@ -50,12 +50,12 @@ public class Styling : ICategory
             myPlot.TitlePanel.Label.Font.Bold = false;
 
             myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.YAxis.Label.Font.Color = Colors.Magenta;
-            myPlot.YAxis.Label.Font.Italic = true;
+            myPlot.YAxis.Label.ForeColor = Colors.Magenta;
+            myPlot.YAxis.Label.Italic = true;
 
             myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.XAxis.Label.Font.Bold = false;
-            myPlot.XAxis.Label.Font.Name = Fonts.Monospace;
+            myPlot.XAxis.Label.Bold = false;
+            myPlot.XAxis.Label.FontName = Fonts.Monospace;
 
             myPlot.XAxis.MajorTickLength = 10;
             myPlot.XAxis.MajorTickWidth = 3;
