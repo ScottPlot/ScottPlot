@@ -26,6 +26,7 @@
 * Ticks: `TickGenerators.NumericManual` now has `AddMajor()` and `AddMinor()` to simplify manual tick placement (#3105, #2957) _Thanks Lake_
 * Legend: Added `Plot.GetLegendImage()` and `Plot.GetLegendSvg()` for displaying legends outside plots (#3062, #2934) _Thanks @KroMignon, @lichen95, and @bclehmann_
 * Plot: Added new `Line` plot type for creating straight lines between two points (#2915, #3109) _Thanks @Gray-lab_
+* Controls: Added `IPlotInteraction` so users can inject their own `Interaction` (#3111, #3110) _Thanks @albyoo_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
