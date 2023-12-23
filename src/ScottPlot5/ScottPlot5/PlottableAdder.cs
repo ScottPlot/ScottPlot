@@ -230,16 +230,45 @@ public class PlottableAdder
         return line;
     }
 
-    public Scatter Line(double x1, double y1, double x2, double y2)
+    public LinePlot Line(Coordinates start, Coordinates end)
     {
-        Coordinates[] coordinates = { new(x1, y1), new(x2, y2) };
-        return Scatter(coordinates);
+        LinePlot lp = new()
+        {
+            Start = start,
+            End = end,
+        };
+
+        lp.LineStyle.Color = GetNextColor();
+        lp.MarkerStyle.Fill.Color = lp.LineStyle.Color;
+
+        Plot.PlottableList.Add(lp);
+
+        return lp;
     }
 
-    public Scatter Line(Coordinates pt1, Coordinates pt2)
+    public LinePlot Line(double x1, double y1, double x2, double y2)
     {
-        Coordinates[] coordinates = { pt1, pt2 };
-        return Scatter(coordinates);
+        Coordinates start = new(x1, y1);
+        Coordinates end = new(x2, y2);
+        return Line(start, end);
+    }
+
+    public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        Plottables.Marker mp = new()
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            Location = new Coordinates(x, y),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Marker Marker(Coordinates location, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        return Marker(location.X, location.Y, shape, size, color);
     }
 
     public OhlcPlot OHLC(IList<IOHLC> ohlcs)

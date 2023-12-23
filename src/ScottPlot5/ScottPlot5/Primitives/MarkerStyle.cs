@@ -24,8 +24,6 @@ public class MarkerStyle
     /// </summary>
     public float Size { get; set; }
 
-    public IMarker MarkerRenderer { get; set; }
-
     public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
 
     public LineStyle Outline { get; set; } = new() { Width = 0 };
@@ -41,7 +39,6 @@ public class MarkerStyle
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {
         Shape = shape;
-        MarkerRenderer = shape.GetRenderer();
         IsVisible = shape != MarkerShape.None;
 
         Outline.Color = color;
@@ -74,9 +71,12 @@ public class MarkerStyle
 
         using SKPaint paint = new() { IsAntialias = true };
 
+        // TODO: don't create this on every render
+        var renderer = Shape.GetRenderer();
+
         foreach (Pixel pixel in pixels)
         {
-            MarkerRenderer.Render(canvas, paint, pixel, Size, Fill, Outline);
+            renderer.Render(canvas, paint, pixel, Size, Fill, Outline);
         }
     }
 }

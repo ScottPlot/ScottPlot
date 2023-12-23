@@ -6,7 +6,7 @@ namespace ScottPlotCookbook;
 /// <summary>
 /// This class contains logic to pair recipes located using reflection with the source code parsed from .cs files.
 /// </summary>
-internal class SourceDatabase
+public class SourceDatabase
 {
     public readonly List<RecipeInfo> Recipes = new();
 
@@ -19,6 +19,12 @@ internal class SourceDatabase
             IEnumerable<RecipeInfo> recipes = GetRecipeSources(sourceFilePath);
             Recipes.AddRange(recipes);
         }
+    }
+
+    public RecipeInfo? GetInfo(IRecipe recipe)
+    {
+        IEnumerable<RecipeInfo> matching = Recipes.Where(x => x.Name == recipe.Name);
+        return matching.Any() ? matching.First() : null;
     }
 
     private static string[] GetRecipeSourceFilePaths()

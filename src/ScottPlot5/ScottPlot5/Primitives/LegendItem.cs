@@ -12,6 +12,47 @@ public class LegendItem
     public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();
     public bool HasSymbol => Line.Width > 0 || Marker.IsVisible || Fill.HasValue;
     public bool IsVisible => !string.IsNullOrEmpty(Label);
+
     public static IEnumerable<LegendItem> None => Array.Empty<LegendItem>();
-    public static IEnumerable<LegendItem> Single(LegendItem item) => new LegendItem[] { item };
+
+    public static IEnumerable<LegendItem> Single(LegendItem item)
+    {
+        return new LegendItem[] { item };
+    }
+
+    public static IEnumerable<LegendItem> Single(string label, MarkerStyle markerStyle)
+    {
+        LegendItem item = new()
+        {
+            Label = label,
+            Marker = markerStyle,
+            Line = LineStyle.None,
+        };
+
+        return Single(item);
+    }
+
+    public static IEnumerable<LegendItem> Single(string label, LineStyle lineStyle)
+    {
+        LegendItem item = new()
+        {
+            Label = label,
+            Marker = MarkerStyle.None,
+            Line = lineStyle,
+        };
+
+        return Single(item);
+    }
+
+    public static IEnumerable<LegendItem> Single(string label, LineStyle lineStyle, MarkerStyle markerStyle)
+    {
+        LegendItem item = new()
+        {
+            Label = label,
+            Marker = markerStyle,
+            Line = lineStyle,
+        };
+
+        return Single(item);
+    }
 }

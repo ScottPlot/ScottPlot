@@ -48,7 +48,7 @@ public partial class OpenGLPerformance : Form, IDemoWindow
         {
             "Random Walk" => Generate.RandomWalk(count),
             "Sine Wave" => Generate.Sin(count),
-            "Random Values" => Generate.Random(count),
+            "Random Values" => Generate.RandomSample(count),
             _ => throw new NotImplementedException(),
         };
 

@@ -203,11 +203,17 @@ public static class Generate
         return RandomData.RandomWalk(count, mult, offset);
     }
 
+    [Obsolete("use RandomSample()")]
+    public static double[] Random(int count, double min = 0, double max = 1)
+    {
+        return RandomSample(count, min, max);
+    }
+
     /// <summary>
     /// Return an array of <paramref name="count"/> random values 
     /// from <paramref name="min"/> to <paramref name="max"/>
     /// </summary>
-    public static double[] Random(int count, double min = 0, double max = 1)
+    public static double[] RandomSample(int count, double min = 0, double max = 1)
     {
         return Enumerable.Range(0, count)
             .Select(_ => RandomData.RandomNumber(min, max))
@@ -218,6 +224,44 @@ public static class Generate
     {
         return Enumerable.Range(0, count)
             .Select(_ => RandomData.RandomNormalNumber(mean, stdDev))
+            .ToArray();
+    }
+
+    /// <summary>
+    /// RandomSample integer between zero (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static int RandomInteger(int max)
+    {
+        return RandomData.RandomInteger(max);
+    }
+
+    /// <summary>
+    /// RandomSample integer between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static int RandomInteger(int min, int max)
+    {
+        return RandomData.RandomInteger(min, max);
+    }
+
+    /// <summary>
+    /// RandomSample integers between zero (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static int[] RandomIntegers(int count, int max)
+    {
+        return Enumerable
+            .Range(0, count)
+            .Select(x => RandomData.RandomInteger(max))
+            .ToArray();
+    }
+
+    /// <summary>
+    /// RandomSample integers between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static int[] RandomIntegers(int count, int min, int max)
+    {
+        return Enumerable
+            .Range(0, count)
+            .Select(x => RandomData.RandomInteger(min, max))
             .ToArray();
     }
 
@@ -241,6 +285,40 @@ public static class Generate
         {
             values[i] = values[i] + RandomData.RandomNumber(-magnitude / 2, magnitude / 2);
         }
+    }
+
+    #endregion
+
+    #region Axes
+
+    public static Coordinates RandomCoordinates()
+    {
+        double x = RandomData.RandomNumber();
+        double y = RandomData.RandomNumber();
+        return new Coordinates(x, y);
+    }
+
+    public static Coordinates RandomLocation(AxisLimits limits)
+    {
+        double x = RandomData.RandomNumber() * limits.HorizontalSpan + limits.Left;
+        double y = RandomData.RandomNumber() * limits.VerticalSpan + limits.Bottom;
+        return new Coordinates(x, y);
+    }
+
+    public static Coordinates[] RandomLocations(int count)
+    {
+        return Enumerable
+            .Range(0, count)
+            .Select(x => RandomCoordinates())
+            .ToArray();
+    }
+
+    public static Coordinates[] RandomLocations(int count, AxisLimits limits)
+    {
+        return Enumerable
+            .Range(0, count)
+            .Select(x => RandomLocation(limits))
+            .ToArray();
     }
 
     #endregion
@@ -306,6 +384,42 @@ public static class Generate
         public static System.DateTime[] Seconds(int count, System.DateTime start) => Consecutive(count, start, TimeSpan.FromSeconds(1));
 
         public static System.DateTime[] Seconds(int count) => Hours(count, ExampleDate);
+    }
+
+    #endregion
+
+    #region Plot Items
+
+    public static Color RandomColor(IColormap colormap)
+    {
+        return colormap.GetColor(RandomData.RandomNumber());
+    }
+
+    public static Color[] RandomColors(int count, IColormap colormap)
+    {
+        return RandomSample(count).Select(colormap.GetColor).ToArray();
+    }
+
+    public static MarkerShape RandomMarkerShape()
+    {
+        MarkerShape[] markerShapes = Enum
+            .GetValues(typeof(MarkerShape))
+            .Cast<MarkerShape>()
+            .ToArray();
+
+        int i = RandomInteger(markerShapes.Length);
+        return markerShapes[i];
+    }
+
+    public static LinePattern RandomLinePattern()
+    {
+        LinePattern[] linePatterns = Enum
+            .GetValues(typeof(LinePattern))
+            .Cast<LinePattern>()
+            .ToArray();
+
+        int i = RandomInteger(linePatterns.Length);
+        return linePatterns[i];
     }
 
     #endregion
