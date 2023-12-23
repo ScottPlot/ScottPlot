@@ -24,12 +24,14 @@ public abstract class AxisBase
 
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
-    public Label Label { get; private set; } = new()
+    public LabelExperimental Label { get; private set; } = new()
     {
         Text = string.Empty,
-        Font = new() { Size = 16, Bold = true },
+        FontSize = 16,
+        Bold = true,
         Rotation = -90,
     };
+
     public bool ShowDebugInformation { get; set; } = false;
 
     public LineStyle FrameLineStyle { get; } = new();
@@ -62,7 +64,7 @@ public abstract class AxisBase
     /// <param name="color"></param>
     public void Color(Color color)
     {
-        Label.Font.Color = color;
+        Label.ForeColor = color;
         TickFont.Color = color;
         MajorTickColor = color;
         MinorTickColor = color;

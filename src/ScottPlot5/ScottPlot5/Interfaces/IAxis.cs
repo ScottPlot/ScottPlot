@@ -50,7 +50,7 @@ public interface IAxis : IPanel
     /// <summary>
     /// The label is the text displayed distal to the ticks
     /// </summary>
-    Label Label { get; }
+    LabelExperimental Label { get; }
     float MajorTickLength { get; set; }
     float MajorTickWidth { get; set; }
     Color MajorTickColor { get; set; }

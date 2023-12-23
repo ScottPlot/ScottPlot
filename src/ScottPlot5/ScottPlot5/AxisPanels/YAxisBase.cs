@@ -85,12 +85,11 @@ public abstract class YAxisBase : AxisBase, IAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
         Label.Alignment = Alignment.UpperCenter;
-        Label.Rotation = Edge == Edge.Left ? -90 : 90;
-        Label.Draw(rp.Canvas, labelPoint);
+        Label.Render(rp.Canvas, labelPoint);
 
         DrawTicks(rp, TickFont, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);

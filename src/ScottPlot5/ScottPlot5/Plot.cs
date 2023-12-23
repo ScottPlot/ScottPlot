@@ -687,7 +687,7 @@ public class Plot : IDisposable
     {
         BottomAxis.Label.Text = label;
         if (size.HasValue)
-            BottomAxis.Label.Font.Size = size.Value;
+            BottomAxis.Label.FontSize = size.Value;
     }
 
     /// <summary>
@@ -698,7 +698,7 @@ public class Plot : IDisposable
     {
         LeftAxis.Label.Text = label;
         if (size.HasValue)
-            LeftAxis.Label.Font.Size = size.Value;
+            LeftAxis.Label.FontSize = size.Value;
     }
 
     /// <summary>
