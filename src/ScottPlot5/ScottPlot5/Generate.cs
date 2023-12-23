@@ -291,7 +291,7 @@ public static class Generate
 
     #region Axes
 
-    public static Coordinates RandomLocation()
+    public static Coordinates RandomCoordinates()
     {
         double x = RandomData.RandomNumber();
         double y = RandomData.RandomNumber();
@@ -309,7 +309,7 @@ public static class Generate
     {
         return Enumerable
             .Range(0, count)
-            .Select(x => RandomLocation())
+            .Select(x => RandomCoordinates())
             .ToArray();
     }
 
@@ -409,6 +409,17 @@ public static class Generate
 
         int i = RandomInteger(markerShapes.Length);
         return markerShapes[i];
+    }
+
+    public static LinePattern RandomLinePattern()
+    {
+        LinePattern[] linePatterns = Enum
+            .GetValues(typeof(LinePattern))
+            .Cast<LinePattern>()
+            .ToArray();
+
+        int i = RandomInteger(linePatterns.Length);
+        return linePatterns[i];
     }
 
     #endregion

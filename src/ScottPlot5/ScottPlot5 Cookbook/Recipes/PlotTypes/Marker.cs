@@ -37,7 +37,7 @@ public class Marker : ICategory
             for (int i = 0; i < 100; i++)
             {
                 MarkerShape shape = Generate.RandomMarkerShape();
-                Coordinates location = Generate.RandomLocation();
+                Coordinates location = Generate.RandomCoordinates();
                 float size = Generate.RandomInteger(5, 10);
                 Color color = Generate.RandomColor(colormap);
 
