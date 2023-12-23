@@ -6,7 +6,7 @@ namespace ScottPlot.Legends;
 public class Legend
 {
     public bool IsVisible { get; set; } = false;
-    public Alignment Alignment { get; set; } = Alignment.LowerRight;
+    public Alignment Location { get; set; } = Alignment.LowerRight;
     public PixelPadding Margin { get; set; } = new PixelPadding(8);
     public PixelPadding Padding { get; set; } = new PixelPadding(3);
     public PixelPadding ItemPadding { get; set; } = new PixelPadding(3);
@@ -52,8 +52,8 @@ public class Legend
         float totalheight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
 
         PixelSize legendSize = new(maxWidth + Padding.Left + Padding.Right, totalheight + Padding.Top + Padding.Bottom);
-        PixelRect legendRect = legendSize.AlignedInside(rp.DataRect, Alignment, Margin);
-        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        PixelRect legendRect = legendSize.AlignedInside(rp.DataRect, Location, Margin);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Location);
         Pixel offset = new(legendRect.Left + Padding.Left, legendRect.Top + Padding.Top);
 
         // render the legend panel
@@ -88,7 +88,7 @@ public class Legend
         int height = (int)Math.Ceiling(totalHeight);
 
         PixelRect legendRect = new(0, width, 0, height);
-        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Location);
         Pixel offset = new(legendRect.Left + Padding.Left, legendRect.Top + Padding.Top);
 
         SvgImage svg = new(width, height);
@@ -114,7 +114,7 @@ public class Legend
 
         PixelSize legendSize = new(maxItemWidth, totalheight);
         PixelRect legendRect = new(new Pixel(ShadowOffset, ShadowOffset), legendSize.Width - 2 * ShadowOffset, legendSize.Height - 2 * ShadowOffset);
-        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Alignment);
+        PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Location);
         Pixel offset = new(legendRect.Left + Padding.Left + ShadowOffset, legendRect.Top + Padding.Top + ShadowOffset);
 
         if (svgStream is null)

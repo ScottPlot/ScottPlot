@@ -28,7 +28,7 @@ public class Legend : ICategory
             myPlot.Legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
             myPlot.Legend.Font.Size = 16;
             myPlot.Legend.Font.Name = Fonts.Serif;
-            myPlot.Legend.Alignment = Alignment.UpperCenter;
+            myPlot.Legend.Location = Alignment.UpperCenter;
         }
     }
 

@@ -164,7 +164,7 @@ public class Bar : ICategory
 
             // build the legend manually
             myPlot.Legend.IsVisible = true;
-            myPlot.Legend.Alignment = Alignment.UpperLeft;
+            myPlot.Legend.Location = Alignment.UpperLeft;
             myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Monday", FillColor = colors[0] });
             myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Tuesday", FillColor = colors[1] });
             myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Wednesday", FillColor = colors[2] });

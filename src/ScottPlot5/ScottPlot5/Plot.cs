@@ -651,7 +651,7 @@ public class Plot : IDisposable
     public void ShowLegend(Alignment location = Alignment.LowerRight)
     {
         Legend.IsVisible = true;
-        Legend.Alignment = location;
+        Legend.Location = location;
     }
 
     /// <summary>
