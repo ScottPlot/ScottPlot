@@ -40,12 +40,16 @@ public class HorizontalLine : AxisLine
 
         // draw line inside the data area
         using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawLine(x1, y, x2, y, paint);
+        Pixel px1 = new(x1, y);
+        Pixel px2 = new(x2, y);
+        Drawing.DrawLine(rp.Canvas, paint, px1, px2, LineStyle);
     }
 
     public override void RenderLast(RenderPack rp)
     {
+        if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
+            return;
+
         // determine location
         float y = Axes.GetPixelY(Y);
         if (!rp.DataRect.ContainsY(y))

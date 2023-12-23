@@ -28,7 +28,7 @@
 * Plot: Added new `Line` plot type for creating straight lines between two points (#2915, #3109) _Thanks @Gray-lab_
 * Controls: Added `IPlotInteraction` so users can inject their own `Interaction` (#3111, #3110) _Thanks @albyoo_
 * Signal: Improved appearance of signal plots where `YOffset` is used (#2949) _Thanks @minjjKang_
-* AxisLine: Simplify API by exposing common properties (#3056)
+* AxisLine: Improve rendering and simplify API by exposing common properties (#3060, #3056)
 * Legend: `Alignment` has been renamed to `Location` (#3059)
 
 ## ScottPlot 4.1.70 (in development)

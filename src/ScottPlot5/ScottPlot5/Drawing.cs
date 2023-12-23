@@ -40,6 +40,21 @@ public static class Drawing
         return new PixelSize(maxWidth, maxHeight);
     }
 
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2)
+    {
+        if (paint.StrokeWidth == 0)
+            return;
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+    }
+
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
+    {
+        lineStyle.ApplyToPaint(paint);
+        if (paint.StrokeWidth == 0)
+            return;
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+    }
+
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         paint.Color = color.ToSKColor();
@@ -47,7 +62,8 @@ public static class Drawing
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
         paint.PathEffect = pattern.GetPathEffect();
-
+        if (paint.StrokeWidth == 0)
+            return;
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 

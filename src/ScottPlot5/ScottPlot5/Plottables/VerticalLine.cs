@@ -45,6 +45,9 @@ public class VerticalLine : AxisLine
 
     public override void RenderLast(RenderPack rp)
     {
+        if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
+            return;
+
         // determine location
         float x = Axes.GetPixelX(X);
         if (!rp.DataRect.ContainsX(x))

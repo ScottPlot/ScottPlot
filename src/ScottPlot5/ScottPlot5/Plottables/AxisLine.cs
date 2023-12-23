@@ -17,7 +17,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
     public string Text { get => Label.Text; set => Label.Text = value; }
 
     public LineStyle LineStyle { get; set; } = new();
-    public float Width { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
 
     public Color Color

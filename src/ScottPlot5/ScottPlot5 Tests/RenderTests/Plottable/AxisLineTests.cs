@@ -48,11 +48,33 @@ internal class AxisLineTests
         vl.Text = "VLine";
         vl.FontSize = 22;
         vl.Color = Colors.Magenta;
-        vl.Width = 3;
+        vl.LineWidth = 3;
         vl.LinePattern = LinePattern.Dot;
 
         plot.SetAxisLimits(-10, 10, -10, 10);
 
+        plot.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_AxisLine_ZeroWidth()
+    {
+        ScottPlot.Plot plot = new();
+
+        var hl = plot.Add.HorizontalLine(0.5);
+        hl.LineWidth = 0;
+
+        plot.SetAxisLimits(-10, 10, -10, 10);
+
+        plot.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_AxisLine_NoLabel()
+    {
+        ScottPlot.Plot plot = new();
+        plot.Add.HorizontalLine(0.5);
+        plot.SetAxisLimits(-10, 10, -10, 10);
         plot.SaveTestImage();
     }
 }
