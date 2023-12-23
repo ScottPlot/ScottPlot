@@ -7,6 +7,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
         <IsPackable>false</IsPackable>
+
+        <!-- This package may not be fully compatible with your project -->
+        <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
