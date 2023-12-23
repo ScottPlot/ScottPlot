@@ -1,4 +1,6 @@
-﻿<ul class="nav flex-column">
+﻿@using ScottPlotCookbook;
+
+<ul class="nav flex-column">
     <li class="nav-item px-3">
         <NavLink class="nav-link fs-5" href="/">
             Quickstart
@@ -9,7 +11,21 @@
             Signal Plot
         </NavLink>
     </li>
+    @foreach (ICategory category in RecipesByCategory.Keys)
+    {
+        <li>
+            <h3 class="text-light">@category.CategoryName</h3>
+        </li>
+
+        @foreach (IRecipe recipe in RecipesByCategory[category])
+        {
+            <li class="text-light px-3">
+                @recipe.Name
+            </li>
+        }
+    }
 </ul>
 
 @code {
+    readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 }
