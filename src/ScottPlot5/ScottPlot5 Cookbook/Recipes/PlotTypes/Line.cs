@@ -16,12 +16,9 @@ public class LinePlot : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(Generate.Sin());
-            myPlot.Add.Signal(Generate.Cos());
-
-            myPlot.Add.LinePlot(1, 12, 12, 0);
-            myPlot.Add.LinePlot(7, 9, 42, 9);
-            myPlot.Add.LinePlot(30, 17, 30, 1);
+            myPlot.Add.Line(1, 12, 12, 0);
+            myPlot.Add.Line(7, 9, 42, 9);
+            myPlot.Add.Line(30, 17, 30, 1);
         }
     }
 
@@ -33,40 +30,48 @@ public class LinePlot : ICategory
         [Test]
         public override void Execute()
         {
+            ScottPlot.Colormaps.Viridis colormap = new();
 
-            ScottPlot.Colormaps.Turbo colormap = new();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
-                LineStyle style = new()
-                {
-                    AntiAlias = true,
-                    Color = Generate.RandomColor(colormap),
-                    Pattern = Generate.RandomLinePattern(),
-                    Width = Generate.RandomInteger(1, 4)
-                };
-                Coordinates start = new(Generate.RandomInteger(0, 20), Generate.RandomInteger(0, 20));
-                Coordinates end = new(Generate.RandomInteger(0, 20), Generate.RandomInteger(0, 20));
-                myPlot.Add.LinePlot(start, end, style);
+                // add a line
+                Coordinates start = Generate.RandomCoordinates();
+                Coordinates end = Generate.RandomCoordinates();
+                var line = myPlot.Add.Line(start, end);
+
+                // customize the line
+                line.LineStyle.Color = Generate.RandomColor(colormap);
+                line.LineStyle.Width = Generate.RandomInteger(1, 4);
+                line.LineStyle.Pattern = Generate.RandomLinePattern();
+
+                // customize markers
+                line.MarkerStyle.Fill.Color = line.LineStyle.Color;
+                line.MarkerStyle.Shape = Generate.RandomMarkerShape();
+                line.MarkerStyle.Size = Generate.RandomInteger(5, 15);
             }
         }
-    }
 
-    public class LinePlotLegend : RecipeBase
-    {
-        public override string Name => "Line Plot Legend";
-        public override string Description => "Line plots with labels appear in the legend.";
-
-        [Test]
-        public override void Execute()
+        public class LinePlotLegend : RecipeBase
         {
-            var sin = myPlot.Add.Signal(Generate.Sin());
-            var cos = myPlot.Add.Signal(Generate.Cos());
-            var linePlot = myPlot.Add.LinePlot(1, 12, 12, 0);
+            public override string Name => "Line Plot Legend";
+            public override string Description => "Line plots with labels appear in the legend.";
 
-            sin.Label = "Sine";
-            cos.Label = "Cosine";
-            linePlot.Label = "Line Plot";
-            myPlot.ShowLegend();
+            [Test]
+            public override void Execute()
+            {
+                var sin = myPlot.Add.Signal(Generate.Sin());
+                var cos = myPlot.Add.Signal(Generate.Cos());
+
+                var line = myPlot.Add.Line(1, 12, 12, 0);
+                line.LineStyle.Width = 3;
+                line.MarkerStyle.Size = 10;
+
+                sin.Label = "Sine";
+                cos.Label = "Cosine";
+                line.Label = "Line Plot";
+
+                myPlot.ShowLegend(Alignment.UpperRight);
+            }
         }
     }
 }

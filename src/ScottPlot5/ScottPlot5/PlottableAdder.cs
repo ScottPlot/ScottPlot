@@ -230,64 +230,27 @@ public class PlottableAdder
         return line;
     }
 
-    public Scatter Line(double x1, double y1, double x2, double y2)
-    {
-        Coordinates[] coordinates = { new(x1, y1), new(x2, y2) };
-        return Scatter(coordinates);
-    }
-
-    public Scatter Line(Coordinates pt1, Coordinates pt2)
-    {
-        Coordinates[] coordinates = { pt1, pt2 };
-        return Scatter(coordinates);
-    }
-
-    public LinePlot LinePlot(Coordinates start, Coordinates end, LineStyle style)
+    public LinePlot Line(Coordinates start, Coordinates end)
     {
         LinePlot lp = new()
         {
-            Line = new Line(start, end, style)
+            Start = start,
+            End = end,
         };
+
+        lp.LineStyle.Color = GetNextColor();
+        lp.MarkerStyle.Fill.Color = lp.LineStyle.Color;
 
         Plot.PlottableList.Add(lp);
 
         return lp;
     }
 
-    public LinePlot LinePlot(Coordinates start, Coordinates end)
+    public LinePlot Line(double x1, double y1, double x2, double y2)
     {
-        LinePlot lp = new()
-        {
-            Line = new Line(start, end)
-        };
-
-        Plot.PlottableList.Add(lp);
-
-        return lp;
-    }
-
-    public LinePlot LinePlot(float x1, float y1, float x2, float y2, LineStyle style)
-    {
-        LinePlot lp = new()
-        {
-            Line = new Line(x1, y1, x2, y2, style)
-        };
-
-        Plot.PlottableList.Add(lp);
-
-        return lp;
-    }
-
-    public LinePlot LinePlot(float x1, float y1, float x2, float y2)
-    {
-        LinePlot lp = new()
-        {
-            Line = new Line(x1, y1, x2, y2)
-        };
-
-        Plot.PlottableList.Add(lp);
-
-        return lp;
+        Coordinates start = new(x1, y1);
+        Coordinates end = new(x2, y2);
+        return Line(start, end);
     }
 
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
