@@ -1,30 +1,48 @@
 ﻿@using ScottPlotCookbook;
 
-<ul class="nav flex-column">
-    <li class="nav-item px-3">
-        <NavLink class="nav-link fs-5" href="/">
-            Quickstart
-        </NavLink>
-    </li>
-    <li class="nav-item px-3">
-        <NavLink class="nav-link fs-5" href="signal">
-            Signal Plot
-        </NavLink>
-    </li>
-    @foreach (ICategory category in RecipesByCategory.Keys)
-    {
-        <li>
-            <h3 class="text-light">@category.CategoryName</h3>
-        </li>
-
-        @foreach (IRecipe recipe in RecipesByCategory[category])
-        {
-            <li class="text-light px-3">
-                @recipe.Name
-            </li>
-        }
+<style>
+    .menulink a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5em;
+        display: block;
+        padding: .3em;
     }
-</ul>
+
+        .menulink a:hover {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5em;
+            background-color: #9a4993;
+            opacity: 1;
+        }
+</style>
+
+<div class="menulink">
+    <NavLink href="/">
+        Quickstart
+    </NavLink>
+</div>
+
+<div class="menulink">
+    <NavLink href="signal">
+        Signal Plot
+    </NavLink>
+</div>
+
+@foreach (ICategory category in RecipesByCategory.Keys)
+{
+    <div class="fs-4 p-2" style="opacity: .5">
+        @category.CategoryName
+    </div>
+
+    @foreach (IRecipe recipe in RecipesByCategory[category])
+    {
+        <div class="menulink">
+            <a href=@("/recipe/" + recipe.Name) style="font-size: 1em; padding-left: 1em;">@recipe.Name</a>
+        </div>
+    }
+}
 
 @code {
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();

@@ -1,0 +1,52 @@
+﻿@page "/recipe/{RecipeName}"
+@using ScottPlot;
+@using ScottPlot.Blazor;
+@using ScottPlotCookbook;
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<h3>ScottPlot Cookbook</h3>
+
+<div>Chapter: ?</div>
+<div>Category: ?</div>
+<div>Recipe: ?</div>
+<div>RecipeName: @RecipeName</div>
+<div>Description: ?</div>
+<div>Code: ?</div>
+
+<BlazorPlot @ref="BlazorPlot" Style="width: 100%; height: 600px;" />
+
+@code {
+    BlazorPlot BlazorPlot = new();
+
+    string recipeName = string.Empty;
+    ICategory? Category { get; set; } = null;
+    IRecipe? PlotRecipe { get; set; } = null;
+
+    Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
+
+    [Parameter]
+    public string RecipeName
+    {
+        get => recipeName;
+        set
+        {
+            recipeName = value;
+
+            foreach (ICategory category in RecipesByCategory.Keys)
+            {
+                foreach (IRecipe recipe in RecipesByCategory[category])
+                {
+                    if (recipe.Name == RecipeName)
+                    {
+                        Category = category;
+                        PlotRecipe = recipe;
+                        recipe.Execute(BlazorPlot.Plot);
+                        BlazorPlot.Refresh();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
