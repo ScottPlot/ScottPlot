@@ -50,28 +50,28 @@ public class LinePlot : ICategory
                 line.MarkerStyle.Size = Generate.RandomInteger(5, 15);
             }
         }
+    }
 
-        public class LinePlotLegend : RecipeBase
+    public class LinePlotLegendQWER : RecipeBase
+    {
+        public override string Name => "Line Plot Legend 123";
+        public override string Description => "Line plots with labels appear in the legend.";
+
+        [Test]
+        public override void Execute()
         {
-            public override string Name => "Line Plot Legend";
-            public override string Description => "Line plots with labels appear in the legend.";
+            var sin = myPlot.Add.Signal(Generate.Sin());
+            var cos = myPlot.Add.Signal(Generate.Cos());
 
-            [Test]
-            public override void Execute()
-            {
-                var sin = myPlot.Add.Signal(Generate.Sin());
-                var cos = myPlot.Add.Signal(Generate.Cos());
+            var line = myPlot.Add.Line(1, 12, 12, 0);
+            line.LineStyle.Width = 3;
+            line.MarkerStyle.Size = 10;
 
-                var line = myPlot.Add.Line(1, 12, 12, 0);
-                line.LineStyle.Width = 3;
-                line.MarkerStyle.Size = 10;
+            sin.Label = "Sine";
+            cos.Label = "Cosine";
+            line.Label = "Line Plot";
 
-                sin.Label = "Sine";
-                cos.Label = "Cosine";
-                line.Label = "Line Plot";
-
-                myPlot.ShowLegend(Alignment.UpperRight);
-            }
+            myPlot.ShowLegend(Alignment.UpperRight);
         }
     }
 }
