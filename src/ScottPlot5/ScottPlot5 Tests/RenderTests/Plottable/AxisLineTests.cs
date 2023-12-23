@@ -26,10 +26,32 @@ internal class AxisLineTests
         plot.DisableGrid();
 
         var vert = plot.Add.VerticalLine(123.45);
-        vert.Label.Text = "Vertical";
+        vert.Text = "Vertical";
 
         var horiz = plot.Add.HorizontalLine(456.78);
-        horiz.Label.Text = "Horizontal";
+        horiz.Text = "Horizontal";
+
+        plot.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_AxisLine_Style()
+    {
+        ScottPlot.Plot plot = new();
+
+        var hl = plot.Add.HorizontalLine(0.5);
+        hl.Text = "HLine";
+        hl.FontSize = 10;
+        hl.FontColor = Colors.Yellow;
+
+        var vl = plot.Add.VerticalLine(0.5);
+        vl.Text = "VLine";
+        vl.FontSize = 22;
+        vl.Color = Colors.Magenta;
+        vl.Width = 3;
+        vl.LinePattern = LinePattern.Dot;
+
+        plot.SetAxisLimits(-10, 10, -10, 10);
 
         plot.SaveTestImage();
     }

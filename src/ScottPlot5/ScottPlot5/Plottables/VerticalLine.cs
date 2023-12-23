@@ -11,6 +11,14 @@ public class VerticalLine : AxisLine
         set => Position = value;
     }
 
+    public VerticalLine()
+    {
+        Label.ForeColor = Colors.White;
+        Label.FontSize = 14;
+        Label.Bold = true;
+        Label.Padding = 5;
+    }
+
     public override AxisLimits GetAxisLimits()
     {
         return AxisLimits.HorizontalOnly(X, X);
@@ -46,11 +54,7 @@ public class VerticalLine : AxisLine
         rp.DisableClipping();
         using SKPaint paint = new();
         Label.Alignment = Alignment.UpperCenter;
-        Label.BackgroundColor = LineStyle.Color;
-        Label.Font.Size = 14;
-        Label.Font.Bold = true;
-        Label.Font.Color = Colors.White;
-        Label.Padding = 5;
-        Label.Draw(rp.Canvas, x, rp.DataRect.Bottom, paint);
+        Label.BackColor = LineStyle.Color;
+        Label.Render(rp.Canvas, x, rp.DataRect.Bottom + Label.Padding, paint);
     }
 }

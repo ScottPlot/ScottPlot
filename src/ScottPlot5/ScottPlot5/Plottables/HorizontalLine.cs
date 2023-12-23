@@ -11,6 +11,16 @@ public class HorizontalLine : AxisLine
         set => Position = value;
     }
 
+    public HorizontalLine()
+    {
+        Label.Rotation = -90;
+        Label.Alignment = Alignment.LowerCenter;
+        Label.FontSize = 14;
+        Label.Bold = true;
+        Label.ForeColor = Colors.White;
+        Label.Padding = 5;
+    }
+
     public override AxisLimits GetAxisLimits()
     {
         return AxisLimits.VerticalOnly(Y, Y);
@@ -44,13 +54,7 @@ public class HorizontalLine : AxisLine
         // draw label outside the data area
         rp.DisableClipping();
         using SKPaint paint = new();
-        Label.Rotation = -90;
-        Label.Alignment = Alignment.LowerCenter;
-        Label.BackgroundColor = LineStyle.Color;
-        Label.Font.Size = 14;
-        Label.Font.Bold = true;
-        Label.Font.Color = Colors.White;
-        Label.Padding = 5;
-        Label.Draw(rp.Canvas, rp.DataRect.Left, y, paint);
+        Label.BackColor = LineStyle.Color;
+        Label.Render(rp.Canvas, rp.DataRect.Left - Label.Padding, y, paint);
     }
 }
