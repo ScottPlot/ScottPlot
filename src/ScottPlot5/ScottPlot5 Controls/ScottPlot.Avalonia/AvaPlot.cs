@@ -19,7 +19,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; } = new();
 
-    public Interaction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; private set; }
 
     public GRContext? GRContext => null;
 
@@ -40,7 +40,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
 
-        Interaction = new(this)
+        Interaction = new Interaction(this)
         {
             ContextMenuItems = GetDefaultContextMenuItems()
         };
@@ -88,7 +88,7 @@ public class AvaPlot : Controls.Control, IPlotControl
             Plot.Save(path, (int)Bounds.Width, (int)Bounds.Height, ImageFormatLookup.FromFilePath(path));
     }
 
-    public void Replace(Interaction interaction)
+    public void Replace(IPlotInteraction interaction)
     {
         Interaction = interaction;
     }

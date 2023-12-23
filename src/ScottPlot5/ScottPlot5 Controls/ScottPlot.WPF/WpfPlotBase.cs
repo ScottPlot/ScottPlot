@@ -17,7 +17,7 @@ namespace ScottPlot.WPF
 
         public Plot Plot { get; internal set; }
 
-        public Interaction Interaction { get; internal set; }
+        public IPlotInteraction Interaction { get; internal set; }
 
         public float DisplayScale { get; set; }
 
@@ -31,7 +31,7 @@ namespace ScottPlot.WPF
         {
             DisplayScale = DetectDisplayScale();
 
-            Interaction = new(this)
+            Interaction = new Interaction(this)
             {
                 ContextMenuItems = GetDefaultContextMenuItems()
             };
@@ -83,7 +83,7 @@ namespace ScottPlot.WPF
             return newPlot;
         }
 
-        public void Replace(Interaction interaction)
+        public void Replace(IPlotInteraction interaction)
         {
             Interaction = interaction;
         }

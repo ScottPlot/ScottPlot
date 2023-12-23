@@ -6,9 +6,9 @@
 /// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
-public class Interaction
+public class Interaction : IPlotInteraction
 {
-    private readonly IPlotControl Control;
+    protected readonly IPlotControl Control;
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
@@ -22,15 +22,15 @@ public class Interaction
     /// </summary>
     public PlotActions Actions = PlotActions.Standard();
 
-    private readonly KeyboardState Keyboard = new();
-    private readonly MouseState Mouse = new();
+    protected readonly KeyboardState Keyboard = new();
+    protected readonly MouseState Mouse = new();
 
     public bool IsDraggingMouse(Pixel pos) => Mouse.PressedButtons.Any() && Mouse.IsDragging(pos);
-    private bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
-    private bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
-    private bool IsZoomingRectangle = false;
+    protected bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
+    protected bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
+    protected bool IsZoomingRectangle = false;
 
-    public ContextMenuItem[] ContextMenuItems = Array.Empty<ContextMenuItem>();
+    public ContextMenuItem[] ContextMenuItems { get; set; } = Array.Empty<ContextMenuItem>();
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
 
     public Interaction(IPlotControl control)
