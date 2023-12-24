@@ -11,6 +11,7 @@ internal class Generate
         GenerateHomePage(cb);
         GenerateCategoryPages(cb);
         GenerateRecipePages(cb);
+        GenerateSearchPage();
 
         Console.WriteLine(Paths.OutputFolder);
     }
@@ -45,5 +46,10 @@ internal class Generate
                 new RecipePage(recipe).Generate(Paths.OutputFolder);
             }
         }
+    }
+
+    private static void GenerateSearchPage()
+    {
+        new SearchPage().Generate(Paths.OutputFolder);
     }
 }
