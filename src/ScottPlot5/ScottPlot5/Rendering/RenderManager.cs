@@ -14,7 +14,15 @@ public class RenderManager
     public RenderDetails LastRender { get; private set; }
 
     /// <summary>
-    /// This event is invoked just before each render
+    /// These events are invoked before any render action.
+    /// Users can add blocking code to this event to ensure processes
+    /// that modify plottables are complete before rendering begins.
+    /// </summary>
+    public EventHandler PreRenderLock { get; set; } = delegate { };
+
+    /// <summary>
+    /// This event is invoked just before each render, 
+    /// after axis limits are determined and axis limits are set
     /// </summary>
     public EventHandler<RenderPack> RenderStarting { get; set; } = delegate { };
 
@@ -55,6 +63,7 @@ public class RenderManager
 
     public static IRenderAction[] DefaultRenderActions => new IRenderAction[]
     {
+        new RenderActions.PreRenderLock(),
         new RenderActions.ClearCanvas(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
