@@ -390,6 +390,31 @@ public static class Generate
 
     #region Plot Items
 
+    public static Box RandomBox(double position)
+    {
+        int N = 50;
+        double mean = RandomData.RandomNumber(3);
+        double stdDev = RandomData.RandomNumber(3);
+
+        double[] values = ScottPlot.Generate.RandomNormal(N, mean, stdDev);
+        Array.Sort(values);
+        double min = values[0];
+        double q1 = values[N / 4];
+        double median = values[N / 2];
+        double q3 = values[3 * N / 4];
+        double max = values[N - 1];
+
+        return new Box
+        {
+            Position = position,
+            WhiskerMin = min,
+            BoxMin = q1,
+            BoxMiddle = median,
+            BoxMax = q3,
+            WhiskerMax = max,
+        };
+    }
+
     public static Color RandomColor(IColormap colormap)
     {
         return colormap.GetColor(RandomData.RandomNumber());

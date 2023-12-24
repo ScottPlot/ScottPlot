@@ -40,6 +40,11 @@ public static class Drawing
         return new PixelSize(maxWidth, maxHeight);
     }
 
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pixelLine)
+    {
+        DrawLine(canvas, paint, pixelLine.Pixel1, pixelLine.Pixel2);
+    }
+
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2)
     {
         if (paint.StrokeWidth == 0)
@@ -92,6 +97,11 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
+    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    {
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
     public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
         using SKPaint paint = new()
@@ -101,6 +111,11 @@ public static class Drawing
             IsAntialias = true,
         };
 
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    {
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
@@ -114,7 +129,7 @@ public static class Drawing
             IsAntialias = true,
         };
 
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        DrawRectangle(canvas, rect, paint);
     }
 
     public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float lineWidth = 1)

@@ -30,6 +30,7 @@
 * Signal: Improved appearance of signal plots where `YOffset` is used (#2949) _Thanks @minjjKang_
 * AxisLine: Improve rendering and simplify API by exposing common properties (#3060, #3056)
 * Legend: `Alignment` has been renamed to `Location` (#3059)
+* Box: Refactored box plot API to favor simplicity and user customization (#3072)
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
