@@ -65,8 +65,11 @@ public static class Descriptive
     /// </summary>
     public static double Variance(double[] values)
     {
-        if (values.Length < 2)
-            throw new ArgumentException($"{nameof(values)} must have at least 2 values");
+        if (values.Length == 0)
+            throw new ArgumentException($"{nameof(values)} must not be empty");
+
+        if (values.Length == 1)
+            return 0;
 
         // TODO: benchmark and see if this can be optimized by not using LINQ
         double mean = Mean(values);
@@ -94,8 +97,11 @@ public static class Descriptive
     /// </summary>
     public static double VarianceP(double[] values)
     {
-        if (values.Length < 1)
-            throw new ArgumentException($"{nameof(values)} must have at least 1 value");
+        if (values.Length == 0)
+            throw new ArgumentException($"{nameof(values)} must not be empty");
+
+        if (values.Length == 1)
+            return 0;
 
         // TODO: benchmark and see if this can be optimized by not using LINQ
         double mean = Mean(values);
@@ -195,10 +201,16 @@ public static class Descriptive
 
     /// <summary>
     /// Return the sample mean. NaN values are ignored.
+    /// Returns NaN if all values are NaN.
     /// </summary>
-    public static double NaNMean<T>(IReadOnlyList<T> values)
+    public static double NanMean<T>(IReadOnlyList<T> values)
     {
-        return Mean(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (real.Any() == false)
+            return double.NaN;
+
+        return Mean(real);
     }
 
     /// <summary>
@@ -207,9 +219,14 @@ public static class Descriptive
     /// Use this function when your data is a sample from a population.
     /// To calculate the variance from the entire population use <see cref="VarianceP(double[])"/>.
     /// </summary>
-    public static double NaNVariance<T>(IReadOnlyList<T> values)
+    public static double NanVariance<T>(IReadOnlyList<T> values)
     {
-        return Variance(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (real.Count() < 2)
+            return double.NaN;
+
+        return Variance(real);
     }
 
     /// <summary>
@@ -218,36 +235,56 @@ public static class Descriptive
     /// Use this function when your data is a sample from a population.
     /// To calculate the variance from the entire population use <see cref="VarianceP(double[])"/>.
     /// </summary>
-    public static double NaNVarianceP<T>(IReadOnlyList<T> values)
+    public static double NanVarianceP<T>(IReadOnlyList<T> values)
     {
-        return VarianceP(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (real.Count() < 2)
+            return double.NaN;
+
+        return VarianceP(real);
     }
 
     /// <summary>
     /// Return the sample standard deviation (the square root of the sample variance).
     /// NaN values are ignored.
     /// </summary>
-    public static double NaNStandardDeviation<T>(IReadOnlyList<T> values)
+    public static double NanStandardDeviation<T>(IReadOnlyList<T> values)
     {
-        return StandardDeviation(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (real.Count() < 2)
+            return double.NaN;
+
+        return StandardDeviation(real);
     }
 
     /// <summary>
     /// Return the population standard deviation (the square root of the sample variance).
     /// NaN values are ignored.
     /// </summary>
-    public static double NaNStandardDeviationP<T>(IReadOnlyList<T> values)
+    public static double NanStandardDeviationP<T>(IReadOnlyList<T> values)
     {
-        return StandardDeviationP(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (real.Count() < 2)
+            return double.NaN;
+
+        return StandardDeviationP(real);
     }
 
     /// <summary>
     /// Standard error of the mean.
     /// NaN values are ignored.
     /// </summary>
-    public static double NaNStandardError<T>(IReadOnlyList<T> values)
+    public static double NanStandardError<T>(IReadOnlyList<T> values)
     {
-        return StandardError(RemoveNaN(values));
+        IReadOnlyList<double> real = RemoveNaN(values);
+
+        if (!real.Any())
+            return double.NaN;
+
+        return StandardError(real);
     }
 
     /// <summary>
@@ -290,39 +327,105 @@ public static class Descriptive
         return vector;
     }
 
-    public static double NaNMean(double[,] values, uint row = 0, uint? column = null)
+    public static double NanMean(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
-        return NaNMean(vector);
+        return NanMean(vector);
     }
 
-    public static double NaNVariance<T>(double[,] values, uint row = 0, uint? column = null)
+    public static double NanVariance<T>(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
         return Variance(RemoveNaN(vector));
     }
 
-    public static double NaNVarianceP<T>(double[,] values, uint row = 0, uint? column = null)
+    public static double NanVarianceP<T>(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
         return VarianceP(RemoveNaN(vector));
     }
 
-    public static double NaNStandardDeviation<T>(double[,] values, uint row = 0, uint? column = null)
+    public static double NanStandardDeviation<T>(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
         return StandardDeviation(RemoveNaN(vector));
     }
 
-    public static double NaNStandardDeviationP<T>(double[,] values, uint row = 0, uint? column = null)
+    public static double NanStandardDeviationP<T>(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
         return StandardDeviationP(RemoveNaN(vector));
     }
 
-    public static double NaNStandardError<T>(double[,] values, uint row = 0, uint? column = null)
+    public static double NanStandardError<T>(double[,] values, uint row = 0, uint? column = null)
     {
         double[] vector = ArrayToVector(values, row, column);
-        return NaNStandardError(RemoveNaN(vector));
+        return NanStandardError(RemoveNaN(vector));
+    }
+
+    public static double[] VerticalSlice(double[,] values, int columnIndex)
+    {
+        double[] slice = new double[values.GetLength(0)];
+
+        for (int y = 0; y < slice.Length; y++)
+        {
+            slice[y] = values[y, columnIndex];
+        }
+
+        return slice;
+    }
+
+    public static double[] VerticalMean(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(Mean)
+            .ToArray();
+    }
+
+    public static double[] VerticalNanMean(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(NanMean)
+            .ToArray();
+    }
+
+    public static double[] VerticalStandardDeviation(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(StandardDeviation)
+            .ToArray();
+    }
+
+    public static double[] VerticalNanStandardDeviation(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(NanStandardDeviation)
+            .ToArray();
+    }
+
+    public static double[] VerticalStandardError(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(StandardError)
+            .ToArray();
+    }
+
+    public static double[] VerticalNanStandardError(double[,] values)
+    {
+        return Enumerable
+            .Range(0, values.GetLength(1))
+            .Select(x => VerticalSlice(values, x))
+            .Select(NanStandardError)
+            .ToArray();
     }
 }
