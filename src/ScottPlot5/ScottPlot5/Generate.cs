@@ -289,6 +289,27 @@ public static class Generate
 
     #endregion
 
+    #region text
+
+    public static char RandomChar()
+    {
+        return (char)('A' + RandomInteger(26));
+    }
+
+    public static string RandomString(int length)
+    {
+        char[] chars = new char[length];
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            chars[i] = RandomChar();
+        }
+
+        return new string(chars);
+    }
+
+    #endregion
+
     #region Axes
 
     public static Coordinates RandomCoordinates()

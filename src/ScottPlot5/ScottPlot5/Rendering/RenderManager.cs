@@ -14,6 +14,11 @@ public class RenderManager
     public RenderDetails LastRender { get; private set; }
 
     /// <summary>
+    /// This event is invoked just before each render
+    /// </summary>
+    public EventHandler<RenderPack> RenderStarting { get; set; } = delegate { };
+
+    /// <summary>
     /// This event is invoked after each render
     /// </summary>
     public EventHandler<RenderDetails> RenderFinished { get; set; } = delegate { };
@@ -56,6 +61,7 @@ public class RenderManager
         new RenderActions.EnsureAxesHaveArea(),
         new RenderActions.CalculateLayout(),
         new RenderActions.RegenerateTicks(),
+        new RenderActions.InvokePreRenderEvent(),
         new RenderActions.RenderBackground(),
         new RenderActions.RenderGridsBelowPlottables(),
         new RenderActions.RenderPlottables(),
