@@ -33,6 +33,7 @@
 * Box: Refactored box plot API to favor simplicity and user customization (#3072)
 * Rendering: Added `RenderManager.RenderStarting` event to allow modification of plottable properties (#3077) _Thanks GooBad_
 * Rendering: Added `RenderManager.PreRenderLock` event so developers of multi-threaded applications can ensure plottables are stable at render time (#3095) _Thanks @bclehmann_
+* Statistics: Added descriptive statistics methods and improved support for 2D arrays (#3113, #3121) _Thanks @arthurits_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
