@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public class SvgImage
+internal class SvgImage : IDisposable
 {
     public readonly int Width;
     public readonly int Height;
@@ -16,11 +16,13 @@ public class SvgImage
         Canvas = SKSvgCanvas.Create(rect, Stream);
     }
 
-    public void Save(string filename)
+    public string GetXml()
     {
-        FileStream fs = new(filename, FileMode.Create);
-        Stream.WriteTo(fs);
-        using StreamWriter sw = new(fs);
-        sw.Write("</svg>");
+        return Encoding.ASCII.GetString(Stream.ToArray()) + "</svg>";
+    }
+
+    public void Dispose()
+    {
+        Canvas.Dispose();
     }
 }

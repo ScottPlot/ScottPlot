@@ -78,7 +78,7 @@ public class Legend
         return new Image(skimg);
     }
 
-    public SvgImage GetSvgImage(Plot plot)
+    public string GetSvgXml(Plot plot)
     {
         using SKPaint paint = new();
         SizedLegendItem[] sizedItems = GetSizedLegendItems(plot, paint);
@@ -91,9 +91,10 @@ public class Legend
         PixelRect legendShadowRect = legendRect.WithDelta(ShadowOffset, ShadowOffset, Location);
         Pixel offset = new(legendRect.Left + Padding.Left, legendRect.Top + Padding.Top);
 
-        SvgImage svg = new(width, height);
+        using SvgImage svg = new(width, height);
         RenderLegend(sizedItems, svg.Canvas, paint, offset, legendRect, legendShadowRect);
-        return svg;
+        string svgXml = svg.GetXml();
+        return svgXml;
     }
 
     private SKObject RenderToObject(ScottPlot.Plot plot, Stream? svgStream = null, int maxWidth = 0, int maxHeight = 0)

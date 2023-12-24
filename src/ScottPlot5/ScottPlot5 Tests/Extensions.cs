@@ -6,24 +6,6 @@ namespace ScottPlotTests;
 
 internal static class Extensions
 {
-    internal static void SaveTestImage(this SvgImage img)
-    {
-        StackTrace stackTrace = new();
-        StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("unknown caller");
-        MethodBase method = frame.GetMethod() ?? throw new InvalidDataException("unknown method");
-        string callingMethod = method.Name;
-
-        string saveFolder = Path.Combine(TestContext.CurrentContext.TestDirectory, "test-images");
-        if (!Directory.Exists(saveFolder))
-            Directory.CreateDirectory(saveFolder);
-
-        string fileName = callingMethod + ".svg";
-        string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
-
-        img.Save(filePath);
-    }
-
     internal static void SaveTestImage(this Image img)
     {
         StackTrace stackTrace = new();
