@@ -66,6 +66,7 @@ public static class SkiaSharpExtensions
 
     public static void ApplyToPaint(this LineStyle style, SKPaint paint)
     {
+        paint.Shader = null;
         paint.IsStroke = true;
         paint.Color = style.Color.ToSKColor();
         paint.StrokeWidth = style.Width;
@@ -90,6 +91,7 @@ public static class SkiaSharpExtensions
 
     public static void ApplyToPaint(this FontStyle fontStyle, SKPaint paint)
     {
+        paint.Shader = null;
         paint.IsStroke = false;
         paint.Typeface = fontStyle.Typeface;
         paint.TextSize = fontStyle.Size;
