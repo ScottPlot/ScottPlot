@@ -196,7 +196,7 @@ public static class Descriptive
     /// <summary>
     /// Return the sample mean. NaN values are ignored.
     /// </summary>
-    public static double NaNMean<T> (IReadOnlyList<T> values)
+    public static double NaNMean<T>(IReadOnlyList<T> values)
     {
         return Mean(RemoveNaN(values));
     }
