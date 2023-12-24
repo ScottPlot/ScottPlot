@@ -253,7 +253,7 @@ public static class Descriptive
     /// <summary>
     /// Transpose a multidimensional (not jagged) array
     /// </summary>
-    public static double[,] Rotate90(double[,] matrix)
+    public static double[,] ArrayTranspose(double[,] matrix)
     {
         int rows = matrix.GetLength(0);
         int cols = matrix.GetLength(1);
@@ -274,7 +274,7 @@ public static class Descriptive
     public static double[] ArrayToVector(double[,] values, uint? row = 0, uint? column = null)
     {
         if (values.GetLength(0) == 0)
-            throw new ArgumentException($"{nameof(values)} cannot be empty");
+            throw new ArgumentException($"Array {nameof(values)} cannot be empty");
 
         double[] vector = Array.Empty<double>();
         if (row is not null)
@@ -284,7 +284,7 @@ public static class Descriptive
         }
         else if (column is not null)
         {
-            vector = ArrayToVector(Rotate90(values), column);
+            vector = ArrayToVector(ArrayTranspose(values), column);
         }
 
         return vector;
