@@ -620,7 +620,7 @@ public class Plot : IDisposable
     /// <summary>
     /// Returns the content of the legend as SVG (vector) image
     /// </summary>
-    public SvgImage GetLegendSvg() => Legend.GetSvgImage(this);
+    public string GetLegendSvgXml() => Legend.GetSvgXml(this);
 
     #endregion
 

@@ -67,7 +67,7 @@ internal class LegendTests
 
         plt.Legend.IsVisible = true;
 
-        SvgImage svg = plt.GetLegendSvg();
-        svg.SaveTestImage();
+        string svgXml = plt.GetLegendSvgXml();
+        svgXml.SaveTestString(".svg");
     }
 }
