@@ -28,6 +28,9 @@ internal abstract class PageBase
     {
         Directory.CreateDirectory(folder);
 
+        if (!url.EndsWith("/"))
+            url += "/";
+
         StringBuilder sbfm = new();
         sbfm.AppendLine("---");
         sbfm.AppendLine($"Title: {title}");

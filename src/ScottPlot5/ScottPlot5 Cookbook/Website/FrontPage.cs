@@ -38,7 +38,7 @@ internal class FrontPage : PageBase
         Save(outputFolder,
             title: "ScottPlot 5.0 Cookbook",
             description: "Example plots shown next to the code used to create them",
-            filename: "cookbook-5.0.md",
+            filename: "index_.md",
             url: "/cookbook/5.0/",
             frontmatter: fm);
     }
