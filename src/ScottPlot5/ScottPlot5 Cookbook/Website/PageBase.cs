@@ -32,7 +32,7 @@ internal abstract class PageBase
         sbfm.AppendLine("---");
         sbfm.AppendLine($"Title: {title}");
         sbfm.AppendLine($"Description: {description}");
-        sbfm.AppendLine($"URL: {url}/index.html");
+        sbfm.AppendLine($"URL: {url}");
         if (frontmatter is not null)
         {
             foreach (string line in frontmatter)
