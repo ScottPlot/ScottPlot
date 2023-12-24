@@ -8,9 +8,11 @@ namespace WinFormsApp
         public Form1()
         {
             InitializeComponent();
-            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Sin(), label: "sin");
-            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Cos(), label: "cos");
-            formsPlot1.Plot.Legend();
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Sin());
+            formsPlot1.Plot.AddSignal(ScottPlot.Generate.Cos());
+
+            formsPlot1.Plot.XAxis.SetZoomInLimit(1);
+
             formsPlot1.Render();
         }
     }

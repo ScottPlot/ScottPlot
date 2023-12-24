@@ -203,6 +203,12 @@ namespace ScottPlot.Renderable
         /// </summary>
         private void ApplyBounds()
         {
+            if (SpanMinimum.HasValue)
+                ApplyZoomInLimit(SpanMinimum.Value);
+
+            if (SpanMaximum.HasValue)
+                ApplyZoomOutLimit(SpanMaximum.Value);
+
             if (Span > SpanBound)
             {
                 Min = OuterBoundaryMin;
@@ -321,12 +327,6 @@ namespace ScottPlot.Renderable
             Min = zoomTo.Value - spanLeft / frac;
             Max = zoomTo.Value + spanRight / frac;
             ApplyBounds();
-
-            if (SpanMinimum.HasValue)
-                ApplyZoomInLimit(SpanMinimum.Value);
-
-            if (SpanMaximum.HasValue)
-                ApplyZoomOutLimit(SpanMaximum.Value);
         }
 
         /// <summary>

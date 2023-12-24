@@ -39,6 +39,7 @@
 * Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_
 * Version: Added `ShouldBe()` method to assert the version of ScottPlot matches the expected one (#3093)
 * Marker: Added support for `Marker.horizontalBar` to compliment `verticalBar` (#3101) _Thanks @SerhiiMahera_
+* Axis: Span limits are respected when zooming with a window or scroll wheel (#3082) _Thanks @ashe27_
 
 ## ScottPlot 5.0.10-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-03_
