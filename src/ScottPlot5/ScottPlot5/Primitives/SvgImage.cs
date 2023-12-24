@@ -2,6 +2,7 @@
 
 internal class SvgImage : IDisposable
 {
+    private bool IsDisposed = false;
     public readonly int Width;
     public readonly int Height;
     private readonly MemoryStream Stream;
@@ -23,6 +24,12 @@ internal class SvgImage : IDisposable
 
     public void Dispose()
     {
+        if (IsDisposed)
+            return;
+
         Canvas.Dispose();
+        IsDisposed = true;
+
+        GC.SuppressFinalize(this);
     }
 }

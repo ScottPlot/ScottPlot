@@ -50,8 +50,8 @@ internal class LegendTests
         sig1.Label = "Sine";
         sig2.Label = "Cosine";
 
-        //Image img = plt.GetLegendImage();
-        //img.SaveTestImage();
+        Image img = plt.GetLegendImage();
+        img.SaveTestImage();
     }
 
     [Test]
