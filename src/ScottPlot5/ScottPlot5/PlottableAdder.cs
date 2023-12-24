@@ -78,34 +78,22 @@ public class PlottableAdder
         return Bars(bars);
     }
 
-    public BoxPlot Box(IList<Box> boxes)
+    public BoxPlot Box(Box box)
     {
-        BoxGroup singleGroup = new()
-        {
-            Boxes = boxes,
-        };
-
-        singleGroup.Fill.Color = GetNextColor();
-
-        IList<BoxGroup> groups = new List<BoxGroup>() { singleGroup };
-
-        return Box(groups);
+        BoxPlot bp = new();
+        bp.Boxes.Add(box);
+        bp.FillColor = GetNextColor();
+        Plot.PlottableList.Add(bp);
+        return bp;
     }
 
-    public BoxPlot Box(IList<BoxGroup> groups)
+    public BoxPlot Boxes(IEnumerable<Box> boxes)
     {
-        BoxGroups boxGroups = new()
-        {
-            Series = groups,
-        };
-
-        BoxPlot boxPlot = new()
-        {
-            Groups = boxGroups,
-        };
-
-        Plot.PlottableList.Add(boxPlot);
-        return boxPlot;
+        BoxPlot bp = new();
+        bp.Boxes.AddRange(boxes);
+        bp.FillColor = GetNextColor();
+        Plot.PlottableList.Add(bp);
+        return bp;
     }
 
     public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
