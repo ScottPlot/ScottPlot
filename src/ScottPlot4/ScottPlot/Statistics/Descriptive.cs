@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ScottPlot.Statistics;
+﻿namespace ScottPlot.Statistics;
 
 public static class Descriptive
 {
@@ -29,5 +24,10 @@ public static class Descriptive
         double meanVarianceSquared = sumVariancesSquared / values.Length;
         double stDev = Math.Sqrt(meanVarianceSquared);
         return stDev;
+    }
+
+    public static double StdErr(double[] values)
+    {
+        return StDev(values) / Math.Sqrt(values.Length);
     }
 }
