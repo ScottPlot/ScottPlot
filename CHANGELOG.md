@@ -36,6 +36,7 @@
 * Statistics: Added descriptive statistics methods and improved support for 2D arrays (#3113, #3121) _Thanks @arthurits_
 * Rendering: Improved appearance of shapes with custom hatches and outlines (#3099) _Thanks @faguetan_
 * Text: Improved support for multiline labels (#3087) _Thanks @raburton_
+* Layout: Improved tick and axis label alignment in fixed layout plots (#3104) _Thanks @albyoo_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
