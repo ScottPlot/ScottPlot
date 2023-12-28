@@ -36,8 +36,6 @@ public class ErrorBar : ICategory
         {
             int points = 10;
 
-            ScottPlot.RandomDataGenerator gen = new();
-
             double[] xs = ScottPlot.Generate.Consecutive(points);
             double[] ys = ScottPlot.Generate.RandomWalk(points);
             var scatter = myPlot.Add.Scatter(xs, ys);
@@ -46,10 +44,10 @@ public class ErrorBar : ICategory
             ScottPlot.Plottables.ErrorBar eb = new(
                 xs: xs,
                 ys: ys,
-                xErrorsNegative: gen.RandomSample(points, .5),
-                xErrorsPositive: gen.RandomSample(points, .5),
-                yErrorsNegative: gen.RandomSample(points),
-                yErrorsPositive: gen.RandomSample(points));
+                xErrorsNegative: ScottPlot.Generate.RandomSample(points, .5),
+                xErrorsPositive: ScottPlot.Generate.RandomSample(points, .5),
+                yErrorsNegative: ScottPlot.Generate.RandomSample(points),
+                yErrorsPositive: ScottPlot.Generate.RandomSample(points));
 
             eb.Color = scatter.Color;
 
