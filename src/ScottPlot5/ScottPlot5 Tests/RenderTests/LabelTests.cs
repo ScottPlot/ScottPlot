@@ -40,4 +40,24 @@ internal class LabelTests
 
         surface.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Label_Multiline()
+    {
+        ScottPlot.LabelExperimental lbl = new()
+        {
+            Text = "One\nTwo",
+            ForeColor = Colors.White.WithAlpha(.5),
+            FontSize = 26,
+            Alignment = Alignment.MiddleCenter,
+        };
+
+        SKSurface surface = Drawing.CreateSurface(400, 300);
+        SKCanvas canvas = surface.Canvas;
+        canvas.Clear(SKColors.Navy);
+
+        lbl.Render(canvas, 200, 150);
+
+        surface.SaveTestImage();
+    }
 }

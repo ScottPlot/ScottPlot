@@ -110,7 +110,21 @@ public class LabelExperimental
         ApplyBackgroundPaint(paint);
         canvas.DrawRect(backgroundRect.ToSKRect(), paint);
         ApplyTextPaint(paint);
-        canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
+
+        if (Text.Contains('\n'))
+        {
+            // TODO: multiline support could be significantly improved
+            string[] lines = Text.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                canvas.DrawText(lines[i], textRect.Left, textRect.Bottom + i * paint.FontSpacing, paint);
+            }
+        }
+        else
+        {
+            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
+        }
+
         ApplyBorderPaint(paint);
         canvas.DrawRect(backgroundRect.ToSKRect(), paint);
         canvas.Restore();
