@@ -110,7 +110,7 @@ internal class LayoutTests
         myPlot.RightAxis.Label.Text = "Secondary Y Axis";
 
         // Use fixed layout
-        myPlot.LayoutEngine = new ScottPlot.LayoutEngines.FixedPadding(new PixelPadding(100));
+        myPlot.Layout.Fixed(new PixelPadding(100));
 
         myPlot.SaveTestImage();
     }

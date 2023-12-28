@@ -34,7 +34,7 @@ public class Plot : IDisposable
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
-    public ILayoutEngine LayoutEngine { get; set; } = new LayoutEngines.Automatic();
+    public LayoutManager Layout { get; private set; }
     public IAutoScaler AutoScaler { get; set; } = new AutoScalers.FractionalAutoScaler(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
@@ -109,6 +109,7 @@ public class Plot : IDisposable
         Style = new(this);
         RenderManager = new(this);
         Legend = new(this);
+        RenderManager = new(this);
     }
 
     public void Dispose()
@@ -724,31 +725,6 @@ public class Plot : IDisposable
         CoordinateRange xRange = x ? otherLimits.XRange : theseLimits.XRange;
         CoordinateRange yRange = y ? otherLimits.YRange : theseLimits.YRange;
         SetAxisLimits(xRange, yRange);
-    }
-
-    /// <summary>
-    /// Apply a fixed layout using the given rectangle to define the data area
-    /// </summary>
-    public void FixedLayout(PixelRect dataRect)
-    {
-        LayoutEngine = new LayoutEngines.FixedDataArea(dataRect);
-    }
-
-    /// <summary>
-    /// Apply a fixed layout using the given padding to define space between the
-    /// data area and the edge of the figure
-    /// </summary>
-    public void FixedLayout(PixelPadding padding)
-    {
-        LayoutEngine = new LayoutEngines.FixedPadding(padding);
-    }
-
-    /// <summary>
-    /// Use the automatic layout system (default)
-    /// </summary>
-    public void AutomaticLayout()
-    {
-        LayoutEngine = new LayoutEngines.Automatic();
     }
 
     #endregion

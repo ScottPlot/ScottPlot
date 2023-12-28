@@ -37,6 +37,7 @@
 * Rendering: Improved appearance of shapes with custom hatches and outlines (#3099) _Thanks @faguetan_
 * Text: Improved support for multiline labels (#3087) _Thanks @raburton_
 * Layout: Improved tick and axis label alignment in fixed layout plots (#3104) _Thanks @albyoo_
+* Layout: Created `Plot.Layout` class for holding `Frameless()` and related methods (#3106) _Thanks @angulion_
 
 ## ScottPlot 4.1.70 (in development)
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
