@@ -110,6 +110,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         RenderManager = new(this);
+        Layout = new(this);
     }
 
     public void Dispose()
