@@ -40,4 +40,14 @@ public class LayoutManager
     {
         LayoutEngine = new FixedPadding(padding);
     }
+
+    /// <summary>
+    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// </summary>
+    public void Frameless()
+    {
+        Plot.XAxes.ForEach(x => x.IsVisible = false);
+        Plot.YAxes.ForEach(x => x.IsVisible = false);
+        Plot.TitlePanel.IsVisible = false;
+    }
 }

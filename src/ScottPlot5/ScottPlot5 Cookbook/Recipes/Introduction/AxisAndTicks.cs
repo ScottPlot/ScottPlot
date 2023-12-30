@@ -101,9 +101,7 @@ public class AxisAndTicks : ICategory
             myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
-            myPlot.XAxes.ForEach(x => x.IsVisible = false);
-            myPlot.YAxes.ForEach(x => x.IsVisible = false);
-            myPlot.TitlePanel.IsVisible = false;
+            myPlot.Layout.Frameless();
         }
     }
 }
