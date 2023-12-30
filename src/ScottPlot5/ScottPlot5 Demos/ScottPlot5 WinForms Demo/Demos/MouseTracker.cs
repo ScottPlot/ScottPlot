@@ -16,22 +16,21 @@ public partial class MouseTracker : Form, IDemoWindow
         InitializeComponent();
 
         CH = formsPlot1.Plot.Add.Crosshair(0, 0);
+        formsPlot1.Refresh();
 
         formsPlot1.MouseMove += (s, e) =>
         {
-            // demonstrate pixel-to-coordinates
-            Pixel px = new(e.X, e.Y);
-            Coordinates coordinates = formsPlot1.GetCoordinates(px);
+            Pixel mousePixel = new(e.X, e.Y);
+            Coordinates mouseCoordinates = formsPlot1.GetCoordinates(mousePixel);
 
-            // demonstrate coordinates-to-pixel
-            Pixel px2 = formsPlot1.Plot.GetPixel(coordinates);
+            // coordinates may be invalid if requested before the first render
+            if (!mouseCoordinates.AreReal)
+                return;
 
-            // place the crosshair where the mouse is
-            CH.Position = coordinates;
+            CH.Position = mouseCoordinates;
             formsPlot1.Refresh();
 
-            // display where the mouse is in the titlebar
-            Text = $"{px2} {coordinates}";
+            Text = mouseCoordinates.ToString();
         };
     }
 }
