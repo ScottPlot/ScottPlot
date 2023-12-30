@@ -16,8 +16,10 @@ public partial class MainMenuForm : Form
     public MainMenuForm()
     {
         InitializeComponent();
-        label2.Text = ScottPlot.Version.VersionString;
+        label1.Text = "ScottPlot Demo";
+        label2.Text = "ScottPlot.WinForms " + ScottPlot.Version.VersionString;
         ShowScrollBar(tableLayoutPanel1.Handle, (int)ScrollBarDirection.VERT, true);
+        //Text = $"ScottPlot Demo ({ScottPlot.Version.VersionString})";
     }
 
     private void MainMenuForm_Load(object sender, EventArgs e)

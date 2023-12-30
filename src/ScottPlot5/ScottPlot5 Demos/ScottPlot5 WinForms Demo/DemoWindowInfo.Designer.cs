@@ -28,76 +28,71 @@ partial class DemoWindowInfo
     /// </summary>
     private void InitializeComponent()
     {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Controls.Add(this.richTextBox1);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(483, 83);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Title";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Location = new System.Drawing.Point(453, 53);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(24, 24);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.richTextBox1.Location = new System.Drawing.Point(90, 22);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(349, 55);
-            this.richTextBox1.TabIndex = 8;
-            this.richTextBox1.Text = "description";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(6, 22);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(78, 55);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Launch";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // MenuItem
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox1);
-            this.Name = "MenuItem";
-            this.Size = new System.Drawing.Size(483, 83);
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-
+        groupBox1 = new GroupBox();
+        label1 = new Label();
+        richTextBox1 = new RichTextBox();
+        button1 = new Button();
+        groupBox1.SuspendLayout();
+        SuspendLayout();
+        // 
+        // groupBox1
+        // 
+        groupBox1.Controls.Add(label1);
+        groupBox1.Controls.Add(richTextBox1);
+        groupBox1.Controls.Add(button1);
+        groupBox1.Dock = DockStyle.Fill;
+        groupBox1.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold, GraphicsUnit.Point);
+        groupBox1.Location = new Point(0, 0);
+        groupBox1.Name = "groupBox1";
+        groupBox1.Size = new Size(483, 83);
+        groupBox1.TabIndex = 0;
+        groupBox1.TabStop = false;
+        groupBox1.Text = "Title";
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Regular, GraphicsUnit.Point);
+        label1.ForeColor = SystemColors.ControlDark;
+        label1.Location = new Point(6, 64);
+        label1.Name = "label1";
+        label1.Size = new Size(73, 15);
+        label1.TabIndex = 9;
+        label1.Text = "View Source";
+        // 
+        // richTextBox1
+        // 
+        richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        richTextBox1.BackColor = SystemColors.Control;
+        richTextBox1.BorderStyle = BorderStyle.None;
+        richTextBox1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+        richTextBox1.Location = new Point(85, 22);
+        richTextBox1.Name = "richTextBox1";
+        richTextBox1.Size = new Size(392, 55);
+        richTextBox1.TabIndex = 8;
+        richTextBox1.Text = "description";
+        // 
+        // button1
+        // 
+        button1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+        button1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+        button1.Location = new Point(6, 22);
+        button1.Name = "button1";
+        button1.Size = new Size(73, 39);
+        button1.TabIndex = 6;
+        button1.Text = "Launch";
+        button1.UseVisualStyleBackColor = true;
+        // 
+        // DemoWindowInfo
+        // 
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        Controls.Add(groupBox1);
+        Name = "DemoWindowInfo";
+        Size = new Size(483, 83);
+        groupBox1.ResumeLayout(false);
+        groupBox1.PerformLayout();
+        ResumeLayout(false);
     }
 
     #endregion
@@ -105,5 +100,5 @@ partial class DemoWindowInfo
     private GroupBox groupBox1;
     private RichTextBox richTextBox1;
     private Button button1;
-    private PictureBox pictureBox1;
+    private Label label1;
 }
