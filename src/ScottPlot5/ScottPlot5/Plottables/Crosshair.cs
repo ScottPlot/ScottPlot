@@ -8,9 +8,11 @@ public class Crosshair : IPlottable
 
     public IEnumerable<LegendItem> LegendItems { get; } = Array.Empty<LegendItem>();
 
-    public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+    public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
 
-    public Coordinates Position { get; set; }
+    public Coordinates Position { get => new(X, Y); set { X = value.X; Y = value.Y; } }
+    public double X { get; set; }
+    public double Y { get; set; }
 
     public bool VerticalLineIsVisible { get; set; } = true;
 
