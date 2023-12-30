@@ -6,26 +6,38 @@ public class AutoScaleUnsetAxes : IRenderAction
     {
         IEnumerable<IPlottable> visiblePlottables = rp.Plot.PlottableList.Where(x => x.IsVisible);
 
-        if (!visiblePlottables.Any())
+        if (visiblePlottables.Any())
         {
-            if (!rp.Plot.BottomAxis.Range.HasBeenSet)
-            {
-                rp.Plot.SetAxisLimitsX(AxisLimits.Default);
-            }
+            AutoscaleUnsetAxesToData(rp.Plot);
+        }
+        else
+        {
+            ApplyDefaultLimitsToUnsetAxes(rp.Plot);
+        }
+    }
 
-            if (!rp.Plot.LeftAxis.Range.HasBeenSet)
-            {
-                rp.Plot.SetAxisLimitsY(AxisLimits.Default);
-            }
+    private void AutoscaleUnsetAxesToData(Plot plot)
+    {
+        foreach (IPlottable plottable in plot.PlottableList)
+        {
+            plot.AutoScale(
+                xAxis: plottable.Axes.XAxis,
+                yAxis: plottable.Axes.YAxis,
+                horizontal: !plottable.Axes.XAxis.Range.HasBeenSet,
+                vertical: !plottable.Axes.YAxis.Range.HasBeenSet);
+        }
+    }
 
-            return;
+    private void ApplyDefaultLimitsToUnsetAxes(Plot plot)
+    {
+        if (!plot.BottomAxis.Range.HasBeenSet)
+        {
+            plot.SetAxisLimitsX(AxisLimits.Default);
         }
 
-        foreach (IPlottable plottable in rp.Plot.PlottableList)
+        if (!plot.LeftAxis.Range.HasBeenSet)
         {
-            bool scaleX = !plottable.Axes.XAxis.Range.HasBeenSet;
-            bool scaleY = !plottable.Axes.YAxis.Range.HasBeenSet;
-            rp.Plot.AutoScale(plottable.Axes.XAxis, plottable.Axes.YAxis, scaleX, scaleY);
+            plot.SetAxisLimitsY(AxisLimits.Default);
         }
     }
 }

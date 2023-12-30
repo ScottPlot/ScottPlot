@@ -22,6 +22,11 @@ public abstract class AxisBase
         set => Range.Max = value;
     }
 
+    public override string ToString()
+    {
+        return base.ToString() + " " + Range.ToString();
+    }
+
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
     public LabelExperimental Label { get; private set; } = new()

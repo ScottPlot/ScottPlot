@@ -9,7 +9,7 @@ public class CoordinateRange : IEquatable<CoordinateRange> // TODO: rename to Mu
     public double Max { get; set; }
     public double Center => (Min + Max) / 2;
     public double Span => Max - Min;
-    public bool HasBeenSet => Max >= Min;
+    public bool HasBeenSet => NumericConversion.IsReal(Span) && Span != 0;
 
     public CoordinateRange(double min, double max)
     {

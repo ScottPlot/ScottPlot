@@ -29,6 +29,11 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         Expand(initialLimits);
     }
 
+    public override string ToString()
+    {
+        return $"Expanding Limits: Left={Left}, Right={Right}, Bottom={Bottom}, Top={Top}";
+    }
+
     /// <summary>
     /// Expanded limits to include the given <paramref name="x"/> and <paramref name="y"/>.
     /// </summary>
@@ -43,8 +48,19 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     /// </summary>
     public void ExpandX(double x)
     {
-        Left = !double.IsNaN(Left) ? Math.Min(Left, x) : x;
-        Right = !double.IsNaN(Right) ? Math.Max(Right, x) : x;
+        // if incoming is NaN do nothing
+        if (double.IsNaN(x))
+            return;
+
+        // if existing is NaN, use the new value
+        if (double.IsNaN(Left))
+            Left = x;
+        if (double.IsNaN(Right))
+            Right = x;
+
+        // otherwise use minmax
+        Left = Math.Min(Left, x);
+        Right = Math.Max(Right, x);
     }
 
     /// <summary>
@@ -52,8 +68,19 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     /// </summary>
     public void ExpandY(double y)
     {
-        Bottom = !double.IsNaN(Bottom) ? Math.Min(Bottom, y) : y;
-        Top = !double.IsNaN(Top) ? Math.Max(Top, y) : y;
+        // if incoming is NaN do nothing
+        if (double.IsNaN(y))
+            return;
+
+        // if existing is NaN, use the new value
+        if (double.IsNaN(Bottom))
+            Bottom = y;
+        if (double.IsNaN(Top))
+            Top = y;
+
+        // otherwise use minmax
+        Bottom = Math.Min(Bottom, y);
+        Top = Math.Max(Top, y);
     }
 
     /// <summary>

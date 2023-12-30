@@ -4,7 +4,11 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
-## ScottPlot 5.0.11-beta (in development)
+## ScottPlot 5.0.12 (in development)
+* Axes: Improved automatic axis scaling for plots containing 1D plottables (#3132)
+
+## ScottPlot 5.0.11-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
 * Plot: `AutoScaler` can now be assigned a `FractionalAutoScaler` with custom properties (#3069, #3067) _Thanks @arthurits_
 * Controls: add SVG to recommended save formats in the right-click menu (#3068)
 * Bar: Refactored bar plots to simplify individual bar customization (#3070, #3066)
@@ -39,7 +43,8 @@
 * Layout: Improved tick and axis label alignment in fixed layout plots (#3104) _Thanks @albyoo_
 * Layout: Created `Plot.Layout` class for holding `Frameless()` and related methods (#3106) _Thanks @angulion_
 
-## ScottPlot 4.1.70 (in development)
+## ScottPlot 4.1.70
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
 * Population Plot: Improved performance for populations with curves that run off the screen (#3054) _Thanks @Em3a-c and @cornford_
 * Performance: Improved performance of Bar and Finance plots by not drawing shapes outside the data area (#3053, #3078) _Thanks @AndreyPalyutin_
 * Colormap: Added a `Reversed()` method for creating colormaps with reversed color order (#3100) _Thanks @bukkideme_

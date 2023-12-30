@@ -1,5 +1,8 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
+/// <summary>
+/// Identifies axes with zero span and expands them slightly
+/// </summary>
 public class EnsureAxesHaveArea : IRenderAction
 {
     public void Render(RenderPack rp)

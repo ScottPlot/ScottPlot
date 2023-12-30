@@ -305,6 +305,30 @@ public class Plot : IDisposable
         AutoScaler.AutoScaleAll(PlottableList);
     }
 
+    public void AutoScaleX()
+    {
+        AutoScaleX(BottomAxis);
+    }
+
+    public void AutoScaleY()
+    {
+        AutoScaleY(LeftAxis);
+    }
+
+    public void AutoScaleX(IXAxis xAxis)
+    {
+        ReplaceNullAxesWithDefaults();
+        AxisLimits limits = AutoScaler.GetAxisLimits(this, xAxis, LeftAxis);
+        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
+    }
+
+    public void AutoScaleY(IYAxis yAxis)
+    {
+        ReplaceNullAxesWithDefaults();
+        AxisLimits limits = AutoScaler.GetAxisLimits(this, BottomAxis, yAxis);
+        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
+    }
+
     /// <summary>
     /// Autoscale the given axes to accommodate the data from all plottables that use them
     /// </summary>
