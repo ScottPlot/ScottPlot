@@ -34,7 +34,7 @@ public partial class OpenGLPerformance : Form, IDemoWindow
         formsPlot1.Plot.Benchmark.IsVisible = true;
 
         formsPlotgl1.Plot.Title("FormsPlotGL");
-        formsPlot1.Plot.Benchmark.IsVisible = true;
+        formsPlotgl1.Plot.Benchmark.IsVisible = true;
 
         UpdatePlots();
     }

@@ -97,7 +97,7 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
+            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
             sig.LineStyle.Width = 10;
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();

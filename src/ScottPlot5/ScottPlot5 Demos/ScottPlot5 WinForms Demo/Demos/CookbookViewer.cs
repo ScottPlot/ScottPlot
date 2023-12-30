@@ -1,6 +1,6 @@
 ﻿using ScottPlotCookbook;
-using ScottPlotCookbook.Recipes;
 using ScottPlotCookbook.Website;
+using System.Linq;
 
 namespace WinForms_Demo.Demos;
 
@@ -13,15 +13,21 @@ public partial class CookbookViewer : Form, IDemoWindow
 
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = Query.GetRecipesByCategory();
 
-    readonly SourceDatabase SB;
+    readonly SourceDatabase SB = new();
 
     public CookbookViewer()
     {
         InitializeComponent();
-        SB = new();
     }
 
     private void CookbookViewer_Load(object sender, EventArgs e)
+    {
+        UpdateRecipeList();
+        listView1.Items[0].Selected = true;
+        tbFilter.Select();
+    }
+
+    private void UpdateRecipeList(string match = "")
     {
         listView1.Items.Clear();
         listView1.Groups.Clear();
@@ -31,6 +37,25 @@ public partial class CookbookViewer : Form, IDemoWindow
             IEnumerable<ICategory> categoriesInChapter = RecipesByCategory.Keys.Where(x => x.Chapter == chapter);
             foreach (ICategory category in categoriesInChapter)
             {
+                List<IRecipe> matchingRecipes = new();
+                foreach (IRecipe recipe in RecipesByCategory[category])
+                {
+                    if (!string.IsNullOrEmpty(match))
+                    {
+                        bool matches =
+                            recipe.Name.Contains(match, StringComparison.InvariantCultureIgnoreCase) ||
+                            recipe.Description.Contains(match, StringComparison.InvariantCultureIgnoreCase);
+
+                        if (matches == false)
+                            continue;
+                    }
+
+                    matchingRecipes.Add(recipe);
+                }
+
+                if (!matchingRecipes.Any())
+                    continue;
+
                 ListViewGroup group = new()
                 {
                     HeaderAlignment = HorizontalAlignment.Center,
@@ -39,7 +64,7 @@ public partial class CookbookViewer : Form, IDemoWindow
 
                 listView1.Groups.Add(group);
 
-                foreach (IRecipe recipe in RecipesByCategory[category])
+                foreach (IRecipe recipe in matchingRecipes)
                 {
                     ListViewItem item = new()
                     {
@@ -51,8 +76,6 @@ public partial class CookbookViewer : Form, IDemoWindow
                 }
             }
         }
-
-        listView1.Items[0].Selected = true;
     }
 
     private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -73,11 +96,16 @@ public partial class CookbookViewer : Form, IDemoWindow
 
         if (recipeInfo is null)
         {
-            richTextBox1.Text = "Source code not found.\nRun test suite to generate JSON file.";
+            rtbCode.Text = "Source code not found.\nRun test suite to generate JSON file.";
         }
         else
         {
-            richTextBox1.Text = recipeInfo.Value.Source;
+            rtbCode.Text = recipeInfo.Value.Source;
         }
+    }
+
+    private void tbFilter_TextChanged(object sender, EventArgs e)
+    {
+        UpdateRecipeList(tbFilter.Text);
     }
 }

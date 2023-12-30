@@ -54,7 +54,7 @@ public class LinePlot : ICategory
 
     public class LinePlotLegendQWER : RecipeBase
     {
-        public override string Name => "Line Plot Legend 123";
+        public override string Name => "Line Plot Legend";
         public override string Description => "Line plots with labels appear in the legend.";
 
         [Test]

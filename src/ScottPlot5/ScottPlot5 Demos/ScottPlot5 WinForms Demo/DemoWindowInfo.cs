@@ -37,8 +37,6 @@ public partial class DemoWindowInfo : UserControl
         Form form = (Form)Activator.CreateInstance(FormType)!;
         form.StartPosition = FormStartPosition.CenterScreen;
         form.Text = title;
-        form.Width = 800;
-        form.Height = 500;
         form.ShowDialog();
     }
 }
