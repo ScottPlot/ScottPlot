@@ -61,11 +61,11 @@ public partial class DraggableAxisLines : Form, IDemoWindow
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
-        CoordinateRect rect = formsPlot1.Plot.GetCoordinateRect(e.X, e.Y);
+        // this rectangle is the area around the mouse in coordinate units
+        CoordinateRect rect = formsPlot1.Plot.GetCoordinateRect(e.X, e.Y, radius: 10);
 
         if (PlottableBeingDragged is null)
         {
-            // nothing is being dragged, but set the cursor based on what's beneath it
             if (rect.ContainsX(VLine.X))
             {
                 Cursor = Cursors.SizeWE;
@@ -78,22 +78,24 @@ public partial class DraggableAxisLines : Form, IDemoWindow
             {
                 Cursor = Cursors.Arrow;
             }
+
+            return;
         }
-        else if (PlottableBeingDragged == VLine)
+
+        if (PlottableBeingDragged == VLine)
         {
             VLine.X = rect.HorizontalCenter;
             VLine.Text = $"{VLine.X:0.00}";
+            formsPlot1.Refresh();
+            return;
         }
-        else if (PlottableBeingDragged == HLine)
+
+        if (PlottableBeingDragged == HLine)
         {
             HLine.Y = rect.VerticalCenter;
             HLine.Text = $"{HLine.Y:0.00}";
-        }
-
-        // if something is being dragged, force a render
-        if (PlottableBeingDragged is not null)
-        {
             formsPlot1.Refresh();
+            return;
         }
     }
 }
