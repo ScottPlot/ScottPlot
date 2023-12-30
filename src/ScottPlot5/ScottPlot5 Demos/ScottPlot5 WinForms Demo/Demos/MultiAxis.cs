@@ -6,21 +6,21 @@ public partial class MultiAxis : Form, IDemoWindow
 
     public string Description => "Display data which visually overlaps but is plotted on different axes";
 
-    ScottPlot.IYAxis YAxis1;
+    readonly ScottPlot.IYAxis YAxis1;
 
-    ScottPlot.IYAxis YAxis2;
+    readonly ScottPlot.IYAxis YAxis2;
 
     public MultiAxis()
     {
         InitializeComponent();
 
-        // add a second Y axis to the plot
-        ScottPlot.AxisPanels.LeftAxis yAxis2 = new();
-        formsPlot1.Plot.Axes.Add(yAxis2);
+        // Store the primary Y axis so we can refer to it later
+        YAxis1 = formsPlot1.Plot.LeftAxis;
 
-        // store the two vertical axes locally so we can reference them any time
-        YAxis1 = formsPlot1.Plot.YAxes[0];
-        YAxis2 = formsPlot1.Plot.YAxes[1];
+        // Create a second Y axis, add it to the plot, and save it for later
+        ScottPlot.AxisPanels.LeftAxis yAxis2 = new();
+        formsPlot1.Plot.YAxes.Add(yAxis2);
+        YAxis2 = yAxis2;
 
         // setup button actions
         btnRandomize.Click += (s, e) => PlotRandomData();
@@ -36,14 +36,14 @@ public partial class MultiAxis : Form, IDemoWindow
         double[] data1 = ScottPlot.RandomDataGenerator.Generate.RandomWalk(count: 51, mult: 1);
         var sig1 = formsPlot1.Plot.Add.Signal(data1);
         sig1.Axes.YAxis = YAxis1;
-        sig1.Axes.YAxis.Label.Text = "YAxis1";
-        sig1.Axes.YAxis.Label.ForeColor = sig1.LineStyle.Color;
+        YAxis1.Label.Text = "YAxis1";
+        YAxis1.Label.ForeColor = sig1.LineStyle.Color;
 
         double[] data2 = ScottPlot.RandomDataGenerator.Generate.RandomWalk(count: 51, mult: 1000);
         var sig2 = formsPlot1.Plot.Add.Signal(data2);
         sig2.Axes.YAxis = YAxis2;
-        sig2.Axes.YAxis.Label.Text = "YAxis2";
-        sig2.Axes.YAxis.Label.ForeColor = sig2.LineStyle.Color;
+        YAxis2.Label.Text = "YAxis2";
+        YAxis2.Label.ForeColor = sig2.LineStyle.Color;
 
         formsPlot1.Plot.AutoScale();
         formsPlot1.Plot.Zoom(.8, .7); // zoom out slightly

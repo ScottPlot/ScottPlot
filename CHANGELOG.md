@@ -8,6 +8,7 @@
 * Axes: Improved automatic axis scaling for plots containing 1D plottables (#3132)
 * Coordinates: Added `AreReal` property to confirm `X` and `Y` are finite
 * Crosshair: Added `X` and `Y` properties to compliment `Position`
+* Axes: Removed `Plot.Axes` list to encourage interaction with `Plot.YAxes` and `Plot.XAxes`
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
