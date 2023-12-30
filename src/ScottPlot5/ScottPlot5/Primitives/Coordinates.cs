@@ -8,6 +8,8 @@ public struct Coordinates : IEquatable<Coordinates>
     public double X { get; set; }
     public double Y { get; set; }
 
+    public bool AreReal => NumericConversion.IsReal(X) && NumericConversion.IsReal(Y);
+
     public Coordinates(double x, double y)
     {
         X = x;
