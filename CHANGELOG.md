@@ -8,7 +8,8 @@
 * Axes: Improved automatic axis scaling for plots containing 1D plottables (#3132)
 * Coordinates: Added `AreReal` property to confirm `X` and `Y` are finite
 * Crosshair: Added `X` and `Y` properties to compliment `Position`
-* Axes: Removed `Plot.Axes` list to encourage interaction with `Plot.YAxes` and `Plot.XAxes`
+* Axes: Removed `Plot.Axes` list to encourage interaction with `Plot.YAxes` and `Plot.XAxes` (#3133)
+* Plot: Added `AddLeftAxis()`, `AddRightAxis()`, etc. to simplify multi-axis creation and management (#3133)
 * Layout: Created `Plot.Layout.Frameless()` to hide axes and allow the data area to fill the figure
 
 ## ScottPlot 5.0.11-beta

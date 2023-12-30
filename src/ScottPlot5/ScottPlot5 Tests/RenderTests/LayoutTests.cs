@@ -9,12 +9,7 @@ internal class LayoutTests
         plt.Add.Signal(ScottPlot.Generate.Sin());
         plt.Add.Signal(ScottPlot.Generate.Cos());
 
-        foreach (IYAxis panel in plt.YAxes)
-        {
-            panel.ShowDebugInformation = true;
-        }
-
-        foreach (IXAxis panel in plt.XAxes)
+        foreach (IAxis panel in plt.GetAxes())
         {
             panel.ShowDebugInformation = true;
         }
@@ -35,13 +30,7 @@ internal class LayoutTests
         plt.Add.Signal(ScottPlot.Generate.Sin());
         plt.Add.Signal(ScottPlot.Generate.Cos());
 
-        foreach (IYAxis panel in plt.YAxes)
-        {
-            panel.MinimumSize = 100;
-            panel.ShowDebugInformation = true;
-        }
-
-        foreach (IXAxis panel in plt.XAxes)
+        foreach (IAxis panel in plt.GetAxes())
         {
             panel.MinimumSize = 100;
             panel.ShowDebugInformation = true;
@@ -63,13 +52,7 @@ internal class LayoutTests
         plt.Add.Signal(ScottPlot.Generate.Sin());
         plt.Add.Signal(ScottPlot.Generate.Cos());
 
-        foreach (IPanel panel in plt.XAxes)
-        {
-            panel.MaximumSize = 20;
-            panel.ShowDebugInformation = true;
-        }
-
-        foreach (IPanel panel in plt.YAxes)
+        foreach (IAxis panel in plt.GetAxes())
         {
             panel.MaximumSize = 20;
             panel.ShowDebugInformation = true;
@@ -91,14 +74,7 @@ internal class LayoutTests
         plt.Add.Signal(ScottPlot.Generate.Sin());
         plt.Add.Signal(ScottPlot.Generate.Cos());
 
-        foreach (IPanel panel in plt.XAxes)
-        {
-            panel.MinimumSize = 50;
-            panel.MaximumSize = 50;
-            panel.ShowDebugInformation = true;
-        }
-
-        foreach (IPanel panel in plt.YAxes)
+        foreach (IAxis panel in plt.GetAxes())
         {
             panel.MinimumSize = 50;
             panel.MaximumSize = 50;

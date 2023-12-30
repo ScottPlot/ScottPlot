@@ -23,8 +23,7 @@ public class MultiAxis : ICategory
             myPlot.YAxis.Label.Text = "Primary Y Axis";
 
             // create a second axis and add it to the plot
-            ScottPlot.AxisPanels.LeftAxis yAxis2 = new();
-            myPlot.YAxes.Add(yAxis2);
+            var yAxis2 = myPlot.AddLeftAxis();
 
             // add a new plottable and tell it to use the custom Y axis
             var sig2 = myPlot.Add.Signal(ScottPlot.Generate.Cos(51, mult: 100));

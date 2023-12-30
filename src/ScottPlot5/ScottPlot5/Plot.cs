@@ -1,4 +1,5 @@
-﻿using ScottPlot.Control;
+﻿using ScottPlot.AxisPanels;
+using ScottPlot.Control;
 using ScottPlot.Legends;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
@@ -7,9 +8,10 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public List<IXAxis> XAxes { get; } = new(); // TODO: axes should be inside the Panels list
-    public List<IYAxis> YAxes { get; } = new(); // TODO: axes should be inside the Panels list
-
+    // TODO: group all this axis management stuff isnide a panels class
+    internal List<IXAxis> XAxes { get; } = new();
+    internal List<IYAxis> YAxes { get; } = new();
+    public IEnumerable<IAxis> GetAxes() => XAxes.Cast<IAxis>().Concat(YAxes);
     public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
     public IXAxis BottomAxis => XAxes.First(x => x.Edge == Edge.Bottom);
     public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
@@ -19,7 +21,7 @@ public class Plot : IDisposable
     /// Panels are rectangular regions on the 4 edges outside the data area.
     /// Axes, colorbars, title, etc.
     /// </summary>
-    public List<IPanel> Panels { get; } = new();
+    internal List<IPanel> Panels { get; } = new();
 
     /// <summary>
     /// This panel displays a label above the plot.
@@ -724,6 +726,46 @@ public class Plot : IDisposable
         LeftAxis.Label.Text = label;
         if (size.HasValue)
             LeftAxis.Label.FontSize = size.Value;
+    }
+
+    /// <summary>
+    /// Crete a new axis, add it to the plot, and return it
+    /// </summary>
+    public LeftAxis AddLeftAxis()
+    {
+        LeftAxis axis = new();
+        YAxes.Add(axis);
+        return axis;
+    }
+
+    /// <summary>
+    /// Crete a new axis, add it to the plot, and return it
+    /// </summary>
+    public RightAxis AddRightAxis()
+    {
+        RightAxis axis = new();
+        YAxes.Add(axis);
+        return axis;
+    }
+
+    /// <summary>
+    /// Crete a new axis, add it to the plot, and return it
+    /// </summary>
+    public BottomAxis AddBottomAxis()
+    {
+        BottomAxis axis = new();
+        XAxes.Add(axis);
+        return axis;
+    }
+
+    /// <summary>
+    /// Crete a new axis, add it to the plot, and return it
+    /// </summary>
+    public TopAxis AddTopAxis()
+    {
+        TopAxis axis = new();
+        XAxes.Add(axis);
+        return axis;
     }
 
     /// <summary>

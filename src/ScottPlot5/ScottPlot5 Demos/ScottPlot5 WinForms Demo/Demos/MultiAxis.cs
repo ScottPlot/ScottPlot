@@ -18,9 +18,7 @@ public partial class MultiAxis : Form, IDemoWindow
         YAxis1 = formsPlot1.Plot.LeftAxis;
 
         // Create a second Y axis, add it to the plot, and save it for later
-        ScottPlot.AxisPanels.LeftAxis yAxis2 = new();
-        formsPlot1.Plot.YAxes.Add(yAxis2);
-        YAxis2 = yAxis2;
+        YAxis2 = formsPlot1.Plot.AddLeftAxis();
 
         // setup button actions
         btnRandomize.Click += (s, e) => PlotRandomData();
