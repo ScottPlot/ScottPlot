@@ -14,8 +14,7 @@ internal class SignalTests
         Array.Copy(sin, 0, data, data.Length - sin.Length, sin.Length);
 
         ScottPlot.Plot plt = new();
-        var sig = plt.Add.Signal(data);
-        sig.LineStyle.AntiAlias = false;
+        plt.Add.Signal(data);
         plt.Grids.Clear();
         plt.SaveTestImage();
     }
@@ -31,8 +30,7 @@ internal class SignalTests
         Generate.AddNoiseInPlace(data, magnitude: .001);
 
         ScottPlot.Plot plt = new();
-        var sig = plt.Add.Signal(data);
-        sig.LineStyle.AntiAlias = false;
+        plt.Add.Signal(data);
         plt.Grids.Clear();
         plt.SaveTestImage();
     }

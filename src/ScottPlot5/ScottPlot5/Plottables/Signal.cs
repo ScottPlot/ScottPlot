@@ -11,14 +11,44 @@ public class Signal : IPlottable
 
     public readonly DataSources.ISignalSource Data;
 
-    public MarkerStyle Marker { get; set; } = new(MarkerShape.FilledCircle, 5) { Outline = LineStyle.None };
     public string? Label { get; set; }
 
-    public LineStyle LineStyle { get; } = new();
+    readonly MarkerStyle Marker;
+    readonly LineStyle LineStyle;
+
+    /// <summary>
+    /// Maximum size of the marker (in pixels) to display
+    /// at each data point when the plot is zoomed far in.
+    /// </summary>
+    public float MaximumMarkerSize { get; set; } = 4;
+
+    public float LineWidth
+    {
+        get => LineStyle.Width;
+        set => LineStyle.Width = value;
+    }
+
+    public Color Color
+    {
+        get => LineStyle.Color;
+        set
+        {
+            LineStyle.Color = value;
+            Marker.Fill.Color = value;
+            Marker.Outline.Color = value;
+        }
+    }
 
     public Signal(DataSources.ISignalSource data)
     {
         Data = data;
+
+        Marker = new(MarkerShape.FilledCircle, 5)
+        {
+            Outline = LineStyle.None
+        };
+
+        LineStyle = new();
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
@@ -92,8 +122,8 @@ public class Signal : IPlottable
         if (pointsPerPx < 1)
         {
             paint.IsStroke = false;
-            float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), 4);
-            Marker.Size = radius;
+            float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
+            Marker.Size = radius * MaximumMarkerSize * .2f;
             Marker.Render(rp.Canvas, points);
         }
     }

@@ -27,8 +27,8 @@ public class MultiAxis : ICategory
             // add additional styling options to each axis
             myPlot.LeftAxis.Label.Text = "Left Axis";
             myPlot.RightAxis.Label.Text = "Right Axis";
-            myPlot.LeftAxis.Label.ForeColor = sig1.LineStyle.Color;
-            myPlot.RightAxis.Label.ForeColor = sig2.LineStyle.Color;
+            myPlot.LeftAxis.Label.ForeColor = sig1.Color;
+            myPlot.RightAxis.Label.ForeColor = sig2.Color;
         }
     }
 

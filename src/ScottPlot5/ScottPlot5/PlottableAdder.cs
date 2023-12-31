@@ -334,12 +334,15 @@ public class PlottableAdder
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        Color nextColor = color ?? GetNextColor();
         SignalSource data = new(ys, period);
-        var sig = new Signal(data);
-        sig.LineStyle.Color = nextColor;
-        sig.Marker.Fill.Color = nextColor;
+
+        var sig = new Signal(data)
+        {
+            Color = color ?? GetNextColor()
+        };
+
         Plot.PlottableList.Add(sig);
+
         return sig;
     }
 

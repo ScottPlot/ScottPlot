@@ -52,7 +52,7 @@ public class CustomizingGrids : ICategory
         public override void Execute()
         {
             var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
-            sig.LineStyle.Width = 10;
+            sig.LineWidth = 10;
 
             ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
             grid.MajorLineStyle.Width = 3;

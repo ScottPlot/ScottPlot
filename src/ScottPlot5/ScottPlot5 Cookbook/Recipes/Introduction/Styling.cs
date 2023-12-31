@@ -83,7 +83,7 @@ public class Styling : ICategory
             {
                 double[] data = ScottPlot.Generate.Sin(100, phase: -i / 20.0f);
                 var sig = myPlot.Add.Signal(data);
-                sig.LineStyle.Width = 3;
+                sig.LineWidth = 3;
             }
         }
     }

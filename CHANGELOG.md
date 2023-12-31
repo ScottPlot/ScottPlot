@@ -13,6 +13,8 @@
 * Layout: Created `Plot.Layout.Frameless()` to hide axes and allow the data area to fill the figure
 * Axes: Improve rotation for right axis labels
 * Bar: Improve autoscaling for bar plots displaying error ranges
+* Signal: Improved rendering of makers when plots are zoomed in (#3136)
+* Signal: Exposed `Color`, `LineWidth`, and `MaximumMarkerSize` so users do not interact with `LineStyle` and `MarkerStyle` directly (#3136)
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
