@@ -14,10 +14,12 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
+            // add bars
             double[] values = { 5, 10, 7, 13 };
             myPlot.Add.Bars(values);
-            myPlot.AutoScale();
-            myPlot.SetAxisLimits(bottom: 0);
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Margins(bottom: 0);
         }
     }
 
@@ -57,6 +59,9 @@ public class Bar : ICategory
             };
 
             myPlot.Add.Bars(bars);
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Margins(bottom: 0);
         }
     }
 
@@ -84,6 +89,9 @@ public class Bar : ICategory
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
             myPlot.BottomAxis.MajorTickLength = 0;
             myPlot.DisableGrid();
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Margins(bottom: 0);
         }
     }
 
@@ -125,6 +133,9 @@ public class Bar : ICategory
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
             myPlot.BottomAxis.MajorTickLength = 0;
             myPlot.DisableGrid();
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Margins(bottom: 0);
         }
     }
 
@@ -179,6 +190,9 @@ public class Bar : ICategory
             myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
             myPlot.BottomAxis.MajorTickLength = 0;
             myPlot.DisableGrid();
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Margins(bottom: 0);
         }
     }
 }
