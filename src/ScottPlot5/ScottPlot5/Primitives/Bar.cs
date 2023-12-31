@@ -56,7 +56,7 @@ public class Bar
             return new AxisLimits(
                 left: Position - Size / 2,
                 right: Position + Size / 2,
-                bottom: ValueBase - Error,
+                bottom: Math.Min(ValueBase, Value - Error),
                 top: Value + Error);
         }
     }
