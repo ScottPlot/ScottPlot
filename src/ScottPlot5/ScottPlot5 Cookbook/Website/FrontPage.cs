@@ -16,6 +16,20 @@ internal class FrontPage : PageBase
 
         AddVersionInformation();
 
+        // table of contents
+        foreach (string chapter in CB.Chapters)
+        {
+            SB.AppendLine($"<div class='mt-3 fs-4'><strong>{chapter}</strong></div>");
+
+            SB.AppendLine("<ul>");
+            foreach (var category in CB.Categories.Where(x => x.Chapter == chapter))
+            {
+                SB.AppendLine($"<li><a href='{category.Url}'>{category.Name}</a> - {category.Description}</li>");
+            }
+            SB.AppendLine("</ul>");
+        }
+
+        // individual recipes
         foreach (string chapter in CB.Chapters)
         {
             SB.AppendLine($"<h1>{chapter}</h1>");
