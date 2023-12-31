@@ -11,6 +11,7 @@
 * Axes: Removed `Plot.Axes` list to encourage interaction with `Plot.YAxes` and `Plot.XAxes` (#3133)
 * Plot: Added `AddLeftAxis()`, `AddRightAxis()`, etc. to simplify multi-axis creation and management (#3133)
 * Layout: Created `Plot.Layout.Frameless()` to hide axes and allow the data area to fill the figure
+* Axes: Improve rotation for right axis labels
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
