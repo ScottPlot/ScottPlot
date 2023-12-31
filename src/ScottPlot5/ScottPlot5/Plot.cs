@@ -276,7 +276,7 @@ public class Plot : IDisposable
     /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
     /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
     /// </summary>
-    public void Margins(double left, double right, double bottom, double top)
+    public void Margins(double left = .05, double right = .05, double bottom = .07, double top = .07)
     {
         AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
         AutoScale();
