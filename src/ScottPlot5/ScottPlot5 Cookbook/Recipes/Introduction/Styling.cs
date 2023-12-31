@@ -136,27 +136,43 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            int count = 21;
-            double[] xs = ScottPlot.Generate.Consecutive(count);
-            double[] ys = ScottPlot.Generate.Sin(count);
-
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
 
             for (int i = 0; i < markerShapes.Length; i++)
             {
-                double[] data = ys.Select(y => markerShapes.Length - y + i).ToArray();
+                double[] xs = Generate.Consecutive(20);
+                double[] ys = Generate.Sin(20, offset: markerShapes.Length - i);
+                var scatter = myPlot.Add.Scatter(xs, ys);
+                scatter.MarkerStyle.Shape = markerShapes[i];
+                scatter.MarkerStyle.Size = 10;
+            }
+        }
+    }
 
-                var scatter = myPlot.Add.Scatter(xs, data);
+    public class MarkerNames : RecipeBase
+    {
+        public override string Name => "Marker Names";
+        public override string Description => "Markers can be referred to by their name.";
 
-                scatter.Label = markerShapes[i].ToString();
+        [Test]
+        public override void Execute()
+        {
+            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
 
-                scatter.MarkerStyle = new MarkerStyle(
-                    shape: markerShapes[i],
-                    size: 10,
-                    color: scatter.LineStyle.Color);
+            for (int i = 0; i < markerShapes.Length; i++)
+            {
+                var mp = myPlot.Add.Marker(x: i, y: 0);
+                mp.MarkerStyle.Shape = markerShapes[i];
+                mp.MarkerStyle.Size = 10;
+
+                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
+                txt.Label.Rotation = -90;
+                txt.Label.Alignment = Alignment.MiddleLeft;
             }
 
-            myPlot.Legend.IsVisible = true;
+            myPlot.Title("Marker Names");
+            myPlot.SetAxisLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.DisableGrid();
         }
     }
 
