@@ -662,12 +662,18 @@ public class Plot : IDisposable
         PlottableList.Remove(plottable);
     }
 
-    public void DisableGrid()
+    /// <summary>
+    /// Disable visibility for all grids
+    /// </summary>
+    public void HideGrid()
     {
         Grids.ForEach(x => x.IsVisible = false);
     }
 
-    public void EnableGrid()
+    /// <summary>
+    /// Enable visibility for all grids
+    /// </summary>
+    public void ShowGrid()
     {
         Grids.ForEach(x => x.IsVisible = true);
     }

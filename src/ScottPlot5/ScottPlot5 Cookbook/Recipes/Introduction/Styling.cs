@@ -67,46 +67,6 @@ public class Styling : ICategory
         }
     }
 
-    public class GridCustom : RecipeBase
-    {
-        public override string Name => "Grid Customization";
-        public override string Description => "Grid lines can be customized. " +
-            "Custom grid systems can be created to give developers full control of grid rendering, " +
-            "but the default grid can be interacted with to customize its appearance.";
-
-        [Test]
-        public override void Execute()
-        {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
-
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-
-            grid.MajorLineStyle.Color = Colors.Green.WithOpacity(.5);
-            grid.MinorLineStyle.Color = Colors.Green.WithOpacity(.1);
-            grid.MinorLineStyle.Width = 1;
-        }
-    }
-
-    public class GridAbove : RecipeBase
-    {
-        public override string Name => "Grid Above Data";
-        public override string Description => "Grid lines are typically drawn beneath " +
-            "data, but grids can be configured to render on top of plottables too.";
-
-        [Test]
-        public override void Execute()
-        {
-            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
-            sig.LineStyle.Width = 10;
-
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Width = 3;
-            grid.MajorLineStyle.Color = Colors.WhiteSmoke;
-            grid.IsBeneathPlottables = false;
-        }
-    }
-
     public class Palette : RecipeBase
     {
         public override string Name => "Palettes";
@@ -172,7 +132,7 @@ public class Styling : ICategory
 
             myPlot.Title("Marker Names");
             myPlot.SetAxisLimits(-1, markerShapes.Length, -1, 4);
-            myPlot.DisableGrid();
+            myPlot.HideGrid();
         }
     }
 
