@@ -9,10 +9,12 @@ public class Scatter : IPlottable
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public LineStyle LineStyle { get; set; } = new();
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
+    public LineStyle LineStyle { get; set; } = new(); // TODO: hide this
+    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default; // TODO: hide this
     public DataSources.IScatterSource Data { get; }
 
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color Color
     {
         get => LineStyle.Color;
