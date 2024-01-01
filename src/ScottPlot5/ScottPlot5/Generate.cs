@@ -409,6 +409,15 @@ public static class Generate
 
     #endregion
 
+    #region Finance
+
+    public static List<IOHLC> RandomOHLCs(int count)
+    {
+        return RandomData.RandomOHLCs(count);
+    }
+
+    #endregion
+
     #region Plot Items
 
     public static Box RandomBox(double position)
