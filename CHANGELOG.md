@@ -15,6 +15,7 @@
 * Bar: Improve autoscaling for bar plots displaying error ranges
 * Signal: Improved rendering of makers when plots are zoomed in (#3136)
 * Signal: Exposed `Color`, `LineWidth`, and `MaximumMarkerSize` so users do not interact with `LineStyle` and `MarkerStyle` directly (#3136)
+* Statistics: Created `Series` class for calculating statistics for time series data
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
