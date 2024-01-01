@@ -17,6 +17,7 @@
 * Signal: Exposed `Color`, `LineWidth`, and `MaximumMarkerSize` so users do not interact with `LineStyle` and `MarkerStyle` directly (#3136)
 * Statistics: Created `Series` class for calculating statistics for time series data
 * Scatter Plot: Added `LineWidth` and `MarkerSize` properties
+* Finance: Created `SimpleMovingAverage` and `BollingerBands` in the `ScottPlot.Finance` namespace to facilitate calculation and display of technical indicators (#3137)
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
