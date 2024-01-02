@@ -24,7 +24,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
         Interaction = new Interaction(this)
         {
-            ContextMenuItems = GetDefaultContextMenuItems()
+            ContextMenuItems = new Menu(this).StandardContextMenuItems()
         };
 
         Plot = Reset();
@@ -32,23 +32,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         // TODO: replace this with an annotation instead of title
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
         Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
-    }
-
-    internal ContextMenuItem[] GetDefaultContextMenuItems()
-    {
-        ContextMenuItem saveImage = new()
-        {
-            Label = "Save Image",
-            OnInvoke = OpenSaveImageDialog
-        };
-
-        ContextMenuItem copyImage = new()
-        {
-            Label = "Copy to Clipboard",
-            OnInvoke = CopyImageToClipboard
-        };
-
-        return new ContextMenuItem[] { saveImage, copyImage };
     }
 
     // make it so changing the background color of the control changes background color of the plot too
@@ -132,54 +115,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         Interaction.KeyUp(e.Key());
         base.OnKeyUp(e);
-    }
-
-    internal void OpenSaveImageDialog()
-    {
-        SaveFileDialog dialog = new()
-        {
-            FileName = Interaction.DefaultSaveImageFilename,
-            Filter = "PNG Files (*.png)|*.png" +
-                     "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
-                     "|BMP Files (*.bmp)|*.bmp" +
-                     "|WebP Files (*.webp)|*.webp" +
-                     "|SVG Files (*.svg)|*.svg" +
-                     "|All files (*.*)|*.*"
-        };
-
-        if (dialog.ShowDialog() == DialogResult.OK)
-        {
-            if (string.IsNullOrEmpty(dialog.FileName))
-                return;
-
-            ImageFormat format;
-
-            try
-            {
-                format = ImageFormatLookup.FromFilePath(dialog.FileName);
-            }
-            catch (ArgumentException)
-            {
-                MessageBox.Show("Unsupported image file format", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                Plot.Save(dialog.FileName, Width, Height, format);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Image save failed", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
-    }
-
-    internal void CopyImageToClipboard()
-    {
-        Bitmap bmp = Plot.GetBitmap(Width, Height);
-        Clipboard.SetImage(bmp);
     }
 
     public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)

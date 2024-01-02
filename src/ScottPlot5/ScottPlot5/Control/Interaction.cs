@@ -8,7 +8,7 @@
 /// </summary>
 public class Interaction : IPlotInteraction
 {
-    protected readonly IPlotControl Control;
+    public IPlotControl PlotControl { get; private set; }
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
@@ -35,7 +35,7 @@ public class Interaction : IPlotInteraction
 
     public Interaction(IPlotControl control)
     {
-        Control = control;
+        PlotControl = control;
     }
 
     /// <summary>
@@ -67,7 +67,7 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public Coordinates GetMouseCoordinates(IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return Control.Plot.GetCoordinates(Mouse.LastPosition, xAxis, yAxis);
+        return PlotControl.Plot.GetCoordinates(Mouse.LastPosition, xAxis, yAxis);
     }
 
     public virtual void OnMouseMove(Pixel newPosition)
@@ -95,17 +95,17 @@ public class Interaction : IPlotInteraction
 
         if (Inputs.ShouldZoomRectangle(button, keys))
         {
-            Actions.DragZoomRectangle(Control, drag, locks);
+            Actions.DragZoomRectangle(PlotControl, drag, locks);
             IsZoomingRectangle = true;
         }
         else if (button == Inputs.DragPanButton)
         {
-            Actions.DragPan(Control, drag, locks);
+            Actions.DragPan(PlotControl, drag, locks);
         }
         else if (button == Inputs.DragZoomButton)
         {
 
-            Actions.DragZoom(Control, drag, locks);
+            Actions.DragZoom(PlotControl, drag, locks);
         }
     }
 
@@ -121,7 +121,7 @@ public class Interaction : IPlotInteraction
 
     public virtual void MouseDown(Pixel position, MouseButton button)
     {
-        Mouse.Down(position, button, new MultiAxisLimitManager(Control));
+        Mouse.Down(position, button, new MultiAxisLimitManager(PlotControl));
     }
 
     public virtual void MouseUp(Pixel position, MouseButton button)
@@ -135,26 +135,26 @@ public class Interaction : IPlotInteraction
 
         if (droppedZoomRectangle)
         {
-            Actions.ZoomRectangleApply(Control);
-            Actions.ZoomRectangleClear(Control);
+            Actions.ZoomRectangleApply(PlotControl);
+            Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;
         }
 
         // this covers the case where an extremely tiny zoom rectangle was made
         if ((isDragging == false) && (button == Inputs.ClickAutoAxisButton))
         {
-            Actions.AutoScale(Control);
+            Actions.AutoScale(PlotControl);
         }
 
         if (button == Inputs.DragZoomRectangleButton)
         {
-            Actions.ZoomRectangleClear(Control);
+            Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;
         }
 
         if (!isDragging && (button == Inputs.ClickContextMenuButton))
         {
-            Actions.ShowContextMenu(Control, position);
+            Actions.ShowContextMenu(PlotControl, position);
         }
 
         Mouse.Up(button);
@@ -162,7 +162,7 @@ public class Interaction : IPlotInteraction
 
     public virtual void DoubleClick()
     {
-        Actions.ToggleBenchmark(Control);
+        Actions.ToggleBenchmark(PlotControl);
     }
 
     public virtual void MouseWheelVertical(Pixel pixel, float delta)
@@ -171,27 +171,27 @@ public class Interaction : IPlotInteraction
 
         if (Inputs.ZoomInWheelDirection.HasValue && Inputs.ZoomInWheelDirection == direction)
         {
-            Actions.ZoomIn(Control, pixel, new LockedAxes(LockX, LockY));
+            Actions.ZoomIn(PlotControl, pixel, new LockedAxes(LockX, LockY));
         }
         else if (Inputs.ZoomOutWheelDirection.HasValue && Inputs.ZoomOutWheelDirection == direction)
         {
-            Actions.ZoomOut(Control, pixel, new LockedAxes(LockX, LockY));
+            Actions.ZoomOut(PlotControl, pixel, new LockedAxes(LockX, LockY));
         }
         else if (Inputs.PanUpWheelDirection.HasValue && Inputs.PanUpWheelDirection == direction)
         {
-            Actions.PanUp(Control);
+            Actions.PanUp(PlotControl);
         }
         else if (Inputs.PanDownWheelDirection.HasValue && Inputs.PanDownWheelDirection == direction)
         {
-            Actions.PanDown(Control);
+            Actions.PanDown(PlotControl);
         }
         else if (Inputs.PanRightWheelDirection.HasValue && Inputs.PanRightWheelDirection == direction)
         {
-            Actions.PanRight(Control);
+            Actions.PanRight(PlotControl);
         }
         else if (Inputs.PanLeftWheelDirection.HasValue && Inputs.PanLeftWheelDirection == direction)
         {
-            Actions.PanLeft(Control);
+            Actions.PanLeft(PlotControl);
         }
         else
         {

@@ -6,5 +6,5 @@
 public struct ContextMenuItem
 {
     public string Label { get; set; }
-    public Action OnInvoke { get; set; }
+    public Action<IPlotControl> OnInvoke { get; set; }
 }

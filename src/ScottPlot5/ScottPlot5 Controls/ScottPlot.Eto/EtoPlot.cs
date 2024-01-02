@@ -19,23 +19,13 @@ public class EtoPlot : Drawable, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    private readonly List<FileFilter> fileDialogFilters = new()
-    {
-        new() { Name = "PNG Files", Extensions = new string[] { "png" } },
-        new() { Name = "JPEG Files", Extensions = new string[] { "jpg", "jpeg" } },
-        new() { Name = "BMP Files", Extensions = new string[] { "bmp" } },
-        new() { Name = "WebP Files", Extensions = new string[] { "webp" } },
-        new() { Name = "SVG Files", Extensions = new string[] { "svg" } },
-        new() { Name = "All Files", Extensions = new string[] { "*" } },
-    };
-
     public EtoPlot()
     {
         DisplayScale = DetectDisplayScale();
 
         Interaction = new Interaction(this)
         {
-            ContextMenuItems = GetDefaultContextMenuItems()
+            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems(),
         };
 
         this.MouseDown += OnMouseDown;
@@ -47,13 +37,6 @@ public class EtoPlot : Drawable, IPlotControl
         this.MouseDoubleClick += OnDoubleClick;
         this.SizeChanged += OnSizeChanged;
     }
-    private ContextMenuItem[] GetDefaultContextMenuItems()
-    {
-        ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
-        ContextMenuItem copyImage = new() { Label = "Copy to Clipboard", OnInvoke = CopyImageToClipboard };
-
-        return new ContextMenuItem[] { saveImage, copyImage };
-    }
 
     private ContextMenu GetContextMenu()
     {
@@ -61,7 +44,7 @@ public class EtoPlot : Drawable, IPlotControl
         foreach (var curr in Interaction.ContextMenuItems)
         {
             var menuItem = new ButtonMenuItem() { Text = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke();
+            menuItem.Click += (s, e) => curr.OnInvoke(this);
 
             menu.Items.Add(menuItem);
         }
@@ -151,38 +134,6 @@ public class EtoPlot : Drawable, IPlotControl
     private void OnSizeChanged(object? sender, EventArgs e)
     {
         Refresh();
-    }
-
-    private void OpenSaveImageDialog()
-    {
-        SaveFileDialog dialog = new() { FileName = Interaction.DefaultSaveImageFilename };
-
-        foreach (var curr in fileDialogFilters)
-            dialog.Filters.Add(curr);
-
-        if (dialog.ShowDialog(this) == DialogResult.Ok)
-        {
-            var filename = dialog.FileName;
-
-            if (string.IsNullOrEmpty(filename))
-                return;
-
-            // Eto doesn't add the extension for you when you select a filter :/
-            if (!Path.HasExtension(filename))
-                filename += $".{dialog.CurrentFilter.Extensions[0]}";
-
-            // TODO: launch a pop-up window indicating if extension is invalid or save failed
-            ImageFormat format = ImageFormatLookup.FromFilePath(filename);
-            Plot.Save(filename, Width, Height, format);
-        }
-    }
-
-    private void CopyImageToClipboard()
-    {
-        byte[] bytes = Plot.GetImage(Width, Height).GetImageBytes();
-        MemoryStream ms = new(bytes);
-        using Bitmap bmp = new(ms);
-        Clipboard.Instance.Image = bmp;
     }
 
     public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)

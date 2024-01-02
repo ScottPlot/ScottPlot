@@ -33,29 +33,12 @@ namespace ScottPlot.WPF
 
             Interaction = new Interaction(this)
             {
-                ContextMenuItems = GetDefaultContextMenuItems()
+                ContextMenuItems = Menu.GetDefaultContextMenuItems()
             };
 
             Plot = Reset();
 
             Focusable = true;
-        }
-
-        internal ContextMenuItem[] GetDefaultContextMenuItems()
-        {
-            ContextMenuItem saveImage = new()
-            {
-                Label = "Save Image",
-                OnInvoke = OpenSaveImageDialog
-            };
-
-            ContextMenuItem copyImage = new()
-            {
-                Label = "Copy to Clipboard",
-                OnInvoke = CopyImageToClipboard
-            };
-
-            return new ContextMenuItem[] { saveImage, copyImage };
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -134,53 +117,6 @@ namespace ScottPlot.WPF
         internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
         {
             Interaction.KeyUp(e.Key());
-        }
-
-        internal void OpenSaveImageDialog()
-        {
-            SaveFileDialog dialog = new()
-            {
-                FileName = Interaction.DefaultSaveImageFilename,
-                Filter = "PNG Files (*.png)|*.png" +
-                         "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
-                         "|BMP Files (*.bmp)|*.bmp" +
-                         "|WebP Files (*.webp)|*.webp" +
-                         "|SVG Files (*.svg)|*.svg" +
-                         "|All files (*.*)|*.*"
-            };
-
-            if (dialog.ShowDialog() is true)
-            {
-                if (string.IsNullOrEmpty(dialog.FileName))
-                    return;
-
-                ImageFormat format;
-
-                try
-                {
-                    format = ImageFormatLookup.FromFilePath(dialog.FileName);
-                }
-                catch (ArgumentException)
-                {
-                    MessageBox.Show("Unsupported image file format", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                try
-                {
-                    Plot.Save(dialog.FileName, (int)ActualWidth, (int)ActualHeight, format);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Image save failed", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-            }
-        }
-
-        public void CopyImageToClipboard()
-        {
-            BitmapImage bmp = Plot.GetBitmapImage((int)ActualWidth, (int)ActualHeight);
-            Clipboard.SetImage(bmp);
         }
 
         public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)

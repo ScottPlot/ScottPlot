@@ -25,16 +25,6 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    private static readonly List<FilePickerFileType> filePickerFileTypes = new()
-    {
-        new("PNG Files") { Patterns = new List<string> { "*.png" } },
-        new("JPEG Files") { Patterns = new List<string> { "*.jpg", "*.jpeg" } },
-        new("BMP Files") { Patterns = new List<string> { "*.bmp" } },
-        new("WebP Files") { Patterns = new List<string> { "*.webp" } },
-        new("SVG Files") { Patterns = new List<string> { "*.svg" } },
-        new("All Files") { Patterns = new List<string> { "*" } },
-    };
-
     public AvaPlot()
     {
         ClipToBounds = true;
@@ -42,18 +32,10 @@ public class AvaPlot : Controls.Control, IPlotControl
 
         Interaction = new Interaction(this)
         {
-            ContextMenuItems = GetDefaultContextMenuItems()
+            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems(),
         };
 
         Refresh();
-    }
-
-    private ContextMenuItem[] GetDefaultContextMenuItems()
-    {
-        ContextMenuItem saveImage = new() { Label = "Save Image", OnInvoke = OpenSaveImageDialog };
-        // TODO: Copying images to the clipboard is still difficult in Avalonia https://github.com/AvaloniaUI/Avalonia/issues/3588
-
-        return new ContextMenuItem[] { saveImage };
     }
 
     private ContextMenu GetContextMenu()
@@ -63,7 +45,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         foreach (var curr in Interaction.ContextMenuItems)
         {
             var menuItem = new MenuItem { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke();
+            menuItem.Click += (s, e) => curr.OnInvoke(this);
 
             items.Add(menuItem);
         }
@@ -72,20 +54,6 @@ public class AvaPlot : Controls.Control, IPlotControl
         {
             ItemsSource = items
         };
-    }
-
-    private async void OpenSaveImageDialog()
-    {
-        var topLevel = TopLevel.GetTopLevel(this) ?? throw new NullReferenceException("Could not find a top level");
-        var destinationFile = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
-        {
-            SuggestedFileName = Interaction.DefaultSaveImageFilename,
-            FileTypeChoices = filePickerFileTypes
-        });
-
-        string? path = destinationFile?.TryGetLocalPath();
-        if (path is not null && !string.IsNullOrWhiteSpace(path))
-            Plot.Save(path, (int)Bounds.Width, (int)Bounds.Height, ImageFormatLookup.FromFilePath(path));
     }
 
     public void Replace(IPlotInteraction interaction)

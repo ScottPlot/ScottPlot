@@ -1,44 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ScottPlot.Control;
 
-namespace ScottPlot.Control
+public interface IPlotInteraction
 {
-    public interface IPlotInteraction
-    {
-        ContextMenuItem[] ContextMenuItems { get; }
+    ContextMenuItem[] ContextMenuItems { get; }
 
-        string DefaultSaveImageFilename { get; }
+    IPlotControl PlotControl { get; }
 
-        /// <summary>
-        /// Disable all mouse interactivity
-        /// </summary>
-        void Disable();
+    string DefaultSaveImageFilename { get; }
 
-        /// <summary>
-        /// Enable mouse interactivity using the default mouse actions
-        /// </summary>
-        void Enable();
+    /// <summary>
+    /// Disable all mouse interactivity
+    /// </summary>
+    void Disable();
 
-        /// <summary>
-        /// Enable mouse interactivity using custom mouse actions
-        /// </summary>
-        void Enable(PlotActions customActions);
+    /// <summary>
+    /// Enable mouse interactivity using the default mouse actions
+    /// </summary>
+    void Enable();
 
-        void OnMouseMove(Pixel newPosition);
+    /// <summary>
+    /// Enable mouse interactivity using custom mouse actions
+    /// </summary>
+    void Enable(PlotActions customActions);
 
-        void KeyUp(Key key);
+    void OnMouseMove(Pixel newPosition);
 
-        void KeyDown(Key key);
+    void KeyUp(Key key);
 
-        void MouseDown(Pixel position, MouseButton button);
+    void KeyDown(Key key);
 
-        void MouseUp(Pixel position, MouseButton button);
+    void MouseDown(Pixel position, MouseButton button);
 
-        void DoubleClick();
+    void MouseUp(Pixel position, MouseButton button);
 
-        void MouseWheelVertical(Pixel pixel, float delta);
-    }
+    void DoubleClick();
+
+    void MouseWheelVertical(Pixel pixel, float delta);
 }

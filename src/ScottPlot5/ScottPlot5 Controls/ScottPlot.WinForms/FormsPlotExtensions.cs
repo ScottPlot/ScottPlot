@@ -41,7 +41,7 @@ internal static class FormsPlotExtensions
         foreach (ContextMenuItem item in interaction.ContextMenuItems)
         {
             ToolStripMenuItem menuItem = new(item.Label);
-            menuItem.Click += (s, e) => item.OnInvoke();
+            menuItem.Click += (s, e) => item.OnInvoke(interaction.PlotControl);
 
             menu.Items.Add(menuItem);
         }

@@ -54,7 +54,7 @@ internal static class WpfPlotExtensions
         foreach (ContextMenuItem curr in interaction.ContextMenuItems)
         {
             MenuItem menuItem = new() { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke();
+            menuItem.Click += (s, e) => curr.OnInvoke(interaction.PlotControl);
             menu.Items.Add(menuItem);
         }
 
