@@ -2,13 +2,13 @@
 
 namespace WinForms_Demo.Demos;
 
-public partial class OpenGLPerformance : Form, IDemoWindow
+public partial class OpenGL : Form, IDemoWindow
 {
-    public string Title => "OpenGL Performance";
+    public string Title => "OpenGL Example";
 
-    public string Description => "Compare CPU vs. GPU rendered plot controls";
+    public string Description => "Compare the standard (CPU) vs OpenGL (GPU) rendering of plot controls";
 
-    public OpenGLPerformance()
+    public OpenGL()
     {
         InitializeComponent();
 

@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class OpenGLPerformance
+partial class OpenGL
 {
     /// <summary>
     /// Required designer variable.
