@@ -33,7 +33,7 @@ public class RenderPack
             bottom: FigureRect.Bottom / Plot.ScaleFactor,
             top: FigureRect.Top / Plot.ScaleFactor);
 
-        Layout = Plot.Layout.LayoutEngine.GetLayout(scaledRect, Plot.GetAllPanels());
+        Layout = Plot.Layout.LayoutEngine.GetLayout(scaledRect, Plot.Axes.GetPanels());
         DataRect = Layout.DataRect;
     }
 

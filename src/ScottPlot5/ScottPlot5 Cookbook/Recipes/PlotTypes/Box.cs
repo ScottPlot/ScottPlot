@@ -27,7 +27,7 @@ public class Box : ICategory
 
             myPlot.Add.Box(box);
 
-            myPlot.SetAxisLimits(0, 10, 70, 110);
+            myPlot.Axes.SetLimits(0, 10, 70, 110);
         }
     }
     public class BoxPlotGroups : RecipeBase

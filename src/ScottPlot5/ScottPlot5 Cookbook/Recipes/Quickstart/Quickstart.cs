@@ -80,9 +80,9 @@ public class Quickstart : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.XAxis.Label.Text = "Horizonal Axis";
-            myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.TitlePanel.Label.Text = "Plot Title";
+            myPlot.Axes.Bottom.Label.Text = "Horizonal Axis";
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.Axes.Left.Label.Text = "Plot Title";
         }
     }
 

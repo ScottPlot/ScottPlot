@@ -119,7 +119,7 @@ public class PlottableAdder
     {
         ColorBar colorBar = new(source, edge);
 
-        Plot.Panels.Add(colorBar);
+        Plot.Axes.Panels.Add(colorBar);
         return colorBar;
     }
 

@@ -34,7 +34,7 @@
         BlazorPlot.Plot.Clear();
         BlazorPlot.Plot.Title($"Signal with {count:N0} points");
         BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));
-        BlazorPlot.Plot.AutoScale();
+        BlazorPlot.Plot.Axes.AutoScale();
         BlazorPlot.Refresh();
     }
 }

@@ -6,11 +6,11 @@ internal class PlotAxisManipulation
     public void Test_Plot_Pan()
     {
         Plot plt = new();
-        plt.SetAxisLimits(-7, 42, -13, 69);
-        plt.Pan(new CoordinateSize(1, 2));
+        plt.Axes.SetLimits(-7, 42, -13, 69);
+        plt.Axes.Pan(new CoordinateSize(1, 2));
 
         AxisLimits expectedLimits = new(-6, 43, -11, 71);
-        plt.GetAxisLimits().Should().Be(expectedLimits);
+        plt.Axes.GetLimits().Should().Be(expectedLimits);
     }
 
     [Test]
@@ -19,16 +19,16 @@ internal class PlotAxisManipulation
         Plot plt = new();
 
         AxisLimits initialLimits = new(-7, 42, -13, 69);
-        plt.SetAxisLimits(initialLimits);
+        plt.Axes.SetLimits(initialLimits);
 
         PixelSize panDistance = new(20, 10);
 
-        Action panBeforeRender = () => plt.Pan(panDistance);
+        Action panBeforeRender = () => plt.Axes.Pan(panDistance);
         panBeforeRender.Should().Throw<InvalidOperationException>();
 
         plt.Render();
-        plt.Pan(panDistance);
-        AxisLimits newLimits = plt.GetAxisLimits();
+        plt.Axes.Pan(panDistance);
+        AxisLimits newLimits = plt.Axes.GetLimits();
         newLimits.Left.Should().BeGreaterThan(initialLimits.Left);
         newLimits.Right.Should().BeGreaterThan(initialLimits.Right);
         newLimits.Bottom.Should().BeGreaterThan(initialLimits.Bottom);
@@ -40,24 +40,24 @@ internal class PlotAxisManipulation
     {
         Plot plt = new();
 
-        plt.SetAxisLimits(-7, 42, -13, 69);
-        plt.GetAxisLimits().Left.Should().Be(-7);
-        plt.GetAxisLimits().Right.Should().Be(42);
-        plt.GetAxisLimits().Bottom.Should().Be(-13);
-        plt.GetAxisLimits().Top.Should().Be(69);
+        plt.Axes.SetLimits(-7, 42, -13, 69);
+        plt.Axes.GetLimits().Left.Should().Be(-7);
+        plt.Axes.GetLimits().Right.Should().Be(42);
+        plt.Axes.GetLimits().Bottom.Should().Be(-13);
+        plt.Axes.GetLimits().Top.Should().Be(69);
 
-        plt.Zoom(2, 1);
-        plt.GetAxisLimits().Left.Should().BeGreaterThan(-7);
-        plt.GetAxisLimits().Right.Should().BeLessThan(42);
-        plt.GetAxisLimits().Bottom.Should().Be(-13);
-        plt.GetAxisLimits().Top.Should().Be(69);
+        plt.Axes.Zoom(2, 1);
+        plt.Axes.GetLimits().Left.Should().BeGreaterThan(-7);
+        plt.Axes.GetLimits().Right.Should().BeLessThan(42);
+        plt.Axes.GetLimits().Bottom.Should().Be(-13);
+        plt.Axes.GetLimits().Top.Should().Be(69);
 
-        plt.Zoom(1, 2);
-        plt.GetAxisLimits().Left.Should().BeGreaterThan(-7);
-        plt.GetAxisLimits().Right.Should().BeLessThan(42);
-        plt.GetAxisLimits().Bottom.Should().BeGreaterThan(-13);
-        plt.GetAxisLimits().Top.Should().BeLessThan(69);
+        plt.Axes.Zoom(1, 2);
+        plt.Axes.GetLimits().Left.Should().BeGreaterThan(-7);
+        plt.Axes.GetLimits().Right.Should().BeLessThan(42);
+        plt.Axes.GetLimits().Bottom.Should().BeGreaterThan(-13);
+        plt.Axes.GetLimits().Top.Should().BeLessThan(69);
 
-        plt.Zoom();
+        plt.Axes.Zoom();
     }
 }

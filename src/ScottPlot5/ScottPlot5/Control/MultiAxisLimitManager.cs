@@ -16,12 +16,12 @@ public class MultiAxisLimitManager
 
     public MultiAxisLimitManager(Plot plot)
     {
-        Remember(plot.GetAllAxes());
+        Remember(plot.Axes.GetAxes());
     }
 
     public MultiAxisLimitManager(IPlotControl control)
     {
-        Remember(control.Plot.GetAllAxes());
+        Remember(control.Plot.Axes.GetAxes());
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class MultiAxisLimitManager
     /// </summary>
     public void Apply(Plot plot)
     {
-        foreach (IAxis axis in plot.GetAllAxes())
+        foreach (IAxis axis in plot.Axes.GetAxes())
         {
             axis.Range.Min = RememberedLimits[axis].Min;
             axis.Range.Max = RememberedLimits[axis].Max;

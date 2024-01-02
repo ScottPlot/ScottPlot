@@ -32,18 +32,18 @@ public partial class SignalPerformance : Form, IDemoWindow
         if (rbSignal.Checked)
         {
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.TitlePanel.Label.Text = $"Signal Plot with {ys.Length:N0} Points";
+            formsPlot1.Plot.Axes.Title.Label.Text = $"Signal Plot with {ys.Length:N0} Points";
             label1.Text = "Signal plots are very performant for large datasets";
         }
         else if (rbScatter.Checked)
         {
             var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
-            formsPlot1.Plot.TitlePanel.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
+            formsPlot1.Plot.Axes.Title.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
             sp.MarkerStyle = MarkerStyle.None;
             label1.Text = "Traditional Scatter plots are not performant for large datasets";
         }
 
-        formsPlot1.Plot.AutoScale();
+        formsPlot1.Plot.Axes.AutoScale();
         formsPlot1.Refresh();
     }
 }

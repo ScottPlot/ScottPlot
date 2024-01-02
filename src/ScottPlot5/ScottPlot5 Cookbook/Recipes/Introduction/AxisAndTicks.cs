@@ -15,11 +15,11 @@ public class AxisAndTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.YAxis.Label.Text = "Vertical Axis";
+            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
         }
     }
 
@@ -31,17 +31,17 @@ public class AxisAndTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             // Interact with a specific axis
-            myPlot.XAxis.Min = -100;
-            myPlot.XAxis.Max = 150;
-            myPlot.YAxis.Min = -5;
-            myPlot.YAxis.Max = 5;
+            myPlot.Axes.Bottom.Min = -100;
+            myPlot.Axes.Bottom.Max = 150;
+            myPlot.Axes.Left.Min = -5;
+            myPlot.Axes.Left.Max = 5;
 
             // Call a helper function
-            myPlot.SetAxisLimits(-100, 150, -5, 5);
+            myPlot.Axes.SetLimits(-100, 150, -5, 5);
         }
     }
 
@@ -53,15 +53,15 @@ public class AxisAndTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             // Interact with a specific axis
-            double top = myPlot.YAxis.Max;
-            double bottom = myPlot.YAxis.Min;
+            double top = myPlot.Axes.Left.Max;
+            double bottom = myPlot.Axes.Left.Min;
 
             // Call a helper function
-            AxisLimits limits = myPlot.GetAxisLimits();
+            AxisLimits limits = myPlot.Axes.GetLimits();
             double left = limits.Rect.Left;
             double center = limits.Rect.HorizontalCenter;
         }
@@ -76,14 +76,14 @@ public class AxisAndTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             // set limits that do not fit the data
-            myPlot.SetAxisLimits(-100, 150, -5, 5);
+            myPlot.Axes.SetLimits(-100, 150, -5, 5);
 
             // reset limits to fit the data
-            myPlot.AutoScale();
+            myPlot.Axes.AutoScale();
         }
     }
 
@@ -98,8 +98,8 @@ public class AxisAndTicks : ICategory
             myPlot.FigureBackground = Colors.Magenta; // should not be seen
             myPlot.DataBackground = Colors.WhiteSmoke;
 
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             myPlot.Layout.Frameless();
         }

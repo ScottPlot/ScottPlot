@@ -10,7 +10,7 @@ internal class AutoScaleTests
         plot.Add.Signal(Generate.Cos());
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().BeLessThan(0);
         limits.Right.Should().BeGreaterThan(50);
         limits.Bottom.Should().BeLessThan(-1);
@@ -23,10 +23,10 @@ internal class AutoScaleTests
         Plot plot = new();
         plot.Add.Signal(Generate.Sin());
         plot.Add.Signal(Generate.Cos());
-        plot.Margins(0, 0);
+        plot.Axes.Margins(0, 0);
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().Be(0);
         limits.Right.Should().Be(50);
         limits.Bottom.Should().Be(-1);
@@ -39,7 +39,7 @@ internal class AutoScaleTests
         Plot plot = new();
         plot.Add.Signal(Generate.Sin());
         plot.Add.Signal(Generate.Cos());
-        plot.Margins(0, .1, 1, 2);
+        plot.Axes.Margins(0, .1, 1, 2);
         plot.SaveTestImage();
     }
 
@@ -49,10 +49,10 @@ internal class AutoScaleTests
         Plot plot = new();
         plot.Add.Signal(Generate.Sin());
         plot.Add.Signal(Generate.Cos());
-        plot.SetAxisLimits(-1, 2, -3, 4);
+        plot.Axes.SetLimits(-1, 2, -3, 4);
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().Be(-1);
         limits.Right.Should().Be(2);
         limits.Bottom.Should().Be(-3);
@@ -65,10 +65,10 @@ internal class AutoScaleTests
         Plot plot = new();
         plot.Add.Signal(Generate.Sin());
         plot.Add.Signal(Generate.Cos());
-        plot.SetAxisLimits(left: 2, right: 5);
+        plot.Axes.SetLimits(left: 2, right: 5);
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().Be(2);
         limits.Right.Should().Be(5);
         limits.Bottom.Should().BeLessThan(-1);
@@ -81,10 +81,10 @@ internal class AutoScaleTests
         Plot plot = new();
         plot.Add.Signal(Generate.Sin());
         plot.Add.Signal(Generate.Cos());
-        plot.SetAxisLimits(bottom: -2, top: 5);
+        plot.Axes.SetLimits(bottom: -2, top: 5);
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().BeLessThan(0);
         limits.Right.Should().BeGreaterThan(50);
         limits.Bottom.Should().Be(-2);
@@ -104,7 +104,7 @@ internal class AutoScaleTests
 
         plot.SaveTestImage();
 
-        AxisLimits limits = plot.GetAxisLimits();
+        AxisLimits limits = plot.Axes.GetLimits();
         limits.Left.Should().Be(-10);
         limits.Right.Should().Be(10);
         limits.Bottom.Should().Be(-10);

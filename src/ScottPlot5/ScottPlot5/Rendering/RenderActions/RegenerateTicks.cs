@@ -4,7 +4,7 @@ public class RegenerateTicks : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Plot.XAxis.TickGenerator.Regenerate(rp.Plot.XAxis.Range, rp.Plot.XAxis.Edge, rp.DataRect.Width);
-        rp.Plot.YAxis.TickGenerator.Regenerate(rp.Plot.YAxis.Range, rp.Plot.YAxis.Edge, rp.DataRect.Height);
+        rp.Plot.Axes.Bottom.TickGenerator.Regenerate(rp.Plot.Axes.Bottom.Range, rp.Plot.Axes.Bottom.Edge, rp.DataRect.Width);
+        rp.Plot.Axes.Left.TickGenerator.Regenerate(rp.Plot.Axes.Left.Range, rp.Plot.Axes.Left.Edge, rp.DataRect.Height);
     }
 }

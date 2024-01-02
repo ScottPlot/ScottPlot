@@ -71,8 +71,8 @@ public partial class OpenGL : Form, IDemoWindow
             sp2.MarkerStyle.IsVisible = false;
         }
 
-        formsPlot1.Plot.AutoScale();
-        formsPlotgl1.Plot.AutoScale();
+        formsPlot1.Plot.Axes.AutoScale();
+        formsPlotgl1.Plot.Axes.AutoScale();
 
         formsPlot1.Refresh();
         formsPlotgl1.Refresh();

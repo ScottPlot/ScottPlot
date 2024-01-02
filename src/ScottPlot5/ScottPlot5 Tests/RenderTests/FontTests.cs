@@ -5,8 +5,8 @@ internal class FontTests
     [Test]
     public void Test_Font_Default()
     {
-        ScottPlot.Plot plt = new();
-        plt.TopAxis.Label.Text = Fonts.Default;
+        Plot plt = new();
+        plt.Axes.Top.Label.Text = Fonts.Default;
         plt.XLabel("Horizontal Axis");
         plt.YLabel("Vertical Axis");
         plt.SaveTestImage();

@@ -28,7 +28,7 @@ public class PlotStyler
     /// </summary>
     public void ColorAxes(Color color)
     {
-        foreach (AxisPanels.AxisBase axis in Plot.GetStandardAxes())
+        foreach (AxisPanels.AxisBase axis in Plot.Axes.GetAxes())
         {
             axis.Label.ForeColor = color;
             axis.FrameLineStyle.Color = color;
@@ -36,7 +36,7 @@ public class PlotStyler
             axis.MinorTickColor = color;
         }
 
-        Plot.TitlePanel.Label.Font.Color = color;
+        Plot.Axes.Title.Label.Font.Color = color;
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class PlotStyler
     /// </summary>
     public void ColorGrids(Color majorColor)
     {
-        foreach (DefaultGrid grid in Plot.Grids.OfType<DefaultGrid>())
+        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
         {
             grid.MajorLineStyle.Color = majorColor;
         }
@@ -55,7 +55,7 @@ public class PlotStyler
     /// </summary>
     public void ColorGrids(Color majorColor, Color minorColor)
     {
-        foreach (DefaultGrid grid in Plot.Grids.OfType<DefaultGrid>())
+        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
         {
             grid.MajorLineStyle.Color = majorColor;
             grid.MinorLineStyle.Color = minorColor;
@@ -67,11 +67,10 @@ public class PlotStyler
     /// </summary>
     public void AxisFrame(float left, float right, float bottom, float top)
     {
-        AxisPanels.AxisBase[] axes = Plot.GetStandardAxes();
-        axes[0].FrameLineStyle.Width = left;
-        axes[1].FrameLineStyle.Width = right;
-        axes[2].FrameLineStyle.Width = bottom;
-        axes[3].FrameLineStyle.Width = top;
+        Plot.Axes.Left.FrameLineStyle.Width = left;
+        Plot.Axes.Right.FrameLineStyle.Width = right;
+        Plot.Axes.Bottom.FrameLineStyle.Width = bottom;
+        Plot.Axes.Top.FrameLineStyle.Width = top;
     }
 
     /// <summary>
@@ -86,10 +85,10 @@ public class PlotStyler
         Fonts.Default = fontName;
 
         // title
-        Plot.TitlePanel.Label.Font.Name = fontName;
+        Plot.Axes.Title.Label.Font.Name = fontName;
 
         // axis labels and ticks
-        foreach (IAxis axis in Plot.GetAllAxes())
+        foreach (IAxis axis in Plot.Axes.GetAxes())
         {
             axis.Label.FontName = fontName;
             axis.TickFont.Name = fontName;

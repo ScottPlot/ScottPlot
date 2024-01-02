@@ -21,7 +21,7 @@ public partial class ShowValueOnHover : Form, IDemoWindow
         MyScatter = formsPlot1.Plot.Add.Scatter(xs, ys);
         MyScatter.LineStyle = LineStyle.None;
         MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
-        formsPlot1.Plot.AutoScale();
+        formsPlot1.Plot.Axes.AutoScale();
         formsPlot1.Refresh();
 
         formsPlot1.MouseMove += (s, e) =>

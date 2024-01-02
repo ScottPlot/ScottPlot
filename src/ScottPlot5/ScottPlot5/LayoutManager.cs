@@ -46,8 +46,8 @@ public class LayoutManager
     /// </summary>
     public void Frameless()
     {
-        Plot.XAxes.ForEach(x => x.IsVisible = false);
-        Plot.YAxes.ForEach(x => x.IsVisible = false);
-        Plot.TitlePanel.IsVisible = false;
+        Plot.Axes.XAxes.ForEach(x => x.IsVisible = false);
+        Plot.Axes.YAxes.ForEach(x => x.IsVisible = false);
+        Plot.Axes.Title.IsVisible = false;
     }
 }
