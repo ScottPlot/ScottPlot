@@ -18,17 +18,17 @@ public partial class SharedAxes : Form, IDemoWindow
         formsPlot2.Plot.Add.Signal(Generate.Sin(51, mult: 100_000));
 
         // add labels
-        formsPlot1.Plot.LeftAxis.Label.Text = "Vertical Axis";
-        formsPlot2.Plot.LeftAxis.Label.Text = "Vertical Axis";
-        formsPlot1.Plot.BottomAxis.Label.Text = "Horizontal Axis";
-        formsPlot2.Plot.BottomAxis.Label.Text = "Horizontal Axis";
+        formsPlot1.Plot.Axes.Left.Label.Text = "Vertical Axis";
+        formsPlot2.Plot.Axes.Left.Label.Text = "Vertical Axis";
+        formsPlot1.Plot.Axes.Bottom.Label.Text = "Horizontal Axis";
+        formsPlot2.Plot.Axes.Bottom.Label.Text = "Horizontal Axis";
 
         // use a fixed size for the left axis panel to ensure it's always aligned
         float leftAxisSize = 90;
-        formsPlot1.Plot.LeftAxis.MinimumSize = leftAxisSize;
-        formsPlot1.Plot.LeftAxis.MaximumSize = leftAxisSize;
-        formsPlot2.Plot.LeftAxis.MinimumSize = leftAxisSize;
-        formsPlot2.Plot.LeftAxis.MaximumSize = leftAxisSize;
+        formsPlot1.Plot.Axes.Left.MinimumSize = leftAxisSize;
+        formsPlot1.Plot.Axes.Left.MaximumSize = leftAxisSize;
+        formsPlot2.Plot.Axes.Left.MinimumSize = leftAxisSize;
+        formsPlot2.Plot.Axes.Left.MaximumSize = leftAxisSize;
 
         // when one plot changes update the other plot
         formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
@@ -47,9 +47,9 @@ public partial class SharedAxes : Form, IDemoWindow
 
     private void ApplyLayoutToOtherPlot(IPlotControl source, IPlotControl dest)
     {
-        AxisLimits axesBefore = dest.Plot.GetAxisLimits();
-        dest.Plot.SetAxisLimitsX(source.Plot.GetAxisLimits());
-        AxisLimits axesAfter = dest.Plot.GetAxisLimits();
+        AxisLimits axesBefore = dest.Plot.Axes.GetLimits();
+        dest.Plot.Axes.SetLimitsX(source.Plot.Axes.GetLimits());
+        AxisLimits axesAfter = dest.Plot.Axes.GetLimits();
         if (axesBefore != axesAfter)
         {
             dest.Refresh();

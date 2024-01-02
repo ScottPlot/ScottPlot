@@ -19,7 +19,7 @@ public class Bar : ICategory
             myPlot.Add.Bars(values);
 
             // tell the plot to autoscale with no padding beneath the bars
-            myPlot.Margins(bottom: 0);
+            myPlot.Axes.Margins(bottom: 0);
         }
     }
 
@@ -61,7 +61,7 @@ public class Bar : ICategory
             myPlot.Add.Bars(bars);
 
             // tell the plot to autoscale with no padding beneath the bars
-            myPlot.Margins(bottom: 0);
+            myPlot.Axes.Margins(bottom: 0);
         }
     }
 
@@ -86,12 +86,12 @@ public class Bar : ICategory
                 new(4, "Banana"),
             };
 
-            myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
-            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.Axes.Bottom.MajorTickLength = 0;
             myPlot.HideGrid();
 
             // tell the plot to autoscale with no padding beneath the bars
-            myPlot.Margins(bottom: 0);
+            myPlot.Axes.Margins(bottom: 0);
         }
     }
 
@@ -130,12 +130,12 @@ public class Bar : ICategory
                 new(2, "Summer"),
             };
 
-            myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
-            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.Axes.Bottom.MajorTickLength = 0;
             myPlot.HideGrid();
 
             // tell the plot to autoscale with no padding beneath the bars
-            myPlot.Margins(bottom: 0);
+            myPlot.Axes.Margins(bottom: 0);
         }
     }
 
@@ -187,12 +187,12 @@ public class Bar : ICategory
                 new(6, "Group 2"),
                 new(10, "Group 3"),
             };
-            myPlot.BottomAxis.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
-            myPlot.BottomAxis.MajorTickLength = 0;
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.Axes.Bottom.MajorTickLength = 0;
             myPlot.HideGrid();
 
             // tell the plot to autoscale with no padding beneath the bars
-            myPlot.Margins(bottom: 0);
+            myPlot.Axes.Margins(bottom: 0);
         }
     }
 }

@@ -16,13 +16,13 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             // visible items have public properties that can be customized
-            myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.TitlePanel.Label.Text = "Plot Title";
+            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.Axes.Title.Label.Text = "Plot Title";
 
             // the Style object contains helper methods to easily style many items at once
             myPlot.Style.Background(figure: Color.FromHex("#07263b"), data: Color.FromHex("#0b3049"));
@@ -39,31 +39,31 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.TitlePanel.Label.Text = "Plot Title";
-            myPlot.TitlePanel.Label.Font.Color = Colors.RebeccaPurple;
-            myPlot.TitlePanel.Label.Font.Size = 32;
-            myPlot.TitlePanel.Label.Font.Name = Fonts.Serif;
-            myPlot.TitlePanel.Label.Rotation = -5;
-            myPlot.TitlePanel.Label.Font.Bold = false;
+            myPlot.Axes.Title.Label.Text = "Plot Title";
+            myPlot.Axes.Title.Label.Font.Color = Colors.RebeccaPurple;
+            myPlot.Axes.Title.Label.Font.Size = 32;
+            myPlot.Axes.Title.Label.Font.Name = Fonts.Serif;
+            myPlot.Axes.Title.Label.Rotation = -5;
+            myPlot.Axes.Title.Label.Font.Bold = false;
 
-            myPlot.YAxis.Label.Text = "Vertical Axis";
-            myPlot.YAxis.Label.ForeColor = Colors.Magenta;
-            myPlot.YAxis.Label.Italic = true;
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.Axes.Left.Label.ForeColor = Colors.Magenta;
+            myPlot.Axes.Left.Label.Italic = true;
 
-            myPlot.XAxis.Label.Text = "Horizontal Axis";
-            myPlot.XAxis.Label.Bold = false;
-            myPlot.XAxis.Label.FontName = Fonts.Monospace;
+            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
+            myPlot.Axes.Bottom.Label.Bold = false;
+            myPlot.Axes.Bottom.Label.FontName = Fonts.Monospace;
 
-            myPlot.XAxis.MajorTickLength = 10;
-            myPlot.XAxis.MajorTickWidth = 3;
-            myPlot.XAxis.MajorTickColor = Colors.Magenta;
-            myPlot.XAxis.MinorTickLength = 5;
-            myPlot.XAxis.MinorTickWidth = 0.5f;
-            myPlot.XAxis.MinorTickColor = Colors.Green;
-            myPlot.XAxis.FrameLineStyle.Color = Colors.LightBlue;
+            myPlot.Axes.Bottom.MajorTickLength = 10;
+            myPlot.Axes.Bottom.MajorTickWidth = 3;
+            myPlot.Axes.Bottom.MajorTickColor = Colors.Magenta;
+            myPlot.Axes.Bottom.MinorTickLength = 5;
+            myPlot.Axes.Bottom.MinorTickWidth = 0.5f;
+            myPlot.Axes.Bottom.MinorTickColor = Colors.Green;
+            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.LightBlue;
         }
     }
 
@@ -81,7 +81,7 @@ public class Styling : ICategory
 
             for (int i = 0; i < 5; i++)
             {
-                double[] data = ScottPlot.Generate.Sin(100, phase: -i / 20.0f);
+                double[] data = Generate.Sin(100, phase: -i / 20.0f);
                 var sig = myPlot.Add.Signal(data);
                 sig.LineWidth = 3;
             }
@@ -131,7 +131,7 @@ public class Styling : ICategory
             }
 
             myPlot.Title("Marker Names");
-            myPlot.SetAxisLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
             myPlot.HideGrid();
         }
     }
@@ -145,8 +145,8 @@ public class Styling : ICategory
         public override void Execute()
         {
             int count = 21;
-            double[] xs = ScottPlot.Generate.Consecutive(count);
-            double[] ys = ScottPlot.Generate.Sin(count);
+            double[] xs = Generate.Consecutive(count);
+            double[] ys = Generate.Sin(count);
 
             LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
 
@@ -177,8 +177,8 @@ public class Styling : ICategory
         public override void Execute()
         {
             myPlot.ScaleFactor = 2;
-            myPlot.Add.Signal(ScottPlot.Generate.Sin());
-            myPlot.Add.Signal(ScottPlot.Generate.Cos());
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
         }
     }
 }

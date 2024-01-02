@@ -27,36 +27,36 @@ public static class StandardActions
     public static void PanUp(IPlotControl control)
     {
         double PanFraction = 0.1;
-        AxisLimits limits = control.Plot.GetAxisLimits();
+        AxisLimits limits = control.Plot.Axes.GetLimits();
         double deltaY = limits.Rect.Height * PanFraction;
-        control.Plot.SetAxisLimits(limits.WithPan(0, deltaY));
+        control.Plot.Axes.SetLimits(limits.WithPan(0, deltaY));
         control.Refresh();
     }
 
     public static void PanDown(IPlotControl control)
     {
         double PanFraction = 0.1;
-        AxisLimits limits = control.Plot.GetAxisLimits();
+        AxisLimits limits = control.Plot.Axes.GetLimits();
         double deltaY = limits.Rect.Height * PanFraction;
-        control.Plot.SetAxisLimits(limits.WithPan(0, -deltaY));
+        control.Plot.Axes.SetLimits(limits.WithPan(0, -deltaY));
         control.Refresh();
     }
 
     public static void PanLeft(IPlotControl control)
     {
         double PanFraction = 0.1;
-        AxisLimits limits = control.Plot.GetAxisLimits();
+        AxisLimits limits = control.Plot.Axes.GetLimits();
         double deltaX = limits.Rect.Width * PanFraction;
-        control.Plot.SetAxisLimits(limits.WithPan(-deltaX, 0));
+        control.Plot.Axes.SetLimits(limits.WithPan(-deltaX, 0));
         control.Refresh();
     }
 
     public static void PanRight(IPlotControl control)
     {
         double PanFraction = 0.1;
-        AxisLimits limits = control.Plot.GetAxisLimits();
+        AxisLimits limits = control.Plot.Axes.GetLimits();
         double deltaX = limits.Rect.Width * PanFraction;
-        control.Plot.SetAxisLimits(limits.WithPan(deltaX, 0));
+        control.Plot.Axes.SetLimits(limits.WithPan(deltaX, 0));
         control.Refresh();
     }
 
@@ -92,7 +92,7 @@ public static class StandardActions
         Pixel px2 = control.Plot.ZoomRectangle.MouseUp;
         PixelRect dataRect = control.Plot.RenderManager.LastRender.DataRect;
 
-        foreach (IXAxis xAxis in control.Plot.XAxes)
+        foreach (IXAxis xAxis in control.Plot.Axes.XAxes)
         {
             double x1 = xAxis.GetCoordinate(px1.X, dataRect);
             double x2 = xAxis.GetCoordinate(px2.X, dataRect);
@@ -101,7 +101,7 @@ public static class StandardActions
             xAxis.Range.Set(xMin, xMax);
         }
 
-        foreach (IYAxis yAxis in control.Plot.YAxes)
+        foreach (IYAxis yAxis in control.Plot.Axes.YAxes)
         {
             double y1 = yAxis.GetCoordinate(px1.Y, dataRect);
             double y2 = yAxis.GetCoordinate(px2.Y, dataRect);
@@ -127,7 +127,7 @@ public static class StandardActions
 
     public static void AutoScale(IPlotControl control)
     {
-        control.Plot.AutoScale();
+        control.Plot.Axes.AutoScale();
         control.Refresh();
     }
 

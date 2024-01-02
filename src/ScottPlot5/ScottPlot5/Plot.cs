@@ -8,105 +8,29 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    // TODO: group all this axis management stuff isnide a panels class
-    internal List<IXAxis> XAxes { get; } = new();
-    internal List<IYAxis> YAxes { get; } = new();
-    public IEnumerable<IAxis> GetAxes() => XAxes.Cast<IAxis>().Concat(YAxes);
-    public IXAxis TopAxis => XAxes.First(x => x.Edge == Edge.Top);
-    public IXAxis BottomAxis => XAxes.First(x => x.Edge == Edge.Bottom);
-    public IYAxis LeftAxis => YAxes.First(x => x.Edge == Edge.Left);
-    public IYAxis RightAxis => YAxes.First(x => x.Edge == Edge.Right);
-
-    /// <summary>
-    /// Panels are rectangular regions on the 4 edges outside the data area.
-    /// Axes, colorbars, title, etc.
-    /// </summary>
-    internal List<IPanel> Panels { get; } = new();
-
-    /// <summary>
-    /// This panel displays a label above the plot.
-    /// </summary>
-    public Panels.TitlePanel TitlePanel { get; } = new();
-
-    public List<IGrid> Grids { get; } = new();
-    public Legend Legend { get; set; }
     public List<IPlottable> PlottableList { get; } = new();
     public PlottableAdder Add { get; }
     public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }
-    public IAutoScaler AutoScaler { get; set; } = new AutoScalers.FractionalAutoScaler(.1, .15);
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
-    public IZoomRectangle ZoomRectangle { get; set; }
+    public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
     public float ScaleFactor { get; set; } = 1.0f;
 
-    public AxisStyler AxisStyler { get; }
+    public AxisManager Axes { get; }
 
     public PlotStyler Style { get; }
 
+    public Legend Legend { get; set; }
+
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
-
-    /// <summary>
-    /// This property provides access to the primary horizontal axis below the plot.
-    /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
-    /// </summary>
-    public IXAxis XAxis
-    {
-        get
-        {
-            var lowerAxes = XAxes.Where(x => x.Edge == Edge.Bottom);
-
-            if (!lowerAxes.Any())
-                throw new InvalidOperationException("Plot does not contain any bottom axes");
-
-            return lowerAxes.First();
-        }
-    }
-
-
-    /// <summary>
-    /// This property provides access to the primary vertical axis to the left of the plot.
-    /// WARNING: Accessing this property will throw if the first bottom axis is not a standard axis.
-    /// </summary>
-    public IYAxis YAxis
-    {
-        get
-        {
-            var leftAxes = YAxes.Where(x => x.Edge == Edge.Left);
-
-            if (!leftAxes.Any())
-                throw new InvalidOperationException("Plot does not contain any left axes");
-
-            return leftAxes.First();
-        }
-    }
 
     public Plot()
     {
-        // setup the default primary X and Y axes
-        IXAxis xAxisPrimary = new AxisPanels.BottomAxis();
-        IYAxis yAxisPrimary = new AxisPanels.LeftAxis();
-        XAxes.Add(xAxisPrimary);
-        YAxes.Add(yAxisPrimary);
-
-        // add labeless secondary axes to get right side ticks and padding
-        IXAxis xAxisSecondary = new AxisPanels.TopAxis();
-        IYAxis yAxisSecondary = new AxisPanels.RightAxis();
-        XAxes.Add(xAxisSecondary);
-        YAxes.Add(yAxisSecondary);
-
-        // setup the zoom rectangle
-        ZoomRectangle = new StandardZoomRectangle();
-
-        // add a default grid using the primary axes
-        IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
-        Grids.Add(grid);
-
-        // setup classes which must be aware of the plot
+        Axes = new(this);
         Add = new(this);
-        AxisStyler = new(this);
         Style = new(this);
         RenderManager = new(this);
         Legend = new(this);
@@ -117,271 +41,8 @@ public class Plot : IDisposable
     public void Dispose()
     {
         PlottableList.Clear();
-        Grids.Clear();
-        Panels.Clear();
-        YAxes.Clear();
-        XAxes.Clear();
+        Axes.Clear();
     }
-
-    #region Axis Management
-
-    internal AxisPanels.AxisBase[] GetStandardAxes()
-    {
-        // TODO: throw if custom axes in use
-        return new AxisPanels.AxisBase[]
-        {
-            (AxisPanels.AxisBase)XAxes[0],
-            (AxisPanels.AxisBase)XAxes[1],
-            (AxisPanels.AxisBase)YAxes[0],
-            (AxisPanels.AxisBase)YAxes[1],
-        };
-    }
-
-    internal IAxis[] GetAllAxes() => XAxes.Select(x => (IAxis)x).Concat(YAxes).ToArray();
-
-    internal IPanel[] GetAllPanels() => XAxes.Select(x => (IPanel)x)
-        .Concat(YAxes)
-        .Concat(Panels)
-        .Concat(new[] { TitlePanel })
-        .ToArray();
-
-    public void SetAxisLimitsX(double left, double right, IXAxis xAxis)
-    {
-        xAxis.Min = left;
-        xAxis.Max = right;
-    }
-
-    public void SetAxisLimitsY(double bottom, double top, IYAxis yAxis)
-    {
-        yAxis.Min = bottom;
-        yAxis.Max = top;
-    }
-
-    public void SetAxisLimitsX(double left, double right)
-    {
-        SetAxisLimitsX(left, right, BottomAxis);
-    }
-
-    public void SetAxisLimitsY(double bottom, double top)
-    {
-        SetAxisLimitsY(bottom, top, LeftAxis);
-    }
-
-    public void SetAxisLimits(double left, double right, double bottom, double top)
-    {
-        SetAxisLimitsX(left, right, BottomAxis);
-        SetAxisLimitsY(bottom, top, LeftAxis);
-    }
-
-    public void SetAxisLimits(double left, double right, double bottom, double top, IXAxis xAxis, IYAxis yAxis)
-    {
-        SetAxisLimitsX(left, right, xAxis);
-        SetAxisLimitsY(bottom, top, yAxis);
-    }
-
-    public void SetAxisLimits(double? left = null, double? right = null, double? bottom = null, double? top = null)
-    {
-        SetAxisLimitsX(left ?? XAxis.Min, right ?? XAxis.Max);
-        SetAxisLimitsY(bottom ?? YAxis.Min, top ?? YAxis.Max);
-    }
-
-    public void SetAxisLimits(CoordinateRect rect)
-    {
-        SetAxisLimits(rect.Left, rect.Right, rect.Bottom, rect.Top);
-    }
-
-    public void SetAxisLimitsX(CoordinateRect limits)
-    {
-        SetAxisLimitsX(limits.Left, limits.Right, BottomAxis);
-    }
-
-    public void SetAxisLimitsY(CoordinateRect limits)
-    {
-        SetAxisLimitsY(limits.Bottom, limits.Top, LeftAxis);
-    }
-
-    public void SetAxisLimitsX(AxisLimits limits)
-    {
-        SetAxisLimitsX(limits.Left, limits.Right);
-    }
-
-    public void SetAxisLimitsX(AxisLimits limits, IXAxis xAxis)
-    {
-        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
-    }
-
-    public void SetAxisLimitsY(AxisLimits limits)
-    {
-        SetAxisLimitsY(limits.Bottom, limits.Top);
-    }
-
-    public void SetAxisLimitsY(AxisLimits limits, IYAxis yAxis)
-    {
-        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
-    }
-
-    public void SetAxisLimits(AxisLimits limits)
-    {
-        SetAxisLimits(limits, XAxis, YAxis);
-    }
-
-    public void SetAxisLimits(AxisLimits limits, IXAxis xAxis, IYAxis yAxis)
-    {
-        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
-        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
-    }
-
-    public void SetAxisLimits(CoordinateRange xRange, CoordinateRange yRange)
-    {
-        AxisLimits limits = new(xRange.Min, xRange.Max, yRange.Min, yRange.Max);
-        SetAxisLimits(limits);
-    }
-
-    /// <summary>
-    /// Return the 2D axis limits for the default axes
-    /// </summary>
-    public AxisLimits GetAxisLimits()
-    {
-        return new AxisLimits(XAxis.Min, XAxis.Max, YAxis.Min, YAxis.Max);
-    }
-
-    /// <summary>
-    /// Return the 2D axis limits for the given X/Y axis pair
-    /// </summary>
-    public AxisLimits GetAxisLimits(IXAxis xAxis, IYAxis yAxis)
-    {
-        return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
-    }
-
-    /// <summary>
-    /// Reset plot data margins to their default value.
-    /// </summary>
-    public void Margins()
-    {
-        AutoScaler = new AutoScalers.FractionalAutoScaler();
-        AutoScale();
-    }
-
-    /// <summary>
-    /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
-    /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
-    /// </summary>
-    public void Margins(double horizontal = 0.1, double vertical = .15)
-    {
-        AutoScaler = new AutoScalers.FractionalAutoScaler(horizontal, vertical);
-        AutoScale();
-    }
-
-    /// <summary>
-    /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
-    /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
-    /// </summary>
-    public void Margins(double left = .05, double right = .05, double bottom = .07, double top = .07)
-    {
-        AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
-        AutoScale();
-    }
-
-    /// <summary>
-    /// Adds the default X and Y axes to all plottables with unset axes
-    /// </summary>
-    internal void ReplaceNullAxesWithDefaults()
-    {
-        foreach (var plottable in PlottableList)
-        {
-            if (plottable.Axes.XAxis is null)
-                plottable.Axes.XAxis = XAxis;
-
-            if (plottable.Axes.YAxis is null)
-                plottable.Axes.YAxis = YAxis;
-        }
-    }
-
-    /// <summary>
-    /// Automatically scale all axes to fit the data in all plottables
-    /// </summary>
-    public void AutoScale()
-    {
-        ReplaceNullAxesWithDefaults();
-        AutoScaler.AutoScaleAll(PlottableList);
-    }
-
-    public void AutoScaleX()
-    {
-        AutoScaleX(BottomAxis);
-    }
-
-    public void AutoScaleY()
-    {
-        AutoScaleY(LeftAxis);
-    }
-
-    public void AutoScaleX(IXAxis xAxis)
-    {
-        ReplaceNullAxesWithDefaults();
-        AxisLimits limits = AutoScaler.GetAxisLimits(this, xAxis, LeftAxis);
-        SetAxisLimitsX(limits.Left, limits.Right, xAxis);
-    }
-
-    public void AutoScaleY(IYAxis yAxis)
-    {
-        ReplaceNullAxesWithDefaults();
-        AxisLimits limits = AutoScaler.GetAxisLimits(this, BottomAxis, yAxis);
-        SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
-    }
-
-    /// <summary>
-    /// Autoscale the given axes to accommodate the data from all plottables that use them
-    /// </summary>
-    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
-    {
-        ReplaceNullAxesWithDefaults();
-
-        AxisLimits limits = AutoScaler.GetAxisLimits(this, xAxis, yAxis);
-
-        if (horizontal)
-        {
-            SetAxisLimitsX(limits.Left, limits.Right, xAxis);
-        }
-
-        if (vertical)
-        {
-            SetAxisLimitsY(limits.Bottom, limits.Top, yAxis);
-        }
-    }
-
-    /// <summary>
-    /// Adjust limits all axes to pan by the given distance in coordinate space
-    /// </summary>
-    public void Pan(CoordinateSize distance)
-    {
-        XAxes.ForEach(x => x.Range.Pan(distance.Width));
-        YAxes.ForEach(x => x.Range.Pan(distance.Height));
-    }
-
-    /// <summary>
-    /// Adjust limits all axes to pan by the given distance in pixel space
-    /// </summary>
-    public void Pan(PixelSize distance)
-    {
-        if (RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
-
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, RenderManager.LastRender.DataRect)));
-    }
-
-    /// <summary>
-    /// Modify limits of all axes to apply the given zoom.
-    /// Fractional values >1 zoom in and <1 zoom out.
-    /// </summary>
-    public void Zoom(double fracX = 1.0, double fracY = 1.0)
-    {
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
-    }
-
-    #endregion
 
     #region Mouse Interaction
 
@@ -400,8 +61,8 @@ public class Plot : IDisposable
         originalLimits.Apply(this);
 
         // pan in the direction opposite of the mouse movement
-        XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
+        Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
+        Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
     }
 
     /// <summary>
@@ -416,8 +77,8 @@ public class Plot : IDisposable
         originalLimits.Apply(this);
 
         // apply zoom for each axis
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
+        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
+        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
     }
 
     /// <summary>
@@ -435,8 +96,8 @@ public class Plot : IDisposable
 
         // apply zoom for each axis
         Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
+        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
+        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -462,8 +123,8 @@ public class Plot : IDisposable
     {
         Coordinates scaledCoordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        float x = XAxis.GetPixel(scaledCoordinates.X, dataRect);
-        float y = YAxis.GetPixel(scaledCoordinates.Y, dataRect);
+        float x = Axes.Bottom.GetPixel(scaledCoordinates.X, dataRect);
+        float y = Axes.Left.GetPixel(scaledCoordinates.Y, dataRect);
         return new Pixel(x, y);
     }
 
@@ -474,8 +135,8 @@ public class Plot : IDisposable
     {
         Pixel scaledPx = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double x = (xAxis ?? XAxis).GetCoordinate(scaledPx.X, dataRect);
-        double y = (yAxis ?? YAxis).GetCoordinate(scaledPx.Y, dataRect);
+        double x = (xAxis ?? Axes.Bottom).GetCoordinate(scaledPx.X, dataRect);
+        double y = (yAxis ?? Axes.Left).GetCoordinate(scaledPx.Y, dataRect);
         return new Coordinates(x, y);
     }
 
@@ -494,10 +155,10 @@ public class Plot : IDisposable
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
     {
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = XAxis.GetCoordinate(x - radius, dataRect);
-        double right = XAxis.GetCoordinate(x + radius, dataRect);
-        double top = YAxis.GetCoordinate(y - radius, dataRect);
-        double bottom = YAxis.GetCoordinate(y + radius, dataRect);
+        double left = Axes.Bottom.GetCoordinate(x - radius, dataRect);
+        double right = Axes.Bottom.GetCoordinate(x + radius, dataRect);
+        double top = Axes.Left.GetCoordinate(y - radius, dataRect);
+        double bottom = Axes.Left.GetCoordinate(y + radius, dataRect);
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -515,8 +176,8 @@ public class Plot : IDisposable
     public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
     {
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double radiusX = XAxis.GetCoordinateDistance(radius, dataRect);
-        double radiusY = YAxis.GetCoordinateDistance(radius, dataRect);
+        double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
+        double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
     }
 
@@ -667,7 +328,7 @@ public class Plot : IDisposable
     /// </summary>
     public void HideGrid()
     {
-        Grids.ForEach(x => x.IsVisible = false);
+        Axes.Grids.ForEach(x => x.IsVisible = false);
     }
 
     /// <summary>
@@ -675,7 +336,7 @@ public class Plot : IDisposable
     /// </summary>
     public void ShowGrid()
     {
-        Grids.ForEach(x => x.IsVisible = true);
+        Axes.Grids.ForEach(x => x.IsVisible = true);
     }
 
     /// <summary>
@@ -706,10 +367,10 @@ public class Plot : IDisposable
     /// </summary>
     public void Title(string text, float? size = null)
     {
-        TitlePanel.Label.Text = text;
-        TitlePanel.IsVisible = !string.IsNullOrWhiteSpace(text);
+        Axes.Title.Label.Text = text;
+        Axes.Title.IsVisible = !string.IsNullOrWhiteSpace(text);
         if (size.HasValue)
-            TitlePanel.Label.Font.Size = size.Value;
+            Axes.Title.Label.Font.Size = size.Value;
     }
 
     /// <summary>
@@ -718,9 +379,9 @@ public class Plot : IDisposable
     /// </summary>
     public void XLabel(string label, float? size = null)
     {
-        BottomAxis.Label.Text = label;
+        Axes.Bottom.Label.Text = label;
         if (size.HasValue)
-            BottomAxis.Label.FontSize = size.Value;
+            Axes.Bottom.Label.FontSize = size.Value;
     }
 
     /// <summary>
@@ -729,49 +390,9 @@ public class Plot : IDisposable
     /// </summary>
     public void YLabel(string label, float? size = null)
     {
-        LeftAxis.Label.Text = label;
+        Axes.Left.Label.Text = label;
         if (size.HasValue)
-            LeftAxis.Label.FontSize = size.Value;
-    }
-
-    /// <summary>
-    /// Crete a new axis, add it to the plot, and return it
-    /// </summary>
-    public LeftAxis AddLeftAxis()
-    {
-        LeftAxis axis = new();
-        YAxes.Add(axis);
-        return axis;
-    }
-
-    /// <summary>
-    /// Crete a new axis, add it to the plot, and return it
-    /// </summary>
-    public RightAxis AddRightAxis()
-    {
-        RightAxis axis = new();
-        YAxes.Add(axis);
-        return axis;
-    }
-
-    /// <summary>
-    /// Crete a new axis, add it to the plot, and return it
-    /// </summary>
-    public BottomAxis AddBottomAxis()
-    {
-        BottomAxis axis = new();
-        XAxes.Add(axis);
-        return axis;
-    }
-
-    /// <summary>
-    /// Crete a new axis, add it to the plot, and return it
-    /// </summary>
-    public TopAxis AddTopAxis()
-    {
-        TopAxis axis = new();
-        XAxes.Add(axis);
-        return axis;
+            Axes.Left.Label.FontSize = size.Value;
     }
 
     /// <summary>
@@ -780,23 +401,11 @@ public class Plot : IDisposable
     /// </summary>
     public Grids.DefaultGrid GetDefaultGrid()
     {
-        IEnumerable<Grids.DefaultGrid> defaultGrids = Grids.OfType<Grids.DefaultGrid>();
+        IEnumerable<Grids.DefaultGrid> defaultGrids = Axes.Grids.OfType<Grids.DefaultGrid>();
         if (defaultGrids.Any())
             return defaultGrids.First();
         else
             throw new InvalidOperationException("The plot has no default grids");
-    }
-
-    /// <summary>
-    /// Set axis limits of this plots to match those of a given plot
-    /// </summary>
-    public void MatchAxisLimits(Plot other, bool x = true, bool y = true)
-    {
-        AxisLimits theseLimits = GetAxisLimits();
-        AxisLimits otherLimits = other.GetAxisLimits();
-        CoordinateRange xRange = x ? otherLimits.XRange : theseLimits.XRange;
-        CoordinateRange yRange = y ? otherLimits.YRange : theseLimits.YRange;
-        SetAxisLimits(xRange, yRange);
     }
 
     #endregion
@@ -805,7 +414,7 @@ public class Plot : IDisposable
 
     public void Developer_ShowAxisDetails(bool enable = true)
     {
-        foreach (IPanel panel in GetAllAxes())
+        foreach (IPanel panel in Axes.GetAxes())
         {
             panel.ShowDebugInformation = enable;
         }

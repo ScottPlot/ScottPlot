@@ -26,7 +26,7 @@ public class Function : ICategory
             myPlot.Add.Function(func3);
 
             // Manually set axis limits because functions do not have discrete data points
-            myPlot.SetAxisLimits(-10, 10, -1.5, 1.5);
+            myPlot.Axes.SetLimits(-10, 10, -1.5, 1.5);
         }
     }
 }

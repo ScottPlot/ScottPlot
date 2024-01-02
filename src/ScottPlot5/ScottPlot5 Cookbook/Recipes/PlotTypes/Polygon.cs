@@ -23,7 +23,7 @@ public class Polygon : ICategory
                 new Coordinates(1,   0)
             };
             myPlot.Add.Polygon(vertices);
-            myPlot.AutoScale();
+            myPlot.Axes.AutoScale();
         }
     }
 
@@ -58,7 +58,7 @@ public class Polygon : ICategory
             poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
             poly.MarkerStyle.Fill.Color = Colors.Gold;
             poly.MarkerStyle.Outline.Color = Colors.Brown;
-            myPlot.AutoScale();
+            myPlot.Axes.AutoScale();
         }
     }
 }

@@ -37,7 +37,7 @@ public class CustomizingTicks : ICategory
             };
 
             // tell an axis to use the custom tick generator
-            myPlot.XAxis.TickGenerator = myTickGenerator;
+            myPlot.Axes.Bottom.TickGenerator = myTickGenerator;
         }
     }
 
@@ -57,7 +57,7 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
-            myPlot.XAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
         }
     }
 
@@ -90,7 +90,7 @@ public class CustomizingTicks : ICategory
             ticks.AddMinor(45);
 
             // tell the horizontal axis to use the custom tick genrator
-            myPlot.BottomAxis.TickGenerator = ticks;
+            myPlot.Axes.Bottom.TickGenerator = ticks;
         }
     }
 }

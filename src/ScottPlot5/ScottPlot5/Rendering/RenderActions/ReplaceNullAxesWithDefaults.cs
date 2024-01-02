@@ -4,6 +4,6 @@ public class ReplaceNullAxesWithDefaults : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Plot.ReplaceNullAxesWithDefaults();
+        rp.Plot.Axes.ReplaceNullAxesWithDefaults();
     }
 }

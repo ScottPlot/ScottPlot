@@ -51,7 +51,7 @@ internal class AxisLineTests
         vl.LineWidth = 3;
         vl.LinePattern = LinePattern.Dot;
 
-        plot.SetAxisLimits(-10, 10, -10, 10);
+        plot.Axes.SetLimits(-10, 10, -10, 10);
 
         plot.SaveTestImage();
     }
@@ -64,7 +64,7 @@ internal class AxisLineTests
         var hl = plot.Add.HorizontalLine(0.5);
         hl.LineWidth = 0;
 
-        plot.SetAxisLimits(-10, 10, -10, 10);
+        plot.Axes.SetLimits(-10, 10, -10, 10);
 
         plot.SaveTestImage();
     }
@@ -74,7 +74,7 @@ internal class AxisLineTests
     {
         ScottPlot.Plot plot = new();
         plot.Add.HorizontalLine(0.5);
-        plot.SetAxisLimits(-10, 10, -10, 10);
+        plot.Axes.SetLimits(-10, 10, -10, 10);
         plot.SaveTestImage();
     }
 }

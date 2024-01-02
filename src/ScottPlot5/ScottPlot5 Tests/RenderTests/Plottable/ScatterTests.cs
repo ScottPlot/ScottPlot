@@ -22,7 +22,7 @@ internal class ScatterTests
         plt.Render();
         plt.SaveTestImage();
 
-        Assert.That(plt.GetAxisLimits().Rect.Area, Is.Not.Zero);
+        Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);
     }
 
 
@@ -36,6 +36,6 @@ internal class ScatterTests
         plt.Render();
         plt.SaveTestImage();
 
-        Assert.That(plt.GetAxisLimits().Rect.Area, Is.Not.Zero);
+        Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);
     }
 }

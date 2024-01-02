@@ -15,10 +15,10 @@ public partial class MultiAxis : Form, IDemoWindow
         InitializeComponent();
 
         // Store the primary Y axis so we can refer to it later
-        YAxis1 = formsPlot1.Plot.LeftAxis;
+        YAxis1 = formsPlot1.Plot.Axes.Left;
 
         // Create a second Y axis, add it to the plot, and save it for later
-        YAxis2 = formsPlot1.Plot.AddLeftAxis();
+        YAxis2 = formsPlot1.Plot.Axes.AddLeftAxis();
 
         // setup button actions
         btnRandomize.Click += (s, e) => PlotRandomData();
@@ -43,8 +43,8 @@ public partial class MultiAxis : Form, IDemoWindow
         YAxis2.Label.Text = "YAxis2";
         YAxis2.Label.ForeColor = sig2.Color;
 
-        formsPlot1.Plot.AutoScale();
-        formsPlot1.Plot.Zoom(.8, .7); // zoom out slightly
+        formsPlot1.Plot.Axes.AutoScale();
+        formsPlot1.Plot.Axes.Zoom(.8, .7); // zoom out slightly
         formsPlot1.Refresh();
     }
 
@@ -55,27 +55,27 @@ public partial class MultiAxis : Form, IDemoWindow
 
     private void btnManualScale_Click(object sender, EventArgs e)
     {
-        formsPlot1.Plot.SetAxisLimits(0, 50, -20, 20, formsPlot1.Plot.BottomAxis, YAxis1);
-        formsPlot1.Plot.SetAxisLimits(0, 50, -20_000, 20_000, formsPlot1.Plot.BottomAxis, YAxis2);
+        formsPlot1.Plot.Axes.SetLimits(0, 50, -20, 20, formsPlot1.Plot.Axes.Bottom, YAxis1);
+        formsPlot1.Plot.Axes.SetLimits(0, 50, -20_000, 20_000, formsPlot1.Plot.Axes.Bottom, YAxis2);
         formsPlot1.Refresh();
     }
 
     private void btnAutoScale_Click(object sender, EventArgs e)
     {
-        formsPlot1.Plot.Margins();
-        formsPlot1.Plot.AutoScale();
+        formsPlot1.Plot.Axes.Margins();
+        formsPlot1.Plot.Axes.AutoScale();
         formsPlot1.Refresh();
     }
 
     private void btnAutoScaleTight_Click(object sender, EventArgs e)
     {
-        formsPlot1.Plot.Margins(0, 0);
+        formsPlot1.Plot.Axes.Margins(0, 0);
         formsPlot1.Refresh();
     }
 
     private void btnAutoScaleWithPadding_Click(object sender, EventArgs e)
     {
-        formsPlot1.Plot.Margins(1, 1);
+        formsPlot1.Plot.Axes.Margins(1, 1);
         formsPlot1.Refresh();
     }
 }

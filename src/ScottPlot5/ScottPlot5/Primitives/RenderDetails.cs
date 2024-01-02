@@ -74,7 +74,7 @@ public readonly struct RenderDetails
         Elapsed = rp.Elapsed;
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
-        AxisLimits = rp.Plot.GetAxisLimits();
+        AxisLimits = rp.Plot.Axes.GetLimits();
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
 

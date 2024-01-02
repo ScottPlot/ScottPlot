@@ -23,7 +23,7 @@ public class DateTimeAxes : ICategory
             myPlot.Add.Scatter(xs, ys);
 
             // tell the plot to display dates on the bottom axis
-            myPlot.AxisStyler.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
     }
 }
