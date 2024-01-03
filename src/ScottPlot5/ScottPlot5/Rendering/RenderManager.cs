@@ -58,16 +58,17 @@ public class RenderManager
     public RenderManager(Plot plot)
     {
         Plot = plot;
-        RenderActions = new(RenderManager.DefaultRenderActions);
+        RenderActions = DefaultRenderActions;
     }
 
-    public static IRenderAction[] DefaultRenderActions => new IRenderAction[]
+    public static List<IRenderAction> DefaultRenderActions => new()
     {
         new RenderActions.PreRenderLock(),
         new RenderActions.ClearCanvas(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.EnsureAxesHaveArea(),
+        new RenderActions.ApplyAxisRules(),
         new RenderActions.CalculateLayout(),
         new RenderActions.RegenerateTicks(),
         new RenderActions.InvokePreRenderEvent(),

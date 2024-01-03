@@ -72,6 +72,14 @@ public class AxisManager
     /// </summary>
     public List<IGrid> Grids { get; } = new();
 
+    /// <summary>
+    /// Rules that are applied before each render
+    /// </summary>
+    public List<IAxisRule> Rules { get; } = new();
+
+    /// <summary>
+    /// Contains state and logic for axes
+    /// </summary>
     public AxisManager(Plot plot)
     {
         Plot = plot;
