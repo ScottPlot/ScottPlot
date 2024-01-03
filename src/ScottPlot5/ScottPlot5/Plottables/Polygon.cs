@@ -122,7 +122,8 @@ public class Polygon : IPlottable
 
         if (MarkerStyle != null && MarkerStyle.IsVisible)
         {
-            MarkerStyle.Render(rp.Canvas, skPoints.Select(x => new Pixel(x.X, x.Y)));
+            var pixels = skPoints.Select(x => new Pixel(x.X, x.Y));
+            Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
         }
     }
 }

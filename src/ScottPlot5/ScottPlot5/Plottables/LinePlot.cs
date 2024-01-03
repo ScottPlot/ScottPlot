@@ -26,8 +26,8 @@ public class LinePlot : IPlottable
         path.MoveTo(Axes.GetPixel(Start).ToSKPoint());
         path.LineTo(Axes.GetPixel(End).ToSKPoint());
 
-        MarkerStyle.Render(rp.Canvas, Axes.GetPixel(Start));
-        MarkerStyle.Render(rp.Canvas, Axes.GetPixel(End));
+        Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Start), MarkerStyle);
+        Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(End), MarkerStyle);
 
         rp.Canvas.DrawPath(path, paint);
     }

@@ -124,7 +124,7 @@ public class Signal : IPlottable
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
             Marker.Size = radius * MaximumMarkerSize * .2f;
-            Marker.Render(rp.Canvas, points);
+            Drawing.DrawMarkers(rp.Canvas, paint, points, Marker);
         }
     }
 

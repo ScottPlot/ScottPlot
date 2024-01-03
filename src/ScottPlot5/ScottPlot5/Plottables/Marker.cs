@@ -12,7 +12,7 @@ public class Marker : IPlottable
 
     public void Render(RenderPack rp)
     {
-        Pixel pixelLocation = Axes.GetPixel(Location);
-        MarkerStyle.Render(rp.Canvas, pixelLocation);
+        using SKPaint paint = new();
+        Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Location), MarkerStyle);
     }
 }

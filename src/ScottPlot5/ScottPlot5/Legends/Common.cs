@@ -77,7 +77,7 @@ public static class Common
         if (item.Marker.IsVisible)
         {
             Pixel px = new(rect.HorizontalCenter, rect.VerticalCenter);
-            item.Marker.Render(canvas, px);
+            Drawing.DrawMarker(canvas, paint, px, item.Marker);
         }
 
         if (item.Fill.HasValue)

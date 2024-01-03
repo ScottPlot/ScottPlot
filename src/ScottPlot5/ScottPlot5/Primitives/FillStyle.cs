@@ -10,4 +10,5 @@ public class FillStyle
     public Color HatchColor { get; set; } = Colors.Gray;
     public IHatch? Hatch { get; set; } = null;
     public bool HasValue => Color != Colors.Transparent || Hatch is not null && HatchColor != Colors.Transparent;
+    public bool AntiAlias = true;
 }

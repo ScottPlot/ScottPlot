@@ -1,13 +1,4 @@
-﻿/* Unmerged change from project 'ScottPlot (net462)'
-Before:
-namespace ScottPlot.Style;
-After:
-using ScottPlot;
-using ScottPlot;
-using ScottPlot.Style;
-*/
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -58,25 +49,4 @@ public class MarkerStyle
     public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
 
     public static MarkerStyle None => new(MarkerShape.None, 0);
-
-    public void Render(SKCanvas canvas, Pixel pixel)
-    {
-        Render(canvas, new[] { pixel });
-    }
-
-    public void Render(SKCanvas canvas, IEnumerable<Pixel> pixels)
-    {
-        if (!IsVisible)
-            return;
-
-        using SKPaint paint = new() { IsAntialias = true };
-
-        // TODO: don't create this on every render
-        var renderer = Shape.GetRenderer();
-
-        foreach (Pixel pixel in pixels)
-        {
-            renderer.Render(canvas, paint, pixel, Size, Fill, Outline);
-        }
-    }
 }

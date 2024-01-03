@@ -78,6 +78,7 @@ public static class SkiaSharpExtensions
     {
         paint.Color = fs.Color.ToSKColor();
         paint.IsStroke = false;
+        paint.IsAntialias = fs.AntiAlias;
 
         if (fs.Hatch is not null)
         {

@@ -19,6 +19,7 @@
 * Scatter Plot: Added `LineWidth` and `MarkerSize` properties
 * Finance: Created `SimpleMovingAverage` and `BollingerBands` in the `ScottPlot.Finance` namespace to facilitate calculation and display of technical indicators (#3137)
 * Axes: Moved axis management logic from `Plot` into the `Plot.Axes` class. Notable changed method names include `Plot.Axes.SetLimits()`, `Plot.Axes.GetLimits()`, `Plot.Axes.AutoScale()`, and `Plot.Axes.Margins()` (#3140)
+* Rendering: Improved anti-aliased drawing of solid shapes
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_

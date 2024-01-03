@@ -1,6 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
+
+// TODO: obsolete methods in this class that create paints. Pass paints in to minimize allocations at render time.
 
 /// <summary>
 /// Common operations using the default rendering system.
@@ -49,11 +52,15 @@ public static class Drawing
     {
         if (paint.StrokeWidth == 0)
             return;
+
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false) // TODO: move this check in the LineStyle class
+            return;
+
         lineStyle.ApplyToPaint(paint);
         if (paint.StrokeWidth == 0)
             return;
@@ -62,6 +69,9 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
+        if (width == 0)
+            return;
+
         paint.Color = color.ToSKColor();
         paint.IsStroke = true;
         paint.IsAntialias = antiAlias;
@@ -74,6 +84,9 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
+        if (width == 0)
+            return;
+
         if (starts.Length != ends.Length)
             throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have same length");
 
@@ -92,6 +105,25 @@ public static class Drawing
         {
             path.MoveTo(starts[i].X, starts[i].Y);
             path.LineTo(ends[i].X, ends[i].Y);
+        }
+
+        canvas.DrawPath(path, paint);
+    }
+
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    {
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+
+        using SKPath path = new();
+
+        path.MoveTo(pixels.First().ToSKPoint());
+
+        foreach (var pixel in pixels.Skip(1))
+        {
+            path.LineTo(pixel.ToSKPoint());
         }
 
         canvas.DrawPath(path, paint);
@@ -163,6 +195,29 @@ public static class Drawing
         };
 
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
+    {
+        if (!style.IsVisible)
+            return;
+
+        IMarker renderer = style.Shape.GetRenderer();
+
+        renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+    }
+
+    public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
+    {
+        if (!style.IsVisible)
+            return;
+
+        IMarker renderer = style.Shape.GetRenderer();
+
+        foreach (Pixel pixel in pixels)
+        {
+            renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+        }
     }
 
     public static SKBitmap BitmapFromArgbs(uint[] argbs, int width, int height)
