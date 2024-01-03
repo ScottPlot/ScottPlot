@@ -312,11 +312,23 @@ public static class Generate
 
     #region Axes
 
-    public static Coordinates RandomCoordinates()
+    public static Coordinates RandomCoordinates(double xMult = 1, double yMult = 1, double xOffset = 0, double yOffset = 0)
     {
-        double x = RandomData.RandomNumber();
-        double y = RandomData.RandomNumber();
+        double x = RandomData.RandomNumber() * xMult + xOffset;
+        double y = RandomData.RandomNumber() * yMult + yOffset;
         return new Coordinates(x, y);
+    }
+
+    public static Coordinates[] RandomCoordinates(int count, double xMult = 1, double yMult = 1, double xOffset = 0, double yOffset = 0)
+    {
+        Coordinates[] cs = new Coordinates[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            cs[i] = RandomCoordinates(xMult, yMult, xOffset, yOffset);
+        }
+
+        return cs;
     }
 
     public static Coordinates RandomLocation(AxisLimits limits)
