@@ -25,6 +25,7 @@
 * DataSources: Created `SignalSourceUInt16` to demonstrate how to plot data with custom types (#3154) _Thanks @angulion_
 * Signal Plot: Added support for generic type arrays and lists (#3154)
 * Scatter Plot: Added support for generic types including Xs and Ys of different types (#3154)
+* Scatter Plot: Added support for DateTime types (#3154)
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_

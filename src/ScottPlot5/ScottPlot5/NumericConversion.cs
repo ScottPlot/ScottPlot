@@ -41,6 +41,7 @@ public static class NumericConversion
             ushort vUint16 => Convert.ToDouble(vUint16),
             decimal vDecimal => Convert.ToDouble(vDecimal),
             byte vByte => Convert.ToDouble(vByte),
+            DateTime vDateTime => vDateTime.ToOADate(),
 #endif
             _ => Convert.ToDouble(value),
         };

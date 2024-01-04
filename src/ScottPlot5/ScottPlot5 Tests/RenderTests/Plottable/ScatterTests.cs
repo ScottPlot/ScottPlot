@@ -51,6 +51,19 @@ internal class ScatterTests
     }
 
     [Test]
+    public void Test_Scatter_DateTimeXs()
+    {
+        DateTime firstDay = new(2024, 01, 01);
+        DateTime[] days = Generate.DateTime.Days(365, firstDay);
+        double[] values = Generate.RandomWalk(days.Length);
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Scatter(days, values);
+        plt.Axes.DateTimeTicks(Edge.Bottom);
+        plt.SaveTestImage();
+    }
+
+    [Test]
     public void Test_Scatter_AddGenericList()
     {
         List<float> xs = new() { 1, 2, 3, 4 };
