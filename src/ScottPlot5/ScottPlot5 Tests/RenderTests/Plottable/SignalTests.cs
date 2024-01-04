@@ -56,4 +56,36 @@ internal class SignalTests
         plt.Add.Signal(source);
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Signal_GenericType()
+    {
+        UInt16[] values = { 1, 3, 2, 4 };
+        double period = 1.0;
+        ScottPlot.DataSources.SignalSourceGenericArray<UInt16> source = new(values, period);
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(source);
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Signal_AddGenericArray()
+    {
+        UInt16[] values = { 1, 3, 2, 4 };
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(values);
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Signal_AddGenericList()
+    {
+        List<UInt16> values = new() { 1, 3, 2, 4 };
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(values);
+        plt.SaveTestImage();
+    }
 }

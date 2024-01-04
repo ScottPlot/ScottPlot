@@ -41,4 +41,6 @@ public interface ISignalSource : IHasAxisLimits
     /// Return an object for working with all Y values.
     /// </summary>
     IReadOnlyList<double> GetYs();
+    // NOTE: GetYs() is only called in low density mode to plot a few ploints
+    // TODO: Add min/max X arguments so large datasets are not copied
 }

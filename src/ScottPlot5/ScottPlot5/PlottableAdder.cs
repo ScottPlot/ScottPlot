@@ -346,9 +346,37 @@ public class PlottableAdder
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        SignalSourceDouble data = new(ys, period);
+        SignalSourceDouble source = new(ys, period);
 
-        Signal sig = new(data)
+        Signal sig = new(source)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
+    public Signal Signal<T>(T[] ys, double period = 1, Color? color = null)
+    {
+        SignalSourceGenericArray<T> source = new(ys, period);
+
+        Signal sig = new(source)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
+    public Signal Signal<T>(List<T> ys, double period = 1, Color? color = null)
+    {
+        SignalSourceGenericList<T> source = new(ys, period);
+
+        Signal sig = new(source)
         {
             Color = color ?? GetNextColor()
         };

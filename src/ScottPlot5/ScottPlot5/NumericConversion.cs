@@ -51,7 +51,7 @@ public static class NumericConversion
     /// using a conversion technique optimized for the platform.
     /// </summary>
     [MethodImpl(ImplOptions)]
-    public static double GenericToDouble<T>(List<T> list, int i)
+    public static double GenericToDouble<T>(IReadOnlyList<T> list, int i)
     {
         var v = list[i];
         return GenericToDouble(ref v);
