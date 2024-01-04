@@ -38,4 +38,26 @@ internal class ScatterTests
 
         Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);
     }
+
+    [Test]
+    public void Test_Scatter_AddGenericArray()
+    {
+        float[] xs = { 1, 2, 3, 4 };
+        UInt16[] ys = { 1, 3, 2, 4 };
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Scatter(xs, ys);
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Scatter_AddGenericList()
+    {
+        List<float> xs = new() { 1, 2, 3, 4 };
+        List<UInt16> ys = new() { 1, 3, 2, 4 };
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Scatter(xs, ys);
+        plt.SaveTestImage();
+    }
 }

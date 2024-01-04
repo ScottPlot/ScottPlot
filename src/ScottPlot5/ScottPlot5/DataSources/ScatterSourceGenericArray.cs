@@ -3,13 +3,16 @@
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceXsYs : IScatterSource
+public class ScatterSourceGenericArray<T1, T2> : IScatterSource
 {
-    private readonly IReadOnlyList<double> Xs;
-    private readonly IReadOnlyList<double> Ys;
+    private readonly T1[] Xs;
+    private readonly T2[] Ys;
 
-    public ScatterSourceXsYs(IReadOnlyList<double> xs, IReadOnlyList<double> ys)
+    public ScatterSourceGenericArray(T1[] xs, T2[] ys)
     {
+        if (xs.Length != ys.Length)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+
         Xs = xs;
         Ys = ys;
     }
@@ -17,7 +20,7 @@ public class ScatterSourceXsYs : IScatterSource
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         // TODO: try to avoid calling this
-        return Xs.Zip(Ys, (x, y) => new Coordinates(x, y)).ToArray();
+        return Xs.Zip(Ys, (x, y) => NumericConversion.GenericToCoordinates(ref x, ref y)).ToArray();
     }
 
     public AxisLimits GetLimits()
@@ -27,18 +30,22 @@ public class ScatterSourceXsYs : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        if (!Xs.Any())
+        if (Xs.Length == 0)
             return CoordinateRange.NotSet;
 
-        return new CoordinateRange(Xs.Min(), Xs.Max());
+        double[] values = NumericConversion.GenericToDoubleArray(Xs);
+
+        return new CoordinateRange(values.Min(), values.Max());
     }
 
     public CoordinateRange GetLimitsY()
     {
-        if (!Ys.Any())
+        if (Ys.Length == 0)
             return CoordinateRange.NotSet;
 
-        return new CoordinateRange(Ys.Min(), Ys.Max());
+        double[] values = NumericConversion.GenericToDoubleArray(Ys);
+
+        return new CoordinateRange(values.Min(), values.Max());
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
@@ -50,17 +57,21 @@ public class ScatterSourceXsYs : IScatterSource
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i = 0; i < Xs.Count; i++)
+        for (int i = 0; i < Xs.Length; i++)
         {
-            double dX = (Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (Ys[i] - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            T1 xValue = Xs[i];
+            T2 yValue = Ys[i];
+            double xValueDouble = NumericConversion.GenericToDouble(ref xValue);
+            double yValueDouble = NumericConversion.GenericToDouble(ref yValue);
+            double dX = (xValueDouble - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dY = (yValueDouble - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)
             {
                 closestDistanceSquared = distanceSquared;
-                closestX = Xs[i];
-                closestY = Ys[i];
+                closestX = xValueDouble;
+                closestY = yValueDouble;
                 closestIndex = i;
             }
         }

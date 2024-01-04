@@ -299,10 +299,10 @@ public class PlottableAdder
         return plottable;
     }
 
-    public Scatter Scatter(IScatterSource data, Color? color = null)
+    public Scatter Scatter(IScatterSource source, Color? color = null)
     {
         Color nextColor = color ?? GetNextColor();
-        Scatter scatter = new(data);
+        Scatter scatter = new(source);
         scatter.LineStyle.Color = nextColor;
         scatter.MarkerStyle.Fill.Color = nextColor;
         Plot.PlottableList.Add(scatter);
@@ -313,23 +313,55 @@ public class PlottableAdder
     {
         double[] xs = { x };
         double[] ys = { y };
-        return Scatter(new ScatterSourceXsYs(xs, ys), color);
+        ScatterSourceDoubleArray source = new(xs, ys);
+        return Scatter(source, color);
     }
 
-    public Scatter Scatter(IReadOnlyList<double> xs, IReadOnlyList<double> ys, Color? color = null)
+    public Scatter Scatter(double[] xs, double[] ys, Color? color = null)
     {
-        return Scatter(new ScatterSourceXsYs(xs, ys), color);
+        ScatterSourceDoubleArray source = new(xs, ys);
+        return Scatter(source, color);
     }
 
     public Scatter Scatter(Coordinates point, Color? color = null)
     {
         Coordinates[] coordinates = { point };
-        return Scatter(new ScatterSourceCoordinates(coordinates), color);
+        ScatterSourceCoordinatesArray source = new(coordinates);
+        return Scatter(source, color);
     }
 
-    public Scatter Scatter(IReadOnlyList<Coordinates> coordinates, Color? color = null)
+    public Scatter Scatter(Coordinates[] coordinates, Color? color = null)
     {
-        return Scatter(new ScatterSourceCoordinates(coordinates), color);
+        ScatterSourceCoordinatesArray source = new(coordinates);
+        return Scatter(source, color);
+    }
+
+    public Scatter Scatter(List<Coordinates> coordinates, Color? color = null)
+    {
+        ScatterSourceCoordinatesList source = new(coordinates);
+        return Scatter(source, color);
+    }
+
+    public Scatter Scatter<T1, T2>(T1[] xs, T2[] ys, Color? color = null)
+    {
+        Color nextColor = color ?? GetNextColor();
+        ScatterSourceGenericArray<T1, T2> source = new(xs, ys);
+        Scatter scatter = new(source);
+        scatter.LineStyle.Color = nextColor;
+        scatter.MarkerStyle.Fill.Color = nextColor;
+        Plot.PlottableList.Add(scatter);
+        return scatter;
+    }
+
+    public Scatter Scatter<T1, T2>(List<T1> xs, List<T2> ys, Color? color = null)
+    {
+        Color nextColor = color ?? GetNextColor();
+        ScatterSourceGenericList<T1, T2> source = new(xs, ys);
+        Scatter scatter = new(source);
+        scatter.LineStyle.Color = nextColor;
+        scatter.MarkerStyle.Fill.Color = nextColor;
+        Plot.PlottableList.Add(scatter);
+        return scatter;
     }
 
     public Signal Signal(ISignalSource source, Color? color = null)

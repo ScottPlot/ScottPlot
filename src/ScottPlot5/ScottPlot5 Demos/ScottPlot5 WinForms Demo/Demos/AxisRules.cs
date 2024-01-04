@@ -14,7 +14,7 @@ public partial class AxisRules : Form, IDemoWindow
         InitializeComponent();
         UnlockButtons();
 
-        var coordinates = Generate.RandomCoordinates(1000);
+        Coordinates[] coordinates = Generate.RandomCoordinates(1000);
         var sp = formsPlot1.Plot.Add.Scatter(coordinates);
         sp.LineWidth = 0;
         sp.MarkerStyle.Size = 5;

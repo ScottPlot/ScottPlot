@@ -3,11 +3,11 @@
 /// <summary>
 /// This data source manages X/Y points as a collection of coordinates
 /// </summary>
-public class ScatterSourceCoordinates : IScatterSource
+public class ScatterSourceCoordinatesList : IScatterSource
 {
-    private readonly IReadOnlyList<Coordinates> Coordinates;
+    private readonly List<Coordinates> Coordinates;
 
-    public ScatterSourceCoordinates(IReadOnlyList<Coordinates> coordinates)
+    public ScatterSourceCoordinatesList(List<Coordinates> coordinates)
     {
         Coordinates = coordinates;
     }

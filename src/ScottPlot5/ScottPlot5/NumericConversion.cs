@@ -46,6 +46,12 @@ public static class NumericConversion
         };
     }
 
+    [MethodImpl(ImplOptions)]
+    public static Coordinates GenericToCoordinates<T1, T2>(ref T1 x, ref T2 y)
+    {
+        return new Coordinates(GenericToDouble(ref x), GenericToDouble(ref y));
+    }
+
     /// <summary>
     /// Returns the double value of the <typeparamref name="T"/> at position <paramref name="i"/> in <paramref name="list"/>
     /// using a conversion technique optimized for the platform.
