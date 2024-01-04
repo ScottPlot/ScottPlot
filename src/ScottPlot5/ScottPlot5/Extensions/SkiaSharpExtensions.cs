@@ -107,6 +107,7 @@ public static class SkiaSharpExtensions
         {
             LinePattern.Solid => null,
             LinePattern.Dash => SKPathEffect.CreateDash(new float[] { 10, 10 }, 0),
+            LinePattern.ShortDash => SKPathEffect.CreateDash(new float[] { 6, 6 }, 0),
             LinePattern.Dot => SKPathEffect.CreateDash(new float[] { 3, 5 }, 0),
             _ => throw new NotImplementedException(),
         };
