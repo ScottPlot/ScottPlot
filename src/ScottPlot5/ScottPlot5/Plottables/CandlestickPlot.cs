@@ -6,7 +6,7 @@ public class CandlestickPlot : IPlottable
 
     public IAxes Axes { get; set; } = new Axes();
 
-    private readonly DataSources.IOHLCSource Data;
+    private readonly IOHLCSource Data;
 
     /// <summary>
     /// Fractional width of the candle symbol relative to its time span
@@ -35,7 +35,7 @@ public class CandlestickPlot : IPlottable
         Color = Color.FromHex("#f23645"),
     };
 
-    public CandlestickPlot(DataSources.IOHLCSource data)
+    public CandlestickPlot(IOHLCSource data)
     {
         Data = data;
     }

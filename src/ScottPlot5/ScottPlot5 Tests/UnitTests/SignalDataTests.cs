@@ -6,7 +6,7 @@ internal class SignalDataTests
     public void Test_Signal_DataLimits()
     {
         double[] data = Generate.Zeros(51);
-        ScottPlot.DataSources.SignalSource ss = new(data, period: 1);
+        ScottPlot.DataSources.SignalSourceDouble ss = new(data, period: 1);
 
         AxisLimits limits = ss.GetLimits();
         limits.Left.Should().Be(0);

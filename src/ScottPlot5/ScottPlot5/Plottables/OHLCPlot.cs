@@ -6,7 +6,7 @@ public class OhlcPlot : IPlottable
 
     public IAxes Axes { get; set; } = new Axes();
 
-    private readonly DataSources.IOHLCSource Data;
+    private readonly IOHLCSource Data;
 
     /// <summary>
     /// Fractional width of the OHLC symbol relative to its time span
@@ -25,7 +25,7 @@ public class OhlcPlot : IPlottable
         Width = 2,
     };
 
-    public OhlcPlot(DataSources.IOHLCSource data)
+    public OhlcPlot(IOHLCSource data)
     {
         Data = data;
     }

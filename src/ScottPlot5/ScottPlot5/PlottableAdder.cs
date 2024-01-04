@@ -334,9 +334,9 @@ public class PlottableAdder
 
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
-        SignalSource data = new(ys, period);
+        SignalSourceDouble data = new(ys, period);
 
-        var sig = new Signal(data)
+        Signal sig = new(data)
         {
             Color = color ?? GetNextColor()
         };

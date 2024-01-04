@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalSource : ISignalSource
+public class SignalSourceDouble : ISignalSource
 {
     private readonly IReadOnlyList<double> Ys;
 
@@ -10,7 +10,7 @@ public class SignalSource : ISignalSource
 
     public double YOffset { get; set; }
 
-    public SignalSource(IReadOnlyList<double> ys, double period)
+    public SignalSourceDouble(IReadOnlyList<double> ys, double period)
     {
         Ys = ys;
         Period = period;
@@ -31,12 +31,12 @@ public class SignalSource : ISignalSource
     {
         int firstIndex = GetIndex(xMin, false);
         int lastIndex = GetIndex(xMax, false);
-        return (lastIndex >= 0) && (firstIndex <= Ys.Count - 1);
+        return lastIndex >= 0 && firstIndex <= Ys.Count - 1;
     }
 
     public double GetX(int index)
     {
-        return (index * Period) + XOffset;
+        return index * Period + XOffset;
     }
 
     public IReadOnlyList<double> GetYs()

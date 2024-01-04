@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This interface describes data sources which have 2D data

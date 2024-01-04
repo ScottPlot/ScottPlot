@@ -9,7 +9,7 @@ public class Signal : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly DataSources.ISignalSource Data;
+    public readonly ISignalSource Data;
 
     public string? Label { get; set; }
 
@@ -39,7 +39,7 @@ public class Signal : IPlottable
         }
     }
 
-    public Signal(DataSources.ISignalSource data)
+    public Signal(ISignalSource data)
     {
         Data = data;
 

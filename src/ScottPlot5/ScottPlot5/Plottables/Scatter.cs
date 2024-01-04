@@ -11,7 +11,8 @@ public class Scatter : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public LineStyle LineStyle { get; set; } = new(); // TODO: hide this
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default; // TODO: hide this
-    public DataSources.IScatterSource Data { get; }
+
+    public IScatterSource Data { get; }
 
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
@@ -36,7 +37,7 @@ public class Scatter : IPlottable
             Line = LineStyle,
         });
 
-    public Scatter(DataSources.IScatterSource data)
+    public Scatter(IScatterSource data)
     {
         Data = data;
     }

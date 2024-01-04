@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources;
+﻿namespace ScottPlot;
 
 public interface IOHLCSource : IHasAxisLimits
 {
