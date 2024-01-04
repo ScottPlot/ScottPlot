@@ -44,4 +44,16 @@ internal class SignalTests
         sig.Data.YOffset = 10;
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Signal_ConcreteType()
+    {
+        UInt16[] values = { 1, 3, 2, 4 };
+        double period = 1.0;
+        ScottPlot.DataSources.SignalSourceUInt16 source = new(values, period);
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(source);
+        plt.SaveTestImage();
+    }
 }

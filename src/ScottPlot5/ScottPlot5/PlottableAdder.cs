@@ -332,6 +332,18 @@ public class PlottableAdder
         return Scatter(new ScatterSourceCoordinates(coordinates), color);
     }
 
+    public Signal Signal(ISignalSource source, Color? color = null)
+    {
+        Signal sig = new(source)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
     public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
     {
         SignalSourceDouble data = new(ys, period);
