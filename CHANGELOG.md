@@ -21,6 +21,7 @@
 * Axes: Moved axis management logic from `Plot` into the `Plot.Axes` class. Notable changed method names include `Plot.Axes.SetLimits()`, `Plot.Axes.GetLimits()`, `Plot.Axes.AutoScale()`, and `Plot.Axes.Margins()` (#3140)
 * Rendering: Improved anti-aliased drawing of solid shapes
 * Axis: Added rules for zoom in/out boundaries, axis span limits, and square ratio locking (#3139, #3142)
+* ErrorBar: Improved axis limit detection for data that does not start at zero (#3155) _Thanks @wolfcomp_
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_

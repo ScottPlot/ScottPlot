@@ -38,13 +38,15 @@
 
             for (int i = 0; i < Xs.Count; i++)
             {
-                double x = Xs[i];
-                double y = Ys[i];
+                double xMin = XErrorsNegative is null ? Xs[i] : Xs[i] - XErrorsNegative[i];
+                double xMax = XErrorsPositive is null ? Xs[i] : Xs[i] + XErrorsPositive[i];
+                double yMin = YErrorsNegative is null ? Ys[i] : Ys[i] - YErrorsNegative[i];
+                double yMax = YErrorsPositive is null ? Ys[i] : Ys[i] + YErrorsPositive[i];
 
-                limits.ExpandX(x - XErrorsNegative?[i] ?? 0);
-                limits.ExpandX(x + XErrorsPositive?[i] ?? 0);
-                limits.ExpandY(y - YErrorsNegative?[i] ?? 0);
-                limits.ExpandY(y + YErrorsPositive?[i] ?? 0);
+                limits.ExpandX(xMin);
+                limits.ExpandX(xMax);
+                limits.ExpandY(yMin);
+                limits.ExpandY(yMax);
             }
 
             return limits.AxisLimits;
