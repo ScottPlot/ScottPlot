@@ -96,7 +96,7 @@ public class PlottableAdder
         return bp;
     }
 
-    public CandlestickPlot Candlestick(IList<IOHLC> ohlcs)
+    public CandlestickPlot Candlestick(IList<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
         CandlestickPlot candlestickPlot = new(dataSource);
@@ -259,7 +259,7 @@ public class PlottableAdder
         return Marker(location.X, location.Y, shape, size, color);
     }
 
-    public OhlcPlot OHLC(IList<IOHLC> ohlcs)
+    public OhlcPlot OHLC(IList<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
         OhlcPlot ohlc = new(dataSource);

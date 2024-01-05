@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct OHLC : IOHLC
+public struct OHLC
 {
     public double Open { get; set; }
     public double High { get; set; }
@@ -22,7 +22,7 @@ public struct OHLC : IOHLC
 
 public static class OhlcExtensions
 {
-    public static CoordinateRange GetPriceRange(this IOHLC ohlc)
+    public static CoordinateRange GetPriceRange(this OHLC ohlc)
     {
         double min = ohlc.Open;
         min = Math.Min(min, ohlc.High);

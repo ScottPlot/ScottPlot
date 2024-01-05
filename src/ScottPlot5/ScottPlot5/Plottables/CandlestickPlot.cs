@@ -48,7 +48,7 @@ public class CandlestickPlot : IPlottable
     {
         using SKPaint paint = new();
 
-        foreach (IOHLC ohlc in Data.GetOHLCs())
+        foreach (OHLC ohlc in Data.GetOHLCs())
         {
             bool isRising = ohlc.Close >= ohlc.Open;
             LineStyle lineStyle = isRising ? RisingLineStyle : FallingLineStyle;

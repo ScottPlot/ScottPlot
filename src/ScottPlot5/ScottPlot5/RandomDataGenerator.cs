@@ -174,14 +174,14 @@ public class RandomDataGenerator
     /// <summary>
     /// Return a collection OHLCs representing random price action
     /// </summary>
-    public List<IOHLC> RandomOHLCs(int count)
+    public List<OHLC> RandomOHLCs(int count)
     {
         DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;
 
-        List<IOHLC> ohlcs = new();
+        List<OHLC> ohlcs = new();
         double open = RandomNumber(150, 250);
         for (int i = 0; i < count; i++)
         {

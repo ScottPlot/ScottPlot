@@ -10,7 +10,7 @@ public class BollingerBands
     public readonly DateTime[] DateTimes;
     public readonly double[] Dates;
 
-    public BollingerBands(List<IOHLC> ohlcs, int N, double sdCoeff = 2)
+    public BollingerBands(List<OHLC> ohlcs, int N, double sdCoeff = 2)
     {
         double[] prices = ohlcs.Select(x => x.Close).ToArray();
         double[] sma = Series.MovingAverage(prices, N, preserveLength: true);

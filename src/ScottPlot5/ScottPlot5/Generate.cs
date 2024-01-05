@@ -423,7 +423,7 @@ public static class Generate
 
     #region Finance
 
-    public static List<IOHLC> RandomOHLCs(int count)
+    public static List<OHLC> RandomOHLCs(int count)
     {
         return RandomData.RandomOHLCs(count);
     }

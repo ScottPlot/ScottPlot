@@ -40,7 +40,7 @@ public class OhlcPlot : IPlottable
         using SKPath risingPath = new();
         using SKPath fallingPath = new();
 
-        foreach (IOHLC ohlc in Data.GetOHLCs())
+        foreach (OHLC ohlc in Data.GetOHLCs())
         {
             bool isRising = ohlc.Close >= ohlc.Open;
             SKPath path = isRising ? risingPath : fallingPath;
