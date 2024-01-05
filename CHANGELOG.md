@@ -26,6 +26,7 @@
 * Signal Plot: Added support for generic type arrays and lists (#3154)
 * Scatter Plot: Added support for generic types including Xs and Ys of different types (#3154)
 * Scatter Plot: Added support for DateTime types (#3154)
+* Style: Added support for more line patterns (#3161) _Thanks @MCF_
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_
