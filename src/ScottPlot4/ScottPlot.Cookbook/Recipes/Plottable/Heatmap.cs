@@ -125,6 +125,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class FramelessHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_frameless";
+        public string Title => "Frameless Heatmap";
+        public string Description =>
+            "Disable the frame and set margins to zero to create a heatmap plot that fills the entire image.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            plt.AddHeatmap(imageData, lockScales: false);
+            plt.Frameless();
+            plt.Margins(0, 0);
+        }
+    }
+
     public class HeatmapOpacity : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
