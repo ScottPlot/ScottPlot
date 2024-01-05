@@ -127,7 +127,10 @@ public class SourceDatabase
             // end of the Execute() code block
             if (InRecipe && line.StartsWith("        }"))
             {
+                string shortVersionString = ScottPlot.Version.VersionString.Replace(".", ", ").Split("-")[0];
+
                 StringBuilder sb = new();
+                sb.AppendLine($"ScottPlot.Version.ShouldBe({shortVersionString});");
                 sb.AppendLine("ScottPlot.Plot myPlot = new();");
                 sb.AppendLine();
                 sb.AppendLine(source.ToString().Trim());

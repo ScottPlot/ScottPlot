@@ -59,12 +59,16 @@ namespace ScottPlot.Cookbook
                     if (string.IsNullOrWhiteSpace(id))
                         continue;
 
-                    IRecipe recipe = Locate.GetRecipe(id);
-                    string source = $"var plt = new ScottPlot.Plot({width}, {height});\n\n" +
-                                    GetRecipeSource(singleClassSourceCode, csFilePath) + "\n\n" +
-                                    $"plt.SaveFig(\"{id}.png\");";
+                    StringBuilder sb = new();
+                    sb.AppendLine($"ScottPlot.Version.ShouldBe({ScottPlot.Version.ShortString.Replace(".", ", ")});");
+                    sb.AppendLine($"var plt = new ScottPlot.Plot({width}, {height});");
+                    sb.AppendLine();
+                    sb.AppendLine(GetRecipeSource(singleClassSourceCode, csFilePath));
+                    sb.AppendLine();
+                    sb.AppendLine($"plt.SaveFig(\"{id}.png\");");
 
-                    sources.Add(new RecipeSource(recipe, source));
+                    IRecipe recipe = Locate.GetRecipe(id);
+                    sources.Add(new RecipeSource(recipe, sb.ToString()));
                 }
             }
 
