@@ -94,13 +94,13 @@ public class Finance : ICategory
             var sp2 = myPlot.Add.Scatter(bb.Dates, bb.UpperValues);
             sp2.MarkerSize = 0;
             sp2.Color = Colors.Navy;
-            sp2.LineStyle.Pattern = LinePattern.Dot;
+            sp2.LineStyle.Pattern = LinePattern.Dotted;
 
             // display lower bands (positive variance) as a dashed line
             var sp3 = myPlot.Add.Scatter(bb.Dates, bb.LowerValues);
             sp3.MarkerSize = 0;
             sp3.Color = Colors.Navy;
-            sp3.LineStyle.Pattern = LinePattern.Dot;
+            sp3.LineStyle.Pattern = LinePattern.Dotted;
         }
     }
 }

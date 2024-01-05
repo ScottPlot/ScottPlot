@@ -8,13 +8,15 @@ internal class AxisLineTests
         ScottPlot.Plot plot = new();
         plot.HideGrid();
 
-        plot.Add.VerticalLine(123.45, width: 1, pattern: LinePattern.Dash);
-        plot.Add.VerticalLine(123.55, width: 2, pattern: LinePattern.Dot);
-        plot.Add.VerticalLine(123.75, width: 10);
+        plot.Add.VerticalLine(123.45, width: 1, pattern: LinePattern.Dashed);
+        plot.Add.VerticalLine(123.55, width: 2, pattern: LinePattern.DenselyDashed);
+        plot.Add.VerticalLine(123.65, width: 3, pattern: LinePattern.Dotted);
+        plot.Add.VerticalLine(123.85, width: 10);
 
-        plot.Add.HorizontalLine(123.45, width: 1, pattern: LinePattern.Dash);
-        plot.Add.HorizontalLine(123.55, width: 2, pattern: LinePattern.Dot);
-        plot.Add.HorizontalLine(123.75, width: 10);
+        plot.Add.HorizontalLine(123.45, width: 1, pattern: LinePattern.Dashed);
+        plot.Add.HorizontalLine(123.55, width: 2, pattern: LinePattern.DenselyDashed);
+        plot.Add.HorizontalLine(123.65, width: 3, pattern: LinePattern.Dotted);
+        plot.Add.HorizontalLine(123.85, width: 10);
 
         plot.SaveTestImage();
     }
@@ -49,7 +51,7 @@ internal class AxisLineTests
         vl.FontSize = 22;
         vl.Color = Colors.Magenta;
         vl.LineWidth = 3;
-        vl.LinePattern = LinePattern.Dot;
+        vl.LinePattern = LinePattern.Dotted;
 
         plot.Axes.SetLimits(-10, 10, -10, 10);
 
