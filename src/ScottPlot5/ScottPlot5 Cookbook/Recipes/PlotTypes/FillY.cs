@@ -100,7 +100,7 @@ public class FillY : ICategory
 
             xyy.LineStyle.AntiAlias = true;
             xyy.LineStyle.Color = Colors.DarkBlue;
-            xyy.LineStyle.Pattern = LinePattern.Dot;
+            xyy.LineStyle.Pattern = LinePattern.Dotted;
             xyy.LineStyle.Width = 2;
             xyy.Label = "xyy";
 

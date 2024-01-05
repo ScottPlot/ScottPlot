@@ -52,7 +52,7 @@ public class Polygon : ICategory
             {
                 AntiAlias = true,
                 Color = Colors.Black,
-                Pattern = LinePattern.Dash,
+                Pattern = LinePattern.Dashed,
                 Width = 2
             };
             poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);

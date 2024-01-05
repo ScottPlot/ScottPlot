@@ -30,7 +30,7 @@ public class Regression : ICategory
             Coordinates pt2 = new(xs.Last(), reg.GetValue(xs.Last()));
             var line = myPlot.Add.Line(pt1, pt2);
             line.MarkerStyle = MarkerStyle.None;
-            line.LineStyle.Pattern = LinePattern.Dash;
+            line.LineStyle.Pattern = LinePattern.Dashed;
             line.LineStyle.Width = 2;
 
             // note the formula at the top of the plot
