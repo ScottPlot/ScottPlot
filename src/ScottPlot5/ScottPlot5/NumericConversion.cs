@@ -30,7 +30,6 @@ public static class NumericConversion
     {
         return value switch
         {
-#if NETCOREAPP
             double vDouble => vDouble,
             float vSingle => Convert.ToDouble(vSingle),
             int vInt32 => Convert.ToDouble(vInt32),
@@ -42,7 +41,6 @@ public static class NumericConversion
             decimal vDecimal => Convert.ToDouble(vDecimal),
             byte vByte => Convert.ToDouble(vByte),
             DateTime vDateTime => vDateTime.ToOADate(),
-#endif
             _ => Convert.ToDouble(value),
         };
     }
@@ -82,7 +80,6 @@ public static class NumericConversion
     [MethodImpl(ImplOptions)]
     public static void DoubleToGeneric<T>(double value, out T v)
     {
-#if NETCOREAPP
         if (typeof(T) == typeof(double))
             v = (T)(object)value;
         else if (typeof(T) == typeof(float))
@@ -103,11 +100,10 @@ public static class NumericConversion
             v = (T)(object)Convert.ToDecimal(value);
         else if (typeof(T) == typeof(byte))
             v = (T)(object)Convert.ToByte(value);
+        else if (typeof(T) == typeof(DateTime))
+            v = (T)(object)DateTime.FromOADate(value);
         else
-#endif
-        {
             v = (T)Convert.ChangeType(value, typeof(T));
-        }
     }
 
     public static T[] DoubleToGeneric<T>(this double[] input)
