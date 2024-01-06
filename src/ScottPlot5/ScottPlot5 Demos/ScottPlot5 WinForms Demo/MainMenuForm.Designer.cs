@@ -106,7 +106,6 @@ partial class MainMenuForm
         Name = "MainMenuForm";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "ScottPlot Demo";
-        Load += MainMenuForm_Load;
         tableLayoutPanel1.ResumeLayout(false);
         panel1.ResumeLayout(false);
         panel1.PerformLayout();
