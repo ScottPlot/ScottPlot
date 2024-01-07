@@ -144,25 +144,29 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            int count = 21;
-            double[] xs = Generate.Consecutive(count);
-            double[] ys = Generate.Sin(count);
-
             LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
 
             for (int i = 0; i < linePatterns.Length; i++)
             {
-                double[] data = ys.Select(y => linePatterns.Length - y + i).ToArray();
+                LinePattern pattern = linePatterns[i];
 
-                var scatter = myPlot.Add.Scatter(xs, data);
+                var line = myPlot.Add.Line(0, -i, 1, -i);
+                line.Pattern = pattern;
+                line.Width = 2;
+                line.Color = Colors.Black;
 
-                scatter.Label = linePatterns[i].ToString();
-                scatter.LineStyle.Width = 2;
-                scatter.LineStyle.Pattern = linePatterns[i];
-                scatter.MarkerStyle = MarkerStyle.None;
+                var txt = myPlot.Add.Text(pattern.ToString(), 1.1, -i);
+                txt.Size = 18;
+                txt.Bold = true;
+                txt.Color = Colors.Black;
+                txt.Label.Alignment = Alignment.MiddleLeft;
             }
 
-            myPlot.Legend.IsVisible = true;
+            myPlot.Axes.Margins(right: 1);
+            myPlot.HideGrid();
+            myPlot.Layout.Frameless();
+
+            myPlot.ShowLegend();
         }
     }
 
