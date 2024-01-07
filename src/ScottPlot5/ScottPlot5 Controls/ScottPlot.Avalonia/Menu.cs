@@ -8,11 +8,14 @@ namespace ScottPlot.Avalonia;
 
 public class Menu
 {
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     private readonly AvaPlot ThisControl;
 
     public Menu(AvaPlot avaPlot)
     {
         ThisControl = avaPlot;
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -29,12 +32,30 @@ public class Menu
         return new ContextMenuItem[] { saveImage };
     }
 
+    public ContextMenu GetContextMenu()
+    {
+        List<MenuItem> items = new();
+
+        foreach (var curr in ContextMenuItems)
+        {
+            var menuItem = new MenuItem { Header = curr.Label };
+            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+
+            items.Add(menuItem);
+        }
+
+        return new()
+        {
+            ItemsSource = items
+        };
+    }
+
     public async void OpenSaveImageDialog(IPlotControl plotControl)
     {
         var topLevel = TopLevel.GetTopLevel(ThisControl) ?? throw new NullReferenceException("Could not find a top level");
         var destinationFile = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
         {
-            SuggestedFileName = plotControl.Interaction.DefaultSaveImageFilename,
+            SuggestedFileName = DefaultSaveImageFilename,
             FileTypeChoices = filePickerFileTypes
         });
 

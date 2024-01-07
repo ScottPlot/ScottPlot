@@ -22,11 +22,7 @@ public class EtoPlot : Drawable, IPlotControl
     public EtoPlot()
     {
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems(),
-        };
+        Interaction = new Interaction(this);
 
         this.MouseDown += OnMouseDown;
         this.MouseUp += OnMouseUp;
@@ -36,20 +32,6 @@ public class EtoPlot : Drawable, IPlotControl
         this.KeyUp += OnKeyUp;
         this.MouseDoubleClick += OnDoubleClick;
         this.SizeChanged += OnSizeChanged;
-    }
-
-    private ContextMenu GetContextMenu()
-    {
-        ContextMenu menu = new();
-        foreach (var curr in Interaction.ContextMenuItems)
-        {
-            var menuItem = new ButtonMenuItem() { Text = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(this);
-
-            menu.Items.Add(menuItem);
-        }
-
-        return menu;
     }
 
     public void Replace(IPlotInteraction interaction)
@@ -64,7 +46,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var menu = GetContextMenu();
+        var menu = new Menu(this).GetContextMenu();
         menu.Show(this, new Point((int)position.X, (int)position.Y));
     }
 

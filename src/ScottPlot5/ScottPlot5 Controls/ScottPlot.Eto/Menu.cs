@@ -8,11 +8,14 @@ namespace ScottPlot.Eto;
 
 public class Menu
 {
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly EtoPlot ThisControl;
 
     public Menu(EtoPlot etoPlot)
     {
         ThisControl = etoPlot;
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -32,6 +35,20 @@ public class Menu
         return new ContextMenuItem[] { saveImage, copyImage };
     }
 
+    public ContextMenu GetContextMenu()
+    {
+        ContextMenu menu = new();
+        foreach (var curr in ContextMenuItems)
+        {
+            var menuItem = new ButtonMenuItem() { Text = curr.Label };
+            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
+    }
+
     public readonly List<FileFilter> FileDialogFilters = new()
     {
         new() { Name = "PNG Files", Extensions = new string[] { "png" } },
@@ -46,7 +63,7 @@ public class Menu
     {
         SaveFileDialog dialog = new()
         {
-            FileName = plotControl.Interaction.DefaultSaveImageFilename
+            FileName = DefaultSaveImageFilename
         };
 
         foreach (var curr in FileDialogFilters)

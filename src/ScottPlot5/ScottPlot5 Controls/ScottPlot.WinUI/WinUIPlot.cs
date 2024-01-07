@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
-using Windows.ApplicationModel.DataTransfer;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -30,11 +24,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems()
-        };
+        Interaction = new Interaction(this);
 
         Background = new SolidColorBrush(Microsoft.UI.Colors.White);
 
@@ -74,7 +64,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public void ShowContextMenu(Pixel position)
     {
         MenuFlyout flyout = new Menu(this).GetContextMenu(this);
-
         flyout.ShowAt(this, position.ToPoint());
     }
 

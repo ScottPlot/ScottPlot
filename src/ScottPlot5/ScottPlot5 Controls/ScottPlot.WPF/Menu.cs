@@ -3,12 +3,24 @@ using ScottPlot.Control;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace ScottPlot.WPF;
 
-public static class Menu
+public class Menu
 {
-    public static ContextMenuItem[] GetDefaultContextMenuItems()
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
+    readonly WpfPlotBase ThisControl;
+
+    public Menu(WpfPlotBase control)
+    {
+        ThisControl = control;
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
+    }
+
+    public ContextMenuItem[] GetDefaultContextMenuItems()
     {
         ContextMenuItem saveImage = new()
         {
@@ -25,11 +37,25 @@ public static class Menu
         return new ContextMenuItem[] { saveImage, copyImage };
     }
 
-    public static void OpenSaveImageDialog(IPlotControl plotControl)
+    public ContextMenu GetContextMenu()
+    {
+        ContextMenu menu = new();
+
+        foreach (ContextMenuItem curr in ContextMenuItems)
+        {
+            MenuItem menuItem = new() { Header = curr.Label };
+            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
+    }
+
+    public void OpenSaveImageDialog(IPlotControl plotControl)
     {
         SaveFileDialog dialog = new()
         {
-            FileName = plotControl.Interaction.DefaultSaveImageFilename,
+            FileName = DefaultSaveImageFilename,
             Filter = "PNG Files (*.png)|*.png" +
                      "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                      "|BMP Files (*.bmp)|*.bmp" +

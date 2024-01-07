@@ -2,19 +2,23 @@
 using System.Windows.Forms;
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ScottPlot.WinForms;
 
 public class Menu
 {
-    readonly UserControl ThisControl;
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
+    readonly FormsPlotBase ThisControl;
 
-    public Menu(UserControl control)
+    public Menu(FormsPlotBase control)
     {
         ThisControl = control;
+        ContextMenuItems.AddRange(StandardContextMenuItems());
     }
 
-    public ContextMenuItem[] StandardContextMenuItems()
+    public List<ContextMenuItem> StandardContextMenuItems()
     {
         ContextMenuItem saveImage = new()
         {
@@ -28,7 +32,10 @@ public class Menu
             OnInvoke = CopyImageToClipboard
         };
 
-        return new ContextMenuItem[] { saveImage, copyImage };
+        return new List<ContextMenuItem>() {
+            saveImage,
+            copyImage,
+        };
     }
 
     public void CopyImageToClipboard(IPlotControl plotControl)
@@ -38,11 +45,26 @@ public class Menu
         Clipboard.SetImage(bmp);
     }
 
+    public ContextMenuStrip GetContextMenu()
+    {
+        ContextMenuStrip menu = new();
+
+        foreach (ContextMenuItem item in ContextMenuItems)
+        {
+            ToolStripMenuItem menuItem = new(item.Label);
+            menuItem.Click += (s, e) => item.OnInvoke(ThisControl);
+
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
+    }
+
     public void OpenSaveImageDialog(IPlotControl plotControl)
     {
         SaveFileDialog dialog = new()
         {
-            FileName = plotControl.Interaction.DefaultSaveImageFilename,
+            FileName = DefaultSaveImageFilename,
             Filter = "PNG Files (*.png)|*.png" +
                      "|JPEG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg" +
                      "|BMP Files (*.bmp)|*.bmp" +

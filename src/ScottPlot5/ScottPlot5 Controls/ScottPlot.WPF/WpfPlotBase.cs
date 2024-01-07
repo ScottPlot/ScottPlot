@@ -30,14 +30,8 @@ namespace ScottPlot.WPF
         public WpfPlotBase()
         {
             DisplayScale = DetectDisplayScale();
-
-            Interaction = new Interaction(this)
-            {
-                ContextMenuItems = Menu.GetDefaultContextMenuItems()
-            };
-
+            Interaction = new Interaction(this);
             Plot = Reset();
-
             Focusable = true;
         }
 
@@ -73,7 +67,7 @@ namespace ScottPlot.WPF
 
         public void ShowContextMenu(Pixel position)
         {
-            var menu = Interaction.GetContextMenu();
+            var menu = new Menu(this).GetContextMenu();
             menu.PlacementTarget = this;
             menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
             menu.IsOpen = true;

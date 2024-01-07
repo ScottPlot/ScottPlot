@@ -29,31 +29,8 @@ public class AvaPlot : Controls.Control, IPlotControl
     {
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems(),
-        };
-
+        Interaction = new Interaction(this);
         Refresh();
-    }
-
-    private ContextMenu GetContextMenu()
-    {
-        List<MenuItem> items = new();
-
-        foreach (var curr in Interaction.ContextMenuItems)
-        {
-            var menuItem = new MenuItem { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(this);
-
-            items.Add(menuItem);
-        }
-
-        return new()
-        {
-            ItemsSource = items
-        };
     }
 
     public void Replace(IPlotInteraction interaction)
@@ -105,7 +82,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var manualContextMenu = GetContextMenu();
+        var manualContextMenu = new Menu(this).GetContextMenu();
 
         // I am fully aware of how janky it is to place the menu in a 1x1 rect, unfortunately the Avalonia docs were down when I wrote this
         manualContextMenu.PlacementRect = new(position.X, position.Y, 1, 1);

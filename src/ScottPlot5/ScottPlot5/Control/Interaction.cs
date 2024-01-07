@@ -30,9 +30,6 @@ public class Interaction : IPlotInteraction
     protected bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
     protected bool IsZoomingRectangle = false;
 
-    public ContextMenuItem[] ContextMenuItems { get; set; } = Array.Empty<ContextMenuItem>();
-    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
-
     public Interaction(IPlotControl control)
     {
         PlotControl = control;

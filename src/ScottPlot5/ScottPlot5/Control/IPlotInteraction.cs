@@ -2,11 +2,7 @@
 
 public interface IPlotInteraction
 {
-    ContextMenuItem[] ContextMenuItems { get; }
-
     IPlotControl PlotControl { get; }
-
-    string DefaultSaveImageFilename { get; }
 
     /// <summary>
     /// Disable all mouse interactivity

@@ -11,11 +11,14 @@ namespace ScottPlot.WinUI;
 
 public class Menu
 {
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly WinUIPlot ThisControl;
 
     public Menu(WinUIPlot thisControl)
     {
         ThisControl = thisControl;
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -39,7 +42,7 @@ public class Menu
     {
         MenuFlyout menu = new();
 
-        foreach (var curr in plotControl.Interaction.ContextMenuItems)
+        foreach (var curr in ContextMenuItems)
         {
             var menuItem = new MenuFlyoutItem { Text = curr.Label };
             menuItem.Click += (s, e) => curr.OnInvoke(plotControl);
@@ -54,7 +57,7 @@ public class Menu
     {
         FileSavePicker dialog = new()
         {
-            SuggestedFileName = plotControl.Interaction.DefaultSaveImageFilename
+            SuggestedFileName = DefaultSaveImageFilename
         };
         dialog.FileTypeChoices.Add("PNG Files", new List<string>() { ".png" });
         dialog.FileTypeChoices.Add("JPEG Files", new List<string>() { ".jpg", ".jpeg" });

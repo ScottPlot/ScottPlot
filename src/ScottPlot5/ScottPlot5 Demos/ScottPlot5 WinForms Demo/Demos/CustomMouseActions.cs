@@ -23,7 +23,6 @@ public partial class CustomMouseActions : Form, IDemoWindow
         ScottPlot.Control.Interaction interaction = new(formsPlot1)
         {
             Inputs = ScottPlot.Control.InputBindings.Standard(),
-            ContextMenuItems = new ScottPlot.WinForms.Menu(formsPlot1).StandardContextMenuItems(),
         };
 
         formsPlot1.Replace(interaction);
@@ -61,7 +60,6 @@ public partial class CustomMouseActions : Form, IDemoWindow
         ScottPlot.Control.Interaction interaction = new(formsPlot1)
         {
             Inputs = customInputBindings,
-            ContextMenuItems = new ScottPlot.WinForms.Menu(formsPlot1).StandardContextMenuItems(),
         };
 
         formsPlot1.Replace(interaction);
