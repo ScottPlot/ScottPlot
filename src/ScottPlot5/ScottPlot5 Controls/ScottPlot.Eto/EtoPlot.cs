@@ -17,7 +17,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
 
-    public IMenu Menu { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public float DisplayScale { get; set; }
 
@@ -25,7 +25,7 @@ public class EtoPlot : Drawable, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
-        Menu = new Menu(this);
+        Menu = new EtoPlotMenu(this);
 
         this.MouseDown += OnMouseDown;
         this.MouseUp += OnMouseUp;

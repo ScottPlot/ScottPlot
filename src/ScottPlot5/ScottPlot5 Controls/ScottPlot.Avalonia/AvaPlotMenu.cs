@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace ScottPlot.Avalonia;
 
-public class Menu : IMenu
+public class AvaPlotMenu : IPlotMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     private readonly AvaPlot ThisControl;
 
-    public Menu(AvaPlot avaPlot)
+    public AvaPlotMenu(AvaPlot avaPlot)
     {
         ThisControl = avaPlot;
         ContextMenuItems.AddRange(GetDefaultContextMenuItems());

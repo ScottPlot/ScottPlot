@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public interface IMenu
+public interface IPlotMenu
 {
     void ShowContextMenu(Pixel pixel);
 }

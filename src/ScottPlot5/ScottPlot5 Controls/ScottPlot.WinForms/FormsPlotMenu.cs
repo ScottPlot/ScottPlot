@@ -7,13 +7,13 @@ using System.Diagnostics;
 
 namespace ScottPlot.WinForms;
 
-public class Menu : IMenu
+public class FormsPlotMenu : IPlotMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly FormsPlotBase ThisControl;
 
-    public Menu(FormsPlotBase control)
+    public FormsPlotMenu(FormsPlotBase control)
     {
         ThisControl = control;
         ContextMenuItems.AddRange(StandardContextMenuItems());

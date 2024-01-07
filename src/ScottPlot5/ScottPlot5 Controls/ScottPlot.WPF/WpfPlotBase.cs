@@ -17,7 +17,7 @@ namespace ScottPlot.WPF
         public Plot Plot { get; internal set; }
         public IPlotInteraction Interaction { get; set; }
         public float DisplayScale { get; set; }
-        public IMenu Menu { get; set; }
+        public IPlotMenu Menu { get; set; }
 
         static WpfPlotBase()
         {
@@ -30,7 +30,7 @@ namespace ScottPlot.WPF
         {
             DisplayScale = DetectDisplayScale();
             Interaction = new Interaction(this);
-            Menu = new Menu(this);
+            Menu = new WpfPlotMenu(this);
             Plot = Reset();
             Focusable = true;
         }

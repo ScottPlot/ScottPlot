@@ -8,13 +8,13 @@ using System.Windows.Controls;
 
 namespace ScottPlot.WPF;
 
-public class Menu : IMenu
+public class WpfPlotMenu : IPlotMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly WpfPlotBase ThisControl;
 
-    public Menu(WpfPlotBase control)
+    public WpfPlotMenu(WpfPlotBase control)
     {
         ThisControl = control;
         ContextMenuItems.AddRange(GetDefaultContextMenuItems());

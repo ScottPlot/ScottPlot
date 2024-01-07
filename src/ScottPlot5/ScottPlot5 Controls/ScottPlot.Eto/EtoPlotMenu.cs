@@ -6,13 +6,13 @@ using System.IO;
 
 namespace ScottPlot.Eto;
 
-public class Menu : IMenu
+public class EtoPlotMenu : IPlotMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly EtoPlot ThisControl;
 
-    public Menu(EtoPlot etoPlot)
+    public EtoPlotMenu(EtoPlot etoPlot)
     {
         ThisControl = etoPlot;
         ContextMenuItems.AddRange(GetDefaultContextMenuItems());

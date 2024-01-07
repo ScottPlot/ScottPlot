@@ -17,7 +17,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
 
-    public IMenu Menu { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public BlazorPlotBase()
     {

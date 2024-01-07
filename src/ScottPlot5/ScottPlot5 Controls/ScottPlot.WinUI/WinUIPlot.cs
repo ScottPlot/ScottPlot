@@ -16,7 +16,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public SkiaSharp.GRContext? GRContext => null;
 
     public IPlotInteraction Interaction { get; set; }
-    public IMenu Menu { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
@@ -26,7 +26,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
-        Menu = new Menu(this);
+        Menu = new WinUIPlotMenu(this);
 
         Background = new SolidColorBrush(Microsoft.UI.Colors.White);
 

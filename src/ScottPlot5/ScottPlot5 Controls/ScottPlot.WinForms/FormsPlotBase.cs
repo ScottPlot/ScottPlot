@@ -15,7 +15,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     public Plot Plot { get; internal set; }
 
     public IPlotInteraction Interaction { get; set; }
-    public IMenu Menu { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public float DisplayScale { get; set; }
 
@@ -23,7 +23,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
-        Menu = new Menu(this);
+        Menu = new FormsPlotMenu(this);
         Plot = Reset();
 
         // TODO: replace this with an annotation instead of title

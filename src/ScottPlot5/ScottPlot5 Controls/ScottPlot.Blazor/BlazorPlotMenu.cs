@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Blazor;
 
-public class BlazorPlotMenu : IMenu
+public class BlazorPlotMenu : IPlotMenu
 {
     public void ShowContextMenu(Pixel pixel)
     {

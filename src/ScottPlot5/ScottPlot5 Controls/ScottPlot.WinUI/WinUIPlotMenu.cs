@@ -9,13 +9,13 @@ using Windows.Storage.Streams;
 
 namespace ScottPlot.WinUI;
 
-public class Menu : IMenu
+public class WinUIPlotMenu : IPlotMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly WinUIPlot ThisControl;
 
-    public Menu(WinUIPlot thisControl)
+    public WinUIPlotMenu(WinUIPlot thisControl)
     {
         ThisControl = thisControl;
         ContextMenuItems.AddRange(GetDefaultContextMenuItems());

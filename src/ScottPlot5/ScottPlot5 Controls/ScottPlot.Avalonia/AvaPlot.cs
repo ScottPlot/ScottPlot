@@ -17,7 +17,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     public Plot Plot { get; } = new();
 
     public IPlotInteraction Interaction { get; set; }
-    public IMenu Menu { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public GRContext? GRContext => null;
 
@@ -28,7 +28,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
-        Menu = new Menu(this);
+        Menu = new AvaPlotMenu(this);
         Refresh();
     }
 
