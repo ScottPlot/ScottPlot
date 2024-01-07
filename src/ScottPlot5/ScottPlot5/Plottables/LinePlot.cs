@@ -41,16 +41,12 @@ public class LinePlot : IPlottable
 
     public void Render(RenderPack rp)
     {
+        CoordinateLine line = new(Start, End);
+        PixelLine pxLine = Axes.GetPixelLine(line);
+
         using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-
-        using SKPath path = new();
-        path.MoveTo(Axes.GetPixel(Start).ToSKPoint());
-        path.LineTo(Axes.GetPixel(End).ToSKPoint());
-
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Start), MarkerStyle);
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(End), MarkerStyle);
-
-        rp.Canvas.DrawPath(path, paint);
+        Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
     }
 }
