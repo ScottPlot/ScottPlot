@@ -234,6 +234,11 @@ public class PlottableAdder
         return lp;
     }
 
+    public LinePlot Line(CoordinateLine line)
+    {
+        return Line(line.Start, line.End);
+    }
+
     public LinePlot Line(double x1, double y1, double x2, double y2)
     {
         Coordinates start = new(x1, y1);
