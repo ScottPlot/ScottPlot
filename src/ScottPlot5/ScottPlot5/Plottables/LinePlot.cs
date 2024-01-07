@@ -27,6 +27,12 @@ public class LinePlot : IPlottable
         set => LineStyle.Width = value;
     }
 
+    public float MarkerSize
+    {
+        get => MarkerStyle.Size;
+        set => MarkerStyle.Size = value;
+    }
+
     public LinePattern Pattern
     {
         get => LineStyle.Pattern;
