@@ -10,6 +10,8 @@ public class Signal : IPlottable
     public IAxes Axes { get; set; } = new Axes();
 
     public readonly ISignalSource Data;
+    public double XOffset { get => Data.XOffset; set => Data.XOffset = value; }
+    public double YOffset { get => Data.YOffset; set => Data.YOffset = value; }
 
     public string? Label { get; set; }
 
