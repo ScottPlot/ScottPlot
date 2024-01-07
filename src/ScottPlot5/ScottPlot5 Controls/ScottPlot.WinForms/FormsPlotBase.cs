@@ -14,7 +14,8 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public Plot Plot { get; internal set; }
 
-    public IPlotInteraction Interaction { get; internal set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IMenu Menu { get; set; }
 
     public float DisplayScale { get; set; }
 
@@ -22,6 +23,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        Menu = new Menu(this);
         Plot = Reset();
 
         // TODO: replace this with an annotation instead of title
@@ -61,9 +63,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        Debug.WriteLine("Showing Context Menu");
-        ContextMenuStrip menu = new Menu(this).GetContextMenu();
-        menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
+        Menu.ShowContextMenu(position);
     }
 
     internal void SKElement_MouseDown(object? sender, MouseEventArgs e)

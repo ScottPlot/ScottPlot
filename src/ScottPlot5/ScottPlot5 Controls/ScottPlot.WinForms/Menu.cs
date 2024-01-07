@@ -3,10 +3,11 @@ using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ScottPlot.WinForms;
 
-public class Menu
+public class Menu : IMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
@@ -101,5 +102,12 @@ public class Menu
                 return;
             }
         }
+    }
+
+    public void ShowContextMenu(Pixel pixel)
+    {
+        Debug.WriteLine("Showing Context Menu");
+        ContextMenuStrip menu = GetContextMenu();
+        menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
     }
 }

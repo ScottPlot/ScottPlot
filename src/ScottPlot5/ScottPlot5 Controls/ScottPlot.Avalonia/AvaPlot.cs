@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Skia;
 using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Platform.Storage;
 using Avalonia.Rendering.SceneGraph;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -19,7 +16,8 @@ public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; } = new();
 
-    public IPlotInteraction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IMenu Menu { get; set; }
 
     public GRContext? GRContext => null;
 
@@ -30,6 +28,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        Menu = new Menu(this);
         Refresh();
     }
 
@@ -77,11 +76,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var manualContextMenu = new Menu(this).GetContextMenu();
-
-        // I am fully aware of how janky it is to place the menu in a 1x1 rect, unfortunately the Avalonia docs were down when I wrote this
-        manualContextMenu.PlacementRect = new(position.X, position.Y, 1, 1);
-        manualContextMenu.Open(this);
+        Menu.ShowContextMenu(position);
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)

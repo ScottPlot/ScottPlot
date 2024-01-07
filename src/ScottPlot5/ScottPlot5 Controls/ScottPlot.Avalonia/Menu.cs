@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ScottPlot.Avalonia;
 
-public class Menu
+public class Menu : IMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
@@ -76,4 +76,15 @@ public class Menu
         new("SVG Files") { Patterns = new List<string> { "*.svg" } },
         new("All Files") { Patterns = new List<string> { "*" } },
     };
+
+    public void ShowContextMenu(Pixel pixel)
+    {
+        var manualContextMenu = GetContextMenu();
+
+        // I am fully aware of how janky it is to place the menu in a 1x1 rect,
+        // unfortunately the Avalonia docs were down when I wrote this
+        manualContextMenu.PlacementRect = new(pixel.X, pixel.Y, 1, 1);
+
+        manualContextMenu.Open(ThisControl);
+    }
 }

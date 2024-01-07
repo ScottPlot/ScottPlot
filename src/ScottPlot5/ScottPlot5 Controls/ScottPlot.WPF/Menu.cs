@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace ScottPlot.WPF;
 
-public class Menu
+public class Menu : IMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
@@ -49,6 +49,14 @@ public class Menu
         }
 
         return menu;
+    }
+
+    public void ShowContextMenu(Pixel position)
+    {
+        var menu = GetContextMenu();
+        menu.PlacementTarget = ThisControl;
+        menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+        menu.IsOpen = true;
     }
 
     public void OpenSaveImageDialog(IPlotControl plotControl)

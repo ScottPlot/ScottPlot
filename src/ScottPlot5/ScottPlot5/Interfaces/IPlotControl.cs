@@ -1,6 +1,4 @@
-﻿using ScottPlot.Control;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public interface IPlotControl
 {
@@ -17,7 +15,12 @@ public interface IPlotControl
     /// <summary>
     /// Advanced options for configuring how user inputs manipulate the plot
     /// </summary>
-    IPlotInteraction Interaction { get; }
+    IPlotInteraction Interaction { get; set; }
+
+    /// <summary>
+    /// Platform-specific logic for managing the context menu
+    /// </summary>
+    IMenu Menu { get; set; }
 
     /// <summary>
     /// Launch the default pop-up menu (typically in response to a right-click) at the given position in the control

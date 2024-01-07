@@ -15,7 +15,9 @@ public class EtoPlot : Drawable, IPlotControl
 
     public GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; set; }
+
+    public IMenu Menu { get; set; }
 
     public float DisplayScale { get; set; }
 
@@ -23,6 +25,7 @@ public class EtoPlot : Drawable, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        Menu = new Menu(this);
 
         this.MouseDown += OnMouseDown;
         this.MouseUp += OnMouseUp;
@@ -41,8 +44,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var menu = new Menu(this).GetContextMenu();
-        menu.Show(this, new Point((int)position.X, (int)position.Y));
+        Menu.ShowContextMenu(position);
     }
 
     protected override void OnPaint(PaintEventArgs args)

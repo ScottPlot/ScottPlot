@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ScottPlot.Eto;
 
-public class Menu
+public class Menu : IMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
@@ -98,4 +98,9 @@ public class Menu
         Clipboard.Instance.Image = bmp;
     }
 
+    public void ShowContextMenu(Pixel pixel)
+    {
+        var menu = GetContextMenu();
+        menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
+    }
 }

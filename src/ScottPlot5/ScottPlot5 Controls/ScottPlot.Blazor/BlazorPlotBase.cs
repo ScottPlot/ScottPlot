@@ -15,6 +15,10 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public Plot Plot { get; private set; } = new();
 
+    public IPlotInteraction Interaction { get; set; }
+
+    public IMenu Menu { get; set; }
+
     public BlazorPlotBase()
     {
         HandlerPointerMoved += OnPointerMoved;
@@ -27,9 +31,8 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        Menu = new BlazorPlotMenu();
     }
-
-    public IPlotInteraction Interaction { get; private set; }
 
     public GRContext? GRContext => null;
 
@@ -60,7 +63,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        //throw new NotImplementedException();
+        Menu.ShowContextMenu(position);
     }
 
     public event EventHandler<PointerEventArgs> HandlerPointerMoved;

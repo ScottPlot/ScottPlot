@@ -12,14 +12,12 @@ namespace ScottPlot.WPF
     public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotControl
     {
         public abstract GRContext GRContext { get; }
-
         public abstract void Refresh();
 
         public Plot Plot { get; internal set; }
-
-        public IPlotInteraction Interaction { get; internal set; }
-
+        public IPlotInteraction Interaction { get; set; }
         public float DisplayScale { get; set; }
+        public IMenu Menu { get; set; }
 
         static WpfPlotBase()
         {
@@ -27,10 +25,12 @@ namespace ScottPlot.WPF
                 forType: typeof(WpfPlotBase),
                 typeMetadata: new FrameworkPropertyMetadata(typeof(WpfPlotBase)));
         }
+
         public WpfPlotBase()
         {
             DisplayScale = DetectDisplayScale();
             Interaction = new Interaction(this);
+            Menu = new Menu(this);
             Plot = Reset();
             Focusable = true;
         }
@@ -62,10 +62,7 @@ namespace ScottPlot.WPF
 
         public void ShowContextMenu(Pixel position)
         {
-            var menu = new Menu(this).GetContextMenu();
-            menu.PlacementTarget = this;
-            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
-            menu.IsOpen = true;
+            Menu.ShowContextMenu(position);
         }
 
         internal void SKElement_MouseDown(object? sender, System.Windows.Input.MouseButtonEventArgs e)

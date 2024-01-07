@@ -9,7 +9,7 @@ using Windows.Storage.Streams;
 
 namespace ScottPlot.WinUI;
 
-public class Menu
+public class Menu : IMenu
 {
     public string DefaultSaveImageFilename { get; set; } = "Plot.png";
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
@@ -96,4 +96,10 @@ public class Menu
         Clipboard.SetContent(content);
     }
 
+    public void ShowContextMenu(Pixel pixel)
+    {
+        MenuFlyout flyout = GetContextMenu(ThisControl);
+        Windows.Foundation.Point pt = new(pixel.X, pixel.Y);
+        flyout.ShowAt(ThisControl, pt);
+    }
 }

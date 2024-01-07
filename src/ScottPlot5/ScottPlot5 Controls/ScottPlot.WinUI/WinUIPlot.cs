@@ -15,7 +15,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public SkiaSharp.GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IMenu Menu { get; set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
@@ -25,6 +26,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        Menu = new Menu(this);
 
         Background = new SolidColorBrush(Microsoft.UI.Colors.White);
 
@@ -58,8 +60,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        MenuFlyout flyout = new Menu(this).GetContextMenu(this);
-        flyout.ShowAt(this, position.ToPoint());
+        Menu.ShowContextMenu(position);
     }
 
     private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)
