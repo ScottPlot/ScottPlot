@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using ScottPlot.Control;
@@ -32,21 +33,6 @@ internal static class FormsPlotExtensions
             Keys.ShiftKey => Control.Key.Shift,
             _ => Control.Key.Unknown,
         };
-    }
-
-    internal static ContextMenuStrip GetContextMenu(this IPlotInteraction interaction)
-    {
-        ContextMenuStrip menu = new();
-
-        foreach (ContextMenuItem item in interaction.ContextMenuItems)
-        {
-            ToolStripMenuItem menuItem = new(item.Label);
-            menuItem.Click += (s, e) => item.OnInvoke(interaction.PlotControl);
-
-            menu.Items.Add(menuItem);
-        }
-
-        return menu;
     }
 
     internal static Bitmap GetBitmap(this Plot plot, int width, int height)

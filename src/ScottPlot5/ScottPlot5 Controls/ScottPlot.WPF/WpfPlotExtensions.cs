@@ -47,20 +47,6 @@ internal static class WpfPlotExtensions
         };
     }
 
-    internal static ContextMenu GetContextMenu(this IPlotInteraction interaction)
-    {
-        ContextMenu menu = new();
-
-        foreach (ContextMenuItem curr in interaction.ContextMenuItems)
-        {
-            MenuItem menuItem = new() { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(interaction.PlotControl);
-            menu.Items.Add(menuItem);
-        }
-
-        return menu;
-    }
-
     internal static BitmapImage GetBitmapImage(this Plot plot, int width, int height)
     {
         byte[] bytes = plot.GetImageBytes(width, height);

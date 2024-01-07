@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Skia;
 using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Platform.Storage;
 using Avalonia.Rendering.SceneGraph;
 using ScottPlot.Control;
 using SkiaSharp;
@@ -19,7 +16,8 @@ public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; } = new();
 
-    public IPlotInteraction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public GRContext? GRContext => null;
 
@@ -29,36 +27,9 @@ public class AvaPlot : Controls.Control, IPlotControl
     {
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems(),
-        };
-
+        Interaction = new Interaction(this);
+        Menu = new AvaPlotMenu(this);
         Refresh();
-    }
-
-    private ContextMenu GetContextMenu()
-    {
-        List<MenuItem> items = new();
-
-        foreach (var curr in Interaction.ContextMenuItems)
-        {
-            var menuItem = new MenuItem { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(this);
-
-            items.Add(menuItem);
-        }
-
-        return new()
-        {
-            ItemsSource = items
-        };
-    }
-
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
     }
 
     private class CustomDrawOp : ICustomDrawOperation
@@ -105,11 +76,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        var manualContextMenu = GetContextMenu();
-
-        // I am fully aware of how janky it is to place the menu in a 1x1 rect, unfortunately the Avalonia docs were down when I wrote this
-        manualContextMenu.PlacementRect = new(position.X, position.Y, 1, 1);
-        manualContextMenu.Open(this);
+        Menu.ShowContextMenu(position);
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)

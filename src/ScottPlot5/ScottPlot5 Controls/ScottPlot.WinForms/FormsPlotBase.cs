@@ -14,19 +14,16 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public Plot Plot { get; internal set; }
 
-    public IPlotInteraction Interaction { get; internal set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public float DisplayScale { get; set; }
 
     public FormsPlotBase()
     {
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).StandardContextMenuItems()
-        };
-
+        Interaction = new Interaction(this);
+        Menu = new FormsPlotMenu(this);
         Plot = Reset();
 
         // TODO: replace this with an annotation instead of title
@@ -64,15 +61,9 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         return newPlot;
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     public void ShowContextMenu(Pixel position)
     {
-        ContextMenuStrip menu = Interaction.GetContextMenu();
-        menu.Show(this, new System.Drawing.Point((int)position.X, (int)position.Y));
+        Menu.ShowContextMenu(position);
     }
 
     internal void SKElement_MouseDown(object? sender, MouseEventArgs e)

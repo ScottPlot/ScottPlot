@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
-using Windows.ApplicationModel.DataTransfer;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -21,7 +15,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public SkiaSharp.GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get; private set; }
+    public IPlotInteraction Interaction { get; set; }
+    public IPlotMenu Menu { get; set; }
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
@@ -30,11 +25,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         DisplayScale = DetectDisplayScale();
-
-        Interaction = new Interaction(this)
-        {
-            ContextMenuItems = new Menu(this).GetDefaultContextMenuItems()
-        };
+        Interaction = new Interaction(this);
+        Menu = new WinUIPlotMenu(this);
 
         Background = new SolidColorBrush(Microsoft.UI.Colors.White);
 
@@ -61,11 +53,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
         };
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     public void Refresh()
     {
         _canvas.Invalidate();
@@ -73,9 +60,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        MenuFlyout flyout = new Menu(this).GetContextMenu(this);
-
-        flyout.ShowAt(this, position.ToPoint());
+        Menu.ShowContextMenu(position);
     }
 
     private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)

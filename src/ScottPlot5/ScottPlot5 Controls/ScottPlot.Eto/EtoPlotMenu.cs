@@ -1,18 +1,22 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
 using ScottPlot.Control;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace ScottPlot.Eto;
 
-public class Menu
+public class EtoPlotMenu : IPlotMenu
 {
+    public string DefaultSaveImageFilename { get; set; } = "Plot.png";
+    public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
     readonly EtoPlot ThisControl;
 
-    public Menu(EtoPlot etoPlot)
+    public EtoPlotMenu(EtoPlot etoPlot)
     {
         ThisControl = etoPlot;
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -32,6 +36,20 @@ public class Menu
         return new ContextMenuItem[] { saveImage, copyImage };
     }
 
+    public ContextMenu GetContextMenu()
+    {
+        ContextMenu menu = new();
+        foreach (var curr in ContextMenuItems)
+        {
+            var menuItem = new ButtonMenuItem() { Text = curr.Label };
+            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+
+            menu.Items.Add(menuItem);
+        }
+
+        return menu;
+    }
+
     public readonly List<FileFilter> FileDialogFilters = new()
     {
         new() { Name = "PNG Files", Extensions = new string[] { "png" } },
@@ -46,7 +64,7 @@ public class Menu
     {
         SaveFileDialog dialog = new()
         {
-            FileName = plotControl.Interaction.DefaultSaveImageFilename
+            FileName = DefaultSaveImageFilename
         };
 
         foreach (var curr in FileDialogFilters)
@@ -81,4 +99,19 @@ public class Menu
         Clipboard.Instance.Image = bmp;
     }
 
+    public void ShowContextMenu(Pixel pixel)
+    {
+        var menu = GetContextMenu();
+        menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
+    }
+
+    public void Clear()
+    {
+        ContextMenuItems.Clear();
+    }
+
+    public void Add(string Label, Action<IPlotControl> action)
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
 }
