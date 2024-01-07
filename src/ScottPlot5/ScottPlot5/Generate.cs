@@ -331,6 +331,12 @@ public static class Generate
         return cs;
     }
 
+    public static Coordinates RandomLocation()
+    {
+        AxisLimits limits = new(0, 1, 0, 1);
+        return RandomLocation(limits);
+    }
+
     public static Coordinates RandomLocation(AxisLimits limits)
     {
         double x = RandomData.RandomNumber() * limits.HorizontalSpan + limits.Left;
@@ -476,6 +482,11 @@ public static class Generate
 
         int i = RandomInteger(markerShapes.Length);
         return markerShapes[i];
+    }
+
+    public static CoordinateLine RandomLine()
+    {
+        return new CoordinateLine(RandomLocation(), RandomLocation());
     }
 
     public static LinePattern RandomLinePattern()
