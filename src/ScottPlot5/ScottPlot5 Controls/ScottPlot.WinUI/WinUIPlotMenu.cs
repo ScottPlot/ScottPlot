@@ -102,4 +102,14 @@ public class WinUIPlotMenu : IPlotMenu
         Windows.Foundation.Point pt = new(pixel.X, pixel.Y);
         flyout.ShowAt(ThisControl, pt);
     }
+
+    public void Clear()
+    {
+        ContextMenuItems.Clear();
+    }
+
+    public void Add(string Label, Action<IPlotControl> action)
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
 }

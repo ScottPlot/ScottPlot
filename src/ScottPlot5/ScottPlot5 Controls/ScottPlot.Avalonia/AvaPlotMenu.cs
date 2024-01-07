@@ -87,4 +87,14 @@ public class AvaPlotMenu : IPlotMenu
 
         manualContextMenu.Open(ThisControl);
     }
+
+    public void Clear()
+    {
+        ContextMenuItems.Clear();
+    }
+
+    public void Add(string Label, Action<IPlotControl> action)
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
 }

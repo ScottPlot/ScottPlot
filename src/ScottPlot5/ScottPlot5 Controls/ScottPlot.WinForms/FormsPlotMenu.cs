@@ -110,4 +110,14 @@ public class FormsPlotMenu : IPlotMenu
         ContextMenuStrip menu = GetContextMenu();
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
     }
+
+    public void Clear()
+    {
+        ContextMenuItems.Clear();
+    }
+
+    public void Add(string Label, Action<IPlotControl> action)
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
 }

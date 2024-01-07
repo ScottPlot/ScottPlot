@@ -6,4 +6,12 @@ public class BlazorPlotMenu : IPlotMenu
     {
         //throw new NotImplementedException();
     }
+
+    public void Clear()
+    {
+    }
+
+    public void Add(string Label, Action<IPlotControl> action)
+    {
+    }
 }
