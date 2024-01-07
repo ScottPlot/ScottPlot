@@ -9,6 +9,30 @@ public class Text : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
+    public Color Color
+    {
+        get => Label.ForeColor;
+        set => Label.ForeColor = value;
+    }
+
+    public float Size
+    {
+        get => Label.FontSize;
+        set => Label.FontSize = value;
+    }
+
+    public bool Bold
+    {
+        get => Label.Bold;
+        set => Label.Bold = value;
+    }
+
+    public float Rotation
+    {
+        get => Label.Rotation;
+        set => Label.Rotation = value;
+    }
+
     public Text()
     {
 
