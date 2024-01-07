@@ -33,11 +33,6 @@ public class AvaPlot : Controls.Control, IPlotControl
         Refresh();
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     private class CustomDrawOp : ICustomDrawOperation
     {
         private readonly Plot _plot;

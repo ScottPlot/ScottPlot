@@ -58,11 +58,6 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         return newPlot;
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     public void ShowContextMenu(Pixel position)
     {
         //throw new NotImplementedException();

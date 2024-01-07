@@ -51,11 +51,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
         };
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     public void Refresh()
     {
         _canvas.Invalidate();

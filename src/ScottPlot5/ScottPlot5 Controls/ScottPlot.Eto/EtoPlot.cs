@@ -34,11 +34,6 @@ public class EtoPlot : Drawable, IPlotControl
         this.SizeChanged += OnSizeChanged;
     }
 
-    public void Replace(IPlotInteraction interaction)
-    {
-        Interaction = interaction;
-    }
-
     public void Refresh()
     {
         Invalidate();

@@ -60,11 +60,6 @@ namespace ScottPlot.WPF
             return newPlot;
         }
 
-        public void Replace(IPlotInteraction interaction)
-        {
-            Interaction = interaction;
-        }
-
         public void ShowContextMenu(Pixel position)
         {
             var menu = new Menu(this).GetContextMenu();
