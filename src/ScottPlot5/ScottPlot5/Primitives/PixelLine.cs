@@ -30,6 +30,11 @@ public readonly struct PixelLine
         Y2 = px2.Y;
     }
 
+    public override string ToString()
+    {
+        return $"Line from {Pixel1} to {Pixel2}";
+    }
+
     public void Draw(SKCanvas canvas, SKPaint paint)
     {
         canvas.DrawLine(X1, Y1, X2, Y2, paint);
