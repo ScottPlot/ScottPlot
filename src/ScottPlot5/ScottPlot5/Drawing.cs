@@ -56,6 +56,11 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pxLine, LineStyle lineStyle)
+    {
+        DrawLine(canvas, paint, pxLine.Pixel1, pxLine.Pixel2, lineStyle);
+    }
+
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
         if (lineStyle.Width == 0 || lineStyle.IsVisible == false) // TODO: move this check in the LineStyle class
