@@ -463,6 +463,25 @@ public static class Generate
         };
     }
 
+    public static Color RandomColor()
+    {
+        byte r = RandomData.RandomByte();
+        byte g = RandomData.RandomByte();
+        byte b = RandomData.RandomByte();
+        return new Color(r, g, b);
+    }
+
+    /// <summary>
+    /// Generate a dark color by defining the maximum value to use for R, G, and B
+    /// </summary>
+    public static Color RandomColor(byte max)
+    {
+        byte r = (byte)RandomData.RandomInteger(max);
+        byte g = (byte)RandomData.RandomInteger(max);
+        byte b = (byte)RandomData.RandomInteger(max);
+        return new Color(r, g, b);
+    }
+
     public static Color RandomColor(IColormap colormap)
     {
         return colormap.GetColor(RandomData.RandomNumber());
