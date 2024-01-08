@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook
                     sb.AppendLine();
                     sb.AppendLine(GetRecipeSource(singleClassSourceCode, csFilePath));
                     sb.AppendLine();
-                    sb.AppendLine($"plt.SaveFig(\"{id}.png\");");
+                    sb.Append($"plt.SaveFig(\"{id}.png\");");
 
                     IRecipe recipe = Locate.GetRecipe(id);
                     sources.Add(new RecipeSource(recipe, sb.ToString()));
