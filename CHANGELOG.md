@@ -4,7 +4,8 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
-## ScottPlot 5.0.12 (in development)
+## ScottPlot 5.0.12-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-07_
 * Axes: Improved automatic axis scaling for plots containing 1D plottables (#3132)
 * Coordinates: Added `AreReal` property to confirm `X` and `Y` are finite
 * Crosshair: Added `X` and `Y` properties to compliment `Position`
