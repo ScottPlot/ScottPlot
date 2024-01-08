@@ -31,6 +31,7 @@
 * Controls: Added `Menu` with `Add()` and `Clear()` methods to simplify context menu customization (#3150)
 * Axes: Added rules for locking horizontal and/or vertical axes (#3160) _Thanks @raburton_
 * Signal: Added `Data.MinimumIndex` and `Data.MaximumIndex` to allow for partial array rendering (#3158) _Thanks @raburton_
+* Heatmap: Added `GetIndexes()` and `GetValue()` to get data from a coordinate (#3165) _Thanks @skn41_
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_

@@ -139,6 +139,39 @@ public class Heatmap : IPlottable, IHasColorAxis
     {
         return new(AlignedExtent);
     }
+
+    /// <summary>
+    /// Return the position in the array beneath the given point
+    /// </summary>
+    public (int x, int y) GetIndexes(Coordinates coordinates)
+    {
+        CoordinateRect rect = AlignedExtent;
+
+        double distanceFromLeft = coordinates.X - rect.Left;
+        int xIndex = (int)(distanceFromLeft / CellWidth);
+
+        double distanceFromTop = rect.Top - coordinates.Y;
+        int yIndex = (int)(distanceFromTop / CellHeight);
+
+        return (xIndex, yIndex);
+    }
+
+    /// <summary>
+    /// Return the value of the cell beneath the given point.
+    /// Returns NaN if the point is outside the heatmap area.
+    /// </summary>
+    public double GetValue(Coordinates coordinates)
+    {
+        CoordinateRect rect = AlignedExtent;
+
+        if (!rect.Contains(coordinates))
+            return double.NaN;
+
+        (int xIndex, int yIndex) = GetIndexes(coordinates);
+
+        return Intensities[yIndex, xIndex];
+    }
+
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
     public Range GetRange() => Range.GetRange(Intensities);

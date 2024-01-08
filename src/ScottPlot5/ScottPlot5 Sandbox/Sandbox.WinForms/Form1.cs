@@ -8,17 +8,20 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(Generate.Sin());
-        formsPlot1.Plot.Add.Signal(Generate.Cos());
-
-        AxisLimits limits = new(0, 50, -1, 1);
-
-        ScottPlot.AxisRules.MinimumBoundary rule1 = new(formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Left, limits);
-        formsPlot1.Plot.Axes.Rules.Add(rule1);
-
-        ScottPlot.AxisRules.MaximumBoundary rule2 = new(formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Left, limits);
-        formsPlot1.Plot.Axes.Rules.Add(rule2);
+        double[,] data = SampleData.MonaLisa();
+        var hm = formsPlot1.Plot.Add.Heatmap(data);
 
         formsPlot1.Refresh();
+
+        formsPlot1.MouseMove += (s, e) =>
+        {
+            Coordinates coordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
+            (int x, int y) = hm.GetIndexes(coordinates);
+            double value = hm.GetValue(coordinates);
+
+            Text = double.IsNaN(value)
+                ? "None"
+                : $"data[{y}, {x}] = {value}";
+        };
     }
 }
