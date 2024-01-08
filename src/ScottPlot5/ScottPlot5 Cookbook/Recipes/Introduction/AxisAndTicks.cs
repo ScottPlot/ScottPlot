@@ -69,9 +69,10 @@ public class AxisAndTicks : ICategory
 
     public class AutoScale : RecipeBase
     {
-        public override string Name => "Zoom to Fit Data";
+        public override string Name => "AutoScale Axis Limits to Fit Data";
         public override string Description => "The axis limits can be automatically adjusted to fit the data. " +
-            "Optional arguments allow users to define the amount of whitespace around the edges of the data.";
+            "Optional arguments allow users to define the amount of whitespace around the edges of the data." +
+            "In older versions of ScottPlot this functionality was achieved by a method named AxisAuto().";
 
         [Test]
         public override void Execute()
