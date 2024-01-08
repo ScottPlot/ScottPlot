@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a series of data points with distinct X and Y positions in coordinate space.
 /// </summary>
-public interface IScatterSource : IHasAxisLimits
+public interface IScatterSource
 {
     /// <summary>
     /// Return a copy of the data in <see cref="Coordinates"/> format.
@@ -15,4 +15,10 @@ public interface IScatterSource : IHasAxisLimits
     /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
     /// </summary>
     DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
+
+    public CoordinateRange GetLimitsX(); // TODO: struct
+
+    public CoordinateRange GetLimitsY(); // TODO: struct
+
+    AxisLimits GetLimits();
 }

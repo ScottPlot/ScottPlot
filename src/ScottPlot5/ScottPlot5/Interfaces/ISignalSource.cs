@@ -4,7 +4,7 @@
 /// This interface is used by plottables to access data while rendering.
 /// This interface describes Y data sampled along an X axis at a fixed period.
 /// </summary>
-public interface ISignalSource : IHasAxisLimits
+public interface ISignalSource
 {
     /// <summary>
     /// X distance between Y points
@@ -43,4 +43,10 @@ public interface ISignalSource : IHasAxisLimits
     IReadOnlyList<double> GetYs();
     // NOTE: GetYs() is only called in low density mode to plot a few ploints
     // TODO: Add min/max X arguments so large datasets are not copied
+
+    public CoordinateRange GetLimitsX(); // TODO: struct
+
+    public CoordinateRange GetLimitsY(); // TODO: struct
+
+    AxisLimits GetLimits();
 }
