@@ -14,6 +14,7 @@ public class Signal : IPlottable
     public string? Label { get; set; }
 
     readonly MarkerStyle Marker;
+
     readonly LineStyle LineStyle;
 
     /// <summary>

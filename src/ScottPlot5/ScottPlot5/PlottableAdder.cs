@@ -381,7 +381,7 @@ public class PlottableAdder
         return sig;
     }
 
-    public Signal Signal(IReadOnlyList<double> ys, double period = 1, Color? color = null)
+    public Signal Signal(double[] ys, double period = 1, Color? color = null)
     {
         SignalSourceDouble source = new(ys, period);
 

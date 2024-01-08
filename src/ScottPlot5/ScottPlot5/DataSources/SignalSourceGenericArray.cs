@@ -1,14 +1,9 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalSourceGenericArray<T> : ISignalSource
+public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource
 {
     private readonly T[] Ys;
-
-    public double Period { get; set; }
-
-    public double XOffset { get; set; }
-
-    public double YOffset { get; set; }
+    public override int Length => Ys.Length;
 
     public SignalSourceGenericArray(T[] ys, double period)
     {
@@ -16,55 +11,24 @@ public class SignalSourceGenericArray<T> : ISignalSource
         Period = period;
     }
 
-    public int GetIndex(double x, bool clamp)
-    {
-        int i = (int)((x - XOffset) / Period);
-        if (clamp)
-        {
-            i = Math.Max(i, 0);
-            i = Math.Min(i, Ys.Length - 1);
-        }
-        return i;
-    }
-
-    private bool RangeContainsSignal(double xMin, double xMax)
-    {
-        int firstIndex = GetIndex(xMin, false);
-        int lastIndex = GetIndex(xMax, false);
-        return lastIndex >= 0 && firstIndex <= Ys.Length - 1;
-    }
-
-    public double GetX(int index)
-    {
-        return index * Period + XOffset;
-    }
-
     public IReadOnlyList<double> GetYs()
     {
         return NumericConversion.GenericToDoubleArray(Ys);
     }
 
-    public AxisLimits GetLimits()
+    public override SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
-        double[] ys2 = NumericConversion.GenericToDoubleArray(Ys);
+        double min = double.PositiveInfinity;
+        double max = double.NegativeInfinity;
 
-        return new AxisLimits(
-            left: XOffset,
-            right: (Ys.Length - 1) * Period + XOffset,
-            bottom: ys2.Min() + YOffset,
-            top: ys2.Max() + YOffset);
-    }
+        for (int i = firstIndex; i <= lastIndex; i++)
+        {
+            double value = NumericConversion.GenericToDouble(ref Ys[i]);
+            min = Math.Min(min, value);
+            max = Math.Max(max, value);
+        }
 
-    public CoordinateRange GetLimitsX()
-    {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Left, rect.Left);
-    }
-
-    public CoordinateRange GetLimitsY()
-    {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Bottom, rect.Bottom);
+        return new SignalRangeY(min, max);
     }
 
     public PixelColumn GetPixelColumn(IAxes axes, int xPixelIndex)
