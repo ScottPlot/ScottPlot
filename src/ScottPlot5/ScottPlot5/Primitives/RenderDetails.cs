@@ -38,7 +38,7 @@ public readonly struct RenderDetails
     /// <summary>
     /// Axis limits for this render
     /// </summary>
-    public readonly AxisLimits AxisLimits;
+    public readonly AxisLimits AxisLimits; // TODO: store a dictionary of limits by axis
 
     /// <summary>
     /// Indicates whether the axis view (coordinate units) of this render differs from the previous
