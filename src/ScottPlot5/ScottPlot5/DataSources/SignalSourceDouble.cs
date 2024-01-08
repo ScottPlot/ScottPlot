@@ -1,14 +1,9 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalSourceDouble : ISignalSource
+public class SignalSourceDouble : SignalSourceBase, ISignalSource
 {
     private readonly IReadOnlyList<double> Ys;
-
-    public double Period { get; set; }
-
-    public double XOffset { get; set; }
-
-    public double YOffset { get; set; }
+    public override int Length => Ys.Count;
 
     public SignalSourceDouble(IReadOnlyList<double> ys, double period)
     {
@@ -16,53 +11,23 @@ public class SignalSourceDouble : ISignalSource
         Period = period;
     }
 
-    public int GetIndex(double x, bool clamp)
-    {
-        int i = (int)((x - XOffset) / Period);
-        if (clamp)
-        {
-            i = Math.Max(i, 0);
-            i = Math.Min(i, Ys.Count - 1);
-        }
-        return i;
-    }
-
-    private bool RangeContainsSignal(double xMin, double xMax)
-    {
-        int firstIndex = GetIndex(xMin, false);
-        int lastIndex = GetIndex(xMax, false);
-        return lastIndex >= 0 && firstIndex <= Ys.Count - 1;
-    }
-
-    public double GetX(int index)
-    {
-        return index * Period + XOffset;
-    }
-
     public IReadOnlyList<double> GetYs()
     {
         return Ys;
     }
 
-    public AxisLimits GetLimits()
+    public override SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
-        return new AxisLimits(
-            left: XOffset,
-            right: (Ys.Count - 1) * Period + XOffset,
-            bottom: Ys.Min() + YOffset,
-            top: Ys.Max() + YOffset);
-    }
+        double min = double.PositiveInfinity;
+        double max = double.NegativeInfinity;
 
-    public CoordinateRange GetLimitsX()
-    {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Left, rect.Left);
-    }
+        for (int i = firstIndex; i <= lastIndex; i++)
+        {
+            min = Math.Min(min, Ys[i]);
+            max = Math.Max(max, Ys[i]);
+        }
 
-    public CoordinateRange GetLimitsY()
-    {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Bottom, rect.Bottom);
+        return new SignalRangeY(min, max);
     }
 
     public PixelColumn GetPixelColumn(IAxes axes, int xPixelIndex)
@@ -78,22 +43,15 @@ public class SignalSourceDouble : ISignalSource
         // determine column limits horizontally
         int i1 = GetIndex(xRangeMin, true);
         int i2 = GetIndex(xRangeMax, true);
+
+        // first and last Y vales for this column
         float yEnter = axes.GetPixelY(Ys[i1] + YOffset);
         float yExit = axes.GetPixelY(Ys[i2] + YOffset);
 
-        // determine column span vertically
-        double yMin = double.PositiveInfinity;
-        double yMax = double.NegativeInfinity;
-        for (int i = i1; i <= i2; i++)
-        {
-            yMin = Math.Min(yMin, Ys[i]);
-            yMax = Math.Max(yMax, Ys[i]);
-        }
-        yMin += YOffset;
-        yMax += YOffset;
-
-        float yBottom = axes.GetPixelY(yMin);
-        float yTop = axes.GetPixelY(yMax);
+        // column min and max
+        SignalRangeY rangeY = GetLimitsY(i1, i2);
+        float yBottom = axes.GetPixelY(rangeY.Min + YOffset);
+        float yTop = axes.GetPixelY(rangeY.Max + YOffset);
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
     }

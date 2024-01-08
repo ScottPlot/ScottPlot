@@ -29,7 +29,7 @@
 * Style: Added support for more line patterns (#3161) _Thanks @MCF_
 * Controls: Assigning `Interaction` can be used instead of `Replace()` for customizing mouse actions (#3150)
 * Controls: Added `Menu` with `Add()` and `Clear()` methods to simplify context menu customization (#3150)
-* Signal: Added `XOffset` and `YOffset` so users don't have to reach into the `Data` source (#2949, #3168)
+* Signal: Added `Data.MinimumIndex` and `Data.MaximumIndex` to allow for partial array rendering (#3158) _Thanks @raburton_
 
 ## ScottPlot 5.0.11-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2023-12-29_

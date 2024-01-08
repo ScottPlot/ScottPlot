@@ -94,4 +94,41 @@ public class Signal : ICategory
             myPlot.Legend.IsVisible = true;
         }
     }
+
+    public class SignalRenderIndexes : RecipeBase
+    {
+        public override string Name => "Partial Signal Rendering";
+        public override string Description => "Even if a signal plot references a " +
+            "large array of data, rendering can be limited to a range of values. If set," +
+            "only the range of data between the minimum and maximum render indexes will be displayed.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = Generate.RandomWalk(1000);
+
+            var sigAll = myPlot.Add.Signal(values);
+            sigAll.Label = "Full";
+            sigAll.Data.YOffset = 80;
+
+            var sigLeft = myPlot.Add.Signal(values);
+            sigLeft.Label = "Left";
+            sigLeft.Data.YOffset = 60;
+            sigLeft.Data.MaximumIndex = 700;
+
+            var sigRight = myPlot.Add.Signal(values);
+            sigRight.Label = "Right";
+            sigRight.Data.YOffset = 40;
+            sigRight.Data.MinimumIndex = 300;
+
+            var sigMid = myPlot.Add.Signal(values);
+            sigMid.Label = "Mid";
+            sigMid.Data.YOffset = 20;
+            sigMid.Data.MinimumIndex = 300;
+            sigMid.Data.MaximumIndex = 700;
+
+            myPlot.ShowLegend(Alignment.UpperRight);
+            myPlot.Axes.Margins(top: .5);
+        }
+    }
 }

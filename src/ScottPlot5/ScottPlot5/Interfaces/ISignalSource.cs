@@ -22,6 +22,16 @@ public interface ISignalSource
     double YOffset { get; set; }
 
     /// <summary>
+    /// Do not display data above this index
+    /// </summary>
+    public int MaximumIndex { get; set; }
+
+    /// <summary>
+    /// Do not display data below this index
+    /// </summary>
+    public int MinimumIndex { get; set; }
+
+    /// <summary>
     /// Returns range information about the data at a specific pixel location
     /// </summary>
     PixelColumn GetPixelColumn(IAxes axes, int xPixelIndex);
