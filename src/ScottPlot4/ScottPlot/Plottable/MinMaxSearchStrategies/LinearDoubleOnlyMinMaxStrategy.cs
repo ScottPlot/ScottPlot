@@ -3,6 +3,7 @@
     public class LinearDoubleOnlyMinMaxStrategy : IMinMaxSearchStrategy<double>
     {
         double[] sourceArray;
+
         public double[] SourceArray
         {
             get => sourceArray;
