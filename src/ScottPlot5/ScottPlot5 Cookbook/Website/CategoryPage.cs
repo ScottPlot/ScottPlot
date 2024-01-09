@@ -21,7 +21,7 @@ internal class CategoryPage : PageBase
         foreach (var recipe in CB.Recipes.Where(x => x.Category == Category.Name))
         {
             SB.AppendLine();
-            SB.AppendLine($"## {recipe.Name}");
+            SB.AppendLine($"<h2><a href='{recipe.RecipeUrl}'>{recipe.Name}</a></h2>");
             SB.AppendLine();
             SB.AppendLine(recipe.Description);
             SB.AppendLine();
@@ -30,6 +30,8 @@ internal class CategoryPage : PageBase
             SB.AppendLine("```cs");
             SB.AppendLine(recipe.Source);
             SB.AppendLine("```");
+            SB.AppendLine();
+            SB.AppendLine("<hr class='my-5 invisible'>");
             SB.AppendLine();
         }
 
