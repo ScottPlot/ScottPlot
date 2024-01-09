@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
+using System.Drawing;
 
 namespace ScottPlot;
 
@@ -414,6 +415,18 @@ public class PlottableAdder
         SignalSourceGenericList<T> source = new(ys, period);
 
         Signal sig = new(source)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
+    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    {
+        SignalXY sig = new(xs, ys)
         {
             Color = color ?? GetNextColor()
         };
