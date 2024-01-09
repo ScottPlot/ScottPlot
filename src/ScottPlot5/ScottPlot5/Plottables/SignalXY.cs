@@ -2,7 +2,7 @@
 
 public class SignalXY : IPlottable
 {
-    public DataSources.SignalXYSourceDoubleArray DataSource { get; set; }
+    public ISignalXYSource DataSource { get; set; }
 
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
@@ -16,7 +16,7 @@ public class SignalXY : IPlottable
 
     public SignalXY(double[] xs, double[] ys)
     {
-        DataSource = new(xs, ys);
+        DataSource = new DataSources.SignalXYSourceDoubleArray(xs, ys);
     }
 
     public AxisLimits GetAxisLimits() => DataSource.GetAxisLimits();

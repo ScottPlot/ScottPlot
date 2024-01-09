@@ -23,9 +23,6 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
         return GetRangeY(0, Length - 1);
     }
 
-    /// <summary>
-    /// Return the axis limits covered by these data
-    /// </summary>
     public AxisLimits GetAxisLimits()
     {
         CoordinateRangeStruct xRange = GetRangeX();
@@ -106,10 +103,6 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
         }
     }
 
-    /// <summary>
-    /// Return pixels to render to display this signal.
-    /// May return one extra point on each side of the plot outside the data area.
-    /// </summary>
     public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes)
     {
         // determine the range of data in view
