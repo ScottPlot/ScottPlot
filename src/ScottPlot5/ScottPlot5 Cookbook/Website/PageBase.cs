@@ -47,6 +47,7 @@ internal abstract class PageBase
         sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
         sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
         sbfm.AppendLine($"SearchUrl: \"/cookbook/5.0/search/\"");
+        sbfm.AppendLine($"ShowEditLink: false");
         sbfm.AppendLine("---");
         sbfm.AppendLine();
 
