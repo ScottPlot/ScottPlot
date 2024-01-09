@@ -14,9 +14,9 @@ public class SignalXY : IPlottable
     public string Label = string.Empty;
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
-    public SignalXY(double[] xs, double[] ys)
+    public SignalXY(ISignalXYSource dataSource)
     {
-        DataSource = new DataSources.SignalXYSourceDoubleArray(xs, ys);
+        DataSource = dataSource;
     }
 
     public AxisLimits GetAxisLimits() => DataSource.GetAxisLimits();

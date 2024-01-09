@@ -426,7 +426,9 @@ public class PlottableAdder
 
     public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
     {
-        SignalXY sig = new(xs, ys)
+        SignalXYSourceDoubleArray dataSource = new(xs, ys);
+
+        SignalXY sig = new(dataSource)
         {
             Color = color ?? GetNextColor()
         };
