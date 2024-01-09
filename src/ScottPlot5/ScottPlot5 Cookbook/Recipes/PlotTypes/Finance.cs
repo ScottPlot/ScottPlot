@@ -6,6 +6,23 @@ public class Finance : ICategory
     public string CategoryName => "Financial Plot";
     public string CategoryDescription => "Finance plots display price data binned into time ranges";
 
+    public class Candlestick : RecipeBase
+    {
+        public override string Name => "Candlestick Chart";
+        public override string Description => "Candlestick charts use symbols to display price data. " +
+            "The rectangle indicates open and close prices, and the center line indicates minimum and " +
+            "maximum price for the given time period. Color indicates whether the price increased or decreased " +
+            "between open and close.";
+
+        [Test]
+        public override void Execute()
+        {
+            var prices = Generate.RandomOHLCs(30);
+            myPlot.Add.Candlestick(prices);
+            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+        }
+    }
+
     public class OhlcChart : RecipeBase
     {
         public override string Name => "OHLC Chart";
@@ -21,19 +38,24 @@ public class Finance : ICategory
         }
     }
 
-    public class Candlestick : RecipeBase
+    public class FinanceRightAxis : RecipeBase
     {
-        public override string Name => "Candlestick Chart";
-        public override string Description => "Candlestick charts use symbols to display price data. " +
-            "The rectangle indicates open and close prices, and the center line indicates minimum and " +
-            "maximum price for the given time period. Color indicates whether the price increased or decreased " +
-            "between open and close.";
+        public override string Name => "Price on Right";
+        public override string Description => "Finance charts can be created " +
+            "which display price information on the right axis.";
 
         [Test]
         public override void Execute()
         {
+            // add candlesticks to the plot
             var prices = Generate.RandomOHLCs(30);
-            myPlot.Add.Candlestick(prices);
+            var candles = myPlot.Add.Candlestick(prices);
+
+            // configure the candlesticks to use the plot's right axis
+            candles.Axes.YAxis = myPlot.Axes.Right;
+            candles.Axes.YAxis.Label.Text = "Price";
+
+            // style the bottom axis to display date
             myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
     }
