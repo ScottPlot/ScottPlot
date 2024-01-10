@@ -1,5 +1,4 @@
-﻿
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Text : IPlottable
 {

@@ -13,9 +13,9 @@ public class Signal : IPlottable
 
     public string? Label { get; set; }
 
-    readonly MarkerStyle Marker;
+    public readonly MarkerStyle Marker;
 
-    readonly LineStyle LineStyle;
+    public readonly LineStyle LineStyle;
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
