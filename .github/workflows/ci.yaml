@@ -63,7 +63,7 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
       - name: 🚚 Install Additional Workloads
-        run: dotnet workload install maui-android maui-ios maccatalyst
+        run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore
         run: dotnet workload restore ${{ env.FULL_SOLUTION }}
       - name: 🚚 Full Restore

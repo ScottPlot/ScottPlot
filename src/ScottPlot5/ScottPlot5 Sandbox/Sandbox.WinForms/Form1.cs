@@ -8,20 +8,19 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        double[,] data = SampleData.MonaLisa();
-        var hm = formsPlot1.Plot.Add.Heatmap(data);
-
-        formsPlot1.Refresh();
-
-        formsPlot1.MouseMove += (s, e) =>
+        // generate sample data with gaps
+        List<int> xList = new();
+        List<float> yList = new();
+        for (int i = 0; i < 5; i++)
         {
-            Coordinates coordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
-            (int x, int y) = hm.GetIndexes(coordinates);
-            double value = hm.GetValue(coordinates);
+            xList.AddRange(Generate.Consecutive(1000, first: 2000 * i).Select(x => (int)x));
+            yList.AddRange(Generate.RandomSample(1000).Select(x => (float)x));
+        }
+        int[] xs = xList.ToArray();
+        float[] ys = yList.ToArray();
 
-            Text = double.IsNaN(value)
-                ? "None"
-                : $"data[{y}, {x}] = {value}";
-        };
+        // add a SignalXY plot
+        formsPlot1.Plot.Add.SignalXY(xs, ys);
+        formsPlot1.Refresh();
     }
 }

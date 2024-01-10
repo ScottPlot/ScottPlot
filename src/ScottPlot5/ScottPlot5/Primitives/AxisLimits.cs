@@ -54,6 +54,14 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Top = yRange.Max;
     }
 
+    public AxisLimits(CoordinateRangeStruct xRange, CoordinateRangeStruct yRange)
+    {
+        Left = xRange.Min;
+        Right = xRange.Max;
+        Bottom = yRange.Min;
+        Top = yRange.Max;
+    }
+
     public override string ToString()
     {
         return $"AxisLimits: X=[{Rect.Left}, {Rect.Right}], Y=[{Rect.Bottom}, {Rect.Top}]";

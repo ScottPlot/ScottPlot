@@ -4,6 +4,9 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
+## ScottPlot 5.0.13-beta
+* SignalXY: New high performance plot type for signal data with defined ascending X positions (#3163) _Thanks @ChristianWeigand_
+
 ## ScottPlot 5.0.12-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-07_
 * Axes: Improved automatic axis scaling for plots containing 1D plottables (#3132)

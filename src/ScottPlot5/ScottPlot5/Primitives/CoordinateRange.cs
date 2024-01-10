@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot;
 
+// TODO: strangle this class and replace with CoordinateRangeStruct
+
 /// <summary>
 /// Represents a range of values between two coordinates on a single axis
 /// </summary>
