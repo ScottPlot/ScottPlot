@@ -1,14 +1,14 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSource
+public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : SignalXYSourceBase, ISignalXYSource
 {
-    public double[] Xs = xs;
-    public double[] Ys = ys;
+    public TX[] Xs { get; set; } = xs;
+    public TY[] Ys { get; set; } = ys;
 
     public AxisLimits GetAxisLimits()
     {
-        double xMin = Xs[0];
-        double xMax = Xs[Xs.Length - 1];
+        double xMin = NumericConversion.GenericToDouble(Xs, 0);
+        double xMax = NumericConversion.GenericToDouble(Xs, Xs.Length - 1);
         CoordinateRangeStruct xRange = new(xMin, xMax);
         CoordinateRangeStruct yRange = GetRangeY(0, Ys.Length - 1);
         return new AxisLimits(xRange, yRange);
@@ -44,13 +44,14 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     public CoordinateRangeStruct GetRangeY(int index1, int index2)
     {
-        double min = Ys[index1];
-        double max = Ys[index1];
+        double min = NumericConversion.GenericToDouble(Ys, index1);
+        double max = NumericConversion.GenericToDouble(Ys, index1);
 
         for (int i = index1; i <= index2; i++)
         {
-            min = Math.Min(Ys[i], min);
-            max = Math.Max(Ys[i], max);
+            double value = NumericConversion.GenericToDouble(Ys, i);
+            min = Math.Min(value, min);
+            max = Math.Max(value, max);
         }
 
         return new CoordinateRangeStruct(min, max);
@@ -70,7 +71,8 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     public int GetIndex(double x, IndexRange indexRange)
     {
-        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x);
+        NumericConversion.DoubleToGeneric(x, out TX x2);
+        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x2);
 
         if (index < 0)
         {
@@ -101,14 +103,16 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
             yield break;
         }
 
-        yield return new Pixel(xPixel, axes.GetPixelY(Ys[startIndex])); // enter
+        double yStart = NumericConversion.GenericToDouble(Ys, startIndex);
+        yield return new Pixel(xPixel, axes.GetPixelY(yStart)); // enter
 
         if (pointsInRange > 1)
         {
+            double yEnd = NumericConversion.GenericToDouble(Ys, endIndex - 1);
             CoordinateRangeStruct yRange = GetRangeY(startIndex, endIndex - 1);
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
-            yield return new Pixel(xPixel, axes.GetPixelY(Ys[endIndex - 1])); // exit
+            yield return new Pixel(xPixel, axes.GetPixelY(yEnd)); // exit
         }
     }
 
@@ -122,8 +126,10 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
 
         if (pointBeforeIndex > 0)
         {
-            float beforeX = axes.GetPixelX(Xs[pointBeforeIndex - 1]);
-            float beforeY = axes.GetPixelY(Ys[pointBeforeIndex - 1]);
+            double x = NumericConversion.GenericToDouble(Xs, pointBeforeIndex - 1);
+            double y = NumericConversion.GenericToDouble(Ys, pointBeforeIndex - 1);
+            float beforeX = axes.GetPixelX(x);
+            float beforeY = axes.GetPixelY(y);
             Pixel beforePoint = new(beforeX, beforeY);
             return ([beforePoint], pointBeforeIndex);
         }
@@ -143,8 +149,10 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
 
         if (pointAfterIndex <= Ys.Length - 1)
         {
-            float afterX = axes.GetPixelX(Xs[pointAfterIndex]);
-            float afterY = axes.GetPixelY(Ys[pointAfterIndex]);
+            double x = NumericConversion.GenericToDouble(Xs, pointAfterIndex);
+            double y = NumericConversion.GenericToDouble(Ys, pointAfterIndex);
+            float afterX = axes.GetPixelX(x);
+            float afterY = axes.GetPixelY(y);
             Pixel afterPoint = new(afterX, afterY);
             return ([afterPoint], pointAfterIndex);
         }

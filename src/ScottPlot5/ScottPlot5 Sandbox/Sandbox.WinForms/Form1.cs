@@ -9,15 +9,15 @@ public partial class Form1 : Form
         InitializeComponent();
 
         // generate sample data with gaps
-        List<double> xList = new();
-        List<double> yList = new();
+        List<int> xList = new();
+        List<float> yList = new();
         for (int i = 0; i < 5; i++)
         {
-            xList.AddRange(Generate.Consecutive(1000, first: 2000 * i));
-            yList.AddRange(Generate.RandomSample(1000));
+            xList.AddRange(Generate.Consecutive(1000, first: 2000 * i).Select(x => (int)x));
+            yList.AddRange(Generate.RandomSample(1000).Select(x => (float)x));
         }
-        double[] xs = xList.ToArray();
-        double[] ys = yList.ToArray();
+        int[] xs = xList.ToArray();
+        float[] ys = yList.ToArray();
 
         // add a SignalXY plot
         formsPlot1.Plot.Add.SignalXY(xs, ys);
