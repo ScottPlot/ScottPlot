@@ -5,5 +5,5 @@
 /// </summary>
 public interface IAxisRule
 {
-    void Apply(RenderPack rp);
+    void Apply(RenderPack rp, bool beforeLayout);
 }

@@ -1,6 +1,4 @@
-﻿using ScottPlot;
-
-namespace Sandbox.WinForms;
+﻿namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
@@ -8,19 +6,15 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        // generate sample data with gaps
-        List<int> xList = new();
-        List<float> yList = new();
-        for (int i = 0; i < 5; i++)
-        {
-            xList.AddRange(Generate.Consecutive(1000, first: 2000 * i).Select(x => (int)x));
-            yList.AddRange(Generate.RandomSample(1000).Select(x => (float)x));
-        }
-        int[] xs = xList.ToArray();
-        float[] ys = yList.ToArray();
+        double[] positions1 = { 1, 4, 7, 10, 13, 16, 19 };
+        double[] values1 = { 1, 4, 7, 10, 13, 16, 19 };
+        double[] positions2 = { 2, 5, 8, 11, 14, 17, 20 };
+        double[] values2 = { 2, 5, 8, 11, 14, 17, 20 };
 
-        // add a SignalXY plot
-        formsPlot1.Plot.Add.SignalXY(xs, ys);
-        formsPlot1.Refresh();
+        formsPlot1.Plot.Add.Bars(positions1, values1);
+        formsPlot1.Plot.Add.Bars(positions2, values2);
+
+        formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.LockedVertical(formsPlot1.Plot.Axes.Left));
+        //formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.LockedHorizontal(formsPlot1.Plot.Axes.Bottom));
     }
 }

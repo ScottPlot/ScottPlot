@@ -16,7 +16,7 @@ public class MaximumSpan : IAxisRule
         YSpan = ySpan;
     }
 
-    public void Apply(RenderPack rp)
+    public void Apply(RenderPack rp, bool beforeLayout)
     {
         if (XAxis.Range.Span > XSpan)
         {

@@ -11,8 +11,12 @@ public class SquarePreserveY : IAxisRule
         YAxis = yAxis;
     }
 
-    public void Apply(RenderPack rp)
+    public void Apply(RenderPack rp, bool beforeLayout)
     {
+        // rules that refer to the datarect must wait for the layout to occur
+        if (beforeLayout)
+            return;
+
         double unitsPerPxY = YAxis.Height / rp.DataRect.Height;
         double halfWidth = rp.DataRect.Width / 2 * unitsPerPxY;
         double xMin = XAxis.Range.Center - halfWidth;

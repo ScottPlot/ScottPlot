@@ -11,8 +11,12 @@ public class SquareZoomOut : IAxisRule
         YAxis = yAxis;
     }
 
-    public void Apply(RenderPack rp)
+    public void Apply(RenderPack rp, bool beforeLayout)
     {
+        // rules that refer to the datarect must wait for the layout to occur
+        if (beforeLayout)
+            return;
+
         double unitsPerPxX = XAxis.Width / rp.DataRect.Width;
         double unitsPerPxY = YAxis.Height / rp.DataRect.Height;
         double maxUnitsPerPx = Math.Max(unitsPerPxX, unitsPerPxY);

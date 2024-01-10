@@ -13,7 +13,7 @@ public class MaximumBoundary : IAxisRule
         Limits = limits;
     }
 
-    public void Apply(RenderPack rp)
+    public void Apply(RenderPack rp, bool beforeLayout)
     {
         XAxis.Range.Min = Math.Max(XAxis.Range.Min, Limits.Left);
         XAxis.Range.Max = Math.Min(XAxis.Range.Max, Limits.Right);
