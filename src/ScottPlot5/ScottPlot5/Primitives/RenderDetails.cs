@@ -36,9 +36,14 @@ public readonly struct RenderDetails
     public readonly (string, TimeSpan)[] TimedActions;
 
     /// <summary>
-    /// Axis limits for this render
+    /// Axis limits of the primary axes for this render
     /// </summary>
-    public readonly AxisLimits AxisLimits; // TODO: store a dictionary of limits by axis
+    public readonly AxisLimits AxisLimits;
+
+    /// <summary>
+    /// Axis limits for every axis
+    /// </summary>
+    public readonly Dictionary<IAxis, CoordinateRange> AxisLimitsByAxis;
 
     /// <summary>
     /// Indicates whether the axis view (coordinate units) of this render differs from the previous
@@ -75,6 +80,7 @@ public readonly struct RenderDetails
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.Axes.GetLimits();
+        AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
 
