@@ -131,4 +131,41 @@ public class Signal : ICategory
             myPlot.Axes.Margins(top: .5);
         }
     }
+
+    public class SignalGeneric : RecipeBase
+    {
+        public override string Name => "Signal Generic";
+        public override string Description => "Signal plots support generic data types, " +
+            "although double is typically the most performant.";
+
+        [Test]
+        public override void Execute()
+        {
+            int[] values = Generate.RandomIntegers(1000, -100, 100);
+
+            myPlot.Add.Signal(values);
+
+            myPlot.Title("Signal Plot with 1 Million Points");
+        }
+    }
+
+    public class SignalDateTime : RecipeBase
+    {
+        public override string Name => "Signal DateTime";
+        public override string Description => "A signal plot may use DateTime units but " +
+            "be sure to setup the respective axis to display using DateTime format.";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime start = new(2024, 1, 1);
+            double[] ys = Generate.RandomWalk(200);
+
+            var sig = myPlot.Add.Signal(ys);
+            sig.Data.XOffset = start.ToOADate();
+            sig.Data.Period = 1.0; // one day between each point
+
+            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : SignalXYSourceBase, ISignalXYSource
+public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : ISignalXYSource
 {
     public TX[] Xs { get; set; } = xs;
     public TY[] Ys { get; set; } = ys;

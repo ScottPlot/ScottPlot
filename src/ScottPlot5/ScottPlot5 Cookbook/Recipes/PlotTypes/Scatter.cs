@@ -141,4 +141,37 @@ public class Scatter : ICategory
             myPlot.Axes.Margins(.05, .5, .05, .05);
         }
     }
+
+    public class ScatterGeneric : RecipeBase
+    {
+        public override string Name => "Scatter Generic";
+        public override string Description => "Scatter plots support generic data types, " +
+            "although double is typically the most performant.";
+
+        [Test]
+        public override void Execute()
+        {
+            int[] xs = { 1, 2, 3, 4, 5 };
+            float[] ys = { 1, 4, 9, 16, 25 };
+
+            myPlot.Add.Scatter(xs, ys);
+        }
+    }
+
+    public class ScatterDateTime : RecipeBase
+    {
+        public override string Name => "Scatter DateTime";
+        public override string Description => "A scatter plot may use DateTime units but " +
+            "be sure to setup the respective axis to display using DateTime format.";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime[] xs = Generate.DateTime.Days(100);
+            double[] ys = Generate.RandomWalk(xs.Length);
+
+            myPlot.Add.Scatter(xs, ys);
+            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+        }
+    }
 }
