@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.13-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-09_
 * SignalXY: New high performance plot type for signal data with defined ascending X positions (#3163) _Thanks @ChristianWeigand_
 * Scatter, Signal, and SignalXY: Improved support for generic data types
 * Axis: Improve behavior of axis rules which reference axes from previous renders (#3179) _Thanks @3179_
