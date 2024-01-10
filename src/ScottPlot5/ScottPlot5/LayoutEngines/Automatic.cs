@@ -23,11 +23,11 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
 
         panels.OfType<IXAxis>()
             .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureSize.Width));
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range.ToCoordinateRange, xAxis.Edge, figureSize.Width));
 
         panels.OfType<IYAxis>()
             .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureSize.Height));
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range.ToCoordinateRange, yAxis.Edge, figureSize.Height));
 
         Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);

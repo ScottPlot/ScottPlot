@@ -9,8 +9,8 @@ public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : ISignalXYSou
     {
         double xMin = NumericConversion.GenericToDouble(Xs, 0);
         double xMax = NumericConversion.GenericToDouble(Xs, Xs.Length - 1);
-        CoordinateRangeStruct xRange = new(xMin, xMax);
-        CoordinateRangeStruct yRange = GetRangeY(0, Ys.Length - 1);
+        CoordinateRange xRange = new(xMin, xMax);
+        CoordinateRange yRange = GetRangeY(0, Ys.Length - 1);
         return new AxisLimits(xRange, yRange);
     }
 
@@ -42,7 +42,7 @@ public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : ISignalXYSou
     /// <summary>
     /// Return the vertical range covered by data between the given indices (inclusive)
     /// </summary>
-    public CoordinateRangeStruct GetRangeY(int index1, int index2)
+    public CoordinateRange GetRangeY(int index1, int index2)
     {
         double min = NumericConversion.GenericToDouble(Ys, index1);
         double max = NumericConversion.GenericToDouble(Ys, index1);
@@ -54,7 +54,7 @@ public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : ISignalXYSou
             max = Math.Max(value, max);
         }
 
-        return new CoordinateRangeStruct(min, max);
+        return new CoordinateRange(min, max);
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class SignalXYSourceGenericArray<TX, TY>(TX[] xs, TY[] ys) : ISignalXYSou
         if (pointsInRange > 1)
         {
             double yEnd = NumericConversion.GenericToDouble(Ys, endIndex - 1);
-            CoordinateRangeStruct yRange = GetRangeY(startIndex, endIndex - 1);
+            CoordinateRange yRange = GetRangeY(startIndex, endIndex - 1);
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
             yield return new Pixel(xPixel, axes.GetPixelY(yEnd)); // exit

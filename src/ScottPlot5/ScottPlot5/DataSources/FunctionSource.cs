@@ -1,20 +1,18 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class FunctionSource : IFunctionSource
+public class FunctionSource(Func<double, double> func) : IFunctionSource
 {
     public CoordinateRange RangeX { get; set; } = CoordinateRange.Infinity;
-    public Func<double, double> EvaluateFunc { get; set; }
+    public Func<double, double> Function { get; set; } = func;
     public Func<CoordinateRange, CoordinateRange>? GetRangeYFunc { get; set; } = null;
 
-    public FunctionSource(Func<double, double> evaluateFunc)
+    public double Get(double x) => Function(x);
+
+    public CoordinateRange GetRangeY(CoordinateRange xs)
     {
-        EvaluateFunc = evaluateFunc;
+        if (GetRangeYFunc is null)
+            return CoordinateRange.NotSet;
+
+        return GetRangeYFunc(xs);
     }
-
-    public double Get(double x) => EvaluateFunc(x);
-
-    public CoordinateRange GetRangeY(CoordinateRange xs) =>
-        GetRangeYFunc is not null
-        ? GetRangeYFunc(xs)
-        : new CoordinateRange(double.NaN, double.NaN);
 }

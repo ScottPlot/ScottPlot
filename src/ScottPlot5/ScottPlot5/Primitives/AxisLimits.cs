@@ -54,14 +54,6 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Top = yRange.Max;
     }
 
-    public AxisLimits(CoordinateRangeStruct xRange, CoordinateRangeStruct yRange)
-    {
-        Left = xRange.Min;
-        Right = xRange.Max;
-        Bottom = yRange.Min;
-        Top = yRange.Max;
-    }
-
     public override string ToString()
     {
         return $"AxisLimits: X=[{Rect.Left}, {Rect.Right}], Y=[{Rect.Bottom}, {Rect.Top}]";
@@ -127,13 +119,13 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     {
         // TODO: do this without heap allocations
 
-        CoordinateRange xRange = new(Rect.Left, Rect.Right);
+        CoordinateRangeMutable xRange = new(Rect.Left, Rect.Right);
         xRange.ZoomFrac(fracX, zoomToX);
 
-        CoordinateRange yRange = new(Rect.Bottom, Rect.Top);
+        CoordinateRangeMutable yRange = new(Rect.Bottom, Rect.Top);
         yRange.ZoomFrac(fracY, zoomToY);
 
-        return new(xRange, yRange);
+        return new(XRange.Min, XRange.Max, yRange.Min, yRange.Max);
     }
 
     public bool Equals(AxisLimits other)

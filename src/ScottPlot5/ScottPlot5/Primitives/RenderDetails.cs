@@ -80,7 +80,7 @@ public readonly struct RenderDetails
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.Axes.GetLimits();
-        AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range);
+        AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
 

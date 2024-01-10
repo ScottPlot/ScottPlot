@@ -26,16 +26,10 @@ public class FunctionPlot : IPlottable
 
     public AxisLimits GetAxisLimits()
     {
-        var xMin = Source.RangeX.Min.FiniteCoallesce(double.NaN);
-        var xMax = Source.RangeX.Max.FiniteCoallesce(double.NaN);
+        if (!Source.RangeX.IsReal)
+            return AxisLimits.NoLimits;
 
-        if (!double.IsNaN(xMin) && !double.IsNaN(xMax))
-        {
-            var yRange = Source.GetRangeY(new(xMin, xMax));
-            return new AxisLimits(xMin, xMax, yRange.Min, yRange.Max);
-        }
-
-        return new AxisLimits(xMin, xMax, double.NaN, double.NaN);
+        return new AxisLimits(Source.RangeX, Source.GetRangeY(Source.RangeX));
     }
 
     public void Render(RenderPack rp)

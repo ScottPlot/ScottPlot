@@ -9,8 +9,8 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     {
         double xMin = Xs[0];
         double xMax = Xs[Xs.Length - 1];
-        CoordinateRangeStruct xRange = new(xMin, xMax);
-        CoordinateRangeStruct yRange = GetRangeY(0, Ys.Length - 1);
+        CoordinateRange xRange = new(xMin, xMax);
+        CoordinateRange yRange = GetRangeY(0, Ys.Length - 1);
         return new AxisLimits(xRange, yRange);
     }
 
@@ -42,7 +42,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// <summary>
     /// Return the vertical range covered by data between the given indices (inclusive)
     /// </summary>
-    public CoordinateRangeStruct GetRangeY(int index1, int index2)
+    public CoordinateRange GetRangeY(int index1, int index2)
     {
         double min = Ys[index1];
         double max = Ys[index1];
@@ -53,7 +53,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
             max = Math.Max(Ys[i], max);
         }
 
-        return new CoordinateRangeStruct(min, max);
+        return new CoordinateRange(min, max);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
 
         if (pointsInRange > 1)
         {
-            CoordinateRangeStruct yRange = GetRangeY(startIndex, endIndex - 1);
+            CoordinateRange yRange = GetRangeY(startIndex, endIndex - 1);
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
             yield return new Pixel(xPixel, axes.GetPixelY(Ys[endIndex - 1])); // exit

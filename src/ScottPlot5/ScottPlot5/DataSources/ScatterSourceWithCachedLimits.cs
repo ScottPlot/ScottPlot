@@ -5,8 +5,8 @@ public class CacheScatterLimitsDecorator : IScatterSource
     private readonly IScatterSource _source;
 
     private AxisLimits? _axisLimits = null;
-    private CoordinateRange? _limitsX = null;
-    private CoordinateRange? _limitsY = null;
+    private CoordinateRange _limitsX = CoordinateRange.NotSet;
+    private CoordinateRange _limitsY = CoordinateRange.NotSet;
 
     public CacheScatterLimitsDecorator(IScatterSource source)
     {
@@ -23,7 +23,7 @@ public class CacheScatterLimitsDecorator : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        if (_limitsX is null)
+        if (_limitsX == CoordinateRange.NotSet)
             _limitsX = _source.GetLimitsX();
 
         return _limitsX;
@@ -31,7 +31,7 @@ public class CacheScatterLimitsDecorator : IScatterSource
 
     public CoordinateRange GetLimitsY()
     {
-        if (_limitsY is null)
+        if (_limitsY == CoordinateRange.NotSet)
             _limitsY = _source.GetLimitsY();
 
         return _limitsY;

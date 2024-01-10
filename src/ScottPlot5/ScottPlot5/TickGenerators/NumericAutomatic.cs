@@ -93,7 +93,7 @@ public class NumericAutomatic : ITickGenerator
             .ToArray();
 
         Tick[] minorTicks = MinorFromMajor(positions, minorTicksPerMajorTick, range)
-            .Select(position => Tick.Minor(position))
+            .Select(Tick.Minor)
             .ToArray();
 
         return majorTicks.Concat(minorTicks).ToArray();

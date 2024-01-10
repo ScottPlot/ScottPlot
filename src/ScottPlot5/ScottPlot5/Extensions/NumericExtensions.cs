@@ -38,6 +38,9 @@ public static class NumericExtensions
         return (float)(degrees / 180.0 * Math.PI);
     }
 
+    /// <summary>
+    /// Returns the fallback value if the given value is infinity
+    /// </summary>
     public static double FiniteCoallesce(this double value, double fallback)
     {
         if (double.IsInfinity(value) || double.IsNaN(value))

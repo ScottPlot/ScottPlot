@@ -37,6 +37,14 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         Top = yRange.Max;
     }
 
+    public CoordinateRect(CoordinateRangeMutable xRange, CoordinateRangeMutable yRange)
+    {
+        Left = xRange.Min;
+        Right = xRange.Max;
+        Bottom = yRange.Min;
+        Top = yRange.Max;
+    }
+
     public CoordinateRect(Coordinates pt1, Coordinates pt2)
     {
         Left = Math.Min(pt1.X, pt2.X);

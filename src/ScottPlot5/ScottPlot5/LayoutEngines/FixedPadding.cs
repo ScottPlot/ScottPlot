@@ -18,11 +18,11 @@ public class FixedPadding : LayoutEngineBase, ILayoutEngine
 
         panels.OfType<IXAxis>()
             .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range, xAxis.Edge, figureRect.Width));
+            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range.ToCoordinateRange, xAxis.Edge, figureRect.Width));
 
         panels.OfType<IYAxis>()
             .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range, yAxis.Edge, figureRect.Height));
+            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range.ToCoordinateRange, yAxis.Edge, figureRect.Height));
 
         Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);

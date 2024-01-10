@@ -7,6 +7,7 @@
 ## ScottPlot 5.0.13-beta
 * SignalXY: New high performance plot type for signal data with defined ascending X positions (#3163) _Thanks @ChristianWeigand_
 * Axis: Improve behavior of axis rules which reference axes from previous renders (#3179) _Thanks @3179_
+* Primitives: separated `CoordinateRange` struct for passing ranges and `CoordinateRangeMutable` for mutating them (#3170)
 
 ## ScottPlot 5.0.12-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-07_
