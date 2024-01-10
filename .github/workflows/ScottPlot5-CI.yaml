@@ -52,7 +52,7 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
       - name: 🚚 Install Additional Workloads
-        run: dotnet workload install maui-android maui-ios maccatalyst
+        run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore ScottPlot5
         run: dotnet workload restore ${{ env.SLN_SP5_FULL }}
       - name: 🚚 Solution Restore ScottPlot5

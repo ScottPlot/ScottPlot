@@ -423,6 +423,34 @@ public class PlottableAdder
         return sig;
     }
 
+    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    {
+        SignalXYSourceDoubleArray dataSource = new(xs, ys);
+
+        SignalXY sig = new(dataSource)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
+    public SignalXY SignalXY<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
+    {
+        var dataSource = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
+
+        SignalXY sig = new(dataSource)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
     public Text Text(string text, Coordinates location)
     {
         return Text(text, location.X, location.Y);
