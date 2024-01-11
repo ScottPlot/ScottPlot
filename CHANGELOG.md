@@ -4,6 +4,10 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
+## ScottPlot 5.0.14-beta
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-10_
+* Rendering: Improved performance by limiting how often `AutoScale()` is called by the renderer (#3183) _Thanks @Smonze_
+
 ## ScottPlot 5.0.13-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-09_
 * SignalXY: New high performance plot type for signal data with defined ascending X positions (#3163) _Thanks @ChristianWeigand_

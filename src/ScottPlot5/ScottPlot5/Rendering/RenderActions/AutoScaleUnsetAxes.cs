@@ -20,6 +20,11 @@ public class AutoScaleUnsetAxes : IRenderAction
     {
         foreach (IPlottable plottable in plot.PlottableList)
         {
+            bool xAxisNeedsScaling = !plottable.Axes.XAxis.Range.HasBeenSet;
+            bool yAxisNeedsScaling = !plottable.Axes.XAxis.Range.HasBeenSet;
+            if (xAxisNeedsScaling == false && yAxisNeedsScaling == false)
+                return;
+
             plot.Axes.AutoScale(
                 xAxis: plottable.Axes.XAxis,
                 yAxis: plottable.Axes.YAxis,

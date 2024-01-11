@@ -1,4 +1,6 @@
-﻿namespace Sandbox.WinForms;
+﻿using ScottPlot;
+
+namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
@@ -6,15 +8,24 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        double[] positions1 = { 1, 4, 7, 10, 13, 16, 19 };
-        double[] values1 = { 1, 4, 7, 10, 13, 16, 19 };
-        double[] positions2 = { 2, 5, 8, 11, 14, 17, 20 };
-        double[] values2 = { 2, 5, 8, 11, 14, 17, 20 };
+        int pointsPerPlot = 1024;
+        int numberOfPlots = 1_000;
 
-        formsPlot1.Plot.Add.Bars(positions1, values1);
-        formsPlot1.Plot.Add.Bars(positions2, values2);
+        for (int n = 0; n < numberOfPlots; n++)
+        {
+            double[] dataX = Generate.Consecutive(pointsPerPlot);
+            double[] dataY = Generate.RandomWalk(pointsPerPlot);
 
-        formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.LockedVertical(formsPlot1.Plot.Axes.Left));
-        //formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.LockedHorizontal(formsPlot1.Plot.Axes.Bottom));
+            var scatter = formsPlot1.Plot.Add.Scatter(dataX, dataY);
+            scatter.MarkerStyle.IsVisible = false;
+            scatter.LineStyle.Width = 1.0F;
+            scatter.LineStyle.Pattern = LinePattern.Solid;
+            scatter.LineStyle.AntiAlias = true;
+        }
+
+        formsPlot1.Plot.RenderManager.RenderFinished += (s, e) =>
+        {
+            Text = formsPlot1.Plot.LastRender.Elapsed.ToString();
+        };
     }
 }
