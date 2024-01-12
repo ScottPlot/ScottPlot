@@ -131,14 +131,34 @@ public class Finance : ICategory
         public override string Name => "Financial Plot Without Gaps";
         public override string Description => "When the DateTimes stored in OHLC objects " +
             "are used to determine the horizontal position of candlesticks, periods without data " +
-            "like weekends and holidays appear as gaps in the plot.";
+            "like weekends and holidays appear as gaps in the plot. Enabling sequential mode causes " +
+            "the plot to ignore the OHLC DateTimes and display candles at integer positions starting " +
+            "from zero. Since this is not a true DateTime axis, users enabling this mode must customize " +
+            "the tick labels themselves.";
 
         [Test]
         public override void Execute()
         {
-            var prices = Generate.RandomOHLCs(30);
+            // create a candlestick plot
+            var prices = Generate.RandomOHLCs(31);
             var candlePlot = myPlot.Add.Candlestick(prices);
+
+            // enable sequential mode to place candles at X = 0, 1, 2, ...
             candlePlot.Sequential = true;
+
+            // determine a few candles to display ticks for
+            int tickCount = 5;
+            int tickDelta = prices.Count / tickCount;
+            DateTime[] tickDates = prices
+                .Where((x, i) => i % tickDelta == 0)
+                .Select(x => x.DateTime)
+                .ToArray();
+
+            // use a manual tick generator for the horizontal axis
+            double[] tickPositions = Generate.Consecutive(tickDates.Length, tickDelta);
+            string[] tickLabels = tickDates.Select(x => x.ToString("MM/dd")).ToArray();
+            ScottPlot.TickGenerators.NumericManual tickGen = new(tickPositions, tickLabels);
+            myPlot.Axes.Bottom.TickGenerator = tickGen;
         }
     }
 }
