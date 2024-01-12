@@ -7,6 +7,22 @@
         xmlns:local="clr-namespace:Sandbox.WPF"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ScottPlot 5 - WPF Sandbox" Height="300" Width="500">
-    <ScottPlot:WpfPlot x:Name="WpfPlot1"/>
+        Title="ScottPlot 5 - WPF Sandbox" Height="800" Width="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+            <StackPanel x:Name="charts">
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Window>
