@@ -6,6 +6,7 @@
 
 ## ScottPlot 5.0.15-beta (not yet on NuGet)
 * Ticks: Added additional styling options for axis tick labels (#3185) _Thanks @barnettben_
+* Finance: Added `Sequential` property to display OHLC data without gaps (#2611, #3187) _Thanks @robbyls, @mjpz, and @segeyros_
 
 ## ScottPlot 5.0.14-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-10_

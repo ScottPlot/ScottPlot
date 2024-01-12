@@ -125,4 +125,20 @@ public class Finance : ICategory
             sp3.LineStyle.Pattern = LinePattern.Dotted;
         }
     }
+
+    public class FinancialPlotWithoutGaps : RecipeBase
+    {
+        public override string Name => "Financial Plot Without Gaps";
+        public override string Description => "When the DateTimes stored in OHLC objects " +
+            "are used to determine the horizontal position of candlesticks, periods without data " +
+            "like weekends and holidays appear as gaps in the plot.";
+
+        [Test]
+        public override void Execute()
+        {
+            var prices = Generate.RandomOHLCs(30);
+            var candlePlot = myPlot.Add.Candlestick(prices);
+            candlePlot.Sequential = true;
+        }
+    }
 }

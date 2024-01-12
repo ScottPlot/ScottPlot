@@ -2,8 +2,8 @@
 
 public interface IOHLCSource
 {
-    IList<OHLC> GetOHLCs();
-    public CoordinateRange GetLimitsX(); // TODO: struct
-    public CoordinateRange GetLimitsY(); // TODO: struct
+    List<OHLC> GetOHLCs();
+    public CoordinateRange GetLimitsX();
+    public CoordinateRange GetLimitsY();
     AxisLimits GetLimits();
 }
