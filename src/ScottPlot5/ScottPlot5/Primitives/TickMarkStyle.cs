@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct TickStyle
+public class TickMarkStyle
 {
     public float Length;
     public float Width;

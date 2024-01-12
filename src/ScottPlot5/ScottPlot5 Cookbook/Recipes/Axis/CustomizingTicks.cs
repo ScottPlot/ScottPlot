@@ -93,4 +93,21 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Bottom.TickGenerator = ticks;
         }
     }
+
+    public class RotatedTicks : RecipeBase
+    {
+        public override string Name => "Rotated Tick Labels";
+        public override string Description => "Users can customize tick label rotation.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
+            myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
+            myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
+        }
+    }
 }

@@ -41,38 +41,31 @@ public abstract class AxisBase
 
     public LineStyle FrameLineStyle { get; } = new();
 
-    public FontStyle TickFont { get; set; } = new();
-
-    public float MajorTickLength { get; set; } = 4;
-    public float MajorTickWidth { get; set; } = 1;
-    public Color MajorTickColor { get; set; } = Colors.Black;
-    public TickStyle MajorTickStyle => new()
+    public TickMarkStyle MajorTickStyle { get; set; } = new()
     {
-        Length = MajorTickLength,
-        Width = MajorTickWidth,
-        Color = MajorTickColor
+        Length = 4,
+        Width = 1,
+        Color = Colors.Black
     };
 
-    public float MinorTickLength { get; set; } = 2;
-    public float MinorTickWidth { get; set; } = 1;
-    public Color MinorTickColor { get; set; } = Colors.Black;
-    public TickStyle MinorTickStyle => new()
+    public TickMarkStyle MinorTickStyle { get; set; } = new()
     {
-        Length = MinorTickLength,
-        Width = MinorTickWidth,
-        Color = MinorTickColor
+        Length = 2,
+        Width = 1,
+        Color = Colors.Black
     };
+
+    public LabelExperimental TickLabelStyle { get; set; } = new();
 
     /// <summary>
     /// Apply a single color to all axis components: label, tick labels, tick marks, and frame
     /// </summary>
-    /// <param name="color"></param>
     public void Color(Color color)
     {
         Label.ForeColor = color;
-        TickFont.Color = color;
-        MajorTickColor = color;
-        MinorTickColor = color;
+        TickLabelStyle.ForeColor = color;
+        MajorTickStyle.Color = color;
+        MinorTickStyle.Color = color;
         FrameLineStyle.Color = color;
     }
 
@@ -131,7 +124,7 @@ public abstract class AxisBase
         }
     }
 
-    private static void DrawTicksHorizontalAxis(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksHorizontalAxis(RenderPack rp, LabelExperimental label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -139,7 +132,7 @@ public abstract class AxisBase
         }
 
         using SKPaint paint = new();
-        font.ApplyToPaint(paint);
+        label.ApplyToPaint(paint);
 
         paint.TextAlign = SKTextAlign.Center;
 
@@ -161,14 +154,16 @@ public abstract class AxisBase
                 foreach (string line in tick.Label.Split('\n'))
                 {
                     paint.IsStroke = false;
-                    rp.Canvas.DrawText(line, xPx, yEdge + fontSpacing, paint);
+                    label.Text = line;
+                    Pixel px = new(xPx, yEdge + fontSpacing);
+                    label.Render(rp.Canvas, px);
                     fontSpacing += paint.TextSize;
                 }
             }
         }
     }
 
-    private static void DrawTicksVerticalAxis(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    private static void DrawTicksVerticalAxis(RenderPack rp, LabelExperimental label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -176,7 +171,7 @@ public abstract class AxisBase
         }
 
         using SKPaint paint = new();
-        font.ApplyToPaint(paint);
+        label.ApplyToPaint(paint);
 
         paint.TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left;
 
@@ -200,11 +195,11 @@ public abstract class AxisBase
         }
     }
 
-    public static void DrawTicks(RenderPack rp, FontStyle font, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickStyle majorStyle, TickStyle minorStyle)
+    public static void DrawTicks(RenderPack rp, LabelExperimental label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge.IsVertical())
-            DrawTicksVerticalAxis(rp, font, panelRect, ticks, axis, majorStyle, minorStyle);
+            DrawTicksVerticalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
         else
-            DrawTicksHorizontalAxis(rp, font, panelRect, ticks, axis, majorStyle, minorStyle);
+            DrawTicksHorizontalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
     }
 }

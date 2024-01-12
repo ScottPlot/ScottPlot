@@ -22,7 +22,7 @@ public class LabelExperimental
 
     private SKTypeface? CachedTypeface = null;
     private SKTypeface Typeface => CachedTypeface ??= FontStyle.CreateTypeface(FontName, Bold, Italic);
-    public string FontName { get; set; } = Fonts.Default;
+    public string FontName { get; set; } = Fonts.Default; // TODO: font lookup and caching
     public float FontSize { get; set; } = 12;
     public bool Bold = false;
     public bool Italic = false;
@@ -67,6 +67,11 @@ public class LabelExperimental
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAlias;
+    }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        ApplyTextPaint(paint);
     }
 
     public void Render(SKCanvas canvas, Pixel pixel)

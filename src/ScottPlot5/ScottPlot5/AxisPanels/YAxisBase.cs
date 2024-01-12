@@ -34,7 +34,7 @@ public abstract class YAxisBase : AxisBase, IAxis
     private float MeasureTicks()
     {
         using SKPaint paint = new();
-        TickFont.ApplyToPaint(paint);
+        TickLabelStyle.ApplyToPaint(paint);
 
         float largestTickWidth = 0;
 
@@ -91,7 +91,7 @@ public abstract class YAxisBase : AxisBase, IAxis
         Label.Alignment = Alignment.UpperCenter;
         Label.Render(rp.Canvas, labelPoint);
 
-        DrawTicks(rp, TickFont, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
+        DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 

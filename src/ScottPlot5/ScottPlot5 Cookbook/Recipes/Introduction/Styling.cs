@@ -57,12 +57,12 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.Label.Bold = false;
             myPlot.Axes.Bottom.Label.FontName = Fonts.Monospace;
 
-            myPlot.Axes.Bottom.MajorTickLength = 10;
-            myPlot.Axes.Bottom.MajorTickWidth = 3;
-            myPlot.Axes.Bottom.MajorTickColor = Colors.Magenta;
-            myPlot.Axes.Bottom.MinorTickLength = 5;
-            myPlot.Axes.Bottom.MinorTickWidth = 0.5f;
-            myPlot.Axes.Bottom.MinorTickColor = Colors.Green;
+            myPlot.Axes.Bottom.MajorTickStyle.Length = 10;
+            myPlot.Axes.Bottom.MajorTickStyle.Width = 3;
+            myPlot.Axes.Bottom.MajorTickStyle.Color = Colors.Magenta;
+            myPlot.Axes.Bottom.MinorTickStyle.Length = 5;
+            myPlot.Axes.Bottom.MinorTickStyle.Width = 0.5f;
+            myPlot.Axes.Bottom.MinorTickStyle.Color = Colors.Green;
             myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.LightBlue;
         }
     }

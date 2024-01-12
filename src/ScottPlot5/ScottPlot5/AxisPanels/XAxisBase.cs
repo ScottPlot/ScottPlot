@@ -18,7 +18,7 @@ public abstract class XAxisBase : AxisBase, IAxis
     private float MeasureTicks()
     {
         using SKPaint paint = new();
-        TickFont.ApplyToPaint(paint);
+        TickLabelStyle.ApplyToPaint(paint);
 
         float largestTickHeight = 0;
 
@@ -92,7 +92,7 @@ public abstract class XAxisBase : AxisBase, IAxis
 
         IEnumerable<Tick> ticks = TickGenerator.Ticks;
 
-        DrawTicks(rp, TickFont, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        DrawTicks(rp, TickLabelStyle, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 

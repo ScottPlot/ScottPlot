@@ -1,4 +1,5 @@
-﻿using ScottPlot.Grids;
+﻿using ScottPlot.AxisPanels;
+using ScottPlot.Grids;
 
 namespace ScottPlot.Stylers;
 
@@ -28,12 +29,9 @@ public class PlotStyler
     /// </summary>
     public void ColorAxes(Color color)
     {
-        foreach (AxisPanels.AxisBase axis in Plot.Axes.GetAxes())
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
         {
-            axis.Label.ForeColor = color;
-            axis.FrameLineStyle.Color = color;
-            axis.MajorTickColor = color;
-            axis.MinorTickColor = color;
+            axis.Color(color);
         }
 
         Plot.Axes.Title.Label.Font.Color = color;
@@ -91,7 +89,7 @@ public class PlotStyler
         foreach (IAxis axis in Plot.Axes.GetAxes())
         {
             axis.Label.FontName = fontName;
-            axis.TickFont.Name = fontName;
+            axis.TickLabelStyle.FontName = fontName;
         }
     }
 
