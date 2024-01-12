@@ -10,6 +10,8 @@ public class Axes : IAxes
     public IYAxis YAxis { get; set; } = null!;
     public PixelRect DataRect { get; set; }
 
+    public static Axes Default => new();
+
     public Axes()
     {
     }
