@@ -55,7 +55,10 @@ public abstract class AxisBase
         Color = Colors.Black
     };
 
-    public LabelExperimental TickLabelStyle { get; set; } = new();
+    public LabelExperimental TickLabelStyle { get; set; } = new()
+    {
+        Alignment = Alignment.MiddleCenter
+    };
 
     /// <summary>
     /// Apply a single color to all axis components: label, tick labels, tick marks, and frame
