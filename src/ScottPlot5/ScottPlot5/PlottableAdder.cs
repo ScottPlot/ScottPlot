@@ -423,6 +423,19 @@ public class PlottableAdder
         return sig;
     }
 
+    public SignalConst<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
+        where T : struct, IComparable
+    {
+        SignalConst<T> sig = new(ys, period)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
     public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
     {
         SignalXYSourceDoubleArray dataSource = new(xs, ys);

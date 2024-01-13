@@ -26,6 +26,7 @@ public abstract class SignalSourceBase
 
         return i;
     }
+
     public bool RangeContainsSignal(double xMin, double xMax)
     {
         int xMinIndex = GetIndex(xMin, false);
