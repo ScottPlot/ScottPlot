@@ -10,6 +10,20 @@ public class BarPlot : IPlottable
     public string? Label { get; set; }
     public IEnumerable<Bar> Bars { get; set; }
 
+    /// <summary>
+    /// Apply a fill color to all bars
+    /// </summary>
+    public Color Color
+    {
+        set
+        {
+            foreach (Bar bar in Bars)
+            {
+                bar.FillColor = value;
+            }
+        }
+    }
+
     public BarPlot(Bar bar)
     {
         Bars = new Bar[] { bar };

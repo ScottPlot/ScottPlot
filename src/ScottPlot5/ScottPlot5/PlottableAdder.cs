@@ -44,7 +44,10 @@ public class PlottableAdder
 
     public BarPlot Bars(IEnumerable<Bar> bars)
     {
-        BarPlot bp = new(bars);
+        BarPlot bp = new(bars)
+        {
+            Color = GetNextColor(),
+        };
         Plottable(bp);
         return bp;
     }
