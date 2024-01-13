@@ -24,17 +24,23 @@ public class Bar
     public bool ErrorPositive = true;
     public bool ErrorNegative = true;
 
-    public readonly Orientation Orientation = Orientation.Vertical; //TODO: support horizontal bar charts
+    public Orientation Orientation = Orientation.Vertical;
 
     internal CoordinateRect Rect
     {
         get
         {
-            return new CoordinateRect(
-                left: Position - Size / 2,
-                right: Position + Size / 2,
-                bottom: ValueBase,
-                top: Value);
+            return Orientation == Orientation.Vertical
+                ? new CoordinateRect(
+                    left: Position - Size / 2,
+                    right: Position + Size / 2,
+                    bottom: ValueBase,
+                    top: Value)
+                : new CoordinateRect(
+                    left: ValueBase,
+                    right: Value,
+                    bottom: Position - Size / 2,
+                    top: Position + Size / 2);
         }
     }
 
@@ -42,9 +48,20 @@ public class Bar
     {
         get
         {
-            CoordinateLine center = new(Position, Value - Error, Position, Value + Error);
-            CoordinateLine top = new(Position - ErrorSize / 2, Value + Error, Position + ErrorSize / 2, Value + Error);
-            CoordinateLine bottom = new(Position - ErrorSize / 2, Value - Error, Position + ErrorSize / 2, Value - Error);
+            CoordinateLine center, top, bottom;
+            if (Orientation == Orientation.Vertical)
+            {
+                center = new(Position, Value - Error, Position, Value + Error);
+                top = new(Position - ErrorSize / 2, Value + Error, Position + ErrorSize / 2, Value + Error);
+                bottom = new(Position - ErrorSize / 2, Value - Error, Position + ErrorSize / 2, Value - Error);
+            }
+            else
+            {
+                center = new(Value - Error, Position, Value + Error, Position);
+                top = new(Value + Error, Position - ErrorSize / 2, Value + Error, Position + ErrorSize / 2);
+                bottom = new(Value - Error, Position - ErrorSize / 2, Value - Error, Position + ErrorSize / 2);
+            }
+
             return new List<CoordinateLine>() { center, top, bottom };
         }
     }
@@ -53,11 +70,17 @@ public class Bar
     {
         get
         {
-            return new AxisLimits(
-                left: Position - Size / 2,
-                right: Position + Size / 2,
-                bottom: Math.Min(ValueBase, Value - Error),
-                top: Value + Error);
+            return Orientation == Orientation.Vertical
+                ? new AxisLimits(
+                    left: Position - Size / 2,
+                    right: Position + Size / 2,
+                    bottom: Math.Min(ValueBase, Value - Error),
+                    top: Value + Error)
+                : new AxisLimits(
+                    left: Math.Min(ValueBase, Value - Error),
+                    right: Value + Error,
+                    bottom: Position - Size / 2,
+                    top: Position + Size / 2);
         }
     }
 

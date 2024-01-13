@@ -195,4 +195,27 @@ public class Bar : ICategory
             myPlot.Axes.Margins(bottom: 0);
         }
     }
+
+    public class HorizontalBar : RecipeBase
+    {
+        public override string Name => "Horizontal Bar Plot";
+        public override string Description => "Bar plots can be displayed horizontally.";
+
+        [Test]
+        public override void Execute()
+        {
+            ScottPlot.Bar[] bars =
+            {
+                new() { Position = 1, Value = 5, Error = 1, },
+                new() { Position = 2, Value = 7, Error = 2, },
+                new() { Position = 3, Value = 6, Error = 1, },
+                new() { Position = 4, Value = 8, Error = 2, },
+            };
+
+            var barPlot = myPlot.Add.Bars(bars);
+            barPlot.Horizontal = true;
+
+            myPlot.Axes.Margins(left: 0);
+        }
+    }
 }

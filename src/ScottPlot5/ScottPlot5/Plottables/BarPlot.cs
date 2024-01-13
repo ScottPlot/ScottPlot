@@ -10,6 +10,36 @@ public class BarPlot : IPlottable
     public string? Label { get; set; }
     public IEnumerable<Bar> Bars { get; set; }
 
+    /// <summary>
+    /// Apply a fill color to all bars
+    /// </summary>
+    public Color Color
+    {
+        set
+        {
+            foreach (Bar bar in Bars)
+            {
+                bar.FillColor = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Define orientation for all bars
+    /// </summary>
+    public bool Horizontal
+    {
+        set
+        {
+            foreach (Bar bar in Bars)
+            {
+                bar.Orientation = value
+                    ? Orientation.Horizontal
+                    : Orientation.Vertical;
+            }
+        }
+    }
+
     public BarPlot(Bar bar)
     {
         Bars = new Bar[] { bar };
