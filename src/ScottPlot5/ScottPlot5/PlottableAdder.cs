@@ -304,6 +304,17 @@ public class PlottableAdder
         return plottable;
     }
 
+    public Polygon Rectangle(double left, double right, double bottom, double top)
+    {
+        Coordinates[] points = {
+            new(left, bottom),
+            new(left, top),
+            new(right, top),
+            new(right, bottom),
+        };
+        return Polygon(points);
+    }
+
     public Scatter Scatter(IScatterSource source, Color? color = null)
     {
         Color nextColor = color ?? GetNextColor();
