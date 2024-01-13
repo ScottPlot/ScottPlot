@@ -9,6 +9,7 @@
 * Finance: Added `Sequential` property to display OHLC data without gaps (#2611, #3187) _Thanks @robbyls, @mjpz, and @segeyros_
 * SignalConst: A high performance plot type for evenly-spaced unchanging data (#70, #3188) _Thanks @StendProg_
 * Plot: Created `Plot.Add.Rectangle()` for placing a rectangular polygon on the plot
+* Axis Rules: Improved `MaximumBoundary` and `MinimumBoundary` correction behavior (#3191) _Thanks @Milyczekpolsl_
 
 ## ScottPlot 5.0.14-beta
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-10_
