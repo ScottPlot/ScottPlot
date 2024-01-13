@@ -8,8 +8,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        double[] values = Generate.RandomWalk(10_000_000);
-        WpfPlot1.Plot.Add.SignalConst(values);
-        WpfPlot1.Plot.Title($"{values.Length:N0} Points");
+        WpfPlot1.Plot.Add.Signal(Generate.Sin());
+        WpfPlot1.Plot.Add.Signal(Generate.Cos());
     }
 }
