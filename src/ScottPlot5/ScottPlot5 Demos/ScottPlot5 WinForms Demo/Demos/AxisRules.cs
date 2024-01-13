@@ -19,6 +19,15 @@ public partial class AxisRules : Form, IDemoWindow
         var sp = formsPlot1.Plot.Add.Scatter(coordinates);
         sp.LineWidth = 0;
         sp.MarkerStyle.Size = 5;
+        sp.Color = Colors.Magenta;
+
+        var rect = formsPlot1.Plot.Add.Rectangle(0, 1, 0, 1);
+        rect.FillStyle.Color = Colors.Transparent;
+        rect.LineStyle.Color = Colors.Green;
+        rect.LineStyle.Width = 3;
+        rect.LineStyle.IsVisible = true;
+
+        btnReset_Click(this, EventArgs.Empty);
     }
 
     private void LockButtons()
@@ -48,7 +57,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Disable zooming in beyond [0, 1]");
+        formsPlot1.Plot.Title("Area inside the boundary is always in view");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -62,7 +71,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Disable zooming out beyond [0, 1]");
+        formsPlot1.Plot.Title("Cannot view area outside the boundary");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -75,7 +84,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Square axes zooming Y to preserve X");
+        formsPlot1.Plot.Title("Automatically adjust Y so coordinates are square");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -88,7 +97,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Square axes zooming X to preserve Y");
+        formsPlot1.Plot.Title("Automatically adjust X so coordinates are square");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -101,7 +110,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Square axes by zooming out the smaller axis");
+        formsPlot1.Plot.Title("Automatically adjust the most zoomed-in axis so coordinates are square");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -116,7 +125,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Disabled zooming in beyond an axis span of 1");
+        formsPlot1.Plot.Title("Cannot zoom in beyond an axis span of 1");
         formsPlot1.Refresh();
         LockButtons();
     }
@@ -131,7 +140,7 @@ public partial class AxisRules : Form, IDemoWindow
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
-        formsPlot1.Plot.Title("Disabled zooming out beyond an axis span of 1");
+        formsPlot1.Plot.Title("Cannot zoom out beyond an axis span of 1");
         formsPlot1.Refresh();
         LockButtons();
     }
