@@ -24,6 +24,22 @@ public class BarPlot : IPlottable
         }
     }
 
+    /// <summary>
+    /// Define orientation for all bars
+    /// </summary>
+    public bool Horizontal
+    {
+        set
+        {
+            foreach (Bar bar in Bars)
+            {
+                bar.Orientation = value
+                    ? Orientation.Horizontal
+                    : Orientation.Vertical;
+            }
+        }
+    }
+
     public BarPlot(Bar bar)
     {
         Bars = new Bar[] { bar };
