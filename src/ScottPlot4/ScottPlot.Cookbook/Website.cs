@@ -28,10 +28,14 @@ public static class Website
         sb.AppendLine("or they can be instantiated directly so users can access the colors they produce. ");
         sb.AppendLine("Viridis and Turbo are typically recommended as the best colormaps to use for scientific data.");
         sb.AppendLine();
+        sb.AppendLine("{{< code-sp4 >}}");
+        sb.AppendLine();
         sb.AppendLine("```cs");
         sb.AppendLine($"var cmap = new ScottPlot.Drawing.Colormaps.Viridis();");
         sb.AppendLine("(byte r, byte g, byte b) = cmap.GetRGB(123);");
         sb.AppendLine("```");
+        sb.AppendLine();
+        sb.AppendLine("{{< /code-sp4 >}}");
         sb.AppendLine();
 
         foreach (var cmap in ScottPlot.Drawing.Colormap.GetColormaps())
@@ -74,6 +78,8 @@ public static class Website
         sb.AppendLine("The palette in `Plot.Palette` defines default colors for new objects added to plots. ");
         sb.AppendLine("Users can access palettes directly to get color values for any use. ");
         sb.AppendLine();
+        sb.AppendLine("{{< code-sp4 >}}");
+        sb.AppendLine();
         sb.AppendLine("```cs");
         sb.AppendLine($"var pal = ScottPlot.Palette.Category10;");
         sb.AppendLine("for (int i = 0; i < pal.Count(); i++)");
@@ -83,6 +89,8 @@ public static class Website
         sb.AppendLine("}");
         sb.AppendLine("```");
         sb.AppendLine();
+        sb.AppendLine("{{< /code-sp4 >}}");
+        sb.AppendLine();
 
         foreach (IPalette palette in ScottPlot.Palette.GetPalettes())
         {
@@ -91,11 +99,15 @@ public static class Website
             sb.AppendLine();
             sb.AppendLine(palette.Description);
             sb.AppendLine();
+            sb.AppendLine("{{< code-sp4 >}}");
+            sb.AppendLine();
             sb.AppendLine("```cs");
             sb.AppendLine($"var myPalette = new {palette}();");
             sb.AppendLine($"foreach (var color in myPalette)");
             sb.AppendLine($"    Console.WriteLine(color);");
             sb.AppendLine("```");
+            sb.AppendLine();
+            sb.AppendLine("{{< /code-sp4 >}}");
             sb.AppendLine();
 
             sb.AppendLine("<div class='d-flex flex-wrap'>");
@@ -181,26 +193,19 @@ public static class Website
     {
         StringBuilder sb = new();
         sb.AppendLine($"<h2><a id='{recipe.AnchorID}' href='{recipe.Url}'>{recipe.Title}</a></h2>");
-        sb.AppendLine("");
+        sb.AppendLine();
         sb.AppendLine(recipe.Description);
-        sb.AppendLine("");
+        sb.AppendLine();
+        sb.AppendLine("{{< code-sp4 >}}");
+        sb.AppendLine();
         sb.AppendLine("```cs");
         sb.AppendLine(recipe.Code);
         sb.AppendLine("```");
-        sb.AppendLine("");
+        sb.AppendLine();
+        sb.AppendLine("{{< /code-sp4 >}}");
+        sb.AppendLine();
         sb.AppendLine($"<img src='../../images/{recipe.ID.ToLower()}.png' class='d-block mx-auto my-5' />");
-        sb.AppendLine("");
-        return sb.ToString();
-    }
-
-    private static string GetRecipeHtml(RecipeSource recipe)
-    {
-        StringBuilder sb = new();
-        sb.AppendLine($"<h3 class='mt-5' id='{recipe.AnchorID}'>{recipe.Title}</h3>");
-        sb.AppendLine($"<div>{recipe.Description}</div>");
-        sb.AppendLine($"<pre class='bg-light border rounded p-3'>{recipe.Code}</pre>");
-        sb.AppendLine($"<img src='../../images/{recipe.ID.ToLower()}.png' " +
-            "class='d-block mx-auto my-5 border shadow-sm' style='max-width: 100%;'/>");
+        sb.AppendLine();
         return sb.ToString();
     }
 
@@ -242,18 +247,6 @@ public static class Website
             title: $"{categoryName} - ScottPlot 4.1 Cookbook",
             description: category.Description,
             frontmatter: fm);
-
-        StringBuilder html = new();
-        html.AppendLine($"This page contains recipes for the <i>{category.Name}</i> category.<br>" +
-            "Visit the <a href='../../index.dev.html'>Cookbook Home Page</a> to view all cookbook recipes.");
-        foreach (RecipeSource recipe in recipes)
-            html.AppendLine(GetRecipeHtml(recipe));
-
-        Template.CreateHtmlPage(
-            filePath: Path.Combine(thisCategoryFolderPath, "index.dev.html"),
-            bodyHtml: html.ToString(),
-            title: $"{categoryName} - ScottPlot 4.1 Cookbook",
-            description: category.Description);
     }
 
     private static void MakeIndexPage(string OutputFolderPath, RecipeSource[] Recipes)
@@ -369,11 +362,5 @@ public static class Website
             description: "Example plots shown next to the code used to create them",
             url: "/cookbook/4.1/",
             frontmatter: fm);
-
-        Template.CreateHtmlPage(
-            filePath: Path.Combine(OutputFolderPath, "index.dev.html"),
-            bodyHtml: sb.ToString().Replace("/#", "/index.dev.html#"),
-            title: "ScottPlot 4.1 Cookbook",
-            description: "Example plots shown next to the code used to create them");
     }
 }
