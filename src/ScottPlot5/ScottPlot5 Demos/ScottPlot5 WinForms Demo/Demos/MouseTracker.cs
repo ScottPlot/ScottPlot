@@ -21,7 +21,7 @@ public partial class MouseTracker : Form, IDemoWindow
         formsPlot1.MouseMove += (s, e) =>
         {
             Pixel mousePixel = new(e.X, e.Y);
-            Coordinates mouseCoordinates = formsPlot1.GetCoordinates(mousePixel);
+            Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(mousePixel);
 
             // coordinates may be invalid if requested before the first render
             if (!mouseCoordinates.AreReal)
@@ -30,7 +30,7 @@ public partial class MouseTracker : Form, IDemoWindow
             CH.Position = mouseCoordinates;
             formsPlot1.Refresh();
 
-            Text = mouseCoordinates.ToString();
+            Text = $"X={mouseCoordinates.X:N3}, Y={mouseCoordinates.Y:N3}";
         };
     }
 }
