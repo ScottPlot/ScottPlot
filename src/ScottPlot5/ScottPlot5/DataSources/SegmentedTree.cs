@@ -2,6 +2,10 @@
 
 namespace ScottPlot.DataSources;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
+#pragma warning disable CS8604 // Possible null reference argument.
+
 public class SegmentedTree<T> where T : struct, IComparable
 {
     private T[] sourceArray;
