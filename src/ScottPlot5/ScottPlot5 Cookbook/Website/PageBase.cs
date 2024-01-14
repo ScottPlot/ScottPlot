@@ -6,6 +6,7 @@ internal abstract class PageBase
 
     public void AddVersionInformation()
     {
+        /*
         string alertHtml = "\n\n" +
             "<div class='alert alert-warning' role='alert'>" +
             "<h4 class='alert-heading py-0 my-0'>" +
@@ -20,8 +21,14 @@ internal abstract class PageBase
             "</p>" +
             "</div>" +
             "\n\n";
-
         SB.AppendLine(alertHtml);
+        */
+
+        /*
+        SB.AppendLine();
+        SB.AppendLine("{{< banner-sp5 >}}");
+        SB.AppendLine();
+        */
     }
 
     public void Save(string folder, string title, string description, string filename, string url, string[]? frontmatter)
