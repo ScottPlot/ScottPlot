@@ -17,6 +17,7 @@ public partial class MainMenuForm : Form
         ShowScrollBar(tableLayoutPanel1.Handle, (int)ScrollBarDirection.VERT, true);
         DemoWindows.GetDemoWindows().ForEach(AddLauncherRow);
         AddBlankRow();
+        Text = $"{ScottPlot.Version.LongString} Demo";
     }
 
     private void AddLauncherRow(IDemoWindow demoForm)

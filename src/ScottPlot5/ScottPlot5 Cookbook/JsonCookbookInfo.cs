@@ -40,6 +40,12 @@ public class JsonCookbookInfo
         Recipes = document.RootElement.GetProperty("recipes").EnumerateArray().Select(x => GetRecipeInfo(x))!.ToArray()!;
     }
 
+    public static JsonCookbookInfo FromJsonFile(string jsonFilePath)
+    {
+        string json = File.ReadAllText(jsonFilePath);
+        return new JsonCookbookInfo(json);
+    }
+
     private static JsonCategoryInfo GetCategoryInfo(JsonElement el)
     {
         return new JsonCategoryInfo()

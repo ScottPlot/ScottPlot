@@ -1,23 +1,33 @@
 ﻿using ScottPlotCookbook;
-using ScottPlotCookbook.Website;
-using System.Linq;
 
 namespace WinForms_Demo.Demos;
 
 public partial class CookbookViewer : Form, IDemoWindow
 {
-    public string Title => "ScottPlot Cookbook";
+    public string Title => $"{ScottPlot.Version.LongString} Cookbook";
 
     public string Description => "Common ScottPlot features demonstrated " +
         "as interactive graphs displayed next to the code used to create them";
 
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = Query.GetRecipesByCategory();
 
-    readonly SourceDatabase SB = new();
+    readonly JsonCookbookInfo? JsonInfo = null;
 
     public CookbookViewer()
     {
         InitializeComponent();
+
+        string jsonFilePathInRepo = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/recipes.json");
+        string jsonFilePathHere = Path.GetFullPath("recipes.json");
+
+        if (File.Exists(jsonFilePathInRepo))
+        {
+            JsonInfo = JsonCookbookInfo.FromJsonFile(jsonFilePathInRepo);
+        }
+        else if (File.Exists(jsonFilePathHere))
+        {
+            JsonInfo = JsonCookbookInfo.FromJsonFile(jsonFilePathHere);
+        }
     }
 
     private void CookbookViewer_Load(object sender, EventArgs e)
@@ -92,16 +102,25 @@ public partial class CookbookViewer : Form, IDemoWindow
         selectedRecipe.Execute(formsPlot1.Plot);
         formsPlot1.Refresh();
 
-        RecipeInfo? recipeInfo = SB.GetInfo(selectedRecipe);
-
-        if (recipeInfo is null)
+        if (JsonInfo is null)
         {
             rtbCode.Text = "Source code not found.\nRun test suite to generate JSON file.";
+            return;
         }
-        else
+
+        var recipeInfos = JsonInfo.Recipes.Where(x => x.Name == selectedRecipe.Name);
+        if (!recipeInfos.Any())
         {
-            rtbCode.Text = recipeInfo.Value.Source;
+            rtbCode.Text = "Source code not found.\nRun test suite to generate JSON file.";
+            return;
         }
+
+        if (recipeInfos.Count() > 1)
+        {
+            throw new InvalidOperationException($"multiple recipes with same name: {selectedRecipe.Name}");
+        }
+
+        rtbCode.Text = recipeInfos.Single().Source;
     }
 
     private void tbFilter_TextChanged(object sender, EventArgs e)
