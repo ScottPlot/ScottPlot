@@ -130,12 +130,12 @@ public class SourceDatabase
                 string shortVersionString = ScottPlot.Version.VersionString.Replace(".", ", ").Split("-")[0];
 
                 StringBuilder sb = new();
-                sb.AppendLine($"ScottPlot.Version.ShouldBe({shortVersionString});");
+                //sb.AppendLine($"ScottPlot.Version.ShouldBe({shortVersionString});");
                 sb.AppendLine("ScottPlot.Plot myPlot = new();");
                 sb.AppendLine();
                 sb.AppendLine(source.ToString().Trim());
                 sb.AppendLine();
-                sb.AppendLine($"myPlot.SavePng(\"demo.png\");");
+                sb.AppendLine($"myPlot.SavePng(\"demo.png\", 400, 300);");
 
                 string description = GetDescription(recipeName);
                 RecipeInfo thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), categoryClassName, recipeClassName, sourceFilePath);
