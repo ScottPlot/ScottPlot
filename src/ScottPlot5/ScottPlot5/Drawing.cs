@@ -130,7 +130,7 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false)
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count() < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);
