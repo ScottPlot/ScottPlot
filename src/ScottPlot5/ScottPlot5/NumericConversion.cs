@@ -16,6 +16,19 @@ public static class NumericConversion
         MethodImplOptions.AggressiveInlining;
 
     [MethodImpl(ImplOptions)]
+    public static double[] GenericToDoubleArray<T>(T[] values)
+    {
+        double[] values2 = new double[values.Length];
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            values2[i] = GenericToDouble(values, i);
+        }
+
+        return values2;
+    }
+
+    [MethodImpl(ImplOptions)]
     public static double[] GenericToDoubleArray<T>(IEnumerable<T> values)
     {
         return values.Select(value => GenericToDouble(ref value)).ToArray();

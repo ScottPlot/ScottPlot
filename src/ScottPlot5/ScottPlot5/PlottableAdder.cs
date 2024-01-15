@@ -126,6 +126,33 @@ public class PlottableAdder
         return colorBar;
     }
 
+    public DataLogger DataLogger()
+    {
+        DataLogger logger = new()
+        {
+            Color = GetNextColor(),
+        };
+
+        Plot.PlottableList.Add(logger);
+
+        return logger;
+    }
+
+    public DataStreamer DataStreamer(int points, double period = 1)
+    {
+        double[] data = new double[points];
+
+        DataStreamer streamer = new(Plot, data)
+        {
+            Color = GetNextColor(),
+            Period = period,
+        };
+
+        Plot.PlottableList.Add(streamer);
+
+        return streamer;
+    }
+
     public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double> yErrors)
     {
         ErrorBar eb = new(xs, ys, null, null, yErrors, yErrors)

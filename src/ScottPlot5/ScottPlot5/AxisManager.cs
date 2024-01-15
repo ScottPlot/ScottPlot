@@ -302,6 +302,14 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Return the 2D axis limits for the given X/Y axis pair
+    /// </summary>
+    public AxisLimits GetLimits(IAxes axes)
+    {
+        return GetLimits(axes.XAxis, axes.YAxis);
+    }
+
+    /// <summary>
     /// Adds the default X and Y axes to all plottables with unset axes
     /// </summary>
     internal void ReplaceNullAxesWithDefaults()
