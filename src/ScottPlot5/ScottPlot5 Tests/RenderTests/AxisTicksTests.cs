@@ -28,4 +28,28 @@ internal class AxisTicksTests
 
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Multiline_TickLabels()
+    {
+        Plot plt = new();
+
+        plt.Add.Signal(Generate.Sin());
+        plt.Add.Signal(Generate.Cos());
+
+        ScottPlot.TickGenerators.NumericManual yTicker = new();
+        yTicker.AddMajor(-.5, "one line");
+        yTicker.AddMajor(+.5, "two\nlines");
+        yTicker.AddMinor(0);
+
+        ScottPlot.TickGenerators.NumericManual xTicker = new();
+        xTicker.AddMajor(20, "one line");
+        xTicker.AddMajor(40, "two\nlines");
+        xTicker.AddMinor(10);
+
+        plt.Axes.Left.TickGenerator = yTicker;
+        plt.Axes.Bottom.TickGenerator = xTicker;
+
+        plt.SaveTestImage();
+    }
 }

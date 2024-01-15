@@ -77,54 +77,17 @@ public abstract class AxisBase
     /// </summary>
     public static void DrawFrame(RenderPack rp, PixelRect panelRect, Edge edge, LineStyle lineStyle)
     {
-        using SKPaint framePaint = new()
+        PixelLine pxLine = edge switch
         {
-            Color = lineStyle.Color.ToSKColor(),
-            IsAntialias = true,
-            StrokeWidth = lineStyle.Width,
-            IsStroke = true,
+            Edge.Left => new(panelRect.Right, panelRect.Bottom, panelRect.Right, panelRect.Top),
+            Edge.Right => new(panelRect.Left, panelRect.Bottom, panelRect.Left, panelRect.Top),
+            Edge.Bottom => new(panelRect.Left, panelRect.Top, panelRect.Right, panelRect.Top),
+            Edge.Top => new(panelRect.Left, panelRect.Bottom, panelRect.Right, panelRect.Bottom),
+            _ => throw new NotImplementedException(edge.ToString()),
         };
 
-        if (edge == Edge.Left)
-        {
-            rp.Canvas.DrawLine(
-                x0: panelRect.Right,
-                y0: panelRect.Bottom,
-                x1: panelRect.Right,
-                y1: panelRect.Top,
-                paint: framePaint);
-        }
-        else if (edge == Edge.Right)
-        {
-            rp.Canvas.DrawLine(
-                x0: panelRect.Left,
-                y0: panelRect.Bottom,
-                x1: panelRect.Left,
-                y1: panelRect.Top,
-                paint: framePaint);
-        }
-        else if (edge == Edge.Bottom)
-        {
-            rp.Canvas.DrawLine(
-                x0: panelRect.Left,
-                y0: panelRect.Top,
-                x1: panelRect.Right,
-                y1: panelRect.Top,
-                paint: framePaint);
-        }
-        else if (edge == Edge.Top)
-        {
-            rp.Canvas.DrawLine(
-                x0: panelRect.Left,
-                y0: panelRect.Bottom,
-                x1: panelRect.Right,
-                y1: panelRect.Bottom,
-                paint: framePaint);
-        }
-        else
-        {
-            throw new NotImplementedException(edge.ToString());
-        }
+        using SKPaint paint = new();
+        Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
     }
 
     private static void DrawTicksHorizontalAxis(RenderPack rp, Label label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
@@ -141,22 +104,22 @@ public abstract class AxisBase
 
         foreach (Tick tick in ticks)
         {
+            // draw tick
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
-
             float xPx = axis.GetPixel(tick.Position, panelRect);
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
             float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
-            float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
-            paint.IsStroke = true;
-            rp.Canvas.DrawLine(xPx, y, xPx, yEdge, paint);
+            PixelLine pxLine = new(xPx, y, xPx, yEdge);
+            Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
+            // draw label
             if (!string.IsNullOrWhiteSpace(tick.Label))
             {
+                float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
                 foreach (string line in tick.Label.Split('\n'))
                 {
-                    paint.IsStroke = false;
                     label.Text = line;
                     Pixel px = new(xPx, yEdge + fontSpacing);
                     label.Render(rp.Canvas, px);
@@ -175,26 +138,35 @@ public abstract class AxisBase
 
         using SKPaint paint = new();
         label.ApplyToPaint(paint);
-
-        paint.TextAlign = axis.Edge == Edge.Left ? SKTextAlign.Right : SKTextAlign.Left;
+        label.Alignment = axis.Edge == Edge.Left ? Alignment.MiddleRight : Alignment.MiddleLeft;
 
         foreach (Tick tick in ticks)
         {
+            // draw tick
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
-
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float y = axis.GetPixel(tick.Position, panelRect);
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
-            paint.IsStroke = true;
-            rp.Canvas.DrawLine(x, y, xEdge, y, paint);
+            PixelLine pxLine = new(x, y, xEdge, y);
+            Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
+            // draw label
             float majorTickLabelPadding = 7;
             float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
-            paint.IsStroke = false;
             if (!string.IsNullOrWhiteSpace(tick.Label))
-                rp.Canvas.DrawText(tick.Label, labelPos, y + paint.TextSize * .4f, paint);
+            {
+                string[] lines = tick.Label.Split('\n');
+                double fontSpacing = -paint.TextSize * (lines.Length - 1) / 2;
+                foreach (string line in lines)
+                {
+                    label.Text = line;
+                    Pixel px = new(labelPos, y + fontSpacing);
+                    label.Render(rp.Canvas, px);
+                    fontSpacing += paint.TextSize;
+                }
+            }
         }
     }
 

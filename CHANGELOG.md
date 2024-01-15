@@ -8,6 +8,7 @@
 * Data Streamer: A new plot type for displaying live data as a fixed-width line trace (#3202, #3205)
 * Data Logger: A new plot type for displaying live data as a growing scatter plot (#3202, #3205)
 * Generate: Created a `Generate.RandomWalker` class for producing an infinite amount of streaming random data
+* Ticks: Improved support for multi-line tick labels on vertical axes (#3208) _Thanks @raburton_
 
 ## ScottPlot 5.0.15
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-14_
