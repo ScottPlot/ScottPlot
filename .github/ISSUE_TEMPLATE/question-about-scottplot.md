@@ -1,35 +1,19 @@
 ---
-name: Question about ScottPlot
-about: How do I use ScottPlot to...
+name: Question
+about: We encourage users to ask questions in GitHub Issues so others may benefit from the discussion!
 title: ''
-labels: 'Question'
+labels: ''
 assignees: ''
 ---
 
-## Before submitting a question
-1. Check if your question is already addressed in:
-  * The ScottPlot FAQ: https://scottplot.net/faq
-  * The ScottPlot Cookbook: https://scottplot.net/cookbook
-  * The ScottPlot Demo: https://scottplot.net/demo
-2. Search the issues and discussions to see if the question has already been addressed: 
-  * https://github.com/ScottPlot/ScottPlot/issues
-  * https://github.com/ScottPlot/ScottPlot/discussions
+**Question:** (Ask your question here)
 
-_This header can be deleted before posting_
+**ScottPlot Version:** (What NuGet package are you using?)
 
----------------------------------
-
-**ScottPlot Version:** ???
-
-**Operating System:** ???
-
-**Application Type:** (console, WinForms, WPF, etc...)
-
-**Question:** Describe your question here
+**Code Sample:** See http://scottplot.net/faq/repro/ for tips about creating reproducible code samples
 
 ```cs
-// a code sample may improve communication
-var examplePlot = new ScottPlot.Plot();
+ScottPlot.Plot myPlot = new();
+/* a code sample may improve communication */
+myPlot.SavePng("bug.png");
 ```
-
-Images or screenshots often help communication and are encouraged. You can copy/paste or drag/drop images into this box.
