@@ -4,6 +4,9 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
+## ScottPlot 5.0.16 (not yet on NuGet)
+* Generate: Created a `Generate.RandomWalker` class for producing an infinite amount of streaming random data
+
 ## ScottPlot 5.0.15
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-14_
 * Ticks: Added additional styling options for axis tick labels (#3185) _Thanks @barnettben_
