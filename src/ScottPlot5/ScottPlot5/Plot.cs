@@ -370,7 +370,7 @@ public class Plot : IDisposable
         Axes.Title.Label.Text = text;
         Axes.Title.IsVisible = !string.IsNullOrWhiteSpace(text);
         if (size.HasValue)
-            Axes.Title.Label.Font.Size = size.Value;
+            Axes.Title.Label.FontSize = size.Value;
     }
 
     /// <summary>

@@ -1,11 +1,6 @@
-﻿using SkiaSharp;
+﻿namespace ScottPlot;
 
-namespace ScottPlot;
-
-/// <summary>
-/// Describes text using methods from the new font provider.
-/// Holds all customization required to style and draw text.
-/// </summary>
+[Obsolete("", true)]
 public class Label
 {
     public string Text { get; set; } = string.Empty;

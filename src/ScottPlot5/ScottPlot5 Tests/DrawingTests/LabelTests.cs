@@ -17,16 +17,19 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            Label lbl = new()
+            LabelExperimental lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
-                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
-                Border = new() { Color = Colors.Yellow, Width = 1 },
+                FontSize = 32,
+                ForeColor = Colors.White.WithOpacity(.5),
+                BorderColor = Colors.Yellow,
+                BorderWidth = 1,
                 PointSize = 5,
+                PointColor = Colors.White,
             };
 
-            lbl.Draw(canvas, pixel);
+            lbl.Render(canvas, pixel);
 
             y += 50;
         }
@@ -50,16 +53,19 @@ internal class LabelTests
             float y = (float)Math.Sin(i * Math.PI / 180) * radius;
             Pixel center = new(bmp.Width / 2 + x, bmp.Height / 2 + y);
 
-            Label lbl = new()
+            LabelExperimental lbl = new()
             {
                 Text = $"R{i}",
-                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
+                FontSize = 32,
+                ForeColor = Colors.White.WithOpacity(.5),
                 Rotation = i,
                 PointSize = 5,
-                Border = new() { Color = Colors.Yellow },
-                BackgroundColor = Colors.White.WithOpacity(.2),
+                BorderColor = Colors.Yellow,
+                PointColor = Colors.White,
+                BorderWidth = 1,
             };
-            lbl.Draw(canvas, center);
+
+            lbl.Render(canvas, center);
         }
 
         bmp.SaveTestImage();
@@ -78,21 +84,56 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            Label lbl = new()
+            LabelExperimental lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
-                Font = new() { Size = 32, Color = Colors.White.WithOpacity(.5) },
-                Border = new() { Color = Colors.Yellow },
+                FontSize = 32,
+                ForeColor = Colors.White.WithOpacity(.5),
+                BorderColor = Colors.Yellow,
+                BorderWidth = 1,
                 PointSize = 5,
+                PointColor = Colors.White,
                 Rotation = 30,
             };
 
-            lbl.Draw(canvas, pixel);
+            lbl.Render(canvas, pixel);
 
             y += 50;
         }
 
         bmp.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_String_Measurement()
+    {
+        SKBitmap bmp = new(500, 500);
+        using SKCanvas canvas = new(bmp);
+        canvas.Clear(SKColors.Navy);
+
+        string[] fonts = { "Times New Roman", "Consolas", "Impact", "Arial Narrow" };
+
+        float yOffset = 20;
+        foreach (string font in fonts)
+        {
+            LabelExperimental lbl = new()
+            {
+                Text = "Hello, World",
+                FontName = font,
+                FontSize = 64,
+                ForeColor = Colors.White,
+                BorderColor = Colors.Yellow,
+                BorderWidth = 1,
+            };
+
+            Pixel px = new(20, yOffset);
+            lbl.Render(canvas, px);
+
+            yOffset += 100;
+        }
+
+        bmp.SaveTestImage();
+        Assert.Pass();
     }
 }

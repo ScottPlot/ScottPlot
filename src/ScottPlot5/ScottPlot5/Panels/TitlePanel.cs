@@ -10,10 +10,11 @@ public class TitlePanel : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
-    public Label Label { get; } = new()
+    public LabelExperimental Label { get; } = new()
     {
         Text = string.Empty,
-        Font = new() { Size = 16, Bold = true },
+        FontSize = 16,
+        Bold = true,
         Alignment = Alignment.LowerCenter,
     };
 
@@ -53,9 +54,9 @@ public class TitlePanel : IPanel
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.Font.Color);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
-        Label.Draw(rp.Canvas, labelPoint);
+        Label.Render(rp.Canvas, labelPoint);
     }
 }

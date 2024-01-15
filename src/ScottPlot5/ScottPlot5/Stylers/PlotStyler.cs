@@ -34,7 +34,7 @@ public class PlotStyler
             axis.Color(color);
         }
 
-        Plot.Axes.Title.Label.Font.Color = color;
+        Plot.Axes.Title.Label.ForeColor = color;
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public class PlotStyler
         Fonts.Default = fontName;
 
         // title
-        Plot.Axes.Title.Label.Font.Name = fontName;
+        Plot.Axes.Title.Label.FontName = fontName;
 
         // axis labels and ticks
         foreach (IAxis axis in Plot.Axes.GetAxes())

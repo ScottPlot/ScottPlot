@@ -137,8 +137,13 @@ public class LabelExperimental
         canvas.Save();
         canvas.Translate(x, y); // do not compensate for padding
         canvas.RotateDegrees(Rotation);
-        ApplyPointPaint(paint);
-        canvas.DrawCircle(0, 0, PointSize, paint);
+
+        if (PointSize > 0)
+        {
+            ApplyPointPaint(paint);
+            canvas.DrawCircle(0, 0, PointSize, paint);
+        }
+
         canvas.DrawLine(-PointSize, 0, PointSize, 0, paint);
         canvas.DrawLine(0, -PointSize, 0, PointSize, paint);
         canvas.Restore();
