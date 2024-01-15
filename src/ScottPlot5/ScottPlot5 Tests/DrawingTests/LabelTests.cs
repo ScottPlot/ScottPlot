@@ -17,7 +17,7 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            LabelExperimental lbl = new()
+            Label lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
@@ -53,7 +53,7 @@ internal class LabelTests
             float y = (float)Math.Sin(i * Math.PI / 180) * radius;
             Pixel center = new(bmp.Width / 2 + x, bmp.Height / 2 + y);
 
-            LabelExperimental lbl = new()
+            Label lbl = new()
             {
                 Text = $"R{i}",
                 FontSize = 32,
@@ -84,7 +84,7 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            LabelExperimental lbl = new()
+            Label lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
@@ -117,7 +117,7 @@ internal class LabelTests
         float yOffset = 20;
         foreach (string font in fonts)
         {
-            LabelExperimental lbl = new()
+            Label lbl = new()
             {
                 Text = "Hello, World",
                 FontName = font,

@@ -1,139 +1,151 @@
 ﻿namespace ScottPlot;
 
-[Obsolete("", true)]
 public class Label
 {
+    public bool IsVisible { get; set; } = true;
     public string Text { get; set; } = string.Empty;
-    public FontStyle Font { get; set; } = new();
-    public Color BackgroundColor { get; set; } = Colors.Transparent;
-    public LineStyle Border { get; set; } = new() { Width = 0 };
-    public bool AntiAlias { get; set; } = true;
-    public Alignment Alignment { get; set; } = Alignment.UpperLeft;
+
+    public Alignment Alignment { get; set; } = 0;
+
+    /// <summary>
+    /// Rotation in degrees clockwise from 0 (horizontal text)
+    /// </summary>
     public float Rotation { get; set; } = 0;
-    public float PointSize { get; set; } = 0;
-    public Color PointColor { get; set; } = Colors.Magenta;
-    public float Padding { get; set; } = 0;
 
-    private SKPaint MakeBackgroundPaint()
+    public Color ForeColor { get; set; } = Colors.Black;
+
+    public Color BackColor { get; set; } = Colors.Transparent;
+
+    public Color BorderColor { get; set; } = Colors.Transparent;
+
+    public float BorderWidth { get; set; } = 1;
+
+    private SKTypeface? CachedTypeface = null;
+    private SKTypeface Typeface => CachedTypeface ??= FontStyle.CreateTypeface(FontName, Bold, Italic);
+    public string FontName { get; set; } = Fonts.Default; // TODO: font lookup and caching
+    public float FontSize { get; set; } = 12;
+    public bool Bold = false;
+    public bool Italic = false;
+    public bool AntiAlias = true;
+    public float Padding = 0;
+
+    public float PointSize = 0;
+    public bool PointFilled = false;
+    public Color PointColor = Colors.Magenta;
+
+    public float OffsetX = 0; // TODO: automatic padding support for arbitrary rotations
+    public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
+
+    private void ApplyPointPaint(SKPaint paint)
     {
-        return new SKPaint()
-        {
-            IsStroke = false,
-            Color = BackgroundColor.ToSKColor(),
-            IsAntialias = AntiAlias,
-            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-        };
+        paint.IsStroke = !PointFilled;
+        paint.StrokeWidth = 1;
+        paint.Color = PointColor.ToSKColor();
+        paint.IsAntialias = AntiAlias;
     }
 
-    private SKPaint MakeBorderPaint()
+    private void ApplyBorderPaint(SKPaint paint)
     {
-        return new SKPaint()
-        {
-            IsStroke = true,
-            Color = Border.Color.ToSKColor(),
-            IsAntialias = AntiAlias,
-            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-        };
+        paint.IsStroke = true;
+        paint.StrokeWidth = BorderWidth;
+        paint.Color = BorderColor.ToSKColor();
+        paint.IsAntialias = AntiAlias;
     }
 
-    private SKPaint MakePointPaint()
+    private void ApplyBackgroundPaint(SKPaint paint)
     {
-        return new SKPaint()
-        {
-            IsStroke = false,
-            Color = PointColor.ToSKColor(),
-            IsAntialias = AntiAlias,
-            FilterQuality = AntiAlias ? SKFilterQuality.High : SKFilterQuality.Low,
-        };
+        paint.IsStroke = false;
+        paint.Color = BackColor.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+    }
+
+    private void ApplyTextPaint(SKPaint paint)
+    {
+        paint.TextAlign = SKTextAlign.Left;
+        paint.IsStroke = false;
+        paint.Typeface = Typeface;
+        paint.TextSize = FontSize;
+        paint.Color = ForeColor.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+    }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        ApplyTextPaint(paint);
+    }
+
+    public void Render(SKCanvas canvas, Pixel pixel)
+    {
+        Render(canvas, pixel.X, pixel.Y);
+    }
+
+    public void Render(SKCanvas canvas, float x, float y)
+    {
+        using SKPaint paint = new();
+        Render(canvas, x, y, paint);
     }
 
     public PixelSize Measure()
     {
-        return Measure(Text);
+        using SKPaint paint = new();
+        return Measure(paint);
     }
 
-    public PixelSize Measure(string text)
+    public PixelSize Measure(SKPaint paint)
     {
-        using SKPaint paint = new();
-        Font.ApplyToPaint(paint);
-        SKRect textBounds = new();
-        paint.MeasureText(text, ref textBounds);
-        return textBounds.ToPixelSize();
-    }
-
-    public PixelRect GetRectangle(Pixel pixel)
-    {
-        using SKPaint paint = new();
-        Font.ApplyToPaint(paint);
-
+        ApplyTextPaint(paint);
         SKRect textBounds = new();
         paint.MeasureText(Text, ref textBounds);
-        return textBounds.ToPixelSize().ToPixelRect(pixel, Alignment);
+        return new PixelSize(textBounds.Width, textBounds.Height);
     }
 
-    public void Draw(SKCanvas canvas, Pixel px)
+    public void Render(SKCanvas canvas, float x, float y, SKPaint paint)
     {
-        Draw(canvas, px.X, px.Y);
-    }
+        PixelSize size = Measure(paint);
 
-    public void Draw(SKCanvas canvas, float x, float y)
-    {
-        using SKPaint paint = new();
-        Draw(canvas, x, y, paint);
-    }
-
-    public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
-    {
-        Font.ApplyToPaint(paint);
-
-        paint.TextAlign = Alignment.ToSKTextAlign();
-        SKRect textBounds = new();
-        paint.MeasureText(Text, ref textBounds);
-        float xOffset = textBounds.Width * Alignment.HorizontalFraction();
-        float yOffset = textBounds.Height * Alignment.VerticalFraction();
-        PixelRect textRect = new(0, textBounds.Width, textBounds.Height, 0);
-        textRect = textRect.WithDelta(-xOffset, yOffset - textBounds.Height);
+        float xOffset = size.Width * Alignment.HorizontalFraction();
+        float yOffset = size.Height * Alignment.VerticalFraction();
+        PixelRect textRect = new(0, size.Width, size.Height, 0);
+        textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
 
-        // NOTE: translation to adjust for padding is incorrect when rotation is enabled
-        // https://github.com/ScottPlot/ScottPlot/issues/2993
+        canvas.Save();
+        canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
+        canvas.RotateDegrees(Rotation);
+        ApplyBackgroundPaint(paint);
+        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        ApplyTextPaint(paint);
 
-        // TODO: use better logic that covers all cases
-        if (Rotation == 0 && Alignment.IsUpperEdge())
+        if (Text.Contains('\n'))
         {
-            y += Padding;
+            // TODO: multiline support could be significantly improved
+            string[] lines = Text.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                canvas.DrawText(lines[i], textRect.Left, textRect.Bottom + i * paint.FontSpacing, paint);
+            }
+        }
+        else
+        {
+            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
         }
 
-        // TODO: use better logic that covers all cases
-        if (Rotation == -90 && Alignment.IsLowerEdge())
-        {
-            x -= Padding;
-        }
+        ApplyBorderPaint(paint);
+        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        canvas.Restore();
 
         canvas.Save();
-        canvas.Translate(x, y);
+        canvas.Translate(x, y); // do not compensate for padding
         canvas.RotateDegrees(Rotation);
-
-        if (BackgroundColor.Alpha > 0)
-        {
-            using SKPaint backgroundPaint = MakeBackgroundPaint();
-            canvas.DrawRect(backgroundRect.ToSKRect(), backgroundPaint);
-        }
-
-        canvas.DrawText(Text, new(0, yOffset), paint);
-
-        if (Border.Width > 0)
-        {
-            using SKPaint borderPaint = MakeBorderPaint();
-            canvas.DrawRect(backgroundRect.ToSKRect(), borderPaint);
-        }
 
         if (PointSize > 0)
         {
-            using SKPaint pointPaint = MakePointPaint();
-            canvas.DrawCircle(new SKPoint(0, 0), PointSize, pointPaint);
+            ApplyPointPaint(paint);
+            canvas.DrawCircle(0, 0, PointSize, paint);
         }
 
+        canvas.DrawLine(-PointSize, 0, PointSize, 0, paint);
+        canvas.DrawLine(0, -PointSize, 0, PointSize, paint);
         canvas.Restore();
     }
 }

@@ -7,7 +7,7 @@ internal class LabelTests
     [Test]
     public void Test_Label_Basic()
     {
-        ScottPlot.LabelExperimental lbl = new()
+        ScottPlot.Label lbl = new()
         {
             Text = "Test",
             PointSize = 5,
@@ -44,7 +44,7 @@ internal class LabelTests
     [Test]
     public void Test_Label_Multiline()
     {
-        ScottPlot.LabelExperimental lbl = new()
+        ScottPlot.Label lbl = new()
         {
             Text = "One\nTwo",
             ForeColor = Colors.White.WithAlpha(.5),

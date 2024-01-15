@@ -10,7 +10,7 @@ public class TitlePanel : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
-    public LabelExperimental Label { get; } = new()
+    public Label Label { get; } = new()
     {
         Text = string.Empty,
         FontSize = 16,

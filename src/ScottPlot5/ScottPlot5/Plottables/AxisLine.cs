@@ -9,7 +9,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
 
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly LabelExperimental Label = new();
+    public readonly Label Label = new();
     public float FontSize { get => Label.FontSize; set => Label.FontSize = value; }
     public bool FontBold { get => Label.Bold; set => Label.Bold = value; }
     public string FontName { get => Label.FontName; set => Label.FontName = value; }

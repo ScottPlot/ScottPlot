@@ -2,7 +2,7 @@
 
 public class Text : IPlottable
 {
-    public readonly LabelExperimental Label = new();
+    public readonly Label Label = new();
     public Coordinates Location { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();

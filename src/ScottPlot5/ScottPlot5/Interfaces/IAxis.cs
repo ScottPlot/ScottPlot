@@ -50,13 +50,13 @@ public interface IAxis : IPanel
     /// <summary>
     /// The label is the text displayed distal to the ticks
     /// </summary>
-    LabelExperimental Label { get; }
+    Label Label { get; }
 
     TickMarkStyle MajorTickStyle { get; set; }
 
     TickMarkStyle MinorTickStyle { get; set; }
 
-    LabelExperimental TickLabelStyle { get; set; }
+    Label TickLabelStyle { get; set; }
 
     LineStyle FrameLineStyle { get; }
 }
