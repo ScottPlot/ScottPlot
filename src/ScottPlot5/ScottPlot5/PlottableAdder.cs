@@ -126,6 +126,18 @@ public class PlottableAdder
         return colorBar;
     }
 
+    public DataLogger DataLogger()
+    {
+        DataLogger logger = new()
+        {
+            Color = GetNextColor(),
+        };
+
+        Plot.PlottableList.Add(logger);
+
+        return logger;
+    }
+
     public DataStreamer DataStreamer(int points, double period = 1)
     {
         double[] data = new double[points];

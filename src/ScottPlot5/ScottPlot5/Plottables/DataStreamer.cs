@@ -142,5 +142,7 @@ public class DataStreamer : IPlottable
         }
 
         Renderer.Render(rp);
+
+        DataSource.CountTotalOnLastRender = DataSource.CountTotal;
     }
 }

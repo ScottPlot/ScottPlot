@@ -1,21 +1,21 @@
 ﻿namespace WinForms_Demo.Demos;
-public partial class DataStreamer : Form, IDemoWindow
+
+public partial class DataLogger : Form, IDemoWindow
 {
-    public string Title => "Data Streamer";
-    public string Description => "Plots live streaming data as a fixed-width line plot, " +
-        "shifting old data out as new data comes in.";
+    public string Title => "Data Logger";
+    public string Description => "Plots live streaming data as a growing line plot.";
 
     readonly System.Windows.Forms.Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottables.DataStreamer Streamer;
+    readonly ScottPlot.Plottables.DataLogger Logger;
     readonly ScottPlot.Generate.RandomWalker Walker = new();
 
-    public DataStreamer()
+    public DataLogger()
     {
         InitializeComponent();
 
-        Streamer = formsPlot1.Plot.Add.DataStreamer(1000);
+        Logger = formsPlot1.Plot.Add.DataLogger();
 
         // disable mouse interaction by default
         formsPlot1.Interaction.Disable();
@@ -24,33 +24,34 @@ public partial class DataStreamer : Form, IDemoWindow
         AddNewDataTimer.Tick += (s, e) =>
         {
             double[] newValues = Walker.GetNext(10);
-            Streamer.AddRange(newValues);
+            Logger.Add(newValues);
         };
 
         // setup a timer to request a render periodically
         UpdatePlotTimer.Tick += (s, e) =>
         {
-            if (Streamer.HasNewData)
+            if (Logger.HasNewData)
             {
-                formsPlot1.Plot.Title($"Processed {Streamer.DataSource.CountTotal:N0} points");
+                formsPlot1.Plot.Title($"Processed {Logger.DataSource.CountTotal:N0} points");
                 formsPlot1.Refresh();
             }
         };
 
         // setup configuration actions
-        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight();
-        btnScrollLeft.Click += (s, e) => Streamer.ViewScrollLeft();
+        btnFull.Click += (s, e) => Logger.ViewFull();
+        btnJump.Click += (s, e) => Logger.ViewJump();
+        btnSlide.Click += (s, e) => Logger.ViewSlide();
         cbManageLimits.CheckedChanged += (s, e) =>
         {
             if (cbManageLimits.Checked)
             {
-                Streamer.ManageAxisLimits = true;
+                Logger.ManageAxisLimits = true;
                 formsPlot1.Interaction.Disable();
                 formsPlot1.Plot.Axes.AutoScale();
             }
             else
             {
-                Streamer.ManageAxisLimits = false;
+                Logger.ManageAxisLimits = false;
                 formsPlot1.Interaction.Enable();
             }
         };

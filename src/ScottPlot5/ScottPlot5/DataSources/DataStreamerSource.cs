@@ -27,7 +27,7 @@ public class DataStreamerSource
     /// Total of data points added the last time this plottable was rendered.
     /// This can be compared with <see cref="CountTotal"/> to determine if a new render is required.
     /// </summary>
-    public int CountTotalOnLastRender { get; private set; } = -1;
+    public int CountTotalOnLastRender { get; set; } = -1;
 
     /// <summary>
     /// Minimum value of all known data (not just the data in view)
