@@ -18,27 +18,27 @@ public class Wipe : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        int newestCount = Streamer.NextIndex;
-        int oldestCount = Streamer.Data.Length - newestCount;
+        int newestCount = Streamer.DataSource.NextIndex;
+        int oldestCount = Streamer.DataSource.Data.Length - newestCount;
 
-        double xMax = Streamer.Data.Length * Streamer.SamplePeriod + Streamer.OffsetX;
+        double xMax = Streamer.DataSource.Data.Length * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
 
         Pixel[] newest = new Pixel[newestCount];
         Pixel[] oldest = new Pixel[oldestCount];
 
         for (int i = 0; i < newest.Length; i++)
         {
-            double xPos = i * Streamer.SamplePeriod + Streamer.OffsetX;
+            double xPos = i * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
-            float y = Streamer.Axes.GetPixelY(Streamer.Data[i] + Streamer.OffsetY);
+            float y = Streamer.Axes.GetPixelY(Streamer.DataSource.Data[i] + Streamer.DataSource.OffsetY);
             newest[i] = new(x, y);
         }
 
         for (int i = 0; i < oldest.Length; i++)
         {
-            double xPos = (i + Streamer.NextIndex) * Streamer.SamplePeriod + Streamer.OffsetX;
+            double xPos = (i + Streamer.DataSource.NextIndex) * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
-            float y = Streamer.Axes.GetPixelY(Streamer.Data[i + Streamer.NextIndex] + Streamer.OffsetY);
+            float y = Streamer.Axes.GetPixelY(Streamer.DataSource.Data[i + Streamer.DataSource.NextIndex] + Streamer.DataSource.OffsetY);
             oldest[i] = new(x, y);
         }
 

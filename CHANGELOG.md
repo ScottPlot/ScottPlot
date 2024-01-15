@@ -5,6 +5,7 @@
 * https://scottplot.net/contributors/ shows all of ScottPlot's contributors
 
 ## ScottPlot 5.0.16 (not yet on NuGet)
+* Data Streamer: A new plot type for displaying live data as a fixed-width line trace (#3205)
 * Generate: Created a `Generate.RandomWalker` class for producing an infinite amount of streaming random data
 
 ## ScottPlot 5.0.15

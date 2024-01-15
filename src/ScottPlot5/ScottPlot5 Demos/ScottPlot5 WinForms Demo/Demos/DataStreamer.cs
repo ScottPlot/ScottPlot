@@ -9,41 +9,49 @@ public partial class DataStreamer : Form, IDemoWindow
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
     readonly ScottPlot.Plottables.DataStreamer Streamer;
-
-    readonly Random Rand = new();
-
-    double LastPointValue = 0;
+    readonly ScottPlot.Generate.RandomWalker Walker = new();
 
     public DataStreamer()
     {
         InitializeComponent();
 
-        double[] data = new double[1000];
-        Streamer = new ScottPlot.Plottables.DataStreamer(formsPlot1.Plot, data);
-        formsPlot1.Plot.Add.Plottable(Streamer);
+        Streamer = formsPlot1.Plot.Add.DataStreamer(1000);
 
-        //btnWipeRight_Click(null, EventArgs.Empty);
-        //cbManageLimits_CheckedChanged(null, EventArgs.Empty);
+        // disable mouse interaction by default
+        formsPlot1.Interaction.Disable();
 
-        AddNewDataTimer.Tick += (s, e) => AddRandomWalkData();
-        UpdatePlotTimer.Tick += (s, e) => UpdatePlotTimer_Tick(this, EventArgs.Empty);
-    }
-
-    private void AddRandomWalkData()
-    {
-        int count = Rand.Next(10);
-        for (int i = 0; i < count; i++)
+        // setup a timer to add data to the streamer periodically
+        AddNewDataTimer.Tick += (s, e) =>
         {
-            LastPointValue = LastPointValue + Rand.NextDouble() - .5;
-            Streamer.Add(LastPointValue);
-        }
-    }
+            double[] newValues = Walker.GetNext(10);
+            Streamer.AddRange(newValues);
+        };
 
-    private void UpdatePlotTimer_Tick(object sender, EventArgs e)
-    {
-        if (Streamer.CountTotal != Streamer.CountTotalOnLastRender)
-            formsPlot1.Refresh();
+        // setup a timer to request a render periodically
+        UpdatePlotTimer.Tick += (s, e) =>
+        {
+            if (Streamer.HasNewData)
+            {
+                formsPlot1.Plot.Title($"Processed {Streamer.DataSource.CountTotal:N0} points");
+                formsPlot1.Refresh();
+            }
+        };
 
-        Text = $"DataStreamer Demo ({Streamer.CountTotal:N0} points)";
+        // setup configuration actions
+        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight();
+        btnScrollLeft.Click += (s, e) => Streamer.ViewScrollLeft();
+        cbManageLimits.CheckedChanged += (s, e) =>
+        {
+            if (cbManageLimits.Checked)
+            {
+                Streamer.ManageAxisLimits = true;
+                formsPlot1.Interaction.Disable();
+            }
+            else
+            {
+                Streamer.ManageAxisLimits = false;
+                formsPlot1.Interaction.Enable();
+            }
+        };
     }
 }

@@ -16,18 +16,18 @@ public class Scroll : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        Pixel[] points = new Pixel[Streamer.Data.Length];
+        Pixel[] points = new Pixel[Streamer.DataSource.Length];
 
-        int oldPointCount = Streamer.Data.Length - Streamer.NextIndex;
+        int oldPointCount = Streamer.DataSource.Length - Streamer.DataSource.NextIndex;
 
-        for (int i = 0; i < Streamer.Data.Length; i++)
+        for (int i = 0; i < Streamer.DataSource.Length; i++)
         {
             bool isNewPoint = i < oldPointCount;
-            int sourceIndex = isNewPoint ? Streamer.NextIndex + i : i - oldPointCount;
-            int targetIndex = NewOnRight ? i : Streamer.Data.Length - 1 - i;
+            int sourceIndex = isNewPoint ? Streamer.DataSource.NextIndex + i : i - oldPointCount;
+            int targetIndex = NewOnRight ? i : Streamer.DataSource.Data.Length - 1 - i;
             points[targetIndex] = new(
-                x: Streamer.Axes.GetPixelX(targetIndex * Streamer.SamplePeriod + Streamer.OffsetX),
-                y: Streamer.Axes.GetPixelY(Streamer.Data[sourceIndex] + Streamer.OffsetY));
+                x: Streamer.Axes.GetPixelX(targetIndex * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX),
+                y: Streamer.Axes.GetPixelY(Streamer.DataSource.Data[sourceIndex] + Streamer.DataSource.OffsetY));
         }
 
         using SKPaint paint = new();
