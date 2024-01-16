@@ -32,6 +32,18 @@ public class Text : IPlottable
         set => Label.Rotation = value;
     }
 
+    public string LabelText
+    {
+        get => Label.Text;
+        set => Label.Text = value;
+    }
+
+    public string FontName
+    {
+        get => Label.FontName;
+        set => Label.FontName = value;
+    }
+
     public Text()
     {
 
