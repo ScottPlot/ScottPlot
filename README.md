@@ -4,7 +4,7 @@
 [![](https://img.shields.io/nuget/dt/scottplot?color=004880&label=Downloads&logo=NuGet)](https://www.nuget.org/packages/ScottPlot/)
 [![Discord](https://badgen.net/discord/members/Dru6fnY2UX?icon=discord&color=5562ea&label=Discord)](https://scottplot.net/discord/)
 
-**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/4.1/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5.0/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
 * **[ScottPlot Cookbook](https://scottplot.net/cookbook)** 👈 _Learn how to use ScottPlot_
 
@@ -23,17 +23,15 @@
 
 <a href='https://scottplot.net'><img src='dev/graphics/ScottPlot.gif'></a>
 
-<a href='https://scottplot.net/cookbook/4.1/'><img src='dev/graphics/cookbook.jpg'></a>
+<a href='https://scottplot.net/cookbook/5.0/'><img src='dev/graphics/cookbook.jpg'></a>
 
 </div>
 
 ## Versions
 
-* **✔️ ScottPlot 4** is stable and recommended for all users
+* **ScottPlot 5.0 is the newest version of ScottPlot.** ScottPlot 5 is actively developed and supports all operating systems. The API is similar but not identical to ScottPlot 4. See the [What's New in ScottPlot 5.0](https://scottplot.net/faq/version-5.0/) page for details.
 
-* **⚠️ ScottPlot 5** is in preview and not recommended for production use
-
-* 💡 See https://scottplot.net/versions/ for more information
+* **ScottPlot 4.1 is a stable version of ScottPlot** which continues to be maintained but no longer receives major new features. ScottPlot 4 supported all operating systems through .NET 6, but after .NET 7 it can only be used in projects that target Windows.
 
 ## Community
 
