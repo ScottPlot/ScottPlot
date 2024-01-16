@@ -3,7 +3,7 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable
+public class DataStreamer : IPlottable, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
@@ -131,18 +131,17 @@ public class DataStreamer : IPlottable
         return DataSource.GetAxisLimits();
     }
 
+    public void UpdateAxisLimits(Plot plot, bool force = false)
+    {
+        AxisLimits limits = Plot.Axes.GetLimits(Axes);
+        AxisLimits dataLimits = DataSource.GetAxisLimits();
+        AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
+        Plot.Axes.SetLimits(newLimits);
+    }
+
     public void Render(RenderPack rp)
     {
-        if (ManageAxisLimits)
-        {
-            AxisLimits limits = Plot.Axes.GetLimits(Axes);
-            AxisLimits dataLimits = DataSource.GetAxisLimits();
-            AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
-            Plot.Axes.SetLimits(newLimits);
-        }
-
         Renderer.Render(rp);
-
         DataSource.CountTotalOnLastRender = DataSource.CountTotal;
     }
 }

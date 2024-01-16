@@ -68,6 +68,7 @@ public class RenderManager
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.EnsureAxesHaveArea(),
+        new RenderActions.ExecutePlottableAxisManagers(),
         new RenderActions.ApplyAxisRulesBeforeLayout(),
         new RenderActions.CalculateLayout(),
         new RenderActions.ApplyAxisRulesAfterLayout(),

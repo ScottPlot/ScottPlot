@@ -4,7 +4,7 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataLogger : IPlottable
+public class DataLogger : IPlottable, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
@@ -23,7 +23,7 @@ public class DataLogger : IPlottable
     /// </summary>
     public bool HasNewData => DataSource.CountTotal != DataSource.CountOnLastRender;
 
-    private void UpdateAxisLimits(Plot plot, bool force = false)
+    public void UpdateAxisLimits(Plot plot, bool force = false)
     {
         AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes);
         AxisLimits dataLimits = GetAxisLimits();
@@ -49,18 +49,10 @@ public class DataLogger : IPlottable
 
     public void Render(RenderPack rp)
     {
-        if (ManageAxisLimits)
-        {
-            UpdateAxisLimits(rp.Plot);
-        }
+        IEnumerable<Pixel> points = DataSource.Coordinates.Select(Axes.GetPixel);
 
-        Pixel[] points = DataSource.Coordinates.Select(Axes.GetPixel).ToArray();
-
-        if (points.Length > 1)
-        {
-            using SKPaint paint = new();
-            Drawing.DrawLines(rp.Canvas, paint, points, LineStyle);
-        }
+        using SKPaint paint = new();
+        Drawing.DrawLines(rp.Canvas, paint, points, LineStyle);
 
         DataSource.CountOnLastRender = DataSource.CountTotal;
     }
