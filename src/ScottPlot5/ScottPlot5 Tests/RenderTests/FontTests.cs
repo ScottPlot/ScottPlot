@@ -15,30 +15,37 @@ internal class FontTests
     [Test]
     public void Test_Font_SpecialCharacters()
     {
-        string chinese = "测试";
-        string japanese = "試験";
-        string korean = "테스트";
-        string msg = $"Chinese: {chinese} " +
-            $"Japanese: {japanese} " +
-            $"Korean: {korean}";
+        List<(string, string)> samples = new()
+        {
+            ( "English", "Test" ),
+            ( "Chinese", "测试" ),
+            ( "Japanese", "試験" ),
+            ( "Korean", "테스트" ),
+        };
 
-        Plot plt1 = new();
-        plt1.Title($"[{Fonts.Default}] {msg}");
-        plt1.SaveTestImage(600, 400, "default");
+        Plot myPlot = new();
+        myPlot.HideGrid();
 
-        Fonts.Default = Fonts.Detect(chinese) ?? Fonts.System;
-        Plot plt2 = new();
-        plt2.Title($"[{Fonts.Default}] {msg}");
-        plt2.SaveTestImage(600, 400, "chinese");
+        for (int i = 0; i < samples.Count; i++)
+        {
+            string language = samples[i].Item1;
+            string text = samples[i].Item2;
 
-        Fonts.Default = Fonts.Detect(japanese) ?? Fonts.System;
-        Plot plt3 = new();
-        plt3.Title($"[{Fonts.Default}] {msg}");
-        plt3.SaveTestImage(600, 400, "japanese");
+            var txtSample = myPlot.Add.Text(text, 1, i);
+            txtSample.Size = 22;
+            txtSample.FontName = Fonts.Detect(text); // this works
+            txtSample.Label.SetBestFont(); // this also works
+            txtSample.Color = Colors.Magenta;
 
-        Fonts.Default = Fonts.Detect(korean) ?? Fonts.System;
-        Plot plt4 = new();
-        plt4.Title($"[{Fonts.Default}] {msg}");
-        plt4.SaveTestImage(600, 400, "korean");
+            var txtLanguage = myPlot.Add.Text(language, 0, i);
+            txtLanguage.Size = 22;
+
+            var txtFont = myPlot.Add.Text(txtSample.FontName, 2, i);
+            txtFont.Size = 22;
+            txtFont.Color = Colors.Green;
+        }
+
+        myPlot.Axes.SetLimits(-.5, 4.5, -.5, 3.5);
+        myPlot.SaveTestImage();
     }
 }

@@ -31,28 +31,30 @@ public static class Fonts
     public static string System { get; } = SKTypeface.Default.FamilyName;
 
     /// <summary>
-    /// Return the name of the font which will best display the given character.
-    /// This method helps identify the best fonts for displaying Chinese, Japanese, and Korean (CJK) characters.
+    /// Returns the name of the installed font most likely to support this character set
+    /// or null if an ideal font can be determined.
     /// </summary>
     public static string? Detect(char c)
     {
-        // https://github.com/ScottPlot/ScottPlot/issues/2746
-        var tf = SKFontManager.Default.MatchCharacter(c);
-
-        if (tf is null)
-            return null;
-
-        return tf.FamilyName;
+        return SKFontManager.Default.MatchCharacter(c)?.FamilyName ?? null;
     }
 
     /// <summary>
-    /// Return the name of the font which will best display the given the first character of the given string.
-    /// This method helps identify the best fonts for displaying Chinese, Japanese, and Korean (CJK) characters.
+    /// Use the characters in the string to detetermine an installed system font 
+    /// most likely to support this character set. 
+    /// Returns the system <see cref="Default"/> font if an ideal font cannot be determined.
     /// </summary>
-    public static string? Detect(string s)
+    public static string Detect(string s)
     {
-        ReadOnlySpan<char> chars = s.AsSpan();
-        return Detect(chars[0]);
+        CountingCollection<string> counts = new();
+
+        IEnumerable<string> names = s.ToCharArray()
+            .Select(x => Detect(x) ?? string.Empty)
+            .Where(x => !string.IsNullOrEmpty(x));
+
+        counts.AddRange(names);
+
+        return counts.Any() ? counts.SortedKeys.Last() : Default;
     }
 
     /// <summary>
