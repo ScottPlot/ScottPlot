@@ -127,11 +127,6 @@ public class AvaPlot : Controls.Control, IPlotControl
         Interaction.KeyUp(e.ToKey());
     }
 
-    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
-    {
-        return Plot.GetCoordinates(px, xAxis, yAxis);
-    }
-
     public float DetectDisplayScale()
     {
         // TODO: improve support for DPI scale detection

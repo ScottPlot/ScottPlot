@@ -33,12 +33,6 @@ public interface IPlotControl
     GRContext? GRContext { get; }
 
     /// <summary>
-    /// Logic for translating screen position (pixels) to coordinates in (axis units).
-    /// Implementers must add logic to compensate for DPI scaling.
-    /// </summary>
-    Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null); // TODO: deprecate this
-
-    /// <summary>
     /// Determine the DPI scaling ratio of the present display.
     /// A value of 1.0 means no scaling, and 1.5 means 150% scaling.
     /// This operation may be costly so do not call it frequently.

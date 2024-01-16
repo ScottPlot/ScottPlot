@@ -108,11 +108,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         base.OnKeyUp(e);
     }
 
-    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
-    {
-        return Plot.GetCoordinates(px.X, px.Y, xAxis, yAxis);
-    }
-
     public float DetectDisplayScale()
     {
         using Graphics gfx = CreateGraphics();

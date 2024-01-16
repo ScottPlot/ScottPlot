@@ -45,11 +45,6 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         return 1.0f;
     }
 
-    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
-    {
-        return Plot.GetCoordinates(px, xAxis, yAxis);
-    }
-
     public virtual void Refresh() { }
 
     public Plot Reset()

@@ -115,11 +115,6 @@ public class EtoPlot : Drawable, IPlotControl
         Refresh();
     }
 
-    public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
-    {
-        return Plot.GetCoordinates(px, xAxis, yAxis);
-    }
-
     public float DetectDisplayScale()
     {
         // TODO: improve support for DPI scale detection

@@ -17,7 +17,7 @@ public partial class Form1 : Form
         formsPlot1.MouseMove += (s, e) =>
         {
             Pixel mousePixel = new(e.X, e.Y);
-            Coordinates mouseCoordinates = formsPlot1.GetCoordinates(mousePixel);
+            Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(mousePixel);
             crosshair.Position = mouseCoordinates;
             formsPlot1.Refresh();
         };

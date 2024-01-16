@@ -105,13 +105,6 @@ namespace ScottPlot.WPF
             Interaction.KeyUp(e.Key());
         }
 
-        public Coordinates GetCoordinates(Pixel px, IXAxis? xAxis = null, IYAxis? yAxis = null)
-        {
-            float x = px.X * DisplayScale;
-            float y = px.Y * DisplayScale;
-            return Plot.GetCoordinates(x, y, xAxis, yAxis);
-        }
-
         public float DetectDisplayScale()
         {
             return (float)VisualTreeHelper.GetDpi(this).DpiScaleX;
