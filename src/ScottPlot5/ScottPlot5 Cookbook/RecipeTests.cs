@@ -45,4 +45,16 @@ internal class RecipeTests
         db.Recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
         db.Recipes.Select(x => x.RecipeUrl).Should().OnlyHaveUniqueItems();
     }
+
+    [Test]
+    public static void Test_ChaptersList_HasAllChapters()
+    {
+        var orderedChapterNames = Query.GetChapterNamesInOrder();
+        var recipeChapterNames = Query.GetCategories().Select(x => x.Chapter).Distinct();
+
+        foreach (string chapter in recipeChapterNames)
+        {
+            orderedChapterNames.Should().Contain(chapter);
+        }
+    }
 }
