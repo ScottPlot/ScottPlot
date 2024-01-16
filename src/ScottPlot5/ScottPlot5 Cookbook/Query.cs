@@ -13,6 +13,7 @@ public static class Query
             "Axis",
             "Plot Types",
             "Statistics",
+            "Miscellaneous"
         };
     }
 
