@@ -36,6 +36,15 @@ public class Label
     public float OffsetX = 0; // TODO: automatic padding support for arbitrary rotations
     public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
 
+    /// <summary>
+    /// Use the characters in <see cref="Text"/> to detetermine an installed 
+    /// system font most likely to support this character set.
+    /// </summary>
+    public void SetBestFont()
+    {
+        FontName = Fonts.Detect(Text);
+    }
+
     private void ApplyPointPaint(SKPaint paint)
     {
         paint.IsStroke = !PointFilled;

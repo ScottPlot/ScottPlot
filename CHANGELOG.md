@@ -11,6 +11,7 @@
 * Ticks: Improved support for multi-line tick labels on vertical axes (#3208) _Thanks @raburton_
 * Text: Exposed `FontName` and `LabelText` properties
 * Internationalization: `Fonts.Detect()` now inspects all characters instead of just the first (#3184, #2746) _Thanks @prime167_
+* Label: Added `SetBestFont()` to apply the installed font most likely able to display characters in the label (#3184, #2746) _Thanks @prime167_
 
 ## ScottPlot 5.0.15
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-14_
