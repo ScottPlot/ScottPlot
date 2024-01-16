@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Grids;
 
-public class DefaultGrid : IGrid
+public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
 {
     public bool IsVisible { get; set; } = true;
     public LineStyle MajorLineStyle = new() { Width = 1, Color = Colors.Black.WithOpacity(.1) };
@@ -10,14 +10,8 @@ public class DefaultGrid : IGrid
 
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public IXAxis XAxis { get; private set; }
-    public IYAxis YAxis { get; private set; }
-
-    public DefaultGrid(IXAxis xAxis, IYAxis yAxis)
-    {
-        XAxis = xAxis;
-        YAxis = yAxis;
-    }
+    public IXAxis XAxis { get; private set; } = xAxis;
+    public IYAxis YAxis { get; private set; } = yAxis;
 
     public void Replace(IXAxis xAxis)
     {
@@ -34,18 +28,21 @@ public class DefaultGrid : IGrid
         if (!IsVisible)
             return;
 
+        var xTicks = XAxis.TickGenerator.Ticks.Where(x => x.Position >= XAxis.Min && x.Position <= XAxis.Max);
+        var yTicks = YAxis.TickGenerator.Ticks.Where(x => x.Position >= YAxis.Min && x.Position <= YAxis.Max);
+
         if (MinorLineStyle.Width > 0)
         {
-            float[] xTicksMinor = XAxis.TickGenerator.Ticks.Where(x => !x.IsMajor).Select(x => XAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
-            float[] yTicksMinor = YAxis.TickGenerator.Ticks.Where(x => !x.IsMajor).Select(x => YAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
+            float[] xTicksMinor = xTicks.Where(x => !x.IsMajor).Select(x => XAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
+            float[] yTicksMinor = yTicks.Where(x => !x.IsMajor).Select(x => YAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
             RenderGridLines(rp, xTicksMinor, XAxis.Edge, MinorLineStyle);
             RenderGridLines(rp, yTicksMinor, YAxis.Edge, MinorLineStyle);
         }
 
         if (MajorLineStyle.Width > 0)
         {
-            float[] xTicksMajor = XAxis.TickGenerator.Ticks.Where(x => x.IsMajor).Select(x => XAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
-            float[] yTicksMajor = YAxis.TickGenerator.Ticks.Where(x => x.IsMajor).Select(x => YAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
+            float[] xTicksMajor = xTicks.Where(x => x.IsMajor).Select(x => XAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
+            float[] yTicksMajor = yTicks.Where(x => x.IsMajor).Select(x => YAxis.GetPixel(x.Position, rp.DataRect)).ToArray();
             RenderGridLines(rp, xTicksMajor, XAxis.Edge, MajorLineStyle);
             RenderGridLines(rp, yTicksMajor, YAxis.Edge, MajorLineStyle);
         }

@@ -14,6 +14,7 @@
 * Label: Added `SetBestFont()` to apply the installed font most likely able to display characters in the label (#3184, #2746) _Thanks @prime167_
 * Style: Added `Plot.Style.SetBestFonts()` to apply the best font to all plot components (#3184, #2746) _Thanks @prime167_
 * Controls: Removed `GetCoordinates()` from `IPlotControl`. Users can call Plot.GetCoordinates()` directly. (#3199)
+* Ticks: Do not display manually defined grid lines, tick marks, or tick labels to appear outside the data area (#3207)
 
 ## ScottPlot 5.0.15
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-14_

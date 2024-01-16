@@ -90,9 +90,7 @@ public abstract class XAxisBase : AxisBase, IAxis
         Label.Alignment = Alignment.LowerCenter;
         Label.Render(rp.Canvas, labelPoint);
 
-        IEnumerable<Tick> ticks = TickGenerator.Ticks;
-
-        DrawTicks(rp, TickLabelStyle, panelRect, ticks, this, MajorTickStyle, MinorTickStyle);
+        DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
     }
 
