@@ -3,6 +3,9 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
+## ScottPlot 5.0.17 (not yet on NuGet)
+* Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
+
 ## ScottPlot 5.0.16
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-15_
 * Data Streamer: A new plot type for displaying live data as a fixed-width line trace (#3202, #3205)

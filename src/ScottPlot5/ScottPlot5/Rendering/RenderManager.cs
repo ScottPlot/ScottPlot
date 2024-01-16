@@ -51,6 +51,12 @@ public class RenderManager
     /// </summary>
     public bool ClearCanvasBeforeRendering { get; set; } = true;
 
+
+    /// <summary>
+    /// If false, any calls to Render() return immediately
+    /// </summary>
+    private bool EnableRendering { get; set; } = true;
+
     public bool EnableEvents { get; set; } = true;
 
     private Plot Plot { get; }
@@ -88,6 +94,9 @@ public class RenderManager
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
+        if (EnableRendering == false)
+            return;
+
         IsRendering = true;
         canvas.Scale(Plot.ScaleFactor);
 
