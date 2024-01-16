@@ -28,4 +28,21 @@ public class Internationalization : ICategory
             myPlot.Axes.Bottom.Label.FontName = Fonts.Detect(korean);
         }
     }
+
+    public class AutomaticFontDetection : RecipeBase
+    {
+        public override string Name => "Automatic Font Detection";
+        public override string Description => "The Plot's Style class contains a method " +
+            "which automatically sets the fonts of common plot objects to the font " +
+            "most likely able to display the characters they contain.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Title("测试"); // Chinese
+            myPlot.YLabel("試験"); // Japanese
+            myPlot.XLabel("테스트"); // Korean
+            myPlot.Style.SetBestFonts();
+        }
+    }
 }

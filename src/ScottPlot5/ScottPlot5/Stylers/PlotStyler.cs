@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System.ComponentModel;
 
 namespace ScottPlot.Stylers;
 
@@ -91,17 +92,34 @@ public class PlotStyler
             axis.Label.FontName = fontName;
             axis.TickLabelStyle.FontName = fontName;
         }
+
+        // TODO: also modify tick labels
+        // TODO: also modify plotted text
+    }
+
+    [Obsolete("use SetBestFonts()", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public bool SetFontFromText(string text)
+    {
+        throw new InvalidOperationException();
     }
 
     /// <summary>
-    /// Calls <see cref="SetFont(string)"/> using the system font best suited
-    /// to display the first character in the given string.
+    /// Detects the best font to apply to every label in the plot based on the characters the they contain.
+    /// If the best font for a label cannot be detected, the font last defined by <see cref="SetFont(string)"/> will be used.
     /// </summary>
-    public bool SetFontFromText(string text)
+    public void SetBestFonts()
     {
-        string? fontName = Fonts.Detect(text);
-        bool success = !string.IsNullOrEmpty(fontName);
-        SetFont(fontName ?? Fonts.Default);
-        return success;
+        // title
+        Plot.Axes.Title.Label.SetBestFont();
+
+        // axis labels and ticks
+        foreach (IAxis axis in Plot.Axes.GetAxes())
+        {
+            axis.Label.SetBestFont();
+        }
+
+        // TODO: also modify tick labels
+        // TODO: also modify plotted text
     }
 }
