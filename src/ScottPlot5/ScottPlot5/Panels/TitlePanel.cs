@@ -10,6 +10,11 @@ public class TitlePanel : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
+    public TitlePanel()
+    {
+        Label.Rotation = 0;
+    }
+
     public Label Label { get; } = new()
     {
         Text = string.Empty,

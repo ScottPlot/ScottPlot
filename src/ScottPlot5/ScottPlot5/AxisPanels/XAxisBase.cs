@@ -4,6 +4,11 @@ public abstract class XAxisBase : AxisBase, IAxis
 {
     public double Width => Range.Span;
 
+    public XAxisBase()
+    {
+        Label.Rotation = 0;
+    }
+
     public float Measure()
     {
         if (!IsVisible)
