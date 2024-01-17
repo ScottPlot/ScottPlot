@@ -3,7 +3,8 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
-## ScottPlot 5.0.17 (not yet on NuGet)
+## ScottPlot 5.0.17
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_
 * Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. See the [async FAQ page](https://scottplot.net/faq/async/) for usage details. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
 * WPF: Improved "Copy to Clipboard" functionality (#3214) _Thanks @MCF_
 * Controls: Created `FormsPlotViewer` and `WpfPlotViewer` for launching interactive plots from console applications. See the [Interactive Plots in Console Applications](https://scottplot.net/faq/launch-console/) page for details. (#3212, #308) _Thanks @chaojian-zhang_
