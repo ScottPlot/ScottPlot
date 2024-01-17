@@ -53,22 +53,6 @@ The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5.0/) demonstrates h
 
 [![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://scottplot.net/cookbook/5.0/)
 
-
-## Plot in the Cloud
-
-**ScottPlot does not require a GUI so it can be used to create plots in cloud applications.** The images below are regenerated hourly using Azure Functions to update star metrics from the GitHub API and download count from the NuGet API. The data is plotted with ScottPlot and saved as an image file in blob storage. Try it out!
-
-**Try it out!** [Give us a star](https://github.com/scottplot/scottplot) and come back in an hour and your name will appear here:
-
-
-<a href="https://stargraph.z20.web.core.windows.net/scottplot-stars.png" target="_blank">
-  <img src="https://stargraph.z20.web.core.windows.net/scottplot-stars.png?" class="d-block mx-auto my-5" >
-</a>
-
-<a href='https://nugetppt.z20.web.core.windows.net/plots/scottplot.png'>
-  <img src='https://nugetppt.z20.web.core.windows.net/plots/scottplot.png' class="d-block mx-auto my-5" >
-</a>
-
 # Versions
 
 * **ScottPlot 5.0 is the newest version of ScottPlot.** ScottPlot 5 is actively developed and supports all operating systems. The API is similar but not identical to ScottPlot 4. See the [What's New in ScottPlot 5.0](https://scottplot.net/faq/version-5.0/) page for details.
