@@ -22,9 +22,27 @@ public class DataLoggerSource
     public void Add(double y)
     {
         double x = Coordinates.Count * Period;
-        Coordinates.Add(new Coordinates(x, y));
-        YMin = Math.Min(YMin, y);
-        YMax = Math.Max(YMax, y);
+        Add(x, y);
+    }
+
+    public void Add(double x, double y)
+    {
+        Add(new Coordinates(x, y));
+    }
+
+    public void Add(Coordinates coordinates)
+    {
+        if (Coordinates.Any())
+        {
+            if (coordinates.X < Coordinates.Last().X)
+            {
+                throw new ArgumentException("new X values cannot be smaller than existing ones");
+            }
+        }
+
+        Coordinates.Add(coordinates);
+        YMin = Math.Min(YMin, coordinates.Y);
+        YMax = Math.Max(YMax, coordinates.Y);
     }
 
     public void Clear()

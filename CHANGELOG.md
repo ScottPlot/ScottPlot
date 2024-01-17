@@ -7,6 +7,7 @@
 * Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. See the [async FAQ page](https://scottplot.net/faq/async/) for usage details. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
 * WPF: Improved "Copy to Clipboard" functionality (#3214) _Thanks @MCF_
 * Controls: Created `FormsPlotViewer` and `WpfPlotViewer` for launching interactive plots from console applications. See the [Interactive Plots in Console Applications](https://scottplot.net/faq/launch-console/) page for details. (#3212, #308) _Thanks @chaojian-zhang_
+* DataLogger: Added `Add()` overloads which support X/Y pairs (#3210) _Thanks @devbotas_
 
 ## ScottPlot 5.0.16
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-15_

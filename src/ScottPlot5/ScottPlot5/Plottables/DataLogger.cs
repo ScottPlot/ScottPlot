@@ -28,6 +28,11 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes);
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
+
+        Debug.WriteLine("");
+        Debug.WriteLine(dataLimits);
+        Debug.WriteLine(newLimits);
+
         plot.Axes.SetLimits(newLimits);
 
         if (force)
@@ -39,11 +44,42 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         DataSource.Add(y);
     }
 
-    public void Add(IEnumerable<double> ys)
+    public void Add(double x, double y)
+    {
+        DataSource.Add(x, y);
+    }
+
+    public void Add(Coordinates coordinates)
+    {
+        DataSource.Add(coordinates);
+    }
+
+    public void Add(IReadOnlyList<double> ys)
     {
         foreach (double y in ys)
         {
             DataSource.Add(y);
+        }
+    }
+
+    public void Add(IReadOnlyList<Coordinates> coordinates)
+    {
+        foreach (Coordinates c in coordinates)
+        {
+            DataSource.Add(c);
+        }
+    }
+
+    public void Add(IReadOnlyList<double> xs, IReadOnlyList<double> ys)
+    {
+        if (xs.Count != ys.Count)
+        {
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal size");
+        }
+
+        for (int i = 0; i < xs.Count; i++)
+        {
+            DataSource.Add(xs[i], ys[i]);
         }
     }
 
