@@ -4,7 +4,8 @@
 * https://scottplot.net/changelog/ is a formatted version of this document
 
 ## ScottPlot 5.0.17 (not yet on NuGet)
-* Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
+* Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. See the [async FAQ page](https://scottplot.net/faq/async/) for usage details. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
+* WPF: Improved "Copy to Clipboard" functionality (#3214) _Thanks @MCF_
 
 ## ScottPlot 5.0.16
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-15_

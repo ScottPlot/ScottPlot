@@ -5,6 +5,7 @@ using System.Windows;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.IO;
 
 namespace ScottPlot.WPF;
 
@@ -104,8 +105,16 @@ public class WpfPlotMenu : IPlotMenu
     public static void CopyImageToClipboard(IPlotControl plotControl)
     {
         PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        BitmapImage bmp = plotControl.Plot.GetBitmapImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
-        Clipboard.SetImage(bmp);
+        Image bmp = plotControl.Plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
+        byte[] bmpBytes = bmp.GetImageBytes();
+
+        using MemoryStream ms = new();
+        ms.Write(bmpBytes, 0, bmpBytes.Length);
+        BitmapImage bmpImage = new();
+        bmpImage.BeginInit();
+        bmpImage.StreamSource = ms;
+        bmpImage.EndInit();
+        Clipboard.SetImage(bmpImage);
     }
 
     public void Clear()
