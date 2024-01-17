@@ -82,7 +82,7 @@ public class Quickstart : ICategory
 
             myPlot.Axes.Bottom.Label.Text = "Horizonal Axis";
             myPlot.Axes.Left.Label.Text = "Vertical Axis";
-            myPlot.Axes.Left.Label.Text = "Plot Title";
+            myPlot.Axes.Top.Label.Text = "Plot Title";
         }
     }
 
