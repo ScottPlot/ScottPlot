@@ -15,7 +15,7 @@ public class AvaPlotMenu : IPlotMenu
     public AvaPlotMenu(AvaPlot avaPlot)
     {
         ThisControl = avaPlot;
-        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
+        Reset();
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -86,6 +86,12 @@ public class AvaPlotMenu : IPlotMenu
         manualContextMenu.PlacementRect = new(pixel.X, pixel.Y, 1, 1);
 
         manualContextMenu.Open(ThisControl);
+    }
+
+    public void Reset()
+    {
+        Clear();
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public void Clear()

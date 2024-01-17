@@ -16,7 +16,7 @@ public class EtoPlotMenu : IPlotMenu
     public EtoPlotMenu(EtoPlot etoPlot)
     {
         ThisControl = etoPlot;
-        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
+        Reset();
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -103,6 +103,12 @@ public class EtoPlotMenu : IPlotMenu
     {
         var menu = GetContextMenu();
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
+    }
+
+    public void Reset()
+    {
+        Clear();
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public void Clear()

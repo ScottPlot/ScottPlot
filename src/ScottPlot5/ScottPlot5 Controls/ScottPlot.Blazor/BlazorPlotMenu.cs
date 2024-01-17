@@ -7,6 +7,10 @@ public class BlazorPlotMenu : IPlotMenu
         //throw new NotImplementedException();
     }
 
+    public void Reset()
+    {
+    }
+
     public void Clear()
     {
     }

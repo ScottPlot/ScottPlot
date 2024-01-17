@@ -16,7 +16,7 @@ public class FormsPlotMenu : IPlotMenu
     public FormsPlotMenu(FormsPlotBase control)
     {
         ThisControl = control;
-        ContextMenuItems.AddRange(StandardContextMenuItems());
+        Reset();
     }
 
     public List<ContextMenuItem> StandardContextMenuItems()
@@ -109,6 +109,12 @@ public class FormsPlotMenu : IPlotMenu
         Debug.WriteLine("Showing Context Menu");
         ContextMenuStrip menu = GetContextMenu();
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
+    }
+
+    public void Reset()
+    {
+        Clear();
+        ContextMenuItems.AddRange(StandardContextMenuItems());
     }
 
     public void Clear()
