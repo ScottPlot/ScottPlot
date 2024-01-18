@@ -2,7 +2,7 @@
 
 public class SignalXY : IPlottable
 {
-    public ISignalXYSource DataSource { get; set; }
+    public ISignalXYSource Data { get; set; }
 
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
@@ -16,14 +16,14 @@ public class SignalXY : IPlottable
 
     public SignalXY(ISignalXYSource dataSource)
     {
-        DataSource = dataSource;
+        Data = dataSource;
     }
 
-    public AxisLimits GetAxisLimits() => DataSource.GetAxisLimits();
+    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
 
     public void Render(RenderPack rp)
     {
-        Pixel[] pixels = DataSource.GetPixelsToDraw(rp, Axes);
+        Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
 
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);

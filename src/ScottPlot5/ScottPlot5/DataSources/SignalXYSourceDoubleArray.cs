@@ -1,16 +1,33 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSource
+public class SignalXYSourceDoubleArray : ISignalXYSource
 {
-    public double[] Xs = xs;
-    public double[] Ys = ys;
+    readonly double[] Xs;
+    readonly double[] Ys;
+
+    public double XOffset { get; set; } = 0;
+    public double YOffset { get; set; } = 0;
+    public int MinimumIndex { get; set; } = 0;
+    public int MaximumIndex { get; set; }
+
+    public SignalXYSourceDoubleArray(double[] xs, double[] ys)
+    {
+        if (xs.Length != ys.Length)
+        {
+            throw new InvalidOperationException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+        }
+
+        Xs = xs;
+        Ys = ys;
+        MaximumIndex = xs.Length - 1;
+    }
 
     public AxisLimits GetAxisLimits()
     {
-        double xMin = Xs[0];
-        double xMax = Xs[Xs.Length - 1];
+        double xMin = Xs[MinimumIndex] + XOffset;
+        double xMax = Xs[MaximumIndex] + XOffset;
         CoordinateRange xRange = new(xMin, xMax);
-        CoordinateRange yRange = GetRangeY(0, Ys.Length - 1);
+        CoordinateRange yRange = GetRangeY(MinimumIndex, MaximumIndex);
         return new AxisLimits(xRange, yRange);
     }
 
@@ -53,7 +70,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
             max = Math.Max(Ys[i], max);
         }
 
-        return new CoordinateRange(min, max);
+        return new CoordinateRange(min + YOffset, max + YOffset);
     }
 
     /// <summary>
@@ -61,7 +78,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     public int GetIndexX(double x)
     {
-        IndexRange range = new(0, Xs.Length - 1);
+        IndexRange range = new(MinimumIndex, MaximumIndex);
         return GetIndex(x, range);
     }
 
@@ -70,7 +87,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     public int GetIndex(double x, IndexRange indexRange)
     {
-        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x);
+        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x - XOffset);
 
         if (index < 0)
         {
@@ -101,14 +118,14 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
             yield break;
         }
 
-        yield return new Pixel(xPixel, axes.GetPixelY(Ys[startIndex])); // enter
+        yield return new Pixel(xPixel, axes.GetPixelY(Ys[startIndex] + YOffset)); // enter
 
         if (pointsInRange > 1)
         {
             CoordinateRange yRange = GetRangeY(startIndex, endIndex - 1);
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
-            yield return new Pixel(xPixel, axes.GetPixelY(Ys[endIndex - 1])); // exit
+            yield return new Pixel(xPixel, axes.GetPixelY(Ys[endIndex - 1] + YOffset)); // exit
         }
     }
 
@@ -120,16 +137,16 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     {
         int pointBeforeIndex = GetIndexX(axes.XAxis.Min);
 
-        if (pointBeforeIndex > 0)
+        if (pointBeforeIndex > MinimumIndex)
         {
-            float beforeX = axes.GetPixelX(Xs[pointBeforeIndex - 1]);
-            float beforeY = axes.GetPixelY(Ys[pointBeforeIndex - 1]);
+            float beforeX = axes.GetPixelX(Xs[pointBeforeIndex - 1] + XOffset);
+            float beforeY = axes.GetPixelY(Ys[pointBeforeIndex - 1] + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
             return ([beforePoint], pointBeforeIndex);
         }
         else
         {
-            return ([], 0);
+            return ([], MinimumIndex);
         }
     }
 
@@ -141,16 +158,16 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     {
         int pointAfterIndex = GetIndexX(axes.XAxis.Max);
 
-        if (pointAfterIndex <= Ys.Length - 1)
+        if (pointAfterIndex <= MaximumIndex)
         {
-            float afterX = axes.GetPixelX(Xs[pointAfterIndex]);
-            float afterY = axes.GetPixelY(Ys[pointAfterIndex]);
+            float afterX = axes.GetPixelX(Xs[pointAfterIndex] + XOffset);
+            float afterY = axes.GetPixelY(Ys[pointAfterIndex] + YOffset);
             Pixel afterPoint = new(afterX, afterY);
             return ([afterPoint], pointAfterIndex);
         }
         else
         {
-            return ([], Ys.Length - 1);
+            return ([], MaximumIndex);
         }
     }
 
@@ -160,7 +177,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     private void InterpolateBefore(RenderPack rp, Pixel[] pixels)
     {
-        if (pixels.Length >= 2)
+        if (pixels.Length <= 2)
             return;
 
         Pixel lastOutsidePoint = pixels[0];
@@ -183,7 +200,7 @@ public class SignalXYSourceDoubleArray(double[] xs, double[] ys) : ISignalXYSour
     /// </summary>
     private void InterpolateAfter(RenderPack rp, Pixel[] pixels)
     {
-        if (pixels.Length >= 2)
+        if (pixels.Length <= 2)
             return;
 
         Pixel lastInsidePoint = pixels[pixels.Length - 2];

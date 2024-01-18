@@ -2,7 +2,25 @@
 
 public interface ISignalXYSource
 {
-    // TODO: support XOffset and YOffset
+    /// <summary>
+    /// X position of the first data point
+    /// </summary>
+    double XOffset { get; set; }
+
+    /// <summary>
+    /// Shift Y position of all values by this amount
+    /// </summary>
+    double YOffset { get; set; }
+
+    /// <summary>
+    /// Do not display data below this index
+    /// </summary>
+    public int MinimumIndex { get; set; }
+
+    /// <summary>
+    /// Do not display data above this index
+    /// </summary>
+    public int MaximumIndex { get; set; }
 
     /// <summary>
     /// Return the axis limits covered by these data
