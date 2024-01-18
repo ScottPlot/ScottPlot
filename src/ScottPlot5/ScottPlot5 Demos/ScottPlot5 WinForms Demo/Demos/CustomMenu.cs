@@ -19,8 +19,8 @@ public partial class CustomMenu : Form, IDemoWindow
 
     private void btnDefault_Click(object sender, EventArgs e)
     {
-        // use a new fresh menu with default options
-        formsPlot1.Menu = new FormsPlotMenu(formsPlot1);
+        // Reset menu to default options
+        formsPlot1.Menu.Reset();
 
         formsPlot1.Plot.Title("Default Right-Click Menu");
         formsPlot1.Refresh();

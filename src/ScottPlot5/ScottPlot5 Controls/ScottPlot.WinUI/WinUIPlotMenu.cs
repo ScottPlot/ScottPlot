@@ -18,7 +18,7 @@ public class WinUIPlotMenu : IPlotMenu
     public WinUIPlotMenu(WinUIPlot thisControl)
     {
         ThisControl = thisControl;
-        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
+        Reset();
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -101,6 +101,12 @@ public class WinUIPlotMenu : IPlotMenu
         MenuFlyout flyout = GetContextMenu(ThisControl);
         Windows.Foundation.Point pt = new(pixel.X, pixel.Y);
         flyout.ShowAt(ThisControl, pt);
+    }
+
+    public void Reset()
+    {
+        Clear();
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public void Clear()
