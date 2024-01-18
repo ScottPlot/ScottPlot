@@ -6,6 +6,8 @@ namespace ScottPlotTests;
 
 internal static class Extensions
 {
+    // TODO: deprecate save methods in favor of Should() methods
+
     internal static void SaveTestImage(this Image img)
     {
         StackTrace stackTrace = new();
@@ -107,5 +109,10 @@ internal static class Extensions
 
         // actually save the thing
         File.WriteAllText(filePath, s);
+    }
+
+    internal static PlotAssertions Should(this Plot plot)
+    {
+        return new PlotAssertions(plot);
     }
 }
