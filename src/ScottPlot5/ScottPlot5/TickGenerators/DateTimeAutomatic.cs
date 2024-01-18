@@ -58,7 +58,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
     {
-        if (range.Span >= TimeSpan.MaxValue.Days)
+        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span))
         {
             // cases of extreme zoom (10,000 years)
             Ticks = Array.Empty<Tick>();
