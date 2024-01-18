@@ -5,11 +5,12 @@
 
 ## ScottPlot 5.0.18 (not yet on NuGet...)
 * Axes: Improved default label rotation for DateTime axes (#3211, #3216) _Thanks @CBrauer_
+* Fonts: Improved font detection for strings containing mixed-language characters (#3220, #3184, #2746) _Thanks @kl7107 and @prime167_
 * Controls: Add a Reset function for context menus (#3224) _Thanks @MCF_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_
-* Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. See the [async FAQ page](https://scottplot.net/faq/async/) for usage details. (#3213, #3095) _Thanks Lumtoo and @bclehmann_
+* Rendering: Added a `RenderManager.EnableRendering` flag to skip render requests while performing dangerous actions in multi-threaded environments. Skipping renders compliments the `PreRenderLock` event which hangs renders. See the [async FAQ page](https://scottplot.net/faq/async/) for usage details. (#3213, #3095) _Thanks @LumAsWell and @bclehmann_
 * WPF: Improved "Copy to Clipboard" functionality (#3214) _Thanks @MCF_
 * Controls: Created `FormsPlotViewer` and `WpfPlotViewer` for launching interactive plots from console applications. See the [Interactive Plots in Console Applications](https://scottplot.net/faq/launch-console/) page for details. (#3212, #308) _Thanks @chaojian-zhang_
 * DataLogger: Added `Add()` overloads which support X/Y pairs (#3210) _Thanks @devbotas_
