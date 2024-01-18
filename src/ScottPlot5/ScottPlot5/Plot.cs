@@ -34,7 +34,6 @@ public class Plot : IDisposable
         Style = new(this);
         RenderManager = new(this);
         Legend = new(this);
-        RenderManager = new(this);
         Layout = new(this);
     }
 
