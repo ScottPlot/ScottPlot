@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>ScottPlotTests</RootNamespace>
         <IsPackable>false</IsPackable>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
