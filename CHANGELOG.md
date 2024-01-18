@@ -6,6 +6,7 @@
 ## ScottPlot 5.0.18 (not yet on NuGet...)
 * Axes: Improved default label rotation for DateTime axes (#3211, #3216) _Thanks @CBrauer_
 * Fonts: Improved font detection for strings containing mixed-language characters (#3220, #3184, #2746) _Thanks @kl7107 and @prime167_
+* Controls: Add a Reset function for context menus (#3224) _Thanks @MCF_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_

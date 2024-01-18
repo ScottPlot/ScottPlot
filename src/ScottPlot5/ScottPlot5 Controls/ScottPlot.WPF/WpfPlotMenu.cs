@@ -18,7 +18,7 @@ public class WpfPlotMenu : IPlotMenu
     public WpfPlotMenu(WpfPlotBase control)
     {
         ThisControl = control;
-        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
+        Reset();
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
@@ -115,6 +115,12 @@ public class WpfPlotMenu : IPlotMenu
         bmpImage.StreamSource = ms;
         bmpImage.EndInit();
         Clipboard.SetImage(bmpImage);
+    }
+
+    public void Reset()
+    {
+        Clear();
+        ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
 
     public void Clear()
