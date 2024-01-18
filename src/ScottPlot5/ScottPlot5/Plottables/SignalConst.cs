@@ -5,7 +5,7 @@ namespace ScottPlot.Plottables;
 public class SignalConst<T>(T[] ys, double period) : IPlottable
     where T : struct, IComparable
 {
-    readonly SignalConstSourceArray<T> DataSource = new(ys, period);
+    readonly SignalConstSourceDoubleArray<T> DataSource = new(ys, period);
     public readonly MarkerStyle Marker = new();
     public readonly LineStyle LineStyle = new();
 
@@ -34,9 +34,7 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        IEnumerable<PixelColumn> cols = Enumerable.Range(0, (int)Axes.DataRect.Width)
-            .Select(x => DataSource.GetPixelColumn(Axes, x))
-            .Where(x => x.HasData);
+        List<PixelColumn> cols = DataSource.GetPixelColumns(Axes);
 
         if (!cols.Any())
             return;
@@ -47,9 +45,12 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable
         foreach (PixelColumn col in cols)
         {
             path.LineTo(col.X, col.Enter);
-            path.MoveTo(col.X, col.Bottom);
-            path.LineTo(col.X, col.Top);
-            path.MoveTo(col.X, col.Exit);
+            if ((int)col.Top != (int)col.Bottom)
+            {
+                path.MoveTo(col.X, col.Bottom);
+                path.LineTo(col.X, col.Top);
+                path.MoveTo(col.X, col.Exit);
+            }
         }
 
         rp.Canvas.DrawPath(path, paint);

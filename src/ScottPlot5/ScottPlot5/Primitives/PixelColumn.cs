@@ -25,4 +25,9 @@ public readonly struct PixelColumn
     {
         return new PixelColumn(x, float.NaN, float.NaN, float.NaN, float.NaN);
     }
+
+    public override string ToString()
+    {
+        return $"x={X} y=[{Bottom}, {Top}], edges=[{Enter}, {Exit}]";
+    }
 }

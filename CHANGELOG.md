@@ -10,6 +10,7 @@
 * Axes: Prevent exceptions when generating ticks for a DateTime axis with zero size (#3221) _Thanks @devbotas_
 * SignalXY: Added `MinimumIndex` and `MaximumIndex` for partial array rendering (#3227)
 * SignalXY: Added `OffsetX` and `OffsetY` for for applying a fixed offset in coordinate space (#3227)
+* SignalConst: Improved display when signals are zoomed in enough to see individual points (#3228) _Thanks @Marvenix_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_
