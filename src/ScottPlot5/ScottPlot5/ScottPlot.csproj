@@ -5,6 +5,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>12</LangVersion>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot</PackageId>

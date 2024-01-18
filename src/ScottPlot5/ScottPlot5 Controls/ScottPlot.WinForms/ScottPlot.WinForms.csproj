@@ -7,6 +7,7 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>

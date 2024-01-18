@@ -15,6 +15,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-17_
 * SignalXY: Added `OffsetX` and `OffsetY` for for applying a fixed offset in coordinate space (#3227)
 * SignalConst: Improved display when signals are zoomed in enough to see individual points (#3228) _Thanks @Marvenix_
 * Plot: Improved render manager initialization (#3233) _Thanks @VoteForPedro_
+* Projects: Sign all assemblies using strong names (#3235, #283) _Thanks @mlessmann_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_

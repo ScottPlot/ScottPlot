@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinUI</PackageId>

@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Eto</PackageId>

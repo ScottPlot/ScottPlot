@@ -6,6 +6,7 @@
         <UseWPF>true</UseWPF>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>
