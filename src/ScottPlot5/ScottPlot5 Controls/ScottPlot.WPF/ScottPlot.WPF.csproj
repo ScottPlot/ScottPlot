@@ -9,7 +9,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>
-        <Version>5.0.17</Version>
+        <Version>5.0.18</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
