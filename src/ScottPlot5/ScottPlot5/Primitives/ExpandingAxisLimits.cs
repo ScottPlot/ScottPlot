@@ -31,7 +31,7 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
 
     public override string ToString()
     {
-        return $"Expanding Limits: Left={Left}, Right={Right}, Bottom={Bottom}, Top={Top}";
+        return $"Expanding Limits: X=[{Left}, {Right}] Y=[{Bottom}, {Top}]";
     }
 
     /// <summary>
