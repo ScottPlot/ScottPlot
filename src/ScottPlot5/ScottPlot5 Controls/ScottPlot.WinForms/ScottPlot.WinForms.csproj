@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- targets must be in this order for the control to appear in the toolbox -->
@@ -11,7 +11,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>
-        <Version>5.0.18</Version>
+        <Version>5.0.19</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

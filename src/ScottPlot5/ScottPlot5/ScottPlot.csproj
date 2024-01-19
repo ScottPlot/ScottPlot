@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net462;netstandard2.0;net6.0;net8.0</TargetFrameworks>
@@ -9,7 +9,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot</PackageId>
-        <Version>5.0.18</Version>
+        <Version>5.0.19</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

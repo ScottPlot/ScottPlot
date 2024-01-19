@@ -3,7 +3,13 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
-## ScottPlot 5.0.19 (not yet on NuGet...)
+## ScottPlot 5.0.19
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-18_
+* Plot: Improved render manager initialization (#3233) _Thanks @VoteForPedro_
+* Projects: Sign all assemblies using strong names (#3235, #283) _Thanks @mlessmann_
+* Axes: Improved automatic axis determination for plots containing non-real or infinite data limits (#3232, #3237)
+* Bar Plots: Do not overwrite existing colors when adding `Bar` collections to the plot (#3231)
+* Label: Clear cached typefaces when styles change (#3236) _Thanks @kl7107 and @prime167_
 
 ## ScottPlot 5.0.18
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-17_
@@ -14,11 +20,6 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-17_
 * SignalXY: Added `MinimumIndex` and `MaximumIndex` for partial array rendering (#3227)
 * SignalXY: Added `OffsetX` and `OffsetY` for for applying a fixed offset in coordinate space (#3227)
 * SignalConst: Improved display when signals are zoomed in enough to see individual points (#3228) _Thanks @Marvenix_
-* Plot: Improved render manager initialization (#3233) _Thanks @VoteForPedro_
-* Projects: Sign all assemblies using strong names (#3235, #283) _Thanks @mlessmann_
-* Axes: Improved automatic axis determination for plots containing non-real or infinite data limits (#3232, #3237)
-* Bar Plots: Do not overwrite existing colors when adding `Bar` collections to the plot (#3231)
-* Label: Clear cached typefaces when styles change (#3236) _Thanks @kl7107 and @prime167_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_
