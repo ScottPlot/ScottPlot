@@ -25,6 +25,11 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public static AxisLimits Default { get; } = new(-10, 10, -10, 10);
 
+    public bool IsRealX => NumericConversion.AreReal(Left, Right);
+    public bool IsRealY => NumericConversion.AreReal(Bottom, Top);
+    public bool IsReal => IsRealX && IsRealY;
+    public bool HasArea => IsReal && HorizontalSpan != 0 && VerticalSpan != 0;
+
     public AxisLimits(Coordinates coordinates)
     {
         Left = coordinates.X;

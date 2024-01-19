@@ -11,6 +11,10 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     public double Top { get; set; } = double.NaN;
     public double HorizontalSpan => Right - Left;
     public double VerticalSpan => Top - Bottom;
+    public bool IsRealX => NumericConversion.AreReal(Left, Right);
+    public bool IsRealY => NumericConversion.AreReal(Bottom, Top);
+    public bool IsReal => IsRealX && IsRealY;
+    public bool HasArea => IsReal && HorizontalSpan != 0 && VerticalSpan != 0;
 
     public AxisLimits AxisLimits => new(Left, Right, Bottom, Top);
 
@@ -32,6 +36,18 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     public override string ToString()
     {
         return $"Expanding Limits: X=[{Left}, {Right}] Y=[{Bottom}, {Top}]";
+    }
+
+    public void SetX(double left, double right)
+    {
+        Left = left;
+        Right = right;
+    }
+
+    public void SetY(double bottom, double top)
+    {
+        Bottom = bottom;
+        Top = top;
     }
 
     /// <summary>
