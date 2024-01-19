@@ -10,6 +10,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-18_
 * Axes: Improved automatic axis determination for plots containing non-real or infinite data limits (#3232, #3237)
 * Bar Plots: Do not overwrite existing colors when adding `Bar` collections to the plot (#3231)
 * Label: Clear cached typefaces when styles change (#3236) _Thanks @kl7107 and @prime167_
+* Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_
 
 ## ScottPlot 5.0.18
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-17_
