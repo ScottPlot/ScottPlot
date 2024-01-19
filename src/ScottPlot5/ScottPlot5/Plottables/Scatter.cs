@@ -2,8 +2,6 @@
  * Avoid temptation to use generics or generic math at this early stage of development!
  */
 
-using System.Drawing;
-
 namespace ScottPlot.Plottables;
 
 public class Scatter : IPlottable
