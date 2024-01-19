@@ -22,14 +22,15 @@ public class AutoScaleUnsetAxes : IRenderAction
         {
             bool xAxisNeedsScaling = !plottable.Axes.XAxis.Range.HasBeenSet;
             bool yAxisNeedsScaling = !plottable.Axes.YAxis.Range.HasBeenSet;
-            if (xAxisNeedsScaling == false && yAxisNeedsScaling == false)
-                return;
-
-            plot.Axes.AutoScale(
-                xAxis: plottable.Axes.XAxis,
-                yAxis: plottable.Axes.YAxis,
-                horizontal: xAxisNeedsScaling,
-                vertical: yAxisNeedsScaling);
+            if (xAxisNeedsScaling || yAxisNeedsScaling)
+            {
+                Debug.WriteLine("needs scaling");
+                plot.Axes.AutoScale(
+                    xAxis: plottable.Axes.XAxis,
+                    yAxis: plottable.Axes.YAxis,
+                    horizontal: xAxisNeedsScaling,
+                    vertical: yAxisNeedsScaling);
+            }
         }
     }
 
