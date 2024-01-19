@@ -18,6 +18,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-17_
 * Projects: Sign all assemblies using strong names (#3235, #283) _Thanks @mlessmann_
 * Axes: Improved automatic axis determination for plots containing non-real or infinite data limits (#3232, #3237)
 * Bar Plots: Do not overwrite existing colors when adding `Bar` collections to the plot (#3231)
+* Label: Clear cached typefaces when styles change (#3236) _Thanks @kl7107 and @prime167_
 
 ## ScottPlot 5.0.17
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-16_

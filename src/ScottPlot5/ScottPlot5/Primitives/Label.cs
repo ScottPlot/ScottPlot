@@ -20,11 +20,35 @@ public class Label
 
     public float BorderWidth { get; set; } = 1;
 
+    // TODO: use a class for cached typeface management
+
+    public bool UseCachedTypefaces = true;
     private SKTypeface? CachedTypeface = null;
-    private SKTypeface Typeface => CachedTypeface ??= FontStyle.CreateTypeface(FontName, Bold, Italic);
-    public string FontName { get; set; } = Fonts.Default; // TODO: font lookup and caching
-    public float FontSize { get; set; } = 12;
-    public bool Bold = false;
+    private SKTypeface Typeface => (UseCachedTypefaces && CachedTypeface is not null)
+        ? CachedTypeface
+        : FontStyle.CreateTypeface(FontName, Bold, Italic);
+
+    private string _FontName = Fonts.Default;
+    public string FontName
+    {
+        get => _FontName;
+        set { _FontName = value; ClearCachedTypeface(); }
+    }
+
+    private float _FontSize = 12;
+    public float FontSize
+    {
+        get => _FontSize;
+        set { _FontSize = value; ClearCachedTypeface(); }
+    }
+
+    private bool _Bold = false;
+    public bool Bold
+    {
+        get => _Bold;
+        set { _Bold = value; ClearCachedTypeface(); }
+    }
+
     public bool Italic = false;
     public bool AntiAlias = true;
     public float Padding = 0;
@@ -43,6 +67,11 @@ public class Label
     public void SetBestFont()
     {
         FontName = Fonts.Detect(Text);
+    }
+
+    public void ClearCachedTypeface()
+    {
+        CachedTypeface = null;
     }
 
     private void ApplyPointPaint(SKPaint paint)
