@@ -330,7 +330,7 @@ public class AxisManager
     public void AutoScale()
     {
         ReplaceNullAxesWithDefaults();
-        AutoScaler.AutoScaleAll(Plot.PlottableList);
+        AutoScaler.AutoScaleAll(Plot.PlottableList); // TODO: this should call the autoscaler's GetAxisLimits()
     }
 
     public void AutoScaleX()

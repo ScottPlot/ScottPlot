@@ -10,5 +10,5 @@ public interface IAutoScaler
     /// </summary>
     AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis);
 
-    public void AutoScaleAll(IEnumerable<IPlottable> plottables);
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables); // TODO: deprecate
 }
