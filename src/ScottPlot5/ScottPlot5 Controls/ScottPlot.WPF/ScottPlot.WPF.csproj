@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
@@ -6,6 +6,7 @@
         <UseWPF>true</UseWPF>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
+        <SignAssembly>True</SignAssembly>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>
@@ -45,7 +46,7 @@
 		<PackageReference Include="OpenTK.GLWpfControl" Version="4.2.3" />
 	</ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
