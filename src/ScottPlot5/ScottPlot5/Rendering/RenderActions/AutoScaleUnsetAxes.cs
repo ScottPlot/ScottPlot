@@ -24,7 +24,6 @@ public class AutoScaleUnsetAxes : IRenderAction
             bool yAxisNeedsScaling = !plottable.Axes.YAxis.Range.HasBeenSet;
             if (xAxisNeedsScaling || yAxisNeedsScaling)
             {
-                Debug.WriteLine("needs scaling");
                 plot.Axes.AutoScale(
                     xAxis: plottable.Axes.XAxis,
                     yAxis: plottable.Axes.YAxis,

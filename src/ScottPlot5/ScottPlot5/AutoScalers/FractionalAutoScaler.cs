@@ -33,6 +33,8 @@ public class FractionalAutoScaler : IAutoScaler
 
     public void AutoScaleAll(IEnumerable<IPlottable> plottables)
     {
+        // TODO: this should call the GetAxisLimits() below
+
         IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
         IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
 
@@ -50,14 +52,20 @@ public class FractionalAutoScaler : IAutoScaler
         {
             double left = xAxis.Range.Min - (xAxis.Range.Span * LeftFraction);
             double right = xAxis.Range.Max + (xAxis.Range.Span * RightFraction);
-            xAxis.Range.Set(left, right);
+            if (NumericConversion.IsReal(left) && NumericConversion.IsReal(right))
+            {
+                xAxis.Range.Set(left, right);
+            }
         }
 
         foreach (IYAxis yAxis in yAxes)
         {
             double bottom = yAxis.Range.Min - (yAxis.Range.Span * BottomFraction);
             double top = yAxis.Range.Max + (yAxis.Range.Span * TopFraction);
-            yAxis.Range.Set(bottom, top);
+            if (NumericConversion.IsReal(bottom) && NumericConversion.IsReal(top))
+            {
+                yAxis.Range.Set(bottom, top);
+            }
         }
     }
 
@@ -70,10 +78,35 @@ public class FractionalAutoScaler : IAutoScaler
             limits.Expand(plottable.GetAxisLimits());
         }
 
-        return new AxisLimits(
+        if (!limits.IsRealX)
+        {
+            limits.SetX(-10, 10);
+        }
+
+        if (!limits.IsRealY)
+        {
+            limits.SetY(-10, 10);
+        }
+
+        if (limits.Left == limits.Right)
+        {
+            limits.SetX(limits.Left - 1, limits.Right + 1);
+        }
+
+        if (limits.Bottom == limits.Top)
+        {
+            limits.SetY(limits.Bottom - 1, limits.Top + 1);
+        }
+
+        AxisLimits newLimits = new(
             left: limits.Left - (limits.HorizontalSpan * LeftFraction),
             right: limits.Right + (limits.HorizontalSpan * RightFraction),
             bottom: limits.Bottom - (limits.VerticalSpan * BottomFraction),
             top: limits.Top + (limits.VerticalSpan * TopFraction));
+
+        if (!newLimits.IsReal || !newLimits.HasArea)
+            throw new InvalidOperationException("limits returned by the autoscaler must always be in a good state");
+
+        return newLimits;
     }
 }

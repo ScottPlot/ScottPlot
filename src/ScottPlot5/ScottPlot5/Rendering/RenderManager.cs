@@ -72,7 +72,6 @@ public class RenderManager(Plot plot)
         new RenderActions.ClearCanvas(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
-        new RenderActions.EnsureAxesHaveArea(),
         new RenderActions.ExecutePlottableAxisManagers(),
         new RenderActions.ApplyAxisRulesBeforeLayout(),
         new RenderActions.CalculateLayout(),
