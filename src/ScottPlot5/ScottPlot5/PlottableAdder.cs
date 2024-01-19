@@ -7,20 +7,15 @@ namespace ScottPlot;
 /// <summary>
 /// Helper methods to create plottable objects and add them to the plot
 /// </summary>
-public class PlottableAdder
+public class PlottableAdder(Plot plot)
 {
-    private readonly Plot Plot;
+    private readonly Plot Plot = plot;
 
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
     public Color GetNextColor()
     {
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
-    }
-
-    public PlottableAdder(Plot plot)
-    {
-        Plot = plot;
     }
 
     public BarPlot Bar(Bar bar)
@@ -44,10 +39,15 @@ public class PlottableAdder
 
     public BarPlot Bars(IEnumerable<Bar> bars)
     {
-        BarPlot bp = new(bars)
+        BarPlot bp = new(bars);
+
+        // only set bar colors if the user has not already configured them
+        bool barColorsAreAllTheSame = bars.Select(x => x.FillColor).Distinct().Count() == 1;
+        if (barColorsAreAllTheSame)
         {
-            Color = GetNextColor(),
-        };
+            bp.Color = GetNextColor();
+        }
+
         Plottable(bp);
         return bp;
     }
