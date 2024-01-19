@@ -20,7 +20,7 @@
         <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive winforms windows forms</PackageTags>
         <SignAssembly>true</SignAssembly>
         <DelaySign>false</DelaySign>
-        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>../Key.snk</AssemblyOriginatorKeyFile>
         <Authors>Scott W Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>

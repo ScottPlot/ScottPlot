@@ -19,7 +19,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>plot graph data chart signal line bar heatmap scatter control interactive WPF</PackageTags>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>../Key.snk</AssemblyOriginatorKeyFile>
         <DelaySign>false</DelaySign>
         <Authors>Scott W Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
