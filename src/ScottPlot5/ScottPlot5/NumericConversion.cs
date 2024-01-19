@@ -208,6 +208,12 @@ public static class NumericConversion
         return input;
     }
 
+    public static bool AreReal(double x, double y)
+    {
+        // implemented here because older versions of .NET do not support double.IsReal()
+        return IsReal(x) && IsReal(y);
+    }
+
     public static bool IsReal(double x)
     {
         // implemented here because older versions of .NET do not support double.IsReal()

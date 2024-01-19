@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Rendering;
 
-public class RenderManager
+public class RenderManager(Plot plot)
 {
     /// <summary>
     /// This list of actions is performed in sequence to render a plot.
     /// It may be modified externally to inject custom functionality.
     /// </summary>
-    public List<IRenderAction> RenderActions { get; }
+    public List<IRenderAction> RenderActions { get; } = DefaultRenderActions;
 
     /// <summary>
     /// Information about the previous render
@@ -59,13 +59,12 @@ public class RenderManager
 
     public bool EnableEvents { get; set; } = true;
 
-    private Plot Plot { get; }
+    private Plot Plot { get; } = plot;
 
-    public RenderManager(Plot plot)
-    {
-        Plot = plot;
-        RenderActions = DefaultRenderActions;
-    }
+    /// <summary>
+    /// Total number of renders completed
+    /// </summary>
+    public int RenderCount { get; private set; } = 0;
 
     public static List<IRenderAction> DefaultRenderActions => new()
     {
@@ -73,7 +72,6 @@ public class RenderManager
         new RenderActions.ClearCanvas(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
-        new RenderActions.EnsureAxesHaveArea(),
         new RenderActions.ExecutePlottableAxisManagers(),
         new RenderActions.ApplyAxisRulesBeforeLayout(),
         new RenderActions.CalculateLayout(),
@@ -137,6 +135,8 @@ public class RenderManager
         }
 
         // TODO: event for when layout changes
+
+        RenderCount += 1;
 
         IsRendering = false;
     }

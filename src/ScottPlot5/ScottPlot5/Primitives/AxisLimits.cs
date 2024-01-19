@@ -25,6 +25,11 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public static AxisLimits Default { get; } = new(-10, 10, -10, 10);
 
+    public bool IsRealX => NumericConversion.AreReal(Left, Right);
+    public bool IsRealY => NumericConversion.AreReal(Bottom, Top);
+    public bool IsReal => IsRealX && IsRealY;
+    public bool HasArea => IsReal && HorizontalSpan != 0 && VerticalSpan != 0;
+
     public AxisLimits(Coordinates coordinates)
     {
         Left = coordinates.X;
@@ -55,6 +60,11 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Right = xRange.Max;
         Bottom = yRange.Min;
         Top = yRange.Max;
+    }
+
+    public static AxisLimits FromPoint(double x, double y)
+    {
+        return new AxisLimits(x, x, y, y);
     }
 
     public override string ToString()

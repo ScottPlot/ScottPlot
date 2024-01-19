@@ -11,6 +11,8 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
     public double Max { get; set; }
     public double Center => (Min + Max) / 2;
     public double Span => Max - Min;
+
+    // TODO: obsolete this
     public bool HasBeenSet => NumericConversion.IsReal(Span) && Span != 0;
 
     public CoordinateRange ToCoordinateRange => new(Min, Max);
