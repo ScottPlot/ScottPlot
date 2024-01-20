@@ -8,6 +8,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
         <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>

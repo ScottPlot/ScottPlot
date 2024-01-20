@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>12</LangVersion>
         <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../Key.snk</AssemblyOriginatorKeyFile>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot</PackageId>
