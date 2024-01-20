@@ -7,6 +7,10 @@
 * Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_
 * Scatter Plot: Added a `ConnectStyle` to enable step display mode (#3242) _Thanks @NoahSigl_
 
+## ScottPlot 4.1.71 (not yet on NuGet)
+* Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_
+* WPF Control: Routed events now pass the original source (#3243) _Thanks @MarekJur_
+
 ## ScottPlot 5.0.19
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-18_
 * Plot: Improved render manager initialization (#3233) _Thanks @VoteForPedro_
