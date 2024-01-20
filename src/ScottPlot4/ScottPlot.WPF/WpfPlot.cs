@@ -58,9 +58,9 @@ namespace ScottPlot
             add { AddHandler(AxesChangedEvent, value); }
             remove { RemoveHandler(AxesChangedEvent, value); }
         }
-        protected virtual void RaiseAxesChangedEvent()
+        protected virtual void RaiseAxesChangedEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(AxesChangedEvent, this));
+            RaiseEvent(new RoutedEventArgs(AxesChangedEvent, orginalSource));
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace ScottPlot
             remove { RemoveHandler(RightClickedEvent, value); }
         }
 
-        protected virtual void RaiseRightClickedEvent()
+        protected virtual void RaiseRightClickedEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(RightClickedEvent, this));
+            RaiseEvent(new RoutedEventArgs(RightClickedEvent, orginalSource));
         }
 
         /// <summary>
@@ -88,9 +88,9 @@ namespace ScottPlot
             remove { RemoveHandler(LeftClickedEvent, value); }
         }
 
-        protected virtual void RaiseLeftClickedEvent()
+        protected virtual void RaiseLeftClickedEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(LeftClickedEvent, this));
+            RaiseEvent(new RoutedEventArgs(LeftClickedEvent, orginalSource));
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace ScottPlot
             remove { RemoveHandler(LeftClickedPlottableEvent, value); }
         }
 
-        protected virtual void RaiseLeftClickedPlottableEvent()
+        protected virtual void RaiseLeftClickedPlottableEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(LeftClickedPlottableEvent, this));
+            RaiseEvent(new RoutedEventArgs(LeftClickedPlottableEvent, orginalSource));
         }
 
         /// <summary>
@@ -117,9 +117,9 @@ namespace ScottPlot
             remove { RemoveHandler(PlottableDraggedEvent, value); }
         }
 
-        protected virtual void RaisePlottableDraggedEvent()
+        protected virtual void RaisePlottableDraggedEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(PlottableDraggedEvent, this));
+            RaiseEvent(new RoutedEventArgs(PlottableDraggedEvent, orginalSource));
         }
 
         [Obsolete("use 'PlottableDragged' instead", error: true)]
@@ -135,9 +135,9 @@ namespace ScottPlot
             remove { RemoveHandler(PlottableDroppedEvent, value); }
         }
 
-        protected virtual void RaisePlottableDroppedEvent()
+        protected virtual void RaisePlottableDroppedEvent(object orginalSource)
         {
-            RaiseEvent(new RoutedEventArgs(PlottableDroppedEvent, this));
+            RaiseEvent(new RoutedEventArgs(PlottableDroppedEvent, orginalSource));
         }
 
         [Obsolete("use 'PlottableDropped' instead", error: true)]
@@ -162,12 +162,12 @@ namespace ScottPlot
             Backend.BitmapChanged += (o, e) => ReplacePlotBitmap(Backend.GetLatestBitmap());
             Backend.BitmapUpdated += (o, e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
             Backend.CursorChanged += (o, e) => Cursor = Cursors[Backend.Cursor];
-            Backend.RightClicked += (o, e) => RaiseRightClickedEvent();
-            Backend.LeftClicked += (o, e) => RaiseLeftClickedEvent();
-            Backend.LeftClickedPlottable += (o, e) => RaiseLeftClickedPlottableEvent();
-            Backend.AxesChanged += (o, e) => RaiseAxesChangedEvent();
-            Backend.PlottableDragged += (o, e) => RaisePlottableDraggedEvent();
-            Backend.PlottableDropped += (o, e) => RaisePlottableDroppedEvent();
+            Backend.RightClicked += (o, e) => RaiseRightClickedEvent(o);
+            Backend.LeftClicked += (o, e) => RaiseLeftClickedEvent(o);
+            Backend.LeftClickedPlottable += (o, e) => RaiseLeftClickedPlottableEvent(o);
+            Backend.AxesChanged += (o, e) => RaiseAxesChangedEvent(o);
+            Backend.PlottableDragged += (o, e) => RaisePlottableDraggedEvent(o);
+            Backend.PlottableDropped += (o, e) => RaisePlottableDroppedEvent(o);
             Backend.Configuration.ScaleChanged += (o, e) => Backend.Resize(ScaledWidth, ScaledHeight, useDelayedRendering: true);
 
 
