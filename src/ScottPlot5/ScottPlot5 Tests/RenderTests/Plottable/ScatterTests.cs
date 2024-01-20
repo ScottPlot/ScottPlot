@@ -21,7 +21,11 @@ internal class ScatterTests
         double[] xs = { };
         double[] ys = { };
         var sp = plt.Add.Scatter(xs, ys);
-        sp.StepDisplay = true;
+
+        sp.ConnectStyle = ConnectStyle.StepHorizontal;
+        Assert.DoesNotThrow(() => plt.Render());
+
+        sp.ConnectStyle = ConnectStyle.StepVertical;
         Assert.DoesNotThrow(() => plt.Render());
     }
 
