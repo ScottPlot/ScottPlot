@@ -174,4 +174,35 @@ public class Scatter : ICategory
             myPlot.Axes.DateTimeTicks(Edge.Bottom);
         }
     }
+
+    public class ScatterStep : RecipeBase
+    {
+        public override string Name => "Step Plot";
+        public override string Description => "Scatter plots can be created " +
+            "using a step plot display where points are connected with right angles " +
+            "instead of diagnal lines. The direction of the steps can be customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(20);
+            double[] ys1 = Generate.Consecutive(20, first: 10);
+            double[] ys2 = Generate.Consecutive(20, first: 5);
+            double[] ys3 = Generate.Consecutive(20, first: 0);
+
+            var sp1 = myPlot.Add.Scatter(xs, ys1);
+            sp1.ConnectStyle = ConnectStyle.Straight;
+            sp1.Label = "Straight";
+
+            var sp2 = myPlot.Add.Scatter(xs, ys2);
+            sp2.ConnectStyle = ConnectStyle.StepHorizontal;
+            sp2.Label = "StepHorizontal";
+
+            var sp3 = myPlot.Add.Scatter(xs, ys3);
+            sp3.ConnectStyle = ConnectStyle.StepVertical;
+            sp3.Label = "StepVertical";
+
+            myPlot.ShowLegend();
+        }
+    }
 }

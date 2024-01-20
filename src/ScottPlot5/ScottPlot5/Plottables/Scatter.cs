@@ -4,7 +4,7 @@
 
 namespace ScottPlot.Plottables;
 
-public class Scatter : IPlottable
+public class Scatter(IScatterSource data) : IPlottable
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
@@ -12,26 +12,22 @@ public class Scatter : IPlottable
     public LineStyle LineStyle { get; set; } = new(); // TODO: hide this
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default; // TODO: hide this
 
-    public IScatterSource Data { get; }
+    public IScatterSource Data { get; } = data;
 
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
 
+    /// <summary>
+    /// The style of lines to use when connecting points.
+    /// </summary>
+    public ConnectStyle ConnectStyle = ConnectStyle.Straight;
 
-    /// <summary>
-    /// If enabled, scatter plot points will be connected by square corners rather than straight diagnal lines
-    /// </summary>
-    public bool StepDisplay { get; set; } = false;
-    /// <summary>
-    /// Describes orientation of steps if <see cref="StepDisplay"/> is enabled.
-    /// If true, lines will extend to the right before ascending or descending to the level of the following point.
-    /// </summary>
-    public bool StepDisplayRight { get; set; } = false;
     /// <summary>
     /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
     /// <see cref="SmoothTension"/> adjusts the smoothnes of the lines.
     /// </summary>
     public bool Smooth = false;
+
     /// <summary>
     /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
     /// </summary>
@@ -58,36 +54,25 @@ public class Scatter : IPlottable
             Line = LineStyle,
         });
 
-    public Scatter(IScatterSource data)
-    {
-        Data = data;
-    }
-
     public void Render(RenderPack rp)
     {
         // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
-        Pixel[] pixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
+        Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
-        if (!pixels.Any())
+        if (!markerPixels.Any())
             return;
 
-        using SKPaint paint = new();
+        IEnumerable<Pixel> linePixels = ConnectStyle switch
+        {
+            ConnectStyle.Straight => markerPixels,
+            ConnectStyle.StepHorizontal => GetStepDisplayPixels(markerPixels, true),
+            ConnectStyle.StepVertical => GetStepDisplayPixels(markerPixels, false),
+            _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
+        };
 
-        if (StepDisplay)
-        {
-            IEnumerable<Pixel> stepPixels = GetStepDisplayPixels(pixels, StepDisplayRight);
-            Drawing.DrawLines(rp.Canvas, paint, stepPixels, LineStyle);
-        }
-        else if (Smooth)
-        {
-            // TODO: Implement SmoothTension
-            Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
-        }
-        else
-        {
-            Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
-        }
-        Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
+        using SKPaint paint = new();
+        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 
     /// <summary>
