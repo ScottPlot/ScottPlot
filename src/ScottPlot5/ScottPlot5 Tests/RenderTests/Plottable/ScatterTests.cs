@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable;
+﻿using ScottPlot.Plottables;
+
+namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class ScatterTests
 {
@@ -9,6 +11,21 @@ internal class ScatterTests
         double[] xs = { };
         double[] ys = { };
         plt.Add.Scatter(xs, ys);
+        Assert.DoesNotThrow(() => plt.Render());
+    }
+
+    [Test]
+    public void Test_Scatter_Empty_StepDisplay_Render()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = { };
+        double[] ys = { };
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.ConnectStyle = ConnectStyle.StepHorizontal;
+        Assert.DoesNotThrow(() => plt.Render());
+
+        sp.ConnectStyle = ConnectStyle.StepVertical;
         Assert.DoesNotThrow(() => plt.Render());
     }
 
@@ -37,6 +54,42 @@ internal class ScatterTests
         plt.SaveTestImage();
 
         Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);
+    }
+
+    [Test]
+    public void Test_GetStepDisplayPixels_Right()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = { 1, 2, 3, 4, 5 };
+        double[] ys = { 2, 4, 5, 8, 10 };
+        double[] expectedXs = { 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+        double[] expectedYs = { 2, 2, 4, 4, 5, 5, 8, 8, 10 };
+
+        var pixels = Enumerable.Range(0, 5).Select(x => new Pixel(xs[x], ys[x])).ToArray();
+
+        var result = Scatter.GetStepDisplayPixels(pixels, true);
+
+        var expectedPixels = Enumerable.Range(0, 9).Select(x => new Pixel(expectedXs[x], expectedYs[x])).ToArray();
+
+        Assert.That(result, Is.EquivalentTo(expectedPixels));
+    }
+
+    [Test]
+    public void Test_GetStepDisplayPixels_Left()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = { 1, 2, 3, 4, 5 };
+        double[] ys = { 2, 4, 5, 8, 10 };
+        double[] expectedXs = { 1, 1, 2, 2, 3, 3, 4, 4, 5 };
+        double[] expectedYs = { 2, 4, 4, 5, 5, 8, 8, 10, 10 };
+
+        var pixels = Enumerable.Range(0, 5).Select(x => new Pixel(xs[x], ys[x])).ToArray();
+
+        var result = Scatter.GetStepDisplayPixels(pixels, false);
+
+        var expectedPixels = Enumerable.Range(0, 9).Select(x => new Pixel(expectedXs[x], expectedYs[x])).ToArray();
+
+        Assert.That(result, Is.EquivalentTo(expectedPixels));
     }
 
     [Test]

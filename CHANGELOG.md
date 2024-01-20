@@ -3,6 +3,10 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
+## ScottPlot 5.0.20 (not yet on NuGet)
+* Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_
+* Scatter Plot: Added a `ConnectStyle` to enable step display mode (#3242) _Thanks @NoahSigl_
+
 ## ScottPlot 5.0.19
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-18_
 * Plot: Improved render manager initialization (#3233) _Thanks @VoteForPedro_

@@ -19,7 +19,7 @@
         <FileVersion>4.1.70.0</FileVersion>
         <SignAssembly>true</SignAssembly>
         <DelaySign>false</DelaySign>
-        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>../Key.snk</AssemblyOriginatorKeyFile>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <RepositoryUrl>https://github.com/ScottPlot/ScottPlot</RepositoryUrl>
