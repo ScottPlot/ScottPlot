@@ -4,6 +4,11 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 {
     public TX[] Xs { get; set; }
     public TY[] Ys { get; set; }
+    public bool Rotated
+    {
+        get => false;
+        set => throw new NotImplementedException("rotation is not yet supported for generic SignalXY plots");
+    }
 
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
@@ -48,10 +53,10 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (PointBefore.Length > 0)
-            InterpolateBefore(rp, points);
+            SignalInterpolation.InterpolateBeforeX(rp, points);
 
         if (PointAfter.Length > 0)
-            InterpolateAfter(rp, points);
+            SignalInterpolation.InterpolateAfterX(rp, points);
 
         return points;
     }
@@ -176,52 +181,6 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         else
         {
             return ([], MaximumIndex);
-        }
-    }
-
-    /// <summary>
-    /// If the point to the left of the graph is extremely far outside the data area, 
-    /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
-    /// </summary>
-    private void InterpolateBefore(RenderPack rp, Pixel[] pixels)
-    {
-        if (pixels.Length <= 2)
-            return;
-
-        Pixel lastOutsidePoint = pixels[0];
-        Pixel firstInsidePoint = pixels[1];
-
-        if (lastOutsidePoint.X != firstInsidePoint.X)
-        {
-            float x0 = -1 + rp.DataRect.Left;
-            float yDelta = lastOutsidePoint.Y - firstInsidePoint.Y;
-            float xDelta1 = x0 - firstInsidePoint.X;
-            float xDelta2 = lastOutsidePoint.X - firstInsidePoint.X;
-            float y0 = firstInsidePoint.Y + yDelta * xDelta1 / xDelta2;
-            pixels[0] = new Pixel(x0, y0);
-        }
-    }
-
-    /// <summary>
-    /// If the point to the right of the graph is extremely far outside the data area, 
-    /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
-    /// </summary>
-    private void InterpolateAfter(RenderPack rp, Pixel[] pixels)
-    {
-        if (pixels.Length <= 2)
-            return;
-
-        Pixel lastInsidePoint = pixels[pixels.Length - 2];
-        Pixel firstOutsidePoint = pixels[pixels.Length - 1];
-
-        if (firstOutsidePoint.X != lastInsidePoint.X)
-        {
-            float x1 = rp.DataRect.Width + rp.DataRect.Left;
-            float yDelta = firstOutsidePoint.Y - lastInsidePoint.Y;
-            float xDelta1 = x1 - lastInsidePoint.X;
-            float xDelta2 = firstOutsidePoint.X - lastInsidePoint.X;
-            float y1 = lastInsidePoint.Y + yDelta * xDelta1 / xDelta2;
-            pixels[pixels.Length - 1] = new Pixel(x1, y1);
         }
     }
 }

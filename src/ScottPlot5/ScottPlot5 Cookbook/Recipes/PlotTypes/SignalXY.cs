@@ -116,4 +116,22 @@ public class SignalXY : ICategory
             sig2.Data.YOffset = .5;
         }
     }
+
+    public class VerticalSignalXY : RecipeBase
+    {
+        public override string Name => "Vertical SignalXY";
+        public override string Description => "Although SignalXY plots typically " +
+            "display data left-to-right, it is possible to use this plot type to " +
+            "display data bottom-to-top.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(1000);
+            double[] ys = Generate.RandomWalk(1000);
+
+            var sig1 = myPlot.Add.SignalXY(xs, ys);
+            sig1.Data.Rotated = true;
+        }
+    }
 }

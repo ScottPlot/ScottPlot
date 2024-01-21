@@ -23,6 +23,11 @@ public interface ISignalXYSource
     public int MaximumIndex { get; set; }
 
     /// <summary>
+    /// If enabled, Xs will be vertical and Ys will be horizontal.
+    /// </summary>
+    public bool Rotated { get; set; }
+
+    /// <summary>
     /// Return the axis limits covered by these data
     /// </summary>
     AxisLimits GetAxisLimits();
