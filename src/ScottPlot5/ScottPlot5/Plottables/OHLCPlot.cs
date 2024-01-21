@@ -58,6 +58,10 @@ public class OhlcPlot : IPlottable
             float open = Axes.GetPixelY(ohlc.Open);
             float close = Axes.GetPixelY(ohlc.Close);
 
+            // do not render OHLCs off the screen
+            if (right < rp.DataRect.Left || left > rp.DataRect.Right)
+                continue;
+
             // center line
             path.MoveTo(center, top);
             path.LineTo(center, bottom);
