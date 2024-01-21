@@ -6,6 +6,7 @@
 ## ScottPlot 5.0.20 (not yet on NuGet)
 * Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_
 * Scatter Plot: Added a `ConnectStyle` to enable step display mode (#3242) _Thanks @NoahSigl_
+* Polygon: `Plot.Add.Polygon()` now accepts generic type lists and arrays (#3244) _Thanks howhowone_23_
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_

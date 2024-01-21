@@ -64,6 +64,16 @@ public static class NumericConversion
         return new Coordinates(GenericToDouble(ref x), GenericToDouble(ref y));
     }
 
+    [MethodImpl(ImplOptions)]
+    public static Coordinates[] GenericToCoordinates<T1, T2>(IEnumerable<T1> xs, IEnumerable<T2> ys)
+    {
+        double[] xs2 = GenericToDoubleArray(xs);
+        double[] ys2 = GenericToDoubleArray(ys);
+        if (xs2.Length != ys2.Length)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+        return Enumerable.Range(0, xs2.Length).Select(x => new Coordinates(xs2[x], ys2[x])).ToArray();
+    }
+
     /// <summary>
     /// Returns the double value of the <typeparamref name="T"/> at position <paramref name="i"/> in <paramref name="list"/>
     /// using a conversion technique optimized for the platform.

@@ -10,6 +10,7 @@ public class Polygon : IPlottable
 
     public bool IsEmpty { get; private set; } = false;
 
+    // TODO: replace with a generic data source
     public Coordinates[] Coordinates { get; private set; } = Array.Empty<Coordinates>();
 
     public string Label { get; set; } = string.Empty;

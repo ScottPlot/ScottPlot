@@ -328,6 +328,14 @@ public class PlottableAdder(Plot plot)
         return poly;
     }
 
+    public Polygon Polygon<TX, TY>(IEnumerable<TX> xs, IEnumerable<TY> ys)
+    {
+        Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
+        Polygon poly = new(coordinates);
+        Plot.PlottableList.Add(poly);
+        return poly;
+    }
+
     public IPlottable Plottable(IPlottable plottable)
     {
         Plot.PlottableList.Add(plottable);
