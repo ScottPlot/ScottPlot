@@ -87,6 +87,10 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
                 right = Axes.GetPixelX(i + (float)SymbolWidth / 2);
             }
 
+            // do not render OHLCs off the screen
+            if (right < rp.DataRect.Left || left > rp.DataRect.Right)
+                continue;
+
             float open = Axes.GetPixelY(ohlc.Open);
             float close = Axes.GetPixelY(ohlc.Close);
 

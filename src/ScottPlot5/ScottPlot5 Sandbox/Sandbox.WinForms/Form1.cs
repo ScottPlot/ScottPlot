@@ -8,7 +8,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(Generate.Sin());
-        formsPlot1.Plot.Add.Signal(Generate.Cos());
+        var ohlcs = Generate.RandomOHLCs(12_000);
+        formsPlot1.Plot.Add.Candlestick(ohlcs);
     }
 }
