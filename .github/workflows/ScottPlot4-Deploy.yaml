@@ -4,30 +4,10 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: "7.0.x"
+  DOTNET_VERSION: "8.0.x"
   TEST_PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.Tests/"
 
 jobs:
-  test:
-    name: 🧪 Test ScottPlot4
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: 🚚 Restore
-        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
-        run: dotnet restore 
-      - name: 🛠️ Build
-        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
-        run: dotnet build --configuration Release
-      - name: 🧪 Test
-        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
-        run: dotnet test --configuration Release --verbosity minimal
-
   deploy:
     name: 🚀 Publish ScottPlot4 Packages
     needs: [test]
@@ -40,6 +20,18 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 🚚 Restore Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet restore
+
+      - name: 🛠️ Build Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet build --configuration Release
+
+      - name: 🧪 Run Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet test --configuration Release --verbosity minimal
 
       - name: 🛠️ Setup NuGet
         uses: nuget/setup-nuget@v1
