@@ -2,6 +2,7 @@ name: PR
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
     paths:
       - src/ScottPlot4/**
