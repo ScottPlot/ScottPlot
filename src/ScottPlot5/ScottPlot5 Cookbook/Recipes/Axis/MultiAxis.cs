@@ -3,7 +3,7 @@
 public class MultiAxis : ICategory
 {
     public string Chapter => "Axis";
-    public string CategoryName => "Advanced Axis Features";
+    public string CategoryName => "Multiple Axes";
     public string CategoryDescription => "Tick mark customization and creation of multi-Axis plots";
 
     public class RightAxis : RecipeBase

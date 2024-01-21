@@ -6,6 +6,8 @@ public class FractionalAutoScaler : IAutoScaler
     public readonly double RightFraction;
     public readonly double BottomFraction;
     public readonly double TopFraction;
+    public bool InvertedX { get; set; } = false;
+    public bool InvertedY { get; set; } = true;
 
     /// <summary>
     /// Pad the data area with the given fractions of whitespace.
@@ -54,6 +56,11 @@ public class FractionalAutoScaler : IAutoScaler
             double right = xAxis.Range.Max + (xAxis.Range.Span * RightFraction);
             if (NumericConversion.IsReal(left) && NumericConversion.IsReal(right))
             {
+                if (InvertedX)
+                {
+                    (left, right) = (right, left);
+                }
+
                 xAxis.Range.Set(left, right);
             }
         }
@@ -64,6 +71,11 @@ public class FractionalAutoScaler : IAutoScaler
             double top = yAxis.Range.Max + (yAxis.Range.Span * TopFraction);
             if (NumericConversion.IsReal(bottom) && NumericConversion.IsReal(top))
             {
+                if (InvertedY)
+                {
+                    (bottom, top) = (top, bottom);
+                }
+
                 yAxis.Range.Set(bottom, top);
             }
         }
@@ -106,6 +118,12 @@ public class FractionalAutoScaler : IAutoScaler
 
         if (!newLimits.IsReal || !newLimits.HasArea)
             throw new InvalidOperationException("limits returned by the autoscaler must always be in a good state");
+
+        if (InvertedX)
+            newLimits = newLimits.InvertedHorizontally();
+
+        if (InvertedY)
+            newLimits = newLimits.InvertedVertically();
 
         return newLimits;
     }

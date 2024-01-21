@@ -11,6 +11,7 @@
 * Generate: Added `RandomNumber()` and `RandomNumbers()` overloads
 * OHLC: Improved autoscaling behavior for empty datasets
 * Generate: Added `RandomOHLCs()` overload that accepts a starting `DateTime` (#3254) _Thanks @CBrauer_
+* Axes: Improved support for inverted axes (#3252) _Thanks @fujiangang_
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_

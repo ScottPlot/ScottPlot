@@ -11,4 +11,7 @@ public interface IAutoScaler
     AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis);
 
     public void AutoScaleAll(IEnumerable<IPlottable> plottables); // TODO: deprecate
+
+    public bool InvertedX { get; set; }
+    public bool InvertedY { get; set; }
 }

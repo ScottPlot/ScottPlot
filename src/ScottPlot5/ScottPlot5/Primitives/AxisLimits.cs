@@ -62,6 +62,9 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Top = yRange.Max;
     }
 
+    public AxisLimits InvertedVertically() => new(Left, Right, Top, Bottom);
+    public AxisLimits InvertedHorizontally() => new(Right, Left, Bottom, Top);
+
     public static AxisLimits FromPoint(double x, double y)
     {
         return new AxisLimits(x, x, y, y);
