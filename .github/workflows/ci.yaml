@@ -17,10 +17,12 @@ jobs:
   test-linux:
     strategy:
       matrix:
-        TEST_PROJECT:
-          - "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
-          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
-    name: Test on Linux
+        include:
+          - VERSION_NAME: "ScottPlot 4"
+            TEST_PROJECT: "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
+          - VERSION_NAME: "ScottPlot 5"
+            TEST_PROJECT: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
+    name: Test ${{ matrix.VERSION_NAME }}
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -40,10 +42,12 @@ jobs:
     needs: [test-linux]
     strategy:
       matrix:
-        FULL_SOLUTION:
-          - "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
-          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot5 Tests.csproj"
-    name: Full Build
+        include:
+          - VERSION_NAME: "ScottPlot 4"
+            FULL_SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
+          - VERSION_NAME: "ScottPlot 5"
+            FULL_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
+    name: Build ${{ matrix.VERSION_NAME }}
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
