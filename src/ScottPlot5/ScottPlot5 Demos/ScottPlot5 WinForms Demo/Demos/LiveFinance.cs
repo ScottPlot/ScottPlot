@@ -69,7 +69,7 @@ public partial class LiveFinance : Form, IDemoWindow
             OHLCs[lastOhlcIndex] = updatedOhlc;
         }
 
-        formsPlot1.Plot.Axes.AutoScale();
+        formsPlot1.Plot.Axes.AutoScaleExpand();
         formsPlot1.Refresh();
     }
 }

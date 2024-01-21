@@ -50,6 +50,8 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         Top = top;
     }
 
+    // TODO: Methods like Expand() should be fluent, named Expanded(), and returning this object
+
     /// <summary>
     /// Expanded limits to include the given <paramref name="x"/> and <paramref name="y"/>.
     /// </summary>
@@ -118,22 +120,28 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         }
     }
 
-    /// <summary>
-    /// Expanded limits to include all corners of the given <paramref name="rect"/>.
-    /// </summary>
     public void Expand(CoordinateRect rect)
     {
         Expand(rect.Left, rect.Top);
         Expand(rect.Right, rect.Bottom);
     }
 
-    /// <summary>
-    /// Expanded limits to include all corners of the given <paramref name="limits"/>.
-    /// </summary>
     public void Expand(AxisLimits limits)
     {
-        Expand(limits.Left, limits.Top);
-        Expand(limits.Right, limits.Bottom);
+        ExpandX(limits);
+        ExpandY(limits);
+    }
+
+    public void ExpandX(AxisLimits limits)
+    {
+        ExpandX(limits.Left);
+        ExpandX(limits.Right);
+    }
+
+    public void ExpandY(AxisLimits limits)
+    {
+        ExpandY(limits.Bottom);
+        ExpandY(limits.Top);
     }
 
     public bool Equals(ExpandingAxisLimits? other)

@@ -35,8 +35,6 @@ public class FractionalAutoScaler : IAutoScaler
 
     public void AutoScaleAll(IEnumerable<IPlottable> plottables)
     {
-        // TODO: this should call the GetAxisLimits() below
-
         IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
         IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
 

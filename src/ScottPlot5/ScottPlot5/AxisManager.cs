@@ -330,7 +330,73 @@ public class AxisManager
     public void AutoScale()
     {
         ReplaceNullAxesWithDefaults();
-        AutoScaler.AutoScaleAll(Plot.PlottableList); // TODO: this should call the autoscaler's GetAxisLimits()
+        AutoScaler.AutoScaleAll(Plot.PlottableList);
+    }
+
+    /// <summary>
+    /// Automatically expand the default axes to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpand()
+    {
+        AutoScaleExpand(Bottom, Left);
+    }
+
+    /// <summary>
+    /// Automatically expand the provided axes to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpand(IXAxis xAxis, IYAxis yAxis)
+    {
+        ReplaceNullAxesWithDefaults();
+        AxisLimits suggestedLimits = AutoScaler.GetAxisLimits(Plot, xAxis, yAxis);
+        AxisLimits currentLimits = GetLimits();
+
+        ExpandingAxisLimits limits = new(currentLimits);
+        limits.Expand(suggestedLimits);
+        SetLimits(limits.AxisLimits);
+    }
+
+    /// <summary>
+    /// Automatically expand the provided axes horizontally to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpandX(IXAxis xAxis)
+    {
+        ReplaceNullAxesWithDefaults();
+        AxisLimits suggestedLimits = AutoScaler.GetAxisLimits(Plot, xAxis, Left);
+        AxisLimits currentLimits = GetLimits();
+
+        ExpandingAxisLimits limits = new(currentLimits);
+        limits.Expand(suggestedLimits);
+        SetLimitsX(limits.AxisLimits);
+    }
+
+    /// <summary>
+    /// Automatically expand the default horizontal axis to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpandX()
+    {
+        AutoScaleExpandX(Bottom);
+    }
+
+    /// <summary>
+    /// Automatically expand the provided axes vertically to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpandY(IYAxis yAxis)
+    {
+        ReplaceNullAxesWithDefaults();
+        AxisLimits suggestedLimits = AutoScaler.GetAxisLimits(Plot, Bottom, yAxis);
+        AxisLimits currentLimits = GetLimits();
+
+        ExpandingAxisLimits limits = new(currentLimits);
+        limits.Expand(suggestedLimits);
+        SetLimitsY(limits.AxisLimits);
+    }
+
+    /// <summary>
+    /// Automatically expand the default vertical axis to fit the data in all plottables.
+    /// </summary>
+    public void AutoScaleExpandY()
+    {
+        AutoScaleExpandY(Left);
     }
 
     public void AutoScaleX()

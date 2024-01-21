@@ -10,7 +10,13 @@ public interface IAutoScaler
     /// </summary>
     AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis);
 
-    public void AutoScaleAll(IEnumerable<IPlottable> plottables); // TODO: deprecate
+    /// <summary>
+    /// Autoscale every unset axis used by plottables.
+    /// </summary>
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables);
+
+    // TODO: GetRecommendedAxisLimits() should return a dictionary of limits by axis,
+    // then both functions can be collapsed into one.
 
     public bool InvertedX { get; set; }
     public bool InvertedY { get; set; }
