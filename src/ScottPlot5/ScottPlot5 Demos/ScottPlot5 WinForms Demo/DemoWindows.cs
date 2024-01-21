@@ -29,6 +29,7 @@ public static class DemoWindows
             windows.Add(targetWindow);
         }
 
+        MoveToTop(typeof(Demos.DraggablePoints));
         MoveToTop(typeof(Demos.DraggableAxisLines));
         MoveToTop(typeof(Demos.MouseTracker));
         MoveToTop(typeof(Demos.CookbookViewer));
