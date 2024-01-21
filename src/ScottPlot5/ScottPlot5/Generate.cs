@@ -286,6 +286,46 @@ public static class Generate
     }
 
     /// <summary>
+    /// RandomSample integer between 0 (inclusive) and 1 (exclusive)
+    /// </summary>
+    public static double RandomNumber()
+    {
+        return RandomData.RandomNumber(0, 1);
+    }
+
+    /// <summary>
+    /// RandomSample integer between 0 (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static double RandomNumber(double max)
+    {
+        return RandomData.RandomNumber(0, max);
+    }
+
+    /// <summary>
+    /// RandomSample integer between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static double RandomNumber(double min, double max)
+    {
+        return RandomData.RandomNumber(min, max);
+    }
+
+    /// <summary>
+    /// Random numbers between zero (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static double[] RandomNumbers(int count, double max)
+    {
+        return RandomData.RandomSample(count, 0, max);
+    }
+
+    /// <summary>
+    /// Random numbers between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public static double[] RandomNumbers(int count, double min, double max)
+    {
+        return RandomData.RandomSample(count, min, max);
+    }
+
+    /// <summary>
     /// Return a copy of the given array with random values added to each point
     /// </summary>
     public static double[] AddNoise(double[] input, double magnitude = 1)
@@ -449,7 +489,24 @@ public static class Generate
 
     #region Finance
 
+    public static OHLC RandomOHLC()
+    {
+        return RandomData.RandomOHLCs(1).Single();
+    }
+
+    public static OHLC RandomOHLC(System.DateTime date)
+    {
+        OHLC ohlc = RandomOHLC();
+        ohlc.DateTime = date;
+        return ohlc;
+    }
+
     public static List<OHLC> RandomOHLCs(int count)
+    {
+        return RandomData.RandomOHLCs(count);
+    }
+
+    public static List<OHLC> RandomOHLCs(int count, System.DateTime startDate)
     {
         return RandomData.RandomOHLCs(count);
     }
