@@ -10,86 +10,15 @@ on:
     paths:
       - src/**
 
-env:
-  DOTNET_VERSION: "8.0.x"
-
 jobs:
-  test-linux:
-    strategy:
-      matrix:
-        include:
-          - VERSION_NAME: "ScottPlot 4"
-            TEST_PROJECT: "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
-          - VERSION_NAME: "ScottPlot 5"
-            TEST_PROJECT: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
-    name: Test ${{ matrix.VERSION_NAME }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: 🚚 Restore
-        run: dotnet restore "${{ matrix.TEST_PROJECT }}"
-      - name: 🛠️ Build
-        run: dotnet build "${{ matrix.TEST_PROJECT }}" --configuration Release --no-restore
-      - name: 🧪 Test
-        run: dotnet test "${{ matrix.TEST_PROJECT }}" --configuration Release --no-restore --verbosity minimal
+  scottplot4:
+    uses: ./.github/workflows/ScottPlot4-CI.yaml
 
-  test-windows:
-    needs: [test-linux]
-    strategy:
-      matrix:
-        include:
-          - VERSION_NAME: "ScottPlot 4"
-            FULL_SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
-            INSTALL_WORKLOADS: false
-          - VERSION_NAME: "ScottPlot 5"
-            FULL_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
-            INSTALL_WORKLOADS: true
-    name: Build ${{ matrix.VERSION_NAME }}
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-      - name: 🐢 Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✨ Setup Java 17
-        if: ${{ matrix.INSTALL_WORKLOADS }}
-        uses: actions/setup-java@v3
-        with:
-          distribution: "microsoft"
-          java-version: "17"
-      - name: 🚚 Install Additional Workloads
-        if: ${{ matrix.INSTALL_WORKLOADS }}
-        run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
-      - name: 🚚 Workload Restore
-        if: ${{ matrix.INSTALL_WORKLOADS }}
-        run: dotnet workload restore "${{ matrix.FULL_SOLUTION }}"
-      - name: 🚚 Full Restore
-        run: dotnet restore "${{ matrix.FULL_SOLUTION }}"
-      - name: 🛠️ Full Build
-        run: dotnet build "${{ matrix.FULL_SOLUTION }}" --configuration Release
-      - name: ✍️ Autoformat
-        run: dotnet format "${{ matrix.FULL_SOLUTION }}"
-      - name: 🚀 Push Formatting Changes
-        run: |
-          git config --global user.name 'Scott W Harden (via GitHub Actions)'
-          git config --global user.email 'swharden@gmail.com'
-          git pull
-          git commit -am "CI: autoformat"
-          git push
+  scottplot5:
+    uses: ./.github/workflows/ScottPlot5-CI.yaml
 
   changelog:
-    needs: [test-linux, test-windows]
+    needs: [scottplot4, scottplot5]
     runs-on: ubuntu-latest
     name: Update Changelog Webpage
     steps:
@@ -103,16 +32,14 @@ jobs:
             https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
 
   code-analysis:
-    needs: [test-linux, test-windows]
+    needs: [scottplot4, scottplot5]
     runs-on: ubuntu-latest
-    name: Code Metrics
+    name: Update Code Metrics Webpage
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+      - name: ✨ Setup .NET
         uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🧪 Run Code Analysis
         run: dotnet run dotnet run --project dev/CodeAnalysis
       - name: 🔐 Create Key File
