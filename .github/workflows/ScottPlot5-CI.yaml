@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot5 Tests.csproj"
+  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
   SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "7.0.x"
 

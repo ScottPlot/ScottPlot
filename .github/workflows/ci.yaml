@@ -19,7 +19,7 @@ jobs:
       matrix:
         TEST_PROJECT:
           - "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
-          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot5 Tests.csproj"
+          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
     name: Test on Linux
     runs-on: ubuntu-latest
     steps:
