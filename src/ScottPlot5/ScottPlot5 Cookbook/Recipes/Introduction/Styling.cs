@@ -4,7 +4,7 @@ public class Styling : ICategory
 {
     public string Chapter => "Introduction";
     public string CategoryName => "Styling Plots";
-    public string CategoryDescription => "How to customize plots";
+    public string CategoryDescription => "How to customize appearance of plots";
 
     public class StyleClass : RecipeBase
     {
@@ -77,7 +77,8 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Palette = new ScottPlot.Palettes.Nord();
+            // change the default palette used when adding new plottables
+            myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
 
             for (int i = 0; i < 5; i++)
             {
@@ -183,6 +184,43 @@ public class Styling : ICategory
             myPlot.ScaleFactor = 2;
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
+        }
+    }
+
+    public class DarkMode : RecipeBase
+    {
+        public override string Name => "Dark Mode";
+        public override string Description => "Plots can be created using dark mode " +
+            "by setting the colors of major plot components to ones consistent with a dark theme.";
+
+        [Test]
+        public override void Execute()
+        {
+            // set the color palette used when coloring new items added to the plot
+            myPlot.Add.Palette = new ScottPlot.Palettes.Penumbra();
+
+            // add things to the plot
+            for (int i = 0; i < 5; i++)
+            {
+                var sig = myPlot.Add.Signal(Generate.Sin(51, phase: -.05 * i));
+                sig.LineWidth = 3;
+                sig.Label = $"Line {i + 1}";
+            }
+            myPlot.XLabel("Horizontal Axis");
+            myPlot.YLabel("Vertical Axis");
+            myPlot.Title("ScottPlot 5 in Dark Mode");
+            myPlot.ShowLegend();
+
+            // change figure colors
+            myPlot.Style.ColorAxes(Color.FromHex("#d7d7d7"));
+            myPlot.Style.ColorGrids(Color.FromHex("#404040"));
+            myPlot.Style.Background(
+                figure: Color.FromHex("#181818"),
+                data: Color.FromHex("#1f1f1f"));
+            myPlot.Style.ColorLegend(
+                background: Color.FromHex("#404040"),
+                foreground: Color.FromHex("#d7d7d7"),
+                border: Color.FromHex("#d7d7d7"));
         }
     }
 }

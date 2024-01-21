@@ -103,23 +103,19 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
-            Color[] colors = {
-                myPlot.Palette.GetColor(0),
-                myPlot.Palette.GetColor(1),
-                myPlot.Palette.GetColor(2),
-            };
+            ScottPlot.Palettes.Category10 palette = new();
 
             ScottPlot.Bar[] bars =
             {
                 // first set of stacked bars
-                new() { Position = 1, ValueBase = 0, Value = 2, FillColor = colors[0] },
-                new() { Position = 1, ValueBase = 2, Value = 5, FillColor = colors[1] },
-                new() { Position = 1, ValueBase = 5, Value = 10, FillColor = colors[2] },
+                new() { Position = 1, ValueBase = 0, Value = 2, FillColor = palette.GetColor(0) },
+                new() { Position = 1, ValueBase = 2, Value = 5, FillColor = palette.GetColor(1) },
+                new() { Position = 1, ValueBase = 5, Value = 10, FillColor = palette.GetColor(2) },
 
                 // second set of stacked bars
-                new() { Position = 2, ValueBase = 0, Value = 4, FillColor = colors[0] },
-                new() { Position = 2, ValueBase = 4, Value = 7, FillColor = colors[1] },
-                new() { Position = 2, ValueBase = 7, Value = 10, FillColor = colors[2] },
+                new() { Position = 2, ValueBase = 0, Value = 4, FillColor = palette.GetColor(0) },
+                new() { Position = 2, ValueBase = 4, Value = 7, FillColor = palette.GetColor(1) },
+                new() { Position = 2, ValueBase = 7, Value = 10, FillColor = palette.GetColor(2) },
             };
 
             myPlot.Add.Bars(bars);
@@ -147,28 +143,24 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
-            Color[] colors = {
-                myPlot.Palette.GetColor(0),
-                myPlot.Palette.GetColor(1),
-                myPlot.Palette.GetColor(2),
-            };
+            ScottPlot.Palettes.Category10 palette = new();
 
             ScottPlot.Bar[] bars =
             {
                 // first group
-                new() { Position = 1, Value = 2, FillColor = colors[0], Error = 1 },
-                new() { Position = 2, Value = 5, FillColor = colors[1], Error = 2 },
-                new() { Position = 3, Value = 7, FillColor = colors[2], Error = 1 },
+                new() { Position = 1, Value = 2, FillColor = palette.GetColor(0), Error = 1 },
+                new() { Position = 2, Value = 5, FillColor = palette.GetColor(1), Error = 2 },
+                new() { Position = 3, Value = 7, FillColor = palette.GetColor(2), Error = 1 },
 
                 // second group
-                new() { Position = 5, Value = 4, FillColor = colors[0], Error = 2 },
-                new() { Position = 6, Value = 7, FillColor = colors[1], Error = 1 },
-                new() { Position = 7, Value = 13, FillColor = colors[2], Error = 3 },
+                new() { Position = 5, Value = 4, FillColor = palette.GetColor(0), Error = 2 },
+                new() { Position = 6, Value = 7, FillColor = palette.GetColor(1), Error = 1 },
+                new() { Position = 7, Value = 13, FillColor = palette.GetColor(2), Error = 3 },
                 
                 // third group
-                new() { Position = 9, Value = 5, FillColor = colors[0], Error = 1 },
-                new() { Position = 10, Value = 6, FillColor = colors[1], Error = 3 },
-                new() { Position = 11, Value = 11, FillColor = colors[2], Error = 2 },
+                new() { Position = 9, Value = 5, FillColor = palette.GetColor(0), Error = 1 },
+                new() { Position = 10, Value = 6, FillColor = palette.GetColor(1), Error = 3 },
+                new() { Position = 11, Value = 11, FillColor = palette.GetColor(2), Error = 2 },
             };
 
             myPlot.Add.Bars(bars);
@@ -176,9 +168,9 @@ public class Bar : ICategory
             // build the legend manually
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Location = Alignment.UpperLeft;
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Monday", FillColor = colors[0] });
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Tuesday", FillColor = colors[1] });
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Wednesday", FillColor = colors[2] });
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Monday", FillColor = palette.GetColor(0) });
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Tuesday", FillColor = palette.GetColor(1) });
+            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Wednesday", FillColor = palette.GetColor(2) });
 
             // show group labels on the bottom axis
             Tick[] ticks =

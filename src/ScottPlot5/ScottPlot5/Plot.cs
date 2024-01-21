@@ -8,9 +8,8 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public List<IPlottable> PlottableList { get; } = new();
+    public List<IPlottable> PlottableList { get; } = [];
     public PlottableAdder Add { get; }
-    public IPalette Palette { get => Add.Palette; set => Add.Palette = value; }
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }

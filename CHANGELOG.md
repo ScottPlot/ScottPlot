@@ -18,6 +18,7 @@
 * SignalConst: The property `Data` has been renamed to `DataSource` (#3260)
 * Axes: Added `AutoScaleExpand()` to zoom out to fit data only if necessary (#3259)
 * Style: Added `Plot.Style.ColorLegend()` for quick customization of legend colors (#3247)
+* Plot: Replacing palettes is now achieved by setting `Plot.Add.Palette` instead of `Plot.Palette`.
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_

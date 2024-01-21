@@ -11,6 +11,9 @@ public class PlottableAdder(Plot plot)
 {
     private readonly Plot Plot = plot;
 
+    /// <summary>
+    /// Color set used for adding new plottables
+    /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
     public Color GetNextColor()
