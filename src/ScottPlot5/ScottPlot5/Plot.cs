@@ -347,6 +347,16 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Helper method for displaying specific items in the legend
+    /// </summary>
+    public void ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
+    {
+        ShowLegend(location);
+        Legend.ManualItems.Clear();
+        Legend.ManualItems.AddRange(items);
+    }
+
+    /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
     public void HideLegend()
