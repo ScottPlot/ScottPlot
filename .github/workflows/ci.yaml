@@ -30,11 +30,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ matrix.TEST_PROJECT }}
+        run: dotnet restore "${{ matrix.TEST_PROJECT }}"
       - name: 🛠️ Build
-        run: dotnet build ${{ matrix.TEST_PROJECT }} --configuration Release --no-restore
+        run: dotnet build "${{ matrix.TEST_PROJECT }}" --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ matrix.TEST_PROJECT }} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test "${{ matrix.TEST_PROJECT }}" --configuration Release --no-restore --verbosity minimal
 
   test-windows:
     needs: [test-linux]
@@ -64,13 +64,13 @@ jobs:
       - name: 🚚 Install Additional Workloads
         run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore
-        run: dotnet workload restore ${{ matrix.FULL_SOLUTION }}
+        run: dotnet workload restore "${{ matrix.FULL_SOLUTION }}"
       - name: 🚚 Full Restore
-        run: dotnet restore ${{ matrix.FULL_SOLUTION }}
+        run: dotnet restore "${{ matrix.FULL_SOLUTION }}"
       - name: 🛠️ Full Build
-        run: dotnet build ${{ matrix.FULL_SOLUTION }} --configuration Release
+        run: dotnet build "${{ matrix.FULL_SOLUTION }}" --configuration Release
       - name: ✍️ Autoformat
-        run: dotnet format ${{ matrix.FULL_SOLUTION }}
+        run: dotnet format "${{ matrix.FULL_SOLUTION }}"
       - name: 🚀 Push Formatting Changes
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
