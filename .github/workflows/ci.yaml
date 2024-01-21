@@ -17,10 +17,10 @@ jobs:
   test-linux:
     strategy:
       matrix:
-        version: ["ScottPlot4", "ScottPlot5"]
-    env:
-      TEST_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
-    name: Test ${{ matrix.version }} on Linux
+        TEST_PROJECT:
+          - "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
+          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot5 Tests.csproj"
+    name: Test on Linux
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -30,21 +30,20 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: 🚚 Restore
-        run: dotnet restore ${{ env.TEST_SOLUTION }}
+        run: dotnet restore ${{ matrix.TEST_PROJECT }}
       - name: 🛠️ Build
-        run: dotnet build ${{ env.TEST_SOLUTION }} --configuration Release --no-restore
+        run: dotnet build ${{ matrix.TEST_PROJECT }} --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test ${{ env.TEST_SOLUTION }} --configuration Release --no-restore --verbosity minimal
+        run: dotnet test ${{ matrix.TEST_PROJECT }} --configuration Release --no-restore --verbosity minimal
 
   test-windows:
     needs: [test-linux]
     strategy:
       matrix:
-        version: ["ScottPlot4", "ScottPlot5"]
-    env:
-      FULL_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}.sln"
-      TEST_SOLUTION: "src/${{ matrix.version }}/${{ matrix.version }}-tests.slnf"
-    name: ${{ matrix.version }} Full Build
+        FULL_SOLUTION:
+          - "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
+          - "src/ScottPlot5/ScottPlot5 Tests/ScottPlot5 Tests.csproj"
+    name: Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -60,18 +59,18 @@ jobs:
       - name: ✨ Setup Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'microsoft'
-          java-version: '17'
+          distribution: "microsoft"
+          java-version: "17"
       - name: 🚚 Install Additional Workloads
         run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore
-        run: dotnet workload restore ${{ env.FULL_SOLUTION }}
+        run: dotnet workload restore ${{ matrix.FULL_SOLUTION }}
       - name: 🚚 Full Restore
-        run: dotnet restore ${{ env.FULL_SOLUTION }}
+        run: dotnet restore ${{ matrix.FULL_SOLUTION }}
       - name: 🛠️ Full Build
-        run: dotnet build ${{ env.FULL_SOLUTION }} --configuration Release
+        run: dotnet build ${{ matrix.FULL_SOLUTION }} --configuration Release
       - name: ✍️ Autoformat
-        run: dotnet format ${{ env.FULL_SOLUTION }}
+        run: dotnet format ${{ matrix.FULL_SOLUTION }}
       - name: 🚀 Push Formatting Changes
         run: |
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
