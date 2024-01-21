@@ -61,16 +61,16 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✨ Setup Java 17
-        if: ${{ matrix.VERSION_NAME }} == "ScottPlot 5"
+        if: ${{ matrix.VERSION_NAME == "ScottPlot 5" }}
         uses: actions/setup-java@v3
         with:
           distribution: "microsoft"
           java-version: "17"
       - name: 🚚 Install Additional Workloads
-        if: ${{ matrix.VERSION_NAME }} == "ScottPlot 5"
+        if: ${{ matrix.VERSION_NAME == "ScottPlot 5" }}
         run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore
-        if: ${{ matrix.VERSION_NAME }} == "ScottPlot 5"
+        if: ${{ matrix.VERSION_NAME == "ScottPlot 5" }}
         run: dotnet workload restore "${{ matrix.FULL_SOLUTION }}"
       - name: 🚚 Full Restore
         run: dotnet restore "${{ matrix.FULL_SOLUTION }}"
