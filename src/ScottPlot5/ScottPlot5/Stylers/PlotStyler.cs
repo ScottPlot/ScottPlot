@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using ScottPlot.Legends;
 using System.ComponentModel;
 
 namespace ScottPlot.Stylers;
@@ -59,6 +60,13 @@ public class PlotStyler
             grid.MajorLineStyle.Color = majorColor;
             grid.MinorLineStyle.Color = minorColor;
         }
+    }
+
+    public void ColorLegend(Color background, Color foreground, Color border)
+    {
+        Plot.Legend.BackgroundFill.Color = background;
+        Plot.Legend.Font.Color = foreground;
+        Plot.Legend.OutlineStyle.Color = border;
     }
 
     /// <summary>
