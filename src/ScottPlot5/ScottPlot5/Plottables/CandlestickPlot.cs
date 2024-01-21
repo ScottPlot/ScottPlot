@@ -45,11 +45,14 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
     public AxisLimits GetAxisLimits()
     {
-        AxisLimits limits = Data.GetLimits();
+        AxisLimits limits = Data.GetLimits(); // TODO: Data.GetSequentialLimits()
 
-        return Sequential
-            ? new AxisLimits(0, Data.GetOHLCs().Count, limits.Bottom, limits.Top)
-            : limits;
+        if (Sequential)
+        {
+            limits = new AxisLimits(0, Data.GetOHLCs().Count, limits.Bottom, limits.Top);
+        }
+
+        return limits;
     }
 
     public void Render(RenderPack rp)

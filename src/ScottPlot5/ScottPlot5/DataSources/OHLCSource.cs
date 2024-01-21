@@ -16,7 +16,7 @@ public class OHLCSource : IOHLCSource
 
     public AxisLimits GetLimits()
     {
-        return new AxisLimits(GetLimitsX(), GetLimitsY());
+        return Prices.Any() ? new AxisLimits(GetLimitsX(), GetLimitsY()) : AxisLimits.NoLimits;
     }
 
     public CoordinateRange GetLimitsX()
