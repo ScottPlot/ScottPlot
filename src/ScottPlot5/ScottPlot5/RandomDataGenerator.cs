@@ -184,7 +184,15 @@ public class RandomDataGenerator
     /// </summary>
     public List<OHLC> RandomOHLCs(int count)
     {
-        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count);
+        return RandomOHLCs(count, new DateTime(2024, 1, 1));
+    }
+
+    /// <summary>
+    /// Return a collection OHLCs representing random price action
+    /// </summary>
+    public List<OHLC> RandomOHLCs(int count, DateTime start)
+    {
+        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count, start);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;

@@ -10,6 +10,7 @@
 * Demo: Added a draggable points window to show how to drag points of a scatter plot (#3248) _Thanks bologna_
 * Generate: Added `RandomNumber()` and `RandomNumbers()` overloads
 * OHLC: Improved autoscaling behavior for empty datasets
+* Generate: Added `RandomOHLCs()` overload that accepts a starting `DateTime` (#3254) _Thanks @CBrauer_
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_
