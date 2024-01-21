@@ -8,20 +8,20 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public DataLoggerSource DataSource { get; set; } = new();
+    public DataLoggerSource Data { get; set; } = new();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public bool ManageAxisLimits { get; set; } = true;
     public IAxisManager AxisManager { get; set; } = new Full();
 
-    public AxisLimits GetAxisLimits() => DataSource.GetAxisLimits();
+    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
     public LineStyle LineStyle = new();
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>
     /// Returns true if data has been added since the last render
     /// </summary>
-    public bool HasNewData => DataSource.CountTotal != DataSource.CountOnLastRender;
+    public bool HasNewData => Data.CountTotal != Data.CountOnLastRender;
 
     public void UpdateAxisLimits(Plot plot, bool force = false)
     {
@@ -41,24 +41,24 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 
     public void Add(double y)
     {
-        DataSource.Add(y);
+        Data.Add(y);
     }
 
     public void Add(double x, double y)
     {
-        DataSource.Add(x, y);
+        Data.Add(x, y);
     }
 
     public void Add(Coordinates coordinates)
     {
-        DataSource.Add(coordinates);
+        Data.Add(coordinates);
     }
 
     public void Add(IReadOnlyList<double> ys)
     {
         foreach (double y in ys)
         {
-            DataSource.Add(y);
+            Data.Add(y);
         }
     }
 
@@ -66,7 +66,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
     {
         foreach (Coordinates c in coordinates)
         {
-            DataSource.Add(c);
+            Data.Add(c);
         }
     }
 
@@ -79,18 +79,18 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 
         for (int i = 0; i < xs.Count; i++)
         {
-            DataSource.Add(xs[i], ys[i]);
+            Data.Add(xs[i], ys[i]);
         }
     }
 
     public void Render(RenderPack rp)
     {
-        IEnumerable<Pixel> points = DataSource.Coordinates.Select(Axes.GetPixel);
+        IEnumerable<Pixel> points = Data.Coordinates.Select(Axes.GetPixel);
 
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, points, LineStyle);
 
-        DataSource.CountOnLastRender = DataSource.CountTotal;
+        Data.CountOnLastRender = Data.CountTotal;
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
     {
         ManageAxisLimits = true;
         AxisManager = new Full();
-        DataSource.CountOnLastRender = -1;
+        Data.CountOnLastRender = -1;
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
             Width = width,
             PaddingFractionX = paddingFraction,
         };
-        DataSource.CountOnLastRender = -1;
+        Data.CountOnLastRender = -1;
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
             Width = width,
             PaddingFractionX = 0,
         };
-        DataSource.CountOnLastRender = -1;
+        Data.CountOnLastRender = -1;
     }
 
 }

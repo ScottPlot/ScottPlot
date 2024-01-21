@@ -12,14 +12,14 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     public readonly LineStyle LineStyle = new();
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public DataStreamerSource DataSource { get; set; }
+    public DataStreamerSource Data { get; set; }
 
-    public double Period { get => DataSource.SamplePeriod; set => DataSource.SamplePeriod = value; }
+    public double Period { get => Data.SamplePeriod; set => Data.SamplePeriod = value; }
 
     /// <summary>
     /// Returns true if data has been added since the last render
     /// </summary>
-    public bool HasNewData => DataSource.CountTotal != DataSource.CountTotalOnLastRender;
+    public bool HasNewData => Data.CountTotal != Data.CountTotalOnLastRender;
 
     /// <summary>
     /// If enabled, axis limits will be adjusted automatically if new data runs off the screen.
@@ -45,7 +45,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     public DataStreamer(Plot plot, double[] data)
     {
         Plot = plot;
-        DataSource = new DataStreamerSource(data);
+        Data = new DataStreamerSource(data);
         Renderer = new DataViews.Wipe(this, true);
     }
 
@@ -54,7 +54,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// </summary>
     public void Add(double value)
     {
-        DataSource.Add(value);
+        Data.Add(value);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// </summary>
     public void AddRange(IEnumerable<double> values)
     {
-        DataSource.AddRange(values);
+        Data.AddRange(values);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// </summary>
     public void Clear(double value = 0)
     {
-        DataSource.Clear(value);
+        Data.Clear(value);
     }
 
     /// <summary>
@@ -128,13 +128,13 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
 
     public AxisLimits GetAxisLimits()
     {
-        return DataSource.GetAxisLimits();
+        return Data.GetAxisLimits();
     }
 
     public void UpdateAxisLimits(Plot plot, bool force = false)
     {
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
-        AxisLimits dataLimits = DataSource.GetAxisLimits();
+        AxisLimits dataLimits = Data.GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
         Plot.Axes.SetLimits(newLimits);
     }
@@ -142,6 +142,6 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     public void Render(RenderPack rp)
     {
         Renderer.Render(rp);
-        DataSource.CountTotalOnLastRender = DataSource.CountTotal;
+        Data.CountTotalOnLastRender = Data.CountTotal;
     }
 }

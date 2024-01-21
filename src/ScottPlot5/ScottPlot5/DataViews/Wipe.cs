@@ -18,27 +18,27 @@ public class Wipe : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        int newestCount = Streamer.DataSource.NextIndex;
-        int oldestCount = Streamer.DataSource.Data.Length - newestCount;
+        int newestCount = Streamer.Data.NextIndex;
+        int oldestCount = Streamer.Data.Data.Length - newestCount;
 
-        double xMax = Streamer.DataSource.Data.Length * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
+        double xMax = Streamer.Data.Data.Length * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
 
         Pixel[] newest = new Pixel[newestCount];
         Pixel[] oldest = new Pixel[oldestCount];
 
         for (int i = 0; i < newest.Length; i++)
         {
-            double xPos = i * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
+            double xPos = i * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
-            float y = Streamer.Axes.GetPixelY(Streamer.DataSource.Data[i] + Streamer.DataSource.OffsetY);
+            float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i] + Streamer.Data.OffsetY);
             newest[i] = new(x, y);
         }
 
         for (int i = 0; i < oldest.Length; i++)
         {
-            double xPos = (i + Streamer.DataSource.NextIndex) * Streamer.DataSource.SamplePeriod + Streamer.DataSource.OffsetX;
+            double xPos = (i + Streamer.Data.NextIndex) * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
-            float y = Streamer.Axes.GetPixelY(Streamer.DataSource.Data[i + Streamer.DataSource.NextIndex] + Streamer.DataSource.OffsetY);
+            float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i + Streamer.Data.NextIndex] + Streamer.Data.OffsetY);
             oldest[i] = new(x, y);
         }
 

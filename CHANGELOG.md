@@ -14,6 +14,8 @@
 * Axes: Improved support for inverted axes (#3252) _Thanks @fujiangang_
 * Finance: Improved performance of financial charts by not rendering symbols outside the data area (#3258) _Thanks Lyakabynka_
 * SignalXY: Support vertical orientation (#3253) _Thanks @manaruto_
+* Data logger and streamer: The property `Data` has been renamed to `DataSource` (#3260)
+* SignalConst: The property `Data` has been renamed to `DataSource` (#3260)
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_

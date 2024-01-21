@@ -32,7 +32,7 @@ public partial class DataLogger : Form, IDemoWindow
         {
             if (Logger.HasNewData)
             {
-                formsPlot1.Plot.Title($"Processed {Logger.DataSource.CountTotal:N0} points");
+                formsPlot1.Plot.Title($"Processed {Logger.Data.CountTotal:N0} points");
                 formsPlot1.Refresh();
             }
         };

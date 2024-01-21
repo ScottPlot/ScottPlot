@@ -5,7 +5,7 @@ namespace ScottPlot.Plottables;
 public class SignalConst<T>(T[] ys, double period) : IPlottable
     where T : struct, IComparable
 {
-    readonly SignalConstSourceDoubleArray<T> DataSource = new(ys, period);
+    readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
     public readonly MarkerStyle Marker = new();
     public readonly LineStyle LineStyle = new();
 
@@ -27,14 +27,14 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public AxisLimits GetAxisLimits() => DataSource.GetAxisLimits();
+    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
 
     public void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        List<PixelColumn> cols = DataSource.GetPixelColumns(Axes);
+        List<PixelColumn> cols = Data.GetPixelColumns(Axes);
 
         if (!cols.Any())
             return;

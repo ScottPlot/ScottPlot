@@ -32,7 +32,7 @@ public partial class DataStreamer : Form, IDemoWindow
         {
             if (Streamer.HasNewData)
             {
-                formsPlot1.Plot.Title($"Processed {Streamer.DataSource.CountTotal:N0} points");
+                formsPlot1.Plot.Title($"Processed {Streamer.Data.CountTotal:N0} points");
                 formsPlot1.Refresh();
             }
         };

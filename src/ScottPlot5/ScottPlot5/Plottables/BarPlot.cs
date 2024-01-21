@@ -8,7 +8,7 @@ public class BarPlot : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
-    public IEnumerable<Bar> Bars { get; set; }
+    public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
 
     /// <summary>
     /// Apply a fill color to all bars

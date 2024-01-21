@@ -2,15 +2,17 @@
 {
     public class ErrorBar : IPlottable
     {
+        // TODO: use an errorbar source instead of so many lists
+
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = new Axes();
 
         public IReadOnlyList<double> Xs { get; set; }
         public IReadOnlyList<double> Ys { get; set; }
-        public IReadOnlyList<double>? XErrorsPositive { get; set; }
-        public IReadOnlyList<double>? XErrorsNegative { get; set; }
-        public IReadOnlyList<double>? YErrorsPositive { get; set; }
-        public IReadOnlyList<double>? YErrorsNegative { get; set; }
+        public IReadOnlyList<double>? XErrorPositive { get; set; }
+        public IReadOnlyList<double>? XErrorNegative { get; set; }
+        public IReadOnlyList<double>? YErrorPositive { get; set; }
+        public IReadOnlyList<double>? YErrorNegative { get; set; }
 
         public LineStyle LineStyle { get; set; } = new();
         public float CapSize { get; set; } = 3;
@@ -24,10 +26,10 @@
         {
             Xs = xs;
             Ys = ys;
-            XErrorsPositive = xErrorsPositive;
-            XErrorsNegative = xErrorsNegative;
-            YErrorsPositive = yErrorsPositive;
-            YErrorsNegative = yErrorsNegative;
+            XErrorPositive = xErrorsPositive;
+            XErrorNegative = xErrorsNegative;
+            YErrorPositive = yErrorsPositive;
+            YErrorNegative = yErrorsNegative;
         }
 
         public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
@@ -38,10 +40,10 @@
 
             for (int i = 0; i < Xs.Count; i++)
             {
-                double xMin = XErrorsNegative is null ? Xs[i] : Xs[i] - XErrorsNegative[i];
-                double xMax = XErrorsPositive is null ? Xs[i] : Xs[i] + XErrorsPositive[i];
-                double yMin = YErrorsNegative is null ? Ys[i] : Ys[i] - YErrorsNegative[i];
-                double yMax = YErrorsPositive is null ? Ys[i] : Ys[i] + YErrorsPositive[i];
+                double xMin = XErrorNegative is null ? Xs[i] : Xs[i] - XErrorNegative[i];
+                double xMax = XErrorPositive is null ? Xs[i] : Xs[i] + XErrorPositive[i];
+                double yMin = YErrorNegative is null ? Ys[i] : Ys[i] - YErrorNegative[i];
+                double yMax = YErrorPositive is null ? Ys[i] : Ys[i] + YErrorPositive[i];
 
                 limits.ExpandX(xMin);
                 limits.ExpandX(xMax);
@@ -54,8 +56,8 @@
 
         public void Render(RenderPack rp)
         {
-            RenderErrorBars(rp.Canvas, Xs, Ys, YErrorsPositive, YErrorsNegative);
-            RenderErrorBars(rp.Canvas, Ys, Xs, XErrorsPositive, XErrorsNegative, true);
+            RenderErrorBars(rp.Canvas, Xs, Ys, YErrorPositive, YErrorNegative);
+            RenderErrorBars(rp.Canvas, Ys, Xs, XErrorPositive, XErrorNegative, true);
         }
 
         private void RenderErrorBars(SKCanvas canvas, IReadOnlyList<double> positions, IReadOnlyList<double> vals, IReadOnlyList<double>? errorPositive, IReadOnlyList<double>? errorNegative, bool horizontal = false)

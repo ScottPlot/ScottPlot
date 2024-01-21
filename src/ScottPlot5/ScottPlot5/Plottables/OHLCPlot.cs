@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class OhlcPlot : IPlottable
+public class OhlcPlot(IOHLCSource data) : IPlottable
 {
     public bool IsVisible { get; set; } = true;
 
     public IAxes Axes { get; set; } = new Axes();
 
-    private readonly IOHLCSource Data;
+    private readonly IOHLCSource Data = data;
 
     /// <summary>
     /// Fractional width of the OHLC symbol relative to its time span
@@ -24,11 +24,6 @@ public class OhlcPlot : IPlottable
         Color = Color.FromHex("#f23645"),
         Width = 2,
     };
-
-    public OhlcPlot(IOHLCSource data)
-    {
-        Data = data;
-    }
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
