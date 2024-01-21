@@ -22,6 +22,7 @@ public partial class DemoWindowInfo : UserControl
         label1.MouseLeave += (s, e) => { label1.ForeColor = SystemColors.ControlDark; };
         label1.Click += (s, e) => LaunchSourceBrowser();
         HideCaret(richTextBox1.Handle);
+        richTextBox1.Enabled = false;
     }
 
     private void LaunchSourceBrowser()
