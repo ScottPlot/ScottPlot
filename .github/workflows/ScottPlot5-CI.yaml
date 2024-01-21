@@ -18,7 +18,7 @@ env:
 
 jobs:
   test-linux:
-    name: Test on Linux
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -36,7 +36,7 @@ jobs:
 
   test-windows:
     needs: [test-linux]
-    name: Test on Windows
+    name: Full Build
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
@@ -50,8 +50,8 @@ jobs:
       - name: ✨ Setup Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'microsoft'
-          java-version: '17'
+          distribution: "microsoft"
+          java-version: "17"
       - name: 🚚 Install Additional Workloads
         run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
       - name: 🚚 Workload Restore ScottPlot5
@@ -60,30 +60,8 @@ jobs:
         run: dotnet restore "${{ env.SLN_SP5_FULL }}"
       - name: 🛠️ Full Build ScottPlot5
         run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
-
-  check-format:
-    needs: [test-linux, test-windows]
-    name: Ensure 'dotnet format' was run
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Set up .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✨ Setup Java 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'microsoft'
-          java-version: '17'
-      - name: 🚚 Install Additional Workloads
-        run: dotnet workload install maui-android maui-ios maccatalyst
-      - name: 🚚 Workload Restore
-        run: dotnet workload restore "${{ env.SLN_SP5_FULL }}"
-      - name: 🚚 Restore ScottPlot5
-        run: dotnet restore "${{ env.SLN_SP5_FULL }}"
-      - name: ✒️ Check ScottPlot5 Code formatting
+      - name: ✒️ Check Code formatting
+        if: github.event_name == 'pull_request'
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_FULL }}"
           echo "::warning::Run 'dotnet format ScottPlot5.sln' to fix code format errors"
