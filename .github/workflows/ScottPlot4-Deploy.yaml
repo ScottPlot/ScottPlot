@@ -10,7 +10,6 @@ env:
 jobs:
   deploy:
     name: 🚀 Publish ScottPlot4 Packages
-    needs: [test]
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout

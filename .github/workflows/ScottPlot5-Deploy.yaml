@@ -8,9 +8,8 @@ env:
   TEST_PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Tests/"
 
 jobs:
-  depploy:
+  deploy:
     name: 🚀 Publish ScottPlot5 Packages
-    needs: [test]
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
