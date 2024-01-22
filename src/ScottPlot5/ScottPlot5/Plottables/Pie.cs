@@ -1,33 +1,7 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class PieSlice
-{
-    // TODO: data source
-    public string? Label { get; set; }
-    public double Value { get; set; }
-    public FillStyle Fill { get; set; } = new();
-
-    public PieSlice() { }
-
-    public PieSlice(double value, Color color)
-    {
-        Value = value;
-        Fill.Color = color;
-    }
-
-    public PieSlice(double value, Color color, string label)
-    {
-        Value = value;
-        Label = label;
-        Fill.Color = color;
-    }
-}
-
 public class Pie : IPlottable
 {
-    [Obsolete("Pie charts cannot be assigned a label. Instead, assign labels to the Slices.", true)]
-    public string? Label { get; set; }
-
     public IList<PieSlice> Slices { get; set; }
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;

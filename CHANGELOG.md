@@ -21,6 +21,7 @@
 * Plot: Replacing palettes is now achieved by setting `Plot.Add.Palette` instead of `Plot.Palette`.
 * Plot: Added `ShowLegend()` overload that accepts manually created legend items
 * Scatter Plot: Added `LinePattern` property for customizing line style
+* Pie: Improved default colors of pie charts created from discrete values
 
 ## ScottPlot 4.1.71 (not yet on NuGet)
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_

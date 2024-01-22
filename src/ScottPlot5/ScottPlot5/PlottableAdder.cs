@@ -43,14 +43,6 @@ public class PlottableAdder(Plot plot)
     public BarPlot Bars(IEnumerable<Bar> bars)
     {
         BarPlot bp = new(bars);
-
-        // only set bar colors if the user has not already configured them
-        bool barColorsAreAllTheSame = bars.Select(x => x.FillColor).Distinct().Count() == 1;
-        if (barColorsAreAllTheSame)
-        {
-            bp.Color = GetNextColor();
-        }
-
         Plottable(bp);
         return bp;
     }
@@ -314,11 +306,18 @@ public class PlottableAdder(Plot plot)
 
     public Pie Pie(IEnumerable<double> values)
     {
-        var slices = values.Select(v => new PieSlice
+        List<PieSlice> slices = new();
+        foreach (double value in values)
         {
-            Value = v,
-            Fill = new() { Color = GetNextColor() },
-        }).ToList();
+            PieSlice slice = new()
+            {
+                Value = value,
+                FillColor = Palette.GetColor(slices.Count),
+            };
+
+            slices.Add(slice);
+        }
+
         var pie = Pie(slices);
         Plot.PlottableList.Add(pie);
         return pie;
