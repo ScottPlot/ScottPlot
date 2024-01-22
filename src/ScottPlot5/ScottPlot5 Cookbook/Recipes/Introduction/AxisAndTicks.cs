@@ -6,22 +6,6 @@ public class AxisAndTicks : ICategory
     public string CategoryName => "Axis and Ticks";
     public string CategoryDescription => "Examples of common customizations for axis labels and ticks";
 
-    public class AxisLabels : RecipeBase
-    {
-        public override string Name => "Axis Labels";
-        public override string Description => "Axis labels are the text labels centered on each axis.";
-
-        [Test]
-        public override void Execute()
-        {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
-
-            myPlot.YLabel("Horizontal Axis");
-            myPlot.XLabel("Vertical Axis");
-        }
-    }
-
     public class SetAxisLimits : RecipeBase
     {
         public override string Name => "Set Axis Limits";
