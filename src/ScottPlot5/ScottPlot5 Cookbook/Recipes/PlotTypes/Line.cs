@@ -40,14 +40,14 @@ public class LinePlot : ICategory
                 var line = myPlot.Add.Line(start, end);
 
                 // customize the line
-                line.LineStyle.Color = Generate.RandomColor(colormap);
-                line.LineStyle.Width = Generate.RandomInteger(1, 4);
-                line.LineStyle.Pattern = Generate.RandomLinePattern();
+                line.LineColor = Generate.RandomColor(colormap);
+                line.LineWidth = Generate.RandomInteger(1, 4);
+                line.LinePattern = Generate.RandomLinePattern();
 
                 // customize markers
-                line.MarkerStyle.Fill.Color = line.LineStyle.Color;
-                line.MarkerStyle.Shape = Generate.RandomMarkerShape();
-                line.MarkerStyle.Size = Generate.RandomInteger(5, 15);
+                line.MarkerColor = line.LineStyle.Color;
+                line.MarkerShape = Generate.RandomMarkerShape();
+                line.MarkerSize = Generate.RandomInteger(5, 15);
             }
         }
     }
@@ -61,14 +61,14 @@ public class LinePlot : ICategory
         public override void Execute()
         {
             var sin = myPlot.Add.Signal(Generate.Sin());
+            sin.Label = "Sine";
+
             var cos = myPlot.Add.Signal(Generate.Cos());
+            cos.Label = "Cosine";
 
             var line = myPlot.Add.Line(1, 12, 12, 0);
-            line.LineStyle.Width = 3;
-            line.MarkerStyle.Size = 10;
-
-            sin.Label = "Sine";
-            cos.Label = "Cosine";
+            line.LineWidth = 3;
+            line.MarkerSize = 10;
             line.Label = "Line Plot";
 
             myPlot.ShowLegend(Alignment.UpperRight);

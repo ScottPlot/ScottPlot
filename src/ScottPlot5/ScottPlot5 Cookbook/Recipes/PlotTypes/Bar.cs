@@ -31,11 +31,11 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
-            List<ScottPlot.Bar> bars = new()
+            ScottPlot.Bar[] bars =
             {
-                new() { Position = 1, Value = 5, ValueBase = 3, },
-                new() { Position = 2, Value = 7, ValueBase = 0, },
-                new() { Position = 4, Value = 3, ValueBase = 2, },
+                new() { Position = 1, Value = 5, ValueBase = 3, FillColor = Colors.Red },
+                new() { Position = 2, Value = 7, ValueBase = 0, FillColor = Colors.Blue },
+                new() { Position = 4, Value = 3, ValueBase = 2, FillColor = Colors.Green },
             };
 
             myPlot.Add.Bars(bars);
@@ -50,12 +50,12 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
-            List<ScottPlot.Bar> bars = new()
+            ScottPlot.Bar[] bars =
             {
-                new() { Position = 1, Value = 5, Error = 1, },
-                new() { Position = 2, Value = 7, Error = 2, },
-                new() { Position = 3, Value = 6, Error = 1, },
-                new() { Position = 4, Value = 8, Error = 2, },
+                new() { Position = 1, Value = 5, Error = 1, FillColor = Colors.Red },
+                new() { Position = 2, Value = 7, Error = 2, FillColor = Colors.Orange },
+                new() { Position = 3, Value = 6, Error = 1, FillColor = Colors.Green },
+                new() { Position = 4, Value = 8, Error = 2, FillColor = Colors.Blue },
             };
 
             myPlot.Add.Bars(bars);
@@ -168,9 +168,13 @@ public class Bar : ICategory
             // build the legend manually
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Location = Alignment.UpperLeft;
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Monday", FillColor = palette.GetColor(0) });
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Tuesday", FillColor = palette.GetColor(1) });
-            myPlot.Legend.ManualItems.Add(new LegendItem() { Label = "Wednesday", FillColor = palette.GetColor(2) });
+
+            LegendItem[] legendItems =
+            {
+                new() { Label = "Monday", FillColor = palette.GetColor(0) },
+                new() { Label = "Tuesday", FillColor = palette.GetColor(1) },
+                new() { Label = "Wednesday", FillColor = palette.GetColor(2) }
+            };
 
             // show group labels on the bottom axis
             Tick[] ticks =

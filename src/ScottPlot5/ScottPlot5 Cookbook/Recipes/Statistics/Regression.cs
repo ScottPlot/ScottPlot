@@ -20,7 +20,7 @@ public class Regression : ICategory
             // plot original data as a scatter plot
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.LineStyle = LineStyle.None;
-            sp.MarkerStyle.Size = 10;
+            sp.MarkerSize = 10;
 
             // calculate the regression line
             ScottPlot.Statistics.LinearRegression reg = new(xs, ys);
@@ -29,12 +29,12 @@ public class Regression : ICategory
             Coordinates pt1 = new(xs.First(), reg.GetValue(xs.First()));
             Coordinates pt2 = new(xs.Last(), reg.GetValue(xs.Last()));
             var line = myPlot.Add.Line(pt1, pt2);
-            line.MarkerStyle = MarkerStyle.None;
-            line.LineStyle.Pattern = LinePattern.Dashed;
-            line.LineStyle.Width = 2;
+            line.MarkerSize = 0;
+            line.LineWidth = 2;
+            line.LinePattern = LinePattern.Dashed;
 
             // note the formula at the top of the plot
-            myPlot.Title($"y = {reg.Slope:0.###}x + {reg.Offset:0.###} (r²={reg.Rsquared:0.###})");
+            myPlot.Title(reg.FormulaWithRSquared);
         }
     }
 }

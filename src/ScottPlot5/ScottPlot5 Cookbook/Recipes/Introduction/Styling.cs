@@ -152,8 +152,8 @@ public class Styling : ICategory
                 LinePattern pattern = linePatterns[i];
 
                 var line = myPlot.Add.Line(0, -i, 1, -i);
-                line.Pattern = pattern;
-                line.Width = 2;
+                line.LinePattern = pattern;
+                line.LineWidth = 2;
                 line.Color = Colors.Black;
 
                 var txt = myPlot.Add.Text(pattern.ToString(), 1.1, -i);

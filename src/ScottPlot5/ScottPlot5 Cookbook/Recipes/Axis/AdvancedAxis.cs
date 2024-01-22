@@ -18,7 +18,7 @@ public class AdvancedAxis : ICategory
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
 
-            myPlot.Axes.SetLimits(bottom: 1.5, top: -1.5);
+            myPlot.Axes.SetLimitsY(bottom: 1.5, top: -1.5);
         }
     }
 

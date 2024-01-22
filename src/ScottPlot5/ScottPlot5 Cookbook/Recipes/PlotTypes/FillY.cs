@@ -17,7 +17,7 @@ public class FillY : ICategory
             RandomDataGenerator dataGen = new(0);
 
             int count = 20;
-            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] xs = Generate.Consecutive(count);
             double[] ys1 = dataGen.RandomWalk(count, offset: -5);
             double[] ys2 = dataGen.RandomWalk(count, offset: 5);
 
@@ -37,7 +37,7 @@ public class FillY : ICategory
             RandomDataGenerator dataGen = new(0);
 
             int count = 20;
-            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] xs = Generate.Consecutive(count);
             double[] ys1 = dataGen.RandomWalk(count, offset: -5);
             double[] ys2 = dataGen.RandomWalk(count, offset: 5);
 
@@ -87,7 +87,7 @@ public class FillY : ICategory
             RandomDataGenerator dataGen = new(0);
 
             int count = 20;
-            double[] xs = ScottPlot.Generate.Consecutive(count);
+            double[] xs = Generate.Consecutive(count);
             double[] ys1 = dataGen.RandomWalk(count, offset: -5);
             double[] ys2 = dataGen.RandomWalk(count, offset: 5);
 

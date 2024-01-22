@@ -35,19 +35,22 @@ public class Polygon : ICategory
         [Test]
         public override void Execute()
         {
-            Coordinates[] vertices = new Coordinates[]
+            Coordinates[] vertices =
             {
-                new Coordinates(0,   0.25),
-                new Coordinates(0.3, 0.75),
-                new Coordinates(1,   1),
-                new Coordinates(0.7, 0.5),
-                new Coordinates(1,   0)
+                new (0, 0.25),
+                new (0.3, 0.75),
+                new (1, 1),
+                new (0.7, 0.5),
+                new (1, 0)
             };
+
             var poly = myPlot.Add.Polygon(vertices);
+
             poly.FillStyle = new FillStyle
             {
                 Color = Colors.IndianRed
             };
+
             poly.LineStyle = new LineStyle
             {
                 AntiAlias = true,
@@ -55,6 +58,7 @@ public class Polygon : ICategory
                 Pattern = LinePattern.Dashed,
                 Width = 2
             };
+
             poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
             poly.MarkerStyle.Fill.Color = Colors.Gold;
             poly.MarkerStyle.Outline.Color = Colors.Brown;

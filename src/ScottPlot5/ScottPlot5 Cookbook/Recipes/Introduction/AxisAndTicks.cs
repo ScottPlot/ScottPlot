@@ -8,9 +8,8 @@ public class AxisAndTicks : ICategory
 
     public class AxisLabels : RecipeBase
     {
-        public override string Name => "Adding Axis Labels";
-        public override string Description => "Axis labels are the text labels centered on each axis. " +
-            "The text inside these labels can be changed, and the style of the text can be extensively customized.";
+        public override string Name => "Axis Labels";
+        public override string Description => "Axis labels are the text labels centered on each axis.";
 
         [Test]
         public override void Execute()
@@ -18,15 +17,15 @@ public class AxisAndTicks : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
-            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.YLabel("Horizontal Axis");
+            myPlot.XLabel("Vertical Axis");
         }
     }
 
     public class SetAxisLimits : RecipeBase
     {
-        public override string Name => "Manually Set Axis Limits";
-        public override string Description => "Axis Limits can be set manually in different ways.";
+        public override string Name => "Set Axis Limits";
+        public override string Description => "Axis Limits can be set by the user.";
 
         [Test]
         public override void Execute()
@@ -34,13 +33,6 @@ public class AxisAndTicks : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            // Interact with a specific axis
-            myPlot.Axes.Bottom.Min = -100;
-            myPlot.Axes.Bottom.Max = 150;
-            myPlot.Axes.Left.Min = -5;
-            myPlot.Axes.Left.Max = 5;
-
-            // Call a helper function
             myPlot.Axes.SetLimits(-100, 150, -5, 5);
         }
     }
@@ -48,7 +40,7 @@ public class AxisAndTicks : ICategory
     public class GetAxisLimits : RecipeBase
     {
         public override string Name => "Read Axis Limits";
-        public override string Description => "The current axis limits can be read in multiple ways.";
+        public override string Description => "Use GetLimits() to obtain the current axis limits.";
 
         [Test]
         public override void Execute()
@@ -56,14 +48,11 @@ public class AxisAndTicks : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            // Interact with a specific axis
-            double top = myPlot.Axes.Left.Max;
-            double bottom = myPlot.Axes.Left.Min;
-
-            // Call a helper function
             AxisLimits limits = myPlot.Axes.GetLimits();
-            double left = limits.Rect.Left;
-            double center = limits.Rect.HorizontalCenter;
+            double xMin = limits.Left;
+            double xMax = limits.Right;
+            double yMin = limits.Bottom;
+            double yMax = limits.Top;
         }
     }
 
@@ -96,13 +85,14 @@ public class AxisAndTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.FigureBackground = Colors.Magenta; // should not be seen
-            myPlot.DataBackground = Colors.WhiteSmoke;
-
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
+            // make the data area cover the full figure
             myPlot.Layout.Frameless();
+
+            // set the data area background so we can observe its size
+            myPlot.DataBackground = Colors.WhiteSmoke;
         }
     }
 }

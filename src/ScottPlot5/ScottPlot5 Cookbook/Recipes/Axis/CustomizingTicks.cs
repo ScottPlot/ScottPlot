@@ -15,9 +15,9 @@ public class CustomizingTicks : ICategory
         [Test]
         public override void Execute()
         {
-            double[] xs = ScottPlot.Generate.Consecutive(100, 1, -50);
-            myPlot.Add.Scatter(xs, ScottPlot.Generate.Sin(100));
-            myPlot.Add.Scatter(xs, ScottPlot.Generate.Cos(100));
+            double[] xs = Generate.Consecutive(100, 1, -50);
+            myPlot.Add.Scatter(xs, Generate.Sin(100));
+            myPlot.Add.Scatter(xs, Generate.Cos(100));
 
             // create a static function containing the string formatting logic
             static string CustomFormatter(double position)
@@ -54,8 +54,8 @@ public class CustomizingTicks : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
             myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(11);
         }

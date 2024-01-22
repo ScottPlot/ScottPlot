@@ -5,6 +5,8 @@ public readonly struct LinearRegression
     public readonly double Slope;
     public readonly double Offset;
     public readonly double Rsquared;
+    public string Formula => $"y = {Slope:0.###}x + {Offset:0.###}";
+    public string FormulaWithRSquared => $"{Formula} (r²={Rsquared:0.###})";
 
     /// <summary>
     /// Calculate the linear regression from a collection of X/Y coordinates

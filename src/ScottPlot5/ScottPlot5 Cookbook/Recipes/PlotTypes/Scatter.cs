@@ -128,7 +128,7 @@ public class Scatter : ICategory
                 var sp = myPlot.Add.Scatter(xs, ys);
                 sp.LineWidth = 2;
                 sp.MarkerSize = 0;
-                sp.LineStyle.Pattern = patterns[i];
+                sp.LinePattern = patterns[i];
                 sp.Color = palette.GetColor(i);
 
                 var txt = myPlot.Add.Text(patterns[i].ToString(), 51, yOffset);

@@ -7,6 +7,11 @@ public class LegendItem
     public Color LineColor { get => Line.Color; set => Line.Color = value; }
     public float LineWidth { get => Line.Width; set => Line.Width = value; }
     public MarkerStyle Marker { get; set; } = MarkerStyle.Default;
+    public Color MarkerColor
+    {
+        get => Marker.Fill.Color;
+        set { Marker.Fill.Color = value; Marker.Outline.Color = value; }
+    }
     public FillStyle Fill { get; set; } = new() { Color = Colors.Transparent };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
     public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();

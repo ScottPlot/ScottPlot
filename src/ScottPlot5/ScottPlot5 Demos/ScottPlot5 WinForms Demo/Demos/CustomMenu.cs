@@ -42,7 +42,7 @@ public partial class CustomMenu : Form, IDemoWindow
         formsPlot1.Menu.Add("Add Line", (formsplot1) =>
         {
             var line = formsplot1.Plot.Add.Line(Generate.RandomLine());
-            line.Width = 2;
+            line.LineWidth = 2;
             line.MarkerSize = 20;
             formsplot1.Plot.Axes.AutoScale();
             formsplot1.Refresh();

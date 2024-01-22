@@ -21,7 +21,29 @@ public class LinePlot : IPlottable
         }
     }
 
-    public float Width
+    public Color LineColor
+    {
+        get => LineStyle.Color;
+        set => LineStyle.Color = value;
+    }
+
+    public Color MarkerColor
+    {
+        get => MarkerStyle.Fill.Color;
+        set
+        {
+            MarkerStyle.Fill.Color = value;
+            MarkerStyle.Outline.Color = value;
+        }
+    }
+
+    public MarkerShape MarkerShape
+    {
+        get => MarkerStyle.Shape;
+        set => MarkerStyle.Shape = value;
+    }
+
+    public float LineWidth
     {
         get => LineStyle.Width;
         set => LineStyle.Width = value;
@@ -33,7 +55,7 @@ public class LinePlot : IPlottable
         set => MarkerStyle.Size = value;
     }
 
-    public LinePattern Pattern
+    public LinePattern LinePattern
     {
         get => LineStyle.Pattern;
         set => LineStyle.Pattern = value;
