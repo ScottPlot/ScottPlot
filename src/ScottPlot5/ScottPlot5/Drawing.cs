@@ -21,9 +21,12 @@ public static class Drawing
         }
 
         SKRect bounds = new();
-        paint.MeasureText(text, ref bounds);
+        ///INFO: MeasureText(string str, ref SKRect rect) works as follow:
+        /// - returned value is the length of the text with leading and trailing white spaces
+        /// - rect.Left contains the width of leading white spaces
+        /// - rect.width contains the length of the text __without__ leading or trailing white spaces
+        float width = paint.MeasureText(text, ref bounds);
 
-        float width = bounds.Width;
         float height = bounds.Height;
         return new PixelSize(width, height);
     }
