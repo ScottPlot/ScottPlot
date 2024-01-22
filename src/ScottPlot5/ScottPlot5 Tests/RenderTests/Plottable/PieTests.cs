@@ -9,7 +9,7 @@ internal class PieTests
     {
         Plot plt = new();
 
-        ScottPlot.Plottables.PieSlice[] slices =
+        PieSlice[] slices =
         {
             new(6, Colors.Red),
             new(4, Colors.Blue),
