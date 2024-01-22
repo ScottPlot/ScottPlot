@@ -3,7 +3,8 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
-## ScottPlot 5.0.20 (not yet on NuGet)
+## ScottPlot 5.0.20
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_
 * Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_
 * Scatter Plot: Added a `ConnectStyle` to enable step display mode (#3242) _Thanks @NoahSigl_
 * Polygon: `Plot.Add.Polygon()` now accepts generic type lists and arrays (#3244) _Thanks howhowone_23_
@@ -23,7 +24,8 @@
 * Scatter Plot: Added `LinePattern` property for customizing line style
 * Pie: Improved default colors of pie charts created from discrete values
 
-## ScottPlot 4.1.71 (not yet on NuGet)
+## ScottPlot 4.1.71
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_
 * Assembly: All ScottPlot packages use the same strong name signing key (#3235, #3241) _Thanks @mlessmann_
 * WPF Control: Routed events now pass the original source (#3243) _Thanks @MarekJur_
 
