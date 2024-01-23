@@ -28,7 +28,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✒️ Autoformat
-        run: dotnet format ${{ env.SOLUTION }}
+        run: dotnet format "${{ env.SOLUTION }}"
       - name: 🧐 Inspect Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
