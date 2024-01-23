@@ -1,20 +1,23 @@
-# Really this just runs the autoformatter that commits back to main.
-# It's called by the main CI workflow (not called by PRs)
+# run the autoformatter and commit changes back to the main branch
 
-name: SP4 Full Build
+name: Autoformat
 
 on:
   workflow_dispatch:
-  workflow_call:
+  push:
+    branches:
+      - main
+    paths:
+      - src/ScottPlot5/**
 
 env:
-  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
+  SLN_SP4_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "8.0.x"
 
 jobs:
-  autoformat:
-    name: Autoformat
-    runs-on: windows-latest
+  sp4-autoformat:
+    name: SP4 Autoformat
+    runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
@@ -24,9 +27,14 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✒️ Fix Code Formatting
+      - name: ✒️ Autoformat
+        run: dotnet format ${{ env.FULL_SOLUTION }}
+      - name: 🧐 Inspect Changes
+        id: verify_diff
+        run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: ✅ Commit Changes
+        if: steps.verify_diff.outputs.changed == 'true'
         run: |
-          dotnet format ${{ env.SLN_SP4_FULL }}
           git config --global user.name 'Scott W Harden (via GitHub Actions)'
           git config --global user.email 'swharden@gmail.com'
           git pull

@@ -22,16 +22,13 @@ jobs:
     uses: ./.github/workflows/ScottPlot5-PR.yaml
 
   # these take a long time to run and may commit back to main
-  sp4-full:
-    needs: [sp4-pr]
-    uses: ./.github/workflows/ScottPlot4-Full.yaml
   sp5-full:
     needs: [sp5-pr]
     uses: ./.github/workflows/ScottPlot5-Full.yaml
 
   #TODO make this its own action and call it
   changelog:
-    needs: [sp4-full, sp5-full]
+    needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
     name: Update Changelog Webpage
     steps:
@@ -46,7 +43,7 @@ jobs:
 
   #TODO make this its own action and call it
   code-analysis:
-    needs: [sp4-full, sp5-full]
+    needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
     name: Update Code Metrics Webpage
     steps:

@@ -1,0 +1,42 @@
+# run the autoformatter and commit changes back to the main branch
+
+name: Autoformat
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - src/ScottPlot4/**
+
+env:
+  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  sp4-autoformat:
+    name: SP4 Autoformat
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: ✒️ Autoformat
+        run: dotnet format ${{ env.FULL_SOLUTION }}
+      - name: 🧐 Inspect Changes
+        id: verify_diff
+        run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: ✅ Commit Changes
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "CI: autoformat"
+          git push
