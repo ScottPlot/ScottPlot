@@ -4,12 +4,13 @@ public class ArrowCoordinated : ICategory
 {
     public string Chapter => "Plot Types";
     public string CategoryName => "Arrow";
-    public string CategoryDescription => "Points to a location in coordinate space.";
+    public string CategoryDescription => "Arrows point to a location in coordinate space.";
 
-    public class Quickstart : RecipeBase
+    public class ArrowQuickstart : RecipeBase
     {
         public override string Name => "Arrow Quickstart";
-        public override string Description => "Points to a location in coordinate space.";
+        public override string Description => "Arrows can be placed on plots to point to a " +
+            "location in coordinate space and extensively customized.";
 
         [Test]
         public override void Execute()
