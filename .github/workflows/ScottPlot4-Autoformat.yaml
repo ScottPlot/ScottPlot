@@ -1,6 +1,6 @@
 # run the autoformatter and commit changes back to the main branch
 
-name: Autoformat
+name: SP4 Autoformat
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
       - src/ScottPlot4/**
 
 env:
-  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
+  SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
   DOTNET_VERSION: "8.0.x"
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✒️ Autoformat
-        run: dotnet format ${{ env.FULL_SOLUTION }}
+        run: dotnet format ${{ env.SOLUTION }}
       - name: 🧐 Inspect Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
