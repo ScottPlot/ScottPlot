@@ -20,8 +20,6 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
@@ -43,6 +41,18 @@ jobs:
         run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
       - name: 🧪 Run Tests
         run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
+  autoformat:
+    name: Autoformat
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✒️ Fix Code Formatting
         run: |
           dotnet format ${{ env.SLN_SP5_FULL }}

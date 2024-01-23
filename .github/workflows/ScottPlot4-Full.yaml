@@ -12,8 +12,8 @@ env:
   DOTNET_VERSION: "8.0.x"
 
 jobs:
-  full-build:
-    name: Full Build
+  autoformat:
+    name: Autoformat
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
