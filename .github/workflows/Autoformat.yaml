@@ -1,6 +1,6 @@
 # run the autoformatter and commit changes back to the main branch
 
-name: SP4 Autoformat
+name: Autoformat
 
 on:
   workflow_dispatch:
@@ -8,15 +8,14 @@ on:
     branches:
       - main
     paths:
-      - src/ScottPlot4/**
+      - src/**
 
 env:
-  SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
   DOTNET_VERSION: "8.0.x"
 
 jobs:
   sp4-autoformat:
-    name: SP4 Autoformat
+    name: Autoformat
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -28,7 +27,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✒️ Autoformat
-        run: dotnet format "${{ env.SOLUTION }}"
+        run: |
+          dotnet format "src/ScottPlot4/ScottPlot/"
+          dotnet format "src/ScottPlot4/ScottPlot.Cookbook/"
+          dotnet format "src/ScottPlot4/ScottPlot.Demo/"
+          dotnet format "src/ScottPlot5/ScottPlot5/"
+          dotnet format "src/ScottPlot5/ScottPlot5 Tests/"
+          dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/"
+          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/"
       - name: 🧐 Inspect Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
