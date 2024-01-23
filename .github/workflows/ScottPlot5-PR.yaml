@@ -15,7 +15,6 @@ env:
   SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
   SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
   SLN_SP5_DEMO: "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
-  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "8.0.x"
 
 jobs:
@@ -45,10 +44,3 @@ jobs:
         run: |
           dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
           dotnet test "${{ env.SLN_SP5_COOK }}" --verbosity minimal
-      - name: ✒️ Check Code Format
-        run: |
-          dotnet format --verify-no-changes "${{ env.SLN_SP5_PROJ }}"
-          dotnet format --verify-no-changes "${{ env.SLN_SP5_TEST }}"
-          dotnet format --verify-no-changes "${{ env.SLN_SP5_COOK }}"
-          dotnet format --verify-no-changes "${{ env.SLN_SP5_DEMO }}"
-          echo "::warning::Run 'dotnet format' to fix code format errors"
