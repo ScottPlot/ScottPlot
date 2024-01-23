@@ -1,0 +1,35 @@
+# Really this just runs the autoformatter that commits back to main.
+# It's called by the main CI workflow (not called by PRs)
+
+name: SP4 Full Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  full-build:
+    needs: [test-linux]
+    name: Full Build
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: ✒️ Fix Code Formatting
+        run: |
+          dotnet format ${{ env.SLN_SP4_FULL }}
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "CI: autoformat"
+          git push
