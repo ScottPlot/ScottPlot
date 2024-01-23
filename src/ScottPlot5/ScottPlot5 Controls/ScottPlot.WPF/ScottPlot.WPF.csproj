@@ -6,6 +6,7 @@
         <UseWPF>true</UseWPF>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>

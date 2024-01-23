@@ -10,15 +10,23 @@ on:
     paths:
       - src/**
 
+env:
+  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
+  DOTNET_VERSION: "8.0.x"
+
 jobs:
-  scottplot4:
-    uses: ./.github/workflows/ScottPlot4-CI.yaml
+  sp4-pr:
+    uses: ./.github/workflows/ScottPlot4-PR.yaml
 
-  scottplot5:
-    uses: ./.github/workflows/ScottPlot5-CI.yaml
+  sp5-pr: # this runs first because it fails quickly on build errors
+    uses: ./.github/workflows/ScottPlot5-PR.yaml
 
-  changelog:
-    needs: [scottplot4, scottplot5]
+  sp5-full:
+    needs: [sp5-pr]
+    uses: ./.github/workflows/ScottPlot5-Full.yaml
+
+  changelog: #TODO make this its own action and call it
+    needs: [sp4-pr, sp5-pr, sp5-full]
     runs-on: ubuntu-latest
     name: Update Changelog Webpage
     steps:
@@ -31,8 +39,8 @@ jobs:
             -d "{\"ref\":\"main\"}" \
             https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
 
-  code-analysis:
-    needs: [scottplot4, scottplot5]
+  code-analysis: #TODO make this its own action and call it
+    needs: [sp4-pr, sp5-pr, sp5-full]
     runs-on: ubuntu-latest
     name: Update Code Metrics Webpage
     steps:

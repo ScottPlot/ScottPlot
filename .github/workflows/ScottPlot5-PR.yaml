@@ -1,0 +1,54 @@
+# This is a quick action to verify PRs are in acceptable state.
+# It does not build or test targets requiring exotic workloads.
+
+name: PR
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+    paths:
+      - src/ScottPlot5/**
+
+env:
+  SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
+  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
+  SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
+  SLN_SP5_DEMO: "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
+  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  test-linux:
+    name: PR Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Restore
+        run: |
+          dotnet restore "${{ env.SLN_SP5_PROJ }}"
+          dotnet restore "${{ env.SLN_SP5_TEST }}"
+          dotnet restore "${{ env.SLN_SP5_COOK }}"
+          dotnet restore "${{ env.SLN_SP5_DEMO }}"
+      - name: 🛠️ Build
+        run: |
+          dotnet build "${{ env.SLN_SP5_PROJ }}"
+          dotnet build "${{ env.SLN_SP5_TEST }}"
+          dotnet build "${{ env.SLN_SP5_COOK }}"
+          dotnet build "${{ env.SLN_SP5_DEMO }}"
+      - name: 🧪 Run Tests
+        run: |
+          dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
+          dotnet test "${{ env.SLN_SP5_COOK }}" --verbosity minimal
+      - name: ✒️ Check Code Format
+        run: |
+          dotnet format --verify-no-changes "${{ env.SLN_SP5_PROJ }}"
+          dotnet format --verify-no-changes "${{ env.SLN_SP5_TEST }}"
+          dotnet format --verify-no-changes "${{ env.SLN_SP5_COOK }}"
+          dotnet format --verify-no-changes "${{ env.SLN_SP5_DEMO }}"
+          echo "::warning::Run 'dotnet format' to fix code format errors"
