@@ -1,6 +1,7 @@
 # This workflow performs a full build of ScottPlot 5.
 # It's really slow because it requires many workloads.
 # It also fixes any project code formatting issues.
+# It is not meant to run on PRs.
 
 name: SP5 Full Build
 

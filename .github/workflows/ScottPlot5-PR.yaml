@@ -1,3 +1,6 @@
+# This is a quick action to verify PRs are in acceptable state.
+# It does not build or test targets requiring exotic workloads.
+
 name: PR
 
 on:
