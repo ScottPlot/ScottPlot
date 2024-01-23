@@ -15,7 +15,6 @@ env:
 
 jobs:
   full-build:
-    needs: [test-linux]
     name: Full Build
     runs-on: windows-latest
     steps:

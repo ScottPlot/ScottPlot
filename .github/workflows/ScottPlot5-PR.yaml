@@ -49,19 +49,10 @@ jobs:
         run: |
           dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
           dotnet test "${{ env.SLN_SP5_COOK }}" --verbosity minimal
-      - name: ✒️ Autoformat ScottPlot
+      - name: ✒️ Check Code Format
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_PROJ }}"
-          echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Autoformat Tests
-        run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_TEST }}"
-          echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Autoformat Cookbook
-        run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_COOK }}"
-          echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Autoformat Demo
-        run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_DEMO }}"
           echo "::warning::Run 'dotnet format' to fix code format errors"
