@@ -10,6 +10,11 @@ on:
     paths:
       - src/**
 
+# cancel running versions of this workflow when this one starts
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 env:
   SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   DOTNET_VERSION: "8.0.x"
