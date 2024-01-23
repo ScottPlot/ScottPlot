@@ -186,13 +186,13 @@ public class Arrow : IPlottable
             using SKPath path = new();
             path.MoveTo(skpt_tip_offset);
             path.LineTo(Rotate_(
-                skpt_tip_offset.X - ArrowheadLength,
+                skpt_tip_offset.X - ArrowheadLength - 1,
                 skpt_tip_offset.Y + ArrowheadWidth / 2,
                 skpt_tip_offset.X,
                 skpt_tip_offset.Y,
                 angle));
             path.LineTo(Rotate_(
-                skpt_tip_offset.X - ArrowheadLength,
+                skpt_tip_offset.X - ArrowheadLength - 1,
                 skpt_tip_offset.Y - ArrowheadWidth / 2,
                 skpt_tip_offset.X,
                 skpt_tip_offset.Y,
