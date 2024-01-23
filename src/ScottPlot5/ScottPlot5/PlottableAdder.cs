@@ -21,14 +21,14 @@ public class PlottableAdder(Plot plot)
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
 
-    public ArrowCoordinated Arrow(Coordinates @base, Coordinates tip)
+    public Arrow Arrow(Coordinates @base, Coordinates tip)
     {
         return Arrow(@base.X, @base.Y, tip.X, tip.Y);
     }
 
-    public ArrowCoordinated Arrow(double xBase, double yBase, double xTip, double yTip)
+    public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
     {
-        ArrowCoordinated ar = new(xBase, yBase, xTip, yTip);
+        Arrow ar = new(xBase, yBase, xTip, yTip);
         ar.SetColor(GetNextColor());
         Plot.PlottableList.Add(ar);
         return ar;

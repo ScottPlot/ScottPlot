@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class ArrowCoordinated : IPlottable
+public class Arrow : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -27,13 +27,13 @@ public class ArrowCoordinated : IPlottable
     public float OffsetPixels { get; set; } = 0;
 
 
-    public ArrowCoordinated(Coordinates @base, Coordinates tip)
+    public Arrow(Coordinates @base, Coordinates tip)
     {
         Base = @base;
         Tip = tip;
     }
 
-    public ArrowCoordinated(double xBase, double yBase, double xTip, double yTip)
+    public Arrow(double xBase, double yBase, double xTip, double yTip)
     {
         Base = new(xBase, yBase);
         Tip = new(xTip, yTip);
