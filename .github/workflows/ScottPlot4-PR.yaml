@@ -7,10 +7,6 @@ on:
     paths:
       - src/ScottPlot4/**
 
-concurrency:
-  group: $SP4-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 env:
   SLN_SP4_TEST: "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
   SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
@@ -18,7 +14,7 @@ env:
 
 jobs:
   test-linux:
-    name: Run Tests
+    name: PR Check
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -57,8 +53,17 @@ jobs:
         run: dotnet restore ${{ env.SLN_SP4_FULL }}
       - name: 🛠️ Full Build ScottPlot4
         run: dotnet build ${{ env.SLN_SP4_FULL }} --configuration Release
-      - name: ✒️ Check Code formatting
+      - name: ✒️ Check Code Formatting
         if: github.event_name == 'pull_request'
         run: |
           dotnet format --verify-no-changes ${{ env.SLN_SP4_FULL }}
           echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
+      - name: ✒️ Fix Code Formatting
+        if: github.event_name != 'pull_request'
+        run: |
+          dotnet format ${{ env.SLN_SP4_FULL }}
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "CI: autoformat"
+          git push

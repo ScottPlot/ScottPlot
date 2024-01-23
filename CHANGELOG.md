@@ -3,6 +3,10 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
+## ScottPlot 5.0.21 (Not yet on NuGet)
+* RenderManager: Exposed `EnableRendering` to facilitate render locking in async environments (#3264, #3213, #3095) _Thanks @kagerouttepaso_
+* Arrow: Added a new arrow plot type that can be used to mark a position in coordinate space (#3265) _Thanks @hockerschwan_
+
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_
 * Assembly: ScottPlot packages are now strongly named (#3235, #3241) _Thanks @mlessmann_

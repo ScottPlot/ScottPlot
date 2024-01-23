@@ -1,2 +1,2 @@
-dotnet format ScottPlot5-tests.slnf
+dotnet format
 pause

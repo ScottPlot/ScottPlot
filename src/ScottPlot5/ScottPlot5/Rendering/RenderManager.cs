@@ -55,7 +55,7 @@ public class RenderManager(Plot plot)
     /// <summary>
     /// If false, any calls to Render() return immediately
     /// </summary>
-    private bool EnableRendering { get; set; } = true;
+    public bool EnableRendering { get; set; } = true;
 
     public bool EnableEvents { get; set; } = true;
 

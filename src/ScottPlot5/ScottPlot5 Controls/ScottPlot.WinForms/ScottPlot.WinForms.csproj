@@ -9,6 +9,7 @@
         <LangVersion>11</LangVersion>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>

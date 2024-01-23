@@ -21,6 +21,25 @@ public class PlottableAdder(Plot plot)
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
 
+    public Arrow Arrow(Coordinates @base, Coordinates tip)
+    {
+        Arrow ar = new()
+        {
+            Color = GetNextColor(),
+            Base = @base,
+            Tip = tip,
+        };
+        Plot.PlottableList.Add(ar);
+        return ar;
+    }
+
+    public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
+    {
+        Coordinates cBase = new(xBase, yBase);
+        Coordinates cTip = new(xTip, yTip);
+        return Arrow(cBase, cTip);
+    }
+
     public BarPlot Bar(Bar bar)
     {
         BarPlot bp = new(bar);
