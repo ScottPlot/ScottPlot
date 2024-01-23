@@ -26,14 +26,18 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: ✒️ Autoformat
-        run: |
-          dotnet format "src/ScottPlot4/ScottPlot/"
-          dotnet format "src/ScottPlot4/ScottPlot.Cookbook/"
-          dotnet format "src/ScottPlot5/ScottPlot5/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Tests/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/"
+      - name: ✒️ ScottPlot4 Core
+        run: dotnet format "src/ScottPlot4/ScottPlot/"
+      - name: ✒️ ScottPlot4 Cookbook
+        run: dotnet format "src/ScottPlot4/ScottPlot.Cookbook/"
+      - name: ✒️ ScottPlot5 Core
+        run: dotnet format "src/ScottPlot5/ScottPlot5/"
+      - name: ✒️ ScottPlot5 Tests
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Tests/"
+      - name: ✒️ ScottPlot5 Cookbook
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/"
+      - name: ✒️ ScottPlot5 Demo
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/"
       - name: 🧐 Inspect Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
