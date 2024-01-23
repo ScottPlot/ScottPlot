@@ -52,11 +52,18 @@ public class VerticalLine : AxisLine
         if (!rp.DataRect.ContainsX(x))
             return;
 
+        float y = LabelOppositeAxis
+            ? rp.DataRect.Top - Label.Padding
+            : rp.DataRect.Bottom + Label.Padding;
+
+        Label.Alignment = LabelOppositeAxis
+            ? Alignment.LowerCenter
+            : Alignment.UpperCenter;
+
         // draw label
         rp.DisableClipping();
         using SKPaint paint = new();
-        Label.Alignment = Alignment.UpperCenter;
         Label.BackColor = LineStyle.Color;
-        Label.Render(rp.Canvas, x, rp.DataRect.Bottom + Label.Padding, paint);
+        Label.Render(rp.Canvas, x, y, paint);
     }
 }

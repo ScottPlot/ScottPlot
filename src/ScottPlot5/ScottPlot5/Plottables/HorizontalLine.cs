@@ -54,10 +54,18 @@ public class HorizontalLine : AxisLine
         if (!rp.DataRect.ContainsY(y))
             return;
 
+        float x = LabelOppositeAxis
+            ? rp.DataRect.Right + Label.Padding
+            : rp.DataRect.Left - Label.Padding;
+
+        Label.Alignment = LabelOppositeAxis
+            ? Alignment.UpperCenter
+            : Alignment.LowerCenter;
+
         // draw label outside the data area
         rp.DisableClipping();
         using SKPaint paint = new();
         Label.BackColor = LineStyle.Color;
-        Label.Render(rp.Canvas, rp.DataRect.Left - Label.Padding, y, paint);
+        Label.Render(rp.Canvas, x, y, paint);
     }
 }

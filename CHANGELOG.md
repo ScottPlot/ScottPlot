@@ -7,6 +7,7 @@
 * RenderManager: Exposed `EnableRendering` to facilitate render locking in async environments (#3264, #3213, #3095) _Thanks @kagerouttepaso_
 * Arrow: Added a new arrow plot type that can be used to mark a position in coordinate space (#3265) _Thanks @hockerschwan_
 * Label: Improved measurement of text containing leading or tailing whitespace (#3223, #3268) _Thanks @KroMignon and @lindpatr_
+* Axis Line: Added `LabelOppositeAxis` property and created dedicated cookbook page (#3275) _Thanks Lyakabynka_
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

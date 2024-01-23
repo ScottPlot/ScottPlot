@@ -20,6 +20,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
 
+    public bool LabelOppositeAxis { get; set; } = false;
+
     public Color Color
     {
         get => LineStyle.Color;
