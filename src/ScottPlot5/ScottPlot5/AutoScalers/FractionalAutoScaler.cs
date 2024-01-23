@@ -7,7 +7,7 @@ public class FractionalAutoScaler : IAutoScaler
     public readonly double BottomFraction;
     public readonly double TopFraction;
     public bool InvertedX { get; set; } = false;
-    public bool InvertedY { get; set; } =  false ;
+    public bool InvertedY { get; set; } = false;
 
     /// <summary>
     /// Pad the data area with the given fractions of whitespace.
