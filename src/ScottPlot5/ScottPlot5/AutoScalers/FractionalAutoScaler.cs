@@ -18,7 +18,7 @@ public class FractionalAutoScaler : IAutoScaler
         LeftFraction = horizontal / 2;
         RightFraction = horizontal / 2;
         BottomFraction = vertical / 2;
-        TopFraction = vertical / 2 ;
+        TopFraction = vertical / 2;
     }
 
     /// <summary>
