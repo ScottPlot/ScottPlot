@@ -8,7 +8,7 @@ on:
       - src/ScottPlot4/**
 
 concurrency:
-  group: $SP4-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: $PR-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:

@@ -11,7 +11,7 @@ on:
       - src/ScottPlot5/**
 
 concurrency:
-  group: $SP5-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: $PR-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
