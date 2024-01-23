@@ -23,15 +23,21 @@ public class PlottableAdder(Plot plot)
 
     public Arrow Arrow(Coordinates @base, Coordinates tip)
     {
-        return Arrow(@base.X, @base.Y, tip.X, tip.Y);
+        Arrow ar = new()
+        {
+            Color = GetNextColor(),
+            Base = @base,
+            Tip = tip,
+        };
+        Plot.PlottableList.Add(ar);
+        return ar;
     }
 
     public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
     {
-        Arrow ar = new(xBase, yBase, xTip, yTip);
-        ar.SetColor(GetNextColor());
-        Plot.PlottableList.Add(ar);
-        return ar;
+        Coordinates cBase = new(xBase, yBase);
+        Coordinates cTip = new(xTip, yTip);
+        return Arrow(cBase, cTip);
     }
 
     public BarPlot Bar(Bar bar)

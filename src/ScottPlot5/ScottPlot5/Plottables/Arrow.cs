@@ -4,40 +4,57 @@ public class Arrow : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
     /// <summary>
     /// Label to appear in the legend
     /// </summary>
     public string Label { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Position of the base of the arrow in coordinate units
+    /// </summary>
     public Coordinates Base = Coordinates.Origin;
+
+    /// <summary>
+    /// Position of the base of the arrowhead in coordinate units
+    /// </summary>
     public Coordinates Tip = Coordinates.Origin;
 
+    /// <summary>
+    /// Advanced styling options
+    /// </summary>
     public readonly LineStyle LineStyle = new() { Color = Colors.Gray, Width = 2 };
-    public readonly MarkerStyle MarkerStyle = new()
-    {
-        Fill = new() { Color = Colors.Gray },
-        IsVisible = false,
-    };
 
-    public float ArrowheadWidthPixels { get; set; } = 10;
-    public float ArrowheadLengthPixels { get; set; } = 16;
-    public float MinimumLengthPixels { get; set; } = 0;
-    public float OffsetPixels { get; set; } = 0;
+    /// <summary>
+    /// Color of the arrow line and arrowhead
+    /// </summary>
+    public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
+    /// <summary>
+    /// Thickness of the line at the base of the arrow
+    /// </summary>
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
 
-    public Arrow(Coordinates @base, Coordinates tip)
-    {
-        Base = @base;
-        Tip = tip;
-    }
+    /// <summary>
+    /// Total width of the arrowhead in pixels
+    /// </summary>
+    public float ArrowheadWidth { get; set; } = 10;
 
-    public Arrow(double xBase, double yBase, double xTip, double yTip)
-    {
-        Base = new(xBase, yBase);
-        Tip = new(xTip, yTip);
-    }
+    /// <summary>
+    /// Length of the arrowhead in pixels
+    /// </summary>
+    public float ArrowheadLength { get; set; } = 16;
+
+    /// <summary>
+    /// The base of the arrow will be expanded away from the tip so its length is always at least this number of pixels
+    /// </summary>
+    public float MinimumLength { get; set; } = 0;
+
+    /// <summary>
+    /// Back the arrow away from its tip along its axis by this many pixels
+    /// </summary>
+    public float Offset { get; set; } = 0;
 
     public AxisLimits GetAxisLimits() => new(
         Math.Min(Base.X, Tip.X),
@@ -127,34 +144,34 @@ public class Arrow : IPlottable
 
             angle = Math.Atan2(px_edge_tip.Y - px_edge_base.Y, px_edge_tip.X - px_edge_base.X);
 
-            if (OffsetPixels == 0)
+            if (Offset == 0)
             {
                 skpt_tip_offset = px_tip.ToSKPoint();
             }
             else
             {
-                skpt_tip_offset = Rotate_(px_tip.X - OffsetPixels, px_tip.Y, px_tip.X, px_tip.Y, angle);
-                dist -= OffsetPixels;
+                skpt_tip_offset = Rotate_(px_tip.X - Offset, px_tip.Y, px_tip.X, px_tip.Y, angle);
+                dist -= Offset;
             }
 
             SKPoint skpt_base_extended;
-            if (dist < MinimumLengthPixels)
+            if (dist < MinimumLength)
             {
-                var m = MinimumLengthPixels / CalcDistance_(ref px_edge_base, ref px_edge_tip);
+                var m = MinimumLength / CalcDistance_(ref px_edge_base, ref px_edge_tip);
                 skpt_base_extended = new(
                     skpt_tip_offset.X - (px_edge_tip.X - px_edge_base.X) * m,
                     skpt_tip_offset.Y - (px_edge_tip.Y - px_edge_base.Y) * m);
-                dist = MinimumLengthPixels;
+                dist = MinimumLength;
             }
             else
             {
                 skpt_base_extended = px_base.ToSKPoint();
             }
 
-            if (dist - ArrowheadLengthPixels >= 1)
+            if (dist - ArrowheadLength >= 1)
             {
                 var skpt_head_bottom = Rotate_(
-                    skpt_tip_offset.X - ArrowheadLengthPixels,
+                    skpt_tip_offset.X - ArrowheadLength,
                     skpt_tip_offset.Y,
                     skpt_tip_offset.X,
                     skpt_tip_offset.Y,
@@ -164,19 +181,19 @@ public class Arrow : IPlottable
         }
 
         // Head
-        if (ArrowheadLengthPixels >= 1)
+        if (ArrowheadLength >= 1)
         {
             using SKPath path = new();
             path.MoveTo(skpt_tip_offset);
             path.LineTo(Rotate_(
-                skpt_tip_offset.X - ArrowheadLengthPixels,
-                skpt_tip_offset.Y + ArrowheadWidthPixels / 2,
+                skpt_tip_offset.X - ArrowheadLength,
+                skpt_tip_offset.Y + ArrowheadWidth / 2,
                 skpt_tip_offset.X,
                 skpt_tip_offset.Y,
                 angle));
             path.LineTo(Rotate_(
-                skpt_tip_offset.X - ArrowheadLengthPixels,
-                skpt_tip_offset.Y - ArrowheadWidthPixels / 2,
+                skpt_tip_offset.X - ArrowheadLength,
+                skpt_tip_offset.Y - ArrowheadWidth / 2,
                 skpt_tip_offset.X,
                 skpt_tip_offset.Y,
                 angle));
@@ -185,13 +202,6 @@ public class Arrow : IPlottable
             paint.Style = SKPaintStyle.Fill;
             rp.Canvas.DrawPath(path, paint);
         }
-
-        // Marker
-        if (MarkerStyle.IsVisible && dist0 >= ArrowheadLengthPixels + OffsetPixels + MarkerStyle.Size / 2)
-        {
-            Drawing.DrawMarker(rp.Canvas, paint, px_base, MarkerStyle);
-        }
-
 
         static float CalcDistance_(ref Pixel px1, ref Pixel px2)
             => (float)Math.Sqrt(Math.Pow(px1.X - px2.X, 2) + Math.Pow(px1.Y - px2.Y, 2));
@@ -205,10 +215,5 @@ public class Arrow : IPlottable
 
             return new SKPoint((float)(dx * cos - dy * sin + xCenter), (float)(dy * cos + dx * sin + yCenter));
         }
-    }
-
-    public void SetColor(Color color)
-    {
-        LineStyle.Color = MarkerStyle.Fill.Color = MarkerStyle.Outline.Color = color;
     }
 }
