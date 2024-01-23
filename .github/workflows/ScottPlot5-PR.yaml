@@ -10,10 +10,6 @@ on:
     paths:
       - src/ScottPlot5/**
 
-concurrency:
-  group: $PR-{{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 env:
   SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
   SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
