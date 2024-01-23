@@ -21,7 +21,7 @@ env:
 
 jobs:
   test-linux:
-    name: Run Tests
+    name: PR Check
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -46,19 +46,19 @@ jobs:
         run: |
           dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
           dotnet test "${{ env.SLN_SP5_COOK }}" --verbosity minimal
-      - name: ✒️ ScottPlot Autoformat
+      - name: ✒️ Autoformat ScottPlot
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_PROJ }}"
           echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Test Autoformat
+      - name: ✒️ Autoformat Tests
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_TEST }}"
           echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Cookbook Autoformat
+      - name: ✒️ Autoformat Cookbook
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_COOK }}"
           echo "::warning::Run 'dotnet format' to fix code format errors"
-      - name: ✒️ Demo Autoformat
+      - name: ✒️ Autoformat Demo
         run: |
           dotnet format --verify-no-changes "${{ env.SLN_SP5_DEMO }}"
           echo "::warning::Run 'dotnet format' to fix code format errors"

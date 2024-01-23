@@ -18,7 +18,7 @@ env:
 
 jobs:
   test-linux:
-    name: Run Tests
+    name: PR Check
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
