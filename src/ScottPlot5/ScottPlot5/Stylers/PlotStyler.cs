@@ -130,4 +130,22 @@ public class PlotStyler
         // TODO: also modify tick labels
         // TODO: also modify plotted text
     }
+
+    /// <summary>
+    /// Reset colors and palette do a dark mode style
+    /// </summary>
+    public void DarkMode()
+    {
+        Plot.Add.Palette = new Palettes.Penumbra();
+
+        ColorAxes(Color.FromHex("#d7d7d7"));
+        ColorGrids(Color.FromHex("#404040"));
+        Background(
+            figure: Color.FromHex("#181818"),
+            data: Color.FromHex("#1f1f1f"));
+        ColorLegend(
+            background: Color.FromHex("#404040"),
+            foreground: Color.FromHex("#d7d7d7"),
+            border: Color.FromHex("#d7d7d7"));
+    }
 }

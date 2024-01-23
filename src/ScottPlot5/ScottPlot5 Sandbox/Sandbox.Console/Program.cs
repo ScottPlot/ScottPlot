@@ -1,11 +1,21 @@
-﻿ScottPlot.Plot plt = new();
+﻿using ScottPlot;
 
-double[] sales = { 123, 456, 789 };
-double[] salesError = { 50, 150, 350 };
-DateTime[] dates = { new(2024, 01, 01), new(2024, 01, 02), new(2024, 01, 03) };
-double[] dateXs = dates.Select(x => x.ToOADate()).ToArray();
+Plot plt = new();
+plt.Style.DarkMode();
 
-plt.Add.Scatter(dateXs, sales);
-plt.Add.ErrorBar(dateXs, sales, salesError);
+Color[] colors = { Colors.Red, Colors.Green, Colors.Yellow, Colors.LightGray };
 
-plt.SavePng("test.png", 400, 300);
+double x = 0;
+for (int i = 0; i < 10; i++)
+{
+    double width = Random.Shared.Next(1, 5);
+    x += width;
+    double y = Random.Shared.Next(1, 3);
+
+    CoordinateRect cr = new(x, x + width, y, y + 1);
+    var rp = plt.Add.Rectangle(cr);
+    rp.LineStyle.Width = 0;
+    rp.FillStyle.Color = colors[Random.Shared.Next(colors.Length)];
+}
+
+plt.SavePng("test.png", 600, 300);

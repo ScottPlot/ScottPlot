@@ -17,7 +17,7 @@ public class Polygon : IPlottable
 
     public bool IsVisible { get; set; } = true;
 
-    public LineStyle LineStyle { get; set; } = LineStyle.None;
+    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.LightGray };
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.None;
 
@@ -90,21 +90,20 @@ public class Polygon : IPlottable
         if (IsEmpty)
             return;
 
-        List<SKPoint> skPoints = new();
-        foreach (var coordinate in Coordinates)
-        {
-            skPoints.Add(Axes.GetPixel(coordinate).ToSKPoint());
-        }
+        bool close = true; // TODO: make property
+        var coordinates = close 
+            ? Coordinates.Concat(new Coordinates[] { Coordinates.First() }) 
+            : Coordinates;
+        IEnumerable<Pixel> pixels = coordinates.Select(Axes.GetPixel);
 
+        // TODO: stop using skia primitives directly
+        IEnumerable<SKPoint> skPoints = pixels.Select(x => x.ToSKPoint());
         using SKPath path = new();
-        path.MoveTo(skPoints[0]);
-        foreach (var p in skPoints.Skip(1))
+        path.MoveTo(skPoints.First());
+        foreach (SKPoint p in skPoints.Skip(1))
         {
             path.LineTo(p);
         }
-
-        // Connect last vertex to the initial vertex to close the shape.
-        path.LineTo(skPoints[0]);
 
         using var paint = new SKPaint();
         if (FillStyle != null && FillStyle.HasValue)
@@ -114,16 +113,16 @@ public class Polygon : IPlottable
             rp.Canvas.DrawPath(path, paint);
         }
 
-        if (LineStyle != null && LineStyle.IsVisible)
+        if (LineStyle != null && LineStyle.IsVisible && LineStyle.Width > 0)
         {
             paint.Style = SKPaintStyle.Stroke;
             LineStyle.ApplyToPaint(paint);
             rp.Canvas.DrawPath(path, paint);
+            Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
         }
 
         if (MarkerStyle != null && MarkerStyle.IsVisible)
         {
-            var pixels = skPoints.Select(x => new Pixel(x.X, x.Y));
             Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
         }
     }
