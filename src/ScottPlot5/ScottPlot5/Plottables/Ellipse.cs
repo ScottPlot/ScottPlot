@@ -39,16 +39,16 @@ public class Ellipse : IPlottable
     /// <summary>
     /// Rotation of the ellipse (degrees)
     /// </summary>
-    public float Rotation
+    public double Rotation
     {
         get => _rotation;
         set
         {
-            if (value < 0) { value += 360f; }
-            _rotation = value % 360f;
+            if (value < 0) { value += 360; }
+            _rotation = value % 360;
         }
     }
-    private float _rotation = 0;
+    private double _rotation = 0;
 
     public AxisLimits GetAxisLimits()
     {
@@ -79,10 +79,10 @@ public class Ellipse : IPlottable
         using var paint = new SKPaint();
 
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
-        rp.Canvas.RotateDegrees(Rotation);
+        rp.Canvas.RotateDegrees((float)Rotation);
 
-        var rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
-        var ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
+        float rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
+        float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
 
         if (FillStyle.Color.A > 0)
         {
