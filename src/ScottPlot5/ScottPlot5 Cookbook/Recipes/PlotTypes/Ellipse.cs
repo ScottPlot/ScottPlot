@@ -6,7 +6,7 @@ public class Ellipse : ICategory
     public string CategoryName => "Ellipse";
     public string CategoryDescription => "Ellipses are curves with a defined center and distinct X and Y radii. A circle is an ellipse with an X radius equal to its Y radius.";
 
-    public class EllipseQuickstart : RecipeBase
+    public class PlotEllipseQuickstart : RecipeBase
     {
         public override string Name => "Ellipse Quickstart";
         public override string Description => "Ellipses can be added to plots";
@@ -28,7 +28,7 @@ public class Ellipse : ICategory
         }
     }
 
-    public class CircleQuickstart : RecipeBase
+    public class PlotCircleQuickstart : RecipeBase
     {
         public override string Name => "Circle Quickstart";
         public override string Description => "Circles can be added to plots. Circles are really Ellipses with the same X and Y radius. Note that circles appear as ellipses unless the plot has a square coordinate system.";
