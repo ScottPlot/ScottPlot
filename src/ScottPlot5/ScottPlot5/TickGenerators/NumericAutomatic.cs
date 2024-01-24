@@ -2,13 +2,13 @@
 
 public class NumericAutomatic : ITickGenerator
 {
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Tick[] Ticks { get; set; } = [];
 
     public int MaxTickCount { get; set; } = 10_000;
 
     public Func<double, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
 
-    public double MinorTicksPerMajorTick { get; set; } = 5;
+    public IMinorTickGenerator MinorTickGenerator { get; set; } = new EvenlySpacedMinorTickGenerator(5);
 
     public static string DefaultLabelFormatter(double value)
     {
@@ -56,7 +56,7 @@ public class NumericAutomatic : ITickGenerator
         // recursively recalculate tick density if necessary
         return tickExceedsPredictedSize
             ? GenerateTicks(range, edge, size, largestLabel, depth + 1)
-            : GenerateFinalTicks(majorTickPositions, majorTickLabels, range, MinorTicksPerMajorTick);
+            : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
     }
 
     private static double[] GenerateTickPositions(CoordinateRange range, PixelLength size, float predictedTickSize)
@@ -88,17 +88,13 @@ public class NumericAutomatic : ITickGenerator
         return majorTickPositions;
     }
 
-    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange range, double minorTicksPerMajorTick)
+    private Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange visibleRange)
     {
-        Tick[] majorTicks = positions
-            .Select((position, i) => Tick.Major(position, labels[i]))
-            .ToArray();
+        var majorTicks = positions.Select((position, i) => Tick.Major(position, labels[i]));
 
-        Tick[] minorTicks = MinorFromMajor(positions, minorTicksPerMajorTick, range)
-            .Select(Tick.Minor)
-            .ToArray();
+        var minorTicks = MinorTickGenerator.GetMinorTicks(positions, visibleRange).Select(Tick.Minor);
 
-        return majorTicks.Concat(minorTicks).ToArray();
+        return [.. majorTicks, .. minorTicks];
     }
 
     private static double GetIdealTickSpacing(CoordinateRange range, int maxTickCount)
@@ -125,33 +121,5 @@ public class NumericAutomatic : ITickGenerator
         }
 
         return tickSpacings[tickSpacings.Count - 3];
-    }
-
-    private static double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, CoordinateRange range)
-    {
-        if (majorTicks == null || majorTicks.Length < 2)
-            return new double[] { };
-
-        double majorTickSpacing = majorTicks[1] - majorTicks[0];
-        double minorTickSpacing = majorTickSpacing / minorTicksPerMajorTick;
-
-        List<double> majorTicksWithPadding = new()
-        {
-            majorTicks[0] - majorTickSpacing
-        };
-        majorTicksWithPadding.AddRange(majorTicks);
-
-        List<double> minorTicks = new();
-        foreach (var majorTickPosition in majorTicksWithPadding)
-        {
-            for (int i = 1; i < minorTicksPerMajorTick; i++)
-            {
-                double minorTickPosition = majorTickPosition + minorTickSpacing * i;
-                if (range.Contains(minorTickPosition))
-                    minorTicks.Add(minorTickPosition);
-            }
-        }
-
-        return minorTicks.ToArray();
     }
 }

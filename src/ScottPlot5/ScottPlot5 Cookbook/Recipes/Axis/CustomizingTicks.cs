@@ -128,14 +128,35 @@ public class CustomizingTicks : ICategory
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.LineWidth = 0;
 
-            // make a new tick generator with increased minor tick density
-            ScottPlot.TickGenerators.NumericAutomatic tickGen = new()
-            {
-                MinorTicksPerMajorTick = 10 // the deafult is 5
-            };
+            // create a minor tick generator with 10 minor ticks per major tick
+            ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator minorTickGen = new(10);
 
-            // tell the left axis to use the custom tick generator
+            // create a numeric tick generator that uses our custom minor tick generator
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            tickGen.MinorTickGenerator = minorTickGen;
+
+            // tell the left axis to use our custom tick generator
             myPlot.Axes.Left.TickGenerator = tickGen;
+        }
+    }
+
+    public class LogScaleTicks : RecipeBase
+    {
+        public override string Name => "Log Scale Tick Marks";
+        public override string Description =>
+            "The apperance of logarithmic scaling can be achieved by configuring " +
+            "minor tick mark placement.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample data
+            double[] xs = Generate.Consecutive(100);
+            double[] ys = Generate.NoisyExponential(100);
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.LineWidth = 0;
+
+            // TODO
         }
     }
 }
