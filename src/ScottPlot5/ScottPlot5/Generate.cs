@@ -60,6 +60,32 @@ public static class Generate
         return data;
     }
 
+    /// <summary>
+    /// An exponential curve that rises from 0 to <paramref name="mult"/> 
+    /// over <paramref name="count"/> points with random positive noise that scales
+    /// with the underlying signal. The rate constant of the exponential
+    /// curve is <paramref name="tau"/>.
+    /// </summary>
+    public static double[] NoisyExponential(int count, double mult = 1000, double noise = .5, double tau = 5)
+    {
+        double[] values = new double[count];
+
+        // add this to ensure we never actually return 0, so Log10() never returns infinity
+        double offset = mult * .001;
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            double x = (double)i / (count - 1);
+            double y = (Math.Exp(tau * x) - 1) / Math.Exp(tau); // 0 to 1
+            y *= mult;
+            y += Math.Abs(RandomData.RandomNormalNumber()) * noise * y;
+            y += offset;
+            values[i] = y;
+        }
+
+        return values;
+    }
+
     public static double[] SquareWave(uint cycles = 20, uint pointsPerCycle = 1_000, double duty = .5, double low = 0, double high = 1)
     {
         if (duty < 0 || duty > 1)

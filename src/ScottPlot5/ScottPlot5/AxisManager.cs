@@ -473,6 +473,32 @@ public class AxisManager
         XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
     }
+
+    /// <summary>
+    /// Zoom out so the new view is the given fraction of the original view
+    /// </summary>
+    public void ZoomOut(double x = 1.0, double y = 1.0)
+    {
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomOut(x));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomOut(y));
+    }
+
+    /// <summary>
+    /// Zoom out so the new view is the given fraction of the original view
+    /// </summary>
+    public void ZoomOutX(double x = 1.0)
+    {
+        ZoomOut(x, 1);
+    }
+
+    /// <summary>
+    /// Zoom out so the new view is the given fraction of the original view
+    /// </summary>
+    public void ZoomOutY(double y = 1.0)
+    {
+        ZoomOut(1, y);
+    }
+
     /// <summary>
     /// Reset plot data margins to their default value.
     /// </summary>

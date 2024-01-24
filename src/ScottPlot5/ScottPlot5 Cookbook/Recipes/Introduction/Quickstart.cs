@@ -1,9 +1,9 @@
 ﻿namespace ScottPlotCookbook.Recipes.Quickstart;
 
-public class Quickstart : ICategory
+public class ScottPlotQuickstart : ICategory
 {
-    public string Chapter => "Quickstart";
-    public string CategoryName => "ScottPlot 5 Quickstart";
+    public string Chapter => "Introduction";
+    public string CategoryName => "Quickstart";
     public string CategoryDescription => "A survey of basic functionality in ScottPlot 5";
 
     public class QuickstartScatter : RecipeBase

@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.Axis;
+﻿using System.ComponentModel;
+
+namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingTicks : ICategory
 {
@@ -109,6 +111,82 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
             myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
+        }
+    }
+
+    public class StandardMinorTickDistribution : RecipeBase
+    {
+        public override string Name => "Minor Tick Density";
+        public override string Description =>
+            "Minor tick marks are automatically generated at intervals between major tick marks. " +
+            "By default they are evenly spaced, but their density may be customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample data
+            double[] xs = Generate.Consecutive(100);
+            double[] ys = Generate.NoisyExponential(100);
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.LineWidth = 0;
+
+            // create a minor tick generator with 10 minor ticks per major tick
+            ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator minorTickGen = new(10);
+
+            // create a numeric tick generator that uses our custom minor tick generator
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            tickGen.MinorTickGenerator = minorTickGen;
+
+            // tell the left axis to use our custom tick generator
+            myPlot.Axes.Left.TickGenerator = tickGen;
+        }
+    }
+
+    public class LogScaleTicks : RecipeBase
+    {
+        public override string Name => "Log Scale Tick Marks";
+        public override string Description =>
+            "The apperance of logarithmic scaling can be achieved by log-scaling " +
+            "the data to be displayed then customizing the minor ticks and grid.";
+
+        [Test]
+        public override void Execute()
+        {
+            // start with original data
+            double[] xs = Generate.Consecutive(100);
+            double[] ys = Generate.NoisyExponential(100);
+
+            // log-scale the data and account for negative values
+            double[] logYs = ys.Select(Math.Log10).ToArray();
+
+            // add log-scaled data to th eplot
+            var sp = myPlot.Add.Scatter(xs, logYs);
+            sp.LineWidth = 0;
+
+            // create a minor tick generator that places log-distributed minor ticks
+            ScottPlot.TickGenerators.LogMinorTickGenerator minorTickGen = new();
+
+            // create a numeric tick generator that uses our custom minor tick generator
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            tickGen.MinorTickGenerator = minorTickGen;
+
+            // create a custom tick formatter to set the label text for each tick
+            static string LogTickLabelFormatter(double y) => $"{Math.Pow(10, y):N0}";
+
+            // tell our major tick generator to only show major ticks that are whole integers
+            tickGen.IntegerTicksOnly = true;
+
+            // tell our custom tick generator to use our new label formatter
+            tickGen.LabelFormatter = LogTickLabelFormatter;
+
+            // tell the left axis to use our custom tick generator
+            myPlot.Axes.Left.TickGenerator = tickGen;
+
+            // show grid lines for minor ticks
+            var grid = myPlot.GetDefaultGrid();
+            grid.MajorLineStyle.Color = Colors.Black.WithOpacity(.15);
+            grid.MinorLineStyle.Color = Colors.Black.WithOpacity(.05);
+            grid.MinorLineStyle.Width = 1;
         }
     }
 }
