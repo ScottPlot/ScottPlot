@@ -322,6 +322,24 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Remove all items of a specific type from the plot. Returns false if no items were found. 
+    /// This removes all items of a specific type from <see cref="PlottableList"/>.
+    /// </summary>
+    public bool Remove(Type plotType)
+    {
+        List<IPlottable> itemsToRemove = PlottableList.Where(x => x.GetType() != plotType).ToList();
+        if(itemsToRemove.Count == 0)
+            return false;
+
+        foreach (var item in itemsToRemove)
+        {
+            PlottableList.Remove(item);
+        }
+
+        return true;
+    }
+
+    /// <summary>
     /// Disable visibility for all grids
     /// </summary>
     public void HideGrid()
