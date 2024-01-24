@@ -342,7 +342,7 @@ public class Plot : IDisposable
     public int Remove<T>(Func<T, bool> predicate) where T : IPlottable
     {
         var toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
-        foreach(var item in toRemove)
+        foreach (var item in toRemove)
             PlottableList.Remove(item);
         return toRemove.Count;
     }
