@@ -10,6 +10,7 @@
 * Axis Line: Added `LabelOppositeAxis` property and created dedicated cookbook page (#3275) _Thanks Lyakabynka_
 * Plot: `AddRectangle()` now accepts more input types (#3263) _Thanks @enumer_
 * Ticks: Created `IMinorTickGenerator` to allow users to inject their own logic for placing minor ticks
+* Axes: Added support for log-scale tick labels and grid lines (#3143)
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_
