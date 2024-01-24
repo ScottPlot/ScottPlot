@@ -91,8 +91,8 @@ public class Polygon : IPlottable
             return;
 
         bool close = true; // TODO: make property
-        var coordinates = close 
-            ? Coordinates.Concat(new Coordinates[] { Coordinates.First() }) 
+        var coordinates = close
+            ? Coordinates.Concat(new Coordinates[] { Coordinates.First() })
             : Coordinates;
         IEnumerable<Pixel> pixels = coordinates.Select(Axes.GetPixel);
 
