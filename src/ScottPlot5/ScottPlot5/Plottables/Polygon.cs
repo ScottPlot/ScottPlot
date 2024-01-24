@@ -100,15 +100,22 @@ public class Polygon : IPlottable
         IEnumerable<SKPoint> skPoints = pixels.Select(x => x.ToSKPoint());
         using SKPath path = new();
         path.MoveTo(skPoints.First());
+        float xMax, xMin, yMax, yMin;
+        xMax = xMin = skPoints.First().X;
+        yMax = yMin = skPoints.First().Y;
         foreach (SKPoint p in skPoints.Skip(1))
         {
+            xMax = Math.Max(xMax, p.X);
+            xMin = Math.Min(xMin, p.X);
+            yMax = Math.Max(yMax, p.Y);
+            yMin = Math.Min(yMin, p.Y);
             path.LineTo(p);
         }
 
         using var paint = new SKPaint();
         if (FillStyle != null && FillStyle.HasValue)
         {
-            FillStyle.ApplyToPaint(paint);
+            FillStyle.ApplyToPaint(paint, xMax - xMin, yMax- yMin);
             paint.Style = SKPaintStyle.Fill;
             rp.Canvas.DrawPath(path, paint);
         }

@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Extensions;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Holds values for drawing a box-and-whisker symbol
@@ -38,7 +40,7 @@ public class Box
         // body fill
         CoordinateRect bodyRect = new(Position - Width / 2, Position + Width / 2, BoxMin, BoxMax);
         PixelRect bodyRectPx = axes.GetPixelRect(bodyRect);
-        Fill.ApplyToPaint(paint);
+        Fill.ApplyToPaint(paint, bodyRectPx.Width, bodyRectPx.Height);
         Drawing.Fillectangle(rp.Canvas, bodyRectPx, paint);
 
         // body stroke

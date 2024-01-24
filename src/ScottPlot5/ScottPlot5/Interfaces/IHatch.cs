@@ -2,5 +2,5 @@
 
 public interface IHatch
 {
-    SKShader GetShader(Color backgroundColor, Color hatchColor);
+    SKShader GetShader(Color backgroundColor, Color hatchColor, float width, float height);
 }

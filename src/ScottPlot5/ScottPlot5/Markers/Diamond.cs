@@ -6,7 +6,7 @@ internal class Diamond : IMarker
     {
         float offset = size / 2;
 
-        fill.ApplyToPaint(paint);
+        fill.ApplyToPaint(paint, size, size);
 
         // 4 corners
         SKPoint[] pointsList = new SKPoint[]

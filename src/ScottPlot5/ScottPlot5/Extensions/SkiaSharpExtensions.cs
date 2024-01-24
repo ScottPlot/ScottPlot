@@ -74,7 +74,7 @@ public static class SkiaSharpExtensions
         paint.IsAntialias = style.AntiAlias;
     }
 
-    public static void ApplyToPaint(this FillStyle fs, SKPaint paint)
+    public static void ApplyToPaint(this FillStyle fs, SKPaint paint, float width, float height)
     {
         paint.Color = fs.Color.ToSKColor();
         paint.IsStroke = false;
@@ -82,7 +82,7 @@ public static class SkiaSharpExtensions
 
         if (fs.Hatch is not null)
         {
-            paint.Shader = fs.Hatch.GetShader(fs.Color, fs.HatchColor);
+            paint.Shader = fs.Hatch.GetShader(fs.Color, fs.HatchColor, width, height);
         }
         else
         {

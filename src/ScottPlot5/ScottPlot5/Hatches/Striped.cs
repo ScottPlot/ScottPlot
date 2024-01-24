@@ -43,7 +43,7 @@ namespace ScottPlot.Hatches
             return bitmap;
         }
 
-        public SKShader GetShader(Color backgroundColor, Color hatchColor)
+        public SKShader GetShader(Color backgroundColor, Color hatchColor, float width, float height)
         {
             var rotationMatrix = StripeDirection switch
             {
