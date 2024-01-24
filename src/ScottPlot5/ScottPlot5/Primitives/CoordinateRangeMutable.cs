@@ -122,6 +122,13 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         ZoomFrac(frac, Center);
     }
 
+    public void ZoomOut(double multiple)
+    {
+        double newSpan = Span * multiple;
+        double halfSpan = newSpan / 2;
+        Set(Center - halfSpan, Center + halfSpan);
+    }
+
     public void ZoomMouseDelta(float deltaPx, float dataSizePx)
     {
         double deltaFracX = deltaPx / (Math.Abs(deltaPx) + dataSizePx);
