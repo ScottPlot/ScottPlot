@@ -111,4 +111,31 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
         }
     }
+
+    public class StandardMinorTickDistribution : RecipeBase
+    {
+        public override string Name => "Minor Tick Density";
+        public override string Description =>
+            "Minor tick marks are automatically generated at intervals between major tick marks. " +
+            "By default they are evenly spaced, but their density may be customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample data
+            double[] xs = Generate.Consecutive(100);
+            double[] ys = Generate.NoisyExponential(100);
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.LineWidth = 0;
+
+            // make a new tick generator with increased minor tick density
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new()
+            {
+                MinorTicksPerMajorTick = 10 // the deafult is 5
+            };
+
+            // tell the left axis to use the custom tick generator
+            myPlot.Axes.Left.TickGenerator = tickGen;
+        }
+    }
 }

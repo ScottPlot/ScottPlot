@@ -9,6 +9,7 @@
 * Label: Improved measurement of text containing leading or tailing whitespace (#3223, #3268) _Thanks @KroMignon and @lindpatr_
 * Axis Line: Added `LabelOppositeAxis` property and created dedicated cookbook page (#3275) _Thanks Lyakabynka_
 * Plot: `AddRectangle()` now accepts more input types (#3263) _Thanks @enumer_
+* Ticks: Added `MinorTicksPerMajorTick` property to `TickGenerators.NumericAutomatic` to allow minor tick density customization
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

@@ -8,6 +8,8 @@ public class NumericAutomatic : ITickGenerator
 
     public Func<double, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
 
+    public double MinorTicksPerMajorTick { get; set; } = 5;
+
     public static string DefaultLabelFormatter(double value)
     {
         CultureInfo culture = CultureInfo.InvariantCulture;
@@ -54,7 +56,7 @@ public class NumericAutomatic : ITickGenerator
         // recursively recalculate tick density if necessary
         return tickExceedsPredictedSize
             ? GenerateTicks(range, edge, size, largestLabel, depth + 1)
-            : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
+            : GenerateFinalTicks(majorTickPositions, majorTickLabels, range, MinorTicksPerMajorTick);
     }
 
     private static double[] GenerateTickPositions(CoordinateRange range, PixelLength size, float predictedTickSize)
@@ -86,7 +88,7 @@ public class NumericAutomatic : ITickGenerator
         return majorTickPositions;
     }
 
-    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange range, int minorTicksPerMajorTick = 5)
+    private static Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange range, double minorTicksPerMajorTick)
     {
         Tick[] majorTicks = positions
             .Select((position, i) => Tick.Major(position, labels[i]))
