@@ -363,29 +363,24 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public Polygon Rectangle(CoordinateRect rect)
+    public Rectangle Rectangle(CoordinateRect rect)
     {
         return Rectangle(rect.Left, rect.Right, rect.Top, rect.Bottom);
     }
 
-    public Polygon Rectangle(double left, double right, double bottom, double top)
+    public Rectangle Rectangle(double left, double right, double bottom, double top)
     {
-        // TODO: create a rectangle plot type
-
-        Coordinates[] points = {
-            new(left, bottom),
-            new(left, top),
-            new(right, top),
-            new(right, bottom),
+        Rectangle rp = new()
+        {
+            X1 = left,
+            X2 = right,
+            Y1 = bottom,
+            Y2 = top,
         };
 
-        Color color = GetNextColor();
-
-        var poly = Polygon(points);
-        poly.LineStyle.Color = color;
-        poly.FillStyle.Color = Colors.Transparent;
-
-        return poly;
+        rp.FillStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(rp);
+        return rp;
     }
 
     public Scatter Scatter(IScatterSource source, Color? color = null)

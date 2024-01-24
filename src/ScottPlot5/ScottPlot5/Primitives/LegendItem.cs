@@ -61,6 +61,19 @@ public class LegendItem
         return Single(item);
     }
 
+    public static IEnumerable<LegendItem> Single(string label, FillStyle fillStyle, LineStyle lineStyle)
+    {
+        LegendItem item = new()
+        {
+            Label = label,
+            Marker = MarkerStyle.None,
+            Fill = fillStyle,
+            Line = lineStyle,
+        };
+
+        return Single(item);
+    }
+
     public static IEnumerable<LegendItem> Single(string label, LineStyle lineStyle, MarkerStyle markerStyle)
     {
         LegendItem item = new()
