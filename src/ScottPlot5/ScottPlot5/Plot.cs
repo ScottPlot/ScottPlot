@@ -3,7 +3,6 @@ using ScottPlot.Control;
 using ScottPlot.Legends;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
-using System.Linq;
 
 namespace ScottPlot;
 
