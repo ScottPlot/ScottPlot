@@ -3,6 +3,7 @@ using ScottPlot.Control;
 using ScottPlot.Legends;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -319,6 +320,32 @@ public class Plot : IDisposable
     public void Remove(IPlottable plottable)
     {
         PlottableList.Remove(plottable);
+    }
+
+    /// <summary>
+    /// Remove a specific type of IPlottable from the plot.
+    /// This removes the given object from <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    /// <returns>The number of elements removed from<see cref="PlottableList"/>.</returns>
+    public int Remove<T>() where T : IPlottable
+    {
+        return PlottableList.RemoveAll(x => x is T);
+    }
+
+    /// <summary>
+    /// Remove a specific type of IPlottable from the plot.
+    /// This removes the given object from <see cref="PlottableList"/>.
+    /// </summary>
+    /// <param name="predicate">A function to test each element for a condition.</param>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    /// <returns>The number of elements removed from<see cref="PlottableList"/>.</returns>
+    public int Remove<T>(Func<T, bool> predicate) where T : IPlottable
+    {
+        var toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
+        foreach(var item in toRemove)
+            PlottableList.Remove(item);
+        return toRemove.Count;
     }
 
     /// <summary>
