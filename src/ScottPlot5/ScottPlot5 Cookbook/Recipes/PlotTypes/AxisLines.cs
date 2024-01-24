@@ -4,7 +4,7 @@ public class AxisLines : ICategory
 {
     public string Chapter => "Plot Types";
     public string CategoryName => "Primitive Shapes";
-    public string CategoryDescription => "Basic shapes that can be added to plots";
+    public string CategoryDescription => "Axis lines span an entire axis.";
 
     public class AxisLineQuickstart : RecipeBase
     {

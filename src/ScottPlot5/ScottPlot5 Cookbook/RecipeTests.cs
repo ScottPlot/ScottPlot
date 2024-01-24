@@ -5,13 +5,11 @@ namespace ScottPlotCookbook;
 internal class RecipeTests
 {
     [Test]
-    public void Test_Query_Categories()
+    public void Test_Query_Categories_HavePopulatedFields()
     {
-        IEnumerable<ICategory> categories = Query.GetCategories();
-        categories.Should().NotBeNullOrEmpty();
+        var categories = Query.GetCategories().ToArray();
 
-        categories.Select(x => x.CategoryName).Should().OnlyHaveUniqueItems();
-        categories.Select(x => x.CategoryDescription).Should().OnlyHaveUniqueItems();
+        categories.Should().NotBeNullOrEmpty();
 
         foreach (ICategory category in categories)
         {
@@ -19,6 +17,32 @@ internal class RecipeTests
             category.CategoryName.Should().NotBeNullOrWhiteSpace();
             category.CategoryDescription.Should().NotBeNullOrWhiteSpace();
         }
+    }
+
+    [Test]
+    public void Test_Query_Categories_HaveUniqueNames()
+    {
+        ScottPlot.Testing.DuplicateIdentifier<ICategory> ids = new("category name");
+
+        foreach (ICategory category in Query.GetCategories())
+        {
+            ids.Add(category.CategoryName, category);
+        }
+
+        ids.ShouldHaveNoDuplicates();
+    }
+
+    [Test]
+    public void Test_Query_Categories_HaveUniqueDescriptions()
+    {
+        ScottPlot.Testing.DuplicateIdentifier<ICategory> ids = new("category description");
+
+        foreach (ICategory category in Query.GetCategories())
+        {
+            ids.Add(category.CategoryDescription, category);
+        }
+
+        ids.ShouldHaveNoDuplicates();
     }
 
     [Test]
