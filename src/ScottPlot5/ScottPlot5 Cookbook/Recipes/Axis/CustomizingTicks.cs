@@ -10,7 +10,8 @@ public class CustomizingTicks : ICategory
     {
         public override string Name => "Custom Tick Formatters";
         public override string Description => "Users can customize the logic used to create " +
-            "tick labels from tick positions.";
+            "tick labels from tick positions. " +
+"Old versions of ScottPlot achieved this using a ManualTickPositions method.";
 
         [Test]
         public override void Execute()
