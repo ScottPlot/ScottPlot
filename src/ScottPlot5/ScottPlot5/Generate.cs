@@ -62,7 +62,7 @@ public static class Generate
 
     /// <summary>
     /// An exponential curve that rises from 0 to <paramref name="mult"/> 
-    /// over <paramref name="count"/> points with random noise that scales
+    /// over <paramref name="count"/> points with random positive noise that scales
     /// with the underlying signal. The rate constant of the exponential
     /// curve is <paramref name="tau"/>.
     /// </summary>
@@ -70,12 +70,16 @@ public static class Generate
     {
         double[] values = new double[count];
 
+        // add this to ensure we never actually return 0, so Log10() never returns infinity
+        double offset = mult * .001;
+
         for (int i = 0; i < values.Length; i++)
         {
             double x = (double)i / (count - 1);
-            double y = Math.Exp(tau * x) / Math.Exp(tau); // 0 to 1
+            double y = (Math.Exp(tau * x) - 1) / Math.Exp(tau); // 0 to 1
             y *= mult;
-            y += RandomData.RandomNormalNumber() * noise * y;
+            y += Math.Abs(RandomData.RandomNormalNumber()) * noise * y;
+            y += offset;
             values[i] = y;
         }
 
