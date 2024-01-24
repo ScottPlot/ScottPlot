@@ -121,6 +121,16 @@ public class PlottableAdder(Plot plot)
         return candlestickPlot;
     }
 
+    public Ellipse Circle(Coordinates center, double radius)
+    {
+        return Ellipse(center, radius, radius);
+    }
+
+    public Ellipse Circle(double xCenter, double yCenter, double radius)
+    {
+        return Circle(new(xCenter, yCenter), radius);
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
@@ -165,6 +175,26 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(streamer);
 
         return streamer;
+    }
+
+    public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, float rotation = 0)
+    {
+        var ellipse = new Ellipse()
+        {
+            Center = center,
+            RadiusX = radiusX,
+            RadiusY = radiusY,
+            Rotation = rotation
+        };
+        ellipse.LineStyle.Color = GetNextColor();
+
+        Plot.PlottableList.Add(ellipse);
+        return ellipse;
+    }
+
+    public Ellipse Ellipse(double xCenter, double yCenter, double radiusX, double radiusY, float rotation = 0)
+    {
+        return Ellipse(new Coordinates(xCenter, yCenter), radiusX, radiusY, rotation);
     }
 
     public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double> yErrors)
