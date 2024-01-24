@@ -6,6 +6,8 @@ public class NumericAutomatic : ITickGenerator
 
     public int MaxTickCount { get; set; } = 10_000;
 
+    public bool IntegerTicksOnly { get; set; } = false;
+
     public Func<double, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
 
     public IMinorTickGenerator MinorTickGenerator { get; set; } = new EvenlySpacedMinorTickGenerator(5);
@@ -90,6 +92,20 @@ public class NumericAutomatic : ITickGenerator
 
     private Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange visibleRange)
     {
+        // TODO: make this process cleaner
+        if (IntegerTicksOnly)
+        {
+            List<int> indexes = [];
+            for (int i = 0; i < positions.Length; i++)
+            {
+                if (positions[i] == (int)positions[i])
+                    indexes.Add(i);
+            }
+
+            positions = indexes.Select(x => positions[x]).ToArray();
+            labels = indexes.Select(x => labels[x]).ToArray();
+        }
+
         var majorTicks = positions.Select((position, i) => Tick.Major(position, labels[i]));
 
         var minorTicks = MinorTickGenerator.GetMinorTicks(positions, visibleRange).Select(Tick.Minor);
