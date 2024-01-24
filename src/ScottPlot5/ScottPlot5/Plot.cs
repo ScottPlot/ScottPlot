@@ -328,7 +328,7 @@ public class Plot : IDisposable
     public bool Remove(Type plotType)
     {
         List<IPlottable> itemsToRemove = PlottableList.Where(x => x.GetType() != plotType).ToList();
-        if(itemsToRemove.Count == 0)
+        if (itemsToRemove.Count == 0)
             return false;
 
         foreach (var item in itemsToRemove)
