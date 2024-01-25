@@ -313,30 +313,27 @@ public class Plot : IDisposable
     #region Helper Methods
 
     /// <summary>
-    /// Remove a specific object from the plot.
-    /// This removes the given object from <see cref="PlottableList"/>.
+    /// Remove the given plottable from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(IPlottable plottable)
     {
-        PlottableList.Remove(plottable);
+        while (PlottableList.Contains(plottable))
+        {
+            PlottableList.Remove(plottable);
+        }
     }
 
     /// <summary>
-    /// Remove all items of a specific type from the plot. Returns false if no items were found. 
-    /// This removes all items of a specific type from <see cref="PlottableList"/>.
+    /// Remove all items of a specific type from the <see cref="PlottableList"/>.
     /// </summary>
-    public bool Remove(Type plotType)
+    public void Remove(Type plotType)
     {
-        List<IPlottable> itemsToRemove = PlottableList.Where(x => x.GetType() != plotType).ToList();
-        if (itemsToRemove.Count == 0)
-            return false;
+        List<IPlottable> itemsToRemove = PlottableList.Where(x => x.GetType() == plotType).ToList();
 
-        foreach (var item in itemsToRemove)
+        foreach (IPlottable item in itemsToRemove)
         {
             PlottableList.Remove(item);
         }
-
-        return true;
     }
 
     /// <summary>
