@@ -40,4 +40,26 @@ public class Heatmap : ICategory
             hm2.Extent = new(100, 165, 0, 100);
         }
     }
+
+    public class HeatmapColormap : RecipeBase
+    {
+        public override string Name => "Heatmap with custom Colormap";
+        public override string Description => "A heatmap's Colormap is the logic " +
+            "used to convert from cell value to cell color and they can set by the user. " +
+            "ScottPlot comes with many common colormaps, " +
+            "but users may implement IColormap and apply their own. " +
+            "A colorbar can be added to indicate which colors map to which values.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Colormap = new ScottPlot.Colormaps.Turbo();
+
+            // TODO: this isn't working quite right yet...
+            myPlot.Add.ColorBar(hm1);
+        }
+    }
 }
