@@ -17,6 +17,11 @@ public class Interaction : IPlotInteraction
     public InputBindings Inputs = InputBindings.Standard();
 
     /// <summary>
+    /// A field to store the plotActions during a 'Disabled' period
+    /// </summary>
+    private PlotActions EnabledPlotActions;
+    
+    /// <summary>
     /// Delegates in this object can be overwritten with custom functions that manipulate the plot.
     /// (e.g., changing the sensitivity of click-drag-zooming)
     /// </summary>
@@ -40,6 +45,8 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public void Disable()
     {
+        //back up the enabled plot actions
+        EnabledPlotActions = Actions;
         Actions = PlotActions.NonInteractive();
     }
 
@@ -48,7 +55,7 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public void Enable()
     {
-        Actions = PlotActions.Standard();
+        Actions = EnabledPlotActions;
     }
 
     /// <summary>
