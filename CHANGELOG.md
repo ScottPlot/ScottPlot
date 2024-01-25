@@ -12,8 +12,9 @@
 * Ticks: Created `IMinorTickGenerator` to allow users to inject their own logic for placing minor ticks
 * Axes: Added support for log-scale tick labels and grid lines (#3143)
 * Plot: Users can now `Add.Ellipse()` and `Add.Circle()` to place closed curves on plots (#3277, #3287) _Thanks @hockerschwan_
-* Plot: Added a `Plot.Remove()` overloads for removing all plottables of the given type (#3296, #3296) _Thanks @DerekGooding_
-* Plot: Added a `Plot.Remove()` overloads for removing plottables matching specific criteria (#3296, #3297) _Thanks @KroMignon_
+* Plot: Added `Plot.Remove()` overloads for removing all plottables of the given type (#3296, #3296) _Thanks @DerekGooding_
+* Plot: Added `Plot.Remove()` overloads for removing plottables matching specific criteria (#3296, #3297) _Thanks @KroMignon_
+* Plot: Added `Plot.GetPlottables()` overloads to facilitate iterating over plottables of a specific type
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

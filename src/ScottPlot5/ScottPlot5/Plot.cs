@@ -313,6 +313,22 @@ public class Plot : IDisposable
     #region Helper Methods
 
     /// <summary>
+    /// Return contents of <see cref="PlottableList"/>.
+    /// </summary>
+    public IEnumerable<IPlottable> GetPlottables()
+    {
+        return PlottableList;
+    }
+
+    /// <summary>
+    /// Return all plottables in <see cref="PlottableList"/> of the given type.
+    /// </summary>
+    public IEnumerable<T> GetPlottables<T>() where T : IPlottable
+    {
+        return PlottableList.OfType<T>();
+    }
+
+    /// <summary>
     /// Remove the given plottable from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(IPlottable plottable)

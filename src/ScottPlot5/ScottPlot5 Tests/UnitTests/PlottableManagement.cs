@@ -132,4 +132,26 @@ internal class PlottableManagement
         myPlot.Remove<ScottPlot.Plottables.Scatter>(x => x.Color == Colors.Magenta);
         myPlot.PlottableList.Count.Should().Be(1);
     }
+
+    [Test]
+    public void Test_Plot_GetPlottables()
+    {
+        double[] xs = Generate.Consecutive();
+        double[] ys = Generate.Sin();
+
+        Plot myPlot = new();
+
+        // add scatter plots
+        var sp1 = myPlot.Add.Scatter(xs, ys);
+        var sp2 = myPlot.Add.Scatter(xs, ys);
+        var sp3 = myPlot.Add.Scatter(xs, ys);
+
+        // add signal plots
+        var sig1 = myPlot.Add.Signal(ys);
+        var sig2 = myPlot.Add.Signal(ys);
+
+        myPlot.GetPlottables().Count().Should().Be(5);
+        myPlot.GetPlottables<ScottPlot.Plottables.Scatter>().Count().Should().Be(3);
+        myPlot.GetPlottables<ScottPlot.Plottables.Signal>().Count().Should().Be(2);
+    }
 }
