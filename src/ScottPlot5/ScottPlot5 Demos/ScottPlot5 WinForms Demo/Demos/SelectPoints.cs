@@ -55,7 +55,7 @@ public partial class SelectPoints : Form, IDemoWindow
         RectanglePlot.IsVisible = false;
 
         // clear old markers
-        formsPlot1.Plot.Remove(typeof(ScottPlot.Plottables.Marker));
+        formsPlot1.Plot.Remove<ScottPlot.Plottables.Marker>();
 
         // identify selectedPoints
         var selectedPoints = DataPoints.Where(x => MouseSlectionRect.Contains(x));
