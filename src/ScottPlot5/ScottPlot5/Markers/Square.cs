@@ -6,7 +6,7 @@ internal class Square : IMarker
     {
         PixelRect rect = new(center: center, radius: size / 2);
 
-        fill.ApplyToPaint(paint, size, size);
+        fill.ApplyToPaint(paint, new PixelRect(center, size));
         canvas.DrawRect(rect.ToSKRect(), paint);
 
         if (outline.Width > 0)

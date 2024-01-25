@@ -82,7 +82,7 @@ public static class Common
 
         if (item.Fill.HasValue)
         {
-            item.Fill.ApplyToPaint(paint, symbolWidth, height) ;
+            item.Fill.ApplyToPaint(paint, rect);
             canvas.DrawRect(rect.ToSKRect(), paint);
         }
     }

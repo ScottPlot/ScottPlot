@@ -29,7 +29,7 @@ namespace ScottPlot.Hatches
             return bmp;
         }
 
-        public SKShader GetShader(Color backgroundColor, Color hatchColor, float width, float height)
+        public SKShader GetShader(Color backgroundColor, Color hatchColor, PixelRect rect)
         {
             return SKShader.CreateBitmap(
                 bmp,

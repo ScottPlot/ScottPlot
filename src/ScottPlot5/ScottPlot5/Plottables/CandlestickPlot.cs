@@ -104,7 +104,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
             // rectangle
             SKRect rect = new(left, Math.Max(open, close), right, Math.Min(open, close));
-            fillStlye.ApplyToPaint(paint, rect.Width, rect.Height);
+            fillStlye.ApplyToPaint(paint, rect.ToPixelRect());
             rp.Canvas.DrawRect(rect, paint);
         }
     }
