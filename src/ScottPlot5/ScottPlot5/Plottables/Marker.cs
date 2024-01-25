@@ -2,10 +2,25 @@
 
 public class Marker : IPlottable
 {
+    public double X { get; set; }
+    public double Y { get; set; }
+    public Coordinates Location
+    {
+        get => new(X, Y);
+        set { X = value.X; Y = value.Y; }
+    }
+
     public string Label { get; set; } = string.Empty;
-    public Coordinates Location { get; set; }
     public bool IsVisible { get; set; } = true;
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
+    public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public Color Color
+    {
+        get => MarkerStyle.Fill.Color;
+        set { MarkerStyle.Fill.Color = value; MarkerStyle.Outline.Color = value; }
+    }
+
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle);
     public AxisLimits GetAxisLimits() => new(Location);
