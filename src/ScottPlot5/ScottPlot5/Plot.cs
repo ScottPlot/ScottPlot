@@ -337,29 +337,24 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Remove a specific type of IPlottable from the plot.
-    /// This removes the given object from <see cref="PlottableList"/>.
+    /// Remove a all instances of a specific type from the <see cref="PlottableList"/>.
     /// </summary>
     /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
-    /// <returns>The number of elements removed from<see cref="PlottableList"/>.</returns>
-    public int Remove<T>() where T : IPlottable
+    public void Remove<T>() where T : IPlottable
     {
-        return PlottableList.RemoveAll(x => x is T);
+        PlottableList.RemoveAll(x => x is T);
     }
 
     /// <summary>
-    /// Remove a specific type of IPlottable from the plot.
-    /// This removes the given object from <see cref="PlottableList"/>.
+    /// Remove all instances of a specific type from the <see cref="PlottableList"/> 
+    /// that meet the <paramref name="predicate"/> criteraia.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
     /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
-    /// <returns>The number of elements removed from<see cref="PlottableList"/>.</returns>
-    public int Remove<T>(Func<T, bool> predicate) where T : IPlottable
+    public void Remove<T>(Func<T, bool> predicate) where T : IPlottable
     {
-        var toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
-        foreach (var item in toRemove)
-            PlottableList.Remove(item);
-        return toRemove.Count;
+        List<T> toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
+        toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
     /// <summary>
