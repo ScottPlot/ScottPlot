@@ -117,12 +117,12 @@ public class Plot : IDisposable
     /// <summary>
     /// Return the pixel for a specific coordinate using measurements from the most recent render.
     /// </summary>
-    public Pixel GetPixel(Coordinates coordinates)
+    public Pixel GetPixel(Coordinates coordinates, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         Coordinates scaledCoordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        float x = Axes.Bottom.GetPixel(scaledCoordinates.X, dataRect);
-        float y = Axes.Left.GetPixel(scaledCoordinates.Y, dataRect);
+        float x = (xAxis ?? Axes.Bottom).GetPixel(scaledCoordinates.X, dataRect);
+        float y = (yAxis ?? Axes.Left).GetPixel(scaledCoordinates.Y, dataRect);
         return new Pixel(x, y);
     }
 
