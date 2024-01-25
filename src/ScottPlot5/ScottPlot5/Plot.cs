@@ -337,6 +337,27 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Remove a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    public void Remove<T>() where T : IPlottable
+    {
+        PlottableList.RemoveAll(x => x is T);
+    }
+
+    /// <summary>
+    /// Remove all instances of a specific type from the <see cref="PlottableList"/> 
+    /// that meet the <paramref name="predicate"/> criteraia.
+    /// </summary>
+    /// <param name="predicate">A function to test each element for a condition.</param>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    public void Remove<T>(Func<T, bool> predicate) where T : IPlottable
+    {
+        List<T> toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
+        toRemove.ForEach(x => PlottableList.Remove(x));
+    }
+
+    /// <summary>
     /// Disable visibility for all grids
     /// </summary>
     public void HideGrid()
