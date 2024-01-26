@@ -17,6 +17,11 @@ public class Interaction : IPlotInteraction
     public InputBindings Inputs = InputBindings.Standard();
 
     /// <summary>
+    /// Stores the <see cref="Actions"/> that were preseent when <see cref="Disable"/> was called.
+    /// </summary>
+    private PlotActions ActionsWhenDisabled = PlotActions.Standard();
+
+    /// <summary>
     /// Delegates in this object can be overwritten with custom functions that manipulate the plot.
     /// (e.g., changing the sensitivity of click-drag-zooming)
     /// </summary>
@@ -40,6 +45,7 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public void Disable()
     {
+        ActionsWhenDisabled = Actions;
         Actions = PlotActions.NonInteractive();
     }
 
@@ -48,7 +54,7 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public void Enable()
     {
-        Actions = PlotActions.Standard();
+        Actions = ActionsWhenDisabled;
     }
 
     /// <summary>

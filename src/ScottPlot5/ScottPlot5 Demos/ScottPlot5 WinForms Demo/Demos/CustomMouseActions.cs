@@ -23,6 +23,7 @@ public partial class CustomMouseActions : Form, IDemoWindow
         ScottPlot.Control.Interaction interaction = new(formsPlot1)
         {
             Inputs = ScottPlot.Control.InputBindings.Standard(),
+            Actions = ScottPlot.Control.PlotActions.Standard(),
         };
 
         formsPlot1.Interaction = interaction;
@@ -37,6 +38,7 @@ public partial class CustomMouseActions : Form, IDemoWindow
         ScottPlot.Control.Interaction interaction = new(formsPlot1)
         {
             Inputs = customInputBindings,
+            Actions = ScottPlot.Control.PlotActions.NonInteractive(),
         };
 
         formsPlot1.Interaction = interaction;
