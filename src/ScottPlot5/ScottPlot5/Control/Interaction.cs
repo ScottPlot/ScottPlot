@@ -20,7 +20,7 @@ public class Interaction : IPlotInteraction
     /// A field to store the plotActions during a 'Disabled' period
     /// </summary>
     private PlotActions EnabledPlotActions;
-    
+
     /// <summary>
     /// Delegates in this object can be overwritten with custom functions that manipulate the plot.
     /// (e.g., changing the sensitivity of click-drag-zooming)
