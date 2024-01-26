@@ -9,7 +9,7 @@ internal class TriangleDown : IMarker
         float xOffset = (float)(radius * 0.866); // r * sqrt(3)/2
         float yOffset = radius / 2;
 
-        fill.ApplyToPaint(paint, size, size);
+        fill.ApplyToPaint(paint, new PixelRect(center, size));
 
         // Bottom, right, and left vertices
         SKPoint[] pointsList = new SKPoint[]

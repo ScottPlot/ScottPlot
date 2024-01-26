@@ -40,7 +40,7 @@ public class Box
         // body fill
         CoordinateRect bodyRect = new(Position - Width / 2, Position + Width / 2, BoxMin, BoxMax);
         PixelRect bodyRectPx = axes.GetPixelRect(bodyRect);
-        Fill.ApplyToPaint(paint, bodyRectPx.Width, bodyRectPx.Height);
+        Fill.ApplyToPaint(paint, bodyRectPx);
         Drawing.Fillectangle(rp.Canvas, bodyRectPx, paint);
 
         // body stroke

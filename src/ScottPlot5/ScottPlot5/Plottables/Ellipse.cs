@@ -88,7 +88,7 @@ public class Ellipse : IPlottable
 
         if (FillStyle.Color.A > 0)
         {
-            FillStyle.ApplyToPaint(paint, rx, ry);
+            FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, RadiusX, RadiusY)));
             rp.Canvas.DrawOval(0, 0, rx, ry, paint);
         }
 

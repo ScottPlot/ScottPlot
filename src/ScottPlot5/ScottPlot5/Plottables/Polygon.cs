@@ -115,7 +115,7 @@ public class Polygon : IPlottable
         using var paint = new SKPaint();
         if (FillStyle != null && FillStyle.HasValue)
         {
-            FillStyle.ApplyToPaint(paint, xMax - xMin, yMax- yMin);
+            FillStyle.ApplyToPaint(paint, new PixelRect(xMin, yMin, xMax, yMax));
             paint.Style = SKPaintStyle.Fill;
             rp.Canvas.DrawPath(path, paint);
         }

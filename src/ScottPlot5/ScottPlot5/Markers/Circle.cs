@@ -6,7 +6,7 @@ internal class Circle : IMarker
     {
         float radius = size / 2;
 
-        fill.ApplyToPaint(paint, size, size);
+        fill.ApplyToPaint(paint, new PixelRect(center, size));
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
 
         if (outline.Width > 0)

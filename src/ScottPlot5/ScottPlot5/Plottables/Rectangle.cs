@@ -40,7 +40,7 @@ public class Rectangle : IPlottable
         using SKPaint paint = new();
 
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
-        FillStyle.ApplyToPaint(paint, rect.Width, rect.Height);
+        FillStyle.ApplyToPaint(paint, rect);
         Drawing.Fillectangle(rp.Canvas, rect, paint);
 
         LineStyle.ApplyToPaint(paint);

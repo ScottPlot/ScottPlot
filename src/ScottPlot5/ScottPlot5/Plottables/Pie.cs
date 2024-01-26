@@ -70,7 +70,7 @@ public class Pie : IPlottable
                 path.AddOval(rect);
             }
 
-            Slices[i].Fill.ApplyToPaint(paint, radius, radius);
+            Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
             paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
             rp.Canvas.DrawPath(path, paint);
 
