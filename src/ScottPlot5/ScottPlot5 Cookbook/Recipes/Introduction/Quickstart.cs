@@ -103,4 +103,33 @@ public class ScottPlotQuickstart : ICategory
             myPlot.ShowLegend();
         }
     }
+
+    public class AddPlottablesManually : RecipeBase
+    {
+        public override string Name => "Add Plottables Manually";
+        public override string Description => "Although the Plot.Add class has many helpful methods " +
+            "for creating plottable objects and adding them to the plot, users can instantiate plottable " +
+            "objects themselves and use Add.Plottable() to place it on the plot. This stategy allows " +
+            "users to create their own plottables (implementing IPlottable) with custom appearance or behavior.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create a plottable and modify it as desired
+            ScottPlot.Plottables.Marker marker = new()
+            {
+                X = 2,
+                Y = 3,
+                Size = 20,
+                Color = Colors.Magenta,
+                Shape = MarkerShape.OpenDiamond,
+                Label = "My Marker",
+            };
+
+            // add the custom plottable to the plot
+            myPlot.Add.Plottable(marker);
+
+            myPlot.ShowLegend();
+        }
+    }
 }

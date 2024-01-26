@@ -114,6 +114,22 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class DisableGridLines : RecipeBase
+    {
+        public override string Name => "Disable Grid Lines";
+        public override string Description => "Users can disable grid lines for specific axes.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
+            grid.MajorLineStyle.Width = 1; // TODO: demonstrate how to disable just vertical or horizontal grid lines
+        }
+    }
+
     public class StandardMinorTickDistribution : RecipeBase
     {
         public override string Name => "Minor Tick Density";

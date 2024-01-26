@@ -313,12 +313,64 @@ public class Plot : IDisposable
     #region Helper Methods
 
     /// <summary>
-    /// Remove a specific object from the plot.
-    /// This removes the given object from <see cref="PlottableList"/>.
+    /// Return contents of <see cref="PlottableList"/>.
+    /// </summary>
+    public IEnumerable<IPlottable> GetPlottables()
+    {
+        return PlottableList;
+    }
+
+    /// <summary>
+    /// Return all plottables in <see cref="PlottableList"/> of the given type.
+    /// </summary>
+    public IEnumerable<T> GetPlottables<T>() where T : IPlottable
+    {
+        return PlottableList.OfType<T>();
+    }
+
+    /// <summary>
+    /// Remove the given plottable from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(IPlottable plottable)
     {
-        PlottableList.Remove(plottable);
+        while (PlottableList.Contains(plottable))
+        {
+            PlottableList.Remove(plottable);
+        }
+    }
+
+    /// <summary>
+    /// Remove all items of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    public void Remove(Type plotType)
+    {
+        List<IPlottable> itemsToRemove = PlottableList.Where(x => x.GetType() == plotType).ToList();
+
+        foreach (IPlottable item in itemsToRemove)
+        {
+            PlottableList.Remove(item);
+        }
+    }
+
+    /// <summary>
+    /// Remove a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    public void Remove<T>() where T : IPlottable
+    {
+        PlottableList.RemoveAll(x => x is T);
+    }
+
+    /// <summary>
+    /// Remove all instances of a specific type from the <see cref="PlottableList"/> 
+    /// that meet the <paramref name="predicate"/> criteraia.
+    /// </summary>
+    /// <param name="predicate">A function to test each element for a condition.</param>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be removed</typeparam>
+    public void Remove<T>(Func<T, bool> predicate) where T : IPlottable
+    {
+        List<T> toRemove = PlottableList.OfType<T>().Where(predicate).ToList();
+        toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
     /// <summary>
