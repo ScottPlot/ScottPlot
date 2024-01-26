@@ -115,15 +115,25 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return the pixel for a specific coordinate using measurements from the most recent render.
+    /// Return the location on the screen (pixel) for a location on the plot (coordinates) on the default axes.
+    /// The figure size and layout referenced will be the one from the last render.
     /// </summary>
-    public Pixel GetPixel(Coordinates coordinates, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    public Pixel GetPixel(Coordinates coordinates) => GetPixel(coordinates, Axes.Bottom, Axes.Left);
+
+    /// <summary>
+    /// Return the location on the screen (pixel) for a location on the plot (coordinates) on the given axes.
+    /// The figure size and layout referenced will be the one from the last render.
+    /// </summary>
+    public Pixel GetPixel(Coordinates coordinates, IXAxis xAxis, IYAxis yAxis)
     {
-        Coordinates scaledCoordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
-        PixelRect dataRect = RenderManager.LastRender.DataRect;
-        float x = (xAxis ?? Axes.Bottom).GetPixel(scaledCoordinates.X, dataRect);
-        float y = (yAxis ?? Axes.Left).GetPixel(scaledCoordinates.Y, dataRect);
-        return new Pixel(x, y);
+        if (ScaleFactor != 1)
+        {
+            coordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
+        }
+
+        float xPixel = xAxis.GetPixel(coordinates.X, RenderManager.LastRender.DataRect);
+        float yPixel = yAxis.GetPixel(coordinates.Y, RenderManager.LastRender.DataRect);
+        return new Pixel(xPixel, yPixel);
     }
 
     /// <summary>
