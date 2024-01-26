@@ -39,8 +39,8 @@ public class Rectangle : IPlottable
     {
         using SKPaint paint = new();
 
-        FillStyle.ApplyToPaint(paint);
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
+        FillStyle.ApplyToPaint(paint, rect);
         Drawing.Fillectangle(rp.Canvas, rect, paint);
 
         LineStyle.ApplyToPaint(paint);

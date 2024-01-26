@@ -15,6 +15,8 @@
 * Plot: Added `Plot.Remove()` overloads for removing all plottables of the given type (#3296, #3296) _Thanks @DerekGooding_
 * Plot: Added `Plot.Remove()` overloads for removing plottables matching specific criteria (#3296, #3297) _Thanks @KroMignon_
 * Plot: Added `Plot.GetPlottables()` overloads to facilitate iterating over plottables of a specific type
+* Rendering: Added support for gradient fills (#3298, #3157) _Thanks @KroMignon and @faguetan_
+* Controls: Disabling interactions then re-enabling them restores original interactions (#3305, #3304) _Thanks @Nils-Berghs_
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

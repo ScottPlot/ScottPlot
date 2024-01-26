@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using ScottPlot.Hatches;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Shapes : ICategory
 {
@@ -100,7 +102,9 @@ public class Shapes : ICategory
 
             poly.FillStyle = new FillStyle
             {
-                Color = Colors.IndianRed
+                Color = Colors.Green,
+                HatchColor = Colors.Blue,
+                Hatch = new Gradient(),
             };
 
             poly.LineStyle = new LineStyle

@@ -39,7 +39,7 @@ namespace ScottPlot.Hatches
             return bmp;
         }
 
-        public SKShader GetShader(Color backgroundColor, Color hatchColor)
+        public SKShader GetShader(Color backgroundColor, Color hatchColor, PixelRect rect)
         {
             var rotationMatrix = Rotate ? SKMatrix.CreateRotationDegrees(45) : SKMatrix.Identity;
 
