@@ -17,6 +17,7 @@
 * Plot: Added `Plot.GetPlottables()` overloads to facilitate iterating over plottables of a specific type
 * Rendering: Added support for gradient fills (#3298, #3157) _Thanks @KroMignon and @faguetan_
 * Controls: Disabling interactions then re-enabling them restores original interactions (#3305, #3304) _Thanks @Nils-Berghs_
+* Plot: Added `Plot.GetPixel()` overload for improved support on multi-axis plots (#3306) _Thanks @MCF_
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_
