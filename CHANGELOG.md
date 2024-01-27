@@ -15,7 +15,7 @@
 * Plot: Added `Plot.Remove()` overloads for removing all plottables of the given type (#3296, #3296) _Thanks @DerekGooding_
 * Plot: Added `Plot.Remove()` overloads for removing plottables matching specific criteria (#3296, #3297) _Thanks @KroMignon_
 * Plot: Added `Plot.GetPlottables()` overloads to facilitate iterating over plottables of a specific type
-* Rendering: Added support for gradient fills (#3298, #3157) _Thanks @KroMignon and @faguetan_
+* Rendering: Added support for gradient fills (#3298, #3157, #3310) _Thanks @KroMignon, @hockerschwan, and @faguetan_
 * Controls: Disabling interactions then re-enabling them restores original interactions (#3305, #3304) _Thanks @Nils-Berghs_
 * Plot: Added `Plot.GetPixel()` overload for improved support on multi-axis plots (#3306) _Thanks @MCF_
 

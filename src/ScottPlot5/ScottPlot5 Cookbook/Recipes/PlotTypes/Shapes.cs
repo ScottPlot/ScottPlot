@@ -104,7 +104,12 @@ public class Shapes : ICategory
             {
                 Color = Colors.Green,
                 HatchColor = Colors.Blue,
-                Hatch = new Gradient(),
+                Hatch = new Gradient()
+                {
+                    GradiantType = GradiantType.Linear,
+                    AlignmentStart = Alignment.UpperRight,
+                    AlignmentEnd = Alignment.LowerLeft,
+                }
             };
 
             poly.LineStyle = new LineStyle
