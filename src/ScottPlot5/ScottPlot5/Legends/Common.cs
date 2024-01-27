@@ -68,7 +68,7 @@ public static class Common
 
         using SKPaint paint = new();
 
-        if (item.Line is not null)
+        if (item.Line is not null && item.Line.Width > 0)
         {
             item.Line.ApplyToPaint(paint);
             canvas.DrawLine(new(rect.Left, rect.VerticalCenter), new(rect.Right, rect.VerticalCenter), paint);

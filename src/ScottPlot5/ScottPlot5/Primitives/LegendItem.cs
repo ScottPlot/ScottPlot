@@ -56,6 +56,7 @@ public class LegendItem
             Label = label,
             Marker = MarkerStyle.None,
             Fill = fillStyle,
+            Line = LineStyle.None,
         };
 
         return Single(item);
