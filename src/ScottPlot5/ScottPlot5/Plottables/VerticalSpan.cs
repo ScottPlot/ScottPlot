@@ -7,6 +7,7 @@ public class VerticalSpan : AxisSpan, IPlottable
 {
     public double Y1 { get; set; }
     public double Y2 { get; set; }
+    public CoordinateRange YRange => new(Bottom, Top);
 
     public double Bottom
     {

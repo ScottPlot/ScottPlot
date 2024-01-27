@@ -7,6 +7,7 @@ public class HorizontalSpan : AxisSpan, IPlottable
 {
     public double X1 { get; set; }
     public double X2 { get; set; }
+    public CoordinateRange XRange => new(Left, Right);
 
     public double Left
     {
