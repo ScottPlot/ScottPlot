@@ -37,19 +37,19 @@ public class AxisLines : ICategory
             // by default labels are drawn on the same side as the axis label
 
             var axLine1 = myPlot.Add.VerticalLine(24);
-            axLine1.Label.Text = "Line 1";
+            axLine1.Text = "Line 1";
 
             var axLine2 = myPlot.Add.HorizontalLine(0.75);
-            axLine2.Label.Text = "Line 2";
+            axLine2.Text = "Line 2";
 
             // labels may be drawn on the side opposite of the axis label
 
             var axLine3 = myPlot.Add.VerticalLine(37);
-            axLine3.Label.Text = "Line 3";
+            axLine3.Text = "Line 3";
             axLine3.LabelOppositeAxis = true;
 
             var axLine4 = myPlot.Add.HorizontalLine(-.75);
-            axLine4.Label.Text = "Line 4";
+            axLine4.Text = "Line 4";
             axLine4.LabelOppositeAxis = true;
         }
     }
@@ -57,8 +57,7 @@ public class AxisLines : ICategory
     public class AxisLineStyle : RecipeBase
     {
         public override string Name => "Axis Line Style";
-        public override string Description => "Axis lines have extensive " +
-            "line style customization options.";
+        public override string Description => "Axis lines have extensive customization options.";
 
         [Test]
         public override void Execute()
@@ -66,14 +65,23 @@ public class AxisLines : ICategory
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
 
-            var vl = myPlot.Add.VerticalLine(24);
-            vl.LineWidth = 3;
-            vl.Color = Colors.Magenta;
+            var vl1 = myPlot.Add.VerticalLine(24);
+            vl1.LineWidth = 3;
+            vl1.Color = Colors.Magenta;
 
-            var hl = myPlot.Add.HorizontalLine(0.75);
-            hl.LineWidth = 2;
-            hl.Color = Colors.Green;
-            hl.LinePattern = LinePattern.Dashed;
+            var hl1 = myPlot.Add.HorizontalLine(0.75);
+            hl1.LineWidth = 2;
+            hl1.Color = Colors.Green;
+            hl1.LinePattern = LinePattern.Dashed;
+
+            var hl2 = myPlot.Add.HorizontalLine(-.23);
+            hl2.LineColor = Colors.Navy;
+            hl2.LineWidth = 5;
+            hl2.Text = "Hello";
+            hl2.Label.FontSize = 24;
+            hl2.Label.BackColor = Colors.Blue;
+            hl2.Label.ForeColor = Colors.Yellow;
+            hl2.LinePattern = LinePattern.DenselyDashed;
         }
     }
 }

@@ -33,11 +33,14 @@ public class VerticalLine : AxisLine
         float y1 = rp.DataRect.Bottom;
         float y2 = rp.DataRect.Top;
         float x = Axes.GetPixelX(X);
+
+        // do not render if the axis line is outside the data area
         if (!rp.DataRect.ContainsX(x))
             return;
 
         // draw line inside the data area
         PixelLine line = new(x, y1, x, y2);
+
         using SKPaint paint = new();
         LineStyle.Render(rp.Canvas, paint, line);
     }
@@ -49,6 +52,8 @@ public class VerticalLine : AxisLine
 
         // determine location
         float x = Axes.GetPixelX(X);
+
+        // do not render if the axis line is outside the data area
         if (!rp.DataRect.ContainsX(x))
             return;
 
@@ -60,10 +65,10 @@ public class VerticalLine : AxisLine
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
 
-        // draw label
+        // draw label outside the data area
         rp.DisableClipping();
+
         using SKPaint paint = new();
-        Label.BackColor = LineStyle.Color;
         Label.Render(rp.Canvas, x, y, paint);
     }
 }

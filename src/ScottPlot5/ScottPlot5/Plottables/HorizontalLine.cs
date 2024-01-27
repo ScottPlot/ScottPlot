@@ -35,6 +35,8 @@ public class HorizontalLine : AxisLine
         float x1 = rp.DataRect.Left;
         float x2 = rp.DataRect.Right;
         float y = Axes.GetPixelY(Y);
+
+        // do not render if the axis line is outside the data area
         if (!rp.DataRect.ContainsY(y))
             return;
 
@@ -51,6 +53,8 @@ public class HorizontalLine : AxisLine
 
         // determine location
         float y = Axes.GetPixelY(Y);
+
+        // do not render if the axis line is outside the data area
         if (!rp.DataRect.ContainsY(y))
             return;
 
@@ -64,8 +68,8 @@ public class HorizontalLine : AxisLine
 
         // draw label outside the data area
         rp.DisableClipping();
+
         using SKPaint paint = new();
-        Label.BackColor = LineStyle.Color;
         Label.Render(rp.Canvas, x, y, paint);
     }
 }
