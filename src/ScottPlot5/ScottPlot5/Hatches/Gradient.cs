@@ -35,6 +35,15 @@ namespace ScottPlot.Hatches
         /// </summary>
         public SKShaderTileMode TileMode { get; set; } = SKShaderTileMode.Clamp;
 
+        /// <summary>
+        /// Start of linear gradient
+        /// </summary>
+        public Alignment AlignmentStart { get; set; } = Alignment.UpperLeft;
+        /// <summary>
+        /// End of linear gradient
+        /// </summary>
+        public Alignment AlignmentEnd { get; set; } = Alignment.LowerRight;
+
         public SKShader GetShader(Color backgroundColor, Color hatchColor, PixelRect rect)
         {
             return Type switch
@@ -63,7 +72,7 @@ namespace ScottPlot.Hatches
                     ),
 
                 _ => SKShader.CreateLinearGradient(
-                    rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(),
+                    rect.GetAlignedPixel(AlignmentStart).ToSKPoint(), rect.GetAlignedPixel(AlignmentEnd).ToSKPoint(),
                     new SKColor[] { backgroundColor.ToSKColor(), hatchColor.ToSKColor() },
                     TileMode)
             };

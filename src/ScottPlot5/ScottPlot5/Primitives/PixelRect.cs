@@ -173,6 +173,23 @@ public struct PixelRect : IEquatable<PixelRect>
     {
         return Top <= y && y <= Bottom;
     }
+
+    public Pixel GetAlignedPixel(Alignment alignment)
+    {
+        return alignment switch
+        {
+            Alignment.UpperLeft => TopLeft,
+            Alignment.UpperCenter => TopCenter,
+            Alignment.UpperRight => TopRight,
+            Alignment.MiddleLeft => LeftCenter,
+            Alignment.MiddleCenter => new(HorizontalCenter, VerticalCenter),
+            Alignment.MiddleRight => RightCenter,
+            Alignment.LowerLeft => BottomLeft,
+            Alignment.LowerCenter => BottomCenter,
+            Alignment.LowerRight => BottomRight,
+            _ => Pixel.NaN,
+        };
+    }
 }
 
 public static class PixelRectExtensions
