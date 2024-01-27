@@ -17,4 +17,21 @@ public readonly record struct CoordinateRange(double Min, double Max)
         else
             return true;
     }
+
+    public bool Intersects(CoordinateRange other)
+    {
+        // other engulfs this
+        if (other.Min < Min && other.Max > Max)
+            return true;
+
+        // this engulfs other
+        if (Min < other.Min && Max > other.Max)
+            return true;
+
+        // partial intersection
+        if (Contains(other.Min) || Contains(other.Max))
+            return true;
+
+        return false;
+    }
 }
