@@ -1,10 +1,10 @@
 ﻿namespace ScottPlot;
 
-public struct PixelRect : IEquatable<PixelRect>
+public readonly struct PixelRect : IEquatable<PixelRect>
 {
     public readonly float Left;
     public readonly float Right;
-    public readonly float Bottom;
+    public readonly float Bottom; // this value is be larger than Top
     public readonly float Top;
 
     public float HorizontalCenter => (Left + Right) / 2;
@@ -64,6 +64,17 @@ public struct PixelRect : IEquatable<PixelRect>
         Right = Math.Max(left, right);
         Bottom = Math.Max(top, bottom);
         Top = Math.Min(top, bottom);
+    }
+
+    /// <summary>
+    /// Create a pixel rectangle from two pixel ranges
+    /// </summary>
+    public PixelRect(PixelRangeX xRange, PixelRangeY yRange)
+    {
+        Left = xRange.Left;
+        Right = xRange.Right;
+        Bottom = yRange.Bottom;
+        Top = yRange.Top;
     }
 
     public PixelRect WithPan(float x, float y)
