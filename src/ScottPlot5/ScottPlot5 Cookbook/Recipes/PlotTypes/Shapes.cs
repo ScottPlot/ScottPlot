@@ -106,7 +106,7 @@ public class Shapes : ICategory
                 HatchColor = Colors.Blue,
                 Hatch = new Gradient()
                 {
-                    Type = GradiantType.Linear,
+                    GradiantType = GradiantType.Linear,
                     AlignmentStart = Alignment.UpperRight,
                     AlignmentEnd = Alignment.LowerLeft,
                 }
