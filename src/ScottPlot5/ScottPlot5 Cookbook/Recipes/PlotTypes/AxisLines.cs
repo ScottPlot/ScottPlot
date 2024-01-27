@@ -3,7 +3,7 @@
 public class AxisLines : ICategory
 {
     public string Chapter => "Plot Types";
-    public string CategoryName => "Primitive Shapes";
+    public string CategoryName => "Axis Lines";
     public string CategoryDescription => "Axis lines indicate a position on an axis.";
 
     public class AxisLineQuickstart : RecipeBase

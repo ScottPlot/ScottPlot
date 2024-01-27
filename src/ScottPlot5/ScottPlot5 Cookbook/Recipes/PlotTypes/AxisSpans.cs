@@ -3,7 +3,7 @@
 public class AxisSpans : ICategory
 {
     public string Chapter => "Plot Types";
-    public string CategoryName => "Primitive Shapes";
+    public string CategoryName => "Axis Spans";
     public string CategoryDescription => "Axis spans indicate a range of an axis.";
 
     public class AxisSpanQuickstart : RecipeBase
