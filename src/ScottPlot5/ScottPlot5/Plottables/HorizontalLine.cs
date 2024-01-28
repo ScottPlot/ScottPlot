@@ -21,6 +21,8 @@ public class HorizontalLine : AxisLine
         Label.Padding = 5;
     }
 
+    public override bool IsUnderMouse(CoordinateRect rect) => IsDraggable && rect.ContainsY(Y);
+
     public override AxisLimits GetAxisLimits()
     {
         return AxisLimits.VerticalOnly(Y, Y);

@@ -20,6 +20,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
 
     public bool LabelOppositeAxis { get; set; } = false;
 
+    public bool IsDraggable { get; set; } = false;
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -43,6 +45,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
             });
         }
     }
+
+    public abstract bool IsUnderMouse(CoordinateRect rect);
 
     public abstract AxisLimits GetAxisLimits();
 

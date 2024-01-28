@@ -10,9 +10,9 @@ static class Program
         Application.EnableVisualStyles();
 
         // use this to quickly launch a test Form while developing
-        if (true && Environment.MachineName == "DESKTOP-L7MMAB7")
+        if (false && Environment.MachineName == "DESKTOP-L7MMAB7")
         {
-            Demos.DraggableAxisSpans window = new() { StartPosition = FormStartPosition.CenterScreen };
+            Demos.DraggableAxisLines window = new() { StartPosition = FormStartPosition.CenterScreen };
             Application.Run(window);
         }
         else
