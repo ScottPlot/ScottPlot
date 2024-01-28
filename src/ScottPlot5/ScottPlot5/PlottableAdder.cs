@@ -286,6 +286,7 @@ public class PlottableAdder(Plot plot)
         HorizontalLine line = new();
         line.LineStyle.Width = width;
         line.LineStyle.Color = color ?? GetNextColor();
+        line.Label.BackColor = line.LineStyle.Color;
         line.LineStyle.Pattern = pattern;
         line.Y = y;
         Plot.PlottableList.Add(line);
@@ -603,6 +604,7 @@ public class PlottableAdder(Plot plot)
         VerticalLine line = new();
         line.LineStyle.Width = width;
         line.LineStyle.Color = color ?? GetNextColor();
+        line.Label.BackColor = line.LineStyle.Color;
         line.LineStyle.Pattern = pattern;
         line.X = x;
         Plot.PlottableList.Add(line);
