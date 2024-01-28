@@ -13,7 +13,7 @@ public class NumericFixedInterval : ITickGenerator
         Interval = interval;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
     {
         List<Tick> ticks = new();
 

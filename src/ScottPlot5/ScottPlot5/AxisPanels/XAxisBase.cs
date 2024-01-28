@@ -108,4 +108,11 @@ public abstract class XAxisBase : AxisBase, IAxis
     {
         return distance / (dataArea.Width / Width);
     }
+
+    public void RegenerateTicks(PixelLength size)
+    {
+        using SKPaint paint = new();
+        TickLabelStyle.ApplyToPaint(paint);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint);
+    }
 }

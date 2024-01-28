@@ -4,14 +4,8 @@ public class RegenerateTicks : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Plot.Axes.Bottom.TickGenerator.Regenerate(
-            range: rp.Plot.Axes.Bottom.Range.ToRectifiedCoordinateRange,
-            edge: rp.Plot.Axes.Bottom.Edge,
-            size: rp.DataRect.Width);
-
-        rp.Plot.Axes.Left.TickGenerator.Regenerate(
-            range: rp.Plot.Axes.Left.Range.ToRectifiedCoordinateRange,
-            edge: rp.Plot.Axes.Left.Edge,
-            size: rp.DataRect.Height);
+        // TODO: shouldn't all axis ticks be regenerated???
+        rp.Plot.Axes.Bottom.RegenerateTicks(rp.DataRect.Width);
+        rp.Plot.Axes.Left.RegenerateTicks(rp.DataRect.Height);
     }
 }

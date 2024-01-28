@@ -16,13 +16,9 @@ public class FixedPadding : LayoutEngineBase, ILayoutEngine
     {
         // must recalculate ticks before measuring panels
 
-        panels.OfType<IXAxis>()
-            .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range.ToCoordinateRange, xAxis.Edge, figureRect.Width));
-
-        panels.OfType<IYAxis>()
-            .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range.ToCoordinateRange, yAxis.Edge, figureRect.Height));
+        // NOTE: the actual ticks will be regenerated later, after the layout is determined
+        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width));
+        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height));
 
         Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);

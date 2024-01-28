@@ -45,7 +45,12 @@ public interface IAxis : IPanel
     /// <summary>
     /// Logic for determining tick positions and formatting tick labels
     /// </summary>
-    ITickGenerator TickGenerator { get; set; }
+    ITickGenerator TickGenerator { get; set; } // TODO: never call TickGenerator.Generate() externally
+
+    /// <summary>
+    /// Use the <see cref="TickLabelStyle"/> to generate ticks with ideal spacing.
+    /// </summary>
+    public void RegenerateTicks(PixelLength size);
 
     /// <summary>
     /// The label is the text displayed distal to the ticks

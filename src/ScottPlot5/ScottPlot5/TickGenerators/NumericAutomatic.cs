@@ -4,13 +4,19 @@ public class NumericAutomatic : ITickGenerator
 {
     public Tick[] Ticks { get; set; } = [];
 
-    public int MaxTickCount { get; set; } = 10_000;
+    public int MaxTickCount
+    {
+        get => TickSpacingCalculator.MaximumTickCount;
+        set => TickSpacingCalculator.MaximumTickCount = value;
+    }
 
     public bool IntegerTicksOnly { get; set; } = false;
 
     public Func<double, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
 
     public IMinorTickGenerator MinorTickGenerator { get; set; } = new EvenlySpacedMinorTickGenerator(5);
+
+    public DecimalTickSpacingCalculator TickSpacingCalculator = new();
 
     public static string DefaultLabelFormatter(double value)
     {
@@ -29,65 +35,32 @@ public class NumericAutomatic : ITickGenerator
         return label == "-0" ? "0" : label;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
     {
-        PixelSize largestLabel = new(12, 12);
-        Ticks = GenerateTicks(range, edge, size, largestLabel)
+        Ticks = GenerateTicks(range, edge, size, new PixelLength(12), paint)
             .Where(x => range.Contains(x.Position))
             .ToArray();
     }
 
-    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength size, PixelSize predictedTickSize, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, int depth = 0)
     {
         if (depth > 3)
             Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
 
         // generate ticks and labels based on predicted maximum label size
-        float maxPredictedSize = edge.IsVertical() ? predictedTickSize.Height : predictedTickSize.Width;
-        double[] majorTickPositions = GenerateTickPositions(range, size, maxPredictedSize);
+        double[] majorTickPositions = TickSpacingCalculator.GenerateTickPositions(range, axisLength, maxLabelLength.Length);
         string[] majorTickLabels = majorTickPositions.Select(x => LabelFormatter(x)).ToArray();
 
-        // determine if the actual tick labels are larger than predicted (suggesting density is too high and overlapping may occur)
-        using SKPaint paint = new();
-        PixelSize measuredLabel = Drawing.MeasureLargestString(majorTickLabels, paint);
-        PixelSize largestLabel = new(
-            width: Math.Max(predictedTickSize.Width, measuredLabel.Width),
-            height: Math.Max(predictedTickSize.Height, measuredLabel.Height));
-        bool tickExceedsPredictedSize = largestLabel.Area > predictedTickSize.Area;
+        // determine if the actual tick labels are larger than predicted,
+        // suggesting density is too high and overlapping may occur.
+        (string largestText, PixelLength actualMaxLength) = edge.IsVertical()
+            ? Drawing.MeasureHighestString(majorTickLabels, paint)
+            : Drawing.MeasureWidestString(majorTickLabels, paint);
 
         // recursively recalculate tick density if necessary
-        return tickExceedsPredictedSize
-            ? GenerateTicks(range, edge, size, largestLabel, depth + 1)
+        return actualMaxLength.Length > maxLabelLength.Length
+            ? GenerateTicks(range, edge, axisLength, actualMaxLength, paint, depth + 1)
             : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
-    }
-
-    private static double[] GenerateTickPositions(CoordinateRange range, PixelLength size, float predictedTickSize)
-    {
-        double unitsPerPx = range.Span / size.Length;
-
-        float tickDensity = 1.0f;
-        int targetTickCount = (int)(size.Length / predictedTickSize * tickDensity);
-        double tickSpacing = GetIdealTickSpacing(range, targetTickCount);
-
-        double firstTickOffset = range.Min % tickSpacing;
-        int tickCount = (int)(range.Span / tickSpacing) + 2;
-        tickCount = Math.Min(1000, tickCount);
-        tickCount = Math.Max(1, tickCount);
-
-        double[] majorTickPositions = Enumerable.Range(0, tickCount)
-            .Select(x => range.Min - firstTickOffset + tickSpacing * x)
-            .Where(x => range.Contains(x))
-            .ToArray();
-
-        if (majorTickPositions.Length < 2)
-        {
-            double tickBelow = range.Min - firstTickOffset;
-            double firstTick = majorTickPositions.Length > 0 ? majorTickPositions[0] : tickBelow;
-            double nextTick = tickBelow + tickSpacing;
-            majorTickPositions = new double[] { firstTick, nextTick };
-        }
-
-        return majorTickPositions;
     }
 
     private Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange visibleRange)
@@ -111,31 +84,5 @@ public class NumericAutomatic : ITickGenerator
         var minorTicks = MinorTickGenerator.GetMinorTicks(positions, visibleRange).Select(Tick.Minor);
 
         return [.. majorTicks, .. minorTicks];
-    }
-
-    private static double GetIdealTickSpacing(CoordinateRange range, int maxTickCount)
-    {
-        int radix = 10;
-        int exponent = (int)Math.Log(range.Span, radix);
-        double initialSpace = Math.Pow(radix, exponent);
-        List<double> tickSpacings = new() { initialSpace, initialSpace, initialSpace };
-
-        double[] divBy;
-        if (radix == 10)
-            divBy = new double[] { 2, 2, 2.5 }; // 10, 5, 2.5, 1
-        else if (radix == 16)
-            divBy = new double[] { 2, 2, 2, 2 }; // 16, 8, 4, 2, 1
-        else
-            throw new ArgumentException($"radix {radix} is not supported");
-
-        int divisions = 0;
-        int tickCount = 0;
-        while (tickCount < maxTickCount && tickSpacings.Count < 1000)
-        {
-            tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
-            tickCount = (int)(range.Span / tickSpacings.Last());
-        }
-
-        return tickSpacings[tickSpacings.Count - 3];
     }
 }
