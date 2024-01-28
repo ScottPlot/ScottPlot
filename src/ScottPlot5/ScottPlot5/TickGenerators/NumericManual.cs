@@ -32,7 +32,7 @@ public class NumericManual : ITickGenerator
         }
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size) { }
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint) { }
 
     public void Add(Tick tick)
     {

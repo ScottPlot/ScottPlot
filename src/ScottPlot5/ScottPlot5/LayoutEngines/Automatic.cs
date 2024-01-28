@@ -19,15 +19,9 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
          * 
          */
 
-        PixelSize figureSize = figureRect.Size;
-
-        panels.OfType<IXAxis>()
-            .ToList()
-            .ForEach(xAxis => xAxis.TickGenerator.Regenerate(xAxis.Range.ToCoordinateRange, xAxis.Edge, figureSize.Width));
-
-        panels.OfType<IYAxis>()
-            .ToList()
-            .ForEach(yAxis => yAxis.TickGenerator.Regenerate(yAxis.Range.ToCoordinateRange, yAxis.Edge, figureSize.Height));
+        // NOTE: the actual ticks will be regenerated later, after the layout is determined
+        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width));
+        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height));
 
         Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
@@ -40,8 +34,8 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
 
         PixelRect dataRect = new(
             left: paddingNeededForPanels.Left,
-            right: figureSize.Width - paddingNeededForPanels.Right,
-            bottom: figureSize.Height - paddingNeededForPanels.Bottom,
+            right: figureRect.Width - paddingNeededForPanels.Right,
+            bottom: figureRect.Height - paddingNeededForPanels.Bottom,
             top: paddingNeededForPanels.Top);
 
         dataRect = dataRect.WithPan(figureRect.Left, figureRect.Top);

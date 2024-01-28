@@ -30,19 +30,40 @@ public static class Drawing
         return new PixelSize(width, height);
     }
 
-    public static PixelSize MeasureLargestString(string[] strings, SKPaint paint)
+    public static (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
     {
         float maxWidth = 0;
-        float maxHeight = 0;
+        string maxText = string.Empty;
 
         for (int i = 0; i < strings.Length; i++)
         {
-            PixelSize tickSize = MeasureString(strings[i], paint);
-            maxWidth = Math.Max(maxWidth, tickSize.Width);
-            maxHeight = Math.Max(maxHeight, tickSize.Height);
+            PixelSize size = MeasureString(strings[i], paint);
+            if (size.Width > maxWidth)
+            {
+                maxWidth = size.Width;
+                maxText = strings[i];
+            }
         }
 
-        return new PixelSize(maxWidth, maxHeight);
+        return (maxText, maxWidth);
+    }
+
+    public static (string text, PixelLength width) MeasureHighestString(string[] strings, SKPaint paint)
+    {
+        float maxHeight = 0;
+        string maxText = string.Empty;
+
+        for (int i = 0; i < strings.Length; i++)
+        {
+            PixelSize size = MeasureString(strings[i], paint);
+            if (size.Height > maxHeight)
+            {
+                maxHeight = size.Height;
+                maxText = strings[i];
+            }
+        }
+
+        return (maxText, maxHeight);
     }
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pixelLine)

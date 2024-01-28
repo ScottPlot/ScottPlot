@@ -10,7 +10,7 @@ public class EmptyTickGenerator : ITickGenerator
     {
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
     {
     }
 }

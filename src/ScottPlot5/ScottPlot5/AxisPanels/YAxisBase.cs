@@ -104,4 +104,11 @@ public abstract class YAxisBase : AxisBase, IAxis
     {
         return distance / (dataArea.Height / Height);
     }
+
+    public void RegenerateTicks(PixelLength size)
+    {
+        using SKPaint paint = new();
+        TickLabelStyle.ApplyToPaint(paint);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint);
+    }
 }
