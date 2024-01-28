@@ -9,8 +9,8 @@ public class LineStyle
     public float Width { get; set; } = 1.0f;
     public Color Color { get; set; } = Colors.Black;
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
-    public bool IsVisible { get; set; } = true;
-    public static LineStyle None => new() { IsVisible = false };
+    public bool IsVisible { get; set; } = true; // TODO: deprecate in favor of 0 line width
+    public static LineStyle None => new() { IsVisible = false, Width = 0 };
     public bool AntiAlias { get; set; } = true;
 
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)

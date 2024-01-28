@@ -1,8 +1,5 @@
 ﻿namespace ScottPlot.Plottables;
 
-/// <summary>
-/// An axis line is a straight vertical or horizontal line that spans the data area.
-/// </summary>
 public abstract class AxisLine : IPlottable, IRenderLast
 {
     public bool IsVisible { get; set; } = true;
@@ -22,6 +19,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public bool LabelOppositeAxis { get; set; } = false;
+
+    public bool IsDraggable { get; set; } = false;
 
     public Color Color
     {
@@ -46,6 +45,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
             });
         }
     }
+
+    public abstract bool IsUnderMouse(CoordinateRect rect);
 
     public abstract AxisLimits GetAxisLimits();
 

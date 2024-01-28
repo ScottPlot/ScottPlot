@@ -3,7 +3,7 @@ using System.Net.Security;
 
 namespace ScottPlot.Legends;
 
-public class Legend
+public class Legend(Plot plot)
 {
     public bool IsVisible { get; set; } = false;
     public Alignment Location { get; set; } = Alignment.LowerRight;
@@ -23,12 +23,7 @@ public class Legend
     private const float SymbolLabelSeparation = 5;
     public List<LegendItem> ManualItems { get; set; } = new();
 
-    private readonly Plot Plot;
-
-    public Legend(Plot plot)
-    {
-        Plot = plot;
-    }
+    private readonly Plot Plot = plot;
 
     public void Render(RenderPack rp)
     {

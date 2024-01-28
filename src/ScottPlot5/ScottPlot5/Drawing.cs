@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -150,7 +149,11 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    // TODO: add an overload to support an actual FillStyle with hatching etc.
+    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    {
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
 
     public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {
@@ -169,7 +172,11 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    // TODO: need overload that accepts LineStyle
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
+    {
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {

@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using ScottPlot.Plottables;
 
 namespace WinForms_Demo.Demos;
 
@@ -7,9 +8,7 @@ public partial class DraggableAxisLines : Form, IDemoWindow
     public string Title => "Draggable Axis Lines";
     public string Description => "Demonstrates how to add mouse interactivity to plotted objects";
 
-    ScottPlot.Plottables.VerticalLine VLine;
-    ScottPlot.Plottables.HorizontalLine HLine;
-    IPlottable? PlottableBeingDragged = null;
+    AxisLine? PlottableBeingDragged = null;
 
     public DraggableAxisLines()
     {
@@ -18,10 +17,15 @@ public partial class DraggableAxisLines : Form, IDemoWindow
         // place axis lines on the plot
         formsPlot1.Plot.Add.Signal(Generate.Sin());
         formsPlot1.Plot.Add.Signal(Generate.Cos());
-        VLine = formsPlot1.Plot.Add.VerticalLine(23);
-        VLine.Text = "VLine";
-        HLine = formsPlot1.Plot.Add.HorizontalLine(0.42);
-        HLine.Text = "HLine";
+
+        var vl = formsPlot1.Plot.Add.VerticalLine(23);
+        vl.IsDraggable = true;
+        vl.Text = "VLine";
+
+        var hl = formsPlot1.Plot.Add.HorizontalLine(0.42);
+        hl.IsDraggable = true;
+        hl.Text = "HLine";
+
         formsPlot1.Refresh();
 
         // use events for custom mouse interactivity
@@ -32,30 +36,18 @@ public partial class DraggableAxisLines : Form, IDemoWindow
 
     private void FormsPlot1_MouseDown(object? sender, MouseEventArgs e)
     {
-        // determine the range of coordinates around the mouse position
-        CoordinateRect rect = formsPlot1.Plot.GetCoordinateRect(e.X, e.Y);
-
-        // determine if a plottable is within the coordinate range near the mouse
-        if (rect.ContainsX(VLine.X))
+        var lineUnderMouse = GetLineUnderMouse(e.X, e.Y);
+        if (lineUnderMouse is not null)
         {
-            PlottableBeingDragged = VLine;
-        }
-        else if (rect.ContainsY(HLine.Y))
-        {
-            PlottableBeingDragged = HLine;
-        }
-
-        // disable pan/zoom while a plottable is being dragged
-        if (PlottableBeingDragged is not null)
-        {
-            formsPlot1.Interaction.Disable();
+            PlottableBeingDragged = lineUnderMouse;
+            formsPlot1.Interaction.Disable(); // disable panning while dragging
         }
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
         PlottableBeingDragged = null;
-        formsPlot1.Interaction.Enable();
+        formsPlot1.Interaction.Enable(); // enable panning again
         formsPlot1.Refresh();
     }
 
@@ -66,36 +58,39 @@ public partial class DraggableAxisLines : Form, IDemoWindow
 
         if (PlottableBeingDragged is null)
         {
-            if (rect.ContainsX(VLine.X))
-            {
-                Cursor = Cursors.SizeWE;
-            }
-            else if (rect.ContainsY(HLine.Y))
-            {
-                Cursor = Cursors.SizeNS;
-            }
-            else
-            {
-                Cursor = Cursors.Arrow;
-            }
-
-            return;
+            // set cursor based on what's beneath the plottable
+            var lineUnderMouse = GetLineUnderMouse(e.X, e.Y);
+            if (lineUnderMouse is null) Cursor = Cursors.Default;
+            else if (lineUnderMouse.IsDraggable && lineUnderMouse is VerticalLine) Cursor = Cursors.SizeWE;
+            else if (lineUnderMouse.IsDraggable && lineUnderMouse is HorizontalLine) Cursor = Cursors.SizeNS;
         }
-
-        if (PlottableBeingDragged == VLine)
+        else
         {
-            VLine.X = rect.HorizontalCenter;
-            VLine.Text = $"{VLine.X:0.00}";
+            // update the position of the plottable being dragged
+            if (PlottableBeingDragged is HorizontalLine hl)
+            {
+                hl.Y = rect.VerticalCenter;
+                hl.Text = $"{hl.Y:0.00}";
+            }
+            else if (PlottableBeingDragged is VerticalLine vl)
+            {
+                vl.X = rect.HorizontalCenter;
+                vl.Text = $"{vl.X:0.00}";
+            }
             formsPlot1.Refresh();
-            return;
+        }
+    }
+
+    private AxisLine? GetLineUnderMouse(float x, float y)
+    {
+        CoordinateRect rect = formsPlot1.Plot.GetCoordinateRect(x, y, radius: 10);
+
+        foreach (AxisLine axLine in formsPlot1.Plot.GetPlottables<AxisLine>().Reverse())
+        {
+            if (axLine.IsUnderMouse(rect))
+                return axLine;
         }
 
-        if (PlottableBeingDragged == HLine)
-        {
-            HLine.Y = rect.VerticalCenter;
-            HLine.Text = $"{HLine.Y:0.00}";
-            formsPlot1.Refresh();
-            return;
-        }
+        return null;
     }
 }

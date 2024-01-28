@@ -19,6 +19,8 @@ public class VerticalLine : AxisLine
         Label.Padding = 5;
     }
 
+    public override bool IsUnderMouse(CoordinateRect rect) => IsDraggable && rect.ContainsX(X);
+
     public override AxisLimits GetAxisLimits()
     {
         return AxisLimits.HorizontalOnly(X, X);

@@ -286,10 +286,20 @@ public class PlottableAdder(Plot plot)
         HorizontalLine line = new();
         line.LineStyle.Width = width;
         line.LineStyle.Color = color ?? GetNextColor();
+        line.Label.BackColor = line.LineStyle.Color;
         line.LineStyle.Pattern = pattern;
         line.Y = y;
         Plot.PlottableList.Add(line);
         return line;
+    }
+
+    public HorizontalSpan HorizontalSpan(double x1, double x2, Color? color = null)
+    {
+        HorizontalSpan span = new() { X1 = x1, X2 = x2 };
+        span.FillStyle.Color = color ?? GetNextColor().WithAlpha(.2);
+        span.LineStyle.Color = span.FillStyle.Color.WithAlpha(.5);
+        Plot.PlottableList.Add(span);
+        return span;
     }
 
     public LinePlot Line(Coordinates start, Coordinates end)
@@ -594,9 +604,19 @@ public class PlottableAdder(Plot plot)
         VerticalLine line = new();
         line.LineStyle.Width = width;
         line.LineStyle.Color = color ?? GetNextColor();
+        line.Label.BackColor = line.LineStyle.Color;
         line.LineStyle.Pattern = pattern;
         line.X = x;
         Plot.PlottableList.Add(line);
         return line;
+    }
+
+    public VerticalSpan VerticalSpan(double y1, double y2, Color? color = null)
+    {
+        VerticalSpan span = new() { Y1 = y1, Y2 = y2 };
+        span.FillStyle.Color = color ?? GetNextColor().WithAlpha(.2);
+        span.LineStyle.Color = span.FillStyle.Color.WithAlpha(.5);
+        Plot.PlottableList.Add(span);
+        return span;
     }
 }
