@@ -2,7 +2,6 @@
 
 public class DecimalTickSpacingCalculator
 {
-    public double TickDensity { get; set; } = 1.0;
     public int MaximumTickCount { get; set; } = 1000;
 
     public double[] GenerateTickPositions(CoordinateRange range, PixelLength axisLength, PixelLength maxLabelLength)
@@ -34,12 +33,12 @@ public class DecimalTickSpacingCalculator
     {
         double unitsPerPx = range.Span / axisLength.Length;
 
-        int targetTickCount = (int)(axisLength.Length / maxLabelLength.Length * TickDensity);
+        int targetTickCount = (int)(axisLength.Length / maxLabelLength.Length) + 1;
 
         int radix = 10;
-        int exponent = (int)Math.Log(range.Span, radix);
+        int exponent = (int)Math.Log(range.Span, radix) + 1;
         double initialSpace = Math.Pow(radix, exponent);
-        List<double> tickSpacings = [initialSpace, initialSpace, initialSpace];
+        List<double> tickSpacings = [initialSpace];
 
         double[] divBy;
         if (radix == 10)
@@ -49,16 +48,40 @@ public class DecimalTickSpacingCalculator
         else
             throw new ArgumentException($"radix {radix} is not supported");
 
-        // TODO: this needs to be better at determining ideal density
-        // https://github.com/ScottPlot/ScottPlot/issues/3203
-        int divisions = 0;
-        int tickCount = 0;
-        while (tickCount < targetTickCount && tickSpacings.Count < MaximumTickCount)
+        // generate possible tick spacings
+        while (tickSpacings.Count < MaximumTickCount)
         {
-            tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
-            tickCount = (int)(range.Span / tickSpacings.Last());
+            double divisor = divBy[tickSpacings.Count % divBy.Length];
+            double smallerSpacing = tickSpacings.Last() / divisor;
+            tickSpacings.Add(smallerSpacing);
+            int tickCount = (int)(range.Span / tickSpacings.Last());
+            if (tickCount > targetTickCount)
+                break;
         }
 
-        return tickSpacings[tickSpacings.Count - 3];
+        // choose the densest tick spacing that is still good
+        for (int i = 0; i < tickSpacings.Count; i++)
+        {
+            double thisTickSpacing = tickSpacings[tickSpacings.Count - 1 - i];
+            double thisTickCount = range.Span / thisTickSpacing;
+            double spacePerTick = axisLength.Length / thisTickCount;
+            double neededSpcePerTick = maxLabelLength.Length;
+
+            // add more space between small labels
+            if (neededSpcePerTick < 10)
+                neededSpcePerTick *= 2;
+            else if (neededSpcePerTick < 25)
+                neededSpcePerTick *= 1.5;
+            else
+                neededSpcePerTick *= 1.2;
+
+            if (spacePerTick > neededSpcePerTick)
+            {
+                return thisTickSpacing;
+            }
+        }
+
+        Console.WriteLine("RAN OUT OF OF SPACE");
+        return tickSpacings[0];
     }
 }

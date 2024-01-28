@@ -54,10 +54,8 @@ public class NumericAutomatic : ITickGenerator
         // determine if the actual tick labels are larger than predicted,
         // suggesting density is too high and overlapping may occur.
         (string largestText, PixelLength actualMaxLength) = edge.IsVertical()
-            ? Drawing.MeasureWidestString(majorTickLabels, paint)
+            ? Drawing.MeasureHighestString(majorTickLabels, paint)
             : Drawing.MeasureWidestString(majorTickLabels, paint);
-
-        Debug.WriteLineIf(edge == Edge.Bottom, $"[{depth}] Largest: {actualMaxLength} '{largestText}'");
 
         // recursively recalculate tick density if necessary
         return actualMaxLength.Length > maxLabelLength.Length
