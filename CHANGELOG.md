@@ -22,6 +22,7 @@
 * Axis Spans: New `Plot.Add.HorizontalSpan()` and `Plot.Add.VerticalSpan()` methods for shading axis ranges (#3307) _Thanks @erikjl_
 * Interactivity: Added methods to simplify dragging axis lines and spans. See the demo application for details. (#3307) _Thanks @erikjl_
 * Ticks: Improved tick density calculation to prevent overlapping tick labels for very large numbers (#3203)
+* Axes: Deprecate `DateTimeTicks(Edge.Bottom)` in favor of `DateTimeTicksBottom()` which now returns the created axis.
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

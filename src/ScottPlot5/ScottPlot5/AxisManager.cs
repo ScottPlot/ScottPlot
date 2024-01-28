@@ -124,9 +124,7 @@ public class AxisManager
         }
     }
 
-    /// <summary>
-    /// Remove all axes on the given edge and add a new one that displays DateTime ticks
-    /// </summary>
+    [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
     public void DateTimeTicks(Edge edge)
     {
         Remove(edge);
@@ -141,11 +139,19 @@ public class AxisManager
         };
 
         Plot.Axes.XAxes.Add(dateAxis);
+        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+    }
 
-        foreach (IGrid grid in Plot.Axes.Grids)
-        {
-            grid.Replace(dateAxis);
-        }
+    /// <summary>
+    /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
+    /// </summary>
+    public DateTimeXAxis DateTimeTicksBottom()
+    {
+        Plot.Axes.Remove(Edge.Bottom);
+        DateTimeXAxis dateAxis = new();
+        Plot.Axes.XAxes.Add(dateAxis);
+        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+        return dateAxis;
     }
 
     /// <summary>
