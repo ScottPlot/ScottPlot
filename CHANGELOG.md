@@ -25,6 +25,7 @@
 * Axes: Deprecate `DateTimeTicks(Edge.Bottom)` in favor of `DateTimeTicksBottom()` which now returns the created axis.
 * Cookbook: Demonstrate DateTime tick labels with custom string formatting (#3272, #3273) _Thanks @sterenas and @stratdev3_
 * Demo: Added icon to main application and all windows launched within (#3281, #3273) _Thanks @sterenas_
+* Controls: Do not list OpenGL controls in the toolbox. They can still be added programmatically, but they invite many problems and offer little performance improvements for most applications so their use is discouraged (#3282, #3262, #3271)
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

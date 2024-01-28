@@ -1,15 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using ScottPlot.Control;
 using SkiaSharp;
-using System.Windows.Media;
 
 namespace ScottPlot.WPF;
 
-[System.ComponentModel.ToolboxItem(true)]
+[System.ComponentModel.ToolboxItem(false)]
 [System.ComponentModel.DesignTimeVisible(true)]
 [TemplatePart(Name = PART_SKElement, Type = typeof(SkiaSharp.Views.WPF.SKGLElement))]
 public class WpfPlotGL : WpfPlotBase

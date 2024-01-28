@@ -1,10 +1,11 @@
-﻿using ScottPlot.Control;
-using SkiaSharp;
+﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
+[ToolboxItem(true)]
 public class FormsPlot : FormsPlotBase
 {
     readonly SKControl SKElement;
