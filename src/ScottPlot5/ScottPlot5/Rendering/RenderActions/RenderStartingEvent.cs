@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-public class InvokePreRenderEvent : IRenderAction
+public class RenderStartingEvent : IRenderAction
 {
     public void Render(RenderPack rp)
     {

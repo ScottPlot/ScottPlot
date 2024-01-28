@@ -81,7 +81,6 @@ public class DecimalTickSpacingCalculator
             }
         }
 
-        Console.WriteLine("RAN OUT OF OF SPACE");
         return tickSpacings[0];
     }
 }

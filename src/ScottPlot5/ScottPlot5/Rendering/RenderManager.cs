@@ -77,7 +77,7 @@ public class RenderManager(Plot plot)
         new RenderActions.CalculateLayout(),
         new RenderActions.ApplyAxisRulesAfterLayout(),
         new RenderActions.RegenerateTicks(),
-        new RenderActions.InvokePreRenderEvent(),
+        new RenderActions.RenderStartingEvent(),
         new RenderActions.RenderBackground(),
         new RenderActions.RenderGridsBelowPlottables(),
         new RenderActions.RenderPlottables(),

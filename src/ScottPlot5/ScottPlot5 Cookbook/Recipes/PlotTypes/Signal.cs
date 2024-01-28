@@ -165,7 +165,7 @@ public class Signal : ICategory
             sig.Data.XOffset = start.ToOADate();
             sig.Data.Period = 1.0; // one day between each point
 
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
         }
     }
 }

@@ -8,7 +8,7 @@ internal class DataLogger
         Plot plt = new();
 
         var logger = plt.Add.DataLogger();
-        plt.Axes.DateTimeTicks(Edge.Bottom);
+        plt.Axes.DateTimeTicksBottom();
         plt.Should().SavePngWithoutThrowing("empty");
 
         logger.Add(new DateTime(2024, 1, 1).ToOADate(), 1);

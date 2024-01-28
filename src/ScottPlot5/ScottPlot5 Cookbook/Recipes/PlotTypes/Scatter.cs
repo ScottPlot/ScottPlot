@@ -171,7 +171,7 @@ public class Scatter : ICategory
             double[] ys = Generate.RandomWalk(xs.Length);
 
             myPlot.Add.Scatter(xs, ys);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
         }
     }
 

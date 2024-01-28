@@ -34,7 +34,7 @@ public partial class LiveFinance : Form, IDemoWindow
         formsPlot1.Plot.Add.Candlestick(OHLCs);
 
         // setup the plot to display X axis tick labels using date time format
-        formsPlot1.Plot.Axes.DateTimeTicks(Edge.Bottom);
+        formsPlot1.Plot.Axes.DateTimeTicksBottom();
 
         // setup a timer to update the chart every second
         Timer = new System.Windows.Forms.Timer() { Interval = 1000, Enabled = true };

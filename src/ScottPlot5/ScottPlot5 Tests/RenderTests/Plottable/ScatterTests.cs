@@ -112,7 +112,7 @@ internal class ScatterTests
 
         ScottPlot.Plot plt = new();
         plt.Add.Scatter(days, values);
-        plt.Axes.DateTimeTicks(Edge.Bottom);
+        plt.Axes.DateTimeTicksBottom();
         plt.SaveTestImage();
     }
 

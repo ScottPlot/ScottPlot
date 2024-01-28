@@ -19,7 +19,7 @@ public class Finance : ICategory
         {
             var prices = Generate.RandomOHLCs(30);
             myPlot.Add.Candlestick(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
         }
     }
 
@@ -34,7 +34,7 @@ public class Finance : ICategory
         {
             var prices = Generate.RandomOHLCs(30);
             myPlot.Add.OHLC(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
         }
     }
 
@@ -56,7 +56,7 @@ public class Finance : ICategory
             candles.Axes.YAxis.Label.Text = "Price";
 
             // style the bottom axis to display date
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
         }
     }
 
@@ -72,7 +72,7 @@ public class Finance : ICategory
             // generate and plot time series price data
             var prices = Generate.RandomOHLCs(75);
             myPlot.Add.Candlestick(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
 
             // calculate SMA and display it as a scatter plot
             int[] windowSizes = { 3, 8, 20 };
@@ -102,7 +102,7 @@ public class Finance : ICategory
             // generate and plot time series price data
             var prices = Generate.RandomOHLCs(100);
             myPlot.Add.Candlestick(prices);
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
 
             // calculate Bollinger Bands
             ScottPlot.Finance.BollingerBands bb = new(prices, 20);

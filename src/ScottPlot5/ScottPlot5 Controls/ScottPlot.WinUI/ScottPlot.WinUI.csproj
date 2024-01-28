@@ -35,7 +35,7 @@
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 
         <!-- Don't warn about features not implemented by Uno -->
-        <NoWarn>Uno0001</NoWarn>
+        <NoWarn>Uno0001, CS8002</NoWarn>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
