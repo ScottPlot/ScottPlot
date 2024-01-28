@@ -4,6 +4,14 @@ namespace ScottPlotCookbook.Website;
 
 internal static class JsonFile
 {
+    internal static string BuildID = GetBuildID();
+
+    private static string GetBuildID()
+    {
+        DateTime dt = DateTime.Now;
+        return $"{dt.Year - 2000:D2}{dt.Month:D2}{dt.Day:D2}{dt.Hour:D2}{dt.Minute:D2}{dt.Second:D2}";
+    }
+
     public static string Generate()
     {
         SourceDatabase db = new();
@@ -62,7 +70,7 @@ internal static class JsonFile
             writer.WriteString("anchorUrl", recipe.AnchoredCategoryUrl);
             writer.WriteString("categoryUrl", recipe.CategoryUrl);
             writer.WriteString("recipeUrl", recipe.RecipeUrl);
-            writer.WriteString("imageUrl", recipe.ImageUrl);
+            writer.WriteString("imageUrl", recipe.ImageUrl + "?" + BuildID);
             writer.WriteString("sourceUrl", recipe.Sourceurl);
 
             writer.WriteEndObject();
