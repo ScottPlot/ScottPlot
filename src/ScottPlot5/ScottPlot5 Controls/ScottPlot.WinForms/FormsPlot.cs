@@ -6,6 +6,11 @@ using System.Windows.Forms;
 namespace ScottPlot.WinForms;
 
 [ToolboxItem(true)]
+#if NETFRAMEWORK
+[DesignTimeVisible(false)]
+#else
+[DesignTimeVisible(true)]
+#endif
 public class FormsPlot : FormsPlotBase
 {
     readonly SKControl SKElement;
