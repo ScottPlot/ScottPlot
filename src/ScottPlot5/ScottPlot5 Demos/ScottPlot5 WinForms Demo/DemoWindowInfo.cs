@@ -36,8 +36,11 @@ public partial class DemoWindowInfo : UserControl
     private void LaunchDemoWindow(string title)
     {
         Form form = (Form)Activator.CreateInstance(FormType)!;
+        form.Icon = Properties.Resources.scottplot_icon_rounded_border;
         form.StartPosition = FormStartPosition.CenterScreen;
         form.Text = title;
+        ParentForm.Hide();
         form.ShowDialog();
+        ParentForm.Show();
     }
 }

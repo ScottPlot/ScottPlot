@@ -11,8 +11,13 @@
 
         <!-- package restored using non-identical framework -->
         <NoWarn>NU1701</NoWarn>
+        <ApplicationIcon>scottplot-icon-rounded-border.ico</ApplicationIcon>
 
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="scottplot-icon-rounded-border.ico" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj" />
