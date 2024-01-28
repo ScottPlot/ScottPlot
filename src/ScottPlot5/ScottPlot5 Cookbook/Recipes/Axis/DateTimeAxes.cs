@@ -57,7 +57,35 @@ public class DateTimeAxes : ICategory
             // now both arrays represent the same dates
             myPlot.Add.Scatter(dateTimes, Generate.Sin(numberOfHours));
             myPlot.Add.Scatter(dateDoubles, Generate.Cos(numberOfHours));
-            myPlot.Axes.DateTimeTicks(Edge.Bottom);
+            myPlot.Axes.DateTimeTicksBottom();
+        }
+    }
+
+    public class DateTimeAxisCustomFormatter : RecipeBase
+    {
+        public override string Name => "Custom DateTime Label Format";
+        public override string Description => "Users can provide their own logic for customizing DateTime tick labels";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample DateTime data
+            DateTime[] dates = Generate.DateTime.Days(100);
+            double[] ys = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(dates, ys);
+            myPlot.Axes.DateTimeTicksBottom();
+
+            // add logic into the RenderStarting event to customize tick labels
+            myPlot.RenderManager.RenderStarting += (s, e) =>
+            {
+                Tick[] ticks = myPlot.Axes.Bottom.TickGenerator.Ticks;
+                for (int i = 0; i < ticks.Length; i++)
+                {
+                    DateTime dt = DateTime.FromOADate(ticks[i].Position);
+                    string label = $"{dt:MMM} '{dt:yy}";
+                    ticks[i] = new Tick(ticks[i].Position, label);
+                }
+            };
         }
     }
 }
