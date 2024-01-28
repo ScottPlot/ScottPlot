@@ -33,4 +33,49 @@ public class VerticalSpan : AxisSpan, IPlottable
         PixelRect rect = new(horiz, vert);
         Render(rp, rect);
     }
+
+    public override AxisSpanUnderMouse? UnderMouse(CoordinateRect rect)
+    {
+        AxisSpanUnderMouse spanUnderMouse = new()
+        {
+            Span = this,
+            MouseStart = rect.Center,
+            OriginalRange = new CoordinateRange(Y1, Y2),
+        };
+
+        if (IsResizable && rect.ContainsY(Y1))
+        {
+            spanUnderMouse.ResizeEdge1 = true;
+            return spanUnderMouse;
+        }
+        else if (IsResizable && rect.ContainsY(Y2))
+        {
+            spanUnderMouse.ResizeEdge2 = true;
+            return spanUnderMouse;
+        }
+        else if (IsDraggable && rect.YRange.Intersects(YRange))
+        {
+            return spanUnderMouse;
+        }
+
+        return null;
+    }
+
+    public override void DragTo(AxisSpanUnderMouse spanUnderMouse, Coordinates mouseNow)
+    {
+        if (spanUnderMouse.ResizeEdge1)
+        {
+            Y1 = mouseNow.Y;
+        }
+        else if (spanUnderMouse.ResizeEdge2)
+        {
+            Y2 = mouseNow.Y;
+        }
+        else
+        {
+            double dY = spanUnderMouse.MouseStart.Y - mouseNow.Y;
+            Y1 = spanUnderMouse.OriginalRange.Min - dY;
+            Y2 = spanUnderMouse.OriginalRange.Max - dY;
+        }
+    }
 }

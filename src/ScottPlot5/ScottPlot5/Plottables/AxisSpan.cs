@@ -16,6 +16,11 @@ public abstract class AxisSpan : IPlottable
 
     public abstract void Render(RenderPack rp);
 
+    public bool IsDraggable { get; set; } = false;
+    public bool IsResizable { get; set; } = false;
+    public abstract AxisSpanUnderMouse? UnderMouse(CoordinateRect rect);
+    public abstract void DragTo(AxisSpanUnderMouse start, Coordinates mouseNow);
+
     protected void Render(RenderPack rp, PixelRect rect)
     {
         using SKPaint paint = new();
