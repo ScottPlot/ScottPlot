@@ -252,50 +252,49 @@ public class Plot : IDisposable
         return ImageOperations.GetImageHtml(bytes);
     }
 
-    public void SaveJpeg(string filePath, int width, int height, int quality = 85)
+    public SavedImageInfo SaveJpeg(string filePath, int width, int height, int quality = 85)
     {
         using Image image = GetImage(width, height);
-        image.SaveJpeg(filePath, quality);
+        return image.SaveJpeg(filePath, quality).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public void SavePng(string filePath, int width, int height)
+    public SavedImageInfo SavePng(string filePath, int width, int height)
     {
         using Image image = GetImage(width, height);
-        image.SavePng(filePath);
+        return image.SavePng(filePath).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public void SaveBmp(string filePath, int width, int height)
+    public SavedImageInfo SaveBmp(string filePath, int width, int height)
     {
         using Image image = GetImage(width, height);
-        image.SaveBmp(filePath);
+        return image.SaveBmp(filePath).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public void SaveWebp(string filePath, int width, int height, int quality = 85)
+    public SavedImageInfo SaveWebp(string filePath, int width, int height, int quality = 85)
     {
         using Image image = GetImage(width, height);
-        image.SaveWebp(filePath, quality);
+        return image.SaveWebp(filePath, quality).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public void SaveSvg(string filePath, int width, int height)
+    public SavedImageInfo SaveSvg(string filePath, int width, int height)
     {
         using FileStream fs = new(filePath, FileMode.Create);
         using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
         Render(canvas, width, height);
+        return new SavedImageInfo(filePath, (int)fs.Length).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public void Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
+    public SavedImageInfo Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
     {
         if (format == ImageFormat.Svg)
         {
-            SaveSvg(filePath, width, height);
-            return;
+            return SaveSvg(filePath, width, height).WithRenderDetails(RenderManager.LastRender);
         }
 
         if (format.IsRasterFormat())
         {
             using Image image = GetImage(width, height);
-            image.Save(filePath, format, quality);
-            return;
+            return image.Save(filePath, format, quality).WithRenderDetails(RenderManager.LastRender);
         }
 
         throw new NotImplementedException(format.ToString());

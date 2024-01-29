@@ -31,6 +31,7 @@
 * Axes: Added `Plot.Axes.Remove()` to allow users to remove additional axes they may have added (#3288) _Thanks Felix_
 * Data Streamer and Data Logger: Renamed `IAxisManager` to `IAxisLimitManager` to disambiguate it from the `AxisManager` class (#3289)
 * Pie: Added support for displaying slice label text above each slice (#3295) _Thanks @sterenas_
+* Plot: `Save()` methods used to return the saved file path as a `string` but now they return a `SavedImageInfo` with a `Path` property and additional information (#3314)
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

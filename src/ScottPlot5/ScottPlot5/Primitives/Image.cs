@@ -10,18 +10,13 @@ namespace ScottPlot;
 /// <summary>
 /// Bitmap representation of a <seealso cref="SkiaSharp.SKImage"/>
 /// </summary>
-public class Image : IDisposable
+public class Image(SKImage skiaImage) : IDisposable
 {
     private bool IsDisposed = false;
 
-    protected readonly SKImage SKImage;
+    protected readonly SKImage SKImage = skiaImage;
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
-
-    public Image(SKImage skiaImage)
-    {
-        this.SKImage = skiaImage;
-    }
 
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
@@ -70,35 +65,35 @@ public class Image : IDisposable
         return skData.ToArray();
     }
 
-    public string SaveJpeg(string path, int quality = 85)
+    public SavedImageInfo SaveJpeg(string path, int quality = 85)
     {
         byte[] bytes = GetImageBytes(ImageFormat.Jpeg, quality);
         File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        return new SavedImageInfo(path, bytes.Length);
     }
 
-    public string SavePng(string path)
+    public SavedImageInfo SavePng(string path)
     {
         byte[] bytes = GetImageBytes(ImageFormat.Png, 100);
         File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        return new SavedImageInfo(path, bytes.Length);
     }
 
-    public string SaveBmp(string path)
+    public SavedImageInfo SaveBmp(string path)
     {
         byte[] bytes = GetImageBytes(ImageFormat.Bmp, 100);
         File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        return new SavedImageInfo(path, bytes.Length);
     }
 
-    public string SaveWebp(string path, int quality = 85)
+    public SavedImageInfo SaveWebp(string path, int quality = 85)
     {
         byte[] bytes = GetImageBytes(ImageFormat.Webp, quality);
         File.WriteAllBytes(path, bytes);
-        return Path.GetFullPath(path);
+        return new SavedImageInfo(path, bytes.Length);
     }
 
-    public string Save(string path, ImageFormat format = ImageFormat.Png, int quality = 85)
+    public SavedImageInfo Save(string path, ImageFormat format = ImageFormat.Png, int quality = 85)
     {
         return format switch
         {

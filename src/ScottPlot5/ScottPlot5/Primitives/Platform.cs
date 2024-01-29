@@ -46,4 +46,11 @@ public static class Platform
                 throw new InvalidOperationException("Cannot launch a web browser on this OS");
         }
     }
+
+    public static void LaunchFile(string filePath)
+    {
+        filePath = Path.GetFullPath(filePath);
+        ProcessStartInfo psi = new(filePath) { UseShellExecute = true };
+        Process.Start(psi);
+    }
 }
