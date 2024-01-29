@@ -27,6 +27,7 @@
 * Demo: Added icon to main application and all windows launched within (#3281, #3273) _Thanks @sterenas_
 * Controls: Do not list OpenGL controls in the toolbox. They can still be added programmatically, but they invite many problems and offer little performance improvements for most applications so their use is discouraged (#3282, #3262, #3271)
 * WinForms: Disable design time visibility in .NET Framework projects to prevent Visual Studio error messages (#3300) _Thanks @MaxFun_
+* Markers: Added `Plot.Add.Markers()` to display a collection of marker positions all using the same style (#3283)
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

@@ -1,12 +1,8 @@
-﻿/* Minimal case scatter plot for testing only.
- * Avoid temptation to use generics or generic math at this early stage of development!
- */
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Scatter(IScatterSource data) : IPlottable
 {
-    public string? Label { get; set; }
+    public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public LineStyle LineStyle { get; set; } = new();
@@ -48,13 +44,7 @@ public class Scatter(IScatterSource data) : IPlottable
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle, LineStyle);
 
     public void Render(RenderPack rp)
     {

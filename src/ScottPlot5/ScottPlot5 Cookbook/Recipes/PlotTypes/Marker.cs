@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using System.Numerics;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Marker : ICategory
 {
@@ -63,6 +65,24 @@ public class Marker : ICategory
             var marker = myPlot.Add.Marker(25, .5);
             marker.Label = "Marker";
             myPlot.ShowLegend();
+        }
+    }
+
+    public class MarkersPlot : RecipeBase
+    {
+        public override string Name => "Many Markers";
+        public override string Description => "Collections of markers " +
+            "that are all styled the same may be added to the plot";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
+
+            myPlot.Add.Markers(xs, sin, MarkerShape.OpenCircle, 15, Colors.Green);
+            myPlot.Add.Markers(xs, cos, MarkerShape.FilledDiamond, 10, Colors.Magenta);
         }
     }
 }

@@ -348,6 +348,76 @@ public class PlottableAdder(Plot plot)
         return Marker(location.X, location.Y, shape, size, color);
     }
 
+    public Plottables.Markers Markers(double[] xs, double[] ys, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        ScatterSourceDoubleArray ss = new(xs, ys);
+
+        Plottables.Markers mp = new(ss)
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Plottables.Markers Markers(Coordinates[] coordinates, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        ScatterSourceCoordinatesArray ss = new(coordinates);
+
+        Plottables.Markers mp = new(ss)
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Plottables.Markers Markers(List<Coordinates> coordinates, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        ScatterSourceCoordinatesList ss = new(coordinates);
+
+        Plottables.Markers mp = new(ss)
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Plottables.Markers Markers<TX, TY>(TX[] xs, TY[] ys, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        ScatterSourceGenericArray<TX, TY> ss = new(xs, ys);
+
+        Plottables.Markers mp = new(ss)
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
+    public Plottables.Markers Markers<TX, TY>(List<TX> xs, List<TY> ys, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        ScatterSourceGenericList<TX, TY> ss = new(xs, ys);
+
+        Plottables.Markers mp = new(ss)
+        {
+            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+        };
+
+        Plot.PlottableList.Add(mp);
+
+        return mp;
+    }
+
     public OhlcPlot OHLC(List<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
