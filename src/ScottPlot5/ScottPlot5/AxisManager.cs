@@ -124,6 +124,15 @@ public class AxisManager
         }
     }
 
+    /// <summary>
+    /// Remove the given axis from the plot
+    /// </summary>
+    public void Remove(IAxis axis)
+    {
+        XAxes.RemoveAll(ax => ax == axis);
+        YAxes.RemoveAll(ax => ax == axis);
+    }
+
     [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
     public void DateTimeTicks(Edge edge)
     {

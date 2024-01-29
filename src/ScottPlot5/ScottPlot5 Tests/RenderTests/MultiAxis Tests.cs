@@ -22,4 +22,25 @@ internal class MultiAxis_Tests
             Console.WriteLine($"{axis} {range}");
         }
     }
+
+    [Test]
+    public void Test_MultiAxis_Remove()
+    {
+        Plot myPlot = new();
+
+        myPlot.Add.Signal(Generate.Sin(51, mult: 10));
+        var sig2 = myPlot.Add.Signal(Generate.Cos(51, mult: 1));
+
+        // create an additional axis and setup the second signal to use it
+        IYAxis secondYAxis = myPlot.Axes.AddLeftAxis();
+        sig2.Axes.YAxis = secondYAxis;
+        myPlot.Should().SavePngWithoutThrowing("1");
+
+        // remove the additional axis
+        myPlot.Axes.Remove(secondYAxis);
+
+        // tell the signal plot to use the original axis
+        sig2.Axes.YAxis = myPlot.Axes.Left;
+        myPlot.Should().SavePngWithoutThrowing("2");
+    }
 }
