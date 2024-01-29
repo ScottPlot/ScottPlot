@@ -1,5 +1,5 @@
 ﻿
-using ScottPlot.AxisManagers;
+using ScottPlot.AxisLimitCalculators;
 using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
@@ -12,7 +12,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public bool ManageAxisLimits { get; set; } = true;
-    public IAxisManager AxisManager { get; set; } = new Full();
+    public IAxisLimitManager AxisManager { get; set; } = new Full();
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
     public LineStyle LineStyle = new();

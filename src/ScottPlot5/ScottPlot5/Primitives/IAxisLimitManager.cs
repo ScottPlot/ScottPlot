@@ -1,9 +1,10 @@
-﻿namespace ScottPlot.AxisManagers;
+﻿namespace ScottPlot;
 
 /// <summary>
-/// An axis manager contains logic to suggest axis limits given the current view and size of the data.
+/// An axis manager contains logic to suggest axis limits 
+/// given the current view and size of the data.
 /// </summary>
-public interface IAxisManager
+public interface IAxisLimitManager
 {
     /// <summary>
     /// Return recommended axis limits given the current view and size of the data

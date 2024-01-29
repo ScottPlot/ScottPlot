@@ -1,4 +1,4 @@
-﻿using ScottPlot.AxisManagers;
+﻿using ScottPlot.AxisLimitCalculators;
 using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
@@ -30,7 +30,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// Contains logic for automatically adjusting axis limits if new data runs off the screen.
     /// Only used if <see cref="ManageAxisLimits"/> is true.
     /// </summary>
-    private IAxisManager AxisManager { get; set; } = new FixedWidth();
+    private IAxisLimitManager AxisManager { get; set; } = new FixedWidth();
 
     /// <summary>
     /// Used to obtain the current axis limits so <see cref="AxisManager"/> can adjust them if needed.

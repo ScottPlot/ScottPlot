@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.AxisManagers;
+﻿namespace ScottPlot.AxisLimitCalculators;
 
-public class FixedWidth : IAxisManager
+public class FixedWidth : IAxisLimitManager
 {
     /// <summary>
     /// Fractional amount to expand the axis vertically if data runs outside the current view

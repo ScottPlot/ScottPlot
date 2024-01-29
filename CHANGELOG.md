@@ -29,6 +29,7 @@
 * WinForms: Disable design time visibility in .NET Framework projects to prevent Visual Studio error messages (#3300) _Thanks @MaxFun_
 * Markers: Added `Plot.Add.Markers()` to display a collection of marker positions all using the same style (#3283)
 * Axes: Added `Plot.Axes.Remove()` to allow users to remove additional axes they may have added (#3288) _Thanks Felix_
+* Data Streamer and Data Logger: Renamed `IAxisManager` to `IAxisLimitManager` to disambiguate it from the `AxisManager` class (#3289)
 
 ## ScottPlot 5.0.20
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-21_

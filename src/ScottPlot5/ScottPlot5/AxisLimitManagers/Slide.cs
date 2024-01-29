@@ -1,9 +1,9 @@
-﻿namespace ScottPlot.AxisManagers;
+﻿namespace ScottPlot.AxisLimitCalculators;
 
 /// <summary>
 /// Slide the view to the right to keep the newest data points in view
 /// </summary>
-public class Slide : IAxisManager
+public class Slide : IAxisLimitManager
 {
     /// <summary>
     /// Amount of horizontal area to display (in axis units)

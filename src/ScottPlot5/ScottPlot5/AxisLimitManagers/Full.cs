@@ -1,10 +1,10 @@
-﻿namespace ScottPlot.AxisManagers;
+﻿namespace ScottPlot.AxisLimitCalculators;
 
 /// <summary>
 /// Show the entire range of data, changing the axis limits only
 /// when the data extends otuside the current view.
 /// </summary>
-public class Full : IAxisManager
+public class Full : IAxisLimitManager
 {
     /// <summary>
     /// Defines the amount of whitespace added to the right of the data when data runs outside the current view.
