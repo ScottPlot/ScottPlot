@@ -6,6 +6,9 @@ public class Pie : IPlottable
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;
     public double ExplodeFraction { get; set; } = 0;
+    public double SliceLabelDistance { get; set; } = 1.2;
+    public bool ShowSliceLabels { get; set; } = false;
+    public double Padding { get; set; } = 0.2;
 
     public IAxes Axes { get; set; } = new Axes();
 
@@ -16,12 +19,12 @@ public class Pie : IPlottable
 
     public AxisLimits GetAxisLimits()
     {
-        double padding = .03;
-        return new AxisLimits(
-            left: -1 - ExplodeFraction - padding,
-            right: 1 + ExplodeFraction + padding,
-            bottom: -1 - ExplodeFraction - padding,
-            top: 1 + ExplodeFraction + padding);
+        double radius = ShowSliceLabels
+            ? SliceLabelDistance + Padding
+            : 1 + ExplodeFraction + Padding;
+
+        return new AxisLimits(-radius, radius, -radius, radius);
+
     }
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
@@ -36,7 +39,7 @@ public class Pie : IPlottable
     public void Render(RenderPack rp)
     {
         double total = Slices.Sum(s => s.Value);
-        float[] sweeps = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
+        float[] sliceSizeDegrees = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
@@ -49,20 +52,33 @@ public class Pie : IPlottable
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
 
-        float sweepStart = 0;
+        // TODO: first slice should be North, not East.
+
+        float[] sliceOffsetDegrees = new float[Slices.Count];
+        for (int i = 1; i < Slices.Count(); i++)
+        {
+            sliceOffsetDegrees[i] = sliceOffsetDegrees[i - 1] + sliceSizeDegrees[i - 1];
+        }
+
+        float[] sliceCenterDegrees = new float[Slices.Count];
+        for (int i = 0; i < Slices.Count(); i++)
+        {
+            sliceCenterDegrees[i] = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
+        }
+
         for (int i = 0; i < Slices.Count(); i++)
         {
             using var _ = new SKAutoCanvasRestore(rp.Canvas);
 
-            float rotation = sweepStart + sweeps[i] / 2;
+            float rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
             rp.Canvas.Translate(origin.X, origin.Y);
             rp.Canvas.RotateDegrees(rotation);
             rp.Canvas.Translate(explosionRadius, 0);
 
-            if (sweeps[i] != 360)
+            if (sliceSizeDegrees[i] != 360)
             {
                 path.MoveTo(0, 0);
-                path.ArcTo(rect, -sweeps[i] / 2, sweeps[i], false);
+                path.ArcTo(rect, -sliceSizeDegrees[i] / 2, sliceSizeDegrees[i], false);
                 path.Close();
             }
             else
@@ -78,7 +94,17 @@ public class Pie : IPlottable
             rp.Canvas.DrawPath(path, paint);
 
             path.Reset();
-            sweepStart += sweeps[i];
+        }
+
+        if (ShowSliceLabels)
+        {
+            for (int i = 0; i < Slices.Count(); i++)
+            {
+                double x = Math.Cos(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
+                double y = -Math.Sin(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
+                Pixel px = Axes.GetPixel(new Coordinates(x, y));
+                Slices[i].LabelStyle.Render(rp.Canvas, px);
+            }
         }
     }
 }
