@@ -40,13 +40,14 @@ partial class CookbookViewer
         ListViewItem listViewItem7 = new ListViewItem("dfgh");
         listView1 = new ListView();
         tableLayoutPanel1 = new TableLayoutPanel();
-        groupBox1 = new GroupBox();
-        rtbCode = new RichTextBox();
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        gbSource = new GroupBox();
+        rtbCode = new RichTextBox();
+        rtbDescription = new RichTextBox();
         groupBox2 = new GroupBox();
         tbFilter = new TextBox();
         tableLayoutPanel1.SuspendLayout();
-        groupBox1.SuspendLayout();
+        gbSource.SuspendLayout();
         groupBox2.SuspendLayout();
         SuspendLayout();
         // 
@@ -83,38 +84,18 @@ partial class CookbookViewer
         tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         tableLayoutPanel1.ColumnCount = 1;
         tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        tableLayoutPanel1.Controls.Add(groupBox1, 0, 1);
         tableLayoutPanel1.Controls.Add(formsPlot1, 0, 0);
+        tableLayoutPanel1.Controls.Add(gbSource, 0, 2);
+        tableLayoutPanel1.Controls.Add(rtbDescription, 0, 1);
         tableLayoutPanel1.Location = new Point(210, 12);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
-        tableLayoutPanel1.RowCount = 2;
-        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 63.636364F));
-        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 36.363636F));
+        tableLayoutPanel1.RowCount = 3;
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
         tableLayoutPanel1.Size = new Size(663, 627);
         tableLayoutPanel1.TabIndex = 2;
-        // 
-        // groupBox1
-        // 
-        groupBox1.Controls.Add(rtbCode);
-        groupBox1.Dock = DockStyle.Fill;
-        groupBox1.Location = new Point(3, 402);
-        groupBox1.Name = "groupBox1";
-        groupBox1.Size = new Size(657, 222);
-        groupBox1.TabIndex = 0;
-        groupBox1.TabStop = false;
-        groupBox1.Text = "Source Code";
-        // 
-        // richTextBox1
-        // 
-        rtbCode.BackColor = SystemColors.Control;
-        rtbCode.BorderStyle = BorderStyle.None;
-        rtbCode.Dock = DockStyle.Fill;
-        rtbCode.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
-        rtbCode.Location = new Point(3, 19);
-        rtbCode.Name = "richTextBox1";
-        rtbCode.Size = new Size(651, 200);
-        rtbCode.TabIndex = 0;
-        rtbCode.Text = "ScottPlot.Plot = new();";
         // 
         // formsPlot1
         // 
@@ -122,8 +103,42 @@ partial class CookbookViewer
         formsPlot1.Dock = DockStyle.Fill;
         formsPlot1.Location = new Point(3, 3);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(657, 393);
+        formsPlot1.Size = new Size(657, 432);
         formsPlot1.TabIndex = 1;
+        // 
+        // gbSource
+        // 
+        gbSource.Controls.Add(rtbCode);
+        gbSource.Dock = DockStyle.Fill;
+        gbSource.Location = new Point(3, 503);
+        gbSource.Name = "gbSource";
+        gbSource.Size = new Size(657, 121);
+        gbSource.TabIndex = 0;
+        gbSource.TabStop = false;
+        gbSource.Text = "Source Code";
+        // 
+        // rtbCode
+        // 
+        rtbCode.BackColor = SystemColors.Control;
+        rtbCode.BorderStyle = BorderStyle.None;
+        rtbCode.Dock = DockStyle.Fill;
+        rtbCode.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
+        rtbCode.Location = new Point(3, 19);
+        rtbCode.Name = "rtbCode";
+        rtbCode.Size = new Size(651, 99);
+        rtbCode.TabIndex = 0;
+        rtbCode.Text = "ScottPlot.Plot = new();";
+        // 
+        // rtbDescription
+        // 
+        rtbDescription.BackColor = SystemColors.Control;
+        rtbDescription.BorderStyle = BorderStyle.None;
+        rtbDescription.Dock = DockStyle.Fill;
+        rtbDescription.Location = new Point(3, 441);
+        rtbDescription.Name = "rtbDescription";
+        rtbDescription.Size = new Size(657, 56);
+        rtbDescription.TabIndex = 0;
+        rtbDescription.Text = "";
         // 
         // groupBox2
         // 
@@ -157,7 +172,7 @@ partial class CookbookViewer
         Text = "ScottPlot Cookbook - Windows Forms";
         Load += CookbookViewer_Load;
         tableLayoutPanel1.ResumeLayout(false);
-        groupBox1.ResumeLayout(false);
+        gbSource.ResumeLayout(false);
         groupBox2.ResumeLayout(false);
         groupBox2.PerformLayout();
         ResumeLayout(false);
@@ -167,9 +182,10 @@ partial class CookbookViewer
 
     private ListView listView1;
     private TableLayoutPanel tableLayoutPanel1;
-    private GroupBox groupBox1;
+    private GroupBox gbSource;
     private RichTextBox rtbCode;
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private GroupBox groupBox2;
     private TextBox tbFilter;
+    private RichTextBox rtbDescription;
 }

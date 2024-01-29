@@ -1,4 +1,5 @@
 ﻿using ScottPlotCookbook;
+using System.Text;
 
 namespace WinForms_Demo.Demos;
 
@@ -119,6 +120,10 @@ public partial class CookbookViewer : Form, IDemoWindow
         {
             throw new InvalidOperationException($"multiple recipes with same name: {selectedRecipe.Name}");
         }
+
+        rtbDescription.Rtf = @"{\rtf1\ansi \b NAME \b0 - DESC}"
+            .Replace("NAME", recipeInfos.Single().Name)
+            .Replace("DESC", recipeInfos.Single().Description);
 
         rtbCode.Text = recipeInfos.Single().Source;
     }
