@@ -3,6 +3,9 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
+## ScottPlot 5.0.22 (Not yet on NuGet)
+* Plot: Fix GetPixel bug when ScaleFactor was not 1.0 (#3327) _Thanks @MCF_
+
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
 * RenderManager: Exposed `EnableRendering` to facilitate render locking in async environments (#3264, #3213, #3095) _Thanks @kagerouttepaso_
