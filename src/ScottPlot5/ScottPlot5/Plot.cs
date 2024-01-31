@@ -126,13 +126,15 @@ public class Plot : IDisposable
     /// </summary>
     public Pixel GetPixel(Coordinates coordinates, IXAxis xAxis, IYAxis yAxis)
     {
-        if (ScaleFactor != 1)
-        {
-            coordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
-        }
-
         float xPixel = xAxis.GetPixel(coordinates.X, RenderManager.LastRender.DataRect);
         float yPixel = yAxis.GetPixel(coordinates.Y, RenderManager.LastRender.DataRect);
+
+        if (ScaleFactor != 1)
+        {
+            xPixel *= ScaleFactor;
+            yPixel *= ScaleFactor;
+        }
+
         return new Pixel(xPixel, yPixel);
     }
 
