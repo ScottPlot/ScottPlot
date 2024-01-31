@@ -3,7 +3,7 @@
 /// <summary>
 /// Describes the geometry of a color gradient used to fill an area
 /// </summary>
-public enum GradiantType
+public enum GradientType
 {
     Linear,
     Radial,

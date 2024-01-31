@@ -1,11 +1,11 @@
 ﻿namespace ScottPlot;
 
-public class Gradient(GradiantType gradientType = GradiantType.Linear) : IHatch
+public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
 {
     /// <summary>
     /// Describes the geometry of a color gradient used to fill an area
     /// </summary>
-    public GradiantType GradiantType { get; set; } = gradientType;
+    public GradientType GradientType { get; set; } = gradientType;
 
     /// <summary>
     /// Get or set the start angle in degrees for sweep gradient
@@ -49,9 +49,9 @@ public class Gradient(GradiantType gradientType = GradiantType.Linear) : IHatch
             ? Colors.Select(x => x.ToSKColor()).ToArray()
             : [backgroundColor.ToSKColor(), hatchColor.ToSKColor()];
 
-        return GradiantType switch
+        return GradientType switch
         {
-            GradiantType.Radial => SKShader.CreateRadialGradient(
+            GradientType.Radial => SKShader.CreateRadialGradient(
                 center: new SKPoint(rect.HorizontalCenter, rect.VerticalCenter),
                 radius: Math.Max(rect.Width, rect.Height) / 2.0f,
                 colors: colors,
@@ -59,7 +59,7 @@ public class Gradient(GradiantType gradientType = GradiantType.Linear) : IHatch
                 mode: TileMode
                 ),
 
-            GradiantType.Sweep => SKShader.CreateSweepGradient(
+            GradientType.Sweep => SKShader.CreateSweepGradient(
                 center: new SKPoint(rect.HorizontalCenter, rect.VerticalCenter),
                 colors: colors,
                 colorPos: ColorPositions,
@@ -68,7 +68,7 @@ public class Gradient(GradiantType gradientType = GradiantType.Linear) : IHatch
                 endAngle: EndAngle
                 ),
 
-            GradiantType.TwoPointConical => SKShader.CreateTwoPointConicalGradient(
+            GradientType.TwoPointConical => SKShader.CreateTwoPointConicalGradient(
                 start: rect.TopLeft.ToSKPoint(),
                 startRadius: Math.Min(rect.Width, rect.Height),
                 end: rect.BottomRight.ToSKPoint(),
