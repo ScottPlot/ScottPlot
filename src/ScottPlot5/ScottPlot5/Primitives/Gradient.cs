@@ -45,7 +45,7 @@ public class Gradient(GradiantType gradientType = GradiantType.Linear) : IHatch
 
     public SKShader GetShader(Color backgroundColor, Color hatchColor, PixelRect rect)
     {
-        SKColor[] colors = Colors?.Length > 2
+        SKColor[] colors = Colors?.Length > 1
             ? Colors.Select(x => x.ToSKColor()).ToArray()
             : [backgroundColor.ToSKColor(), hatchColor.ToSKColor()];
 
