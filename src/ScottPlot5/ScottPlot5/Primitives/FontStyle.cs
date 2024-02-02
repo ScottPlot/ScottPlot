@@ -15,7 +15,7 @@ public class FontStyle
 
     private SKTypeface? CachedTypeface = null;
 
-    public SKTypeface Typeface => CachedTypeface ?? CreateTypeface(Name, Bold, Italic);
+    public SKTypeface Typeface => CachedTypeface ??= CreateTypeface(Name, Bold, Italic);
 
     private string _name = Fonts.Default;
     public string Name
