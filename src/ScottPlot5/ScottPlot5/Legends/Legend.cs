@@ -47,8 +47,8 @@ public class Legend(Plot plot)
             return;
 
         var legendSize = GetLegendSize(sizedItems,
-            maxWidth: rp.DataRect.Width - ShadowOffset*2 - Margin.Horizontal,
-            maxHeight: rp.DataRect.Height - ShadowOffset*2 - Margin.Vertical,
+            maxWidth: rp.DataRect.Width - ShadowOffset * 2 - Margin.Horizontal,
+            maxHeight: rp.DataRect.Height - ShadowOffset * 2 - Margin.Vertical,
             withOffset: false);
 
         PixelRect legendRect = legendSize.AlignedInside(rp.DataRect, Location, Margin);
