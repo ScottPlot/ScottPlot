@@ -44,9 +44,16 @@ public class WpfPlotMenu : IPlotMenu
 
         foreach (ContextMenuItem curr in ContextMenuItems)
         {
-            MenuItem menuItem = new() { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
-            menu.Items.Add(menuItem);
+            if (curr.IsSeparator)
+            {
+                menu.Items.Add(new Separator());
+            }
+            else
+            {
+                MenuItem menuItem = new() { Header = curr.Label };
+                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                menu.Items.Add(menuItem);
+            }
         }
 
         return menu;
@@ -131,5 +138,10 @@ public class WpfPlotMenu : IPlotMenu
     public void Add(string Label, Action<IPlotControl> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
+
+    public void AddSeparator()
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { IsSeparator = true });
     }
 }
