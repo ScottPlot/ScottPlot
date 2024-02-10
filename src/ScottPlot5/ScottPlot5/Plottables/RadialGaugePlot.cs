@@ -331,14 +331,17 @@ public class RadialGaugePlot : IPlottable
             clockwise: Clockwise,
             mode: GaugeMode);
 
-        float pxPerUnit = 72; // float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+        // Copied from Pie plottable to get the maximum radius centered on the plot area
+        Pixel origin = Axes.GetPixel(Coordinates.Origin);
+        float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
+        float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
+        float radius = Math.Min(minX, minY) / GaugeCount;
 
-        float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));
-        float radiusPixels = gaugeWidthPx * ((float)SpaceFraction + 1);
+        float gaugeWidthPx = radius / ((float)SpaceFraction + 1);
 
-        int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
-        backgroundAlpha = Math.Max(0, backgroundAlpha);
-        backgroundAlpha = Math.Min(255, backgroundAlpha);
+        byte backgroundAlpha = (byte)(255 * BackgroundTransparencyFraction);
+        backgroundAlpha = Math.Max((byte)0, backgroundAlpha);
+        backgroundAlpha = Math.Min((byte)255, backgroundAlpha);
 
         int index;
         int position;
@@ -376,7 +379,7 @@ public class RadialGaugePlot : IPlottable
                 ShowLabels = ShowLevels,
             };
 
-            float radiusPx = position * radiusPixels;
+            float radiusPx = position * radius;
             gauge.Render(rp, radiusPx);
         }
     }

@@ -1,6 +1,8 @@
 ﻿//using ScottPlot.Drawing;
+using SkiaSharp;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace ScottPlot.Plottable;
@@ -119,7 +121,7 @@ internal class RadialGauge
     {
         RenderBackground(rp, radius);
         RenderGaugeForeground(rp, radius);
-        //RenderGaugeLabels(rp, radius);
+        RenderGaugeLabels(rp, radius);
     }
 
     private void RenderBackground(RenderPack rp, float radius)
@@ -137,7 +139,7 @@ internal class RadialGauge
             BackAngleSweep = 0;
 
         // See some examples here: https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/arcs
-        using SKPaint paint = new()
+        using SKPaint skPaint = new()
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
@@ -146,20 +148,12 @@ internal class RadialGauge
             Color = new(BackgroundColor.ARGB)
         };
 
-        rp.Canvas.DrawArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
+        using SKPath skPath = new();
+        skPath.AddArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
             (float)BackStartAngle,
-            (float)BackAngleSweep,
-            true,
-            paint);
+            (float)BackAngleSweep);
 
-
-        //gfx.DrawArc(backgroundPen,
-        //            (rp.FigureRect.BottomCenter.X - radius),
-        //            (rp.FigureRect.LeftCenter.Y - radius),
-        //            (radius * 2),
-        //            (radius * 2),
-        //            (float)BackStartAngle,
-        //            (float)BackAngleSweep);
+        rp.Canvas.DrawPath(skPath, skPaint);
     }
 
     public void RenderGaugeForeground(RenderPack rp, float radius)
@@ -173,7 +167,7 @@ internal class RadialGauge
         if (Math.Abs(SweepAngle) <= 0.01)
             SweepAngle = 0;
 
-        using SKPaint paint = new()
+        using SKPaint skPaint = new()
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
@@ -182,23 +176,52 @@ internal class RadialGauge
             Color = new(Color.ARGB)
         };
 
-        rp.Canvas.DrawArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
-            (float)BackStartAngle,
-            (float)BackAngleSweep,
-            true,
-            paint);
+        using SKPath skPath = new();
+        skPath.AddArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
+            (float)StartAngle,
+            (float)SweepAngle);
 
-        //gfx.DrawArc(
-        //    pen,
-        //    (center.X - radius),
-        //    (center.Y - radius),
-        //    (radius * 2),
-        //    (radius * 2),
-        //    (float)StartAngle,
-        //    (float)SweepAngle);
+        rp.Canvas.DrawPath(skPath, skPaint);
     }
 
     private const double DEG_PER_RAD = 180.0 / Math.PI;
+
+    private void RenderGaugeLabels(RenderPack rp, float radius)
+    {
+        if (!ShowLabels)
+            return;
+
+        using SKPaint skPaint = new()
+        {
+            TextSize = (float)Width * (float)FontSizeFraction,
+            FakeBoldText = true,
+            IsAntialias = true,
+            Color = new(Colors.White.ARGB)
+        };
+
+        SKRect textBounds = new();
+        skPaint.MeasureText(Label, ref textBounds);
+
+        double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction);
+        bool isBelow = angle < 180 && angle > 0;
+        int sign = isBelow ? -1 : 1;
+        double sweepAngle = isBelow ? -(360 - SweepAngle + textBounds.Width / 2) : SweepAngle;  // To flip the text, we use the trick to draw the complementary arc in the anti clockwise direction
+
+        using SKPath skPath = new();
+        skPath.AddArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
+            (float)StartAngle,
+            (float)sweepAngle);
+
+        using SKPathMeasure skMeasure = new(skPath);
+
+        SKPoint skPoint = new();
+        skPoint.Y -= (float)textBounds.MidY;    // Displacement along the y axis (radial-wise), so we can center the text on the path
+        skPoint.X = (float)LabelPositionFraction / 2 * (skMeasure.Length - textBounds.Width);   // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
+
+        rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, skPaint);
+
+        // https://stackoverflow.com/questions/59892490/how-to-rotate-text-drawn-using-canvas-drawtextonpath
+    }
 
     //private void RenderGaugeLabels(Graphics gfx, PlotDimensions dims, PointF center, float radius)
     //{
