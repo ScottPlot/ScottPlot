@@ -1,9 +1,4 @@
-﻿//using ScottPlot.Drawing;
-using SkiaSharp;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+﻿using System.ComponentModel.Design;
 
 namespace ScottPlot.Plottable;
 
@@ -60,7 +55,7 @@ internal class RadialGauge
     /// <summary>
     /// Font used to render values at the tip of the gauge
     /// </summary>
-    public SKFont Font { get; set; }
+    public FontStyle Font { get; set; } = new();
 
     /// <summary>
     /// Size of the font relative to the line thickness
@@ -70,7 +65,7 @@ internal class RadialGauge
     /// <summary>
     /// Text to display on top of the label
     /// </summary>
-    public string Label { get; set; }
+    public string Label { get; set; } = string.Empty;
 
     /// <summary>
     /// Location of the label text along the length of the gauge.
@@ -158,10 +153,6 @@ internal class RadialGauge
 
     public void RenderGaugeForeground(RenderPack rp, float radius)
     {
-        //using Pen pen = GDI.Pen(Color);
-        //pen.Width = (float)Width;
-        //pen.StartCap = StartCap;
-        //pen.EndCap = EndCap;
 
         // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
         if (Math.Abs(SweepAngle) <= 0.01)
@@ -172,7 +163,7 @@ internal class RadialGauge
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = (float)Width,
-            StrokeCap = StartCap,
+            StrokeCap = SKStrokeCap.Butt,
             Color = new(Color.ARGB)
         };
 
@@ -188,24 +179,40 @@ internal class RadialGauge
 
     private void RenderGaugeLabels(RenderPack rp, float radius)
     {
-        if (!ShowLabels)
+        if (!ShowLabels || Label == string.Empty)
             return;
 
         using SKPaint skPaint = new()
         {
             TextSize = (float)Width * (float)FontSizeFraction,
-            FakeBoldText = true,
             IsAntialias = true,
-            Color = new(Colors.White.ARGB)
+            SubpixelText = true,
+            Color = new(Font.Color.ARGB),
+            Typeface = Font.Typeface
         };
 
+        // Text is measured (in linear form) and converted to angular dimensions
         SKRect textBounds = new();
-        skPaint.MeasureText(Label, ref textBounds);
+        skPaint.MeasureText($"{Label}.", ref textBounds);
+        double textWidthFrac = textBounds.Width / radius;
+        double textAngle = (1 - 2 * LabelPositionFraction) * DEG_PER_RAD * textWidthFrac;
 
+        // This is a hack since sometimes when text is at the very beginning or at the very end of the gauge, some small clipping occurs.
+        SKRect spaceBounds = new();
+        skPaint.MeasureText(".", ref spaceBounds);
+        double spaceAngle = (1 - 2 * LabelPositionFraction) * DEG_PER_RAD * spaceBounds.Width / radius;
+
+        // This is done in order to draw the text in the correct orientation. The trick consists in modifying the sweep angle with either the original value or the 360-complimentary value when needed. Other options would be to flip the canvas, draw the text and restore the canvas.
         double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction);
-        bool isBelow = angle < 180 && angle > 0;
-        int sign = isBelow ? -1 : 1;
-        double sweepAngle = isBelow ? -(360 - SweepAngle + textBounds.Width / 2) : SweepAngle;  // To flip the text, we use the trick to draw the complementary arc in the anti clockwise direction
+        bool isBelow = angle <= 180 && angle > 0; 
+        double sweepAngle;
+        if (SweepAngle > 0)
+            sweepAngle = isBelow ? -(360 - SweepAngle - textAngle) : SweepAngle;
+        else
+            sweepAngle = isBelow ? SweepAngle : 360 + SweepAngle - textAngle;
+
+        // This is part of the above hack to adjust text clipping at the gauges's very end
+        float textLinearWidth = SweepAngle > 0 == isBelow ? textBounds.Width - spaceBounds.Width: textBounds.Width;
 
         using SKPath skPath = new();
         skPath.AddArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
@@ -214,9 +221,11 @@ internal class RadialGauge
 
         using SKPathMeasure skMeasure = new(skPath);
 
-        SKPoint skPoint = new();
-        skPoint.Y -= (float)textBounds.MidY;    // Displacement along the y axis (radial-wise), so we can center the text on the path
-        skPoint.X = (float)LabelPositionFraction / 2 * (skMeasure.Length - textBounds.Width);   // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
+        SKPoint skPoint = new()
+        {
+            Y = -(float)textBounds.MidY,    // Displacement along the y axis (radial-wise), so we can center the text on the gauge path
+            X = (float)(LabelPositionFraction / 2) * (skMeasure.Length - textLinearWidth)  // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
+        };
 
         rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, skPaint);
 

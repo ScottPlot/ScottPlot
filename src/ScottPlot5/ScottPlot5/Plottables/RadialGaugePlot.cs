@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-//using ScottPlot.Drawing;
-
-// This plot type was inspired by MicroCharts:
+﻿// This plot type was inspired by MicroCharts:
 // https://github.com/dotnet-ad/Microcharts/blob/main/Sources/Microcharts/Charts/RadialGaugeChart.cs
 
 namespace ScottPlot.Plottable;
@@ -16,13 +10,12 @@ namespace ScottPlot.Plottable;
 public class RadialGaugePlot : IPlottable
 {
     public IAxes Axes { get; set; } = new Axes();
-    //public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     /// <summary>
     /// This array holds the original levels passed-in by the user. 
     /// These levels are used to calculate radial gauge positions on every render.
     /// </summary>
-    public double[] Levels { get; private set; }
+    public double[] Levels { get; private set; } = [];
 
     /// <summary>
     /// Number of gauges.
@@ -51,7 +44,7 @@ public class RadialGaugePlot : IPlottable
     /// Colors for each gauge.
     /// Number of colors must equal number of gauges.
     /// </summary>
-    public Color[] Colors { get; set; }
+    public Color[] Colors { get; set; } = [];
 
     /// <summary>
     /// Describes how transparent the unfilled background of each gauge is (0 to 1).
@@ -101,7 +94,7 @@ public class RadialGaugePlot : IPlottable
     /// <summary>
     /// Describes labels drawn on each gauge.
     /// </summary>
-    public readonly SKFont Font = new();
+    public readonly FontStyle Font = new();
 
     /// <summary>
     /// Controls if value labels are shown inside the gauges.
@@ -129,6 +122,8 @@ public class RadialGaugePlot : IPlottable
 
     public RadialGaugePlot(double[] levels, Color[] colors)
     {
+        Font.Color = ScottPlot.Colors.White;
+        Font.Bold = true;
         Update(levels, colors);
     }
 
@@ -137,7 +132,7 @@ public class RadialGaugePlot : IPlottable
     /// <summary>
     /// Replace gauge levels with new ones.
     /// </summary>
-    public void Update(double[] levels, Color[] colors = null)
+    public void Update(double[] levels, Color[]? colors = null)
     {
         if (levels is null || levels.Length == 0)
             throw new ArgumentException("values must not be null or empty");
@@ -337,11 +332,11 @@ public class RadialGaugePlot : IPlottable
         float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
         float radius = Math.Min(minX, minY) / GaugeCount;
 
-        float gaugeWidthPx = radius / ((float)SpaceFraction + 1);
+        float gaugeWidth = radius / ((float)SpaceFraction + 1);
 
         byte backgroundAlpha = (byte)(255 * BackgroundTransparencyFraction);
-        backgroundAlpha = Math.Max((byte)0, backgroundAlpha);
-        backgroundAlpha = Math.Min((byte)255, backgroundAlpha);
+        //backgroundAlpha = Math.Max((byte)0, backgroundAlpha);
+        //backgroundAlpha = Math.Min((byte)255, backgroundAlpha);
 
         int index;
         int position;
@@ -365,7 +360,7 @@ public class RadialGaugePlot : IPlottable
                 SweepAngle = sweepAngles[index],
                 Color = Colors[index],
                 BackgroundColor = new (Colors[index].R, Colors[index].G, Colors[index].B, backgroundAlpha),
-                Width = gaugeWidthPx,
+                Width = gaugeWidth,
                 CircularBackground = CircularBackground,
                 Clockwise = Clockwise,
                 BackStartAngle = StartingAngleBackGauges,
