@@ -182,7 +182,7 @@ internal class RadialGauge
         double textAngle = DEG_PER_RAD * textBounds.Width / radius;
 
         // We compute the angular location where the label has to be drawn.
-        double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction - textAngle/2);
+        double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction - textAngle / 2);
         bool isBelow = angle <= 180 && angle > 0;
 
         // This is a very dirty trick to avoid label clipping at the gauge's very end.

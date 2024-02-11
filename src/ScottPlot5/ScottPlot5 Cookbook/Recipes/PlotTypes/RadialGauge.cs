@@ -58,7 +58,7 @@ public class RadialGauge : ICategory
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
             double[] values = { 100, 80, 65, 45, 50 };
-            var radialGaugePlot= myPlot.Add.RadialGaugePlot(values);
+            var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
             radialGaugePlot.GaugeMode = ScottPlot.RadialGaugeMode.Sequential;
         }
     }
@@ -245,7 +245,7 @@ public class RadialGauge : ICategory
             double[] values = { 100, 80, 65, 45, 20 };
 
             var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
-            radialGaugePlot.Font.Color= Colors.Black;
+            radialGaugePlot.Font.Color = Colors.Black;
         }
     }
 

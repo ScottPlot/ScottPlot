@@ -243,7 +243,7 @@ public class RadialGaugePlot : IPlottable
             return legendItems;
         }
     }
-    
+
 
     public AxisLimits GetAxisLimits()
     {
@@ -293,7 +293,7 @@ public class RadialGaugePlot : IPlottable
                 StartAngle = startAngles[index],
                 SweepAngle = sweepAngles[index],
                 Color = Colors[index],
-                BackgroundColor = new (Colors[index].R, Colors[index].G, Colors[index].B, backgroundAlpha),
+                BackgroundColor = new(Colors[index].R, Colors[index].G, Colors[index].B, backgroundAlpha),
                 Width = gaugeWidth,
                 CircularBackground = CircularBackground,
                 Clockwise = Clockwise,
