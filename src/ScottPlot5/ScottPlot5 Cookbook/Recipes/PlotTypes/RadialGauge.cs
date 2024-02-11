@@ -129,23 +129,25 @@ public class RadialGauge : ICategory
         }
     }
 
-    public class RadialGaugeCaps : RecipeBase
-    {
-        public override string Name => "Gauge Caps";
-        public override string Description =>
-            "Caps can be customized for the starting and end of the gauges. ";
+    // This does not apply unless we create our own caps drawing
 
-        public override void Execute()
-        {
-            myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
-            double[] values = { 100, 80, 65, 45, 20 };
+    //public class RadialGaugeCaps : RecipeBase
+    //{
+    //    public override string Name => "Gauge Caps";
+    //    public override string Description =>
+    //        "Caps can be customized for the starting and end of the gauges. ";
 
-            var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
-            radialGaugePlot.CircularBackground = false;
-            radialGaugePlot.StartCap = SKStrokeCap.Round;
-            radialGaugePlot.EndCap = SKStrokeCap.Round;
-        }
-    }
+    //    public override void Execute()
+    //    {
+    //        myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
+    //        double[] values = { 100, 80, 65, 45, 20 };
+
+    //        var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
+    //        radialGaugePlot.CircularBackground = false;
+    //        radialGaugePlot.StartCap = SKStrokeCap.Round;
+    //        radialGaugePlot.EndCap = SKStrokeCap.Round;
+    //    }
+    //}
 
     public class RadialGaugeStart : RecipeBase
     {
@@ -211,7 +213,7 @@ public class RadialGauge : ICategory
             double[] values = { 100, 80, 65, 45, 20 };
 
             var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
-            radialGaugePlot.LabelPositionFraction = 0;
+            radialGaugePlot.LabelPositionFraction = 0.5;
         }
     }
 
@@ -243,7 +245,7 @@ public class RadialGauge : ICategory
             double[] values = { 100, 80, 65, 45, 20 };
 
             var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
-            //radialGaugePlot.Font.Typeface.Color = Color.Black;
+            radialGaugePlot.Font.Color= Colors.Black;
         }
     }
 

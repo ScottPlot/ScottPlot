@@ -91,12 +91,12 @@ internal class RadialGauge
     /// <summary>
     /// Style of the base of the gauge
     /// </summary>
-    public SkiaSharp.SKStrokeCap StartCap { get; set; } = SKStrokeCap.Round;
+    public SkiaSharp.SKStrokeCap StartCap { get; set; } = SKStrokeCap.Round;    // Perhaps we should use our own enumeration and implement our own custom drawing
 
     /// <summary>
     /// Style of the tip of the gauge
     /// </summary>
-    public SkiaSharp.SKStrokeCap EndCap { get; set; } = SKStrokeCap.Round;
+    public SkiaSharp.SKStrokeCap EndCap { get; set; } = SKStrokeCap.Round;      // Perhaps we should use our own enumeration and implement our own custom drawing
 
     /// <summary>
     /// Defines the location of each gauge relative to the start angle and distance from the center
@@ -124,7 +124,6 @@ internal class RadialGauge
         if (Mode == RadialGaugeMode.SingleGauge)
             return;
 
-        // See some examples here: https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/arcs
         using SKPaint skPaint = new()
         {
             IsAntialias = true,
@@ -144,17 +143,12 @@ internal class RadialGauge
 
     public void RenderGaugeForeground(RenderPack rp, float radius)
     {
-
-        // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
-        if (Math.Abs(SweepAngle) <= 0.01)
-            SweepAngle = 0;
-
         using SKPaint skPaint = new()
         {
             IsAntialias = true,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = (float)Width,
-            StrokeCap = SKStrokeCap.Butt,
+            StrokeCap = StartCap,
             Color = new(Color.ARGB)
         };
 
@@ -184,41 +178,44 @@ internal class RadialGauge
 
         // Text is measured (in linear form) and converted to angular dimensions
         SKRect textBounds = new();
-        skPaint.MeasureText($"{Label}.", ref textBounds);
-        double textWidthFrac = textBounds.Width / radius;
-        double textAngle = (1 - 2 * LabelPositionFraction) * DEG_PER_RAD * textWidthFrac;
+        skPaint.MeasureText($"{Label}", ref textBounds);
+        double textAngle = DEG_PER_RAD * textBounds.Width / radius;
 
-        // This is a hack since sometimes when text is at the very beginning or at the very end of the gauge, some small clipping occurs.
-        SKRect spaceBounds = new();
-        skPaint.MeasureText(".", ref spaceBounds);
-        double spaceAngle = (1 - 2 * LabelPositionFraction) * DEG_PER_RAD * spaceBounds.Width / radius;
+        // We compute the angular location where the label has to be drawn.
+        double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction - textAngle/2);
+        bool isBelow = angle <= 180 && angle > 0;
 
-        // This is done in order to draw the text in the correct orientation. The trick consists in modifying the sweep angle with either the original value or the 360-complimentary value when needed. Other options would be to flip the canvas, draw the text and restore the canvas.
-        double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction);
-        bool isBelow = angle <= 180 && angle > 0; 
-        double sweepAngle;
-        if (SweepAngle > 0)
-            sweepAngle = isBelow ? -(360 - SweepAngle - textAngle) : SweepAngle;
-        else
-            sweepAngle = isBelow ? SweepAngle : 360 + SweepAngle - textAngle;
+        // This is a very dirty trick to avoid label clipping at the gauge's very end.
+        float additionalSpace = 0;
+        if (LabelPositionFraction == 1 || LabelPositionFraction == 0)
+            additionalSpace += SweepAngle > 0 == isBelow ? 1 : -1;
 
-        // This is part of the above hack to adjust text clipping at the gauges's very end
-        float textLinearWidth = SweepAngle > 0 == isBelow ? textBounds.Width - spaceBounds.Width: textBounds.Width;
+        // We use this trick consisting in the inversion of path so that the orientation of the text is correct (not inverted). Other alternatives would be to flip the canvas, draw the text and restore it.
+        if (SweepAngle > 0 == isBelow) // This is a XNOR operator. It only executes if TRUE-TRUE or FALSE-FALSE
+            ReversePath();
 
+        // Create the path where the text will be drawn
         using SKPath skPath = new();
         skPath.AddArc(new(rp.FigureRect.BottomCenter.X - radius, rp.FigureRect.LeftCenter.Y - radius, rp.FigureRect.BottomCenter.X + radius, rp.FigureRect.LeftCenter.Y + radius),
             (float)StartAngle,
-            (float)sweepAngle);
+            (float)SweepAngle);
 
         using SKPathMeasure skMeasure = new(skPath);
-
         SKPoint skPoint = new()
         {
             Y = -(float)textBounds.MidY,    // Displacement along the y axis (radial-wise), so we can center the text on the gauge path
-            X = (float)(LabelPositionFraction / 2) * (skMeasure.Length - textLinearWidth)  // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
+            X = (float)(LabelPositionFraction / 2) * (skMeasure.Length - textBounds.Width) + additionalSpace  // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
         };
 
         rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, skPaint);
+
+        // Invert parameters so that the path is reversed
+        void ReversePath()
+        {
+            StartAngle += SweepAngle;
+            SweepAngle = -SweepAngle;
+            LabelPositionFraction = 1 - LabelPositionFraction;
+        }
     }
 
     /// <summary>
