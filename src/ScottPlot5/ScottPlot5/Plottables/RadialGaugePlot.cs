@@ -135,13 +135,13 @@ public class RadialGaugePlot : IPlottable
     public void Update(double[] levels, Color[]? colors = null)
     {
         if (levels is null || levels.Length == 0)
-            throw new ArgumentException("values must not be null or empty");
+            throw new ArgumentException("Values must not be null or empty");
 
         bool numberOfGroupsChanged = (Levels is null) || (levels.Length != Levels.Length);
         if (numberOfGroupsChanged)
         {
             if (colors is null || colors.Length != levels.Length)
-                throw new ArgumentException("when changing the number of values a new colors array must be provided");
+                throw new ArgumentException("When changing the number of values a new colors array must be provided");
 
             Colors = new Color[colors.Length];
             Array.Copy(colors, 0, Colors, 0, colors.Length);
@@ -251,70 +251,6 @@ public class RadialGaugePlot : IPlottable
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
-    //public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-    //{
-    //    ValidateData();
-
-    //    (double[] startAngles, double[] sweepAngles, double StartingAngleBackGauges) = GetGaugeAngles(
-    //        values: Levels,
-    //        angleStart: StartingAngle,
-    //        angleRange: MaximumAngle,
-    //        clockwise: Clockwise,
-    //        mode: GaugeMode);
-
-    //    PointF centerPixel = new(dims.GetPixelX(0), dims.GetPixelY(0));
-    //    using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
-
-    //    float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
-
-    //    float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));
-    //    float radiusPixels = gaugeWidthPx * ((float)SpaceFraction + 1);
-
-    //    int backgroundAlpha = (int)(255 * BackgroundTransparencyFraction);
-    //    backgroundAlpha = Math.Max(0, backgroundAlpha);
-    //    backgroundAlpha = Math.Min(255, backgroundAlpha);
-
-    //    int index;
-    //    int position;
-    //    for (int i = 0; i < GaugeCount; i++)
-    //    {
-    //        if (GaugeMode == RadialGaugeMode.SingleGauge)
-    //        {
-    //            index = GaugeCount - i - 1;
-    //            position = GaugeCount;
-    //        }
-    //        else
-    //        {
-    //            index = i;
-    //            position = OrderInsideOut ? i + 1 : (GaugeCount - i);
-    //        }
-
-    //        RadialGauge gauge = new()
-    //        {
-    //            MaximumSizeAngle = MaximumAngle,
-    //            StartAngle = startAngles[index],
-    //            SweepAngle = sweepAngles[index],
-    //            Color = Colors[index],
-    //            BackgroundColor = Color.FromArgb(backgroundAlpha, Colors[index]),
-    //            Width = gaugeWidthPx,
-    //            CircularBackground = CircularBackground,
-    //            Clockwise = Clockwise,
-    //            BackStartAngle = StartingAngleBackGauges,
-    //            StartCap = StartCap,
-    //            EndCap = EndCap,
-    //            Mode = GaugeMode,
-    //            Font = Font,
-    //            FontSizeFraction = FontSizeFraction,
-    //            Label = Levels[index].ToString(LevelTextFormat),
-    //            LabelPositionFraction = LabelPositionFraction,
-    //            ShowLabels = ShowLevels,
-    //        };
-
-    //        float radiusPx = position * radiusPixels;
-    //        gauge.Render(gfx, dims, centerPixel, radiusPx);
-    //    }
-    //}
-
     public void Render(RenderPack rp)
     {
         ValidateData();
@@ -335,8 +271,6 @@ public class RadialGaugePlot : IPlottable
         float gaugeWidth = radius / ((float)SpaceFraction + 1);
 
         byte backgroundAlpha = (byte)(255 * BackgroundTransparencyFraction);
-        //backgroundAlpha = Math.Max((byte)0, backgroundAlpha);
-        //backgroundAlpha = Math.Min((byte)255, backgroundAlpha);
 
         int index;
         int position;

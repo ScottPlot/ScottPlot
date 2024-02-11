@@ -124,15 +124,6 @@ internal class RadialGauge
         if (Mode == RadialGaugeMode.SingleGauge)
             return;
 
-        //using Pen backgroundPen = GDI.Pen(BackgroundColor);
-        //backgroundPen.Width = (float)Width;
-        //backgroundPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-        //backgroundPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-
-        // This check is specific to System.Drawing since DrawArc throws an OutOfMemoryException when the sweepAngle is very small.
-        if (Math.Abs(BackAngleSweep) <= 0.01)
-            BackAngleSweep = 0;
-
         // See some examples here: https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/arcs
         using SKPaint skPaint = new()
         {
@@ -228,80 +219,7 @@ internal class RadialGauge
         };
 
         rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, skPaint);
-
-        // https://stackoverflow.com/questions/59892490/how-to-rotate-text-drawn-using-canvas-drawtextonpath
     }
-
-    //private void RenderGaugeLabels(Graphics gfx, PlotDimensions dims, PointF center, float radius)
-    //{
-    //    if (!ShowLabels)
-    //        return;
-
-    //    // TODO: use this so font size is in pixels not pt
-    //    //Font.Size = lineWidth * (float)FontSizeFraction;
-    //    //using System.Drawing.Font fontGauge = GDI.Font(Font);
-
-    //    using Brush brush = GDI.Brush(Font.Color);
-    //    using System.Drawing.Font font = new(Font.Name, (float)Width * (float)FontSizeFraction, FontStyle.Bold);
-
-    //    using StringFormat sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle);
-
-    //    RectangleF[] letterRectangles = MeasureCharacters(gfx, font, Label);
-    //    double totalLetterWidths = letterRectangles.Select(rect => rect.Width).Sum();
-    //    double textWidthFrac = totalLetterWidths / radius;
-
-    //    double angle = ReduceAngle(StartAngle + SweepAngle * LabelPositionFraction);
-    //    double angle2 = (1 - 2 * LabelPositionFraction) * DEG_PER_RAD * textWidthFrac / 2;
-    //    bool isPositive = (SweepAngle > 0);
-    //    angle += isPositive ? angle2 : -angle2;
-
-    //    bool isBelow = angle < 180 && angle > 0;
-    //    int sign = isBelow ? 1 : -1;
-    //    double theta = angle * Math.PI / 180;
-    //    theta += textWidthFrac / 2 * sign;
-
-    //    for (int i = 0; i < Label.Length; i++)
-    //    {
-    //        theta -= letterRectangles[i].Width / 2 / radius * sign;
-    //        double rotation = (theta - Math.PI / 2 * sign) * DEG_PER_RAD;
-    //        float x = center.X + radius * (float)Math.Cos(theta);
-    //        float y = center.Y + radius * (float)Math.Sin(theta);
-
-    //        gfx.RotateTransform((float)rotation);
-    //        gfx.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append);
-    //        gfx.DrawString(Label[i].ToString(), font, brush, 0, 0, sf);
-    //        GDI.ResetTransformPreservingScale(gfx, dims);
-
-    //        theta -= letterRectangles[i].Width / 2 / radius * sign;
-    //    }
-    //}
-
-    ///// <summary>
-    ///// Return an array indicating the size of each character in a string.
-    ///// Specifiy the maximum expected size to avoid issues associated with text wrapping.
-    ///// </summary>
-    //private static RectangleF[] MeasureCharacters(Graphics gfx, System.Drawing.Font font, string text, int maxWidth = 800, int maxHeight = 100)
-    //{
-    //    using StringFormat stringFormat = new()
-    //    {
-    //        Alignment = StringAlignment.Center,
-    //        LineAlignment = StringAlignment.Center,
-    //        Trimming = StringTrimming.None,
-    //        FormatFlags = StringFormatFlags.MeasureTrailingSpaces,
-    //    };
-
-    //    CharacterRange[] charRanges = Enumerable.Range(0, text.Length)
-    //        .Select(x => new CharacterRange(x, 1))
-    //        .ToArray();
-
-    //    stringFormat.SetMeasurableCharacterRanges(charRanges);
-
-    //    RectangleF imageRectangle = new(0, 0, maxWidth, maxHeight);
-    //    Region[] characterRegions = gfx.MeasureCharacterRanges(text, font, imageRectangle, stringFormat);
-    //    RectangleF[] characterRectangles = characterRegions.Select(x => x.GetBounds(gfx)).ToArray();
-
-    //    return characterRectangles;
-    //}
 
     /// <summary>
     /// Reduces an angle into the range [0°-360°].
