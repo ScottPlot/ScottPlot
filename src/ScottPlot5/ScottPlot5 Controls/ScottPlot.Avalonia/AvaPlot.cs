@@ -1,10 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Skia;
 using Avalonia.Input;
-using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
+using Avalonia.Threading;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -57,7 +57,7 @@ public class AvaPlot : Controls.Control, IPlotControl
             if (leaseFeature is null) return;
 
             using var lease = leaseFeature.Lease();
-            ScottPlot.PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
+            PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
             _plot.Render(lease.SkCanvas, rect);
         }
     }
@@ -71,7 +71,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void Refresh()
     {
-        InvalidateVisual();
+        Dispatcher.UIThread.InvokeAsync(InvalidateVisual, DispatcherPriority.Background);
     }
 
     public void ShowContextMenu(Pixel position)
