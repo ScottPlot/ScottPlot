@@ -140,7 +140,7 @@ public class RandomDataGenerator
     public double[] RandomNormalSample(int count, double mean = 0, double stdDev = 1)
     {
         double[] values = new double[count];
-        for (int i = 0; i <= count; i++)
+        for (int i = 0; i < count; i++)
         {
             values[i] = RandomNormalNumber(mean, stdDev);
         }
