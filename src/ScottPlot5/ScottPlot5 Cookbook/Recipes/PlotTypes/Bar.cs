@@ -166,15 +166,14 @@ public class Bar : ICategory
             myPlot.Add.Bars(bars);
 
             // build the legend manually
-            myPlot.Legend.IsVisible = true;
-            myPlot.Legend.Location = Alignment.UpperLeft;
-
             LegendItem[] legendItems =
             {
                 new() { Label = "Monday", FillColor = palette.GetColor(0) },
                 new() { Label = "Tuesday", FillColor = palette.GetColor(1) },
                 new() { Label = "Wednesday", FillColor = palette.GetColor(2) }
             };
+
+            myPlot.ShowLegend(legendItems, Alignment.UpperLeft);
 
             // show group labels on the bottom axis
             Tick[] ticks =
