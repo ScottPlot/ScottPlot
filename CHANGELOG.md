@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * Plot: Improve `GetPixel()` behavior when a custom `ScaleFactor` is in use (#3327) _Thanks @MCF_
 * Fonts: Improve behavior of cached typefaces (#3334, #3335) _Thanks @Milkitic_
 * Legend: Added support for horizontal orientation (#3341, #3302, #3280) _Thanks @KroMignon_
+* Controls: Created `AddSeparator()` to facilitate creation of custom context menus (#3342) _Thanks @MCF_
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
