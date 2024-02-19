@@ -3,8 +3,10 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
-## ScottPlot 5.0.22 (Not yet on NuGet)
-* Plot: Fix GetPixel bug when ScaleFactor was not 1.0 (#3327) _Thanks @MCF_
+## ScottPlot 5.0.22
+_Not yet on NuGet..._
+* Rendering: Added additional options for gradient fills (#3324) _Thanks @KroMignon_
+* Plot: Improve `GetPixel()` behavior when a custom `ScaleFactor` is in use (#3327) _Thanks @MCF_
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
