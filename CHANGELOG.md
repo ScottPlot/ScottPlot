@@ -12,6 +12,7 @@ _Not yet on NuGet..._
 * Controls: Created `AddSeparator()` to facilitate creation of custom context menus (#3342) _Thanks @MCF_
 * Live Data: Improved indexing of the `Wipe` view to prevent race conditions when displaying live data (#3352) _Thanks @drolevar_
 * Radial Gauge Plot: Added a new plot type for displaying categorical data as circular gauges (#3358) _Thanks @arthurits_
+* Avalonia: Redraw plots using a non-blocking background thread to improve multi-axis behavior (#3373, #3359) _Thanks @oktrue, @BendRocks, and @ykarpeev_
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
