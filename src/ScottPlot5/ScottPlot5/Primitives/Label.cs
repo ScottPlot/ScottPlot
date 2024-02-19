@@ -24,9 +24,15 @@ public class Label
 
     public bool UseCachedTypefaces = true;
     private SKTypeface? CachedTypeface = null;
-    private SKTypeface Typeface => (UseCachedTypefaces && CachedTypeface is not null)
-        ? CachedTypeface
-        : FontStyle.CreateTypeface(FontName, Bold, Italic);
+    private SKTypeface Typeface
+    {
+        get
+        {
+            if (UseCachedTypefaces)
+                return CachedTypeface ??= FontStyle.CreateTypeface(FontName, Bold, Italic);
+            return FontStyle.CreateTypeface(FontName, Bold, Italic);
+        }
+    }
 
     private string _FontName = Fonts.Default;
     public string FontName
