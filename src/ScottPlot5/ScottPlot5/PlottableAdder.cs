@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
+using ScottPlot.Plottable;
 
 namespace ScottPlot;
 
@@ -471,6 +472,16 @@ public class PlottableAdder(Plot plot)
     {
         Plot.PlottableList.Add(plottable);
         return plottable;
+    }
+
+    public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)
+    {
+        Color[] colors = Enumerable.Range(0, values.Count()).Select(x => Palette.GetColor(x)).ToArray();
+        RadialGaugePlot radialGaugePlot = new(values.ToArray(), colors);
+        Plot.PlottableList.Add(radialGaugePlot);
+        Plot.HideGrid();
+        Plot.Layout.Frameless();
+        return radialGaugePlot;
     }
 
     public Rectangle Rectangle(CoordinateRect rect)
