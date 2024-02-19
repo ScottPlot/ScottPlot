@@ -28,6 +28,9 @@ public class Legend(Plot plot)
 
     private readonly Plot Plot = plot;
 
+    public void Show() => IsVisible = true;
+    public void Hide() => IsVisible = false;
+
     public void Render(RenderPack rp)
     {
         if (!IsVisible)
