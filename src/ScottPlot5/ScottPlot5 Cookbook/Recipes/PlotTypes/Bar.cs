@@ -23,6 +23,28 @@ public class Bar : ICategory
         }
     }
 
+    public class BarLegend : RecipeBase
+    {
+        public override string Name => "Bar Plot Legend";
+        public override string Description => "A collection of bars can appear in the legend as a single item.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs1 = { 1, 2, 3, 4 };
+            double[] ys1 = { 5, 10, 7, 13 };
+            var bars1 = myPlot.Add.Bars(xs1, ys1);
+            bars1.Label = "Alpha";
+
+            double[] xs2 = { 6, 7, 8, 9 };
+            double[] ys2 = { 7, 12, 9, 15 };
+            var bars2 = myPlot.Add.Bars(xs2, ys2);
+            bars2.Label = "Beta";
+
+            myPlot.ShowLegend(Alignment.UpperLeft);
+        }
+    }
+
     public class BarPosition : RecipeBase
     {
         public override string Name => "Bar Positioning";
@@ -168,13 +190,9 @@ public class Bar : ICategory
             // build the legend manually
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Location = Alignment.UpperLeft;
-
-            LegendItem[] legendItems =
-            {
-                new() { Label = "Monday", FillColor = palette.GetColor(0) },
-                new() { Label = "Tuesday", FillColor = palette.GetColor(1) },
-                new() { Label = "Wednesday", FillColor = palette.GetColor(2) }
-            };
+            myPlot.Legend.ManualItems.Add(new() { Label = "Monday", FillColor = palette.GetColor(0) });
+            myPlot.Legend.ManualItems.Add(new() { Label = "Tuesday", FillColor = palette.GetColor(1) });
+            myPlot.Legend.ManualItems.Add(new() { Label = "Wednesday", FillColor = palette.GetColor(2) });
 
             // show group labels on the bottom axis
             Tick[] ticks =

@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Radial Gauge Plot: Added a new plot type for displaying categorical data as circular gauges (#3358) _Thanks @arthurits_
 * Generate: Improved `RandomNormalSample()` behavior by fixing an off-by-one indexing error _Thanks @DominicBeer_
 * Avalonia: Redraw plots using a non-blocking background thread to improve multi-axis behavior (#3373, #3359) _Thanks @oktrue, @BendRocks, and @ykarpeev_
+* Bar plot: Added a `Label` property to allow a collection of bars to be displayed as a single item in the legend (#3375) _Thanks @fhannan-ti_
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
