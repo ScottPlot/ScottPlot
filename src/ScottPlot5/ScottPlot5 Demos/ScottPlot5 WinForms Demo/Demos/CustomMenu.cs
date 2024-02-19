@@ -58,6 +58,8 @@ public partial class CustomMenu : Form, IDemoWindow
             formsplot1.Refresh();
         });
 
+        formsPlot1.Menu.AddSeparator();
+
         formsPlot1.Menu.Add("Clear", (formsplot1) =>
         {
             formsplot1.Plot.Clear();
