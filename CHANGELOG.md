@@ -3,6 +3,16 @@
 * https://scottplot.net/versions/ describes the major versions of ScottPlot
 * https://scottplot.net/changelog/ is a formatted version of this document
 
+## ScottPlot 5.0.22
+_Not yet on NuGet..._
+* Rendering: Added additional options for gradient fills (#3324) _Thanks @KroMignon_
+* Plot: Improve `GetPixel()` behavior when a custom `ScaleFactor` is in use (#3327) _Thanks @MCF_
+* Fonts: Improve behavior of cached typefaces (#3334, #3335) _Thanks @Milkitic_
+* Legend: Added support for horizontal orientation (#3341, #3302, #3280) _Thanks @KroMignon_
+* Controls: Created `AddSeparator()` to facilitate creation of custom context menus (#3342) _Thanks @MCF_
+* Live Data: Improved indexing of the `Wipe` view to prevent race conditions when displaying live data (#3352) _Thanks @drolevar_
+* Radial Gauge Plot: Added a new plot type for displaying categorical data as circular gauges (#3358) _Thanks @arthurits_
+
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
 * RenderManager: Exposed `EnableRendering` to facilitate render locking in async environments (#3264, #3213, #3095) _Thanks @kagerouttepaso_
