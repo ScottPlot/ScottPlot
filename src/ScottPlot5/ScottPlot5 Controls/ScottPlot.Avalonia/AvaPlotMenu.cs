@@ -38,10 +38,16 @@ public class AvaPlotMenu : IPlotMenu
 
         foreach (var curr in ContextMenuItems)
         {
-            var menuItem = new MenuItem { Header = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
-
-            items.Add(menuItem);
+            if (curr.IsSeparator)
+            {
+                items.Add(new MenuItem { Header = "-" });
+            }
+            else
+            {
+                var menuItem = new MenuItem { Header = curr.Label };
+                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                items.Add(menuItem);
+            }
         }
 
         return new()
@@ -102,5 +108,10 @@ public class AvaPlotMenu : IPlotMenu
     public void Add(string Label, Action<IPlotControl> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
+
+    public void AddSeparator()
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { IsSeparator = true });
     }
 }

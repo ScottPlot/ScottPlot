@@ -83,4 +83,45 @@ public class Legend : ICategory
             myPlot.Legend.Location = Alignment.UpperCenter;
         }
     }
+
+    public class LegendOrientation : RecipeBase
+    {
+        public override string Name => "Legend Orientation";
+        public override string Description => "Legend items may be arranged horizontally instead of vertically";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51, phase: .2));
+            var sig2 = myPlot.Add.Signal(Generate.Sin(51, phase: .4));
+            var sig3 = myPlot.Add.Signal(Generate.Sin(51, phase: .6));
+
+            sig1.Label = "Signal 1";
+            sig2.Label = "Signal 2";
+            sig3.Label = "Signal 3";
+
+            myPlot.Legend.IsVisible = true;
+            myPlot.Legend.Orientation = Orientation.Horizontal;
+        }
+    }
+
+    public class LegendWrapping : RecipeBase
+    {
+        public override string Name => "Legend Wrapping";
+        public override string Description => "Legend items may wrap to improve display for a large number of items";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                var sig = myPlot.Add.Signal(Generate.Sin(51, phase: .02 * i));
+                sig.Label = $"Signal #{i}";
+            }
+
+            myPlot.Legend.IsVisible = true;
+            myPlot.Legend.Orientation = Orientation.Horizontal;
+            myPlot.Legend.AllowMultiline = true;
+        }
+    }
 }
