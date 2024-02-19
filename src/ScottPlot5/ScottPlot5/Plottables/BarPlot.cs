@@ -8,8 +8,6 @@ public class BarPlot : IPlottable
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public LineStyle LineStyle { get; set; } = new();
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
 
     public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
 
@@ -53,7 +51,24 @@ public class BarPlot : IPlottable
         Bars = bars;
     }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems
+    {
+        get
+        {
+            if (!Bars.Any())
+            {
+                return LegendItem.None;
+            }
+
+            LegendItem item = new()
+            {
+                Label = Label,
+                FillColor = Bars.First().FillColor,
+            };
+
+            return LegendItem.Single(item);
+        }
+    }
 
     public AxisLimits GetAxisLimits()
     {
