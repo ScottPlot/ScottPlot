@@ -41,10 +41,16 @@ public class EtoPlotMenu : IPlotMenu
         ContextMenu menu = new();
         foreach (var curr in ContextMenuItems)
         {
-            var menuItem = new ButtonMenuItem() { Text = curr.Label };
-            menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
-
-            menu.Items.Add(menuItem);
+            if (curr.IsSeparator)
+            {
+                menu.Items.AddSeparator();
+            }
+            else
+            {
+                var menuItem = new ButtonMenuItem() { Text = curr.Label };
+                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                menu.Items.Add(menuItem);
+            }
         }
 
         return menu;
@@ -119,5 +125,10 @@ public class EtoPlotMenu : IPlotMenu
     public void Add(string Label, Action<IPlotControl> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
+
+    public void AddSeparator()
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { IsSeparator = true });
     }
 }

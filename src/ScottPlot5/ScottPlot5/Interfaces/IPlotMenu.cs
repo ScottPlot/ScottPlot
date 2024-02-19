@@ -8,5 +8,7 @@ public interface IPlotMenu
 
     public void Add(string Label, Action<IPlotControl> action);
 
+    public void AddSeparator();
+
     void ShowContextMenu(Pixel pixel);
 }

@@ -52,10 +52,17 @@ public class FormsPlotMenu : IPlotMenu
 
         foreach (ContextMenuItem item in ContextMenuItems)
         {
-            ToolStripMenuItem menuItem = new(item.Label);
-            menuItem.Click += (s, e) => item.OnInvoke(ThisControl);
+            if (item.IsSeparator)
+            {
+                menu.Items.Add(new ToolStripSeparator());
+            }
+            else
+            {
+                ToolStripMenuItem menuItem = new(item.Label);
+                menuItem.Click += (s, e) => item.OnInvoke(ThisControl);
 
-            menu.Items.Add(menuItem);
+                menu.Items.Add(menuItem);
+            }
         }
 
         return menu;
@@ -125,5 +132,10 @@ public class FormsPlotMenu : IPlotMenu
     public void Add(string Label, Action<IPlotControl> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
+    }
+
+    public void AddSeparator()
+    {
+        ContextMenuItems.Add(new ContextMenuItem() { IsSeparator = true });
     }
 }
