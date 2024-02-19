@@ -6,6 +6,7 @@
 ## ScottPlot 5.0.22
 _Not yet on NuGet..._
 * Rendering: Added additional options for gradient fills (#3324) _Thanks @KroMignon_
+* Plot: Improve `GetPixel()` behavior when a custom `ScaleFactor` is in use (#3327) _Thanks @MCF_
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
