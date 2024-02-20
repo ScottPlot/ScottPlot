@@ -231,19 +231,18 @@ public readonly struct Color
 
     public Color WithLightness(float lightness = .5f)
     {
-        (float h, float s, float l) = ToHSL();
+        (float h, float s, float _) = ToHSL();
         return FromHSL(h, s, lightness);
     }
 
     public Color Lighten(float fraction = .5f)
     {
-        (float h, float s, float l) = ToHSL();
-        return FromHSL(h, s, l + (1 - l) * fraction);
+        return new Color((byte)(R + (255 - R) * fraction), (byte)(G + (255 - G) * fraction), (byte)(B + (255 - B) * fraction), Alpha);
     }
 
     public Color Darken(float fraction = .5f)
     {
-        (float h, float s, float l) = ToHSL();
-        return FromHSL(h, s, l * fraction);
+        fraction = 1 - fraction;
+        return new Color((byte)(R * fraction), (byte)(G * fraction), (byte)(B * fraction), Alpha);
     }
 }
