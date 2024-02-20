@@ -146,49 +146,40 @@ public readonly struct Color
 
     public (float h, float s, float l) ToHSL()
     {
-        // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
+        // Converter adapted from http://en.wikipedia.org/wiki/HSL_color_space
+        float r = Red / 255f;
+        float g = Green / 255f;
+        float b = Blue / 255f;
 
-        float v = Math.Max(Red, Green);
-        v = Math.Max(v, Blue);
-
-        float m = Math.Min(Red, Green);
-        m = Math.Min(m, Blue);
+        float max = Math.Max(Math.Max(r, g), b);
+        float min = Math.Min(Math.Min(r, g), b);
 
         float h, s, l;
-        l = (m + v) / 2.0f;
+        l = (min + max) / 2.0f;
         if (l <= 0.0)
         {
             return (0, 0, 0);
         }
 
-        float vm = v - m;
-        s = vm;
+        float delta = max - min;
+        s = delta;
         if (s <= 0.0)
         {
             return (0, 0, l);
         }
 
-        s /= l <= 0.5f ? v + m : 2.0f - v - m;
+        s = (l > 0.5f) ? delta / (2.0f - delta) : delta / (max + min);
 
-        float r2 = (v - Red) / vm;
-        float g2 = (v - Green) / vm;
-        float b2 = (v - Blue) / vm;
+        if (r > g && r > b)
+            h = (g - b) / delta + (g < b ? 6.0f : 0.0f);
 
-        if (Red == v)
-        {
-            h = Green == m ? 5.0f + b2 : 1.0f - g2;
-        }
-        else if (Green == v)
-        {
-            h = Blue == m ? 1.0f + r2 : 3.0f - b2;
-        }
+        else if (g > b)
+            h = (b - r) / delta + 2.0f;
+
         else
-        {
-            h = Red == m ? 3.0f + g2 : 5.0f - r2;
-        }
+            h = (r - g) / delta + 4.0f;
 
         h /= 6.0f;
-
         return (h, s, l);
     }
 
