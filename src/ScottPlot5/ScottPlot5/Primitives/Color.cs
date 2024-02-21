@@ -1,5 +1,19 @@
 ﻿namespace ScottPlot;
 
+internal static class ByteExtension
+{
+    static public byte Lighten(this byte color, float fraction)
+    {
+        var fColor = color + (255 - color) * fraction;
+        return (byte)Math.Min(Math.Max(fColor, 0), 255);
+    }
+    static public byte Darken(this byte color, float fraction)
+    {
+        var fColor = color * fraction;
+        return (byte)Math.Min(Math.Max(fColor, 0), 255);
+    }
+}
+
 public readonly struct Color
 {
     public readonly byte Red;
@@ -223,17 +237,22 @@ public readonly struct Color
     public Color WithLightness(float lightness = .5f)
     {
         (float h, float s, float _) = ToHSL();
-        return FromHSL(h, s, lightness);
+        return FromHSL(h, s, Math.Min(Math.Max(lightness, 0f), 1f));
     }
 
     public Color Lighten(float fraction = .5f)
     {
-        return new Color((byte)(R + (255 - R) * fraction), (byte)(G + (255 - G) * fraction), (byte)(B + (255 - B) * fraction), Alpha);
+        if (fraction < 0)
+            return Darken(-fraction);
+        fraction = Math.Min(1f, fraction);
+        return new Color(R.Lighten(fraction), G.Lighten(fraction), B.Lighten(fraction), Alpha);
     }
 
     public Color Darken(float fraction = .5f)
     {
-        fraction = 1 - fraction;
-        return new Color((byte)(R * fraction), (byte)(G * fraction), (byte)(B * fraction), Alpha);
+        if (fraction < 0)
+            return Lighten(-fraction);
+        fraction = Math.Max(0f, 1f - fraction);
+        return new Color(R.Darken(fraction), G.Darken(fraction), B.Darken(fraction), Alpha);
     }
 }
