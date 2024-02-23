@@ -48,14 +48,21 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             .Select(pixelColumnIndex => GetColumnPixels(pixelColumnIndex, columnIndexRange, rp, axes))
             .SelectMany(x => x);
 
+        Pixel[] leftOutsidePoint = PointBefore, rightOutsidePoint = PointAfter;
+        if (axes.XAxis.Range.Span < 0)
+        {
+            leftOutsidePoint = PointAfter;
+            rightOutsidePoint = PointBefore;
+        }
+
         // combine with one extra point before and after
-        Pixel[] points = [.. PointBefore, .. VisiblePoints, .. PointAfter];
+        Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
-        if (PointBefore.Length > 0)
+        if (leftOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateBeforeX(rp, points);
 
-        if (PointAfter.Length > 0)
+        if (rightOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateAfterX(rp, points);
 
         return points;

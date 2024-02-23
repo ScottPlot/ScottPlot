@@ -54,14 +54,21 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             .Select(pxColumn => GetColumnPixelsX(pxColumn, visibileRange, rp, axes))
             .SelectMany(x => x);
 
+        Pixel[] leftOutsidePoint = PointBefore, rightOutsidePoint = PointAfter;
+        if (axes.XAxis.Range.Span < 0)
+        {
+            leftOutsidePoint = PointAfter;
+            rightOutsidePoint = PointBefore;
+        }
+
         // combine with one extra point before and after
-        Pixel[] points = [.. PointBefore, .. VisiblePoints, .. PointAfter];
+            Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
-        if (PointBefore.Length > 0)
+        if (leftOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateBeforeX(rp, points);
 
-        if (PointAfter.Length > 0)
+        if (rightOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateAfterX(rp, points);
 
         return points;
@@ -79,14 +86,21 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             .Select(pxRow => GetColumnPixelsY(pxRow, visibleRange, rp, axes))
             .SelectMany(x => x);
 
+        Pixel[] bottomOutsidePoint = PointBefore, topOutsidePoint = PointAfter;
+        if (axes.YAxis.Range.Span < 0)
+        {
+            bottomOutsidePoint = PointAfter;
+            topOutsidePoint = PointBefore;
+        }
+
         // combine with one extra point before and after
-        Pixel[] points = [.. PointBefore, .. VisiblePoints, .. PointAfter];
+        Pixel[] points = [.. bottomOutsidePoint, .. VisiblePoints, .. topOutsidePoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
-        if (PointBefore.Length > 0)
+        if (bottomOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateBeforeY(rp, points);
 
-        if (PointAfter.Length > 0)
+        if (topOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateAfterY(rp, points);
 
         return points;
