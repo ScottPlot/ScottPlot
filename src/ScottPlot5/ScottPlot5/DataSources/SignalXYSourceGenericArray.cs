@@ -19,7 +19,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     {
         if (xs.Length != ys.Length)
         {
-            throw new InvalidOperationException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
         }
 
         Xs = xs;
