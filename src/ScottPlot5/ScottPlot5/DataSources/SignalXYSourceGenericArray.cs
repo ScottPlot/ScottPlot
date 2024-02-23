@@ -69,7 +69,10 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double min = NumericConversion.GenericToDouble(Ys, index1);
         double max = NumericConversion.GenericToDouble(Ys, index1);
 
-        for (int i = index1; i <= index2; i++)
+        var minindex = Math.Min(index1, index2);
+        var maxindex = Math.Max(index1, index2);
+
+        for (int i = minindex; i <= maxindex; i++)
         {
             double value = NumericConversion.GenericToDouble(Ys, i);
             min = Math.Min(value, min);
