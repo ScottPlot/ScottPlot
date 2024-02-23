@@ -7,7 +7,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     public bool Rotated
     {
         get => false;
-        set => throw new NotImplementedException("rotation is not yet supported for generic SignalXY plots");
+        set => throw new NotImplementedException("rotation is not yet supported for generic SignalXY plots (try using doubles)");
     }
 
     public double XOffset { get; set; } = 0;
