@@ -351,6 +351,14 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Remove the given Panel from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Axes.Panels.Remove(panel);
+    }
+
+    /// <summary>
     /// Remove all items of a specific type from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(Type plotType)
@@ -460,6 +468,17 @@ public class Plot : IDisposable
     /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
     /// </summary>
     public void YLabel(string label, float? size = null)
+    {
+        Axes.Left.Label.Text = label;
+        if (size.HasValue)
+            Axes.Left.Label.FontSize = size.Value;
+    }
+
+    /// <summary>
+    /// Shortcut to set text of the <see cref="BottomAxis"/> Label
+    /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
+    /// </summary>
+    public void Panel(string label, float? size = null)
     {
         Axes.Left.Label.Text = label;
         if (size.HasValue)
