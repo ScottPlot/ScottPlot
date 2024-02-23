@@ -33,7 +33,9 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double xMax = NumericConversion.GenericToDouble(Xs, MaximumIndex) + XOffset;
         CoordinateRange xRange = new(xMin, xMax);
         CoordinateRange yRange = GetRangeY(MinimumIndex, MaximumIndex);
-        return new AxisLimits(xRange, yRange);
+        return Rotated
+            ? new AxisLimits(yRange, xRange)
+            : new AxisLimits(xRange, yRange);
     }
 
     public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes)
