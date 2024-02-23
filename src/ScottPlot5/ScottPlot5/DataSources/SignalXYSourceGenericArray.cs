@@ -99,9 +99,12 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         NumericConversion.DoubleToGeneric(x - XOffset, out TX x2);
         int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x2);
 
+        // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
+        // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
+        // If x is above the max Xs, BinarySearch returns -maxIndex. Bitwise negation of this value returns maxIndex + 1 (i.e., the position after the last index). However, this index is beyond the array bounds, so we return the final index instead.
         if (index < 0)
         {
-            index = ~index; // read BinarySearch() docs
+            index = index < -indexRange.Max ? indexRange.Max : ~index; // read BinarySearch() docs
         }
 
         return index;
