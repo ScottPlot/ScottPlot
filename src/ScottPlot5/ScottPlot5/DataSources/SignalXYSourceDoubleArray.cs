@@ -211,14 +211,14 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointX(IAxes axes)
     {
-        int pointBeforeIndex = GetIndex(axes.XAxis.Min);
+        int firstPointIndex = GetIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
-        if (pointBeforeIndex > MinimumIndex)
+        if (firstPointIndex > MinimumIndex)
         {
-            float beforeX = axes.GetPixelX(Xs[pointBeforeIndex - 1] + XOffset);
-            float beforeY = axes.GetPixelY(Ys[pointBeforeIndex - 1] + YOffset);
+            float beforeX = axes.GetPixelX(Xs[firstPointIndex - 1] + XOffset);
+            float beforeY = axes.GetPixelY(Ys[firstPointIndex - 1] + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
-            return ([beforePoint], pointBeforeIndex);
+            return ([beforePoint], firstPointIndex);
         }
         else
         {
@@ -232,14 +232,14 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointY(IAxes axes)
     {
-        int pointBeforeIndex = GetIndex(axes.YAxis.Min);
+        int firstPointIndex = GetIndex(axes.YAxis.Range.Span > 0? axes.YAxis.Min: axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
 
-        if (pointBeforeIndex > MinimumIndex)
+        if (firstPointIndex > MinimumIndex)
         {
-            float beforeX = axes.GetPixelX(Ys[pointBeforeIndex - 1] + XOffset);
-            float beforeY = axes.GetPixelY(Xs[pointBeforeIndex - 1] + YOffset);
+            float beforeX = axes.GetPixelX(Ys[firstPointIndex - 1] + XOffset);
+            float beforeY = axes.GetPixelY(Xs[firstPointIndex - 1] + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
-            return ([beforePoint], pointBeforeIndex);
+            return ([beforePoint], firstPointIndex);
         }
         else
         {
@@ -253,14 +253,14 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int lastIndex) GetLastPointX(IAxes axes)
     {
-        int pointAfterIndex = GetIndex(axes.XAxis.Max);
+        int lastPointIndex = GetIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
-        if (pointAfterIndex <= MaximumIndex)
+        if (lastPointIndex < MaximumIndex)
         {
-            float afterX = axes.GetPixelX(Xs[pointAfterIndex] + XOffset);
-            float afterY = axes.GetPixelY(Ys[pointAfterIndex] + YOffset);
+            float afterX = axes.GetPixelX(Xs[lastPointIndex+1] + XOffset);
+            float afterY = axes.GetPixelY(Ys[lastPointIndex+1] + YOffset);
             Pixel afterPoint = new(afterX, afterY);
-            return ([afterPoint], pointAfterIndex);
+            return ([afterPoint], lastPointIndex);
         }
         else
         {
@@ -274,14 +274,14 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int lastIndex) GetLastPointY(IAxes axes)
     {
-        int pointAfterIndex = GetIndex(axes.YAxis.Max);
+        int lastPointIndex = GetIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
-        if (pointAfterIndex <= MaximumIndex)
+        if (lastPointIndex < MaximumIndex)
         {
-            float afterX = axes.GetPixelX(Ys[pointAfterIndex] + XOffset);
-            float afterY = axes.GetPixelY(Xs[pointAfterIndex] + YOffset);
+            float afterX = axes.GetPixelX(Ys[lastPointIndex+1] + XOffset);
+            float afterY = axes.GetPixelY(Xs[lastPointIndex+1] + YOffset);
             Pixel afterPoint = new(afterX, afterY);
-            return ([afterPoint], pointAfterIndex);
+            return ([afterPoint], lastPointIndex);
         }
         else
         {

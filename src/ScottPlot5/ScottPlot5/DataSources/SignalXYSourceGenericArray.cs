@@ -150,16 +150,16 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPoint(IAxes axes)
     {
-        int pointBeforeIndex = GetIndexX(axes.XAxis.Min);
+        int firstPointIndex = GetIndexX(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
-        if (pointBeforeIndex > MinimumIndex)
+        if (firstPointIndex > MinimumIndex)
         {
-            double x = NumericConversion.GenericToDouble(Xs, pointBeforeIndex - 1) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, pointBeforeIndex - 1) + YOffset;
+            double x = NumericConversion.GenericToDouble(Xs, firstPointIndex - 1) + XOffset;
+            double y = NumericConversion.GenericToDouble(Ys, firstPointIndex - 1) + YOffset;
             float beforeX = axes.GetPixelX(x);
             float beforeY = axes.GetPixelY(y);
             Pixel beforePoint = new(beforeX, beforeY);
-            return ([beforePoint], pointBeforeIndex);
+            return ([beforePoint], firstPointIndex);
         }
         else
         {
@@ -173,16 +173,16 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int lastIndex) GetLastPoint(IAxes axes)
     {
-        int pointAfterIndex = GetIndexX(axes.XAxis.Max);
+        int lastPointIndex = GetIndexX(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
-        if (pointAfterIndex <= MaximumIndex)
+        if (lastPointIndex < MaximumIndex)
         {
-            double x = NumericConversion.GenericToDouble(Xs, pointAfterIndex) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, pointAfterIndex) + YOffset;
+            double x = NumericConversion.GenericToDouble(Xs, lastPointIndex) + XOffset;
+            double y = NumericConversion.GenericToDouble(Ys, lastPointIndex) + YOffset;
             float afterX = axes.GetPixelX(x);
             float afterY = axes.GetPixelY(y);
             Pixel afterPoint = new(afterX, afterY);
-            return ([afterPoint], pointAfterIndex);
+            return ([afterPoint], lastPointIndex);
         }
         else
         {
