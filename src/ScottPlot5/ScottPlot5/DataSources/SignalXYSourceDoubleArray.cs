@@ -153,7 +153,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         double end = start + unitsPerPixelX;
         int startIndex = GetIndex(start, rng);
         int endIndex = GetIndex(end, rng);
-        int pointsInRange = endIndex - startIndex;
+        int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
         {
@@ -164,11 +164,11 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (pointsInRange > 1)
         {
-            CoordinateRange yRange = GetRange(startIndex, endIndex - 1);
+            int lastIndex = startIndex < endIndex ? endIndex -1 : endIndex + 1;
             CoordinateRange yRange = GetRangeY(startIndex, lastIndex); //YOffset is added in GetRangeY
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
-            yield return new Pixel(xPixel, axes.GetPixelY(Ys[endIndex - 1] + YOffset)); // exit
+            yield return new Pixel(xPixel, axes.GetPixelY(Ys[lastIndex] + YOffset)); // exit
         }
     }
 
@@ -186,7 +186,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         double end = start + unitsPerPixelY;
         int startIndex = GetIndex(start, rng);
         int endIndex = GetIndex(end, rng);
-        int pointsInRange = endIndex - startIndex;
+        int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
         {
@@ -197,11 +197,11 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (pointsInRange > 1)
         {
-            CoordinateRange yRange = GetRange(startIndex, endIndex - 1);
+            int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex + 1;
             CoordinateRange yRange = GetRangeY(startIndex, lastIndex);
             yield return new Pixel(axes.GetPixelX(yRange.Min), yPixel); // min
             yield return new Pixel(axes.GetPixelX(yRange.Max), yPixel); // max
-            yield return new Pixel(axes.GetPixelX(Ys[endIndex - 1] + XOffset), yPixel); // exit
+            yield return new Pixel(axes.GetPixelX(Ys[lastIndex] + XOffset), yPixel); // exit
         }
     }
 

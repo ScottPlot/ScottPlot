@@ -124,7 +124,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double end = start + unitsPerPixelX;
         int startIndex = GetIndex(start, rng);
         int endIndex = GetIndex(end, rng);
-        int pointsInRange = endIndex - startIndex;
+        int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
         {
@@ -136,8 +136,9 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         if (pointsInRange > 1)
         {
-            double yEnd = NumericConversion.GenericToDouble(Ys, endIndex - 1);
-            CoordinateRange yRange = GetRangeY(startIndex, endIndex - 1);
+            int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex + 1;
+            double yEnd = NumericConversion.GenericToDouble(Ys, lastIndex);
+            CoordinateRange yRange = GetRangeY(startIndex, lastIndex); //YOffset is added in GetRangeY
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
             yield return new Pixel(xPixel, axes.GetPixelY(yEnd) + YOffset); // exit
