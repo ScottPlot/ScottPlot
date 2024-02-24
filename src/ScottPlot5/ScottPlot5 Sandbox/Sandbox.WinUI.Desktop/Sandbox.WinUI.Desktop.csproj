@@ -17,7 +17,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
-		<ProjectReference Include="..\..\ScottPlot5\Sandbox\Sandbox.WPF.csproj"
     </ItemGroup>
 
 </Project>

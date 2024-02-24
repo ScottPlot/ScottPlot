@@ -475,17 +475,6 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Shortcut to set text of the <see cref="BottomAxis"/> Label
-    /// Assign properties of <see cref="BottomAxis"/> Label to customize size, color, font, etc.
-    /// </summary>
-    public void Panel(string label, float? size = null)
-    {
-        Axes.Left.Label.Text = label;
-        if (size.HasValue)
-            Axes.Left.Label.FontSize = size.Value;
-    }
-
-    /// <summary>
     /// Return the first default grid in use.
     /// Throws an exception if no default grids exist.
     /// </summary>
