@@ -215,7 +215,7 @@ public class AxisManager
     {
         yAxis.Min = bottom;
         yAxis.Max = top;
-        AutoScaler.InvertedY = bottom > top? true : false;
+        AutoScaler.InvertedY = bottom > top ? true : false;
     }
 
     public void SetLimitsX(double left, double right)

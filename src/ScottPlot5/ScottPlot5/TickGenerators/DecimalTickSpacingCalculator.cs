@@ -7,7 +7,7 @@ public class DecimalTickSpacingCalculator
     public double[] GenerateTickPositions(CoordinateRange range, PixelLength axisLength, PixelLength maxLabelLength)
     {
         var AbsSpan = Math.Abs(range.Span);
-        var RangeMin = Math.Min(range.Min,range.Max);
+        var RangeMin = Math.Min(range.Min, range.Max);
         double tickSpacing = GetIdealTickSpacing(range, axisLength, maxLabelLength);
 
         double firstTickOffset = RangeMin % tickSpacing;
