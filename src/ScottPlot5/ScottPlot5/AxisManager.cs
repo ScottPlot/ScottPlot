@@ -208,12 +208,14 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
+        AutoScaler.InvertedX = left > right ? true : false;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
     {
         yAxis.Min = bottom;
         yAxis.Max = top;
+        AutoScaler.InvertedY = bottom > top? true : false;
     }
 
     public void SetLimitsX(double left, double right)
