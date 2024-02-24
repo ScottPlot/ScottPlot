@@ -15,6 +15,9 @@ public class Plot : IDisposable
     public LayoutManager Layout { get; private set; }
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
+    public SKBitmap? DataBackgroundImage { get; set; } = null; 
+    public Color DataBackgroundImageColor { get; set; } = Colors.White; 
+
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
     public float ScaleFactor { get; set; } = 1.0f;
 
@@ -38,6 +41,7 @@ public class Plot : IDisposable
 
     public void Dispose()
     {
+        DataBackgroundImage?.Dispose();
         PlottableList.Clear();
         Axes.Clear();
     }

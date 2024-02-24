@@ -25,6 +25,30 @@ public class PlotStyler
         Plot.FigureBackground = figure;
         Plot.DataBackground = data;
     }
+    
+    /// <summary>
+    /// Apply a color to the data frame background image
+    /// </summary>
+    public void ColorDataBackgroundImage(Color color)
+    {
+        Plot.DataBackgroundImageColor = color;
+    }
+
+    /// <summary>
+    /// Apply a background image to the data frame
+    /// </summary>
+    public void DataBackgroundImage(string filePath)
+    {
+        Plot.DataBackgroundImage = SKBitmap.Decode(filePath);
+    }
+
+    /// <summary>
+    /// Apply a background image to the data frame
+    /// </summary>
+    public void DataBackgroundImage(byte[] imageByteData)
+    {
+        Plot.DataBackgroundImage = SKBitmap.Decode(imageByteData);
+    }
 
     /// <summary>
     /// Apply a single color to all components of each axis (label, tick labels, tick marks, and frame)
