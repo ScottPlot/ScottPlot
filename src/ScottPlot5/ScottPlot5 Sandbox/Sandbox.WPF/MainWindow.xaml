@@ -9,5 +9,5 @@
         WindowStartupLocation="CenterScreen"
         Title="ScottPlot 5 - WPF Sandbox" 
         Height="600" Width="800">
-	<ScottPlot:WpfPlot Name="WpfPlot1" />
+        <ScottPlot:WpfPlot Name="WpfPlot1" />
 </Window>
