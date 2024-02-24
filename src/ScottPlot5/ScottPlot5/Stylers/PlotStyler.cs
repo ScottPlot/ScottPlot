@@ -25,7 +25,7 @@ public class PlotStyler
         Plot.FigureBackground = figure;
         Plot.DataBackground = data;
     }
-    
+
     /// <summary>
     /// Apply a color to the data frame background image
     /// </summary>

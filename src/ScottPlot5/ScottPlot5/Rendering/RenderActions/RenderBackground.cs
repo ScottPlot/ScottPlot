@@ -6,9 +6,9 @@ public class RenderBackground : IRenderAction
     {
         using SKPaint backgroundPaint = new() { Color = rp.Plot.DataBackground.ToSKColor() };
 
-        SKRect skDataRect = rp.DataRect.ToSKRect(); 
+        SKRect skDataRect = rp.DataRect.ToSKRect();
         rp.Canvas.DrawRect(skDataRect, backgroundPaint);
-        
+
         if (rp.Plot.DataBackgroundImage != null)
         {
             //draw background image centered in dataRect
@@ -17,7 +17,7 @@ public class RenderBackground : IRenderAction
                 X = skDataRect.MidX - rp.Plot.DataBackgroundImage.Width / 2f,
                 Y = skDataRect.MidY - rp.Plot.DataBackgroundImage.Height / 2f
             };
-            
+
             using SKPaint backgroundImagePaint = new() { Color = rp.Plot.DataBackgroundImageColor.ToSKColor() };
             rp.Canvas.DrawBitmap(rp.Plot.DataBackgroundImage, drawPos, backgroundImagePaint);
         }
