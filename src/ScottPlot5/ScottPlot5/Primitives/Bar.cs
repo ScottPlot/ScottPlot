@@ -1,23 +1,6 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// Double constants that represent bar width values to properly "touch" bars when using OADate indices 
-/// for a Plot's x-axis displaying a BarPlot. Using these constants when setting a new bars width value will prevent overlap and align 
-/// the plottables in an adjacent fashion. 
-/// </summary>
-public static class OABarWidths
-{
-    public const double OADATE_BAR_WIDTH_1_SECOND = 0.00001157;
-    public const double OADATE_BAR_WIDTH_30_SECONDS = 0.000347;
-    public const double OADATE_BAR_WIDTH_1_MINUTE = 0.00069;
-    public const double OADATE_BAR_WIDTH_5_MINUTE = 0.00347;
-    public const double OADATE_BAR_WIDTH_10_MINUTE = 0.00694;
-    public const double OADATE_BAR_WIDTH_30_MINUTE = 0.02083;
-    public const double OADATE_BAR_WIDTH_1_HOUR = 0.04166;
-    public const double OADATE_BAR_WIDTH_1_DAY = 1;
-}
-
-/// <summary>
 /// Represents a single bar in a bar chart
 /// </summary>
 public class Bar
