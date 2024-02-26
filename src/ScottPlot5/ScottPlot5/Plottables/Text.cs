@@ -44,6 +44,12 @@ public class Text : IPlottable
         set => Label.FontName = value;
     }
 
+    public float FontSpacing
+    {
+        get => Label.FontSpacing;
+        set => Label.FontSpacing = value;
+    }
+
     public Text()
     {
 
