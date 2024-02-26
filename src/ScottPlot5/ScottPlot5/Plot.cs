@@ -58,9 +58,23 @@ public class Plot : IDisposable
         // restore mousedown limits
         originalLimits.Apply(this);
 
-        // pan in the direction opposite of the mouse movement
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
+        var axis = GetAxis(mouseDown);
+
+        if (axis != null)
+        {
+            bool horz = axis.IsHorizontal();
+
+            float scaledDelta = horz ? scaledDeltaX : scaledDeltaY;
+            float dataSize = horz ? RenderManager.LastRender.DataRect.Width : RenderManager.LastRender.DataRect.Height;
+
+            axis.Range.PanMouse(scaledDelta, dataSize);
+        }
+        else
+        {
+            // pan in the direction opposite of the mouse movement
+            Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
+            Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
+        }
     }
 
     /// <summary>
@@ -74,9 +88,23 @@ public class Plot : IDisposable
         // restore mousedown limits
         originalLimits.Apply(this);
 
-        // apply zoom for each axis
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
+        var axis = GetAxis(mouseDown);
+
+        if (axis != null)
+        {
+            bool horz = axis.IsHorizontal();
+
+            float pixelDelta = horz ? pixelDeltaX : pixelDeltaY;
+            float dataSize = horz ? RenderManager.LastRender.DataRect.Width : RenderManager.LastRender.DataRect.Height;
+
+            axis.Range.ZoomMouseDelta(pixelDelta, dataSize);
+        }
+        else
+        {
+            // apply zoom for each axis
+            Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
+            Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
+        }
     }
 
     /// <summary>
@@ -85,17 +113,29 @@ public class Plot : IDisposable
     /// </summary>
     public void MouseZoom(double fracX, double fracY, Pixel pixel)
     {
-        Coordinates mouseCoordinate = GetCoordinates(pixel);
-
         MultiAxisLimitManager originalLimits = new(this);
 
         // restore mousedown limits
         originalLimits.Apply(this);
 
-        // apply zoom for each axis
-        Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
+        var axis = GetAxis(pixel);
+
+        if (axis != null)
+        {
+            bool horz = axis.IsHorizontal();
+
+            double frac = horz ? fracX : fracY;
+            float scaledCoord = (horz ? pixel.X : pixel.Y) / ScaleFactor;
+
+            axis.Range.ZoomFrac(frac, axis.GetCoordinate(scaledCoord, RenderManager.LastRender.DataRect));
+        }
+        else
+        {
+            // apply zoom for each axis
+            Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
+            Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
+            Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
+        }
     }
 
     /// <summary>
@@ -189,6 +229,19 @@ public class Plot : IDisposable
         double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
         double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
+    }
+
+    /// <summary>
+    /// Get an axis at a current pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>An axis, if there's one at the <paramref name="pixel" /> location, otherwise null.</returns>
+    public IAxis? GetAxis(Pixel pixel)
+    {
+        var layout = RenderManager.LastRender.Layout;
+
+        var axis = Axes.GetAxes().FirstOrDefault(axis => axis.GetPanelRect(layout.DataRect, layout.PanelSizes[axis], layout.PanelOffsets[axis]).Contains(pixel));
+        return axis;
     }
 
     #endregion
