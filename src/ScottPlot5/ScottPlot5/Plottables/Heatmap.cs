@@ -16,14 +16,47 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// If defined, the this rectangle sets the axis boundaries of heatmap data.
     /// Note that the actual heatmap area is 1 cell larger than this rectangle.
     /// </summary>
-    public CoordinateRect? Extent { get; set; }
+    private CoordinateRect? _extent;
+    public CoordinateRect? Extent
+    {
+        get { return _extent; }
+        set
+        {
+            _extent = value;
+            Update();
+        }
+    }
 
     /// <summary>
     /// This variable controls whether row 0 of the 2D source array is the top or bottom of the heatmap.
     /// When set to false (default), row 0 is the top of the heatmap.
     /// When set to true, row 0 of the source data will be displayed at the bottom.
     /// </summary>
-    public bool FlipVertically { get; set; } = false;
+    private bool _flipRows = false; 
+    public bool FlipRows
+    {
+        get { return _flipRows; }
+        set
+        {
+            _flipRows = value;
+            Update();
+        }
+    }
+    /// <summary>
+    /// This variable controls whether the first sample in each column of the 2D source array is the left or right of the heatmap.
+    /// When set to false (default), sample 0 is the left of the heatmap.
+    /// When set to true, sample 0 of the source data will be displayed at the right.
+    /// </summary>
+    private bool _flipColumns = false;
+    public bool FlipColumns
+    {
+        get { return _flipColumns; }
+        set
+        {
+            _flipColumns = value;
+            Update();
+        }
+    }
 
     /// <summary>
     /// If true, pixels in the final image will be interpolated to give the heatmap a smooth appearance.
@@ -96,7 +129,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
-
+    
     public Heatmap(double[,] intensities)
     {
         Intensities = intensities;
@@ -116,12 +149,16 @@ public class Heatmap : IPlottable, IHasColorAxis
     {
         Range range = GetRange();
         uint[] argb = new uint[Intensities.Length];
+        bool FlipY = FlipRows ^ (ExtentOrDefault.Top < ExtentOrDefault.Bottom);
+        bool FlipX = FlipColumns ^ (ExtentOrDefault.Left > ExtentOrDefault.Right);
+
         for (int y = 0; y < Height; y++)
         {
-            int rowOffset = FlipVertically ? (Height - 1 - y) * Width : y * Width;
+            int rowOffset = FlipY ? (Height - 1 - y) * Width : y * Width;
             for (int x = 0; x < Width; x++)
             {
-                argb[rowOffset + x] = Colormap.GetColor(Intensities[y, x], range).ARGB;
+                int xIndex = FlipX ? (Width - 1 - x) : x;
+                argb[rowOffset + x] = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
             }
         }
 
