@@ -32,7 +32,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// When set to false (default), row 0 is the top of the heatmap.
     /// When set to true, row 0 of the source data will be displayed at the bottom.
     /// </summary>
-    private bool _flipRows = false; 
+    private bool _flipRows = false;
     public bool FlipRows
     {
         get { return _flipRows; }
@@ -129,7 +129,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
-    
+
     public Heatmap(double[,] intensities)
     {
         Intensities = intensities;
