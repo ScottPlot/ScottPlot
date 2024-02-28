@@ -2,6 +2,7 @@
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
+using System.Numerics;
 
 namespace ScottPlot;
 
@@ -329,6 +330,27 @@ public class PlottableAdder(Plot plot)
         Coordinates start = new(x1, y1);
         Coordinates end = new(x2, y2);
         return Line(start, end);
+    }
+
+    public LabelPlot LabelPlot(string text, double x1, double y1, double x2, double y2)
+    {
+        Coordinates start = new(x1, y1);
+        Coordinates end = new(x2, y2);
+        return LabelPlot(text, start, end);
+    }
+
+    public LabelPlot LabelPlot(string text, Coordinates position, Coordinates linkPointPosition)
+    {
+        Plottables.LabelPlot labelPlot = new()
+        {
+            Location = position,
+            LinkLocation = linkPointPosition,
+        };
+        labelPlot.Label.Text = text;
+
+        Plot.PlottableList.Add(labelPlot);
+
+        return labelPlot;
     }
 
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
