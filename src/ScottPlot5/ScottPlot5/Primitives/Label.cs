@@ -20,6 +20,8 @@ public class Label
 
     public float BorderWidth { get; set; } = 1;
 
+    public CoordinateRect LabelRect { get; set; }
+
     // TODO: use a class for cached typeface management
 
     public bool UseCachedTypefaces = true;
@@ -156,6 +158,10 @@ public class Label
         PixelRect textRect = new(0, size.Width, size.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
+
+        var labelCoordinateSize = new CoordinateSize(backgroundRect.Width, backgroundRect.Height);
+        var labelCoordinates = new Coordinates(x, y);
+        LabelRect = new CoordinateRect(labelCoordinates, labelCoordinateSize);
 
         canvas.Save();
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding

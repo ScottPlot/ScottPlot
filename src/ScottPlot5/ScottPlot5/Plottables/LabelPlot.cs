@@ -8,6 +8,7 @@ public class LabelPlot : IPlottable
     public Coordinates LinkLocation { get; set; }
     public readonly Label Label = new();
     public LineStyle LineStyle { get; set; } = new();
+    public bool IsDraggable { get; set; } = true;
 
     public MarkerStyle MarkerStyle { get; set; } = new() { Size = 0 };
     public Color MarkerColor
@@ -37,6 +38,11 @@ public class LabelPlot : IPlottable
     public AxisLimits GetAxisLimits()
     {
         return new AxisLimits(Location);
+    }
+
+    public bool IsUnderMouse(float x, float y)
+    {
+        return IsDraggable && Label.LabelRect.Contains(x, y);
     }
 
     /// <summary>
@@ -92,6 +98,7 @@ public class LabelPlot : IPlottable
     {
         Pixel pixelLocation = Axes.GetPixel(Location);
         Label.Render(rp.Canvas, pixelLocation);
+        
         using SKPaint paint = new();
         CoordinateLine line = new(GetAttachPoint(), LinkLocation);
         PixelLine pxLine = Axes.GetPixelLine(line);
