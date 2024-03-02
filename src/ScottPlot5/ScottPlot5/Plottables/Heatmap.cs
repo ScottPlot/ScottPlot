@@ -92,8 +92,8 @@ public class Heatmap : IPlottable, IHasColorAxis
             {
                 var extent = Extent.Value;
                 //user will provide the extends to the data. The image will be one cell wider and taller so we need to add that on (it is being added on in teh default case).
-                double cellwidth = extent.Width/(Intensities.GetLength(1)-1);
-                double cellheight = extent.Height/ (Intensities.GetLength(0)-1);
+                double cellwidth = extent.Width / (Intensities.GetLength(1) - 1);
+                double cellheight = extent.Height / (Intensities.GetLength(0) - 1);
                 if (extent.Left < extent.Right) extent.Right += cellwidth;
                 if (extent.Left > extent.Right) extent.Left -= cellwidth; //cellwidth will be negative if extent is flipped
                 if (extent.Bottom < extent.Top) extent.Top += cellheight;
