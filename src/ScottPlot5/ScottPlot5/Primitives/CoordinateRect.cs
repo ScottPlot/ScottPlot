@@ -105,15 +105,7 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
 
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
-    public CoordinateRect WithTranslation(Coordinates p)
-    {
-        double newLeft = Left < Right ? Left + p.X : Left - p.X;
-        double newRight = Left < Right ? Right + p.X : Right - p.X;
-        double newBottom = Top > Bottom ? Bottom + p.Y : Bottom - p.Y;
-        double newTop = Top > Bottom ? Top + p.Y : Top - p.Y;
-
-        return new CoordinateRect(newLeft, newRight, newBottom, newTop);
-    }
+    public CoordinateRect WithTranslation(Coordinates p) => new(Left + p.X, Right + p.X, Bottom + p.Y, Top + p.Y);
 
     public override string ToString()
     {
