@@ -4,13 +4,31 @@ public class Heatmap : IPlottable, IHasColorAxis
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IColormap Colormap { get; set; } = new Colormaps.Viridis();
+    private IColormap _colormap { get; set; } = new Colormaps.Viridis();
+    public IColormap Colormap
+    {
+        get { return _colormap; }
+        set
+        {
+            _colormap = value;
+            Update();
+        }
+    }
 
     /// <summary>
     /// Indicates position of the data point relative to the rectangle used to represent it.
     /// An alignment of upper right means the rectangle will appear to the lower left of the point itself.
     /// </summary>
-    public Alignment CellAlignment { get; set; } = Alignment.MiddleCenter;
+    private Alignment _cellAlignment { get; set; } = Alignment.MiddleCenter;
+    public Alignment CellAlignment
+    {
+        get { return _cellAlignment; }
+        set
+        {
+            _cellAlignment = value;
+            Update();
+        }
+    }
 
     /// <summary>
     /// If defined, the this rectangle sets the axis boundaries of heatmap data.
@@ -62,7 +80,16 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// If true, pixels in the final image will be interpolated to give the heatmap a smooth appearance.
     /// If false, the heatmap will appear as individual rectangles with sharp edges.
     /// </summary>
-    public bool Smooth { get; set; } = false;
+    private bool _smooth { get; set; } = false;
+    public bool Smooth
+    {
+        get { return _smooth; }
+        set
+        {
+            _smooth = value;
+            Update();
+        }
+    }
 
     /// <summary>
     /// Actual extent of the heatmap bitmap after alignment has been applied
