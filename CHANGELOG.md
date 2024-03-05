@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * Avalonia: Redraw plots using a non-blocking background thread to improve multi-axis behavior (#3373, #3359) @oktrue, @BendRocks, and @ykarpeev
 * Bar plot: Added a `Label` property to allow a collection of bars to be displayed as a single item in the legend (#3375) @fhannan-ti
 * WPF: Redraw plots using a non-blocking background background thread to improve multi-axis behavior (#3373, #3359, #3381) @drolevar
+* Ellipse: Added `LineWidth`, `LineColor`, and `FillColor` shortcut properties
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
