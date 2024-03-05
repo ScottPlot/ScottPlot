@@ -9,6 +9,7 @@ public class Pie : IPlottable
     public double SliceLabelDistance { get; set; } = 1.2;
     public bool ShowSliceLabels { get; set; } = false;
     public double Padding { get; set; } = 0.2;
+    public double DonutSize { get; set; } = 0;
 
     public IAxes Axes { get; set; } = new Axes();
 
@@ -94,6 +95,14 @@ public class Pie : IPlottable
             rp.Canvas.DrawPath(path, paint);
 
             path.Reset();
+        }        
+
+        if (DonutSize > 0)
+        {
+            float rx = Axes.GetPixelX(radius) - Axes.GetPixelX(0);
+            float ry = Axes.GetPixelY(radius) - Axes.GetPixelY(0);                        
+            //FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, 2, 2)));
+            rp.Canvas.DrawOval(0, 0, rx + .1f, ry + .1f, paint);            
         }
 
         if (ShowSliceLabels)
