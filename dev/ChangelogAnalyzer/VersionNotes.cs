@@ -34,11 +34,6 @@ public class VersionNotes
 
     private void AddPublishedLine(string line)
     {
-        // force italics to be present
-        line = line.Trim();
-        line = line.Trim('_');
-        line = $"_{line}_";
-
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine(line);
         PublishedLines.Add(line);
@@ -46,10 +41,6 @@ public class VersionNotes
 
     private void AddTitleLine(string line)
     {
-        // force all titles to be h2
-        line = line.Trim('#').Trim();
-        line = $"## {line}";
-
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(line);
         TitleLines.Add(line);
