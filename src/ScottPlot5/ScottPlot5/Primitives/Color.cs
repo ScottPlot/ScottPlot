@@ -1,13 +1,14 @@
 ﻿namespace ScottPlot;
 
-internal static class ByteExtension
+internal static class ColorByteExtensions
 {
-    static public byte Lighten(this byte color, float fraction)
+    static public byte Lighten(this byte color, double fraction)
     {
         var fColor = color + (255 - color) * fraction;
         return (byte)Math.Min(Math.Max(fColor, 0), 255);
     }
-    static public byte Darken(this byte color, float fraction)
+
+    static public byte Darken(this byte color, double fraction)
     {
         var fColor = color * fraction;
         return (byte)Math.Min(Math.Max(fColor, 0), 255);
@@ -240,7 +241,11 @@ public readonly struct Color
         return FromHSL(h, s, Math.Min(Math.Max(lightness, 0f), 1f));
     }
 
-    public Color Lighten(float fraction = .5f)
+    /// <summary>
+    /// Amount to lighten the color (from 0-1).
+    /// Larger numbers produce lighter results.
+    /// </summary>
+    public Color Lighten(double fraction = .5f)
     {
         if (fraction < 0)
             return Darken(-fraction);
@@ -248,7 +253,11 @@ public readonly struct Color
         return new Color(R.Lighten(fraction), G.Lighten(fraction), B.Lighten(fraction), Alpha);
     }
 
-    public Color Darken(float fraction = .5f)
+    /// <summary>
+    /// Amount to darken the color (from 0-1).
+    /// Larger numbers produce darker results.
+    /// </summary>
+    public Color Darken(double fraction = .5f)
     {
         if (fraction < 0)
             return Lighten(-fraction);
