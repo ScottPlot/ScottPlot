@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using ScottPlot.Extensions;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -248,6 +249,21 @@ public static class Drawing
         };
 
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
+    {
+        if (lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawOval(rect.ToSKRect(), paint);
+    }
+
+    public static void FillOval(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect)
+    {
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
