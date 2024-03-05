@@ -38,7 +38,7 @@ public class RadialGaugePlot : IPlottable
     /// Number of labels must equal number of gauges.
     /// May be null if gauges are not to appear in the legend.
     /// </summary>
-    public string[] Labels { get; set; }
+    public string[]? Labels { get; set; }
 
     /// <summary>
     /// Colors for each gauge.
