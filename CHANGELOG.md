@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Ellipse: Added `LineWidth`, `LineColor`, and `FillColor` shortcut properties
 * Color: Added `Lighten()` and `Darken()` properties (#3387, #3390) @KroMignon
 * Color: Modified `ToHSL()` to return improved Hue, Saturation and Luminosity values (#3390) @KroMignon
+* SignalXY: Improve support for displaying data on inverted axes (#3396, #3400) @BrianAtZetica
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
