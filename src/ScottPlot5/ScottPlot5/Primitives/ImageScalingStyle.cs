@@ -1,11 +1,11 @@
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public enum ImageScalingStyle
 {
     /// <summary>
     /// As-is, no scaling. 
     /// </summary>
-    None, 
+    None,
     /// <summary>
     /// Stretch image to fill drawing rect.
     /// </summary>
@@ -14,4 +14,4 @@ public enum ImageScalingStyle
     /// Scale image to fill drawing rect, retaining the original aspect ratio.
     /// </summary>
     FillRetainAspect
-} 
+}

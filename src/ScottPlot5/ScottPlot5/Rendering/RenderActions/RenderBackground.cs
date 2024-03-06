@@ -19,7 +19,7 @@ public class RenderBackground : IRenderAction
             SKSize destSize = new();
             SKSize srcSize = new(backgroundImage.Width, backgroundImage.Height);
 
-            switch(rp.Plot.DataBackgroundScalingStyle)
+            switch (rp.Plot.DataBackgroundScalingStyle)
             {
                 case ImageScalingStyle.None:
                     //Selecting minimum of DataBackgroundImageSize and DataRectSize for clipping. 
@@ -58,13 +58,13 @@ public class RenderBackground : IRenderAction
                     destSize.Height = scale * backgroundImage.Height;
                     break;
             }
-            
+
             //Create scrRect
             SKRect srcRect = SKRect.Create
             (
                 (backgroundImage.Width - srcSize.Width) / 2f,
                 (backgroundImage.Height - srcSize.Height) / 2f,
-                srcSize.Width, 
+                srcSize.Width,
                 srcSize.Height
             );
 
@@ -73,10 +73,10 @@ public class RenderBackground : IRenderAction
             (
                 skDataRect.Left + (skDataRect.Width - destSize.Width) / 2f,
                 skDataRect.Top + (skDataRect.Height - destSize.Height) / 2f,
-                destSize.Width, 
+                destSize.Width,
                 destSize.Height
             );
-          
+
             using SKPaint backgroundImagePaint = new() { Color = rp.Plot.DataBackgroundImageColor.ToSKColor() };
             rp.Canvas.DrawBitmap(backgroundImage, srcRect, destRect, backgroundImagePaint);
         }
