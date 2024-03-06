@@ -16,6 +16,7 @@ public class Plot : IDisposable
     public Color FigureBackground { get; set; } = Colors.White;
     public Color DataBackground { get; set; } = Colors.White;
     public SKBitmap? DataBackgroundImage { get; set; } = null;
+    public ImageScalingStyle DataBackgroundScalingStyle { get; set; } = ImageScalingStyle.FillRetainAspect;
     public Color DataBackgroundImageColor { get; set; } = Colors.White;
 
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();

@@ -27,27 +27,29 @@ public class PlotStyler
     }
 
     /// <summary>
+    /// Apply a background image to the data frame
+    /// </summary>
+    public void DataBackgroundImage(string filePath, ImageScalingStyle scalingStyle = ImageScalingStyle.FillRetainAspect)
+    {
+        Plot.DataBackgroundImage = SKBitmap.Decode(filePath);
+        Plot.DataBackgroundScalingStyle = scalingStyle;
+    }
+
+    /// <summary>
+    /// Apply a background image to the data frame
+    /// </summary>
+    public void DataBackgroundImage(byte[] imageByteData, ImageScalingStyle scalingStyle = ImageScalingStyle.FillRetainAspect)
+    {
+        Plot.DataBackgroundImage = SKBitmap.Decode(imageByteData);
+        Plot.DataBackgroundScalingStyle = scalingStyle;
+    }
+
+    /// <summary>
     /// Apply a color to the data frame background image
     /// </summary>
     public void ColorDataBackgroundImage(Color color)
     {
         Plot.DataBackgroundImageColor = color;
-    }
-
-    /// <summary>
-    /// Apply a background image to the data frame
-    /// </summary>
-    public void DataBackgroundImage(string filePath)
-    {
-        Plot.DataBackgroundImage = SKBitmap.Decode(filePath);
-    }
-
-    /// <summary>
-    /// Apply a background image to the data frame
-    /// </summary>
-    public void DataBackgroundImage(byte[] imageByteData)
-    {
-        Plot.DataBackgroundImage = SKBitmap.Decode(imageByteData);
     }
 
     /// <summary>
