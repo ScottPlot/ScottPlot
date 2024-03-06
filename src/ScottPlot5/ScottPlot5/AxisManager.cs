@@ -133,6 +133,22 @@ public class AxisManager
         YAxes.RemoveAll(ax => ax == axis);
     }
 
+    /// <summary>
+    /// Remove the given Panel
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Panels.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Grid
+    /// </summary>
+    public void Remove(IGrid grid)
+    {
+        Grids.Remove(grid);
+    }
+
     [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
     public void DateTimeTicks(Edge edge)
     {
