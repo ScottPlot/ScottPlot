@@ -351,6 +351,30 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Remove the given Panel from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Axes.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Axis from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IAxis axis)
+    {
+        Axes.Remove(axis);
+    }
+
+    /// <summary>
+    /// Remove the given grid from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IGrid grid)
+    {
+        Axes.Remove(grid);
+    }
+
+    /// <summary>
     /// Remove all items of a specific type from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(Type plotType)
