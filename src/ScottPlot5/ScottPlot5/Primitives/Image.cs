@@ -10,13 +10,24 @@ namespace ScottPlot;
 /// <summary>
 /// Bitmap representation of a <seealso cref="SkiaSharp.SKImage"/>
 /// </summary>
-public class Image(SKImage skiaImage) : IDisposable
+public class Image : IDisposable
 {
     private bool IsDisposed = false;
 
-    protected readonly SKImage SKImage = skiaImage;
+    protected readonly SKImage SKImage;
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
+
+    [Obsolete("Use initializer that accepts a SKSurface", true)]
+    public Image(SKImage image)
+    {
+        SKImage = image;
+    }
+
+    public Image(SKSurface surface)
+    {
+        SKImage = surface.Snapshot();
+    }
 
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 

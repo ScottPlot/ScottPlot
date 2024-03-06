@@ -345,8 +345,6 @@ public static class Drawing
 
     public static void SavePng(SKSurface surface, string filename)
     {
-        using SKImage skimg = surface.Snapshot();
-        Image img = new(skimg);
-        img.SavePng(filename);
+        new Image(surface).SavePng(filename);
     }
 }

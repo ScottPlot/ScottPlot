@@ -28,7 +28,7 @@ internal static class Extensions
 
     internal static void SaveTestImage(this SKSurface surface)
     {
-        Image img = new(surface.Snapshot());
+        Image img = new(surface);
 
         StackTrace stackTrace = new();
         StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("unknown caller");

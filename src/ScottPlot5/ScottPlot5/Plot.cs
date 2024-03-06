@@ -246,7 +246,7 @@ public class Plot : IDisposable
             throw new NullReferenceException($"invalid SKImageInfo");
 
         Render(surface.Canvas, width, height);
-        return new(surface.Snapshot());
+        return new Image(surface);
     }
 
     /// <summary>
