@@ -134,4 +134,49 @@ public class SignalXY : ICategory
             sig1.Data.Rotated = true;
         }
     }
+
+    public class SignalXYVerticalInvertedX : RecipeBase
+    {
+        public override string Name => "Vertical SignalXY with Inverted X Axis";
+        public override string Description => "Demonstrates how to display a rotated " +
+            "SignalXY plot (so it goes from bottom to top) which is also displayed " +
+            "on an inverted horizontal axis (where positive values are on the left).";
+
+        [Test]
+        public override void Execute()
+        {
+            // add a signal plot
+            double[] xs = Generate.Consecutive(5_000);
+            double[] ys = Generate.Sin(count: xs.Length, oscillations: 4);
+
+            // rotate it so it is vertical
+            var signal = myPlot.Add.SignalXY(xs, ys);
+            signal.Data.Rotated = true;
+
+            // invert the horizontal axis
+            myPlot.Axes.SetLimitsX(1, -1);
+        }
+    }
+
+    public class SignalXYVerticalInvertedY : RecipeBase
+    {
+        public override string Name => "Vertical SignalXY with Inverted Y Axis";
+        public override string Description => "Demonstrates how to display a rotated " +
+            "SignalXY plot on an inverted vertical axis so data goes from top to bottom.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add a signal plot
+            double[] xs = Generate.Consecutive(5_000);
+            double[] ys = Generate.Sin(count: xs.Length, oscillations: 4);
+
+            // rotate it so it is vertical
+            var signal = myPlot.Add.SignalXY(xs, ys);
+            signal.Data.Rotated = true;
+
+            // invert the vertical axis
+            myPlot.Axes.SetLimitsY(5000, 0);
+        }
+    }
 }
