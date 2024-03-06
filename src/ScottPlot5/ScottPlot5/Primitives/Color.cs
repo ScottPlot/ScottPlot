@@ -277,8 +277,8 @@ public readonly struct Color
     {
         if (b1 < b2)
             return Math.Min(Math.Max((byte)(b1 + (b2 - b1) * factor), (byte)0), (byte)255);
-        else 
-            return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1- factor)), (byte)0), (byte)255);
+        else
+            return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1 - factor)), (byte)0), (byte)255);
     }
     static public Color InterpolateRgb(Color c1, Color c2, double factor)
     {
