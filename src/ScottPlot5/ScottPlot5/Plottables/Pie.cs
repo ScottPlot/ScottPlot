@@ -48,7 +48,7 @@ public class Pie : IPlottable
         float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
         float radius = Math.Min(minX, minY);
         float explosionRadius = (float)ExplodeFraction * radius;
-        SKRect rect = new(-radius, -radius, radius, radius);
+        SKRect rect = new(-radius, -radius, radius, radius);        
 
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
@@ -99,10 +99,24 @@ public class Pie : IPlottable
 
         if (DonutSize > 0)
         {
-            float rx = Axes.GetPixelX(radius) - Axes.GetPixelX(0);
-            float ry = Axes.GetPixelY(radius) - Axes.GetPixelY(0);                        
-            //FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, 2, 2)));
-            rp.Canvas.DrawOval(0, 0, rx + .1f, ry + .1f, paint);            
+            
+            //FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, 2, 2)));            
+            var circleRadius = .5;
+            Debug.WriteLine($"Origin {origin}, Radius {radius}, CircleRadius {circleRadius}");
+
+            //float rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
+            //float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
+
+            float rx = Axes.GetPixelX(circleRadius) - Axes.GetPixelX(0);
+            float ry = Axes.GetPixelY(circleRadius) - Axes.GetPixelY(0);
+
+            PixelRect circleRect = new PixelRect(origin, radius/2);
+            paint.BlendMode = SKBlendMode.Difference;            
+            //rp.Canvas.DrawCircle(origin.X, origin.Y, Convert.ToSingle(circleRadius), paint)
+            Drawing.FillOval(rp.Canvas, paint, new FillStyle() {Color=Colors.White}, circleRect);
+            Drawing.DrawOval(rp.Canvas, paint, LineStyle, circleRect);
+            
+            //rp.Canvas.DrawOval(rect.MidX, rect.MidY, circleRadius, circleRadius, paint);            
         }
 
         if (ShowSliceLabels)

@@ -62,8 +62,8 @@ public class Pie : ICategory
             };
 
             var pie = myPlot.Add.Pie(slices);
-            pie.DonutSize = 2;
-            pie.ExplodeFraction = .1;
+            pie.DonutSize = .6;
+            pie.ExplodeFraction = 0;
 
             myPlot.ShowLegend();
         }
