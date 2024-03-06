@@ -9,7 +9,7 @@ public enum ImageScalingStyle
     /// <summary>
     /// Stretch image to fill drawing rect.
     /// </summary>
-    StetchToFill,
+    StretchToFill,
     /// <summary>
     /// Scale image to fill drawing rect, retaining the original aspect ratio.
     /// </summary>

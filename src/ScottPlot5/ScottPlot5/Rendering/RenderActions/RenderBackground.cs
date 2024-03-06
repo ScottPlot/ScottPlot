@@ -41,7 +41,7 @@ public class RenderBackground : IRenderAction
                     }
                     break;
 
-                case ImageScalingStyle.StetchToFill:
+                case ImageScalingStyle.StretchToFill:
                     destSize.Width = skDataRect.Width;
                     destSize.Height = skDataRect.Height;
                     break;
