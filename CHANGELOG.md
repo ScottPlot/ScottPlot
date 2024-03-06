@@ -16,6 +16,7 @@ _Not yet on NuGet..._
 * Color: Modified `ToHSL()` to return improved Hue, Saturation and Luminosity values (#3390) @KroMignon
 * SignalXY: Improve support for displaying data on inverted axes (#3396, #3400) @BrianAtZetica
 * Axes: Improved support for ticks and labels on inverted axes (#3401, #3397) @BrianAtZetica
+* Plot: Added `Remove()` overloads for Axes, Panels, and Grids (#3402, #3360) @Excustic, @redrabbit007, @csbebetter, @xichaoqiang
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
