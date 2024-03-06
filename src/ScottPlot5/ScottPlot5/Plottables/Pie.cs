@@ -52,9 +52,14 @@ public class Pie : IPlottable
 
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
+        
+        SKPath donutClipPath = null;
+        if (DonutSize > 0)
+        {
+            donutClipPath = GetDonutClipPath(rect, radius * (float)DonutSize);            
+        }
 
         // TODO: first slice should be North, not East.        
-
         float[] sliceOffsetDegrees = new float[Slices.Count];
         for (int i = 1; i < Slices.Count(); i++)
         {
@@ -87,8 +92,8 @@ public class Pie : IPlottable
                 path.AddOval(rect);
             }
 
-            if (DonutSize > 0) {
-                rp.Canvas.ClipPath(GetDonutClipPath(rect), SKClipOperation.Difference);
+            if (donutClipPath != null) {
+                rp.Canvas.ClipPath(donutClipPath, SKClipOperation.Difference);
             }
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
@@ -99,34 +104,7 @@ public class Pie : IPlottable
             rp.Canvas.DrawPath(path, paint);
 
             path.Reset();
-        }
-        /*
-        if (DonutSize > 0)
-        {
-
-            //FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, 2, 2)));            
-            var circleRadius = .5;
-            Debug.WriteLine($"Origin {origin}, Radius {radius}, CircleRadius {circleRadius}");
-            
-            PixelRect circleRect = new PixelRect(origin, radius / 2);
-            SKPath donutPath = new SKPath();
-            SKRect innerRect = new(-radius + radius / 2, -radius + radius / 2, radius - radius / 2, radius - radius / 2);
-            //donutPath.AddOval(innerRect);
-            //paint.StrokeWidth = 10;
-            //rp.Canvas.ClipPath(path, SKClipOperation.Intersect);
-            //rp.Canvas.ClipPath(donutPath, SKClipOperation.Difference);
-            //rp.Canvas.DrawCircle(origin.X, origin.Y, radius/2, paint);
-
-            //path.Reset();
-            //donutPath.Reset();
-
-            //rp.Canvas.DrawCircle(origin.X, origin.Y, Convert.ToSingle(circleRadius), paint);            
-            Drawing.FillOval(rp.Canvas, paint, new FillStyle() {Color=Colors.White}, circleRect);
-            Drawing.DrawOval(rp.Canvas, paint, LineStyle, circleRect);
-
-            //rp.Canvas.DrawOval(rect.MidX, rect.MidY, circleRadius, circleRadius, paint);            
-        }
-        */
+        }        
 
         if (ShowSliceLabels)
         {
@@ -140,35 +118,11 @@ public class Pie : IPlottable
         }
     }
 
-    private SKPath GetDonutClipPath(SKRect rect) {
-
-        Pixel origin = Axes.GetPixel(Coordinates.Origin);        
-        var circleRadius = .5;
-        float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
-        float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
-        float radius = (Math.Min(minX, minY)/2);        
-        SKRect donutRect = new(rect.Left+radius , rect.Top - radius, rect.Right - radius, rect.Bottom - radius);
-
-
-        Debug.WriteLine($"Origin {origin}, Radius {radius}, CircleRadius {circleRadius}");
-
-        //PixelRect circleRect = new PixelRect(origin, radius / 2);
-        //SKRect circleRect =  new SKRect(origin.X, origin.Y, origin.X+radius, origin.Y+radius);
+    private SKPath GetDonutClipPath(SKRect rect, float donutRadius) {
+        
         SKPath donutPath = new SKPath();
-        donutPath.AddOval(donutRect);
-        //paint.StrokeWidth = 10;
-        //rp.Canvas.ClipPath(path, SKClipOperation.Intersect);
-        //rp.Canvas.ClipPath(donutPath, SKClipOperation.Difference);
-        //rp.Canvas.DrawCircle(origin.X, origin.Y, radius/2, paint);
-
-        //path.Reset();
-        //donutPath.Reset();
-
-        //rp.Canvas.DrawCircle(origin.X, origin.Y, Convert.ToSingle(circleRadius), paint);            
-        //Drawing.FillOval(rp.Canvas, paint, new FillStyle() { Color = Colors.White }, circleRect);
-        //Drawing.DrawOval(rp.Canvas, paint, LineStyle, circleRect);
-
-        //rp.Canvas.DrawOval(rect.MidX, rect.MidY, circleRadius, circleRadius, paint);            
+        donutPath.AddCircle(rect.MidX, rect.MidY, donutRadius);
+        
         return donutPath;
     }
 }
