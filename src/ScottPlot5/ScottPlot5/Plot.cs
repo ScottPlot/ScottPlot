@@ -355,7 +355,23 @@ public class Plot : IDisposable
     /// </summary>
     public void Remove(IPanel panel)
     {
-        Axes.Panels.Remove(panel);
+        Axes.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Axis from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IAxis axis)
+    {
+        Axes.Remove(axis);
+    }
+
+    /// <summary>
+    /// Remove the given grid from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IGrid grid)
+    {
+        Axes.Remove(grid);
     }
 
     /// <summary>
