@@ -28,8 +28,13 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
         if (!IsVisible)
             return;
 
-        var xTicks = XAxis.TickGenerator.Ticks.Where(x => x.Position >= XAxis.Min && x.Position <= XAxis.Max);
-        var yTicks = YAxis.TickGenerator.Ticks.Where(x => x.Position >= YAxis.Min && x.Position <= YAxis.Max);
+        var minX = Math.Min(XAxis.Min, XAxis.Max);
+        var maxX = Math.Max(XAxis.Min, XAxis.Max);
+        var minY = Math.Min(YAxis.Min, YAxis.Max);
+        var maxY = Math.Max(YAxis.Min, YAxis.Max);
+
+        var xTicks = XAxis.TickGenerator.Ticks.Where(x => x.Position >= minX && x.Position <= maxX);
+        var yTicks = YAxis.TickGenerator.Ticks.Where(x => x.Position >= minY && x.Position <= maxY);
 
         if (MinorLineStyle.Width > 0)
         {
