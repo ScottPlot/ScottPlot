@@ -29,7 +29,7 @@ public class PlotStyler
     /// <summary>
     /// Apply a background image to the data frame
     /// </summary>
-    public void DataBackgroundImage(string filePath, ImageScalingStyle scalingStyle = ImageScalingStyle.FillRetainAspect)
+    public void DataBackgroundImage(string filePath, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
     {
         Plot.DataBackgroundImage = SKBitmap.Decode(filePath);
         Plot.DataBackgroundScalingStyle = scalingStyle;
@@ -38,7 +38,16 @@ public class PlotStyler
     /// <summary>
     /// Apply a background image to the data frame
     /// </summary>
-    public void DataBackgroundImage(byte[] imageByteData, ImageScalingStyle scalingStyle = ImageScalingStyle.FillRetainAspect)
+    public void DataBackgroundImage(Image image, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
+    {
+        byte[] bytes = image.GetImageBytes();
+        DataBackgroundImage(bytes, scalingStyle);
+    }
+
+    /// <summary>
+    /// Apply a background image to the data frame
+    /// </summary>
+    public void DataBackgroundImage(byte[] imageByteData, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
     {
         Plot.DataBackgroundImage = SKBitmap.Decode(imageByteData);
         Plot.DataBackgroundScalingStyle = scalingStyle;
