@@ -48,15 +48,15 @@ public class Pie : IPlottable
         float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
         float radius = Math.Min(minX, minY);
         float explosionRadius = (float)ExplodeFraction * radius;
-        SKRect rect = new(-radius, -radius, radius, radius);        
+        SKRect rect = new(-radius, -radius, radius, radius);
 
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
-        
+
         SKPath donutClipPath = null;
         if (DonutSize > 0)
         {
-            donutClipPath = GetDonutClipPath(rect, radius * (float)DonutSize);            
+            donutClipPath = GetDonutClipPath(rect, radius * (float)DonutSize);
         }
 
         // TODO: first slice should be North, not East.        
@@ -92,7 +92,8 @@ public class Pie : IPlottable
                 path.AddOval(rect);
             }
 
-            if (donutClipPath != null) {
+            if (donutClipPath != null)
+            {
                 rp.Canvas.ClipPath(donutClipPath, SKClipOperation.Difference);
             }
 
@@ -104,7 +105,7 @@ public class Pie : IPlottable
             rp.Canvas.DrawPath(path, paint);
 
             path.Reset();
-        }        
+        }
 
         if (ShowSliceLabels)
         {
@@ -118,11 +119,12 @@ public class Pie : IPlottable
         }
     }
 
-    private SKPath GetDonutClipPath(SKRect rect, float donutRadius) {
-        
+    private SKPath GetDonutClipPath(SKRect rect, float donutRadius)
+    {
+
         SKPath donutPath = new SKPath();
         donutPath.AddCircle(rect.MidX, rect.MidY, donutRadius);
-        
+
         return donutPath;
     }
 }
