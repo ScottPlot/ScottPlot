@@ -126,13 +126,15 @@ public class Plot : IDisposable
     /// </summary>
     public Pixel GetPixel(Coordinates coordinates, IXAxis xAxis, IYAxis yAxis)
     {
-        if (ScaleFactor != 1)
-        {
-            coordinates = new(coordinates.X * ScaleFactor, coordinates.Y * ScaleFactor);
-        }
-
         float xPixel = xAxis.GetPixel(coordinates.X, RenderManager.LastRender.DataRect);
         float yPixel = yAxis.GetPixel(coordinates.Y, RenderManager.LastRender.DataRect);
+
+        if (ScaleFactor != 1)
+        {
+            xPixel *= ScaleFactor;
+            yPixel *= ScaleFactor;
+        }
+
         return new Pixel(xPixel, yPixel);
     }
 
@@ -346,6 +348,30 @@ public class Plot : IDisposable
         {
             PlottableList.Remove(plottable);
         }
+    }
+
+    /// <summary>
+    /// Remove the given Panel from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Axes.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Axis from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IAxis axis)
+    {
+        Axes.Remove(axis);
+    }
+
+    /// <summary>
+    /// Remove the given grid from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IGrid grid)
+    {
+        Axes.Remove(grid);
     }
 
     /// <summary>

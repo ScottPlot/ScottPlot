@@ -36,9 +36,9 @@ public class Wipe : IDataStreamerView
 
         for (int i = 0; i < oldest.Length; i++)
         {
-            double xPos = (i + Streamer.Data.NextIndex) * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
+            double xPos = (i + newestCount) * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
-            float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i + Streamer.Data.NextIndex] + Streamer.Data.OffsetY);
+            float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i + newestCount] + Streamer.Data.OffsetY);
             oldest[i] = new(x, y);
         }
 

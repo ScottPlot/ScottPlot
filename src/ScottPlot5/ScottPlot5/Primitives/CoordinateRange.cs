@@ -10,9 +10,12 @@ public readonly record struct CoordinateRange(double Min, double Max)
 
     public bool Contains(double value)
     {
-        if (value < Min)
+        var trueMin = Math.Min(Min, Max);
+        var trueMax = Math.Max(Min, Max);
+
+        if (value < trueMin)
             return false;
-        else if (value > Max)
+        else if (value > trueMax)
             return false;
         else
             return true;
@@ -20,16 +23,21 @@ public readonly record struct CoordinateRange(double Min, double Max)
 
     public bool Intersects(CoordinateRange other)
     {
+        var trueMin = Math.Min(Min, Max);
+        var trueMax = Math.Max(Min, Max);
+        var otherTrueMin = Math.Min(other.Min, other.Max);
+        var otherTrueMax = Math.Max(other.Min, other.Max);
+
         // other engulfs this
-        if (other.Min < Min && other.Max > Max)
+        if (otherTrueMin < trueMin && otherTrueMax > trueMax)
             return true;
 
         // this engulfs other
-        if (Min < other.Min && Max > other.Max)
+        if (trueMin < otherTrueMin && trueMax > otherTrueMax)
             return true;
 
         // partial intersection
-        if (Contains(other.Min) || Contains(other.Max))
+        if (Contains(otherTrueMin) || Contains(otherTrueMax))
             return true;
 
         return false;

@@ -5,9 +5,10 @@
 /// </summary>
 public class BarPlot : IPlottable
 {
+    public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string? Label { get; set; }
+
     public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
 
     /// <summary>
@@ -50,7 +51,24 @@ public class BarPlot : IPlottable
         Bars = bars;
     }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public IEnumerable<LegendItem> LegendItems
+    {
+        get
+        {
+            if (!Bars.Any())
+            {
+                return LegendItem.None;
+            }
+
+            LegendItem item = new()
+            {
+                Label = Label,
+                FillColor = Bars.First().FillColor,
+            };
+
+            return LegendItem.Single(item);
+        }
+    }
 
     public AxisLimits GetAxisLimits()
     {
