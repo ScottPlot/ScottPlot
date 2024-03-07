@@ -1,7 +1,4 @@
-﻿using ScottPlot.Extensions;
-using System.IO;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class SampleImages
 {

@@ -17,7 +17,12 @@ public class AdvancedStyling : ICategory
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
 
+            // One could load an image from a file...
+            // Image img = new("background.png");
+
+            // But in this example we will generate one:
             Image img = SampleImages.ScottPlotLogo(600, 400);
+
             myPlot.Style.DataBackgroundImage(img);
         }
     }
