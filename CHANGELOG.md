@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * Axes: Improved support for ticks and labels on inverted axes (#3401, #3397) @BrianAtZetica
 * Plot: Added `Remove()` overloads for Axes, Panels, and Grids (#3402, #3360) @Excustic, @redrabbit007, @csbebetter, @xichaoqiang
 * Plot: `Plot.FigureBackground` is now `Plot.FigureBackground.Color` (and same with `DataBackground`)
+* Plot: `Plot.FigureBackground.Image` and `Plot.DataBackground.Image` can be used to add a background image to plots (#3406, #3405) @unsigned-ru
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
