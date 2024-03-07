@@ -29,6 +29,17 @@ public class Image : IDisposable
         SKImage = surface.Snapshot();
     }
 
+    public Image(string filename)
+    {
+        using SKBitmap bmp = SKBitmap.Decode(filename);
+        SKImage = SKImage.FromBitmap(bmp);
+    }
+
+    public Image(byte[] bytes)
+    {
+        SKImage = SKImage.FromEncodedData(bytes);
+    }
+
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
     /// This function creates bitmaps in memory manually.
