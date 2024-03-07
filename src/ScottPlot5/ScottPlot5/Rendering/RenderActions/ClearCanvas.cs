@@ -4,6 +4,6 @@ public class ClearCanvas : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Canvas.Clear(rp.Plot.FigureBackground.ToSKColor());
+        rp.Canvas.Clear(rp.Plot.FigureBackground.Color.ToSKColor());
     }
 }

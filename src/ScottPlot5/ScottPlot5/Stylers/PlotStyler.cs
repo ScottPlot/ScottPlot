@@ -1,6 +1,5 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using ScottPlot.Legends;
 using System.ComponentModel;
 
 namespace ScottPlot.Stylers;
@@ -8,57 +7,43 @@ namespace ScottPlot.Stylers;
 /// <summary>
 /// A collection of high-level methods that make it easy to style many components of a plot at once
 /// </summary>
-public class PlotStyler
+public class PlotStyler(Plot plot)
 {
-    private readonly Plot Plot;
-
-    public PlotStyler(Plot plot)
-    {
-        Plot = plot;
-    }
+    private readonly Plot Plot = plot;
 
     /// <summary>
     /// Apply background colors to the figure and data areas
     /// </summary>
     public void Background(Color figure, Color data)
     {
-        Plot.FigureBackground = figure;
-        Plot.DataBackground = data;
+        Plot.FigureBackground.Color = figure;
+        Plot.DataBackground.Color = data;
     }
 
     /// <summary>
     /// Apply a background image to the data frame
     /// </summary>
-    public void DataBackgroundImage(string filePath, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
-    {
-        Plot.DataBackgroundImage = SKBitmap.Decode(filePath);
-        Plot.DataBackgroundScalingStyle = scalingStyle;
-    }
-
-    /// <summary>
-    /// Apply a background image to the data frame
-    /// </summary>
-    public void DataBackgroundImage(Image image, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
+    public void DataBackground(Image image, ImageScalingStyle scaling = ImageScalingStyle.StretchToFill)
     {
         byte[] bytes = image.GetImageBytes();
-        DataBackgroundImage(bytes, scalingStyle);
+        DataBackground(bytes, scaling);
     }
 
     /// <summary>
     /// Apply a background image to the data frame
     /// </summary>
-    public void DataBackgroundImage(byte[] imageByteData, ImageScalingStyle scalingStyle = ImageScalingStyle.StretchToFill)
+    public void DataBackground(byte[] imageByteData, ImageScalingStyle scaling = ImageScalingStyle.StretchToFill)
     {
-        Plot.DataBackgroundImage = SKBitmap.Decode(imageByteData);
-        Plot.DataBackgroundScalingStyle = scalingStyle;
+        Plot.DataBackground.Image = SKBitmap.Decode(imageByteData);
+        Plot.DataBackground.ImageScaling = scaling;
     }
 
     /// <summary>
     /// Apply a color to the data frame background image
     /// </summary>
-    public void ColorDataBackgroundImage(Color color)
+    public void DataBackground(Color color)
     {
-        Plot.DataBackgroundImageColor = color;
+        Plot.DataBackground.Color = color;
     }
 
     /// <summary>

@@ -1,25 +1,22 @@
-﻿using System.Drawing;
-using ScottPlot.AxisRules;
-
-namespace ScottPlot.Rendering.RenderActions;
+﻿namespace ScottPlot.Rendering.RenderActions;
 
 public class RenderBackground : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        using SKPaint backgroundPaint = new() { Color = rp.Plot.DataBackground.ToSKColor() };
+        using SKPaint backgroundPaint = new() { Color = rp.Plot.DataBackground.Color.ToSKColor() };
 
         SKRect skDataRect = rp.DataRect.ToSKRect();
         rp.Canvas.DrawRect(skDataRect, backgroundPaint);
 
-        SKBitmap? backgroundImage = rp.Plot.DataBackgroundImage;
+        SKBitmap? backgroundImage = rp.Plot.DataBackground.Image;
         if (backgroundImage != null)
         {
             //calculate dest image size
             SKSize destSize = new();
             SKSize srcSize = new(backgroundImage.Width, backgroundImage.Height);
 
-            switch (rp.Plot.DataBackgroundScalingStyle)
+            switch (rp.Plot.DataBackground.ImageScaling)
             {
                 case ImageScalingStyle.None:
                     //Selecting minimum of DataBackgroundImageSize and DataRectSize for clipping. 
@@ -77,7 +74,7 @@ public class RenderBackground : IRenderAction
                 destSize.Height
             );
 
-            using SKPaint backgroundImagePaint = new() { Color = rp.Plot.DataBackgroundImageColor.ToSKColor() };
+            using SKPaint backgroundImagePaint = new() { Color = rp.Plot.DataBackground.Color.ToSKColor() };
             rp.Canvas.DrawBitmap(backgroundImage, srcRect, destRect, backgroundImagePaint);
         }
     }

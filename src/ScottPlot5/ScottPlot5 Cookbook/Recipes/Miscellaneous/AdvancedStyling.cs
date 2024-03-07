@@ -23,7 +23,7 @@ public class AdvancedStyling : ICategory
             // But in this example we will generate one:
             Image img = SampleImages.ScottPlotLogo(600, 400);
 
-            myPlot.Style.DataBackgroundImage(img);
+            myPlot.Style.DataBackground(img);
         }
     }
 }
