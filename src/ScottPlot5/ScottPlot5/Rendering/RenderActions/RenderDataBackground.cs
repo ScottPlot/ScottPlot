@@ -8,10 +8,11 @@ public class RenderDataBackground : IRenderAction
 
         Drawing.Fillectangle(rp.Canvas, rp.DataRect, paint);
 
-        if (rp.Plot.DataBackground.Image is not null){
+        if (rp.Plot.DataBackground.Image is not null)
+        {
             Drawing.DrawImage(
-                canvas: rp.Canvas, 
-                image: rp.Plot.DataBackground.Image, 
+                canvas: rp.Canvas,
+                image: rp.Plot.DataBackground.Image,
                 target: rp.Plot.DataBackground.GetImageRect(rp.DataRect));
         }
     }
