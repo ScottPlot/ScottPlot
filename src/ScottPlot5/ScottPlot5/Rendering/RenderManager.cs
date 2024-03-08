@@ -63,6 +63,7 @@ public class RenderManager(Plot plot)
     public static List<IRenderAction> DefaultRenderActions => new()
     {
         new RenderActions.PreRenderLock(),
+        new RenderActions.ClearCanvas(),
         new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
