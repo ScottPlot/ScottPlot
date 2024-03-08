@@ -21,32 +21,6 @@ public class PlotStyler(Plot plot)
     }
 
     /// <summary>
-    /// Apply a background image to the data frame
-    /// </summary>
-    public void DataBackground(Image image, ImageScalingStyle scaling = ImageScalingStyle.StretchToFill)
-    {
-        byte[] bytes = image.GetImageBytes();
-        DataBackground(bytes, scaling);
-    }
-
-    /// <summary>
-    /// Apply a background image to the data frame
-    /// </summary>
-    public void DataBackground(byte[] imageByteData, ImageScalingStyle scaling = ImageScalingStyle.StretchToFill)
-    {
-        Plot.DataBackground.Image = SKBitmap.Decode(imageByteData);
-        Plot.DataBackground.ImageScaling = scaling;
-    }
-
-    /// <summary>
-    /// Apply a color to the data frame background image
-    /// </summary>
-    public void DataBackground(Color color)
-    {
-        Plot.DataBackground.Color = color;
-    }
-
-    /// <summary>
     /// Apply a single color to all components of each axis (label, tick labels, tick marks, and frame)
     /// </summary>
     public void ColorAxes(Color color)

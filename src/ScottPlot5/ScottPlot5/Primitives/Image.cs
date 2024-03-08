@@ -2,6 +2,7 @@
  * https://github.com/mono/SkiaSharp/issues/320
  */
 
+using System.Drawing;
 using System.Runtime.InteropServices;
 using ScottPlot.IO;
 
@@ -136,5 +137,11 @@ public class Image : IDisposable
         IsDisposed = true;
 
         GC.SuppressFinalize(this);
+    }
+
+    public void Render(SKCanvas canvas, PixelRect target)
+    {
+        SKRect sourceRect = new(0, 0, Width, Height);
+        canvas.DrawImage(SKImage, sourceRect, target.ToSKRect());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Extensions;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace ScottPlot;
@@ -346,5 +347,10 @@ public static class Drawing
     public static void SavePng(SKSurface surface, string filename)
     {
         new Image(surface).SavePng(filename);
+    }
+
+    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target)
+    {
+        image.Render(canvas, target);
     }
 }

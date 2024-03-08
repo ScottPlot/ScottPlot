@@ -6,7 +6,7 @@ public class AdvancedStyling : ICategory
     public string CategoryName => "Advanced Styling";
     public string CategoryDescription => "Features for users seeking extensive customization options.";
 
-    public class AdvancedStylingFigureBackground : RecipeBase
+    public class AdvancedStylingDataBackground : RecipeBase
     {
         public override string Name => "Figure Background Image";
         public override string Description => "The background of the figure can be set to an image.";
@@ -18,12 +18,12 @@ public class AdvancedStyling : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             // One could load an image from a file...
-            // Image img = new("background.png");
+            // Image bgImage = new("background.png");
 
             // But in this example we will generate one:
-            Image img = SampleImages.ScottPlotLogo(600, 400);
+            Image bgImage = SampleImages.ScottPlotLogo(600, 400);
 
-            myPlot.Style.DataBackground(img);
+            myPlot.DataBackground.Image = bgImage;
         }
     }
 }
