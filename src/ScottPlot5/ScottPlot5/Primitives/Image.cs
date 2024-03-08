@@ -18,6 +18,7 @@ public class Image : IDisposable
     protected readonly SKImage SKImage;
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
+    public PixelSize Size => new(Width, Height);
 
     [Obsolete("Use initializer that accepts a SKSurface", true)]
     public Image(SKImage image)

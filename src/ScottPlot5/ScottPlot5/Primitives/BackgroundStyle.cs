@@ -3,7 +3,7 @@
 public class BackgroundStyle : IDisposable
 {
     private SKBitmap? SKBitmap { get; set; } = null;
-    public ImageScaleMode ImageScaling { get; set; } = ImageScaleMode.Stretch;
+    public ImagePosition ImageScaling { get; set; } = ImagePosition.Stretch;
     public Color Color { get; set; } = Colors.White;
 
     public Image? _Image;
@@ -28,8 +28,8 @@ public class BackgroundStyle : IDisposable
 
     public PixelRect GetImageRect(PixelRect targetRect)
     {
-        return SKBitmap is null
-            ? PixelRect.Zero
-            : ImageScaling.GetImageRect(SKBitmap.Width, SKBitmap.Height, targetRect);
+        return Image is null 
+            ? PixelRect.Zero 
+            : ImageScaling.GetRect(Image.Size, targetRect);
     }
 }

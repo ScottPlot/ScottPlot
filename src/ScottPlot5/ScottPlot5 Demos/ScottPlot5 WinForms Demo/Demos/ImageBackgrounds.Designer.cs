@@ -38,6 +38,8 @@ partial class ImageBackgrounds
         // cbData
         // 
         cbData.AutoSize = true;
+        cbData.Checked = true;
+        cbData.CheckState = CheckState.Checked;
         cbData.Location = new Point(22, 25);
         cbData.Name = "cbData";
         cbData.Size = new Size(117, 19);

@@ -8,13 +8,13 @@ public partial class ImageBackgrounds : Form, IDemoWindow
 
     public string Description => "Use a bitmap image for the background of the figure or data area";
 
-    readonly ImageScaleMode[] ScaleModes = Enum.GetValues<ImageScaleMode>();
+    readonly ImagePosition[] ScaleModes = Enum.GetValues<ImagePosition>();
 
     public ImageBackgrounds()
     {
         InitializeComponent();
 
-        foreach (ImageScaleMode mode in ScaleModes)
+        foreach (ImagePosition mode in ScaleModes)
         {
             cbMode.Items.Add(mode);
         }

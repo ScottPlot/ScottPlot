@@ -10,10 +10,14 @@ public class RenderDataBackground : IRenderAction
 
         if (rp.Plot.DataBackground.Image is not null)
         {
+            rp.ClipToDataArea();
+
             Drawing.DrawImage(
                 canvas: rp.Canvas,
                 image: rp.Plot.DataBackground.Image,
                 target: rp.Plot.DataBackground.GetImageRect(rp.DataRect));
+
+            rp.DisableClipping();
         }
     }
 }
