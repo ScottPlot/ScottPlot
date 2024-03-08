@@ -50,7 +50,7 @@ partial class ImageBackgrounds
         // cbFigure
         // 
         cbFigure.AutoSize = true;
-        cbFigure.Location = new Point(175, 22);
+        cbFigure.Location = new Point(167, 25);
         cbFigure.Name = "cbFigure";
         cbFigure.Size = new Size(126, 19);
         cbFigure.TabIndex = 1;
@@ -62,15 +62,15 @@ partial class ImageBackgrounds
         label1.AutoSize = true;
         label1.Location = new Point(326, 26);
         label1.Name = "label1";
-        label1.Size = new Size(59, 15);
+        label1.Size = new Size(50, 15);
         label1.TabIndex = 2;
-        label1.Text = "Fill Mode:";
+        label1.Text = "Position";
         // 
         // cbMode
         // 
         cbMode.DropDownStyle = ComboBoxStyle.DropDownList;
         cbMode.FormattingEnabled = true;
-        cbMode.Location = new Point(391, 23);
+        cbMode.Location = new Point(382, 23);
         cbMode.Name = "cbMode";
         cbMode.Size = new Size(121, 23);
         cbMode.TabIndex = 3;

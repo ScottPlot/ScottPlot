@@ -2,9 +2,10 @@
 
 public class BackgroundStyle : IDisposable
 {
-    private SKBitmap? SKBitmap { get; set; } = null;
-    public ImagePosition ImageScaling { get; set; } = ImagePosition.Stretch;
     public Color Color { get; set; } = Colors.White;
+
+    private SKBitmap? SKBitmap { get; set; } = null;
+    public ImagePosition ImagePosition { get; set; } = ImagePosition.Stretch;
 
     public Image? _Image;
     public Image? Image
@@ -28,8 +29,20 @@ public class BackgroundStyle : IDisposable
 
     public PixelRect GetImageRect(PixelRect targetRect)
     {
-        return Image is null 
-            ? PixelRect.Zero 
-            : ImageScaling.GetRect(Image.Size, targetRect);
+        return Image is null
+            ? PixelRect.Zero
+            : ImagePosition.GetRect(Image.Size, targetRect);
+    }
+
+    public void Render(SKCanvas canvas, PixelRect target)
+    {
+        using SKPaint paint = new() { Color = Color.ToSKColor() };
+        Drawing.Fillectangle(canvas, target, paint);
+
+        if (Image is not null)
+        {
+            PixelRect imgRect = ImagePosition.GetRect(Image.Size, target);
+            Image.Render(canvas, imgRect);
+        }
     }
 }

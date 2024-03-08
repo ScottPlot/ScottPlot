@@ -47,12 +47,6 @@ public class RenderManager(Plot plot)
     public bool IsRendering { get; private set; } = false;
 
     /// <summary>
-    /// Disable this in multiplot environments
-    /// </summary>
-    public bool ClearCanvasBeforeRendering { get; set; } = true;
-
-
-    /// <summary>
     /// If false, any calls to Render() return immediately
     /// </summary>
     public bool EnableRendering { get; set; } = true;
@@ -69,7 +63,7 @@ public class RenderManager(Plot plot)
     public static List<IRenderAction> DefaultRenderActions => new()
     {
         new RenderActions.PreRenderLock(),
-        new RenderActions.ClearCanvas(),
+        new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.ExecutePlottableAxisManagers(),
@@ -105,11 +99,6 @@ public class RenderManager(Plot plot)
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
         {
-            if ((action is RenderActions.ClearCanvas) && (!ClearCanvasBeforeRendering))
-            {
-                continue;
-            }
-
             sw.Restart();
             rp.Canvas.Save();
             action.Render(rp);
