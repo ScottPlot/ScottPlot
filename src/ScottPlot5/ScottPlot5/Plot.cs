@@ -15,8 +15,8 @@ public class Plot : IDisposable
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }
 
-    public BackgroundStyle FigureBackground = new();
-    public BackgroundStyle DataBackground = new();
+    public BackgroundStyle FigureBackground = new() { Color = Colors.White };
+    public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
     public float ScaleFactor { get; set; } = 1.0f;
