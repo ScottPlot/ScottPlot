@@ -50,6 +50,8 @@ partial class ImageBackgrounds
         // cbFigure
         // 
         cbFigure.AutoSize = true;
+        cbFigure.Checked = true;
+        cbFigure.CheckState = CheckState.Checked;
         cbFigure.Location = new Point(167, 25);
         cbFigure.Name = "cbFigure";
         cbFigure.Size = new Size(126, 19);

@@ -18,7 +18,7 @@ public partial class ImageBackgrounds : Form, IDemoWindow
         {
             cbMode.Items.Add(mode);
         }
-        cbMode.SelectedIndex = 0;
+        cbMode.SelectedIndex = 2;
 
         cbData.CheckStateChanged += (s, e) => ResetPlot();
         cbFigure.CheckStateChanged += (s, e) => ResetPlot();
@@ -35,18 +35,17 @@ public partial class ImageBackgrounds : Form, IDemoWindow
         var sig2 = formsPlot1.Plot.Add.Signal(Generate.Cos());
         sig1.LineWidth = 5;
         sig2.LineWidth = 5;
-
-        // give each background a different color
-        formsPlot1.Plot.FigureBackground.Color = Colors.White;
-        formsPlot1.Plot.DataBackground.Color = Colors.LightGray.WithAlpha(.5);
+        formsPlot1.Plot.YLabel("Vertical Axis");
+        formsPlot1.Plot.XLabel("Horizontal Axis");
+        formsPlot1.Plot.Title("Plot with Image Background");
 
         // assign the bitmap image
-        formsPlot1.Plot.DataBackground.Image = cbData.Checked ? SampleImages.ScottPlotLogo(100, 100) : null;
-        formsPlot1.Plot.FigureBackground.Image = cbFigure.Checked ? SampleImages.ScottPlotLogo(100, 100) : null;
+        formsPlot1.Plot.FigureBackground.Image = cbFigure.Checked ? SampleImages.ScottPlotLogo() : null;
+        formsPlot1.Plot.DataBackground.Image = cbData.Checked ? SampleImages.MonaLisa() : null;
 
         // set the scaling mode
-        formsPlot1.Plot.DataBackground.ImagePosition = Positions[cbMode.SelectedIndex];
         formsPlot1.Plot.FigureBackground.ImagePosition = Positions[cbMode.SelectedIndex];
+        formsPlot1.Plot.DataBackground.ImagePosition = Positions[cbMode.SelectedIndex];
 
         // force a redraw
         formsPlot1.Refresh();
