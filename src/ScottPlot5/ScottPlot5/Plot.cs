@@ -1,6 +1,7 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
 using ScottPlot.Legends;
+using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 
@@ -13,8 +14,10 @@ public class Plot : IDisposable
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }
-    public Color FigureBackground { get; set; } = Colors.White;
-    public Color DataBackground { get; set; } = Colors.White;
+
+    public BackgroundStyle FigureBackground = new() { Color = Colors.White };
+    public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
+
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
     public float ScaleFactor { get; set; } = 1.0f;
 
@@ -38,6 +41,8 @@ public class Plot : IDisposable
 
     public void Dispose()
     {
+        DataBackground?.Dispose();
+        FigureBackground?.Dispose();
         PlottableList.Clear();
         Axes.Clear();
     }
@@ -241,7 +246,7 @@ public class Plot : IDisposable
             throw new NullReferenceException($"invalid SKImageInfo");
 
         Render(surface.Canvas, width, height);
-        return new(surface.Snapshot());
+        return new Image(surface);
     }
 
     /// <summary>

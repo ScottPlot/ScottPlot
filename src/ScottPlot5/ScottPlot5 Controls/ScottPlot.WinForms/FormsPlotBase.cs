@@ -39,16 +39,14 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         {
             base.BackColor = value;
             if (Plot is not null)
-                Plot.FigureBackground = value.ToColor();
+                Plot.FigureBackground.Color = value.ToColor();
         }
     }
 
     public Plot Reset()
     {
-        Plot newPlot = new()
-        {
-            FigureBackground = this.BackColor.ToColor(),
-        };
+        Plot newPlot = new();
+        newPlot.FigureBackground.Color = this.BackColor.ToColor();
 
         return Reset(newPlot);
     }
