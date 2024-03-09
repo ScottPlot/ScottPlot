@@ -349,8 +349,8 @@ public static class Drawing
         new Image(surface).SavePng(filename);
     }
 
-    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target)
+    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, SKPaint paint, bool antiAlias = true)
     {
-        image.Render(canvas, target);
+        image.Render(canvas, target, paint, antiAlias);
     }
 }

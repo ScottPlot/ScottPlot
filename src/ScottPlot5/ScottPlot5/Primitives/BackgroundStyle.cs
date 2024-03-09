@@ -6,6 +6,7 @@ public class BackgroundStyle : IDisposable
 
     private SKBitmap? SKBitmap { get; set; } = null;
     public ImagePosition ImagePosition { get; set; } = ImagePosition.Stretch;
+    public bool AntiAlias = true;
 
     public Image? _Image;
     public Image? Image
@@ -42,7 +43,7 @@ public class BackgroundStyle : IDisposable
         if (Image is not null)
         {
             PixelRect imgRect = ImagePosition.GetRect(Image.Size, target);
-            Image.Render(canvas, imgRect);
+            Image.Render(canvas, imgRect, paint, AntiAlias);
         }
     }
 }

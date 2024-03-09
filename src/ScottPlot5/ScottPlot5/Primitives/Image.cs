@@ -19,6 +19,7 @@ public class Image : IDisposable
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
+    public byte Alpha => 255;
 
     [Obsolete("Use initializer that accepts a SKSurface", true)]
     public Image(SKImage image)
@@ -40,6 +41,11 @@ public class Image : IDisposable
     public Image(byte[] bytes)
     {
         SKImage = SKImage.FromEncodedData(bytes);
+    }
+
+    public Image(SKBitmap bmp)
+    {
+        SKImage = SKImage.FromBitmap(bmp);
     }
 
     /// <summary>
@@ -140,9 +146,10 @@ public class Image : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public void Render(SKCanvas canvas, PixelRect target)
+    public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
     {
-        SKRect sourceRect = new(0, 0, Width, Height);
-        canvas.DrawImage(SKImage, sourceRect, target.ToSKRect());
+        paint.Color = SKColors.White.WithAlpha(Alpha);
+        paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
+        canvas.DrawImage(SKImage, target.ToSKRect(), paint);
     }
 }
