@@ -2,7 +2,30 @@
 
 public class SampleImages
 {
-    public static Image ScottPlotLogo(int width, int height)
+    public static Image MonaLisa()
+    {
+        double[,] data = SampleData.MonaLisa();
+        int height = data.GetLength(0);
+        int width = data.GetLength(1);
+        Range range = Range.GetRange(data);
+
+        Colormaps.Viridis colormap = new();
+
+        uint[] argb = new uint[data.Length];
+        for (int y = 0; y < height; y++)
+        {
+            int rowOffset = y * width;
+            for (int x = 0; x < width; x++)
+            {
+                argb[rowOffset + x] = colormap.GetColor(data[y, x], range).ARGB;
+            }
+        }
+
+        SKBitmap bmp = Drawing.BitmapFromArgbs(argb, width, height);
+        return new Image(bmp);
+    }
+
+    public static Image ScottPlotLogo(int width = 256, int height = 256)
     {
         using SKSurface surface = Drawing.CreateSurface(width, height);
         using SKCanvas canvas = surface.Canvas;
