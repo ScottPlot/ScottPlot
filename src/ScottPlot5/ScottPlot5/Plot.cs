@@ -19,7 +19,7 @@ public class Plot : IDisposable
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
-    public float ScaleFactor { get; set; } = 1.0f;
+    public double ScaleFactor { get; set; } = 1.0;
 
     public AxisManager Axes { get; }
 
@@ -57,8 +57,8 @@ public class Plot : IDisposable
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
 
-        float scaledDeltaX = pixelDeltaX / ScaleFactor;
-        float scaledDeltaY = pixelDeltaY / ScaleFactor;
+        float scaledDeltaX = pixelDeltaX / (float)ScaleFactor;
+        float scaledDeltaY = pixelDeltaY / (float)ScaleFactor;
 
         // restore mousedown limits
         originalLimits.Apply(this);
@@ -136,8 +136,8 @@ public class Plot : IDisposable
 
         if (ScaleFactor != 1)
         {
-            xPixel *= ScaleFactor;
-            yPixel *= ScaleFactor;
+            xPixel *= (float)ScaleFactor;
+            yPixel *= (float)ScaleFactor;
         }
 
         return new Pixel(xPixel, yPixel);

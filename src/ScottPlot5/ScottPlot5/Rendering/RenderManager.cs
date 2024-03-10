@@ -91,7 +91,7 @@ public class RenderManager(Plot plot)
             return;
 
         IsRendering = true;
-        canvas.Scale(Plot.ScaleFactor);
+        canvas.Scale((float)Plot.ScaleFactor);
 
         List<(string, TimeSpan)> actionTimes = new();
 
