@@ -29,11 +29,16 @@ public static class MarkerShapeExtensions
     {
         return shape switch
         {
-            MarkerShape.FilledCircle or MarkerShape.OpenCircle => new Markers.Circle(),
-            MarkerShape.FilledSquare or MarkerShape.OpenSquare => new Markers.Square(),
-            MarkerShape.FilledTriangleUp or MarkerShape.OpenTriangleUp => new Markers.TriangleUp(),
-            MarkerShape.FilledTriangleDown or MarkerShape.OpenTriangleDown => new Markers.TriangleDown(),
-            MarkerShape.FilledDiamond or MarkerShape.OpenDiamond => new Markers.Diamond(),
+            MarkerShape.FilledCircle => new Markers.Circle(false),
+            MarkerShape.OpenCircle => new Markers.Circle(true),
+            MarkerShape.FilledSquare => new Markers.Square(false),
+            MarkerShape.OpenSquare => new Markers.Square(true),
+            MarkerShape.FilledTriangleUp => new Markers.TriangleUp(false),
+            MarkerShape.OpenTriangleUp => new Markers.TriangleUp(true),
+            MarkerShape.FilledTriangleDown => new Markers.TriangleDown(false),
+            MarkerShape.OpenTriangleDown => new Markers.TriangleDown(true),
+            MarkerShape.FilledDiamond => new Markers.Diamond(false),
+            MarkerShape.OpenDiamond => new Markers.Diamond(true),
             MarkerShape.Eks => new Markers.Eks(),
             MarkerShape.Cross => new Markers.Cross(),
             MarkerShape.VerticalBar => new Markers.VerticalBar(),

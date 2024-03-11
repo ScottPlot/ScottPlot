@@ -2,11 +2,14 @@
 
 internal class Diamond : IMarker
 {
+    private readonly bool isOutlined;
+    public Diamond(bool isOutlined)
+    {
+        this.isOutlined = isOutlined;
+    }
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
         float offset = size / 2;
-
-        fill.ApplyToPaint(paint, new PixelRect(center, size));
 
         // 4 corners
         SKPoint[] pointsList = new SKPoint[]
@@ -21,9 +24,13 @@ internal class Diamond : IMarker
         var path = new SKPath();
         path.AddPoly(pointsList);
 
-        canvas.DrawPath(path, paint);
+        if (isOutlined == false)
+        {
+            fill.ApplyToPaint(paint, new PixelRect(center, size));
+            canvas.DrawPath(path, paint);
+        }
 
-        if (outline.Width > 0)
+        if (outline.CanBeRendered)
         {
             outline.ApplyToPaint(paint);
             canvas.DrawPath(path, paint);

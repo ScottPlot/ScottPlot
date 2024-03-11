@@ -279,11 +279,10 @@ public static class Drawing
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        if (!style.IsVisible)
+        if (!style.CanBeRendered)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
         foreach (Pixel pixel in pixels)
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);

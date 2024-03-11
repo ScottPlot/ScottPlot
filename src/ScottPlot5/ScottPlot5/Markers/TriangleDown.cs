@@ -2,6 +2,11 @@
 
 internal class TriangleDown : IMarker
 {
+    private readonly bool isOutlined;
+    public TriangleDown(bool isOutlined)
+    {
+        this.isOutlined = isOutlined;
+    }
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
         // Length of each side of triangle = size
@@ -9,7 +14,6 @@ internal class TriangleDown : IMarker
         float xOffset = (float)(radius * 0.866); // r * sqrt(3)/2
         float yOffset = radius / 2;
 
-        fill.ApplyToPaint(paint, new PixelRect(center, size));
 
         // Bottom, right, and left vertices
         SKPoint[] pointsList = new SKPoint[]
@@ -22,9 +26,13 @@ internal class TriangleDown : IMarker
         var path = new SKPath();
         path.AddPoly(pointsList);
 
-        canvas.DrawPath(path, paint);
+        if (isOutlined == false)
+        {
+            fill.ApplyToPaint(paint, new PixelRect(center, size));
+            canvas.DrawPath(path, paint);
+        }
 
-        if (outline.Width > 0)
+        if (outline.CanBeRendered)
         {
             outline.ApplyToPaint(paint);
             canvas.DrawPath(path, paint);
