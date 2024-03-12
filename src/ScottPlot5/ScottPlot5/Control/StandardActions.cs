@@ -147,22 +147,28 @@ public static class StandardActions
         Pixel px2 = control.Plot.ZoomRectangle.MouseUp;
         PixelRect dataRect = control.Plot.RenderManager.LastRender.DataRect;
 
-        foreach (IXAxis xAxis in control.Plot.Axes.XAxes)
+        if (control.Plot.ZoomRectangle.HorizontalSpan == false)
         {
-            double x1 = xAxis.GetCoordinate(px1.X, dataRect);
-            double x2 = xAxis.GetCoordinate(px2.X, dataRect);
-            double xMin = Math.Min(x1, x2);
-            double xMax = Math.Max(x1, x2);
-            xAxis.Range.Set(xMin, xMax);
+            foreach (IXAxis xAxis in control.Plot.Axes.XAxes)
+            {
+                double x1 = xAxis.GetCoordinate(px1.X, dataRect);
+                double x2 = xAxis.GetCoordinate(px2.X, dataRect);
+                double xMin = Math.Min(x1, x2);
+                double xMax = Math.Max(x1, x2);
+                xAxis.Range.Set(xMin, xMax);
+            }
         }
 
-        foreach (IYAxis yAxis in control.Plot.Axes.YAxes)
+        if (control.Plot.ZoomRectangle.VerticalSpan == false)
         {
-            double y1 = yAxis.GetCoordinate(px1.Y, dataRect);
-            double y2 = yAxis.GetCoordinate(px2.Y, dataRect);
-            double xMin = Math.Min(y1, y2);
-            double xMax = Math.Max(y1, y2);
-            yAxis.Range.Set(xMin, xMax);
+            foreach (IYAxis yAxis in control.Plot.Axes.YAxes)
+            {
+                double y1 = yAxis.GetCoordinate(px1.Y, dataRect);
+                double y2 = yAxis.GetCoordinate(px2.Y, dataRect);
+                double xMin = Math.Min(y1, y2);
+                double xMax = Math.Max(y1, y2);
+                yAxis.Range.Set(xMin, xMax);
+            }
         }
 
         control.Refresh();
