@@ -125,9 +125,26 @@ public static class StandardActions
         control.Refresh();
     }
 
-    public static void AutoScale(IPlotControl control)
+    public static void AutoScale(IPlotControl control, Pixel pixel)
     {
-        control.Plot.Axes.AutoScale();
+        IAxis? axisUnderMouse = control.Plot.GetAxis(pixel);
+
+        if (axisUnderMouse is not null)
+        {
+            if (axisUnderMouse is IYAxis yAxisUnderMouse)
+            {
+                control.Plot.Axes.AutoScaleY(yAxisUnderMouse);
+            }
+            else if (axisUnderMouse is IXAxis xAxisUnderMouse)
+            {
+                control.Plot.Axes.AutoScaleX(xAxisUnderMouse);
+            }
+        }
+        else
+        {
+            control.Plot.Axes.AutoScale();
+        }
+
         control.Refresh();
     }
 

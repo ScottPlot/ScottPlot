@@ -146,7 +146,7 @@ public class Interaction : IPlotInteraction
         // this covers the case where an extremely tiny zoom rectangle was made
         if ((isDragging == false) && (button == Inputs.ClickAutoAxisButton))
         {
-            Actions.AutoScale(PlotControl);
+            Actions.AutoScale(PlotControl, position);
         }
 
         if (button == Inputs.DragZoomRectangleButton)
