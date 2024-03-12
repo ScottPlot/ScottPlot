@@ -43,7 +43,21 @@ public class Shapes : ICategory
         [Test]
         public override void Execute()
         {
-            // TODO: need a circle plot type
+            var c1 = myPlot.Add.Circle(1, 0, .5);
+            var c2 = myPlot.Add.Circle(2, 0, .5);
+            var c3 = myPlot.Add.Circle(3, 0, .5);
+
+            c1.FillStyle.Color = Colors.Blue;
+            c2.FillStyle.Color = Colors.Blue.Darken(.75);
+            c3.FillStyle.Color = Colors.Blue.Lighten(.75);
+
+            c1.LineWidth = 0;
+            c2.LineWidth = 0;
+            c3.LineWidth = 0;
+
+            // force circles to remain circles
+            ScottPlot.AxisRules.SquareZoomOut squareRule = new(myPlot.Axes.Bottom, myPlot.Axes.Left);
+            myPlot.Axes.Rules.Add(squareRule);
         }
     }
 
@@ -56,7 +70,16 @@ public class Shapes : ICategory
         [Test]
         public override void Execute()
         {
-            // TODO: need ellipse plot type
+            for (int i = 0; i < 10; i++)
+            {
+                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: i * 10);
+                double fraction = i / 10.0;
+                el.LineColor = Colors.Blue.WithAlpha(fraction);
+            }
+
+            // force circles to remain circles
+            ScottPlot.AxisRules.SquareZoomOut squareRule = new(myPlot.Axes.Bottom, myPlot.Axes.Left);
+            myPlot.Axes.Rules.Add(squareRule);
         }
     }
 
