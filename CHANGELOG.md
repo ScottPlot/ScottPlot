@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * Plot: `Plot.FigureBackground` is now `Plot.FigureBackground.Color` (and same with `DataBackground`)
 * Plot: `Plot.FigureBackground.Image` and `Plot.DataBackground.Image` can be used to add a background image to plots (#3406, #3405) @unsigned-ru
 * Axes: Updated the auto-scaler to ignore plottables with visibility disabled (#3407) @levipara
+* Axes: Improve mouse pan and zoom behavior for multi-axis plots (#3410) @drolevar
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
