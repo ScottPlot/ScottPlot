@@ -60,23 +60,27 @@ public class Plot : IDisposable
         float scaledDeltaX = pixelDeltaX / ScaleFactor;
         float scaledDeltaY = pixelDeltaY / ScaleFactor;
 
-        // restore mousedown limits
+        // restore MouseDown limits
         originalLimits.Apply(this);
 
-        var axis = GetAxis(mouseDown);
+        IAxis? axisUnderMouse = GetAxis(mouseDown);
 
-        if (axis != null)
+        if (axisUnderMouse is not null)
         {
-            bool horz = axis.IsHorizontal();
+            // modify a single axis
+            float scaledDelta = axisUnderMouse.IsHorizontal()
+                ? scaledDeltaX
+                : scaledDeltaY;
 
-            float scaledDelta = horz ? scaledDeltaX : scaledDeltaY;
-            float dataSize = horz ? RenderManager.LastRender.DataRect.Width : RenderManager.LastRender.DataRect.Height;
+            float dataSize = axisUnderMouse.IsHorizontal()
+                ? RenderManager.LastRender.DataRect.Width
+                : RenderManager.LastRender.DataRect.Height;
 
-            axis.Range.PanMouse(scaledDelta, dataSize);
+            axisUnderMouse.Range.PanMouse(scaledDelta, dataSize);
         }
         else
         {
-            // pan in the direction opposite of the mouse movement
+            // modify all axes
             Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
             Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
         }
@@ -90,23 +94,27 @@ public class Plot : IDisposable
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
 
-        // restore mousedown limits
+        // restore MouseDown limits
         originalLimits.Apply(this);
 
-        var axis = GetAxis(mouseDown);
+        IAxis? axisUnderMouse = GetAxis(mouseDown);
 
-        if (axis != null)
+        if (axisUnderMouse is not null)
         {
-            bool horz = axis.IsHorizontal();
+            // modify a single axis
+            float pixelDelta = axisUnderMouse.IsHorizontal()
+                ? pixelDeltaX
+                : pixelDeltaY;
 
-            float pixelDelta = horz ? pixelDeltaX : pixelDeltaY;
-            float dataSize = horz ? RenderManager.LastRender.DataRect.Width : RenderManager.LastRender.DataRect.Height;
+            float dataSize = axisUnderMouse.IsHorizontal()
+                ? RenderManager.LastRender.DataRect.Width
+                : RenderManager.LastRender.DataRect.Height;
 
-            axis.Range.ZoomMouseDelta(pixelDelta, dataSize);
+            axisUnderMouse.Range.ZoomMouseDelta(pixelDelta, dataSize);
         }
         else
         {
-            // apply zoom for each axis
+            // modify all axes
             Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
             Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
         }
@@ -120,7 +128,7 @@ public class Plot : IDisposable
     {
         MultiAxisLimitManager originalLimits = new(this);
 
-        // restore mousedown limits
+        // restore MouseDown limits
         originalLimits.Apply(this);
 
         var axis = GetAxis(pixel);
@@ -237,16 +245,42 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Get an axis at a current pixel
+    /// Get the axis under a given pixel
     /// </summary>
     /// <param name="pixel">Point</param>
-    /// <returns>An axis, if there's one at the <paramref name="pixel" /> location, otherwise null.</returns>
+    /// <returns>The axis at <paramref name="pixel" /> (or null)</returns>
     public IAxis? GetAxis(Pixel pixel)
     {
-        var layout = RenderManager.LastRender.Layout;
+        IPanel? panel = GetPanel(pixel, axesOnly: true);
+        return panel is null ? null : (IAxis)panel;
+    }
 
-        var axis = Axes.GetAxes().FirstOrDefault(axis => axis.GetPanelRect(layout.DataRect, layout.PanelSizes[axis], layout.PanelOffsets[axis]).Contains(pixel));
-        return axis;
+    /// <summary>
+    /// Get the panel under a given pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>The panel at <paramref name="pixel" /> (or null)</returns>
+    public IPanel? GetPanel(Pixel pixel, bool axesOnly)
+    {
+        PixelRect dataRect = RenderManager.LastRender.Layout.DataRect;
+
+        // Reverse here so the "highest" axis is returned in the case some overlap.
+        var panels = axesOnly
+            ? Axes.GetPanels().Reverse()
+            : Axes.GetPanels().Reverse().OfType<IAxis>();
+
+        foreach (IPanel panel in panels)
+        {
+            float axisPanelSize = RenderManager.LastRender.Layout.PanelSizes[panel];
+            float axisPanelOffset = RenderManager.LastRender.Layout.PanelOffsets[panel];
+            PixelRect axisRect = panel.GetPanelRect(dataRect, axisPanelSize, axisPanelOffset);
+            if (axisRect.Contains(pixel))
+            {
+                return panel;
+            }
+        }
+
+        return null;
     }
 
     #endregion
