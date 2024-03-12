@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot.Control;
 
+// TODO: refactor individual actions into their own classes which inherit IControlAction
+
 public static class StandardActions
 {
     public static void ZoomIn(IPlotControl control, Pixel pixel, LockedAxes locked)
@@ -9,7 +11,7 @@ public static class StandardActions
         double xFrac = locked.X ? 1 : zoomInFraction;
         double yFrac = locked.Y ? 1 : zoomInFraction;
 
-        control.Plot.MouseZoom(xFrac, yFrac, pixel);
+        MouseZoom(control.Plot, xFrac, yFrac, pixel);
         control.Refresh();
     }
 
@@ -20,7 +22,7 @@ public static class StandardActions
         double xFrac = locked.X ? 1 : zoomOutFraction;
         double yFrac = locked.Y ? 1 : zoomOutFraction;
 
-        control.Plot.MouseZoom(xFrac, yFrac, pixel);
+        MouseZoom(control.Plot, xFrac, yFrac, pixel);
         control.Refresh();
     }
 
@@ -62,21 +64,74 @@ public static class StandardActions
 
     public static void DragPan(IPlotControl control, MouseDrag drag, LockedAxes locked)
     {
-        Pixel to2 = new(
+        Pixel mouseNow = new(
             x: locked.X ? drag.From.X : drag.To.X,
             y: locked.Y ? drag.From.Y : drag.To.Y);
 
-        control.Plot.MousePan(drag.InitialLimits, drag.From, to2);
+        Pixel mouseDown = drag.From;
+
+        float pixelDeltaX = -(mouseNow.X - mouseDown.X);
+        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
+
+        float scaledDeltaX = pixelDeltaX / control.Plot.ScaleFactor;
+        float scaledDeltaY = pixelDeltaY / control.Plot.ScaleFactor;
+
+        // restore MouseDown limits
+        drag.InitialLimits.Apply(control.Plot);
+
+        IAxis? axisUnderMouse = control.Plot.GetAxis(mouseDown);
+
+        PixelRect dataRect = control.Plot.RenderManager.LastRender.DataRect;
+
+        if (axisUnderMouse is not null)
+        {
+            // modify a single axis
+            float scaledDelta = axisUnderMouse.IsHorizontal() ? scaledDeltaX : scaledDeltaY;
+            float dataSize = axisUnderMouse.IsHorizontal() ? dataRect.Width : dataRect.Height;
+            axisUnderMouse.Range.PanMouse(scaledDelta, dataSize);
+        }
+        else
+        {
+            // modify all axes
+            control.Plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, dataRect.Width));
+            control.Plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, dataRect.Height));
+        }
+
         control.Refresh();
     }
 
     public static void DragZoom(IPlotControl control, MouseDrag drag, LockedAxes locked)
     {
-        Pixel to2 = new(
+        Pixel mouseNow = new(
             x: locked.X ? drag.From.X : drag.To.X,
             y: locked.Y ? drag.From.Y : drag.To.Y);
 
-        control.Plot.MouseZoom(drag.InitialLimits, drag.From, to2);
+        Pixel mouseDown = drag.From;
+
+        float pixelDeltaX = mouseNow.X - mouseDown.X;
+        float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
+
+        // restore MouseDown limits
+        drag.InitialLimits.Apply(control.Plot);
+
+        IAxis? axisUnderMouse = control.Plot.GetAxis(mouseDown);
+
+        PixelRect lastRenderDataRect = control.Plot.RenderManager.LastRender.DataRect;
+
+        if (axisUnderMouse is not null)
+        {
+            // modify a single axis
+            float pixelDelta = axisUnderMouse.IsHorizontal() ? pixelDeltaX : pixelDeltaY;
+            float dataSize = axisUnderMouse.IsHorizontal() ? lastRenderDataRect.Width : lastRenderDataRect.Height;
+            axisUnderMouse.Range.ZoomMouseDelta(pixelDelta, dataSize);
+        }
+        else
+        {
+            // modify all axes
+            control.Plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
+            control.Plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
+        }
+
         control.Refresh();
     }
 
@@ -115,7 +170,7 @@ public static class StandardActions
 
     public static void DragZoomRectangle(IPlotControl control, MouseDrag drag, LockedAxes locked)
     {
-        control.Plot.MouseZoomRectangle(drag.From, drag.To, vSpan: locked.Y, hSpan: locked.X);
+        MouseZoomRectangle(control.Plot, drag.From, drag.To, vSpan: locked.Y, hSpan: locked.X);
         control.Refresh();
     }
 
@@ -151,5 +206,40 @@ public static class StandardActions
     public static void ShowContextMenu(IPlotControl control, Pixel position)
     {
         control.ShowContextMenu(position);
+    }
+
+    private static void MouseZoom(Plot plot, double fracX, double fracY, Pixel pixel)
+    {
+        MultiAxisLimitManager originalLimits = new(plot);
+        PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
+
+        // restore MouseDown limits
+        originalLimits.Apply(plot);
+
+        var axisUnderMouse = plot.GetAxis(pixel);
+
+        if (axisUnderMouse is not null)
+        {
+            // modify a single axis
+            double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
+            float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactor;
+            axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
+        }
+        else
+        {
+            // modify all axes
+            Pixel scaledPixel = new(pixel.X / plot.ScaleFactor, pixel.Y / plot.ScaleFactor);
+            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
+            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
+        }
+    }
+
+    private static void MouseZoomRectangle(Plot plot, Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
+    {
+        Pixel scaledMouseDown = new(mouseDown.X / plot.ScaleFactor, mouseDown.Y / plot.ScaleFactor);
+        Pixel scaledMouseNow = new(mouseNow.X / plot.ScaleFactor, mouseNow.Y / plot.ScaleFactor);
+        plot.ZoomRectangle.Update(scaledMouseDown, scaledMouseNow);
+        plot.ZoomRectangle.VerticalSpan = vSpan;
+        plot.ZoomRectangle.HorizontalSpan = hSpan;
     }
 }
