@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using System;
+
+namespace ScottPlot.Control;
 
 // TODO: refactor individual actions into their own classes which inherit IControlAction
 
@@ -143,47 +145,26 @@ public static class StandardActions
 
     public static void ZoomRectangleApply(IPlotControl control)
     {
-        Pixel px1 = control.Plot.ZoomRectangle.MouseDown;
-        Pixel px2 = control.Plot.ZoomRectangle.MouseUp;
-        PixelRect dataRect = control.Plot.RenderManager.LastRender.DataRect;
-
-        if (control.Plot.ZoomRectangle.HorizontalSpan == false)
-        {
-            foreach (IXAxis xAxis in control.Plot.Axes.XAxes)
-            {
-                double x1 = xAxis.GetCoordinate(px1.X, dataRect);
-                double x2 = xAxis.GetCoordinate(px2.X, dataRect);
-                double xMin = Math.Min(x1, x2);
-                double xMax = Math.Max(x1, x2);
-                xAxis.Range.Set(xMin, xMax);
-            }
-        }
-
-        if (control.Plot.ZoomRectangle.VerticalSpan == false)
-        {
-            foreach (IYAxis yAxis in control.Plot.Axes.YAxes)
-            {
-                double y1 = yAxis.GetCoordinate(px1.Y, dataRect);
-                double y2 = yAxis.GetCoordinate(px2.Y, dataRect);
-                double xMin = Math.Min(y1, y2);
-                double xMax = Math.Max(y1, y2);
-                yAxis.Range.Set(xMin, xMax);
-            }
-        }
-
+        control.Plot.ZoomRectangle.Apply(control.Plot);
         control.Refresh();
     }
 
     public static void DragZoomRectangle(IPlotControl control, MouseDrag drag, LockedAxes locked)
     {
+        control.Plot.ZoomRectangle.VerticalSpan = locked.X;
+        control.Plot.ZoomRectangle.HorizontalSpan = locked.Y;
+
         IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From);
         if (axisUnderMouse is not null)
         {
-            locked.X = axisUnderMouse.IsVertical();
-            locked.Y = axisUnderMouse.IsHorizontal();
+            control.Plot.ZoomRectangle.VerticalSpan = axisUnderMouse.IsHorizontal();
+            control.Plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
         }
 
-        MouseZoomRectangle(control.Plot, drag.From, drag.To, vSpan: locked.Y, hSpan: locked.X);
+        double scaleFactor = control.Plot.ScaleFactor;
+        control.Plot.ZoomRectangle.MouseDown = new(drag.From.X / scaleFactor, drag.From.Y / scaleFactor);
+        control.Plot.ZoomRectangle.MouseUp = new(drag.To.X / scaleFactor, drag.To.Y / scaleFactor);
+        control.Plot.ZoomRectangle.IsVisible = true;
         control.Refresh();
     }
 
@@ -245,14 +226,5 @@ public static class StandardActions
             plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
             plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
         }
-    }
-
-    private static void MouseZoomRectangle(Plot plot, Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
-    {
-        Pixel scaledMouseDown = new(mouseDown.X / plot.ScaleFactor, mouseDown.Y / plot.ScaleFactor);
-        Pixel scaledMouseNow = new(mouseNow.X / plot.ScaleFactor, mouseNow.Y / plot.ScaleFactor);
-        plot.ZoomRectangle.Update(scaledMouseDown, scaledMouseNow);
-        plot.ZoomRectangle.VerticalSpan = vSpan;
-        plot.ZoomRectangle.HorizontalSpan = hSpan;
     }
 }
