@@ -131,20 +131,18 @@ public class Plot : IDisposable
         // restore MouseDown limits
         originalLimits.Apply(this);
 
-        var axis = GetAxis(pixel);
+        var axisUnderMouse = GetAxis(pixel);
 
-        if (axis != null)
+        if (axisUnderMouse is not null)
         {
-            bool horz = axis.IsHorizontal();
-
-            double frac = horz ? fracX : fracY;
-            float scaledCoord = (horz ? pixel.X : pixel.Y) / ScaleFactor;
-
-            axis.Range.ZoomFrac(frac, axis.GetCoordinate(scaledCoord, RenderManager.LastRender.DataRect));
+            // modify a single axis
+            double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
+            float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / ScaleFactor;
+            axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, RenderManager.LastRender.DataRect));
         }
         else
         {
-            // apply zoom for each axis
+            // modify all axes
             Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
             Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
             Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
