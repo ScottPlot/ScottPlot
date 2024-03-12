@@ -133,6 +133,22 @@ public class AxisManager
         YAxes.RemoveAll(ax => ax == axis);
     }
 
+    /// <summary>
+    /// Remove the given Panel
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Panels.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Grid
+    /// </summary>
+    public void Remove(IGrid grid)
+    {
+        Grids.Remove(grid);
+    }
+
     [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
     public void DateTimeTicks(Edge edge)
     {
@@ -208,12 +224,15 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
+        if (xAxis.Range.HasBeenSet) AutoScaler.InvertedX = left > right ? true : false;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
     {
         yAxis.Min = bottom;
         yAxis.Max = top;
+
+        if (yAxis.Range.HasBeenSet) AutoScaler.InvertedY = bottom > top ? true : false;
     }
 
     public void SetLimitsX(double left, double right)

@@ -7,7 +7,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     public bool Rotated
     {
         get => false;
-        set => throw new NotImplementedException("rotation is not yet supported for generic SignalXY plots");
+        set => throw new NotImplementedException("rotation is not yet supported for generic SignalXY plots (try using doubles)");
     }
 
     public double XOffset { get; set; } = 0;
@@ -19,7 +19,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     {
         if (xs.Length != ys.Length)
         {
-            throw new InvalidOperationException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
         }
 
         Xs = xs;
@@ -33,7 +33,9 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double xMax = NumericConversion.GenericToDouble(Xs, MaximumIndex) + XOffset;
         CoordinateRange xRange = new(xMin, xMax);
         CoordinateRange yRange = GetRangeY(MinimumIndex, MaximumIndex);
-        return new AxisLimits(xRange, yRange);
+        return Rotated
+            ? new AxisLimits(yRange, xRange)
+            : new AxisLimits(xRange, yRange);
     }
 
     public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes)
@@ -48,14 +50,21 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             .Select(pixelColumnIndex => GetColumnPixels(pixelColumnIndex, columnIndexRange, rp, axes))
             .SelectMany(x => x);
 
+        Pixel[] leftOutsidePoint = PointBefore, rightOutsidePoint = PointAfter;
+        if (axes.XAxis.Range.Span < 0)
+        {
+            leftOutsidePoint = PointAfter;
+            rightOutsidePoint = PointBefore;
+        }
+
         // combine with one extra point before and after
-        Pixel[] points = [.. PointBefore, .. VisiblePoints, .. PointAfter];
+        Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
-        if (PointBefore.Length > 0)
+        if (leftOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateBeforeX(rp, points);
 
-        if (PointAfter.Length > 0)
+        if (rightOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateAfterX(rp, points);
 
         return points;
@@ -69,7 +78,10 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double min = NumericConversion.GenericToDouble(Ys, index1);
         double max = NumericConversion.GenericToDouble(Ys, index1);
 
-        for (int i = index1; i <= index2; i++)
+        var minindex = Math.Min(index1, index2);
+        var maxindex = Math.Max(index1, index2);
+
+        for (int i = minindex; i <= maxindex; i++)
         {
             double value = NumericConversion.GenericToDouble(Ys, i);
             min = Math.Min(value, min);
@@ -96,9 +108,12 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         NumericConversion.DoubleToGeneric(x - XOffset, out TX x2);
         int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x2);
 
+        // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
+        // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
+        // If x is above the max Xs, BinarySearch returns -maxIndex. Bitwise negation of this value returns maxIndex + 1 (i.e., the position after the last index). However, this index is beyond the array bounds, so we return the final index instead.
         if (index < 0)
         {
-            index = ~index; // read BinarySearch() docs
+            index = index < -indexRange.Max ? indexRange.Max : ~index; // read BinarySearch() docs
         }
 
         return index;
@@ -118,7 +133,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double end = start + unitsPerPixelX;
         int startIndex = GetIndex(start, rng);
         int endIndex = GetIndex(end, rng);
-        int pointsInRange = endIndex - startIndex;
+        int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
         {
@@ -130,8 +145,9 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         if (pointsInRange > 1)
         {
-            double yEnd = NumericConversion.GenericToDouble(Ys, endIndex - 1);
-            CoordinateRange yRange = GetRangeY(startIndex, endIndex - 1);
+            int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex + 1;
+            double yEnd = NumericConversion.GenericToDouble(Ys, lastIndex);
+            CoordinateRange yRange = GetRangeY(startIndex, lastIndex); //YOffset is added in GetRangeY
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
             yield return new Pixel(xPixel, axes.GetPixelY(yEnd) + YOffset); // exit
@@ -144,16 +160,16 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPoint(IAxes axes)
     {
-        int pointBeforeIndex = GetIndexX(axes.XAxis.Min);
+        int firstPointIndex = GetIndexX(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
-        if (pointBeforeIndex > MinimumIndex)
+        if (firstPointIndex > MinimumIndex)
         {
-            double x = NumericConversion.GenericToDouble(Xs, pointBeforeIndex - 1) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, pointBeforeIndex - 1) + YOffset;
+            double x = NumericConversion.GenericToDouble(Xs, firstPointIndex - 1) + XOffset;
+            double y = NumericConversion.GenericToDouble(Ys, firstPointIndex - 1) + YOffset;
             float beforeX = axes.GetPixelX(x);
             float beforeY = axes.GetPixelY(y);
             Pixel beforePoint = new(beforeX, beforeY);
-            return ([beforePoint], pointBeforeIndex);
+            return ([beforePoint], firstPointIndex);
         }
         else
         {
@@ -167,16 +183,16 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int lastIndex) GetLastPoint(IAxes axes)
     {
-        int pointAfterIndex = GetIndexX(axes.XAxis.Max);
+        int lastPointIndex = GetIndexX(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
-        if (pointAfterIndex <= MaximumIndex)
+        if (lastPointIndex < MaximumIndex)
         {
-            double x = NumericConversion.GenericToDouble(Xs, pointAfterIndex) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, pointAfterIndex) + YOffset;
+            double x = NumericConversion.GenericToDouble(Xs, lastPointIndex) + XOffset;
+            double y = NumericConversion.GenericToDouble(Ys, lastPointIndex) + YOffset;
             float afterX = axes.GetPixelX(x);
             float afterY = axes.GetPixelY(y);
             Pixel afterPoint = new(afterX, afterY);
-            return ([afterPoint], pointAfterIndex);
+            return ([afterPoint], lastPointIndex);
         }
         else
         {

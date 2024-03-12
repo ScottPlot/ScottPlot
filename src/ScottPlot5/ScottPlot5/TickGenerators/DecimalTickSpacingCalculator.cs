@@ -6,21 +6,23 @@ public class DecimalTickSpacingCalculator
 
     public double[] GenerateTickPositions(CoordinateRange range, PixelLength axisLength, PixelLength maxLabelLength)
     {
+        var AbsSpan = Math.Abs(range.Span);
+        var RangeMin = Math.Min(range.Min, range.Max);
         double tickSpacing = GetIdealTickSpacing(range, axisLength, maxLabelLength);
 
-        double firstTickOffset = range.Min % tickSpacing;
-        int tickCount = (int)(range.Span / tickSpacing) + 2;
+        double firstTickOffset = RangeMin % tickSpacing;
+        int tickCount = (int)(AbsSpan / tickSpacing) + 2;
         tickCount = Math.Min(1000, tickCount);
         tickCount = Math.Max(1, tickCount);
 
         double[] majorTickPositions = Enumerable.Range(0, tickCount)
-            .Select(x => range.Min - firstTickOffset + tickSpacing * x)
+            .Select(x => RangeMin - firstTickOffset + tickSpacing * x)
             .Where(range.Contains)
             .ToArray();
 
         if (majorTickPositions.Length < 2)
         {
-            double tickBelow = range.Min - firstTickOffset;
+            double tickBelow = RangeMin - firstTickOffset;
             double firstTick = majorTickPositions.Length > 0 ? majorTickPositions[0] : tickBelow;
             double nextTick = tickBelow + tickSpacing;
             majorTickPositions = [firstTick, nextTick];
@@ -31,12 +33,13 @@ public class DecimalTickSpacingCalculator
 
     private double GetIdealTickSpacing(CoordinateRange range, PixelLength axisLength, PixelLength maxLabelLength)
     {
-        double unitsPerPx = range.Span / axisLength.Length;
+        var AbsSpan = Math.Abs(range.Span);
+        double unitsPerPx = AbsSpan / axisLength.Length;
 
         int targetTickCount = (int)(axisLength.Length / maxLabelLength.Length) + 1;
 
         int radix = 10;
-        int exponent = (int)Math.Log(range.Span, radix) + 1;
+        int exponent = (int)Math.Log(AbsSpan, radix) + 1;
         double initialSpace = Math.Pow(radix, exponent);
         List<double> tickSpacings = [initialSpace];
 
@@ -54,7 +57,7 @@ public class DecimalTickSpacingCalculator
             double divisor = divBy[tickSpacings.Count % divBy.Length];
             double smallerSpacing = tickSpacings.Last() / divisor;
             tickSpacings.Add(smallerSpacing);
-            int tickCount = (int)(range.Span / tickSpacings.Last());
+            int tickCount = (int)(AbsSpan / tickSpacings.Last());
             if (tickCount > targetTickCount)
                 break;
         }
@@ -63,7 +66,7 @@ public class DecimalTickSpacingCalculator
         for (int i = 0; i < tickSpacings.Count; i++)
         {
             double thisTickSpacing = tickSpacings[tickSpacings.Count - 1 - i];
-            double thisTickCount = range.Span / thisTickSpacing;
+            double thisTickCount = AbsSpan / thisTickSpacing;
             double spacePerTick = axisLength.Length / thisTickCount;
             double neededSpcePerTick = maxLabelLength.Length;
 
