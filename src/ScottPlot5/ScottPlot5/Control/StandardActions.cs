@@ -170,6 +170,13 @@ public static class StandardActions
 
     public static void DragZoomRectangle(IPlotControl control, MouseDrag drag, LockedAxes locked)
     {
+        IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From);
+        if (axisUnderMouse is not null)
+        {
+            locked.X = axisUnderMouse.IsVertical();
+            locked.Y = axisUnderMouse.IsHorizontal();
+        }
+
         MouseZoomRectangle(control.Plot, drag.From, drag.To, vSpan: locked.Y, hSpan: locked.X);
         control.Refresh();
     }
