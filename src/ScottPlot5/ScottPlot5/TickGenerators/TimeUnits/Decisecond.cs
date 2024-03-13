@@ -8,7 +8,9 @@ public class Decisecond : ITimeUnit
 
     public DateTime Snap(DateTime dt)
     {
-        return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, (dt.Millisecond / 10) * 10);
+        int snapMilliseconds = 1000;
+        int remainder = dt.Millisecond % snapMilliseconds;
+        return dt + TimeSpan.FromMilliseconds(-remainder);
     }
 
     public string GetDateTimeFormatString()
