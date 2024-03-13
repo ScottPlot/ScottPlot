@@ -1,6 +1,5 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using ScottPlot.Legends;
 using System.ComponentModel;
 
 namespace ScottPlot.Stylers;
@@ -8,22 +7,17 @@ namespace ScottPlot.Stylers;
 /// <summary>
 /// A collection of high-level methods that make it easy to style many components of a plot at once
 /// </summary>
-public class PlotStyler
+public class PlotStyler(Plot plot)
 {
-    private readonly Plot Plot;
-
-    public PlotStyler(Plot plot)
-    {
-        Plot = plot;
-    }
+    private readonly Plot Plot = plot;
 
     /// <summary>
     /// Apply background colors to the figure and data areas
     /// </summary>
     public void Background(Color figure, Color data)
     {
-        Plot.FigureBackground = figure;
-        Plot.DataBackground = data;
+        Plot.FigureBackground.Color = figure;
+        Plot.DataBackground.Color = data;
     }
 
     /// <summary>

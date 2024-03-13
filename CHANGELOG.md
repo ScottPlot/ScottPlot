@@ -14,6 +14,14 @@ _Not yet on NuGet..._
 * Ellipse: Added `LineWidth`, `LineColor`, and `FillColor` shortcut properties
 * Color: Added `Lighten()` and `Darken()` properties (#3387, #3390) @KroMignon
 * Color: Modified `ToHSL()` to return improved Hue, Saturation and Luminosity values (#3390) @KroMignon
+* SignalXY: Improve support for displaying data on inverted axes (#3396, #3400) @BrianAtZetica
+* Axes: Improved support for ticks and labels on inverted axes (#3401, #3397) @BrianAtZetica
+* Plot: Added `Remove()` overloads for Axes, Panels, and Grids (#3402, #3360) @Excustic, @redrabbit007, @csbebetter, @xichaoqiang
+* Plot: `Plot.FigureBackground` is now `Plot.FigureBackground.Color` (and same with `DataBackground`)
+* Plot: `Plot.FigureBackground.Image` and `Plot.DataBackground.Image` can be used to add a background image to plots (#3406, #3405) @unsigned-ru
+* Axes: Updated the auto-scaler to ignore plottables with visibility disabled (#3407) @levipara
+* Axes: Restrict pan, zoom, and autoscale to a single dimension if the cursor is over an axis panel (#3410) @drolevar
+* Controls: Improved behavior of middle-click-drag zoom rectangle actions when CTRL or SHIFT is pressed
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
