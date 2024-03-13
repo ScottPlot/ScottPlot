@@ -25,6 +25,8 @@ _Not yet on NuGet..._
 * DataLogger and DataStreamer: Improve support for multi-axis plots (#3411) @drolevar
 * Controls: Prevent unnecessary zoom rectangle clearing (#3412) @drolevar
 * Axes: Improve placement of decisecond and centisecond ticks on DateTime axes (#3413) @drolevar
+* Label: Improved appearance of multiline labels with outlined borders or filled backgrounds (#3415, #3371) @NicolasLairNET
+* Label: Added a `LineSpacing` property to allow manually defining line height in multi-line labels (#3415, #3371) @NicolasLairNET
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._

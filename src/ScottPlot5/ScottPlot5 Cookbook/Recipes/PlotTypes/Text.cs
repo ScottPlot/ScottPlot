@@ -4,7 +4,7 @@ public class Text : ICategory
 {
     public string Chapter => "Plot Types";
     public string CategoryName => "Text";
-    public string CategoryDescription => "Text lables placed on the plot in coordinate space";
+    public string CategoryDescription => "Text labels can be placed on the plot in coordinate space";
 
     public class TextQuickstart : RecipeBase
     {
@@ -38,6 +38,36 @@ public class Text : ICategory
             text.Label.BorderWidth = 3;
             text.Label.Padding = 10;
             text.Label.Alignment = Alignment.MiddleCenter;
+        }
+    }
+
+    public class LabelLineHeight : RecipeBase
+    {
+        public override string Name => "Line Height";
+        public override string Description => "Multiline labels have a default line height " +
+            "estimated from the typeface and font size, however line height may be manually " +
+            "defined by the user.";
+
+        [Test]
+        public override void Execute()
+        {
+            var label1 = myPlot.Add.Text($"line\nheight", 0, 0);
+            label1.LineSpacing = 0;
+            label1.FontColor = Colors.Red;
+
+            var label2 = myPlot.Add.Text($"can\nbe", 1, 0);
+            label2.LineSpacing = 10;
+            label2.FontColor = Colors.Orange;
+
+            var label3 = myPlot.Add.Text($"automatic\nor", 2, 0);
+            label3.LineSpacing = null;
+            label3.FontColor = Colors.Green;
+
+            var label4 = myPlot.Add.Text($"set\nmanually", 3, 0);
+            label4.LineSpacing = 15;
+            label4.FontColor = Colors.Blue;
+
+            myPlot.Axes.SetLimitsX(-.5, 4);
         }
     }
 }
