@@ -47,6 +47,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         Plot newPlot = new();
         newPlot.FigureBackground.Color = this.BackColor.ToColor();
+        newPlot.DataBackground.Color = Colors.White;
 
         return Reset(newPlot);
     }
