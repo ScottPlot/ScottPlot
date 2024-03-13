@@ -55,12 +55,7 @@ public class Label
         set { _Bold = value; ClearCachedTypeface(); }
     }
 
-    private float _FontSpacing = 0;
-    public float FontSpacing
-    {
-        get => _FontSpacing;
-        set { _FontSpacing = value; ClearCachedTypeface(); }
-    }
+    public float? LineSpacing { get; set; } = 0;
 
     public bool Italic = false;
     public bool AntiAlias = true;
@@ -133,7 +128,6 @@ public class Label
     public void Render(SKCanvas canvas, float x, float y)
     {
         using SKPaint paint = new();
-        FontSpacing = FontSpacing == 0 ? paint.FontSpacing : FontSpacing;
         Render(canvas, x, y, paint);
     }
 
@@ -145,8 +139,6 @@ public class Label
 
     public PixelSize Measure(SKPaint paint)
     {
-        ApplyTextPaint(paint);
-
         if (Text.Contains('\n'))
             return MeasureMultiLines(paint);
 
@@ -155,12 +147,13 @@ public class Label
 
     public PixelSize MeasureMultiLines(SKPaint paint)
     {
+        ApplyTextPaint(paint);
         string[] lines = Text.Split('\n');
         int lineNumber = lines.Length;
 
         // height measure
         float height = MeasureText(paint, Text).Height;
-        height = (height * lineNumber) + FontSpacing * (lineNumber - 1);
+        height = (height * lineNumber) + (LineSpacing ?? paint.FontSpacing) * (lineNumber - 1);
 
         // width measure
         string? longestLine = lines.OrderByDescending(line => line.Length).FirstOrDefault();
@@ -171,6 +164,7 @@ public class Label
 
     private PixelSize MeasureText(SKPaint paint, string text)
     {
+        ApplyTextPaint(paint);
         SKRect textBounds = new();
         ///INFO: MeasureText(string str, ref SKRect rect) works as follow:
         /// - returned value is the length of the text with leading and trailing white spaces
@@ -206,7 +200,7 @@ public class Label
             for (int i = 0; i < lines.Length; i++)
             {
                 canvas.DrawText(lines[i], textRect.Left, yPosition, paint);
-                yPosition += lineHeight + FontSpacing;
+                yPosition += lineHeight + LineSpacing ?? paint.FontSpacing;
             }
         }
         else

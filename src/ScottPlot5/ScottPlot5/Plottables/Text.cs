@@ -50,10 +50,10 @@ public class Text : IPlottable
         set => Label.FontName = value;
     }
 
-    public float FontSpacing
+    public float? LineSpacing
     {
-        get => Label.FontSpacing;
-        set => Label.FontSpacing = value;
+        get => Label.LineSpacing;
+        set => Label.LineSpacing = value;
     }
 
     public Text()
