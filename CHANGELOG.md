@@ -19,6 +19,16 @@ _Not yet on NuGet..._
 * Plot: Added `Remove()` overloads for Axes, Panels, and Grids (#3402, #3360) @Excustic, @redrabbit007, @csbebetter, @xichaoqiang
 * Plot: `Plot.FigureBackground` is now `Plot.FigureBackground.Color` (and same with `DataBackground`)
 * Plot: `Plot.FigureBackground.Image` and `Plot.DataBackground.Image` can be used to add a background image to plots (#3406, #3405) @unsigned-ru
+* Axes: Updated the auto-scaler to ignore plottables with visibility disabled (#3407) @levipara
+* Axes: Restrict pan, zoom, and autoscale to a single dimension if the cursor is over an axis panel (#3410) @drolevar
+* Controls: Improved behavior of middle-click-drag zoom rectangle actions when CTRL or SHIFT is pressed
+* DataLogger and DataStreamer: Improve support for multi-axis plots (#3411) @drolevar
+* Controls: Prevent unnecessary zoom rectangle clearing (#3412) @drolevar
+* Axes: Improve placement of decisecond and centisecond ticks on DateTime axes (#3413) @drolevar
+
+## ScottPlot 4.1.72
+_Not yet on NuGet..._
+* DataLogger: Improve support for multi-axis plots (#3411) @drolevar
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
