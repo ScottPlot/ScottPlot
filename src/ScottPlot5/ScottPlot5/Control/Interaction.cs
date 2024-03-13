@@ -149,7 +149,7 @@ public class Interaction : IPlotInteraction
             Actions.AutoScale(PlotControl, position);
         }
 
-        if (button == Inputs.DragZoomRectangleButton)
+        if (IsZoomingRectangle && button == Inputs.DragZoomRectangleButton)
         {
             Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;

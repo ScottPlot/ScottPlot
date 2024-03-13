@@ -183,7 +183,7 @@ public class DataLogger : IPlottable, IHasColor, IHasLine, IHasMarker
         AxisLimits viewLimits = force ? AxisLimits.NoLimits : Plot.GetAxisLimits(XAxisIndex, YAxisIndex);
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
-        Plot.SetAxisLimits(newLimits);
+        Plot.SetAxisLimits(newLimits, XAxisIndex, YAxisIndex);
 
         if (force)
             UpdateAxisLimits();
