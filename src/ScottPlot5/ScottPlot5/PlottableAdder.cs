@@ -569,6 +569,48 @@ public class PlottableAdder(Plot plot)
         return scatter;
     }
 
+    public Scatter ScatterLine(IScatterSource source, Color? color = null)
+    {
+        var scatter = this.Scatter(source, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterLine(double[] xs, double[] ys, Color? color = null)
+    {
+        var scatter = this.Scatter(xs, ys, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterLine(Coordinates[] coordinates, Color? color = null)
+    {
+        var scatter = this.Scatter(coordinates, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterLine(List<Coordinates> coordinates, Color? color = null)
+    {
+        var scatter = this.Scatter(coordinates, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterLine<T1, T2>(T1[] xs, T2[] ys, Color? color = null)
+    {
+        var scatter = this.Scatter(xs, ys, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterLine<T1, T2>(List<T1> xs, List<T2> ys, Color? color = null)
+    {
+        var scatter = this.Scatter(xs, ys, color);
+        scatter.MarkerSize = 0;
+        return scatter;
+    }
+
     public Signal Signal(ISignalSource source, Color? color = null)
     {
         Signal sig = new(source)
