@@ -78,7 +78,7 @@ public class Scatter : ICategory
         }
     }
 
-    public class ScatterLine: RecipeBase
+    public class ScatterLine : RecipeBase
     {
         public override string Name => "Scatter Plot Line Only";
         public override string Description => "Scatter plots can be created " +
@@ -135,8 +135,6 @@ public class Scatter : ICategory
             sp6.LineWidth = 6;
 
             myPlot.ShowLegend(Alignment.UpperLeft);
-
-            myPlot.ScaleFactor = 2; // FIXME: remove
         }
     }
 
