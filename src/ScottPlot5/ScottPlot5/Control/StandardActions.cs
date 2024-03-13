@@ -176,6 +176,8 @@ public static class StandardActions
 
     public static void AutoScale(IPlotControl control, Pixel pixel)
     {
+        // TODO: move axis-specific autoscaling logic into IAutoScaler
+
         IAxis? axisUnderMouse = control.Plot.GetAxis(pixel);
 
         if (axisUnderMouse is not null)

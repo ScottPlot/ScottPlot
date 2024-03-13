@@ -20,29 +20,49 @@ public class StandardZoomRectangle : IZoomRectangle
     {
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
 
-        if (HorizontalSpan == false)
+        IAxis? axisUnderMouse = plot.GetAxis(MouseDown);
+        if (axisUnderMouse is not null)
         {
-            foreach (IXAxis xAxis in plot.Axes.XAxes)
+            if (axisUnderMouse is IXAxis xAxis)
             {
-                double x1 = xAxis.GetCoordinate(MouseDown.X, dataRect);
-                double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
-                double xMin = Math.Min(x1, x2);
-                double xMax = Math.Max(x1, x2);
-                xAxis.Range.Set(xMin, xMax);
+                Apply(xAxis, dataRect);
+            }
+            else if (axisUnderMouse is IYAxis yAxis)
+            {
+                Apply(yAxis, dataRect);
             }
         }
+        else
+        {
+            plot.Axes.XAxes.ForEach(ax => Apply(ax, dataRect));
+            plot.Axes.YAxes.ForEach(ax => Apply(ax, dataRect));
+        }
+    }
 
-        if (VerticalSpan == false)
+    private void Apply(IXAxis xAxis, PixelRect dataRect)
+    {
+        if (HorizontalSpan == true)
         {
-            foreach (IYAxis yAxis in plot.Axes.YAxes)
-            {
-                double y1 = yAxis.GetCoordinate(MouseDown.Y, dataRect);
-                double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
-                double xMin = Math.Min(y1, y2);
-                double xMax = Math.Max(y1, y2);
-                yAxis.Range.Set(xMin, xMax);
-            }
+            return;
         }
+        double x1 = xAxis.GetCoordinate(MouseDown.X, dataRect);
+        double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
+        double xMin = Math.Min(x1, x2);
+        double xMax = Math.Max(x1, x2);
+        xAxis.Range.Set(xMin, xMax);
+    }
+
+    private void Apply(IYAxis yAxis, PixelRect dataRect)
+    {
+        if (VerticalSpan == true)
+        {
+            return;
+        }
+        double y1 = yAxis.GetCoordinate(MouseDown.Y, dataRect);
+        double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
+        double xMin = Math.Min(y1, y2);
+        double xMax = Math.Max(y1, y2);
+        yAxis.Range.Set(xMin, xMax);
     }
 
     public void Render(RenderPack rp)
