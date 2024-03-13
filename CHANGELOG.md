@@ -23,6 +23,7 @@ _Not yet on NuGet..._
 * Axes: Restrict pan, zoom, and autoscale to a single dimension if the cursor is over an axis panel (#3410) @drolevar
 * Controls: Improved behavior of middle-click-drag zoom rectangle actions when CTRL or SHIFT is pressed
 * DataLogger and DataStreamer: Improve support for multi-axis plots (#3411) @drolevar
+* Controls: Prevent premature clearing of zoom rectangle (#3412) @drolevar
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
