@@ -5,7 +5,7 @@ public class Label
     public bool IsVisible { get; set; } = true;
     public string Text { get; set; } = string.Empty;
 
-    public Alignment Alignment { get; set; } = 0;
+    public Alignment Alignment { get; set; } = Alignment.UpperLeft;
 
     /// <summary>
     /// Rotation in degrees clockwise from 0 (horizontal text)
