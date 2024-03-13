@@ -38,6 +38,12 @@ public class Text : IPlottable
         set => Label.Text = value;
     }
 
+    public Color FontColor
+    {
+        get => Color;
+        set => Color = value;
+    }
+
     public string FontName
     {
         get => Label.FontName;
