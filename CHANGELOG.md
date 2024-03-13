@@ -24,6 +24,7 @@ _Not yet on NuGet..._
 * Controls: Improved behavior of middle-click-drag zoom rectangle actions when CTRL or SHIFT is pressed
 * DataLogger and DataStreamer: Improve support for multi-axis plots (#3411) @drolevar
 * Controls: Prevent unnecessary zoom rectangle clearing (#3412) @drolevar
+* Axes: Improve placement of decisecond and centisecond ticks on DateTime axes (#3413) @drolevar
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
