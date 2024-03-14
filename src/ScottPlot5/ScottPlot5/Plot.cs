@@ -95,7 +95,12 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="x">Center point pixel's x</param>
+    /// <param name="y">Center point pixel's y</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
     {
@@ -122,7 +127,11 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="pixel">Center point pixel</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
     {
@@ -130,7 +139,12 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a coordinate pair with the
+    /// radius specified in pixels.  Uses measurements from the most recent
+    /// render.
+    /// <param name="coordinates">Center point in coordinate units</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
     {
