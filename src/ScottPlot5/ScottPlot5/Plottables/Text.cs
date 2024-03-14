@@ -38,10 +38,22 @@ public class Text : IPlottable
         set => Label.Text = value;
     }
 
+    public Color FontColor
+    {
+        get => Color;
+        set => Color = value;
+    }
+
     public string FontName
     {
         get => Label.FontName;
         set => Label.FontName = value;
+    }
+
+    public float? LineSpacing
+    {
+        get => Label.LineSpacing;
+        set => Label.LineSpacing = value;
     }
 
     public Text()

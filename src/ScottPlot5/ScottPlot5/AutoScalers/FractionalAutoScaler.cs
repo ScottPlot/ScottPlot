@@ -43,6 +43,9 @@ public class FractionalAutoScaler : IAutoScaler
 
         foreach (IPlottable plottable in plottables)
         {
+            if (!plottable.IsVisible)
+                continue;
+
             AxisLimits limits = plottable.GetAxisLimits();
             plottable.Axes.XAxis.Range.Expand(limits.XRange);
             plottable.Axes.YAxis.Range.Expand(limits.YRange);

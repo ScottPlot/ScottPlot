@@ -26,6 +26,8 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
     public double Height => Top - Bottom;
     public double Area => Width * Height;
     public bool HasArea => (Area != 0 && !double.IsNaN(Area) && !double.IsInfinity(Area));
+    public bool IsInvertedX => Left > Right;
+    public bool IsInvertedY => Top < Bottom;
 
     public CoordinateRect(CoordinateRange xRange, CoordinateRange yRange)
     {

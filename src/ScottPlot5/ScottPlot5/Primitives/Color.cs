@@ -198,7 +198,7 @@ public readonly struct Color
         return (h, s, l);
     }
 
-    public static Color FromHSL(float hue, float saturation, float luminosity)
+    public static Color FromHSL(float hue, float saturation, float luminosity, float alpha = 1)
     {
         // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
 
@@ -232,7 +232,7 @@ public readonly struct Color
                 clr[i] = temp1;
         }
 
-        return new Color(clr[0], clr[1], clr[2]);
+        return new Color(clr[0], clr[1], clr[2], alpha);
     }
 
     public Color WithLightness(float lightness = .5f)
@@ -263,5 +263,55 @@ public readonly struct Color
             return Lighten(-fraction);
         fraction = Math.Max(0f, 1f - fraction);
         return new Color(R.Darken(fraction), G.Darken(fraction), B.Darken(fraction), Alpha);
+    }
+
+    /// <summary>
+    /// Return this color mixed with another color.
+    /// </summary>
+    /// <param name="otherColor">Color to mix with this color</param>
+    /// <param name="fraction">Fraction of <paramref name="otherColor"/> to use</param>
+    /// <returns></returns>
+    public Color MixedWith(Color otherColor, double fraction)
+    {
+        return InterpolateRgb(otherColor, fraction);
+    }
+
+    public Color InterpolateRgb(Color c1, double factor)
+    {
+        return InterpolateRgb(this, c1, factor);
+    }
+
+    public Color[] InterpolateArrayRgb(Color c1, int steps)
+    {
+        return InterpolateRgbArray(this, c1, steps);
+    }
+
+    static byte InterpolateRgb(byte b1, byte b2, double factor)
+    {
+        if (b1 < b2)
+            return Math.Min(Math.Max((byte)(b1 + (b2 - b1) * factor), (byte)0), (byte)255);
+        else
+            return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1 - factor)), (byte)0), (byte)255);
+    }
+
+    static public Color InterpolateRgb(Color c1, Color c2, double factor)
+    {
+        return new Color(
+            InterpolateRgb(c1.R, c2.R, factor),
+            InterpolateRgb(c1.G, c2.G, factor),
+            InterpolateRgb(c1.B, c2.B, factor),
+            InterpolateRgb(c1.A, c2.A, factor)
+            );
+    }
+
+    static public Color[] InterpolateRgbArray(Color c1, Color c2, int steps)
+    {
+        var stepFactor = 1.0 / (steps - 1);
+        var array = new Color[steps];
+        for (var i = 0; i < steps; ++i)
+        {
+            array[i] = InterpolateRgb(c1, c2, stepFactor * i);
+        }
+        return array;
     }
 }
