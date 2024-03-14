@@ -2,6 +2,7 @@
  * https://github.com/mono/SkiaSharp/issues/320
  */
 
+using System.Drawing;
 using System.Runtime.InteropServices;
 using ScottPlot.IO;
 
@@ -10,13 +11,42 @@ namespace ScottPlot;
 /// <summary>
 /// Bitmap representation of a <seealso cref="SkiaSharp.SKImage"/>
 /// </summary>
-public class Image(SKImage skiaImage) : IDisposable
+public class Image : IDisposable
 {
     private bool IsDisposed = false;
 
-    protected readonly SKImage SKImage = skiaImage;
+    protected readonly SKImage SKImage;
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
+    public PixelSize Size => new(Width, Height);
+    public byte Alpha => 255;
+
+    [Obsolete("Use initializer that accepts a SKSurface", true)]
+    public Image(SKImage image)
+    {
+        SKImage = image;
+    }
+
+    public Image(SKSurface surface)
+    {
+        SKImage = surface.Snapshot();
+    }
+
+    public Image(string filename)
+    {
+        using SKBitmap bmp = SKBitmap.Decode(filename);
+        SKImage = SKImage.FromBitmap(bmp);
+    }
+
+    public Image(byte[] bytes)
+    {
+        SKImage = SKImage.FromEncodedData(bytes);
+    }
+
+    public Image(SKBitmap bmp)
+    {
+        SKImage = SKImage.FromBitmap(bmp);
+    }
 
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
@@ -114,5 +144,12 @@ public class Image(SKImage skiaImage) : IDisposable
         IsDisposed = true;
 
         GC.SuppressFinalize(this);
+    }
+
+    public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
+    {
+        paint.Color = SKColors.White.WithAlpha(Alpha);
+        paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
+        canvas.DrawImage(SKImage, target.ToSKRect(), paint);
     }
 }

@@ -15,6 +15,8 @@ public interface IAutoScaler
     /// </summary>
     public void AutoScaleAll(IEnumerable<IPlottable> plottables);
 
+    // TODO: axis-specific autoscaling can be moved out of the control class and placed somewhere in here
+
     // TODO: GetRecommendedAxisLimits() should return a dictionary of limits by axis,
     // then both functions can be collapsed into one.
 

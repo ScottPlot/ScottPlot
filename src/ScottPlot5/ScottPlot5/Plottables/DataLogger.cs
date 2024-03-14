@@ -25,7 +25,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 
     public void UpdateAxisLimits(Plot plot, bool force = false)
     {
-        AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes);
+        AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
 
@@ -33,7 +33,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         Debug.WriteLine(dataLimits);
         Debug.WriteLine(newLimits);
 
-        plot.Axes.SetLimits(newLimits);
+        plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
 
         if (force)
             UpdateAxisLimits(plot);
