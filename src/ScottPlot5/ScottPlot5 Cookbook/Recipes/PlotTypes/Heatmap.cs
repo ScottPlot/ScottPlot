@@ -62,4 +62,38 @@ public class Heatmap : ICategory
             myPlot.Add.ColorBar(hm1);
         }
     }
+
+    public class HeatmapFlip : RecipeBase
+    {
+        public override string Name => "Flipped Heatmap";
+        public override string Description => "Heatmaps can be flipped horizontally and/or vertically";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            myPlot.Add.Text("default", 0, 1.5);
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new CoordinateRect(0, 1, 0, 1);
+
+            myPlot.Add.Text("flip X", 2, 1.5);
+            var hm2 = myPlot.Add.Heatmap(data);
+            hm2.Extent = new CoordinateRect(2, 3, 0, 1);
+            hm2.FlipHorizontally = true;
+
+            myPlot.Add.Text("flip Y", 4, 1.5);
+            var hm3 = myPlot.Add.Heatmap(data);
+            hm3.Extent = new CoordinateRect(4, 5, 0, 1);
+            hm3.FlipVertically = true;
+
+            myPlot.Add.Text("flip X&Y", 6, 1.5);
+            var hm4 = myPlot.Add.Heatmap(data);
+            hm4.Extent = new CoordinateRect(6, 7, 0, 1);
+            hm4.FlipHorizontally = true;
+            hm4.FlipVertically = true;
+
+            myPlot.Axes.SetLimits(-.5, 7.5, -1, 2);
+        }
+    }
 }

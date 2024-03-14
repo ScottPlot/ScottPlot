@@ -28,6 +28,7 @@ _Not yet on NuGet..._
 * Label: Improved appearance of multiline labels with outlined borders or filled backgrounds (#3415, #3371) @NicolasLairNET
 * Label: Added a `LineSpacing` property to allow manually defining line height in multi-line labels (#3415, #3371) @NicolasLairNET
 * Heatmap: Improve vertical placement of scaled heatmaps (#3416, #3417) @BrianAtZetica
+* Heatmap: Added `FlipHorizontally` and `FlipVertically` properties (#3419) @BrianAtZetica
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
