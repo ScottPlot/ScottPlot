@@ -75,8 +75,8 @@ public static class StandardActions
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
 
-        float scaledDeltaX = pixelDeltaX / control.Plot.ScaleFactor;
-        float scaledDeltaY = pixelDeltaY / control.Plot.ScaleFactor;
+        float scaledDeltaX = pixelDeltaX / control.Plot.ScaleFactorF;
+        float scaledDeltaY = pixelDeltaY / control.Plot.ScaleFactorF;
 
         // restore MouseDown limits
         drag.InitialLimits.Apply(control.Plot);
@@ -218,7 +218,7 @@ public static class StandardActions
         {
             // modify a single axis
             double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
-            float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactor;
+            float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactorF;
             axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
         }
         else
