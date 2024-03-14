@@ -136,7 +136,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
         AxisLimits dataLimits = Data.GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
-        Plot.Axes.SetLimits(newLimits);
+        Plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
     }
 
     public void Render(RenderPack rp)

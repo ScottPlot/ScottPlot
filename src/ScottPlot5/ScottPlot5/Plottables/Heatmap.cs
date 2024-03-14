@@ -100,7 +100,6 @@ public class Heatmap : IPlottable, IHasColorAxis
         {
             double xOffset = Math.Abs(CellWidth) * CellAlignment.HorizontalFraction();
             double yOffset = Math.Abs(CellHeight) * CellAlignment.VerticalFraction();
-
             Coordinates cellOffset = new(-xOffset, -yOffset);
             return ExtentOrDefault.WithTranslation(cellOffset);
         }
