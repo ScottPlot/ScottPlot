@@ -76,7 +76,7 @@ public class AxisAndTicks : ICategory
             myPlot.Layout.Frameless();
 
             // set the data area background so we can observe its size
-            myPlot.DataBackground = Colors.WhiteSmoke;
+            myPlot.DataBackground.Color = Colors.WhiteSmoke;
         }
     }
 }

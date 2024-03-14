@@ -11,25 +11,58 @@ public class StandardZoomRectangle : IZoomRectangle
 
     public LineStyle LineStyle { get; } = new() { Color = new Color(255, 0, 0).WithAlpha(200) };
 
-    public Pixel MouseDown { get; private set; }
-    public Pixel MouseUp { get; private set; }
+    public Pixel MouseDown { get; set; }
+    public Pixel MouseUp { get; set; }
     public bool HorizontalSpan { get; set; } = false;
     public bool VerticalSpan { get; set; } = false;
 
-    public StandardZoomRectangle()
+    public void Apply(Plot plot)
     {
+        PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
+
+        IAxis? axisUnderMouse = plot.GetAxis(MouseDown);
+        if (axisUnderMouse is not null)
+        {
+            if (axisUnderMouse is IXAxis xAxis)
+            {
+                Apply(xAxis, dataRect);
+            }
+            else if (axisUnderMouse is IYAxis yAxis)
+            {
+                Apply(yAxis, dataRect);
+            }
+        }
+        else
+        {
+            plot.Axes.XAxes.ForEach(ax => Apply(ax, dataRect));
+            plot.Axes.YAxes.ForEach(ax => Apply(ax, dataRect));
+        }
     }
 
-    public void Update(Pixel mouseDown, Pixel mouseUp)
+    private void Apply(IXAxis xAxis, PixelRect dataRect)
     {
-        MouseDown = mouseDown;
-        MouseUp = mouseUp;
-        IsVisible = true;
+        if (HorizontalSpan == true)
+        {
+            return;
+        }
+        double x1 = xAxis.GetCoordinate(MouseDown.X, dataRect);
+        double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
+        double xMin = Math.Min(x1, x2);
+        double xMax = Math.Max(x1, x2);
+        xAxis.Range.Set(xMin, xMax);
     }
 
-    public void Clear()
+    private void Apply(IYAxis yAxis, PixelRect dataRect)
     {
-        IsVisible = false;
+        if (VerticalSpan == true)
+        {
+            return;
+        }
+        double y1 = yAxis.GetCoordinate(MouseDown.Y, dataRect);
+        double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
+        double xMin = Math.Min(y1, y2);
+        double xMax = Math.Max(y1, y2);
+        yAxis.Range.Set(xMin, xMax);
     }
 
     public void Render(RenderPack rp)
