@@ -40,4 +40,4 @@ jobs:
       - name: 🛠️ Full Build
         run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
       - name: 🧪 Run Tests
-        run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
+        run: dotnet test "${{ env.SLN_SP5_FULL }}" --configuration Release

@@ -9,7 +9,11 @@ public class Ellipse : IPlottable
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
     public LineStyle LineStyle { get; set; } = new() { Color = Colors.Black, Width = 2 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.Transparent };
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
 
     /// <summary>
     /// Label to appear in the legend
@@ -86,14 +90,9 @@ public class Ellipse : IPlottable
         float rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
         float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
 
-        if (FillStyle.Color.A > 0)
-        {
-            FillStyle.ApplyToPaint(paint, Axes.GetPixelRect(new CoordinateRect(0, 0, RadiusX, RadiusY)));
-            rp.Canvas.DrawOval(0, 0, rx, ry, paint);
-        }
-
-        LineStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawOval(0, 0, rx, ry, paint);
+        PixelRect rect = new(-rx, rx, ry, -ry);
+        Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
+        Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
 
         rp.Canvas.Restore();
     }

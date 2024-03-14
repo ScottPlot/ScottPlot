@@ -47,12 +47,6 @@ public class RenderManager(Plot plot)
     public bool IsRendering { get; private set; } = false;
 
     /// <summary>
-    /// Disable this in multiplot environments
-    /// </summary>
-    public bool ClearCanvasBeforeRendering { get; set; } = true;
-
-
-    /// <summary>
     /// If false, any calls to Render() return immediately
     /// </summary>
     public bool EnableRendering { get; set; } = true;
@@ -70,6 +64,7 @@ public class RenderManager(Plot plot)
     {
         new RenderActions.PreRenderLock(),
         new RenderActions.ClearCanvas(),
+        new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.ExecutePlottableAxisManagers(),
@@ -78,7 +73,7 @@ public class RenderManager(Plot plot)
         new RenderActions.ApplyAxisRulesAfterLayout(),
         new RenderActions.RegenerateTicks(),
         new RenderActions.RenderStartingEvent(),
-        new RenderActions.RenderBackground(),
+        new RenderActions.RenderDataBackground(),
         new RenderActions.RenderGridsBelowPlottables(),
         new RenderActions.RenderPlottables(),
         new RenderActions.RenderGridsAbovePlottables(),
@@ -105,15 +100,11 @@ public class RenderManager(Plot plot)
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
         {
-            if ((action is RenderActions.ClearCanvas) && (!ClearCanvasBeforeRendering))
-            {
-                continue;
-            }
-
             sw.Restart();
             rp.Canvas.Save();
             action.Render(rp);
             rp.Canvas.Restore();
+            rp.DisableClipping();
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 

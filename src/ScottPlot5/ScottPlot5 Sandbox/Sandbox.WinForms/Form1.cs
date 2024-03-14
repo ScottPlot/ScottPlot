@@ -1,6 +1,4 @@
-﻿using ScottPlot;
-
-namespace Sandbox.WinForms;
+﻿namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
@@ -8,7 +6,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        var ohlcs = Generate.RandomOHLCs(12_000);
-        formsPlot1.Plot.Add.Candlestick(ohlcs);
+        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
+        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
     }
 }
