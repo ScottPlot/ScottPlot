@@ -5,7 +5,7 @@ public class Label
     public bool IsVisible { get; set; } = true;
     public string Text { get; set; } = string.Empty;
 
-    public Alignment Alignment { get; set; } = 0;
+    public Alignment Alignment { get; set; } = Alignment.UpperLeft;
 
     /// <summary>
     /// Rotation in degrees clockwise from 0 (horizontal text)
@@ -54,6 +54,8 @@ public class Label
         get => _Bold;
         set { _Bold = value; ClearCachedTypeface(); }
     }
+
+    public float? LineSpacing { get; set; } = 0;
 
     public bool Italic = false;
     public bool AntiAlias = true;
@@ -137,13 +139,38 @@ public class Label
 
     public PixelSize Measure(SKPaint paint)
     {
+        if (Text.Contains('\n'))
+            return MeasureMultiLines(paint);
+
+        return MeasureText(paint, Text);
+    }
+
+    public PixelSize MeasureMultiLines(SKPaint paint)
+    {
+        ApplyTextPaint(paint);
+        string[] lines = Text.Split('\n');
+        int lineNumber = lines.Length;
+
+        // height measure
+        float height = MeasureText(paint, Text).Height;
+        height = (height * lineNumber) + (LineSpacing ?? paint.FontSpacing) * (lineNumber - 1);
+
+        // width measure
+        string? longestLine = lines.OrderByDescending(line => line.Length).FirstOrDefault();
+        float width = MeasureText(paint, longestLine ?? lines[0]).Width;
+
+        return new PixelSize(width, height);
+    }
+
+    private PixelSize MeasureText(SKPaint paint, string text)
+    {
         ApplyTextPaint(paint);
         SKRect textBounds = new();
         ///INFO: MeasureText(string str, ref SKRect rect) works as follow:
         /// - returned value is the length of the text with leading and trailing white spaces
         /// - rect.Left contains the width of leading white spaces
         /// - rect.width contains the length of the text __without__ leading or trailing white spaces
-        var fullTextWidth = paint.MeasureText(Text, ref textBounds);
+        var fullTextWidth = paint.MeasureText(text, ref textBounds);
         return new PixelSize(fullTextWidth, textBounds.Height);
     }
 
@@ -168,9 +195,12 @@ public class Label
         {
             // TODO: multiline support could be significantly improved
             string[] lines = Text.Split('\n');
+            float lineHeight = MeasureText(paint, Text).Height;
+            float yPosition = lineHeight;
             for (int i = 0; i < lines.Length; i++)
             {
-                canvas.DrawText(lines[i], textRect.Left, textRect.Bottom + i * paint.FontSpacing, paint);
+                canvas.DrawText(lines[i], textRect.Left, yPosition, paint);
+                yPosition += lineHeight + LineSpacing ?? paint.FontSpacing;
             }
         }
         else

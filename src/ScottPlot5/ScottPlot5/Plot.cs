@@ -47,77 +47,7 @@ public class Plot : IDisposable
         Axes.Clear();
     }
 
-    #region Mouse Interaction
-
-    /// <summary>
-    /// Apply a click-drag pan operation to the plot
-    /// </summary>
-    public void MousePan(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
-    {
-        float pixelDeltaX = -(mouseNow.X - mouseDown.X);
-        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
-
-        float scaledDeltaX = pixelDeltaX / (float)ScaleFactor;
-        float scaledDeltaY = pixelDeltaY / (float)ScaleFactor;
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // pan in the direction opposite of the mouse movement
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
-    }
-
-    /// <summary>
-    /// Apply a click-drag zoom operation to the plot
-    /// </summary>
-    public void MouseZoom(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
-    {
-        float pixelDeltaX = mouseNow.X - mouseDown.X;
-        float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // apply zoom for each axis
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
-    }
-
-    /// <summary>
-    /// Zoom into the coordinate corresponding to the given pixel.
-    /// Fractional values >1 zoom in and <1 zoom out.
-    /// </summary>
-    public void MouseZoom(double fracX, double fracY, Pixel pixel)
-    {
-        Coordinates mouseCoordinate = GetCoordinates(pixel);
-
-        MultiAxisLimitManager originalLimits = new(this);
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // apply zoom for each axis
-        Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
-    }
-
-    /// <summary>
-    /// Update the shape of the zoom rectangle
-    /// </summary>
-    /// <param name="mouseDown">Location of the mouse at the start of the drag</param>
-    /// <param name="mouseNow">Location of the mouse now (after dragging)</param>
-    /// <param name="vSpan">If true, shade the full region between two X positions</param>
-    /// <param name="hSpan">If true, shade the full region between two Y positions</param>
-    public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
-    {
-        Pixel scaledMouseDown = new(mouseDown.X / ScaleFactor, mouseDown.Y / ScaleFactor);
-        Pixel scaledMouseNow = new(mouseNow.X / ScaleFactor, mouseNow.Y / ScaleFactor);
-        ZoomRectangle.Update(scaledMouseDown, scaledMouseNow);
-        ZoomRectangle.VerticalSpan = vSpan;
-        ZoomRectangle.HorizontalSpan = hSpan;
-    }
+    #region Pixel/Coordinate Conversion
 
     /// <summary>
     /// Return the location on the screen (pixel) for a location on the plot (coordinates) on the default axes.
@@ -194,6 +124,45 @@ public class Plot : IDisposable
         double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
         double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
+    }
+
+    /// <summary>
+    /// Get the axis under a given pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>The axis at <paramref name="pixel" /> (or null)</returns>
+    public IAxis? GetAxis(Pixel pixel)
+    {
+        IPanel? panel = GetPanel(pixel, axesOnly: true);
+        return panel is null ? null : (IAxis)panel;
+    }
+
+    /// <summary>
+    /// Get the panel under a given pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>The panel at <paramref name="pixel" /> (or null)</returns>
+    public IPanel? GetPanel(Pixel pixel, bool axesOnly)
+    {
+        PixelRect dataRect = RenderManager.LastRender.Layout.DataRect;
+
+        // Reverse here so the "highest" axis is returned in the case some overlap.
+        var panels = axesOnly
+            ? Axes.GetPanels().Reverse()
+            : Axes.GetPanels().Reverse().OfType<IAxis>();
+
+        foreach (IPanel panel in panels)
+        {
+            float axisPanelSize = RenderManager.LastRender.Layout.PanelSizes[panel];
+            float axisPanelOffset = RenderManager.LastRender.Layout.PanelOffsets[panel];
+            PixelRect axisRect = panel.GetPanelRect(dataRect, axisPanelSize, axisPanelOffset);
+            if (axisRect.Contains(pixel))
+            {
+                return panel;
+            }
+        }
+
+        return null;
     }
 
     #endregion

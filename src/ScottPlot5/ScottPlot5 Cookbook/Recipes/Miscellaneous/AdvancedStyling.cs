@@ -59,4 +59,25 @@ public class AdvancedStyling : ICategory
             myPlot.DataBackground.Color = Colors.Black.WithAlpha(.5);
         }
     }
+
+    public class ColorInterpolation : RecipeBase
+    {
+        public override string Name => "Color Interpolation";
+        public override string Description => "Colors can be mixed to create" +
+            "a range of colors. This strategy uses linear RGB interpolation.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i <= 10; i++)
+            {
+                double fraction = (double)i / 10;
+                double x = i;
+                double y = Math.Sin(Math.PI * 2 * fraction);
+                var circle = myPlot.Add.Circle(x, y, 2);
+                circle.FillColor = Colors.Blue.MixedWith(Colors.Green, fraction);
+                circle.LineColor = Colors.Black.WithAlpha(.5);
+            }
+        }
+    }
 }
