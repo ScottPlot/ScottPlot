@@ -9,7 +9,7 @@ public class Pie : IPlottable
     public double SliceLabelDistance { get; set; } = 1.2;
     public bool ShowSliceLabels { get; set; } = false;
     public double Padding { get; set; } = 0.2;
-    public double DonutSize { get; set; } = 0;
+    public double DonutFraction { get; set; } = 0;
 
     public IAxes Axes { get; set; } = new Axes();
 
@@ -46,18 +46,20 @@ public class Pie : IPlottable
 
         float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
         float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
-        float radius = Math.Min(minX, minY);
-        float explosionRadius = (float)ExplodeFraction * radius;
-        SKRect rect = new(-radius, -radius, radius, radius);
+
+        // radius of the outer edge of the pie
+        float outerRadius = Math.Min(minX, minY);
+        SKRect outerRect = new(-outerRadius, -outerRadius, outerRadius, outerRadius);
+
+        // radius of the inner edge of the pie when donut mode is enabled
+        float innerRadius = outerRadius * (float)DonutFraction;
+        SKRect innerRect = new(-innerRadius, -innerRadius, innerRadius, innerRadius);
+
+        // radius of the outer edge after explosion
+        float explosionOuterRadius = (float)ExplodeFraction * outerRadius;
 
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
-
-        SKPath donutClipPath = null;
-        if (DonutSize > 0)
-        {
-            donutClipPath = GetDonutClipPath(rect, radius * (float)DonutSize);
-        }
 
         // TODO: first slice should be North, not East.        
         float[] sliceOffsetDegrees = new float[Slices.Count];
@@ -79,25 +81,31 @@ public class Pie : IPlottable
             float rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
             rp.Canvas.Translate(origin.X, origin.Y);
             rp.Canvas.RotateDegrees(rotation);
-            rp.Canvas.Translate(explosionRadius, 0);
+            rp.Canvas.Translate(explosionOuterRadius, 0);
+
+            float degrees1 = -sliceSizeDegrees[i] / 2;
+            float degrees2 = sliceSizeDegrees[i] / 2;
+
+            SKPoint ptInnerHome = GetRotatedPoint(innerRadius, degrees1);
+            SKPoint ptOuterHome = GetRotatedPoint(outerRadius, degrees1);
+            SKPoint ptOuterRotated = GetRotatedPoint(outerRadius, degrees2);
+            SKPoint ptInnerRotated = GetRotatedPoint(innerRadius, degrees2);
 
             if (sliceSizeDegrees[i] != 360)
             {
-                path.MoveTo(0, 0);
-                path.ArcTo(rect, -sliceSizeDegrees[i] / 2, sliceSizeDegrees[i], false);
+                path.MoveTo(ptInnerHome);
+                path.LineTo(ptOuterHome);
+                path.ArcTo(outerRect, -sliceSizeDegrees[i] / 2, sliceSizeDegrees[i], false);
+                path.LineTo(ptInnerRotated);
+                path.ArcTo(innerRect, sliceSizeDegrees[i] / 2, -sliceSizeDegrees[i], false);
                 path.Close();
             }
             else
             {
-                path.AddOval(rect);
+                path.AddOval(outerRect);
             }
 
-            if (donutClipPath != null)
-            {
-                rp.Canvas.ClipPath(donutClipPath, SKClipOperation.Difference);
-            }
-
-            Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
+            Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
             paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
             rp.Canvas.DrawPath(path, paint);
 
@@ -119,12 +127,11 @@ public class Pie : IPlottable
         }
     }
 
-    private SKPath GetDonutClipPath(SKRect rect, float donutRadius)
+    private SKPoint GetRotatedPoint(double radius, double angleInDegrees)
     {
-
-        SKPath donutPath = new SKPath();
-        donutPath.AddCircle(rect.MidX, rect.MidY, donutRadius);
-
-        return donutPath;
+        double angleInRadians = angleInDegrees * (Math.PI / 180);
+        double x = radius * Math.Cos(angleInRadians);
+        double y = radius * Math.Sin(angleInRadians);
+        return new SKPoint((float)x, (float)y);
     }
 }
