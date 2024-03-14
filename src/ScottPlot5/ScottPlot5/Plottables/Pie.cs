@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Pie : IPlottable
+public class Pie(IList<PieSlice> slices) : IPlottable
 {
-    public IList<PieSlice> Slices { get; set; }
+    public IList<PieSlice> Slices { get; set; } = slices;
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;
     public double ExplodeFraction { get; set; } = 0;
@@ -12,11 +12,6 @@ public class Pie : IPlottable
     public double DonutFraction { get; set; } = 0;
 
     public IAxes Axes { get; set; } = new Axes();
-
-    public Pie(IList<PieSlice> slices)
-    {
-        Slices = slices;
-    }
 
     public AxisLimits GetAxisLimits()
     {
@@ -63,20 +58,20 @@ public class Pie : IPlottable
 
         // TODO: first slice should be North, not East.        
         float[] sliceOffsetDegrees = new float[Slices.Count];
-        for (int i = 1; i < Slices.Count(); i++)
+        for (int i = 1; i < Slices.Count; i++)
         {
             sliceOffsetDegrees[i] = sliceOffsetDegrees[i - 1] + sliceSizeDegrees[i - 1];
         }
 
         float[] sliceCenterDegrees = new float[Slices.Count];
-        for (int i = 0; i < Slices.Count(); i++)
+        for (int i = 0; i < Slices.Count; i++)
         {
             sliceCenterDegrees[i] = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
         }
 
-        for (int i = 0; i < Slices.Count(); i++)
+        for (int i = 0; i < Slices.Count; i++)
         {
-            using var _ = new SKAutoCanvasRestore(rp.Canvas);
+            using SKAutoCanvasRestore _ = new(rp.Canvas);
 
             float rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
             rp.Canvas.Translate(origin.X, origin.Y);
@@ -117,7 +112,7 @@ public class Pie : IPlottable
 
         if (ShowSliceLabels)
         {
-            for (int i = 0; i < Slices.Count(); i++)
+            for (int i = 0; i < Slices.Count; i++)
             {
                 double x = Math.Cos(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
                 double y = -Math.Sin(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
@@ -127,7 +122,7 @@ public class Pie : IPlottable
         }
     }
 
-    private SKPoint GetRotatedPoint(double radius, double angleInDegrees)
+    private static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
     {
         double angleInRadians = angleInDegrees * (Math.PI / 180);
         double x = radius * Math.Cos(angleInRadians);
