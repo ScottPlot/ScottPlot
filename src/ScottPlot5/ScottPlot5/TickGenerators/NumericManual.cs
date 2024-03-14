@@ -2,7 +2,7 @@
 
 public class NumericManual : ITickGenerator
 {
-    public Tick[] Ticks { get; set; } = [];
+    public Tick[] Ticks { get; private set; } = [];
 
     private readonly List<Tick> TickList = new();
 
