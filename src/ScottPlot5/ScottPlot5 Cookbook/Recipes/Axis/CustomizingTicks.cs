@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SkiaSharp;
+using System.ComponentModel;
 
 namespace ScottPlotCookbook.Recipes.Axis;
 
@@ -111,6 +112,49 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
             myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
+        }
+    }
+
+    public class RotatedTicksLongLabels : RecipeBase
+    {
+        public override string Name => "Rotated Tick with Long Labels";
+        public override string Description => "When rotating ticks, you may need to expand the Axis size to accomodate the length of the label";
+
+        [Test]
+        public override void Execute()
+        {
+            // add bars
+            double[] values = { 5, 10, 7, 13, 25, 60 };
+
+            myPlot.Add.Bars(values);
+
+            Tick[] ticks =
+            {
+                new(0, "First-LongTitle"),
+                new(1, "Second-LongTitle"),
+                new(2, "Third-LongTitle"),
+                new(3, "Fourth-LongTitle"),
+                new(4, "Fifth-LongTitle"),
+                new(5, "Sixth-LongTitle")
+            };
+
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);                        
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = 45;            
+            myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+
+            using SKPaint paint = new();
+            paint.TextSize = myPlot.Axes.Bottom.TickLabelStyle.FontSize;
+            //get labels
+            var tickLabels = ticks.Select(t => t.Label).ToArray();
+            
+            //get graphic length of longest string
+            var widestString = Drawing.MeasureWidestString(tickLabels, paint);            
+            
+            var edgeLength = widestString.width.Length;            
+            myPlot.Axes.Bottom.MinimumSize = Convert.ToSingle(edgeLength);
+            
+            //expand right side too since the last tick can go over the size of the bottom axes box and get clipped
+            myPlot.Axes.Right.MinimumSize = Convert.ToSingle(edgeLength);
         }
     }
 
