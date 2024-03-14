@@ -35,6 +35,7 @@ _Not yet on NuGet..._
 * DataLogger and DataStreamer: prevent possible out-of-range exception when using the `Scroll` view mode (#3430, #3429) @KroMignon
 * Color: Added `MixWith()` and related methods to facilitate color mixing and creation of color gradients (#3443, #3441) @KroMignon
 * Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
+* Plot: `ScaleFactor` is now a `double` for simplified assignment (#3454, #3455) @MCF
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._

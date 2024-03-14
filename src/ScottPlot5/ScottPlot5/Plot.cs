@@ -19,7 +19,8 @@ public class Plot : IDisposable
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
-    public float ScaleFactor { get; set; } = 1.0f;
+    public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
+    internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
 
@@ -66,8 +67,8 @@ public class Plot : IDisposable
 
         if (ScaleFactor != 1)
         {
-            xPixel *= ScaleFactor;
-            yPixel *= ScaleFactor;
+            xPixel *= ScaleFactorF;
+            yPixel *= ScaleFactorF;
         }
 
         return new Pixel(xPixel, yPixel);
