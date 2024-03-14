@@ -39,7 +39,7 @@ public class Heatmap : IPlottable, IHasColorAxis
         get
         {
             double x = CellWidth * CellAlignment.HorizontalFraction();
-            double y = CellWidth * CellAlignment.VerticalFraction();
+            double y = CellHeight * CellAlignment.VerticalFraction();
             Coordinates cellOffset = new(-x, -y);
             return ExtentOrDefault.WithTranslation(cellOffset);
         }
