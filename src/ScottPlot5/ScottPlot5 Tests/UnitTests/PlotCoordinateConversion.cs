@@ -61,7 +61,7 @@ internal class PlotCoordinateConversion
         double xPx = 200;
         double yPx = 300;
         double radius = 40;
-        Pixel px = new ((float)xPx, (float)yPx);
+        Pixel px = new((float)xPx, (float)yPx);
 
         Coordinates rightTopCoords = plot.GetCoordinates(
                 (float)(xPx + radius), (float)(yPx - radius));
@@ -73,10 +73,10 @@ internal class PlotCoordinateConversion
         CoordinateRect rect2 = plot.GetCoordinateRect(px, (float)radius);
 
         // Expected values
-        double left = xCoordMin + (xPx - radius)*widthCoord/widthPx;
-        double right = xCoordMin + (xPx + radius)*widthCoord/widthPx;
-        double top = yCoordMax - (yPx - radius)*heightCoord/heightPx;
-        double bottom = yCoordMax - (yPx + radius)*heightCoord/heightPx;
+        double left = xCoordMin + (xPx - radius) * widthCoord / widthPx;
+        double right = xCoordMin + (xPx + radius) * widthCoord / widthPx;
+        double top = yCoordMax - (yPx - radius) * heightCoord / heightPx;
+        double bottom = yCoordMax - (yPx + radius) * heightCoord / heightPx;
 
         Assert.Multiple(() =>
         {
