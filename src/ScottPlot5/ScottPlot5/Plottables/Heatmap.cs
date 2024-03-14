@@ -209,6 +209,9 @@ public class Heatmap : IPlottable, IHasColorAxis
         return argb;
     }
 
+    /// <summary>
+    /// Regenerate the image using the present settings and data in <see cref="Intensities"/>
+    /// </summary>
     public void Update()
     {
         uint[] argbs = GetArgbValues();

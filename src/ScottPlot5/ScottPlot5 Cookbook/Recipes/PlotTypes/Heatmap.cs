@@ -96,4 +96,25 @@ public class Heatmap : ICategory
             myPlot.Axes.SetLimits(-.5, 7.5, -1, 2);
         }
     }
+
+    public class HeatmapSmooth : RecipeBase
+    {
+        public override string Name => "Smooth Heatmap";
+        public override string Description => "Enable the `Smooth` property for anti-aliased rendering";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            myPlot.Add.Text("Smooth = false", 0, 1.1);
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new CoordinateRect(0, 1, 0, 1);
+
+            myPlot.Add.Text("Smooth = true", 1.1, 1.1);
+            var hm2 = myPlot.Add.Heatmap(data);
+            hm2.Extent = new CoordinateRect(1.1, 2.1, 0, 1);
+            hm2.Smooth = true;
+        }
+    }
 }
