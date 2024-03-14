@@ -264,13 +264,26 @@ public readonly struct Color
         fraction = Math.Max(0f, 1f - fraction);
         return new Color(R.Darken(fraction), G.Darken(fraction), B.Darken(fraction), Alpha);
     }
+
+    /// <summary>
+    /// Return this color mixed with another color.
+    /// </summary>
+    /// <param name="otherColor">Color to mix with this color</param>
+    /// <param name="fraction">Fraction of <paramref name="otherColor"/> to use</param>
+    /// <returns></returns>
+    public Color MixedWith(Color otherColor, double fraction)
+    {
+        return InterpolateRgb(otherColor, fraction);
+    }
+
     public Color InterpolateRgb(Color c1, double factor)
     {
         return InterpolateRgb(this, c1, factor);
     }
+
     public Color[] InterpolateArrayRgb(Color c1, int steps)
     {
-        return InterpolateArrayRgb(this, c1, steps);
+        return InterpolateRgbArray(this, c1, steps);
     }
 
     static byte InterpolateRgb(byte b1, byte b2, double factor)
@@ -280,6 +293,7 @@ public readonly struct Color
         else
             return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1 - factor)), (byte)0), (byte)255);
     }
+
     static public Color InterpolateRgb(Color c1, Color c2, double factor)
     {
         return new Color(
@@ -289,7 +303,8 @@ public readonly struct Color
             InterpolateRgb(c1.A, c2.A, factor)
             );
     }
-    static public Color[] InterpolateArrayRgb(Color c1, Color c2, int steps)
+
+    static public Color[] InterpolateRgbArray(Color c1, Color c2, int steps)
     {
         var stepFactor = 1.0 / (steps - 1);
         var array = new Color[steps];
