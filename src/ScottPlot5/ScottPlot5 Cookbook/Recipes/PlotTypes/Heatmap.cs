@@ -80,18 +80,18 @@ public class Heatmap : ICategory
             myPlot.Add.Text("flip X", 2, 1.5);
             var hm2 = myPlot.Add.Heatmap(data);
             hm2.Extent = new CoordinateRect(2, 3, 0, 1);
-            hm2.FlipColumns = true;
+            hm2.FlipHorizontally = true;
 
             myPlot.Add.Text("flip Y", 4, 1.5);
             var hm3 = myPlot.Add.Heatmap(data);
             hm3.Extent = new CoordinateRect(4, 5, 0, 1);
-            hm3.FlipRows = true;
+            hm3.FlipVertically = true;
 
             myPlot.Add.Text("flip X&Y", 6, 1.5);
             var hm4 = myPlot.Add.Heatmap(data);
             hm4.Extent = new CoordinateRect(6, 7, 0, 1);
-            hm4.FlipColumns = true;
-            hm4.FlipColumns = true;
+            hm4.FlipHorizontally = true;
+            hm4.FlipVertically = true;
 
             myPlot.Axes.SetLimits(-.5, 7.5, -1, 2);
         }

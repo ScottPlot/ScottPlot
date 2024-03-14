@@ -51,7 +51,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// When set to true, row 0 of the source data will be displayed at the bottom.
     /// </summary>
     private bool _flipRows = false;
-    public bool FlipRows
+    public bool FlipVertically
     {
         get { return _flipRows; }
         set
@@ -60,13 +60,14 @@ public class Heatmap : IPlottable, IHasColorAxis
             Update();
         }
     }
+
     /// <summary>
     /// This variable controls whether the first sample in each column of the 2D source array is the left or right of the heatmap.
     /// When set to false (default), sample 0 is the left of the heatmap.
     /// When set to true, sample 0 of the source data will be displayed at the right.
     /// </summary>
     private bool _flipColumns = false;
-    public bool FlipColumns
+    public bool FlipHorizontally
     {
         get { return _flipColumns; }
         set
@@ -75,6 +76,9 @@ public class Heatmap : IPlottable, IHasColorAxis
             Update();
         }
     }
+
+    public bool FlipColumns { get => FlipHorizontally; set => FlipHorizontally = value; }
+    public bool FlipRows { get => FlipVertically; set => FlipVertically = value; }
 
     /// <summary>
     /// If true, pixels in the final image will be interpolated to give the heatmap a smooth appearance.
@@ -187,8 +191,8 @@ public class Heatmap : IPlottable, IHasColorAxis
     {
         Range range = GetRange();
         uint[] argb = new uint[Intensities.Length];
-        bool FlipY = FlipRows ^ (ExtentOrDefault.Top < ExtentOrDefault.Bottom);
-        bool FlipX = FlipColumns ^ (ExtentOrDefault.Left > ExtentOrDefault.Right);
+        bool FlipY = FlipVertically ^ (ExtentOrDefault.Top < ExtentOrDefault.Bottom);
+        bool FlipX = FlipHorizontally ^ (ExtentOrDefault.Left > ExtentOrDefault.Right);
 
         for (int y = 0; y < Height; y++)
         {
