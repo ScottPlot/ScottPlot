@@ -47,7 +47,8 @@ public class Pie : ICategory
     public class PieDonut : RecipeBase
     {
         public override string Name => "Donut from Slices";
-        public override string Description => "A donut can be created from a collection of slices.";
+        public override string Description => "A donut chart is a pie chart with an open center. " +
+            "Donut charts can be created from a collection of slices.";
 
         [Test]
         public override void Execute()
@@ -62,7 +63,7 @@ public class Pie : ICategory
             };
 
             var pie = myPlot.Add.Pie(slices);
-            pie.DonutSize = .5;
+            pie.DonutFraction = .5;
 
             myPlot.ShowLegend();
         }
