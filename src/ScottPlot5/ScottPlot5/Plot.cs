@@ -99,11 +99,25 @@ public class Plot : IDisposable
     /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
     {
+        float leftPx = (x - radius);
+        float rightPx = (x + radius);
+        float topPx = (y - radius);
+        float bottomPx = (y + radius);
+
+        if (ScaleFactor != 1)
+        {
+            leftPx /= ScaleFactor;
+            rightPx /= ScaleFactor;
+            topPx /= ScaleFactor;
+            bottomPx /= ScaleFactor;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = Axes.Bottom.GetCoordinate(x - radius, dataRect);
-        double right = Axes.Bottom.GetCoordinate(x + radius, dataRect);
-        double top = Axes.Left.GetCoordinate(y - radius, dataRect);
-        double bottom = Axes.Left.GetCoordinate(y + radius, dataRect);
+        double left = Axes.Bottom.GetCoordinate(leftPx, dataRect);
+        double right = Axes.Bottom.GetCoordinate(rightPx, dataRect);
+        double top = Axes.Left.GetCoordinate(topPx, dataRect);
+        double bottom = Axes.Left.GetCoordinate(bottomPx, dataRect);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -120,6 +134,11 @@ public class Plot : IDisposable
     /// </summary>
     public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
     {
+        if (ScaleFactor != 1)
+        {
+            radius /= ScaleFactor;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
         double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
         double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
