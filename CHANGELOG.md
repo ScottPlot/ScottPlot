@@ -32,6 +32,7 @@ _Not yet on NuGet..._
 * Heatmap: Fixed off-by-one render error when `Extent` is provided by the user (#3434, #3419) @BrianAtZetica
 * Heatmap: Added support for the `Smooth` property do render anti-aliased images (#3419) @BrianAtZetica
 * Ticks: Fix issue where manual ticks could be displayed outside the data area (#3425, #3427) @oktrue
+* DataLogger and DataStreamer: prevent possible out-of-range exception when using the `Scroll` view mode (#3430, #3429) @KroMignon
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
