@@ -138,21 +138,21 @@ public class CustomizingTicks : ICategory
                 new(5, "Sixth-LongTitle")
             };
 
-            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);                        
-            myPlot.Axes.Bottom.TickLabelStyle.Rotation = 45;            
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = 45;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleLeft;
 
             using SKPaint paint = new();
             paint.TextSize = myPlot.Axes.Bottom.TickLabelStyle.FontSize;
             //get labels
             var tickLabels = ticks.Select(t => t.Label).ToArray();
-            
+
             //get graphic length of longest string
-            var widestString = Drawing.MeasureWidestString(tickLabels, paint);            
-            
-            var edgeLength = widestString.width.Length;            
+            var widestString = Drawing.MeasureWidestString(tickLabels, paint);
+
+            var edgeLength = widestString.width.Length;
             myPlot.Axes.Bottom.MinimumSize = Convert.ToSingle(edgeLength);
-            
+
             //expand right side too since the last tick can go over the size of the bottom axes box and get clipped
             myPlot.Axes.Right.MinimumSize = Convert.ToSingle(edgeLength);
         }
