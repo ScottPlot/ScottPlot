@@ -12,12 +12,12 @@ public class Arrow : IPlottable
     public string Label { get; set; } = string.Empty;
 
     /// <summary>
-    /// Position of the base of the arrow in coordinate units
+    /// ImagePosition of the base of the arrow in coordinate units
     /// </summary>
     public Coordinates Base = Coordinates.Origin;
 
     /// <summary>
-    /// Position of the base of the arrowhead in coordinate units
+    /// ImagePosition of the base of the arrowhead in coordinate units
     /// </summary>
     public Coordinates Tip = Coordinates.Origin;
 

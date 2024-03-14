@@ -109,9 +109,7 @@ public class Legend(Plot plot)
 
         RenderLegend(sizedItems, surface.Canvas, paint, offset, legendRect, legendShadowRect);
 
-        SKImage skimg = surface.Snapshot();
-
-        return new Image(skimg);
+        return new Image(surface);
     }
 
     public string GetSvgXml(Plot plot)
