@@ -191,8 +191,10 @@ public class Heatmap : IPlottable, IHasColorAxis
     {
         Range range = GetRange();
         uint[] argb = new uint[Intensities.Length];
-        bool FlipY = FlipVertically ^ (ExtentOrDefault.Top < ExtentOrDefault.Bottom);
-        bool FlipX = FlipHorizontally ^ (ExtentOrDefault.Left > ExtentOrDefault.Right);
+
+        // the XOR here disables flipping when the flip property and the extent is inverted.
+        bool FlipY = FlipVertically ^ ExtentOrDefault.IsInvertedY;
+        bool FlipX = FlipHorizontally ^ ExtentOrDefault.IsInvertedX;
 
         for (int y = 0; y < Height; y++)
         {
