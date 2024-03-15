@@ -137,22 +137,32 @@ public class Label
         return Measure(paint);
     }
 
+    public PixelSize Measure(string text)
+    {
+        using SKPaint paint = new();
+
+        if (Text.Contains('\n'))
+            return MeasureMultiLines(paint, text);
+
+        return MeasureText(paint, text);
+    }
+
     public PixelSize Measure(SKPaint paint)
     {
         if (Text.Contains('\n'))
-            return MeasureMultiLines(paint);
+            return MeasureMultiLines(paint, Text);
 
         return MeasureText(paint, Text);
     }
 
-    public PixelSize MeasureMultiLines(SKPaint paint)
+    public PixelSize MeasureMultiLines(SKPaint paint, string text)
     {
         ApplyTextPaint(paint);
-        string[] lines = Text.Split('\n');
+        string[] lines = text.Split('\n');
         int lineNumber = lines.Length;
 
         // height measure
-        float height = MeasureText(paint, Text).Height;
+        float height = MeasureText(paint, text).Height;
         height = (height * lineNumber) + (LineSpacing ?? paint.FontSpacing) * (lineNumber - 1);
 
         // width measure
