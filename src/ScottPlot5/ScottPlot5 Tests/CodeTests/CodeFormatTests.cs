@@ -5,23 +5,20 @@ public class CodeFormatTests
     [Test]
     public void Test_AddMethods_AreAlphabetized()
     {
-        string[] methodNames = typeof(PlottableAdder)
-            .GetMethods()
-            .Where(x => x.ReturnType.GetInterfaces().Contains(typeof(IPlottable)))
-            .Select(x => x.Name)
-            .Distinct()
-            .ToArray();
+        List<string> methodNames = SourceCodeParsing.GetMethodNames("PlottableAdder.cs");
 
-        string[] sorted = methodNames.OrderBy(x => x, StringComparer.InvariantCulture).ToArray();
+        methodNames.Remove("GetNextColor");
 
-        for (int i = 0; i < methodNames.Length; i++)
+        string lastMethodName = string.Empty;
+        foreach (string methodName in methodNames)
         {
-            if (sorted[i] != methodNames[i])
+            if (string.Compare(methodName, lastMethodName) < 0)
             {
-                Console.WriteLine($"Methods in {typeof(PlottableAdder)} must be in alphabetical order.");
-                Console.WriteLine($"ERROR: {methodNames[i]}() is listed before {sorted[i]}()");
-                Assert.Fail();
+                throw new InvalidOperationException($"PlottableAdder.cs methods must be in alphabetical order. " +
+                    $"{lastMethodName} is currently before {methodName}.");
             }
+
+            lastMethodName = methodName;
         }
     }
 }
