@@ -14,6 +14,7 @@ static class Program
         {
             Demos.MultiAxis window = new() { StartPosition = FormStartPosition.CenterScreen };
             Application.Run(window);
+            Application.Run(new MainMenuForm());
         }
         else
         {

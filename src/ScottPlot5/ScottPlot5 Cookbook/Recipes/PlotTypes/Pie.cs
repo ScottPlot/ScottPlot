@@ -44,6 +44,31 @@ public class Pie : ICategory
         }
     }
 
+    public class PieDonut : RecipeBase
+    {
+        public override string Name => "Donut from Slices";
+        public override string Description => "A donut chart is a pie chart with an open center. " +
+            "Donut charts can be created from a collection of slices.";
+
+        [Test]
+        public override void Execute()
+        {
+            List<PieSlice> slices = new()
+            {
+                new PieSlice() { Value = 5, FillColor = Colors.Red, Label = "Red" },
+                new PieSlice() { Value = 2, FillColor = Colors.Orange, Label = "Orange" },
+                new PieSlice() { Value = 8, FillColor = Colors.Gold, Label = "Yellow" },
+                new PieSlice() { Value = 4, FillColor = Colors.Green, Label = "Green" },
+                new PieSlice() { Value = 8, FillColor = Colors.Blue, Label = "Blue" },
+            };
+
+            var pie = myPlot.Add.Pie(slices);
+            pie.DonutFraction = .5;
+
+            myPlot.ShowLegend();
+        }
+    }
+
     public class PieSliceLabels : RecipeBase
     {
         public override string Name => "Pie Slice Labels";

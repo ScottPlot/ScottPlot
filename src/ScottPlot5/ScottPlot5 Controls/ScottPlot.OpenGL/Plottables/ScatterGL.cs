@@ -130,11 +130,10 @@ public class ScatterGL : Scatter, IPlottableGL
 
         IMarkersDrawProgram? newProgram = MarkerStyle.Shape switch
         {
-            MarkerShape.FilledSquare when MarkerProgram is not MarkerFillSquareProgram => new MarkerFillSquareProgram(),
-            MarkerShape.FilledCircle when MarkerProgram is not MarkerFillCircleProgram => new MarkerFillCircleProgram(),
-            MarkerShape.OpenCircle when MarkerProgram is not MarkerOpenCircleProgram => new MarkerOpenCircleProgram(),
-            MarkerShape.OpenSquare when MarkerProgram is not MarkerOpenSquareProgram => new MarkerOpenSquareProgram(),
-            MarkerShape.FilledSquare or MarkerShape.FilledCircle or MarkerShape.OpenCircle or MarkerShape.OpenSquare => null,
+            MarkerShape.FilledSquare => MarkerProgram is MarkerFillSquareProgram ? null : new MarkerFillSquareProgram(),
+            MarkerShape.FilledCircle => MarkerProgram is MarkerFillCircleProgram ? null : new MarkerFillCircleProgram(),
+            MarkerShape.OpenCircle => MarkerProgram is MarkerOpenCircleProgram ? null : new MarkerOpenCircleProgram(),
+            MarkerShape.OpenSquare => MarkerProgram is MarkerOpenSquareProgram ? null : new MarkerOpenSquareProgram(),
             _ => throw new NotSupportedException($"Marker shape `{MarkerStyle.Shape}` is not supported by GLPlottables"),
         };
 
