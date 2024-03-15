@@ -80,61 +80,37 @@ public class Scatter : ICategory
 
     public class ScatterLine : RecipeBase
     {
-        public override string Name => "Scatter Plot Line Only";
-        public override string Description => "Scatter plots can be created " +
-            "without markers using the ScatterLine convenience methods.";
+        public override string Name => "Scatter Plot with Lines Only";
+        public override string Description => "The `ScatterLine()` method can be used " +
+            "to create a scatter plot with a line only (marker size is set to 0).";
 
         [Test]
         public override void Execute()
         {
-            double[] xs1 = { 1, 2, 3, 4, 5 };
-            double[] ys1 = { 1, 4, 9, 16, 25 };
+            double[] xs = Generate.Consecutive(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
 
-            var sp1 = myPlot.Add.ScatterLine(xs1, ys1);
-            sp1.Label = "Two arrays of doubles";
+            myPlot.Add.ScatterLine(xs, sin);
+            myPlot.Add.ScatterLine(xs, cos);
+        }
+    }
 
-            List<double> xs2 = new() { 1, 2, 3, 4, 5 };
-            List<double> ys2 = new() { 3, 6, 11, 18, 27 };
+    public class ScatterPoints : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Points Only";
+        public override string Description => "The `ScatterPoints()` method can be used " +
+            "to create a scatter plot with markers only (line width is set to 0).";
 
-            var sp2 = myPlot.Add.ScatterLine(xs2, ys2);
-            sp2.Label = "Two Lists of doubles";
-            sp2.LineWidth = 2;
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
 
-            float[] xs3 = { 1, 2, 3, 4, 5 };
-            int[] ys3 = { 5, 8, 13, 20, 29 };
-
-            var sp3 = myPlot.Add.ScatterLine(xs3, ys3);
-            sp3.Label = "Array of floats and Array of ints";
-            sp3.LineWidth = 3;
-
-            Coordinates[] coordinates = {
-                new(1, 7),
-                new(2, 10),
-                new(3, 15),
-                new(4, 22),
-                new(5, 31),
-            };
-
-            var sp4 = myPlot.Add.ScatterLine(coordinates);
-            sp4.Label = "Array of Coordinates";
-            sp4.LineWidth = 4;
-
-            List<float> xs5 = new() { 1, 2, 3, 4, 5 };
-            List<int> ys5 = new() { 9, 12, 17, 24, 33 };
-
-            var sp5 = myPlot.Add.ScatterLine(xs5, ys5);
-            sp5.Label = "List of floats and List of ints";
-            sp5.LineWidth = 5;
-
-            double[] xs6 = { 1, 2, 3, 4, 5 };
-            double[] ys6 = { 11, 14, 19, 26, 35 };
-            ScottPlot.DataSources.ScatterSourceDoubleArray source = new(xs6, ys6);
-
-            var sp6 = myPlot.Add.ScatterLine(source);
-            sp6.Label = "ScatterSourceDoubleArray, providing IScatterSource";
-            sp6.LineWidth = 6;
-
-            myPlot.ShowLegend(Alignment.UpperLeft);
+            myPlot.Add.ScatterPoints(xs, sin);
+            myPlot.Add.ScatterPoints(xs, cos);
         }
     }
 
