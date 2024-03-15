@@ -36,6 +36,7 @@ _Not yet on NuGet..._
 * Color: Added `MixWith()` and related methods to facilitate color mixing and creation of color gradients (#3443, #3441) @KroMignon
 * Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
 * Plot: `ScaleFactor` is now a `double` for simplified assignment (#3454, #3455) @MCF
+* Marker: Improved default settings for outline-only markers (#3456, #3453) @KroMignon
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
