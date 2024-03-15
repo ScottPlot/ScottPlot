@@ -22,7 +22,7 @@ internal class PlotCoordinateConversion
     {
         Plot plt = new();
         plt.Axes.SetLimits(1, 2, -15, -5);
-        plt.ScaleFactor = 2.5F;     // Change from default of 1.0F
+        plt.ScaleFactor = 2.5;      // Change from default of 1.0
         plt.SaveTestImage();
 
         Pixel initialPx = new(329.0F, 200.0F);

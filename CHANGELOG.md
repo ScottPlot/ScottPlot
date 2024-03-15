@@ -31,6 +31,15 @@ _Not yet on NuGet..._
 * Heatmap: Added `FlipHorizontally` and `FlipVertically` properties (#3418, #3419) @BrianAtZetica
 * Heatmap: Fixed off-by-one render error when `Extent` is provided by the user (#3434, #3419) @BrianAtZetica
 * Heatmap: Added support for the `Smooth` property do render anti-aliased images (#3419) @BrianAtZetica
+* Ticks: Fix issue where manual ticks could be displayed outside the data area (#3425, #3427) @oktrue
+* DataLogger and DataStreamer: prevent possible out-of-range exception when using the `Scroll` view mode (#3430, #3429) @KroMignon
+* Color: Added `MixWith()` and related methods to facilitate color mixing and creation of color gradients (#3443, #3441) @KroMignon
+* Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
+* Plot: `ScaleFactor` is now a `double` for simplified assignment (#3454, #3455) @MCF
+* Marker: Improved default settings for outline-only markers (#3456, #3453) @KroMignon
+* Scatter: New `Add.ScatterLine()` method creates a scatter plot with a line only and no markers (#3462, #3452) @MCF
+* Scatter: New `Add.ScatterPoints()` method creates a scatter plot with markers only and no line (#3462, #3452) @MCF
+* Ticks: Improve performance by reducing the number of string measurements (#3468) @drolevar
 * Plot: `GetCoordinateRect()` now returns dimensions that respect `ScaleFactor` (#3471) @MCF
 
 ## ScottPlot 4.1.72

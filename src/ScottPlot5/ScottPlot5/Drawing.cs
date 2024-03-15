@@ -273,17 +273,17 @@ public static class Drawing
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
+        renderer.LineWidth = style.Outline.Width;
         renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        if (!style.IsVisible)
+        if (!style.CanBeRendered)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
+        renderer.LineWidth = style.Outline.Width;
         foreach (Pixel pixel in pixels)
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
