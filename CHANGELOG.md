@@ -37,6 +37,8 @@ _Not yet on NuGet..._
 * Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
 * Plot: `ScaleFactor` is now a `double` for simplified assignment (#3454, #3455) @MCF
 * Marker: Improved default settings for outline-only markers (#3456, #3453) @KroMignon
+* Scatter: New `Add.ScatterLine()` method creates a scatter plot with a line only and no markers (#3462, #3452) @MCF
+* Scatter: New `Add.ScatterPoints()` method creates a scatter plot with markers only and no line (#3462, #3452) @MCF
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
