@@ -273,7 +273,7 @@ public static class Drawing
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
+        renderer.LineWidth = style.Outline.Width;
         renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
     }
 
@@ -283,6 +283,7 @@ public static class Drawing
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
+        renderer.LineWidth = style.Outline.Width;
         foreach (Pixel pixel in pixels)
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
