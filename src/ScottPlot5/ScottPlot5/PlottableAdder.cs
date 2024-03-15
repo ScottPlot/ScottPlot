@@ -571,43 +571,85 @@ public class PlottableAdder(Plot plot)
 
     public Scatter ScatterLine(IScatterSource source, Color? color = null)
     {
-        var scatter = this.Scatter(source, color);
+        var scatter = Scatter(source, color);
         scatter.MarkerSize = 0;
         return scatter;
     }
 
     public Scatter ScatterLine(double[] xs, double[] ys, Color? color = null)
     {
-        var scatter = this.Scatter(xs, ys, color);
+        var scatter = Scatter(xs, ys, color);
         scatter.MarkerSize = 0;
         return scatter;
     }
 
     public Scatter ScatterLine(Coordinates[] coordinates, Color? color = null)
     {
-        var scatter = this.Scatter(coordinates, color);
+        var scatter = Scatter(coordinates, color);
         scatter.MarkerSize = 0;
         return scatter;
     }
 
     public Scatter ScatterLine(List<Coordinates> coordinates, Color? color = null)
     {
-        var scatter = this.Scatter(coordinates, color);
+        var scatter = Scatter(coordinates, color);
         scatter.MarkerSize = 0;
         return scatter;
     }
 
     public Scatter ScatterLine<T1, T2>(T1[] xs, T2[] ys, Color? color = null)
     {
-        var scatter = this.Scatter(xs, ys, color);
+        var scatter = Scatter(xs, ys, color);
         scatter.MarkerSize = 0;
         return scatter;
     }
 
     public Scatter ScatterLine<T1, T2>(List<T1> xs, List<T2> ys, Color? color = null)
     {
-        var scatter = this.Scatter(xs, ys, color);
+        var scatter = Scatter(xs, ys, color);
         scatter.MarkerSize = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints(IScatterSource source, Color? color = null)
+    {
+        var scatter = Scatter(source, color);
+        scatter.LineWidth = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints(double[] xs, double[] ys, Color? color = null)
+    {
+        var scatter = Scatter(xs, ys, color);
+        scatter.LineWidth = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints(Coordinates[] coordinates, Color? color = null)
+    {
+        var scatter = Scatter(coordinates, color);
+        scatter.LineWidth = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints(List<Coordinates> coordinates, Color? color = null)
+    {
+        var scatter = Scatter(coordinates, color);
+        scatter.LineWidth = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints<T1, T2>(T1[] xs, T2[] ys, Color? color = null)
+    {
+        var scatter = Scatter(xs, ys, color);
+        scatter.LineWidth = 0;
+        return scatter;
+    }
+
+    public Scatter ScatterPoints<T1, T2>(List<T1> xs, List<T2> ys, Color? color = null)
+    {
+        var scatter = Scatter(xs, ys, color);
+        scatter.LineWidth = 0;
         return scatter;
     }
 
