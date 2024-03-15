@@ -31,6 +31,7 @@ _Not yet on NuGet..._
 * Heatmap: Added `FlipHorizontally` and `FlipVertically` properties (#3418, #3419) @BrianAtZetica
 * Heatmap: Fixed off-by-one render error when `Extent` is provided by the user (#3434, #3419) @BrianAtZetica
 * Heatmap: Added support for the `Smooth` property do render anti-aliased images (#3419) @BrianAtZetica
+* Plot: `GetCoordinateRect()` now returns dimensions that respect `ScaleFactor` (#3471) @MCF
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
