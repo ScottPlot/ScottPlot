@@ -2,8 +2,14 @@
 
 internal class TriUp : IMarker
 {
+    public bool Fill { get; set; } = false;
+    public bool Outline { get; set; } = true;
+
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
+        if (!Outline)
+            return;
+
         // Length of each side of inscribing triangle = size
         float radius = (float)(size / 1.732); // size / sqrt(3)
         float xOffset = (float)(radius * 0.866); // r * sqrt(3)/2

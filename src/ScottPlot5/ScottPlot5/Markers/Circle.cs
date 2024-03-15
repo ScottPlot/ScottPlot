@@ -2,23 +2,20 @@
 
 internal class Circle : IMarker
 {
-    private readonly bool isOutlined;
-    public Circle(bool isOutlined)
-    {
-        this.isOutlined = isOutlined;
-    }
+    public bool Fill { get; set; } = true;
+    public bool Outline { get; set; } = false;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
         float radius = size / 2;
 
-        if (isOutlined == false)
+        if (Fill)
         {
             fill.ApplyToPaint(paint, new PixelRect(center, size));
             canvas.DrawCircle(center.ToSKPoint(), radius, paint);
         }
 
-        if (outline.CanBeRendered)
+        if (Outline && outline.CanBeRendered)
         {
             outline.ApplyToPaint(paint);
             canvas.DrawCircle(center.ToSKPoint(), radius, paint);

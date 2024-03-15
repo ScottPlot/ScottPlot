@@ -2,8 +2,14 @@
 
 internal class HashTag : IMarker
 {
+    public bool Fill { get; set; } = false;
+    public bool Outline { get; set; } = true;
+
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
+        if (!Outline)
+            return;
+
         float sixthOffset = size / 6;
         float halfOffset = size / 2;
 

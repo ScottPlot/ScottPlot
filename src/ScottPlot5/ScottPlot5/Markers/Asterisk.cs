@@ -2,10 +2,15 @@
 
 internal class Asterisk : IMarker
 {
+    public bool Fill { get; set; } = false;
+    public bool Outline { get; set; } = true;
+
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
-        float crossOffset = size / 2;
+        if (!Outline)
+            return;
 
+        float crossOffset = size / 2;
         float eksOffset = (float)(size / 2.828);
 
         var path = new SKPath();
