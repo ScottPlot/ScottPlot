@@ -17,7 +17,7 @@ public class PlottableAdder(Plot plot)
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    public Color GetNextColor()
+    internal Color GetNextColor()
     {
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
