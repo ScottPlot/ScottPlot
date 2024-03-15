@@ -39,6 +39,7 @@ _Not yet on NuGet..._
 * Marker: Improved default settings for outline-only markers (#3456, #3453) @KroMignon
 * Scatter: New `Add.ScatterLine()` method creates a scatter plot with a line only and no markers (#3462, #3452) @MCF
 * Scatter: New `Add.ScatterPoints()` method creates a scatter plot with markers only and no line (#3462, #3452) @MCF
+* Ticks: Improve performance by reducing the number of string measurements (#3468) @drolevar
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
