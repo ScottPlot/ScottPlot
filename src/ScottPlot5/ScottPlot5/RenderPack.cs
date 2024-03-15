@@ -28,10 +28,10 @@ public class RenderPack
             throw new InvalidOperationException("DataRect must only be calculated once per render");
 
         PixelRect scaledRect = new(
-            left: FigureRect.Left / Plot.ScaleFactor,
-            right: FigureRect.Right / Plot.ScaleFactor,
-            bottom: FigureRect.Bottom / Plot.ScaleFactor,
-            top: FigureRect.Top / Plot.ScaleFactor);
+            left: FigureRect.Left / Plot.ScaleFactorF,
+            right: FigureRect.Right / Plot.ScaleFactorF,
+            bottom: FigureRect.Bottom / Plot.ScaleFactorF,
+            top: FigureRect.Top / Plot.ScaleFactorF);
 
         Layout = Plot.Layout.LayoutEngine.GetLayout(scaledRect, Plot.Axes.GetPanels());
         DataRect = Layout.DataRect;

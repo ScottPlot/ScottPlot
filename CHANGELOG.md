@@ -19,6 +19,27 @@ _Not yet on NuGet..._
 * Plot: Added `Remove()` overloads for Axes, Panels, and Grids (#3402, #3360) @Excustic, @redrabbit007, @csbebetter, @xichaoqiang
 * Plot: `Plot.FigureBackground` is now `Plot.FigureBackground.Color` (and same with `DataBackground`)
 * Plot: `Plot.FigureBackground.Image` and `Plot.DataBackground.Image` can be used to add a background image to plots (#3406, #3405) @unsigned-ru
+* Axes: Updated the auto-scaler to ignore plottables with visibility disabled (#3407) @levipara
+* Axes: Restrict pan, zoom, and autoscale to a single dimension if the cursor is over an axis panel (#3410) @drolevar
+* Controls: Improved behavior of middle-click-drag zoom rectangle actions when CTRL or SHIFT is pressed
+* DataLogger and DataStreamer: Improve support for multi-axis plots (#3411) @drolevar
+* Controls: Prevent unnecessary zoom rectangle clearing (#3412) @drolevar
+* Axes: Improve placement of decisecond and centisecond ticks on DateTime axes (#3413) @drolevar
+* Label: Improved appearance of multiline labels with outlined borders or filled backgrounds (#3415, #3371) @NicolasLairNET
+* Label: Added a `LineSpacing` property to allow manually defining line height in multi-line labels (#3415, #3371) @NicolasLairNET
+* Heatmap: Improve vertical placement of scaled heatmaps (#3416, #3417) @BrianAtZetica
+* Heatmap: Added `FlipHorizontally` and `FlipVertically` properties (#3418, #3419) @BrianAtZetica
+* Heatmap: Fixed off-by-one render error when `Extent` is provided by the user (#3434, #3419) @BrianAtZetica
+* Heatmap: Added support for the `Smooth` property do render anti-aliased images (#3419) @BrianAtZetica
+* Ticks: Fix issue where manual ticks could be displayed outside the data area (#3425, #3427) @oktrue
+* DataLogger and DataStreamer: prevent possible out-of-range exception when using the `Scroll` view mode (#3430, #3429) @KroMignon
+* Color: Added `MixWith()` and related methods to facilitate color mixing and creation of color gradients (#3443, #3441) @KroMignon
+* Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
+* Plot: `ScaleFactor` is now a `double` for simplified assignment (#3454, #3455) @MCF
+
+## ScottPlot 4.1.72
+_Not yet on NuGet..._
+* DataLogger: Improve support for multi-axis plots (#3411) @drolevar
 
 ## ScottPlot 5.0.21
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-01-28_
