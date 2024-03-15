@@ -2,16 +2,23 @@
 
 internal class Circle : IMarker
 {
+    public bool Fill { get; set; } = true;
+    public float LineWidth { get; set; } = 0;
+
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
         float radius = size / 2;
 
-        fill.ApplyToPaint(paint, new PixelRect(center, size));
-        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+        if (Fill)
+        {
+            fill.ApplyToPaint(paint, new PixelRect(center, size));
+            canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+        }
 
-        if (outline.Width > 0)
+        if (LineWidth > 0)
         {
             outline.ApplyToPaint(paint);
+            paint.StrokeWidth = LineWidth;
             canvas.DrawCircle(center.ToSKPoint(), radius, paint);
         }
     }

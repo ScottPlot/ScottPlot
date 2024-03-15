@@ -19,7 +19,8 @@ public class Plot : IDisposable
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
-    public float ScaleFactor { get; set; } = 1.0f;
+    public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
+    internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
 
@@ -66,8 +67,8 @@ public class Plot : IDisposable
 
         if (ScaleFactor != 1)
         {
-            xPixel *= ScaleFactor;
-            yPixel *= ScaleFactor;
+            xPixel *= ScaleFactorF;
+            yPixel *= ScaleFactorF;
         }
 
         return new Pixel(xPixel, yPixel);
@@ -95,20 +96,43 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="x">Center point pixel's x</param>
+    /// <param name="y">Center point pixel's y</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
     {
+        float leftPx = (x - radius);
+        float rightPx = (x + radius);
+        float topPx = (y - radius);
+        float bottomPx = (y + radius);
+
+        if (ScaleFactor != 1)
+        {
+            leftPx /= ScaleFactorF;
+            rightPx /= ScaleFactorF;
+            topPx /= ScaleFactorF;
+            bottomPx /= ScaleFactorF;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = Axes.Bottom.GetCoordinate(x - radius, dataRect);
-        double right = Axes.Bottom.GetCoordinate(x + radius, dataRect);
-        double top = Axes.Left.GetCoordinate(y - radius, dataRect);
-        double bottom = Axes.Left.GetCoordinate(y + radius, dataRect);
+        double left = Axes.Bottom.GetCoordinate(leftPx, dataRect);
+        double right = Axes.Bottom.GetCoordinate(rightPx, dataRect);
+        double top = Axes.Left.GetCoordinate(topPx, dataRect);
+        double bottom = Axes.Left.GetCoordinate(bottomPx, dataRect);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="pixel">Center point pixel</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
     {
@@ -116,10 +140,20 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a coordinate pair with the
+    /// radius specified in pixels.  Uses measurements from the most recent
+    /// render.
+    /// <param name="coordinates">Center point in coordinate units</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
     public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
     {
+        if (ScaleFactor != 1)
+        {
+            radius /= ScaleFactorF;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
         double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
         double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);

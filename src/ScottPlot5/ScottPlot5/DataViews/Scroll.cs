@@ -16,15 +16,17 @@ public class Scroll : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        Pixel[] points = new Pixel[Streamer.Data.Length];
+        int dataLength = Streamer.Data.Length;
+        int dataNextIndex = Streamer.Data.NextIndex;
+        int oldPointCount = dataLength - dataNextIndex;
 
-        int oldPointCount = Streamer.Data.Length - Streamer.Data.NextIndex;
+        Pixel[] points = new Pixel[dataLength];
 
-        for (int i = 0; i < Streamer.Data.Length; i++)
+        for (int i = 0; i < dataLength; i++)
         {
             bool isNewPoint = i < oldPointCount;
-            int sourceIndex = isNewPoint ? Streamer.Data.NextIndex + i : i - oldPointCount;
-            int targetIndex = NewOnRight ? i : Streamer.Data.Data.Length - 1 - i;
+            int sourceIndex = isNewPoint ? dataNextIndex + i : i - oldPointCount;
+            int targetIndex = NewOnRight ? i : dataLength - 1 - i;
             points[targetIndex] = new(
                 x: Streamer.Axes.GetPixelX(targetIndex * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX),
                 y: Streamer.Axes.GetPixelY(Streamer.Data.Data[sourceIndex] + Streamer.Data.OffsetY));
