@@ -12,11 +12,11 @@ public class LineStyle
     public bool IsVisible { get; set; } = true; // TODO: deprecate in favor of 0 line width
     public static LineStyle None => new() { IsVisible = false, Width = 0 };
     public bool AntiAlias { get; set; } = true;
+    public bool CanBeRendered => IsVisible && Width > 0 && Color.Alpha > 0;
 
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
     {
-        if (IsVisible == false) return;
-        if (Width == 0) return;
+        if (CanBeRendered == false) return;
 
         this.ApplyToPaint(paint);
         canvas.DrawLine(line.X1, line.Y1, line.X2, line.Y2, paint);
