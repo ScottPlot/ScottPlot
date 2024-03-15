@@ -112,10 +112,10 @@ public class Plot : IDisposable
 
         if (ScaleFactor != 1)
         {
-            leftPx /= ScaleFactor;
-            rightPx /= ScaleFactor;
-            topPx /= ScaleFactor;
-            bottomPx /= ScaleFactor;
+            leftPx /= ScaleFactorF;
+            rightPx /= ScaleFactorF;
+            topPx /= ScaleFactorF;
+            bottomPx /= ScaleFactorF;
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
@@ -151,7 +151,7 @@ public class Plot : IDisposable
     {
         if (ScaleFactor != 1)
         {
-            radius /= ScaleFactor;
+            radius /= ScaleFactorF;
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
