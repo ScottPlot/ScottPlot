@@ -312,3 +312,6 @@ src/ScottPlot4/ScottPlot/ScottPlot.xml
 dev/docfx/_exported_templates/
 dev/docfx/api/*.yml
 dev/docfx/api/.manifest
+
+# Vim swap files
+.*.swp
