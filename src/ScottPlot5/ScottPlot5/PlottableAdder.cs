@@ -132,6 +132,14 @@ public class PlottableAdder(Plot plot)
         return Circle(new(xCenter, yCenter), radius);
     }
 
+    public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
+    {
+        ColorBar colorBar = new(source, edge);
+
+        Plot.Axes.Panels.Add(colorBar);
+        return colorBar;
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
@@ -141,14 +149,6 @@ public class PlottableAdder(Plot plot)
         ch.LineStyle.Color = GetNextColor();
         Plot.PlottableList.Add(ch);
         return ch;
-    }
-
-    public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
-    {
-        ColorBar colorBar = new(source, edge);
-
-        Plot.Axes.Panels.Add(colorBar);
-        return colorBar;
     }
 
     public DataLogger DataLogger()
@@ -453,6 +453,12 @@ public class PlottableAdder(Plot plot)
         return pie;
     }
 
+    public IPlottable Plottable(IPlottable plottable)
+    {
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public Polygon Polygon(Coordinates[] coordinates)
     {
         Polygon poly = new(coordinates);
@@ -466,12 +472,6 @@ public class PlottableAdder(Plot plot)
         Polygon poly = new(coordinates);
         Plot.PlottableList.Add(poly);
         return poly;
-    }
-
-    public IPlottable Plottable(IPlottable plottable)
-    {
-        Plot.PlottableList.Add(plottable);
-        return plottable;
     }
 
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)
