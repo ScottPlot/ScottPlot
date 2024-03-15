@@ -3,7 +3,7 @@
 internal class Circle : IMarker
 {
     public bool Fill { get; set; } = true;
-    public bool Outline { get; set; } = false;
+    public float LineWidth { get; set; } = 0;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
@@ -15,9 +15,10 @@ internal class Circle : IMarker
             canvas.DrawCircle(center.ToSKPoint(), radius, paint);
         }
 
-        if (Outline && outline.CanBeRendered)
+        if (LineWidth > 0)
         {
             outline.ApplyToPaint(paint);
+            paint.StrokeWidth = LineWidth;
             canvas.DrawCircle(center.ToSKPoint(), radius, paint);
         }
     }

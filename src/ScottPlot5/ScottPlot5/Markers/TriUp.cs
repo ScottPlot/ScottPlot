@@ -3,11 +3,11 @@
 internal class TriUp : IMarker
 {
     public bool Fill { get; set; } = false;
-    public bool Outline { get; set; } = true;
+    public float LineWidth { get; set; } = 1;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
-        if (!Outline)
+        if (LineWidth == 0)
             return;
 
         // Length of each side of inscribing triangle = size
@@ -28,6 +28,7 @@ internal class TriUp : IMarker
         path.LineTo(center.X + xOffset, center.Y - yOffset);
 
         outline.ApplyToPaint(paint);
+        paint.StrokeWidth = LineWidth;
         canvas.DrawPath(path, paint);
     }
 }

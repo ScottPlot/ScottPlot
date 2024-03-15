@@ -3,7 +3,7 @@
 internal class Diamond : IMarker
 {
     public bool Fill { get; set; } = true;
-    public bool Outline { get; set; } = false;
+    public float LineWidth { get; set; } = 1;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
@@ -27,9 +27,10 @@ internal class Diamond : IMarker
             canvas.DrawPath(path, paint);
         }
 
-        if (Outline && outline.CanBeRendered)
+        if (LineWidth > 0)
         {
             outline.ApplyToPaint(paint);
+            paint.StrokeWidth = LineWidth;
             canvas.DrawPath(path, paint);
         }
     }

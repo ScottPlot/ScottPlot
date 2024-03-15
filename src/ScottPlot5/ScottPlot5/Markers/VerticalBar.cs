@@ -3,11 +3,11 @@
 internal class VerticalBar : IMarker
 {
     public bool Fill { get; set; } = false;
-    public bool Outline { get; set; } = true;
+    public float LineWidth { get; set; } = 1;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
-        if (!Outline)
+        if (LineWidth == 0)
             return;
 
         float offset = size / 2;
@@ -17,6 +17,7 @@ internal class VerticalBar : IMarker
         path.LineTo(center.X, center.Y - offset);
 
         outline.ApplyToPaint(paint);
+        paint.StrokeWidth = 1;
         canvas.DrawPath(path, paint);
     }
 }

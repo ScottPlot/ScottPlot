@@ -3,11 +3,11 @@
 internal class HashTag : IMarker
 {
     public bool Fill { get; set; } = false;
-    public bool Outline { get; set; } = true;
+    public float LineWidth { get; set; } = 1;
 
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
     {
-        if (!Outline)
+        if (LineWidth == 0)
             return;
 
         float sixthOffset = size / 6;
@@ -27,6 +27,7 @@ internal class HashTag : IMarker
         path.LineTo(center.X - halfOffset, center.Y - sixthOffset);
 
         outline.ApplyToPaint(paint);
+        paint.StrokeWidth = LineWidth;
         canvas.DrawPath(path, paint);
     }
 }
