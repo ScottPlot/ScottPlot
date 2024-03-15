@@ -127,6 +127,7 @@ public class CustomizingTicks : ICategory
             // create a bar plot
             double[] values = { 5, 10, 7, 13, 25, 60 };
             myPlot.Add.Bars(values);
+            myPlot.Axes.Margins(bottom: 0);
 
             // create a tick for each bar
             Tick[] ticks =
