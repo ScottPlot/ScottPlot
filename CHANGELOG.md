@@ -41,7 +41,7 @@ _Not yet on NuGet..._
 * Scatter: New `Add.ScatterPoints()` method creates a scatter plot with markers only and no line (#3462, #3452) @MCF
 * Ticks: Improve performance by reducing the number of string measurements (#3468) @drolevar
 * Plot: `GetCoordinateRect()` now returns dimensions that respect `ScaleFactor` (#3471) @MCF
-* Label: Added `Measure()` overloads to facilitate measuring arbitrary strings without modifying the label text (#3474, #3473) @aespitia
+* Label: Added `Measure()` overloads to facilitate measuring arbitrary strings without modifying the label text (#3474, #3473, #3458) @aespitia @David-A-Blankenship
 * Layout: Improved positioning of text for bottom tick labels with large font (#3436) @edwwsw
 * Legend: Improve international font support when `Plot.Style.SetBestFonts()` is used (#3440) @edwwsw @yui1227
 * Drawing: Do not draw rectangles if they have a line width of zero (#3384)
