@@ -47,6 +47,8 @@ public struct Pixel : IEquatable<Pixel>
     /// </summary>
     public static Pixel NaN => new(float.NaN, float.NaN);
 
+    public static Pixel Zero => new(0, 0);
+
     /// <summary>
     /// Convert the ScottPlot pixel to a SkiaSharp point
     /// </summary>

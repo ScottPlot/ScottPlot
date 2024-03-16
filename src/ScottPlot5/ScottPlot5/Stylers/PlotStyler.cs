@@ -119,10 +119,12 @@ public class PlotStyler(Plot plot)
         foreach (IAxis axis in Plot.Axes.GetAxes())
         {
             axis.Label.SetBestFont();
+            axis.TickLabelStyle.SetBestFont();
         }
 
-        // TODO: also modify tick labels
-        // TODO: also modify plotted text
+        Plot.Legend.SetBestFontOnEachRender = true;
+
+        // TODO: also modify plotted text by adding an IHasText interface
     }
 
     /// <summary>
