@@ -31,7 +31,7 @@ _Not yet on NuGet..._
 * Heatmap: Added `FlipHorizontally` and `FlipVertically` properties (#3418, #3419) @BrianAtZetica
 * Heatmap: Fixed off-by-one render error when `Extent` is provided by the user (#3434, #3419) @BrianAtZetica
 * Heatmap: Added support for the `Smooth` property do render anti-aliased images (#3419) @BrianAtZetica
-* Ticks: Fix issue where manual ticks could be displayed outside the data area (#3425, #3427) @oktrue
+* Ticks: Fix issue where manual ticks could be displayed outside the data area (#3425, #3427, #3395) @oktrue @wsomegapoint
 * DataLogger and DataStreamer: prevent possible out-of-range exception when using the `Scroll` view mode (#3430, #3429) @KroMignon
 * Color: Added `MixWith()` and related methods to facilitate color mixing and creation of color gradients (#3443, #3441) @KroMignon
 * Pie: Added `DonutFraction` property to enable donut charts (#3447, #3438) @aespitia, @Prototipo-Erick-Santander
