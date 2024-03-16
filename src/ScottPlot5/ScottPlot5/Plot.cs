@@ -320,12 +320,12 @@ public class Plot : IDisposable
     /// <summary>
     /// Returns the content of the legend as a raster image
     /// </summary>
-    public Image GetLegendImage() => Legend.GetImage(this);
+    public Image GetLegendImage() => Legend.GetImage();
 
     /// <summary>
     /// Returns the content of the legend as SVG (vector) image
     /// </summary>
-    public string GetLegendSvgXml() => Legend.GetSvgXml(this);
+    public string GetLegendSvgXml() => Legend.GetSvgXml();
 
     #endregion
 

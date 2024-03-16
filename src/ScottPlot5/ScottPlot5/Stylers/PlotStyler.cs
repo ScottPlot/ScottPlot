@@ -122,6 +122,8 @@ public class PlotStyler(Plot plot)
             axis.TickLabelStyle.SetBestFont();
         }
 
+        Plot.Legend.SetBestFontOnEachRender = true;
+
         // TODO: also modify plotted text by adding an IHasText interface
     }
 

@@ -17,6 +17,7 @@ public class LegendItem
     public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();
     public bool HasSymbol => Line.Width > 0 || Marker.IsVisible || Fill.HasValue;
     public bool IsVisible => !string.IsNullOrEmpty(Label);
+    internal FontStyle? CustomFontStyle { get; set; } = null;
 
     public static IEnumerable<LegendItem> None => Array.Empty<LegendItem>();
 
