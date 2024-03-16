@@ -89,4 +89,16 @@ public class FontStyle
         Name = Fonts.Detect(text);
     }
 
+    public FontStyle Clone()
+    {
+        return new FontStyle()
+        {
+            Name = Name,
+            Bold = Bold,
+            Italic = Italic,
+            Color = Color,
+            Size = Size,
+            AntiAlias = AntiAlias,
+        };
+    }
 }
