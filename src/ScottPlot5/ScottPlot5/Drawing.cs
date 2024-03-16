@@ -191,6 +191,9 @@ public static class Drawing
 
     public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
+        if (color == Colors.Transparent)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
@@ -214,6 +217,9 @@ public static class Drawing
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
     {
+        if (color == Colors.Transparent || lineWidth == 0)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
