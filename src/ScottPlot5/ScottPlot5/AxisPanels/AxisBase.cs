@@ -115,7 +115,7 @@ public abstract class AxisBase
             Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
             // draw label
-            if (!string.IsNullOrWhiteSpace(tick.Label))
+            if (!string.IsNullOrWhiteSpace(tick.Label) && label.IsVisible)
             {
                 float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
                 foreach (string line in tick.Label.Split('\n'))
@@ -155,7 +155,7 @@ public abstract class AxisBase
             // draw label
             float majorTickLabelPadding = 7;
             float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
-            if (!string.IsNullOrWhiteSpace(tick.Label))
+            if (!string.IsNullOrWhiteSpace(tick.Label) && label.IsVisible)
             {
                 string[] lines = tick.Label.Split('\n');
                 double fontSpacing = -paint.TextSize * (lines.Length - 1) / 2;
