@@ -178,19 +178,22 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
+        if (color == Colors.Transparent)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
@@ -214,6 +217,9 @@ public static class Drawing
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
     {
+        if (color == Colors.Transparent || lineWidth == 0)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
@@ -325,7 +331,7 @@ public static class Drawing
         // See https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/effects/color-filters
         // for an explanation of this matrix
         // 
-        // Essentially, this matrix maps all gray colours to a line from `background.Value` to `foreground`.
+        // Essentially, this matrix maps all gray colors to a line from `background.Value` to `foreground`.
         // Black and white are at the extremes on this line, 
         // so they get mapped to `background.Value` and `foreground` respectively
         var mat = new float[] {

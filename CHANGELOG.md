@@ -44,6 +44,7 @@ _Not yet on NuGet..._
 * Label: Added `Measure()` overloads to facilitate measuring arbitrary strings without modifying the label text (#3474, #3473) @aespitia
 * Layout: Improved positioning of text for bottom tick labels with large font (#3436) @edwwsw
 * Legend: Improve international font support when `Plot.Style.SetBestFonts()` is used (#3440) @edwwsw @yui1227
+* Drawing: Do not draw rectangles if they have a line width of zero (#3384)
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._

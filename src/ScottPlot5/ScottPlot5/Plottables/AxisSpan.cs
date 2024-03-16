@@ -24,7 +24,7 @@ public abstract class AxisSpan : IPlottable
     protected void Render(RenderPack rp, PixelRect rect)
     {
         using SKPaint paint = new();
-        Drawing.Fillectangle(rp.Canvas, rect, paint, FillStyle);
+        Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
         Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
     }
 }

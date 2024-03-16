@@ -87,7 +87,7 @@ public class Bar
     public void Render(RenderPack rp, IAxes axes, SKPaint paint)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
-        Drawing.Fillectangle(rp.Canvas, rect, FillColor);
+        Drawing.FillRectangle(rp.Canvas, rect, FillColor);
         Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth);
 
         if (Error == 0)

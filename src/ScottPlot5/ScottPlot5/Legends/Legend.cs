@@ -260,8 +260,8 @@ public class Legend(Plot plot)
         using SKPaint paint = new();
 
         // render the legend panel
-        Drawing.Fillectangle(canvas, lp.LegendShadowRect, ShadowFill.Color);
-        Drawing.Fillectangle(canvas, lp.LegendRect, BackgroundFill.Color);
+        Drawing.FillRectangle(canvas, lp.LegendShadowRect, ShadowFill.Color);
+        Drawing.FillRectangle(canvas, lp.LegendRect, BackgroundFill.Color);
         Drawing.DrawRectangle(canvas, lp.LegendRect, OutlineStyle.Color, OutlineStyle.Width);
 
         // render all items inside the legend

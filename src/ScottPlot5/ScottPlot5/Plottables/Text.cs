@@ -7,6 +7,7 @@ public class Text : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public PixelSize PixelOffset { get; set; }
 
     public Color Color
     {
