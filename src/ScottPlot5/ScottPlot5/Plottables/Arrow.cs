@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class Arrow : IPlottable
+namespace ScottPlot.Plottables;
+
+public class Arrow : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -24,7 +26,7 @@ public class Arrow : IPlottable
     /// <summary>
     /// Advanced styling options
     /// </summary>
-    public readonly LineStyle LineStyle = new() { Color = Colors.Gray, Width = 2 };
+    public LineStyle LineStyle { get; } = new() { Color = Colors.Gray, Width = 2 };
 
     /// <summary>
     /// Color of the arrow line and arrowhead

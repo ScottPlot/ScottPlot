@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class FunctionPlot : IPlottable
+namespace ScottPlot.Plottables;
+
+public class FunctionPlot : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();

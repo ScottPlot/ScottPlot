@@ -11,6 +11,7 @@ public enum LinePattern
     Dashed,
     DenselyDashed,
     Dotted,
+    HandDrawn
 }
 
 public static class LinePatternExtensions
@@ -23,6 +24,7 @@ public static class LinePatternExtensions
             LinePattern.Dashed => SKPathEffect.CreateDash(new float[] { 10, 10 }, 0),
             LinePattern.DenselyDashed => SKPathEffect.CreateDash(new float[] { 6, 6 }, 0),
             LinePattern.Dotted => SKPathEffect.CreateDash(new float[] { 3, 5 }, 0),
+            LinePattern.HandDrawn => SKPathEffect.CreateDiscrete(8, 1),
             _ => throw new NotImplementedException($"Line pattern '{pattern}' has no matching path effect"),
         };
     }

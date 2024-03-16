@@ -1,7 +1,9 @@
 ﻿
+using ScottPlot.Interfaces;
+
 namespace ScottPlot.Plottables;
 
-public class Rectangle : IPlottable
+public class Rectangle : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();

@@ -204,7 +204,7 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1, LinePattern pattern = LinePattern.Solid)
     {
         using SKPaint paint = new()
         {
@@ -212,6 +212,7 @@ public static class Drawing
             IsStroke = true,
             StrokeWidth = lineWidth,
             IsAntialias = true,
+            PathEffect = pattern.GetPathEffect()
         };
 
         DrawRectangle(canvas, rect, paint);

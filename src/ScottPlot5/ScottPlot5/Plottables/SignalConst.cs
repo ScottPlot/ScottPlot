@@ -1,13 +1,14 @@
 ﻿using ScottPlot.DataSources;
+using ScottPlot.Interfaces;
 
 namespace ScottPlot.Plottables;
 
-public class SignalConst<T>(T[] ys, double period) : IPlottable
+public class SignalConst<T>(T[] ys, double period) : IPlottable, IHoldLineStyle
     where T : struct, IComparable
 {
     readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
     public readonly MarkerStyle Marker = new();
-    public readonly LineStyle LineStyle = new();
+    public LineStyle LineStyle { get; } = new();
 
     public string? Label { get; set; }
 

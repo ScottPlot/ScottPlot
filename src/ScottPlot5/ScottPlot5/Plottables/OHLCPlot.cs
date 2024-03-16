@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class OhlcPlot(IOHLCSource data) : IPlottable
+namespace ScottPlot.Plottables;
+
+public class OhlcPlot(IOHLCSource data) : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
 
@@ -27,6 +29,11 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
+    /// <summary>
+    /// Used for applying styling to both rising and falling candles
+    /// </summary>
+    public LineStyle LineStyle { get; } = new();
+
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
     public void Render(RenderPack rp)
@@ -34,6 +41,10 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         using SKPaint paint = new();
         using SKPath risingPath = new();
         using SKPath fallingPath = new();
+
+        // style the OHLCs
+        RisingStyle.Pattern = LineStyle.Pattern;
+        FallingStyle.Pattern = LineStyle.Pattern;
 
         foreach (OHLC ohlc in Data.GetOHLCs())
         {

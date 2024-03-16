@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class Scatter(IScatterSource data) : IPlottable
+namespace ScottPlot.Plottables;
+
+public class Scatter(IScatterSource data) : IPlottable, IHoldLineStyle
 {
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;

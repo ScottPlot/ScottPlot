@@ -20,6 +20,8 @@ public class Box
     public double CapSize { get; set; } = 0.3;
     public FillStyle Fill { get; set; } = new();
     public LineStyle Stroke { get; set; } = new();
+    public LineStyle LineStyle { get; } = new();
+
     public Orientation Orientation { get; set; } = Orientation.Vertical;
 
     public AxisLimits GetAxisLimits()
@@ -45,35 +47,35 @@ public class Box
 
         // body stroke
         Stroke.ApplyToPaint(paint);
-        Drawing.DrawRectangle(rp.Canvas, bodyRectPx, paint);
+        Drawing.DrawRectangle(rp.Canvas, bodyRectPx, paint, LineStyle);
 
         if (BoxMiddle.HasValue)
         {
             CoordinateLine lineMid = new(bodyRect.Left, BoxMiddle.Value, bodyRect.Right, BoxMiddle.Value);
             PixelLine lineMidPx = axes.GetPixelLine(lineMid);
-            Drawing.DrawLine(rp.Canvas, paint, lineMidPx);
+            Drawing.DrawLine(rp.Canvas, paint, lineMidPx, LineStyle);
         }
 
         if (WhiskerMax.HasValue)
         {
             CoordinateLine lineMax = new(Position, BoxMax, Position, WhiskerMax.Value);
             PixelLine lineMaxPx = axes.GetPixelLine(lineMax);
-            Drawing.DrawLine(rp.Canvas, paint, lineMaxPx);
+            Drawing.DrawLine(rp.Canvas, paint, lineMaxPx, LineStyle);
 
             CoordinateLine lineMaxAcross = new(Position - CapSize / 2, WhiskerMax.Value, Position + CapSize / 2, WhiskerMax.Value);
             PixelLine lineMaxAcrossPx = axes.GetPixelLine(lineMaxAcross);
-            Drawing.DrawLine(rp.Canvas, paint, lineMaxAcrossPx);
+            Drawing.DrawLine(rp.Canvas, paint, lineMaxAcrossPx, LineStyle);
         }
 
         if (WhiskerMin.HasValue)
         {
             CoordinateLine lineMin = new(Position, BoxMin, Position, WhiskerMin.Value);
             PixelLine lineMinPx = axes.GetPixelLine(lineMin);
-            Drawing.DrawLine(rp.Canvas, paint, lineMinPx);
+            Drawing.DrawLine(rp.Canvas, paint, lineMinPx, LineStyle);
 
             CoordinateLine lineMinAcross = new(Position - CapSize / 2, WhiskerMin.Value, Position + CapSize / 2, WhiskerMin.Value);
             PixelLine lineMinAcrossPx = axes.GetPixelLine(lineMinAcross);
-            Drawing.DrawLine(rp.Canvas, paint, lineMinAcrossPx);
+            Drawing.DrawLine(rp.Canvas, paint, lineMinAcrossPx, LineStyle);
         }
     }
 }

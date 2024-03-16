@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class Crosshair : IPlottable
+namespace ScottPlot.Plottables;
+
+public class Crosshair : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
 
@@ -17,7 +19,7 @@ public class Crosshair : IPlottable
     public bool VerticalLineIsVisible { get; set; } = true;
 
     public bool HorizontalLineIsVisible { get; set; } = true;
-    public readonly LineStyle LineStyle = new();
+    public LineStyle LineStyle { get; } = new();
 
     public void Render(RenderPack rp)
     {

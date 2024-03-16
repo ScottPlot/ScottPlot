@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class SignalXY : IPlottable
+namespace ScottPlot.Plottables;
+
+public class SignalXY : IPlottable, IHoldLineStyle
 {
     public ISignalXYSource Data { get; set; }
 

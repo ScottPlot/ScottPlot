@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
+
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// Holds a collection of individually styled bars

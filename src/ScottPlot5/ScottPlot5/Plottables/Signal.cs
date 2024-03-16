@@ -2,9 +2,11 @@
  * !! Avoid temptation to use generics or generic math at this early stage of development
  */
 
+using ScottPlot.Interfaces;
+
 namespace ScottPlot.Plottables;
 
-public class Signal : IPlottable
+public class Signal : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -15,7 +17,7 @@ public class Signal : IPlottable
 
     public readonly MarkerStyle Marker;
 
-    public readonly LineStyle LineStyle;
+    public LineStyle LineStyle { get; private set; }
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display

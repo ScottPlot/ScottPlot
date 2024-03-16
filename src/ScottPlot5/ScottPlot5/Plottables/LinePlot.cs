@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class LinePlot : IPlottable
+namespace ScottPlot.Plottables;
+
+public class LinePlot : IPlottable, IHoldLineStyle
 {
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }

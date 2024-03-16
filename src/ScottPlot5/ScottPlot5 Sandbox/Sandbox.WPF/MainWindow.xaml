@@ -9,5 +9,14 @@
         WindowStartupLocation="CenterScreen"
         Title="ScottPlot 5 - WPF Sandbox" 
         Height="600" Width="800">
-    <ScottPlot:WpfPlot Name="WpfPlot1" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <ComboBox x:Name="plotsCombo" SelectionChanged="plotsCombo_SelectionChanged" MinWidth="150" Height="30"/>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="1"/>
+    </Grid>
 </Window>

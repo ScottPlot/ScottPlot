@@ -1,10 +1,11 @@
 ﻿
 using ScottPlot.AxisLimitCalculators;
 using ScottPlot.DataSources;
+using ScottPlot.Interfaces;
 
 namespace ScottPlot.Plottables;
 
-public class DataLogger : IPlottable, IManagesAxisLimits
+public class DataLogger : IPlottable, IManagesAxisLimits, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
@@ -15,7 +16,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
     public IAxisLimitManager AxisManager { get; set; } = new Full();
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
-    public LineStyle LineStyle = new();
+    public LineStyle LineStyle { get; } = new();
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>

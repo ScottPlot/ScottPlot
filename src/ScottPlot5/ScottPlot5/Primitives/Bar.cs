@@ -19,6 +19,8 @@ public class Bar
     public float BorderLineWidth = 1;
     public float ErrorLineWidth = 0;
 
+    public LinePattern BarLinePattern { get; set; } = LinePattern.Solid;
+
     // TODO: something like ErrorInDirectionOfValue?
     // Maybe ErrorPosition should be an enum containing: None, Upward, Downward, Both, or Extend
     public bool ErrorPositive = true;
@@ -88,7 +90,7 @@ public class Bar
     {
         PixelRect rect = axes.GetPixelRect(Rect);
         Drawing.Fillectangle(rp.Canvas, rect, FillColor);
-        Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth);
+        Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth, BarLinePattern);
 
         if (Error == 0)
             return;
@@ -97,7 +99,7 @@ public class Bar
         {
             Pixel pt1 = axes.GetPixel(line.Start);
             Pixel pt2 = axes.GetPixel(line.End);
-            Drawing.DrawLine(rp.Canvas, paint, pt1, pt2, BorderColor, BorderLineWidth);
+            Drawing.DrawLine(rp.Canvas, paint, pt1, pt2, BorderColor, BorderLineWidth, true, BarLinePattern);
         }
     }
 }

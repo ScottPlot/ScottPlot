@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables
+﻿using ScottPlot.Interfaces;
+
+namespace ScottPlot.Plottables
 {
-    public class ErrorBar : IPlottable
+    public class ErrorBar : IPlottable, IHoldLineStyle
     {
         // TODO: use an errorbar source instead of so many lists
 

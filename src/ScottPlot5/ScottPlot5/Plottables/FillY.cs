@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class FillY : IPlottable
+namespace ScottPlot.Plottables;
+
+public class FillY : IPlottable, IHoldLineStyle
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;

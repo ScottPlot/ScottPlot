@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using ScottPlot.Interfaces;
 using ScottPlot.Legends;
 using System.ComponentModel;
 
@@ -147,5 +148,26 @@ public class PlotStyler
             background: Color.FromHex("#404040"),
             foreground: Color.FromHex("#d7d7d7"),
             border: Color.FromHex("#d7d7d7"));
+    }
+
+    public void SetLineStylePatterns(LinePattern pattern)
+    {
+        foreach (IPlottable plottable in Plot.GetPlottables())
+        {
+            if (plottable is IHoldLineStyle)
+            {
+                ((IHoldLineStyle)plottable).LineStyle.Pattern = pattern;
+            }
+        }
+
+        foreach (IAxis axis in Plot.Axes.GetAxes())
+        {
+            axis.FrameLineStyle.Pattern = pattern;
+        }
+
+        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
+        {
+            grid.MajorLineStyle.Pattern = pattern;
+        }
     }
 }

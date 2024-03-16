@@ -1,10 +1,17 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class CandlestickPlot(IOHLCSource data) : IPlottable
+namespace ScottPlot.Plottables;
+
+public class CandlestickPlot(IOHLCSource data) : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
 
     public IAxes Axes { get; set; } = new Axes();
+
+    /// <summary>
+    /// Only used for setting pattern of lines.  Other line styles derive from OHLC plot.
+    /// </summary>
+    public LineStyle LineStyle { get; } = new();
 
     private readonly IOHLCSource Data = data;
 
@@ -66,6 +73,9 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             bool isRising = ohlc.Close >= ohlc.Open;
             LineStyle lineStyle = isRising ? RisingLineStyle : FallingLineStyle;
             FillStyle fillStlye = isRising ? RisingFillStyle : FallingFillStyle;
+
+            // Apply pattern from class property for styling the path
+            lineStyle.Pattern = LineStyle.Pattern;
 
             float top = Axes.GetPixelY(ohlc.High);
             float bottom = Axes.GetPixelY(ohlc.Low);

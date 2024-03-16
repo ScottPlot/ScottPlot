@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public abstract class AxisLine : IPlottable, IRenderLast
+namespace ScottPlot.Plottables;
+
+public abstract class AxisLine : IPlottable, IRenderLast, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
 

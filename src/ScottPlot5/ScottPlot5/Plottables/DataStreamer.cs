@@ -1,15 +1,16 @@
 ﻿using ScottPlot.AxisLimitCalculators;
 using ScottPlot.DataSources;
+using ScottPlot.Interfaces;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public readonly LineStyle LineStyle = new();
+    public LineStyle LineStyle { get; } = new();
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public DataStreamerSource Data { get; set; }

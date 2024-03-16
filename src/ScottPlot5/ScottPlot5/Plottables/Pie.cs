@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class Pie : IPlottable
+namespace ScottPlot.Plottables;
+
+public class Pie : IPlottable, IHoldLineStyle
 {
     public IList<PieSlice> Slices { get; set; }
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };

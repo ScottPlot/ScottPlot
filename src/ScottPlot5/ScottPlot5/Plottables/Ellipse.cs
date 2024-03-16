@@ -1,8 +1,9 @@
 ﻿using ScottPlot.Extensions;
+using ScottPlot.Interfaces;
 
 namespace ScottPlot.Plottables;
 
-public class Ellipse : IPlottable
+public class Ellipse : IPlottable, IHoldLineStyle
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
