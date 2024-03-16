@@ -24,6 +24,9 @@ public class Bar
     public bool ErrorPositive = true;
     public bool ErrorNegative = true;
 
+    public string Label = string.Empty;
+    public float LabelOffset = 5;
+
     public Orientation Orientation = Orientation.Vertical;
 
     internal CoordinateRect Rect
@@ -84,20 +87,24 @@ public class Bar
         }
     }
 
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint)
+    public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label label)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
         Drawing.FillRectangle(rp.Canvas, rect, FillColor);
         Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth);
 
-        if (Error == 0)
-            return;
-
-        foreach (CoordinateLine line in ErrorLines)
+        if (Error != 0)
         {
-            Pixel pt1 = axes.GetPixel(line.Start);
-            Pixel pt2 = axes.GetPixel(line.End);
-            Drawing.DrawLine(rp.Canvas, paint, pt1, pt2, BorderColor, BorderLineWidth);
+            foreach (CoordinateLine line in ErrorLines)
+            {
+                Pixel pt1 = axes.GetPixel(line.Start);
+                Pixel pt2 = axes.GetPixel(line.End);
+                Drawing.DrawLine(rp.Canvas, paint, pt1, pt2, BorderColor, BorderLineWidth);
+            }
         }
+
+        float offset = Value >= ValueBase ? -LabelOffset : LabelOffset;
+        Pixel labelPixel = new(rect.HorizontalCenter, rect.Top + offset);
+        label.Render(rp.Canvas, labelPixel);
     }
 }

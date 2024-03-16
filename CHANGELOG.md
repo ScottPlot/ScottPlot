@@ -47,6 +47,7 @@ _Not yet on NuGet..._
 * Drawing: Do not draw rectangles if they have a line width of zero (#3384)
 * Ticks: Do not render ticks on `Axes` where `TickLabelStyle.IsVisible` is `false`
 * NuGet: Package now includes native Linux assets regardless of original build target (#3481, #3357)
+* Bar: Added `Label` property to allow values to be displayed above bars (#3477) @DouglasWatt
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
