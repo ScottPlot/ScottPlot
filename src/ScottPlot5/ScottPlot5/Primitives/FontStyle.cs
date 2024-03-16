@@ -66,6 +66,11 @@ public class FontStyle
     public float Size { get; set; } = 12;
     public bool AntiAlias { get; set; } = true;
 
+    public override string ToString()
+    {
+        return $"{Name}, Size {Size}, {Color}";
+    }
+
     private void ClearCachedTypeface()
     {
         CachedTypeface = null;
