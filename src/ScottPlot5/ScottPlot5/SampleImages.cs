@@ -37,7 +37,7 @@ public class SampleImages
 
         // purple upper background
         fillStyle.Color = Color.FromHex("#67217a");
-        Drawing.Fillectangle(canvas, canvasRect, paint, fillStyle);
+        Drawing.FillRectangle(canvas, canvasRect, paint, fillStyle);
 
         // pink lower background
         Pixel[] pointsLowerBackground =
