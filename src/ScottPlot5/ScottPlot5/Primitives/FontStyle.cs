@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -81,4 +79,14 @@ public class FontStyle
         SKFontStyle skfs = new(weight, width, slant);
         return SKTypeface.FromFamilyName(font, skfs);
     }
+
+    /// <summary>
+    /// Use the characters in <paramref name="text"/> to determine an installed 
+    /// system font most likely to support this character set.
+    /// </summary>
+    public void SetBestFont(string text)
+    {
+        Name = Fonts.Detect(text);
+    }
+
 }
