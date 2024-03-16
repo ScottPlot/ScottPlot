@@ -42,6 +42,7 @@ _Not yet on NuGet..._
 * Ticks: Improve performance by reducing the number of string measurements (#3468) @drolevar
 * Plot: `GetCoordinateRect()` now returns dimensions that respect `ScaleFactor` (#3471) @MCF
 * Label: Added `Measure()` overloads to facilitate measuring arbitrary strings without modifying the label text (#3474, #3473) @aespitia
+* Layout: Improved positioning of text for bottom tick labels with large font (#3436) @edwwsw
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
