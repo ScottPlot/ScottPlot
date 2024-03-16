@@ -29,22 +29,44 @@ partial class Form1
     private void InitializeComponent()
     {
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        button1 = new Button();
+        button2 = new Button();
         SuspendLayout();
         // 
         // formsPlot1
         // 
+        formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         formsPlot1.DisplayScale = 1F;
-        formsPlot1.Dock = DockStyle.Fill;
-        formsPlot1.Location = new Point(0, 0);
+        formsPlot1.Location = new Point(12, 41);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(800, 450);
+        formsPlot1.Size = new Size(776, 397);
         formsPlot1.TabIndex = 0;
+        // 
+        // button1
+        // 
+        button1.Location = new Point(12, 12);
+        button1.Name = "button1";
+        button1.Size = new Size(75, 23);
+        button1.TabIndex = 1;
+        button1.Text = "button1";
+        button1.UseVisualStyleBackColor = true;
+        // 
+        // button2
+        // 
+        button2.Location = new Point(93, 12);
+        button2.Name = "button2";
+        button2.Size = new Size(75, 23);
+        button2.TabIndex = 2;
+        button2.Text = "button2";
+        button2.UseVisualStyleBackColor = true;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(800, 450);
+        Controls.Add(button2);
+        Controls.Add(button1);
         Controls.Add(formsPlot1);
         Name = "Form1";
         StartPosition = FormStartPosition.CenterScreen;
@@ -55,4 +77,6 @@ partial class Form1
     #endregion
 
     private ScottPlot.WinForms.FormsPlot formsPlot1;
+    private Button button1;
+    private Button button2;
 }

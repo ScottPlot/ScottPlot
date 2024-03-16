@@ -56,13 +56,7 @@ public static class Drawing
         return (maxText, maxWidth);
     }
 
-    public static (string text, PixelLength width) MeasureHighestString(string[] strings)
-    {
-        using SKPaint paint = new();
-        return MeasureHighestString(strings, paint);
-    }
-
-    public static (string text, PixelLength width) MeasureHighestString(string[] strings, SKPaint paint)
+    public static (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
     {
         float maxHeight = 0;
         string maxText = string.Empty;
