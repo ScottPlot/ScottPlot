@@ -186,12 +186,6 @@ public class Legend(Plot plot)
 
     private SizedLegendItem[] GetSizedLegendItems(IEnumerable<LegendItem> items, SKPaint paint)
     {
-
-        foreach (var item in items)
-        {
-            Console.WriteLine($"GetSizedLegendItems: {item.CustomFontStyle}");
-        }
-
         List<SizedLegendItem> sizedItems = new();
 
         foreach (LegendItem item in items)
@@ -264,11 +258,6 @@ public class Legend(Plot plot)
     private void RenderLegend(SKCanvas canvas, LegendPack lp)
     {
         using SKPaint paint = new();
-
-        foreach (var item in lp.SizedItems)
-        {
-            Console.WriteLine($"RenderLegend: {item.Item.CustomFontStyle}");
-        }
 
         // render the legend panel
         Drawing.Fillectangle(canvas, lp.LegendShadowRect, ShadowFill.Color);
