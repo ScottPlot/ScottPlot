@@ -92,7 +92,7 @@ public class Interaction : IPlotInteraction
     {
         bool lockY = Inputs.ShouldLockY(keys);
         bool lockX = Inputs.ShouldLockX(keys);
-        LockedAxes locks = new(lockX, LockY);
+        LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
 
