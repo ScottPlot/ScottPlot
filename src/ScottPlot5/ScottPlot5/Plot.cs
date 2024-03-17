@@ -435,7 +435,16 @@ public class Plot : IDisposable
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void ShowLegend(Alignment location = Alignment.LowerRight)
+    public void ShowLegend()
+    {
+        Legend.IsVisible = true;
+    }
+
+    /// <summary>
+    /// Helper method for setting visibility of the <see cref="Legend"/>
+    /// and setting <see cref="Legend.Location"/> to the provided one.
+    /// </summary>
+    public void ShowLegend(Alignment location)
     {
         Legend.IsVisible = true;
         Legend.Location = location;

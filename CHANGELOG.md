@@ -1,3 +1,7 @@
+## ScottPlot 5.0.23
+_Not yet on NuGet..._
+* Plot: Added `ShowLegend()` overload that does not override the current `Orientation` (#3450) @aespitia
+
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
 * Rendering: Added additional options for gradient fills (#3324) @KroMignon
