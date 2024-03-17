@@ -281,7 +281,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     {
         var (lastPointPosition, lastPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
-        if (lastPointIndex <= MaximumIndex)
+        if (lastPointPosition <= MaximumIndex)
         {
             float afterX = axes.GetPixelX(Ys[lastPointIndex] + XOffset);
             float afterY = axes.GetPixelY(Xs[lastPointIndex] + YOffset);
