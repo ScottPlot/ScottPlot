@@ -1,5 +1,5 @@
 ## ScottPlot 5.0.22
-_Not yet on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
 * Rendering: Added additional options for gradient fills (#3324) @KroMignon
 * Plot: Improve `GetPixel()` behavior when a custom `ScaleFactor` is in use (#3327) @MCF
 * Fonts: Improve behavior of cached typefaces (#3334, #3335) @Milkitic
@@ -52,7 +52,7 @@ _Not yet on NuGet..._
 * Pie: Fixed issue were pie charts may have duplicate legends (#3445)
 
 ## ScottPlot 4.1.72
-_Not yet on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
 * DataLogger: Improve support for multi-axis plots (#3411) @drolevar
 
 ## ScottPlot 5.0.21
