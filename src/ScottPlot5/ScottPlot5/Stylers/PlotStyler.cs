@@ -17,16 +17,8 @@ public class PlotStyler(Plot plot)
     /// <summary>
     /// Apply a single color to all components of each axis (label, tick labels, tick marks, and frame)
     /// </summary>
-    [Obsolete("Call Plot.Axes.SetColor()")]
-    public void ColorAxes(Color color)
-    {
-        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
-        {
-            axis.Color(color);
-        }
-
-        Plot.Axes.Title.Label.ForeColor = color;
-    }
+    [Obsolete("This method is deprecated. Call Plot.Axes.Color() instead.", true)]
+    public void ColorAxes(Color color) { }
 
     [Obsolete("Reference Plot.Legend properties directly.", true)]
     public void ColorLegend(Color background, Color foreground, Color border)
@@ -107,7 +99,7 @@ public class PlotStyler(Plot plot)
     {
         Plot.Add.Palette = new Palettes.Penumbra();
 
-        ColorAxes(Color.FromHex("#d7d7d7"));
+        Plot.Axes.Color(Color.FromHex("#d7d7d7"));
 
         Plot.Grid.LineColor = Color.FromHex("#404040");
         Plot.FigureBackground.Color = Color.FromHex("#181818");

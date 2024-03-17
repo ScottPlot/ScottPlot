@@ -116,6 +116,19 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Apply a single color to the label, tick labels, tick marks, and frame of all axes
+    /// </summary>
+    public void Color(Color color)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.Color(color);
+        }
+
+        Plot.Axes.Title.Label.ForeColor = color;
+    }
+
+    /// <summary>
     /// Remove all axes that lie on the given edge.
     /// </summary>
     public void Remove(Edge edge)

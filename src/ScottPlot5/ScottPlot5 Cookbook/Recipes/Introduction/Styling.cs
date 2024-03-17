@@ -30,7 +30,7 @@ public class Styling : ICategory
             myPlot.DataBackground.Color = Color.FromHex("#0b3049");
 
             // the Style object contains helper methods to style many items at once
-            myPlot.Style.ColorAxes(Color.FromHex("#a0acb5"));
+            myPlot.Axes.Color(Color.FromHex("#a0acb5"));
         }
     }
 
@@ -222,7 +222,7 @@ public class Styling : ICategory
             myPlot.ShowLegend();
 
             // change figure colors
-            myPlot.Style.ColorAxes(Color.FromHex("#d7d7d7"));
+            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
             myPlot.Grid.LineColor = Color.FromHex("#404040");
             myPlot.FigureBackground.Color = Color.FromHex("#181818");
             myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
