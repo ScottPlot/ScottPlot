@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Grid: Allow axis-specific grid line customization (#3291, #3293) @bjschwarz, @PaxITIS
 * Style: `Plot.Style.ColorLegend()` is deprecated. Access `Plot.Legend` properties directly as seen in the cookbook.
 * Style: `Plot.Style.ColorAxes()` is deprecated. Call `Plot.Axes.Color()` instead.
+* Style: `Plot.Style.AxisFrame()` is deprecated. Call `Plot.Axes.Frame()` overloads instead.
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_

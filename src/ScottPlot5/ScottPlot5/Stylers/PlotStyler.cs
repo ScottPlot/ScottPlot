@@ -28,16 +28,8 @@ public class PlotStyler(Plot plot)
         Plot.Legend.OutlineStyle.Color = border;
     }
 
-    /// <summary>
-    /// Set frame thickness for each side of the plot
-    /// </summary>
-    public void AxisFrame(float left, float right, float bottom, float top)
-    {
-        Plot.Axes.Left.FrameLineStyle.Width = left;
-        Plot.Axes.Right.FrameLineStyle.Width = right;
-        Plot.Axes.Bottom.FrameLineStyle.Width = bottom;
-        Plot.Axes.Top.FrameLineStyle.Width = top;
-    }
+    [Obsolete("This method is deprecated. Call Plot.Axes.Frame() methods instead.", true)]
+    public void AxisFrame(float left, float right, float bottom, float top) { }
 
     /// <summary>
     /// Apply the given font name to all existing plot objects.

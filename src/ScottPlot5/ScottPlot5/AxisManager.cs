@@ -129,6 +129,39 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Set visibility of the frame on every axis
+    /// </summary>
+    public void Frame(bool enable)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.IsVisible = enable;
+        }
+    }
+
+    /// <summary>
+    /// Set thickness of the frame on every axis
+    /// </summary>
+    public void FrameWidth(float width)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Width = width;
+        }
+    }
+
+    /// <summary>
+    /// Set color of the frame on every axis
+    /// </summary>
+    public void FrameColor(Color color)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Color = color;
+        }
+    }
+
+    /// <summary>
     /// Remove all axes that lie on the given edge.
     /// </summary>
     public void Remove(Edge edge)
