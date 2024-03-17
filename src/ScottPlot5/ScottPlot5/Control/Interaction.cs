@@ -170,6 +170,8 @@ public class Interaction : IPlotInteraction
 
     public virtual void MouseWheelVertical(Pixel pixel, float delta)
     {
+        if (IsZoomingRectangle) return;
+
         MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
 
         if (Inputs.ZoomInWheelDirection.HasValue && Inputs.ZoomInWheelDirection == direction)
