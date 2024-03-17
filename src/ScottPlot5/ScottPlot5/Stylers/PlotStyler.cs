@@ -28,7 +28,7 @@ public class PlotStyler(Plot plot)
         Plot.Axes.Title.Label.ForeColor = color;
     }
 
-    [Obsolete("Reference Plot.Legend properties directly.")]
+    [Obsolete("Reference Plot.Legend properties directly.", true)]
     public void ColorLegend(Color background, Color foreground, Color border)
     {
         Plot.Legend.BackgroundFill.Color = background;
@@ -112,9 +112,9 @@ public class PlotStyler(Plot plot)
         Plot.Grid.LineColor = Color.FromHex("#404040");
         Plot.FigureBackground.Color = Color.FromHex("#181818");
         Plot.DataBackground.Color = Color.FromHex("#1f1f1f");
-        ColorLegend(
-            background: Color.FromHex("#404040"),
-            foreground: Color.FromHex("#d7d7d7"),
-            border: Color.FromHex("#d7d7d7"));
+
+        Plot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
+        Plot.Legend.Font.Color = Color.FromHex("#d7d7d7");
+        Plot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
     }
 }
