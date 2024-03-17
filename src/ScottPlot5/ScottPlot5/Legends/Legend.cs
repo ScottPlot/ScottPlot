@@ -101,15 +101,9 @@ public class Legend(Plot plot)
 
     private LegendPack GetLegendPack(int maxWidth, int maxHeight)
     {
-        LegendItem[] items = GetItems();
-        if (items.Length == 0)
-            return null!;
-
         using SKPaint paint = new();
+        LegendItem[] items = GetItems();
         SizedLegendItem[] sizedItems = GetSizedLegendItems(paint, items);
-        if (sizedItems.Length == 0)
-            return null;
-
         PixelSize legendSize = GetLegendSize(sizedItems, maxWidth: maxWidth, maxHeight: maxHeight, withOffset: true);
         PixelRect legendRect = new(0, legendSize.Width, legendSize.Height, 0);
         Pixel offset = Pixel.Zero;
