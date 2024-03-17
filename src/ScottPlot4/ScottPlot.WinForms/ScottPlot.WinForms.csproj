@@ -6,9 +6,9 @@
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.71</Version>
-        <AssemblyVersion>4.1.71.0</AssemblyVersion>
-        <FileVersion>4.1.71.0</FileVersion>
+        <Version>4.1.72</Version>
+        <AssemblyVersion>4.1.72.0</AssemblyVersion>
+        <FileVersion>4.1.72.0</FileVersion>
 
         <AssemblyName>ScottPlot.WinForms</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>
