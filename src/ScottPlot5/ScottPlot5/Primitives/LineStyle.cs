@@ -14,6 +14,18 @@ public class LineStyle
     public bool AntiAlias { get; set; } = true;
     public bool CanBeRendered => IsVisible && Width > 0 && Color.Alpha > 0;
 
+    public static LineStyle DefaultMajorStyle => new()
+    {
+        Width = 1,
+        Color = Colors.Black.WithOpacity(.1)
+    };
+
+    public static LineStyle DefaultMinorStyle => new()
+    {
+        Width = 0,
+        Color = Colors.Black.WithOpacity(.05)
+    };
+
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
     {
         if (CanBeRendered == false) return;

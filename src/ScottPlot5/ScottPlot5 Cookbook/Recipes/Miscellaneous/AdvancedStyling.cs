@@ -49,7 +49,7 @@ public class AdvancedStyling : ICategory
             myPlot.FigureBackground.Image = bgImage;
 
             // Color the axes and data so they stand out against the dark background
-            myPlot.Style.ColorAxes(Colors.White);
+            myPlot.Axes.Color(Colors.White);
             sig1.Color = sig1.Color.Lighten(.2);
             sig2.Color = sig2.Color.Lighten(.2);
             sig1.LineWidth = 3;
