@@ -34,11 +34,9 @@ public class CustomizingGrids : ICategory
             myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
             myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
 
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-
-            grid.MajorLineStyle.Color = Colors.Green.WithOpacity(.5);
-            grid.MinorLineStyle.Color = Colors.Green.WithOpacity(.1);
-            grid.MinorLineStyle.Width = 1;
+            myPlot.Grid.MajorLineStyle.Color = Colors.Green.WithOpacity(.5);
+            myPlot.Grid.MinorLineStyle.Color = Colors.Green.WithOpacity(.1);
+            myPlot.Grid.MinorLineStyle.Width = 1;
         }
     }
 
@@ -54,10 +52,9 @@ public class CustomizingGrids : ICategory
             var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
             sig.LineWidth = 10;
 
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Width = 3;
-            grid.MajorLineStyle.Color = Colors.WhiteSmoke;
-            grid.IsBeneathPlottables = false;
+            myPlot.Grid.MajorLineStyle.Width = 3;
+            myPlot.Grid.MajorLineStyle.Color = Colors.WhiteSmoke;
+            myPlot.Grid.IsBeneathPlottables = false;
         }
     }
 }

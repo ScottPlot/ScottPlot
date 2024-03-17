@@ -15,7 +15,7 @@ internal class SignalTests
 
         ScottPlot.Plot plt = new();
         plt.Add.Signal(data);
-        plt.Axes.Grids.Clear();
+        plt.HideGrid();
         plt.SaveTestImage();
     }
 
@@ -31,7 +31,7 @@ internal class SignalTests
 
         ScottPlot.Plot plt = new();
         plt.Add.Signal(data);
-        plt.Axes.Grids.Clear();
+        plt.HideGrid();
         plt.SaveTestImage();
     }
 

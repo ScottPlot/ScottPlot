@@ -11,18 +11,13 @@ public class PlotStyler(Plot plot)
 {
     private readonly Plot Plot = plot;
 
-    /// <summary>
-    /// Apply background colors to the figure and data areas
-    /// </summary>
-    public void Background(Color figure, Color data)
-    {
-        Plot.FigureBackground.Color = figure;
-        Plot.DataBackground.Color = data;
-    }
+    [Obsolete("This method is deprecated. Assign Plot.FigureBackground.Color instead.", true)]
+    public void Background(Color figure, Color data) { }
 
     /// <summary>
     /// Apply a single color to all components of each axis (label, tick labels, tick marks, and frame)
     /// </summary>
+    [Obsolete("Call Plot.Axes.SetColor()")]
     public void ColorAxes(Color color)
     {
         foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
@@ -33,29 +28,7 @@ public class PlotStyler(Plot plot)
         Plot.Axes.Title.Label.ForeColor = color;
     }
 
-    /// <summary>
-    /// Apply a color to all currently visible grids
-    /// </summary>
-    public void ColorGrids(Color majorColor)
-    {
-        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
-        {
-            grid.MajorLineStyle.Color = majorColor;
-        }
-    }
-
-    /// <summary>
-    /// Apply a color to all currently visible grids
-    /// </summary>
-    public void ColorGrids(Color majorColor, Color minorColor)
-    {
-        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
-        {
-            grid.MajorLineStyle.Color = majorColor;
-            grid.MinorLineStyle.Color = minorColor;
-        }
-    }
-
+    [Obsolete("Reference Plot.Legend properties directly.")]
     public void ColorLegend(Color background, Color foreground, Color border)
     {
         Plot.Legend.BackgroundFill.Color = background;
@@ -135,10 +108,10 @@ public class PlotStyler(Plot plot)
         Plot.Add.Palette = new Palettes.Penumbra();
 
         ColorAxes(Color.FromHex("#d7d7d7"));
-        ColorGrids(Color.FromHex("#404040"));
-        Background(
-            figure: Color.FromHex("#181818"),
-            data: Color.FromHex("#1f1f1f"));
+
+        Plot.Grid.LineColor = Color.FromHex("#404040");
+        Plot.FigureBackground.Color = Color.FromHex("#181818");
+        Plot.DataBackground.Color = Color.FromHex("#1f1f1f");
         ColorLegend(
             background: Color.FromHex("#404040"),
             foreground: Color.FromHex("#d7d7d7"),

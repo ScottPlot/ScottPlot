@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
+using ScottPlot.Grids;
 using ScottPlot.Legends;
 using ScottPlot.Primitives;
 using ScottPlot.Rendering;
@@ -28,6 +29,8 @@ public class Plot : IDisposable
 
     public Legend Legend { get; set; }
 
+    public DefaultGrid Grid => Axes.DefaultGrid;
+
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
     public Plot()
@@ -45,7 +48,6 @@ public class Plot : IDisposable
         DataBackground?.Dispose();
         FigureBackground?.Dispose();
         PlottableList.Clear();
-        Axes.Clear();
     }
 
     #region Pixel/Coordinate Conversion
@@ -375,14 +377,6 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Remove the given grid from the <see cref="Axes"/>.
-    /// </summary>
-    public void Remove(IGrid grid)
-    {
-        Axes.Remove(grid);
-    }
-
-    /// <summary>
     /// Remove all items of a specific type from the <see cref="PlottableList"/>.
     /// </summary>
     public void Remove(Type plotType)
@@ -421,7 +415,7 @@ public class Plot : IDisposable
     /// </summary>
     public void HideGrid()
     {
-        Axes.Grids.ForEach(x => x.IsVisible = false);
+        Axes.AllGrids.ForEach(x => x.IsVisible = false);
     }
 
     /// <summary>
@@ -429,7 +423,7 @@ public class Plot : IDisposable
     /// </summary>
     public void ShowGrid()
     {
-        Axes.Grids.ForEach(x => x.IsVisible = true);
+        Axes.AllGrids.ForEach(x => x.IsVisible = true);
     }
 
     /// <summary>
@@ -507,18 +501,8 @@ public class Plot : IDisposable
             Axes.Left.Label.FontSize = size.Value;
     }
 
-    /// <summary>
-    /// Return the first default grid in use.
-    /// Throws an exception if no default grids exist.
-    /// </summary>
-    public Grids.DefaultGrid GetDefaultGrid()
-    {
-        IEnumerable<Grids.DefaultGrid> defaultGrids = Axes.Grids.OfType<Grids.DefaultGrid>();
-        if (defaultGrids.Any())
-            return defaultGrids.First();
-        else
-            throw new InvalidOperationException("The plot has no default grids");
-    }
+    [Obsolete("This method is deprecated. Access Plot.Grid instead.", true)]
+    public static DefaultGrid GetDefaultGrid() => null!;
 
     #endregion
 

@@ -13,6 +13,19 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
     public IXAxis XAxis { get; set; } = xAxis;
     public IYAxis YAxis { get; set; } = yAxis;
 
+    /// <summary>
+    /// Controls color for <see cref="MajorLineStyle"/> and <see cref="MinorLineStyle"/>
+    /// </summary>
+    public Color LineColor
+    {
+        get => MajorLineStyle.Color;
+        set
+        {
+            MajorLineStyle.Color = value;
+            MinorLineStyle.Color = value;
+        }
+    }
+
     public void Render(RenderPack rp)
     {
         if (!IsVisible)

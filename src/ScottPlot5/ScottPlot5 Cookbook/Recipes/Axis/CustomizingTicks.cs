@@ -168,8 +168,7 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
 
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Width = 1; // TODO: demonstrate how to disable just vertical or horizontal grid lines
+            myPlot.Grid.MajorLineStyle.Width = 1; // TODO: demonstrate how to disable just vertical or horizontal grid lines
         }
     }
 
@@ -242,10 +241,9 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Left.TickGenerator = tickGen;
 
             // show grid lines for minor ticks
-            var grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Color = Colors.Black.WithOpacity(.15);
-            grid.MinorLineStyle.Color = Colors.Black.WithOpacity(.05);
-            grid.MinorLineStyle.Width = 1;
+            myPlot.Grid.MajorLineStyle.Color = Colors.Black.WithOpacity(.15);
+            myPlot.Grid.MinorLineStyle.Color = Colors.Black.WithOpacity(.05);
+            myPlot.Grid.MinorLineStyle.Width = 1;
         }
     }
 }
