@@ -9,5 +9,7 @@ public interface IGrid
     bool IsBeneathPlottables { get; set; }
     IXAxis XAxis { get; set; }
     IYAxis YAxis { get; set; }
+    GridStyle XAxisStyle { get; set; }
+    GridStyle YAxisStyle { get; set; }
     void Render(RenderPack rp);
 }

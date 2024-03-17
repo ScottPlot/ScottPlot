@@ -25,7 +25,7 @@ public class Styling : ICategory
             myPlot.Axes.Title.Label.Text = "Plot Title";
 
             // some items must be styled directly
-            myPlot.Grid.LineColor = Color.FromHex("#0e3d54");
+            myPlot.Grid.MajorLineColor = Color.FromHex("#0e3d54");
             myPlot.FigureBackground.Color = Color.FromHex("#07263b");
             myPlot.DataBackground.Color = Color.FromHex("#0b3049");
 
@@ -223,7 +223,7 @@ public class Styling : ICategory
 
             // change figure colors
             myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
-            myPlot.Grid.LineColor = Color.FromHex("#404040");
+            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
             myPlot.FigureBackground.Color = Color.FromHex("#181818");
             myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
             myPlot.Legend.BackgroundFill.Color = Color.FromHex("#404040");

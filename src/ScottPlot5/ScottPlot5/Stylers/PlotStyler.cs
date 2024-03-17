@@ -34,7 +34,7 @@ public class PlotStyler(Plot plot)
 
         Plot.Axes.Color(Color.FromHex("#d7d7d7"));
 
-        Plot.Grid.LineColor = Color.FromHex("#404040");
+        Plot.Grid.MajorLineColor = Color.FromHex("#404040");
         Plot.FigureBackground.Color = Color.FromHex("#181818");
         Plot.DataBackground.Color = Color.FromHex("#1f1f1f");
 

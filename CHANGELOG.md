@@ -2,11 +2,11 @@
 _Not yet on NuGet..._
 * Plot: Added `ShowLegend()` overload that does not override the current `Orientation` (#3450) @aespitia
 * Grid: The standard grid can be accessed via `Plot.Grid` instead of `GetDefaultGrid()`
-* Grid: Allow axis-specific grid line customization (#3291, #3293) @bjschwarz, @PaxITIS
 * Style: `Plot.Style.ColorLegend()` is deprecated. Access `Plot.Legend` properties directly as seen in the cookbook.
 * Style: `Plot.Style.ColorAxes()` has moved to `Plot.Axes.Color()`
 * Style: `Plot.Style.AxisFrame()` has moved to `Plot.Axes.Frame()`
 * Style: `Plot.Style.SetBestFonts()` has moved to `Plot.Font.Automatic()`
+* Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz, @PaxITIS
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_

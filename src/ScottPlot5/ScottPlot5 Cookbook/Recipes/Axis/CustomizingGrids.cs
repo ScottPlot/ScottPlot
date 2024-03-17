@@ -31,12 +31,32 @@ public class CustomizingGrids : ICategory
         [Test]
         public override void Execute()
         {
-            myPlot.Add.Signal(ScottPlot.Generate.Sin(51));
-            myPlot.Add.Signal(ScottPlot.Generate.Cos(51));
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.Grid.MajorLineStyle.Color = Colors.Green.WithOpacity(.5);
-            myPlot.Grid.MinorLineStyle.Color = Colors.Green.WithOpacity(.1);
-            myPlot.Grid.MinorLineStyle.Width = 1;
+            myPlot.Grid.MajorLineColor = Colors.Green.WithOpacity(.5);
+            myPlot.Grid.MinorLineColor = Colors.Green.WithOpacity(.1);
+            myPlot.Grid.MinorLineWidth = 1;
+        }
+    }
+
+    public class GridCustomAxis : RecipeBase
+    {
+        public override string Name => "Axis Specific Grid Customization";
+        public override string Description => "Axis-specific styling properties are available " +
+            "for extensive axis-specific customization of grid line styling.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            myPlot.Grid.XAxisStyle.MajorLineStyle.Color = Colors.Magenta.WithAlpha(.1);
+            myPlot.Grid.XAxisStyle.MajorLineStyle.Width = 5;
+
+            myPlot.Grid.YAxisStyle.MajorLineStyle.Color = Colors.Green.WithAlpha(.3);
+            myPlot.Grid.YAxisStyle.MajorLineStyle.Width = 2;
         }
     }
 
@@ -52,8 +72,8 @@ public class CustomizingGrids : ICategory
             var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
             sig.LineWidth = 10;
 
-            myPlot.Grid.MajorLineStyle.Width = 3;
-            myPlot.Grid.MajorLineStyle.Color = Colors.WhiteSmoke;
+            myPlot.Grid.MajorLineWidth = 3;
+            myPlot.Grid.MajorLineColor = Colors.WhiteSmoke;
             myPlot.Grid.IsBeneathPlottables = false;
         }
     }
