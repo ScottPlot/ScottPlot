@@ -60,15 +60,7 @@ public class PlotStyler(Plot plot)
             axis.TickLabelStyle.FontName = fontName;
         }
 
-        // TODO: also modify tick labels
         // TODO: also modify plotted text
-    }
-
-    [Obsolete("use SetBestFonts()", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public bool SetFontFromText(string text)
-    {
-        throw new InvalidOperationException();
     }
 
     /// <summary>
