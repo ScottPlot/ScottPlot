@@ -10,18 +10,8 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
 
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public IXAxis XAxis { get; private set; } = xAxis;
-    public IYAxis YAxis { get; private set; } = yAxis;
-
-    public void Replace(IXAxis xAxis)
-    {
-        XAxis = xAxis;
-    }
-
-    public void Replace(IYAxis yAxis)
-    {
-        YAxis = yAxis;
-    }
+    public IXAxis XAxis { get; set; } = xAxis;
+    public IYAxis YAxis { get; set; } = yAxis;
 
     public void Render(RenderPack rp)
     {

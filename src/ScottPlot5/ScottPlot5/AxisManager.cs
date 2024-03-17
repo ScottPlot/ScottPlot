@@ -149,24 +149,6 @@ public class AxisManager
         Grids.Remove(grid);
     }
 
-    [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
-    public void DateTimeTicks(Edge edge)
-    {
-        Remove(edge);
-
-        IXAxis dateAxis = edge switch
-        {
-            Edge.Left => throw new NotImplementedException(), // TODO: support vertical DateTime axes
-            Edge.Right => throw new NotImplementedException(),
-            Edge.Bottom => new DateTimeXAxis(),
-            Edge.Top => throw new NotImplementedException(),
-            _ => throw new NotImplementedException(),
-        };
-
-        Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
-    }
-
     /// <summary>
     /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
     /// </summary>
@@ -175,7 +157,7 @@ public class AxisManager
         Plot.Axes.Remove(Edge.Bottom);
         DateTimeXAxis dateAxis = new();
         Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+        Plot.Axes.Grids.ForEach(x => x.XAxis = dateAxis);
         return dateAxis;
     }
 
