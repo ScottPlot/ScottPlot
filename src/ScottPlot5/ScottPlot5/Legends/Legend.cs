@@ -107,6 +107,9 @@ public class Legend(Plot plot)
 
         using SKPaint paint = new();
         SizedLegendItem[] sizedItems = GetSizedLegendItems(paint, items);
+        if (sizedItems.Length == 0)
+            return null;
+
         PixelSize legendSize = GetLegendSize(sizedItems, maxWidth: maxWidth, maxHeight: maxHeight, withOffset: true);
         PixelRect legendRect = new(0, legendSize.Width, legendSize.Height, 0);
         Pixel offset = Pixel.Zero;
@@ -118,12 +121,14 @@ public class Legend(Plot plot)
         if (!IsVisible)
             return null;
 
-        LegendItem[] allItems = GetItems();
-        if (allItems.Length == 0)
+        LegendItem[] items = GetItems();
+        if (items.Length == 0)
             return null;
 
         using SKPaint paint = new();
-        SizedLegendItem[] sizedItems = GetSizedLegendItems(paint, allItems);
+        SizedLegendItem[] sizedItems = GetSizedLegendItems(paint, items);
+        if (sizedItems.Length == 0)
+            return null;
 
         PixelSize legendSize = GetLegendSize(sizedItems,
             maxWidth: dataRect.Width - ShadowOffset * 2 - Margin.Horizontal,
@@ -136,12 +141,10 @@ public class Legend(Plot plot)
         return new LegendPack(sizedItems, legendRect, legendShadowRect, offset);
     }
 
-    public LegendItem[] GetItems(bool visibleOnly = true)
+    public LegendItem[] GetItems()
     {
         LegendItem[] items = Plot.PlottableList
             .SelectMany(x => x.LegendItems)
-            .Where(x => !visibleOnly || x.IsVisible)
-            .Where(x => !visibleOnly || !string.IsNullOrEmpty(x.Label))
             .Concat(ManualItems)
             .ToArray();
 
@@ -176,9 +179,13 @@ public class Legend(Plot plot)
 
     private SizedLegendItem[] GetSizedLegendItems(SKPaint paint, IEnumerable<LegendItem> allItems)
     {
-        LegendItem[] items = GetAllLegendItems(allItems).Where(x => x.IsVisible).ToArray();
-        if (!items.Any())
-            return Array.Empty<SizedLegendItem>();
+        LegendItem[] items = GetAllLegendItems(allItems)
+            .Where(x => x.IsVisible)
+            .Where(x => !string.IsNullOrWhiteSpace(x.Label))
+            .ToArray();
+
+        if (items.Length == 0)
+            return [];
 
         // measure all items to determine dimensions of the legend
         return GetSizedLegendItems(items, paint);
