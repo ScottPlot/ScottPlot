@@ -36,7 +36,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // create an array of DateTimes one hour apart
-            int numberOfHours = 72;
+            int numberOfHours = 24;
             DateTime[] dateTimes = new DateTime[numberOfHours];
             DateTime startDateTime = new(2024, 1, 1);
             TimeSpan deltaTimeSpan = TimeSpan.FromHours(1);

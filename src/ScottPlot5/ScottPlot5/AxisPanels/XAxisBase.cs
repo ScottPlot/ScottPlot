@@ -19,7 +19,9 @@ public abstract class XAxisBase : AxisBase, IAxis
         float tickHeight = MajorTickStyle.Length;
 
         TickLabelStyle.ApplyToPaint(paint);
-        float tickLabelHeight = paint.FontSpacing;
+        float lineHeight = paint.FontSpacing;
+        int numberOfLines = TickGenerator.Ticks.Select(x => x.Label).Select(x => x.Split('\n').Length).FirstOrDefault();
+        float tickLabelHeight = lineHeight * numberOfLines;
 
         float axisLabelHeight = 0;
         if (Label.IsVisible && !string.IsNullOrWhiteSpace(Label.Text))
