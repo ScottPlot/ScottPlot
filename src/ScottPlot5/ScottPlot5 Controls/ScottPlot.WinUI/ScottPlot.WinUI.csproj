@@ -21,6 +21,7 @@
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
         <IncludeSource>true</IncludeSource>
