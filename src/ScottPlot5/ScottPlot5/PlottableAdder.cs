@@ -448,7 +448,7 @@ public class PlottableAdder(Plot plot)
             slices.Add(slice);
         }
 
-        var pie = Pie(slices);
+        Pie pie = new(slices);
         Plot.PlottableList.Add(pie);
         return pie;
     }

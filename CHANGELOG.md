@@ -49,6 +49,7 @@ _Not yet on NuGet..._
 * NuGet: Package now includes native Linux assets regardless of original build target (#3481, #3357)
 * Bar: Added `Label` property to allow values to be displayed above bars (#3477) @DouglasWatt
 * Axes: Added `Plot.Axes.SquareUnits()` helper method for adding an axis rule that enforces equal axis scales (#3451)
+* Pie: Fixed issue were pie charts may have duplicate legends (#3445)
 
 ## ScottPlot 4.1.72
 _Not yet on NuGet..._
