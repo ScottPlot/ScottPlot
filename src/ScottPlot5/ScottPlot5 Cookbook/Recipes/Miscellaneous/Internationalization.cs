@@ -50,7 +50,7 @@ public class Internationalization : ICategory
             myPlot.YLabel("試験"); // Japanese
             myPlot.XLabel("테스트"); // Korean
 
-            myPlot.Style.SetBestFonts();
+            myPlot.Font.Automatic(); // set font for each item based on its content
         }
     }
 }

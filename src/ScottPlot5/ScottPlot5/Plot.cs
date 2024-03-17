@@ -5,6 +5,7 @@ using ScottPlot.Legends;
 using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ScottPlot;
 
@@ -26,6 +27,7 @@ public class Plot : IDisposable
     public AxisManager Axes { get; }
 
     public PlotStyler Style { get; }
+    public FontStyler Font { get; }
 
     public Legend Legend { get; set; }
 
@@ -38,6 +40,7 @@ public class Plot : IDisposable
         Axes = new(this);
         Add = new(this);
         Style = new(this);
+        Font = new(this);
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
