@@ -63,7 +63,10 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.MinorTickStyle.Length = 5;
             myPlot.Axes.Bottom.MinorTickStyle.Width = 0.5f;
             myPlot.Axes.Bottom.MinorTickStyle.Color = Colors.Green;
-            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.LightBlue;
+            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.Blue;
+            myPlot.Axes.Bottom.FrameLineStyle.Width = 3;
+
+            myPlot.Axes.Right.FrameLineStyle.Width = 0;
         }
     }
 
