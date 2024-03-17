@@ -38,4 +38,24 @@ public class AdvancedAxis : ICategory
             myPlot.Axes.AutoScaler.InvertedY = true;
         }
     }
+
+    public class SquareAxisUnits : RecipeBase
+    {
+        public override string Name => "SquareAxisUnits";
+        public override string Description => "Axis rules can be put in place which " +
+            "force the vertical scale (units per pixel) to match the horizontal scale " +
+            "so circles always appear as circles and not stretched ellipses.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Circle(0, 0, 10);
+
+            // force pixels to have a 1:1 scale ratio
+            myPlot.Axes.SquareUnits();
+
+            // even if you try to "stretch" the axis, it will adjust the axis limits automatically
+            myPlot.Axes.SetLimits(-10, 10, -20, 20);
+        }
+    }
 }

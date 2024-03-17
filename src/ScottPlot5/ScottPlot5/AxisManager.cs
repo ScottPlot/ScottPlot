@@ -561,4 +561,13 @@ public class AxisManager
         AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
         AutoScale();
     }
+    /// <summary>
+    /// Force pixels to have a 1:1 scale ratio.
+    /// This allows circles to always appear as circles and not stretched ellipses.
+    /// </summary>
+    public void SquareUnits()
+    {
+        AxisRules.SquareZoomOut rule = new(Bottom, Left);
+        Rules.Add(rule);
+    }
 }
