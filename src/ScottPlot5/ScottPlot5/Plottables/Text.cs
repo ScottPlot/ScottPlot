@@ -70,6 +70,8 @@ public class Text : IPlottable
     public void Render(RenderPack rp)
     {
         Pixel pixelLocation = Axes.GetPixel(Location);
+        pixelLocation.X += PixelOffset.Width;
+        pixelLocation.Y += PixelOffset.Height;
         Label.Render(rp.Canvas, pixelLocation);
     }
 }
