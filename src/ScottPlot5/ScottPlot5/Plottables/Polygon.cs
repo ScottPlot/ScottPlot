@@ -72,7 +72,7 @@ public class Polygon : IPlottable
         foreach (var coord in Coordinates)
         {
             if (coord.X > xMax) xMax = coord.X;
-            if (coord.X < xMin) xMax = coord.X;
+            if (coord.X < xMin) xMin = coord.X;
             if (coord.Y > yMax) yMax = coord.Y;
             if (coord.Y < yMin) yMin = coord.Y;
         }
