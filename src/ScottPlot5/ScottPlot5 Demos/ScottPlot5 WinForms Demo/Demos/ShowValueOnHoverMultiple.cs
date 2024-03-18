@@ -36,7 +36,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
         MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
 
-        MyMarker = formsPlot1.Plot.Add.Marker(0, 0, shape:MarkerShape.OpenCircle);
+        MyMarker = formsPlot1.Plot.Add.Marker(0, 0, MarkerShape.OpenCircle);
 
         MyText = formsPlot1.Plot.Add.Text("", 0, 0);
         MyText.Label.Alignment = Alignment.LowerLeft;
