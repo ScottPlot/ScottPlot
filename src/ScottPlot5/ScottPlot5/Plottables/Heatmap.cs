@@ -249,7 +249,7 @@ public class Heatmap : IPlottable, IHasColorAxis
             for (int x = 0; x < Width; x++)
             {
                 int xIndex = FlipX ? (Width - 1 - x) : x;
-                if (Double.IsNaN(Intensities[y,xIndex]))
+                if (Double.IsNaN(Intensities[y, xIndex]))
                 {
                     argb[rowOffset + x] = transparentBlack;
                     continue;
