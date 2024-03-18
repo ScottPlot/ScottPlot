@@ -241,12 +241,19 @@ public class Heatmap : IPlottable, IHasColorAxis
         bool FlipY = FlipVertically ^ ExtentOrDefault.IsInvertedY;
         bool FlipX = FlipHorizontally ^ ExtentOrDefault.IsInvertedX;
 
+        uint transparentBlack = 0x00000000;
+
         for (int y = 0; y < Height; y++)
         {
             int rowOffset = FlipY ? (Height - 1 - y) * Width : y * Width;
             for (int x = 0; x < Width; x++)
             {
                 int xIndex = FlipX ? (Width - 1 - x) : x;
+                if (Double.IsNaN(Intensities[y,xIndex]))
+                {
+                    argb[rowOffset + x] = transparentBlack;
+                    continue;
+                }
                 var colorWithoutAlpha = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
                 var alpha = AlphaMap[y, xIndex];
                 // Extract the RGB components
