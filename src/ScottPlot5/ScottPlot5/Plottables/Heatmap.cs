@@ -157,6 +157,39 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// </summary>
     public readonly double[,] Intensities;
 
+    private byte[,] _alphaMap;
+    public byte[,] AlphaMap
+    {
+        get { return _alphaMap; }
+        set
+        {
+            if (value.GetLength(0) != Height) throw new Exception("AlphaMap height must match the height of the Intensity map.");
+            if (value.GetLength(1) != Width) throw new Exception("AlphaMap width must match the width of the Intensity map.");
+            _alphaMap = value;
+            Update();
+        }
+    }
+    private byte _globalAlpha;
+    public byte GlobalAlpha
+    {
+        get { return _globalAlpha; }
+        set
+        {
+            _globalAlpha = value;
+            var UpdatedAlphaMap = new byte[Height, Width];
+
+            for (int i = 0; i < Height; i++)
+            {
+                for (int j = 0; j < Width; j++)
+                {
+                    UpdatedAlphaMap[i, j] = value;
+                }
+            }
+            AlphaMap = UpdatedAlphaMap;
+            Update();
+        }
+    }
+
     /// <summary>
     /// Height of the heatmap data (rows)
     /// </summary>
@@ -175,7 +208,19 @@ public class Heatmap : IPlottable, IHasColorAxis
     public Heatmap(double[,] intensities)
     {
         Intensities = intensities;
+        // Create the Alpha array with the same size as Intensities
+        _alphaMap = new byte[Height, Width];
+        GlobalAlpha = (byte)255;
     }
+
+    public Heatmap(double[,] intensities, byte globalAlpha)
+    {
+        Intensities = intensities;
+        // Create the Alpha array with the same size as Intensities
+        _alphaMap = new byte[Height, Width];
+        GlobalAlpha = globalAlpha;
+    }
+
 
     ~Heatmap()
     {
@@ -202,7 +247,18 @@ public class Heatmap : IPlottable, IHasColorAxis
             for (int x = 0; x < Width; x++)
             {
                 int xIndex = FlipX ? (Width - 1 - x) : x;
-                argb[rowOffset + x] = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
+                var colorWithoutAlpha = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
+                var alpha = AlphaMap[y, xIndex];
+                // Extract the RGB components
+                byte Red = (byte)((colorWithoutAlpha >> 16) & 0xFF);
+                byte Green = (byte)((colorWithoutAlpha >> 8) & 0xFF);
+                byte Blue = (byte)(colorWithoutAlpha & 0xFF);
+
+                // Calculate premultiplied RGB components
+                byte premultipliedRed = (byte)((Red * alpha) / 255);
+                byte premultipliedGreen = (byte)((Green * alpha) / 255);
+                byte premultipliedBlue = (byte)((Blue * alpha) / 255);
+                argb[rowOffset + x] = ((uint)alpha << 24) | ((uint)premultipliedRed << 16) | ((uint)premultipliedGreen << 8) | premultipliedBlue;
             }
         }
 
