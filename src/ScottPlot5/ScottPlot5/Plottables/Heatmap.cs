@@ -259,34 +259,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                     continue;
                 }
 
-                // Extract the RGB components
                 Color cellColor = Colormap.GetColor(Intensities[y, xIndex], range);
-                uint cellArgb = cellColor.ARGB;
-                byte Red = (byte)((cellArgb >> 16) & 0xFF);
-                byte Green = (byte)((cellArgb >> 8) & 0xFF);
-                byte Blue = (byte)(cellArgb & 0xFF);
 
-                // Calculate premultiplied RGB components
-
-                // start with the original color
-                byte alpha = cellColor.Alpha;
-
-                // apply the alpha map if it is present
                 if (AlphaMap is not null)
-                    alpha = AlphaMap[y, xIndex];
+                    cellColor = cellColor.WithAlpha(AlphaMap[y, xIndex]);
 
-                // apply global opacity if it has been customized
                 if (Opacity != 1)
-                    alpha = (byte)(alpha * Opacity);
+                    cellColor = cellColor.WithAlpha((byte)(cellColor.Alpha * Opacity));
 
-                byte premultipliedRed = (byte)((Red * alpha) / 255);
-                byte premultipliedGreen = (byte)((Green * alpha) / 255);
-                byte premultipliedBlue = (byte)((Blue * alpha) / 255);
-                argb[rowOffset + x] =
-                    ((uint)alpha << 24) |
-                    ((uint)premultipliedRed << 16) |
-                    ((uint)premultipliedGreen << 8) |
-                    ((uint)premultipliedBlue << 0);
+                argb[rowOffset + x] = cellColor.PremultipliedARGB;
             }
         }
 
