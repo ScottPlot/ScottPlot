@@ -33,11 +33,11 @@ public class Heatmap : ICategory
 
             var hm1 = myPlot.Add.Heatmap(data);
             hm1.Colormap = new ScottPlot.Colormaps.Viridis();
-            hm1.Extent = new(0, 65, 0, 100);
+            hm1.Position = new(0, 65, 0, 100);
 
             var hm2 = myPlot.Add.Heatmap(data);
             hm2.Colormap = new ScottPlot.Colormaps.Viridis().Reversed();
-            hm2.Extent = new(100, 165, 0, 100);
+            hm2.Position = new(100, 165, 0, 100);
         }
     }
 
@@ -75,21 +75,21 @@ public class Heatmap : ICategory
 
             myPlot.Add.Text("default", 0, 1.5);
             var hm1 = myPlot.Add.Heatmap(data);
-            hm1.Extent = new CoordinateRect(0, 1, 0, 1);
+            hm1.Position = new CoordinateRect(0, 1, 0, 1);
 
             myPlot.Add.Text("flip X", 2, 1.5);
             var hm2 = myPlot.Add.Heatmap(data);
-            hm2.Extent = new CoordinateRect(2, 3, 0, 1);
+            hm2.Position = new CoordinateRect(2, 3, 0, 1);
             hm2.FlipHorizontally = true;
 
             myPlot.Add.Text("flip Y", 4, 1.5);
             var hm3 = myPlot.Add.Heatmap(data);
-            hm3.Extent = new CoordinateRect(4, 5, 0, 1);
+            hm3.Position = new CoordinateRect(4, 5, 0, 1);
             hm3.FlipVertically = true;
 
             myPlot.Add.Text("flip X&Y", 6, 1.5);
             var hm4 = myPlot.Add.Heatmap(data);
-            hm4.Extent = new CoordinateRect(6, 7, 0, 1);
+            hm4.Position = new CoordinateRect(6, 7, 0, 1);
             hm4.FlipHorizontally = true;
             hm4.FlipVertically = true;
 
@@ -109,11 +109,11 @@ public class Heatmap : ICategory
 
             myPlot.Add.Text("Smooth = false", 0, 1.1);
             var hm1 = myPlot.Add.Heatmap(data);
-            hm1.Extent = new CoordinateRect(0, 1, 0, 1);
+            hm1.Position = new CoordinateRect(0, 1, 0, 1);
 
             myPlot.Add.Text("Smooth = true", 1.1, 1.1);
             var hm2 = myPlot.Add.Heatmap(data);
-            hm2.Extent = new CoordinateRect(1.1, 2.1, 0, 1);
+            hm2.Position = new CoordinateRect(1.1, 2.1, 0, 1);
             hm2.Smooth = true;
         }
     }
@@ -142,11 +142,11 @@ public class Heatmap : ICategory
 
             // plot the heatmap on top of the line chart
             var hm1 = myPlot.Add.Heatmap(data);
-            hm1.Extent = new(10, 35, -1.5, .5);
+            hm1.Position = new(10, 35, -1.5, .5);
 
             // the NaN transparency color can be customized
             var hm2 = myPlot.Add.Heatmap(data);
-            hm2.Extent = new(40, 55, -.5, .75);
+            hm2.Position = new(40, 55, -.5, .75);
             hm2.NaNCellColor = Colors.Magenta.WithAlpha(.4);
         }
     }
@@ -154,7 +154,7 @@ public class Heatmap : ICategory
     public class HeatmapGlobalTransparency : RecipeBase
     {
         public override string Name => "Global Transparency";
-        public override string Description => "The alpha (transparency) of the entire heatmap can be adjusted.";
+        public override string Description => "The transparency of the entire heatmap can be adjusted.";
 
         [Test]
         public override void Execute()

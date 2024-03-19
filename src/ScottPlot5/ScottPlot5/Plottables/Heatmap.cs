@@ -35,7 +35,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// Note that the actual heatmap area is 1 cell larger than this rectangle.
     /// </summary>
     private CoordinateRect? _extent;
-    public CoordinateRect? Extent
+    public CoordinateRect? Extent // TODO: obsolete this
     {
         get { return _extent; }
         set
@@ -44,6 +44,12 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             Update();
         }
     }
+
+    /// <summary>
+    /// If defined, the this rectangle sets the axis boundaries of heatmap data.
+    /// Note that the actual heatmap area is 1 cell larger than this rectangle.
+    /// </summary>
+    public CoordinateRect? Position { get => Extent; set => Extent = value; }
 
     /// <summary>
     /// This variable controls whether row 0 of the 2D source array is the top or bottom of the heatmap.
