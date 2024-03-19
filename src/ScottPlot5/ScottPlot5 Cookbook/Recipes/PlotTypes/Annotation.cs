@@ -3,8 +3,8 @@
 public class Annotation : ICategory
 {
     public string Chapter => "Plot Types";
-    public string CategoryName => "Arrow";
-    public string CategoryDescription => "Arrows point to a location in coordinate space.";
+    public string CategoryName => "Annotation";
+    public string CategoryDescription => "Annotations are always-visible text labels positioned over the data area.";
 
     public class AnnotationQuickstart : RecipeBase
     {
