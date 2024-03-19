@@ -166,9 +166,45 @@ public class Heatmap : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             // plot the heatmap on top of the line chart
-            var hm1 = myPlot.Add.Heatmap(data);
-            hm1.Extent = new(10, 35, -1.5, .5);
-            hm1.Opacity = 0.5;
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Position = new(10, 35, -1.5, .5);
+            hm.Opacity = 0.5;
+        }
+    }
+
+    public class HeatmapAlphaMap : RecipeBase
+    {
+        public override string Name => "Alpha Map";
+        public override string Description => "An alpha map (a 2d array of byte values) can be used to " +
+            "apply custom transparency to each cell of a heatmap.";
+
+        [Test]
+        public override void Execute()
+        {
+            // data values are translated to color based on the heatmap's colormap
+            double[,] data = SampleData.MonaLisa();
+
+            // an alpha map controls transparency of each cell
+            byte[,] alphaMap = new byte[data.GetLength(0), data.GetLength(1)];
+
+            // fill the alpha map with values from 0 (transparent) to 255 (opaque)
+            for (int y = 0; y < alphaMap.GetLength(0); y++)
+            {
+                for (int x = 0; x < alphaMap.GetLength(1); x++)
+                {
+                    double fractionAcross = (double)x / alphaMap.GetLength(1);
+                    alphaMap[y, x] = (byte)(fractionAcross * 255);
+                }
+            }
+
+            // create a line chart
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // plot the heatmap on top of the line chart
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Position = new(10, 35, -1.5, .5);
+            hm.AlphaMap = alphaMap;
         }
     }
 }
