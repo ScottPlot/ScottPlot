@@ -41,7 +41,7 @@ public readonly struct Color
 
     public override string ToString()
     {
-        return $"Color R={R}, G={G}, B={B}";
+        return $"Color R={R}, G={G}, B={B}, A={A}";
     }
 
     public Color(byte red, byte green, byte blue, byte alpha = 255)
