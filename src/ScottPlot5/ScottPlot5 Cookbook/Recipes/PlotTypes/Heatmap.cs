@@ -117,4 +117,32 @@ public class Heatmap : ICategory
             hm2.Smooth = true;
         }
     }
+
+    public class HeatmapTransparentCells : RecipeBase
+    {
+        public override string Name => "Transparent Cells";
+        public override string Description => "Assign double.NaN to a heatmap cell to make it transparent.";
+
+        [Test]
+        public override void Execute()
+        {
+            // start with 2D data and set some cells to NaN
+            double[,] data = SampleData.MonaLisa();
+            for (int y = 20; y < 80; y++)
+            {
+                for (int x = 20; x < 60; x++)
+                {
+                    data[y, x] = double.NaN;
+                }
+            }
+
+            // create a line chart
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // plot the heatmap on top of the line chart
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Extent = new(10, 40, -1, .5);
+        }
+    }
 }
