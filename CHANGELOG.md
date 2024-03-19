@@ -7,6 +7,12 @@ _Not yet on NuGet..._
 * Style: `Plot.Style.AxisFrame()` has moved to `Plot.Axes.Frame()`
 * Style: `Plot.Style.SetBestFonts()` has moved to `Plot.Font.Automatic()`
 * Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz, @PaxITIS
+* SignalXY: Fixed a bug where the final line segment was not drawn (#3495, #3423) @MareMare @mjazd
+* SignalXY: Improved support for inverted vertical axes (#3495) @MareMare
+* Controls: Ignore mouse wheel zooming if a zoom rectangle is being drawn (#3498) @BrianAtZetica
+* Controls: Improve axis lock behavior when dragging the mouse on a control (#3498) @BrianAtZetica
+* Heatmap: Added `Opacity` and `AlphaMap` properties to enhance transparency customization (#3499, #3349) @BrianAtZetica
+* Heatmap: Intensity values that are `double.NaN` are now displayed as transparent cells (#3499, #3349) @BrianAtZetica
 * Text: Added an `OffsetX` and `OffsetY` properties for adjusting text position in pixel units (#3506) @jamaa
 
 ## ScottPlot 5.0.22
