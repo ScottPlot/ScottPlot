@@ -194,35 +194,17 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         }
     }
 
-    private byte _globalAlpha = 255;
+    private double _Opacity = 1;
 
     /// <summary>
-    /// Controls the transparency of the entire heatmap
+    /// Controls the opacity of the entire heatmap from 0 (transparent) to 1 (opaque)
     /// </summary>
-    public byte GlobalAlpha
+    public double Opacity
     {
-        get => _globalAlpha;
+        get => _Opacity;
         set
         {
-
-            _globalAlpha = value;
-
-            if (GlobalAlpha == 255)
-            {
-                AlphaMap = null;
-                return;
-            }
-
-            AlphaMap = new byte[Height, Width];
-
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    AlphaMap[i, j] = value;
-                }
-            }
-
+            _Opacity = NumericConversion.Clamp(value, 0, 1);
             Update();
         }
     }
@@ -285,7 +267,18 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                 byte Blue = (byte)(cellArgb & 0xFF);
 
                 // Calculate premultiplied RGB components
-                byte alpha = AlphaMap is null ? cellColor.Alpha : AlphaMap[y, xIndex];
+
+                // start with the original color
+                byte alpha = cellColor.Alpha;
+
+                // apply the alpha map if it is present
+                if (AlphaMap is not null)
+                    alpha = AlphaMap[y, xIndex];
+
+                // apply global opacity if it has been customized
+                if (Opacity != 1)
+                    alpha = (byte)(alpha * Opacity);
+
                 byte premultipliedRed = (byte)((Red * alpha) / 255);
                 byte premultipliedGreen = (byte)((Green * alpha) / 255);
                 byte premultipliedBlue = (byte)((Blue * alpha) / 255);

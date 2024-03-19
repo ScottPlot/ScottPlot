@@ -150,4 +150,25 @@ public class Heatmap : ICategory
             hm2.NaNCellColor = Colors.Magenta.WithAlpha(.4);
         }
     }
+
+    public class HeatmapGlobalTransparency : RecipeBase
+    {
+        public override string Name => "Global Transparency";
+        public override string Description => "The alpha (transparency) of the entire heatmap can be adjusted.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            // create a line chart
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // plot the heatmap on top of the line chart
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new(10, 35, -1.5, .5);
+            hm1.Opacity = 0.5;
+        }
+    }
 }
