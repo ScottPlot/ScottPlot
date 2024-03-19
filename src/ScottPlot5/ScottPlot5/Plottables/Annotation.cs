@@ -19,40 +19,44 @@ public class Annotation : IPlottable
             return;
 
         PixelSize textSize = Label.Measure();
-
-        float _verticalOrigin = Alignment switch
-        {
-            Alignment.UpperLeft => rp.DataRect.Top + 0.5f * textSize.Height + OffsetY,
-            Alignment.UpperCenter => rp.DataRect.Top + 0.5f * textSize.Height + OffsetY,
-            Alignment.UpperRight => rp.DataRect.Top + 0.5f * textSize.Height + OffsetY,
-            Alignment.MiddleLeft => rp.DataRect.LeftCenter.Y - 0.5f * textSize.Height,
-            Alignment.MiddleCenter => rp.DataRect.LeftCenter.Y - 0.5f * textSize.Height,
-            Alignment.MiddleRight => rp.DataRect.LeftCenter.Y - 0.5f * textSize.Height,
-            Alignment.LowerLeft => rp.DataRect.Bottom - textSize.Height - 4 - OffsetY,
-            Alignment.LowerCenter => rp.DataRect.Bottom - textSize.Height - 4 - OffsetY,
-            Alignment.LowerRight => rp.DataRect.Bottom - textSize.Height - 4 - OffsetY,
-            _ => throw new NotImplementedException()
-        };
-
-        float _horizontalOrigin = Alignment switch
-        {
-            Alignment.UpperLeft => rp.DataRect.Left + 4 + OffsetX,
-            Alignment.UpperCenter => rp.DataRect.TopCenter.X - 0.5f * textSize.Width,
-            Alignment.UpperRight => rp.DataRect.Right - textSize.Width - 4 - OffsetX,
-            Alignment.MiddleLeft => rp.DataRect.Left + 4 + OffsetX,
-            Alignment.MiddleCenter => rp.DataRect.BottomCenter.X - 0.5f * textSize.Width,
-            Alignment.MiddleRight => rp.DataRect.Right - textSize.Width - 4 - OffsetX,
-            Alignment.LowerLeft => rp.DataRect.Left + 4 + OffsetX,
-            Alignment.LowerCenter => rp.DataRect.BottomCenter.X - 0.5f * textSize.Width,
-            Alignment.LowerRight => rp.DataRect.Right - textSize.Width - 4 - OffsetX,
-            _ => throw new NotImplementedException()
-        };
+        float y = GetY(textSize.Height, rp.DataRect);
+        float x = GetX(textSize.Width, rp.DataRect);
 
         using SKPaint paint = new();
-        Label.Render(
-            canvas: rp.Canvas,
-            x: _horizontalOrigin,
-            y: _verticalOrigin,
-            paint: paint);
+        Label.Render(rp.Canvas, x, y, paint);
+    }
+
+    private float GetX(float textWidth, PixelRect rect)
+    {
+        return Alignment switch
+        {
+            Alignment.UpperLeft => rect.Left + 4 + OffsetX,
+            Alignment.UpperCenter => rect.TopCenter.X - 0.5f * textWidth,
+            Alignment.UpperRight => rect.Right - textWidth - 4 - OffsetX,
+            Alignment.MiddleLeft => rect.Left + 4 + OffsetX,
+            Alignment.MiddleCenter => rect.BottomCenter.X - 0.5f * textWidth,
+            Alignment.MiddleRight => rect.Right - textWidth - 4 - OffsetX,
+            Alignment.LowerLeft => rect.Left + 4 + OffsetX,
+            Alignment.LowerCenter => rect.BottomCenter.X - 0.5f * textWidth,
+            Alignment.LowerRight => rect.Right - textWidth - 4 - OffsetX,
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private float GetY(float textHeight, PixelRect rect)
+    {
+        return Alignment switch
+        {
+            Alignment.UpperLeft => rect.Top + 0.5f * textHeight + OffsetY,
+            Alignment.UpperCenter => rect.Top + 0.5f * textHeight + OffsetY,
+            Alignment.UpperRight => rect.Top + 0.5f * textHeight + OffsetY,
+            Alignment.MiddleLeft => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.MiddleCenter => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.MiddleRight => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.LowerLeft => rect.Bottom - textHeight - 4 - OffsetY,
+            Alignment.LowerCenter => rect.Bottom - textHeight - 4 - OffsetY,
+            Alignment.LowerRight => rect.Bottom - textHeight - 4 - OffsetY,
+            _ => throw new NotImplementedException()
+        };
     }
 }
